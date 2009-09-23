@@ -29,7 +29,7 @@
 
 						// Allow users to override the binding
 						if (key.indexOf(':') > -1) {
-							String[] keyAndBinding = key.split(":", 2);
+							String[] keyAndBinding = key.split(":", 2); //$NON-NLS-1$
 							key = keyAndBinding[0];
 							if (keyAndBinding.length > 1
 									&& bindings.get(key) != null)
@@ -69,12 +69,12 @@
 				}
 			}
 
-			String prefixString = prefix.toString().replaceAll("^\\s+", "");
+			String prefixString = prefix.toString().replaceAll("^\\s+", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			if (prefixString != null) {
 				decoration.addPrefix(TextProcessor.process(prefixString,
 						"()[].")); //$NON-NLS-1$
 			}
-			String suffixString = suffix.toString().replaceAll("\\s+$", "");
+			String suffixString = suffix.toString().replaceAll("\\s+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			if (suffixString != null) {
 				decoration.addSuffix(TextProcessor.process(suffixString,
 						"()[].")); //$NON-NLS-1$

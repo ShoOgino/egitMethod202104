@@ -1,6 +1,6 @@
 		private void decorateText(IDecoration decoration,
 				IDecoratableResource resource) {
-			String format = "";
+			String format = ""; //$NON-NLS-1$
 			switch (resource.getType()) {
 			case IResource.FILE:
 				format = store
@@ -19,9 +19,9 @@
 			Map<String, String> bindings = new HashMap<String, String>();
 			bindings.put(BINDING_RESOURCE_NAME, resource.getName());
 			bindings.put(BINDING_BRANCH_NAME, resource.getBranch());
-			bindings.put(BINDING_DIRTY_FLAG, resource.isDirty() ? ">" : null);
+			bindings.put(BINDING_DIRTY_FLAG, resource.isDirty() ? ">" : null); //$NON-NLS-1$
 			bindings.put(BINDING_STAGED_FLAG,
-					resource.staged() != Staged.NOT_STAGED ? "*" : null);
+					resource.staged() != Staged.NOT_STAGED ? "*" : null); //$NON-NLS-1$
 
 			decorate(decoration, format, bindings);
 		}

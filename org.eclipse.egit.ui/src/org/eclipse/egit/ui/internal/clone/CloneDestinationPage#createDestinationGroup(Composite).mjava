@@ -2,7 +2,7 @@
 		final Group g = createGroup(parent,
 				UIText.CloneDestinationPage_groupDestination);
 
-		newLabel(g, UIText.CloneDestinationPage_promptDirectory + ":");
+		newLabel(g, UIText.CloneDestinationPage_promptDirectory + ":"); //$NON-NLS-1$
 		final Composite p = new Composite(g, SWT.NONE);
 		final GridLayout grid = new GridLayout();
 		grid.numColumns = 2;
@@ -34,7 +34,7 @@
 			}
 		});
 
-		newLabel(g, UIText.CloneDestinationPage_promptInitialBranch + ":");
+		newLabel(g, UIText.CloneDestinationPage_promptInitialBranch + ":"); //$NON-NLS-1$
 		initialBranch = new Combo(g, SWT.DROP_DOWN | SWT.READ_ONLY);
 		initialBranch.setLayoutData(createFieldGridData());
 		initialBranch.addSelectionListener(new SelectionAdapter() {

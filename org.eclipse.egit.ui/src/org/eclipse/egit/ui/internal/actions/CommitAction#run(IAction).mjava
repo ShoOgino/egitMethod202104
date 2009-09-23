@@ -42,11 +42,11 @@
 			final RepositoryConfig config = repository.getConfig();
 			author = config.getAuthorName();
 			final String authorEmail = config.getAuthorEmail();
-			author = author + " <" + authorEmail + ">";
+			author = author + " <" + authorEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 
 			committer = config.getCommitterName();
 			final String committerEmail = config.getCommitterEmail();
-			committer = committer + " <" + committerEmail + ">";
+			committer = committer + " <" + committerEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		loadPreviousCommit();
@@ -61,7 +61,7 @@
 		if (previousCommit != null) {
 			commitDialog.setPreviousCommitMessage(previousCommit.getMessage());
 			PersonIdent previousAuthor = previousCommit.getAuthor();
-			commitDialog.setPreviousAuthor(previousAuthor.getName() + " <" + previousAuthor.getEmailAddress() + ">");
+			commitDialog.setPreviousAuthor(previousAuthor.getName() + " <" + previousAuthor.getEmailAddress() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		if (commitDialog.open() != IDialogConstants.OK_ID)

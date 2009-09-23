@@ -1,7 +1,7 @@
 	private static URL init() {
 		try {
-			return new URL(Activator.getDefault().getBundle().getEntry("/"),
-					"icons/");
+			return new URL(Activator.getDefault().getBundle().getEntry("/"), //$NON-NLS-1$
+					"icons/"); //$NON-NLS-1$
 		} catch (MalformedURLException mux) {
 			Activator.logError("Can't determine icon base.", mux);
 			return null;

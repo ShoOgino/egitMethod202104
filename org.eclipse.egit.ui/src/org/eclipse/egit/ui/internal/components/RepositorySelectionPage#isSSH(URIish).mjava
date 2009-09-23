@@ -2,11 +2,11 @@
 		if (!uri.isRemote())
 			return false;
 		final String scheme = uri.getScheme();
-		if ("ssh".equals(scheme))
+		if ("ssh".equals(scheme)) //$NON-NLS-1$
 			return true;
-		if ("ssh+git".equals(scheme))
+		if ("ssh+git".equals(scheme)) //$NON-NLS-1$
 			return true;
-		if ("git+ssh".equals(scheme))
+		if ("git+ssh".equals(scheme)) //$NON-NLS-1$
 			return true;
 		if (scheme == null && uri.getHost() != null && uri.getPath() != null)
 			return true;

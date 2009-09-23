@@ -2,7 +2,7 @@
 		final Group g = createGroup(parent,
 				UIText.RepositorySelectionPage_groupConnection);
 
-		newLabel(g, UIText.RepositorySelectionPage_promptScheme + ":");
+		newLabel(g, UIText.RepositorySelectionPage_promptScheme + ":"); //$NON-NLS-1$
 		scheme = new Combo(g, SWT.DROP_DOWN | SWT.READ_ONLY);
 		scheme.setItems(DEFAULT_SCHEMES);
 		scheme.addSelectionListener(new SelectionAdapter() {
@@ -16,10 +16,10 @@
 			}
 		});
 
-		newLabel(g, UIText.RepositorySelectionPage_promptPort + ":");
+		newLabel(g, UIText.RepositorySelectionPage_promptPort + ":"); //$NON-NLS-1$
 		portText = new Text(g, SWT.BORDER);
 		portText.addVerifyListener(new VerifyListener() {
-			final Pattern p = Pattern.compile("^(?:[1-9][0-9]*)?$");
+			final Pattern p = Pattern.compile("^(?:[1-9][0-9]*)?$"); //$NON-NLS-1$
 
 			public void verifyText(final VerifyEvent e) {
 				final String v = portText.getText();

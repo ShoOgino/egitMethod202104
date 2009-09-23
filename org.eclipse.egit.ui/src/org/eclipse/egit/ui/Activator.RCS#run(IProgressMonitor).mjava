@@ -15,7 +15,7 @@
 						if (!scanned.contains(r)) {
 							if (monitor.isCanceled())
 								break;
-							trace("Scanning " + r + " for changes");
+							trace("Scanning " + r + " for changes"); //$NON-NLS-1$ //$NON-NLS-2$
 							scanned.add(r);
 							ISchedulingRule rule = p.getWorkspace().getRuleFactory().modifyRule(p);
 							getJobManager().beginRule(rule, monitor);
@@ -29,10 +29,10 @@
 					monitor.worked(1);
 				}
 				monitor.done();
-				trace("Rescheduling " + getName() + " job");
+				trace("Rescheduling " + getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
 				schedule(REPO_SCAN_INTERVAL);
 			} catch (Exception e) {
-				trace("Stopped rescheduling " + getName() + "job");
+				trace("Stopped rescheduling " + getName() + "job"); //$NON-NLS-1$ //$NON-NLS-2$
 				return new Status(
 						IStatus.ERROR,
 						getPluginId(),

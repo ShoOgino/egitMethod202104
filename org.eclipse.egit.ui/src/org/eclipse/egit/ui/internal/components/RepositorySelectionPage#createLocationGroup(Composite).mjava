@@ -2,7 +2,7 @@
 		final Group g = createGroup(parent,
 				UIText.RepositorySelectionPage_groupLocation);
 
-		newLabel(g, UIText.RepositorySelectionPage_promptURI + ":");
+		newLabel(g, UIText.RepositorySelectionPage_promptURI + ":"); //$NON-NLS-1$
 		uriText = new Text(g, SWT.BORDER);
 		uriText.setLayoutData(createFieldGridData());
 		uriText.addModifyListener(new ModifyListener() {
@@ -21,7 +21,7 @@
 					if (u.getPort() > 0)
 						portText.setText(Integer.toString(u.getPort()));
 					else
-						portText.setText("");
+						portText.setText(""); //$NON-NLS-1$
 
 					if (isFile(u))
 						scheme.select(S_FILE);
@@ -42,11 +42,11 @@
 					// leave uriText as it is, but clean up underlying uri and
 					// decomposed fields
 					uri = new URIish();
-					hostText.setText("");
-					pathText.setText("");
-					userText.setText("");
-					passText.setText("");
-					portText.setText("");
+					hostText.setText(""); //$NON-NLS-1$
+					pathText.setText(""); //$NON-NLS-1$
+					userText.setText(""); //$NON-NLS-1$
+					passText.setText(""); //$NON-NLS-1$
+					portText.setText(""); //$NON-NLS-1$
 					scheme.select(0);
 				} finally {
 					eventDepth--;
@@ -55,7 +55,7 @@
 			}
 		});
 
-		newLabel(g, UIText.RepositorySelectionPage_promptHost + ":");
+		newLabel(g, UIText.RepositorySelectionPage_promptHost + ":"); //$NON-NLS-1$
 		hostText = new Text(g, SWT.BORDER);
 		hostText.setLayoutData(createFieldGridData());
 		hostText.addModifyListener(new ModifyListener() {
@@ -64,7 +64,7 @@
 			}
 		});
 
-		newLabel(g, UIText.RepositorySelectionPage_promptPath + ":");
+		newLabel(g, UIText.RepositorySelectionPage_promptPath + ":"); //$NON-NLS-1$
 		pathText = new Text(g, SWT.BORDER);
 		pathText.setLayoutData(createFieldGridData());
 		pathText.addModifyListener(new ModifyListener() {

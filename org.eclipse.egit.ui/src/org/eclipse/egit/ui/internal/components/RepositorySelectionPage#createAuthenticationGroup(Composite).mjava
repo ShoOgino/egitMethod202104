@@ -2,7 +2,7 @@
 		final Group g = createGroup(parent,
 				UIText.RepositorySelectionPage_groupAuthentication);
 
-		newLabel(g, UIText.RepositorySelectionPage_promptUser + ":");
+		newLabel(g, UIText.RepositorySelectionPage_promptUser + ":"); //$NON-NLS-1$
 		userText = new Text(g, SWT.BORDER);
 		userText.setLayoutData(createFieldGridData());
 		userText.addModifyListener(new ModifyListener() {
@@ -11,7 +11,7 @@
 			}
 		});
 
-		newLabel(g, UIText.RepositorySelectionPage_promptPassword + ":");
+		newLabel(g, UIText.RepositorySelectionPage_promptPassword + ":"); //$NON-NLS-1$
 		passText = new Text(g, SWT.BORDER | SWT.PASSWORD);
 		passText.setLayoutData(createFieldGridData());
 		return g;

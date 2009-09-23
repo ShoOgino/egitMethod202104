@@ -21,7 +21,7 @@
 		GridData findTextData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		findTextData.minimumWidth = 50;
 		patternField.setLayoutData(findTextData);
-		patternField.setText("");
+		patternField.setText(""); //$NON-NLS-1$
 		patternField.setTextLimit(100);
 
 		nextButton = new Button(this, SWT.HORIZONTAL);
@@ -82,7 +82,7 @@
 		totalLabelData.grabExcessHorizontalSpace = true;
 		currentPositionLabel.setLayoutData(totalLabelData);
 		currentPositionLabel.setAlignment(SWT.RIGHT);
-		currentPositionLabel.setText("");
+		currentPositionLabel.setText(""); //$NON-NLS-1$
 
 		progressBar = new ProgressBar(this, SWT.HORIZONTAL);
 		GridData findProgressBarData = new GridData();
@@ -148,11 +148,11 @@
 					String current = null;
 					int currentValue = findResults.getMatchNumberFor(newIx);
 					if (currentValue == -1) {
-						current = "-";
+						current = "-"; //$NON-NLS-1$
 					} else {
 						current = String.valueOf(currentValue);
 					}
-					currentPositionLabel.setText(current + "/"
+					currentPositionLabel.setText(current + "/" //$NON-NLS-1$
 							+ findResults.size());
 				}
 			}

@@ -1,6 +1,6 @@
 	private void writeTreeWithSubTrees(Tree tree) throws TeamException {
 		if (tree.getId() == null) {
-			System.out.println("writing tree for: " + tree.getFullName());
+			System.out.println("writing tree for: " + tree.getFullName()); //$NON-NLS-1$
 			try {
 				for (TreeEntry entry : tree.members()) {
 					if (entry.isModified()) {
@@ -9,7 +9,7 @@
 						} else {
 							// this shouldn't happen.... not quite sure what to
 							// do here :)
-							System.out.println("BAD JUJU: "
+							System.out.println("BAD JUJU: " //$NON-NLS-1$
 									+ entry.getFullName());
 						}
 					}

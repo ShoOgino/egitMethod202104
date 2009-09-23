@@ -1,19 +1,19 @@
 	public String getName() {
 		final ResourceList in = (ResourceList) super.getInput();
 		if (currentWalk == null || in == null)
-			return "";
+			return ""; //$NON-NLS-1$
 		final IResource[] items = in.getItems();
 		if (items.length == 0)
-			return "";
+			return ""; //$NON-NLS-1$
 
 		final StringBuilder b = new StringBuilder();
 		b.append(items[0].getProject().getName());
 		if (currentWalk.getRevFilter() != RevFilter.ALL) {
-			b.append(": ");
+			b.append(": "); //$NON-NLS-1$
 			b.append(currentWalk.getRevFilter());
 		}
 		if (currentWalk.getTreeFilter() != TreeFilter.ALL) {
-			b.append(":");
+			b.append(":"); //$NON-NLS-1$
 			for (final String p : pathFilters) {
 				b.append(' ');
 				b.append(p);

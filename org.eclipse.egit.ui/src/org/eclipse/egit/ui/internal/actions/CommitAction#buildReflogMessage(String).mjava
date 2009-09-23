@@ -1,10 +1,10 @@
 	private String buildReflogMessage(String commitMessage) {
 		String firstLine = commitMessage;
-		int newlineIndex = commitMessage.indexOf("\n");
+		int newlineIndex = commitMessage.indexOf("\n"); //$NON-NLS-1$
 		if (newlineIndex > 0) {
 			firstLine = commitMessage.substring(0, newlineIndex);
 		}
-		String commitStr = amending ? "commit (amend):" : "commit: ";
+		String commitStr = amending ? "commit (amend):" : "commit: "; //$NON-NLS-1$ //$NON-NLS-2$
 		String message = commitStr + firstLine;
 		return message;
 	}

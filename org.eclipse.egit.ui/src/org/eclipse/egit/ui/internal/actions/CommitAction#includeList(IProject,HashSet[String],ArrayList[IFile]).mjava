@@ -1,7 +1,7 @@
 	private void includeList(IProject project, HashSet<String> added, ArrayList<IFile> category) {
 		String repoRelativePath = RepositoryMapping.getMapping(project).getRepoRelativePath(project);
 		if (repoRelativePath.length() > 0) {
-			repoRelativePath += "/";
+			repoRelativePath += "/"; //$NON-NLS-1$
 		}
 
 		for (String filename : added) {
@@ -15,7 +15,7 @@
 						files.add((IFile) member);
 					category.add((IFile) member);
 				} else {
-					System.out.println("Couldn't find " + filename);
+					System.out.println("Couldn't find " + filename); //$NON-NLS-1$
 				}
 			} catch (Exception t) {
 				t.printStackTrace();
