@@ -1,0 +1,29 @@
+	public void run(IProgressMonitor m) throws CoreException {
+		if (m == null) {
+			m = new NullProgressMonitor();
+		}
+
+		m.beginTask(CoreText.DisconnectProviderOperation_disconnecting,
+				projectList.size() * 200);
+		try {
+			for (Object obj : projectList) {
+				obj = ((IAdaptable)obj).getAdapter(IResource.class);
+				if (obj instanceof IProject) {
+					final IProject p = (IProject) obj;
+
+					Activator.trace("disconnect " + p.getName());
+					unmarkTeamPrivate(p);
+					RepositoryProvider.unmap(p);
+					m.worked(100);
+
+					p.refreshLocal(IResource.DEPTH_INFINITE,
+							new SubProgressMonitor(m, 100));
+				} else {
+					m.worked(200);
+				}
+			}
+		} finally {
+			m.done();
+		}
+	}
+

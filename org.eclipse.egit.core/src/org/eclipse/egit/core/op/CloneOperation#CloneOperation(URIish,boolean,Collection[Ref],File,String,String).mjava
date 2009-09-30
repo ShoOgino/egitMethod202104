@@ -1,0 +1,31 @@
+	/**
+	 * Create a new clone operation.
+	 * 
+	 * @param uri
+	 *            remote we should fetch from.
+	 * @param allSelected
+	 *            true when all branches have to be fetched (indicates wildcard
+	 *            in created fetch refspec), false otherwise.
+	 * @param selectedBranches
+	 *            collection of branches to fetch. Ignored when allSelected is
+	 *            true.
+	 * @param workdir
+	 *            working directory to clone to. The directory may or may not
+	 *            already exist.
+	 * @param branch
+	 *            branch to initially clone from.
+	 * @param remoteName
+	 *            name of created remote config as source remote (typically
+	 *            named "origin").
+	 */
+	public CloneOperation(final URIish uri, final boolean allSelected,
+			final Collection<Ref> selectedBranches, final File workdir,
+			final String branch, final String remoteName) {
+		this.uri = uri;
+		this.allSelected = allSelected;
+		this.selectedBranches = selectedBranches;
+		this.workdir = workdir;
+		this.branch = branch;
+		this.remoteName = remoteName;
+	}
+

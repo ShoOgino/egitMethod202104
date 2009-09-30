@@ -1,0 +1,36 @@
+	public void run(IProgressMonitor monitor) throws CoreException {
+		monitor.beginTask("Performing " + type.toString().toLowerCase() + " reset to " + refName, 7);
+		
+		mapObjects();
+		monitor.worked(1);
+		
+		writeRef();
+		monitor.worked(1);
+		
+		if (type != ResetType.SOFT) {
+			if (type == ResetType.MIXED)
+				resetIndex();
+			else
+				readIndex();
+			writeIndex();
+		}
+		monitor.worked(1);
+		
+		if (type == ResetType.HARD) {
+			checkoutIndex();
+		}
+		monitor.worked(1);
+		
+		if (type != ResetType.SOFT) {
+			refreshIndex();
+		}
+		monitor.worked(1);
+		
+		writeReflogs();
+		monitor.worked(1);
+
+		refreshProjects();
+		
+		monitor.done();
+	}
+

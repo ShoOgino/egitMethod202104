@@ -1,0 +1,19 @@
+	private List<RefContentProposal> createContentProposals(
+			final Collection<Ref> refs, final Ref HEAD) {
+		final TreeSet<Ref> set = new TreeSet<Ref>(new Comparator<Ref>() {
+			public int compare(Ref o1, Ref o2) {
+				// lexicographical ordering by name seems to be fine
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		set.addAll(refs);
+		if (HEAD != null)
+			set.add(HEAD);
+
+		final List<RefContentProposal> result = new ArrayList<RefContentProposal>(
+				set.size());
+		for (final Ref r : set)
+			result.add(new RefContentProposal(localDb, r));
+		return result;
+	}
+

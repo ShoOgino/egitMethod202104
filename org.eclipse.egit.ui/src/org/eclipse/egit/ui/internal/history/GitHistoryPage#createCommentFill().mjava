@@ -1,0 +1,11 @@
+	private IAction createCommentFill() {
+		final BooleanPrefAction a = new BooleanPrefAction(PREF_COMMENT_FILL,
+				UIText.ResourceHistory_toggleCommentFill) {
+			void apply(boolean fill) {
+				commentViewer.setFill(fill);
+			}
+		};
+		a.apply(a.isChecked());
+		return a;
+	}
+

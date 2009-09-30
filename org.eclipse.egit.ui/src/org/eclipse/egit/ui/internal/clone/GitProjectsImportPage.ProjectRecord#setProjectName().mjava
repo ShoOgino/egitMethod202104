@@ -1,0 +1,26 @@
+		/**
+		 * Set the name of the project based on the projectFile.
+		 */
+		private void setProjectName() {
+			try {
+				// If we don't have the project name try again
+				if (projectName == null) {
+					IPath path = new Path(projectSystemFile.getPath());
+					// if the file is in the default location, use the directory
+					// name as the project name
+					if (isDefaultLocation(path)) {
+						projectName = path.segment(path.segmentCount() - 2);
+						description = IDEWorkbenchPlugin.getPluginWorkspace()
+								.newProjectDescription(projectName);
+					} else {
+						description = IDEWorkbenchPlugin.getPluginWorkspace()
+								.loadProjectDescription(path);
+						projectName = description.getName();
+					}
+
+				}
+			} catch (CoreException e) {
+				// no good couldn't get the name
+			}
+		}
+

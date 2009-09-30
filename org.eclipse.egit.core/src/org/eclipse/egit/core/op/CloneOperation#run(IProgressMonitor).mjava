@@ -1,0 +1,29 @@
+	public void run(final IProgressMonitor pm)
+			throws InvocationTargetException, InterruptedException {
+		final IProgressMonitor monitor;
+		if (pm == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = pm;
+
+		try {
+			monitor.beginTask(NLS.bind(CoreText.CloneOperation_title, uri),
+					5000);
+			try {
+				doInit(new SubProgressMonitor(monitor, 100));
+				doFetch(new SubProgressMonitor(monitor, 4000));
+				doCheckout(new SubProgressMonitor(monitor, 900));
+			} finally {
+				closeLocal();
+			}
+		} catch (final Exception e) {
+			delete(workdir);
+			if (monitor.isCanceled())
+				throw new InterruptedException();
+			else
+				throw new InvocationTargetException(e);
+		} finally {
+			monitor.done();
+		}
+	}
+

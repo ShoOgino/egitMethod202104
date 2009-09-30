@@ -1,0 +1,10 @@
+		public PushJob(final PushOperation operation,
+				final PushOperationResult resultToCompare,
+				final String destinationString) {
+			super(NLS.bind(UIText.PushWizard_jobName, getURIsString(operation
+					.getSpecification().getURIs())));
+			this.operation = operation;
+			this.resultToCompare = resultToCompare;
+			this.destinationString = destinationString;
+		}
+

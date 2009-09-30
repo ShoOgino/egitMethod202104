@@ -1,0 +1,22 @@
+		@Override
+		public void run() {
+			if (!isChecked()) {
+				if (showAllFilter == filter) {
+					showAllFilter = ShowFilter.SHOWALLRESOURCE;
+					refresh();
+				}
+			}
+			if (isChecked() && showAllFilter != filter) {
+				showAllFilter = filter;
+				if (this != showAllRepoVersionsAction)
+					showAllRepoVersionsAction.setChecked(false);
+				if (this != showAllProjectVersionsAction)
+					showAllProjectVersionsAction.setChecked(false);
+				if (this != showAllFolderVersionsAction)
+					showAllFolderVersionsAction.setChecked(false);
+				refresh();
+			}
+			Activator.getDefault().getPreferenceStore().setValue(
+					PREF_SHOWALLFILTER, showAllFilter.toString());
+		}
+

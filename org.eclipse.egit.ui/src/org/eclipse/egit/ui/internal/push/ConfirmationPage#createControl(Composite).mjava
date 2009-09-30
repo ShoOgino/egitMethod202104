@@ -1,0 +1,19 @@
+	public void createControl(final Composite parent) {
+		final Composite panel = new Composite(parent, SWT.NONE);
+		panel.setLayout(new GridLayout());
+
+		resultPanel = new PushResultTable(panel);
+		final Control tableControl = resultPanel.getControl();
+		tableControl
+				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		requireUnchangedButton = new Button(panel, SWT.CHECK);
+		requireUnchangedButton
+				.setText(UIText.ConfirmationPage_requireUnchangedButton);
+
+		showOnlyIfChanged = new Button(panel, SWT.CHECK);
+		showOnlyIfChanged.setText(UIText.ConfirmationPage_showOnlyIfChanged);
+
+		setControl(panel);
+	}
+

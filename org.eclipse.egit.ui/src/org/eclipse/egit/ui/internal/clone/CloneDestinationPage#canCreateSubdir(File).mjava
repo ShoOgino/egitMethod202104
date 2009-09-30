@@ -1,0 +1,11 @@
+	// this is actually just an optimistic heuristic - should be named
+	// isThereHopeThatCanCreateSubdir() as probably there is no 100% reliable
+	// way to check that in Java for Windows
+	private static boolean canCreateSubdir(final File parent) {
+		if (parent == null)
+			return true;
+		if (parent.exists())
+			return parent.isDirectory() && parent.canWrite();
+		return canCreateSubdir(parent.getParentFile());
+	}
+

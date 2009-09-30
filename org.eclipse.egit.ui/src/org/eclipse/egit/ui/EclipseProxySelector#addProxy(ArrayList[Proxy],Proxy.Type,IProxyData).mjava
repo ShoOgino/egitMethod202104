@@ -1,0 +1,10 @@
+	private void addProxy(final ArrayList<Proxy> r, final Proxy.Type type,
+			final IProxyData d) {
+		try {
+			r.add(new Proxy(type, new InetSocketAddress(InetAddress.getByName(d
+					.getHost()), d.getPort())));
+		} catch (UnknownHostException uhe) {
+			// Oh well.
+		}
+	}
+

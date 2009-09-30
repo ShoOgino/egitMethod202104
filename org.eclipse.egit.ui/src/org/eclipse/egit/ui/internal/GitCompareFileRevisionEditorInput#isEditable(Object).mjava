@@ -1,0 +1,7 @@
+	private boolean isEditable(Object object) {
+		if (object instanceof IEditableContent) {
+			return ((IEditableContent) object).isEditable();
+		}
+		return false;
+	}
+

@@ -1,0 +1,19 @@
+	public Object[] getChildren() {
+		if (children != null)
+			return children;
+		if (entry instanceof Tree) {
+			try {
+				Tree t = (Tree)entry;
+				children = new GitResourceNode[t.memberCount()];
+				for (int i=0; i<children.length; ++i) {
+					children[i] = new GitResourceNode(t.members()[i]);
+				}
+			} catch (IOException e) {
+				// TODO: eclipse error handling
+				e.printStackTrace();
+				children = new GitResourceNode[0];
+			}
+		}
+		return children;
+	}
+

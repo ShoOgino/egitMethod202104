@@ -1,0 +1,10 @@
+	public InputStream getContents() throws CoreException {
+		try {
+			return open();
+		} catch (IOException e) {
+			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
+					getFullPath(), "IO error reading Git blob " + blobId + ".",
+					e);
+		}
+	}
+

@@ -1,0 +1,8 @@
+	private void remapAll() {
+		protectedResources.clear();
+		final Iterator i = mappings.iterator();
+		while (i.hasNext()) {
+			map((RepositoryMapping) i.next());
+		}
+	}
+

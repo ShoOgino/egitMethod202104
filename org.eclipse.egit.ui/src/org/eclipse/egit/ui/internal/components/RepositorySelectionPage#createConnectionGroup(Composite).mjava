@@ -1,0 +1,46 @@
+	private void createConnectionGroup(final Composite parent) {
+		final Group g = createGroup(parent,
+				UIText.RepositorySelectionPage_groupConnection);
+
+		newLabel(g, UIText.RepositorySelectionPage_promptScheme + ":");
+		scheme = new Combo(g, SWT.DROP_DOWN | SWT.READ_ONLY);
+		scheme.setItems(DEFAULT_SCHEMES);
+		scheme.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				final int idx = scheme.getSelectionIndex();
+				if (idx < 0)
+					setURI(uri.setScheme(null));
+				else
+					setURI(uri.setScheme(nullString(scheme.getItem(idx))));
+				updateAuthGroup();
+			}
+		});
+
+		newLabel(g, UIText.RepositorySelectionPage_promptPort + ":");
+		portText = new Text(g, SWT.BORDER);
+		portText.addVerifyListener(new VerifyListener() {
+			final Pattern p = Pattern.compile("^(?:[1-9][0-9]*)?$");
+
+			public void verifyText(final VerifyEvent e) {
+				final String v = portText.getText();
+				e.doit = p.matcher(
+						v.substring(0, e.start) + e.text + v.substring(e.end))
+						.matches();
+			}
+		});
+		portText.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				final String val = nullString(portText.getText());
+				if (val == null)
+					setURI(uri.setPort(-1));
+				else {
+					try {
+						setURI(uri.setPort(Integer.parseInt(val)));
+					} catch (NumberFormatException err) {
+						// Ignore it for now.
+					}
+				}
+			}
+		});
+	}
+

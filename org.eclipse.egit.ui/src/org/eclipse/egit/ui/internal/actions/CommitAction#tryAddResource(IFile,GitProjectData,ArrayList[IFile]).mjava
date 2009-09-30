@@ -1,0 +1,19 @@
+	boolean tryAddResource(IFile resource, GitProjectData projectData, ArrayList<IFile> category) {
+		if (files.contains(resource))
+			return false;
+
+		try {
+			RepositoryMapping repositoryMapping = projectData
+					.getRepositoryMapping(resource);
+
+			if (isChanged(repositoryMapping, resource)) {
+				files.add(resource);
+				category.add(resource);
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+

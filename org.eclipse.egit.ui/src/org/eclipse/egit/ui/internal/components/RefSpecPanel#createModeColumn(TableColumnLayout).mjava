@@ -1,0 +1,64 @@
+	private void createModeColumn(final TableColumnLayout columnLayout) {
+		final TableViewerColumn column = createColumn(columnLayout,
+				UIText.RefSpecPanel_columnMode, COLUMN_MODE_WEIGHT, SWT.CENTER);
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(final Object element) {
+				return (isDeleteRefSpec(element) ? UIText.RefSpecPanel_modeDelete
+						: UIText.RefSpecPanel_modeUpdate);
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				return (isDeleteRefSpec(element) ? imageRegistry
+						.get(IMAGE_DELETE) : imageRegistry.get(IMAGE_ADD));
+			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				if (isDeleteRefSpec(element))
+					return UIText.RefSpecPanel_modeDeleteDescription + '\n'
+							+ UIText.RefSpecPanel_clickToChange;
+				return UIText.RefSpecPanel_modeUpdateDescription + '\n'
+						+ UIText.RefSpecPanel_clickToChange;
+			}
+		});
+		column.setEditingSupport(new EditingSupport(tableViewer) {
+			@Override
+			protected boolean canEdit(final Object element) {
+				return true;
+			}
+
+			@Override
+			protected CellEditor getCellEditor(final Object element) {
+				return modeCellEditor;
+			}
+
+			@Override
+			protected Object getValue(final Object element) {
+				return isDeleteRefSpec(element);
+			}
+
+			@Override
+			protected void setValue(final Object element, final Object value) {
+				final RefSpec oldSpec = (RefSpec) element;
+				final RefSpec newSpec;
+				if ((Boolean) value) {
+					newSpec = setRefSpecSource(oldSpec, null);
+					setRefSpec(oldSpec, newSpec);
+				} else {
+					newSpec = setRefSpecSource(oldSpec,
+							UIText.RefSpecPanel_refChooseSome);
+					setRefSpec(oldSpec, newSpec);
+					tableViewer.getControl().getDisplay().asyncExec(
+							new Runnable() {
+								public void run() {
+									tableViewer.editElement(newSpec,
+											srcColumnIndex);
+								}
+							});
+				}
+			}
+		});
+	}
+

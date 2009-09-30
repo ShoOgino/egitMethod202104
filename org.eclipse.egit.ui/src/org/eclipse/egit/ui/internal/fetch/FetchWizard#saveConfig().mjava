@@ -1,0 +1,17 @@
+	private void saveConfig() {
+		final RemoteConfig rc = repoPage.getSelection().getConfig();
+		rc.setFetchRefSpecs(refSpecPage.getRefSpecs());
+		rc.setTagOpt(refSpecPage.getTagOpt());
+		final RepositoryConfig config = localDb.getConfig();
+		rc.update(config);
+		try {
+			config.save();
+		} catch (final IOException e) {
+			ErrorDialog.openError(getShell(), UIText.FetchWizard_cantSaveTitle,
+					UIText.FetchWizard_cantSaveMessage, new Status(
+							IStatus.WARNING, Activator.getPluginId(), e
+									.getMessage(), e));
+			// Continue, it's not critical.
+		}
+	}
+

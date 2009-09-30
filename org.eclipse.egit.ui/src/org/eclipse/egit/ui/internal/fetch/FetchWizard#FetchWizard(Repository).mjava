@@ -1,0 +1,19 @@
+	/**
+	 * Create wizard for provided local repository.
+	 *
+	 * @param localDb
+	 *            local repository to fetch to.
+	 * @throws URISyntaxException
+	 *             when configuration of this repository contains illegal URIs.
+	 */
+	public FetchWizard(final Repository localDb) throws URISyntaxException {
+		this.localDb = localDb;
+		final List<RemoteConfig> remotes = RemoteConfig
+				.getAllRemoteConfigs(localDb.getConfig());
+		repoPage = new RepositorySelectionPage(true, remotes);
+		refSpecPage = new RefSpecPage(localDb, false, repoPage);
+		// TODO use/create another cool icon
+		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
+		setNeedsProgressMonitor(true);
+	}
+

@@ -1,0 +1,39 @@
+	private void createResourceFilterActions() {
+		try {
+			showAllFilter = ShowFilter.valueOf(Activator.getDefault()
+					.getPreferenceStore().getString(PREF_SHOWALLFILTER));
+		} catch (IllegalArgumentException e) {
+			showAllFilter = ShowFilter.SHOWALLRESOURCE;
+		}
+
+		showAllRepoVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLREPO, UIIcons.FILTERREPO,
+				UIText.HistoryPage_ShowAllVersionsForRepo);
+
+		showAllProjectVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLPROJECT, UIIcons.FILTERPROJECT,
+				UIText.HistoryPage_ShowAllVersionsForProject);
+
+		showAllFolderVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLFOLDER, UIIcons.FILTERFOLDER,
+				UIText.HistoryPage_ShowAllVersionsForFolder);
+
+		showAllRepoVersionsAction
+				.setChecked(showAllFilter == showAllRepoVersionsAction.filter);
+		showAllProjectVersionsAction
+				.setChecked(showAllFilter == showAllProjectVersionsAction.filter);
+		showAllFolderVersionsAction
+				.setChecked(showAllFilter == showAllFolderVersionsAction.filter);
+
+		getSite().getActionBars().getToolBarManager().add(new Separator());
+
+		getSite().getActionBars().getToolBarManager().add(
+				showAllRepoVersionsAction);
+
+		getSite().getActionBars().getToolBarManager().add(
+				showAllProjectVersionsAction);
+
+		getSite().getActionBars().getToolBarManager().add(
+				showAllFolderVersionsAction);
+	}
+

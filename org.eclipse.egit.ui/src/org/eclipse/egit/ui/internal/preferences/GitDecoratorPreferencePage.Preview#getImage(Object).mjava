@@ -1,0 +1,28 @@
+		public Image getImage(Object element) {
+			final String s;
+			switch (((PreviewResource) element).type) {
+			case IResource.PROJECT:
+				s = SharedImages.IMG_OBJ_PROJECT;
+				break;
+			case IResource.FOLDER:
+				s = ISharedImages.IMG_OBJ_FOLDER;
+				break;
+			default:
+				s = ISharedImages.IMG_OBJ_FILE;
+				break;
+			}
+			final Image baseImage = PlatformUI.getWorkbench().getSharedImages()
+					.getImage(s);
+			final ImageDescriptor overlay = getDecoration(element).getOverlay();
+			if (overlay == null)
+				return baseImage;
+			try {
+				return fImageCache.createImage(new DecorationOverlayIcon(
+						baseImage, overlay, IDecoration.BOTTOM_RIGHT));
+			} catch (Exception e) {
+				Activator.logError(e.getMessage(), e);
+			}
+
+			return null;
+		}
+

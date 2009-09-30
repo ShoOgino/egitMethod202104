@@ -1,0 +1,8 @@
+		@Override
+		public String getName() {
+			if (rsrc.getType() == IResource.PROJECT)
+				return rsrc.getLocation().lastSegment();
+			else
+				return rsrc.getName();
+		}
+

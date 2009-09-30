@@ -1,0 +1,17 @@
+	private ObjectId locateBlobObjectId() throws CoreException {
+		try {
+			final GitIndex idx = db.getIndex();
+			final Entry e = idx.getEntry(path);
+			if (e == null)
+				throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
+						Path.fromPortableString(path),
+						"Git index entry not found", null);
+			return e.getObjectId();
+
+		} catch (IOException e) {
+			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL, Path
+					.fromPortableString(path),
+					"IO error looking up path in index.", e);
+		}
+	}
+

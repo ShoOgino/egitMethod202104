@@ -1,0 +1,8 @@
+	protected void setUp() throws Exception {
+		super.setUp();
+		project = new TestProject();
+		gitDir = new File(project.getProject().getWorkspace().getRoot()
+				.getRawLocation().toFile(), ".git");
+		rmrf(gitDir);
+	}
+

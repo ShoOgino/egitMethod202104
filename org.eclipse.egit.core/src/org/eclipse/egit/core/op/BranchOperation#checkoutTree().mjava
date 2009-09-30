@@ -1,0 +1,12 @@
+	private void checkoutTree() throws TeamException {
+		try {
+			new WorkDirCheckout(repository, repository.getWorkDir(), oldTree,
+					index, newTree).checkout();
+		} catch (CheckoutConflictException e) {
+			TeamException teamException = new TeamException(e.getMessage());
+			throw teamException;
+		} catch (IOException e) {
+			throw new TeamException("Problem while checking out:", e);
+		}
+	}
+

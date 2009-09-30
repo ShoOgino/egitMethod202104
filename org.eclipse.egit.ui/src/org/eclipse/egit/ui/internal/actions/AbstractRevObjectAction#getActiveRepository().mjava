@@ -1,0 +1,11 @@
+	/**
+	 * Find out which repository is involved here
+	 *
+	 * @return the Git repository associated with the selected RevObject
+	 */
+	protected Repository getActiveRepository() {
+		RevObjectSelectionProvider selectionProvider = (RevObjectSelectionProvider) wp
+				.getSite().getSelectionProvider();
+		return selectionProvider.getActiveRepository();
+	}
+

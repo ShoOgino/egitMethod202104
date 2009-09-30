@@ -1,0 +1,6 @@
+	private boolean cannotModifyRepository(final IResourceTree tree) {
+		tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
+				CoreText.MoveDeleteHook_cannotModifyFolder, null));
+		return I_AM_DONE;
+	}
+

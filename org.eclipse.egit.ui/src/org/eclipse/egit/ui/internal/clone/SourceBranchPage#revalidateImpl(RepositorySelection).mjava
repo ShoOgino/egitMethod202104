@@ -1,0 +1,63 @@
+	private void revalidateImpl(final RepositorySelection newRepoSelection) {
+		if (label.isDisposed() || !isCurrentPage())
+			return;
+
+		final ListRemoteOperation listRemoteOp;
+		try {
+			final URIish uri = newRepoSelection.getURI();
+			final Repository db = new Repository(new File("/tmp"));
+			listRemoteOp = new ListRemoteOperation(db, uri);
+			getContainer().run(true, true, listRemoteOp);
+		} catch (InvocationTargetException e) {
+			Throwable why = e.getCause();
+			transportError(why.getMessage());
+			ErrorDialog.openError(getShell(),
+					UIText.SourceBranchPage_transportError,
+					UIText.SourceBranchPage_cannotListBranches, new Status(
+							IStatus.ERROR, Activator.getPluginId(), 0, why
+									.getMessage(), why.getCause()));
+			return;
+		} catch (IOException e) {
+			transportError(UIText.SourceBranchPage_cannotCreateTemp);
+			return;
+		} catch (InterruptedException e) {
+			transportError(UIText.SourceBranchPage_remoteListingCancelled);
+			return;
+		}
+
+		final Ref idHEAD = listRemoteOp.getRemoteRef(Constants.HEAD);
+		head = null;
+		for (final Ref r : listRemoteOp.getRemoteRefs()) {
+			final String n = r.getName();
+			if (!n.startsWith(Constants.R_HEADS))
+				continue;
+			availableRefs.add(r);
+			if (idHEAD == null || head != null)
+				continue;
+			if (r.getObjectId().equals(idHEAD.getObjectId()))
+				head = r;
+		}
+		Collections.sort(availableRefs, new Comparator<Ref>() {
+			public int compare(final Ref o1, final Ref o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		if (idHEAD != null && head == null) {
+			head = idHEAD;
+			availableRefs.add(0, idHEAD);
+		}
+
+		validatedRepoSelection = newRepoSelection;
+		for (final Ref r : availableRefs) {
+			String n = r.getName();
+			if (n.startsWith(Constants.R_HEADS))
+				n = n.substring(Constants.R_HEADS.length());
+			final TableItem ti = new TableItem(refsTable, SWT.NONE);
+			ti.setText(n);
+			ti.setChecked(true);
+			selectedRefs.add(r);
+		}
+		notifySelectionChanged();
+		checkPage();
+	}
+

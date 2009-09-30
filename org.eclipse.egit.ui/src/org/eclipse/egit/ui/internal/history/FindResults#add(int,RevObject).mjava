@@ -1,0 +1,17 @@
+	/**
+	 * Adds a history table item index (<code>matchIx</code>) to the find
+	 * results matches list.
+	 *
+	 * @param matchIx
+	 *            the history table item index that matches a find pattern.
+	 * @param revObj
+	 *            The RevObject that will have the highlight tag set.
+	 */
+	public synchronized void add(int matchIx, RevObject revObj) {
+		matchesMap.put(Integer.valueOf(matchIx), Integer
+				.valueOf(++matchesCount));
+		revObjList.add(revObj);
+		revObj.add(highlight);
+		keysArray = null;
+	}
+

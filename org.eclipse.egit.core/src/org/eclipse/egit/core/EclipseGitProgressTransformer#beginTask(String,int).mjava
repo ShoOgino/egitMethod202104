@@ -1,0 +1,13 @@
+	public void beginTask(final String name, final int total) {
+		endTask();
+		msg = name;
+		lastWorked = 0;
+		totalWork = total;
+		task = new SubProgressMonitor(root, 1000);
+		if (totalWork == UNKNOWN)
+			task.beginTask("", IProgressMonitor.UNKNOWN);
+		else
+			task.beginTask("", totalWork);
+		task.subTask(msg);
+	}
+

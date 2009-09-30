@@ -1,0 +1,13 @@
+	static GitDocument create(final IResource resource) throws IOException {
+		Activator.trace("(GitDocument) create: " + resource);
+		GitDocument ret = null;
+		if (RepositoryProvider.getProvider(resource.getProject()) instanceof GitProvider) {
+			ret = new GitDocument(resource);
+			ret.populate();
+			final Repository repository = ret.getRepository();
+			if (repository != null)
+				repository.addRepositoryChangedListener(ret);
+		}
+		return ret;
+	}
+

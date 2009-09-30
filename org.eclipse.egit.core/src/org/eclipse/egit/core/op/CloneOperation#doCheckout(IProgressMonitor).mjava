@@ -1,0 +1,22 @@
+	private void doCheckout(final IProgressMonitor monitor) throws IOException {
+		final Ref head = fetchResult.getAdvertisedRef(branch);
+		if (head == null || head.getObjectId() == null)
+			return;
+
+		final GitIndex index = new GitIndex(local);
+		final Commit mapCommit = local.mapCommit(head.getObjectId());
+		final Tree tree = mapCommit.getTree();
+		final RefUpdate u;
+		final WorkDirCheckout co;
+
+		u = local.updateRef(Constants.HEAD);
+		u.setNewObjectId(mapCommit.getCommitId());
+		u.forceUpdate();
+
+		monitor.setTaskName("Checking out files");
+		co = new WorkDirCheckout(local, local.getWorkDir(), index, tree);
+		co.checkout();
+		monitor.setTaskName("Writing index");
+		index.write();
+	}
+

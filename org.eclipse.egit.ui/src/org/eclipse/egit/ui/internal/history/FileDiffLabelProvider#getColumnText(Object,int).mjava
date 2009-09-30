@@ -1,0 +1,11 @@
+	public String getColumnText(final Object element, final int columnIndex) {
+		final FileDiff c = (FileDiff) element;
+		switch (columnIndex) {
+		case 0:
+			return c.change;
+		case 1:
+			return c.path;
+		}
+		return "";
+	}
+

@@ -1,0 +1,15 @@
+	private void delete() {
+		final File dir = propertyFile().getParentFile();
+		final File[] todel = dir.listFiles();
+		if (todel != null) {
+			for (int k = 0; k < todel.length; k++) {
+				if (todel[k].isFile()) {
+					todel[k].delete();
+				}
+			}
+		}
+		dir.delete();
+		trace("deleteDataFor(" + getProject().getName() + ")");
+		uncache(getProject());
+	}
+

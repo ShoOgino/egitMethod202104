@@ -1,0 +1,11 @@
+	public boolean setInput(final Object o) {
+		final Object in;
+		if (o instanceof IResource)
+			in = new ResourceList(new IResource[] { (IResource) o });
+		else if (o instanceof ResourceList)
+			in = o;
+		else
+			in = null;
+		return super.setInput(in);
+	}
+

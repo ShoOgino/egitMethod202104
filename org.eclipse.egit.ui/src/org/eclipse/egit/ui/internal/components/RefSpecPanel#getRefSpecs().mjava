@@ -1,0 +1,13 @@
+	/**
+	 * Return current list of specifications of this panel.
+	 * <p>
+	 * This method should be called only from the UI thread.
+	 *
+	 * @return unmodifiable view of specifications list as edited by user in
+	 *         this panel. Note that this view underlying model may change -
+	 *         create a copy if needed.
+	 */
+	public List<RefSpec> getRefSpecs() {
+		return Collections.unmodifiableList(specs);
+	}
+

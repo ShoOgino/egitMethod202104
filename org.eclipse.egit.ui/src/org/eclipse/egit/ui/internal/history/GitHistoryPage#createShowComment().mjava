@@ -1,0 +1,9 @@
+	private IAction createShowComment() {
+		return new BooleanPrefAction(SHOW_COMMENT,
+				UIText.ResourceHistory_toggleRevComment) {
+			void apply(final boolean value) {
+				layout();
+			}
+		};
+	}
+

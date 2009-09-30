@@ -1,0 +1,9 @@
+	private IAction createShowFiles() {
+		return new BooleanPrefAction(SHOW_FILES,
+				UIText.ResourceHistory_toggleRevDetail) {
+			void apply(final boolean value) {
+				layout();
+			}
+		};
+	}
+

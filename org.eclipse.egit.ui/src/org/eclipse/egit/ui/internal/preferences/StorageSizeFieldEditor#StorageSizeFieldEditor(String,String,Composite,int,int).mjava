@@ -1,0 +1,12 @@
+	StorageSizeFieldEditor(String name, String labelText, Composite parent,
+			int min, int max) {
+		init(name, labelText);
+		setTextLimit(10);
+		setEmptyStringAllowed(false);
+		setErrorMessage(JFaceResources
+				.getString("IntegerFieldEditor.errorMessage"));
+		createControl(parent);
+		minValidValue = min;
+		maxValidValue = max;
+	}
+

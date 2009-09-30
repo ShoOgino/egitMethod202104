@@ -1,0 +1,15 @@
+	private ObjectId locateBlobObjectId() throws CoreException {
+		try {
+			final TreeWalk w = TreeWalk.forPath(db, path, commit.getTree());
+			if (w == null)
+				throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
+						Path.fromPortableString(path), "Path not in "
+								+ commit.getId() + ".", null);
+			return w.getObjectId(0);
+		} catch (IOException e) {
+			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL, Path
+					.fromPortableString(path), "IO error looking up path in "
+					+ commit.getId() + ".", e);
+		}
+	}
+

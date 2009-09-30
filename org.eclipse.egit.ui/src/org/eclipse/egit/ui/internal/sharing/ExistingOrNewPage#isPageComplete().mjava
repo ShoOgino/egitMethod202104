@@ -1,0 +1,13 @@
+	@Override
+	public boolean isPageComplete() {
+		if (tree.getSelectionCount() == 0)
+			return false;
+		for (TreeItem ti : tree.getSelection()) {
+			String path = ti.getText(2);
+			if (path.equals("")) { //$NON-NLS-1$
+				return false;
+			}
+		}
+		return true;
+	}
+

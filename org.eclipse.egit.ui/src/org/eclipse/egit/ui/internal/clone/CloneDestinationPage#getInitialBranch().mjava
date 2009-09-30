@@ -1,0 +1,10 @@
+	/**
+	 * @return initial branch selected (includes refs/heads prefix).
+	 */
+	public String getInitialBranch() {
+		final int ix = initialBranch.getSelectionIndex();
+		if (ix < 0)
+			return Constants.R_HEADS + Constants.MASTER;
+		return Constants.R_HEADS + initialBranch.getItem(ix);
+	}
+

@@ -1,0 +1,12 @@
+	public IPackageFragmentRoot createSourceFolder() throws CoreException {
+		IFolder folder = project.getFolder("src");
+		folder.create(false, true, null);
+		IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(folder);
+		IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
+		javaProject.setRawClasspath(newEntries, null);
+		return root;
+	}
+

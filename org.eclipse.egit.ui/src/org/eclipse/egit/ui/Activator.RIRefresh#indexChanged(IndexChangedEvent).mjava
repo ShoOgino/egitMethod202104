@@ -1,0 +1,21 @@
+		public void indexChanged(IndexChangedEvent e) {
+			// Check the workspace setting "refresh automatically" setting first
+			if (!ResourcesPlugin.getPlugin().getPluginPreferences().getBoolean(
+					ResourcesPlugin.PREF_AUTO_REFRESH))
+				return;
+
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			Set<IProject> toRefresh= new HashSet<IProject>();
+			for (IProject p : projects) {
+				RepositoryMapping mapping = RepositoryMapping.getMapping(p);
+				if (mapping != null && mapping.getRepository() == e.getRepository()) {
+					toRefresh.add(p);
+				}
+			}
+			synchronized (projectsToScan) {
+				projectsToScan.addAll(toRefresh);
+			}
+			if (projectsToScan.size() > 0)
+				schedule();
+		}
+

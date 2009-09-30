@@ -1,0 +1,13 @@
+	private static String getURIsString(final Collection<URIish> uris) {
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (final URIish uri : uris) {
+			if (first)
+				first = false;
+			else
+				sb.append(", "); //$NON-NLS-1$
+			sb.append(uri);
+		}
+		return sb.toString();
+	}
+

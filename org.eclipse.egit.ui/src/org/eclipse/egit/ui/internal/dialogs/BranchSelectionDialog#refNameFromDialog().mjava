@@ -1,0 +1,9 @@
+	private void refNameFromDialog() {
+		TreeItem[] selection = branchTree.getSelection();
+		refName = null;
+		if (selection != null && selection.length > 0) {
+			TreeItem item = selection[0];
+			refName = (String) item.getData();
+		}
+	}
+

@@ -1,0 +1,16 @@
+	/**
+	 * Returns the last table item index that contains a match to the find
+	 * pattern.
+	 *
+	 * @return the last index that contains a match. Returns -1 if there isn't
+	 *         any match
+	 */
+	public synchronized int getLastIndex() {
+		Integer[] matches = getkeysArray();
+		if (matches.length > 0) {
+			return matches[matches.length - 1].intValue();
+		}
+
+		return -1;
+	}
+

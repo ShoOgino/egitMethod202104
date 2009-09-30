@@ -1,0 +1,13 @@
+	/**
+	 * Defaults was clicked. Restore the Git decoration preferences to their
+	 * default values
+	 */
+	protected void performDefaults() {
+		IPreferenceStore store = getPreferenceStore();
+		generalTab.performDefaults(store);
+		textDecorationTab.performDefaults(store);
+		iconDecorationTab.performDefaults(store);
+		super.performDefaults();
+		preview.refresh();
+	}
+

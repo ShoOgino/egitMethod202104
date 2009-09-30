@@ -1,0 +1,47 @@
+	@Override
+	public void createControl(final Composite parent) {
+		GridData gd;
+
+		prefs = Activator.getDefault().getPluginPreferences();
+		ourControl = createMainPanel(parent);
+		gd = new GridData();
+		gd.verticalAlignment = SWT.FILL;
+		gd.horizontalAlignment = SWT.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = true;
+		ourControl.setLayoutData(gd);
+
+		gd = new GridData();
+		gd.verticalAlignment = SWT.FILL;
+		gd.horizontalAlignment = SWT.FILL;
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = true;
+		graphDetailSplit = new SashForm(ourControl, SWT.VERTICAL);
+		graphDetailSplit.setLayoutData(gd);
+
+		graph = new CommitGraphTable(graphDetailSplit);
+		revInfoSplit = new SashForm(graphDetailSplit, SWT.HORIZONTAL);
+		commentViewer = new CommitMessageViewer(revInfoSplit);
+		fileViewer = new CommitFileDiffViewer(revInfoSplit);
+		findToolbar = new FindToolbar(ourControl);
+
+		layoutSashForm(graphDetailSplit, SPLIT_GRAPH);
+		layoutSashForm(revInfoSplit, SPLIT_INFO);
+
+		revObjectSelectionProvider = new RevObjectSelectionProvider();
+		popupMgr = new MenuManager(null, POPUP_ID);
+		attachCommitSelectionChanged();
+		createLocalToolbarActions();
+		createResourceFilterActions();
+		createStandardActions();
+		createViewMenu();
+
+		finishContextMenu();
+		attachContextMenu(graph.getControl());
+		attachContextMenu(commentViewer.getControl());
+		attachContextMenu(fileViewer.getControl());
+		layout();
+
+		Repository.addAnyRepositoryChangedListener(this);
+	}
+

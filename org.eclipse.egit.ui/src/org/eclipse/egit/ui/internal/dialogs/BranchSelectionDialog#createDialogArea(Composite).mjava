@@ -1,0 +1,26 @@
+	@Override
+	protected Composite createDialogArea(Composite base) {
+		parent = (Composite) super.createDialogArea(base);
+		parent.setLayout(GridLayoutFactory.swtDefaults().create());
+		new Label(parent, SWT.NONE).setText(UIText.BranchSelectionDialog_Refs);
+		branchTree = new Tree(parent, SWT.BORDER);
+		branchTree.setLayoutData(GridDataFactory.fillDefaults().grab(true,true).hint(500, 300).create());
+
+		if (showResetType) {
+			buildResetGroup();
+		}
+
+		String rawTitle = showResetType ? UIText.BranchSelectionDialog_TitleReset
+				: UIText.BranchSelectionDialog_TitleCheckout;
+		getShell().setText(
+				NLS.bind(rawTitle, new Object[] { repo.getDirectory() }));
+
+		try {
+			fillTreeWithBranches(null);
+		} catch (Throwable e) {
+			Activator.logError(UIText.BranchSelectionDialog_ErrorCouldNotRefresh, e);
+		}
+
+		return parent;
+	}
+

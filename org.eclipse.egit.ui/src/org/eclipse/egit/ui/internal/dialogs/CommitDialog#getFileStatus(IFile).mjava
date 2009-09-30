@@ -1,0 +1,43 @@
+	private static String getFileStatus(IFile file) {
+		String prefix = UIText.CommitDialog_StatusUnknown;
+
+		try {
+			RepositoryMapping repositoryMapping = RepositoryMapping
+					.getMapping(file.getProject());
+
+			Repository repo = repositoryMapping.getRepository();
+			GitIndex index = repo.getIndex();
+			Tree headTree = repo.mapTree(Constants.HEAD);
+
+			String repoPath = repositoryMapping.getRepoRelativePath(file);
+			TreeEntry headEntry = headTree.findBlobMember(repoPath);
+			boolean headExists = headTree.existsBlob(repoPath);
+
+			Entry indexEntry = index.getEntry(repoPath);
+			if (headEntry == null) {
+				prefix = UIText.CommitDialog_StatusAdded;
+				if (indexEntry.isModified(repositoryMapping.getWorkDir()))
+					prefix = UIText.CommitDialog_StatusAddedIndexDiff;
+			} else if (indexEntry == null) {
+				prefix = UIText.CommitDialog_StatusRemoved;
+			} else if (headExists
+					&& !headEntry.getId().equals(indexEntry.getObjectId())) {
+				prefix = UIText.CommitDialog_StatusModified;
+
+				if (indexEntry.isModified(repositoryMapping.getWorkDir()))
+					prefix = UIText.CommitDialog_StatusModifiedIndexDiff;
+			} else if (!new File(repositoryMapping.getWorkDir(), indexEntry
+					.getName()).isFile()) {
+				prefix = UIText.CommitDialog_StatusRemovedNotStaged;
+			} else if (indexEntry.isModified(repositoryMapping.getWorkDir())) {
+				prefix = UIText.CommitDialog_StatusModifiedNotStaged;
+			}
+
+		} catch (Exception e) {
+			Activator.logError("Problem in finding file status", e);
+			prefix = e.getMessage();
+		}
+
+		return prefix;
+	}
+

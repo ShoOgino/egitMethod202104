@@ -1,0 +1,53 @@
+	private void revalidateImpl(final RepositorySelection newRepoSelection) {
+		final ListRemoteOperation listRemotesOp;
+		try {
+			final URIish uri;
+			uri = newRepoSelection.getURI();
+			listRemotesOp = new ListRemoteOperation(local, uri);
+			getContainer().run(true, true, listRemotesOp);
+		} catch (InvocationTargetException e) {
+			final Throwable cause = e.getCause();
+			transportError(cause.getMessage());
+			ErrorDialog.openError(getShell(),
+					UIText.RefSpecPage_errorTransportDialogTitle,
+					UIText.RefSpecPage_errorTransportDialogMessage, new Status(
+							IStatus.ERROR, Activator.getPluginId(), 0, cause
+									.getMessage(), cause));
+			return;
+		} catch (InterruptedException e) {
+			transportError(UIText.RefSpecPage_operationCancelled);
+			return;
+		}
+
+		this.validatedRepoSelection = newRepoSelection;
+		final String remoteName = validatedRepoSelection.getConfigName();
+		specsPanel.setAssistanceData(local, listRemotesOp.getRemoteRefs(),
+				remoteName);
+
+		tagsAutoFollowButton.setSelection(false);
+		tagsFetchTagsButton.setSelection(false);
+		tagsNoTagsButton.setSelection(false);
+
+		if (newRepoSelection.isConfigSelected()) {
+			saveButton.setVisible(true);
+			saveButton.setText(NLS.bind(UIText.RefSpecPage_saveSpecifications,
+					remoteName));
+			saveButton.getParent().layout();
+			final TagOpt tagOpt = newRepoSelection.getConfig().getTagOpt();
+			switch (tagOpt) {
+			case AUTO_FOLLOW:
+				tagsAutoFollowButton.setSelection(true);
+				break;
+			case FETCH_TAGS:
+				tagsFetchTagsButton.setSelection(true);
+				break;
+			case NO_TAGS:
+				tagsNoTagsButton.setSelection(true);
+				break;
+			}
+		} else
+			tagsAutoFollowButton.setSelection(true);
+
+		checkPage();
+	}
+

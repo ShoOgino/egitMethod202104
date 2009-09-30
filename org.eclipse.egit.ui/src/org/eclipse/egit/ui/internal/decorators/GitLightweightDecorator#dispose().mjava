@@ -1,0 +1,17 @@
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
+				.removePropertyChangeListener(this);
+		TeamUI.removePropertyChangeListener(this);
+		Activator.removePropertyChangeListener(this);
+		Repository.removeAnyRepositoryChangedListener(this);
+		GitProjectData.removeRepositoryChangeListener(this);
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+	}
+

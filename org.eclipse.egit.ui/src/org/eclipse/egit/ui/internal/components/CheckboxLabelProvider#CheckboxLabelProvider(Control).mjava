@@ -1,0 +1,13 @@
+	/**
+	 * Create label provider for provided viewer.
+	 *
+	 * @param control
+	 *            viewer where label provided is used.
+	 */
+	public CheckboxLabelProvider(final Control control) {
+		imageCheckedEnabled = createCheckboxImage(control, true, true);
+		imageUncheckedEnabled = createCheckboxImage(control, false, true);
+		imageCheckedDisabled = createCheckboxImage(control, true, false);
+		imageUncheckedDisabled = createCheckboxImage(control, false, false);
+	}
+

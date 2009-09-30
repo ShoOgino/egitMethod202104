@@ -1,0 +1,11 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.compare.CompareEditorInput#getTitle()
+	 */
+	public String getTitle() {
+		Object[] titleObject = new Object[3];
+		titleObject[0] = getShortName(left);
+		titleObject[1] = getContentIdentifier(getLeftRevision());
+		titleObject[2] = getContentIdentifier(getRightRevision());
+		return NLS.bind(TeamUIMessages.CompareFileRevisionEditorInput_compareResourceAndVersions, titleObject);
+	}
+

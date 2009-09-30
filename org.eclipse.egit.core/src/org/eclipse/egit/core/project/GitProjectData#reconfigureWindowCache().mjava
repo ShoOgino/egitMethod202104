@@ -1,0 +1,13 @@
+	/**
+	 * Update the settings for the global window cache of the workspace.
+	 */
+	public static void reconfigureWindowCache() {
+		final WindowCacheConfig c = new WindowCacheConfig();
+		Preferences p = Activator.getDefault().getPluginPreferences();
+		c.setPackedGitLimit(p.getInt(GitCorePreferences.core_packedGitLimit));
+		c.setPackedGitWindowSize(p.getInt(GitCorePreferences.core_packedGitWindowSize));
+		c.setPackedGitMMAP(p.getBoolean(GitCorePreferences.core_packedGitMMAP));
+		c.setDeltaBaseCacheLimit(p.getInt(GitCorePreferences.core_deltaBaseCacheLimit));
+		WindowCache.reconfigure(c);
+	}
+

@@ -1,0 +1,7 @@
+	public IProject[] getProjects() {
+		IProject[] ret = new IProject[tree.getSelection().length];
+		for (int i = 0; i < ret.length; ++i)
+			ret[i] = (IProject)tree.getSelection()[i].getData();
+		return ret;
+	}
+

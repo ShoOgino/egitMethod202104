@@ -1,0 +1,17 @@
+	/**
+	 * Construct a new iterator from the workspace root.
+	 * <p>
+	 * The iterator will support traversal over workspace projects that have
+	 * a Git repository provider connected and is mapped into a Git repository.
+	 * During the iteration the paths will be automatically generated to match
+	 * the proper repository paths for this container's children.
+	 *
+	 * @param root
+	 *            the workspace root to walk over.
+	 */
+	public ContainerTreeIterator(final IWorkspaceRoot root) {
+		super("");
+		node = root;
+		init(entries());
+	}
+

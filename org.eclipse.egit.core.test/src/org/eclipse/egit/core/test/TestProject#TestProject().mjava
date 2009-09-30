@@ -1,0 +1,13 @@
+	public TestProject() throws CoreException {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		project = root.getProject("Project-1");
+		project.create(null);
+		project.open(null);
+		javaProject = JavaCore.create(project);
+		IFolder binFolder = createBinFolder();
+		setJavaNature();
+		javaProject.setRawClasspath(new IClasspathEntry[0], null);
+		createOutputFolder(binFolder);
+		addSystemLibraries();
+	}
+

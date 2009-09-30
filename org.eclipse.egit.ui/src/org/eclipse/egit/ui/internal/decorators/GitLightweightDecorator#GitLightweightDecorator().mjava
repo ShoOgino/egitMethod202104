@@ -1,0 +1,14 @@
+	/**
+	 * Constructs a new Git resource decorator
+	 */
+	public GitLightweightDecorator() {
+		TeamUI.addPropertyChangeListener(this);
+		Activator.addPropertyChangeListener(this);
+		PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
+				.addPropertyChangeListener(this);
+		Repository.addAnyRepositoryChangedListener(this);
+		GitProjectData.addRepositoryChangeListener(this);
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(this,
+				IResourceChangeEvent.POST_CHANGE);
+	}
+

@@ -1,0 +1,46 @@
+	public void run(IProgressMonitor m) throws CoreException {
+		if (m == null) {
+			m = new NullProgressMonitor();
+		}
+
+		m.beginTask(CoreText.ConnectProviderOperation_connecting,
+				100 * projects.length);
+		try {
+
+			for (IProject project : projects) {
+				m.setTaskName(NLS.bind(
+						CoreText.ConnectProviderOperation_ConnectingProject,
+						project.getName()));
+				Activator.trace("Locating repository for " + project); //$NON-NLS-1$
+				Collection<RepositoryMapping> repos = new RepositoryFinder(
+						project).find(new SubProgressMonitor(m, 40));
+				if (repos.size() == 1) {
+					GitProjectData projectData = new GitProjectData(project);
+					try {
+						projectData.setRepositoryMappings(repos);
+						projectData.store();
+					} catch (CoreException ce) {
+						GitProjectData.delete(project);
+						throw ce;
+					} catch (RuntimeException ce) {
+						GitProjectData.delete(project);
+						throw ce;
+					}
+					RepositoryProvider
+							.map(project, GitProvider.class.getName());
+					projectData = GitProjectData.get(project);
+					project.refreshLocal(IResource.DEPTH_INFINITE,
+							new SubProgressMonitor(m, 50));
+					m.worked(10);
+				} else {
+					Activator
+							.trace("Attempted to share project without repository ignored :" //$NON-NLS-1$
+									+ project);
+					m.worked(60);
+				}
+			}
+		} finally {
+			m.done();
+		}
+	}
+

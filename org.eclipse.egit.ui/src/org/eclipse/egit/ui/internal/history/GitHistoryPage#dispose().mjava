@@ -1,0 +1,18 @@
+	public void dispose() {
+		Repository.removeAnyRepositoryChangedListener(this);
+		cancelRefreshJob();
+		if (popupMgr != null) {
+			for (final IContributionItem i : popupMgr.getItems()) {
+				if (i instanceof ActionFactory.IWorkbenchAction)
+					((ActionFactory.IWorkbenchAction) i).dispose();
+			}
+			for (final IContributionItem i : getSite().getActionBars()
+					.getMenuManager().getItems()) {
+				if (i instanceof ActionFactory.IWorkbenchAction)
+					((ActionFactory.IWorkbenchAction) i).dispose();
+			}
+		}
+		Activator.getDefault().savePluginPreferences();
+		super.dispose();
+	}
+

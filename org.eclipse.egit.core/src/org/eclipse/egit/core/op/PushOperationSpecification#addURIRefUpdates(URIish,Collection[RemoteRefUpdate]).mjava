@@ -1,0 +1,19 @@
+	/**
+	 * Add remote repository URI with ref updates specification.
+	 * <p>
+	 * Ref updates are not in constructor - pay attention to not share them
+	 * between different URIs ref updates or push operations.
+	 * <p>
+	 * Note that refUpdates can differ between URIs <b>only</b> by expected old
+	 * object id field: {@link RemoteRefUpdate#getExpectedOldObjectId()}.
+	 *
+	 * @param uri
+	 *            remote repository URI.
+	 * @param refUpdates
+	 *            collection of remote ref updates specifications.
+	 */
+	public void addURIRefUpdates(final URIish uri,
+			Collection<RemoteRefUpdate> refUpdates) {
+		urisRefUpdates.put(uri, refUpdates);
+	}
+

@@ -1,0 +1,17 @@
+	/**
+	 * Return information about validity of specifications.
+	 * <p>
+	 * Specifications are considered valid if pushing/fetching (depending on
+	 * panel configuration) shouldn't cause any error except for
+	 * non-fast-forward or server-related errors complaint. I.e. specifications
+	 * destinations don't overlap and every specification is correctly
+	 * formulated, preferably none is referring to non-existing ref etc.
+	 *
+	 * @return true if all specifications in panel are valid, false if at least
+	 *         one specification is invalid (in this case
+	 *         {@link #getErrorMessage()} gives detailed information for user).
+	 */
+	public boolean isValid() {
+		return errorMessage == null;
+	}
+

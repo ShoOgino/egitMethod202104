@@ -1,0 +1,17 @@
+	private void createPaintListener(final Table rawTable) {
+		// Tell SWT we will completely handle painting for some columns.
+		//
+		rawTable.addListener(SWT.EraseItem, new Listener() {
+			public void handleEvent(final Event event) {
+				if (0 <= event.index && event.index <= 2)
+					event.detail &= ~SWT.FOREGROUND;
+			}
+		});
+
+		rawTable.addListener(SWT.PaintItem, new Listener() {
+			public void handleEvent(final Event event) {
+				doPaint(event);
+			}
+		});
+	}
+

@@ -1,0 +1,11 @@
+	@Override
+	public AbstractTreeIterator createSubtreeIterator(final Repository db)
+			throws IncorrectObjectTypeException, IOException {
+		if (FileMode.TREE.equals(mode))
+			return new ContainerTreeIterator(this,
+					(IContainer) ((ResourceEntry) current()).rsrc);
+		else
+			throw new IncorrectObjectTypeException(ObjectId.zeroId(),
+					Constants.TYPE_TREE);
+	}
+

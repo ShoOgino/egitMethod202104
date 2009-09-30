@@ -1,0 +1,34 @@
+		private boolean shouldRecurse(TreeWalk treeWalk) {
+			final WorkingTreeIterator workspaceIterator = treeWalk.getTree(
+					T_WORKSPACE, WorkingTreeIterator.class);
+
+			if (workspaceIterator instanceof AdaptableFileTreeIterator)
+				return true;
+
+			ResourceEntry resourceEntry = null;
+			if (workspaceIterator != null)
+				resourceEntry = ((ContainerTreeIterator) workspaceIterator)
+						.getResourceEntry();
+
+			if (resourceEntry == null)
+				return true;
+
+			IResource visitingResource = resourceEntry.getResource();
+			if (targetDepth == -1) {
+				if (visitingResource.equals(resource)
+						|| visitingResource.getParent().equals(resource))
+					targetDepth = treeWalk.getDepth();
+				else
+					return true;
+			}
+
+			if ((treeWalk.getDepth() - targetDepth) >= recurseLimit) {
+				if (visitingResource.equals(resource))
+					extractResourceProperties(treeWalk);
+
+				return false;
+			}
+
+			return true;
+		}
+

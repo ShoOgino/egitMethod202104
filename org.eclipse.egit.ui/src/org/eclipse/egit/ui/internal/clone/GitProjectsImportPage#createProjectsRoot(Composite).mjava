@@ -1,0 +1,19 @@
+	/**
+	 * Create the area where you select the root directory for the projects.
+	 *
+	 * @param workArea
+	 *            Composite
+	 */
+	private void createProjectsRoot(Composite workArea) {
+
+		// project specification group
+		Composite projectGroup = new Composite(workArea, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 3;
+		layout.makeColumnsEqualWidth = false;
+		layout.marginWidth = 0;
+		projectGroup.setLayout(layout);
+		projectGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+	}
+

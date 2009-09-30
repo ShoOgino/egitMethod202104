@@ -1,0 +1,116 @@
+	public void createControl(Composite parent) {
+		Group g = new Group(parent, SWT.NONE);
+		g.setLayout(new GridLayout(3,false));
+		g.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
+		tree = new Tree(g, SWT.BORDER|SWT.MULTI);
+		tree.setHeaderVisible(true);
+		tree.setLayout(new GridLayout());
+		tree.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(3,1).create());
+		TreeColumn c1 = new TreeColumn(tree,SWT.NONE);
+		c1.setText(UIText.ExistingOrNewPage_HeaderProject);
+		c1.setWidth(100);
+		TreeColumn c2 = new TreeColumn(tree,SWT.NONE);
+		c2.setText(UIText.ExistingOrNewPage_HeaderPath);
+		c2.setWidth(400);
+		TreeColumn c3 = new TreeColumn(tree,SWT.NONE);
+		c3.setText(UIText.ExistingOrNewPage_HeaderRepository);
+		c3.setWidth(200);
+		for (IProject project : myWizard.projects) {
+			TreeItem treeItem = new TreeItem(tree, SWT.NONE);
+			treeItem.setData(project);
+			treeItem.setText(0, project.getName());
+			treeItem.setText(1, project.getLocation().toOSString());
+			RepositoryFinder repositoryFinder = new RepositoryFinder(project);
+			Collection<RepositoryMapping> find;
+			try {
+				find = repositoryFinder.find(new NullProgressMonitor());
+				if (find.size() == 0)
+					treeItem.setText(2, ""); //$NON-NLS-1$
+				else {
+					Iterator<RepositoryMapping> mi = find.iterator();
+					RepositoryMapping m = mi.next();
+					if (m.getGitDir() == null)
+						treeItem.setText(2,UIText.ExistingOrNewPage_SymbolicValueEmptyMapping);
+					else
+						treeItem.setText(2, m.getGitDir());
+					while (mi.hasNext()) {
+						TreeItem treeItem2 = new TreeItem(treeItem, SWT.NONE);
+						if (m.getGitDir() == null)
+							treeItem2.setText(2,UIText.ExistingOrNewPage_SymbolicValueEmptyMapping);
+						else
+							treeItem2.setText(2,m.getGitDir());
+					}
+				}
+			} catch (CoreException e) {
+				TreeItem treeItem2 = new TreeItem(treeItem, SWT.BOLD|SWT.ITALIC);
+				treeItem2.setText(e.getMessage());
+			}
+		}
+
+		button = new Button(g, SWT.PUSH);
+		button.setLayoutData(GridDataFactory.fillDefaults().create());
+		button.setText(UIText.ExistingOrNewPage_CreateButton);
+		button.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				File gitDir = new File(repositoryToCreate.getText(),".git");
+				try {
+					Repository repository = new Repository(gitDir);
+					repository.create();
+					for (IProject project : getProjects()) {
+						// If we don't refresh the project directories right
+						// now we won't later know that a .git directory
+						// exists within it and we won't mark the .git
+						// directory as a team-private member. Failure
+						// to do so might allow someone to delete
+						// the .git directory without us stopping them.
+						// (Half lie, we should optimize so we do not
+						// refresh when the .git is not within the project)
+						//
+						if (!gitDir.toString().contains("..")) //$NON-NLS-1$
+							project.refreshLocal(IResource.DEPTH_ONE,
+									new NullProgressMonitor());
+					}
+				} catch (IOException e1) {
+					MessageDialog.openError(getShell(), UIText.ExistingOrNewPage_ErrorFailedToCreateRepository, gitDir.toString() + ":\n" + e1.getMessage());
+					Activator.logError("Failed to create repository at " + gitDir, e1); //$NON-NLS-1$
+				} catch (CoreException e2) {
+					Activator.logError(UIText.ExistingOrNewPage_ErrorFailedToRefreshRepository + gitDir, e2);
+				}
+				for (TreeItem ti : tree.getSelection()) {
+					ti.setText(2, gitDir.toString());
+				}
+				updateCreateOptions();
+				getContainer().updateButtons();
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		repositoryToCreate = new Text(g, SWT.SINGLE | SWT.BORDER);
+		repositoryToCreate.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(1,1).create());
+		repositoryToCreate.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event e) {
+				if (e.text == null)
+					return;
+				IPath fromOSString = Path.fromOSString(e.text);
+				button.setEnabled(minumumPath
+						.matchingFirstSegments(fromOSString) == fromOSString
+						.segmentCount());
+			}
+		});
+		Text l = new Text(g,SWT.NONE);
+		l.setEnabled(false);
+		l.setEditable(false);
+		l.setText(File.separatorChar + ".git"); //$NON-NLS-1$
+		l.setLayoutData(GridDataFactory.fillDefaults().create());
+		tree.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				updateCreateOptions();
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// Empty
+			}
+		});
+		updateCreateOptions();
+		setControl(g);
+	}
+

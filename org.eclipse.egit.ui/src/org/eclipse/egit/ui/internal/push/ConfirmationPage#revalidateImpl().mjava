@@ -1,0 +1,65 @@
+	private void revalidateImpl() {
+		if (getControl().isDisposed() || !isCurrentPage())
+			return;
+
+		final List<RefSpec> fetchSpecs;
+		if (displayedRepoSelection.isConfigSelected())
+			fetchSpecs = displayedRepoSelection.getConfig().getFetchRefSpecs();
+		else
+			fetchSpecs = null;
+
+		final PushOperation operation;
+		try {
+			final Collection<RemoteRefUpdate> updates = Transport
+					.findRemoteRefUpdatesFor(local, displayedRefSpecs,
+							fetchSpecs);
+			if (updates.isEmpty()) {
+				// It can happen only when local refs changed in the mean time.
+				setErrorMessage(UIText.ConfirmationPage_errorRefsChangedNoMatch);
+				setPageComplete(false);
+				return;
+			}
+
+			final PushOperationSpecification spec = new PushOperationSpecification();
+			for (final URIish uri : displayedRepoSelection.getAllURIs())
+				spec.addURIRefUpdates(uri, copyUpdates(updates));
+
+			operation = new PushOperation(local, spec, true,
+					displayedRepoSelection.getConfig());
+			getContainer().run(true, true, operation);
+		} catch (final IOException e) {
+			setErrorMessage(NLS.bind(
+					UIText.ConfirmationPage_errorCantResolveSpecs, e
+							.getMessage()));
+			return;
+		} catch (final InvocationTargetException e) {
+			setErrorMessage(NLS.bind(UIText.ConfirmationPage_errorUnexpected, e
+					.getCause().getMessage()));
+			return;
+		} catch (final InterruptedException e) {
+			setErrorMessage(UIText.ConfirmationPage_errorInterrupted);
+			setPageComplete(true);
+			displayedRefSpecs = null;
+			displayedRepoSelection = null;
+			return;
+		}
+
+		final PushOperationResult result = operation.getOperationResult();
+		resultPanel.setData(local, result);
+		if (result.isSuccessfulConnectionForAnyURI()) {
+			setPageComplete(true);
+			confirmedResult = result;
+		} else {
+			final String message = NLS.bind(
+					UIText.ConfirmationPage_cantConnectToAny, result
+							.getErrorStringForAllURis());
+			setErrorMessage(message);
+			ErrorDialog
+					.openError(getShell(),
+							UIText.ConfirmationPage_cantConnectToAnyTitle,
+							null,
+							new Status(IStatus.ERROR, Activator.getPluginId(),
+									message));
+		}
+	}
+

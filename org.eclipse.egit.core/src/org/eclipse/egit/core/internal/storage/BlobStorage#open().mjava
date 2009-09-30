@@ -1,0 +1,12 @@
+	private InputStream open() throws IOException, ResourceException,
+			IncorrectObjectTypeException {
+		final ObjectLoader reader = db.openBlob(blobId);
+		if (reader == null)
+			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
+					getFullPath(), "Git blob " + blobId + " not found.", null);
+		final byte[] data = reader.getBytes();
+		if (reader.getType() != Constants.OBJ_BLOB)
+			throw new IncorrectObjectTypeException(blobId, Constants.TYPE_BLOB);
+		return new ByteArrayInputStream(data);
+	}
+

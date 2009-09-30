@@ -1,0 +1,83 @@
+		/**
+		 * Decorates the given <code>decoration</code>, using the specified text
+		 * <code>format</code>, and mapped using the variable bindings from
+		 * <code>bindings</code>
+		 *
+		 * @param decoration
+		 *            the decoration to decorate
+		 * @param format
+		 *            the format to base the decoration on
+		 * @param bindings
+		 *            the bindings between variables in the format and actual
+		 *            values
+		 */
+		public static void decorate(IDecoration decoration, String format,
+				Map<String, String> bindings) {
+			StringBuffer prefix = new StringBuffer();
+			StringBuffer suffix = new StringBuffer();
+			StringBuffer output = prefix;
+
+			int length = format.length();
+			int start = -1;
+			int end = length;
+			while (true) {
+				if ((end = format.indexOf('{', start)) > -1) {
+					output.append(format.substring(start + 1, end));
+					if ((start = format.indexOf('}', end)) > -1) {
+						String key = format.substring(end + 1, start);
+						String s;
+
+						// Allow users to override the binding
+						if (key.indexOf(':') > -1) {
+							String[] keyAndBinding = key.split(":", 2);
+							key = keyAndBinding[0];
+							if (keyAndBinding.length > 1
+									&& bindings.get(key) != null)
+								bindings.put(key, keyAndBinding[1]);
+						}
+
+						// We use the BINDING_RESOURCE_NAME key to determine if
+						// we are doing the prefix or suffix. The name isn't
+						// actually part of either.
+						if (key.equals(BINDING_RESOURCE_NAME)) {
+							output = suffix;
+							s = null;
+						} else {
+							s = bindings.get(key);
+						}
+
+						if (s != null) {
+							output.append(s);
+						} else {
+							// Support removing prefix character if binding is
+							// null
+							int curLength = output.length();
+							if (curLength > 0) {
+								char c = output.charAt(curLength - 1);
+								if (c == ':' || c == '@') {
+									output.deleteCharAt(curLength - 1);
+								}
+							}
+						}
+					} else {
+						output.append(format.substring(end, length));
+						break;
+					}
+				} else {
+					output.append(format.substring(start + 1, length));
+					break;
+				}
+			}
+
+			String prefixString = prefix.toString().replaceAll("^\\s+", "");
+			if (prefixString != null) {
+				decoration.addPrefix(TextProcessor.process(prefixString,
+						"()[].")); //$NON-NLS-1$
+			}
+			String suffixString = suffix.toString().replaceAll("\\s+$", "");
+			if (suffixString != null) {
+				decoration.addSuffix(TextProcessor.process(suffixString,
+						"()[].")); //$NON-NLS-1$
+			}
+		}
+

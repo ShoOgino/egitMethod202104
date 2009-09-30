@@ -1,0 +1,13 @@
+	private void loadPreviousCommit() {
+		IProject project = getProjectsForSelectedResources()[0];
+
+		Repository repo = RepositoryMapping.getMapping(project).getRepository();
+		try {
+			ObjectId parentId = repo.resolve(Constants.HEAD);
+			if (parentId != null)
+				previousCommit = repo.mapCommit(parentId);
+		} catch (IOException e) {
+			Utils.handleError(getTargetPart().getSite().getShell(), e, "Error during commit", "Error occurred retrieving last commit");
+		}
+	}
+

@@ -1,0 +1,17 @@
+	private void safeCreateResources() {
+		imageRegistry.put(IMAGE_ADD, UIIcons.ELCL16_ADD);
+		imageRegistry.put(IMAGE_DELETE, UIIcons.ELCL16_DELETE);
+		imageRegistry.put(IMAGE_TRASH, UIIcons.ELCL16_TRASH);
+		imageRegistry.put(IMAGE_CLEAR, UIIcons.ELCL16_CLEAR);
+		errorBackgroundColor = new Color(panel.getDisplay(), 255, 150, 150);
+		errorTextColor = new Color(panel.getDisplay(), 255, 0, 0);
+
+		panel.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				imageRegistry.dispose();
+				errorBackgroundColor.dispose();
+				errorTextColor.dispose();
+			}
+		});
+	}
+

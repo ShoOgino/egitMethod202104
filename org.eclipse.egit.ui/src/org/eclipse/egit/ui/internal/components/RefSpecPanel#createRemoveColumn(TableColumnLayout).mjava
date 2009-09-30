@@ -1,0 +1,39 @@
+	private void createRemoveColumn(TableColumnLayout columnLayout) {
+		final TableViewerColumn column = createColumn(columnLayout,
+				UIText.RefSpecPanel_columnRemove, COLUMN_REMOVE_WEIGHT,
+				SWT.CENTER);
+		column.setLabelProvider(new CenteredImageLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				return imageRegistry.get(IMAGE_TRASH);
+			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				return NLS.bind(UIText.RefSpecPanel_removeDescription,
+						typeString());
+			}
+		});
+		column.setEditingSupport(new EditingSupport(tableViewer) {
+			@Override
+			protected boolean canEdit(Object element) {
+				return true;
+			}
+
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				return removeSpecCellEditor;
+			}
+
+			@Override
+			protected Object getValue(Object element) {
+				return null;
+			}
+
+			@Override
+			protected void setValue(Object element, Object value) {
+				removeRefSpec((RefSpec) element);
+			}
+		});
+	}
+

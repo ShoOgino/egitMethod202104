@@ -1,0 +1,97 @@
+	/**
+	 * Set information needed for assisting user with entering data and
+	 * validating user input. This method automatically enables the panel.
+	 *
+	 * @param localRepo
+	 *            local repository where specifications will be applied.
+	 * @param remoteRefs
+	 *            collection of remote refs as advertised by remote repository.
+	 *            Typically they are collected by {@link FetchConnection}
+	 *            implementation.
+	 * @param remoteName
+	 *            optional name for remote configuration, if edited
+	 *            specification list is related to this remote configuration.
+	 *            Can be null. When not null, panel is filled with default
+	 *            fetch/push specifications for this remote configuration.
+	 */
+	public void setAssistanceData(final Repository localRepo,
+			final Collection<Ref> remoteRefs, final String remoteName) {
+		this.localDb = localRepo;
+		this.remoteName = remoteName;
+
+		final List<RefContentProposal> remoteProposals = createContentProposals(
+				remoteRefs, null);
+		remoteProposalProvider.setProposals(remoteProposals);
+		remoteRefNames = new HashSet<String>();
+		for (final RefContentProposal p : remoteProposals)
+			remoteRefNames.add(p.getContent());
+
+		Ref HEAD = null;
+		try {
+			final ObjectId id = localDb.resolve(Constants.HEAD);
+			if (id != null)
+				HEAD = new Ref(Storage.LOOSE, Constants.HEAD, id);
+		} catch (IOException e) {
+			Activator.logError("Couldn't read HEAD from local repository", e); //$NON-NLS-1$
+		}
+		final List<RefContentProposal> localProposals = createContentProposals(
+				localDb.getAllRefs().values(), HEAD);
+		localProposalProvider.setProposals(localProposals);
+		localRefNames = new HashSet<String>();
+		for (final RefContentProposal ref : localProposals)
+			localRefNames.add(ref.getContent());
+
+		final List<RefContentProposal> localFilteredProposals = createProposalsFilteredLocal(localProposals);
+		final List<RefContentProposal> remoteFilteredProposals = createProposalsFilteredRemote(remoteProposals);
+
+		if (pushSpecs) {
+			creationSrcComboSupport.setProposals(localFilteredProposals);
+			creationDstComboSupport.setProposals(remoteFilteredProposals);
+		} else {
+			creationSrcComboSupport.setProposals(remoteFilteredProposals);
+			creationDstComboSupport.setProposals(localFilteredProposals);
+		}
+		validateCreationPanel();
+
+		if (pushSpecs) {
+			deleteRefComboSupport.setProposals(remoteFilteredProposals);
+			validateDeleteCreationPanel();
+		}
+
+		try {
+			if (remoteName == null)
+				predefinedConfigured = Collections.emptyList();
+			else {
+				final RemoteConfig rc = new RemoteConfig(localDb.getConfig(),
+						remoteName);
+				if (pushSpecs)
+					predefinedConfigured = rc.getPushRefSpecs();
+				else
+					predefinedConfigured = rc.getFetchRefSpecs();
+				for (final RefSpec spec : predefinedConfigured)
+					addRefSpec(spec);
+			}
+		} catch (URISyntaxException e) {
+			predefinedConfigured = null;
+			ErrorDialog.openError(panel.getShell(),
+					UIText.RefSpecPanel_errorRemoteConfigTitle,
+					UIText.RefSpecPanel_errorRemoteConfigDescription,
+					new Status(IStatus.ERROR, Activator.getPluginId(), 0, e
+							.getMessage(), e));
+		}
+		updateAddPredefinedButton(addConfiguredButton, predefinedConfigured);
+		if (pushSpecs)
+			predefinedBranches = Transport.REFSPEC_PUSH_ALL;
+		else {
+			final String r;
+			if (remoteName == null)
+				r = UIText.RefSpecPanel_refChooseRemoteName;
+			else
+				r = remoteName;
+			predefinedBranches = new RefSpec("refs/heads/*:refs/remotes/" //$NON-NLS-1$
+					+ r + "/*"); //$NON-NLS-1$
+		}
+		updateAddPredefinedButton(addBranchesButton, predefinedBranches);
+		setEnable(true);
+	}
+

@@ -1,0 +1,23 @@
+	public void refsChanged(final RefsChangedEvent e) {
+		if (e.getRepository() != db)
+			return;
+
+		if (getControl().isDisposed())
+			return;
+
+		synchronized (this) {
+			if (refschangedRunnable == null) {
+				refschangedRunnable = new Runnable() {
+					public void run() {
+						if (!getControl().isDisposed()) {
+							Activator.trace("Executing async repository changed event");
+							refschangedRunnable = null;
+							inputSet();
+						}
+					}
+				};
+				getControl().getDisplay().asyncExec(refschangedRunnable);
+			}
+		}
+	}
+

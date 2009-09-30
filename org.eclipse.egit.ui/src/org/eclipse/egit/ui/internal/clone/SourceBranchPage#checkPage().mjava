@@ -1,0 +1,21 @@
+	/**
+	 * Check internal state for page completion status. This method should be
+	 * called only when all necessary data from previous form is available.
+	 */
+	private void checkPage() {
+		if (transportError != null) {
+			setErrorMessage(transportError);
+			setPageComplete(false);
+			return;
+		}
+
+		if (getSelectedBranches().isEmpty()) {
+			setErrorMessage(UIText.SourceBranchPage_errorBranchRequired);
+			setPageComplete(false);
+			return;
+		}
+
+		setErrorMessage(null);
+		setPageComplete(true);
+	}
+

@@ -1,0 +1,12 @@
+	/**
+	 * Creates a pixel converter
+	 *
+	 * @param control
+	 *
+	 * @return the created pixel converter
+	 */
+	public static PixelConverter createDialogPixelConverter(Control control) {
+		Dialog.applyDialogFont(control);
+		return new PixelConverter(control);
+	}
+

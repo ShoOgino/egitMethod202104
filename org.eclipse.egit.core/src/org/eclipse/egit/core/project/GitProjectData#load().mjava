@@ -1,0 +1,25 @@
+	private GitProjectData load() throws IOException {
+		final File dat = propertyFile();
+		trace("load " + dat);
+
+		final FileInputStream o = new FileInputStream(dat);
+		try {
+			final Properties p = new Properties();
+			p.load(o);
+
+			mappings.clear();
+			final Iterator keyItr = p.keySet().iterator();
+			while (keyItr.hasNext()) {
+				final String key = keyItr.next().toString();
+				if (RepositoryMapping.isInitialKey(key)) {
+					mappings.add(new RepositoryMapping(p, key));
+				}
+			}
+		} finally {
+			o.close();
+		}
+
+		remapAll();
+		return this;
+	}
+

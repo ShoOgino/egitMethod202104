@@ -1,0 +1,12 @@
+	/**
+	 * Add push result for the repository (URI) with successful connection.
+	 *
+	 * @param uri
+	 *            remote repository URI.
+	 * @param result
+	 *            push result.
+	 */
+	public void addOperationResult(final URIish uri, final PushResult result) {
+		urisEntries.put(uri, new Entry(result));
+	}
+

@@ -1,0 +1,25 @@
+	/**
+	 * Clears the toolbar.
+	 */
+	public void clear() {
+		patternField.setBackground(null);
+		if (patternField.getText().length() > 0) {
+			patternField.selectAll();
+			nextButton.setEnabled(true);
+			previousButton.setEnabled(true);
+		} else {
+			nextButton.setEnabled(false);
+			previousButton.setEnabled(false);
+		}
+		currentPositionLabel.setText("");
+		progressBar.setSelection(0);
+		lastErrorPattern = null;
+
+		findResults.clear();
+		if (historyTable != null) {
+			historyTable.clearAll();
+		}
+
+		FindToolbarThread.updateGlobalThreadIx();
+	}
+

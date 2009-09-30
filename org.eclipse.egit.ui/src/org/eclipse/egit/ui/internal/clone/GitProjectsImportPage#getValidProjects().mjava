@@ -1,0 +1,23 @@
+	/**
+	 * Get the array of valid project records that can be imported from the
+	 * source workspace or archive, selected by the user. If a project with the
+	 * same name exists in both the source workspace and the current workspace,
+	 * it will not appear in the list of projects to import and thus cannot be
+	 * selected for import.
+	 *
+	 * Method declared public for test suite.
+	 *
+	 * @return ProjectRecord[] array of projects that can be imported into the
+	 *         workspace
+	 */
+	public ProjectRecord[] getValidProjects() {
+		List<ProjectRecord> validProjects = new ArrayList<ProjectRecord>();
+		for (int i = 0; i < selectedProjects.length; i++) {
+			if (!isProjectInWorkspace(selectedProjects[i].getProjectName())) {
+				validProjects.add(selectedProjects[i]);
+			}
+		}
+		return validProjects
+				.toArray(new ProjectRecord[validProjects.size()]);
+	}
+

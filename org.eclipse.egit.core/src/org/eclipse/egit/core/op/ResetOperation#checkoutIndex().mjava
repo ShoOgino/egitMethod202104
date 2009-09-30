@@ -1,0 +1,12 @@
+	private void checkoutIndex() throws TeamException {
+		final File parentFile = repository.getWorkDir();
+		try {
+			WorkDirCheckout workDirCheckout = 
+				new WorkDirCheckout(repository, parentFile, index, newTree);
+			workDirCheckout.setFailOnConflict(false);
+			workDirCheckout.checkout();
+		} catch (IOException e) {
+			throw new TeamException("mapping tree for commit", e);
+		}
+	}
+

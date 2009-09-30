@@ -1,0 +1,19 @@
+	/**
+	 * Equalizes the specified subset of controls using the specified converter
+	 *
+	 * @param converter
+	 * @param controls
+	 * @param start
+	 * @param end
+	 */
+	public static void equalizeControls(PixelConverter converter,
+			Control[] controls, int start, int end) {
+		final int size = calculateControlSize(converter, controls, start, end);
+		for (int i = start; i <= end; i++) {
+			final Control button = controls[i];
+			if (button.getLayoutData() instanceof GridData) {
+				((GridData) button.getLayoutData()).widthHint = size;
+			}
+		}
+	}
+

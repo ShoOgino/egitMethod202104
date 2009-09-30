@@ -1,0 +1,23 @@
+	FetchResultTable(final Composite parent) {
+		tablePanel = new Composite(parent, SWT.NONE);
+		tablePanel.setLayout(new GridLayout());
+		final GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		layoutData.heightHint = TABLE_PREFERRED_HEIGHT;
+		layoutData.widthHint = TABLE_PREFERRED_WIDTH;
+		tableViewer = new TableViewer(tablePanel);
+		ColumnViewerToolTipSupport.enableFor(tableViewer);
+		final Table table = tableViewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+
+		colorRegistry = new ColorRegistry(table.getDisplay());
+		colorRegistry.put(COLOR_REJECTED_KEY, COLOR_REJECTED);
+		colorRegistry.put(COLOR_UPDATED_KEY, COLOR_UPDATED);
+		colorRegistry.put(COLOR_UP_TO_DATE_KEY, COLOR_UP_TO_DATE);
+
+		tableViewer.setContentProvider(new TrackingRefUpdateContentProvider());
+		tableViewer.setInput(null);
+
+		createTableColumns();
+	}
+

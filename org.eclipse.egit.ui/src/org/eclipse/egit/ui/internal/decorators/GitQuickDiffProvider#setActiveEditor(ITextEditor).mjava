@@ -1,0 +1,6 @@
+	public void setActiveEditor(ITextEditor editor) {
+		Activator.trace("(GitQuickDiffProvider) setActiveEditor: " + editor.getTitle());
+		IEditorInput editorInput = editor.getEditorInput();
+		resource = ResourceUtil.getResource(editorInput);
+	}
+

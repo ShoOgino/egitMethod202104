@@ -1,0 +1,9 @@
+	public void initializeDefaultPreferences() {
+		final Preferences p = Activator.getDefault().getPluginPreferences();
+
+		p.setDefault(GitCorePreferences.core_packedGitWindowSize, 8 * 1024);
+		p.setDefault(GitCorePreferences.core_packedGitLimit, 10 * MB);
+		p.setDefault(GitCorePreferences.core_packedGitMMAP, false);
+		p.setDefault(GitCorePreferences.core_deltaBaseCacheLimit, 10 * MB);
+	}
+

@@ -1,0 +1,16 @@
+	private void saveRefSpecs() {
+		final RemoteConfig rc = repoPage.getSelection().getConfig();
+		rc.setPushRefSpecs(refSpecPage.getRefSpecs());
+		final RepositoryConfig config = localDb.getConfig();
+		rc.update(config);
+		try {
+			config.save();
+		} catch (final IOException e) {
+			ErrorDialog.openError(getShell(), UIText.PushWizard_cantSaveTitle,
+					UIText.PushWizard_cantSaveMessage, new Status(
+							IStatus.WARNING, Activator.getPluginId(), e
+									.getMessage(), e));
+			// Continue, it's not critical.
+		}
+	}
+

@@ -1,0 +1,25 @@
+	/**
+	 * Remove provided specification from this panel. Panel view is
+	 * automatically refreshed, model is revalidated.
+	 * <p>
+	 * Provided specification must be equals with existing one in terms of
+	 * reference equality, not an equals method.
+	 * <p>
+	 * This method should be called only from the UI thread.
+	 *
+	 * @param spec
+	 *            specification to remove.
+	 * @throws IllegalArgumentException
+	 *             if specification with this reference doesn't exist in this
+	 *             panel.
+	 */
+	public void removeRefSpec(final RefSpec spec) {
+		final int i = indexOfSpec(spec);
+		if (i == -1)
+			throw new IllegalArgumentException("RefSpec " + spec //$NON-NLS-1$
+					+ " not found."); //$NON-NLS-1$
+		specs.remove(i);
+		tableViewer.remove(spec);
+		notifySpecsChanged();
+	}
+

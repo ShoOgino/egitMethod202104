@@ -1,0 +1,13 @@
+	@Override
+	protected Image getImage(final Object element) {
+		if (isEnabled(element)) {
+			if (isChecked(element))
+				return imageCheckedEnabled;
+			return imageUncheckedEnabled;
+		} else {
+			if (isChecked(element))
+				return imageCheckedDisabled;
+			return imageUncheckedDisabled;
+		}
+	}
+

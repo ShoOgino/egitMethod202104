@@ -1,0 +1,13 @@
+	/**
+	 * Construct a {@link RepositoryMapping} for a previously connected project.
+	 *
+	 * @param p TODO
+	 * @param initialKey TODO
+	 */
+	public RepositoryMapping(final Properties p, final String initialKey) {
+		final int dot = initialKey.lastIndexOf('.');
+
+		containerPath = initialKey.substring(0, dot);
+		gitdirPath = p.getProperty(initialKey);
+	}
+

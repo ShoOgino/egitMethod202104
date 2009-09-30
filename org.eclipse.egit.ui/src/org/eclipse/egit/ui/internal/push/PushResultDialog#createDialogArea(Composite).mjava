@@ -1,0 +1,21 @@
+	@Override
+	protected Control createDialogArea(final Composite parent) {
+		final Composite composite = (Composite) super.createDialogArea(parent);
+
+		final Label label = new Label(composite, SWT.NONE);
+		label.setText(NLS.bind(UIText.ResultDialog_label, destinationString));
+		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		final PushResultTable table = new PushResultTable(composite);
+		table.setData(localDb, result);
+		final Control tableControl = table.getControl();
+		final GridData tableLayout = new GridData(SWT.FILL, SWT.FILL, true,
+				true);
+		tableLayout.widthHint = 650;
+		tableLayout.heightHint = 300;
+		tableControl.setLayoutData(tableLayout);
+
+		getShell().setText(
+				NLS.bind(UIText.ResultDialog_title, destinationString));
+		return composite;
+	}
+

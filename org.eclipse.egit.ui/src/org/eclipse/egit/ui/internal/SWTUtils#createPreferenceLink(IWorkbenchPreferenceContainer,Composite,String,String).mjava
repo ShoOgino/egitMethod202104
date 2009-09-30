@@ -1,0 +1,18 @@
+	/**
+	 * Creates a preference link which will open in the specified container
+	 *
+	 * @param container
+	 * @param parent
+	 * @param pageId
+	 * @param text
+	 *
+	 * @return the created link
+	 */
+	public static PreferenceLinkArea createPreferenceLink(
+			IWorkbenchPreferenceContainer container, Composite parent,
+			String pageId, String text) {
+		final PreferenceLinkArea area = new PreferenceLinkArea(parent,
+				SWT.NONE, pageId, text, container, null);
+		return area;
+	}
+

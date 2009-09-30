@@ -1,0 +1,44 @@
+	public boolean moveFile(final IResourceTree tree, final IFile srcf,
+			final IFile dstf, final int updateFlags,
+			final IProgressMonitor monitor) {
+		final boolean force = (updateFlags & IResource.FORCE) == IResource.FORCE;
+		if (!force && !tree.isSynchronized(srcf, IResource.DEPTH_ZERO))
+			return false;
+
+		final RepositoryMapping srcm = RepositoryMapping.getMapping(srcf);
+		if (srcm == null)
+			return false;
+		final RepositoryMapping dstm = RepositoryMapping.getMapping(dstf);
+
+		try {
+			final DirCache sCache = DirCache.lock(srcm.getRepository());
+			final String sPath = srcm.getRepoRelativePath(srcf);
+			final DirCacheEntry sEnt = sCache.getEntry(sPath);
+			if (sEnt == null) {
+				sCache.unlock();
+				return false;
+			}
+
+			final DirCacheEditor sEdit = sCache.editor();
+			sEdit.add(new DirCacheEditor.DeletePath(sEnt));
+			if (dstm != null && dstm.getRepository() == srcm.getRepository()) {
+				final String dPath = srcm.getRepoRelativePath(dstf);
+				sEdit.add(new DirCacheEditor.PathEdit(dPath) {
+					@Override
+					public void apply(final DirCacheEntry dEnt) {
+						dEnt.copyMetaData(sEnt);
+					}
+				});
+			}
+			if (!sEdit.commit())
+				tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(),
+						0, CoreText.MoveDeleteHook_operationError, null));
+
+			tree.standardMoveFile(srcf, dstf, updateFlags, monitor);
+		} catch (IOException e) {
+			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
+					CoreText.MoveDeleteHook_operationError, e));
+		}
+		return true;
+	}
+

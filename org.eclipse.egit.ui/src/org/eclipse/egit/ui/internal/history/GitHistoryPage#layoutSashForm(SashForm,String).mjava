@@ -1,0 +1,10 @@
+	private void layoutSashForm(final SashForm sf, final String key) {
+		sf.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				final int[] w = sf.getWeights();
+				UIPreferences.setValue(prefs, key, w);
+			}
+		});
+		sf.setWeights(UIPreferences.getIntArray(prefs, key, 2));
+	}
+

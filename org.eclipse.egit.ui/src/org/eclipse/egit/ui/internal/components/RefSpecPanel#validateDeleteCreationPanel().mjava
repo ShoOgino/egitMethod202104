@@ -1,0 +1,31 @@
+	private void validateDeleteCreationPanel() {
+		final String ref = deleteRefCombo.getText();
+
+		deleteButton.setEnabled(false);
+		if (ref == null || ref.length() == 0)
+			setControlDecoration(deleteRefDecoration,
+					FieldDecorationRegistry.DEC_REQUIRED,
+					UIText.RefSpecPanel_validationRefDeleteRequired);
+		else if (!isValidRefExpression(ref))
+			setControlDecoration(deleteRefDecoration,
+					FieldDecorationRegistry.DEC_ERROR, NLS.bind(
+							UIText.RefSpecPanel_validationRefInvalidExpression,
+							ref));
+		else if (RefSpec.isWildcard(ref))
+			setControlDecoration(deleteRefDecoration,
+					FieldDecorationRegistry.DEC_ERROR,
+					UIText.RefSpecPanel_validationRefDeleteWildcard);
+		else if (!isRemoteRef(ref))
+			setControlDecoration(
+					deleteRefDecoration,
+					FieldDecorationRegistry.DEC_ERROR,
+					NLS
+							.bind(
+									UIText.RefSpecPanel_validationRefNonExistingRemoteDelete,
+									ref));
+		else {
+			deleteRefDecoration.hide();
+			deleteButton.setEnabled(true);
+		}
+	}
+

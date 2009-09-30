@@ -1,0 +1,22 @@
+	/**
+	 * Get the repository mapping for a resource
+	 *
+	 * @param resource
+	 * @return the RepositoryMapping for this resource,
+	 *         or null for non GitProvider.
+	 */
+	public static RepositoryMapping getMapping(final IResource resource) {
+		final IProject project = resource.getProject();
+		if (project == null)
+			return null;
+
+		final RepositoryProvider rp = RepositoryProvider.getProvider(project);
+		if (!(rp instanceof GitProvider))
+			return null;
+
+		if (((GitProvider)rp).getData() == null)
+			return null;
+
+		return ((GitProvider)rp).getData().getRepositoryMapping(resource);
+	}
+

@@ -1,0 +1,8 @@
+	private void protect(IResource c) {
+		while (c != null && !c.equals(getProject())) {
+			trace("protect " + c);
+			protectedResources.add(c);
+			c = c.getParent();
+		}
+	}
+

@@ -1,0 +1,81 @@
+	private void format() {
+		if (commit == null) {
+			setDocument(new Document());
+			return;
+		}
+
+		final PersonIdent author = commit.getAuthorIdent();
+		final PersonIdent committer = commit.getCommitterIdent();
+		final StringBuilder d = new StringBuilder();
+		final ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
+
+		d.append("commit ");
+		d.append(commit.getId().name());
+		d.append("\n");
+
+		if (author != null) {
+			d.append("Author: ");
+			d.append(author.getName());
+			d.append(" <");
+			d.append(author.getEmailAddress());
+			d.append("> ");
+			d.append(fmt.format(author.getWhen()));
+			d.append("\n");
+		}
+
+		if (committer != null) {
+			d.append("Committer: ");
+			d.append(committer.getName());
+			d.append(" <");
+			d.append(committer.getEmailAddress());
+			d.append("> ");
+			d.append(fmt.format(committer.getWhen()));
+			d.append("\n");
+		}
+
+		for (int i = 0; i < commit.getParentCount(); i++) {
+			final RevCommit p = commit.getParent(i);
+			d.append("Parent: ");
+			addLink(d, styles, p);
+			d.append(" (");
+			d.append(p.getShortMessage());
+			d.append(")");
+			d.append("\n");
+		}
+
+		for (int i = 0; i < commit.getChildCount(); i++) {
+			final RevCommit p = commit.getChild(i);
+			d.append("Child:  ");
+			addLink(d, styles, p);
+			d.append(" (");
+			d.append(p.getShortMessage());
+			d.append(")");
+			d.append("\n");
+		}
+
+		makeGrayText(d, styles);
+		d.append("\n");
+		String msg = commit.getFullMessage();
+		Pattern p = Pattern.compile("\n([A-Z](?:[A-Za-z]+-)+by: [^\n]+)");
+		if (fill) {
+			Matcher spm = p.matcher(msg);
+			if (spm.find()) {
+				String subMsg = msg.substring(0, spm.end());
+				msg = subMsg.replaceAll("([\\w.,; \t])\n(\\w)", "$1 $2")
+						+ msg.substring(spm.end());
+			}
+		}
+		int h0 = d.length();
+		d.append(msg);
+
+		Matcher matcher = p.matcher(msg);
+		while (matcher.find()) {
+			styles.add(new StyleRange(h0 + matcher.start(), matcher.end()-matcher.start(), null,  null, SWT.ITALIC));
+		}
+
+		final StyleRange[] arr = new StyleRange[styles.size()];
+		styles.toArray(arr);
+		setDocument(new Document(d.toString()));
+		getTextWidget().setStyleRanges(arr);
+	}
+

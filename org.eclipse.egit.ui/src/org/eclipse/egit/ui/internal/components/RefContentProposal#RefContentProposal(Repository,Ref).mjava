@@ -1,0 +1,14 @@
+	/**
+	 * Create content proposal for specified ref.
+	 *
+	 * @param repo
+	 *            repository for accessing information about objects. Could be a
+	 *            local repository even for remote objects.
+	 * @param ref
+	 *            ref being a content proposal. May have null or locally
+	 *            non-existent object id.
+	 */
+	public RefContentProposal(final Repository repo, final Ref ref) {
+		this(repo, ref.getName(), ref.getObjectId());
+	}
+

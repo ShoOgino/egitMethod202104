@@ -1,0 +1,19 @@
+	private synchronized static Repository lookupRepository(final File gitDir)
+			throws IOException {
+		final Iterator i = repositoryCache.entrySet().iterator();
+		while (i.hasNext()) {
+			final Map.Entry e = (Map.Entry) i.next();
+			if (((Reference) e.getValue()).get() == null) {
+				i.remove();
+			}
+		}
+
+		final Reference r = repositoryCache.get(gitDir);
+		Repository d = r != null ? (Repository) r.get() : null;
+		if (d == null) {
+			d = new Repository(gitDir);
+			repositoryCache.put(gitDir, new WeakReference<Repository>(d));
+		}
+		return d;
+	}
+

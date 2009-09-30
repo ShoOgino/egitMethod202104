@@ -1,0 +1,14 @@
+		@SuppressWarnings("synthetic-access")
+		public void resourceChanged(final IResourceChangeEvent event) {
+			switch (event.getType()) {
+			case IResourceChangeEvent.PRE_CLOSE:
+				uncache((IProject) event.getResource());
+				break;
+			case IResourceChangeEvent.PRE_DELETE:
+				delete((IProject) event.getResource());
+				break;
+			default:
+				break;
+			}
+		}
+

@@ -1,0 +1,19 @@
+	/**
+	 * @param p
+	 * @return {@link GitProjectData} for the specified project
+	 */
+	public synchronized static GitProjectData get(final IProject p) {
+		try {
+			GitProjectData d = lookup(p);
+			if (d == null
+					&& RepositoryProvider.getProvider(p) instanceof GitProvider) {
+				d = new GitProjectData(p).load();
+				cache(p, d);
+			}
+			return d;
+		} catch (IOException err) {
+			Activator.logError(CoreText.GitProjectData_missing, err);
+			return null;
+		}
+	}
+

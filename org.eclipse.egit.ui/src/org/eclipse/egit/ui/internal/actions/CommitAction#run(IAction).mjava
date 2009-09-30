@@ -1,0 +1,78 @@
+	@Override
+	public void run(IAction act) {
+		resetState();
+		try {
+			buildIndexHeadDiffList();
+		} catch (IOException e) {
+			Utils.handleError(getTargetPart().getSite().getShell(), e, "Error during commit", "Error occurred computing diffs");
+			return;
+		}
+
+		Repository[] repos = getRepositoriesFor(getProjectsForSelectedResources());
+		Repository repository = null;
+		amendAllowed = repos.length == 1;
+		for (Repository repo : repos) {
+			repository = repo;
+			if (!repo.getRepositoryState().canCommit()) {
+				MessageDialog.openError(getTargetPart().getSite().getShell(),
+					"Cannot commit now", "Repository state:"
+							+ repo.getRepositoryState().getDescription());
+				return;
+			}
+		}
+		
+		if (files.isEmpty()) {
+			if (amendAllowed) {
+				boolean result = MessageDialog
+				.openQuestion(getTargetPart().getSite().getShell(),
+						"No files to commit",
+				"No changed items were selected. Do you wish to amend the last commit?");
+				if (!result)
+					return;
+				amending = true;
+			} else {
+				MessageDialog.openWarning(getTargetPart().getSite().getShell(), "No files to commit", "No changed items were selected.\n\nAmend is not possible as you have selected multiple repositories.");
+				return;
+			}
+		}
+
+		String author = null;
+		String committer = null;
+		if (repository != null) {
+			final RepositoryConfig config = repository.getConfig();
+			author = config.getAuthorName();
+			final String authorEmail = config.getAuthorEmail();
+			author = author + " <" + authorEmail + ">";
+
+			committer = config.getCommitterName();
+			final String committerEmail = config.getCommitterEmail();
+			committer = committer + " <" + committerEmail + ">";
+		}
+
+		loadPreviousCommit();
+
+		CommitDialog commitDialog = new CommitDialog(getTargetPart().getSite().getShell());
+		commitDialog.setAmending(amending);
+		commitDialog.setAmendAllowed(amendAllowed);
+		commitDialog.setFileList(files);
+		commitDialog.setAuthor(author);
+		commitDialog.setCommitter(committer);
+
+		if (previousCommit != null) {
+			commitDialog.setPreviousCommitMessage(previousCommit.getMessage());
+			PersonIdent previousAuthor = previousCommit.getAuthor();
+			commitDialog.setPreviousAuthor(previousAuthor.getName() + " <" + previousAuthor.getEmailAddress() + ">");
+		}
+
+		if (commitDialog.open() != IDialogConstants.OK_ID)
+			return;
+
+		String commitMessage = commitDialog.getCommitMessage();
+		amending = commitDialog.isAmending();
+		try {
+			performCommit(commitDialog, commitMessage);
+		} catch (TeamException e) {
+			Utils.handleError(getTargetPart().getSite().getShell(), e, "Error during commit", "Error occurred while committing");
+		}
+	}
+

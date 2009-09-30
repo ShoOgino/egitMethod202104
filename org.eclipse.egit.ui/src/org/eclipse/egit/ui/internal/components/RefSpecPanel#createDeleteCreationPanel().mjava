@@ -1,0 +1,47 @@
+	private void createDeleteCreationPanel() {
+		final Group deletePanel = new Group(panel, SWT.NONE);
+		deletePanel.setText(UIText.RefSpecPanel_deletionGroup);
+		deletePanel
+				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		final GridLayout layout = new GridLayout();
+		layout.numColumns = 3;
+		layout.horizontalSpacing = 10;
+		deletePanel.setLayout(layout);
+
+		final Label label = new Label(deletePanel, SWT.NONE);
+		label.setText(UIText.RefSpecPanel_deletionRef);
+		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+
+		deleteRefDecoration = createAssistedDecoratedCombo(deletePanel,
+				getRefsProposalProvider(false), null);
+		deleteRefCombo = (Combo) deleteRefDecoration.getControl();
+		deleteRefCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false));
+		deleteRefCombo
+				.setToolTipText(UIText.RefSpecPanel_dstDeletionDescription);
+		deleteRefComboSupport = new ComboLabelingSupport(deleteRefCombo, null);
+
+		deleteButton = new Button(deletePanel, SWT.PUSH);
+		deleteButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
+				false));
+		deleteButton.setImage(imageRegistry.get(IMAGE_DELETE));
+		deleteButton.setText(UIText.RefSpecPanel_deletionButton);
+		deleteButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RefSpec spec = new RefSpec(':' + deleteRefCombo.getText());
+				addRefSpec(spec);
+				deleteRefCombo.setText(""); //$NON-NLS-1$
+			}
+		});
+		deleteButton
+				.setToolTipText(UIText.RefSpecPanel_deletionButtonDescription);
+		validateDeleteCreationPanel();
+
+		deleteRefCombo.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				validateDeleteCreationPanel();
+			}
+		});
+	}
+

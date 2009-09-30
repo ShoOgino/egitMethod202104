@@ -1,0 +1,5 @@
+	protected IWorkspaceRunnable createOperation(final IAction act,
+			final List sel) {
+		return sel.isEmpty() ? null : new UpdateOperation(sel);
+	}
+

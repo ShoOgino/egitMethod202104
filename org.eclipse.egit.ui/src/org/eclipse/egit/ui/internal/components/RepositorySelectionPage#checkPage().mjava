@@ -1,0 +1,89 @@
+	private void checkPage() {
+		if (isURISelected()) {
+			assert uri != null;
+			if (uriText.getText().length() == 0) {
+				selectionIncomplete(null);
+				return;
+			}
+
+			try {
+				final URIish finalURI = new URIish(uriText.getText());
+				String proto = finalURI.getScheme();
+				if (proto == null && scheme.getSelectionIndex() >= 0)
+					proto = scheme.getItem(scheme.getSelectionIndex());
+
+				if (uri.getPath() == null) {
+					selectionIncomplete(NLS.bind(
+							UIText.RepositorySelectionPage_fieldRequired,
+							unamp(UIText.RepositorySelectionPage_promptPath), proto));
+					return;
+				}
+
+				if (isFile(finalURI)) {
+					String badField = null;
+					if (uri.getHost() != null)
+						badField = UIText.RepositorySelectionPage_promptHost;
+					else if (uri.getUser() != null)
+						badField = UIText.RepositorySelectionPage_promptUser;
+					else if (uri.getPass() != null)
+						badField = UIText.RepositorySelectionPage_promptPassword;
+					if (badField != null) {
+						selectionIncomplete(NLS
+								.bind(
+										UIText.RepositorySelectionPage_fieldNotSupported,
+										unamp(badField), proto));
+						return;
+					}
+
+					final File d = FS.resolve(new File("."), uri.getPath());
+					if (!d.exists()) {
+						selectionIncomplete(NLS.bind(
+								UIText.RepositorySelectionPage_fileNotFound, d
+										.getAbsolutePath()));
+						return;
+					}
+
+					selectionComplete(finalURI, null);
+					return;
+				}
+
+				if (uri.getHost() == null) {
+					selectionIncomplete(NLS.bind(
+							UIText.RepositorySelectionPage_fieldRequired,
+							unamp(UIText.RepositorySelectionPage_promptHost), proto));
+					return;
+				}
+
+				if (isGIT(finalURI)) {
+					String badField = null;
+					if (uri.getUser() != null)
+						badField = UIText.RepositorySelectionPage_promptUser;
+					else if (uri.getPass() != null)
+						badField = UIText.RepositorySelectionPage_promptPassword;
+					if (badField != null) {
+						selectionIncomplete(NLS
+								.bind(
+										UIText.RepositorySelectionPage_fieldNotSupported,
+										unamp(badField), proto));
+						return;
+					}
+				}
+
+				selectionComplete(finalURI, null);
+				return;
+			} catch (URISyntaxException e) {
+				selectionIncomplete(e.getReason());
+				return;
+			} catch (Exception e) {
+				Activator.logError("Error validating " + getClass().getName(),
+						e);
+				selectionIncomplete(UIText.RepositorySelectionPage_internalError);
+				return;
+			}
+		} else {
+			assert remoteButton.getSelection();
+			selectionComplete(null, remoteConfig);
+			return;
+		}
+	}
+

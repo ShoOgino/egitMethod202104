@@ -1,0 +1,11 @@
+	private IAction createCommentWrap() {
+		final BooleanPrefAction a = new BooleanPrefAction(PREF_COMMENT_WRAP,
+				UIText.ResourceHistory_toggleCommentWrap) {
+			void apply(boolean wrap) {
+				commentViewer.setWrap(wrap);
+			}
+		};
+		a.apply(a.isChecked());
+		return a;
+	}
+

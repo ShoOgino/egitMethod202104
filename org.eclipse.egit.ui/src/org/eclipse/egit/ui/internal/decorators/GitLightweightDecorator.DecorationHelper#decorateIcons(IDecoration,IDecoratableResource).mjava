@@ -1,0 +1,40 @@
+		private void decorateIcons(IDecoration decoration,
+				IDecoratableResource resource) {
+			ImageDescriptor overlay = null;
+
+			if (resource.isTracked()) {
+				if (store.getBoolean(UIPreferences.DECORATOR_SHOW_TRACKED_ICON))
+					overlay = trackedImage;
+
+				if (store
+						.getBoolean(UIPreferences.DECORATOR_SHOW_ASSUME_VALID_ICON)
+						&& resource.isAssumeValid())
+					overlay = assumeValidImage;
+
+				// Staged overrides tracked
+				Staged staged = resource.staged();
+				if (store.getBoolean(UIPreferences.DECORATOR_SHOW_STAGED_ICON)
+						&& staged != Staged.NOT_STAGED) {
+					if (staged == Staged.ADDED)
+						overlay = stagedAddedImage;
+					else if (staged == Staged.REMOVED)
+						overlay = stagedRemovedImage;
+					else
+						overlay = stagedImage;
+				}
+
+				// Conflicts override everything
+				if (store
+						.getBoolean(UIPreferences.DECORATOR_SHOW_CONFLICTS_ICON)
+						&& resource.hasConflicts())
+					overlay = conflictImage;
+
+			} else if (store
+					.getBoolean(UIPreferences.DECORATOR_SHOW_UNTRACKED_ICON)) {
+				overlay = untrackedImage;
+			}
+
+			// Overlays can only be added once, so do it at the end
+			decoration.addOverlay(overlay);
+		}
+

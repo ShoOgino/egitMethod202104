@@ -1,0 +1,13 @@
+	private void createTableColumns(final Composite tablePanel) {
+		final TableColumnLayout columnLayout = new TableColumnLayout();
+		tablePanel.setLayout(columnLayout);
+
+		createDummyColumn(columnLayout);
+		if (pushSpecs)
+			createModeColumn(columnLayout);
+		createSrcColumn(columnLayout);
+		createDstColumn(columnLayout);
+		createForceColumn(columnLayout);
+		createRemoveColumn(columnLayout);
+	}
+

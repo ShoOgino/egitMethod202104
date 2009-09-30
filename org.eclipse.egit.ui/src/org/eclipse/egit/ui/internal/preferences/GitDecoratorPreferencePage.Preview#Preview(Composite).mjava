@@ -1,0 +1,17 @@
+		public Preview(Composite composite) {
+			// Has to happen before the tree control is constructed
+			reloadDecorationHelper();
+			SWTUtils.createLabel(composite,
+					UIText.DecoratorPreferencesPage_preview);
+			fImageCache = new LocalResourceManager(JFaceResources
+					.getResources());
+
+			fViewer = new TreeViewer(composite);
+			fViewer.getControl().setLayoutData(SWTUtils.createHVFillGridData());
+			fViewer.setContentProvider(this);
+			fViewer.setLabelProvider(this);
+			fViewer.setInput(PREVIEW_FILESYSTEM_ROOT);
+			fViewer.expandAll();
+			fHelper = new DecorationHelper(new PreferenceStore());
+		}
+

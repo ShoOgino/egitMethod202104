@@ -1,0 +1,11 @@
+	public void testNoRepository() throws CoreException {
+
+		ConnectProviderOperation operation = new ConnectProviderOperation(
+				project.getProject());
+		operation.run(null);
+
+		// We are shared because we declared as shared
+		assertTrue(RepositoryProvider.isShared(project.getProject()));
+		assertTrue(!gitDir.exists());
+	}
+

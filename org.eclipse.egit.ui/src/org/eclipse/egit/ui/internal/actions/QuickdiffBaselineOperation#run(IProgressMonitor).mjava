@@ -1,0 +1,8 @@
+	public void run(IProgressMonitor monitor) throws CoreException {
+		try {
+			GitQuickDiffProvider.setBaselineReference(repository, baseline);
+		} catch (IOException e) {
+			Activator.logError("Cannot set quickdiff baseline", e);
+		}
+	}
+

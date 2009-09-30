@@ -1,0 +1,15 @@
+	/**
+	 * Store the preferences to the given preference store
+	 *
+	 * @param store
+	 *            the preference store to store the preferences to
+	 *
+	 * @return whether it operation succeeded
+	 */
+	private boolean performOk(IPreferenceStore store) {
+		generalTab.performOk(store);
+		textDecorationTab.performOk(store);
+		iconDecorationTab.performOk(store);
+		return true;
+	}
+

@@ -1,0 +1,12 @@
+	private void addLink(final StringBuilder d,
+			final ArrayList<StyleRange> styles, final RevCommit to) {
+		final ObjectLink sr = new ObjectLink();
+		sr.targetCommit = to;
+		sr.foreground = sys_linkColor;
+		sr.underline = true;
+		sr.start = d.length();
+		d.append(to.getId().name());
+		sr.length = d.length() - sr.start;
+		styles.add(sr);
+	}
+

@@ -1,0 +1,30 @@
+	/**
+	 * Change some specification to the new one.
+	 * <p>
+	 * Old specification must exist in the panel, while new specification can't
+	 * exist before (both in terms of reference equality).
+	 * <p>
+	 * This method should be called only from the UI thread.
+	 *
+	 * @param oldSpec
+	 *            specification to change. Can't be null.
+	 * @param newSpec
+	 *            new specification to override existing one. Can't be null.
+	 */
+	public void setRefSpec(final RefSpec oldSpec, final RefSpec newSpec) {
+		final int oldI = indexOfSpec(oldSpec);
+		if (oldI == -1)
+			throw new IllegalArgumentException("RefSpec " + oldSpec //$NON-NLS-1$
+					+ " not found."); //$NON-NLS-1$
+		final int newI = indexOfSpec(newSpec);
+		if (newI != -1)
+			throw new IllegalArgumentException("RefSpec " + newSpec //$NON-NLS-1$
+					+ " already exists."); //$NON-NLS-1$
+		specs.set(oldI, newSpec);
+
+		// have to refresh whole table as we are operating on immutable objects
+		// (this shouldn't be an issue)
+		tableViewer.refresh();
+		notifySpecsChanged();
+	}
+

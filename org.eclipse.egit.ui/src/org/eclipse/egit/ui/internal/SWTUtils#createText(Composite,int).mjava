@@ -1,0 +1,14 @@
+	/**
+	 * Creates a text control with the specified span
+	 *
+	 * @param parent
+	 * @param span
+	 *
+	 * @return the created text control
+	 */
+	public static Text createText(Composite parent, int span) {
+		final Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		text.setLayoutData(createHFillGridData(span));
+		return text;
+	}
+

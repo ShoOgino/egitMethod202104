@@ -1,0 +1,11 @@
+	/**
+	 * Remove a registered {@link RepositoryChangeListener}
+	 *
+	 * @param objectThatCares
+	 *            The listener to remove
+	 */
+	public static synchronized void removeRepositoryChangeListener(
+			final RepositoryChangeListener objectThatCares) {
+		repositoryChangeListeners.remove(objectThatCares);
+	}
+

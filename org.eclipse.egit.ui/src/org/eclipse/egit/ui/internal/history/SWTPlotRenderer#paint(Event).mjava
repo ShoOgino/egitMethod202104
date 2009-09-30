@@ -1,0 +1,11 @@
+	void paint(final Event event) {
+		g = event.gc;
+		cellX = event.x;
+		cellY = event.y;
+		cellFG = g.getForeground();
+		cellBG = g.getBackground();
+
+		final TableItem ti = (TableItem) event.item;
+		paintCommit((PlotCommit<SWTLane>) ti.getData(), event.height);
+	}
+

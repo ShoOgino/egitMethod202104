@@ -1,0 +1,16 @@
+	void showCommitList(final Job j, final SWTCommitList list,
+			final SWTCommit[] asArray) {
+		if (job != j || graph.getControl().isDisposed())
+			return;
+
+		graph.getControl().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				if (!graph.getControl().isDisposed() && job == j) {
+					graph.setInput(highlightFlag, list, asArray);
+					findToolbar.setInput(highlightFlag, graph.getTable(),
+							asArray);
+				}
+			}
+		});
+	}
+

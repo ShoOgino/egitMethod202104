@@ -1,0 +1,46 @@
+	private String validateSpec(final RefSpec spec) {
+		final String src = spec.getSource();
+		final String dst = spec.getDestination();
+		final boolean wildcard = spec.isWildcard();
+
+		// check src
+		if (pushSpecs) {
+			if (!isDeleteRefSpec(spec)) {
+				if (src.length() == 0)
+					return UIText.RefSpecPanel_validationSrcUpdateRequired;
+				else if (!wildcard && !isLocalRef(src))
+					return NLS.bind(
+							UIText.RefSpecPanel_validationRefInvalidLocal, src);
+				else if (wildcard && !isValidRefExpression(src))
+					return NLS.bind(
+							UIText.RefSpecPanel_validationRefInvalidExpression,
+							src);
+				// ignore non-matching wildcard specs
+			}
+		} else {
+			if (src == null || src.length() == 0)
+				return UIText.RefSpecPanel_validationSrcUpdateRequired;
+			else if (!wildcard && !isRemoteRef(src))
+				return NLS
+						.bind(
+								UIText.RefSpecPanel_validationRefNonExistingRemote,
+								src);
+			// ignore non-matching wildcard specs
+		}
+
+		// check dst
+		if (dst == null || dst.length() == 0) {
+			if (isDeleteRefSpec(spec))
+				return UIText.RefSpecPanel_validationRefDeleteRequired;
+			return UIText.RefSpecPanel_validationDstRequired;
+		} else if (!isValidRefExpression(dst))
+			return NLS.bind(UIText.RefSpecPanel_validationRefInvalidExpression,
+					dst);
+		else if (isDeleteRefSpec(spec) && !isRemoteRef(dst))
+			return NLS.bind(
+					UIText.RefSpecPanel_validationRefNonExistingRemoteDelete,
+					dst);
+
+		return null;
+	}
+

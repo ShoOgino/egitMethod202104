@@ -1,0 +1,12 @@
+	public Object[] getElements(final Object inputElement) {
+		if (diff == null && walk != null && commit != null) {
+			try {
+				diff = FileDiff.compute(walk, commit);
+			} catch (IOException err) {
+				Activator.error("Can't get file difference of "
+						+ commit.getId() + ".", err);
+			}
+		}
+		return diff;
+	}
+

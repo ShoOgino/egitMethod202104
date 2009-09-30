@@ -1,0 +1,75 @@
+	public void createControl(final Composite parent) {
+		final Composite panel = new Composite(parent, SWT.NULL);
+		final GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		panel.setLayout(layout);
+
+		label = new Label(panel, SWT.NONE);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		refsTable = new Table(panel, SWT.CHECK | SWT.V_SCROLL | SWT.BORDER);
+		refsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		refsTable.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				if (e.detail != SWT.CHECK)
+					return;
+
+				final TableItem tableItem = (TableItem) e.item;
+				final int i = refsTable.indexOf(tableItem);
+				final Ref ref = availableRefs.get(i);
+
+				if (tableItem.getChecked()) {
+					int insertionPos = 0;
+					for (int j = 0; j < i; j++) {
+						if (selectedRefs.contains(availableRefs.get(j)))
+							insertionPos++;
+					}
+					selectedRefs.add(insertionPos, ref);
+				} else
+					selectedRefs.remove(ref);
+
+				notifySelectionChanged();
+				checkPage();
+			}
+		});
+
+		final Composite bPanel = new Composite(panel, SWT.NONE);
+		bPanel.setLayout(new RowLayout());
+		final Button selectB;
+		selectB = new Button(bPanel, SWT.PUSH);
+		selectB.setText(UIText.SourceBranchPage_selectAll);
+		selectB.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				for (int i = 0; i < refsTable.getItemCount(); i++)
+					refsTable.getItem(i).setChecked(true);
+				selectedRefs.clear();
+				selectedRefs.addAll(availableRefs);
+				notifySelectionChanged();
+				checkPage();
+			}
+		});
+		final Button unselectB = new Button(bPanel, SWT.PUSH);
+		unselectB.setText(UIText.SourceBranchPage_selectNone);
+		unselectB.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				for (int i = 0; i < refsTable.getItemCount(); i++)
+					refsTable.getItem(i).setChecked(false);
+				selectedRefs.clear();
+				notifySelectionChanged();
+				checkPage();
+			}
+		});
+		bPanel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		addSelectionListener(new SelectionChangeListener() {
+			public void selectionChanged() {
+				selectB.setEnabled(selectedRefs.size() != availableRefs.size());
+				unselectB.setEnabled(selectedRefs.size() != 0);
+			}
+		});
+
+		setControl(panel);
+		checkPage();
+	}
+

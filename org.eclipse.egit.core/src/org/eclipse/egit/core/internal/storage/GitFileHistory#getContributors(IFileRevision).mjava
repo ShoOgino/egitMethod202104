@@ -1,0 +1,14 @@
+	public IFileRevision[] getContributors(final IFileRevision ifr) {
+		if (!(ifr instanceof CommitFileRevision))
+			return NO_REVISIONS;
+
+		final CommitFileRevision rev = (CommitFileRevision) ifr;
+		final Repository db = walk.getRepository();
+		final String p = rev.getGitPath();
+		final RevCommit c = rev.getRevCommit();
+		final IFileRevision[] r = new IFileRevision[c.getParentCount()];
+		for (int i = 0; i < r.length; i++)
+			r[i] = new CommitFileRevision(db, c.getParent(i), p);
+		return r;
+	}
+

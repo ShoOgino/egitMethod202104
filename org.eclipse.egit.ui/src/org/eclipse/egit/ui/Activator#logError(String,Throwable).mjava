@@ -1,0 +1,12 @@
+	/**
+	 * Log an error via the Eclipse logging routines.
+	 * 
+	 * @param message
+	 * @param thr
+	 *            cause of error
+	 */
+	public static void logError(final String message, final Throwable thr) {
+		getDefault().getLog().log(
+				new Status(IStatus.ERROR, getPluginId(), 0, message, thr));
+	}
+

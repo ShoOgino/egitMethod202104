@@ -1,0 +1,29 @@
+	/**
+	 * Determine if the input can be shown in this viewer.
+	 * 
+	 * @param object
+	 *            an object that is hopefully of type ResourceList or IResource,
+	 *            but may be anything (including null).
+	 * @return true if the input is a ResourceList or an IResource of type FILE,
+	 *         FOLDER or PROJECT and we can show it; false otherwise.
+	 */
+	public static boolean canShowHistoryFor(final Object object) {
+		if (object instanceof ResourceList) {
+			final IResource[] array = ((ResourceList) object).getItems();
+			if (array.length == 0)
+				return false;
+			for (final IResource r : array) {
+				if (!typeOk(r))
+					return false;
+			}
+			return true;
+
+		}
+
+		if (object instanceof IResource) {
+			return typeOk((IResource) object);
+		}
+
+		return false;
+	}
+

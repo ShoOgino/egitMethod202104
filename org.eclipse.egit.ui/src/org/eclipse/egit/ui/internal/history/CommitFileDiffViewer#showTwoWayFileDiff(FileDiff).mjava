@@ -1,0 +1,20 @@
+	void showTwoWayFileDiff(final FileDiff d) {
+		final GitCompareFileRevisionEditorInput in;
+
+		final Repository db = walker.getRepository();
+		final String p = d.path;
+		final RevCommit c = d.commit;
+		final IFileRevision baseFile;
+		final IFileRevision nextFile;
+		final ITypedElement base;
+		final ITypedElement next;
+
+		baseFile = GitFileRevision.inCommit(db, c.getParent(0), p, d.blobs[0]);
+		nextFile = GitFileRevision.inCommit(db, c, p, d.blobs[1]);
+
+		base = new FileRevisionTypedElement(baseFile);
+		next = new FileRevisionTypedElement(nextFile);
+		in = new GitCompareFileRevisionEditorInput(base, next, null);
+		CompareUI.openCompareEditor(in);
+	}
+

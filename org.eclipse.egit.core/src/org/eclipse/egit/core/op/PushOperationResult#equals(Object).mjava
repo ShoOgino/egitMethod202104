@@ -1,0 +1,55 @@
+	/**
+	 * This implementation returns true if all following conditions are met:
+	 * <ul>
+	 * <li>both objects result have the same set successfully connected
+	 * repositories (URIs) - unsuccessful connections are discarded, AND <li>
+	 * remote ref updates must match for each successful connection in sense of
+	 * equal remoteName, equal status and equal newObjectId value.</li>
+	 * </ul>
+	 *
+	 * @see Object#equals(Object)
+	 * @param obj
+	 *            other push operation result to compare to.
+	 * @return true if object is equal to this one in terms of conditions
+	 *         described above, false otherwise.
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		if (!(obj instanceof PushOperationResult))
+			return false;
+
+		final PushOperationResult other = (PushOperationResult) obj;
+
+		// Check successful connections/URIs two-ways:
+		final Set<URIish> otherURIs = other.getURIs();
+		for (final URIish uri : getURIs()) {
+			if (isSuccessfulConnection(uri)
+					&& (!otherURIs.contains(uri) || !other
+							.isSuccessfulConnection(uri)))
+				return false;
+		}
+		for (final URIish uri : other.getURIs()) {
+			if (other.isSuccessfulConnection(uri)
+					&& (!urisEntries.containsKey(uri) || !isSuccessfulConnection(uri)))
+				return false;
+		}
+
+		for (final URIish uri : getURIs()) {
+			if (!isSuccessfulConnection(uri))
+				continue;
+
+			final PushResult otherPushResult = other.getPushResult(uri);
+			for (final RemoteRefUpdate rru : getPushResult(uri)
+					.getRemoteUpdates()) {
+				final RemoteRefUpdate otherRru = otherPushResult
+						.getRemoteUpdate(rru.getRemoteName());
+				if (otherRru == null)
+					return false;
+				if (otherRru.getStatus() != rru.getStatus()
+						|| otherRru.getNewObjectId() != rru.getNewObjectId())
+					return false;
+			}
+		}
+		return true;
+	}
+

@@ -1,0 +1,26 @@
+	public void run(IProgressMonitor pm) throws InvocationTargetException,
+			InterruptedException {
+		Transport transport = null;
+		Connection connection = null;
+		try {
+			transport = Transport.open(localDb, uri);
+
+			if (pm != null)
+				pm.beginTask(CoreText.ListRemoteOperation_title,
+						IProgressMonitor.UNKNOWN);
+			connection = transport.openFetch();
+			remoteRefsMap = connection.getRefsMap();
+		} catch (NotSupportedException e) {
+			throw new InvocationTargetException(e);
+		} catch (TransportException e) {
+			throw new InvocationTargetException(e);
+		} finally {
+			if (connection != null)
+				connection.close();
+			if (transport != null)
+				transport.close();
+			if (pm != null)
+				pm.done();
+		}
+	}
+

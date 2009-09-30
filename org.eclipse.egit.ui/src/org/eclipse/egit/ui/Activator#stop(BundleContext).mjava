@@ -1,0 +1,14 @@
+	public void stop(final BundleContext context) throws Exception {
+		trace("Trying to cancel " + rcs.getName() + " job");
+		rcs.cancel();
+		trace("Trying to cancel " + refreshJob.getName() + " job");
+		refreshJob.cancel();
+
+		rcs.join();
+		refreshJob.join();
+
+		trace("Jobs terminated");
+		super.stop(context);
+		plugin = null;
+	}
+

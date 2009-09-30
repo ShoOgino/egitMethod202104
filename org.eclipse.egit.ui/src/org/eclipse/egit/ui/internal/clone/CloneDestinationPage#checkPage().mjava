@@ -1,0 +1,44 @@
+	/**
+	 * Check internal state for page completion status.
+	 */
+	private void checkPage() {
+		final String dstpath = directoryText.getText();
+		if (dstpath.length() == 0) {
+			setErrorMessage(NLS.bind(UIText.CloneDestinationPage_fieldRequired,
+					UIText.CloneDestinationPage_promptDirectory));
+			setPageComplete(false);
+			return;
+		}
+		final File absoluteFile = new File(dstpath).getAbsoluteFile();
+		if (!absoluteFile.getAbsolutePath().equals(alreadyClonedInto)
+				&& !isEmptyDir(absoluteFile)) {
+			setErrorMessage(NLS.bind(
+					UIText.CloneDestinationPage_errorNotEmptyDir, absoluteFile
+							.getPath()));
+			setPageComplete(false);
+			return;
+		}
+
+		if (!canCreateSubdir(absoluteFile.getParentFile())) {
+			setErrorMessage(NLS.bind(UIText.GitCloneWizard_errorCannotCreate,
+					absoluteFile.getPath()));
+			setPageComplete(false);
+			return;
+		}
+		if (initialBranch.getSelectionIndex() < 0) {
+			setErrorMessage(NLS.bind(UIText.CloneDestinationPage_fieldRequired,
+					UIText.CloneDestinationPage_promptInitialBranch));
+			setPageComplete(false);
+			return;
+		}
+		if (remoteText.getText().length() == 0) {
+			setErrorMessage(NLS.bind(UIText.CloneDestinationPage_fieldRequired,
+					UIText.CloneDestinationPage_promptRemoteName));
+			setPageComplete(false);
+			return;
+		}
+
+		setErrorMessage(null);
+		setPageComplete(true);
+	}
+

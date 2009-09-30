@@ -1,0 +1,12 @@
+	private static List<RefContentProposal> createProposalsFilteredRemote(
+			final List<RefContentProposal> proposals) {
+		final List<RefContentProposal> result = new ArrayList<RefContentProposal>();
+		for (final RefContentProposal p : proposals) {
+			final String content = p.getContent();
+			if (content.equals(Constants.HEAD)
+					|| content.startsWith(Constants.R_HEADS))
+				result.add(p);
+		}
+		return result;
+	}
+

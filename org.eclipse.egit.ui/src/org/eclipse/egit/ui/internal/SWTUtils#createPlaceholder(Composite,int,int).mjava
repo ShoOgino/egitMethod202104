@@ -1,0 +1,21 @@
+	/**
+	 * Creates a place holder with the specified height and span
+	 *
+	 * @param parent
+	 * @param heightInChars
+	 * @param span
+	 *
+	 * @return the created place holder
+	 */
+	public static Control createPlaceholder(Composite parent,
+			int heightInChars, int span) {
+		Assert.isTrue(heightInChars > 0);
+		final Control placeHolder = new Composite(parent, SWT.NONE);
+		final GridData gd = new GridData(SWT.BEGINNING, SWT.TOP, false, false);
+		gd.heightHint = new PixelConverter(parent)
+				.convertHeightInCharsToPixels(heightInChars);
+		gd.horizontalSpan = span;
+		placeHolder.setLayoutData(gd);
+		return placeHolder;
+	}
+

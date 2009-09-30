@@ -1,0 +1,62 @@
+	private void createPredefinedCreationPanel() {
+		final Group predefinedPanel = new Group(panel, SWT.NONE);
+		predefinedPanel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false));
+		predefinedPanel.setText(UIText.RefSpecPanel_predefinedGroup);
+		final GridLayout layout = new GridLayout();
+		layout.numColumns = 3;
+		predefinedPanel.setLayout(layout);
+
+		addConfiguredButton = new Button(predefinedPanel, SWT.PUSH);
+		addConfiguredButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+				true, false));
+		addConfiguredButton.setText(NLS.bind(
+				UIText.RefSpecPanel_predefinedConfigured, typeString()));
+		addConfiguredButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addPredefinedRefSpecs(predefinedConfigured);
+			}
+		});
+		addConfiguredButton
+				.setToolTipText(UIText.RefSpecPanel_predefinedConfiguredDescription);
+		updateAddPredefinedButton(addConfiguredButton, predefinedConfigured);
+
+		addBranchesButton = new Button(predefinedPanel, SWT.PUSH);
+		addBranchesButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+				true, false));
+		addBranchesButton.setText(UIText.RefSpecPanel_predefinedAll);
+		addBranchesButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addPredefinedRefSpecs(predefinedBranches);
+			}
+		});
+		addBranchesButton
+				.setToolTipText(UIText.RefSpecPanel_predefinedAllDescription);
+		updateAddPredefinedButton(addBranchesButton, predefinedBranches);
+
+		addTagsButton = new Button(predefinedPanel, SWT.PUSH);
+		addTagsButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false));
+		addTagsButton.setText(UIText.RefSpecPanel_predefinedTags);
+		addTagsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addPredefinedRefSpecs(Transport.REFSPEC_TAGS);
+			}
+		});
+		addTagsButton
+				.setToolTipText(UIText.RefSpecPanel_predefinedTagsDescription);
+		updateAddPredefinedButton(addTagsButton, Transport.REFSPEC_TAGS);
+
+		addRefSpecTableListener(new SelectionChangeListener() {
+			public void selectionChanged() {
+				updateAddPredefinedButton(addConfiguredButton,
+						predefinedConfigured);
+				updateAddPredefinedButton(addBranchesButton, predefinedBranches);
+				updateAddPredefinedButton(addTagsButton, Transport.REFSPEC_TAGS);
+			}
+		});
+	}
+

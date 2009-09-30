@@ -1,0 +1,12 @@
+	/**
+	 * Perform a blanket refresh of all decorations
+	 */
+	public static void refresh() {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				Activator.getDefault().getWorkbench().getDecoratorManager()
+						.update(DECORATOR_ID);
+			}
+		});
+	}
+

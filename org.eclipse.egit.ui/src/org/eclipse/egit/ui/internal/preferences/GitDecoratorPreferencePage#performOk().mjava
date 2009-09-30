@@ -1,0 +1,16 @@
+	/**
+	 * OK was clicked. Store the preferences to the plugin store
+	 *
+	 * @return whether it is okay to close the preference page
+	 */
+	public boolean performOk() {
+		IPreferenceStore store = getPreferenceStore();
+		final boolean okToClose = performOk(store);
+		if (store.needsSaving()) {
+			Activator.getDefault().savePluginPreferences();
+			Activator.broadcastPropertyChange(new PropertyChangeEvent(this,
+					Activator.DECORATORS_CHANGED, null, null));
+		}
+		return okToClose;
+	}
+

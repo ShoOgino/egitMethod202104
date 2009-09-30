@@ -1,0 +1,9 @@
+	public synchronized IMoveDeleteHook getMoveDeleteHook() {
+		if (hook == null) {
+			GitProjectData _data = getData();
+			if (_data != null)
+				hook = new GitMoveDeleteHook(_data);
+		}
+		return hook;
+	}
+

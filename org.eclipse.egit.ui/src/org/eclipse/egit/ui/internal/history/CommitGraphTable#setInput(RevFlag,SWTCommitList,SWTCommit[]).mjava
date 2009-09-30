@@ -1,0 +1,14 @@
+	void setInput(final RevFlag hFlag, final SWTCommitList list,
+			final SWTCommit[] asArray) {
+		final SWTCommitList oldList = allCommits;
+		highlight = hFlag;
+		allCommits = list;
+		table.setInput(asArray);
+		if (asArray != null && asArray.length > 0) {
+			if (oldList != list)
+				selectCommit(asArray[0]);
+		} else {
+			table.getTable().deselectAll();
+		}
+	}
+

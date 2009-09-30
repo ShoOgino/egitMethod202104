@@ -1,0 +1,10 @@
+	/**
+	 * @param uri
+	 *            remote repository URI.
+	 * @return push result for this repository (URI) or null if operation ended
+	 *         with unsuccessful connection for this URI.
+	 */
+	public PushResult getPushResult(final URIish uri) {
+		return urisEntries.get(uri).getResult();
+	}
+

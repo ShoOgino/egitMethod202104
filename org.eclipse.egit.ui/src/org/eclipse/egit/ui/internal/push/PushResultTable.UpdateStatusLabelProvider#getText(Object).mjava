@@ -1,0 +1,39 @@
+		@Override
+		public String getText(Object element) {
+			final RefUpdateElement rue = (RefUpdateElement) element;
+			if (!rue.isSuccessfulConnection(uri))
+				return UIText.PushResultTable_statusConnectionFailed;
+
+			final RemoteRefUpdate rru = rue.getRemoteRefUpdate(uri);
+			switch (rru.getStatus()) {
+			case OK:
+				if (rru.isDelete())
+					return UIText.PushResultTable_statusOkDeleted;
+
+				final Ref oldRef = rue.getAdvertisedRemoteRef(uri);
+				if (oldRef == null) {
+					if (rue.getDstRefName().startsWith(Constants.R_TAGS))
+						return UIText.PushResultTable_statusOkNewTag;
+					return UIText.PushResultTable_statusOkNewBranch;
+				}
+
+				return oldRef.getObjectId().abbreviate(localDb).name()
+						+ (rru.isFastForward() ? ".." : "...")
+						+ rru.getNewObjectId().abbreviate(localDb).name();
+			case UP_TO_DATE:
+				return UIText.PushResultTable_statusUpToDate;
+			case NON_EXISTING:
+				return UIText.PushResultTable_statusNoMatch;
+			case REJECTED_NODELETE:
+			case REJECTED_NONFASTFORWARD:
+			case REJECTED_REMOTE_CHANGED:
+				return UIText.PushResultTable_statusRejected;
+			case REJECTED_OTHER_REASON:
+				return UIText.PushResultTable_statusRemoteRejected;
+			default:
+				throw new IllegalArgumentException(NLS.bind(
+						UIText.PushResultTable_statusUnexpected, rru
+								.getStatus()));
+			}
+		}
+

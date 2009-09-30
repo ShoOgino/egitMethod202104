@@ -1,0 +1,12 @@
+	/**
+	 * Set a new baseline for quickdiff
+	 *
+	 * @param repository
+	 * @param baseline any commit reference, ref, symref or sha-1
+	 * @throws IOException
+	 */
+	public static void setBaselineReference(final Repository repository, final String baseline) throws IOException {
+		GitQuickDiffProvider.baseline.put(repository, baseline);
+		GitDocument.refreshRelevant(repository);
+	}
+

@@ -1,0 +1,21 @@
+	/**
+	 * Set the preference values associated with a fixed integer array.
+	 * 
+	 * @param prefs
+	 *            the store to read.
+	 * @param key
+	 *            key nam
+	 * @param data
+	 *            entries to store.
+	 */
+	public static void setDefault(final Preferences prefs, final String key,
+			final int[] data) {
+		final StringBuilder s = new StringBuilder();
+		for (int i = 0; i < data.length; i++) {
+			if (i > 0)
+				s.append(',');
+			s.append(data[i]);
+		}
+		prefs.setDefault(key, s.toString());
+	}
+

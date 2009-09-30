@@ -1,0 +1,12 @@
+	/**
+	 * Returns the preference store that belongs to the our plugin.
+	 *
+	 * This is important because we want to store our preferences separately
+	 * from the desktop.
+	 *
+	 * @return the preference store for this plugin
+	 */
+	protected IPreferenceStore doGetPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
+	}
+

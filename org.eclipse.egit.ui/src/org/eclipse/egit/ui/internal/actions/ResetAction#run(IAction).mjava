@@ -1,0 +1,41 @@
+	@Override
+	public void run(IAction action) {
+		final Repository repository = getRepository(true);
+		if (repository == null)
+			return;
+		
+		if (!repository.getRepositoryState().canResetHead()) {
+			MessageDialog.openError(getShell(), "Cannot reset HEAD now",
+					"Repository state:"
+							+ repository.getRepositoryState().getDescription());
+			return;
+		}
+
+		BranchSelectionDialog branchSelectionDialog = new BranchSelectionDialog(getShell(), repository);
+		if (branchSelectionDialog.open() == IDialogConstants.OK_ID) {
+			final String refName = branchSelectionDialog.getRefName();
+			final ResetType type = branchSelectionDialog.getResetType();
+
+			try {
+				getTargetPart().getSite().getWorkbenchWindow().run(true, false,
+						new IRunnableWithProgress() {
+					public void run(final IProgressMonitor monitor)
+					throws InvocationTargetException {
+						try {
+							new ResetOperation(repository, refName, type).run(monitor);
+							GitLightweightDecorator.refresh();
+						} catch (CoreException ce) {
+							ce.printStackTrace();
+							throw new InvocationTargetException(ce);
+						}
+					}
+				});
+			} catch (InvocationTargetException e) {
+				MessageDialog.openError(getShell(),"Reset failed", e.getMessage());
+			} catch (InterruptedException e) {
+				MessageDialog.openError(getShell(),"Reset failed", e.getMessage());
+			}
+		}
+		
+	}
+

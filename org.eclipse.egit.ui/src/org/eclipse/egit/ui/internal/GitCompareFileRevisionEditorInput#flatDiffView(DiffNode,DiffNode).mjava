@@ -1,0 +1,16 @@
+	private void flatDiffView(DiffNode rootNode, DiffNode currentNode) {
+		if(currentNode != null) {
+			IDiffElement[] dElems = currentNode.getChildren();
+			if(dElems != null) {
+				for(IDiffElement dElem : dElems) {
+					DiffNode dNode = (DiffNode) dElem;
+					if(dNode.getChildren() != null && dNode.getChildren().length > 0) {
+						flatDiffView(rootNode, dNode);
+					} else {
+						rootNode.add(dNode);
+					}
+				}
+			}
+		}
+	}
+

@@ -1,0 +1,14 @@
+	/**
+	 * Creates a horizontal grid data with the specified span
+	 *
+	 * @param span
+	 *
+	 * @return the created grid data
+	 */
+	public static GridData createHFillGridData(int span) {
+		final GridData gd = createGridData(0, SWT.DEFAULT, SWT.FILL,
+				SWT.CENTER, true, false);
+		gd.horizontalSpan = span;
+		return gd;
+	}
+

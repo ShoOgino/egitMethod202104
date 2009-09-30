@@ -1,0 +1,7 @@
+	private RemoteConfig selectDefaultRemoteConfig() {
+		for (final RemoteConfig rc : configuredRemotes)
+			if (getTextForRemoteConfig(rc) == DEFAULT_REMOTE_NAME)
+				return rc;
+		return configuredRemotes.get(0);
+	}
+

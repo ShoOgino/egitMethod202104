@@ -1,0 +1,29 @@
+		public TextDecorationTab(TabFolder parent) {
+			Composite composite = SWTUtils.createHVFillComposite(parent,
+					SWTUtils.MARGINS_DEFAULT, 3);
+
+			fileTextFormat = new FormatEditor(composite,
+					UIText.DecoratorPreferencesPage_fileFormatLabel,
+					UIText.DecoratorPreferencesPage_addVariablesAction,
+					FILE_AND_FOLDER_BINDINGS,
+					UIPreferences.DECORATOR_FILETEXT_DECORATION);
+			folderTextFormat = new FormatEditor(composite,
+					UIText.DecoratorPreferencesPage_folderFormatLabel,
+					UIText.DecoratorPreferencesPage_addVariablesAction,
+					FILE_AND_FOLDER_BINDINGS,
+					UIPreferences.DECORATOR_FOLDERTEXT_DECORATION);
+			projectTextFormat = new FormatEditor(composite,
+					UIText.DecoratorPreferencesPage_projectFormatLabel,
+					UIText.DecoratorPreferencesPage_addVariablesAction,
+					PROJECT_BINDINGS,
+					UIPreferences.DECORATOR_PROJECTTEXT_DECORATION);
+
+			fileTextFormat.addModifyListener(this);
+			folderTextFormat.addModifyListener(this);
+			projectTextFormat.addModifyListener(this);
+
+			final TabItem tabItem = new TabItem(parent, SWT.NONE);
+			tabItem.setText(UIText.DecoratorPreferencesPage_textLabel);
+			tabItem.setControl(composite);
+		}
+

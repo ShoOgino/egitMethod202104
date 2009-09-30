@@ -1,0 +1,16 @@
+	CloneDestinationPage(final RepositorySelectionPage sp,
+			final SourceBranchPage bp) {
+		super(CloneDestinationPage.class.getName());
+		sourcePage = sp;
+		branchPage = bp;
+		setTitle(UIText.CloneDestinationPage_title);
+
+		final SelectionChangeListener listener = new SelectionChangeListener() {
+			public void selectionChanged() {
+				checkPreviousPagesSelections();
+			}
+		};
+		sourcePage.addSelectionListener(listener);
+		branchPage.addSelectionListener(listener);
+	}
+

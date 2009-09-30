@@ -1,0 +1,15 @@
+	protected boolean checkState() {
+		final Text text = getTextControl();
+		if (text == null)
+			return false;
+
+		final String numberString = text.getText();
+		final int number = parse(numberString);
+		if (checkValue(number)) {
+			clearErrorMessage();
+			return true;
+		}
+		showErrorMessage();
+		return false;
+	}
+

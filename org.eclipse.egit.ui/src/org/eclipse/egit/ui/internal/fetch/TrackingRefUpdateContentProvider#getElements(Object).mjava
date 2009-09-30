@@ -1,0 +1,8 @@
+	public Object[] getElements(final Object inputElement) {
+		if (inputElement == null)
+			return new TrackingRefUpdate[0];
+
+		final FetchResult result = (FetchResult) inputElement;
+		return result.getTrackingRefUpdates().toArray(new TrackingRefUpdate[0]);
+	}
+

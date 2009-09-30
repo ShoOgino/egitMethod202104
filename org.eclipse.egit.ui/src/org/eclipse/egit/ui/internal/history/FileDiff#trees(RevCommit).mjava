@@ -1,0 +1,8 @@
+	private static ObjectId[] trees(final RevCommit commit) {
+		final ObjectId[] r = new ObjectId[commit.getParentCount() + 1];
+		for (int i = 0; i < r.length - 1; i++)
+			r[i] = commit.getParent(i).getTree().getId();
+		r[r.length - 1] = commit.getTree().getId();
+		return r;
+	}
+

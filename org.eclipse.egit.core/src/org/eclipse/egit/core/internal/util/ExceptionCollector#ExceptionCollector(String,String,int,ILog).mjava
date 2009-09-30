@@ -1,0 +1,24 @@
+	/**
+	 * Creates a collector and initializes the parameters for the top-level
+	 * exception that would be returned from <code>getStatus</code> is
+	 * exceptions are collected.
+	 *
+	 * @param message
+	 *            a human-readable message, localized to the current locale
+	 * @param pluginId
+	 *            the unique identifier of the relevant plug-in
+	 * @param severity
+	 *            the severity; one of <code>OK</code>, <code>ERROR</code>,
+	 *            <code>INFO</code>, or <code>WARNING</code>
+	 * @param log
+	 *            the log to output the exceptions to, or <code>null</code> if
+	 *            exceptions should not be logged.
+	 */
+	public ExceptionCollector(String message, String pluginId, int severity,
+			ILog log) {
+		this.message = message;
+		this.pluginId = pluginId;
+		this.severity = severity;
+		this.log = log;
+	}
+

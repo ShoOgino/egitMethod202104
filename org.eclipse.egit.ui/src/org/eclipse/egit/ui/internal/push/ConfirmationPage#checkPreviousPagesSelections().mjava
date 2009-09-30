@@ -1,0 +1,12 @@
+	private void checkPreviousPagesSelections() {
+		if (!repoPage.selectionEquals(displayedRepoSelection)
+				|| !refSpecPage.specsSelectionEquals(displayedRefSpecs)) {
+			// Allow user to finish by skipping confirmation...
+			setPageComplete(true);
+		} else {
+			// ... but if user doesn't skip confirmation, allow only when no
+			// critical errors occurred
+			setPageComplete(confirmedResult != null);
+		}
+	}
+

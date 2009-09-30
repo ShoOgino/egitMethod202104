@@ -1,0 +1,26 @@
+	/**
+	 * Add this exception to the collector. If a log was specified in the
+	 * constructor then the exception will be output to the log. You can
+	 * retreive exceptions using <code>getStatus</code>.
+	 *
+	 * @param exception
+	 *            the exception to collect
+	 */
+	public void handleException(CoreException exception) {
+		if (log != null) {
+			log.log(new Status(severity, pluginId, 0, message, exception));
+		}
+
+		// Record each status individually to flatten the resulting multi-status
+		final IStatus exceptionStatus = exception.getStatus();
+
+		// Wrap the exception so the stack trace is not lost.
+		final IStatus status = new Status(exceptionStatus.getSeverity(),
+				exceptionStatus.getPlugin(), exceptionStatus.getCode(),
+				exceptionStatus.getMessage(), exception);
+
+		recordStatus(status);
+		for (IStatus childStatus : status.getChildren())
+			recordStatus(childStatus);
+	}
+

@@ -1,0 +1,14 @@
+	private CellEditor createRefCellEditor(final Table table,
+			final IContentProposalProvider proposalProvider) {
+		final CellEditor cellEditor = new TextCellEditor(table);
+
+		final Text text = (Text) cellEditor.getControl();
+		final ContentAssistCommandAdapter assist = new ContentAssistCommandAdapter(
+				text, new TextContentAdapter(), proposalProvider, null, null,
+				true);
+		assist
+				.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+
+		return cellEditor;
+	}
+

@@ -1,0 +1,7 @@
+	public IStorage getStorage(final IProgressMonitor monitor)
+			throws CoreException {
+		if (blobId == null)
+			blobId = locateBlobObjectId();
+		return new BlobStorage(db, path, blobId);
+	}
+

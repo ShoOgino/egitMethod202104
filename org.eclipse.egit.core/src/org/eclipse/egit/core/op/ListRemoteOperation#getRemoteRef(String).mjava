@@ -1,0 +1,12 @@
+	/**
+	 * @param refName
+	 *            remote ref name to search for.
+	 * @return ref with specified refName or null if not found.
+	 * @throws IllegalStateException
+	 *             if error occurred during earlier remote refs listing.
+	 */
+	public Ref getRemoteRef(final String refName) {
+		checkState();
+		return remoteRefsMap.get(refName);
+	}
+

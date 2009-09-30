@@ -1,0 +1,6 @@
+	public boolean performOk() {
+		Activator.getDefault().savePluginPreferences();
+		GitProjectData.reconfigureWindowCache();
+		return super.performOk();
+	}
+

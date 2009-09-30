@@ -1,0 +1,16 @@
+	private KidWalk buildWalk() {
+		final RepositoryMapping rm = RepositoryMapping.getMapping(resource);
+		if (rm == null) {
+			Activator.logError("Git not attached to project "
+					+ resource.getProject().getName() + ".", null);
+			return null;
+		}
+
+		final KidWalk w = new KidWalk(rm.getRepository());
+		gitPath = rm.getRepoRelativePath(resource);
+		w.setTreeFilter(AndTreeFilter.create(PathFilterGroup
+				.createFromStrings(Collections.singleton(gitPath)),
+				TreeFilter.ANY_DIFF));
+		return w;
+	}
+

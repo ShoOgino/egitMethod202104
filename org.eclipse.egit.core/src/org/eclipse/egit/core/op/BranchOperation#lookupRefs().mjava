@@ -1,0 +1,14 @@
+	private void lookupRefs() throws TeamException {
+		try {
+			newCommit = repository.mapCommit(refName);
+		} catch (IOException e) {
+			throw new TeamException("Mapping commit: " + refName, e);
+		}
+
+		try {
+			oldCommit = repository.mapCommit(Constants.HEAD);
+		} catch (IOException e) {
+			throw new TeamException("Mapping commit HEAD commit", e);
+		}
+	}
+

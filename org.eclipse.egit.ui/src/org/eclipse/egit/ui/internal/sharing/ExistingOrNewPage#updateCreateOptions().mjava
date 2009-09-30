@@ -1,0 +1,29 @@
+	private void updateCreateOptions() {
+		minumumPath = null;
+		IPath p = null;
+		for (TreeItem ti : tree.getSelection()) {
+			String path = ti.getText(2);
+			if (!path.equals("")) { //$NON-NLS-1$
+				p = null;
+				break;
+			}
+			String gitDirParentCandidate = ti.getText(1);
+			IPath thisPath = Path.fromOSString(gitDirParentCandidate);
+			if (p == null)
+				p = thisPath;
+			else {
+				int n = p.matchingFirstSegments(thisPath);
+				p = p.removeLastSegments(p.segmentCount() - n);
+			}
+		}
+		minumumPath = p;
+		if (p != null) {
+			repositoryToCreate.setText(p.toOSString());
+		} else {
+			repositoryToCreate.setText(""); //$NON-NLS-1$
+		}
+		button.setEnabled(p != null);
+		repositoryToCreate.setEnabled(p != null);
+		getContainer().updateButtons();
+	}
+

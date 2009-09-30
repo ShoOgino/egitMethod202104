@@ -1,0 +1,44 @@
+	private void tryAutoCompleteSrcToDst() {
+		final String src = creationSrcCombo.getText();
+		final String dst = creationDstCombo.getText();
+
+		if (src == null || src.length() == 0)
+			return;
+
+		if (dst != null && dst.length() > 0) {
+			// dst is already there, just fix wildcards if needed
+			final String newDst;
+			if (RefSpec.isWildcard(src))
+				newDst = wildcardSpecComponent(dst);
+			else
+				newDst = unwildcardSpecComponent(dst, src);
+			creationDstCombo.setText(newDst);
+			return;
+		}
+
+		if (!isValidRefExpression(src)) {
+			// no way to be smarter than user here
+			return;
+		}
+
+		// dst is empty, src is ref or wildcard, so we can rewrite it as user
+		// would perhaps
+		if (pushSpecs)
+			creationDstCombo.setText(src);
+		else {
+			for (final RefSpec spec : predefinedConfigured) {
+				if (spec.matchSource(src)) {
+					final String newDst = spec.expandFromSource(src)
+							.getDestination();
+					creationDstCombo.setText(newDst);
+					return;
+				}
+			}
+			if (remoteName != null && src.startsWith(Constants.R_HEADS)) {
+				final String newDst = Constants.R_REMOTES + remoteName + '/'
+						+ src.substring(Constants.R_HEADS.length());
+				creationDstCombo.setText(newDst);
+			}
+		}
+	}
+

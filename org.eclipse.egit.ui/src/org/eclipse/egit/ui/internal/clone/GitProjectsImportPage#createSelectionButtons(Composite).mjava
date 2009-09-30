@@ -1,0 +1,47 @@
+	/**
+	 * Create the selection buttons in the listComposite.
+	 *
+	 * @param listComposite
+	 */
+	private void createSelectionButtons(Composite listComposite) {
+		Composite buttonsComposite = new Composite(listComposite, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		buttonsComposite.setLayout(layout);
+
+		buttonsComposite.setLayoutData(new GridData(
+				GridData.VERTICAL_ALIGN_BEGINNING));
+
+		Button selectAll = new Button(buttonsComposite, SWT.PUSH);
+		selectAll.setText(UIText.WizardProjectsImportPage_selectAll);
+		selectAll.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				projectsList.setCheckedElements(selectedProjects);
+				setPageComplete(projectsList.getCheckedElements().length > 0);
+			}
+		});
+		Dialog.applyDialogFont(selectAll);
+		setButtonLayoutData(selectAll);
+
+		Button deselectAll = new Button(buttonsComposite, SWT.PUSH);
+		deselectAll.setText(UIText.WizardProjectsImportPage_deselectAll);
+		deselectAll.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse
+			 * .swt.events.SelectionEvent)
+			 */
+			public void widgetSelected(SelectionEvent e) {
+
+				projectsList.setCheckedElements(new Object[0]);
+				setPageComplete(false);
+			}
+		});
+		Dialog.applyDialogFont(deselectAll);
+		setButtonLayoutData(deselectAll);
+
+	}
+

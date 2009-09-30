@@ -1,0 +1,64 @@
+	private void prepareTrees(IFile[] selectedItems,
+			HashMap<Repository, Tree> treeMap) throws IOException,
+			UnsupportedEncodingException {
+		if (selectedItems.length == 0) {
+			// amending commit - need to put something into the map
+			for (IProject proj : getProjectsForSelectedResources()) {
+				Repository repo = RepositoryMapping.getMapping(proj).getRepository();
+				if (!treeMap.containsKey(repo))
+					treeMap.put(repo, repo.mapTree(Constants.HEAD));
+			}
+		}
+
+		for (IFile file : selectedItems) {
+			// System.out.println("\t" + file);
+
+			IProject project = file.getProject();
+			RepositoryMapping repositoryMapping = RepositoryMapping.getMapping(project);
+			Repository repository = repositoryMapping.getRepository();
+			Tree projTree = treeMap.get(repository);
+			if (projTree == null) {
+				projTree = repository.mapTree(Constants.HEAD);
+				if (projTree == null)
+					projTree = new Tree(repository);
+				treeMap.put(repository, projTree);
+				System.out.println("Orig tree id: " + projTree.getId());
+			}
+			GitIndex index = repository.getIndex();
+			String repoRelativePath = repositoryMapping
+					.getRepoRelativePath(file);
+			String string = repoRelativePath;
+
+			TreeEntry treeMember = projTree.findBlobMember(repoRelativePath);
+			// we always want to delete it from the current tree, since if it's
+			// updated, we'll add it again
+			if (treeMember != null)
+				treeMember.delete();
+
+			Entry idxEntry = index.getEntry(string);
+			if (notIndexed.contains(file)) {
+				File thisfile = new File(repositoryMapping.getWorkDir(), idxEntry.getName());
+				if (!thisfile.isFile()) {
+					index.remove(repositoryMapping.getWorkDir(), thisfile);
+					index.write();
+					System.out.println("Phantom file, so removing from index");
+					continue;
+				} else {
+					if (idxEntry.update(thisfile))
+						index.write();
+				}
+			}
+				
+			
+			if (idxEntry != null) {
+				projTree.addFile(repoRelativePath);
+				TreeEntry newMember = projTree.findBlobMember(repoRelativePath);
+
+				newMember.setId(idxEntry.getObjectId());
+				System.out.println("New member id for " + repoRelativePath
+						+ ": " + newMember.getId() + " idx id: "
+						+ idxEntry.getObjectId());
+			}
+		}
+	}
+

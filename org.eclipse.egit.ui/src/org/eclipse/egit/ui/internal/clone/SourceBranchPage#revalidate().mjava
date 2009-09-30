@@ -1,0 +1,27 @@
+	private void revalidate() {
+		if (sourcePage.selectionEquals(validatedRepoSelection)) {
+			// URI hasn't changed, no need to refill the page with new data
+			checkPage();
+			return;
+		}
+
+		final RepositorySelection newRepoSelection = sourcePage.getSelection();
+		label.setText(NLS.bind(UIText.SourceBranchPage_branchList,
+				newRepoSelection.getURI().toString()));
+		label.getParent().layout();
+
+		validatedRepoSelection = null;
+		transportError = null;
+		head = null;
+		availableRefs.clear();
+		selectedRefs.clear();
+		refsTable.removeAll();
+		setPageComplete(false);
+		setErrorMessage(null);
+		label.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				revalidateImpl(newRepoSelection);
+			}
+		});
+	}
+

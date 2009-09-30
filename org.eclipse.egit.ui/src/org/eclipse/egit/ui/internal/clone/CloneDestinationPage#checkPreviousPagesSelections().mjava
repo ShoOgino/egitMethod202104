@@ -1,0 +1,9 @@
+	private void checkPreviousPagesSelections() {
+		if (!sourcePage.selectionEquals(validatedRepoSelection)
+				|| !branchPage.selectionEquals(validatedSelectedBranches,
+						validatedHEAD))
+			setPageComplete(false);
+		else
+			checkPage();
+	}
+

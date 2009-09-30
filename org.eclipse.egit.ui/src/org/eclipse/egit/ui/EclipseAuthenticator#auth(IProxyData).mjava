@@ -1,0 +1,7 @@
+	private PasswordAuthentication auth(final IProxyData d) {
+		final String user = d.getUserId();
+		final String pass = d.getPassword();
+		final char[] passChar = pass != null ? pass.toCharArray() : new char[0];
+		return new PasswordAuthentication(user, passChar);
+	}
+

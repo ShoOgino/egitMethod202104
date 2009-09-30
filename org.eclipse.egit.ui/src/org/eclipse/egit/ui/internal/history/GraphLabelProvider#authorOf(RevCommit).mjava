@@ -1,0 +1,8 @@
+	private PersonIdent authorOf(final RevCommit c) {
+		if (lastCommit != c) {
+			lastCommit = c;
+			lastAuthor = c.getAuthorIdent();
+		}
+		return lastAuthor;
+	}
+

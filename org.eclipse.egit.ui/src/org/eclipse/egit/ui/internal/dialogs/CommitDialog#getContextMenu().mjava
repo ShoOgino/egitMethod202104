@@ -1,0 +1,44 @@
+	private Menu getContextMenu() {
+		Menu menu = new Menu(filesViewer.getTable());
+		MenuItem item = new MenuItem(menu, SWT.PUSH);
+		item.setText(UIText.CommitDialog_AddFileOnDiskToIndex);
+		item.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event arg0) {
+				IStructuredSelection sel = (IStructuredSelection) filesViewer.getSelection();
+				if (sel.isEmpty()) {
+					return;
+				}
+				try {
+					ArrayList<GitIndex> changedIndexes = new ArrayList<GitIndex>();
+					for (Iterator<?> it = sel.iterator(); it.hasNext();) {
+						CommitItem commitItem = (CommitItem) it.next();
+
+						IProject project = commitItem.file.getProject();
+						RepositoryMapping map = RepositoryMapping.getMapping(project);
+
+						Repository repo = map.getRepository();
+						GitIndex index = null;
+						index = repo.getIndex();
+						Entry entry = index.getEntry(map.getRepoRelativePath(commitItem.file));
+						if (entry != null && entry.isModified(map.getWorkDir())) {
+							entry.update(new File(map.getWorkDir(), entry.getName()));
+							if (!changedIndexes.contains(index))
+								changedIndexes.add(index);
+						}
+					}
+					if (!changedIndexes.isEmpty()) {
+						for (GitIndex idx : changedIndexes) {
+							idx.write();
+						}
+						filesViewer.refresh(true);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					return;
+				}
+			}
+		});
+
+		return menu;
+	}
+

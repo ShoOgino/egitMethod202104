@@ -1,0 +1,17 @@
+	@Override
+	protected void paint(final Event event, final Object element) {
+		final Image image = getImage(element);
+		final Rectangle bounds = ((TableItem) event.item)
+				.getBounds(event.index);
+		final Rectangle imgBounds = image.getBounds();
+		bounds.width /= 2;
+		bounds.width -= imgBounds.width / 2;
+		bounds.height /= 2;
+		bounds.height -= imgBounds.height / 2;
+
+		final int x = bounds.width > 0 ? bounds.x + bounds.width : bounds.x;
+		final int y = bounds.height > 0 ? bounds.y + bounds.height : bounds.y;
+
+		event.gc.drawImage(image, x, y);
+	}
+

@@ -1,0 +1,14 @@
+	/**
+	 * Post the label event to the UI thread
+	 *
+	 * @param event
+	 *            The event to post
+	 */
+	private void postLabelEvent(final LabelProviderChangedEvent event) {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				fireLabelProviderChanged(event);
+			}
+		});
+	}
+

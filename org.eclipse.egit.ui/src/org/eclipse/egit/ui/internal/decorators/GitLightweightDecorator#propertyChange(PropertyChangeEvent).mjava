@@ -1,0 +1,18 @@
+	/**
+	 * Callback for IPropertyChangeListener events
+	 *
+	 * If any of the relevant preferences has been changed we refresh all
+	 * decorations (all projects and their resources).
+	 *
+	 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		final String prop = event.getProperty();
+		// If the property is of any interest to us
+		if (prop.equals(TeamUI.GLOBAL_IGNORES_CHANGED)
+				|| prop.equals(TeamUI.GLOBAL_FILE_TYPES_CHANGED)
+				|| prop.equals(Activator.DECORATORS_CHANGED)) {
+			postLabelEvent(new LabelProviderChangedEvent(this));
+		}
+	}
+

@@ -1,0 +1,8 @@
+	/**
+	 * Notifies registered listeners about selection change.
+	 */
+	protected void notifySelectionChanged() {
+		for (final SelectionChangeListener l : selectionListeners)
+			l.selectionChanged();
+	}
+

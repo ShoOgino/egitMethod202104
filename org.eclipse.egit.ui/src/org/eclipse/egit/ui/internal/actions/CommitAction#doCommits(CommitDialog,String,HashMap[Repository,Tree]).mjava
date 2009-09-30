@@ -1,0 +1,45 @@
+	private void doCommits(CommitDialog commitDialog, String commitMessage,
+			HashMap<Repository, Tree> treeMap) throws IOException, TeamException {
+
+		final String author = commitDialog.getAuthor();
+		final String committer = commitDialog.getCommitter();
+		final Date commitDate = new Date();
+		final TimeZone timeZone = TimeZone.getDefault();
+
+		final PersonIdent authorIdent = new PersonIdent(author);
+		final PersonIdent committerIdent = new PersonIdent(committer);
+
+		for (java.util.Map.Entry<Repository, Tree> entry : treeMap.entrySet()) {
+			Tree tree = entry.getValue();
+			Repository repo = tree.getRepository();
+			writeTreeWithSubTrees(tree);
+
+			ObjectId currentHeadId = repo.resolve(Constants.HEAD);
+			ObjectId[] parentIds;
+			if (amending) {
+				parentIds = previousCommit.getParentIds();
+			} else {
+				if (currentHeadId != null)
+					parentIds = new ObjectId[] { currentHeadId };
+				else
+					parentIds = new ObjectId[0];
+			}
+			Commit commit = new Commit(repo, parentIds);
+			commit.setTree(tree);
+			commit.setMessage(commitMessage);
+			commit.setAuthor(new PersonIdent(authorIdent, commitDate, timeZone));
+			commit.setCommitter(new PersonIdent(committerIdent, commitDate, timeZone));
+
+			ObjectWriter writer = new ObjectWriter(repo);
+			commit.setCommitId(writer.writeCommit(commit));
+
+			final RefUpdate ru = repo.updateRef(Constants.HEAD);
+			ru.setNewObjectId(commit.getCommitId());
+			ru.setRefLogMessage(buildReflogMessage(commitMessage), false);
+			if (ru.forceUpdate() == RefUpdate.Result.LOCK_FAILURE) {
+				throw new TeamException("Failed to update " + ru.getName()
+						+ " to commit " + commit.getCommitId() + ".");
+			}
+		}
+	}
+

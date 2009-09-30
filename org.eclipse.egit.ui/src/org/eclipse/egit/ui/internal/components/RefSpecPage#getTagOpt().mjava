@@ -1,0 +1,12 @@
+	/**
+	 * @return selected tag fetching strategy. This result is relevant only for
+	 *         fetch page.
+	 */
+	public TagOpt getTagOpt() {
+		if (tagsAutoFollowButton.getSelection())
+			return TagOpt.AUTO_FOLLOW;
+		if (tagsFetchTagsButton.getSelection())
+			return TagOpt.FETCH_TAGS;
+		return TagOpt.NO_TAGS;
+	}
+

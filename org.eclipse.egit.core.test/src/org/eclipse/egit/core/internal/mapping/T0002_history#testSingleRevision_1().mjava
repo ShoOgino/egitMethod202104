@@ -1,0 +1,11 @@
+	public void testSingleRevision_1() {
+		GitProvider provider = (GitProvider)RepositoryProvider.getProvider(project.project);
+		assertNotNull(provider);
+		IFileHistoryProvider fileHistoryProvider = provider.getFileHistoryProvider();
+		IFileHistory fileHistory = fileHistoryProvider.getFileHistoryFor(project.getProject().getWorkspace().getRoot().findMember("Project-1/A.txt"), IFileHistoryProvider.SINGLE_LINE_OF_DESCENT, new NullProgressMonitor());
+		IFileRevision fileRevision = fileHistory.getFileRevision("60f0d7917fe2aed5c92b5bc35dfb55b9b8ada359");
+		assertEquals("60f0d7917fe2aed5c92b5bc35dfb55b9b8ada359", fileRevision.getContentIdentifier());
+		assertEquals("J. Author",fileRevision.getAuthor());
+
+	}
+

@@ -1,0 +1,12 @@
+	@Override
+	public boolean performCancel() {
+		if (cloneDestination.alreadyClonedInto != null) {
+			if (MessageDialog
+					.openQuestion(getShell(), "Aborting clone.",
+							"A complete clone was already made. Do you want to delete it?")) {
+				deleteRecursively(new File(cloneDestination.alreadyClonedInto));
+			}
+		}
+		return true;
+	}
+

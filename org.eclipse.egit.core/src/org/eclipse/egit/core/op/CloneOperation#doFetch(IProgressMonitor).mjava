@@ -1,0 +1,12 @@
+	private void doFetch(final IProgressMonitor monitor)
+			throws NotSupportedException, TransportException {
+		final Transport tn = Transport.open(local, remoteConfig);
+		try {
+			final EclipseGitProgressTransformer pm;
+			pm = new EclipseGitProgressTransformer(monitor);
+			fetchResult = tn.fetch(pm, null);
+		} finally {
+			tn.close();
+		}
+	}
+

@@ -1,0 +1,10 @@
+	private String getDestinationString() {
+		final RepositorySelection repoSelection = repoPage.getSelection();
+		final String destination;
+		if (repoSelection.isConfigSelected())
+			destination = repoSelection.getConfigName();
+		else
+			destination = repoSelection.getURI().toString();
+		return destination;
+	}
+

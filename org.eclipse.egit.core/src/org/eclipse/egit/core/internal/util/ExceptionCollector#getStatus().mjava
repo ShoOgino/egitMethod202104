@@ -1,0 +1,23 @@
+	/**
+	 * Returns a status that represents the exceptions collected. If the
+	 * collector is empty <code>IStatus.OK</code> is returned. Otherwise a
+	 * MultiStatus containing all collected exceptions is returned.
+	 *
+	 * @return a multistatus containing the exceptions collected or IStatus.OK
+	 *         if the collector is empty.
+	 */
+	public IStatus getStatus() {
+		if (statuses.isEmpty()) {
+			return Status.OK_STATUS;
+		} else {
+			final MultiStatus multiStatus = new MultiStatus(pluginId, severity,
+					message, null);
+			final Iterator it = statuses.iterator();
+			while (it.hasNext()) {
+				final IStatus status = (IStatus) it.next();
+				multiStatus.merge(status);
+			}
+			return multiStatus;
+		}
+	}
+

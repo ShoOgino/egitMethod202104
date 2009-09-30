@@ -1,0 +1,18 @@
+	@Override
+	protected Session createSession(final OpenSshConfig.Host hc,
+			final String user, final String host, final int port)
+			throws JSchException {
+		final JSch jsch = getJSch(hc);
+		if (jsch == provider.getJSch()) {
+			// If its the default JSch desired, let the provider
+			// manage the session creation for us.
+			//
+			return provider.createSession(host, port, user);
+		} else {
+			// This host configuration is using a different IdentityFile,
+			// one that is not available through the default JSch.
+			//
+			return jsch.getSession(user, host, port);
+		}
+	}
+

@@ -1,0 +1,42 @@
+	public void run(final IAction act) {
+		if (op != null) {
+			try {
+				try {
+					wp.getSite().getWorkbenchWindow().run(true, false,
+							new IRunnableWithProgress() {
+								public void run(final IProgressMonitor monitor)
+										throws InvocationTargetException {
+									try {
+										op.run(monitor);
+									} catch (CoreException ce) {
+										throw new InvocationTargetException(ce);
+									}
+								}
+							});
+				} finally {
+					postOperation();
+				}
+			} catch (Throwable e) {
+				final String msg = NLS.bind(UIText.GenericOperationFailed, act
+						.getText());
+				final IStatus status;
+
+				if (e instanceof InvocationTargetException) {
+					e = e.getCause();
+				}
+
+				if (e instanceof CoreException) {
+					status = ((CoreException) e).getStatus();
+					e = status.getException();
+				} else {
+					status = new Status(IStatus.ERROR, Activator.getPluginId(),
+							1, msg, e);
+				}
+
+				Activator.logError(msg, e);
+				ErrorDialog.openError(wp.getSite().getShell(), act.getText(),
+						msg, status, status.getSeverity());
+			}
+		}
+	}
+

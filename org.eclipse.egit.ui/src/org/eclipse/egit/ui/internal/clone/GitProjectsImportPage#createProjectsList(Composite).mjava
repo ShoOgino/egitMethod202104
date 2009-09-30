@@ -1,0 +1,123 @@
+	/**
+	 * Create the checkbox list for the found projects.
+	 *
+	 * @param workArea
+	 */
+	private void createProjectsList(Composite workArea) {
+
+		Label title = new Label(workArea, SWT.NONE);
+		title.setText(UIText.WizardProjectsImportPage_ProjectsListTitle);
+
+		Composite listComposite = new Composite(workArea, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginWidth = 0;
+		layout.makeColumnsEqualWidth = false;
+		listComposite.setLayout(layout);
+
+		listComposite.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH));
+
+		projectsList = new CheckboxTreeViewer(listComposite, SWT.BORDER);
+		GridData listData = new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
+		projectsList.getControl().setLayoutData(listData);
+
+		projectsList.setContentProvider(new ITreeContentProvider() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java
+			 * .lang.Object)
+			 */
+			public Object[] getChildren(Object parentElement) {
+				return null;
+			}
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.IStructuredContentProvider#getElements
+			 * (java.lang.Object)
+			 */
+			public Object[] getElements(Object inputElement) {
+				return getValidProjects();
+			}
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java
+			 * .lang.Object)
+			 */
+			public boolean hasChildren(Object element) {
+				return false;
+			}
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java
+			 * .lang.Object)
+			 */
+			public Object getParent(Object element) {
+				return null;
+			}
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+			 */
+			public void dispose() {
+
+			}
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse
+			 * .jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+			 */
+			public void inputChanged(Viewer viewer, Object oldInput,
+					Object newInput) {
+			}
+
+		});
+
+		projectsList.setLabelProvider(new LabelProvider() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+			 */
+			public String getText(Object element) {
+				return ((ProjectRecord) element).getProjectLabel();
+			}
+		});
+
+		projectsList.addCheckStateListener(new ICheckStateListener() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.ICheckStateListener#checkStateChanged
+			 * (org.eclipse.jface.viewers.CheckStateChangedEvent)
+			 */
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				setPageComplete(projectsList.getCheckedElements().length > 0);
+			}
+		});
+
+		projectsList.setInput(this);
+		projectsList.setComparator(new ViewerComparator());
+		createSelectionButtons(listComposite);
+	}
+

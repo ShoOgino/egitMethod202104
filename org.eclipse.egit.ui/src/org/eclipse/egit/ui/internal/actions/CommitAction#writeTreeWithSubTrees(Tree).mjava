@@ -1,0 +1,24 @@
+	private void writeTreeWithSubTrees(Tree tree) throws TeamException {
+		if (tree.getId() == null) {
+			System.out.println("writing tree for: " + tree.getFullName());
+			try {
+				for (TreeEntry entry : tree.members()) {
+					if (entry.isModified()) {
+						if (entry instanceof Tree) {
+							writeTreeWithSubTrees((Tree) entry);
+						} else {
+							// this shouldn't happen.... not quite sure what to
+							// do here :)
+							System.out.println("BAD JUJU: "
+									+ entry.getFullName());
+						}
+					}
+				}
+				ObjectWriter writer = new ObjectWriter(tree.getRepository());
+				tree.setId(writer.writeTree(tree));
+			} catch (IOException e) {
+				throw new TeamException("Writing trees", e);
+			}
+		}
+	}
+

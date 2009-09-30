@@ -1,0 +1,14 @@
+	public void testDeepHistory_B() {
+		GitProvider provider = (GitProvider)RepositoryProvider.getProvider(project.project);
+		assertNotNull(provider);
+		IFileHistoryProvider fileHistoryProvider = provider.getFileHistoryProvider();
+		IFileHistory fileHistory = fileHistoryProvider.getFileHistoryFor(project.getProject().getWorkspace().getRoot().findMember("Project-1/B.txt"), IFileHistoryProvider.NONE, new NullProgressMonitor());
+		IFileRevision[] fileRevisions = fileHistory.getFileRevisions();
+		assertEquals(2, fileRevisions.length);
+		assertEquals("fd5a571c8a3a4a152e4c413d09d3ecb7d41e1e5f", fileRevisions[0].getContentIdentifier());
+		assertEquals("J. Author",fileRevisions[0].getAuthor());
+		assertEquals("60f0d7917fe2aed5c92b5bc35dfb55b9b8ada359", fileRevisions[1].getContentIdentifier());
+		assertEquals("J. Author",fileRevisions[0].getAuthor());
+
+	}
+

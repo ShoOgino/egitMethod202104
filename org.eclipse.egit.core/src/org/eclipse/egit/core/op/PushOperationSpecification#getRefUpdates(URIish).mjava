@@ -1,0 +1,9 @@
+	/**
+	 * @param uri
+	 *            remote repository URI.
+	 * @return remote ref updates as specified by user for this URI.
+	 */
+	public Collection<RemoteRefUpdate> getRefUpdates(final URIish uri) {
+		return Collections.unmodifiableCollection(urisRefUpdates.get(uri));
+	}
+

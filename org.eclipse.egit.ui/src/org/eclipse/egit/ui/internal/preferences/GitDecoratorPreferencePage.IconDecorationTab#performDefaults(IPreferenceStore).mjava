@@ -1,0 +1,18 @@
+		public void performDefaults(IPreferenceStore store) {
+			showTracked
+					.setSelection(store
+							.getDefaultBoolean(UIPreferences.DECORATOR_SHOW_TRACKED_ICON));
+			showUntracked
+					.setSelection(store
+							.getDefaultBoolean(UIPreferences.DECORATOR_SHOW_UNTRACKED_ICON));
+			showStaged
+					.setSelection(store
+							.getDefaultBoolean(UIPreferences.DECORATOR_SHOW_STAGED_ICON));
+			showConflicts
+					.setSelection(store
+							.getDefaultBoolean(UIPreferences.DECORATOR_SHOW_CONFLICTS_ICON));
+			showAssumeValid
+					.setSelection(store
+							.getDefaultBoolean(UIPreferences.DECORATOR_SHOW_ASSUME_VALID_ICON));
+		}
+

@@ -1,0 +1,11 @@
+	/**
+	 * Broadcast a Team property change.
+	 *
+	 * @param event
+	 *            The event to broadcast
+	 */
+	public static synchronized void broadcastPropertyChange(PropertyChangeEvent event) {
+		for (IPropertyChangeListener listener : propertyChangeListeners)
+			listener.propertyChange(event);
+	}
+

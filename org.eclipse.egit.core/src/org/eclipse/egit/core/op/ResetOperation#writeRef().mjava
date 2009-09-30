@@ -1,0 +1,12 @@
+	private void writeRef() throws TeamException {
+		try {
+			final RefUpdate ru = repository.updateRef(Constants.HEAD);
+			ru.setNewObjectId(commit.getCommitId());
+			ru.setRefLogMessage("reset", false);
+			if (ru.forceUpdate() == RefUpdate.Result.LOCK_FAILURE)
+				throw new TeamException("Can't update " + ru.getName());
+		} catch (IOException e) {
+			throw new TeamException("Updating " + Constants.HEAD + " failed", e);
+		}
+	}
+

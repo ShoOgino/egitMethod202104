@@ -1,0 +1,11 @@
+	/**
+	 * Initializes states of the controls from the preference store.
+	 */
+	private void initializeValues() {
+		final IPreferenceStore store = getPreferenceStore();
+		generalTab.initializeValues(store);
+		textDecorationTab.initializeValues(store);
+		iconDecorationTab.initializeValues(store);
+		setValid(true);
+	}
+

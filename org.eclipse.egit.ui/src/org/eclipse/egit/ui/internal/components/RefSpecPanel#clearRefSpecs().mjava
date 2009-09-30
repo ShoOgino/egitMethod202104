@@ -1,0 +1,12 @@
+	/**
+	 * Clear all specifications from this panel.
+	 * <p>
+	 * This method should be called only from the UI thread.
+	 */
+	public void clearRefSpecs() {
+		final RefSpec toRemove[] = specs.toArray(new RefSpec[0]);
+		specs.clear();
+		tableViewer.remove(toRemove);
+		notifySpecsChanged();
+	}
+

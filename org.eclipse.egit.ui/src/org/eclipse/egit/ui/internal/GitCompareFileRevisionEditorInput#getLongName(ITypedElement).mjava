@@ -1,0 +1,12 @@
+	private String getLongName(ITypedElement element) {
+		if (element instanceof FileRevisionTypedElement){
+			FileRevisionTypedElement fileRevisionElement = (FileRevisionTypedElement) element;
+			return fileRevisionElement.getPath();
+		}
+		else if (element instanceof LocalResourceTypedElement){
+			LocalResourceTypedElement typedContent = (LocalResourceTypedElement) element;
+			return typedContent.getResource().getFullPath().toString();
+		}
+		return element.getName();
+	}
+

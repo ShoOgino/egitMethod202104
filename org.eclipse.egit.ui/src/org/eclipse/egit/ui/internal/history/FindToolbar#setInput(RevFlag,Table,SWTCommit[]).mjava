@@ -1,0 +1,15 @@
+	/**
+	 * Sets the table that will have its selected items changed by this toolbar.
+	 * Sets the list to be searched.
+	 *
+	 * @param hFlag
+	 * @param historyTable
+	 * @param commitArray
+	 */
+	public void setInput(final RevFlag hFlag, final Table historyTable,
+			final SWTCommit[] commitArray) {
+		this.fileRevisions = commitArray;
+		this.historyTable = historyTable;
+		findResults.setHighlightFlag(hFlag);
+	}
+

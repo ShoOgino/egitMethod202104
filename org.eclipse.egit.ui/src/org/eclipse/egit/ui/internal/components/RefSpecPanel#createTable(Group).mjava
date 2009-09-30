@@ -1,0 +1,46 @@
+	private void createTable(final Group tableGroup) {
+		final Composite tablePanel = new Composite(tableGroup, SWT.NONE);
+		final GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		layoutData.heightHint = TABLE_PREFERRED_HEIGHT;
+		layoutData.widthHint = TABLE_PREFERRED_WIDTH;
+		tablePanel.setLayoutData(layoutData);
+
+		tableViewer = new TableViewer(tablePanel, SWT.FULL_SELECTION
+				| SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
+		ColumnViewerToolTipSupport.enableFor(tableViewer);
+		final Table table = tableViewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+
+		createTableColumns(tablePanel);
+		createCellEditors(table);
+
+		tableViewer.setContentProvider(new IStructuredContentProvider() {
+			public Object[] getElements(final Object inputElement) {
+				return ((List) inputElement).toArray();
+			}
+
+			public void dispose() {
+				// nothing to dispose
+			}
+
+			public void inputChanged(Viewer viewer, Object oldInput,
+					Object newInput) {
+				// input is hard coded
+			}
+		});
+		tableViewer.setInput(specs);
+
+		tableViewer.setComparer(new IElementComparer() {
+			public boolean equals(Object a, Object b) {
+				// need that as viewers are not designed to support 2 equals
+				// object, while we have RefSpec#equals implemented
+				return a == b;
+			}
+
+			public int hashCode(Object element) {
+				return element.hashCode();
+			}
+		});
+	}
+

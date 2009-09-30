@@ -1,0 +1,45 @@
+	@Override
+	public void run(IAction action) {
+		final Repository repository = getRepository(true);
+		if (repository == null)
+			return;
+
+		if (!repository.getRepositoryState().canCheckout()) {
+			MessageDialog.openError(getShell(), "Cannot checkout now",
+					"Repository state:"
+							+ repository.getRepositoryState().getDescription());
+			return;
+		}
+
+		BranchSelectionDialog dialog = new BranchSelectionDialog(getShell(), repository);
+		dialog.setShowResetType(false);
+		if (dialog.open() != IDialogConstants.OK_ID) {
+			return;
+		}
+		
+		final String refName = dialog.getRefName();
+		try {
+			getTargetPart().getSite().getWorkbenchWindow().run(true, false,
+					new IRunnableWithProgress() {
+				public void run(final IProgressMonitor monitor)
+				throws InvocationTargetException {
+					try {
+						new BranchOperation(repository, refName).run(monitor);
+						GitLightweightDecorator.refresh();
+					} catch (final CoreException ce) {
+						ce.printStackTrace();
+						Display.getDefault().asyncExec(new Runnable() {
+							public void run() {
+								handle(ce, "Error while switching branches", "Unable to switch branches");							
+							}
+						});
+					}
+				}
+			});
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+

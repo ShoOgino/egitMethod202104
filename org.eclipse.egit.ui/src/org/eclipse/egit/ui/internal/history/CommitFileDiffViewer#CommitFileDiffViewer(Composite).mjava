@@ -1,0 +1,34 @@
+	CommitFileDiffViewer(final Composite parent) {
+		super(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER
+				| SWT.FULL_SELECTION);
+
+		final Table rawTable = getTable();
+		rawTable.setHeaderVisible(true);
+		rawTable.setLinesVisible(true);
+
+		final TableLayout layout = new TableLayout();
+		rawTable.setLayout(layout);
+		createColumns(rawTable, layout);
+
+		setLabelProvider(new FileDiffLabelProvider());
+		setContentProvider(new FileDiffContentProvider());
+		addOpenListener(new IOpenListener() {
+			public void open(final OpenEvent event) {
+				final ISelection s = event.getSelection();
+				if (s.isEmpty() || !(s instanceof IStructuredSelection))
+					return;
+				final IStructuredSelection iss = (IStructuredSelection) s;
+				final FileDiff d = (FileDiff) iss.getFirstElement();
+				if (walker != null && d.blobs.length == 2)
+					showTwoWayFileDiff(d);
+			}
+		});
+
+		clipboard = new Clipboard(rawTable.getDisplay());
+		rawTable.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(final DisposeEvent e) {
+				clipboard.dispose();
+			}
+		});
+	}
+

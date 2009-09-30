@@ -1,0 +1,24 @@
+	/**
+	 * Calculates the size of the specified subset of controls, using the
+	 * specified converter
+	 *
+	 * @param converter
+	 * @param controls
+	 * @param start
+	 * @param end
+	 *
+	 * @return the created control
+	 */
+	public static int calculateControlSize(PixelConverter converter,
+			Control[] controls, int start, int end) {
+		int minimum = converter
+				.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
+		for (int i = start; i <= end; i++) {
+			final int length = controls[i]
+					.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+			if (minimum < length)
+				minimum = length;
+		}
+		return minimum;
+	}
+

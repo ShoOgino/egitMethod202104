@@ -1,0 +1,15 @@
+	/**
+	 * Create listing operation for specified local repository (needed by
+	 * transport) and remote repository URI.
+	 *
+	 * @param localDb
+	 *            local repository (needed for transport) where fetch would
+	 *            occur.
+	 * @param uri
+	 *            URI of remote repository to list.
+	 */
+	public ListRemoteOperation(final Repository localDb, final URIish uri) {
+		this.localDb = localDb;
+		this.uri = uri;
+	}
+

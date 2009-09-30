@@ -1,0 +1,10 @@
+	private static URL init() {
+		try {
+			return new URL(Activator.getDefault().getBundle().getEntry("/"),
+					"icons/");
+		} catch (MalformedURLException mux) {
+			Activator.logError("Can't determine icon base.", mux);
+			return null;
+		}
+	}
+

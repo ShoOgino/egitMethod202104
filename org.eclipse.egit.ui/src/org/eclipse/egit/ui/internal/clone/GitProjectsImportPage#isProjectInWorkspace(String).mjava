@@ -1,0 +1,21 @@
+	/**
+	 * Determine if the project with the given name is in the current workspace.
+	 *
+	 * @param projectName
+	 *            String the project name to check
+	 * @return boolean true if the project with the given name is in this
+	 *         workspace
+	 */
+	private boolean isProjectInWorkspace(String projectName) {
+		if (projectName == null) {
+			return false;
+		}
+		IProject[] workspaceProjects = getProjectsInWorkspace();
+		for (int i = 0; i < workspaceProjects.length; i++) {
+			if (projectName.equals(workspaceProjects[i].getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+

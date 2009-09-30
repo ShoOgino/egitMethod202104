@@ -1,0 +1,20 @@
+	private void createColumns(final Table rawTable, final TableLayout layout) {
+		final TableColumn graph = new TableColumn(rawTable, SWT.NONE);
+		graph.setResizable(true);
+		graph.setText("");
+		graph.setWidth(250);
+		layout.addColumnData(new ColumnWeightData(20, true));
+
+		final TableColumn author = new TableColumn(rawTable, SWT.NONE);
+		author.setResizable(true);
+		author.setText(UIText.HistoryPage_authorColumn);
+		author.setWidth(250);
+		layout.addColumnData(new ColumnWeightData(10, true));
+
+		final TableColumn date = new TableColumn(rawTable, SWT.NONE);
+		date.setResizable(true);
+		date.setText(UIText.HistoryPage_dateColumn);
+		date.setWidth(250);
+		layout.addColumnData(new ColumnWeightData(5, true));
+	}
+

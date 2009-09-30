@@ -1,0 +1,13 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.compare.CompareEditorInput#getAdapter(java.lang.Class)
+	 */
+	public Object getAdapter(Class adapter) {
+		if (adapter == IFile.class || adapter == IResource.class) {
+			if (getLocalElement() != null) {
+				return getLocalElement().getResource();
+			}
+			return null;
+		}
+		return super.getAdapter(adapter);
+	}
+

@@ -1,0 +1,14 @@
+		@Override
+		public InputStream openInputStream() throws IOException {
+			if (rsrc instanceof IFile) {
+				try {
+					return ((IFile) rsrc).getContents(true);
+				} catch (CoreException err) {
+					final IOException ioe = new IOException(err.getMessage());
+					ioe.initCause(err);
+					throw ioe;
+				}
+			}
+			throw new IOException("Not a regular file: " + rsrc);
+		}
+

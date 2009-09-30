@@ -1,0 +1,13 @@
+	/**
+	 * Create a new operation to stop tracking existing files/folders.
+	 * 
+	 * @param rsrcs
+	 *            collection of {@link IResource}s which should be removed from
+	 *            the relevant Git repositories.
+	 */
+	public UntrackOperation(final Collection rsrcs) {
+		rsrcList = rsrcs;
+		edits = new IdentityHashMap<Repository, DirCacheEditor>();
+		mappings = new IdentityHashMap<RepositoryMapping, Object>();
+	}
+

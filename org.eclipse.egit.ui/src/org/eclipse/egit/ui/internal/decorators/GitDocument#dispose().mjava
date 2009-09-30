@@ -1,0 +1,8 @@
+	void dispose() {
+		Activator.trace("(GitDocument) dispose: " + resource);
+		doc2repo.remove(this);
+		Repository repository = getRepository();
+		if (repository != null)
+			repository.removeRepositoryChangedListener(this);
+	}
+

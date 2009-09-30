@@ -1,0 +1,21 @@
+	private ControlDecoration createAssistedDecoratedCombo(
+			final Composite parent,
+			final IContentProposalProvider proposalProvider,
+			final IContentProposalListener listener) {
+		// FIXME: VERY ANNOYING! reported as 243991 in eclipse bugzilla
+		// when typing, pressing arrow-down key opens combo box drop-down
+		// instead of moving within autocompletion list (Mac 10.4&10.5, Eclipse
+		// 3.4)
+		final Combo combo = new Combo(parent, SWT.DROP_DOWN);
+		final ControlDecoration decoration = new ControlDecoration(combo,
+				SWT.BOTTOM | SWT.LEFT);
+		final ContentAssistCommandAdapter proposal = new ContentAssistCommandAdapter(
+				combo, new ComboContentAdapter(), proposalProvider, null, null,
+				true);
+		proposal
+				.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+		if (listener != null)
+			proposal.addContentProposalListener(listener);
+		return decoration;
+	}
+

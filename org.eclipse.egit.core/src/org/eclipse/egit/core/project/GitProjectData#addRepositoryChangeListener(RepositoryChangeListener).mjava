@@ -1,0 +1,17 @@
+	/**
+	 * Register a new listener for repository modification events.
+	 * <p>
+	 * This is a no-op if <code>objectThatCares</code> has already been
+	 * registered.
+	 * </p>
+	 * 
+	 * @param objectThatCares
+	 *            the new listener to register. Must not be null.
+	 */
+	public static synchronized void addRepositoryChangeListener(
+			final RepositoryChangeListener objectThatCares) {
+		if (objectThatCares == null)
+			throw new NullPointerException();
+		repositoryChangeListeners.add(objectThatCares);
+	}
+

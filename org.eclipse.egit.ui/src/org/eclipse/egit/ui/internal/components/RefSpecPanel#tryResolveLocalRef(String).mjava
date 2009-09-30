@@ -1,0 +1,11 @@
+	private ObjectId tryResolveLocalRef(final String ref) {
+		try {
+			return localDb.resolve(ref);
+		} catch (final IOException e) {
+			Activator.logError(
+					"I/O error occurred during resolving expression: " //$NON-NLS-1$
+							+ ref, e);
+			return null;
+		}
+	}
+

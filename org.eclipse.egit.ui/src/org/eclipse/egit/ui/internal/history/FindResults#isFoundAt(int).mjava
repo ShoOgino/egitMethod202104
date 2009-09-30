@@ -1,0 +1,13 @@
+	/**
+	 * Returns if the index in the history table matches the find pattern.
+	 *
+	 * @param index
+	 *            history table item index.
+	 * @return boolean <code>true</code> if the history table
+	 *         <code>index</code> contains a match to the find pattern,
+	 *         <code>false</code> otherwise
+	 */
+	public synchronized boolean isFoundAt(int index) {
+		return matchesMap.containsKey(Integer.valueOf(index));
+	}
+

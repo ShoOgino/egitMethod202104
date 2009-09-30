@@ -1,0 +1,8 @@
+	/**
+	 * Stop listening to resource changes
+	 */
+	public static void detachFromWorkspace() {
+		trace("detachFromWorkspace - removeResourceChangeListener");
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(rcl);
+	}
+

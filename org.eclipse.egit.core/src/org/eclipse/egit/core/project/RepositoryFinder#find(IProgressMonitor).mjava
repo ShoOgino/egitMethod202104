@@ -1,0 +1,19 @@
+	/**
+	 * Run the search algorithm.
+	 * 
+	 * @param m
+	 *            a progress monitor to report feedback to; may be null.
+	 * @return all found {@link RepositoryMapping} instances associated with the
+	 *         project supplied to this instance's constructor.
+	 * @throws CoreException
+	 *             Eclipse was unable to access its workspace, and threw up on
+	 *             us. We're throwing it back at the caller.
+	 */
+	public Collection<RepositoryMapping> find(IProgressMonitor m) throws CoreException {
+		if (m == null) {
+			m = new NullProgressMonitor();
+		}
+		find(m, proj);
+		return results;
+	}
+

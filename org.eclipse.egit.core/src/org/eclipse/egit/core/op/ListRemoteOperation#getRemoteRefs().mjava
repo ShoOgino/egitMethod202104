@@ -1,0 +1,10 @@
+	/**
+	 * @return collection of refs advertised by remote side.
+	 * @throws IllegalStateException
+	 *             if error occurred during earlier remote refs listing.
+	 */
+	public Collection<Ref> getRemoteRefs() {
+		checkState();
+		return remoteRefsMap.values();
+	}
+

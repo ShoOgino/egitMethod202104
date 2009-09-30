@@ -1,0 +1,41 @@
+	/**
+	 * Create a new panel and install it on a provided composite. Panel is
+	 * created either for editing push or fetch specifications - this setting
+	 * can't be changed later, after constructing object.
+	 * <p>
+	 * Panel is created with an empty model, with no provided assistant. It
+	 * can't be used by user until
+	 * {@link #setAssistanceData(Repository, Collection, String)} method is
+	 * called, and to this time is disabled.
+	 *
+	 * @param parent
+	 *            parent control for panel.
+	 * @param pushSpecs
+	 *            true if panel is used for editing push specifications, false
+	 *            if panel is used for editing fetch specifications.
+	 */
+	public RefSpecPanel(final Composite parent, final boolean pushSpecs) {
+		this.pushSpecs = pushSpecs;
+		this.localProposalProvider = new RefContentProposalProvider(pushSpecs);
+		this.remoteProposalProvider = new RefContentProposalProvider(false);
+		this.imageRegistry = new ImageRegistry(parent.getDisplay());
+
+		panel = new Composite(parent, SWT.NONE);
+		panel.setLayout(new GridLayout());
+
+		safeCreateResources();
+
+		createCreationPanel();
+		if (pushSpecs)
+			createDeleteCreationPanel();
+		createPredefinedCreationPanel();
+		createTableGroup();
+
+		addRefSpecTableListener(new SelectionChangeListener() {
+			public void selectionChanged() {
+				validateSpecs();
+			}
+		});
+		setEnable(false);
+	}
+

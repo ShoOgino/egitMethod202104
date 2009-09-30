@@ -1,0 +1,76 @@
+	private void createSrcColumn(final TableColumnLayout columnLayout) {
+		final TableViewerColumn column = createColumn(columnLayout,
+				UIText.RefSpecPanel_columnSrc, COLUMN_SRC_WEIGHT, SWT.LEFT);
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(final Object element) {
+				return ((RefSpec) element).getSource();
+			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				if (isInvalidSpec(element))
+					return errorMessage;
+				if (isDeleteRefSpec(element))
+					return UIText.RefSpecPanel_srcDeleteDescription;
+				if (pushSpecs)
+					return UIText.RefSpecPanel_srcPushDescription;
+				return UIText.RefSpecPanel_srcFetchDescription;
+			}
+
+			@Override
+			public Color getBackground(final Object element) {
+				if (isInvalidSpec(element))
+					return errorBackgroundColor;
+				return null;
+			}
+
+			@Override
+			public Color getToolTipForegroundColor(Object element) {
+				if (isInvalidSpec(element))
+					return errorTextColor;
+				return null;
+			}
+		});
+		column.setEditingSupport(new EditingSupport(tableViewer) {
+			@Override
+			protected boolean canEdit(final Object element) {
+				return !isDeleteRefSpec(element);
+			}
+
+			@Override
+			protected CellEditor getCellEditor(final Object element) {
+				return (pushSpecs ? localRefCellEditor : remoteRefCellEditor);
+			}
+
+			@Override
+			protected Object getValue(final Object element) {
+				return ((RefSpec) element).getSource();
+			}
+
+			@Override
+			protected void setValue(final Object element, final Object value) {
+				if (value == null || ((String) value).length() == 0
+						|| ObjectId.zeroId().name().equals(value)) {
+					// Ignore empty strings or null objects - do not set them in
+					// model.User won't loose any information if we just fall
+					// back to the old value.
+					// If user want to delete ref, let change the mode.
+					return;
+				}
+
+				final RefSpec oldSpec = (RefSpec) element;
+				final RefSpec newSpec = setRefSpecSource(oldSpec,
+						(String) value);
+				setRefSpec(oldSpec, newSpec);
+			}
+		});
+
+		// find index of this column - for later usage
+		final TableColumn[] columns = tableViewer.getTable().getColumns();
+		for (srcColumnIndex = 0; srcColumnIndex < columns.length; srcColumnIndex++)
+			if (columns[srcColumnIndex] == column.getColumn())
+				break;
+
+	}
+

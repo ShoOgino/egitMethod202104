@@ -1,0 +1,94 @@
+	private void validateCreationPanel() {
+		final String src = creationSrcCombo.getText();
+		final String dst = creationDstCombo.getText();
+
+		// check src ref field
+		boolean srcOk = false;
+		final boolean srcWildcard = RefSpec.isWildcard(src);
+		if (src == null || src.length() == 0)
+			setControlDecoration(creationSrcDecoration,
+					FieldDecorationRegistry.DEC_REQUIRED,
+					UIText.RefSpecPanel_validationSrcUpdateRequired);
+		else if (pushSpecs) {
+			if (!srcWildcard && !isLocalRef(src))
+				setControlDecoration(creationSrcDecoration,
+						FieldDecorationRegistry.DEC_ERROR, NLS.bind(
+								UIText.RefSpecPanel_validationRefInvalidLocal,
+								src));
+			else if (srcWildcard && !isValidRefExpression(src))
+				setControlDecoration(
+						creationSrcDecoration,
+						FieldDecorationRegistry.DEC_ERROR,
+						NLS
+								.bind(
+										UIText.RefSpecPanel_validationRefInvalidExpression,
+										src));
+			else {
+				srcOk = true;
+				if (srcWildcard && !isMatchingAny(src, localRefNames))
+					setControlDecoration(
+							creationSrcDecoration,
+							FieldDecorationRegistry.DEC_WARNING,
+							NLS
+									.bind(
+											UIText.RefSpecPanel_validationRefNonMatchingLocal,
+											src));
+				else
+					creationSrcDecoration.hide();
+			}
+		} else {
+			if (!srcWildcard && !isRemoteRef(src))
+				setControlDecoration(
+						creationSrcDecoration,
+						FieldDecorationRegistry.DEC_ERROR,
+						NLS
+								.bind(
+										UIText.RefSpecPanel_validationRefNonExistingRemote,
+										src));
+			else if (srcWildcard && !isMatchingAny(src, remoteRefNames)) {
+				setControlDecoration(
+						creationSrcDecoration,
+						FieldDecorationRegistry.DEC_WARNING,
+						NLS
+								.bind(
+										UIText.RefSpecPanel_validationRefNonMatchingRemote,
+										src));
+				srcOk = true;
+			} else {
+				srcOk = true;
+				creationSrcDecoration.hide();
+			}
+		}
+
+		// check dst ref field
+		boolean dstOk = false;
+		if (dst == null || dst.length() == 0)
+			setControlDecoration(creationDstDecoration,
+					FieldDecorationRegistry.DEC_REQUIRED,
+					UIText.RefSpecPanel_validationDstRequired);
+		else if (!isValidRefExpression(dst))
+			setControlDecoration(creationDstDecoration,
+					FieldDecorationRegistry.DEC_ERROR, NLS.bind(
+							UIText.RefSpecPanel_validationDstInvalidExpression,
+							dst));
+		else {
+			creationDstDecoration.hide();
+			dstOk = true;
+		}
+		// leave duplicates dst checking for validateSpecs()
+
+		// check the wildcard synergy
+		boolean wildcardOk = true;
+		if (srcOk && dstOk && (srcWildcard ^ RefSpec.isWildcard(dst))) {
+			setControlDecoration(creationSrcDecoration,
+					FieldDecorationRegistry.DEC_ERROR,
+					UIText.RefSpecPanel_validationWildcardInconsistent);
+			setControlDecoration(creationDstDecoration,
+					FieldDecorationRegistry.DEC_ERROR,
+					UIText.RefSpecPanel_validationWildcardInconsistent);
+			wildcardOk = false;
+		}
+
+		creationButton.setEnabled(srcOk && dstOk && wildcardOk);
+	}
+

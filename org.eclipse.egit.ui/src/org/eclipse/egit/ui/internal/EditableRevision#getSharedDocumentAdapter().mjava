@@ -1,0 +1,22 @@
+	private synchronized ISharedDocumentAdapter getSharedDocumentAdapter() {
+		if (sharedDocumentAdapter == null)
+			sharedDocumentAdapter = new EditableSharedDocumentAdapter(
+					new EditableSharedDocumentAdapter.ISharedDocumentAdapterListener() {
+						public void handleDocumentConnected() {
+						}
+
+						public void handleDocumentFlushed() {
+						}
+
+						public void handleDocumentDeleted() {
+						}
+
+						public void handleDocumentSaved() {
+						}
+
+						public void handleDocumentDisconnected() {
+						}
+					});
+		return sharedDocumentAdapter;
+	}
+

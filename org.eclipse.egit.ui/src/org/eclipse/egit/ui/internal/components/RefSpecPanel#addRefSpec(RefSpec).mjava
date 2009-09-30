@@ -1,0 +1,25 @@
+	/**
+	 * Add provided specification to this panel. Panel view is automatically
+	 * refreshed, model is revalidated.
+	 * <p>
+	 * Note that the same reference can't be added twice to the panel, while two
+	 * or more equals RefSpec (in terms of equals method) can be - likely
+	 * causing validation error.
+	 * <p>
+	 * This method should be called only from the UI thread.
+	 *
+	 * @param spec
+	 *            specification to add.
+	 * @throws IllegalArgumentException
+	 *             if specification with same reference already exists in panel.
+	 */
+	public void addRefSpec(final RefSpec spec) {
+		final int i = indexOfSpec(spec);
+		if (i != -1)
+			throw new IllegalArgumentException("RefSpec " + spec //$NON-NLS-1$
+					+ " already exists."); //$NON-NLS-1$
+		specs.add(spec);
+		tableViewer.add(spec);
+		notifySpecsChanged();
+	}
+

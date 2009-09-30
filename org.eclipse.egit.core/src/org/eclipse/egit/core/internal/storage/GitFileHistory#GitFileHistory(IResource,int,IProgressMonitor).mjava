@@ -1,0 +1,7 @@
+	GitFileHistory(final IResource rsrc, final int flags,
+			final IProgressMonitor monitor) {
+		resource = rsrc;
+		walk = buildWalk();
+		revisions = buildRevisions(monitor, flags);
+	}
+

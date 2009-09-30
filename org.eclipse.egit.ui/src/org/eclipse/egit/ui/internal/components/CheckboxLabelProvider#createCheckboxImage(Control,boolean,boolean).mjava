@@ -1,0 +1,61 @@
+	private static Image createCheckboxImage(final Control control,
+			boolean checked, boolean enabled) {
+
+		String checkboxhack = System.getProperty("egit.swt.checkboxhack");
+		if (checkboxhack == null)
+			if (Platform.getOS().equals(Platform.OS_MACOSX))
+				checkboxhack = "hardwired";
+			else
+				checkboxhack = "screenshot";
+
+		if (checkboxhack == "hardwired") {
+			if (enabled) {
+				if (checked)
+					return UIIcons.CHECKBOX_ENABLED_CHECKED.createImage();
+				return UIIcons.CHECKBOX_ENABLED_UNCHECKED.createImage();
+			}
+			if (checked)
+				return UIIcons.CHECKBOX_DISABLED_CHECKED.createImage();
+			return UIIcons.CHECKBOX_DISABLED_UNCHECKED.createImage();
+		}
+
+		// else if checkboxhack = "screenshot";
+
+		// FIXME: Shawn says that blinking shell caused by below code is very
+		// annoying...(at least on Mac) - anyone knows better workaround?
+		final Shell s = new Shell(control.getShell(), SWT.NO_TRIM);
+		// Hopefully no platform uses exactly this color because we'll make
+		// it transparent in the image.
+		final Color greenScreen = new Color(control.getDisplay(), 222, 223, 224);
+
+		// otherwise we have a default gray color
+		s.setBackground(greenScreen);
+
+		final Button b = new Button(s, SWT.CHECK);
+		b.setSelection(checked);
+		b.setEnabled(enabled);
+		b.setBackground(greenScreen);
+
+		// otherwise an image is located in a corner
+		b.setLocation(0, 0);
+		final Point bSize = b.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		// otherwise an image is stretched by width
+		bSize.x = Math.max(bSize.x, bSize.y);
+		bSize.y = Math.max(bSize.x, bSize.y);
+		b.setSize(bSize);
+		s.setSize(bSize);
+		s.open();
+
+		final GC gc = new GC(b);
+		final Image image = new Image(control.getShell().getDisplay(), bSize.x,
+				bSize.y);
+		gc.copyArea(image, 0, 0);
+		gc.dispose();
+		s.close();
+
+		final ImageData imageData = image.getImageData();
+		imageData.transparentPixel = imageData.palette.getPixel(greenScreen
+				.getRGB());
+		return new Image(control.getDisplay(), imageData);
+	}
+

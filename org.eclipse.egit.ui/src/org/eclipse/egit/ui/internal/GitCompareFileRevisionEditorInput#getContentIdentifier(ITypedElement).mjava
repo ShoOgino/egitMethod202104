@@ -1,0 +1,24 @@
+	private String getContentIdentifier(ITypedElement element){
+		if (element instanceof FileRevisionTypedElement){
+			FileRevisionTypedElement fileRevisionElement = (FileRevisionTypedElement) element;
+			Object fileObject = fileRevisionElement.getFileRevision();
+			if (fileObject instanceof LocalFileRevision){
+				try {
+					IStorage storage = ((LocalFileRevision) fileObject).getStorage(new NullProgressMonitor());
+					if (Utils.getAdapter(storage, IFileState.class) != null){
+						//local revision
+						return TeamUIMessages.CompareFileRevisionEditorInput_0;
+					} else if (Utils.getAdapter(storage, IFile.class) != null) {
+						//current revision
+						return TeamUIMessages.CompareFileRevisionEditorInput_1;
+					}
+				} catch (CoreException e) {
+					Activator.logError("Problem getting content identifier", e);
+				}
+			} else {
+				return fileRevisionElement.getContentIdentifier();
+			}
+		}
+		return TeamUIMessages.CompareFileRevisionEditorInput_2;
+	}
+

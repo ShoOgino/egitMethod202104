@@ -1,0 +1,23 @@
+	public void init(IWorkbench arg0, IStructuredSelection arg1) {
+		setWindowTitle(UIText.GitCloneWizard_title);
+		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
+		setNeedsProgressMonitor(true);
+		cloneSource = new RepositorySelectionPage(true);
+		validSource = new SourceBranchPage(cloneSource);
+		cloneDestination = new CloneDestinationPage(cloneSource, validSource);
+		importProject = new GitProjectsImportPage() {
+			@Override
+			public void setVisible(boolean visible) {
+				if (visible) {
+					if (cloneDestination.alreadyClonedInto == null) {
+						performClone(false);
+						cloneDestination.alreadyClonedInto = cloneDestination
+								.getDestinationFile().getAbsolutePath();
+					}
+					setProjectsList(cloneDestination.alreadyClonedInto);
+				}
+				super.setVisible(visible);
+			}
+		};
+	}
+

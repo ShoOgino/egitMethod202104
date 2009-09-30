@@ -1,0 +1,88 @@
+	public void run(IProgressMonitor m) throws CoreException {
+		if (m == null) {
+			m = new NullProgressMonitor();
+		}
+
+		final IdentityHashMap<RepositoryMapping, Boolean> tomerge = new IdentityHashMap<RepositoryMapping, Boolean>();
+		m.beginTask(CoreText.AddOperation_adding, rsrcList.size() * 200);
+		try {
+			for (Object obj : rsrcList) {
+				obj = ((IAdaptable)obj).getAdapter(IResource.class);
+				if (obj instanceof IResource) {
+					final IResource toAdd = (IResource)obj;
+					final RepositoryMapping rm = RepositoryMapping.getMapping(toAdd);
+					final GitIndex index = rm.getRepository().getIndex();
+
+					if (obj instanceof IFile) {
+						String repoPath = rm.getRepoRelativePath((IResource) obj);
+						Entry entry = index.getEntry(repoPath);
+						if (entry != null) {
+							if (!entry.isAssumedValid()) {
+								System.out.println("Already tracked - skipping");
+								continue;
+							}
+						}
+					}
+
+					tomerge.put(rm, Boolean.TRUE);
+					if (toAdd instanceof IContainer) {
+						((IContainer)toAdd).accept(new IResourceVisitor() {
+							public boolean visit(IResource resource) throws CoreException {
+								try {
+									String repoPath = rm.getRepoRelativePath(resource);
+									// We use add to reset the assume valid bit, so we check the bit
+									// first. If a resource within a ignored folder is marked
+									// we ignore it here, i.e. there is no way to unmark it expect
+									// by explicitly selecting and invoking track on it.
+									boolean isIgnored = Team.isIgnoredHint(resource);
+									if (resource.getType() == IResource.FILE) {
+										Entry entry = index.getEntry(repoPath);
+										if (!isIgnored || entry != null && entry.isAssumedValid()) {
+											entry = index.add(rm.getWorkDir(), new File(rm.getWorkDir(), repoPath));
+											entry.setAssumeValid(false);
+										}
+									}
+									if (isIgnored)
+										return false;
+
+								} catch (IOException e) {
+									e.printStackTrace();
+									throw Activator.error(CoreText.AddOperation_failed, e);
+								}
+								return true;
+							}
+						},IResource.DEPTH_INFINITE, IContainer.EXCLUDE_DERIVED);
+					} else {
+						Entry entry = index.add(rm.getWorkDir(), new File(rm.getWorkDir(),rm.getRepoRelativePath(toAdd)));
+						entry.setAssumeValid(false);
+						
+					}
+				}
+				m.worked(200);
+			}
+			for (RepositoryMapping rm : tomerge.keySet()) {
+				m.setTaskName("Writing index for "+rm.getRepository().getDirectory());
+				rm.getRepository().getIndex().write();
+			}
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			throw Activator.error(CoreText.AddOperation_failed, e);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw Activator.error(CoreText.AddOperation_failed, e);
+		} finally {
+			try {
+				final Iterator i = tomerge.keySet().iterator();
+				while (i.hasNext()) {
+					final RepositoryMapping r = (RepositoryMapping) i.next();
+					r.getRepository().getIndex().read();
+					r.fireRepositoryChanged();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				m.done();
+			}
+		}
+	}
+

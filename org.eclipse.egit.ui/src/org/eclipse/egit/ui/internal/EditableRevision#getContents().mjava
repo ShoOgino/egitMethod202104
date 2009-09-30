@@ -1,0 +1,8 @@
+	@Override
+	public InputStream getContents() throws CoreException {
+		if (modifiedContent != null) {
+			return new ByteArrayInputStream(modifiedContent);
+		}
+		return super.getContents();
+	}
+

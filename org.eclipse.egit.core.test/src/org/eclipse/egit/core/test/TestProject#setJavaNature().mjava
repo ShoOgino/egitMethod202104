@@ -1,0 +1,6 @@
+	private void setJavaNature() throws CoreException {
+		IProjectDescription description = project.getDescription();
+		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
+		project.setDescription(description, null);
+	}
+

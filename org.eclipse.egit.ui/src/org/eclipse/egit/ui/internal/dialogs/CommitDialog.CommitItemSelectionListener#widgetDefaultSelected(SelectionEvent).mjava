@@ -1,0 +1,40 @@
+		public void widgetDefaultSelected(SelectionEvent e) {
+			IStructuredSelection selection = (IStructuredSelection) filesViewer.getSelection();
+
+			CommitItem commitItem = (CommitItem) selection.getFirstElement();
+			if (commitItem == null) {
+				return;
+			}
+
+			IProject project = commitItem.file.getProject();
+			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+			if (mapping == null) {
+				return;
+			}
+			Repository repository = mapping.getRepository();
+
+			Commit headCommit;
+			try {
+				headCommit = repository.mapCommit(Constants.HEAD);
+			} catch (IOException e1) {
+				headCommit = null;
+			}
+			if (headCommit == null) {
+				return;
+			}
+
+			GitProvider provider = (GitProvider) RepositoryProvider.getProvider(project);
+			GitFileHistoryProvider fileHistoryProvider = (GitFileHistoryProvider) provider.getFileHistoryProvider();
+
+			IFileHistory fileHistory = fileHistoryProvider.getFileHistoryFor(commitItem.file, IFileHistoryProvider.SINGLE_REVISION, null);
+
+			IFileRevision baseFile = fileHistory.getFileRevisions()[0];
+			IFileRevision nextFile = fileHistoryProvider.getWorkspaceFileRevision(commitItem.file);
+
+			ITypedElement base = new FileRevisionTypedElement(baseFile);
+			ITypedElement next = new FileRevisionTypedElement(nextFile);
+
+			GitCompareFileRevisionEditorInput input = new GitCompareFileRevisionEditorInput(base, next, null);
+			CompareUI.openCompareDialog(input);
+		}
+

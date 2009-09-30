@@ -1,0 +1,11 @@
+	private static String wildcardSpecComponent(final String comp) {
+		final int i;
+		if (RefSpec.isWildcard(comp))
+			return comp;
+		if (comp == null || (i = comp.lastIndexOf('/')) == -1) {
+			// That's somewhat ugly. What better can we do here?
+			return UIText.RefSpecPanel_refChooseSomeWildcard;
+		}
+		return comp.substring(0, i + 1) + '*';
+	}
+

@@ -1,0 +1,10 @@
+	void updateUI() {
+		if (allCommits.size() == lastUpdateCnt)
+			return;
+
+		final SWTCommit[] asArray = new SWTCommit[allCommits.size()];
+		allCommits.toArray(asArray);
+		page.showCommitList(this, allCommits, asArray);
+		lastUpdateCnt = allCommits.size();
+	}
+

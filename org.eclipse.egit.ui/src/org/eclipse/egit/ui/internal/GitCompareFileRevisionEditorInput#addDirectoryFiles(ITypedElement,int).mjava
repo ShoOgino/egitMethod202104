@@ -1,0 +1,22 @@
+	private DiffNode addDirectoryFiles(ITypedElement elem, int diffType) {
+		ITypedElement l = null;
+		ITypedElement r = null;
+		if (diffType == Differencer.DELETION) {
+			r = elem;
+		} else {
+			l = elem;
+		}
+
+		if (elem.getType().equals(ITypedElement.FOLDER_TYPE)) {
+			DiffNode diffNode = null;
+			diffNode = new DiffNode(null,Differencer.CHANGE,null,l,r);
+			ITypedElement[] children = (ITypedElement[])((IStructureComparator)elem).getChildren();
+			for (ITypedElement child : children) {
+				diffNode.add(addDirectoryFiles(child, diffType));
+			}
+			return diffNode;
+		} else {
+			return new DiffNode(diffType, null, l, r);
+		}
+	}
+

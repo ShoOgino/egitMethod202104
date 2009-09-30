@@ -1,0 +1,52 @@
+	CommitMessageViewer(final Composite parent) {
+		super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
+		fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		final StyledText t = getTextWidget();
+		t.setFont(Activator.getFont(UIPreferences.THEME_CommitMessageFont));
+
+		sys_linkColor = t.getDisplay().getSystemColor(SWT.COLOR_BLUE);
+		sys_darkgray = t.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
+		sys_linkCursor = t.getDisplay().getSystemCursor(SWT.CURSOR_HAND);
+		sys_normalCursor = t.getCursor();
+
+		t.addListener(SWT.MouseMove, new Listener() {
+			public void handleEvent(final Event e) {
+				final int o;
+				try {
+					o = t.getOffsetAtLocation(new Point(e.x, e.y));
+				} catch (IllegalArgumentException err) {
+					t.setCursor(sys_normalCursor);
+					return;
+				}
+
+				final StyleRange r = t.getStyleRangeAtOffset(o);
+				if (r instanceof ObjectLink)
+					t.setCursor(sys_linkCursor);
+				else
+					t.setCursor(sys_normalCursor);
+			}
+		});
+		t.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(final MouseEvent e) {
+				final int o;
+				try {
+					o = t.getOffsetAtLocation(new Point(e.x, e.y));
+				} catch (IllegalArgumentException err) {
+					return;
+				}
+
+				final StyleRange r = t.getStyleRangeAtOffset(o);
+				if (r instanceof ObjectLink) {
+					final RevCommit c = ((ObjectLink) r).targetCommit;
+					for (final Object l : navListeners.getListeners())
+						((CommitNavigationListener) l).showCommit(c);
+				}
+			}
+		});
+		setTextDoubleClickStrategy(new DefaultTextDoubleClickStrategy(),
+				IDocument.DEFAULT_CONTENT_TYPE);
+		activatePlugins();
+	}
+

@@ -1,0 +1,11 @@
+	private void updateForceUpdateAllButton() {
+		boolean enable = false;
+		for (final RefSpec spec : specs) {
+			if (!isDeleteRefSpec(spec) && !spec.isForceUpdate()) {
+				enable = true;
+				break;
+			}
+		}
+		forceUpdateAllButton.setEnabled(enable);
+	}
+

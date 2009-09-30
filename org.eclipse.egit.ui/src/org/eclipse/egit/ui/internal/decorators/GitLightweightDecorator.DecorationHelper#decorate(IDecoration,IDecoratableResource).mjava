@@ -1,0 +1,19 @@
+		/**
+		 * Decorates the given <code>decoration</code> based on the state of the
+		 * given <code>resource</code>, using the preferences passed when
+		 * constructing this decoration helper.
+		 *
+		 * @param decoration
+		 *            the decoration to decorate
+		 * @param resource
+		 *            the resource to retrieve state from
+		 */
+		public void decorate(IDecoration decoration,
+				IDecoratableResource resource) {
+			if (resource.isIgnored())
+				return;
+
+			decorateText(decoration, resource);
+			decorateIcons(decoration, resource);
+		}
+

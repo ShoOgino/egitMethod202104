@@ -1,0 +1,17 @@
+	/**
+	 * Creates a radio button with the specified message and span
+	 *
+	 * @param parent
+	 * @param message
+	 * @param span
+	 *
+	 * @return the created radio button
+	 */
+	public static Button createRadioButton(Composite parent, String message,
+			int span) {
+		final Button button = new Button(parent, SWT.RADIO);
+		button.setText(message);
+		button.setLayoutData(createHFillGridData(span));
+		return button;
+	}
+

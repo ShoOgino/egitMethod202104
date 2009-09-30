@@ -1,0 +1,17 @@
+	protected void setUp() throws Exception {
+		super.setUp();
+
+		repository = new Repository(gitDir);
+		repositoryRoot = repository.getWorkDir();
+		repository.create();
+
+		file = new File(project.getProject().getLocation().toFile(), "a.txt");
+		final FileWriter fileWriter = new FileWriter(file);
+		fileWriter.write("aaaaaaaaaaa");
+		fileWriter.close();
+
+		final ConnectProviderOperation operation = new ConnectProviderOperation(
+				project.getProject());
+		operation.run(null);
+	}
+

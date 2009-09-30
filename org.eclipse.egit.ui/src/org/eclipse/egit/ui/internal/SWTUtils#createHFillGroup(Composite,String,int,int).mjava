@@ -1,0 +1,22 @@
+	/**
+	 * Creates a horizontal fill group with the specified text, margins and rows
+	 *
+	 * @param parent
+	 * @param text
+	 * @param margins
+	 * @param rows
+	 *
+	 * @return the created group
+	 */
+	public static Group createHFillGroup(Composite parent, String text,
+			int margins, int rows) {
+		final Group group = new Group(parent, SWT.NONE);
+		group.setFont(parent.getFont());
+		group.setLayoutData(createHFillGridData());
+		if (text != null)
+			group.setText(text);
+		group.setLayout(createGridLayout(rows, new PixelConverter(parent),
+				margins));
+		return group;
+	}
+

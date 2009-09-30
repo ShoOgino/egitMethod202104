@@ -1,0 +1,8 @@
+	protected void doLoad() {
+		final Text text = getTextControl();
+		if (text != null) {
+			int value = getPreferenceStore().getInt(getPreferenceName());
+			text.setText(format(value));
+		}
+	}
+

@@ -1,0 +1,14 @@
+	void addChild(final KidCommit c) {
+		final int cnt = children.length;
+		if (cnt == 0)
+			children = new KidCommit[] { c };
+		else if (cnt == 1)
+			children = new KidCommit[] { children[0], c };
+		else {
+			final KidCommit[] n = new KidCommit[cnt + 1];
+			System.arraycopy(children, 0, n, 0, cnt);
+			n[cnt] = c;
+			children = n;
+		}
+	}
+

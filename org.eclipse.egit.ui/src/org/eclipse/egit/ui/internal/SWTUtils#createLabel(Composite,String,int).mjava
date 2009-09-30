@@ -1,0 +1,17 @@
+	/**
+	 * Creates a label with the specified message and span
+	 *
+	 * @param parent
+	 * @param message
+	 * @param span
+	 *
+	 * @return the created label
+	 */
+	public static Label createLabel(Composite parent, String message, int span) {
+		final Label label = new Label(parent, SWT.WRAP);
+		if (message != null)
+			label.setText(message);
+		label.setLayoutData(createHFillGridData(span));
+		return label;
+	}
+

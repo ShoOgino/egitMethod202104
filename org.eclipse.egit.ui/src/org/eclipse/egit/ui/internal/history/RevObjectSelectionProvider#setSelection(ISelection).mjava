@@ -1,0 +1,8 @@
+	public void setSelection(ISelection selection) {
+		this.selection = selection;
+		SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
+		for (ISelectionChangedListener l : listeners) {
+			l.selectionChanged(event);
+		}
+	}
+

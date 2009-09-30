@@ -1,0 +1,8 @@
+	private Repository getRepository() {
+		IProject project = resource.getProject();
+		RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+		if (mapping != null)
+			return mapping.getRepository();
+		return null;
+	}
+

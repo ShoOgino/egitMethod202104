@@ -1,0 +1,19 @@
+	/**
+	 * @return string being list of failed URIs with their error messages.
+	 */
+	public String getErrorStringForAllURis() {
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (final URIish uri : getURIs()) {
+			if (first)
+				first = false;
+			else
+				sb.append(", ");
+			sb.append(uri);
+			sb.append(" (");
+			sb.append(getErrorMessage(uri));
+			sb.append(")");
+		}
+		return sb.toString();
+	}
+

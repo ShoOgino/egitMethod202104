@@ -1,0 +1,57 @@
+	/**
+	 * Derive push operation specification from this push operation result.
+	 * <p>
+	 * Specification is created basing on URIs of remote repositories in this
+	 * result that completed without connection errors, and remote ref updates
+	 * from push results.
+	 * <p>
+	 * This method is targeted to provide support for 2-stage push, where first
+	 * operation is dry run for user confirmation and second one is a real
+	 * operation.
+	 *
+	 * @param requireUnchanged
+	 *            if true, newly created copies of remote ref updates have
+	 *            expected old object id set to previously advertised ref value
+	 *            (remote ref won't be updated if it change in the mean time),
+	 *            if false, newly create copies of remote ref updates have
+	 *            expected object id set up as in this result source
+	 *            specification.
+	 * @return derived specification for another push operation.
+	 * @throws IOException
+	 *             when some previously locally available source ref is not
+	 *             available anymore, or some error occurred during creation
+	 *             locally tracking ref update.
+	 *
+	 */
+	public PushOperationSpecification deriveSpecification(
+			final boolean requireUnchanged) throws IOException {
+		final PushOperationSpecification spec = new PushOperationSpecification();
+		for (final URIish uri : getURIs()) {
+			final PushResult pr = getPushResult(uri);
+			if (pr == null)
+				continue;
+
+			final Collection<RemoteRefUpdate> oldUpdates = pr
+					.getRemoteUpdates();
+			final ArrayList<RemoteRefUpdate> newUpdates = new ArrayList<RemoteRefUpdate>(
+					oldUpdates.size());
+			for (final RemoteRefUpdate rru : oldUpdates) {
+				final ObjectId expectedOldObjectId;
+				if (requireUnchanged) {
+					final Ref advertisedRef = getPushResult(uri)
+							.getAdvertisedRef(rru.getRemoteName());
+					if (advertisedRef == null)
+						expectedOldObjectId = ObjectId.zeroId();
+					else
+						expectedOldObjectId = advertisedRef.getObjectId();
+				} else
+					expectedOldObjectId = rru.getExpectedOldObjectId();
+				final RemoteRefUpdate newRru = new RemoteRefUpdate(rru,
+						expectedOldObjectId);
+				newUpdates.add(newRru);
+			}
+			spec.addURIRefUpdates(uri, newUpdates);
+		}
+		return spec;
+	}
+

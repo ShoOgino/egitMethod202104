@@ -1,0 +1,6 @@
+	private static boolean isOptionSet(final String optionId) {
+		final String option = getPluginId() + optionId;
+		final String value = Platform.getDebugOption(option);
+		return value != null && value.equals("true");
+	}
+

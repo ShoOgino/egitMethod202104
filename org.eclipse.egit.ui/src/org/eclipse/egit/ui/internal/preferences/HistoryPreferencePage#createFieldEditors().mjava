@@ -1,0 +1,14 @@
+	@Override
+	protected void createFieldEditors() {
+		addField(new BooleanFieldEditor(
+				UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP,
+				UIText.ResourceHistory_toggleCommentWrap,
+				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(
+				UIPreferences.RESOURCEHISTORY_SHOW_REV_COMMENT,
+				UIText.ResourceHistory_toggleRevComment, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(
+				UIPreferences.RESOURCEHISTORY_SHOW_REV_DETAIL,
+				UIText.ResourceHistory_toggleRevDetail, getFieldEditorParent()));
+	}
+

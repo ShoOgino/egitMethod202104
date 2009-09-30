@@ -1,0 +1,33 @@
+	private void attachCommitSelectionChanged() {
+		graph.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(final SelectionChangedEvent event) {
+				final ISelection s = event.getSelection();
+				if (s.isEmpty() || !(s instanceof IStructuredSelection)) {
+					commentViewer.setInput(null);
+					fileViewer.setInput(null);
+					return;
+				}
+
+				final IStructuredSelection sel;
+				final PlotCommit<?> c;
+
+				sel = ((IStructuredSelection) s);
+				c = (PlotCommit<?>) sel.getFirstElement();
+				commentViewer.setInput(c);
+				fileViewer.setInput(c);
+				revObjectSelectionProvider.setSelection(s);
+			}
+		});
+		commentViewer
+				.addCommitNavigationListener(new CommitNavigationListener() {
+					public void showCommit(final RevCommit c) {
+						graph.selectCommit(c);
+					}
+				});
+		findToolbar.addSelectionListener(new Listener() {
+			public void handleEvent(Event event) {
+				graph.selectCommit((RevCommit) event.data);
+			}
+		});
+	}
+

@@ -1,0 +1,30 @@
+	private void validateSpecsCrossDst() {
+		final Map<String, RefSpec> dstsSpecsMap = new HashMap<String, RefSpec>();
+		try {
+			for (final RefSpec spec : specs) {
+				if (!spec.isWildcard()) {
+					if (!tryAddDestination(dstsSpecsMap, spec.getDestination(),
+							spec))
+						return;
+				} else {
+					final Collection<String> srcNames;
+					if (pushSpecs)
+						srcNames = localRefNames;
+					else
+						srcNames = remoteRefNames;
+
+					for (final String src : srcNames) {
+						if (spec.matchSource(src)) {
+							final String dst = spec.expandFromSource(src)
+									.getDestination();
+							if (!tryAddDestination(dstsSpecsMap, dst, spec))
+								return;
+						}
+					}
+				}
+			}
+		} finally {
+			matchingAnyRefs = !dstsSpecsMap.isEmpty();
+		}
+	}
+

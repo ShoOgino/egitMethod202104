@@ -1,0 +1,12 @@
+	/**
+	 * @return true if connection was successful for any repository (URI), false
+	 *         otherwise.
+	 */
+	public boolean isSuccessfulConnectionForAnyURI() {
+		for (final URIish uri : getURIs()) {
+			if (isSuccessfulConnection(uri))
+				return true;
+		}
+		return false;
+	}
+

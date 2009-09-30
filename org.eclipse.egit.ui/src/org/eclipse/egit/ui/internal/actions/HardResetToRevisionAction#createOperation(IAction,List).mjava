@@ -1,0 +1,7 @@
+	@Override
+	protected IWorkspaceRunnable createOperation(IAction act, List selection) {
+		return new ResetOperation(getActiveRepository(),
+				((AnyObjectId) selection.get(0)).name(),
+				ResetOperation.ResetType.HARD);
+	}
+

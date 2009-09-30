@@ -1,0 +1,12 @@
+	/**
+	 * Add error message for the repository (URI) with unsuccessful connection.
+	 *
+	 * @param uri
+	 *            remote repository URI.
+	 * @param errorMessage
+	 *            failure error message.
+	 */
+	public void addOperationResult(final URIish uri, final String errorMessage) {
+		urisEntries.put(uri, new Entry(errorMessage));
+	}
+

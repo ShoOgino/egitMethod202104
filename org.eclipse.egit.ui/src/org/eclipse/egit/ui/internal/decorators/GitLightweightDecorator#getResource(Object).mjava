@@ -1,0 +1,22 @@
+	private static IResource getResource(Object element) {
+		if (element instanceof ResourceMapping) {
+			element = ((ResourceMapping) element).getModelObject();
+		}
+
+		IResource resource = null;
+		if (element instanceof IResource) {
+			resource = (IResource) element;
+		} else if (element instanceof IAdaptable) {
+			final IAdaptable adaptable = (IAdaptable) element;
+			resource = (IResource) adaptable.getAdapter(IResource.class);
+			if (resource == null) {
+				final IContributorResourceAdapter adapter = (IContributorResourceAdapter) adaptable
+						.getAdapter(IContributorResourceAdapter.class);
+				if (adapter != null)
+					resource = adapter.getAdaptedResource(adaptable);
+			}
+		}
+
+		return resource;
+	}
+

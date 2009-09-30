@@ -1,0 +1,19 @@
+	private Group createAuthenticationGroup(final Composite parent) {
+		final Group g = createGroup(parent,
+				UIText.RepositorySelectionPage_groupAuthentication);
+
+		newLabel(g, UIText.RepositorySelectionPage_promptUser + ":");
+		userText = new Text(g, SWT.BORDER);
+		userText.setLayoutData(createFieldGridData());
+		userText.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				setURI(uri.setUser(nullString(userText.getText())));
+			}
+		});
+
+		newLabel(g, UIText.RepositorySelectionPage_promptPassword + ":");
+		passText = new Text(g, SWT.BORDER | SWT.PASSWORD);
+		passText.setLayoutData(createFieldGridData());
+		return g;
+	}
+

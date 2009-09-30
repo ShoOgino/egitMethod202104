@@ -1,0 +1,10 @@
+	/**
+	 * Creates a new object and increments the internal
+	 * <code>globalThreadIx</code> variable causing any earlier running thread
+	 * to return.
+	 */
+	public FindToolbarThread() {
+		super("history_find_thread" + ++globalThreadIx);
+		currentThreadIx = globalThreadIx;
+	}
+

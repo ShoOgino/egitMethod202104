@@ -1,0 +1,25 @@
+	@Override
+	public void run(IAction action) {
+		try {
+			final TrackOperation op = new TrackOperation(Arrays
+					.asList(getSelectedResources()));
+			getTargetPart().getSite().getWorkbenchWindow().run(true, false,
+					new IRunnableWithProgress() {
+						public void run(IProgressMonitor arg0)
+								throws InvocationTargetException,
+								InterruptedException {
+							try {
+								op.run(arg0);
+							} catch (CoreException e) {
+								MessageDialog.openError(getShell(),
+										"Track failed", e.getMessage());
+							}
+						}
+					});
+		} catch (InvocationTargetException e) {
+			MessageDialog.openError(getShell(), "Track failed", e.getMessage());
+		} catch (InterruptedException e) {
+			MessageDialog.openError(getShell(), "Track failed", e.getMessage());
+		}
+	}
+

@@ -1,0 +1,21 @@
+	private void makeGrayText(StringBuilder d,
+			ArrayList<StyleRange> styles) {
+		int p0 = 0;
+		for (int i = 0; i<styles.size(); ++i) {
+			StyleRange r = styles.get(i);
+			if (p0 < r.start) {
+				StyleRange nr = new StyleRange(p0, r.start  - p0, sys_darkgray, null);
+				styles.add(i, nr);
+				p0 = r.start;
+			} else {
+				if (r.foreground == null)
+					r.foreground = sys_darkgray;
+				p0 = r.start + r.length;
+			}
+		}
+		if (d.length() - 1 > p0) {
+			StyleRange nr = new StyleRange(p0, d.length() - p0, sys_darkgray, null);
+			styles.add(nr);
+		}
+	}
+

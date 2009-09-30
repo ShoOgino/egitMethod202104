@@ -1,0 +1,7 @@
+	private void addPredefinedRefSpecs(final List<RefSpec> predefined) {
+		for (final RefSpec pre : predefined) {
+			if (!specs.contains(pre))
+				addRefSpec(pre);
+		}
+	}
+

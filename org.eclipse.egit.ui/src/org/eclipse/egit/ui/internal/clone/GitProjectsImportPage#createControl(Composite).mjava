@@ -1,0 +1,25 @@
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
+	 * .Composite)
+	 */
+	public void createControl(Composite parent) {
+
+		initializeDialogUnits(parent);
+
+		Composite workArea = new Composite(parent, SWT.NONE);
+		setControl(workArea);
+
+		workArea.setLayout(new GridLayout());
+		workArea.setLayoutData(new GridData(GridData.FILL_BOTH
+				| GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
+
+		createProjectsRoot(workArea);
+		createProjectsList(workArea);
+		createOptionsArea(workArea);
+		Dialog.applyDialogFont(workArea);
+
+	}
+

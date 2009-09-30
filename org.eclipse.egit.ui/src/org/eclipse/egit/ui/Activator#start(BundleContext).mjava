@@ -1,0 +1,9 @@
+	public void start(final BundleContext context) throws Exception {
+		super.start(context);
+		traceVerbose = isOptionSet("/trace/verbose");
+		setupSSH(context);
+		setupProxy(context);
+		setupRepoChangeScanner();
+		setupRepoIndexRefresh();
+	}
+

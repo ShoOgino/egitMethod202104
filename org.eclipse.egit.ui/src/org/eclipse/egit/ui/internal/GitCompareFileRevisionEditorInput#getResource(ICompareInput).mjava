@@ -1,0 +1,7 @@
+	private IResource getResource(ICompareInput input) {
+		if (getLocalElement() != null) {
+			return ((IResourceProvider) getLocalElement()).getResource();
+		}
+		return null;
+	}
+

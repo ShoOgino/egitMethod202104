@@ -1,0 +1,47 @@
+	private void createDestinationGroup(final Composite parent) {
+		final Group g = createGroup(parent,
+				UIText.CloneDestinationPage_groupDestination);
+
+		newLabel(g, UIText.CloneDestinationPage_promptDirectory + ":");
+		final Composite p = new Composite(g, SWT.NONE);
+		final GridLayout grid = new GridLayout();
+		grid.numColumns = 2;
+		p.setLayout(grid);
+		p.setLayoutData(createFieldGridData());
+		directoryText = new Text(p, SWT.BORDER);
+		directoryText.setLayoutData(createFieldGridData());
+		directoryText.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				checkPage();
+			}
+		});
+		final Button b = new Button(p, SWT.PUSH);
+		b.setText(UIText.CloneDestinationPage_browseButton);
+		b.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				final FileDialog d;
+
+				d = new FileDialog(getShell(), SWT.APPLICATION_MODAL | SWT.SAVE);
+				if (directoryText.getText().length() > 0) {
+					final File file = new File(directoryText.getText())
+							.getAbsoluteFile();
+					d.setFilterPath(file.getParent());
+					d.setFileName(file.getName());
+				}
+				final String r = d.open();
+				if (r != null)
+					directoryText.setText(r);
+			}
+		});
+
+		newLabel(g, UIText.CloneDestinationPage_promptInitialBranch + ":");
+		initialBranch = new Combo(g, SWT.DROP_DOWN | SWT.READ_ONLY);
+		initialBranch.setLayoutData(createFieldGridData());
+		initialBranch.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				checkPage();
+			}
+		});
+	}
+

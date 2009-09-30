@@ -1,0 +1,9 @@
+	private void createDummyColumn(final TableColumnLayout columnLayout) {
+		final TableViewerColumn viewerColumn = new TableViewerColumn(
+				tableViewer, SWT.LEFT);
+		final TableColumn column = viewerColumn.getColumn();
+		columnLayout.setColumnData(column, new ColumnWeightData(0, 0, false));
+		viewerColumn.setLabelProvider(new ColumnLabelProvider());
+		// FIXME: first cell is left aligned on Mac OS X 10.4, Eclipse 3.4
+	}
+

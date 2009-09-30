@@ -1,0 +1,15 @@
+	/**
+	 * Cleans the find results. All match item indexes are removed.
+	 */
+	public synchronized void clear() {
+		if (highlight != null) {
+			for (RevObject o : revObjList) {
+				o.remove(highlight);
+			}
+		}
+		matchesMap.clear();
+		revObjList.clear();
+		keysArray = null;
+		matchesCount = 0;
+	}
+

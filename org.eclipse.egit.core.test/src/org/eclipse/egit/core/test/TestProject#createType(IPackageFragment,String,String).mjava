@@ -1,0 +1,11 @@
+	public IType createType(IPackageFragment pack, String cuName, String source)
+			throws JavaModelException {
+		StringBuffer buf = new StringBuffer();
+		buf.append("package " + pack.getElementName() + ";\n");
+		buf.append("\n");
+		buf.append(source);
+		ICompilationUnit cu = pack.createCompilationUnit(cuName,
+				buf.toString(), false, null);
+		return cu.getTypes()[0];
+	}
+

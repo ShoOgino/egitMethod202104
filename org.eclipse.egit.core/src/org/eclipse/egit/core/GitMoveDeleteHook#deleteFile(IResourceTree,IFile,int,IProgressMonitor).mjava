@@ -1,0 +1,35 @@
+	public boolean deleteFile(final IResourceTree tree, final IFile file,
+			final int updateFlags, final IProgressMonitor monitor) {
+		final boolean force = (updateFlags & IResource.FORCE) == IResource.FORCE;
+		if (!force && !tree.isSynchronized(file, IResource.DEPTH_ZERO))
+			return false;
+
+		final RepositoryMapping map = RepositoryMapping.getMapping(file);
+		if (map == null)
+			return false;
+
+		try {
+			final DirCache dirc = DirCache.lock(map.getRepository());
+			final int first = dirc.findEntry(map.getRepoRelativePath(file));
+			if (first < 0) {
+				dirc.unlock();
+				return false;
+			}
+
+			final DirCacheBuilder edit = dirc.builder();
+			if (first > 0)
+				edit.keep(0, first);
+			final int next = dirc.nextEntry(first);
+			if (next < dirc.getEntryCount())
+				edit.keep(next, dirc.getEntryCount() - next);
+			if (!edit.commit())
+				tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(),
+						0, CoreText.MoveDeleteHook_operationError, null));
+			tree.standardDeleteFile(file, updateFlags, monitor);
+		} catch (IOException e) {
+			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
+					CoreText.MoveDeleteHook_operationError, e));
+		}
+		return true;
+	}
+

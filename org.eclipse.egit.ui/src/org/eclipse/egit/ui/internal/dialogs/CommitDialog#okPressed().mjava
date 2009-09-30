@@ -1,0 +1,53 @@
+	@Override
+	protected void okPressed() {
+		commitMessage = commitText.getText();
+		author = authorText.getText().trim();
+		committer = committerText.getText().trim();
+		signedOff = signedOffButton.getSelection();
+		amending = amendingButton.getSelection();
+
+		Object[] checkedElements = filesViewer.getCheckedElements();
+		selectedFiles.clear();
+		for (Object obj : checkedElements)
+			selectedFiles.add(((CommitItem) obj).file);
+
+		if (commitMessage.trim().length() == 0) {
+			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoMessage, UIText.CommitDialog_ErrorMustEnterCommitMessage);
+			return;
+		}
+
+		boolean authorValid = false;
+		if (author.length() > 0) {
+			try {
+				new PersonIdent(author);
+				authorValid = true;
+			} catch (IllegalArgumentException e) {
+				authorValid = false;
+			}
+		}
+		if (!authorValid) {
+			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorInvalidAuthor, UIText.CommitDialog_ErrorInvalidAuthorSpecified);
+			return;
+		}
+
+		boolean committerValid = false;
+		if (committer.length() > 0) {
+			try {
+				new PersonIdent(committer);
+				committerValid = true;
+			} catch (IllegalArgumentException e) {
+				committerValid = false;
+			}
+		}
+		if (!committerValid) {
+			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorInvalidAuthor, UIText.CommitDialog_ErrorInvalidCommitterSpecified);
+			return;
+		}
+
+		if (selectedFiles.isEmpty() && !amending) {
+			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoItemsSelected, UIText.CommitDialog_ErrorNoItemsSelectedToBeCommitted);
+			return;
+		}
+		super.okPressed();
+	}
+

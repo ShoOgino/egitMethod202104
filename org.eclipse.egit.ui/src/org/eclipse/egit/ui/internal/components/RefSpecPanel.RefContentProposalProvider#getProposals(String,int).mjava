@@ -1,0 +1,34 @@
+		public IContentProposal[] getProposals(final String contents,
+				int position) {
+			final List<RefContentProposal> result = new ArrayList<RefContentProposal>();
+
+			if (contents.indexOf('*') != -1 || contents.indexOf('?') != -1) {
+				// contents contains wildcards
+
+				// check if contents can be safely added as wildcard spec
+				if (isValidRefExpression(contents))
+					result.add(new RefContentProposal(localDb, contents, null));
+
+				// let's expand wildcards
+				final String regex = ".*" //$NON-NLS-1$
+						+ contents.replace("*", ".*").replace("?", ".?") + ".*"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				final Pattern p = Pattern.compile(regex);
+				for (final RefContentProposal prop : proposals)
+					if (p.matcher(prop.getContent()).matches())
+						result.add(prop);
+			} else {
+				for (final RefContentProposal prop : proposals)
+					if (prop.getContent().contains(contents))
+						result.add(prop);
+
+				if (tryResolvingLocally && result.isEmpty()) {
+					final ObjectId id = tryResolveLocalRef(contents);
+					if (id != null)
+						result
+								.add(new RefContentProposal(localDb, contents,
+										id));
+				}
+			}
+			return result.toArray(new IContentProposal[0]);
+		}
+

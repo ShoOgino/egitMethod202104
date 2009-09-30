@@ -1,0 +1,16 @@
+	private void checkPage() {
+		if (transportError != null) {
+			setErrorMessage(transportError);
+			setPageComplete(false);
+			return;
+		}
+		if (!specsPanel.isEmpty() && specsPanel.isValid()
+				&& !specsPanel.isMatchingAnyRefs()) {
+			setErrorMessage(UIText.RefSpecPage_errorDontMatchSrc);
+			setPageComplete(false);
+			return;
+		}
+		setErrorMessage(specsPanel.getErrorMessage());
+		setPageComplete(!specsPanel.isEmpty() && specsPanel.isValid());
+	}
+

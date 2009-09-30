@@ -1,0 +1,47 @@
+	private void find(final IProgressMonitor m, final IContainer c)
+			throws CoreException {
+		final IPath loc = c.getLocation();
+
+		m.beginTask("", 101);
+		m.subTask(CoreText.RepositoryFinder_finding);
+		try {
+			if (loc != null) {
+				final File fsLoc = loc.toFile();
+				final File ownCfg = configFor(fsLoc);
+				final IResource[] children;
+
+				if (ownCfg.isFile()) {
+					register(c, ownCfg.getParentFile());
+				} else if (c.isLinked() || c instanceof IProject) {
+					File p = fsLoc.getParentFile();
+					while (p != null) {
+						final File pCfg = configFor(p);
+						if (pCfg.isFile()) {
+							register(c, pCfg.getParentFile());
+							break;
+						}
+						p = p.getParentFile();
+					}
+				}
+				m.worked(1);
+
+				children = c.members();
+				if (children != null && children.length > 0) {
+					final int scale = 100 / children.length;
+					for (int k = 0; k < children.length; k++) {
+						final IResource o = children[k];
+						if (o instanceof IContainer
+								&& !o.getName().equals(".git")) {
+							find(new SubProgressMonitor(m, scale),
+									(IContainer) o);
+						} else {
+							m.worked(scale);
+						}
+					}
+				}
+			}
+		} finally {
+			m.done();
+		}
+	}
+

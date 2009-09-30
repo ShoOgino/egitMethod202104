@@ -1,0 +1,15 @@
+	/**
+	 * A change occurred to a repository. Update any GitDocument instances
+	 * referring to such repositories.
+	 *
+	 * @param repository Repository which changed
+	 * @throws IOException
+	 */
+	static void refreshRelevant(final Repository repository) throws IOException {
+		for (Map.Entry<GitDocument, Repository> i : doc2repo.entrySet()) {
+			if (i.getValue() == repository) {
+				i.getKey().populate();
+			}
+		}
+	}
+

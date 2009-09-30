@@ -1,0 +1,16 @@
+	/**
+	 * Creates a grid data with the specified metrics
+	 *
+	 * @param width
+	 * @param height
+	 * @param hFill
+	 * @param vFill
+	 *
+	 * @return the created grid data
+	 */
+	public static GridData createGridData(int width, int height, boolean hFill,
+			boolean vFill) {
+		return createGridData(width, height, hFill ? SWT.FILL : SWT.BEGINNING,
+				vFill ? SWT.FILL : SWT.CENTER, hFill, vFill);
+	}
+

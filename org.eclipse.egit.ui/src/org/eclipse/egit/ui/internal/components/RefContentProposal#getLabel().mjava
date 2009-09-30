@@ -1,0 +1,9 @@
+	public String getLabel() {
+		for (int i = 0; i < PREFIXES.length; i++)
+			if (refName.startsWith(PREFIXES[i]))
+				return refName.substring(PREFIXES[i].length())
+						+ PREFIXES_DESCRIPTIONS[i];
+		return refName;
+
+	}
+

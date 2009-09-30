@@ -1,0 +1,35 @@
+	private void revalidate() {
+		if (sourcePage.selectionEquals(validatedRepoSelection)
+				&& branchPage.selectionEquals(validatedSelectedBranches,
+						validatedHEAD)) {
+			checkPage();
+			return;
+		}
+
+		if (!sourcePage.selectionEquals(validatedRepoSelection)) {
+			validatedRepoSelection = sourcePage.getSelection();
+			// update repo-related selection only if it changed
+			final String n = getSuggestedName();
+			setDescription(NLS.bind(UIText.CloneDestinationPage_description, n));
+			directoryText.setText(new File(ResourcesPlugin.getWorkspace()
+					.getRoot().getRawLocation().toFile(), n).getAbsolutePath());
+		}
+
+		validatedSelectedBranches = branchPage.getSelectedBranches();
+		validatedHEAD = branchPage.getHEAD();
+
+		initialBranch.removeAll();
+		final Ref head = branchPage.getHEAD();
+		int newix = 0;
+		for (final Ref r : branchPage.getSelectedBranches()) {
+			String name = r.getName();
+			if (name.startsWith(Constants.R_HEADS))
+				name = name.substring((Constants.R_HEADS).length());
+			if (head != null && head.getName().equals(r.getName()))
+				newix = initialBranch.getItemCount();
+			initialBranch.add(name);
+		}
+		initialBranch.select(newix);
+		checkPage();
+	}
+

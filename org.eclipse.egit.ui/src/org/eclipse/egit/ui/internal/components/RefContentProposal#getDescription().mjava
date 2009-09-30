@@ -1,0 +1,32 @@
+	public String getDescription() {
+		if (objectId == null)
+			return null;
+		final Object obj;
+		try {
+			obj = db.mapObject(objectId, refName);
+		} catch (IOException e) {
+			Activator.logError("Unable to read object " + objectId
+					+ " for content proposal assistance", e);
+			return null;
+		}
+
+		final StringBuilder sb = new StringBuilder();
+		sb.append(refName);
+		sb.append('\n');
+		sb.append(objectId.abbreviate(db).name());
+		sb.append(" - ");
+		if (obj instanceof Commit) {
+			final Commit c = ((Commit) obj);
+			appendObjectSummary(sb, "commit", c.getAuthor(), c.getMessage());
+		} else if (obj instanceof Tag) {
+			final Tag t = ((Tag) obj);
+			appendObjectSummary(sb, "tag", t.getAuthor(), t.getMessage());
+		} else if (obj instanceof Tree) {
+			sb.append("tree");
+		} else if (obj instanceof Blob) {
+			sb.append("blob");
+		} else
+			sb.append("locally unknown object");
+		return sb.toString();
+	}
+

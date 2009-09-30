@@ -1,0 +1,20 @@
+	/**
+	 * Creates a horizontal fill composite with the specified margins and
+	 * columns
+	 *
+	 * @param parent
+	 * @param margins
+	 * @param columns
+	 *
+	 * @return the created composite
+	 */
+	public static Composite createHFillComposite(Composite parent, int margins,
+			int columns) {
+		final Composite composite = new Composite(parent, SWT.NONE);
+		composite.setFont(parent.getFont());
+		composite.setLayoutData(createHFillGridData());
+		composite.setLayout(createGridLayout(columns,
+				new PixelConverter(parent), margins));
+		return composite;
+	}
+

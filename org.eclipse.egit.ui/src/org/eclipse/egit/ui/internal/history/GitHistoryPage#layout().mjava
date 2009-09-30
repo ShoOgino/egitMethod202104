@@ -1,0 +1,26 @@
+	private void layout() {
+		final boolean showComment = prefs.getBoolean(SHOW_COMMENT);
+		final boolean showFiles = prefs.getBoolean(SHOW_FILES);
+		final boolean showFindToolbar = prefs.getBoolean(SHOW_FIND_TOOLBAR);
+
+		if (showComment && showFiles) {
+			graphDetailSplit.setMaximizedControl(null);
+			revInfoSplit.setMaximizedControl(null);
+		} else if (showComment && !showFiles) {
+			graphDetailSplit.setMaximizedControl(null);
+			revInfoSplit.setMaximizedControl(commentViewer.getControl());
+		} else if (!showComment && showFiles) {
+			graphDetailSplit.setMaximizedControl(null);
+			revInfoSplit.setMaximizedControl(fileViewer.getControl());
+		} else if (!showComment && !showFiles) {
+			graphDetailSplit.setMaximizedControl(graph.getControl());
+		}
+		if (showFindToolbar) {
+			((GridData) findToolbar.getLayoutData()).heightHint = SWT.DEFAULT;
+		} else {
+			((GridData) findToolbar.getLayoutData()).heightHint = 0;
+			findToolbar.clear();
+		}
+		ourControl.layout();
+	}
+

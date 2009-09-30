@@ -1,0 +1,71 @@
+	/**
+	 * Collect the list of .project files that are under directory into files.
+	 *
+	 * @param files
+	 * @param directory
+	 * @param directoriesVisited
+	 *            Set of canonical paths of directories, used as recursion guard
+	 * @param monitor
+	 *            The monitor to report to
+	 * @return boolean <code>true</code> if the operation was completed.
+	 */
+	private boolean collectProjectFilesFromDirectory(Collection<File> files,
+			File directory, Set<String> directoriesVisited, IProgressMonitor monitor) {
+
+		if (monitor.isCanceled()) {
+			return false;
+		}
+		monitor.subTask(NLS.bind(
+				UIText.WizardProjectsImportPage_CheckingMessage, directory
+						.getPath()));
+		File[] contents = directory.listFiles();
+		if (contents == null)
+			return false;
+
+		// Initialize recursion guard for recursive symbolic links
+		if (directoriesVisited == null) {
+			directoriesVisited = new HashSet<String>();
+			try {
+				directoriesVisited.add(directory.getCanonicalPath());
+			} catch (IOException exception) {
+				StatusManager.getManager().handle(
+						StatusUtil.newStatus(IStatus.ERROR, exception
+								.getLocalizedMessage(), exception));
+			}
+		}
+
+		// first look for project description files
+		final String dotProject = IProjectDescription.DESCRIPTION_FILE_NAME;
+		for (int i = 0; i < contents.length; i++) {
+			File file = contents[i];
+			if (file.isFile() && file.getName().equals(dotProject)) {
+				files.add(file);
+				// don't search sub-directories since we can't have nested
+				// projects
+				return true;
+			}
+		}
+		// no project description found, so recurse into sub-directories
+		for (int i = 0; i < contents.length; i++) {
+			if (contents[i].isDirectory()) {
+				if (!contents[i].getName().equals(METADATA_FOLDER)) {
+					try {
+						String canonicalPath = contents[i].getCanonicalPath();
+						if (!directoriesVisited.add(canonicalPath)) {
+							// already been here --> do not recurse
+							continue;
+						}
+					} catch (IOException exception) {
+						StatusManager.getManager().handle(
+								StatusUtil.newStatus(IStatus.ERROR, exception
+										.getLocalizedMessage(), exception));
+
+					}
+					collectProjectFilesFromDirectory(files, contents[i],
+							directoriesVisited, monitor);
+				}
+			}
+		}
+		return true;
+	}
+

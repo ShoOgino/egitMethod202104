@@ -1,0 +1,13 @@
+	private int indexOfSpec(final RefSpec spec) {
+		int i;
+		for (i = 0; i < specs.size(); i++) {
+			// we have to compare references, not use List#indexOf,
+			// as equals is implemented in RefSpec
+			if (specs.get(i) == spec)
+				break;
+		}
+		if (i == specs.size())
+			return -1;
+		return i;
+	}
+

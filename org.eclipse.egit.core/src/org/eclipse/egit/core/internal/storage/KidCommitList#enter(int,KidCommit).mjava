@@ -1,0 +1,7 @@
+	@Override
+	protected void enter(final int index, final KidCommit e) {
+		final int nParents = e.getParentCount();
+		for (int i = 0; i < nParents; i++)
+			((KidCommit) e.getParent(i)).addChild(e);
+	}
+

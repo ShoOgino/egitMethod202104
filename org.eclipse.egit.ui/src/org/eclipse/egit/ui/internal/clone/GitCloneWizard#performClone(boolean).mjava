@@ -1,0 +1,56 @@
+	boolean performClone(boolean background) {
+		final URIish uri = cloneSource.getSelection().getURI();
+		final boolean allSelected = validSource.isAllSelected();
+		final Collection<Ref> selectedBranches = validSource
+				.getSelectedBranches();
+		final File workdir = cloneDestination.getDestinationFile();
+		final String branch = cloneDestination.getInitialBranch();
+		final String remoteName = cloneDestination.getRemote();
+
+		workdir.mkdirs();
+		if (!workdir.isDirectory()) {
+			final String errorMessage = NLS.bind(
+					UIText.GitCloneWizard_errorCannotCreate, workdir.getPath());
+			ErrorDialog.openError(getShell(), getWindowTitle(),
+					UIText.GitCloneWizard_failed, new Status(IStatus.ERROR,
+							Activator.getPluginId(), 0, errorMessage, null));
+			// let's give user a chance to fix this minor problem
+			return false;
+		}
+
+		final CloneOperation op = new CloneOperation(uri, allSelected,
+				selectedBranches, workdir, branch, remoteName);
+		if (background) {
+			final Job job = new Job(NLS.bind(UIText.GitCloneWizard_jobName, uri
+					.toString())) {
+				@Override
+				protected IStatus run(final IProgressMonitor monitor) {
+					try {
+						op.run(monitor);
+						return Status.OK_STATUS;
+					} catch (InterruptedException e) {
+						return Status.CANCEL_STATUS;
+					} catch (InvocationTargetException e) {
+						Throwable thr = e.getCause();
+						return new Status(IStatus.ERROR, Activator
+								.getPluginId(), 0, thr.getMessage(), thr);
+					}
+				}
+			};
+			job.setUser(true);
+			job.schedule();
+			return true;
+		} else {
+			try {
+				PlatformUI.getWorkbench().getProgressService().run(false, true,
+						op);
+				return true;
+			} catch (Exception e) {
+				Activator.logError("Failed to clone", e);
+				MessageDialog.openError(getShell(), "Failed clone", e
+						.toString());
+				return false;
+			}
+		}
+	}
+

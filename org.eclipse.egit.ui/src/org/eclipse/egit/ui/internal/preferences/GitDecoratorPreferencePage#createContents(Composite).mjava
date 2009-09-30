@@ -1,0 +1,44 @@
+	/**
+	 * @see PreferencePage#createContents(Composite)
+	 */
+	protected Control createContents(Composite parent) {
+
+		Composite composite = SWTUtils.createHVFillComposite(parent,
+				SWTUtils.MARGINS_NONE);
+
+		SWTUtils.createPreferenceLink(
+				(IWorkbenchPreferenceContainer) getContainer(), composite,
+				"org.eclipse.ui.preferencePages.Decorators", //$NON-NLS-1$
+				UIText.DecoratorPreferencesPage_labelDecorationsLink);
+
+		TabFolder tabFolder = new TabFolder(composite, SWT.NONE);
+		tabFolder.setLayoutData(SWTUtils.createHVFillGridData());
+
+		generalTab = new GeneralTab(tabFolder);
+		textDecorationTab = new TextDecorationTab(tabFolder);
+		iconDecorationTab = new IconDecorationTab(tabFolder);
+
+		initializeValues();
+
+		preview = new Preview(composite);
+		preview.refresh();
+
+		generalTab.addObserver(preview);
+		textDecorationTab.addObserver(preview);
+		iconDecorationTab.addObserver(preview);
+
+		// TODO: Add help text for this preference page
+
+		themeListener = new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				preview.refresh();
+			}
+		};
+		PlatformUI.getWorkbench().getThemeManager().addPropertyChangeListener(
+				themeListener);
+
+		Dialog.applyDialogFont(parent);
+
+		return composite;
+	}
+

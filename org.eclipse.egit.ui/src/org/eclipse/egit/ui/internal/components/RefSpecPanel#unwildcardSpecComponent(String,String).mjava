@@ -1,0 +1,10 @@
+	private static String unwildcardSpecComponent(final String comp,
+			final String other) {
+		if (!RefSpec.isWildcard(comp))
+			return comp;
+		if (other == null || other.length() == 0)
+			return ""; //$NON-NLS-1$
+		final int i = other.lastIndexOf('/');
+		return comp.substring(0, comp.length() - 1) + other.substring(i + 1);
+	}
+

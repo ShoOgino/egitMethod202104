@@ -1,0 +1,13 @@
+	synchronized void setRepository(final Repository r) {
+		db = r;
+
+		try {
+			workdirPrefix = getWorkDir().getCanonicalPath();
+		} catch (IOException err) {
+			workdirPrefix = getWorkDir().getAbsolutePath();
+		}
+		workdirPrefix = workdirPrefix.replace('\\', '/');
+		if (!workdirPrefix.endsWith("/"))
+			workdirPrefix += "/";
+	}
+

@@ -1,0 +1,53 @@
+	void findCompletionUpdate(String pattern, boolean overflow) {
+		int total = findResults.size();
+		if (total > 0) {
+			if (overflow) {
+				currentPositionLabel
+						.setText(UIText.HistoryPage_findbar_exceeded + " 1/"
+								+ total);
+			} else {
+				currentPositionLabel.setText("1/" + total);
+			}
+			int ix = findResults.getFirstIndex();
+			sendEvent(null, ix);
+
+			patternField.setBackground(null);
+			nextButton.setEnabled(true);
+			previousButton.setEnabled(true);
+			lastErrorPattern = null;
+		} else {
+			if (pattern.length() > 0) {
+				patternField.setBackground(errorBackgroundColor);
+				currentPositionLabel
+						.setText(UIText.HistoryPage_findbar_notFound);
+				// Don't keep beeping every time if the user is deleting
+				// a long not found pattern
+				if (lastErrorPattern == null
+						|| (lastErrorPattern != null && !lastErrorPattern
+								.startsWith(pattern))) {
+					getDisplay().beep();
+					nextButton.setEnabled(false);
+					previousButton.setEnabled(false);
+				}
+				lastErrorPattern = pattern;
+			} else {
+				patternField.setBackground(null);
+				currentPositionLabel.setText("");
+				nextButton.setEnabled(false);
+				previousButton.setEnabled(false);
+				lastErrorPattern = null;
+			}
+		}
+		progressBar.setSelection(0);
+		historyTable.clearAll();
+
+		if (overflow) {
+			Display display = getDisplay();
+			currentPositionLabel.setForeground(display
+					.getSystemColor(SWT.COLOR_RED));
+			display.beep();
+		} else {
+			currentPositionLabel.setForeground(null);
+		}
+	}
+

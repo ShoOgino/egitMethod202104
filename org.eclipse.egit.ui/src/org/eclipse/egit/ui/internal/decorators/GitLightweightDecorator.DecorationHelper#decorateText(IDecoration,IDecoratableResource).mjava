@@ -1,0 +1,28 @@
+		private void decorateText(IDecoration decoration,
+				IDecoratableResource resource) {
+			String format = "";
+			switch (resource.getType()) {
+			case IResource.FILE:
+				format = store
+						.getString(UIPreferences.DECORATOR_FILETEXT_DECORATION);
+				break;
+			case IResource.FOLDER:
+				format = store
+						.getString(UIPreferences.DECORATOR_FOLDERTEXT_DECORATION);
+				break;
+			case IResource.PROJECT:
+				format = store
+						.getString(UIPreferences.DECORATOR_PROJECTTEXT_DECORATION);
+				break;
+			}
+
+			Map<String, String> bindings = new HashMap<String, String>();
+			bindings.put(BINDING_RESOURCE_NAME, resource.getName());
+			bindings.put(BINDING_BRANCH_NAME, resource.getBranch());
+			bindings.put(BINDING_DIRTY_FLAG, resource.isDirty() ? ">" : null);
+			bindings.put(BINDING_STAGED_FLAG,
+					resource.staged() != Staged.NOT_STAGED ? "*" : null);
+
+			decorate(decoration, format, bindings);
+		}
+

@@ -1,0 +1,15 @@
+	private boolean tryAddDestination(final Map<String, RefSpec> dstsSpecsMap,
+			final String dst, final RefSpec spec) {
+		final RefSpec other = dstsSpecsMap.put(dst, spec);
+		if (other != null) {
+			errorMessage = NLS
+					.bind(
+							UIText.RefSpecPanel_validationSpecificationsOverlappingDestination,
+							dst);
+			invalidSpec = other;
+			invalidSpecSameDst = spec;
+			return false;
+		}
+		return true;
+	}
+

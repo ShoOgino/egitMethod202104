@@ -1,0 +1,10 @@
+	/**
+	 * @param uri
+	 *            remote repository URI.
+	 * @return error message for this repository (URI) or null if operation
+	 *         ended with successful connection for this URI.
+	 */
+	public String getErrorMessage(final URIish uri) {
+		return urisEntries.get(uri).getErrorMessage();
+	}
+

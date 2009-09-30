@@ -1,0 +1,10 @@
+	private void register(final IContainer c, final File gitdir) {
+		File f;
+		try {
+			f = gitdir.getCanonicalFile();
+		} catch (IOException ioe) {
+			f = gitdir.getAbsoluteFile();
+		}
+		results.add(new RepositoryMapping(c, f));
+	}
+

@@ -1,0 +1,30 @@
+	@Override
+	public boolean performFinish() {
+		if (repoPage.getSelection().isConfigSelected()
+				&& refSpecPage.isSaveRequested())
+			saveConfig();
+
+		final Transport transport;
+		final RepositorySelection repoSelection = repoPage.getSelection();
+		try {
+			if (repoSelection.isConfigSelected())
+				transport = Transport.open(localDb, repoSelection.getConfig());
+			else
+				transport = Transport.open(localDb, repoSelection.getURI());
+		} catch (final NotSupportedException e) {
+			ErrorDialog.openError(getShell(),
+					UIText.FetchWizard_transportNotSupportedTitle,
+					UIText.FetchWizard_transportNotSupportedMessage,
+					new Status(IStatus.ERROR, org.eclipse.egit.ui.Activator
+							.getPluginId(), e.getMessage(), e));
+			return false;
+		}
+		transport.setTagOpt(refSpecPage.getTagOpt());
+
+		final Job fetchJob = new FetchJob(transport, refSpecPage.getRefSpecs(),
+				getSourceString());
+		fetchJob.setUser(true);
+		fetchJob.schedule();
+		return true;
+	}
+

@@ -1,0 +1,18 @@
+	public String getColumnText(final Object element, final int columnIndex) {
+		final RevCommit c = (RevCommit) element;
+		if (columnIndex == 0)
+			return c.getShortMessage();
+
+		final PersonIdent author = authorOf(c);
+		if (author != null) {
+			switch (columnIndex) {
+			case 1:
+				return author.getName() + " <" + author.getEmailAddress() + ">";
+			case 2:
+				return fmt.format(author.getWhen());
+			}
+		}
+
+		return "";
+	}
+

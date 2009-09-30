@@ -1,0 +1,16 @@
+	protected InputStream createStream() throws CoreException {
+		if (entry instanceof FileTreeEntry) {
+			try {
+				ObjectId id = entry.getId();
+				ObjectLoader reader = entry.getRepository().openBlob(id);
+				byte[] bytes = reader.getBytes();
+				return new ByteArrayInputStream(bytes);
+			} catch (IOException e) {
+				// TODO: eclipse error handling
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return null;
+	}
+

@@ -1,0 +1,18 @@
+	private static void ensureContentsCached(FileRevisionTypedElement left, FileRevisionTypedElement right,
+			IProgressMonitor monitor) {
+		if (left != null) {
+			try {
+				left.cacheContents(monitor);
+			} catch (CoreException e) {
+				TeamUIPlugin.log(e);
+			}
+		}
+		if (right != null) {
+			try {
+				right.cacheContents(monitor);
+			} catch (CoreException e) {
+				TeamUIPlugin.log(e);
+			}
+		}
+	}
+

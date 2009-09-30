@@ -1,0 +1,13 @@
+	/**
+	 * Retrieve all the projects in the current workspace.
+	 *
+	 * @return IProject[] array of IProject in the current workspace
+	 */
+	private IProject[] getProjectsInWorkspace() {
+		if (wsProjects == null) {
+			wsProjects = IDEWorkbenchPlugin.getPluginWorkspace().getRoot()
+					.getProjects();
+		}
+		return wsProjects;
+	}
+

@@ -1,0 +1,18 @@
+	private void buildIndexHeadDiffList() throws IOException {
+		for (IProject project : getProjectsInRepositoryOfSelectedResources()) {
+			RepositoryMapping repositoryMapping = RepositoryMapping.getMapping(project);
+			assert repositoryMapping != null;
+			Repository repository = repositoryMapping.getRepository();
+			Tree head = repository.mapTree(Constants.HEAD);
+			GitIndex index = repository.getIndex();
+			IndexDiff indexDiff = new IndexDiff(head, index);
+			indexDiff.diff();
+
+			includeList(project, indexDiff.getAdded(), indexChanges);
+			includeList(project, indexDiff.getChanged(), indexChanges);
+			includeList(project, indexDiff.getRemoved(), indexChanges);
+			includeList(project, indexDiff.getMissing(), notIndexed);
+			includeList(project, indexDiff.getModified(), notIndexed);
+		}
+	}
+

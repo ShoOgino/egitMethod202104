@@ -1,0 +1,10 @@
+	/**
+	 * @param uri
+	 *            remote repository URI.
+	 * @return true if connection was successful for this repository (URI),
+	 *         false if this operation ended with unsuccessful connection.
+	 */
+	public boolean isSuccessfulConnection(final URIish uri) {
+		return urisEntries.get(uri).isSuccessfulConnection();
+	}
+

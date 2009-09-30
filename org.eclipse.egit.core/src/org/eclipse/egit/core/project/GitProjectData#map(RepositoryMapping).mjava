@@ -1,0 +1,54 @@
+	private void map(final RepositoryMapping m) {
+		final IResource r;
+		final File git;
+		final IResource dotGit;
+		IContainer c = null;
+
+		m.clear();
+		r = getProject().findMember(m.getContainerPath());
+		if (r instanceof IContainer) {
+			c = (IContainer) r;
+		} else {
+			c = (IContainer) r.getAdapter(IContainer.class);
+		}
+
+		if (c == null) {
+			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
+					new FileNotFoundException(m.getContainerPath().toString()));
+			m.clear();
+			return;
+		}
+		m.setContainer(c);
+
+		git = c.getLocation().append(m.getGitDirPath()).toFile();
+		if (!git.isDirectory() || !new File(git, "config").isFile()) {
+			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
+					new FileNotFoundException(m.getContainerPath().toString()));
+			m.clear();
+			return;
+		}
+
+		try {
+			m.setRepository(lookupRepository(git));
+		} catch (IOException ioe) {
+			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
+					new FileNotFoundException(m.getContainerPath().toString()));
+			m.clear();
+			return;
+		}
+
+		m.fireRepositoryChanged();
+
+		trace("map " + c + " -> " + m.getRepository());
+		try {
+			c.setSessionProperty(MAPPING_KEY, m);
+		} catch (CoreException err) {
+			Activator.logError("Failed to cache RepositoryMapping", err);
+		}
+
+		dotGit = c.findMember(".git");
+		if (dotGit != null && dotGit.getLocation().toFile().equals(git)) {
+			protect(dotGit);
+		}
+	}
+

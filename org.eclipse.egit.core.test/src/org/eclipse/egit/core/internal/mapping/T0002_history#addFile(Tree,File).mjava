@@ -1,0 +1,5 @@
+	private void addFile(Tree t,File f) throws IOException {
+		ObjectId id = objectWriter.writeBlob(f);
+		t.addEntry(new FileTreeEntry(t,id,f.getName().getBytes("UTF-8"),false));
+	}
+

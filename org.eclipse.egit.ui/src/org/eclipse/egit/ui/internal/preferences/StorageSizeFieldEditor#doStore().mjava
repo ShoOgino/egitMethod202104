@@ -1,0 +1,8 @@
+	protected void doStore() {
+		final Text text = getTextControl();
+		if (text != null) {
+			final int v = parse(text.getText());
+			getPreferenceStore().setValue(getPreferenceName(), v);
+		}
+	}
+

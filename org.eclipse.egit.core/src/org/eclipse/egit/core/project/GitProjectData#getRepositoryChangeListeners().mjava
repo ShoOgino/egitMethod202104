@@ -1,0 +1,13 @@
+	/**
+	 * Get a copy of the current set of repository change listeners
+	 * <p>
+	 * The array has no references, so is safe for iteration and modification
+	 *
+	 * @return a copy of the current repository change listeners
+	 */
+	private static synchronized RepositoryChangeListener[] getRepositoryChangeListeners() {
+		return repositoryChangeListeners
+				.toArray(new RepositoryChangeListener[repositoryChangeListeners
+						.size()]);
+	}
+

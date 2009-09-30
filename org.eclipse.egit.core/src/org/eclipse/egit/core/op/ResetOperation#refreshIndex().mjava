@@ -1,0 +1,14 @@
+	private void refreshIndex() throws TeamException {
+//		File workdir = repository.getDirectory().getParentFile();
+//		for (Entry e : newIndex.getMembers()) {
+//			try {
+//				e.update(new File(workdir, e.getName()));
+//			} catch (IOException ignore) {}
+//		}
+		try {
+			index.write();
+		} catch (IOException e1) {
+			throw new TeamException("Writing index", e1);
+		}
+	}
+

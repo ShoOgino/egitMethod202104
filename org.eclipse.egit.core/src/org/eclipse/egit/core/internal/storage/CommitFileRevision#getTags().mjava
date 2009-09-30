@@ -1,0 +1,13 @@
+	public ITag[] getTags() {
+		final Collection<GitTag> ret = new ArrayList<GitTag>();
+		for (final Map.Entry<String, Ref> tag : db.getTags().entrySet()) {
+			final ObjectId ref = tag.getValue().getPeeledObjectId();
+			if (ref == null)
+				continue;
+			if (!AnyObjectId.equals(ref, commit))
+				continue;
+			ret.add(new GitTag(tag.getKey()));
+		}
+		return ret.toArray(new ITag[ret.size()]);
+	}
+

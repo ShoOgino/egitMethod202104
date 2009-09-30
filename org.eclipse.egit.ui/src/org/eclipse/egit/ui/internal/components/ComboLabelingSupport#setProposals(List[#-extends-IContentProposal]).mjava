@@ -1,0 +1,18 @@
+	/**
+	 * Sets input data for combo.
+	 * <p>
+	 * Proposals are set in provided order.
+	 *
+	 * @param proposals
+	 *            model of input data.
+	 */
+	public void setProposals(final List<? extends IContentProposal> proposals) {
+		this.proposals = proposals;
+
+		final String[] itemsLabels = new String[proposals.size()];
+		int i = 0;
+		for (final IContentProposal p : proposals)
+			itemsLabels[i++] = p.getLabel();
+		combo.setItems(itemsLabels);
+	}
+

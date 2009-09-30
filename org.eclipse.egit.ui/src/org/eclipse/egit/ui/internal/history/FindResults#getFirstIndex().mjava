@@ -1,0 +1,16 @@
+	/**
+	 * Returns the first table item index that contains a match to the find
+	 * pattern.
+	 *
+	 * @return the first index that contains a match. Returns -1 if there isn't
+	 *         any match
+	 */
+	public synchronized int getFirstIndex() {
+		Iterator iter = matchesMap.keySet().iterator();
+		if (iter.hasNext()) {
+			return ((Integer) iter.next()).intValue();
+		}
+
+		return -1;
+	}
+

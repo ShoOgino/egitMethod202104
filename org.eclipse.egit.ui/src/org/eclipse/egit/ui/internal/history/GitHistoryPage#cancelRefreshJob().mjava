@@ -1,0 +1,18 @@
+	private void cancelRefreshJob() {
+		if (job != null && job.getState() != Job.NONE) {
+			job.cancel();
+
+			// As the job had to be canceled but was working on
+			// the data connected with the currentWalk we cannot
+			// be sure it really finished. Since the walk is not
+			// thread safe we must throw it away and build a new
+			// one to start another walk. Clearing our field will
+			// ensure that happens.
+			//
+			job = null;
+			currentWalk = null;
+			highlightFlag = null;
+			pathFilters = null;
+		}
+	}
+

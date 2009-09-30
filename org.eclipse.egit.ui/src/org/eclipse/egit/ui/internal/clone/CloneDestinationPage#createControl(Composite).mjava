@@ -1,0 +1,13 @@
+	public void createControl(final Composite parent) {
+		final Composite panel = new Composite(parent, SWT.NULL);
+		final GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		panel.setLayout(layout);
+
+		createDestinationGroup(panel);
+		createConfigGroup(panel);
+		createWorkbenchGroup(panel);
+		setControl(panel);
+		checkPage();
+	}
+

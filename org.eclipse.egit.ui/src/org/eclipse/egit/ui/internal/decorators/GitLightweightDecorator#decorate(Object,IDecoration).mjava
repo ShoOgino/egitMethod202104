@@ -1,0 +1,49 @@
+	/**
+	 * This method should only be called by the decorator thread.
+	 *
+	 * @see org.eclipse.jface.viewers.ILightweightLabelDecorator#decorate(java.lang.Object,
+	 *      org.eclipse.jface.viewers.IDecoration)
+	 */
+	public void decorate(Object element, IDecoration decoration) {
+		final IResource resource = getResource(element);
+		if (resource == null)
+			return;
+
+		// Don't decorate if the workbench is not running
+		if (!PlatformUI.isWorkbenchRunning())
+			return;
+
+		// Don't decorate if UI plugin is not running
+		Activator activator = Activator.getDefault();
+		if (activator == null)
+			return;
+
+		// Don't decorate the workspace root
+		if (resource.getType() == IResource.ROOT)
+			return;
+
+		// Don't decorate non-existing resources
+		if (!resource.exists() && !resource.isPhantom())
+			return;
+
+		// Make sure we're dealing with a project under Git revision control
+		final RepositoryMapping mapping = RepositoryMapping
+				.getMapping(resource);
+		if (mapping == null)
+			return;
+
+		// Cannot decorate linked resources
+		if (mapping.getRepoRelativePath(resource) == null)
+			return;
+
+		try {
+			DecorationHelper helper = new DecorationHelper(activator
+					.getPreferenceStore());
+			helper.decorate(decoration,
+					new DecoratableResourceAdapter(resource));
+		} catch (IOException e) {
+			handleException(resource, new CoreException(new Status(
+					IStatus.ERROR, Activator.getPluginId(), e.getMessage(), e)));
+		}
+	}
+

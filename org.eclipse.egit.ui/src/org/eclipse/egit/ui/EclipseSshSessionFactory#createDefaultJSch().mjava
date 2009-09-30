@@ -1,0 +1,10 @@
+	@Override
+	protected JSch createDefaultJSch() throws JSchException {
+		// Forcing a dummy session to be created will cause the known hosts
+		// and configured private keys to be initialized. This is needed by
+		// our parent class in case non-default JSch instances need to be made.
+		//
+		provider.createSession("127.0.0.1", 0, "eclipse");
+		return provider.getJSch();
+	}
+

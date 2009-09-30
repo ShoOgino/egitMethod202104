@@ -1,0 +1,58 @@
+	private IFileRevision[] buildRevisions(final IProgressMonitor monitor,
+			final int flags) {
+		if (walk == null)
+			return NO_REVISIONS;
+
+		final Repository db = walk.getRepository();
+		final RevCommit root;
+		try {
+			final AnyObjectId headId = db.resolve(Constants.HEAD);
+			if (headId == null) {
+				Activator.logError("No HEAD revision available from Git"
+						+ " for project " + resource.getProject().getName()
+						+ ".", null);
+				return NO_REVISIONS;
+			}
+
+			root = walk.parseCommit(headId);
+			if ((flags & SINGLE_REVISION) == SINGLE_REVISION) {
+				// If all Eclipse wants is one revision it probably is
+				// for the editor "quick diff" feature. We can pass off
+				// just the repository HEAD, even though it may not be
+				// the revision that most recently modified the path.
+				//
+				final CommitFileRevision single;
+				single = new CommitFileRevision(db, root, gitPath);
+				return new IFileRevision[] { single };
+			}
+
+			walk.markStart(root);
+		} catch (IOException e) {
+			Activator.logError("Invalid HEAD revision for project "
+					+ resource.getProject().getName() + ".", e);
+			return NO_REVISIONS;
+		}
+
+		final KidCommitList list = new KidCommitList();
+		list.source(walk);
+		try {
+			for (;;) {
+				final int oldsz = list.size();
+				list.fillTo(oldsz + BATCH_SIZE - 1);
+				if (oldsz == list.size())
+					break;
+				if (monitor != null && monitor.isCanceled())
+					break;
+			}
+		} catch (IOException e) {
+			Activator.logError("Error parsing history for "
+					+ resource.getFullPath() + ".", e);
+			return NO_REVISIONS;
+		}
+
+		final IFileRevision[] r = new IFileRevision[list.size()];
+		for (int i = 0; i < r.length; i++)
+			r[i] = new CommitFileRevision(db, list.get(i), gitPath);
+		return r;
+	}
+

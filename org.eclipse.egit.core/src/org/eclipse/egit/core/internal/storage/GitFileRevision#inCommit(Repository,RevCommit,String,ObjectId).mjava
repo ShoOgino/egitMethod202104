@@ -1,0 +1,19 @@
+	/**
+	 * Obtain a file revision for a specific blob of an existing commit.
+	 * 
+	 * @param db
+	 *            the repository this commit was loaded out of, and that this
+	 *            file's blob should also be reachable through.
+	 * @param commit
+	 *            the commit the blob was identified to be within.
+	 * @param path
+	 *            path within the commit's tree of the file.
+	 * @param blobId
+	 *            unique name of the content.
+	 * @return revision implementation for this file in the given commit.
+	 */
+	public static GitFileRevision inCommit(final Repository db,
+			final RevCommit commit, final String path, final ObjectId blobId) {
+		return new CommitFileRevision(db, commit, path, blobId);
+	}
+

@@ -1,0 +1,24 @@
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			TableColumn column = (TableColumn)e.widget;
+			Table table = column.getParent();
+
+			if (column == table.getSortColumn()) {
+				reversed = !reversed;
+			} else {
+				reversed = false;
+			}
+			table.setSortColumn(column);
+
+			Comparator<CommitItem> comparator;
+			if (reversed) {
+				comparator = order.descending();
+				table.setSortDirection(SWT.DOWN);
+			} else {
+				comparator = order;
+				table.setSortDirection(SWT.UP);
+			}
+
+			filesViewer.setComparator(new CommitViewerComparator(comparator));
+		}
+

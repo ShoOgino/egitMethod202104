@@ -1,0 +1,149 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite container = (Composite) super.createDialogArea(parent);
+		parent.getShell().setText(UIText.CommitDialog_CommitChanges);
+
+		GridLayout layout = new GridLayout(2, false);
+		container.setLayout(layout);
+
+		Label label = new Label(container, SWT.LEFT);
+		label.setText(UIText.CommitDialog_CommitMessage);
+		label.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
+
+		commitText = new Text(container, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
+		commitText.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true)
+				.hint(600, 200).create());
+
+		// allow to commit with ctrl-enter
+		commitText.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.keyCode == SWT.CR
+						&& (arg0.stateMask & SWT.CONTROL) > 0) {
+					okPressed();
+				} else if (arg0.keyCode == SWT.TAB
+						&& (arg0.stateMask & SWT.SHIFT) == 0) {
+					arg0.doit = false;
+					commitText.traverse(SWT.TRAVERSE_TAB_NEXT);
+				}
+			}
+		});
+
+		new Label(container, SWT.LEFT).setText(UIText.CommitDialog_Author);
+		authorText = new Text(container, SWT.BORDER);
+		authorText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		if (author != null)
+			authorText.setText(author);
+
+		new Label(container, SWT.LEFT).setText(UIText.CommitDialog_Committer);
+		committerText = new Text(container, SWT.BORDER);
+		committerText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		if (committer != null)
+			committerText.setText(committer);
+		committerText.addModifyListener(new ModifyListener() {
+			String oldCommitter = committerText.getText();
+			public void modifyText(ModifyEvent e) {
+				if (signedOffButton.getSelection()) {
+					// the commit message is signed
+					// the signature must be updated
+					String newCommitter = committerText.getText();
+					String oldSignOff = getSignedOff(oldCommitter);
+					String newSignOff = getSignedOff(newCommitter);
+					commitText.setText(replaceSignOff(commitText.getText(), oldSignOff, newSignOff));
+					oldCommitter = newCommitter;
+				}
+			}
+		});
+
+		amendingButton = new Button(container, SWT.CHECK);
+		if (amending) {
+			amendingButton.setSelection(amending);
+			amendingButton.setEnabled(false); // if already set, don't allow any changes
+			commitText.setText(previousCommitMessage);
+			authorText.setText(previousAuthor);
+		} else if (!amendAllowed) {
+			amendingButton.setEnabled(false);
+		}
+		amendingButton.addSelectionListener(new SelectionListener() {
+			boolean alreadyAdded = false;
+			public void widgetSelected(SelectionEvent arg0) {
+				if (alreadyAdded)
+					return;
+				if (amendingButton.getSelection()) {
+					alreadyAdded = true;
+					String curText = commitText.getText();
+					if (curText.length() > 0)
+						curText += "\n"; //$NON-NLS-1$
+					commitText.setText(curText + previousCommitMessage);
+					authorText.setText(previousAuthor);
+				}
+			}
+
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// Empty
+			}
+		});
+
+		amendingButton.setText(UIText.CommitDialog_AmendPreviousCommit);
+		amendingButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+
+		signedOffButton = new Button(container, SWT.CHECK);
+		signedOffButton.setSelection(signedOff);
+		signedOffButton.setText(UIText.CommitDialog_AddSOB);
+		signedOffButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+
+		signedOffButton.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent arg0) {
+				String curText = commitText.getText();
+				if (signedOffButton.getSelection()) {
+					// add signed off line
+					commitText.setText(signOff(curText));
+				} else {
+					// remove signed off line
+					curText = replaceSignOff(curText, getSignedOff(), "");
+					if (curText.endsWith(Text.DELIMITER + Text.DELIMITER))
+						curText = curText.substring(0, curText.length() - Text.DELIMITER.length());
+					commitText.setText(curText);
+				}
+			}
+
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// Empty
+			}
+		});
+
+		commitText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateSignedOffButton();
+			}
+		});
+		updateSignedOffButton();
+
+		Table resourcesTable = new Table(container, SWT.H_SCROLL | SWT.V_SCROLL
+				| SWT.FULL_SELECTION | SWT.MULTI | SWT.CHECK | SWT.BORDER);
+		resourcesTable.setLayoutData(GridDataFactory.fillDefaults().hint(600,
+				200).span(2,1).grab(true, true).create());
+
+		resourcesTable.addSelectionListener(new CommitItemSelectionListener());
+
+		resourcesTable.setHeaderVisible(true);
+		TableColumn statCol = new TableColumn(resourcesTable, SWT.LEFT);
+		statCol.setText(UIText.CommitDialog_Status);
+		statCol.setWidth(150);
+		statCol.addSelectionListener(new HeaderSelectionListener(CommitItem.Order.ByStatus));
+
+		TableColumn resourceCol = new TableColumn(resourcesTable, SWT.LEFT);
+		resourceCol.setText(UIText.CommitDialog_File);
+		resourceCol.setWidth(415);
+		resourceCol.addSelectionListener(new HeaderSelectionListener(CommitItem.Order.ByFile));
+
+		filesViewer = new CheckboxTableViewer(resourcesTable);
+		filesViewer.setContentProvider(new CommitContentProvider());
+		filesViewer.setLabelProvider(new CommitLabelProvider());
+		filesViewer.setInput(items);
+		filesViewer.setAllChecked(true);
+		filesViewer.getTable().setMenu(getContextMenu());
+
+		container.pack();
+		return container;
+	}
+

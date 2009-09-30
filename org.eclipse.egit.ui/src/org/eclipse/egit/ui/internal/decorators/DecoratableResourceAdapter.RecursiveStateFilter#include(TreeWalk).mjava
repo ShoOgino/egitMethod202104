@@ -1,0 +1,31 @@
+		@Override
+		public boolean include(TreeWalk treeWalk)
+				throws MissingObjectException, IncorrectObjectTypeException,
+				IOException {
+
+			if (treeWalk.getFileMode(T_HEAD) == FileMode.MISSING
+					&& treeWalk.getFileMode(T_INDEX) == FileMode.MISSING)
+				return false;
+
+			if (FileMode.TREE.equals(treeWalk.getRawMode(T_WORKSPACE)))
+				return shouldRecurse(treeWalk);
+
+			// Backup current state so far
+			Staged wasStaged = staged;
+			boolean wasDirty = dirty;
+			boolean hadConflicts = conflicts;
+
+			extractResourceProperties(treeWalk);
+			filesChecked++;
+
+			// Merge results with old state
+			ignored = false;
+			assumeValid = false;
+			dirty = wasDirty || dirty;
+			conflicts = hadConflicts || conflicts;
+			if (staged != wasStaged && filesChecked > 1)
+				staged = Staged.MODIFIED;
+
+			return false;
+		}
+

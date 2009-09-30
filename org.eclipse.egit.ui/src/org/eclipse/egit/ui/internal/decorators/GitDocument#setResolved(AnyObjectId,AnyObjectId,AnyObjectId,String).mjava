@@ -1,0 +1,11 @@
+	private void setResolved(final AnyObjectId commit, final AnyObjectId tree, final AnyObjectId blob, final String value) {
+		lastCommit = commit != null ? commit.copy() : null;
+		lastTree = tree != null ? tree.copy() : null;
+		lastBlob = blob != null ? blob.copy() : null;
+		set(value);
+		if (blob != null)
+			Activator.trace("(GitDocument) resolved " + resource + " to " + lastBlob + " in " + lastCommit + "/" + lastTree);
+		else
+			Activator.trace("(GitDocument) unresolved " + resource);
+	}
+

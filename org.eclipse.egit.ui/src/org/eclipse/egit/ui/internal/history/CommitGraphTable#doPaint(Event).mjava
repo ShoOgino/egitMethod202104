@@ -1,0 +1,23 @@
+	void doPaint(final Event event) {
+		final RevCommit c = (RevCommit) ((TableItem) event.item).getData();
+		if (highlight != null && c.has(highlight))
+			event.gc.setFont(hFont);
+		else
+			event.gc.setFont(nFont);
+
+		if (event.index == 0) {
+			renderer.paint(event);
+			return;
+		}
+
+		final ITableLabelProvider lbl;
+		final String txt;
+
+		lbl = (ITableLabelProvider) table.getLabelProvider();
+		txt = lbl.getColumnText(c, event.index);
+
+		final Point textsz = event.gc.textExtent(txt);
+		final int texty = (event.height - textsz.y) / 2;
+		event.gc.drawString(txt, event.x, event.y + texty, true);
+	}
+

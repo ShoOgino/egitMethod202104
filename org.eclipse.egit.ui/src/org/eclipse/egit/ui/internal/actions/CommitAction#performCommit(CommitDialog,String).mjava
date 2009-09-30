@@ -1,0 +1,22 @@
+	private void performCommit(CommitDialog commitDialog, String commitMessage)
+			throws TeamException {
+		// System.out.println("Commit Message: " + commitMessage);
+		IFile[] selectedItems = commitDialog.getSelectedFiles();
+
+		HashMap<Repository, Tree> treeMap = new HashMap<Repository, Tree>();
+		try {
+			prepareTrees(selectedItems, treeMap);
+		} catch (IOException e) {
+			throw new TeamException("Preparing trees", e);
+		}
+
+		try {
+			doCommits(commitDialog, commitMessage, treeMap);
+		} catch (IOException e) {
+			throw new TeamException("Committing changes", e);
+		}
+		for (IProject proj : getProjectsForSelectedResources()) {
+			RepositoryMapping.getMapping(proj).fireRepositoryChanged();
+		}
+	}
+

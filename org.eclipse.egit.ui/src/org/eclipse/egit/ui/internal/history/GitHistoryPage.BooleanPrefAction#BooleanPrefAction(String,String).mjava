@@ -1,0 +1,7 @@
+		BooleanPrefAction(final String pn, final String text) {
+			setText(text);
+			prefName = pn;
+			prefs.addPropertyChangeListener(this);
+			setChecked(prefs.getBoolean(prefName));
+		}
+

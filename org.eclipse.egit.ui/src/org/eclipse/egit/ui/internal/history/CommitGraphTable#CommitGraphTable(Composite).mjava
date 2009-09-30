@@ -1,0 +1,37 @@
+	CommitGraphTable(final Composite parent) {
+		nFont = Activator.getFont(UIPreferences.THEME_CommitGraphNormalFont);
+		hFont = highlightFont();
+
+		Table rawTable = new Table(parent, SWT.MULTI | SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		rawTable.setHeaderVisible(true);
+		rawTable.setLinesVisible(false);
+		rawTable.setFont(nFont);
+
+		final TableLayout layout = new TableLayout();
+		rawTable.setLayout(layout);
+
+		createColumns(rawTable, layout);
+		createPaintListener(rawTable);
+
+		table = new TableViewer(rawTable) {
+			protected Widget doFindItem(final Object element) {
+				return element != null ? ((SWTCommit) element).widget : null;
+			}
+
+			protected void mapElement(final Object element, final Widget item) {
+				((SWTCommit) element).widget = item;
+			}
+		};
+		table.setLabelProvider(new GraphLabelProvider());
+		table.setContentProvider(new GraphContentProvider());
+		renderer = new SWTPlotRenderer(rawTable.getDisplay());
+
+		clipboard = new Clipboard(rawTable.getDisplay());
+		rawTable.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(final DisposeEvent e) {
+				clipboard.dispose();
+			}
+		});
+	}
+

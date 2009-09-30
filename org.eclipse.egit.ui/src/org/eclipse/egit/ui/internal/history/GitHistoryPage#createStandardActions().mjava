@@ -1,0 +1,28 @@
+	private void createStandardActions() {
+		final TextAction copy = new TextAction(ITextOperationTarget.COPY);
+		final TextAction sAll = new TextAction(ITextOperationTarget.SELECT_ALL);
+
+		graph.getControl().addFocusListener(copy);
+		graph.getControl().addFocusListener(sAll);
+		graph.addSelectionChangedListener(copy);
+		graph.addSelectionChangedListener(sAll);
+
+		commentViewer.getControl().addFocusListener(copy);
+		commentViewer.getControl().addFocusListener(sAll);
+		commentViewer.addSelectionChangedListener(copy);
+		commentViewer.addSelectionChangedListener(sAll);
+
+		fileViewer.getControl().addFocusListener(copy);
+		fileViewer.getControl().addFocusListener(sAll);
+		fileViewer.addSelectionChangedListener(copy);
+		fileViewer.addSelectionChangedListener(sAll);
+
+		final IActionBars b = getSite().getActionBars();
+		b.setGlobalActionHandler(ActionFactory.COPY.getId(), copy);
+		b.setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(), sAll);
+
+		popupMgr.add(createStandardAction(ActionFactory.COPY));
+		popupMgr.add(createStandardAction(ActionFactory.SELECT_ALL));
+		popupMgr.add(new Separator());
+	}
+

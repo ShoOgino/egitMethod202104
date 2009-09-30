@@ -1,0 +1,255 @@
+	private void createToolbar() {
+		errorBackgroundColor = new Color(getDisplay(), new RGB(255, 150, 150));
+		nextIcon = UIIcons.ELCL16_NEXT.createImage();
+		previousIcon = UIIcons.ELCL16_PREVIOUS.createImage();
+		commitIdIcon = UIIcons.ELCL16_COMMIT.createImage();
+		commentsIcon = UIIcons.ELCL16_COMMENTS.createImage();
+		authorIcon = UIIcons.ELCL16_AUTHOR.createImage();
+		committerIcon = UIIcons.ELCL16_COMMITTER.createImage();
+
+		GridLayout findLayout = new GridLayout();
+		findLayout.marginHeight = 2;
+		findLayout.marginWidth = 2;
+		findLayout.numColumns = 8;
+		setLayout(findLayout);
+		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		Label findLabel = new Label(this, SWT.NULL);
+		findLabel.setText(UIText.HistoryPage_findbar_find);
+
+		patternField = new Text(this, SWT.SEARCH);
+		GridData findTextData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		findTextData.minimumWidth = 50;
+		patternField.setLayoutData(findTextData);
+		patternField.setText("");
+		patternField.setTextLimit(100);
+
+		nextButton = new Button(this, SWT.HORIZONTAL);
+		nextButton.setImage(nextIcon);
+		nextButton.setText(UIText.HistoryPage_findbar_next);
+
+		previousButton = new Button(this, SWT.HORIZONTAL);
+		previousButton.setImage(previousIcon);
+		previousButton.setText(UIText.HistoryPage_findbar_previous);
+
+		final ToolBar toolBar = new ToolBar(this, SWT.FLAT);
+		new ToolItem(toolBar, SWT.SEPARATOR);
+
+		final ToolItem prefsItem = new ToolItem(toolBar, SWT.DROP_DOWN);
+		final Menu prefsMenu = new Menu(this.getShell(), SWT.POP_UP);
+		final MenuItem caseItem = new MenuItem(prefsMenu, SWT.CHECK);
+		caseItem.setText(UIText.HistoryPage_findbar_ignorecase);
+		new MenuItem(prefsMenu, SWT.SEPARATOR);
+		commitIdItem = new MenuItem(prefsMenu, SWT.RADIO);
+		commitIdItem.setText(UIText.HistoryPage_findbar_commit);
+		commentsItem = new MenuItem(prefsMenu, SWT.RADIO);
+		commentsItem.setText(UIText.HistoryPage_findbar_comments);
+		authorItem = new MenuItem(prefsMenu, SWT.RADIO);
+		authorItem.setText(UIText.HistoryPage_findbar_author);
+		committerItem = new MenuItem(prefsMenu, SWT.RADIO);
+		committerItem.setText(UIText.HistoryPage_findbar_committer);
+
+		prefsItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				if (event.detail == SWT.ARROW) {
+					Rectangle itemBounds = prefsItem.getBounds();
+					Point point = toolBar.toDisplay(itemBounds.x, itemBounds.y
+							+ itemBounds.height);
+					prefsMenu.setLocation(point);
+					prefsMenu.setVisible(true);
+				} else {
+					switch (prefs.getInt(UIPreferences.FINDTOOLBAR_FIND_IN)) {
+					case PREFS_FINDIN_COMMITID:
+						commentsItem.notifyListeners(SWT.Selection, null);
+						break;
+					case PREFS_FINDIN_COMMENTS:
+						authorItem.notifyListeners(SWT.Selection, null);
+						break;
+					case PREFS_FINDIN_AUTHOR:
+						committerItem.notifyListeners(SWT.Selection, null);
+						break;
+					case PREFS_FINDIN_COMMITTER:
+						commitIdItem.notifyListeners(SWT.Selection, null);
+						break;
+					}
+				}
+			}
+		});
+
+		currentPositionLabel = new Label(this, SWT.NULL);
+		GridData totalLabelData = new GridData();
+		totalLabelData.horizontalAlignment = SWT.FILL;
+		totalLabelData.grabExcessHorizontalSpace = true;
+		currentPositionLabel.setLayoutData(totalLabelData);
+		currentPositionLabel.setAlignment(SWT.RIGHT);
+		currentPositionLabel.setText("");
+
+		progressBar = new ProgressBar(this, SWT.HORIZONTAL);
+		GridData findProgressBarData = new GridData();
+		findProgressBarData.heightHint = 12;
+		findProgressBarData.widthHint = 35;
+		progressBar.setLayoutData(findProgressBarData);
+		progressBar.setMinimum(0);
+		progressBar.setMaximum(100);
+
+		final FindToolbar thisToolbar = this;
+		patternField.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				final FindToolbarThread finder = new FindToolbarThread();
+				finder.pattern = ((Text) e.getSource()).getText();
+				finder.fileRevisions = fileRevisions;
+				finder.toolbar = thisToolbar;
+				finder.ignoreCase = caseItem.getSelection();
+				finder.findInCommitId = commitIdItem.getSelection();
+				finder.findInComments = commentsItem.getSelection();
+				finder.findInAuthor = authorItem.getSelection();
+				finder.findInCommitter = committerItem.getSelection();
+				getDisplay().timerExec(200, new Runnable() {
+					public void run() {
+						finder.start();
+					}
+				});
+			}
+		});
+
+		final Listener findButtonsListener = new Listener() {
+			public void handleEvent(Event event) {
+				if (patternField.getText().length() > 0
+						&& findResults.size() == 0) {
+					// If the toolbar was cleared and has a pattern typed,
+					// then we redo the find with the new table data.
+					final FindToolbarThread finder = new FindToolbarThread();
+					finder.pattern = patternField.getText();
+					finder.fileRevisions = fileRevisions;
+					finder.toolbar = thisToolbar;
+					finder.ignoreCase = caseItem.getSelection();
+					finder.findInCommitId = commitIdItem.getSelection();
+					finder.findInComments = commentsItem.getSelection();
+					finder.findInAuthor = authorItem.getSelection();
+					finder.findInCommitter = committerItem.getSelection();
+					finder.start();
+					patternField.setSelection(0, 0);
+				} else {
+					int currentIx = historyTable.getSelectionIndex();
+					int newIx = -1;
+					if (event.widget == nextButton) {
+						newIx = findResults.getIndexAfter(currentIx);
+						if (newIx == -1) {
+							newIx = findResults.getFirstIndex();
+						}
+					} else {
+						newIx = findResults.getIndexBefore(currentIx);
+						if (newIx == -1) {
+							newIx = findResults.getLastIndex();
+						}
+					}
+					sendEvent(event.widget, newIx);
+
+					String current = null;
+					int currentValue = findResults.getMatchNumberFor(newIx);
+					if (currentValue == -1) {
+						current = "-";
+					} else {
+						current = String.valueOf(currentValue);
+					}
+					currentPositionLabel.setText(current + "/"
+							+ findResults.size());
+				}
+			}
+		};
+		nextButton.addListener(SWT.Selection, findButtonsListener);
+		previousButton.addListener(SWT.Selection, findButtonsListener);
+
+		patternField.addKeyListener(new KeyAdapter() {
+			private Event event = new Event();
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.keyCode == SWT.ARROW_DOWN) {
+					if (nextButton.isEnabled()) {
+						event.widget = nextButton;
+						findButtonsListener.handleEvent(event);
+					}
+				} else if (e.keyCode == SWT.ARROW_UP) {
+					if (previousButton.isEnabled()) {
+						event.widget = previousButton;
+						findButtonsListener.handleEvent(event);
+					}
+				}
+			}
+		});
+
+		caseItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				prefs.setValue(UIPreferences.FINDTOOLBAR_IGNORE_CASE, caseItem
+						.getSelection());
+				Activator.getDefault().savePluginPreferences();
+				clear();
+			}
+		});
+		caseItem.setSelection(prefs
+				.getBoolean(UIPreferences.FINDTOOLBAR_IGNORE_CASE));
+
+		int selectedPrefsItem = prefs.getInt(UIPreferences.FINDTOOLBAR_FIND_IN);
+
+		commitIdItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				prefsItem.setImage(commitIdIcon);
+				prefsItem
+						.setToolTipText(UIText.HistoryPage_findbar_changeto_comments);
+				prefsItemChanged(PREFS_FINDIN_COMMITID, commitIdItem);
+			}
+		});
+		if (selectedPrefsItem == PREFS_FINDIN_COMMITID) {
+			commitIdItem.setSelection(true);
+			prefsItem.setImage(commitIdIcon);
+			prefsItem
+					.setToolTipText(UIText.HistoryPage_findbar_changeto_comments);
+		}
+
+		commentsItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				prefsItem.setImage(commentsIcon);
+				prefsItem
+						.setToolTipText(UIText.HistoryPage_findbar_changeto_author);
+				prefsItemChanged(PREFS_FINDIN_COMMENTS, commentsItem);
+			}
+		});
+		if (selectedPrefsItem == PREFS_FINDIN_COMMENTS) {
+			commentsItem.setSelection(true);
+			prefsItem.setImage(commentsIcon);
+			prefsItem
+					.setToolTipText(UIText.HistoryPage_findbar_changeto_author);
+		}
+
+		authorItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				prefsItem.setImage(authorIcon);
+				prefsItem
+						.setToolTipText(UIText.HistoryPage_findbar_changeto_committer);
+				prefsItemChanged(PREFS_FINDIN_AUTHOR, authorItem);
+			}
+		});
+		if (selectedPrefsItem == PREFS_FINDIN_AUTHOR) {
+			authorItem.setSelection(true);
+			prefsItem.setImage(authorIcon);
+			prefsItem
+					.setToolTipText(UIText.HistoryPage_findbar_changeto_committer);
+		}
+
+		committerItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				prefsItem.setImage(committerIcon);
+				prefsItem
+						.setToolTipText(UIText.HistoryPage_findbar_changeto_commit);
+				prefsItemChanged(PREFS_FINDIN_COMMITTER, committerItem);
+			}
+		});
+		if (selectedPrefsItem == PREFS_FINDIN_COMMITTER) {
+			committerItem.setSelection(true);
+			prefsItem.setImage(committerIcon);
+			prefsItem
+					.setToolTipText(UIText.HistoryPage_findbar_changeto_commit);
+		}
+	}
+

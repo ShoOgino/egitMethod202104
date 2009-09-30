@@ -1,0 +1,12 @@
+	public boolean deleteFolder(final IResourceTree tree, final IFolder folder,
+			final int updateFlags, final IProgressMonitor monitor) {
+		// Deleting a GIT repository which is in use is a pretty bad idea. To
+		// delete disconnect the team provider first.
+		//
+		if (data.isProtected(folder)) {
+			return cannotModifyRepository(tree);
+		} else {
+			return FINISH_FOR_ME;
+		}
+	}
+

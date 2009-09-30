@@ -1,0 +1,45 @@
+	private void createSpecsButtonsPanel(final Composite parent) {
+		final Composite specsPanel = new Composite(parent, SWT.NONE);
+		specsPanel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true,
+				false));
+		final RowLayout layout = new RowLayout();
+		layout.spacing = 10;
+		specsPanel.setLayout(layout);
+
+		forceUpdateAllButton = new Button(specsPanel, SWT.PUSH);
+		forceUpdateAllButton.setText(UIText.RefSpecPanel_forceAll);
+		forceUpdateAllButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final List<RefSpec> specsCopy = new ArrayList<RefSpec>(specs);
+				for (final RefSpec spec : specsCopy) {
+					if (!isDeleteRefSpec(spec))
+						setRefSpec(spec, spec.setForceUpdate(true));
+				}
+			}
+		});
+		forceUpdateAllButton
+				.setToolTipText(UIText.RefSpecPanel_forceAllDescription);
+		updateForceUpdateAllButton();
+
+		removeAllSpecButton = new Button(specsPanel, SWT.PUSH);
+		removeAllSpecButton.setImage(imageRegistry.get(IMAGE_CLEAR));
+		removeAllSpecButton.setText(UIText.RefSpecPanel_removeAll);
+		removeAllSpecButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				clearRefSpecs();
+			}
+		});
+		removeAllSpecButton
+				.setToolTipText(UIText.RefSpecPanel_removeAllDescription);
+		updateRemoveAllSpecButton();
+
+		addRefSpecTableListener(new SelectionChangeListener() {
+			public void selectionChanged() {
+				updateForceUpdateAllButton();
+				updateRemoveAllSpecButton();
+			}
+		});
+	}
+

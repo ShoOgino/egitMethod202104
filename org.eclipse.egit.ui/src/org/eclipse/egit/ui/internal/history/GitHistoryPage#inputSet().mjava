@@ -1,0 +1,124 @@
+	@Override
+	public boolean inputSet() {
+		if (revObjectSelectionProvider != null)
+			revObjectSelectionProvider.setActiveRepository(null);
+		cancelRefreshJob();
+
+		if (graph == null)
+			return false;
+
+		final IResource[] in = ((ResourceList) super.getInput()).getItems();
+		if (in == null || in.length == 0)
+			return false;
+
+		db = null;
+
+		final ArrayList<String> paths = new ArrayList<String>(in.length);
+		for (final IResource r : in) {
+			final RepositoryMapping map = RepositoryMapping.getMapping(r);
+			if (map == null)
+				continue;
+
+			if (db == null)
+				db = map.getRepository();
+			else if (db != map.getRepository())
+				return false;
+
+			if (showAllFilter == ShowFilter.SHOWALLFOLDER) {
+				final String name = map.getRepoRelativePath(r.getParent());
+				if (name != null && name.length() > 0)
+					paths.add(name);
+			} else if (showAllFilter == ShowFilter.SHOWALLPROJECT) {
+				final String name = map.getRepoRelativePath(r.getProject());
+				if (name != null && name.length() > 0)
+					paths.add(name);
+			} else if (showAllFilter == ShowFilter.SHOWALLREPO) {
+				// nothing
+			} else /*if (showAllFilter == ShowFilter.SHOWALLRESOURCE)*/ {
+				final String name = map.getRepoRelativePath(r);
+				if (name != null && name.length() > 0)
+					paths.add(name);
+			}
+		}
+
+		if (db == null)
+			return false;
+
+		final AnyObjectId headId;
+		try {
+			headId = db.resolve(Constants.HEAD);
+		} catch (IOException e) {
+			Activator.logError("Cannot parse HEAD in: "
+					+ db.getDirectory().getAbsolutePath(), e);
+			return false;
+		}
+
+		if (currentWalk == null || currentWalk.getRepository() != db
+				|| pathChange(pathFilters, paths) || headId != null
+				&& !headId.equals(currentHeadId)) {
+			// TODO Do not dispose SWTWalk just because HEAD changed
+			// In theory we should be able to update the graph and
+			// not dispose of the SWTWalk, even if HEAD was reset to
+			// HEAD^1 and the old HEAD commit should not be visible.
+			//
+			currentWalk = new SWTWalk(db);
+			currentWalk.sort(RevSort.COMMIT_TIME_DESC, true);
+			currentWalk.sort(RevSort.BOUNDARY, true);
+			highlightFlag = currentWalk.newFlag("highlight");
+		} else {
+			currentWalk.reset();
+		}
+
+		if (headId == null)
+			return false;
+		try {
+			currentWalk.markStart(currentWalk.parseCommit(headId));
+		} catch (IOException e) {
+			Activator.logError("Cannot read HEAD commit " + headId + " in: "
+					+ db.getDirectory().getAbsolutePath(), e);
+			return false;
+		}
+
+		final TreeWalk fileWalker = new TreeWalk(db);
+		fileWalker.setRecursive(true);
+		if (paths.size() > 0) {
+			pathFilters = paths;
+			currentWalk.setTreeFilter(AndTreeFilter.create(PathFilterGroup
+					.createFromStrings(paths), TreeFilter.ANY_DIFF));
+			fileWalker.setFilter(currentWalk.getTreeFilter().clone());
+
+		} else {
+			pathFilters = null;
+			currentWalk.setTreeFilter(TreeFilter.ALL);
+			fileWalker.setFilter(TreeFilter.ANY_DIFF);
+		}
+		fileViewer.setTreeWalk(fileWalker);
+		findToolbar.clear();
+		graph.setInput(highlightFlag, null, null);
+
+		final SWTCommitList list;
+		list = new SWTCommitList(graph.getControl().getDisplay());
+		list.source(currentWalk);
+
+		final GenerateHistoryJob rj = new GenerateHistoryJob(this, list);
+		final Repository fdb = db;
+		rj.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(final IJobChangeEvent event) {
+				revObjectSelectionProvider.setActiveRepository(fdb);
+				final Control graphctl = graph.getControl();
+				if (job != rj || graphctl.isDisposed())
+					return;
+				graphctl.getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						if (job == rj)
+							job = null;
+					}
+				});
+			}
+		});
+		job = rj;
+		schedule(rj);
+		return true;
+	}
+

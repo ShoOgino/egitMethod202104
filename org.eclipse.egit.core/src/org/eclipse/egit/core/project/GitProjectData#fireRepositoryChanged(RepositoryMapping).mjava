@@ -1,0 +1,11 @@
+	/**
+	 * Notify registered {@link RepositoryChangeListener}s of a change.
+	 * 
+	 * @param which
+	 *            the repository which has had changes occur within it.
+	 */
+	static void fireRepositoryChanged(final RepositoryMapping which) {
+		for (RepositoryChangeListener listener : getRepositoryChangeListeners())
+			listener.repositoryChanged(which);
+	}
+

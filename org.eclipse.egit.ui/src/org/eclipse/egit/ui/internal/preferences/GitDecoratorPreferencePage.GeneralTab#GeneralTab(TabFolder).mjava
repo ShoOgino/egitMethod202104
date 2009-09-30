@@ -1,0 +1,25 @@
+		public GeneralTab(TabFolder parent) {
+			Composite composite = SWTUtils.createHVFillComposite(parent,
+					SWTUtils.MARGINS_DEFAULT, 1);
+
+			recomputeAncestorDecorations = SWTUtils
+					.createCheckBox(
+							composite,
+							UIText.DecoratorPreferencesPage_recomputeAncestorDecorations);
+			recomputeAncestorDecorations
+					.setToolTipText(UIText.DecoratorPreferencesPage_recomputeAncestorDecorationsTooltip);
+
+			SWTUtils.createLabel(composite,
+					UIText.DecoratorPreferencesPage_computeRecursiveLimit);
+			containerRecurseLimit = createLabeledScaleControl(composite);
+			containerRecurseLimit
+					.setToolTipText(UIText.DecoratorPreferencesPage_computeRecursiveLimitTooltip);
+
+			recomputeAncestorDecorations.addSelectionListener(this);
+			containerRecurseLimit.addSelectionListener(this);
+
+			final TabItem tabItem = new TabItem(parent, SWT.NONE);
+			tabItem.setText(UIText.DecoratorPreferencesPage_generalTabFolder);
+			tabItem.setControl(composite);
+		}
+

@@ -1,0 +1,108 @@
+	private void createCreationPanel() {
+		final Group creationPanel = new Group(panel, SWT.NONE);
+		creationPanel.setText(UIText.RefSpecPanel_creationGroup);
+		creationPanel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false));
+		final GridLayout layout = new GridLayout();
+		layout.numColumns = 3;
+		layout.horizontalSpacing = 10;
+		layout.verticalSpacing = 2;
+		creationPanel.setLayout(layout);
+
+		new Label(creationPanel, SWT.NONE)
+				.setText(UIText.RefSpecPanel_creationSrc);
+		new Label(creationPanel, SWT.NONE)
+				.setText(UIText.RefSpecPanel_creationDst);
+		creationButton = new Button(creationPanel, SWT.PUSH);
+		creationButton.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, false,
+				false, 1, 2));
+		creationButton.setImage(imageRegistry.get(IMAGE_ADD));
+		creationButton.setText(UIText.RefSpecPanel_creationButton);
+		creationButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final String src = creationSrcCombo.getText();
+				final String dst = creationDstCombo.getText();
+				RefSpec spec = new RefSpec(src + ':' + dst);
+				addRefSpec(spec);
+				creationSrcCombo.setText(""); //$NON-NLS-1$
+				creationDstCombo.setText(""); //$NON-NLS-1$
+			}
+		});
+		creationButton.setToolTipText(NLS.bind(
+				UIText.RefSpecPanel_creationButtonDescription, typeString()));
+
+		creationSrcDecoration = createAssistedDecoratedCombo(creationPanel,
+				getRefsProposalProvider(pushSpecs),
+				new IContentProposalListener() {
+					public void proposalAccepted(IContentProposal proposal) {
+						tryAutoCompleteSrcToDst();
+					}
+				});
+		creationSrcCombo = (Combo) creationSrcDecoration.getControl();
+		creationSrcCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false));
+		creationSrcCombo.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(TraverseEvent e) {
+				// SWT.TRAVERSE_RETURN may be also reasonable here, but
+				// it can be confused with RETURN for content proposal
+				if (e.detail == SWT.TRAVERSE_TAB_NEXT)
+					tryAutoCompleteSrcToDst();
+			}
+		});
+		if (pushSpecs)
+			creationSrcCombo
+					.setToolTipText(UIText.RefSpecPanel_srcPushDescription);
+		else
+			creationSrcCombo
+					.setToolTipText(UIText.RefSpecPanel_srcFetchDescription);
+		creationSrcComboSupport = new ComboLabelingSupport(creationSrcCombo,
+				new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						tryAutoCompleteSrcToDst();
+					}
+				});
+
+		creationDstDecoration = createAssistedDecoratedCombo(creationPanel,
+				getRefsProposalProvider(!pushSpecs),
+				new IContentProposalListener() {
+					public void proposalAccepted(IContentProposal proposal) {
+						tryAutoCompleteDstToSrc();
+					}
+				});
+		creationDstCombo = (Combo) creationDstDecoration.getControl();
+		creationDstCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false));
+		creationDstCombo.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(TraverseEvent e) {
+				// SWT.TRAVERSE_RETURN may be also reasonable here, but
+				// it can be confused with RETURN for content proposal
+				if (e.detail == SWT.TRAVERSE_TAB_NEXT)
+					tryAutoCompleteDstToSrc();
+			}
+		});
+		if (pushSpecs)
+			creationDstCombo
+					.setToolTipText(UIText.RefSpecPanel_dstPushDescription);
+		else
+			creationDstCombo
+					.setToolTipText(UIText.RefSpecPanel_dstFetchDescription);
+		creationDstComboSupport = new ComboLabelingSupport(creationDstCombo,
+				new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						tryAutoCompleteDstToSrc();
+					}
+				});
+
+		validateCreationPanel();
+		final ModifyListener validator = new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				validateCreationPanel();
+			}
+		};
+		creationSrcCombo.addModifyListener(validator);
+		creationDstCombo.addModifyListener(validator);
+	}
+

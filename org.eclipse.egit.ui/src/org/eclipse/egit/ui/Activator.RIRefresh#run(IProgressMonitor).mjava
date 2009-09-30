@@ -1,0 +1,29 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			monitor.beginTask("Refreshing git managed projects", projects.length);
+
+			while (projectsToScan.size() > 0) {
+				IProject p;
+				synchronized (projectsToScan) {
+					if (projectsToScan.size() == 0)
+						break;
+					Iterator<IProject> i = projectsToScan.iterator();
+					p = i.next();
+					i.remove();
+				}
+				ISchedulingRule rule = p.getWorkspace().getRuleFactory().refreshRule(p);
+				try {
+					getJobManager().beginRule(rule, monitor);
+					p.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor, 1));
+				} catch (CoreException e) {
+					logError("Failed to refresh projects from index changes", e);
+					return new Status(IStatus.ERROR, getPluginId(), e.getMessage());
+				} finally {
+					getJobManager().endRule(rule);
+				}
+			}
+			monitor.done();
+			return Status.OK_STATUS;
+		}
+

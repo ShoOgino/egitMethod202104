@@ -1,0 +1,31 @@
+	@SuppressWarnings("fallthrough")
+	public DecoratableResourceAdapter(IResource resourceToWrap)
+			throws IOException {
+		resource = resourceToWrap;
+		mapping = RepositoryMapping.getMapping(resource);
+		repository = mapping.getRepository();
+		headId = repository.resolve(Constants.HEAD);
+
+		store = Activator.getDefault().getPreferenceStore();
+
+		// TODO: Add option to shorten branch name to 6 chars if it's a SHA
+		branch = repository.getBranch();
+
+		TreeWalk treeWalk = createThreeWayTreeWalk();
+		if (treeWalk == null)
+			return;
+
+		switch (resource.getType()) {
+		case IResource.FILE:
+			if (!treeWalk.next())
+				return;
+			extractResourceProperties(treeWalk);
+			break;
+		case IResource.PROJECT:
+			tracked = true;
+		case IResource.FOLDER:
+			extractContainerProperties(treeWalk);
+			break;
+		}
+	}
+

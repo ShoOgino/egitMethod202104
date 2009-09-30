@@ -1,0 +1,21 @@
+	/**
+	 * @param r any workbench resource contained within this project.
+	 * @return the mapping for the specified project
+	 */
+	public RepositoryMapping getRepositoryMapping(IResource r) {
+		try {
+			for (; r != null; r = r.getParent()) {
+				final RepositoryMapping m;
+
+				if (!r.isAccessible())
+					continue;
+				m = (RepositoryMapping) r.getSessionProperty(MAPPING_KEY);
+				if (m != null)
+					return m;
+			}
+		} catch (CoreException err) {
+			Activator.logError("Failed finding RepositoryMapping", err);
+		}
+		return null;
+	}
+

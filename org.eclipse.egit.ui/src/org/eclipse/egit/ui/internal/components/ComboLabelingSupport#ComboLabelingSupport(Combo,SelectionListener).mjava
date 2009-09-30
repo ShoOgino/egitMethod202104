@@ -1,0 +1,30 @@
+	/**
+	 * Installs labeling support on provided combo. setItems method of combo
+	 * shouldn't be called manually after that installation.
+	 * <p>
+	 * Support class is initialized with empty proposals list.
+	 *
+	 * @param combo
+	 *            target combo to install on.
+	 * @param selectionListener
+	 *            listener that is notified when content is filled after label
+	 *            being clicked. May be null.
+	 */
+	public ComboLabelingSupport(final Combo combo,
+			final SelectionListener selectionListener) {
+		this.combo = combo;
+
+		combo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int i = combo.getSelectionIndex();
+				if (i != -1 && i < proposals.size()) {
+					combo.setText(proposals.get(i).getContent());
+					if (selectionListener != null)
+						selectionListener.widgetSelected(e);
+				}
+			}
+		});
+		setProposals(Collections.<IContentProposal> emptyList());
+	}
+

@@ -1,0 +1,41 @@
+	/**
+	 * Store information about the repository connection in the workspace
+	 *
+	 * @throws CoreException
+	 */
+	public void store() throws CoreException {
+		final File dat = propertyFile();
+		final File tmp;
+		boolean ok = false;
+
+		try {
+			trace("save " + dat);
+			tmp = File.createTempFile("gpd_", ".prop", dat.getParentFile());
+			final FileOutputStream o = new FileOutputStream(tmp);
+			try {
+				final Properties p = new Properties();
+				final Iterator i = mappings.iterator();
+				while (i.hasNext()) {
+					((RepositoryMapping) i.next()).store(p);
+				}
+				p.store(o, "GitProjectData");
+				ok = true;
+			} finally {
+				o.close();
+				if (!ok) {
+					tmp.delete();
+				}
+			}
+		} catch (IOException ioe) {
+			throw Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
+					dat), ioe);
+		}
+
+		dat.delete();
+		if (!tmp.renameTo(dat)) {
+			tmp.delete();
+			throw Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
+					dat), null);
+		}
+	}
+

@@ -1,0 +1,11 @@
+	/**
+	 * Notifies all registered <code>IContentChangeListener</code>s of a content
+	 * change.
+	 */
+	protected void fireContentChanged() {
+		if (fChangeNotifier == null || fChangeNotifier.isEmpty()) {
+			return;
+		}
+		fChangeNotifier.fireContentChanged();
+	}
+

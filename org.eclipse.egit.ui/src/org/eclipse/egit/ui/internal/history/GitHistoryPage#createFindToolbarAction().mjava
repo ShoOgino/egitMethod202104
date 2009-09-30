@@ -1,0 +1,12 @@
+	private IAction createFindToolbarAction() {
+		final IAction r = new Action("Fi", UIIcons.ELCL16_FIND) {
+			public void run() {
+				prefs.setValue(SHOW_FIND_TOOLBAR, isChecked());
+				layout();
+			}
+		};
+		r.setChecked(prefs.getBoolean(SHOW_FIND_TOOLBAR));
+		r.setToolTipText(UIText.HistoryPage_findbar_findTooltip);
+		return r;
+	}
+

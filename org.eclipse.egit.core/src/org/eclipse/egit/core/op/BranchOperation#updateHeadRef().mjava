@@ -1,0 +1,8 @@
+	private void updateHeadRef() throws TeamException {
+		try {
+			repository.writeSymref(Constants.HEAD, refName);
+		} catch (IOException e) {
+			throw new TeamException("Updating HEAD to ref: " + refName, e);
+		}
+	}
+

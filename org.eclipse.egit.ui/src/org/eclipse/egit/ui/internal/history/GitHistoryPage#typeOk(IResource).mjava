@@ -1,0 +1,10 @@
+	private static boolean typeOk(final IResource object) {
+		switch (object.getType()) {
+		case IResource.FILE:
+		case IResource.FOLDER:
+		case IResource.PROJECT:
+			return true;
+		}
+		return false;
+	}
+

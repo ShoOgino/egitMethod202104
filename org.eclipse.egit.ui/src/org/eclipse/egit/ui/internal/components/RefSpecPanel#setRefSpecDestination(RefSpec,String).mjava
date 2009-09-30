@@ -1,0 +1,10 @@
+	private static RefSpec setRefSpecDestination(final RefSpec spec,
+			final String dst) {
+		final String src;
+		if (RefSpec.isWildcard(dst))
+			src = wildcardSpecComponent(spec.getSource());
+		else
+			src = unwildcardSpecComponent(spec.getSource(), dst);
+		return spec.setSourceDestination(src, dst);
+	}
+

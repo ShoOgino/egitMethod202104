@@ -1,0 +1,45 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			try {
+				// A repository can contain many projects, only scan once
+				// (a project could in theory be distributed among many
+				// repositories. We discard that as being ugly and stupid for
+				// the moment.
+				IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+				monitor.beginTask("Scanning Git repositories for changes", projects.length);
+				Set<Repository> scanned = new HashSet<Repository>();
+				for (IProject p : projects) {
+					RepositoryMapping mapping = RepositoryMapping.getMapping(p);
+					if (mapping != null) {
+						Repository r = mapping.getRepository();
+						if (!scanned.contains(r)) {
+							if (monitor.isCanceled())
+								break;
+							trace("Scanning " + r + " for changes");
+							scanned.add(r);
+							ISchedulingRule rule = p.getWorkspace().getRuleFactory().modifyRule(p);
+							getJobManager().beginRule(rule, monitor);
+							try {
+								r.scanForRepoChanges();
+							} finally {
+								getJobManager().endRule(rule);
+							}
+						}
+					}
+					monitor.worked(1);
+				}
+				monitor.done();
+				trace("Rescheduling " + getName() + " job");
+				schedule(REPO_SCAN_INTERVAL);
+			} catch (Exception e) {
+				trace("Stopped rescheduling " + getName() + "job");
+				return new Status(
+						IStatus.ERROR,
+						getPluginId(),
+						0,
+						"An error occurred while scanning for changes. Scanning aborted",
+						e);
+			}
+			return Status.OK_STATUS;
+		}
+

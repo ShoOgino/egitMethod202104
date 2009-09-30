@@ -1,0 +1,37 @@
+	public void run(IProgressMonitor m) throws CoreException {
+		if (m == null)
+			m = new NullProgressMonitor();
+
+		caches.clear();
+		mappings.clear();
+
+		m.beginTask(CoreText.AssumeUnchangedOperation_adding,
+				rsrcList.size() * 200);
+		try {
+			for (Object obj : rsrcList) {
+				obj = ((IAdaptable) obj).getAdapter(IResource.class);
+				if (obj instanceof IResource)
+					assumeValid((IResource) obj);
+				m.worked(200);
+			}
+
+			for (Map.Entry<Repository, DirCache> e : caches.entrySet()) {
+				final Repository db = e.getKey();
+				final DirCache editor = e.getValue();
+				m.setTaskName("Writing index for " + db.getDirectory());
+				editor.write();
+				editor.commit();
+			}
+		} catch (RuntimeException e) {
+			throw Activator.error(CoreText.UntrackOperation_failed, e);
+		} catch (IOException e) {
+			throw Activator.error(CoreText.UntrackOperation_failed, e);
+		} finally {
+			for (final RepositoryMapping rm : mappings.keySet())
+				rm.fireRepositoryChanged();
+			caches.clear();
+			mappings.clear();
+			m.done();
+		}
+	}
+

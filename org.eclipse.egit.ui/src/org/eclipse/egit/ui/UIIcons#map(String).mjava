@@ -1,0 +1,11 @@
+	private static ImageDescriptor map(final String icon) {
+		if (base != null) {
+			try {
+				return ImageDescriptor.createFromURL(new URL(base, icon));
+			} catch (MalformedURLException mux) {
+				Activator.logError("Can't load plugin image.", mux);
+			}
+		}
+		return ImageDescriptor.getMissingImageDescriptor();
+	}
+
