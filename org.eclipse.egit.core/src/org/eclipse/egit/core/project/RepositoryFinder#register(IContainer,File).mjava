@@ -5,6 +5,9 @@
 		} catch (IOException ioe) {
 			f = gitdir.getAbsoluteFile();
 		}
+		if (gitdirs.contains(f))
+			return;
+		gitdirs.add(f);
 		results.add(new RepositoryMapping(c, f));
 	}
 
