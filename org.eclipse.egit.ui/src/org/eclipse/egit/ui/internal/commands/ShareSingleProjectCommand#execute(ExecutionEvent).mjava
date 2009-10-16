@@ -1,0 +1,19 @@
+	/**
+	 * Invokes 'Configure Git Repository' dialog to share given project.
+	 *
+	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 */
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final String projectName = event.getParameter(PROJECT_NAME_PARAMETER);
+		final IProject projectToShare = ResourcesPlugin.getWorkspace()
+				.getRoot().getProject(projectName);
+		IWorkbench workbench = HandlerUtil.getActiveWorkbenchWindow(event)
+				.getWorkbench();
+
+		final SharingWizard wizard = new SharingWizard();
+		wizard.init(workbench, projectToShare);
+		final Shell shell = HandlerUtil.getActiveShell(event);
+		ConfigureProjectWizard.openWizard(shell, wizard);
+		return null;
+	}
+
