@@ -4,20 +4,23 @@
 		}
 
 		m.beginTask(CoreText.ConnectProviderOperation_connecting,
-				100 * projects.length);
+				100 * projects.size());
 		try {
 
-			for (IProject project : projects) {
+			for (Iterator iterator = projects.keySet().iterator(); iterator.hasNext();) {
+				IProject project = (IProject) iterator.next();
 				m.setTaskName(NLS.bind(
 						CoreText.ConnectProviderOperation_ConnectingProject,
 						project.getName()));
 				Activator.trace("Locating repository for " + project); //$NON-NLS-1$
 				Collection<RepositoryMapping> repos = new RepositoryFinder(
 						project).find(new SubProgressMonitor(m, 40));
-				if (repos.size() == 1) {
+				File suggestedRepo = projects.get(project);
+				RepositoryMapping actualMapping= findActualRepository(repos, suggestedRepo);
+				if (actualMapping != null) {
 					GitProjectData projectData = new GitProjectData(project);
 					try {
-						projectData.setRepositoryMappings(repos);
+						projectData.setRepositoryMappings(Arrays.asList(actualMapping));
 						projectData.store();
 					} catch (CoreException ce) {
 						GitProjectData.delete(project);

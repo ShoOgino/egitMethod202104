@@ -1,7 +1,7 @@
 	public void testNoRepository() throws CoreException {
 
 		ConnectProviderOperation operation = new ConnectProviderOperation(
-				project.getProject());
+				project.getProject(), new File("../../.git"));
 		operation.run(null);
 
 		assertFalse(RepositoryProvider.isShared(project.getProject()));

@@ -4,7 +4,7 @@
 	 * @param projects
 	 *            the projects to connect to the Git team provider.
 	 */
-	public ConnectProviderOperation(final IProject[] projects) {
-		this.projects = projects;
+	public ConnectProviderOperation(final Map<IProject, File> projects) {
+		this.projects.putAll(projects);
 	}
 

@@ -58,7 +58,7 @@
 				try {
 					Repository repository = new Repository(gitDir);
 					repository.create();
-					for (IProject project : getProjects()) {
+					for (IProject project : getProjects().keySet()) {
 						// If we don't refresh the project directories right
 						// now we won't later know that a .git directory
 						// exists within it and we won't mark the .git

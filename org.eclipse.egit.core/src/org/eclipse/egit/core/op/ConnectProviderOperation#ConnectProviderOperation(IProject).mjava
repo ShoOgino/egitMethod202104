@@ -1,10 +1,13 @@
 	/**
 	 * Create a new connection operation to execute within the workspace.
+	 * <p>
+	 * Uses <code>.git</code> as a default relative path to repository.
+	 * @see #ConnectProviderOperation(IProject, File)
 	 *
 	 * @param proj
 	 *            the project to connect to the Git team provider.
 	 */
 	public ConnectProviderOperation(final IProject proj) {
-		this(new IProject[] { proj });
+		this(proj, new File(".git"));
 	}
 

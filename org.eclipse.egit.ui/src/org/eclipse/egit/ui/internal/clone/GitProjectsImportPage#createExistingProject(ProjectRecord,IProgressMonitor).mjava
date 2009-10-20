@@ -39,7 +39,7 @@
 					monitor, openTicks));
 			if (share) {
 				ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
-						project);
+						project, record.repository);
 				connectProviderOperation
 						.run(new SubProgressMonitor(monitor, 20));
 			}
