@@ -1,5 +1,5 @@
 	@Override
-	protected IWorkspaceRunnable createOperation(IAction act, List selection) {
+	protected IWorkspaceRunnable createOperation(List selection) {
 		return new QuickdiffBaselineOperation(getActiveRepository(), ((RevObject)selection.get(0)).getId().name());
 	}
 
