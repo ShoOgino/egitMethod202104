@@ -9,7 +9,7 @@
 	private RepositoryMapping findActualRepository(
 			Collection<RepositoryMapping> repos, File suggestedRepo) {
 		for (RepositoryMapping rm : repos) {
-			if (rm.getGitDir().equals(suggestedRepo.getPath()))
+			if (Path.fromOSString(rm.getGitDir()).equals(Path.fromOSString(suggestedRepo.getPath())))
 				return rm;
 		}
 		return null;
