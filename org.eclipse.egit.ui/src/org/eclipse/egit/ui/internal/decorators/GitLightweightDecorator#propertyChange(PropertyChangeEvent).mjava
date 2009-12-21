@@ -13,6 +13,11 @@
 				|| prop.equals(TeamUI.GLOBAL_FILE_TYPES_CHANGED)
 				|| prop.equals(Activator.DECORATORS_CHANGED)) {
 			postLabelEvent(new LabelProviderChangedEvent(this));
+		} else if (prop.equals(UIPreferences.THEME_UncommittedChangeBackgroundColor)
+				|| prop.equals(UIPreferences.THEME_UncommittedChangeFont)
+				|| prop.equals(UIPreferences.THEME_UncommittedChangeForegroundColor)) {
+			ensureFontAndColorsCreated(fonts, colors);
+			postLabelEvent(new LabelProviderChangedEvent(this)); // TODO do I really need this?
 		}
 	}
 

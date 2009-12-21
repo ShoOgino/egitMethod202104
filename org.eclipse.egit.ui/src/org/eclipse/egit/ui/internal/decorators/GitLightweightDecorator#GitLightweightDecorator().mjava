@@ -10,5 +10,9 @@
 		GitProjectData.addRepositoryChangeListener(this);
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this,
 				IResourceChangeEvent.POST_CHANGE);
+
+		// This is an optimization to ensure that while decorating our fonts and colors are
+		// pre-created and decoration can occur without having to syncExec.
+		ensureFontAndColorsCreated(fonts, colors);
 	}
 
