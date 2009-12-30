@@ -1,0 +1,14 @@
+	private void fillTreeItemWithGitDirectory(RepositoryMapping m, TreeItem treeItem2, boolean isAlternative) {
+		if (m.getGitDir() == null)
+			treeItem2.setText(2, UIText.ExistingOrNewPage_SymbolicValueEmptyMapping);
+		else {
+			IPath container = m.getContainerPath();
+			if (!container.isEmpty())
+				container = container.addTrailingSeparator();
+			IPath relativePath = container.append(m.getGitDir());
+			if (isAlternative)
+				treeItem2.setText(0, relativePath.removeLastSegments(1).addTrailingSeparator().toString());
+			treeItem2.setText(2, relativePath.toString());
+		}
+	}
+
