@@ -5,7 +5,6 @@
 						.getWorkspace().getRoot().getLocation().toFile()
 						.getAbsoluteFile().toString());
 		project = new TestProject(true);
-		checkNotNested();
 		gitDir = new File(project.getProject().getWorkspace().getRoot()
 				.getRawLocation().toFile(), ".git");
 		rmrf(gitDir);
