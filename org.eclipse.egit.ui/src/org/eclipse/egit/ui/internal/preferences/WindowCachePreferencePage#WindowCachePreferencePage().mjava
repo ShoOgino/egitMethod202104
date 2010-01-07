@@ -2,6 +2,8 @@
 	public WindowCachePreferencePage() {
 		super(GRID);
 		setTitle(UIText.WindowCachePreferencePage_title);
-		setPreferenceStore(Activator.getDefault().getPreferenceStore());
+		ScopedPreferenceStore store = new ScopedPreferenceStore(
+				new InstanceScope(), Activator.getPluginId());
+		setPreferenceStore(store);
 	}
 
