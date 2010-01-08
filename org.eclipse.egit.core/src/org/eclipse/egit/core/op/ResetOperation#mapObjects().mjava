@@ -16,10 +16,5 @@
 			}
 		}
 
-		try {
-			previousCommit = repository.mapCommit(repository.resolve(Constants.HEAD));
-		} catch (IOException e) {
-			throw new TeamException("looking up HEAD commit", e);
-		}
 	}
 
