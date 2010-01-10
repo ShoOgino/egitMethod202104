@@ -28,9 +28,7 @@
 
 		Ref HEAD = null;
 		try {
-			final ObjectId id = localDb.resolve(Constants.HEAD);
-			if (id != null)
-				HEAD = new Ref(Storage.LOOSE, Constants.HEAD, id);
+			HEAD = localDb.getRef(Constants.HEAD);
 		} catch (IOException e) {
 			Activator.logError("Couldn't read HEAD from local repository", e); //$NON-NLS-1$
 		}

@@ -1,6 +1,15 @@
 	private void updateHeadRef() throws TeamException {
 		try {
-			repository.writeSymref(Constants.HEAD, refName);
+			RefUpdate u = repository.updateRef(Constants.HEAD);
+			u.setRefLogMessage("checkout: moving to " + refName, false);
+			switch (u.link(refName)) {
+			case NEW:
+			case FORCED:
+			case NO_CHANGE:
+				break;
+			default:
+				throw new IOException(u.getResult().name());
+			}
 		} catch (IOException e) {
 			throw new TeamException("Updating HEAD to ref: " + refName, e);
 		}
