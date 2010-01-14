@@ -7,7 +7,7 @@
 		fileA.create(new ByteArrayInputStream(srcA.getBytes()), false, null);
 
 		File gitDir = new File(project.getProject().getWorkspace().getRoot()
-				.getRawLocation().toFile(), ".git");
+				.getRawLocation().toFile(), Constants.DOT_GIT);
 		Repository thisGit = new Repository(gitDir);
 		thisGit.create();
 		Tree rootTree = new Tree(thisGit);
@@ -32,7 +32,7 @@
 		assertEquals(RefUpdate.Result.NEW, lck.forceUpdate());
 
 		ConnectProviderOperation operation = new ConnectProviderOperation(
-				project.getProject(), new File("../.git"));
+				project.getProject(), new File("..", Constants.DOT_GIT));
 		operation.run(null);
 
 		final boolean f[] = new boolean[1];

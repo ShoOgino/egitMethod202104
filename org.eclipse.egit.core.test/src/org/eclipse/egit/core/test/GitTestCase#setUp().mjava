@@ -6,7 +6,7 @@
 						.getAbsoluteFile().toString());
 		project = new TestProject(true);
 		gitDir = new File(project.getProject().getWorkspace().getRoot()
-				.getRawLocation().toFile(), ".git");
+				.getRawLocation().toFile(), Constants.DOT_GIT);
 		rmrf(gitDir);
 	}
 

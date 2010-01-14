@@ -2,7 +2,7 @@
 		super.setUp();
 		project.createSourceFolder();
 		gitDir = new File(project.getProject().getWorkspace().getRoot()
-				.getRawLocation().toFile(), ".git");
+				.getRawLocation().toFile(), Constants.DOT_GIT);
 		thisGit = new Repository(gitDir);
 		workDir = thisGit.getWorkDir();
 		thisGit.create();
@@ -50,7 +50,7 @@
 		assertEquals(RefUpdate.Result.NEW, lck.forceUpdate());
 
 		ConnectProviderOperation operation = new ConnectProviderOperation(
-				project.getProject(), new File("../.git"));
+				project.getProject(), new File("..", Constants.DOT_GIT));
 		operation.run(null);
 	}
 

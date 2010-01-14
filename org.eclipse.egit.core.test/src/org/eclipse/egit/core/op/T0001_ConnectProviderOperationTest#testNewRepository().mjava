@@ -1,12 +1,12 @@
 	public void testNewRepository() throws CoreException, IOException {
 
 		File gitDir = new File(project.getProject().getWorkspace().getRoot()
-				.getRawLocation().toFile(), ".git");
+				.getRawLocation().toFile(), Constants.DOT_GIT);
 		Repository repository = new Repository(gitDir);
 		repository.create();
 		repository.close();
 		ConnectProviderOperation operation = new ConnectProviderOperation(
-				project.getProject(), new File("../.git"));
+				project.getProject(), new File("..", Constants.DOT_GIT));
 		operation.run(null);
 
 		assertTrue(RepositoryProvider.isShared(project.getProject()));

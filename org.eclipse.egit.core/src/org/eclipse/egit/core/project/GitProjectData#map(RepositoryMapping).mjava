@@ -46,7 +46,7 @@
 			Activator.logError("Failed to cache RepositoryMapping", err);
 		}
 
-		dotGit = c.findMember(".git");
+		dotGit = c.findMember(Constants.DOT_GIT);
 		if (dotGit != null && dotGit.getLocation().toFile().equals(git)) {
 			protect(dotGit);
 		}
