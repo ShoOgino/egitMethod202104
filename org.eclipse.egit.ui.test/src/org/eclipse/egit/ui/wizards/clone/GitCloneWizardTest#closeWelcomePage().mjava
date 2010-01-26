@@ -1,0 +1,11 @@
+	// TODO: push this in the junit class runner. This can then be shared across
+	// all tests.
+	@BeforeClass
+	public static void closeWelcomePage() {
+		try {
+			bot.viewByTitle("Welcome").close();
+		} catch (WidgetNotFoundException e) {
+			// somebody else probably closed it, lets not feel bad about it.
+		}
+	}
+

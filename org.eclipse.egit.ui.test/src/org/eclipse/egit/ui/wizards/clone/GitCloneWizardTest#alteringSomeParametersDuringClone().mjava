@@ -1,0 +1,43 @@
+	@Test
+	public void alteringSomeParametersDuringClone() throws Exception {
+
+		File destRepo = new File(new File(ResourcesPlugin.getWorkspace()
+				.getRoot().getLocation().toFile().getParent(),
+				"junit-workspace"), "EGIT2");
+
+		RepoPropertiesPage repoProperties = importWizard.openWizard();
+		RepoRemoteBranchesPage remoteBranches = repoProperties
+				.nextToRemoteBranches("git://repo.or.cz/egit.git");
+		remoteBranches.deselectAllBranches();
+		remoteBranches
+				.assertErrorMessage("At least one branch must be selected.");
+		remoteBranches.assertNextIsDisabled();
+
+		remoteBranches.selectBranches("historical/pre-eclipse");
+		remoteBranches.assertNextIsEnabled();
+
+		WorkingCopyPage workingCopy = remoteBranches.nextToWorkingCopy();
+		workingCopy.setDirectory(destRepo.toString());
+		workingCopy.assertBranch("historical/pre-eclipse");
+		workingCopy.setRemoteName("src");
+		workingCopy.doNotImportProjectsAfterClone();
+		workingCopy.waitForCreate();
+
+		// Some random sampling to see we got something. We do not test
+		// the integrity of the repo here. Only a few basic properties
+		// we'd expect from a clone made this way, that would possibly
+		// not hold true given othe parameters in the GUI.
+		Repository repository = new Repository(new File(destRepo, ".git"));
+		assertNotNull(repository.resolve("src/historical/pre-eclipse"));
+		// we didn't clone that one
+		assertNull(repository.resolve("src/master"));
+		// and a local master initialized from origin/master (default!)
+		assertEquals(repository.resolve("stable"), repository
+				.resolve("src/stable"));
+		// A well known tag
+		assertEquals("90b818e596660b813b6fcf68f1e9e9b62c615130", repository
+				.resolve("refs/tags/v0.4.0").name());
+		// lots of refs
+		assertTrue(repository.getAllRefs().size() >= 10);
+	}
+

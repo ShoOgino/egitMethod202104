@@ -1,0 +1,11 @@
+	public void deselectAllBranches() {
+		SWTBotTable table = bot.table();
+
+		bot.waitUntil(widgetIsEnabled(table));
+
+		int rowCount = table.rowCount();
+		for (int i = 0; i < rowCount; i++) {
+			table.getTableItem(i).uncheck();
+		}
+	}
+

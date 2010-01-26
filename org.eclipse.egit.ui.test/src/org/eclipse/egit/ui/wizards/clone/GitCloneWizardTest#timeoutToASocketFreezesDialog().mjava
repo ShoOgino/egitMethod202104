@@ -1,0 +1,13 @@
+	// TODO: Broken, seems that this takes forever and does not come back with
+	// an error. Perhaps set a higher timeout for this test ?
+	@Ignore
+	public void timeoutToASocketFreezesDialog() throws Exception {
+		RepoPropertiesPage repoProperties = importWizard.openWizard();
+		RepoRemoteBranchesPage remoteBranches = repoProperties
+				.nextToRemoteBranches("git://www.example.com/EGIT");
+		remoteBranches
+				.assertErrorMessage("git://www.example.com/EGIT: Connection timed out");
+		remoteBranches.assertCannotProceed();
+		remoteBranches.cancel();
+	}
+

@@ -1,0 +1,49 @@
+	@SuppressWarnings("boxing")
+	@Test
+	public void canCloneARemoteRepo() throws Exception {
+		File destRepo = new File(new File(ResourcesPlugin.getWorkspace()
+				.getRoot().getLocation().toFile().getParent(),
+				"junit-workspace"), "egit");
+
+		RepoPropertiesPage propertiesPage = importWizard.openWizard();
+
+		RepoRemoteBranchesPage remoteBranches = propertiesPage
+				.nextToRemoteBranches("git://repo.or.cz/egit.git");
+
+		remoteBranches.assertRemoteBranches("historical/pre-eclipse", "master");
+		remoteBranches.selectBranches("historical/pre-eclipse");
+
+		WorkingCopyPage workingCopy = remoteBranches.nextToWorkingCopy();
+
+		workingCopy.assertDirectory(destRepo.toString());
+		workingCopy.assertBranch("master");
+		workingCopy.assertRemoteName("origin");
+		workingCopy.doNotImportProjectsAfterClone();
+		workingCopy.waitForCreate();
+
+		// Some random sampling to see we got something. We do not test
+		// the integrity of the repository here. Only a few basic properties
+		// we'd expect from a clone made this way, that would possibly
+		// not hold true given other parameters in the GUI.
+		Repository repository = new Repository(new File(destRepo, ".git"));
+		// we always have an origin/master
+		assertNotNull(repository.resolve("origin/master"));
+		// and a local master initialized from origin/master (default!)
+		assertEquals(repository.resolve("origin/master"), repository
+				.resolve("origin/master"));
+		// A well known tag
+		assertEquals("90b818e596660b813b6fcf68f1e9e9b62c615130", repository
+				.resolve("refs/tags/v0.4.0").name());
+		// lots of refs
+		assertTrue(repository.getAllRefs().size() >= 10);
+		// and a README in the working dir
+		assertTrue(new File(destRepo, "README").exists());
+		assertFalse(repository.getIndex().isChanged());
+		assertFalse(repository.getIndex().getEntry("README").isModified(
+				destRepo));
+		// No project have been imported
+		assertEquals(0,
+				ResourcesPlugin.getWorkspace().getRoot().getProjects().length);
+
+	}
+

@@ -1,0 +1,11 @@
+	@Test
+	public void invalidHostnameFreezesDialog() throws Exception {
+		RepoPropertiesPage repoProperties = importWizard.openWizard();
+		RepoRemoteBranchesPage remoteBranches = repoProperties
+				.nextToRemoteBranches("git://no.example.com/EGIT");
+		remoteBranches
+				.assertErrorMessage("git://no.example.com/EGIT: unknown host");
+		remoteBranches.assertCannotProceed();
+		remoteBranches.cancel();
+	}
+

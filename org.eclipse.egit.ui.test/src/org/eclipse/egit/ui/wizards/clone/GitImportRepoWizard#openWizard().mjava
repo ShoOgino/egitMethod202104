@@ -1,0 +1,14 @@
+	// TODO: speed it up by calling the wizard using direct eclipse API.
+	public RepoPropertiesPage openWizard() {
+		bot.menu("File").menu("Import...").click();
+		bot.shell("Import").activate();
+
+		bot.tree().expandNode("Git").select("Git Repository");
+
+		bot.button("Next >").click();
+
+		bot.shell("Import Git Repository").activate();
+
+		return new RepoPropertiesPage();
+	}
+

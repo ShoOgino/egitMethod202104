@@ -1,0 +1,8 @@
+	public void selectBranches(String... branches) {
+		SWTBotTable table = bot.table();
+		bot.waitUntil(widgetIsEnabled(table));
+		for (String branch : branches) {
+			table.getTableItem(branch).check();
+		}
+	}
+

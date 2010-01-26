@@ -1,0 +1,11 @@
+	@SuppressWarnings("boxing")
+	public static boolean isEclipseShell(final SWTBotShell shell) {
+		return UIThreadRunnable.syncExec(new BoolResult() {
+
+			public Boolean run() {
+				return new WorkbenchContentsFinder().activeWorkbenchWindow()
+						.getShell() == shell.widget;
+			}
+		});
+	}
+

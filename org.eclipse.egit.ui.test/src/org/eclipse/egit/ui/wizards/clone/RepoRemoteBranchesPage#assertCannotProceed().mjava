@@ -1,0 +1,7 @@
+	public void assertCannotProceed() {
+		assertEnabled(bot.button("Cancel"));
+		assertEnabled(bot.button("< Back"));
+		assertNotEnabled(bot.button("Next >"));
+		assertNotEnabled(bot.button("Finish"));
+	}
+

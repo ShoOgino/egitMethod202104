@@ -1,0 +1,9 @@
+	@Test
+	public void clonedRepositoryShouldExistOnFileSystem() throws Exception {
+		RepoPropertiesPage repoProperties = importWizard.openWizard();
+		RepoRemoteBranchesPage remoteBranches = repoProperties
+				.nextToRemoteBranches("git://repo.or.cz/egit.git");
+		WorkingCopyPage workingCopy = remoteBranches.nextToWorkingCopy();
+		workingCopy.assertWorkingCopyExists();
+	}
+
