@@ -1,0 +1,14 @@
+	private String formatPathLine(String path) {
+		int n = 80 - path.length() - 2;
+		if (n < 0 )
+			return path;
+		final StringBuilder d = new StringBuilder();
+		int i = 0;
+		for (; i < n/2; i++)
+			d.append("-"); //$NON-NLS-1$
+		d.append(" ").append(path).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+		for (; i < n - 1; i++)
+			d.append("-"); //$NON-NLS-1$
+		return d.toString();
+	}
+
