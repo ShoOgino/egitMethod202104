@@ -32,7 +32,7 @@
 		assertEquals(RefUpdate.Result.NEW, lck.forceUpdate());
 
 		ConnectProviderOperation operation = new ConnectProviderOperation(
-				project.getProject(), new File("..", Constants.DOT_GIT));
+				project.getProject(), gitDir);
 		operation.run(null);
 
 		final boolean f[] = new boolean[1];
