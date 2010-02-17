@@ -1,3 +1,4 @@
+	@Test
 	public void testSingleRevision_3() {
 		GitProvider provider = (GitProvider)RepositoryProvider.getProvider(project.project);
 		assertNotNull(provider);
@@ -6,6 +7,5 @@
 		IFileRevision fileRevision = fileHistory.getFileRevision("fd5a571c8a3a4a152e4c413d09d3ecb7d41e1e5f");
 		assertEquals("fd5a571c8a3a4a152e4c413d09d3ecb7d41e1e5f", fileRevision.getContentIdentifier());
 		assertEquals("J. Author",fileRevision.getAuthor());
-
 	}
 
