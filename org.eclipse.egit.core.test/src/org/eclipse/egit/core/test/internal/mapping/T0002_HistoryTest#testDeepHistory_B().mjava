@@ -1,3 +1,4 @@
+	@Test
 	public void testDeepHistory_B() {
 		GitProvider provider = (GitProvider)RepositoryProvider.getProvider(project.project);
 		assertNotNull(provider);
@@ -9,6 +10,5 @@
 		assertEquals("J. Author",fileRevisions[0].getAuthor());
 		assertEquals("60f0d7917fe2aed5c92b5bc35dfb55b9b8ada359", fileRevisions[1].getContentIdentifier());
 		assertEquals("J. Author",fileRevisions[0].getAuthor());
-
 	}
 
