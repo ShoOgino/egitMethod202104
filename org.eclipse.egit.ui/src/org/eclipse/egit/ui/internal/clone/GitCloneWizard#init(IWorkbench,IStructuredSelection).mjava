@@ -10,9 +10,9 @@
 			public void setVisible(boolean visible) {
 				if (visible) {
 					if (cloneDestination.alreadyClonedInto == null) {
-						performClone(false);
-						cloneDestination.alreadyClonedInto = cloneDestination
-								.getDestinationFile().getAbsolutePath();
+						if (performClone(false))
+							cloneDestination.alreadyClonedInto = cloneDestination
+									.getDestinationFile().getAbsolutePath();
 					}
 					setProjectsList(cloneDestination.alreadyClonedInto);
 				}
