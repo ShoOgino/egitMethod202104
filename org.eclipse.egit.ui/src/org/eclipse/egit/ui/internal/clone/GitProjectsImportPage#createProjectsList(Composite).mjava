@@ -5,6 +5,8 @@
 	 */
 	private void createProjectsList(Composite workArea) {
 
+		checkedItems.clear();
+
 		Label title = new Label(workArea, SWT.NONE);
 		title.setText(UIText.WizardProjectsImportPage_ProjectsListTitle);
 
@@ -18,7 +20,24 @@
 		listComposite.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH));
 
-		projectsList = new CheckboxTreeViewer(listComposite, SWT.BORDER);
+		PatternFilter filter = new PatternFilter() {
+
+			@Override
+			public boolean isElementVisible(Viewer viewer, Object element) {
+
+				if (checkedItems.contains(element)) {
+					return true;
+				}
+
+				return super.isElementVisible(viewer, element);
+			}
+
+		};
+
+		FilteredTree filteredTree = new FilteredTree(listComposite, SWT.CHECK
+				| SWT.BORDER, filter, true);
+		filteredTree.setInitialText(UIText.WizardProjectsImportPage_filterText);
+		projectsList = filteredTree.getViewer();
 		GridData listData = new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
 		projectsList.getControl().setLayoutData(listData);
@@ -91,6 +110,23 @@
 
 		});
 
+		projectsList.getTree().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (e.widget instanceof Tree) {
+					TreeItem item = ((Tree) e.widget).getItem(new Point(e.x,
+							e.y));
+					if (item != null) {
+						if (item.getChecked())
+							checkedItems.add(item.getData());
+						else
+							checkedItems.remove(item.getData());
+						setPageComplete(!checkedItems.isEmpty());
+					}
+				}
+			}
+		});
+
 		projectsList.setLabelProvider(new LabelProvider() {
 			/*
 			 * (non-Javadoc)
@@ -99,20 +135,14 @@
 			 * org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 			 */
 			public String getText(Object element) {
+				// Need to set the checked item state. FIXME This is clumsy.
+				for (final TreeItem item : projectsList.getTree().getItems()) {
+					if (checkedItems.contains(item.getData()))
+						item.setChecked(true);
+					else
+						item.setChecked(false);
+				}
 				return ((ProjectRecord) element).getProjectLabel();
-			}
-		});
-
-		projectsList.addCheckStateListener(new ICheckStateListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.jface.viewers.ICheckStateListener#checkStateChanged
-			 * (org.eclipse.jface.viewers.CheckStateChangedEvent)
-			 */
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				setPageComplete(projectsList.getCheckedElements().length > 0);
 			}
 		});
 

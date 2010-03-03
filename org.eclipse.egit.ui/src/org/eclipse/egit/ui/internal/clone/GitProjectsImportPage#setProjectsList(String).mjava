@@ -1,5 +1,6 @@
 	/**
-	 * Update the list of projects based on path.
+	 * Update the list of projects based on path. This will not check any
+	 * projects.
 	 *
 	 * @param path
 	 */
@@ -9,8 +10,7 @@
 			setMessage(UIText.WizardProjectsImportPage_ImportProjectsDescription);
 			selectedProjects = new ProjectRecord[0];
 			projectsList.refresh(true);
-			projectsList.setCheckedElements(selectedProjects);
-			setPageComplete(projectsList.getCheckedElements().length > 0);
+			setPageComplete(checkedItems.size() > 0);
 			lastPath = path;
 			return;
 		}
@@ -59,6 +59,7 @@
 						while (filesIterator.hasNext()) {
 							File file = filesIterator.next();
 							selectedProjects[index] = new ProjectRecord(file);
+							checkedItems.add(selectedProjects[index]);
 							index++;
 						}
 					} else {
@@ -75,13 +76,12 @@
 		}
 
 		projectsList.refresh(true);
-		projectsList.setCheckedElements(getValidProjects());
 		if (getValidProjects().length < selectedProjects.length) {
 			setMessage(UIText.WizardProjectsImportPage_projectsInWorkspace,
 					WARNING);
 		} else {
 			setMessage(UIText.WizardProjectsImportPage_ImportProjectsDescription);
 		}
-		setPageComplete(projectsList.getCheckedElements().length > 0);
+		setPageComplete(checkedItems.size() > 0);
 	}
 
