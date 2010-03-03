@@ -1,0 +1,8 @@
+		@Override
+		public boolean isEnabled() {
+			int size = ((IStructuredSelection) revObjectSelectionProvider
+					.getSelection()).size();
+			return IFile.class.isAssignableFrom(getInput().getClass())
+					&& size == 2;
+		}
+

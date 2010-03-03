@@ -1,0 +1,24 @@
+		@Override
+		public void run() {
+			IStructuredSelection selection = ((IStructuredSelection) revObjectSelectionProvider
+					.getSelection());
+			if (selection.size() == 1) {
+				Iterator<?> it = selection.iterator();
+				SWTCommit commit = (SWTCommit) it.next();
+				if (getInput() instanceof IFile){
+					IFile file = (IFile) getInput();
+					final RepositoryMapping mapping = RepositoryMapping.getMapping(file.getProject());
+					final String gitPath = mapping.getRepoRelativePath(file);
+					ITypedElement right = getEditableRevision(file, gitPath,
+							commit);
+					final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+							SaveableCompareEditorInput.createFileElement(file),
+							right,
+							null);
+					openInCompare(in);
+				}
+
+			}
+
+		}
+
