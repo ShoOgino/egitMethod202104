@@ -1,0 +1,35 @@
+	/**
+	 * Adds a URI string to the list of previously added ones
+	 *
+	 * @param stringToAdd
+	 */
+	public void saveUriInPrefs(String stringToAdd) {
+
+		Set<String> uriStrings = getUrisFromPrefs();
+
+		if (uriStrings.add(stringToAdd)) {
+
+			IEclipsePreferences prefs = new InstanceScope().getNode(Activator
+					.getPluginId());
+
+			StringBuilder sb = new StringBuilder();
+			StringBuilder lb = new StringBuilder();
+
+			// there is no "good" separator for URIish, so we
+			// keep track of the URI lengths separately
+			for (String uriString : uriStrings) {
+				sb.append(uriString);
+				lb.append(uriString.length());
+				lb.append(" "); //$NON-NLS-1$
+			}
+			prefs.put(USED_URIS_PREF, sb.toString());
+			prefs.put(USED_URIS_LENGTH_PREF, lb.toString());
+
+			try {
+				prefs.flush();
+			} catch (BackingStoreException e) {
+				// we simply ignore this here
+			}
+		}
+	}
+
