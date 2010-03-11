@@ -1,0 +1,42 @@
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.eclipse.core.resources.IWorkspaceRunnable#run(org.eclipse.core.runtime
+	 * .IProgressMonitor)
+	 */
+	public void run(IProgressMonitor m) throws CoreException {
+		IProgressMonitor monitor;
+		if (m == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = m;
+		Collection<GitIndex> changedIndexes = new ArrayList<GitIndex>();
+		// GitIndex can not be updated if it contains staged entries
+		Collection<GitIndex> indexesWithStagedEntries = new ArrayList<GitIndex>();
+		try {
+			for (Object obj : rsrcList) {
+				obj = ((IAdaptable) obj).getAdapter(IResource.class);
+				if (obj instanceof IFile)
+					addToIndex((IFile) obj, changedIndexes,
+							indexesWithStagedEntries);
+				monitor.worked(200);
+			}
+			if (!changedIndexes.isEmpty()) {
+				for (GitIndex idx : changedIndexes) {
+					idx.write();
+				}
+
+			}
+		} catch (RuntimeException e) {
+			throw Activator.error(CoreText.AddToIndexOperation_failed, e);
+		} catch (IOException e) {
+			throw Activator.error(CoreText.AddToIndexOperation_failed, e);
+		} finally {
+			for (final RepositoryMapping rm : mappings.keySet())
+				rm.fireRepositoryChanged();
+			mappings.clear();
+			monitor.done();
+		}
+	}
+

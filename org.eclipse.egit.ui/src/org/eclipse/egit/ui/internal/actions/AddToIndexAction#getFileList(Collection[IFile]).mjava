@@ -1,0 +1,9 @@
+	private static String getFileList(Collection<IFile> notAddedFiles) {
+		String result = "";  //$NON-NLS-1$
+		for (IFile file : notAddedFiles) {
+			result += file.getName();
+			result += "\n"; //$NON-NLS-1$
+		}
+		return result;
+	}
+

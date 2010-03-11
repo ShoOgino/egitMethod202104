@@ -1,0 +1,12 @@
+	@Override
+	protected void postOperation() {
+		Collection<IFile> notAddedFiles = operation.getNotAddedFiles();
+		if (notAddedFiles.size()==0)
+			return;
+		String title = UIText.AddToIndexAction_addingFilesFailed;
+		String message = UIText.AddToIndexAction_indexesWithUnmergedEntries;
+		message += "\n\n";  //$NON-NLS-1$
+		message += getFileList(notAddedFiles);
+		MessageDialog.openWarning(wp.getSite().getShell(), title, message);
+	}
+

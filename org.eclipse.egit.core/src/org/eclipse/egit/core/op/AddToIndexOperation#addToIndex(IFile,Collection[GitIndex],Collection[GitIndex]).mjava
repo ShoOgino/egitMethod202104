@@ -1,0 +1,28 @@
+	private void addToIndex(IFile file,
+			Collection<GitIndex> changedIndexes,
+			Collection<GitIndex> indexesWithUnmergedEntries) throws IOException {
+		IProject project = file.getProject();
+		RepositoryMapping map = RepositoryMapping.getMapping(project);
+		Repository repo = map.getRepository();
+		GitIndex index = null;
+		index = repo.getIndex();
+		Entry entry = index.getEntry(map.getRepoRelativePath(file));
+		if (entry == null)
+			return;
+		if (indexesWithUnmergedEntries.contains(index)) {
+			notAddedFiles.add(file);
+			return;
+		} else {
+			if (!canUpdateIndex(index)) {
+				indexesWithUnmergedEntries.add(index);
+				notAddedFiles.add(file);
+				return;
+			}
+		}
+		if (entry.isModified(map.getWorkDir())) {
+			entry.update(new File(map.getWorkDir(), entry.getName()));
+			if (!changedIndexes.contains(index))
+				changedIndexes.add(index);
+		}
+	}
+

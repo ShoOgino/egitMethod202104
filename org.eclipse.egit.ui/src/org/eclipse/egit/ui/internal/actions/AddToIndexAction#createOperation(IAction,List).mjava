@@ -1,0 +1,10 @@
+	protected IWorkspaceRunnable createOperation(final IAction act,
+			final List sel) {
+		if (sel.isEmpty()) {
+			return null;
+		} else {
+			operation = new AddToIndexOperation(sel);
+			return operation;
+		}
+	}
+
