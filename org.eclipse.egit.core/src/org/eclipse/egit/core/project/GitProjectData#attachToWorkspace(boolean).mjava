@@ -4,7 +4,7 @@
 	 * @param includeChange true to listen to content changes
 	 */
 	public static void attachToWorkspace(final boolean includeChange) {
-		trace("attachToWorkspace - addResourceChangeListener");
+		trace("attachToWorkspace - addResourceChangeListener");  //$NON-NLS-1$
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(
 				rcl,
 				(includeChange ? IResourceChangeEvent.POST_CHANGE : 0)

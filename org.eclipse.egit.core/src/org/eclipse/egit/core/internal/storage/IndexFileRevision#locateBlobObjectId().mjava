@@ -5,13 +5,13 @@
 			if (e == null)
 				throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
 						Path.fromPortableString(path),
-						"Git index entry not found", null);
+						CoreText.IndexFileRevision_indexEntryNotFound, null);
 			return e.getObjectId();
 
 		} catch (IOException e) {
 			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL, Path
 					.fromPortableString(path),
-					"IO error looking up path in index.", e);
+					CoreText.IndexFileRevision_errorLookingUpPath, e);
 		}
 	}
 

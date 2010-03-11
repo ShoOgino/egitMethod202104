@@ -14,7 +14,8 @@
 					return m;
 			}
 		} catch (CoreException err) {
-			Activator.logError("Failed finding RepositoryMapping", err);
+			Activator.logError(
+					CoreText.GitProjectData_failedFindingRepoMapping, err);
 		}
 		return null;
 	}

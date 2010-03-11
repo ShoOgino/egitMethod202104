@@ -4,7 +4,7 @@
 			index = repository.getIndex();
 			index.readTree(newTree);
 		} catch (IOException e) {
-			throw new TeamException("Reading index", e);
+			throw new TeamException(CoreText.ResetOperation_readingIndex, e);
 		}
 	}
 

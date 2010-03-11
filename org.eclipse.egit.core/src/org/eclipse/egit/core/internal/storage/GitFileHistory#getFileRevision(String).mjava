@@ -1,5 +1,6 @@
 	public IFileRevision getFileRevision(final String id) {
-		if (id == null || id.equals("") || GitFileRevision.WORKSPACE.equals(id))
+		if (id == null || id.equals("") //$NON-NLS-1$
+				|| GitFileRevision.WORKSPACE.equals(id))
 			return new WorkspaceFileRevision(resource);
 		if (GitFileRevision.INDEX.equals(id))
 			return new IndexFileRevision(walk.getRepository(), gitPath);

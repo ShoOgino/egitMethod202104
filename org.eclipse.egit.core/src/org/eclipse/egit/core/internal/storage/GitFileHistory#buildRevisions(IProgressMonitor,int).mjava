@@ -8,9 +8,9 @@
 		try {
 			final AnyObjectId headId = db.resolve(Constants.HEAD);
 			if (headId == null) {
-				Activator.logError("No HEAD revision available from Git"
-						+ " for project " + resource.getProject().getName()
-						+ ".", null);
+				Activator.logError(NLS.bind(
+						CoreText.GitFileHistory_noHeadRevisionAvailable,
+						resource.getProject().getName()), null);
 				return NO_REVISIONS;
 			}
 
@@ -28,8 +28,9 @@
 
 			walk.markStart(root);
 		} catch (IOException e) {
-			Activator.logError("Invalid HEAD revision for project "
-					+ resource.getProject().getName() + ".", e);
+			Activator.logError(NLS.bind(
+					CoreText.GitFileHistory_invalidHeadRevision, resource
+							.getProject().getName()), e);
 			return NO_REVISIONS;
 		}
 
@@ -45,8 +46,9 @@
 					break;
 			}
 		} catch (IOException e) {
-			Activator.logError("Error parsing history for "
-					+ resource.getFullPath() + ".", e);
+			Activator.logError(NLS.bind(
+					CoreText.GitFileHistory_errorParsingHistory, resource
+							.getFullPath()), e);
 			return NO_REVISIONS;
 		}
 

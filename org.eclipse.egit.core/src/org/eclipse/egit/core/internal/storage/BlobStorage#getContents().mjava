@@ -3,8 +3,8 @@
 			return open();
 		} catch (IOException e) {
 			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
-					getFullPath(), "IO error reading Git blob " + blobId + ".",
-					e);
+					getFullPath(), NLS.bind(
+							CoreText.BlobStorage_errorReadingBlob, blobId), e);
 		}
 	}
 

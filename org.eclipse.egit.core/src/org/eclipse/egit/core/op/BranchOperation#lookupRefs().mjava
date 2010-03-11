@@ -2,13 +2,15 @@
 		try {
 			newCommit = repository.mapCommit(refName);
 		} catch (IOException e) {
-			throw new TeamException("Mapping commit: " + refName, e);
+			throw new TeamException(NLS.bind(
+					CoreText.BranchOperation_mappingCommit, refName), e);
 		}
 
 		try {
 			oldCommit = repository.mapCommit(Constants.HEAD);
 		} catch (IOException e) {
-			throw new TeamException("Mapping commit HEAD commit", e);
+			throw new TeamException(CoreText.BranchOperation_mappingCommitHead,
+					e);
 		}
 	}
 

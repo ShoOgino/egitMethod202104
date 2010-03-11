@@ -4,7 +4,7 @@
 			index = repository.getIndex();
 			newTree = newCommit.getTree();
 		} catch (IOException e) {
-			throw new TeamException("Mapping trees", e);
+			throw new TeamException(CoreText.BranchOperation_mappingTrees, e);
 		}
 	}
 

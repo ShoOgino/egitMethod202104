@@ -9,8 +9,11 @@
 		boolean ok = false;
 
 		try {
-			trace("save " + dat);
-			tmp = File.createTempFile("gpd_", ".prop", dat.getParentFile());
+			trace("save " + dat);  //$NON-NLS-1$
+			tmp = File.createTempFile(
+					"gpd_",  //$NON-NLS-1$
+					".prop",   //$NON-NLS-1$
+					dat.getParentFile());
 			final FileOutputStream o = new FileOutputStream(tmp);
 			try {
 				final Properties p = new Properties();
@@ -18,7 +21,7 @@
 				while (i.hasNext()) {
 					((RepositoryMapping) i.next()).store(p);
 				}
-				p.store(o, "GitProjectData");
+				p.store(o, "GitProjectData");  //$NON-NLS-1$
 				ok = true;
 			} finally {
 				o.close();

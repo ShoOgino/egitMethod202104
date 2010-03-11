@@ -2,7 +2,7 @@
 			throws CoreException {
 		final IPath loc = c.getLocation();
 
-		m.beginTask("", 101);
+		m.beginTask("", 101);  //$NON-NLS-1$
 		m.subTask(CoreText.RepositoryFinder_finding);
 		try {
 			if (loc != null) {
@@ -17,7 +17,9 @@
 				if (c.isLinked() || c instanceof IProject) {
 					File p = fsLoc.getParentFile();
 					while (p != null) {
-						System.out.println("Looking at candidate dir: " + p);
+						System.out.println(
+								"Looking at candidate dir: "  //$NON-NLS-1$
+								+ p);
 						final File pCfg = configFor(p);
 						if (pCfg.isFile()) {
 							register(c, pCfg.getParentFile());

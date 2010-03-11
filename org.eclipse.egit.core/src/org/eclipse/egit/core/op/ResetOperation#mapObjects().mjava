@@ -3,7 +3,8 @@
 		try {
 			commitId = repository.resolve(refName);
 		} catch (IOException e) {
-			throw new TeamException("looking up ref " + refName, e);
+			throw new TeamException(NLS.bind(
+					CoreText.ResetOperation_lookingUpRef, refName), e);
 		}
 		try {
 			commit = repository.mapCommit(commitId);
@@ -12,7 +13,8 @@
 				Tag t = repository.mapTag(refName, commitId);
 				commit = repository.mapCommit(t.getObjId());
 			} catch (IOException e2) {
-				throw new TeamException("looking up commit " + commitId, e2);
+				throw new TeamException(NLS.bind(
+						CoreText.ResetOperation_lookingUpCommit, commitId), e2);
 			}
 		}
 

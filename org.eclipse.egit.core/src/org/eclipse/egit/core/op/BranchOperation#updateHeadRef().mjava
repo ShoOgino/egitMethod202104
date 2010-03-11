@@ -1,7 +1,8 @@
 	private void updateHeadRef() throws TeamException {
 		try {
 			RefUpdate u = repository.updateRef(Constants.HEAD);
-			u.setRefLogMessage("checkout: moving to " + refName, false);
+			u.setRefLogMessage(NLS.bind(
+					CoreText.BranchOperation_checkoutMovingTo, refName), false);
 			switch (u.link(refName)) {
 			case NEW:
 			case FORCED:
@@ -11,7 +12,8 @@
 				throw new IOException(u.getResult().name());
 			}
 		} catch (IOException e) {
-			throw new TeamException("Updating HEAD to ref: " + refName, e);
+			throw new TeamException(NLS.bind(
+					CoreText.BranchOperation_updatingHeadToRef, refName), e);
 		}
 	}
 

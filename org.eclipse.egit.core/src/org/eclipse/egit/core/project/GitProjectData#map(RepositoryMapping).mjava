@@ -21,7 +21,8 @@
 		m.setContainer(c);
 
 		git = c.getLocation().append(m.getGitDirPath()).toFile();
-		if (!git.isDirectory() || !new File(git, "config").isFile()) {
+		if (!git.isDirectory()
+				|| !new File(git, "config").isFile()) {  //$NON-NLS-1$
 			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
 					new FileNotFoundException(m.getContainerPath().toString()));
 			m.clear();
@@ -39,11 +40,15 @@
 
 		m.fireRepositoryChanged();
 
-		trace("map " + c + " -> " + m.getRepository());
+		trace("map "  //$NON-NLS-1$
+				+ c
+				+ " -> "  //$NON-NLS-1$
+				+ m.getRepository());
 		try {
 			c.setSessionProperty(MAPPING_KEY, m);
 		} catch (CoreException err) {
-			Activator.logError("Failed to cache RepositoryMapping", err);
+			Activator.logError(
+					CoreText.GitProjectData_failedToCacheRepoMapping, err);
 		}
 
 		dotGit = c.findMember(Constants.DOT_GIT);

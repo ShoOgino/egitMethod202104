@@ -13,10 +13,10 @@
 		u.setNewObjectId(mapCommit.getCommitId());
 		u.forceUpdate();
 
-		monitor.setTaskName("Checking out files");
+		monitor.setTaskName(CoreText.CloneOperation_checkingOutFiles);
 		co = new WorkDirCheckout(local, local.getWorkDir(), index, tree);
 		co.checkout();
-		monitor.setTaskName("Writing index");
+		monitor.setTaskName(CoreText.CloneOperation_writingIndex);
 		index.write();
 	}
 

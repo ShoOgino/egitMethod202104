@@ -6,7 +6,7 @@
 			TeamException teamException = new TeamException(e.getMessage());
 			throw teamException;
 		} catch (IOException e) {
-			throw new TeamException("Problem while checking out:", e);
+			throw new TeamException(CoreText.BranchOperation_checkoutProblem, e);
 		}
 	}
 

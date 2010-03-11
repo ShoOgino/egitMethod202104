@@ -6,7 +6,8 @@
 			workDirCheckout.setFailOnConflict(false);
 			workDirCheckout.checkout();
 		} catch (IOException e) {
-			throw new TeamException("mapping tree for commit", e);
+			throw new TeamException(
+					CoreText.ResetOperation_mappingTreeForCommit, e);
 		}
 	}
 

@@ -3,16 +3,19 @@
 			final RefUpdate ru = repository.updateRef(Constants.HEAD);
 			ru.setNewObjectId(commit.getCommitId());
 			String name = refName;
-			if (name.startsWith("refs/heads/"))
+			if (name.startsWith("refs/heads/"))  //$NON-NLS-1$
 				name = name.substring(11);
-			if (name.startsWith("refs/remotes/"))
+			if (name.startsWith("refs/remotes/"))  //$NON-NLS-1$
 				name = name.substring(13);
-			String message = "reset --" + type.toString().toLowerCase() + " " + name;
+			String message = "reset --" //$NON-NLS-1$
+					+ type.toString().toLowerCase() + " " + name; //$NON-NLS-1$
 			ru.setRefLogMessage(message, false);
 			if (ru.forceUpdate() == RefUpdate.Result.LOCK_FAILURE)
-				throw new TeamException("Can't update " + ru.getName());
+				throw new TeamException(NLS.bind(
+						CoreText.ResetOperation_cantUpdate, ru.getName()));
 		} catch (IOException e) {
-			throw new TeamException("Updating " + Constants.HEAD + " failed", e);
+			throw new TeamException(NLS.bind(
+					CoreText.ResetOperation_updatingFailed, Constants.HEAD), e);
 		}
 	}
 

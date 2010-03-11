@@ -1,6 +1,6 @@
 	private void protect(IResource c) {
 		while (c != null && !c.equals(getProject())) {
-			trace("protect " + c);
+			trace("protect " + c);  //$NON-NLS-1$
 			protectedResources.add(c);
 			c = c.getParent();
 		}

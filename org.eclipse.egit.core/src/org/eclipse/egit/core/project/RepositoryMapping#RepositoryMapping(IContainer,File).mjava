@@ -27,9 +27,9 @@
 				gitdirPath = remainder.toPortableString().substring(device.length());
 		} else if (gLocParent.isPrefixOf(cLoc)) {
 			cnt = cLoc.segmentCount() - cLoc.matchingFirstSegments(gLocParent);
-			p = "";
+			p = "";  //$NON-NLS-1$
 			while (cnt-- > 0) {
-				p += "../";
+				p += "../";  //$NON-NLS-1$
 			}
 			p += gLoc.segment(gLoc.segmentCount() - 1);
 			gitdirPath = p;

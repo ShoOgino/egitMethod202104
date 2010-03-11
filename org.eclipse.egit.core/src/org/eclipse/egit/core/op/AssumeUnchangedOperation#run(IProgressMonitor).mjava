@@ -18,7 +18,9 @@
 			for (Map.Entry<Repository, DirCache> e : caches.entrySet()) {
 				final Repository db = e.getKey();
 				final DirCache editor = e.getValue();
-				m.setTaskName("Writing index for " + db.getDirectory());
+				m.setTaskName(NLS.bind(
+						CoreText.AssumeUnchangedOperation_writingIndex, db
+								.getDirectory()));
 				editor.write();
 				editor.commit();
 			}

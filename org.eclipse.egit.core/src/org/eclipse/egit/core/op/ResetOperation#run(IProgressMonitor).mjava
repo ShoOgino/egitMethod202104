@@ -1,5 +1,6 @@
 	public void run(IProgressMonitor monitor) throws CoreException {
-		monitor.beginTask("Performing " + type.toString().toLowerCase() + " reset to " + refName, 7);
+		monitor.beginTask(NLS.bind(CoreText.ResetOperation_performingReset,
+				type.toString().toLowerCase(), refName), 7);
 
 		mapObjects();
 		monitor.worked(1);

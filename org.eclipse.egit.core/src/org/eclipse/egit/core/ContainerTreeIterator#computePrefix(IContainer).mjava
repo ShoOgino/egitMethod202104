@@ -1,7 +1,8 @@
 	private static String computePrefix(final IContainer base) {
 		final RepositoryMapping rm = RepositoryMapping.getMapping(base);
 		if (rm == null)
-			throw new IllegalArgumentException("Not in a Git project: " + base);
+			throw new IllegalArgumentException(
+					"Not in a Git project: " + base);  //$NON-NLS-1$
 		return rm.getRepoRelativePath(base);
 	}
 

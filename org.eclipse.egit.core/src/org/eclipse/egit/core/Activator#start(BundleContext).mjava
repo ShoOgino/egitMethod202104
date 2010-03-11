@@ -1,6 +1,6 @@
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
-		traceVerbose = isOptionSet("/trace/verbose");
+		traceVerbose = isOptionSet("/trace/verbose");  //$NON-NLS-1$
 		GitProjectData.reconfigureWindowCache();
 		GitProjectData.attachToWorkspace(true);
 	}
