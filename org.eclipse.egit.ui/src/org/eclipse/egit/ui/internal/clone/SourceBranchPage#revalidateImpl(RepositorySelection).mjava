@@ -7,7 +7,12 @@
 			final URIish uri = newRepoSelection.getURI();
 			final Repository db = new Repository(new File("/tmp")); //$NON-NLS-1$
 			listRemoteOp = new ListRemoteOperation(db, uri);
-			getContainer().run(true, true, listRemoteOp);
+			getContainer().run(true, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor)
+						throws InvocationTargetException, InterruptedException {
+					listRemoteOp.run(monitor);
+				}
+			});
 		} catch (InvocationTargetException e) {
 			Throwable why = e.getCause();
 			transportError(why.getMessage());

@@ -47,7 +47,13 @@
 			try {
 				// Perform clone in ModalContext thread with progress
 				// reporting on the wizard.
-				getContainer().run(true, true, op);
+				getContainer().run(true, true, new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						op.run(monitor);
+					}
+				});
 				cloneSource.saveUriInPrefs(uri.toString());
 				return true;
 			} catch (InterruptedException e) {

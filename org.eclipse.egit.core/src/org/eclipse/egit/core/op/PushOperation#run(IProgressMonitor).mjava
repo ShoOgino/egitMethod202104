@@ -3,11 +3,14 @@
 	 * on each remote repository.
 	 * <p>
 	 *
+	 * @param monitor
+	 *            the monitor to be used for reporting progress and responding
+	 *            to cancellation. The monitor is never <code>null</code>
+	 *
 	 * @throws InvocationTargetException
 	 *             Cause of this exceptions may include
 	 *             {@link TransportException}, {@link NotSupportedException} or
 	 *             some unexpected {@link RuntimeException}.
-	 * @see IRunnableWithProgress#run(IProgressMonitor)
 	 */
 	public void run(IProgressMonitor monitor) throws InvocationTargetException {
 		if (monitor == null)
