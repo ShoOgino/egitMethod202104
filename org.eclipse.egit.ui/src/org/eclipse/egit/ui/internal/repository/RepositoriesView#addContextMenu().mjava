@@ -1,0 +1,24 @@
+	private void addContextMenu() {
+		tv.getTree().addMenuDetectListener(new MenuDetectListener() {
+
+			public void menuDetected(MenuDetectEvent e) {
+
+				tv.getTree().setMenu(null);
+				Menu men = new Menu(tv.getTree());
+
+				TreeItem testItem = tv.getTree().getItem(
+						tv.getTree().toControl(new Point(e.x, e.y)));
+				if (testItem == null) {
+					addMenuItemsForPanel(men);
+				} else {
+					addMenuItemsForTreeSelection(men);
+					if (men.getItemCount() > 0)
+						new MenuItem(men, SWT.SEPARATOR);
+					addMenuItemsForPanel(men);
+				}
+
+				tv.getTree().setMenu(men);
+			}
+		});
+	}
+
