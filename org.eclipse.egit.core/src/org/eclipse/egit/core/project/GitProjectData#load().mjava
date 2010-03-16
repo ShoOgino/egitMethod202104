@@ -8,9 +8,8 @@
 			p.load(o);
 
 			mappings.clear();
-			final Iterator keyItr = p.keySet().iterator();
-			while (keyItr.hasNext()) {
-				final String key = keyItr.next().toString();
+			for (final Object keyObj : p.keySet()) {
+				final String key = keyObj.toString();
 				if (RepositoryMapping.isInitialKey(key)) {
 					mappings.add(new RepositoryMapping(p, key));
 				}

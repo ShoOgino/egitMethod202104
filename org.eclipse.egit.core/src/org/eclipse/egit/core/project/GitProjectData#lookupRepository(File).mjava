@@ -8,9 +8,10 @@
 			}
 		}
 
-		final Reference r = repositoryCache.get(gitDir);
-		Repository d = r != null ? (Repository) r.get() : null;
-		if (d == null) {
+		final Repository d;
+		if (repositoryCache.containsKey(gitDir)) {
+			d = (Repository) repositoryCache.get(gitDir).get();
+		} else {
 			d = new Repository(gitDir);
 			repositoryCache.put(gitDir, new WeakReference<Repository>(d));
 		}
