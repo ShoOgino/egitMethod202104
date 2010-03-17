@@ -26,7 +26,12 @@
 
 			operation = new PushOperation(local, spec, true,
 					displayedRepoSelection.getConfig());
-			getContainer().run(true, true, operation);
+			getContainer().run(true, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor)
+						throws InvocationTargetException, InterruptedException {
+					operation.run(monitor);
+				}
+			});
 		} catch (final IOException e) {
 			setErrorMessage(NLS.bind(
 					UIText.ConfirmationPage_errorCantResolveSpecs, e
