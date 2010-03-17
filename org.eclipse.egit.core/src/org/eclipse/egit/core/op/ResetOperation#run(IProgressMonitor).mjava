@@ -29,7 +29,8 @@
 
 		monitor.worked(1);
 
-		refreshProjects();
+		ProjectUtil.refreshProjects(repository, new SubProgressMonitor(monitor,
+				1));
 
 		monitor.done();
 	}
