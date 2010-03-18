@@ -1,0 +1,10 @@
+	@Override
+	protected void okPressed() {
+		result = new HashSet<String>();
+		Object[] checked = tv.getCheckedElements();
+		for (Object o : checked) {
+			result.add((String) o);
+		}
+		super.okPressed();
+	}
+

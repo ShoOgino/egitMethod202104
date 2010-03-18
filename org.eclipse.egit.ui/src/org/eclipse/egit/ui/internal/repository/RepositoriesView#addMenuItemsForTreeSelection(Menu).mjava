@@ -1,0 +1,447 @@
+	@SuppressWarnings("unchecked")
+	private void addMenuItemsForTreeSelection(Menu men) {
+		final List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
+		final List<RepositoryTreeNode<File>> projects = new ArrayList<RepositoryTreeNode<File>>();
+		final List<RepositoryTreeNode<Repository>> repos = new ArrayList<RepositoryTreeNode<Repository>>();
+
+		TreeItem[] selectedItems = tv.getTree().getSelection();
+		for (TreeItem item : selectedItems) {
+			RepositoryTreeNode node = (RepositoryTreeNode) item.getData();
+			switch (node.getType()) {
+			case PROJ:
+				projects.add(node);
+				break;
+			case REF:
+				refs.add(node);
+				break;
+			case REPO:
+				repos.add(node);
+				break;
+			default:
+				break;
+			}
+		}
+
+		boolean importableProjectsOnly = !projects.isEmpty() && repos.isEmpty()
+				&& refs.isEmpty();
+
+		for (RepositoryTreeNode<File> prj : projects) {
+			if (!importableProjectsOnly)
+				break;
+
+			for (IProject proj : ResourcesPlugin.getWorkspace().getRoot()
+					.getProjects()) {
+				if (proj.getLocation().equals(
+						new Path(prj.getObject().getAbsolutePath())))
+					importableProjectsOnly = false;
+
+			}
+
+		}
+
+		boolean singleRef = refs.size() == 1 && projects.isEmpty()
+				&& repos.isEmpty();
+		boolean singleRepo = repos.size() == 1 && projects.isEmpty()
+				&& refs.isEmpty();
+
+		try {
+			singleRef = singleRef
+					&& !refs.get(0).getObject().getName()
+							.equals(Constants.HEAD)
+					&& (refs.get(0).getRepository().mapCommit(
+							refs.get(0).getObject().getLeaf().getObjectId()) != null);
+		} catch (IOException e2) {
+			singleRef = false;
+		}
+
+		if (importableProjectsOnly) {
+			MenuItem sync = new MenuItem(men, SWT.PUSH);
+			sync
+					.setText(RepositoryViewUITexts.RepositoriesView_ImportProject_MenuItem);
+
+			sync.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+					IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+
+						public void run(IProgressMonitor monitor)
+								throws CoreException {
+
+							for (RepositoryTreeNode<File> projectNode : projects) {
+								File file = projectNode.getObject();
+
+								IProjectDescription pd = ResourcesPlugin
+										.getWorkspace().newProjectDescription(
+												file.getName());
+								IPath locationPath = new Path(file
+										.getAbsolutePath());
+
+								pd.setLocation(locationPath);
+
+								ResourcesPlugin.getWorkspace().getRoot()
+										.getProject(pd.getName()).create(pd,
+												monitor);
+								IProject project = ResourcesPlugin
+										.getWorkspace().getRoot().getProject(
+												pd.getName());
+								project.open(monitor);
+
+								File gitDir = projectNode.getRepository()
+										.getDirectory();
+
+								ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
+										project, gitDir);
+								connectProviderOperation
+										.run(new SubProgressMonitor(monitor, 20));
+
+							}
+
+						}
+					};
+
+					try {
+
+						ResourcesPlugin.getWorkspace().run(wsr,
+								ResourcesPlugin.getWorkspace().getRoot(),
+								IWorkspace.AVOID_UPDATE,
+								new NullProgressMonitor());
+
+						scheduleRefresh();
+					} catch (CoreException e1) {
+						Activator.getDefault().getLog().log(e1.getStatus());
+					}
+
+				}
+
+			});
+		}
+
+		if (singleRef) {
+
+			MenuItem checkout = new MenuItem(men, SWT.PUSH);
+			checkout
+					.setText(RepositoryViewUITexts.RepositoriesView_CheckOut_MenuItem);
+			checkout.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					Repository repo = refs.get(0).getRepository();
+					String refName = refs.get(0).myObject.getLeaf().getName();
+					final BranchOperation op = new BranchOperation(repo,
+							refName);
+					IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+
+						public void run(IProgressMonitor monitor)
+								throws CoreException {
+							op.run(monitor);
+						}
+					};
+					try {
+						ResourcesPlugin.getWorkspace().run(wsr,
+								ResourcesPlugin.getWorkspace().getRoot(),
+								IWorkspace.AVOID_UPDATE,
+								new NullProgressMonitor());
+						scheduleRefresh();
+					} catch (CoreException e1) {
+						MessageDialog
+								.openError(
+										getSite().getShell(),
+										RepositoryViewUITexts.RepositoriesView_Error_WindowTitle,
+										e1.getMessage());
+					}
+
+				}
+
+			});
+		}
+
+		if (singleRepo) {
+
+			MenuItem importProjects = new MenuItem(men, SWT.PUSH);
+			importProjects
+					.setText(RepositoryViewUITexts.RepositoriesView_ImportExistingProjects_MenuItem);
+			importProjects.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					Wizard wiz = new ExternalProjectImportWizard(repos.get(0)
+							.getRepository().getWorkDir().getAbsolutePath()) {
+
+						@Override
+						public void addPages() {
+							super.addPages();
+							// we could add some page with a single
+							// checkbox to indicate if we wan
+							// addPage(new WizardPage("Share") {
+							//
+							// public void createControl(
+							// Composite parent) {
+							// Composite main = new Composite(
+							// parent, SWT.NONE);
+							// main.setLayout(new GridLayout(1,
+							// false));
+							// GridDataFactory.fillDefaults()
+							// .grab(true, true).applyTo(
+							// main);
+							// Button but = new Button(main,
+							// SWT.PUSH);
+							// but.setText("Push me");
+							// setControl(main);
+							//
+							// }
+							// });
+						}
+
+						@Override
+						public boolean performFinish() {
+
+							final Set<IPath> previousLocations = new HashSet<IPath>();
+							// we want to share only new projects
+							for (IProject project : ResourcesPlugin
+									.getWorkspace().getRoot().getProjects()) {
+								previousLocations.add(project.getLocation());
+							}
+
+							boolean success = super.performFinish();
+							if (success) {
+								// IWizardPage page = getPage("Share");
+								// TODO evaluate checkbox or such, but
+								// if we do share
+								// always, we don't even need another
+								// page
+
+								IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+
+									public void run(IProgressMonitor monitor)
+											throws CoreException {
+										File gitDir = repos.get(0)
+												.getRepository().getDirectory();
+										File gitWorkDir = repos.get(0)
+												.getRepository().getWorkDir();
+										Path workPath = new Path(gitWorkDir
+												.getAbsolutePath());
+
+										// we check which projects are
+										// in the workspace
+										// pointing to a location in the
+										// repo's
+										// working directory
+										// and share them
+										for (IProject prj : ResourcesPlugin
+												.getWorkspace().getRoot()
+												.getProjects()) {
+
+											if (workPath.isPrefixOf(prj
+													.getLocation())) {
+												if (previousLocations
+														.contains(prj
+																.getLocation())) {
+													continue;
+												}
+												ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
+														prj, gitDir);
+												connectProviderOperation
+														.run(new SubProgressMonitor(
+																monitor, 20));
+
+											}
+										}
+
+									}
+								};
+
+								try {
+									ResourcesPlugin.getWorkspace().run(
+											wsr,
+											ResourcesPlugin.getWorkspace()
+													.getRoot(),
+											IWorkspace.AVOID_UPDATE,
+											new NullProgressMonitor());
+									scheduleRefresh();
+								} catch (CoreException ce) {
+									MessageDialog
+											.openError(
+													getShell(),
+													RepositoryViewUITexts.RepositoriesView_Error_WindowTitle,
+													ce.getMessage());
+								}
+
+							}
+							return success;
+						}
+
+					};
+
+					WizardDialog dlg = new WizardDialog(getSite().getShell(),
+							wiz);
+					dlg.open();
+				}
+
+			});
+
+			// TODO "import existing plug-in" menu item
+			// TODO "configure" menu item
+
+			MenuItem remove = new MenuItem(men, SWT.PUSH);
+			remove
+					.setText(RepositoryViewUITexts.RepositoriesView_Remove_MenuItem);
+			remove.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+					List<IProject> projectsToDelete = new ArrayList<IProject>();
+					File workDir = repos.get(0).getRepository().getWorkDir();
+					final IPath wdPath = new Path(workDir.getAbsolutePath());
+					for (IProject prj : ResourcesPlugin.getWorkspace()
+							.getRoot().getProjects()) {
+						if (wdPath.isPrefixOf(prj.getLocation())) {
+							projectsToDelete.add(prj);
+						}
+					}
+
+					if (!projectsToDelete.isEmpty()) {
+						boolean confirmed;
+						confirmed = confirmProjectDeletion(projectsToDelete);
+						if (!confirmed) {
+							return;
+						}
+					}
+
+					IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+
+						public void run(IProgressMonitor monitor)
+								throws CoreException {
+
+							for (IProject prj : ResourcesPlugin.getWorkspace()
+									.getRoot().getProjects()) {
+								if (wdPath.isPrefixOf(prj.getLocation())) {
+									prj.delete(false, false, monitor);
+								}
+							}
+
+							Repository repo = repos.get(0).getRepository();
+							removeDir(repo.getDirectory().getAbsolutePath());
+							scheduleRefresh();
+						}
+					};
+
+					try {
+						ResourcesPlugin.getWorkspace().run(wsr,
+								ResourcesPlugin.getWorkspace().getRoot(),
+								IWorkspace.AVOID_UPDATE,
+								new NullProgressMonitor());
+					} catch (CoreException e1) {
+						Activator.getDefault().getLog().log(e1.getStatus());
+					}
+
+				}
+
+			});
+
+			// TODO delete does not work because of file locks on .pack-files
+			// Shawn Pearce has added the following thoughts:
+
+			// Hmm. We probably can't active detect file locks on pack files on
+			// Windows, can we?
+			// It would be nice if we could support a delete, but only if the
+			// repository is
+			// reasonably believed to be not-in-use right now.
+			//
+			// Within EGit you might be able to check GitProjectData and its
+			// repositoryCache to
+			// see if the repository is open by this workspace. If it is, then
+			// we know we shouldn't
+			// try to delete it.
+			//
+			// Some coding might look like this:
+			//
+			// MenuItem deleteRepo = new MenuItem(men, SWT.PUSH);
+			// deleteRepo.setText("Delete");
+			// deleteRepo.addSelectionListener(new SelectionAdapter() {
+			//
+			// @Override
+			// public void widgetSelected(SelectionEvent e) {
+			//
+			// boolean confirmed = MessageDialog.openConfirm(getSite()
+			// .getShell(), "Confirm",
+			// "This will delete the repository, continue?");
+			//
+			// if (!confirmed)
+			// return;
+			//
+			// IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+			//
+			// public void run(IProgressMonitor monitor)
+			// throws CoreException {
+			// File workDir = repos.get(0).getRepository()
+			// .getWorkDir();
+			//
+			// File gitDir = repos.get(0).getRepository()
+			// .getDirectory();
+			//
+			// IPath wdPath = new Path(workDir.getAbsolutePath());
+			// for (IProject prj : ResourcesPlugin.getWorkspace()
+			// .getRoot().getProjects()) {
+			// if (wdPath.isPrefixOf(prj.getLocation())) {
+			// prj.delete(false, false, monitor);
+			// }
+			// }
+			//
+			// repos.get(0).getRepository().close();
+			//
+			// boolean deleted = deleteRecursively(gitDir, monitor);
+			// if (!deleted) {
+			// MessageDialog.openError(getSite().getShell(),
+			// "Error",
+			// "Could not delete Git Repository");
+			// }
+			//
+			// deleted = deleteRecursively(workDir, monitor);
+			// if (!deleted) {
+			// MessageDialog
+			// .openError(getSite().getShell(),
+			// "Error",
+			// "Could not delete Git Working Directory");
+			// }
+			//
+			// scheduleRefresh();
+			// }
+			//
+			// private boolean deleteRecursively(File fileToDelete,
+			// IProgressMonitor monitor) {
+			// if (fileToDelete.isDirectory()) {
+			// for (File file : fileToDelete.listFiles()) {
+			// if (!deleteRecursively(file, monitor)) {
+			// return false;
+			// }
+			// }
+			// }
+			// monitor.setTaskName(fileToDelete.getAbsolutePath());
+			// boolean deleted = fileToDelete.delete();
+			// if (!deleted) {
+			// System.err.println("Could not delete "
+			// + fileToDelete.getAbsolutePath());
+			// }
+			// return deleted;
+			// }
+			// };
+			//
+			// try {
+			// ResourcesPlugin.getWorkspace().run(wsr,
+			// ResourcesPlugin.getWorkspace().getRoot(),
+			// IWorkspace.AVOID_UPDATE,
+			// new NullProgressMonitor());
+			// } catch (CoreException e1) {
+			// // TODO Exception handling
+			// e1.printStackTrace();
+			// }
+			//
+			// }
+			//
+			// });
+		}
+	}
+

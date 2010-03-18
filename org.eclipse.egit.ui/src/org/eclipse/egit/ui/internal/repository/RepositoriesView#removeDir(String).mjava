@@ -1,0 +1,37 @@
+	private void removeDir(String dir) {
+
+		IEclipsePreferences prefs = new InstanceScope().getNode(Activator
+				.getPluginId());
+
+		TreeSet<String> resultStrings = new TreeSet<String>();
+		String dirs = prefs.get(PREFS_DIRECTORIES, ""); //$NON-NLS-1$
+		if (dirs != null && dirs.length() > 0) {
+			StringTokenizer tok = new StringTokenizer(dirs, File.pathSeparator);
+			while (tok.hasMoreTokens()) {
+				String dirName = tok.nextToken();
+				File testFile = new File(dirName);
+				if (testFile.exists()) {
+					resultStrings.add(dirName);
+				}
+			}
+		}
+
+		if (resultStrings.remove(dir)) {
+			StringBuilder sb = new StringBuilder();
+			for (String gitDirString : resultStrings) {
+				sb.append(gitDirString);
+				sb.append(File.pathSeparatorChar);
+			}
+
+			prefs.put(PREFS_DIRECTORIES, sb.toString());
+			try {
+				prefs.flush();
+			} catch (BackingStoreException e) {
+				IStatus error = new Status(IStatus.ERROR, Activator
+						.getPluginId(), e.getMessage(), e);
+				Activator.getDefault().getLog().log(error);
+			}
+		}
+
+	}
+

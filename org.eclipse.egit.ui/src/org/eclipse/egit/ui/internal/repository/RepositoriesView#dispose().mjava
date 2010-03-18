@@ -1,0 +1,10 @@
+	@Override
+	public void dispose() {
+		// make sure to cancel the refresh job
+		if (this.scheduledJob != null) {
+			this.scheduledJob.cancel();
+			this.scheduledJob = null;
+		}
+		super.dispose();
+	}
+

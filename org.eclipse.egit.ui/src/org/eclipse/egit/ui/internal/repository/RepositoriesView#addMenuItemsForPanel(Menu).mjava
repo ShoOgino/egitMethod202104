@@ -1,0 +1,39 @@
+	private void addMenuItemsForPanel(Menu men) {
+
+		MenuItem importItem = new MenuItem(men, SWT.PUSH);
+		importItem
+				.setText(RepositoryViewUITexts.RepositoriesView_ImportRepository_MenuItem);
+		importItem.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				importAction.run();
+			}
+
+		});
+
+		MenuItem addItem = new MenuItem(men, SWT.PUSH);
+		addItem
+				.setText(RepositoryViewUITexts.RepositoriesView_AddRepository_MenuItem);
+		addItem.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addAction.run();
+			}
+
+		});
+
+		MenuItem refreshItem = new MenuItem(men, SWT.PUSH);
+		refreshItem.setText(refreshAction.getText());
+		refreshItem.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				refreshAction.run();
+			}
+
+		});
+
+	}
+

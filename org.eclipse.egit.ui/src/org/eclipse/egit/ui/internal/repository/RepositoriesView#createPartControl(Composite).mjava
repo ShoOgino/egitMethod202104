@@ -1,0 +1,20 @@
+	@Override
+	public void createPartControl(Composite parent) {
+
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		main.setLayout(new GridLayout(1, false));
+
+		tv = new TreeViewer(main);
+		tv.setContentProvider(new ContentProvider());
+		new LabelProvider(tv);
+
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tv.getTree());
+
+		addContextMenu();
+
+		addActionsToToolbar();
+
+		scheduleRefresh();
+	}
+

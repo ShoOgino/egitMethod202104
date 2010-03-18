@@ -1,0 +1,92 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(3, false));
+
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+
+		Label dirLabel = new Label(main, SWT.NONE);
+		dirLabel.setText("Directory");
+		final Text dir = new Text(main, SWT.NONE);
+		if (myInitialPath != null)
+			dir.setText(myInitialPath);
+
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+				false).applyTo(dir);
+
+		Button browse = new Button(main, SWT.PUSH);
+		browse.setText("Browse...");
+		browse.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				DirectoryDialog dd = new DirectoryDialog(getShell());
+				dd.setFilterPath(dir.getText());
+				String directory = dd.open();
+				if (directory != null) {
+					dir.setText(directory);
+				}
+			}
+
+		});
+
+		Button search = new Button(main, SWT.PUSH);
+		search.setText("Search");
+		GridDataFactory.fillDefaults().align(SWT.LEAD, SWT.CENTER).span(3, 1)
+				.applyTo(search);
+
+		tv = CheckboxTableViewer.newCheckList(main, SWT.NONE);
+		Table tab = tv.getTable();
+		GridDataFactory.fillDefaults().grab(true, true).span(3, 1).applyTo(tab);
+
+		tv.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				if (existingRepositoryDirs.contains(event.getElement()))
+					event.getCheckable().setChecked(event.getElement(), false);
+				getButton(IDialogConstants.OK_ID).setEnabled(
+						tv.getCheckedElements().length > 0);
+			}
+		});
+
+		tv.setContentProvider(new ContentProvider());
+		tv.setLabelProvider(new LabelProvider());
+
+		search.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final TreeSet<String> directories = new TreeSet<String>();
+				final File file = new File(dir.getText());
+				if (file.exists()) {
+					IRunnableWithProgress action = new IRunnableWithProgress() {
+
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							RepositoriesView.recurseDir(file, directories,
+									monitor);
+						}
+					};
+					try {
+						ProgressMonitorDialog pd = new ProgressMonitorDialog(
+								getShell());
+						pd.run(true, true, action);
+
+					} catch (InvocationTargetException e1) {
+						MessageDialog.openError(getShell(), "Error", e1
+								.getCause().getMessage());
+					} catch (InterruptedException e1) {
+						// ignore
+					}
+
+					tv.setInput(directories);
+				}
+			}
+
+		});
+
+		return main;
+	}
+
