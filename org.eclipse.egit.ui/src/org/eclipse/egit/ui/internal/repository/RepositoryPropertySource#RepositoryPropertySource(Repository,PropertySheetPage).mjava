@@ -1,0 +1,32 @@
+	/**
+	 * @param rep
+	 *            the repository
+	 * @param page
+	 */
+	public RepositoryPropertySource(Repository rep, PropertySheetPage page) {
+
+		myPage = page;
+
+		makeActions();
+		addActions();
+
+		effectiveConfig = rep.getConfig();
+		userHomeConfig = SystemReader.getInstance().openUserConfig();
+		// TODO constant?
+		File configFile = new File(rep.getDirectory(), "config"); //$NON-NLS-1$
+		repositoryConfig = new FileBasedConfig(configFile);
+
+		try {
+			effectiveConfig.load();
+			userHomeConfig.load();
+			repositoryConfig.load();
+		} catch (IOException e) {
+			// TODO refactor to a method and react on exceptions
+			e.printStackTrace();
+		} catch (ConfigInvalidException e) {
+			// TODO refactor to a method and react on exceptions
+			e.printStackTrace();
+		}
+
+	}
+

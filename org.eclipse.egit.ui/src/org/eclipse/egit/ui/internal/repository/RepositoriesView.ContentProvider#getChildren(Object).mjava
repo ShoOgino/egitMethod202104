@@ -9,13 +9,28 @@
 
 				List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
 
-				Repository rep = node.getRepository();
-				for (Ref ref : rep.getAllRefs().values()) {
+				for (Ref ref : repo.getAllRefs().values()) {
 					refs.add(new RepositoryTreeNode<Ref>(node,
 							RepositoryTreeNodeType.REF, repo, ref));
 				}
 
 				return refs.toArray();
+
+			case REMOTES:
+
+				List<RepositoryTreeNode<String>> remotes = new ArrayList<RepositoryTreeNode<String>>();
+
+				Repository rep = node.getRepository();
+
+				Set<String> configNames = rep.getConfig()
+						.getSubsections(REMOTE);
+
+				for (String configName : configNames) {
+					remotes.add(new RepositoryTreeNode<String>(node,
+							RepositoryTreeNodeType.REMOTE, repo, configName));
+				}
+
+				return remotes.toArray();
 
 			case REPO:
 
@@ -27,6 +42,10 @@
 
 				branches.add(new RepositoryTreeNode<Repository>(node,
 						RepositoryTreeNodeType.PROJECTS, node.getRepository(),
+						node.getRepository()));
+
+				branches.add(new RepositoryTreeNode<Repository>(node,
+						RepositoryTreeNodeType.REMOTES, node.getRepository(),
 						node.getRepository()));
 
 				return branches.toArray();

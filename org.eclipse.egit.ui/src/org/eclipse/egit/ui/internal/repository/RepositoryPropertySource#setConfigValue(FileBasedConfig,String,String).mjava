@@ -1,0 +1,29 @@
+	private void setConfigValue(FileBasedConfig configuration, String key,
+			String value) throws IOException {
+		// we un-set empty strings, as the config API does not allow to
+		// distinguish this case
+		// (null is returned, even if the value is set to "", but in the
+		// effective configuration
+		// this results in shadowing of the base configured values
+		StringTokenizer tok = new StringTokenizer(key, "."); //$NON-NLS-1$
+		if (tok.countTokens() == 2) {
+			if (value == null || value.length() == 0) {
+				configuration.unset(tok.nextToken(), null, tok.nextToken());
+			} else {
+				configuration.setString(tok.nextToken(), null, tok.nextToken(),
+						value);
+			}
+		}
+		if (tok.countTokens() == 3) {
+			if (value == null || value.length() == 0) {
+				configuration.unset(tok.nextToken(), tok.nextToken(), tok
+						.nextToken());
+			} else {
+				configuration.setString(tok.nextToken(), tok.nextToken(), tok
+						.nextToken(), value);
+			}
+
+		}
+		configuration.save();
+	}
+

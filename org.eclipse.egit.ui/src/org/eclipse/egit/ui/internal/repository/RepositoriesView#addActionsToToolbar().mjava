@@ -13,6 +13,8 @@
 		importAction
 				.setToolTipText(RepositoryViewUITexts.RepositoriesView_Clone_Tooltip);
 
+		importAction.setImageDescriptor(UIIcons.IMPORT);
+
 		getViewSite().getActionBars().getToolBarManager().add(importAction);
 
 		addAction = new Action(
@@ -37,6 +39,8 @@
 		addAction
 				.setToolTipText(RepositoryViewUITexts.RepositoriesView_AddRepository_Tooltip);
 
+		addAction.setImageDescriptor(UIIcons.NEW_REPOSITORY);
+
 		getViewSite().getActionBars().getToolBarManager().add(addAction);
 
 		// TODO if we don't show projects, then we probably don't need refresh
@@ -49,6 +53,8 @@
 				scheduleRefresh();
 			}
 		};
+
+		refreshAction.setImageDescriptor(UIIcons.ELCL16_REFRESH);
 
 		getViewSite().getActionBars().getToolBarManager().add(refreshAction);
 	}

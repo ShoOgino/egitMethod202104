@@ -11,6 +11,6 @@
 			return;
 		}
 		setErrorMessage(specsPanel.getErrorMessage());
-		setPageComplete(!specsPanel.isEmpty() && specsPanel.isValid());
+		setPageComplete(initialSpecSize > 0 || (!specsPanel.isEmpty() && specsPanel.isValid()));
 	}
 

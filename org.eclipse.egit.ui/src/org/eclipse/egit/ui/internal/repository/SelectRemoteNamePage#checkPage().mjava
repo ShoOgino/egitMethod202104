@@ -1,0 +1,19 @@
+	private void checkPage() {
+		try {
+			setErrorMessage(null);
+			if (remoteName.getText().equals("")) { //$NON-NLS-1$
+				setErrorMessage(UIText.SelectRemoteNamePage_NameMustNotBeEmptyMessage);
+				return;
+			}
+
+			ConfigureRemoteWizard wizard = (ConfigureRemoteWizard) getWizard();
+			if (wizard.getConfiguration().getSubsections(
+					RepositoriesView.REMOTE).contains(remoteName.getText())) {
+				setErrorMessage(UIText.SelectRemoteNamePage_NameInUseMessage);
+				return;
+			}
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+

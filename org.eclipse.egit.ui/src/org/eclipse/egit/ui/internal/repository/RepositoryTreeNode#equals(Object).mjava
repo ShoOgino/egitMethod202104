@@ -1,0 +1,36 @@
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		RepositoryTreeNode other = (RepositoryTreeNode) obj;
+
+		if (myType == null) {
+			if (other.myType != null)
+				return false;
+		} else if (!myType.equals(other.myType))
+			return false;
+		if (myParent == null) {
+			if (other.myParent != null)
+				return false;
+		} else if (!myParent.equals(other.myParent))
+			return false;
+		if (myRepository == null) {
+			if (other.myRepository != null)
+				return false;
+		} else if (!myRepository.getDirectory().equals(
+				other.myRepository.getDirectory()))
+			return false;
+		if (myObject == null) {
+			if (other.myObject != null)
+				return false;
+		} else if (!checkObjectsEqual(other.myObject))
+			return false;
+
+		return true;
+	}
+

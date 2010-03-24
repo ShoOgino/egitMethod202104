@@ -1,0 +1,20 @@
+	private void addActions() {
+
+		boolean refreshToolbar = false;
+		IActionBars bars = myPage.getSite().getActionBars();
+
+		if (bars.getToolBarManager().find(modeToggleAction.getId()) == null) {
+			bars.getToolBarManager().add(modeToggleAction);
+			refreshToolbar = true;
+		}
+
+		if (bars.getMenuManager().find(configureKeyAction.getId()) == null)
+			bars.getMenuManager().add(configureKeyAction);
+
+		if (bars.getMenuManager().find(restoreKeyAction.getId()) == null)
+			bars.getMenuManager().add(restoreKeyAction);
+
+		if (refreshToolbar)
+			bars.getToolBarManager().update(false);
+	}
+

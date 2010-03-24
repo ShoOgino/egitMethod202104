@@ -1,0 +1,16 @@
+	public Object getPropertyValue(Object id) {
+		String[] list = myConfig.getStringList(RepositoriesView.REMOTE, myName,
+				(String) id);
+		if (list != null && list.length > 1) {
+			// let's show this as "[some/uri][another/uri]"
+			StringBuffer sb = new StringBuffer();
+			for (String s : list) {
+				sb.append('[');
+				sb.append(s);
+				sb.append(']');
+			}
+			return sb.toString();
+		}
+		return myConfig.getString(RepositoriesView.REMOTE, myName, (String) id);
+	}
+

@@ -7,7 +7,7 @@
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 
 		Label dirLabel = new Label(main, SWT.NONE);
-		dirLabel.setText("Directory");
+		dirLabel.setText(UIText.RepositorySearchDialog_DirectoryLabel);
 		final Text dir = new Text(main, SWT.NONE);
 		if (myInitialPath != null)
 			dir.setText(myInitialPath);
@@ -16,7 +16,7 @@
 				false).applyTo(dir);
 
 		Button browse = new Button(main, SWT.PUSH);
-		browse.setText("Browse...");
+		browse.setText(UIText.RepositorySearchDialog_BrowseButton);
 		browse.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -32,7 +32,7 @@
 		});
 
 		Button search = new Button(main, SWT.PUSH);
-		search.setText("Search");
+		search.setText(UIText.RepositorySearchDialog_SearchButton);
 		GridDataFactory.fillDefaults().align(SWT.LEAD, SWT.CENTER).span(3, 1)
 				.applyTo(search);
 
@@ -75,7 +75,7 @@
 						pd.run(true, true, action);
 
 					} catch (InvocationTargetException e1) {
-						MessageDialog.openError(getShell(), "Error", e1
+						MessageDialog.openError(getShell(), UIText.RepositorySearchDialog_ErrorHeader, e1
 								.getCause().getMessage());
 					} catch (InterruptedException e1) {
 						// ignore

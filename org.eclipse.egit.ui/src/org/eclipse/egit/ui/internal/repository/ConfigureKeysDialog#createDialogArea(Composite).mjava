@@ -1,0 +1,90 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(1, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+
+		final CheckboxTableViewer tv = CheckboxTableViewer.newCheckList(main,
+				SWT.NONE);
+
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tv.getTable());
+
+		ToolBar tb = new ToolBar(main, SWT.HORIZONTAL);
+		final ToolItem del = new ToolItem(tb, SWT.PUSH);
+		del.setEnabled(false);
+		del.setText(UIText.ConfigureKeysDialog_DeleteButton);
+		del.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Object ob : tv.getCheckedElements()) {
+					activeKeys.remove(ob);
+					tv.setInput(activeKeys);
+				}
+			}
+
+		});
+
+		final ToolItem addStandard = new ToolItem(tb, SWT.PUSH);
+		addStandard.setText(UIText.ConfigureKeysDialog_AddStandardButton);
+		addStandard.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (String key : standardKeys) {
+					if (!activeKeys.contains(key)) {
+						activeKeys.add(key);
+					}
+					tv.setInput(activeKeys);
+				}
+				Collections.sort(activeKeys);
+			}
+
+		});
+
+		ToolItem add = new ToolItem(tb, SWT.PUSH);
+		add.setText(UIText.ConfigureKeysDialog_NewButton);
+		add.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IInputValidator validator = new IInputValidator() {
+
+					public String isValid(String newText) {
+						if (activeKeys.contains(newText))
+							return NLS
+									.bind(
+											UIText.ConfigureKeysDialog_AlreadyThere_Message,
+											newText);
+						return null;
+					}
+				};
+				InputDialog id = new InputDialog(getShell(),
+						UIText.ConfigureKeysDialog_NewKeyLabel,
+						UIText.ConfigureKeysDialog_NewKeyLabel, null, validator);
+				if (id.open() == Window.OK) {
+					activeKeys.add(id.getValue());
+					Collections.sort(activeKeys);
+					tv.setInput(activeKeys);
+				}
+			}
+
+		});
+
+		tv.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				boolean anyChecked = tv.getCheckedElements().length > 0;
+				del.setEnabled(anyChecked);
+
+			}
+		});
+
+		tv.setLabelProvider(new LabelProvider());
+		tv.setContentProvider(new ContentProvider());
+		tv.setInput(this.activeKeys);
+
+		return main;
+	}
+

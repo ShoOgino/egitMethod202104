@@ -1,0 +1,54 @@
+	@Override
+	public boolean performFinish() {
+
+		String actRemoteName = myRemoteName;
+		if (myRemoteName == null) {
+			SelectRemoteNamePage page = (SelectRemoteNamePage) getPage(SelectRemoteNamePage.class
+					.getName());
+			actRemoteName = page.remoteName.getText();
+		}
+
+		RepositorySelectionPage sp = (RepositorySelectionPage) getPage(RepositorySelectionPage.class
+				.getName());
+
+		String uriString = sp.getSelection().getURI().toString();
+
+		myConfiguration.setString(RepositoriesView.REMOTE, actRemoteName,
+				RepositoriesView.URL, uriString);
+
+		if (myRemoteName != null) {
+
+			RefSpecPage specPage = (RefSpecPage) getPage(RefSpecPage.class
+					.getName());
+
+			if (specPage.getRefSpecs().isEmpty()) {
+				specPage.setVisible(true);
+				specPage.setVisible(false);
+			}
+
+			RemoteConfig config;
+			try {
+				config = new RemoteConfig(myConfiguration, actRemoteName);
+			} catch (URISyntaxException e1) {
+				// TODO better Exception handling
+				return false;
+			}
+
+			if (pushMode)
+				config.setPushRefSpecs(specPage.getRefSpecs());
+			else {
+				config.setFetchRefSpecs(specPage.getRefSpecs());
+				config.setTagOpt(specPage.getTagOpt());
+			}
+			config.update(myConfiguration);
+		}
+
+		try {
+			myConfiguration.save();
+			return true;
+		} catch (IOException e) {
+			// TODO better Exception handling
+			return false;
+		}
+	}
+

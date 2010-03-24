@@ -1,0 +1,25 @@
+	public IPropertySource getPropertySource(Object object) {
+
+		if (object == lastObject)
+			return lastRepositorySource;
+
+		if (!(object instanceof RepositoryTreeNode))
+			return null;
+
+		RepositoryTreeNode node = (RepositoryTreeNode) object;
+
+		if (node.getType() == RepositoryTreeNodeType.REPO) {
+			lastObject = object;
+			lastRepositorySource = new RepositoryPropertySource(
+					(Repository) node.getObject(), myPage);
+			return lastRepositorySource;
+		} else if (node.getType() == RepositoryTreeNodeType.REMOTE) {
+			lastObject = object;
+			lastRepositorySource = new RepositoryRemotePropertySource(node
+					.getRepository().getConfig(), (String) node.getObject(), myPage);
+			return lastRepositorySource;
+		} else {
+			return null;
+		}
+	}
+

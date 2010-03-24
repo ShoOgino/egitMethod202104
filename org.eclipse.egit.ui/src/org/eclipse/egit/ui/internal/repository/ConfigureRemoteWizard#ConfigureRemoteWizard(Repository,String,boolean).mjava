@@ -1,0 +1,35 @@
+	/**
+	 *
+	 * @param repository
+	 * @param remoteName
+	 * @param push
+	 */
+	public ConfigureRemoteWizard(Repository repository, String remoteName,
+			boolean push) {
+		myConfiguration = repository.getConfig();
+		myRemoteName = remoteName;
+		pushMode = push;
+		if (myRemoteName == null) {
+			// create mode: add remote name page and repository selection page
+			addPage(new SelectRemoteNamePage());
+			addPage(new RepositorySelectionPage(null));
+			setWindowTitle(UIText.ConfigureRemoteWizard_WizardTitle_New);
+		} else {
+			// edit mode: no remote name page and pre-selected repository
+			// selection page
+			RepositorySelectionPage sp = new RepositorySelectionPage(
+					myConfiguration.getString(RepositoriesView.REMOTE,
+							myRemoteName, RepositoriesView.URL));
+
+			addPage(sp);
+			// and also the corresponding configuration page
+			RefSpecPage rsp = new RefSpecPage(repository, pushMode, sp,
+					myRemoteName);
+			addPage(rsp);
+			setWindowTitle(NLS.bind(
+					UIText.ConfigureRemoteWizard_WizardTitle_Change,
+					myRemoteName));
+		}
+
+	}
+

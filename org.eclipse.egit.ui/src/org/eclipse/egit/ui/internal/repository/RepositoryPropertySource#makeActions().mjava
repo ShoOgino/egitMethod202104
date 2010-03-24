@@ -1,0 +1,67 @@
+	private void makeActions() {
+
+		configureKeyAction = new Action(
+				UIText.RepositoryPropertySource_ConfigureKeysAction) {
+
+			@Override
+			public String getId() {
+				return "ConfigKeyActionId"; //$NON-NLS-1$
+			}
+
+			@Override
+			public void run() {
+				ConfigureKeysDialog dlg = new ConfigureKeysDialog(myPage
+						.getSite().getShell(), getConfiguredKeys());
+				if (dlg.open() == Window.OK)
+					try {
+						setConfiguredKeys(dlg.getActiveKeys());
+						myPage.refresh();
+					} catch (IOException e) {
+						showExceptionMessage(e);
+					}
+
+			}
+
+		};
+
+		modeToggleAction = new Action(
+				UIText.RepositoryPropertySource_EffectiveConfigurationAction) {
+			// TODO icon
+			@Override
+			public String getId() {
+				return "ViewModeToggle"; //$NON-NLS-1$
+			}
+
+			@Override
+			public void run() {
+				myPage.refresh();
+			}
+
+			@Override
+			public int getStyle() {
+				return IAction.AS_CHECK_BOX;
+			}
+
+		};
+
+		restoreKeyAction = new Action(
+				UIText.RepositoryPropertySource_RestoreStandardAction) {
+
+			@Override
+			public String getId() {
+				return "RestoreKeys"; //$NON-NLS-1$
+			}
+
+			@Override
+			public void run() {
+				try {
+					setConfiguredKeys(new ArrayList<String>());
+					myPage.refresh();
+				} catch (IOException e) {
+					showExceptionMessage(e);
+				}
+			}
+
+		};
+	}
+

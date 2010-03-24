@@ -1,0 +1,22 @@
+	public IPropertyDescriptor[] getPropertyDescriptors() {
+
+		try {
+			myConfig.load();
+		} catch (IOException e) {
+			showExceptionMessage(e);
+		} catch (ConfigInvalidException e) {
+			showExceptionMessage(e);
+		}
+		List<IPropertyDescriptor> resultList = new ArrayList<IPropertyDescriptor>();
+		PropertyDescriptor desc = new PropertyDescriptor(RepositoriesView.URL,
+				UIText.RepositoryRemotePropertySource_RemoteUrlLabel);
+		resultList.add(desc);
+		desc = new PropertyDescriptor(RepositoriesView.FETCH,
+				UIText.RepositoryRemotePropertySource_FetchLabel);
+		resultList.add(desc);
+		desc = new PropertyDescriptor(RepositoriesView.PUSH,
+				UIText.RepositoryRemotePropertySource_PushLabel);
+		resultList.add(desc);
+		return resultList.toArray(new IPropertyDescriptor[resultList.size()]);
+	}
+

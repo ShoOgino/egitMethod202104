@@ -1,0 +1,41 @@
+	private Object getValueFromConfig(Config config, String keyString) {
+
+		StringTokenizer tok = new StringTokenizer(keyString, "."); //$NON-NLS-1$
+
+		String section;
+		String subsection;
+		String name;
+
+		String[] valueList = null;
+		String value = null;
+		if (tok.countTokens() == 2) {
+			section = tok.nextToken();
+			subsection = null;
+			name = tok.nextToken();
+		} else if (tok.countTokens() == 3) {
+			section = tok.nextToken();
+			subsection = tok.nextToken();
+			name = tok.nextToken();
+		} else {
+			// TODO exception?
+			return null;
+		}
+
+		value = config.getString(section, subsection, name);
+
+		if (value != null)
+			return value;
+
+		valueList = config.getStringList(section, subsection, name);
+
+		if (valueList == null || valueList.length == 0)
+			return null;
+
+		if (valueList.length == 1) {
+			return valueList[0];
+		}
+
+		return valueList;
+
+	}
+

@@ -1,0 +1,14 @@
+	private void setConfiguredKeys(List<String> keys) throws IOException {
+
+		StringBuilder sb = new StringBuilder();
+		for (String key : keys) {
+			sb.append(key);
+			sb.append(" "); //$NON-NLS-1$
+		}
+		ScopedPreferenceStore store = new ScopedPreferenceStore(
+				new InstanceScope(), Activator.getPluginId());
+		store.putValue(PREFERENCE_KEYS, sb.toString());
+		store.save();
+
+	}
+

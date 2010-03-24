@@ -2,12 +2,30 @@
 	public void createPartControl(Composite parent) {
 
 		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(1, false));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 		main.setLayout(new GridLayout(1, false));
 
 		tv = new TreeViewer(main);
 		tv.setContentProvider(new ContentProvider());
 		new LabelProvider(tv);
+
+		getSite().setSelectionProvider(this);
+
+		tv.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+
+				IStructuredSelection ssel = (IStructuredSelection) event
+						.getSelection();
+				if (ssel.size() == 1) {
+					setSelection(new StructuredSelection(ssel.getFirstElement()));
+				} else {
+					setSelection(new StructuredSelection());
+				}
+
+			}
+		});
 
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tv.getTree());
 
