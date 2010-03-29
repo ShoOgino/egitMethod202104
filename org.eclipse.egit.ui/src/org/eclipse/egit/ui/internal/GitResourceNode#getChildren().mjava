@@ -10,7 +10,8 @@
 				}
 			} catch (IOException e) {
 				// TODO: eclipse error handling
-				e.printStackTrace();
+				if (GitTraceLocation.CORE.isActive())
+					GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 				children = new GitResourceNode[0];
 			}
 		}

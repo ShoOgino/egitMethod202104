@@ -1,4 +1,7 @@
 	private void trace(final String m) {
-		Activator.trace("(UpdateJob)"+m);  //$NON-NLS-1$
+		// TODO is this the right location?
+		if (GitTraceLocation.CORE.isActive())
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.CORE.getLocation(), "(UpdateJob)" + m);
 	}
 

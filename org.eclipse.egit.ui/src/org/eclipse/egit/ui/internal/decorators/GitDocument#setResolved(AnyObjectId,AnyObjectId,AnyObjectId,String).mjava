@@ -4,8 +4,18 @@
 		lastBlob = blob != null ? blob.copy() : null;
 		set(value);
 		if (blob != null)
-			Activator.trace("(GitDocument) resolved " + resource + " to " + lastBlob + " in " + lastCommit + "/" + lastTree); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		else
-			Activator.trace("(GitDocument) unresolved " + resource); //$NON-NLS-1$
+			// TODO is this the right location?
+			if (GitTraceLocation.UI.isActive())
+				GitTraceLocation
+						.getTrace()
+						.trace(
+								GitTraceLocation.UI.getLocation(),
+								"(GitDocument) resolved " + resource + " to " + lastBlob + " in " + lastCommit + "/" + lastTree); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			else
+			// TODO is this the right location?
+			if (GitTraceLocation.UI.isActive())
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.UI.getLocation(),
+						"(GitDocument) unresolved " + resource); //$NON-NLS-1$
 	}
 

@@ -8,9 +8,11 @@
 				return entry.isModified(map.getWorkDir());
 			return false;
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			if (GitTraceLocation.CORE.isActive())
+				GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (GitTraceLocation.CORE.isActive())
+				GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 		}
 		return false;
 	}

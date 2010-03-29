@@ -1,0 +1,24 @@
+	/**
+	 * Initialize the locations
+	 *
+	 * @param options
+	 * @param pluginIsDebugging
+	 */
+	public static void initializeFromOptions(DebugOptions options, boolean pluginIsDebugging) {
+
+		// we evaluate the plug-in switch
+		if (pluginIsDebugging) {
+			myTrace = options.newDebugTrace(Activator.getPluginId());
+			for (GitTraceLocation loc : values()) {
+				boolean active = options.getBooleanOption(loc.getFullPath(), false);
+				loc.setActive(active);
+			}
+		} else {
+			// if the plug-in switch is off, we don't set the trace instance
+			// to null to avoid problems with possibly running trace calls
+			for (GitTraceLocation loc : values()) {
+				loc.setActive(false);
+			}
+		}
+	}
+

@@ -1,6 +1,11 @@
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
-		traceVerbose = isOptionSet("/trace/verbose");  //$NON-NLS-1$
+        // register this as DebugOptions listener
+		Hashtable<String, String> props = new Hashtable<String, String>(4);
+		// we want to get notified about our own DebugOptions
+		props.put(DebugOptions.LISTENER_SYMBOLICNAME, context.getBundle().getSymbolicName());
+		context.registerService(DebugOptionsListener.class.getName(), this, props);
+
 		GitProjectData.reconfigureWindowCache();
 		GitProjectData.attachToWorkspace(true);
 	}

@@ -10,8 +10,11 @@
 				obj = ((IAdaptable)obj).getAdapter(IResource.class);
 				if (obj instanceof IProject) {
 					final IProject p = (IProject) obj;
-
-					Activator.trace("disconnect " + p.getName());  //$NON-NLS-1$
+					// TODO is this the right location?
+					if (GitTraceLocation.CORE.isActive())
+						GitTraceLocation.getTrace().trace(
+								GitTraceLocation.CORE.getLocation(),
+								"disconnect " + p.getName()); //$NON-NLS-1$
 					unmarkTeamPrivate(p);
 					RepositoryProvider.unmap(p);
 					m.worked(100);

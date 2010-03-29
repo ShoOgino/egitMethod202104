@@ -1,5 +1,7 @@
 	public void dispose() {
-		Activator.trace("(GitQuickDiffProvider) dispose"); //$NON-NLS-1$
+		// TODO is this the right location?
+		if (GitTraceLocation.UI.isActive())
+			GitTraceLocation.getTrace().traceEntry(GitTraceLocation.UI.getLocation());
 		if (document != null)
 			document.dispose();
 	}

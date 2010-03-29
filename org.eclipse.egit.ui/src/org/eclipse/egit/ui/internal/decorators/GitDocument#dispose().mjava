@@ -1,5 +1,9 @@
 	void dispose() {
-		Activator.trace("(GitDocument) dispose: " + resource); //$NON-NLS-1$
+		// TODO is this the right location?
+		if (GitTraceLocation.UI.isActive())
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.UI.getLocation(),
+					"(GitDocument) dispose: " + resource); //$NON-NLS-1$
 		doc2repo.remove(this);
 		Repository repository = getRepository();
 		if (repository != null)

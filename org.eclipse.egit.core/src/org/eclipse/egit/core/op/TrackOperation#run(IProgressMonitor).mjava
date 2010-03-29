@@ -18,8 +18,14 @@
 						Entry entry = index.getEntry(repoPath);
 						if (entry != null) {
 							if (!entry.isAssumedValid()) {
-								System.out
-										.println("Already tracked - skipping"); //$NON-NLS-1$
+								// TODO is this the right location?
+								if (GitTraceLocation.CORE.isActive())
+									GitTraceLocation
+											.getTrace()
+											.trace(
+													GitTraceLocation.CORE
+															.getLocation(),
+													"Already tracked - skipping"); //$NON-NLS-1$
 								continue;
 							}
 						}
@@ -47,7 +53,8 @@
 										return false;
 
 								} catch (IOException e) {
-									e.printStackTrace();
+									if (GitTraceLocation.CORE.isActive())
+										GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 									throw Activator.error(CoreText.AddOperation_failed, e);
 								}
 								return true;
@@ -66,10 +73,12 @@
 				rm.getRepository().getIndex().write();
 			}
 		} catch (RuntimeException e) {
-			e.printStackTrace();
+			if (GitTraceLocation.CORE.isActive())
+				GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 			throw Activator.error(CoreText.AddOperation_failed, e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (GitTraceLocation.CORE.isActive())
+				GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 			throw Activator.error(CoreText.AddOperation_failed, e);
 		} finally {
 			try {
@@ -80,7 +89,8 @@
 					r.fireRepositoryChanged();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				if (GitTraceLocation.CORE.isActive())
+					GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 			} finally {
 				m.done();
 			}

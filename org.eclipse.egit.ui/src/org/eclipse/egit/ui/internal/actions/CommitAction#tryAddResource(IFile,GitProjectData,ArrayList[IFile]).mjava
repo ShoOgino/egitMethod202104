@@ -12,7 +12,8 @@
 				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (GitTraceLocation.CORE.isActive())
+				GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 		}
 		return false;
 	}

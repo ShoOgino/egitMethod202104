@@ -15,10 +15,15 @@
 						files.add((IFile) member);
 					category.add((IFile) member);
 				} else {
-					System.out.println("Couldn't find " + filename); //$NON-NLS-1$
+					// TODO is this the right Location?
+					if (GitTraceLocation.UI.isActive())
+						GitTraceLocation.getTrace().trace(
+								GitTraceLocation.UI.getLocation(),
+								"Couldn't find " + filename); //$NON-NLS-1$
 				}
-			} catch (Exception t) {
-				t.printStackTrace();
+			} catch (Exception e) {
+				if (GitTraceLocation.CORE.isActive())
+					GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 				continue;
 			} // if it's outside the workspace, bad things happen
 		}
