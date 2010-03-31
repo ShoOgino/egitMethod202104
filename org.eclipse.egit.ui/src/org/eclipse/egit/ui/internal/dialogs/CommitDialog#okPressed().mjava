@@ -48,6 +48,10 @@
 			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoItemsSelected, UIText.CommitDialog_ErrorNoItemsSelectedToBeCommitted);
 			return;
 		}
+
+		addValueToPrefs(author, AUTHOR_VALUES_PREF);
+		addValueToPrefs(committer, COMMITTER_VALUES_PREF);
+
 		super.okPressed();
 	}
 

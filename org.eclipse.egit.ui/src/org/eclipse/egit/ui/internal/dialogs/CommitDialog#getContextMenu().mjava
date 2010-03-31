@@ -33,8 +33,7 @@
 						filesViewer.refresh(true);
 					}
 				} catch (IOException e) {
-					if (GitTraceLocation.CORE.isActive())
-						GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
+
 					return;
 				}
 			}
