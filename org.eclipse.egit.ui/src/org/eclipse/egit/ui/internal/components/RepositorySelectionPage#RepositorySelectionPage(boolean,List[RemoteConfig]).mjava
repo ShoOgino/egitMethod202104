@@ -18,25 +18,6 @@
 	 */
 	public RepositorySelectionPage(final boolean sourceSelection,
 			final List<RemoteConfig> configuredRemotes) {
-		super(RepositorySelectionPage.class.getName());
-		this.uri = new URIish();
-
-		if (configuredRemotes != null)
-			removeUnusableRemoteConfigs(configuredRemotes);
-		if (configuredRemotes == null || configuredRemotes.isEmpty())
-			this.configuredRemotes = null;
-		else {
-			this.configuredRemotes = configuredRemotes;
-			this.remoteConfig = selectDefaultRemoteConfig();
-		}
-		selection = RepositorySelection.INVALID_SELECTION;
-
-		if (sourceSelection) {
-			setTitle(UIText.RepositorySelectionPage_sourceSelectionTitle);
-			setDescription(UIText.RepositorySelectionPage_sourceSelectionDescription);
-		} else {
-			setTitle(UIText.RepositorySelectionPage_destinationSelectionTitle);
-			setDescription(UIText.RepositorySelectionPage_destinationSelectionDescription);
-		}
+		this(sourceSelection, configuredRemotes, null);
 	}
 

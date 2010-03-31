@@ -1,7 +1,6 @@
-	private List<String> getGitDirs() {
+	private static List<String> getDirs() {
 		List<String> resultStrings = new ArrayList<String>();
-		String dirs = new InstanceScope().getNode(Activator.getPluginId()).get(
-				PREFS_DIRECTORIES, ""); //$NON-NLS-1$
+		String dirs = getPrefs().get(PREFS_DIRECTORIES, ""); //$NON-NLS-1$
 		if (dirs != null && dirs.length() > 0) {
 			StringTokenizer tok = new StringTokenizer(dirs, File.pathSeparator);
 			while (tok.hasMoreTokens()) {

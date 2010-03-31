@@ -5,7 +5,9 @@
 		switch (myType) {
 		case REPO:
 		case PROJECTS:
+		case REMOTES:
 		case BRANCHES:
+		case WORKINGDIR:
 			result = prime
 					* result
 					+ ((myObject == null) ? 0 : ((Repository) myObject)
@@ -18,14 +20,17 @@
 							.hashCode());
 			break;
 		case PROJ:
+		case FILE:
+		case FOLDER:
 			result = prime
 					* result
 					+ ((myObject == null) ? 0 : ((File) myObject).getPath()
 							.hashCode());
 			break;
+		case REMOTE:
+			result = prime * result
+					+ ((myObject == null) ? 0 : myObject.hashCode());
 
-		default:
-			break;
 		}
 
 		result = prime * result

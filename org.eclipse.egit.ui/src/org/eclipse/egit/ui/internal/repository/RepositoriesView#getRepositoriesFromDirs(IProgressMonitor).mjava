@@ -1,12 +1,12 @@
 	private List<Repository> getRepositoriesFromDirs(IProgressMonitor monitor)
 			throws InterruptedException {
 
-		List<String> gitDirStrings = getGitDirs();
+		List<String> gitDirStrings = getDirs();
 		List<Repository> input = new ArrayList<Repository>();
 		for (String dirString : gitDirStrings) {
 			if (monitor.isCanceled()) {
 				throw new InterruptedException(
-						RepositoryViewUITexts.RepositoriesView_ActionCanceled_Message);
+						UIText.RepositoriesView_ActionCanceled_Message);
 			}
 			try {
 				File dir = new File(dirString);

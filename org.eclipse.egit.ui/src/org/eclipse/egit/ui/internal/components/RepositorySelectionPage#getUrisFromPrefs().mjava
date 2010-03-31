@@ -3,10 +3,10 @@
 	 *
 	 * @return a (possibly empty) list of URIs, never <code>null</code>
 	 */
-	public Set<String> getUrisFromPrefs() {
+	public List<String> getUrisFromPrefs() {
 
 		// use a TreeSet to get the same sorting always
-		Set<String> uriStrings = new TreeSet<String>();
+		List<String> uriStrings = new ArrayList<String>();
 
 		IEclipsePreferences prefs = new InstanceScope().getNode(Activator
 				.getPluginId());

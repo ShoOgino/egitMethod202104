@@ -1,32 +1,14 @@
 	@Override
 	public boolean performFinish() {
 
-		String actRemoteName = myRemoteName;
-		if (myRemoteName == null) {
-			SelectRemoteNamePage page = (SelectRemoteNamePage) getPage(SelectRemoteNamePage.class
-					.getName());
-			actRemoteName = page.remoteName.getText();
-		}
+		RemoteConfig config;
+		if (createMode) {
 
-		RepositorySelectionPage sp = (RepositorySelectionPage) getPage(RepositorySelectionPage.class
-				.getName());
-
-		String uriString = sp.getSelection().getURI().toString();
-
-		myConfiguration.setString(RepositoriesView.REMOTE, actRemoteName,
-				RepositoriesView.URL, uriString);
-
-		if (myRemoteName != null) {
-
-			RefSpecPage specPage = (RefSpecPage) getPage(RefSpecPage.class
+			SelectRemoteNamePage srp = (SelectRemoteNamePage) getPage(SelectRemoteNamePage.class
 					.getName());
 
-			if (specPage.getRefSpecs().isEmpty()) {
-				specPage.setVisible(true);
-				specPage.setVisible(false);
-			}
+			String actRemoteName = srp.remoteName.getText();
 
-			RemoteConfig config;
 			try {
 				config = new RemoteConfig(myConfiguration, actRemoteName);
 			} catch (URISyntaxException e1) {
@@ -34,14 +16,55 @@
 				return false;
 			}
 
-			if (pushMode)
+			if (srp.configureFetch.getSelection()) {
+				RepositorySelectionPage sp = (RepositorySelectionPage) getPages()[1];
+				config.addURI(sp.getSelection().getURI());
+				RefSpecPage specPage = (RefSpecPage) getPages()[2];
+				config.setFetchRefSpecs(specPage.getRefSpecs());
+				config.setTagOpt(specPage.getTagOpt());
+				config.update(myConfiguration);
+				sp.saveUriInPrefs(sp.getSelection().getURI().toString());
+
+			}
+			if (srp.configurePush.getSelection()) {
+				RepositorySelectionPage sp = (RepositorySelectionPage) getPages()[3];
+				config.addPushURI(sp.getSelection().getURI());
+				RefSpecPage specPage = (RefSpecPage) getPages()[4];
 				config.setPushRefSpecs(specPage.getRefSpecs());
+				config.update(myConfiguration);
+				sp.saveUriInPrefs(sp.getSelection().getURI().toString());
+			}
+
+		} else {
+
+			RepositorySelectionPage sp = (RepositorySelectionPage) getPage(RepositorySelectionPage.class
+					.getName());
+
+			RefSpecPage specPage = (RefSpecPage) getPage(RefSpecPage.class
+					.getName());
+
+			try {
+				config = new RemoteConfig(myConfiguration, myRemoteName);
+			} catch (URISyntaxException e1) {
+				// TODO better Exception handling
+				return false;
+			}
+
+
+			if (pushMode){
+				config.addPushURI(sp.getSelection().getURI());
+				config.setPushRefSpecs(specPage.getRefSpecs());
+			}
 			else {
+				config.addURI(sp.getSelection().getURI());
 				config.setFetchRefSpecs(specPage.getRefSpecs());
 				config.setTagOpt(specPage.getTagOpt());
 			}
-			config.update(myConfiguration);
+
+			sp.saveUriInPrefs(sp.getSelection().getURI().toString());
 		}
+
+		config.update(myConfiguration);
 
 		try {
 			myConfiguration.save();

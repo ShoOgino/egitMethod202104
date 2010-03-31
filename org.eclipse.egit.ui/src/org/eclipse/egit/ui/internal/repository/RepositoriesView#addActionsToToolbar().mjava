@@ -1,52 +1,74 @@
 	private void addActionsToToolbar() {
-		importAction = new Action(
-				RepositoryViewUITexts.RepositoriesView_Import_Button) {
+		importAction = new Action(UIText.RepositoriesView_Import_Button) {
 
 			@Override
 			public void run() {
 				GitCloneWizard wiz = new GitCloneWizard();
 				wiz.init(null, null);
 				new WizardDialog(getSite().getShell(), wiz).open();
-				updateDirStrings(new NullProgressMonitor());
 			}
 		};
-		importAction
-				.setToolTipText(RepositoryViewUITexts.RepositoriesView_Clone_Tooltip);
+		importAction.setToolTipText(UIText.RepositoriesView_Clone_Tooltip);
 
 		importAction.setImageDescriptor(UIIcons.IMPORT);
 
 		getViewSite().getActionBars().getToolBarManager().add(importAction);
 
-		addAction = new Action(
-				RepositoryViewUITexts.RepositoriesView_Add_Button) {
+		addAction = new Action(UIText.RepositoriesView_Add_Button) {
 
 			@Override
 			public void run() {
 				RepositorySearchDialog sd = new RepositorySearchDialog(
-						getSite().getShell(), ResourcesPlugin.getWorkspace()
-								.getRoot().getLocation().toOSString(),
-						getGitDirs());
+						getSite().getShell(), getDirs());
 				if (sd.open() == Window.OK) {
 					Set<String> dirs = new HashSet<String>();
-					dirs.addAll(getGitDirs());
+					dirs.addAll(getDirs());
 					if (dirs.addAll(sd.getDirectories()))
-						saveDirStrings(dirs);
+						saveDirs(dirs);
 					scheduleRefresh();
 				}
 
 			}
 		};
-		addAction
-				.setToolTipText(RepositoryViewUITexts.RepositoriesView_AddRepository_Tooltip);
+		addAction.setToolTipText(UIText.RepositoriesView_AddRepository_Tooltip);
 
 		addAction.setImageDescriptor(UIIcons.NEW_REPOSITORY);
 
 		getViewSite().getActionBars().getToolBarManager().add(addAction);
 
-		// TODO if we don't show projects, then we probably don't need refresh
+		linkWithSelectionAction = new Action(UIText.RepositoriesView_LinkWithSelection_action,
+				IAction.AS_CHECK_BOX) {
 
-		refreshAction = new Action(
-				RepositoryViewUITexts.RepositoriesView_Refresh_Button) {
+			@Override
+			public void run() {
+				IEclipsePreferences prefs = getPrefs();
+				prefs.putBoolean(PREFS_SYNCED, isChecked());
+				try {
+					prefs.flush();
+				} catch (BackingStoreException e) {
+					// ignore here
+				}
+				if (isChecked()) {
+					ISelectionService srv = (ISelectionService) getSite()
+							.getService(ISelectionService.class);
+					reactOnSelection(srv.getSelection());
+				}
+
+			}
+
+		};
+
+		linkWithSelectionAction.setToolTipText(UIText.RepositoriesView_LinkWithSelection_action);
+
+		linkWithSelectionAction.setImageDescriptor(UIIcons.ELCL16_SYNCED);
+
+		linkWithSelectionAction.setChecked(getPrefs().getBoolean(PREFS_SYNCED,
+				false));
+
+		getViewSite().getActionBars().getToolBarManager().add(
+				linkWithSelectionAction);
+
+		refreshAction = new Action(UIText.RepositoriesView_Refresh_Button) {
 
 			@Override
 			public void run() {

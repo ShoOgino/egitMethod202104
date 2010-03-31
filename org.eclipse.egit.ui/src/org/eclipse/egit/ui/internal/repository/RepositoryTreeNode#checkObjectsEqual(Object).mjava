@@ -4,16 +4,19 @@
 		case PROJECTS:
 		case REMOTES:
 		case BRANCHES:
+		case WORKINGDIR:
 			return ((Repository) myObject).getDirectory().equals(
 					((Repository) otherObject).getDirectory());
 		case REF:
 			return ((Ref) myObject).getName().equals(
 					((Ref) otherObject).getName());
 		case PROJ:
+		case FOLDER:
+		case FILE:
 			return ((File) myObject).getPath().equals(
 					((File) otherObject).getPath());
 		case REMOTE:
-				return myObject.equals(otherObject);
+			return myObject.equals(otherObject);
 		}
 		return false;
 	}

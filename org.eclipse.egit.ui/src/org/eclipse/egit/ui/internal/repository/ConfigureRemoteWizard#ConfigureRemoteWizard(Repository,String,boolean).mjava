@@ -9,22 +9,51 @@
 		myConfiguration = repository.getConfig();
 		myRemoteName = remoteName;
 		pushMode = push;
-		if (myRemoteName == null) {
-			// create mode: add remote name page and repository selection page
+		createMode = remoteName == null;
+		if (createMode) {
+			// selection of a remote name
 			addPage(new SelectRemoteNamePage());
-			addPage(new RepositorySelectionPage(null));
+
+			// repository selection for fetch
+			RepositorySelectionPage sp = new RepositorySelectionPage(false,
+					null, myConfiguration.getString(RepositoriesView.REMOTE,
+							null, RepositoriesView.URL));
+			addPage(sp);
+
+			// ref spec for fetch
+			RefSpecPage rsp = new RefSpecPage(repository, false, sp);
+			addPage(rsp);
+
+			// repository selection for push
+			sp = new RepositorySelectionPage(true, null, myConfiguration
+					.getString(RepositoriesView.REMOTE, null,
+							RepositoriesView.PUSHURL));
+			addPage(sp);
+
+			// ref spec for push
+			rsp = new RefSpecPage(repository, true, sp);
+			addPage(rsp);
+
 			setWindowTitle(UIText.ConfigureRemoteWizard_WizardTitle_New);
+
 		} else {
 			// edit mode: no remote name page and pre-selected repository
 			// selection page
-			RepositorySelectionPage sp = new RepositorySelectionPage(
-					myConfiguration.getString(RepositoriesView.REMOTE,
-							myRemoteName, RepositoriesView.URL));
+			RepositorySelectionPage sp;
+			if (pushMode) {
+				sp = new RepositorySelectionPage(pushMode, null,
+						myConfiguration.getString(RepositoriesView.REMOTE,
+								myRemoteName, RepositoriesView.PUSHURL));
+			} else {
+				sp = new RepositorySelectionPage(pushMode, null,
+						myConfiguration.getString(RepositoriesView.REMOTE,
+								myRemoteName, RepositoriesView.URL));
+			}
 
 			addPage(sp);
 			// and also the corresponding configuration page
-			RefSpecPage rsp = new RefSpecPage(repository, pushMode, sp,
-					myRemoteName);
+			RefSpecPage rsp = new RefSpecPage(repository, pushMode, sp);
+			rsp.setConfigName(myRemoteName);
 			addPage(rsp);
 			setWindowTitle(NLS.bind(
 					UIText.ConfigureRemoteWizard_WizardTitle_Change,

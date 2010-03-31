@@ -1,0 +1,46 @@
+	public String getColumnText(Object element, int columnIndex) {
+
+		RepositoryTreeNode node = (RepositoryTreeNode) element;
+		switch (node.getType()) {
+		case REPO:
+			File directory = ((Repository) node.getObject()).getDirectory();
+			return (directory.getParentFile().getName() + " - " + directory //$NON-NLS-1$
+					.getAbsolutePath());
+		case FILE:
+		case FOLDER: // fall through
+			return ((File) node.getObject()).getName();
+		case BRANCHES:
+			return UIText.RepositoriesView_Branches_Nodetext;
+		case REMOTES:
+			return UIText.RepositoriesView_RemotesNodeText;
+		case REMOTE:
+			return (String) node.getObject();
+		case PROJECTS:
+			return UIText.RepositoriesView_ExistingProjects_Nodetext;
+		case REF:
+			Ref ref = (Ref) node.getObject();
+			// shorten the name
+			String refName = node.getRepository().shortenRefName(ref.getName());
+			if (ref.isSymbolic()) {
+				refName = refName
+						+ " - " //$NON-NLS-1$
+						+ node.getRepository().shortenRefName(
+								ref.getLeaf().getName());
+			}
+			return refName;
+		case PROJ:
+
+			File file = (File) node.getObject();
+			return file.getName();
+
+		case WORKINGDIR:
+
+			return UIText.RepositoriesView_WorkingDir_treenode
+					+ " - " //$NON-NLS-1$
+					+ node.getRepository().getWorkDir().getAbsolutePath();
+
+		default:
+			return null;
+		}
+	}
+

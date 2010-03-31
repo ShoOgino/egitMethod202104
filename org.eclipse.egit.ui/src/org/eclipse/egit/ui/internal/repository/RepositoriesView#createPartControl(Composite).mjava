@@ -7,8 +7,9 @@
 		main.setLayout(new GridLayout(1, false));
 
 		tv = new TreeViewer(main);
-		tv.setContentProvider(new ContentProvider());
-		new LabelProvider(tv);
+		tv.setContentProvider(new RepositoriesViewContentProvider());
+		// the label provider registers itself
+		new RepositoriesViewLabelProvider(tv);
 
 		getSite().setSelectionProvider(this);
 
@@ -26,6 +27,8 @@
 
 			}
 		});
+		// make the tree rather wide to accommodate long directory names
+		tv.getTree().getColumn(0).setWidth(700);
 
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tv.getTree());
 
@@ -34,5 +37,21 @@
 		addActionsToToolbar();
 
 		scheduleRefresh();
+
+		ISelectionService srv = (ISelectionService) getSite().getService(
+				ISelectionService.class);
+		srv.addPostSelectionListener(new ISelectionListener() {
+
+			public void selectionChanged(IWorkbenchPart part,
+					ISelection selection) {
+
+				if (linkWithSelectionAction == null
+						|| !linkWithSelectionAction.isChecked())
+					return;
+
+				reactOnSelection(selection);
+			}
+
+		});
 	}
 

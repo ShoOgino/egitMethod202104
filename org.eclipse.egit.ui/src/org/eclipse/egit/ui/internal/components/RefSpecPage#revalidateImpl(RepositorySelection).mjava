@@ -26,12 +26,11 @@
 
 		this.validatedRepoSelection = newRepoSelection;
 		final String actRemoteName;
-		if (remoteName == null)
+		if (configName == null)
 			actRemoteName = validatedRepoSelection.getConfigName();
 		else
-			actRemoteName = remoteName;
-		if (initialSpecSize < 0)
-			initialSpecSize = listRemotesOp.getRemoteRefs().size();
+			actRemoteName = configName;
+
 		specsPanel.setAssistanceData(local, listRemotesOp.getRemoteRefs(),
 				actRemoteName);
 
@@ -44,7 +43,7 @@
 		if (newRepoSelection.isConfigSelected()) {
 			saveButton.setVisible(true);
 			saveButton.setText(NLS.bind(UIText.RefSpecPage_saveSpecifications,
-					remoteName));
+					actRemoteName));
 			saveButton.getParent().layout();
 			final TagOpt tagOpt = newRepoSelection.getConfig().getTagOpt();
 			switch (tagOpt) {
