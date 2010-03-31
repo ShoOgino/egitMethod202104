@@ -1,0 +1,21 @@
+	public void createInitialLayout(IPageLayout layout) {
+
+		// repositories on the left hand
+		layout.addView(RepositoriesView.VIEW_ID, IPageLayout.LEFT, (float) 0.5, layout.getEditorArea());
+
+		// Properties under editor area
+		layout.addView(IPageLayout.ID_PROP_SHEET, IPageLayout.BOTTOM, (float) 0.5, layout
+				.getEditorArea());
+
+		// place holder for Package Explorer under repositories
+		layout.addPlaceholder("org.eclipse.jdt.ui.PackageExplorer", IPageLayout.BOTTOM, (float) 0.7, RepositoriesView.VIEW_ID);
+
+		// shortcut to Package Explorer
+		layout.addShowViewShortcut("org.eclipse.jdt.ui.PackageExplorer");
+		// shortcut to History view
+		layout.addShowViewShortcut(IHistoryView.VIEW_ID);
+
+
+
+	}
+
