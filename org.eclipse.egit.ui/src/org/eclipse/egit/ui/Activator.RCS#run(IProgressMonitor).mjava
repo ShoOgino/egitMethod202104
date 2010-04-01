@@ -38,7 +38,8 @@
 					GitTraceLocation.getTrace().trace(
 							GitTraceLocation.UI.getLocation(),
 							"Rescheduling " + getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
-				schedule(REPO_SCAN_INTERVAL);
+				if (doReschedule)
+					schedule(REPO_SCAN_INTERVAL);
 			} catch (Exception e) {
 				// TODO is this the right location?
 				if (GitTraceLocation.UI.isActive())
