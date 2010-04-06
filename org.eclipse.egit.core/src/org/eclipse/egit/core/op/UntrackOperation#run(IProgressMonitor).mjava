@@ -21,9 +21,9 @@
 				editor.commit();
 			}
 		} catch (RuntimeException e) {
-			throw Activator.error(CoreText.UntrackOperation_failed, e);
+			throw new CoreException(Activator.error(CoreText.UntrackOperation_failed, e));
 		} catch (IOException e) {
-			throw Activator.error(CoreText.UntrackOperation_failed, e);
+			throw new CoreException(Activator.error(CoreText.UntrackOperation_failed, e));
 		} finally {
 			for (final RepositoryMapping rm : mappings.keySet())
 				rm.fireRepositoryChanged();

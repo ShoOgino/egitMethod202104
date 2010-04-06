@@ -13,7 +13,7 @@
 			try {
 				cache = DirCache.lock(db);
 			} catch (IOException err) {
-				throw Activator.error(CoreText.UntrackOperation_failed, err);
+				throw new CoreException(Activator.error(CoreText.UntrackOperation_failed, err));
 			}
 			caches.put(db, cache);
 			mappings.put(rm, rm);

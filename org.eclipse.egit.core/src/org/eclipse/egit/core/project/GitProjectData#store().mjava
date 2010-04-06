@@ -29,15 +29,15 @@
 				}
 			}
 		} catch (IOException ioe) {
-			throw Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
-					dat), ioe);
+			throw new CoreException(Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
+					dat), ioe));
 		}
 
 		dat.delete();
 		if (!tmp.renameTo(dat)) {
 			tmp.delete();
-			throw Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
-					dat), null);
+			throw new CoreException(Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
+					dat), null));
 		}
 	}
 
