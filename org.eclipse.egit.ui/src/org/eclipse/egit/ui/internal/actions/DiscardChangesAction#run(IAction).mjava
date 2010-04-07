@@ -1,0 +1,11 @@
+	@Override
+	public void run(IAction action) {
+
+		boolean performAction = MessageDialog.openConfirm(getShell(),
+				UIText.DiscardChangesAction_confirmActionTitle,
+				UIText.DiscardChangesAction_confirmActionMessage);
+		if (performAction) {
+			performDiscardChanges();
+		}
+	}
+
