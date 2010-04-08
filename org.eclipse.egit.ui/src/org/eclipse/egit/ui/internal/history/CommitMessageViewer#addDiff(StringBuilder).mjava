@@ -9,8 +9,8 @@
 					outputDiff(d, diff);
 			}
 		} catch (IOException e) {
-			Activator.error("Can't get file difference of "
-					+ commit.getId() + ".", e);
+			Activator.error(NLS.bind(UIText.CommitMessageViewer_errorGettingFileDifference,
+					commit.getId()), e);
 		}
 	}
 

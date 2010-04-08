@@ -9,52 +9,57 @@
 		final StringBuilder d = new StringBuilder();
 		final ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
 
-		d.append("commit ");
+		d.append(UIText.CommitMessageViewer_commit);
+		d.append(SPACE);
 		d.append(commit.getId().name());
-		d.append("\n"); //$NON-NLS-1$
+		d.append(LF);
 
 		if (author != null) {
-			d.append("Author: ");
+			d.append(UIText.CommitMessageViewer_author);
+			d.append(": ");  //$NON-NLS-1$
 			d.append(author.getName());
 			d.append(" <"); //$NON-NLS-1$
 			d.append(author.getEmailAddress());
 			d.append("> "); //$NON-NLS-1$
 			d.append(fmt.format(author.getWhen()));
-			d.append("\n"); //$NON-NLS-1$
+			d.append(LF);
 		}
 
 		if (committer != null) {
-			d.append("Committer: ");
+			d.append(UIText.CommitMessageViewer_committer);
+			d.append(": ");  //$NON-NLS-1$
 			d.append(committer.getName());
 			d.append(" <"); //$NON-NLS-1$
 			d.append(committer.getEmailAddress());
 			d.append("> "); //$NON-NLS-1$
 			d.append(fmt.format(committer.getWhen()));
-			d.append("\n"); //$NON-NLS-1$
+			d.append(LF);
 		}
 
 		for (int i = 0; i < commit.getParentCount(); i++) {
 			final RevCommit p = commit.getParent(i);
-			d.append("Parent: ");
+			d.append(UIText.CommitMessageViewer_parent);
+			d.append(": ");  //$NON-NLS-1$
 			addLink(d, styles, p);
 			d.append(" ("); //$NON-NLS-1$
 			d.append(p.getShortMessage());
 			d.append(")"); //$NON-NLS-1$
-			d.append("\n"); //$NON-NLS-1$
+			d.append(LF);
 		}
 
 		for (int i = 0; i < commit.getChildCount(); i++) {
 			final RevCommit p = commit.getChild(i);
-			d.append("Child:  ");
+			d.append(UIText.CommitMessageViewer_child);
+			d.append(":  ");  //$NON-NLS-1$
 			addLink(d, styles, p);
 			d.append(" ("); //$NON-NLS-1$
 			d.append(p.getShortMessage());
 			d.append(")"); //$NON-NLS-1$
-			d.append("\n"); //$NON-NLS-1$
+			d.append(LF);
 		}
 
 		makeGrayText(d, styles);
-		d.append("\n"); //$NON-NLS-1$
+		d.append(LF);
 		String msg = commit.getFullMessage();
 		Pattern p = Pattern.compile("\n([A-Z](?:[A-Za-z]+-)+by: [^\n]+)"); //$NON-NLS-1$
 		if (fill) {
@@ -68,7 +73,7 @@
 		int h0 = d.length();
 		d.append(msg);
 
-		d.append("\n"); //$NON-NLS-1$
+		d.append(LF);
 
 		addDiff(d);
 

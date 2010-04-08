@@ -15,8 +15,8 @@
 				right = new EditableRevision(nextFile);
 			}
 		} catch (IOException e) {
-			Activator.error("IO error looking up path" + gitPath + " in "
-					+ commit.getId() + ".", e);
+			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
+					gitPath, commit.getId()), e);
 		}
 		return right;
 	}

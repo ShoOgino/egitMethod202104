@@ -37,8 +37,9 @@
 			ru.setNewObjectId(commit.getCommitId());
 			ru.setRefLogMessage(buildReflogMessage(commitMessage), false);
 			if (ru.forceUpdate() == RefUpdate.Result.LOCK_FAILURE) {
-				throw new TeamException("Failed to update " + ru.getName()
-						+ " to commit " + commit.getCommitId() + ".");
+				throw new TeamException(
+						NLS.bind(UIText.CommitAction_failedToUpdate, ru.getName(),
+						commit.getCommitId()));
 			}
 		}
 	}

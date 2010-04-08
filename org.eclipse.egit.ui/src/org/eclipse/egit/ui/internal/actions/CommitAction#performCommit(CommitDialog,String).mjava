@@ -7,13 +7,13 @@
 		try {
 			prepareTrees(selectedItems, treeMap);
 		} catch (IOException e) {
-			throw new TeamException("Preparing trees", e);
+			throw new TeamException(UIText.CommitAction_errorPreparingTrees, e);
 		}
 
 		try {
 			doCommits(commitDialog, commitMessage, treeMap);
 		} catch (IOException e) {
-			throw new TeamException("Committing changes", e);
+			throw new TeamException(UIText.CommitAction_errorCommittingChanges, e);
 		}
 		for (IProject proj : getProjectsForSelectedResources()) {
 			RepositoryMapping.getMapping(proj).fireRepositoryChanged();

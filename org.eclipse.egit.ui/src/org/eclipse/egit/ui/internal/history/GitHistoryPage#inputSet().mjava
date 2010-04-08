@@ -48,8 +48,8 @@
 		try {
 			headId = db.resolve(Constants.HEAD);
 		} catch (IOException e) {
-			Activator.logError("Cannot parse HEAD in: "
-					+ db.getDirectory().getAbsolutePath(), e);
+			Activator.logError(NLS.bind(UIText.GitHistoryPage_errorParsingHead,
+					db.getDirectory().getAbsolutePath()), e);
 			return false;
 		}
 
@@ -64,7 +64,7 @@
 			currentWalk = new SWTWalk(db);
 			currentWalk.sort(RevSort.COMMIT_TIME_DESC, true);
 			currentWalk.sort(RevSort.BOUNDARY, true);
-			highlightFlag = currentWalk.newFlag("highlight");
+			highlightFlag = currentWalk.newFlag("highlight"); //$NON-NLS-1$
 		} else {
 			currentWalk.reset();
 		}
@@ -74,8 +74,8 @@
 		try {
 			currentWalk.markStart(currentWalk.parseCommit(headId));
 		} catch (IOException e) {
-			Activator.logError("Cannot read HEAD commit " + headId + " in: "
-					+ db.getDirectory().getAbsolutePath(), e);
+			Activator.logError(NLS.bind(UIText.GitHistoryPage_errorReadingHeadCommit,
+					headId, db.getDirectory().getAbsolutePath()), e);
 			return false;
 		}
 

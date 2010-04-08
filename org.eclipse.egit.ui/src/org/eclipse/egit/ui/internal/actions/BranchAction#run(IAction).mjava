@@ -5,9 +5,10 @@
 			return;
 
 		if (!repository.getRepositoryState().canCheckout()) {
-			MessageDialog.openError(getShell(), "Cannot checkout now",
-					"Repository state:"
-							+ repository.getRepositoryState().getDescription());
+			MessageDialog.openError(getShell(),
+					UIText.BranchAction_cannotCheckout, NLS.bind(
+							UIText.BranchAction_repositoryState, repository
+									.getRepositoryState().getDescription()));
 			return;
 		}
 
@@ -31,7 +32,10 @@
 							GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
-								handle(e, "Error while switching branches", "Unable to switch branches");
+								handle(
+										e,
+										UIText.BranchAction_errorSwitchingBranches,
+										UIText.BranchAction_unableToSwitchBranches);
 							}
 						});
 					}

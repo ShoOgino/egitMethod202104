@@ -2,7 +2,10 @@
 		try {
 			GitQuickDiffProvider.setBaselineReference(repository, baseline);
 		} catch (IOException e) {
-			Activator.logError("Cannot set quickdiff baseline", e);
+			Activator
+					.logError(
+							UIText.QuickdiffBaselineOperation_baseline,
+							e);
 		}
 	}
 

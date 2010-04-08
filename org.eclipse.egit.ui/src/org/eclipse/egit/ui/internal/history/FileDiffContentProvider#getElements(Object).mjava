@@ -3,8 +3,8 @@
 			try {
 				diff = FileDiff.compute(walk, commit);
 			} catch (IOException err) {
-				Activator.error("Can't get file difference of "
-						+ commit.getId() + ".", err);
+				Activator.error(NLS.bind(UIText.FileDiffContentProvider_errorGettingDifference,
+						commit.getId()), err);
 			}
 		}
 		return diff;

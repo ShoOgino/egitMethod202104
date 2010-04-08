@@ -13,7 +13,10 @@
 						return TeamUIMessages.CompareFileRevisionEditorInput_1;
 					}
 				} catch (CoreException e) {
-					Activator.logError("Problem getting content identifier", e);
+					Activator
+							.logError(
+									UIText.GitCompareFileRevisionEditorInput_contentIdentifier,
+									e);
 				}
 			} else {
 				return fileRevisionElement.getContentIdentifier();

@@ -4,7 +4,7 @@
 		try {
 			buildIndexHeadDiffList();
 		} catch (IOException e) {
-			Utils.handleError(getTargetPart().getSite().getShell(), e, "Error during commit", "Error occurred computing diffs");
+			Utils.handleError(getTargetPart().getSite().getShell(), e, UIText.CommitAction_errorDuringCommit, UIText.CommitAction_errorComputingDiffs);
 			return;
 		}
 
@@ -15,8 +15,8 @@
 			repository = repo;
 			if (!repo.getRepositoryState().canCommit()) {
 				MessageDialog.openError(getTargetPart().getSite().getShell(),
-					"Cannot commit now", "Repository state:"
-							+ repo.getRepositoryState().getDescription());
+					UIText.CommitAction_cannotCommit,
+					NLS.bind(UIText.CommitAction_repositoryState, repo.getRepositoryState().getDescription()));
 				return;
 			}
 		}
@@ -26,13 +26,13 @@
 			if (amendAllowed && previousCommit != null) {
 				boolean result = MessageDialog
 				.openQuestion(getTargetPart().getSite().getShell(),
-						"No files to commit",
-				"No changed items were selected. Do you wish to amend the last commit?");
+						UIText.CommitAction_noFilesToCommit,
+				UIText.CommitAction_amendCommit);
 				if (!result)
 					return;
 				amending = true;
 			} else {
-				MessageDialog.openWarning(getTargetPart().getSite().getShell(), "No files to commit", "Commit/amend not possible. Possible causes:\n\n- No changed items were selected\n- Multiple repositories selected\n- No repositories selected\n- No previous commits");
+				MessageDialog.openWarning(getTargetPart().getSite().getShell(), UIText.CommitAction_noFilesToCommit, UIText.CommitAction_amendNotPossible);
 				return;
 			}
 		}
@@ -71,7 +71,7 @@
 		try {
 			performCommit(commitDialog, commitMessage);
 		} catch (TeamException e) {
-			Utils.handleError(getTargetPart().getSite().getShell(), e, "Error during commit", "Error occurred while committing");
+			Utils.handleError(getTargetPart().getSite().getShell(), e, UIText.CommitAction_errorDuringCommit, UIText.CommitAction_errorOnCommit);
 		}
 	}
 

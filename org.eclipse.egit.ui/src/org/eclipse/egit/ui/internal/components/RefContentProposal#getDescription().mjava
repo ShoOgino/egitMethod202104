@@ -5,8 +5,8 @@
 		try {
 			obj = db.mapObject(objectId, refName);
 		} catch (IOException e) {
-			Activator.logError("Unable to read object " + objectId
-					+ " for content proposal assistance", e);
+			Activator.logError(NLS.bind(
+					UIText.RefContentProposal_errorReadingObject, objectId), e);
 			return null;
 		}
 
@@ -14,19 +14,21 @@
 		sb.append(refName);
 		sb.append('\n');
 		sb.append(objectId.abbreviate(db).name());
-		sb.append(" - ");
+		sb.append(" - "); //$NON-NLS-1$
 		if (obj instanceof Commit) {
 			final Commit c = ((Commit) obj);
-			appendObjectSummary(sb, "commit", c.getAuthor(), c.getMessage());
+			appendObjectSummary(sb, UIText.RefContentProposal_commit, c
+					.getAuthor(), c.getMessage());
 		} else if (obj instanceof Tag) {
 			final Tag t = ((Tag) obj);
-			appendObjectSummary(sb, "tag", t.getAuthor(), t.getMessage());
+			appendObjectSummary(sb, UIText.RefContentProposal_tag, t
+					.getAuthor(), t.getMessage());
 		} else if (obj instanceof Tree) {
-			sb.append("tree");
+			sb.append(UIText.RefContentProposal_tree);
 		} else if (obj instanceof Blob) {
-			sb.append("blob");
+			sb.append(UIText.RefContentProposal_blob);
 		} else
-			sb.append("locally unknown object");
+			sb.append(UIText.RefContentProposal_unknownObject);
 		return sb.toString();
 	}
 

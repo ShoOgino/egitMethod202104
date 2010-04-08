@@ -24,17 +24,17 @@
 				return;
 			}
 		} else {
-			Activator.logError("Could not resolve quickdiff baseline "
-					+ baseline + " corresponding to " + resource + " in "
-					+ repository, new Throwable());
+			String msg = NLS.bind(UIText.GitDocument_errorResolveQuickdiff,
+					new Object[] { baseline, resource, repository });
+			Activator.logError(msg, new Throwable());
 			setResolved(null, null, null, ""); //$NON-NLS-1$
 			return;
 		}
 		Commit baselineCommit = repository.mapCommit(commitId);
 		if (baselineCommit == null) {
-			Activator.logError("Could not load commit " + commitId + " for "
-					+ baseline + " corresponding to " + resource + " in "
-					+ repository, new Throwable());
+			String msg = NLS.bind(UIText.GitDocument_errorLoadCommit,
+					new Object[] { commitId, baseline, resource, repository });
+			Activator.logError(msg, new Throwable());
 			setResolved(null, null, null, ""); //$NON-NLS-1$
 			return;
 		}
@@ -49,9 +49,9 @@
 		}
 		Tree baselineTree = baselineCommit.getTree();
 		if (baselineTree == null) {
-			Activator.logError("Could not load tree " + treeId + " for "
-					+ baseline + " corresponding to " + resource + " in "
-					+ repository, new Throwable());
+			String msg = NLS.bind(UIText.GitDocument_errorLoadTree,
+					new Object[] { treeId, baseline, resource, repository });
+			Activator.logError(msg, new Throwable());
 			setResolved(null, null, null, ""); //$NON-NLS-1$
 			return;
 		}

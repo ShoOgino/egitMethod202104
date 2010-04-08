@@ -25,7 +25,7 @@
 				ObjectWriter writer = new ObjectWriter(tree.getRepository());
 				tree.setId(writer.writeTree(tree));
 			} catch (IOException e) {
-				throw new TeamException("Writing trees", e);
+				throw new TeamException(UIText.CommitAction_errorWritingTrees, e);
 			}
 		}
 	}

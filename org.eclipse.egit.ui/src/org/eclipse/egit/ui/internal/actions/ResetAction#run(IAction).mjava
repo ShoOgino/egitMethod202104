@@ -5,9 +5,8 @@
 			return;
 
 		if (!repository.getRepositoryState().canResetHead()) {
-			MessageDialog.openError(getShell(), "Cannot reset HEAD now",
-					"Repository state:"
-							+ repository.getRepositoryState().getDescription());
+			MessageDialog.openError(getShell(), UIText.ResetAction_errorResettingHead,
+					NLS.bind(UIText.ResetAction_repositoryState, repository.getRepositoryState().getDescription()));
 			return;
 		}
 
@@ -32,9 +31,9 @@
 					}
 				});
 			} catch (InvocationTargetException e) {
-				MessageDialog.openError(getShell(),"Reset failed", e.getMessage());
+				MessageDialog.openError(getShell(),UIText.ResetAction_resetFailed, e.getMessage());
 			} catch (InterruptedException e) {
-				MessageDialog.openError(getShell(),"Reset failed", e.getMessage());
+				MessageDialog.openError(getShell(),UIText.ResetAction_resetFailed, e.getMessage());
 			}
 		}
 
