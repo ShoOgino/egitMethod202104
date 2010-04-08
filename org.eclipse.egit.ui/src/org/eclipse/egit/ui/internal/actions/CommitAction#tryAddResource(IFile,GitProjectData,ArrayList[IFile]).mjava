@@ -12,8 +12,8 @@
 				return true;
 			}
 		} catch (Exception e) {
-			if (GitTraceLocation.CORE.isActive())
-				GitTraceLocation.getTrace().trace(GitTraceLocation.CORE.getLocation(), e.getMessage(), e);
+			if (GitTraceLocation.UI.isActive())
+				GitTraceLocation.getTrace().trace(GitTraceLocation.UI.getLocation(), e.getMessage(), e);
 		}
 		return false;
 	}

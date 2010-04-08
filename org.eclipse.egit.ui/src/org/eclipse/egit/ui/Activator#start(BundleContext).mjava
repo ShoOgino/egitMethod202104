@@ -1,5 +1,15 @@
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
+
+		if (isDebugging()) {
+			ServiceTracker debugTracker = new ServiceTracker(context,
+					DebugOptions.class.getName(), null);
+			debugTracker.open();
+
+			DebugOptions opts = (DebugOptions) debugTracker.getService();
+			GitTraceLocation.initializeFromOptions(opts, true);
+		}
+
 		setupSSH(context);
 		setupProxy(context);
 		setupRepoChangeScanner();

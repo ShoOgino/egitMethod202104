@@ -1,10 +1,15 @@
 	public void start(final BundleContext context) throws Exception {
+
 		super.start(context);
-        // register this as DebugOptions listener
-		Hashtable<String, String> props = new Hashtable<String, String>(4);
-		// we want to get notified about our own DebugOptions
-		props.put(DebugOptions.LISTENER_SYMBOLICNAME, context.getBundle().getSymbolicName());
-		context.registerService(DebugOptionsListener.class.getName(), this, props);
+
+		if (isDebugging()) {
+			ServiceTracker debugTracker = new ServiceTracker(context,
+					DebugOptions.class.getName(), null);
+			debugTracker.open();
+
+			DebugOptions opts = (DebugOptions) debugTracker.getService();
+			GitTraceLocation.initializeFromOptions(opts, true);
+		}
 
 		GitProjectData.reconfigureWindowCache();
 		GitProjectData.attachToWorkspace(true);
