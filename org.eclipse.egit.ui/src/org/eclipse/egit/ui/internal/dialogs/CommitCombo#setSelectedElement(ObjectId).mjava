@@ -1,0 +1,17 @@
+	/**
+	 * Selects the item with is associated with given <code>objectId</code>
+	 *
+	 * @param objectId
+	 */
+	public void setSelectedElement(ObjectId objectId) {
+		if (objectId == null) {
+			return;
+		}
+
+		for (int i = 0; i < commits.size(); i++)
+			if (objectId.equals(commits.get(i).objectId)) {
+				combo.select(i);
+				break;
+			}
+	}
+

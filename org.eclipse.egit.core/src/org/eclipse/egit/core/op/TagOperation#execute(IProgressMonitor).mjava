@@ -1,0 +1,17 @@
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		try {
+			monitor.beginTask(NLS.bind(CoreText.TagOperation_performingTagging,
+					tag.getTag()), 3);
+
+			updateTagObject();
+			monitor.worked(1);
+
+			updateRepo();
+			monitor.worked(1);
+
+			ProjectUtil.refreshProjects(repo, SubMonitor.convert(monitor, 1));
+		} finally {
+			monitor.done();
+		}
+	}
+

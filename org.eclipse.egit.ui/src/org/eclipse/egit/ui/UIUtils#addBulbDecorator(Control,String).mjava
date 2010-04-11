@@ -1,0 +1,21 @@
+	/**
+	 * Adds little bulb decoration to given control. Bulb will appear in top left
+	 * corner of control after giving focus for this control.
+	 *
+	 * After clicking on bulb image text from <code>tooltip</code> will appear.
+	 *
+	 * @param control instance of {@link Control} object with should be decorated
+	 * @param tooltip text value which should appear after clicking on bulb image.
+	 */
+	public static void addBulbDecorator(final Control control, final String tooltip) {
+		ControlDecoration dec = new ControlDecoration(control, SWT.TOP | SWT.LEFT);
+
+		dec.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage());
+
+		dec.setShowOnlyOnFocus(true);
+		dec.setShowHover(true);
+
+		dec.setDescriptionText(tooltip);
+	}
+

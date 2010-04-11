@@ -1,0 +1,16 @@
+	/**
+	 * Returns value of SHA-1 for selected commit.
+	 *
+	 * @param index
+	 *            index of item in check box
+	 * @return SHA-1 of selected commit
+	 */
+	public ObjectId getItem(int index) {
+		checkWidget();
+
+		if (!(0 <= index && index < commits.size())) {
+			SWT.error(SWT.ERROR_INVALID_RANGE);
+		}
+		return commits.get(index).objectId;
+	}
+

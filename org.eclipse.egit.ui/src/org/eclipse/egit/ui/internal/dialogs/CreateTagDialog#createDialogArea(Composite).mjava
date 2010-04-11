@@ -1,0 +1,22 @@
+	@Override
+	protected Control createDialogArea(final Composite parent) {
+		initializeDialogUnits(parent);
+
+		Composite composite = (Composite) super.createDialogArea(parent);
+
+		final SashForm mainForm = new SashForm(composite, SWT.HORIZONTAL | SWT.FILL);
+		mainForm.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
+				.create());
+
+		createLeftSection(mainForm);
+		createExistingTagsSection(mainForm);
+
+		mainForm.setWeights(new int[] { 70, 30 });
+		if (tag != null) {
+			setTagImpl();
+		}
+
+		applyDialogFont(parent);
+		return composite;
+	}
+

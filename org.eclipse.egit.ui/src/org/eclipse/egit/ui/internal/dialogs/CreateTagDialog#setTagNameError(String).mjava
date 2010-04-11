@@ -1,0 +1,19 @@
+	private void setTagNameError(String tagNameMessage) {
+		// copied form
+		// org.eclipse.jface.dialogs.InputDialog.setErrorMessage(String)
+		if (tagNameErrorText != null && !tagNameErrorText.isDisposed()) {
+			tagNameErrorText
+					.setText(tagNameMessage == null ? " \n " : tagNameMessage); //$NON-NLS-1$
+			// Disable the error message text control if there is no error, or
+			// no error text (empty or whitespace only). Hide it also to avoid
+			// color change.
+			// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=130281
+			boolean hasError = tagNameMessage != null
+					&& (StringConverter.removeWhiteSpaces(tagNameMessage))
+							.length() > 0;
+			tagNameErrorText.setEnabled(hasError);
+			tagNameErrorText.setVisible(hasError);
+			tagNameErrorText.getParent().update();
+		}
+	}
+

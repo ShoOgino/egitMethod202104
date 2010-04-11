@@ -1,0 +1,43 @@
+	private void createExistingTagsSection(Composite parent) {
+		Composite right = new Composite(parent, SWT.NORMAL);
+		right.setLayout(GridLayoutFactory.swtDefaults().create());
+		right.setLayoutData(GridLayoutFactory.fillDefaults().create());
+
+		new Label(right, SWT.WRAP).setText(UIText.CreateTagDialog_existingTags);
+
+		Table table = new Table(right, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER
+				| SWT.SINGLE);
+		table.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
+				.hint(80, 100).create());
+
+		TableLayout layout = new TableLayout();
+		layout.addColumnData(new ColumnWeightData(100, 20));
+		table.setLayout(layout);
+
+		tagViewer = new TableViewer(table);
+		tagViewer.setLabelProvider(new TagLabelProvider());
+		tagViewer.setContentProvider(new WorkbenchContentProvider());
+		tagViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				fillTagDialog();
+			}
+		});
+
+		tagViewer.setInput(new TagInputList(existingTags));
+		tagViewer.addFilter(new ViewerFilter() {
+
+			@Override
+			public boolean select(Viewer viewer, Object parentElement,
+					Object element) {
+				Tag tag = (Tag) element;
+
+				if (tagNamePattern != null)
+					return tagNamePattern.matcher(tag.getTag()).find();
+				else
+					return true;
+			}
+		});
+
+		applyDialogFont(parent);
+	}
+

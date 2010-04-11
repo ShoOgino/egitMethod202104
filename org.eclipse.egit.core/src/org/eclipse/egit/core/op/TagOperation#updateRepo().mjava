@@ -1,0 +1,19 @@
+	private void updateRepo() throws TeamException {
+		String refName = Constants.R_TAGS + tag.getTag();
+
+		try {
+			RefUpdate tagRef = repo.updateRef(refName);
+			tagRef.setNewObjectId(tag.getTagId());
+
+			tagRef.setForceUpdate(shouldMoveTag);
+			Result updateResult = tagRef.update();
+
+			if (updateResult != Result.NEW && updateResult != Result.FORCED)
+				throw new TeamException(NLS.bind(CoreText.TagOperation_taggingFailure,
+						tag.getTag(), updateResult));
+		} catch (IOException e) {
+			throw new TeamException(NLS.bind(CoreText.TagOperation_taggingFailure,
+					tag.getTag(), e.getMessage()), e);
+		}
+	}
+

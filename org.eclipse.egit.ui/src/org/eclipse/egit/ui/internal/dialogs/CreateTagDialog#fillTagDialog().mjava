@@ -1,0 +1,25 @@
+	private void fillTagDialog() {
+		IStructuredSelection selection = (IStructuredSelection) tagViewer
+				.getSelection();
+		Object firstSelected = selection.getFirstElement();
+
+		if (firstSelected instanceof Tag) {
+			tag = (Tag) firstSelected;
+
+			if (!overwriteButton.isEnabled()) {
+				String tagMessageValue = tag.getMessage();
+				// don't enable OK button if we are dealing with un-annotated
+				// tag because JGit doesn't support them
+				if (tagMessageValue != null
+						&& tagMessageValue.trim().length() != 0)
+					overwriteButton.setEnabled(true);
+
+				tagNameText.setEnabled(false);
+				commitCombo.setEnabled(false);
+				tagMessageText.setEnabled(false);
+			}
+
+			setTagImpl();
+		}
+	}
+

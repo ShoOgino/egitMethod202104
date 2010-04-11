@@ -1,0 +1,12 @@
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+
+		if (branchName != null) {
+			newShell.setText(NLS.bind(
+					UIText.CreateTagDialog_questionNewTagTitle, branchName));
+		}
+
+		newShell.setMinimumSize(703, 345);
+	}
+

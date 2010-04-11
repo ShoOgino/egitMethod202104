@@ -1,0 +1,14 @@
+	private void updateTagObject() throws TeamException {
+		ObjectId startPointRef = tag.getObjId();
+
+		try {
+			ObjectLoader object = repo.openObject(startPointRef);
+			tag.setType(Constants.typeString(object.getType()));
+			ObjectWriter objWriter = new ObjectWriter(repo);
+			tag.setTagId(objWriter.writeTag(tag));
+		} catch (IOException e) {
+			throw new TeamException(NLS.bind(CoreText.TagOperation_objectIdNotFound,
+					tag.getTag(), e.getMessage()), e);
+		}
+	}
+

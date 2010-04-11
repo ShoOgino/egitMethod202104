@@ -1,0 +1,35 @@
+	private void createAdvancedSection(final Composite composite) {
+		ExpandableComposite advanced = new ExpandableComposite(composite,
+				ExpandableComposite.TREE_NODE
+						| ExpandableComposite.CLIENT_INDENT);
+
+		advanced.setText(UIText.CreateTagDialog_advanced);
+		advanced.setToolTipText(UIText.CreateTagDialog_advancedToolTip);
+		advanced.setLayoutData(GridDataFactory.fillDefaults().grab(true, false)
+				.create());
+
+		Composite advancedComposite = new Composite(advanced, SWT.WRAP);
+		advancedComposite.setLayout(GridLayoutFactory.swtDefaults().create());
+		advancedComposite.setLayoutData(GridDataFactory.fillDefaults().grab(
+				true, true).create());
+
+		Label advancedLabel = new Label(advancedComposite, SWT.WRAP);
+		advancedLabel.setText(UIText.CreateTagDialog_advancedMessage);
+		advancedLabel.setLayoutData(GridDataFactory.fillDefaults().grab(true,
+				false).create());
+
+		commitCombo = new CommitCombo(advancedComposite, SWT.NORMAL);
+		commitCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
+				false).create());
+
+		for (RevCommit revCommit : revCommits)
+			commitCombo.add(revCommit);
+
+		advanced.setClient(advancedComposite);
+		advanced.addExpansionListener(new ExpansionAdapter() {
+			public void expansionStateChanged(ExpansionEvent e) {
+				composite.layout();
+			}
+		});
+	}
+

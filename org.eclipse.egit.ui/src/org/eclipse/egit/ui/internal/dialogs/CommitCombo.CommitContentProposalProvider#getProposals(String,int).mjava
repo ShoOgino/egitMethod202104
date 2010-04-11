@@ -1,0 +1,14 @@
+		public IContentProposal[] getProposals(String contents, int position) {
+			List<IContentProposal> list = new ArrayList<IContentProposal>();
+			Pattern pattern = Pattern.compile(contents,
+					Pattern.CASE_INSENSITIVE);
+			for (int i = 0; i < commits.size(); i++) {
+				String message = commits.get(i).message;
+				if (message.length() >= contents.length()
+						&& pattern.matcher(message).find()) {
+					list.add(makeContentProposal(message));
+				}
+			}
+			return list.toArray(new IContentProposal[] {});
+		}
+

@@ -1,0 +1,24 @@
+	private void validateInput() {
+		// don't validate if dialog is disposed
+		if (getShell() == null) {
+			return;
+		}
+
+		// validate tag name
+		String tagNameMessage = tagNameValidator.isValid(tagNameText.getText());
+		setTagNameError(tagNameMessage);
+
+		String tagMessageVal = tagMessageText.getText().trim();
+
+		Control button = getButton(IDialogConstants.OK_ID);
+		if (button != null) {
+			boolean containsTagNameAndMessage = (tagNameMessage == null || tagMessageVal
+					.length() == 0)
+					&& tagMessageVal.length() != 0;
+			boolean shouldOverwriteTag = (overwriteButton.getSelection() && Repository
+					.isValidRefName(Constants.R_TAGS + tagNameText.getText()));
+
+			button.setEnabled(containsTagNameAndMessage || shouldOverwriteTag);
+		}
+	}
+
