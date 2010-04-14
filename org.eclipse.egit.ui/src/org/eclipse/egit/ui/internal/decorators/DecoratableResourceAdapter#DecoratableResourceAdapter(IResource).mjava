@@ -14,8 +14,7 @@
 					.getName();
 		else
 			repositoryName = ""; //$NON-NLS-1$
-		// TODO: Add option to shorten branch name to 6 chars if it's a SHA
-		branch = repository.getBranch();
+		branch = getShortBranch();
 
 		TreeWalk treeWalk = createThreeWayTreeWalk();
 		if (treeWalk == null)
