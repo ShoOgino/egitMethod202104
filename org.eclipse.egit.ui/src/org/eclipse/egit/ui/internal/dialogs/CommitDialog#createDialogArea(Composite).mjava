@@ -114,6 +114,22 @@
 			}
 		});
 
+		showUntrackedButton = new Button(container, SWT.CHECK);
+		showUntrackedButton.setSelection(showUntracked);
+		showUntrackedButton.setText(UIText.CommitDialog_ShowUntrackedFiles);
+		showUntrackedButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		showUntrackedButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				showUntracked = showUntrackedButton.getSelection();
+				filesViewer.refresh(true);
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// Empty
+			}
+		});
+
 		commitText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				updateSignedOffButton();
@@ -142,6 +158,7 @@
 		filesViewer = new CheckboxTableViewer(resourcesTable);
 		filesViewer.setContentProvider(new CommitContentProvider());
 		filesViewer.setLabelProvider(new CommitLabelProvider());
+		filesViewer.addFilter(new CommitItemFilter());
 		filesViewer.setInput(items);
 		filesViewer.setAllChecked(true);
 		filesViewer.getTable().setMenu(getContextMenu());

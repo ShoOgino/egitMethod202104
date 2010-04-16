@@ -9,6 +9,12 @@
 							e), UIText.CommitAction_errorDuringCommit,
 					UIText.CommitAction_errorComputingDiffs);
 			return;
+		} catch (CoreException e) {
+			handle(
+					new TeamException(UIText.CommitAction_errorComputingDiffs,
+							e), UIText.CommitAction_errorDuringCommit,
+					UIText.CommitAction_errorComputingDiffs);
+			return;
 		}
 
 		Repository[] repos = getRepositoriesFor(getProjectsForSelectedResources());
@@ -59,6 +65,8 @@
 		commitDialog.setFileList(files);
 		commitDialog.setAuthor(author);
 		commitDialog.setCommitter(committer);
+		if(notTracked.size() == files.size())
+			commitDialog.setShowUntracked(true);
 
 		if (previousCommit != null) {
 			commitDialog.setPreviousCommitMessage(previousCommit.getMessage());

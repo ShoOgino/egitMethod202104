@@ -16,7 +16,10 @@
 			Entry indexEntry = index.getEntry(repoPath);
 			if (headEntry == null) {
 				prefix = UIText.CommitDialog_StatusAdded;
-				if (indexEntry.isModified(repositoryMapping.getWorkDir()))
+				if (indexEntry == null) {
+					prefix = UIText.CommitDialog_StatusUntracked;
+				}
+				else if (indexEntry.isModified(repositoryMapping.getWorkDir()))
 					prefix = UIText.CommitDialog_StatusAddedIndexDiff;
 			} else if (indexEntry == null) {
 				prefix = UIText.CommitDialog_StatusRemoved;
