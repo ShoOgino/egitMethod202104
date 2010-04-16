@@ -13,7 +13,7 @@
 		buttonsComposite.setLayoutData(new GridData(
 				GridData.VERTICAL_ALIGN_BEGINNING));
 
-		Button selectAll = new Button(buttonsComposite, SWT.PUSH);
+		selectAll = new Button(buttonsComposite, SWT.PUSH);
 		selectAll.setText(UIText.WizardProjectsImportPage_selectAll);
 		selectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -29,7 +29,7 @@
 		Dialog.applyDialogFont(selectAll);
 		setButtonLayoutData(selectAll);
 
-		Button deselectAll = new Button(buttonsComposite, SWT.PUSH);
+		deselectAll = new Button(buttonsComposite, SWT.PUSH);
 		deselectAll.setText(UIText.WizardProjectsImportPage_deselectAll);
 		deselectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {

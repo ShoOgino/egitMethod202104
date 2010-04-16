@@ -32,6 +32,20 @@
 				return super.isElementVisible(viewer, element);
 			}
 
+			@Override
+			public void setPattern(String patternString) {
+				super.setPattern(patternString);
+				// TODO: is there a better way to react on changes in the tree?
+				// disable select all button when tree becomes empty due to
+				// filtering
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						enableSelectAllButtons();
+					}
+				});
+
+			}
+
 		};
 
 		FilteredTree filteredTree = new FilteredTree(listComposite, SWT.CHECK
