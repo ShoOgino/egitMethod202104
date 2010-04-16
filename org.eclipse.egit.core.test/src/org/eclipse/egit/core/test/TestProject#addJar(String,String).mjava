@@ -1,5 +1,4 @@
-	public void addJar(String plugin, String jar) throws MalformedURLException,
-			IOException, JavaModelException {
+	public void addJar(String plugin, String jar) throws JavaModelException {
 		Path result = findFileInPlugin(plugin, jar);
 		IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
 		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
