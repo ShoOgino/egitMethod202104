@@ -1,19 +1,14 @@
-	private ITypedElement getEditableRevision(final IFile resource,
+	private ITypedElement getFileRevisionTypedElement(final IFile resource,
 			final String gitPath, SWTCommit commit) {
 		ITypedElement right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
 				NLS.bind(UIText.GitHistoryPage_FileNotInCommit, resource
 						.getName(), commit));
 
 		try {
-			TreeWalk w = TreeWalk.forPath(db, gitPath, commit.getTree());
-			// check if file is contained in commit
-			if (w != null) {
-				final IFileRevision nextFile = GitFileRevision.inCommit(db,
-						commit, gitPath, null);
-				right = new EditableRevision(nextFile);
-			}
+			IFileRevision nextFile = getFileRevision(resource, gitPath, commit);
+			if (nextFile != null)
+				right = new FileRevisionTypedElement(nextFile);
 		} catch (IOException e) {
-			// TODO throw an exception or log this?
 			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
 					gitPath, commit.getId()), e);
 		}

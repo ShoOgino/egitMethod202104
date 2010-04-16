@@ -9,8 +9,7 @@
 					IFile file = (IFile) getInput();
 					final RepositoryMapping mapping = RepositoryMapping.getMapping(file.getProject());
 					final String gitPath = mapping.getRepoRelativePath(file);
-					ITypedElement right = getEditableRevision(file, gitPath,
-							commit);
+					ITypedElement right = getFileRevisionTypedElement(file, gitPath, commit);
 					final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
 							SaveableCompareEditorInput.createFileElement(file),
 							right,
