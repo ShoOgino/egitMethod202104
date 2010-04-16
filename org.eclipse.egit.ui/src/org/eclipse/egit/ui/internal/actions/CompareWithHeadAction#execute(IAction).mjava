@@ -1,0 +1,35 @@
+	public void execute(IAction action) throws InvocationTargetException {
+		final IResource resource = getSelectedResources()[0];
+		final RepositoryMapping mapping = RepositoryMapping.getMapping(resource.getProject());
+		final Repository repository = mapping.getRepository();
+		final String gitPath = mapping.getRepoRelativePath(resource);
+
+
+		final IFile baseFile = (IFile) resource;
+		final ITypedElement base = SaveableCompareEditorInput.createFileElement(baseFile);
+
+		ITypedElement next;
+		try {
+			Ref head = repository.getRef(Constants.HEAD);
+			RevWalk rw = new RevWalk(repository);
+			RevCommit commit = rw.parseCommit(head.getObjectId());
+
+			next = new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS.bind(UIText.GitHistoryPage_FileNotInCommit,
+					resource.getName(), commit));
+			TreeWalk w = TreeWalk.forPath(repository, gitPath, commit.getTree());
+			// check if file is contained in commit
+			if (w != null) {
+				final IFileRevision nextFile = GitFileRevision.inCommit(repository, commit, gitPath, null);
+				next = new FileRevisionTypedElement(nextFile);
+			}
+		} catch (IOException e) {
+			// this exception is handled by TeamAction.run
+			throw new InvocationTargetException(e);
+		}
+
+
+		final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+				base, next, null);
+		CompareUI.openCompareEditor(in);
+	}
+
