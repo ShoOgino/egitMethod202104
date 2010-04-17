@@ -1,13 +1,6 @@
 	@Override
 	protected void okPressed() {
 		refNameFromDialog();
-		if (refName == null) {
-			MessageDialog.openWarning(getShell(),
-					UIText.BranchSelectionDialog_NoBranchSeletectTitle,
-					UIText.BranchSelectionDialog_NoBranchSeletectMessage);
-			return;
-		}
-
 		if (showResetType) {
 			if (resetType == ResetType.HARD) {
 				if (!MessageDialog.openQuestion(getShell(),
