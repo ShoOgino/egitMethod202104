@@ -106,9 +106,12 @@
 				}
 			});
 		}
-		createButton(parent, IDialogConstants.OK_ID,
+		confirmationBtn = createButton(parent, IDialogConstants.OK_ID,
 				showResetType ? UIText.BranchSelectionDialog_OkReset
 						: UIText.BranchSelectionDialog_OkCheckout, true);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+
+		// can't advance without a selection
+		confirmationBtn.setEnabled(branchTree.getSelectionCount() != 0);
 	}
 
