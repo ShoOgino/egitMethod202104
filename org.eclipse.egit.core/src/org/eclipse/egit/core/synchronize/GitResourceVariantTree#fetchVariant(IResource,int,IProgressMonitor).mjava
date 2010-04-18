@@ -1,0 +1,10 @@
+	@Override
+	protected IResourceVariant fetchVariant(IResource resource, int depth,
+			IProgressMonitor monitor) throws TeamException {
+		try {
+			return fetchVariant(resource, monitor);
+		} finally {
+			monitor.done();
+		}
+	}
+

@@ -1,0 +1,58 @@
+	public boolean compare(IResource local, IResourceVariant remote) {
+		if (!local.exists() || remote == null) {
+			return false;
+		}
+
+		if (local instanceof IFile) {
+			if (remote.isContainer()) {
+				return false;
+			}
+
+			InputStream stream = null;
+			InputStream remoteStream = null;
+			try {
+				remoteStream = remote.getStorage(
+						new NullProgressMonitor()).getContents();
+				stream = getLocal(local);
+				byte[] remoteBytes = new byte[8096];
+				byte[] bytes = new byte[8096];
+
+				int remoteRead = remoteStream.read(remoteBytes);
+				int read = stream.read(bytes);
+				if (remoteRead != read) {
+					return false;
+				}
+
+				while (Arrays.equals(bytes, remoteBytes)) {
+					remoteRead = remoteStream.read(remoteBytes);
+					read = stream.read(bytes);
+					if (remoteRead != read) {
+						// didn't read the same amount, it's uneven
+						return false;
+					} else if (read == -1) {
+						// both at EOF, check their contents
+						return Arrays.equals(bytes, remoteBytes);
+					}
+				}
+			} catch (IOException e) {
+				logException(e);
+				return false;
+			} catch (CoreException e) {
+				logException(e);
+				return false;
+			} finally {
+				closeStream(stream);
+				closeStream(remoteStream);
+			}
+		} else if (local instanceof IContainer) {
+			if (!remote.isContainer()) {
+				return false;
+			}
+
+			GitFolderResourceVariant gitVariant = (GitFolderResourceVariant) remote;
+			return local.getFullPath().equals(
+					gitVariant.getResource().getFullPath());
+		}
+		return false;
+	}
+

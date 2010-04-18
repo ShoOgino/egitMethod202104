@@ -1,0 +1,10 @@
+	private Tree mapTree(String rev) throws IOException {
+		if (rev.startsWith(Constants.R_TAGS)) {
+			Tag tag = repo.mapTag(rev);
+			Commit commit = repo.mapCommit(tag.getObjId());
+			return commit.getTree();
+		} else {
+			return repo.mapTree(rev);
+		}
+	}
+

@@ -1,0 +1,10 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == IDialogConstants.OK_ID) {
+			dstRef = dstRefCombo.getValue();
+			srcRef = srcRefCombo.getValue();
+			shouldIncluldeLocal = shouldIncludeLocalButton.getSelection();
+		}
+		super.buttonPressed(buttonId);
+	}
+

@@ -1,0 +1,7 @@
+	private GitSubscriberParticipant createDefaultParticipant(GitSynchronizeDataSet data) {
+		GitSubscriberParticipant participant = new GitSubscriberParticipant(data);
+		TeamUI.getSynchronizeManager().addSynchronizeParticipants(new ISynchronizeParticipant[] { participant });
+
+		return participant;
+	}
+

@@ -1,0 +1,8 @@
+	@Override
+	protected IResourceVariantTree getRemoteTree() {
+		if (remoteTree == null) {
+			remoteTree = new GitRemoteResourceVariantTree(gitSynchronizeDataSet, store);
+		}
+		return remoteTree;
+	}
+

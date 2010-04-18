@@ -1,0 +1,38 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite composite = (Composite) super.createDialogArea(parent);
+		composite.setLayout(GridLayoutFactory.swtDefaults().create());
+
+		GridData data = new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.HORIZONTAL_ALIGN_FILL
+				| GridData.VERTICAL_ALIGN_CENTER);
+		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2);
+
+		new Label(composite, SWT.WRAP)
+				.setText(UIText.SelectSynchronizeResourceDialog_srcRef);
+
+		srcRefCombo = new RemoteSelectionCombo(composite, syncRepos);
+		srcRefCombo.setLayoutData(data);
+		srcRefCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
+				false).create());
+
+		shouldIncludeLocalButton = new Button(composite, SWT.CHECK | SWT.WRAP);
+		shouldIncludeLocalButton
+				.setText(UIText.SelectSynchronizeResourceDialog_includeUncommitedChnages);
+
+		new Label(composite, SWT.WRAP)
+				.setText(UIText.SelectSynchronizeResourceDialog_dstRef);
+
+		dstRefCombo = new RemoteSelectionCombo(composite, syncRepos);
+		dstRefCombo.setLayoutData(data);
+		dstRefCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
+				false).create());
+
+		setTitle(NLS.bind(UIText.SelectSynchronizeResourceDialog_selectProject,
+				repoName));
+		setMessage(UIText.SelectSynchronizeResourceDialog_header);
+		setTitleImage(UIIcons.WIZBAN_CONNECT_REPO.createImage());
+
+		return composite;
+	}
+

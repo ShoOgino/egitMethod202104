@@ -1,0 +1,17 @@
+	public IResource[] members(IResource resource) throws TeamException {
+		if (resource.exists() && resource instanceof IContainer) {
+			GitSynchronizeData gsd = getSyncData().getData(
+					resource.getProject());
+			if (gsd.shouldIncludeLocal()) {
+				try {
+					return ((IContainer) resource).members();
+				} catch (CoreException e) {
+					throw new TeamException(e.getStatus());
+				}
+			} else {
+				return getMembersAndStore(resource, gsd);
+			}
+		}
+		return new IResource[0];
+	}
+

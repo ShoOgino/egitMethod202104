@@ -1,0 +1,10 @@
+	@Override
+	public IResource[] roots() {
+		if (roots != null) {
+			return roots;
+		}
+
+		roots = gitSynchronizeDataSet.getAllResources();
+		return roots;
+	}
+

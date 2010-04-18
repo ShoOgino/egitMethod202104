@@ -1,0 +1,9 @@
+	/**
+	 * Constructs GitSynchronize
+	 * @param data
+	 */
+	public GitSynchronize(GitSynchronizeDataSet data) {
+		GitSubscriberParticipant participant = getParticipant(data);
+		participant.refresh(data);
+	}
+

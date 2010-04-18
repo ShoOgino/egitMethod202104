@@ -1,0 +1,11 @@
+	/**
+	 * @return list of all resources
+	 */
+	public IResource[] getAllResources() {
+		Set<IResource> resource = new HashSet<IResource>();
+		for (GitSynchronizeData data : gsd) {
+			resource.addAll(data.getProjects());
+		}
+		return resource.toArray(new IResource[resource.size()]);
+	}
+

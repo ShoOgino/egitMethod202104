@@ -1,0 +1,8 @@
+	private ObjectId getObjecId(String rev) throws IOException {
+		if (rev.startsWith(Constants.R_TAGS)) {
+			return repo.mapTag(rev).getObjId();
+		} else {
+			return repo.mapCommit(rev).getCommitId();
+		}
+	}
+

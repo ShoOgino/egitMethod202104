@@ -1,0 +1,25 @@
+	@Override
+	protected void execute(IAction action) throws InvocationTargetException,
+			InterruptedException {
+		Repository[] repos = getRepositories();
+
+		if (repos.length != repos.length) {
+			return;
+		}
+
+		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
+		for (Repository repo : repos) {
+			List<SyncRepoEntity> syncRepoEntitys = createSyncRepoEntitys(repo);
+			SelectSynchronizeResourceDialog dialog = new SelectSynchronizeResourceDialog(
+					getShell(), repo.getDirectory(), syncRepoEntitys);
+
+			if (dialog.open() != IDialogConstants.OK_ID)
+				return;
+
+			gsdSet.add(new GitSynchronizeData(repo, dialog.getSrcRef(), dialog
+					.getDstRef(), getProcjetsInRepository(repo), dialog.shouldIncludeLocal()));
+		}
+
+		new GitSynchronize(gsdSet);
+	}
+

@@ -1,0 +1,5 @@
+	@Override
+	Tree getRevTree(IResource resource) throws IOException {
+		return getSyncData().getData(resource.getProject()).mapSrcTree();
+	}
+

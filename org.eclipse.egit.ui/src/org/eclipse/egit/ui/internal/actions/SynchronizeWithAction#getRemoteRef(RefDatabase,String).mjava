@@ -1,0 +1,10 @@
+	private Collection<Ref> getRemoteRef(RefDatabase refDb, String remoteName)
+			throws InvocationTargetException {
+		try {
+			return refDb
+					.getRefs(Constants.R_REMOTES + remoteName + "/").values(); //$NON-NLS-1$
+		} catch (IOException e) {
+			throw new InvocationTargetException(e);
+		}
+	}
+

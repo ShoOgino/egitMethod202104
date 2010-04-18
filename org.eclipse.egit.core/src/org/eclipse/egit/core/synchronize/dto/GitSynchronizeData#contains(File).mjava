@@ -1,0 +1,8 @@
+	/**
+	 * @param file
+	 * @return <true> if given {@link File} is contained by this repository
+	 */
+	public boolean contains(File file) {
+		return file.getAbsoluteFile().toString().startsWith(repoParentPath);
+	}
+

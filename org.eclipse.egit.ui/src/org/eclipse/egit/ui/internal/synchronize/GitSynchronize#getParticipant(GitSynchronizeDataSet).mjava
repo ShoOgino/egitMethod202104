@@ -1,0 +1,20 @@
+	private GitSubscriberParticipant getParticipant(GitSynchronizeDataSet data) {
+		ISynchronizeManager synchronizeManager = TeamUI.getSynchronizeManager();
+		ISynchronizeParticipantReference[] participants = synchronizeManager
+				.get(GitSubscriberParticipant.PARTICIPANT_NAME);
+
+		GitSubscriberParticipant participant;
+
+		if (participants.length == 0) {
+			participant = createDefaultParticipant(data);
+		} else {
+			try {
+				participant = (GitSubscriberParticipant) participants[0].getParticipant();
+				participant.reset(data);
+			} catch (TeamException e) {
+				participant = createDefaultParticipant(data);
+			}
+		}
+		return participant;
+	}
+

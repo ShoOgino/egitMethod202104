@@ -1,0 +1,25 @@
+	public boolean compare(IResourceVariant base, IResourceVariant remote) {
+		GitResourceVariant gitBase = (GitResourceVariant) base;
+		GitResourceVariant gitRemote = (GitResourceVariant) remote;
+		IResource resourceBase = gitBase.getResource();
+		IResource resourceRemote = gitRemote.getResource();
+
+		if (!resourceBase.exists() || !resourceRemote.exists()) {
+			return false;
+		}
+
+		if (base.isContainer()) {
+			if (remote.isContainer()) {
+				return resourceBase.getFullPath().equals(
+						resourceRemote.getFullPath());
+			}
+			return false;
+		} else if (remote.isContainer()) {
+			return false;
+		}
+
+		GitBlobResourceVariant baseBlob = (GitBlobResourceVariant) base;
+		GitBlobResourceVariant remoteBlob = (GitBlobResourceVariant) remote;
+		return baseBlob.getId().equals(remoteBlob.getId());
+	}
+

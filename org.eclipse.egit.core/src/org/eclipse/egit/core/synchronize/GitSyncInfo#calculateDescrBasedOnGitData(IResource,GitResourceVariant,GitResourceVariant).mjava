@@ -1,0 +1,33 @@
+	private int calculateDescrBasedOnGitData(IResource local,
+			GitResourceVariant base, GitResourceVariant remote) {
+		int description = IN_SYNC;
+
+		if (base instanceof GitBlobResourceVariant) {
+			if (remote instanceof GitBlobResourceVariant) {
+				if (getComparator().compare(local, base)) {
+					GitBlobResourceVariant baseBlob = (GitBlobResourceVariant) base;
+					GitBlobResourceVariant remoteBlob = (GitBlobResourceVariant) remote;
+
+					if (!baseBlob.getId().equals(remoteBlob.getId())) {
+						description = calculateDescBasedOnGitCommits(baseBlob,
+								remoteBlob);
+					}
+				} else {
+					description = OUTGOING | CHANGE;
+				}
+			} else {
+				// file in local, folder on remote branch
+				description = CONFLICTING | CHANGE;
+			}
+		} else if (base.isContainer()) {
+			if (remote.isContainer()) {
+				description = compareTwoContainers(base, remote);
+			} else {
+				// folder in local, file in remote branch
+				description = CONFLICTING | CHANGE;
+			}
+		}
+
+		return description;
+	}
+

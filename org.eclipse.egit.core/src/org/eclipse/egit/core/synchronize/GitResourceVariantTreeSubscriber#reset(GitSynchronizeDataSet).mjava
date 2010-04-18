@@ -1,0 +1,12 @@
+	/**
+	 * @param data
+	 */
+	public void reset(GitSynchronizeDataSet data) {
+		gitSynchronizeDataSet = data;
+		store.dispose();
+
+		roots = null;
+		baseTree = null;
+		remoteTree = null;
+	}
+

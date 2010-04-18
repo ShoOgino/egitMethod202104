@@ -1,0 +1,11 @@
+	/**
+	 * Construct GitBranchSubscriberParticipant.
+	 *
+	 * @param data
+	 */
+	public GitSubscriberParticipant(GitSynchronizeDataSet data) {
+		ResourceVariantByteStore store = new SessionResourceVariantByteStore();
+		setSubscriber(new GitResourceVariantTreeSubscriber(data, store));
+		setName(UIText.GitBranchSubscriberParticipant_git);
+	}
+

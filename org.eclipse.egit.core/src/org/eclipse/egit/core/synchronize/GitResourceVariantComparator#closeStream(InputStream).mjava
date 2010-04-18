@@ -1,0 +1,10 @@
+	private void closeStream(InputStream stream) {
+		if (stream != null) {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				logException(e);
+			}
+		}
+	}
+
