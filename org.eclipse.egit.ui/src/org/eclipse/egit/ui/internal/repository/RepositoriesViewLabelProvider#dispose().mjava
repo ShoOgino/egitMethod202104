@@ -1,0 +1,10 @@
+	@Override
+	public void dispose() {
+		// dispose of our decorated images
+		for (Image image : decoratedImages.values()) {
+			image.dispose();
+		}
+		decoratedImages.clear();
+		super.dispose();
+	}
+

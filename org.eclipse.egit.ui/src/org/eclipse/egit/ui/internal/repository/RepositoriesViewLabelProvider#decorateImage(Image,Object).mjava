@@ -10,23 +10,7 @@
 			try {
 				String branch = node.getBranch();
 				if (refName.equals(branch)) {
-					CompositeImageDescriptor cd = new CompositeImageDescriptor() {
-
-						@Override
-						protected Point getSize() {
-							return new Point(image.getBounds().width, image
-									.getBounds().width);
-						}
-
-						@Override
-						protected void drawCompositeImage(int width, int height) {
-							drawImage(image.getImageData(), 0, 0);
-							drawImage(UIIcons.OVR_CHECKEDOUT.getImageData(), 0,
-									0);
-
-						}
-					};
-					return cd.createImage();
+					return getDecoratedImage(image);
 				}
 			} catch (IOException e1) {
 				// simply ignore here
@@ -40,23 +24,7 @@
 			for (IProject proj : ResourcesPlugin.getWorkspace().getRoot()
 					.getProjects()) {
 				if (proj.getLocation().equals(new Path(file.getAbsolutePath()))) {
-					CompositeImageDescriptor cd = new CompositeImageDescriptor() {
-
-						@Override
-						protected Point getSize() {
-							return new Point(image.getBounds().width, image
-									.getBounds().width);
-						}
-
-						@Override
-						protected void drawCompositeImage(int width, int height) {
-							drawImage(image.getImageData(), 0, 0);
-							drawImage(UIIcons.OVR_CHECKEDOUT.getImageData(), 0,
-									0);
-
-						}
-					};
-					return cd.createImage();
+					return getDecoratedImage(image);
 				}
 			}
 			return image;
