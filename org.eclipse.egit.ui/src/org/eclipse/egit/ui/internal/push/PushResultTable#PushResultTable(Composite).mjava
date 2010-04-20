@@ -14,13 +14,16 @@
 		imageRegistry.put(IMAGE_ADD, UIIcons.ELCL16_ADD);
 		imageRegistry.put(IMAGE_DELETE, UIIcons.ELCL16_DELETE);
 
-		colorRegistry = new ColorRegistry(table.getDisplay());
-		colorRegistry.put(COLOR_REJECTED_KEY, COLOR_REJECTED);
-		colorRegistry.put(COLOR_UPDATED_KEY, COLOR_UPDATED);
-		colorRegistry.put(COLOR_UP_TO_DATE_KEY, COLOR_UP_TO_DATE);
+		rejectedColor = new Color(parent.getDisplay(), 255, 0, 0);
+		updatedColor = new Color(parent.getDisplay(), 0, 255, 0);
+		upToDateColor = new Color(parent.getDisplay(), 245, 245, 245);
 
 		tablePanel.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
+				// dispose of our allocated Color instances
+				rejectedColor.dispose();
+				updatedColor.dispose();
+				upToDateColor.dispose();
 				imageRegistry.dispose();
 			}
 		});

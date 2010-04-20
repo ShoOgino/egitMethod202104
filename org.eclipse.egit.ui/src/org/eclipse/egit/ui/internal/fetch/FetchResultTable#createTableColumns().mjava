@@ -91,13 +91,13 @@
 				case FAST_FORWARD:
 				case FORCED:
 				case NEW:
-					return colorRegistry.get(COLOR_UPDATED_KEY);
+					return updatedColor;
 				case NO_CHANGE:
-					return colorRegistry.get(COLOR_UP_TO_DATE_KEY);
+					return upToDateColor;
 				case IO_FAILURE:
 				case LOCK_FAILURE:
 				case REJECTED:
-					return colorRegistry.get(COLOR_REJECTED_KEY);
+					return rejectedColor;
 				default:
 					throw new IllegalArgumentException(NLS.bind(
 							UIText.FetchResultTable_statusUnexpected, result));

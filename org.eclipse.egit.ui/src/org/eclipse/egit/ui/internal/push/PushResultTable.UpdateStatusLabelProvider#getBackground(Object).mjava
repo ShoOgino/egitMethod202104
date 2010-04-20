@@ -2,20 +2,20 @@
 		public Color getBackground(Object element) {
 			final RefUpdateElement rue = (RefUpdateElement) element;
 			if (!rue.isSuccessfulConnection(uri))
-				return colorRegistry.get(COLOR_REJECTED_KEY);
+				return rejectedColor;
 
 			final Status status = rue.getRemoteRefUpdate(uri).getStatus();
 			switch (status) {
 			case OK:
-				return colorRegistry.get(COLOR_UPDATED_KEY);
+				return updatedColor;
 			case UP_TO_DATE:
 			case NON_EXISTING:
-				return colorRegistry.get(COLOR_UP_TO_DATE_KEY);
+				return upToDateColor;
 			case REJECTED_NODELETE:
 			case REJECTED_NONFASTFORWARD:
 			case REJECTED_REMOTE_CHANGED:
 			case REJECTED_OTHER_REASON:
-				return colorRegistry.get(COLOR_REJECTED_KEY);
+				return rejectedColor;
 			default:
 				throw new IllegalArgumentException(NLS.bind(
 						UIText.PushResultTable_statusUnexpected, status));
