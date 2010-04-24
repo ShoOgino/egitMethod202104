@@ -1,10 +1,6 @@
 	@Override
 	public void createPartControl(Composite parent) {
-
-		Composite main = new Composite(parent, SWT.NONE);
-		main.setLayout(new FillLayout());
-
-		tv = new TreeViewer(main);
+		tv = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		tv.setContentProvider(new RepositoriesViewContentProvider());
 		// the label provider registers itself
 		new RepositoriesViewLabelProvider(tv);
