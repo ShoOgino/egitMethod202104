@@ -1,13 +1,4 @@
 	public void setActivePart(final IAction act, final IWorkbenchPart part) {
 		wp = part;
-		ISelection sel = part.getSite().getPage().getSelection();
-		final List selection;
-		if (sel instanceof IStructuredSelection && !sel.isEmpty()) {
-			selection = ((IStructuredSelection) sel).toList();
-		} else {
-			selection = Collections.EMPTY_LIST;
-		}
-		op = createOperation(selection);
-		act.setEnabled(op != null && wp != null);
 	}
 
