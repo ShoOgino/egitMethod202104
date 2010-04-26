@@ -12,9 +12,8 @@
 			return;
 		}
 
-		BranchSelectionDialog dialog = new BranchSelectionDialog(getShell(), repository);
-		dialog.setShowResetType(false);
-		if (dialog.open() != IDialogConstants.OK_ID) {
+		BranchSelectionDialog dialog = new BranchSelectionDialog(getShell(), repository, false);
+		if (dialog.open() != Window.OK) {
 			return;
 		}
 

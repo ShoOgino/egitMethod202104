@@ -1,4 +1,4 @@
-	private InputDialog getRefNameInputDialog(String prompt) {
+	private InputDialog getRefNameInputDialog(String prompt, final String refPrefix) {
 		InputDialog labelDialog = new InputDialog(
 				getShell(),
 				UIText.BranchSelectionDialog_QuestionNewBranchTitle,
@@ -11,7 +11,7 @@
 							return ""; //$NON-NLS-1$
 						}
 
-						String testFor = Constants.R_HEADS + newText;
+						String testFor = refPrefix + newText;
 						try {
 							if (repo.resolve(testFor) != null)
 								return UIText.BranchSelectionDialog_ErrorAlreadyExists;

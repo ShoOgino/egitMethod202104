@@ -1,0 +1,12 @@
+	/**
+	 * Construct a dialog to select a branch to reset to or check out
+	 * @param parentShell
+	 * @param repo
+	 * @param showReset true if the "reset" part should be shown
+	 */
+	public BranchSelectionDialog(Shell parentShell, Repository repo, boolean showReset) {
+		super(parentShell);
+		this.repo = repo;
+		this.showResetType = showReset;
+	}
+

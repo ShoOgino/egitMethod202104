@@ -1,6 +1,6 @@
 	@Override
 	protected void okPressed() {
-		refNameFromDialog();
+		this.selectedBranch = refNameFromDialog();
 		if (showResetType) {
 			if (resetType == ResetType.HARD) {
 				if (!MessageDialog.openQuestion(getShell(),

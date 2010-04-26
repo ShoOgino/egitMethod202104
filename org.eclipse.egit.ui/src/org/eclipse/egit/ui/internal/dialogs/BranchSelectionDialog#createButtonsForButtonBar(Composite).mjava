@@ -1,34 +1,47 @@
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		if (!showResetType) {
-			Button newButton = new Button(parent, SWT.PUSH);
+			newButton = new Button(parent, SWT.PUSH);
 			newButton.setFont(JFaceResources.getDialogFont());
 			newButton.setText(UIText.BranchSelectionDialog_NewBranch);
 			setButtonLayoutData(newButton);
 			((GridLayout)parent.getLayout()).numColumns++;
 
-			Button renameButton = new Button(parent, SWT.PUSH);
+			renameButton = new Button(parent, SWT.PUSH);
 			renameButton.setFont(JFaceResources.getDialogFont());
 			renameButton.setText(UIText.BranchSelectionDialog_Rename);
 			setButtonLayoutData(renameButton);
 			((GridLayout)parent.getLayout()).numColumns++;
 
-			renameButton.addSelectionListener(new SelectionListener() {
+			renameButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
-					// check what ref name the user selected, if any.
-					refNameFromDialog();
 
-					String branchName;
+					String refName = refNameFromDialog();
+					String refPrefix;
+
+					// the button should be disabled anyway, but we check again
+					if (refName.equals(Constants.HEAD))
+						return;
+
 					if (refName.startsWith(Constants.R_HEADS))
-						branchName = refName.substring(Constants.R_HEADS.length());
-					else
-						branchName = refName;
+						refPrefix = Constants.R_HEADS;
+					else if (refName.startsWith(Constants.R_REMOTES))
+						refPrefix = Constants.R_REMOTES;
+					else if (refName.startsWith(Constants.R_TAGS))
+						refPrefix = Constants.R_TAGS;
+					else {
+						// the button should be disabled anyway, but we check again
+						return;
+					}
+
+					String branchName = refName.substring(refPrefix.length());
+
 					InputDialog labelDialog = getRefNameInputDialog(NLS
 							.bind(
 									UIText.BranchSelectionDialog_QuestionNewBranchNameMessage,
-									branchName));
+									branchName, refPrefix), refPrefix);
 					if (labelDialog.open() == Window.OK) {
-						String newRefName = Constants.R_HEADS + labelDialog.getValue();
+						String newRefName = refPrefix + labelDialog.getValue();
 						try {
 							RefRename renameRef = repo.renameRef(refName, newRefName);
 							if (renameRef.rename() != Result.RENAMED) {
@@ -57,28 +70,41 @@
 						}
 					}
 				}
-				public void widgetDefaultSelected(SelectionEvent e) {
-					widgetSelected(e);
-				}
 			});
-			newButton.addSelectionListener(new SelectionListener() {
+			newButton.addSelectionListener(new SelectionAdapter() {
 
 				public void widgetSelected(SelectionEvent e) {
 					// check what ref name the user selected, if any.
-					refNameFromDialog();
+					String refName = refNameFromDialog();
 
-					InputDialog labelDialog = getRefNameInputDialog(UIText.BranchSelectionDialog_QuestionNewBranchMessage);
+					String refPrefix;
+
+					// the button should be disabled anyway, but we check again
+					if (refName.equals(Constants.HEAD))
+						return;
+
+					if (refName.startsWith(Constants.R_HEADS))
+						refPrefix = Constants.R_HEADS;
+					else if (refName.startsWith(Constants.R_REMOTES))
+						refPrefix = Constants.R_REMOTES;
+					else {
+						// the button should be disabled anyway, but we check again
+						return;
+					}
+
+					InputDialog labelDialog = getRefNameInputDialog(
+							NLS
+									.bind(
+											UIText.BranchSelectionDialog_QuestionNewBranchMessage,
+											refName, refPrefix), refPrefix);
+
 					if (labelDialog.open() == Window.OK) {
 						String newRefName = Constants.R_HEADS + labelDialog.getValue();
 						RefUpdate updateRef;
 						try {
 							updateRef = repo.updateRef(newRefName);
 							Ref startRef = repo.getRef(refName);
-							ObjectId startAt;
-							if (refName == null)
-								startAt = repo.resolve(Constants.HEAD);
-							else
-								startAt = repo.resolve(refName);
+							ObjectId startAt = repo.resolve(refName);
 							String startBranch;
 							if (startRef != null)
 								startBranch = refName;
@@ -104,11 +130,6 @@
 									UIText.BranchSelectionDialog_ErrorCouldNotRefreshBranchList);
 						}
 					}
-				}
-
-
-				public void widgetDefaultSelected(SelectionEvent e) {
-					widgetSelected(e);
 				}
 			});
 		}
