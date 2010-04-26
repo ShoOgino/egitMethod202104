@@ -21,6 +21,39 @@
 
 			}
 		});
+		tv.addOpenListener(new IOpenListener() {
+			public void open(OpenEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event
+						.getSelection();
+				if (selection.isEmpty()) {
+					// nothing selected, ignore
+					return;
+				}
+
+				Object element = selection.getFirstElement();
+				ITreeContentProvider contentProvider = (ITreeContentProvider) tv
+						.getContentProvider();
+				if (contentProvider.hasChildren(element)) {
+					// this element has children, expand/collapse it
+					tv.setExpandedState(element, !tv.getExpandedState(element));
+				} else {
+					Object[] selectionArray = selection.toArray();
+					for (Object selectedElement : selectionArray) {
+						RepositoryTreeNode node = (RepositoryTreeNode) selectedElement;
+						// if any of the selected elements are not files, ignore the open request
+						if (node.getType() != RepositoryTreeNodeType.FILE) {
+							return;
+						}
+					}
+
+					// open the files the user has selected
+					for (Object selectedElement : selectionArray) {
+						RepositoryTreeNode node = (RepositoryTreeNode) selectedElement;
+						openFile((File) node.getObject());
+					}
+				}
+			}
+		});
 
 		addContextMenu();
 
