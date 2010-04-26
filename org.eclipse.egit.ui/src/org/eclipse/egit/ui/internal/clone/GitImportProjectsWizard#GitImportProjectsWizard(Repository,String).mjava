@@ -1,0 +1,14 @@
+	/**
+	 * @param repository
+	 *            the repository
+	 * @param path
+	 *            a path, either the working directory of the repository or a
+	 *            sub-directory thereof
+	 */
+	public GitImportProjectsWizard(Repository repository, String path) {
+		super();
+		myWorkingDir = path;
+		myGitDir = repository.getDirectory();
+		setWindowTitle("Import existing projects");
+	}
+

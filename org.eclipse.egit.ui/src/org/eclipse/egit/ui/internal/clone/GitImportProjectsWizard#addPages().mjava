@@ -1,0 +1,16 @@
+	@Override
+	public void addPages() {
+
+		GitProjectsImportPage page = new GitProjectsImportPage() {
+
+			@Override
+			public void setVisible(boolean visible) {
+				setGitDir(myGitDir);
+				setProjectsList(myWorkingDir);
+				super.setVisible(visible);
+			}
+
+		};
+		addPage(page);
+	}
+

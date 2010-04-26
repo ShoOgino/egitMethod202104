@@ -2,6 +2,9 @@
 	 * Creates a new project creation wizard page.
 	 */
 	public GitProjectsImportPage() {
-		this("gitWizardExternalProjectsPage"); //$NON-NLS-1$
+		super("gitWizardExternalProjectsPage"); //$NON-NLS-1$
+		setPageComplete(false);
+		setTitle(UIText.WizardProjectsImportPage_ImportProjectsTitle);
+		setDescription(UIText.WizardProjectsImportPage_ImportProjectsDescription);
 	}
 
