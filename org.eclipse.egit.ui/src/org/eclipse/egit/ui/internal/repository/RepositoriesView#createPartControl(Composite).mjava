@@ -35,11 +35,21 @@
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
 
+				// if the "link with selection" toggle is off, we're done
 				if (linkWithSelectionAction == null
 						|| !linkWithSelectionAction.isChecked())
 					return;
 
-				reactOnSelection(selection);
+				// this may happen if we switch between editors
+				if (part instanceof IEditorPart) {
+					IEditorInput input = ((IEditorPart) part).getEditorInput();
+					if (input instanceof IFileEditorInput)
+						reactOnSelection(new StructuredSelection(
+								((IFileEditorInput) input).getFile()));
+
+				} else {
+					reactOnSelection(selection);
+				}
 			}
 
 		});
