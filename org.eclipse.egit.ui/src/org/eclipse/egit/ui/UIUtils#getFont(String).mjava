@@ -1,0 +1,9 @@
+	/**
+	 * @param id see {@link FontRegistry#get(String)}
+	 * @return the font
+	 */
+	public static Font getFont(final String id) {
+		return PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
+				.getFontRegistry().get(id);
+	}
+
