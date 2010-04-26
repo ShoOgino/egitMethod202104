@@ -1,8 +1,8 @@
 	private static Font highlightFont() {
 		final Font n, h;
 
-		n = Activator.getFont(UIPreferences.THEME_CommitGraphNormalFont);
-		h = Activator.getFont(UIPreferences.THEME_CommitGraphHighlightFont);
+		n = UIUtils.getFont(UIPreferences.THEME_CommitGraphNormalFont);
+		h = UIUtils.getFont(UIPreferences.THEME_CommitGraphHighlightFont);
 
 		final FontData[] nData = n.getFontData();
 		final FontData[] hData = h.getFontData();
@@ -12,6 +12,6 @@
 			if (!nData[i].equals(hData[i]))
 				return h;
 
-		return Activator.getBoldFont(UIPreferences.THEME_CommitGraphNormalFont);
+		return UIUtils.getBoldFont(UIPreferences.THEME_CommitGraphNormalFont);
 	}
 
