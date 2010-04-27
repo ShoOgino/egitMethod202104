@@ -25,9 +25,7 @@
 				status = new Status(IStatus.ERROR, Activator.getPluginId(), 1,
 						UIText.SharingWizard_failed, e);
 			}
-			Activator.logError(UIText.SharingWizard_failed, e);
-			ErrorDialog.openError(getContainer().getShell(), getWindowTitle(),
-					UIText.SharingWizard_failed, status, status.getSeverity());
+			Activator.handleError(UIText.SharingWizard_failed, e, true);
 			return false;
 		}
 	}
