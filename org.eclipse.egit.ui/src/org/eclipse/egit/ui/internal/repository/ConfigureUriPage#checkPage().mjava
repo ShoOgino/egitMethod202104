@@ -1,0 +1,28 @@
+	private void checkPage() {
+		try {
+			setErrorMessage(null);
+
+			if (myFetchMode) {
+				if (uriText.getText().equals("")) { //$NON-NLS-1$
+					setErrorMessage(UIText.ConfigureUriPage_MissingUri_message);
+					return;
+				}
+				try {
+					myUri = new URIish(uriText.getText());
+				} catch (URISyntaxException e) {
+					setErrorMessage(UIText.ConfigureUriPage_ParsingProblem_message);
+					return;
+				}
+
+			} else {
+				if (myUris.isEmpty()) {
+					setErrorMessage(UIText.ConfigureUriPage_MissingUris_message);
+					return;
+				}
+			}
+
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+

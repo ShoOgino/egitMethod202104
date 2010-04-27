@@ -1,0 +1,6 @@
+	@Override
+	public boolean performFinish() {
+		uri = ((RepositorySelectionPage) getPages()[0]).getSelection().getURI();
+		return uri != null;
+	}
+

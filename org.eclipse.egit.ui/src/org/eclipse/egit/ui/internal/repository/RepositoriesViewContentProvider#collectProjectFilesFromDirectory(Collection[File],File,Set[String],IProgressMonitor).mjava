@@ -7,8 +7,7 @@
 		if (monitor.isCanceled()) {
 			return false;
 		}
-		monitor.subTask(NLS.bind(
-				UIText.RepositoriesView_Checking_Message,
+		monitor.subTask(NLS.bind(UIText.RepositoriesView_Checking_Message,
 				directory.getPath()));
 		File[] contents = directory.listFiles();
 		if (contents == null)

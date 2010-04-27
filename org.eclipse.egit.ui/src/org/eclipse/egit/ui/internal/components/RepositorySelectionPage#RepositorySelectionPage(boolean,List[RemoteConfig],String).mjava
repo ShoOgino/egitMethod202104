@@ -1,5 +1,8 @@
 	/**
-	 * Special case: the URI is set externally
+	 * Create repository selection page, allowing user specifying URI or
+	 * (optionally) choosing from preconfigured remotes list.
+	 * <p>
+	 * Wizard page is created without image, just with text description.
 	 *
 	 * @param sourceSelection
 	 *            true if dialog is used for source selection; false otherwise
@@ -14,23 +17,20 @@
 	 *            in this case. Note that the provided list may be changed by
 	 *            this constructor.
 	 * @param presetUri
-	 *            the pre-set URI
+	 *            the pre-set URI, may be null
 	 */
 	public RepositorySelectionPage(final boolean sourceSelection,
 			final List<RemoteConfig> configuredRemotes, String presetUri) {
+
 		super(RepositorySelectionPage.class.getName());
+
 		this.uri = new URIish();
 		this.sourceSelection = sourceSelection;
 		this.presetUri = presetUri;
 
-		if (configuredRemotes != null)
-			removeUnusableRemoteConfigs(configuredRemotes);
-		if (configuredRemotes == null || configuredRemotes.isEmpty())
-			this.configuredRemotes = null;
-		else {
-			this.configuredRemotes = configuredRemotes;
-			this.remoteConfig = selectDefaultRemoteConfig();
-		}
+		this.configuredRemotes = getUsableConfigs(configuredRemotes);
+		this.remoteConfig = selectDefaultRemoteConfig();
+
 		selection = RepositorySelection.INVALID_SELECTION;
 
 		if (sourceSelection) {

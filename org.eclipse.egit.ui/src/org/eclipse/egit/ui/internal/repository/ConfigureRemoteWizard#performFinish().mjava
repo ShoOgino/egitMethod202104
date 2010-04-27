@@ -1,73 +1,38 @@
 	@Override
 	public boolean performFinish() {
 
-		RemoteConfig config;
-		if (createMode) {
-
-			SelectRemoteNamePage srp = (SelectRemoteNamePage) getPage(SelectRemoteNamePage.class
-					.getName());
-
-			String actRemoteName = srp.remoteName.getText();
-
-			try {
-				config = new RemoteConfig(myConfiguration, actRemoteName);
-			} catch (URISyntaxException e1) {
-				// TODO better Exception handling
-				return false;
-			}
-
-			if (srp.configureFetch.getSelection()) {
-				RepositorySelectionPage sp = (RepositorySelectionPage) getPages()[1];
-				config.addURI(sp.getSelection().getURI());
-				RefSpecPage specPage = (RefSpecPage) getPages()[2];
-				config.setFetchRefSpecs(specPage.getRefSpecs());
-				config.setTagOpt(specPage.getTagOpt());
-				config.update(myConfiguration);
-				sp.saveUriInPrefs(sp.getSelection().getURI().toString());
-
-			}
-			if (srp.configurePush.getSelection()) {
-				RepositorySelectionPage sp = (RepositorySelectionPage) getPages()[3];
-				config.addPushURI(sp.getSelection().getURI());
-				RefSpecPage specPage = (RefSpecPage) getPages()[4];
-				config.setPushRefSpecs(specPage.getRefSpecs());
-				config.update(myConfiguration);
-				sp.saveUriInPrefs(sp.getSelection().getURI().toString());
-			}
-
+		if (pushMode) {
+			while (!myRemoteConfiguration.getPushURIs().isEmpty())
+				myRemoteConfiguration.removePushURI(myRemoteConfiguration
+						.getPushURIs().get(0));
+			for (URIish uri : configurePushUriPage.getUris())
+				myRemoteConfiguration.addPushURI(uri);
+			myRemoteConfiguration.setPushRefSpecs(configurePushSpecPage
+					.getRefSpecs());
 		} else {
-
-			RepositorySelectionPage sp = (RepositorySelectionPage) getPage(RepositorySelectionPage.class
-					.getName());
-
-			RefSpecPage specPage = (RefSpecPage) getPage(RefSpecPage.class
-					.getName());
-
-			try {
-				config = new RemoteConfig(myConfiguration, myRemoteName);
-			} catch (URISyntaxException e1) {
-				// TODO better Exception handling
-				return false;
-			}
-
-
-			if (pushMode){
-				config.addPushURI(sp.getSelection().getURI());
-				config.setPushRefSpecs(specPage.getRefSpecs());
-			}
-			else {
-				config.addURI(sp.getSelection().getURI());
-				config.setFetchRefSpecs(specPage.getRefSpecs());
-				config.setTagOpt(specPage.getTagOpt());
-			}
-
-			sp.saveUriInPrefs(sp.getSelection().getURI().toString());
+			while (!myRemoteConfiguration.getURIs().isEmpty())
+				myRemoteConfiguration.removeURI(myRemoteConfiguration.getURIs()
+						.get(0));
+			myRemoteConfiguration.addURI(configureFetchUriPage.getUri());
+			myRemoteConfiguration.setFetchRefSpecs(configureFetchSpecPage
+					.getRefSpecs());
+			myRemoteConfiguration.setTagOpt(configureFetchSpecPage.getTagOpt());
 		}
 
-		config.update(myConfiguration);
+    	myRemoteConfiguration.update(myConfiguration);
 
 		try {
 			myConfiguration.save();
+
+			// Save the uris in the RepositorySelectionPage preferences
+
+			for (URIish uri: myRemoteConfiguration.getURIs())
+				RepositorySelectionPage.saveUriInPrefs(uri.toPrivateString());
+
+			for (URIish uri: myRemoteConfiguration.getPushURIs())
+				RepositorySelectionPage.saveUriInPrefs(uri.toPrivateString());
+
+
 			return true;
 		} catch (IOException e) {
 			// TODO better Exception handling

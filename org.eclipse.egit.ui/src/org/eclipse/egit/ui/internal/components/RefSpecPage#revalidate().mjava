@@ -1,11 +1,13 @@
 	private void revalidate() {
-		final RepositorySelection newRepoSelection = repoPage.getSelection();
 
-		if (repoPage.selectionEquals(validatedRepoSelection)) {
+		if (currentRepoSelection != null && currentRepoSelection.equals(validatedRepoSelection)) {
 			// nothing changed on previous page
 			checkPage();
 			return;
 		}
+
+		if (currentRepoSelection == null)
+			return;
 
 		specsPanel.clearRefSpecs();
 		specsPanel.setEnable(false);
@@ -16,7 +18,7 @@
 		transportError = null;
 		getControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				revalidateImpl(newRepoSelection);
+				revalidateImpl(currentRepoSelection);
 			}
 		});
 	}

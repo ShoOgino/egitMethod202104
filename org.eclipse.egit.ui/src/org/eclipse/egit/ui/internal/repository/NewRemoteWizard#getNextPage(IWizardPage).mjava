@@ -1,0 +1,24 @@
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+
+		if (page == selNamePage)
+			if (selNamePage.configureFetch.getSelection())
+				return configureFetchUriPage;
+			else if (selNamePage.configurePush.getSelection())
+				return configurePushUriPage;
+
+		if (page == configureFetchSpecPage)
+			if (!selNamePage.configurePush.getSelection())
+				return null;
+
+		if (page == configureFetchUriPage)
+			configureFetchSpecPage.setSelection(new RepositorySelection(
+					configureFetchUriPage.getUri(), null));
+
+		if (page == configurePushUriPage)
+			configurePushSpecPage.setSelection(new RepositorySelection(
+					configurePushUriPage.getUris().get(0), null));
+
+		return super.getNextPage(page);
+	}
+

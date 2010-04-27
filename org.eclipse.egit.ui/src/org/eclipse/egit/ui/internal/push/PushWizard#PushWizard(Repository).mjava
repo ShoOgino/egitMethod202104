@@ -10,8 +10,8 @@
 		this.localDb = localDb;
 		final List<RemoteConfig> remotes = RemoteConfig
 				.getAllRemoteConfigs(localDb.getConfig());
-		repoPage = new RepositorySelectionPage(false, remotes);
-		refSpecPage = new RefSpecPage(localDb, true, repoPage);
+		repoPage = new RepositorySelectionPage(false, remotes, null);
+		refSpecPage = new RefSpecPage(localDb, true);
 		confirmPage = new ConfirmationPage(localDb, repoPage, refSpecPage);
 		// TODO use/create another cool icon
 		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);

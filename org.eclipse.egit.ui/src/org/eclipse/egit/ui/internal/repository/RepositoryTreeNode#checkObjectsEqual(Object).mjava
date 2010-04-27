@@ -16,6 +16,8 @@
 			return ((File) myObject).getPath().equals(
 					((File) otherObject).getPath());
 		case REMOTE:
+		case FETCH:
+		case PUSH:
 			return myObject.equals(otherObject);
 		}
 		return false;

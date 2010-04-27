@@ -19,7 +19,8 @@
 		});
 
 		configureFetch = new Button(main, SWT.CHECK);
-		configureFetch.setText("Configure Fetch");
+		configureFetch
+				.setText(UIText.SelectRemoteNamePage_ConfigureFetch_button);
 		configureFetch.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -32,7 +33,7 @@
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(configureFetch);
 
 		configurePush = new Button(main, SWT.CHECK);
-		configurePush.setText("Configure Push");
+		configurePush.setText(UIText.SelectRemoteNamePage_ConfigurePush_button);
 		configurePush.addSelectionListener(new SelectionAdapter() {
 
 			@Override

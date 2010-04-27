@@ -40,7 +40,8 @@
 					Object[] selectionArray = selection.toArray();
 					for (Object selectedElement : selectionArray) {
 						RepositoryTreeNode node = (RepositoryTreeNode) selectedElement;
-						// if any of the selected elements are not files, ignore the open request
+						// if any of the selected elements are not files, ignore
+						// the open request
 						if (node.getType() != RepositoryTreeNodeType.FILE) {
 							return;
 						}

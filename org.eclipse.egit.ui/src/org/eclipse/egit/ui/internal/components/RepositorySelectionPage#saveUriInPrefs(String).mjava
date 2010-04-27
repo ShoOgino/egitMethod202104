@@ -1,9 +1,12 @@
 	/**
 	 * Adds a URI string to the list of previously added ones
 	 *
+	 * TODO move this to some proper preferences handling class instead of
+	 * making it static
+	 *
 	 * @param stringToAdd
 	 */
-	public void saveUriInPrefs(String stringToAdd) {
+	public static void saveUriInPrefs(String stringToAdd) {
 
 		List<String> uriStrings = getUrisFromPrefs();
 

@@ -1,9 +1,12 @@
 	/**
 	 * Gets the previously added URIs from the preferences
 	 *
+	 * TODO move this to some proper preferences handling class instead of
+	 * making it static
+	 *
 	 * @return a (possibly empty) list of URIs, never <code>null</code>
 	 */
-	public List<String> getUrisFromPrefs() {
+	public static List<String> getUrisFromPrefs() {
 
 		// use a TreeSet to get the same sorting always
 		List<String> uriStrings = new ArrayList<String>();

@@ -316,12 +316,12 @@
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					WizardDialog dialog = new WizardDialog(
-							getSite().getShell(), new ConfigureRemoteWizard(
-									node.getRepository()));
-					if (dialog.open() == Window.OK) {
+
+					WizardDialog dlg = new WizardDialog(getSite().getShell(),
+							new NewRemoteWizard(node.getRepository()));
+					if (dlg.open() == Window.OK)
 						scheduleRefresh();
-					}
+
 				}
 
 			});
@@ -329,40 +329,112 @@
 
 		if (node.getType() == RepositoryTreeNodeType.REMOTE) {
 
-			final String name = (String) node.getObject();
+			final String configName = (String) node.getObject();
+
+			RemoteConfig rconfig;
+			try {
+				rconfig = new RemoteConfig(node.getRepository().getConfig(),
+						configName);
+			} catch (URISyntaxException e2) {
+				// TODO Exception handling
+				rconfig = null;
+			}
+
+			boolean fetchExists = rconfig != null
+					&& !rconfig.getURIs().isEmpty();
+			boolean pushExists = rconfig != null
+					&& !rconfig.getPushURIs().isEmpty();
 
 			MenuItem configureUrlFetch = new MenuItem(men, SWT.PUSH);
-			configureUrlFetch
-					.setText(UIText.RepositoriesView_ConfigureFetchMenu);
+			if (fetchExists)
+				configureUrlFetch
+						.setText(UIText.RepositoriesView_ConfigureFetchMenu);
+			else
+				configureUrlFetch
+						.setText(UIText.RepositoriesView_CreateFetch_menu);
 			configureUrlFetch.addSelectionListener(new SelectionAdapter() {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					WizardDialog dialog = new WizardDialog(
-							getSite().getShell(), new ConfigureRemoteWizard(
-									node.getRepository(), name, false));
-					if (dialog.open() == Window.OK) {
+
+					WizardDialog dlg = new WizardDialog(getSite().getShell(),
+							new ConfigureRemoteWizard(node.getRepository(),
+									configName, false));
+					if (dlg.open() == Window.OK)
 						scheduleRefresh();
-					}
+
 				}
 
 			});
 
+			if (fetchExists) {
+				MenuItem deleteFetch = new MenuItem(men, SWT.PUSH);
+				deleteFetch.setText(UIText.RepositoriesView_RemoveFetch_menu);
+				deleteFetch.addSelectionListener(new SelectionAdapter() {
+
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						RepositoryConfig config = node.getRepository()
+								.getConfig();
+						config.unset("remote", configName, "url"); //$NON-NLS-1$ //$NON-NLS-2$
+						config.unset("remote", configName, "fetch"); //$NON-NLS-1$//$NON-NLS-2$
+						try {
+							config.save();
+							scheduleRefresh();
+						} catch (IOException e1) {
+							MessageDialog.openError(getSite().getShell(),
+									UIText.RepositoriesView_ErrorHeader, e1
+											.getMessage());
+						}
+					}
+
+				});
+			}
+
 			MenuItem configureUrlPush = new MenuItem(men, SWT.PUSH);
-			configureUrlPush.setText(UIText.RepositoriesView_ConfigurePushMenu);
+			if (pushExists)
+				configureUrlPush
+						.setText(UIText.RepositoriesView_ConfigurePushMenu);
+			else
+				configureUrlPush
+						.setText(UIText.RepositoriesView_CreatePush_menu);
 			configureUrlPush.addSelectionListener(new SelectionAdapter() {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					WizardDialog dialog = new WizardDialog(
-							getSite().getShell(), new ConfigureRemoteWizard(
-									node.getRepository(), name, true));
-					if (dialog.open() == Window.OK) {
+
+					WizardDialog dlg = new WizardDialog(getSite().getShell(),
+							new ConfigureRemoteWizard(node.getRepository(),
+									configName, true));
+					if (dlg.open() == Window.OK)
 						scheduleRefresh();
-					}
 				}
 
 			});
+
+			if (pushExists) {
+				MenuItem deleteFetch = new MenuItem(men, SWT.PUSH);
+				deleteFetch.setText(UIText.RepositoriesView_RemovePush_menu);
+				deleteFetch.addSelectionListener(new SelectionAdapter() {
+
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						RepositoryConfig config = node.getRepository()
+								.getConfig();
+						config.unset("remote", configName, "pushurl"); //$NON-NLS-1$ //$NON-NLS-2$
+						config.unset("remote", configName, "push"); //$NON-NLS-1$ //$NON-NLS-2$
+						try {
+							config.save();
+							scheduleRefresh();
+						} catch (IOException e1) {
+							MessageDialog.openError(getSite().getShell(),
+									UIText.RepositoriesView_ErrorHeader, e1
+											.getMessage());
+						}
+					}
+
+				});
+			}
 
 			new MenuItem(men, SWT.SEPARATOR);
 
@@ -380,11 +452,11 @@
 									NLS
 											.bind(
 													UIText.RepositoriesView_ConfirmDeleteRemoteMessage,
-													name));
+													configName));
 					if (ok) {
 						RepositoryConfig config = node.getRepository()
 								.getConfig();
-						config.unsetSection(REMOTE, name);
+						config.unsetSection(REMOTE, configName);
 						try {
 							config.save();
 							scheduleRefresh();

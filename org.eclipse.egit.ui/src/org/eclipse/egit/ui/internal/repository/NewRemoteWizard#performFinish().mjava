@@ -1,0 +1,45 @@
+	@Override
+	public boolean performFinish() {
+
+		RemoteConfig config;
+
+		try {
+			config = new RemoteConfig(myConfiguration, selNamePage.remoteName
+					.getText());
+		} catch (URISyntaxException e1) {
+			// TODO better Exception handling
+			return false;
+		}
+
+		if (selNamePage.configureFetch.getSelection()) {
+			config.addURI(configureFetchUriPage.getUri());
+			config.setFetchRefSpecs(configureFetchSpecPage.getRefSpecs());
+			config.setTagOpt(configureFetchSpecPage.getTagOpt());
+		}
+
+		if (selNamePage.configurePush.getSelection()) {
+			for (URIish uri : configurePushUriPage.getUris())
+				config.addPushURI(uri);
+			config.setPushRefSpecs(configurePushSpecPage.getRefSpecs());
+		}
+
+		config.update(myConfiguration);
+
+		try {
+			myConfiguration.save();
+
+			// Save the uris in the RepositorySelectionPage preferences
+
+			for (URIish uri : config.getURIs())
+				RepositorySelectionPage.saveUriInPrefs(uri.toPrivateString());
+
+			for (URIish uri : config.getPushURIs())
+				RepositorySelectionPage.saveUriInPrefs(uri.toPrivateString());
+
+			return true;
+		} catch (IOException e) {
+			// TODO better Exception handling
+			return false;
+		}
+	}
+

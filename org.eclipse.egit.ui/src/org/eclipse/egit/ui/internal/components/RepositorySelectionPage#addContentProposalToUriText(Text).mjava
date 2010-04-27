@@ -9,7 +9,8 @@
 		dec.setShowOnlyOnFocus(true);
 		dec.setShowHover(true);
 
-		dec.setDescriptionText(UIText.RepositorySelectionPage_ShowPreviousURIs_HoverText);
+		dec
+				.setDescriptionText(UIText.RepositorySelectionPage_ShowPreviousURIs_HoverText);
 
 		IContentProposalProvider cp = new IContentProposalProvider() {
 
@@ -18,7 +19,8 @@
 				List<IContentProposal> resultList = new ArrayList<IContentProposal>();
 
 				String patternString = contents;
-				while (patternString.length() > 0 && patternString.charAt(0)==' ')
+				while (patternString.length() > 0
+						&& patternString.charAt(0) == ' ')
 					patternString = patternString.substring(1);
 				// make the simplest possible pattern check: allow "*"
 				// for multiple characters
@@ -39,7 +41,8 @@
 				List<String> uriStrings = getUrisFromPrefs();
 				for (final String uriString : uriStrings) {
 
-					if (pattern!=null && !pattern.matcher(uriString).matches())
+					if (pattern != null
+							&& !pattern.matcher(uriString).matches())
 						continue;
 
 					IContentProposal propsal = new IContentProposal() {

@@ -1,4 +1,4 @@
-	private static boolean isFile(final URIish uri) {
+	private boolean isFile(final URIish uri) {
 		if ("file".equals(uri.getScheme()) || uri.getScheme() == null) //$NON-NLS-1$
 			return true;
 		if (uri.getHost() != null || uri.getPort() > 0 || uri.getUser() != null
