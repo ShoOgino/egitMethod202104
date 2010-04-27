@@ -17,7 +17,7 @@
 					getJobManager().beginRule(rule, monitor);
 					p.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor, 1));
 				} catch (CoreException e) {
-					logError(UIText.Activator_refreshFailed, e);
+					handleError(UIText.Activator_refreshFailed, e, false);
 					return new Status(IStatus.ERROR, getPluginId(), e.getMessage());
 				} finally {
 					getJobManager().endRule(rule);

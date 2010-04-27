@@ -12,9 +12,7 @@
 			try {
 				res.refreshLocal(0, new NullProgressMonitor());
 			} catch (CoreException e1) {
-				MessageDialog.openError(getShell(),
-						UIText.DiscardChangesAction_refreshErrorTitle,
-						UIText.DiscardChangesAction_refreshErrorMessage);
+				Activator.handleError(UIText.DiscardChangesAction_refreshErrorMessage, e1, true);
 			}
 
 			repository.getIndex().write();
