@@ -1,7 +1,0 @@
-	private void reportError(Throwable e, String title, String message,
-			Object... args) {
-		String msg = NLS.bind(message, args);
-		MessageDialog.openError(getShell(), title, msg);
-		Activator.logError(msg, e);
-	}
-

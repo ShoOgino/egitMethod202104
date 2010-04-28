@@ -3,9 +3,11 @@
 		try {
 			myConfig.load();
 		} catch (IOException e) {
-			showExceptionMessage(e);
+			Activator.handleError(
+					UIText.RepositoryRemotePropertySource_ErrorHeader, e, true);
 		} catch (ConfigInvalidException e) {
-			showExceptionMessage(e);
+			Activator.handleError(
+					UIText.RepositoryRemotePropertySource_ErrorHeader, e, true);
 		}
 		List<IPropertyDescriptor> resultList = new ArrayList<IPropertyDescriptor>();
 		PropertyDescriptor desc = new PropertyDescriptor(RepositoriesView.URL,

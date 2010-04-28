@@ -21,12 +21,9 @@
 			userHomeConfig.load();
 			repositoryConfig.load();
 		} catch (IOException e) {
-			// TODO refactor to a method and react on exceptions
-			e.printStackTrace();
+			showExceptionMessage(e);
 		} catch (ConfigInvalidException e) {
-			// TODO refactor to a method and react on exceptions
-			e.printStackTrace();
+			showExceptionMessage(e);
 		}
-
 	}
 

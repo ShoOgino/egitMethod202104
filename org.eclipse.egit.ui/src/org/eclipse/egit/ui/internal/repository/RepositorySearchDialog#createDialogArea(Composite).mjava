@@ -159,9 +159,9 @@
 						pd.run(true, true, action);
 
 					} catch (InvocationTargetException e1) {
-						MessageDialog.openError(getShell(),
-								UIText.RepositorySearchDialog_errorOccurred, e1
-										.getCause().getMessage());
+						org.eclipse.egit.ui.Activator.handleError(
+								UIText.RepositorySearchDialog_errorOccurred,
+								e1, true);
 					} catch (InterruptedException e1) {
 						// ignore
 					}

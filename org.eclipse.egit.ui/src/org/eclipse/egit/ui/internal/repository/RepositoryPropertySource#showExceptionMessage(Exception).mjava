@@ -1,5 +1,4 @@
 	private void showExceptionMessage(Exception e) {
-		MessageDialog.openError(myPage.getSite().getShell(),
-				UIText.RepositoryPropertySource_ErrorHeader, e.getMessage());
+		org.eclipse.egit.ui.Activator.handleError(UIText.RepositoryPropertySource_ErrorHeader, e, true);
 	}
 
