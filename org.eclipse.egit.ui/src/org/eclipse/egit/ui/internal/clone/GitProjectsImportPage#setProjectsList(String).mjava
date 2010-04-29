@@ -63,7 +63,7 @@
 
 			});
 		} catch (InvocationTargetException e) {
-			IDEWorkbenchPlugin.log(e.getMessage(), e);
+			Activator.logError(e.getMessage(), e);
 		} catch (InterruptedException e) {
 			// Nothing to do if the user interrupts.
 		}
