@@ -4,7 +4,7 @@
 			revObjectSelectionProvider.setActiveRepository(null);
 		cancelRefreshJob();
 
-		if (graph == null)
+		if (graph == null || super.getInput() == null)
 			return false;
 
 		final IResource[] in = ((ResourceList) super.getInput()).getItems();
