@@ -1,0 +1,10 @@
+	@Test
+	public void testOk() throws Exception {
+		ObjectId id = createFile(repository, project.getProject(), "file", "data");
+		BlobStorage blobStorage = new BlobStorage(repository, "p/file", id);
+		assertEquals("file", blobStorage.getName());
+		assertEquals("data", slurpAndClose(blobStorage.getContents()));
+		assertEquals(Path.fromPortableString("p/file").toOSString(), blobStorage.getFullPath().toOSString());
+
+	}
+

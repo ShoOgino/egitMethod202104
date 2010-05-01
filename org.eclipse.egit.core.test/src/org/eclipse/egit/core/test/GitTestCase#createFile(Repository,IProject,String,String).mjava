@@ -1,0 +1,9 @@
+	protected ObjectId createFile(Repository repository, IProject project, String name, String content) throws IOException {
+		File file = new File(project.getProject().getLocation().toFile(), name);
+		FileWriter fileWriter = new FileWriter(file);
+		fileWriter.write(content);
+		fileWriter.close();
+		ObjectWriter objectWriter = new ObjectWriter(repository);
+		return objectWriter.writeBlob(file);
+	}
+

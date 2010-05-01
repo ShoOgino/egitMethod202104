@@ -1,0 +1,12 @@
+	@Test
+	public void testFailNotFound() throws Exception {
+		BlobStorage blobStorage = new BlobStorage(repository, "file", ObjectId.fromString("0123456789012345678901234567890123456789"));
+		assertEquals("file", blobStorage.getName());
+		try {
+			blobStorage.getContents();
+			fail("We should not be able to read this 'blob'");
+		} catch (CoreException e) {
+			assertEquals("Git blob 0123456789012345678901234567890123456789 with path file not found", e.getMessage());
+		}
+	}
+

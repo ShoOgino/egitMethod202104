@@ -1,0 +1,13 @@
+	protected ObjectId createFileCorruptShort(Repository repository, IProject project, String name, String content) throws IOException {
+		ObjectId id = createFile(repository, project, name, content);
+		File file = new File(repository.getDirectory(), "objects/" + id.name().substring(0,2) + "/" + id.name().substring(2));
+		byte[] readFully = IO.readFully(file);
+		file.delete();
+		FileOutputStream fileOutputStream = new FileOutputStream(file);
+		byte[] truncatedData = new byte[readFully.length - 1];
+		System.arraycopy(readFully, 0, truncatedData, 0, truncatedData.length);
+		fileOutputStream.write(truncatedData);
+		fileOutputStream.close();
+		return id;
+	}
+

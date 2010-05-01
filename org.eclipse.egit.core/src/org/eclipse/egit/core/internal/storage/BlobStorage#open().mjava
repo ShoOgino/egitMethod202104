@@ -1,10 +1,10 @@
-	private InputStream open() throws IOException, ResourceException,
+	private InputStream open() throws IOException, CoreException,
 			IncorrectObjectTypeException {
 		final ObjectLoader reader = db.openBlob(blobId);
 		if (reader == null)
-			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
-					getFullPath(), NLS.bind(CoreText.BlobStorage_blobNotFound,
-							blobId), null);
+			throw new CoreException(Activator.error(NLS.bind(
+					CoreText.BlobStorage_blobNotFound, blobId.name(), path),
+					null));
 		final byte[] data = reader.getBytes();
 		if (reader.getType() != Constants.OBJ_BLOB)
 			throw new IncorrectObjectTypeException(blobId, Constants.TYPE_BLOB);

@@ -2,9 +2,9 @@
 		try {
 			return open();
 		} catch (IOException e) {
-			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
-					getFullPath(), NLS.bind(
-							CoreText.BlobStorage_errorReadingBlob, blobId), e);
+			throw new CoreException(Activator.error(
+					NLS.bind(CoreText.BlobStorage_errorReadingBlob, blobId
+							.name(), path), e));
 		}
 	}
 

@@ -3,15 +3,14 @@
 			final GitIndex idx = db.getIndex();
 			final Entry e = idx.getEntry(path);
 			if (e == null)
-				throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL,
-						Path.fromPortableString(path),
-						CoreText.IndexFileRevision_indexEntryNotFound, null);
+				throw new CoreException(Activator.error(NLS.bind(
+						CoreText.IndexFileRevision_indexEntryNotFound, path),
+						null));
 			return e.getObjectId();
 
 		} catch (IOException e) {
-			throw new ResourceException(IResourceStatus.FAILED_READ_LOCAL, Path
-					.fromPortableString(path),
-					CoreText.IndexFileRevision_errorLookingUpPath, e);
+			throw new CoreException(Activator.error(NLS.bind(
+					CoreText.IndexFileRevision_errorLookingUpPath, path), e));
 		}
 	}
 
