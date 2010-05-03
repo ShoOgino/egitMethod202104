@@ -1,0 +1,12 @@
+	/**
+	 * @return the selected projects
+	 */
+	public IProject[] getSelectedProjects() {
+		List<IProject> prj = new ArrayList<IProject>();
+		for (Object o : tv.getCheckedElements()) {
+			prj.add((IProject) o);
+		}
+		return prj.toArray(new IProject[0]);
+
+	}
+

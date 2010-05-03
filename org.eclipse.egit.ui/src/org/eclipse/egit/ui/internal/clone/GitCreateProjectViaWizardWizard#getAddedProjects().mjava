@@ -1,0 +1,27 @@
+	/**
+	 * @return the projects added to the workspace since the start of this
+	 *         wizard
+	 */
+	public IProject[] getAddedProjects() {
+
+		IProject[] currentProjects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
+
+		List<IProject> newProjects = new ArrayList<IProject>();
+
+		for (IProject current : currentProjects) {
+			boolean found = false;
+			for (IProject previous : previousProjects) {
+				if (previous.equals(current)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				newProjects.add(current);
+			}
+		}
+
+		return newProjects.toArray(new IProject[0]);
+	}
+

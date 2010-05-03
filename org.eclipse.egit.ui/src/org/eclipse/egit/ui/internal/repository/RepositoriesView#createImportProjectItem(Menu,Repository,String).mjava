@@ -1,28 +1,49 @@
 	private void createImportProjectItem(Menu men, final Repository repo,
 			final String path) {
-		MenuItem importProjects;
-		importProjects = new MenuItem(men, SWT.PUSH);
-		importProjects
-				.setText(UIText.RepositoriesView_ImportExistingProjects_MenuItem);
-		importProjects.addSelectionListener(new SelectionAdapter() {
+
+		MenuItem startWizard;
+		startWizard = new MenuItem(men, SWT.PUSH);
+		startWizard.setText(UIText.RepositoriesView_ImportProjectsMenu);
+		startWizard.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// Instead of the generic ExternalProjectImportWizard
-				// from the org.eclipse.ui.ide plug-in, we use our
-				// own wizard (the generic one does not allow to set the
-				// path in 3.4; in addition, we have added project filtering
-				// capabilities)
-				Wizard wiz = new GitImportProjectsWizard(repo, path);
-
-				WizardDialog dlg = new WizardDialog(getSite().getShell(), wiz);
+				WizardDialog dlg = new WizardDialog(getSite().getShell(),
+						new GitCreateProjectViaWizardWizard(repo, path));
 				if (dlg.open() == Window.OK)
-					// TODO if we drop the "existing projects" node, we can
-					// probably do without refresh
 					scheduleRefresh();
 
 			}
 
 		});
+
+		// we could start the ImportWizard here,
+		// unfortunately, this fails within a wizard
+		// startWizard = new MenuItem(men, SWT.PUSH);
+		// startWizard.setText("Start the Import wizard...");
+		// startWizard.addSelectionListener(new SelectionAdapter() {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		//
+		// IHandlerService handlerService = (IHandlerService) getSite()
+		// .getWorkbenchWindow().getWorkbench().getService(
+		// IHandlerService.class);
+		//
+		// try {
+		//					handlerService.executeCommand("org.eclipse.ui.file.import", //$NON-NLS-1$
+		// null);
+		// } catch (ExecutionException e1) {
+		// Activator.handleError(e1.getMessage(), e1, true);
+		// } catch (NotDefinedException e1) {
+		// Activator.handleError(e1.getMessage(), e1, true);
+		// } catch (NotEnabledException e1) {
+		// Activator.handleError(e1.getMessage(), e1, true);
+		// } catch (NotHandledException e1) {
+		// Activator.handleError(e1.getMessage(), e1, true);
+		// }
+		// }
+		//
+		// });
 	}
 

@@ -1,0 +1,27 @@
+	/**
+	 * @param repository
+	 * @param path
+	 */
+	public GitCreateProjectViaWizardWizard(Repository repository, String path) {
+		super();
+		previousProjects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
+		myRepository = repository;
+		myGitDir = path;
+		setWindowTitle(NLS.bind(
+				UIText.GitCreateProjectViaWizardWizard_WizardTitle,
+				myRepository.getDirectory().getPath()));
+
+		// the "Import" wizard could be started like this,
+		// but throws an Exception if started within a wizard
+		// context (no active workbench window found) and the
+		// list of available wizards is empty
+		// -> investigate if we can include that wizard
+		//
+		// IHandlerService handlerService = (IHandlerService)
+		// PlatformUI.getWorkbench().getService(IHandlerService.class);
+		//
+		// handlerService.executeCommand("org.eclipse.ui.file.import",
+
+	}
+

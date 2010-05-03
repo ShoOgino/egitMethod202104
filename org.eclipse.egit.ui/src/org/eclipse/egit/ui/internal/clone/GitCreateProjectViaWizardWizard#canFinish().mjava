@@ -1,0 +1,20 @@
+	@Override
+	public boolean canFinish() {
+
+		boolean showSharePage = mySelectionPage.getActionSelection() == GitSelectWizardPage.ACTION_DIALOG_SHARE;
+		boolean showShareComplete = !showSharePage
+				|| mySharePage.isPageComplete();
+
+		switch (mySelectionPage.getWizardSelection()) {
+		case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
+			return myProjectsImportPage.isPageComplete() && showShareComplete;
+		case GitSelectWizardPage.NEW_WIZARD:
+			return showShareComplete;
+		case GitSelectWizardPage.GENERAL_WIZARD:
+			return myCreateGeneralProjectPage.isPageComplete()
+					&& showShareComplete;
+		}
+		return super.canFinish();
+
+	}
+

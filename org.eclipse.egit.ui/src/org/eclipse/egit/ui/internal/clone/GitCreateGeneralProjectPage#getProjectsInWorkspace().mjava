@@ -1,0 +1,7 @@
+	private IProject[] getProjectsInWorkspace() {
+		if (wsProjects == null) {
+			wsProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		}
+		return wsProjects;
+	}
+

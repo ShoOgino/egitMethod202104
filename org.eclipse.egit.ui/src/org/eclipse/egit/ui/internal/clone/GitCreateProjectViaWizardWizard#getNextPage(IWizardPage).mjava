@@ -1,0 +1,32 @@
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+
+		if (page == mySelectionPage) {
+
+			switch (mySelectionPage.getWizardSelection()) {
+			case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
+				return myProjectsImportPage;
+			case GitSelectWizardPage.NEW_WIZARD:
+				if (mySelectionPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
+					return null;
+				else
+					return mySharePage;
+
+			case GitSelectWizardPage.GENERAL_WIZARD:
+				return myCreateGeneralProjectPage;
+
+			}
+
+			return super.getNextPage(page);
+
+		} else if (page == myCreateGeneralProjectPage
+				|| page == myProjectsImportPage) {
+
+			if (mySelectionPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
+				return null;
+			else
+				return mySharePage;
+		}
+		return super.getNextPage(page);
+	}
+

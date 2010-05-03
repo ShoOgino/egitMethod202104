@@ -1,0 +1,80 @@
+	public void createControl(Composite parent) {
+
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(1, false));
+		tv = CheckboxTableViewer.newCheckList(main, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tv.getTable());
+
+		TableColumn name = new TableColumn(tv.getTable(), SWT.NONE);
+		name.setWidth(200);
+		name.setText(UIText.GitShareProjectsPage_ProjectNameLabel);
+
+		TableColumn repo = new TableColumn(tv.getTable(), SWT.NONE);
+		repo.setWidth(400);
+		repo.setText(UIText.GitShareProjectsPage_RepositoryLabel);
+
+		tv.getTable().setHeaderVisible(true);
+
+		tv.setContentProvider(new IStructuredContentProvider() {
+
+			public void inputChanged(Viewer viewer, Object oldInput,
+					Object newInput) {
+				// nothing
+			}
+
+			public void dispose() {
+				// nothing
+			}
+
+			public Object[] getElements(Object inputElement) {
+				return (Object[]) inputElement;
+			}
+		});
+
+		tv.setLabelProvider(new ITableLabelProvider() {
+
+			public void removeListener(ILabelProviderListener listener) {
+				// ignore
+			}
+
+			public boolean isLabelProperty(Object element, String property) {
+				return false;
+			}
+
+			public void dispose() {
+				// nothing
+			}
+
+			public void addListener(ILabelProviderListener listener) {
+				// ignore
+			}
+
+			public String getColumnText(Object element, int columnIndex) {
+				switch (columnIndex) {
+				case 0:
+					return ((IProject) element).getName();
+				case 1:
+					String actRepo = getRepository((IProject) element);
+					if (actRepo == null)
+						return UIText.GitShareProjectsPage_NoRepoFoundMessage;
+					return actRepo;
+				default:
+					return null;
+				}
+			}
+
+			public Image getColumnImage(Object element, int columnIndex) {
+				return null;
+			}
+		});
+
+		tv.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				checkPage();
+			}
+		});
+
+		setControl(main);
+	}
+

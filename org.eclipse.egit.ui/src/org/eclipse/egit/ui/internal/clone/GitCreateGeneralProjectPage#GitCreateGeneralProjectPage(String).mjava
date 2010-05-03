@@ -1,0 +1,14 @@
+	/**
+	 * Creates a new project creation wizard page.
+	 *
+	 * @param path
+	 *            the path to a directory in the local file system
+	 */
+	public GitCreateGeneralProjectPage(String path) {
+		super(GitCreateGeneralProjectPage.class.getName());
+		myDirectory = new File(path);
+		setPageComplete(false);
+		setTitle(UIText.WizardProjectsImportPage_ImportProjectsTitle);
+		setDescription(UIText.WizardProjectsImportPage_ImportProjectsDescription);
+	}
+

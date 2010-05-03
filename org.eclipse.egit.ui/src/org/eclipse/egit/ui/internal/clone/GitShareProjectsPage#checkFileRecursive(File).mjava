@@ -1,0 +1,8 @@
+	private String checkFileRecursive(File locationFile) {
+		if (locationFile == null)
+			return null;
+		if (locationFile.list(myFilenameFilter).length > 0)
+			return locationFile.getPath();
+		return checkFileRecursive(locationFile.getParentFile());
+	}
+

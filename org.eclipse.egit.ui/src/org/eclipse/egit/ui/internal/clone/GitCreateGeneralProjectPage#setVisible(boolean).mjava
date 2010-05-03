@@ -1,0 +1,10 @@
+	@Override
+	public void setVisible(boolean visible) {
+		if (visible) {
+			projectText.setText(myDirectory.getName());
+			directoryText.setText(myDirectory.getPath());
+			checkPage();
+		}
+		super.setVisible(visible);
+	}
+

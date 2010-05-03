@@ -1,0 +1,5 @@
+	private String getRepository(IProject element) {
+		File locationFile = new File(element.getLocationURI());
+		return checkFileRecursive(locationFile);
+	}
+
