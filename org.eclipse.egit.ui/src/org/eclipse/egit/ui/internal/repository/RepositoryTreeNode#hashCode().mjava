@@ -4,16 +4,32 @@
 		int result = 1;
 		switch (myType) {
 		case REPO:
+			// fall through
 		case PROJECTS:
+			// fall through
 		case REMOTES:
+			// fall through
+		case LOCALBRANCHES:
+			// fall through
+		case REMOTEBRANCHES:
+			// fall through
 		case BRANCHES:
+			// fall through
+		case SYMBOLICREFS:
+			// fall through
 		case WORKINGDIR:
 			result = prime
 					* result
 					+ ((myObject == null) ? 0 : ((Repository) myObject)
 							.getDirectory().hashCode());
 			break;
+		case HEAD:
+			// fall through
 		case REF:
+			// fall through
+		case TAG:
+			// fall through
+		case SYMBOLICREF:
 			result = prime
 					* result
 					+ ((myObject == null) ? 0 : ((Ref) myObject).getName()
@@ -27,9 +43,15 @@
 					+ ((myObject == null) ? 0 : ((File) myObject).getPath()
 							.hashCode());
 			break;
+		case TAGS:
+			// fall through
 		case REMOTE:
+			// fall through
 		case PUSH:
+			// fall through
 		case FETCH:
+			// fall through
+		case ERROR:
 			result = prime * result
 					+ ((myObject == null) ? 0 : myObject.hashCode());
 

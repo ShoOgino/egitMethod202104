@@ -1,23 +1,47 @@
 	private boolean checkObjectsEqual(Object otherObject) {
 		switch (myType) {
 		case REPO:
+			// fall through
 		case PROJECTS:
+			// fall through
 		case REMOTES:
+			// fall through
 		case BRANCHES:
+			// fall through
+		case LOCALBRANCHES:
+			// fall through
+		case REMOTEBRANCHES:
+			// fall through
+		case SYMBOLICREFS:
+			// fall through
+		case ERROR:
+			// fall through
 		case WORKINGDIR:
 			return ((Repository) myObject).getDirectory().equals(
 					((Repository) otherObject).getDirectory());
 		case REF:
+			// fall through
+		case HEAD:
+			// fall through
+		case TAG:
+			// fall through
+		case SYMBOLICREF:
 			return ((Ref) myObject).getName().equals(
 					((Ref) otherObject).getName());
 		case PROJ:
+			// fall through
 		case FOLDER:
+			// fall through
 		case FILE:
 			return ((File) myObject).getPath().equals(
 					((File) otherObject).getPath());
 		case REMOTE:
+			// fall through
 		case FETCH:
+			// fall through
 		case PUSH:
+			// fall through
+		case TAGS:
 			return myObject.equals(otherObject);
 		}
 		return false;
