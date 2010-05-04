@@ -1,0 +1,70 @@
+	private void createDeleteBranchItem(Menu men, final RepositoryTreeNode node) {
+
+		final Ref ref = (Ref) node.getObject();
+
+		MenuItem deleteBranch = new MenuItem(men, SWT.PUSH);
+		deleteBranch.setText(UIText.RepositoriesView_DeleteBranchMenu);
+
+		try {
+			if (node.getRepository().getFullBranch().equals(ref.getName())) {
+				deleteBranch.setEnabled(false);
+			}
+		} catch (IOException e2) {
+			// ignore
+		}
+
+		deleteBranch.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				if (!MessageDialog
+						.openConfirm(
+								getSite().getShell(),
+								UIText.RepositoriesView_ConfirmDeleteTitle,
+								NLS
+										.bind(
+												UIText.RepositoriesView_ConfirmBranchDeletionMessage,
+												ref.getName())))
+					return;
+
+				try {
+					new ProgressMonitorDialog(getSite().getShell()).run(false,
+							false, new IRunnableWithProgress() {
+
+								public void run(IProgressMonitor monitor)
+										throws InvocationTargetException,
+										InterruptedException {
+
+									try {
+										RefUpdate op = node.getRepository()
+												.updateRef(ref.getName());
+										op.setRefLogMessage("branch deleted", //$NON-NLS-1$
+												false);
+										// we set the force update in order
+										// to avoid having this rejected
+										// due to minor issues
+										op.setForceUpdate(true);
+										op.delete();
+										scheduleRefresh();
+									} catch (IOException ioe) {
+										throw new InvocationTargetException(ioe);
+									}
+
+								}
+							});
+				} catch (InvocationTargetException e1) {
+					Activator
+							.handleError(
+									UIText.RepositoriesView_BranchDeletionFailureMessage,
+									e1.getCause(), true);
+					e1.printStackTrace();
+				} catch (InterruptedException e1) {
+					// ignore
+				}
+			}
+
+		});
+
+	}
+

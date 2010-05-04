@@ -1,0 +1,9 @@
+	private String getSourceBranchName() {
+		if (myBaseBranch != null)
+			return myBaseBranch.getName();
+		else if (this.branchCombo != null)
+			return this.branchCombo.getText();
+		else
+			return null;
+	}
+

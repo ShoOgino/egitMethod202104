@@ -1,0 +1,37 @@
+	/**
+	 * @param monitor
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	public void createBranch(IProgressMonitor monitor) throws CoreException,
+			IOException {
+
+		String newRefName = getBranchName();
+		RefUpdate updateRef;
+
+		monitor.beginTask(UIText.CreateBranchPage_CreatingBranchMessage,
+				IProgressMonitor.UNKNOWN);
+		updateRef = myRepository.updateRef(newRefName);
+
+		Ref sourceBranch;
+		if (myBaseBranch != null) {
+			sourceBranch = myBaseBranch;
+		} else {
+			sourceBranch = myRepository.getRef(getSourceBranchName());
+		}
+		ObjectId startAt = sourceBranch.getObjectId();
+		String startBranch = myRepository
+				.shortenRefName(sourceBranch.getName());
+		updateRef.setNewObjectId(startAt);
+		updateRef
+				.setRefLogMessage("branch: Created from " + startBranch, false); //$NON-NLS-1$
+		updateRef.update();
+		if (checkout.getSelection()) {
+			if (monitor.isCanceled())
+				return;
+			monitor.beginTask(UIText.CreateBranchPage_CheckingOutMessage,
+					IProgressMonitor.UNKNOWN);
+			new BranchOperation(myRepository, getBranchName()).execute(monitor);
+		}
+	}
+

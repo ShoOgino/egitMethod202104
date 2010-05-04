@@ -1,0 +1,95 @@
+	public void createControl(Composite parent) {
+
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(2, false));
+
+		Label sourceLabel = new Label(main, SWT.NONE);
+		sourceLabel.setText(UIText.CreateBranchPage_SourceBranchLabel);
+		sourceLabel.setToolTipText(UIText.CreateBranchPage_SourceBranchTooltip);
+		this.branchCombo = new Combo(main, SWT.READ_ONLY | SWT.DROP_DOWN);
+
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(
+				this.branchCombo);
+
+		try {
+			for (Entry<String, Ref> ref : myRepository.getRefDatabase()
+					.getRefs(Constants.R_HEADS).entrySet()) {
+				if (!ref.getValue().isSymbolic())
+					this.branchCombo.add(ref.getValue().getName());
+			}
+			for (Entry<String, Ref> ref : myRepository.getRefDatabase()
+					.getRefs(Constants.R_REMOTES).entrySet()) {
+				if (!ref.getValue().isSymbolic())
+					this.branchCombo.add(ref.getValue().getName());
+			}
+
+		} catch (IOException e1) {
+			// ignore here
+		}
+
+		this.branchCombo.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkPage();
+			}
+
+		});
+		if (myBaseBranch != null) {
+			this.branchCombo.setText(myBaseBranch.getName());
+			this.branchCombo.setEnabled(false);
+		} else {
+			String fullBranch;
+			try {
+				fullBranch = myRepository.getFullBranch();
+				this.branchCombo.setText(fullBranch);
+			} catch (IOException e1) {
+				// ignore
+			}
+		}
+
+		Label nameLabel = new Label(main, SWT.NONE);
+		nameLabel.setText(UIText.CreateBranchPage_BranchNameLabel);
+		if (remoteMode)
+			nameLabel.setToolTipText(NLS.bind(
+					UIText.CreateBranchPage_BranchNameTooltip,
+					Constants.R_REMOTES));
+		else
+			nameLabel.setToolTipText(NLS.bind(
+					UIText.CreateBranchPage_BranchNameTooltip,
+					Constants.R_HEADS));
+
+		nameText = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(nameText);
+		nameText.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+		checkout = new Button(main, SWT.CHECK);
+		checkout.setText(UIText.CreateBranchPage_CheckoutButton);
+		// most of the time, we probably will check this out
+		checkout.setSelection(true);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(
+				checkout);
+		checkout.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkPage();
+			}
+
+		});
+
+		setControl(main);
+		nameText.setFocus();
+
+		// in any case, we will have to enter the name
+		setPageComplete(false);
+		if (this.myBaseBranch != null)
+			setMessage(UIText.CreateBranchPage_ChosseNameMessage);
+		else
+			setMessage(UIText.CreateBranchPage_ChooseBranchAndNameMessage);
+	}
+
