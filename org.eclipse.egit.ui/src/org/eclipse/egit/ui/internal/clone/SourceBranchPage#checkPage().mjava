@@ -9,7 +9,13 @@
 			return;
 		}
 
-		if (getSelectedBranches().isEmpty()) {
+		if (isSourceRepoEmpty()) {
+			setMessage(UIText.SourceBranchPage_repoEmpty, IMessageProvider.WARNING);
+			setPageComplete(true);
+			return;
+		}
+
+		if ( getSelectedBranches().isEmpty()) {
 			setErrorMessage(UIText.SourceBranchPage_errorBranchRequired);
 			setPageComplete(false);
 			return;
