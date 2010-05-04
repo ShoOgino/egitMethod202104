@@ -13,7 +13,8 @@
 		final SharingWizard wizard = new SharingWizard();
 		wizard.init(workbench, projectToShare);
 		final Shell shell = HandlerUtil.getActiveShell(event);
-		ConfigureProjectWizard.openWizard(shell, wizard);
+		WizardDialog wizardDialog = new WizardDialog(shell, wizard);
+		wizardDialog.open();
 		return null;
 	}
 
