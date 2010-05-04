@@ -1,5 +1,5 @@
 	@Override
-	protected IWorkspaceRunnable createOperation(List selection) {
+	protected IEGitOperation createOperation(List selection) {
 		return new QuickdiffBaselineOperation(getActiveRepository(), Constants.HEAD);
 	}
 

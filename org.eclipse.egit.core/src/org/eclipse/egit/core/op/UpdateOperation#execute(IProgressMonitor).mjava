@@ -1,0 +1,7 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.egit.core.op.IEGitOperation#execute(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void execute(IProgressMonitor m) throws CoreException {
+		new UpdateJob(rsrcList).schedule();
+	}
+

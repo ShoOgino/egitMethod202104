@@ -3,7 +3,7 @@
 
 		ConnectProviderOperation operation = new ConnectProviderOperation(
 				project.getProject(), new File("../..", Constants.DOT_GIT));
-		operation.run(null);
+		operation.execute(null);
 
 		assertFalse(RepositoryProvider.isShared(project.getProject()));
 		assertTrue(!gitDir.exists());

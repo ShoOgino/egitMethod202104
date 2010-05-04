@@ -1,27 +1,26 @@
-	public void run(IProgressMonitor m) throws CoreException {
+	/* (non-Javadoc)
+	 * @see org.eclipse.egit.core.op.IEGitOperation#execute(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void execute(IProgressMonitor m) throws CoreException {
 		if (m == null)
 			m = new NullProgressMonitor();
 
-		caches.clear();
+		edits.clear();
 		mappings.clear();
 
-		m.beginTask(CoreText.AssumeUnchangedOperation_adding,
-				rsrcList.size() * 200);
+		m.beginTask(CoreText.AddOperation_adding, rsrcList.size() * 200);
 		try {
 			for (Object obj : rsrcList) {
 				obj = ((IAdaptable) obj).getAdapter(IResource.class);
 				if (obj instanceof IResource)
-					assumeValid((IResource) obj);
+					remove((IResource) obj);
 				m.worked(200);
 			}
 
-			for (Map.Entry<Repository, DirCache> e : caches.entrySet()) {
+			for (Map.Entry<Repository, DirCacheEditor> e : edits.entrySet()) {
 				final Repository db = e.getKey();
-				final DirCache editor = e.getValue();
-				m.setTaskName(NLS.bind(
-						CoreText.AssumeUnchangedOperation_writingIndex, db
-								.getDirectory()));
-				editor.write();
+				final DirCacheEditor editor = e.getValue();
+				m.setTaskName(NLS.bind(CoreText.UntrackOperation_writingIndex, db.getDirectory()));
 				editor.commit();
 			}
 		} catch (RuntimeException e) {
@@ -31,7 +30,7 @@
 		} finally {
 			for (final RepositoryMapping rm : mappings.keySet())
 				rm.fireRepositoryChanged();
-			caches.clear();
+			edits.clear();
 			mappings.clear();
 			m.done();
 		}

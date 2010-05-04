@@ -8,7 +8,7 @@
 		repository.close();
 		ConnectProviderOperation operation = new ConnectProviderOperation(
 				project.getProject(), gitDir);
-		operation.run(null);
+		operation.execute(null);
 
 		assertTrue(RepositoryProvider.isShared(project.getProject()));
 
