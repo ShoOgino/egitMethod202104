@@ -1,7 +1,13 @@
 	@Override
 	public void setVisible(final boolean visible) {
-		if (visible)
+		if (visible) {
+			if (branchPage.isSourceRepoEmpty()) {
+				initialBranch.setEnabled(false);
+				showImportWizard.setSelection(false);
+				showImportWizard.setEnabled(false);
+			}
 			revalidate();
+		}
 		super.setVisible(visible);
 		if (visible)
 			directoryText.setFocus();

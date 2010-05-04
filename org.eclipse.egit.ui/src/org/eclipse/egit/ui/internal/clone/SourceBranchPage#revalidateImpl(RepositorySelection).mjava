@@ -62,6 +62,8 @@
 			ti.setChecked(true);
 			selectedRefs.add(r);
 		}
+		if (availableRefs.size() == 0)
+			sourceRepoEmpty = true;
 		notifySelectionChanged();
 		checkPage();
 	}
