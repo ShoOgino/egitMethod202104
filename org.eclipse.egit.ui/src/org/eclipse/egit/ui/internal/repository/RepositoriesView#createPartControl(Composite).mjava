@@ -11,9 +11,21 @@
 
 			public void selectionChanged(SelectionChangedEvent event) {
 
+				copyAction.setEnabled(false);
+
 				IStructuredSelection ssel = (IStructuredSelection) event
 						.getSelection();
 				if (ssel.size() == 1) {
+					RepositoryTreeNode node = (RepositoryTreeNode) ssel
+							.getFirstElement();
+					// allow copy on repository, file, or folder (copying the
+					// directory)
+					if (node.getType() == RepositoryTreeNodeType.REPO
+							|| node.getType() == RepositoryTreeNodeType.WORKINGDIR
+							|| node.getType() == RepositoryTreeNodeType.FOLDER
+							|| node.getType() == RepositoryTreeNodeType.FILE) {
+						copyAction.setEnabled(true);
+					}
 					setSelection(new StructuredSelection(ssel.getFirstElement()));
 				} else {
 					setSelection(new StructuredSelection());
