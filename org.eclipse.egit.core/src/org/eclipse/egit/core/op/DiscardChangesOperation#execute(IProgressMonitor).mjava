@@ -1,0 +1,10 @@
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
+				discardChanges(monitor);
+			}
+		};
+		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
+				IWorkspace.AVOID_UPDATE, monitor);
+	}
+

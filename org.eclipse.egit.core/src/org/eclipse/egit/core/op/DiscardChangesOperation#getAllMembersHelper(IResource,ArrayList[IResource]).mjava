@@ -1,6 +1,6 @@
 	private void getAllMembersHelper(IResource res, ArrayList<IResource> ret) {
-		ArrayList<IResource> tmp = new ArrayList<IResource> ();
 		if (res instanceof IContainer) {
+			ArrayList<IResource> tmp = new ArrayList<IResource>();
 			IContainer cont = (IContainer) res;
 			try {
 				for (IResource r : cont.members()) {

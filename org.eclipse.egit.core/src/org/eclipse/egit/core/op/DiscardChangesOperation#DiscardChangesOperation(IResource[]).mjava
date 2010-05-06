@@ -1,0 +1,10 @@
+	/**
+	 * Construct a {@link DiscardChangesOperation} object.
+	 *
+	 * @param files
+	 */
+	public DiscardChangesOperation(IResource[] files) {
+		this.files = files;
+		schedulingRule = calcRefreshRule(files);
+	}
+
