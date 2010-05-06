@@ -11,16 +11,20 @@
 
 		case BRANCHES:
 			// fall through
-		case PROJECTS:
+		case LOCALBRANCHES:
+			// fall through
+		case REMOTEBRANCHES:
 			// fall through
 		case REMOTES:
+			// fall through
+		case SYMBOLICREFS:
+			// fall through
+		case TAGS:
 			// fall through
 		case WORKINGDIR:
 			return 0;
 
 		case FETCH:
-			// fall through
-		case PROJ:
 			// fall through
 		case PUSH:
 			// fall through
@@ -32,6 +36,10 @@
 		case FOLDER:
 			return ((File) myObject).getName().compareTo(
 					((File) otherNode.getObject()).getName());
+		case TAG:
+			// fall through
+		case SYMBOLICREF:
+			// fall through
 		case REF:
 			return ((Ref) myObject).getName().compareTo(
 					((Ref) otherNode.getObject()).getName());

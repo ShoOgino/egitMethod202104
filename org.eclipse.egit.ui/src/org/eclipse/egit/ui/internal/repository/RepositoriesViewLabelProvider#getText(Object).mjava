@@ -30,11 +30,7 @@
 			// fall through
 		case ERROR:
 			return (String) node.getObject();
-		case PROJECTS:
-			return UIText.RepositoriesView_ExistingProjects_Nodetext;
 		case REF:
-			// fall through
-		case HEAD:
 			// fall through
 		case TAG:
 			// fall through
@@ -47,17 +43,12 @@
 						+ ref.getLeaf().getName();
 			}
 			return refName;
-		case PROJ:
-
-			File file = (File) node.getObject();
-			return file.getName();
-
 		case WORKINGDIR:
 
 			return UIText.RepositoriesView_WorkingDir_treenode + " - " //$NON-NLS-1$
 					+ node.getRepository().getWorkDir().getAbsolutePath();
-
-		case PUSH: // fall through
+		case PUSH:
+			// fall through
 		case FETCH:
 			return (String) node.getObject();
 
