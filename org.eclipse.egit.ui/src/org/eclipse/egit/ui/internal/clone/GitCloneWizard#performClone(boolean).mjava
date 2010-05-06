@@ -1,5 +1,6 @@
 	boolean performClone(boolean background) {
 		final URIish uri = cloneSource.getSelection().getURI();
+		setWindowTitle(NLS.bind(UIText.GitCloneWizard_jobName, uri.toString()));
 		final boolean allSelected;
 		final Collection<Ref> selectedBranches;
 		if (validSource.isSourceRepoEmpty()) {

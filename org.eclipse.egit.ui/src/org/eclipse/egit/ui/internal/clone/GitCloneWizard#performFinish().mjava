@@ -1,5 +1,9 @@
 	@Override
 	public boolean performFinish() {
-		return performClone(false);
+		try {
+			return performClone(false);
+		} finally {
+			setWindowTitle(UIText.GitCloneWizard_title);
+		}
 	}
 
