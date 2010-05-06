@@ -1,5 +1,17 @@
-	RepositoryTreeNode(RepositoryTreeNode parent, RepositoryTreeNodeType type,
-			Repository repository, T treeObject) {
+	/**
+	 * Constructs a node
+	 *
+	 * @param parent
+	 *            the parent (may be null)
+	 * @param type
+	 *            the type
+	 * @param repository
+	 *            the {@link Repository}
+	 * @param treeObject
+	 *            an object (depending on the type)
+	 */
+	public RepositoryTreeNode(RepositoryTreeNode parent,
+			RepositoryTreeNodeType type, Repository repository, T treeObject) {
 		myParent = parent;
 		myRepository = repository;
 		myType = type;

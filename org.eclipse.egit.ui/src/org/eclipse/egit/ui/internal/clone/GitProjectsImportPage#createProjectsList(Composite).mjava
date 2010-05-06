@@ -47,7 +47,8 @@
 			}
 
 		};
-
+		// we have to use the old constructor in order to be 3.4 compatible
+		// TODO once we drop 3.4 support, we should change to the new constructor
 		FilteredTree filteredTree = new FilteredTree(listComposite, SWT.CHECK
 				| SWT.BORDER, filter);
 		filteredTree.setInitialText(UIText.WizardProjectsImportPage_filterText);
@@ -75,11 +76,12 @@
 			}
 
 			public void dispose() {
-
+				// ignore
 			}
 
 			public void inputChanged(Viewer viewer, Object oldInput,
 					Object newInput) {
+				// ignore
 			}
 
 		});

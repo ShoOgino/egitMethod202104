@@ -1,17 +1,31 @@
-	private List<Repository> getRepositoriesFromDirs(IProgressMonitor monitor)
-			throws InterruptedException {
+	/**
+	 * Converts the directories as configured for this view into a list of
+	 * {@link Repository} objects suitable for the tree content provider
+	 * <p>
+	 * TODO move to some utility class
+	 *
+	 * @param monitor
+	 * @return a list of nodes
+	 * @throws InterruptedException
+	 */
+	public static List<RepositoryTreeNode<Repository>> getRepositoriesFromDirs(
+			IProgressMonitor monitor) throws InterruptedException {
 
 		List<String> gitDirStrings = getDirs();
-		List<Repository> input = new ArrayList<Repository>();
+		List<RepositoryTreeNode<Repository>> input = new ArrayList<RepositoryTreeNode<Repository>>();
+
 		for (String dirString : gitDirStrings) {
-			if (monitor.isCanceled()) {
+			if (monitor != null && monitor.isCanceled()) {
 				throw new InterruptedException(
 						UIText.RepositoriesView_ActionCanceled_Message);
 			}
 			try {
 				File dir = new File(dirString);
 				if (dir.exists() && dir.isDirectory()) {
-					input.add(new Repository(dir));
+					Repository repo = new Repository(dir);
+					RepositoryTreeNode<Repository> node = new RepositoryTreeNode<Repository>(
+							null, RepositoryTreeNodeType.REPO, repo, repo);
+					input.add(node);
 				}
 			} catch (IOException e) {
 				IStatus error = new Status(IStatus.ERROR, Activator
@@ -19,6 +33,7 @@
 				Activator.getDefault().getLog().log(error);
 			}
 		}
+		Collections.sort(input);
 		return input;
 	}
 

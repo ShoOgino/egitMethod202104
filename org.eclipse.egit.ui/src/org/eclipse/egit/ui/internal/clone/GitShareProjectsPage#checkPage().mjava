@@ -17,13 +17,17 @@
 			for (Object obj : selected) {
 				IProject prj = (IProject) obj;
 				if (getRepository(prj) == null) {
-					setErrorMessage(NLS.bind(
-							UIText.GitShareProjectsPage_NoRepoForProjectMessage, prj.getName()));
+					setErrorMessage(NLS
+							.bind(
+									UIText.GitShareProjectsPage_NoRepoForProjectMessage,
+									prj.getName()));
 					return;
 				}
 				if (RepositoryProvider.getProvider(prj) != null)
-					setErrorMessage(NLS.bind(UIText.GitShareProjectsPage_ProjectAlreadySharedMessage, prj
-							.getName()));
+					setErrorMessage(NLS
+							.bind(
+									UIText.GitShareProjectsPage_ProjectAlreadySharedMessage,
+									prj.getName()));
 			}
 
 		} finally {

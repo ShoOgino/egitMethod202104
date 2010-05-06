@@ -1,0 +1,13 @@
+	/**
+	 * @return the selected path
+	 */
+	public String getPath() {
+		IStructuredSelection sel = (IStructuredSelection) tv.getSelection();
+		RepositoryTreeNode node = (RepositoryTreeNode) sel.getFirstElement();
+		if (node != null && node.getType() == RepositoryTreeNodeType.FOLDER)
+			return ((File) node.getObject()).getPath();
+		if (node != null && node.getType() == RepositoryTreeNodeType.WORKINGDIR)
+			return node.getRepository().getWorkDir().getPath();
+		return null;
+	}
+

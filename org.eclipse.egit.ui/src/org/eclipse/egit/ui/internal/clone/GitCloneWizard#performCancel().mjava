@@ -1,10 +1,12 @@
 	@Override
 	public boolean performCancel() {
-		if (cloneDestination.alreadyClonedInto != null) {
-			if (MessageDialog
-					.openQuestion(getShell(), UIText.GitCloneWizard_abortingCloneTitle,
+		if (alreadyClonedInto != null) {
+			File test = new File(alreadyClonedInto);
+			if (test.exists()
+					&& MessageDialog.openQuestion(getShell(),
+							UIText.GitCloneWizard_abortingCloneTitle,
 							UIText.GitCloneWizard_abortingCloneMsg)) {
-				deleteRecursively(new File(cloneDestination.alreadyClonedInto));
+				deleteRecursively(new File(alreadyClonedInto));
 			}
 		}
 		return true;

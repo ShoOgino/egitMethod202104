@@ -1,0 +1,37 @@
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page == selectRepoPage) {
+			importWithDirectoriesPage.setRepository(selectRepoPage
+					.getRepository());
+			return importWithDirectoriesPage;
+		} else if (page == importWithDirectoriesPage) {
+
+			switch (importWithDirectoriesPage.getWizardSelection()) {
+			case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
+				projectsImportPage.setProjectsList(importWithDirectoriesPage
+						.getPath());
+				return projectsImportPage;
+			case GitSelectWizardPage.NEW_WIZARD:
+				if (importWithDirectoriesPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
+					return null;
+				else
+					return shareProjectsPage;
+
+			case GitSelectWizardPage.GENERAL_WIZARD:
+				createGeneralProjectPage.setPath(importWithDirectoriesPage
+						.getPath());
+				return createGeneralProjectPage;
+
+			}
+
+		} else if (page == createGeneralProjectPage
+				|| page == projectsImportPage) {
+
+			if (importWithDirectoriesPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
+				return null;
+			else
+				return shareProjectsPage;
+		}
+		return super.getNextPage(page);
+	}
+

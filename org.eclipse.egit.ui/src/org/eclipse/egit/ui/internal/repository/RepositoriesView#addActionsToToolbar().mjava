@@ -3,9 +3,10 @@
 
 			@Override
 			public void run() {
-				GitCloneWizard wiz = new GitCloneWizard();
-				wiz.init(null, null);
-				new WizardDialog(getSite().getShell(), wiz).open();
+				WizardDialog dlg = new WizardDialog(getSite().getShell(),
+						new GitCloneWizard());
+				if (dlg.open() == Window.OK)
+					scheduleRefresh();
 			}
 		};
 		importAction.setToolTipText(UIText.RepositoriesView_Clone_Tooltip);

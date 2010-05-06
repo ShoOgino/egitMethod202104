@@ -1,0 +1,17 @@
+	private void checkPage() {
+		setErrorMessage(null);
+		try {
+			if (((List) tv.getInput()).isEmpty()) {
+				setErrorMessage(UIText.GitSelectRepositoryPage_NoRepoFoundMessage);
+				return;
+			}
+
+			if (tv.getSelection().isEmpty()) {
+				setErrorMessage(UIText.GitSelectRepositoryPage_PleaseSelectMessage);
+				return;
+			}
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+

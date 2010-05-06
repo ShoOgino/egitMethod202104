@@ -22,7 +22,8 @@
 		importExisting.addSelectionListener(sl);
 
 		newProjectWizard = new Button(wizardType, SWT.RADIO);
-		newProjectWizard.setText(UIText.GitSelectWizardPage_UseNewProjectsWizardButton);
+		newProjectWizard
+				.setText(UIText.GitSelectWizardPage_UseNewProjectsWizardButton);
 		newProjectWizard.addSelectionListener(sl);
 
 		generalWizard = new Button(wizardType, SWT.RADIO);
@@ -37,12 +38,12 @@
 		afterImportAction.setLayout(new GridLayout(1, false));
 
 		actionAutoShare = new Button(afterImportAction, SWT.RADIO);
-		actionAutoShare
-				.setText(UIText.GitSelectWizardPage_AutoShareButton);
+		actionAutoShare.setText(UIText.GitSelectWizardPage_AutoShareButton);
 		actionAutoShare.addSelectionListener(sl);
 
 		actionDialogShare = new Button(afterImportAction, SWT.RADIO);
-		actionDialogShare.setText(UIText.GitSelectWizardPage_InteractiveShareButton);
+		actionDialogShare
+				.setText(UIText.GitSelectWizardPage_InteractiveShareButton);
 		actionDialogShare.addSelectionListener(sl);
 
 		actionNothing = new Button(afterImportAction, SWT.RADIO);

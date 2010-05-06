@@ -15,6 +15,7 @@
 		final String remoteName = cloneDestination.getRemote();
 
 		workdir.mkdirs();
+
 		if (!workdir.isDirectory()) {
 			final String errorMessage = NLS.bind(
 					UIText.GitCloneWizard_errorCannotCreate, workdir.getPath());
@@ -36,7 +37,9 @@
 
 		final CloneOperation op = new CloneOperation(uri, allSelected,
 				selectedBranches, workdir, branch, remoteName);
-		importProject.setGitDir(op.getGitDir());
+
+		alreadyClonedInto = workdir.getPath();
+
 		if (background) {
 			final Job job = new Job(NLS.bind(UIText.GitCloneWizard_jobName, uri
 					.toString())) {
@@ -72,8 +75,11 @@
 							throws InvocationTargetException,
 							InterruptedException {
 						op.run(monitor);
+						if (monitor.isCanceled())
+							throw new InterruptedException();
 					}
 				});
+
 				RepositorySelectionPage.saveUriInPrefs(uri.toString());
 				RepositoriesView.addDir(op.getGitDir());
 				if (view != null)

@@ -34,15 +34,8 @@
 					UIText.WizardProjectsImportPage_CreateProjectsTask, 100);
 			project.create(record.description, new SubProgressMonitor(monitor,
 					30));
-			int openTicks = share ? 50 : 70;
 			project.open(IResource.BACKGROUND_REFRESH, new SubProgressMonitor(
-					monitor, openTicks));
-			if (share) {
-				ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
-						project, gitRepositoryDir);
-				connectProviderOperation
-						.execute(new SubProgressMonitor(monitor, 20));
-			}
+					monitor, 50));
 		} catch (CoreException e) {
 			throw new InvocationTargetException(e);
 		} finally {

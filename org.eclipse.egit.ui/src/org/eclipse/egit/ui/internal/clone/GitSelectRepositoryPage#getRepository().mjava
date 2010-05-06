@@ -1,0 +1,11 @@
+	/**
+	 * @return the repository
+	 */
+	public Repository getRepository() {
+		Object obj = ((IStructuredSelection) tv.getSelection())
+				.getFirstElement();
+		if (obj == null)
+			return null;
+		return ((RepositoryTreeNode) obj).getRepository();
+	}
+

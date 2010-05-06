@@ -31,7 +31,8 @@
 		} catch (InvocationTargetException e) {
 			// one of the steps resulted in a core exception
 			Throwable t = e.getTargetException();
-			Activator.handleError(UIText.WizardProjectImportPage_errorMessage, t, true);
+			Activator.handleError(UIText.WizardProjectImportPage_errorMessage,
+					t, true);
 			return false;
 		}
 		return true;

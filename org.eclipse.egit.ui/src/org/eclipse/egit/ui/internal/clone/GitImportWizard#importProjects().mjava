@@ -1,0 +1,63 @@
+	public void importProjects() {
+		// TODO progress monitoring and cancellation
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+
+				switch (importWithDirectoriesPage.getWizardSelection()) {
+				case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
+					projectsImportPage.createProjects();
+					break;
+				case GitSelectWizardPage.NEW_WIZARD:
+					new NewWizardAction(PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow()).run();
+					break;
+				case GitSelectWizardPage.GENERAL_WIZARD:
+					try {
+
+						final String projectName = createGeneralProjectPage
+								.getProjectName();
+						final String path = importWithDirectoriesPage.getPath();
+						getContainer().run(true, false,
+								new WorkspaceModifyOperation() {
+
+									@Override
+									protected void execute(
+											IProgressMonitor monitor)
+											throws CoreException,
+											InvocationTargetException,
+											InterruptedException {
+
+										final IProjectDescription desc = ResourcesPlugin
+												.getWorkspace()
+												.newProjectDescription(
+														projectName);
+										desc.setLocation(new Path(path));
+
+										IProject prj = ResourcesPlugin
+												.getWorkspace().getRoot()
+												.getProject(desc.getName());
+										prj.create(desc, monitor);
+										prj.open(monitor);
+
+										ResourcesPlugin.getWorkspace()
+												.getRoot().refreshLocal(
+														IResource.DEPTH_ONE,
+														monitor);
+
+									}
+								});
+					} catch (InvocationTargetException e1) {
+						Activator.handleError(e1.getMessage(), e1
+								.getTargetException(), true);
+					} catch (InterruptedException e1) {
+						Activator.handleError(e1.getMessage(), e1, true);
+					}
+					break;
+
+				}
+			}
+		});
+
+	}
+

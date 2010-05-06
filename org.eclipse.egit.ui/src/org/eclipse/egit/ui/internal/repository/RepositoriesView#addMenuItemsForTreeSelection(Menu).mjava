@@ -53,7 +53,8 @@
 								ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
 										project, gitDir);
 								connectProviderOperation
-										.execute(new SubProgressMonitor(monitor, 20));
+										.execute(new SubProgressMonitor(
+												monitor, 20));
 
 							}
 
@@ -108,9 +109,7 @@
 
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-
 						checkoutBranch(node, ref.getLeaf().getName());
-
 					}
 				});
 

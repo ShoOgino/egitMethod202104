@@ -3,7 +3,7 @@
 		if (visible) {
 			// when this becomes visible, we have to ask the wizard to import
 			// the projects
-			final GitCreateProjectViaWizardWizard wiz = (GitCreateProjectViaWizardWizard) getWizard();
+			final ProjectCreator wiz = (ProjectCreator) getWizard();
 			// TODO scheduling rule
 			try {
 				getContainer().run(false, true, new IRunnableWithProgress() {
@@ -20,7 +20,8 @@
 				Activator.handleError(e.getCause().getMessage(), e.getCause(),
 						true);
 			} catch (InterruptedException e) {
-				Activator.handleError(UIText.GitShareProjectsPage_AbortedMessage, e, true);
+				Activator.handleError(
+						UIText.GitShareProjectsPage_AbortedMessage, e, true);
 			}
 
 			setProjects(wiz.getAddedProjects());

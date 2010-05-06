@@ -1,15 +1,16 @@
 	@Override
 	public boolean performFinish() {
-
 		try {
-
-			final int actionSelection = mySelectionPage.getActionSelection();
+			final int actionSelection = importWithDirectoriesPage
+					.getActionSelection();
 
 			final IProject[] projectsToShare;
 			if (actionSelection == GitSelectWizardPage.ACTION_DIALOG_SHARE)
-				projectsToShare = mySharePage.getSelectedProjects();
+				projectsToShare = shareProjectsPage.getSelectedProjects();
 			else
 				projectsToShare = null;
+
+			final File repoDir = selectRepoPage.getRepository().getDirectory();
 
 			getContainer().run(true, true, new IRunnableWithProgress() {
 
@@ -38,7 +39,7 @@
 								throw new InterruptedException();
 							//
 							ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
-									prj, myRepository.getDirectory());
+									prj, repoDir);
 							try {
 								connectProviderOperation.execute(monitor);
 							} catch (CoreException e) {
@@ -61,6 +62,5 @@
 			return false;
 		}
 		return true;
-
 	}
 

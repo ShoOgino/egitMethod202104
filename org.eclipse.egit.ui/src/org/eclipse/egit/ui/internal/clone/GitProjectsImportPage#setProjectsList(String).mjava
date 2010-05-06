@@ -7,11 +7,11 @@
 	void setProjectsList(final String path) {
 		// on an empty path empty selectedProjects
 		if (path == null || path.length() == 0) {
-			setMessage(UIText.WizardProjectsImportPage_ImportProjectsDescription);
 			selectedProjects = new ProjectRecord[0];
 			projectsList.refresh(true);
 			setPageComplete(checkedItems.size() > 0);
 			lastPath = path;
+			setErrorMessage(UIText.GitProjectsImportPage_NoProjectsMessage);
 			return;
 		}
 
@@ -22,6 +22,8 @@
 			// change, no refreshing is required
 			return;
 		}
+
+		setErrorMessage(null);
 
 		lastPath = path;
 		lastModified = modified;
@@ -55,6 +57,9 @@
 							checkedItems.add(selectedProjects[index]);
 							index++;
 						}
+
+						if (files.isEmpty())
+							setErrorMessage(UIText.GitProjectsImportPage_NoProjectsMessage);
 					} else {
 						monitor.worked(60);
 					}

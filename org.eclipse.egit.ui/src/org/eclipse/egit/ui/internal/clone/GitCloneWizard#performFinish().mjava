@@ -1,7 +1,5 @@
 	@Override
 	public boolean performFinish() {
-		if (!cloneDestination.showImportWizard.getSelection())
-			return performClone(true);
-		return importProject.createProjects();
+		return performClone(false);
 	}
 

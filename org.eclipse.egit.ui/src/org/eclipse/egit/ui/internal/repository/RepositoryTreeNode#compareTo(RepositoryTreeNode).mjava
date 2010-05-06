@@ -1,0 +1,55 @@
+	public int compareTo(RepositoryTreeNode otherNode) {
+		int typeDiff = otherNode.getType().ordinal() - this.myType.ordinal();
+		if (typeDiff != 0)
+			return typeDiff;
+
+		// we only implement this for sorting, so we only have to
+		// implement this for nodes that can be on the same level
+		// i.e. siblings to each other
+
+		switch (myType) {
+
+		case BRANCHES:
+			// fall through
+		case PROJECTS:
+			// fall through
+		case REMOTES:
+			// fall through
+		case WORKINGDIR:
+			return 0;
+
+		case FETCH:
+			// fall through
+		case PROJ:
+			// fall through
+		case PUSH:
+			// fall through
+		case REMOTE:
+			return ((String) myObject)
+					.compareTo((String) otherNode.getObject());
+		case FILE:
+			// fall through
+		case FOLDER:
+			return ((File) myObject).getName().compareTo(
+					((File) otherNode.getObject()).getName());
+		case REF:
+			return ((Ref) myObject).getName().compareTo(
+					((Ref) otherNode.getObject()).getName());
+		case REPO:
+			int nameCompare = ((Repository) myObject).getDirectory()
+					.getParentFile().getName().compareTo(
+							(((Repository) otherNode.getObject())
+									.getDirectory().getParentFile().getName()));
+			if (nameCompare != 0)
+				return nameCompare;
+			// if the name is not unique, let's look at the whole path
+			return ((Repository) myObject).getDirectory().getParentFile()
+					.getParentFile().getPath().compareTo(
+							(((Repository) otherNode.getObject())
+									.getDirectory().getParentFile()
+									.getParentFile().getPath()));
+
+		}
+		return 0;
+	}
+

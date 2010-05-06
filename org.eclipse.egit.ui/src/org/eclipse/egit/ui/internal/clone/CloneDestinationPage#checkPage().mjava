@@ -10,8 +10,7 @@
 			return;
 		}
 		final File absoluteFile = new File(dstpath).getAbsoluteFile();
-		if (!absoluteFile.getAbsolutePath().equals(alreadyClonedInto)
-				&& !isEmptyDir(absoluteFile)) {
+		if (!isEmptyDir(absoluteFile)) {
 			setErrorMessage(NLS.bind(
 					UIText.CloneDestinationPage_errorNotEmptyDir, absoluteFile
 							.getPath()));

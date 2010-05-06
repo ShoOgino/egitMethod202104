@@ -1,0 +1,35 @@
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+
+		Composite main = (Composite) getControl();
+
+		tv = new TreeViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
+				| SWT.BORDER);
+		tv.setContentProvider(new RepositoriesViewContentProvider());
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tv.getTree());
+		new RepositoriesViewLabelProvider(tv);
+
+		SelectionListener sl = new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				tv.getTree().setEnabled(!newProjectWizard.getSelection());
+			}
+
+		};
+
+		generalWizard.addSelectionListener(sl);
+		importExisting.addSelectionListener(sl);
+		newProjectWizard.addSelectionListener(sl);
+
+		tv.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				checkPage();
+			}
+		});
+
+		checkPage();
+		setControl(main);
+	}
+
