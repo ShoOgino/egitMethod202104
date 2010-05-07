@@ -22,12 +22,10 @@
 		amendAllowed = repos.length == 1;
 		for (Repository repo : repos) {
 			repository = repo;
-			RepositoryState state = repo.getRepositoryState();
-			// currently we don't support committing a merge commit
-			if (state.equals(RepositoryState.MERGING_RESOLVED) || !state.canCommit()) {
+			if (!repo.getRepositoryState().canCommit()) {
 				MessageDialog.openError(getTargetPart().getSite().getShell(),
 					UIText.CommitAction_cannotCommit,
-					NLS.bind(UIText.CommitAction_repositoryState, state.getDescription()));
+					NLS.bind(UIText.CommitAction_repositoryState, repo.getRepositoryState().getDescription()));
 				return;
 			}
 		}
