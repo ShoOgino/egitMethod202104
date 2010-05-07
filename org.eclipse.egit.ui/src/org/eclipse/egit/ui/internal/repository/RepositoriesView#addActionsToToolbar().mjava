@@ -1,41 +1,16 @@
 	private void addActionsToToolbar() {
-		importAction = new Action(UIText.RepositoriesView_Import_Button) {
+
+		IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
+
+		refreshAction = new Action(UIText.RepositoriesView_Refresh_Button) {
 
 			@Override
 			public void run() {
-				WizardDialog dlg = new WizardDialog(getSite().getShell(),
-						new GitCloneWizard());
-				if (dlg.open() == Window.OK)
-					scheduleRefresh();
+				scheduleRefresh();
 			}
 		};
-		importAction.setToolTipText(UIText.RepositoriesView_Clone_Tooltip);
-
-		importAction.setImageDescriptor(UIIcons.CLONEGIT);
-
-		getViewSite().getActionBars().getToolBarManager().add(importAction);
-
-		addAction = new Action(UIText.RepositoriesView_Add_Button) {
-
-			@Override
-			public void run() {
-				RepositorySearchDialog sd = new RepositorySearchDialog(
-						getSite().getShell(), getDirs());
-				if (sd.open() == Window.OK) {
-					Set<String> dirs = new HashSet<String>();
-					dirs.addAll(getDirs());
-					if (dirs.addAll(sd.getDirectories()))
-						saveDirs(dirs);
-					scheduleRefresh();
-				}
-
-			}
-		};
-		addAction.setToolTipText(UIText.RepositoriesView_AddRepository_Tooltip);
-
-		addAction.setImageDescriptor(UIIcons.NEW_REPOSITORY);
-
-		getViewSite().getActionBars().getToolBarManager().add(addAction);
+		refreshAction.setImageDescriptor(UIIcons.ELCL16_REFRESH);
+		manager.add(refreshAction);
 
 		linkWithSelectionAction = new Action(
 				UIText.RepositoriesView_LinkWithSelection_action,
@@ -62,26 +37,13 @@
 
 		linkWithSelectionAction
 				.setToolTipText(UIText.RepositoriesView_LinkWithSelection_action);
-
 		linkWithSelectionAction.setImageDescriptor(UIIcons.ELCL16_SYNCED);
-
 		linkWithSelectionAction.setChecked(getPrefs().getBoolean(PREFS_SYNCED,
 				false));
 
-		getViewSite().getActionBars().getToolBarManager().add(
-				linkWithSelectionAction);
+		manager.add(linkWithSelectionAction);
 
-		refreshAction = new Action(UIText.RepositoriesView_Refresh_Button) {
-
-			@Override
-			public void run() {
-				scheduleRefresh();
-			}
-		};
-
-		refreshAction.setImageDescriptor(UIIcons.ELCL16_REFRESH);
-
-		getViewSite().getActionBars().getToolBarManager().add(refreshAction);
+		manager.add(new Separator());
 
 		IAction collapseAllAction = new Action(
 				UIText.RepositoriesView_CollapseAllMenu) {
@@ -91,6 +53,46 @@
 				tv.collapseAll();
 			}
 		};
+		collapseAllAction.setImageDescriptor(UIIcons.COLLAPSEALL);
+		manager.add(collapseAllAction);
+
+		manager.add(new Separator());
+
+		importAction = new Action(UIText.RepositoriesView_Import_Button) {
+
+			@Override
+			public void run() {
+				WizardDialog dlg = new WizardDialog(getSite().getShell(),
+						new GitCloneWizard());
+				if (dlg.open() == Window.OK)
+					scheduleRefresh();
+			}
+		};
+		importAction.setToolTipText(UIText.RepositoriesView_Clone_Tooltip);
+		importAction.setImageDescriptor(UIIcons.CLONEGIT);
+
+		manager.add(importAction);
+
+		addAction = new Action(UIText.RepositoriesView_Add_Button) {
+
+			@Override
+			public void run() {
+				RepositorySearchDialog sd = new RepositorySearchDialog(
+						getSite().getShell(), getDirs());
+				if (sd.open() == Window.OK) {
+					Set<String> dirs = new HashSet<String>();
+					dirs.addAll(getDirs());
+					if (dirs.addAll(sd.getDirectories()))
+						saveDirs(dirs);
+					scheduleRefresh();
+				}
+
+			}
+		};
+		addAction.setToolTipText(UIText.RepositoriesView_AddRepository_Tooltip);
+		addAction.setImageDescriptor(UIIcons.NEW_REPOSITORY);
+
+		manager.add(addAction);
 
 		// copy and paste are global actions; we just implement them
 		// and register them with the global action handler
@@ -190,11 +192,6 @@
 			}
 
 		};
-
-		collapseAllAction.setImageDescriptor(UIIcons.COLLAPSEALL);
-
-		getViewSite().getActionBars().getToolBarManager()
-				.add(collapseAllAction);
 
 		getViewSite().getActionBars().setGlobalActionHandler(
 				ActionFactory.PASTE.getId(), pasteAction);
