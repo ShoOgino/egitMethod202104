@@ -7,17 +7,14 @@
 		}
 
 		final IdentityHashMap<RepositoryMapping, Boolean> tomerge = new IdentityHashMap<RepositoryMapping, Boolean>();
-		m.beginTask(CoreText.AddOperation_adding, rsrcList.size() * 200);
+		m.beginTask(CoreText.AddOperation_adding, rsrcList.length * 200);
 		try {
-			for (Object obj : rsrcList) {
-				obj = ((IAdaptable)obj).getAdapter(IResource.class);
-				if (obj instanceof IResource) {
-					final IResource toAdd = (IResource)obj;
+			for (IResource toAdd : rsrcList) {
 					final RepositoryMapping rm = RepositoryMapping.getMapping(toAdd);
 					final GitIndex index = rm.getRepository().getIndex();
 
-					if (obj instanceof IFile) {
-						String repoPath = rm.getRepoRelativePath((IResource) obj);
+					if (toAdd instanceof IFile) {
+						String repoPath = rm.getRepoRelativePath(toAdd);
 						Entry entry = index.getEntry(repoPath);
 						if (entry != null) {
 							if (!entry.isAssumedValid()) {
@@ -68,7 +65,6 @@
 						entry.setAssumeValid(false);
 
 					}
-				}
 				m.worked(200);
 			}
 			for (RepositoryMapping rm : tomerge.keySet()) {
