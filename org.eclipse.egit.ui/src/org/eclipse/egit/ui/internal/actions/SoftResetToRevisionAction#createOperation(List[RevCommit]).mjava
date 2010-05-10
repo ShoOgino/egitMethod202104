@@ -1,0 +1,7 @@
+	@Override
+	protected IEGitOperation createOperation(List<RevCommit> selection) {
+		return new ResetOperation(getActiveRepository(),
+				selection.get(0).name(),
+				ResetOperation.ResetType.SOFT);
+	}
+

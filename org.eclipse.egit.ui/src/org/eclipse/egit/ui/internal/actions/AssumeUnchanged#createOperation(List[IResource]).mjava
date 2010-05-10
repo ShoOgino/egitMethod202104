@@ -1,4 +1,4 @@
-	protected IEGitOperation createOperation(final List sel) {
+	protected IEGitOperation createOperation(final List<IResource> sel) {
 		return sel.isEmpty() ? null : new AssumeUnchangedOperation(sel);
 	}
 

@@ -9,24 +9,18 @@
 		m.beginTask(CoreText.DisconnectProviderOperation_disconnecting,
 				projectList.size() * 200);
 		try {
-			for (Object obj : projectList) {
-				obj = ((IAdaptable)obj).getAdapter(IResource.class);
-				if (obj instanceof IProject) {
-					final IProject p = (IProject) obj;
-					// TODO is this the right location?
-					if (GitTraceLocation.CORE.isActive())
-						GitTraceLocation.getTrace().trace(
-								GitTraceLocation.CORE.getLocation(),
-								"disconnect " + p.getName()); //$NON-NLS-1$
-					unmarkTeamPrivate(p);
-					RepositoryProvider.unmap(p);
-					m.worked(100);
+			for (IProject p : projectList) {
+				// TODO is this the right location?
+				if (GitTraceLocation.CORE.isActive())
+					GitTraceLocation.getTrace().trace(
+							GitTraceLocation.CORE.getLocation(),
+							"disconnect " + p.getName()); //$NON-NLS-1$
+				unmarkTeamPrivate(p);
+				RepositoryProvider.unmap(p);
+				m.worked(100);
 
-					p.refreshLocal(IResource.DEPTH_INFINITE,
-							new SubProgressMonitor(m, 100));
-				} else {
-					m.worked(200);
-				}
+				p.refreshLocal(IResource.DEPTH_INFINITE,
+						new SubProgressMonitor(m, 100));
 			}
 		} finally {
 			m.done();

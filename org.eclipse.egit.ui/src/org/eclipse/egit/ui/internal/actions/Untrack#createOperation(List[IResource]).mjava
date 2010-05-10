@@ -1,0 +1,4 @@
+	protected IEGitOperation createOperation(final List<IResource> sel) {
+		return sel.isEmpty() ? null : new UntrackOperation(sel);
+	}
+

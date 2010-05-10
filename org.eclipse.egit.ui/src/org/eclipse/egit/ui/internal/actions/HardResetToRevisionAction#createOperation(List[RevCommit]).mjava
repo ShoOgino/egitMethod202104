@@ -1,0 +1,7 @@
+	@Override
+	protected IEGitOperation createOperation(final List<RevCommit> commits) {
+		return new ResetOperation(getActiveRepository(),
+				commits.get(0).getName(),
+				ResetOperation.ResetType.HARD);
+	}
+

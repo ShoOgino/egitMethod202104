@@ -1,0 +1,23 @@
+	public void run(final IAction act) {
+		op = createOperation(getSelectedCommits());
+		if(op==null)
+			return;
+		String jobname = getJobName();
+		Job job = new Job(jobname) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					op.execute(monitor);
+					postOperation();
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(e.getStatus()
+							.getMessage(), e);
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
+	}
+

@@ -2,6 +2,7 @@
 	 * @see org.eclipse.egit.core.op.IEGitOperation#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void execute(IProgressMonitor m) throws CoreException {
+		// TODO: integrate UpdateJob here since UpdateOperation is already run in a Job
 		new UpdateJob(rsrcList).schedule();
 	}
 

@@ -1,0 +1,9 @@
+	private List<RevCommit> getSelectedCommits() {
+		List<RevCommit> commits = new ArrayList<RevCommit>();
+		for(Object object: selection) {
+			if(object instanceof RevCommit)
+				commits.add((RevCommit) object);
+		}
+		return commits;
+	}
+

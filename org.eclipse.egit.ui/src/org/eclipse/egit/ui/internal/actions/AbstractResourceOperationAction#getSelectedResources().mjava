@@ -1,0 +1,9 @@
+	private List<IResource> getSelectedResources() {
+		List<IResource> resources = new ArrayList<IResource>();
+		for(Object object: selection) {
+			if(object instanceof IResource)
+				resources.add((IResource) object);
+		}
+		return resources;
+	}
+

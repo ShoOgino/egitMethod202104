@@ -1,7 +1,0 @@
-	@Override
-	protected IEGitOperation createOperation(List selection) {
-		return new ResetOperation(getActiveRepository(),
-				((AnyObjectId) selection.get(0)).name(),
-				ResetOperation.ResetType.HARD);
-	}
-
