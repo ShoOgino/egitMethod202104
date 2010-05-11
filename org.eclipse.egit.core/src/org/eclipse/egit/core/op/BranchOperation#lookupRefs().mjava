@@ -1,6 +1,11 @@
 	private void lookupRefs() throws TeamException {
 		try {
-			newCommit = repository.mapCommit(refName);
+			// if we have a tag, we have to make an indirection
+			if (refName.startsWith(Constants.R_TAGS)) {
+				Tag tag = repository.mapTag(refName);
+				newCommit = repository.mapCommit(tag.getObjId());
+			} else
+				newCommit = repository.mapCommit(refName);
 		} catch (IOException e) {
 			throw new TeamException(NLS.bind(
 					CoreText.BranchOperation_mappingCommit, refName), e);
