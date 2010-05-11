@@ -116,7 +116,8 @@
 							|| node.getType() == RepositoryTreeNodeType.FOLDER) {
 						dir = ((File) node.getObject()).getPath();
 					} else if (node.getType() == RepositoryTreeNodeType.WORKINGDIR) {
-						dir = node.getRepository().getWorkDir().getPath();
+						if (!isBare(node.getRepository()))
+							dir = node.getRepository().getWorkDir().getPath();
 					}
 					if (dir != null) {
 						Clipboard clip = null;
