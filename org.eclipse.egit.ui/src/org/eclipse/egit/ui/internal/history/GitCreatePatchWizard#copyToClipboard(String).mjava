@@ -1,0 +1,12 @@
+	private void copyToClipboard(final String content) {
+		getShell().getDisplay().syncExec(new Runnable() {
+			public void run() {
+				TextTransfer plainTextTransfer = TextTransfer.getInstance();
+				Clipboard clipboard = new Clipboard(getShell().getDisplay());
+				clipboard.setContents(new String[] { content },
+						new Transfer[] { plainTextTransfer });
+				clipboard.dispose();
+			}
+		});
+	}
+

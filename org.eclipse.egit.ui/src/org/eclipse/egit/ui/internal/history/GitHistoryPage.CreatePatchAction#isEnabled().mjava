@@ -1,0 +1,10 @@
+		@Override
+		public boolean isEnabled() {
+			IStructuredSelection selection = ((IStructuredSelection) revObjectSelectionProvider
+					.getSelection());
+			Iterator<?> it = selection.iterator();
+			SWTCommit commit = (SWTCommit) it.next();
+			return (commit.getParentCount() == 1);
+
+		}
+

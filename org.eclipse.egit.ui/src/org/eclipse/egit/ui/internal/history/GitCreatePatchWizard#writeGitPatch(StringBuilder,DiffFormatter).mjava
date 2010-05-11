@@ -1,0 +1,42 @@
+	// TODO use jgit API methods as soon as they are available
+	private void writeGitPatch(StringBuilder sb, DiffFormatter diffFmt)
+			throws IOException {
+
+		final SimpleDateFormat dtfmt;
+		dtfmt = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US); //$NON-NLS-1$
+		dtfmt.setTimeZone(commit.getAuthorIdent().getTimeZone());
+		sb.append(UIText.GitHistoryPage_From).append(" ") //$NON-NLS-1$
+				.append(commit.getId().getName()).append(" ") //$NON-NLS-1$
+				.append(dtfmt.format(Long.valueOf(System.currentTimeMillis())))
+				.append("\n"); //$NON-NLS-1$
+		sb.append(UIText.GitHistoryPage_From)
+				.append(": ") //$NON-NLS-1$
+				.append(commit.getAuthorIdent().getName())
+				.append(" <").append(commit.getAuthorIdent().getEmailAddress()) //$NON-NLS-1$
+				.append(">\n"); //$NON-NLS-1$
+		sb.append(UIText.GitHistoryPage_Date).append(": ") //$NON-NLS-1$
+				.append(dtfmt.format(commit.getAuthorIdent().getWhen()))
+				.append("\n"); //$NON-NLS-1$
+		sb.append(UIText.GitHistoryPage_Subject).append(": [PATCH] ") //$NON-NLS-1$
+				.append(commit.getShortMessage());
+
+		String message = commit.getFullMessage().substring(
+				commit.getShortMessage().length());
+		sb.append(message).append("\n\n"); //$NON-NLS-1$
+
+		FileDiff[] diffs = FileDiff.compute(walker, commit);
+		for (FileDiff diff : diffs) {
+			sb.append("diff --git a").append(IPath.SEPARATOR) //$NON-NLS-1$
+					.append(diff.path).append(" b").append(IPath.SEPARATOR) //$NON-NLS-1$
+					.append(diff.path).append("\n"); //$NON-NLS-1$
+			diff.outputDiff(sb, db, diffFmt, false, false);
+		}
+		sb.append("\n--\n"); //$NON-NLS-1$
+		Bundle bundle = Activator.getDefault().getBundle();
+		String name = (String) bundle.getHeaders().get(
+				org.osgi.framework.Constants.BUNDLE_NAME);
+		String version = (String) bundle.getHeaders().get(
+				org.osgi.framework.Constants.BUNDLE_VERSION);
+		sb.append(name).append(" ").append(version); //$NON-NLS-1$
+	}
+

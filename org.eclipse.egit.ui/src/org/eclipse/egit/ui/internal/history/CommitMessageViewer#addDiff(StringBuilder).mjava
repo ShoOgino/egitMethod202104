@@ -5,8 +5,11 @@
 			FileDiff[] diffs = FileDiff.compute(walker, commit);
 
 			for (FileDiff diff : diffs) {
-				if (diff.blobs.length == 2)
-					outputDiff(d, diff);
+				if (diff.blobs.length == 2) {
+					String path = diff.path;
+					d.append(formatPathLine(path)).append("\n"); //$NON-NLS-1$
+					diff.outputDiff(d, db, diffFmt, false, false);
+				}
 			}
 		} catch (IOException e) {
 			Activator.handleError(NLS.bind(

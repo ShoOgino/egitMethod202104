@@ -1,0 +1,14 @@
+		@Override
+		public void run() {
+			IStructuredSelection selection = ((IStructuredSelection) revObjectSelectionProvider
+					.getSelection());
+			if (selection.size() == 1) {
+
+				Iterator<?> it = selection.iterator();
+				SWTCommit commit = (SWTCommit) it.next();
+
+				GitCreatePatchWizard.run(getHistoryPageSite().getPart(),
+						commit, walker, db);
+			}
+		}
+

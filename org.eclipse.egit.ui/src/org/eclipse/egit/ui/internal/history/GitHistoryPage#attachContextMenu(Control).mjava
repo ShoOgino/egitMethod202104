@@ -6,6 +6,7 @@
 			c.addMenuDetectListener(new MenuDetectListener() {
 
 				public void menuDetected(MenuDetectEvent e) {
+					popupMgr.remove(new ActionContributionItem(createPatchAction));
 					popupMgr.remove(new ActionContributionItem(compareAction));
 					popupMgr.remove(new ActionContributionItem(
 							compareVersionsAction));
@@ -13,6 +14,11 @@
 							viewVersionsAction));
 					int size = ((IStructuredSelection) revObjectSelectionProvider
 							.getSelection()).size();
+					if (size == 1) {
+						popupMgr.add(new Separator());
+						popupMgr.add(createPatchAction);
+						createPatchAction.setEnabled(createPatchAction.isEnabled());
+					}
 					if (IFile.class.isAssignableFrom(getInput().getClass())) {
 						popupMgr.add(new Separator());
 						if (size == 1) {
@@ -29,6 +35,7 @@
 			c.addMenuDetectListener(new MenuDetectListener() {
 
 				public void menuDetected(MenuDetectEvent e) {
+					popupMgr.remove(new ActionContributionItem(createPatchAction));
 					popupMgr.remove(new ActionContributionItem(compareAction));
 					popupMgr.remove(new ActionContributionItem(
 							compareVersionsAction));

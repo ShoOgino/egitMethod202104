@@ -1,0 +1,49 @@
+	@Override
+	public boolean performFinish() {
+		final boolean isGit = optionsPage.gitFormat.getSelection();
+		final boolean isFile = locationPage.fsRadio.getSelection();
+		final String fileName = locationPage.fsPathText.getText();
+
+		try {
+			getContainer().run(true, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor) {
+					StringBuilder sb = new StringBuilder();
+					DiffFormatter diffFmt = new DiffFormatter();
+					try {
+						if (isGit)
+							writeGitPatch(sb, diffFmt);
+						else
+							writePatch(sb, diffFmt);
+
+						if (isFile) {
+							Writer output = new BufferedWriter(new FileWriter(
+									fileName));
+							try {
+								// FileWriter always assumes default encoding is
+								// OK!
+								output.write(sb.toString());
+							} finally {
+								output.close();
+							}
+						} else {
+							copyToClipboard(sb.toString());
+						}
+					} catch (IOException e) {
+						Activator
+							.logError("Patch file could not be written", e); //$NON-NLS-1$
+					}
+				}
+			});
+		} catch (InvocationTargetException e) {
+			((WizardPage) getContainer().getCurrentPage()).setErrorMessage(e
+					.getMessage() == null ? e.getMessage()
+					: UIText.GitCreatePatchWizard_InternalError);
+			Activator.logError("Patch file was not written", e); //$NON-NLS-1$
+			return false;
+		} catch (InterruptedException e) {
+			Activator.logError("Patch file was not written", e); //$NON-NLS-1$
+			return false;
+		}
+		return true;
+	}
+

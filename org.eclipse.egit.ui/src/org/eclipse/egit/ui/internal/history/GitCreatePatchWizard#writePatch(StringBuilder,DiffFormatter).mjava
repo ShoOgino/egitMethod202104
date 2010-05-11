@@ -1,0 +1,12 @@
+	// TODO use jgit API methods as soon as they are available
+	private void writePatch(StringBuilder sb, DiffFormatter diffFmt)
+			throws IOException {
+		FileDiff[] diffs = FileDiff.compute(walker, commit);
+		for (FileDiff diff : diffs) {
+			String projectRelativePath = getProjectRelaticePath(diff);
+			sb.append("diff --git ").append(projectRelativePath).append(" ") //$NON-NLS-1$ //$NON-NLS-2$
+					.append(projectRelativePath).append("\n"); //$NON-NLS-1$
+			diff.outputDiff(sb, db, diffFmt, true, true);
+		}
+	}
+
