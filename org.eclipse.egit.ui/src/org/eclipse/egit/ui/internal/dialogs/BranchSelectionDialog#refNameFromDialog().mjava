@@ -1,8 +1,11 @@
 	private String refNameFromDialog() {
-		TreeItem[] selection = branchTree.getSelection();
-		if (selection.length > 0) {
-			TreeItem item = selection[0];
-			return (String) item.getData();
+		IStructuredSelection sel = (IStructuredSelection) branchTree
+				.getSelection();
+		if (sel.size() != 1)
+			return null;
+		RepositoryTreeNode node = (RepositoryTreeNode) sel.getFirstElement();
+		if (node.getType() == RepositoryTreeNodeType.REF) {
+			return ((Ref) node.getObject()).getName();
 		}
 		return null;
 	}

@@ -51,19 +51,13 @@
 										refName, newRefName, renameRef
 												.getResult());
 							}
+							branchTree.refresh();
+							markRef(newRefName);
 						} catch (Throwable e1) {
 							reportError(
 									e1,
 									UIText.BranchSelectionDialog_ErrorCouldNotRenameRef,
 									refName, newRefName, e1.getMessage());
-						}
-						try {
-							branchTree.removeAll();
-							fillTreeWithBranches(newRefName);
-						} catch (Throwable e1) {
-							reportError(
-									e1,
-									UIText.BranchSelectionDialog_ErrorCouldNotRefreshBranchList);
 						}
 					}
 				}
@@ -74,26 +68,19 @@
 					// check what ref name the user selected, if any.
 					String refName = refNameFromDialog();
 
-					String refPrefix;
-
 					// the button should be disabled anyway, but we check again
 					if (refName.equals(Constants.HEAD))
 						return;
-
-					if (refName.startsWith(Constants.R_HEADS))
-						refPrefix = Constants.R_HEADS;
-					else if (refName.startsWith(Constants.R_REMOTES))
-						refPrefix = Constants.R_REMOTES;
-					else {
+					if (refName.startsWith(Constants.R_TAGS))
 						// the button should be disabled anyway, but we check again
 						return;
-					}
 
 					InputDialog labelDialog = getRefNameInputDialog(
 							NLS
 									.bind(
 											UIText.BranchSelectionDialog_QuestionNewBranchMessage,
-											refName, refPrefix), refPrefix);
+											refName, Constants.R_HEADS),
+							Constants.R_HEADS);
 
 					if (labelDialog.open() == Window.OK) {
 						String newRefName = Constants.R_HEADS + labelDialog.getValue();
@@ -111,18 +98,13 @@
 							updateRef.setNewObjectId(startAt);
 							updateRef.setRefLogMessage("branch: Created from " + startBranch, false); //$NON-NLS-1$
 							updateRef.update();
+							branchTree.refresh();
+							markRef(newRefName);
 						} catch (Throwable e1) {
 							reportError(
 									e1,
 									UIText.BranchSelectionDialog_ErrorCouldNotCreateNewRef,
 									newRefName);
-						}
-						try {
-							branchTree.removeAll();
-							fillTreeWithBranches(newRefName);
-						} catch (Throwable e1) {
-							reportError(e1,
-									UIText.BranchSelectionDialog_ErrorCouldNotRefreshBranchList);
 						}
 					}
 				}
@@ -134,6 +116,6 @@
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 
 		// can't advance without a selection
-		confirmationBtn.setEnabled(branchTree.getSelectionCount() != 0);
+		confirmationBtn.setEnabled(!branchTree.getSelection().isEmpty());
 	}
 
