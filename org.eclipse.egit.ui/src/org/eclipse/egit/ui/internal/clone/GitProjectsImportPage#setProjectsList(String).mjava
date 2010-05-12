@@ -9,7 +9,7 @@
 		if (path == null || path.length() == 0) {
 			selectedProjects = new ProjectRecord[0];
 			projectsList.refresh(true);
-			setPageComplete(checkedItems.size() > 0);
+			checkPageComplete();
 			lastPath = path;
 			setErrorMessage(UIText.GitProjectsImportPage_NoProjectsMessage);
 			return;
@@ -49,12 +49,10 @@
 						selectedProjects = new ProjectRecord[files.size()];
 						int index = 0;
 						monitor.worked(50);
-						monitor
-								.subTask(UIText.WizardProjectsImportPage_ProcessingMessage);
+						monitor.subTask(UIText.WizardProjectsImportPage_ProcessingMessage);
 						while (filesIterator.hasNext()) {
 							File file = filesIterator.next();
 							selectedProjects[index] = new ProjectRecord(file);
-							checkedItems.add(selectedProjects[index]);
 							index++;
 						}
 
@@ -81,6 +79,6 @@
 			setMessage(UIText.WizardProjectsImportPage_ImportProjectsDescription);
 		}
 		enableSelectAllButtons();
-		setPageComplete(checkedItems.size() > 0);
+		checkPageComplete();
 	}
 

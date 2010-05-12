@@ -5,7 +5,7 @@
 	 *         successful.
 	 */
 	boolean createProjects() {
-		final Object[] selected = checkedItems.toArray();
+		final Object[] selected = getCheckedProjects().toArray();
 		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
 			protected void execute(IProgressMonitor monitor)
 					throws InvocationTargetException, InterruptedException {

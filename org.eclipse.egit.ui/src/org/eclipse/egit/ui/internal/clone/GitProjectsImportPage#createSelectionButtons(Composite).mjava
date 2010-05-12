@@ -17,12 +17,9 @@
 		selectAll.setText(UIText.WizardProjectsImportPage_selectAll);
 		selectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				checkedItems.clear();
 				// only the root has children
-				for (final TreeItem item : projectsList.getTree().getItems()) {
+				for (final TreeItem item : projectsList.getTree().getItems())
 					item.setChecked(true);
-					checkedItems.add(item.getData());
-				}
 				setPageComplete(true);
 			}
 		});
@@ -33,11 +30,8 @@
 		deselectAll.setText(UIText.WizardProjectsImportPage_deselectAll);
 		deselectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				checkedItems.clear();
-				// only the root has children
-				for (final TreeItem item : projectsList.getTree().getItems()) {
+				for (final TreeItem item : projectsList.getTree().getItems())
 					item.setChecked(false);
-				}
 				projectsList.setInput(this); // filter away selected projects
 				setPageComplete(false);
 			}
