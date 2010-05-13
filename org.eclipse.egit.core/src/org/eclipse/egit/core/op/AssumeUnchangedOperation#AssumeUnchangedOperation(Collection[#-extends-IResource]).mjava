@@ -5,7 +5,7 @@
 	 *            collection of {@link IResource}s which should be ignored when
 	 *            looking for changes or committing.
 	 */
-	public AssumeUnchangedOperation(final Collection<IResource> rsrcs) {
+	public AssumeUnchangedOperation(final Collection<? extends IResource> rsrcs) {
 		rsrcList = rsrcs;
 		caches = new IdentityHashMap<Repository, DirCache>();
 		mappings = new IdentityHashMap<RepositoryMapping, Object>();

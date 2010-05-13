@@ -5,7 +5,7 @@
 	 *            collection of {@link IResource}s which should be removed from
 	 *            the relevant Git repositories.
 	 */
-	public UntrackOperation(final Collection<IResource> rsrcs) {
+	public UntrackOperation(final Collection<? extends IResource> rsrcs) {
 		rsrcList = rsrcs;
 		edits = new IdentityHashMap<Repository, DirCacheEditor>();
 		mappings = new IdentityHashMap<RepositoryMapping, Object>();

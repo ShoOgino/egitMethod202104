@@ -10,10 +10,8 @@
 
 		m.beginTask(CoreText.AddOperation_adding, rsrcList.size() * 200);
 		try {
-			for (Object obj : rsrcList) {
-				obj = ((IAdaptable) obj).getAdapter(IResource.class);
-				if (obj instanceof IResource)
-					remove((IResource) obj);
+			for (IResource obj : rsrcList) {
+				remove(obj);
 				m.worked(200);
 			}
 

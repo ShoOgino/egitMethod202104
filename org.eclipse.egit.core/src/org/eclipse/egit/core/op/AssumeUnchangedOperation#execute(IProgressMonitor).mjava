@@ -11,10 +11,8 @@
 		m.beginTask(CoreText.AssumeUnchangedOperation_adding,
 				rsrcList.size() * 200);
 		try {
-			for (Object obj : rsrcList) {
-				obj = ((IAdaptable) obj).getAdapter(IResource.class);
-				if (obj instanceof IResource)
-					assumeValid((IResource) obj);
+			for (IResource resource : rsrcList) {
+				assumeValid(resource);
 				m.worked(200);
 			}
 
