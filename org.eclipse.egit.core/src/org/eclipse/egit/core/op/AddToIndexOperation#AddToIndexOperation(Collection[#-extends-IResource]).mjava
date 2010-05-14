@@ -5,7 +5,7 @@
 	 *            collection of {@link IResource}s which should be added to the
 	 *            relevant Git repositories.
 	 */
-	public AddToIndexOperation(final Collection<IResource> rsrcs) {
+	public AddToIndexOperation(final Collection<? extends IResource> rsrcs) {
 		rsrcList = rsrcs;
 		mappings = new IdentityHashMap<RepositoryMapping, Object>();
 		notAddedFiles = new ArrayList<IFile>();
