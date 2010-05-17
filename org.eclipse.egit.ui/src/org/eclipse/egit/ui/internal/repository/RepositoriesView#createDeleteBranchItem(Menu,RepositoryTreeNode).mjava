@@ -5,13 +5,8 @@
 		MenuItem deleteBranch = new MenuItem(men, SWT.PUSH);
 		deleteBranch.setText(UIText.RepositoriesView_DeleteBranchMenu);
 
-		try {
-			if (node.getRepository().getFullBranch().equals(ref.getName())) {
-				deleteBranch.setEnabled(false);
-			}
-		} catch (IOException e2) {
-			// ignore
-		}
+		deleteBranch.setEnabled(!isRefCheckedOut(node.getRepository(), ref
+				.getName()));
 
 		deleteBranch.addSelectionListener(new SelectionAdapter() {
 
