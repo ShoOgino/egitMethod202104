@@ -4,11 +4,11 @@
 		 * @return page is valid
 		 */
 		protected boolean validatePage() {
-			if (!canValidate)
-				return false;
-
-			if (fsRadio.getSelection())
+			if (fsRadio.getSelection()) {
 				pageValid = validateFilesystemLocation();
+			} else if (cpRadio.getSelection()) {
+				pageValid = true;
+			}
 
 			/**
 			 * Avoid draw flicker by clearing error message if all is valid.

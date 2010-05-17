@@ -10,29 +10,29 @@
 			final String pathString = fsPathText.getText().trim();
 			if (pathString.length() == 0
 					|| !new Path("").isValidPath(pathString)) { //$NON-NLS-1$
-				setErrorMessage(""); //$NON-NLS-1$
+				setErrorMessage(UIText.GitCreatePatchWizard_FilesystemError);
 				return false;
 			}
 
 			final File file = new File(pathString);
 			if (!file.isAbsolute()) {
-				setErrorMessage(""); //$NON-NLS-1$
+				setErrorMessage(UIText.GitCreatePatchWizard_FilesystemInvalidError);
 				return false;
 			}
 
 			if (file.isDirectory()) {
-				setErrorMessage(""); //$NON-NLS-1$
+				setErrorMessage(UIText.GitCreatePatchWizard_FilesystemDirectoryError);
 				return false;
 			}
 
 			if (pathString.endsWith("/") || pathString.endsWith("\\")) { //$NON-NLS-1$//$NON-NLS-2$
-				setErrorMessage(""); //$NON-NLS-1$
+				setErrorMessage(UIText.GitCreatePatchWizard_FilesystemDirectoryNotExistsError);
 				return false;
 			}
 
 			final File parent = file.getParentFile();
 			if (!(parent.exists() && parent.isDirectory())) {
-				setErrorMessage(""); //$NON-NLS-1$
+				setErrorMessage(UIText.GitCreatePatchWizard_FilesystemDirectoryNotExistsError);
 				return false;
 			}
 			return true;

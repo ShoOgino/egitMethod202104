@@ -4,6 +4,7 @@
 			gridLayout.numColumns = 3;
 			composite.setLayout(gridLayout);
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			initializeDialogUnits(composite);
 			setControl(composite);
 
 			// clipboard
@@ -12,15 +13,18 @@
 			cpRadio = new Button(composite, SWT.RADIO);
 			cpRadio.setText(UIText.GitCreatePatchWizard_Clipboard);
 			cpRadio.setLayoutData(gd);
+			cpRadio.setSelection(true);
 
 			// filesystem
 			fsRadio = new Button(composite, SWT.RADIO);
 			fsRadio.setText(UIText.GitCreatePatchWizard_File);
+			fsRadio.setSelection(false);
 
 			fsPathText = new Text(composite, SWT.BORDER);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fsPathText.setLayoutData(gd);
 			fsPathText.setText(createFileName());
+			fsPathText.setEnabled(false);
 
 			fsBrowseButton = new Button(composite, SWT.PUSH);
 			fsBrowseButton.setText(UIText.GitCreatePatchWizard_Browse);
@@ -30,10 +34,25 @@
 					SWT.DEFAULT, true);
 			data.widthHint = Math.max(widthHint, minSize.x);
 			fsBrowseButton.setLayoutData(data);
+			fsBrowseButton.setEnabled(false);
+
+			cpRadio.addListener(SWT.Selection, new Listener() {
+				public void handleEvent(Event event) {
+					// disable other input controls
+					fsPathText.setEnabled(false);
+					fsBrowseButton.setEnabled(false);
+					validatePage();
+				}
+			});
 
 			fsRadio.addListener(SWT.Selection, new Listener() {
 
 				public void handleEvent(Event event) {
+					// enable filesystem input controls
+					fsPathText.setEnabled(true);
+					fsBrowseButton.setEnabled(true);
+					// set focus to filesystem input text control
+					fsPathText.setFocus();
 					validatePage();
 				}
 			});
