@@ -55,7 +55,8 @@
 						// if any of the selected elements are not files, ignore
 						// the open request
 						if (node.getType() != RepositoryTreeNodeType.FILE
-								&& node.getType() != RepositoryTreeNodeType.REF) {
+								&& node.getType() != RepositoryTreeNodeType.REF
+								&& node.getType() != RepositoryTreeNodeType.TAG) {
 							return;
 						}
 					}
@@ -65,12 +66,12 @@
 						RepositoryTreeNode node = (RepositoryTreeNode) selectedElement;
 						if (node.getType() == RepositoryTreeNodeType.FILE)
 							openFile((File) node.getObject());
-						else if (node.getType() == RepositoryTreeNodeType.REF) {
+						else if (node.getType() == RepositoryTreeNodeType.REF
+								|| node.getType() == RepositoryTreeNodeType.TAG) {
 							Ref ref = (Ref) node.getObject();
 							if (!isBare(node.getRepository())
-									&& (ref.getName().startsWith(
-											Constants.R_HEADS) || ref.getName()
-											.startsWith(Constants.R_REMOTES)))
+									&& ref.getName().startsWith(
+											Constants.R_REFS))
 								checkoutBranch(node, ref.getName());
 						}
 					}
