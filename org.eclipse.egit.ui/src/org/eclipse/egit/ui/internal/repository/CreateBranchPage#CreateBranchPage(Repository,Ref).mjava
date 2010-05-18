@@ -1,0 +1,17 @@
+	/**
+	 * Constructs this page.
+	 * <p>
+	 * If a base branch is provided, the drop down will be selected accordingly
+	 *
+	 * @param repo
+	 *            the repository
+	 * @param baseBranch
+	 *            the branch to base the new branch on, may be null
+	 */
+	public CreateBranchPage(Repository repo, Ref baseBranch) {
+		super(CreateBranchPage.class.getName());
+		this.myRepository = repo;
+		this.myBaseBranch = baseBranch;
+		setTitle(UIText.CreateBranchPage_Title);
+	}
+

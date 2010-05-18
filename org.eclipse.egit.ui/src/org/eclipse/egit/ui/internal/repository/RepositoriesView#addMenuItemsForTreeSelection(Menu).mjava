@@ -88,11 +88,12 @@
 					checkoutBranch(node, ref.getLeaf().getName());
 				}
 			});
-
 		}
 
-		if (node.getType() == RepositoryTreeNodeType.LOCALBRANCHES
-				|| node.getType() == RepositoryTreeNodeType.REMOTEBRANCHES)
+		if (node.getType() == RepositoryTreeNodeType.BRANCHES
+				|| node.getType() == RepositoryTreeNodeType.LOCALBRANCHES)
+			// offering this on the "Remote Branches" node would probably be
+			// confusing
 			createCreateBranchItem(men, node);
 
 		// for Repository: import existing projects, remove, (delete), open

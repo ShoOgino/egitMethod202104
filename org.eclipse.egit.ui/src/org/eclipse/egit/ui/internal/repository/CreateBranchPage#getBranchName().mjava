@@ -1,7 +1,4 @@
 	private String getBranchName() {
-		if (remoteMode)
-			return Constants.R_REMOTES + nameText.getText();
-		else
-			return Constants.R_HEADS + nameText.getText();
+		return Constants.R_HEADS + nameText.getText();
 	}
 
