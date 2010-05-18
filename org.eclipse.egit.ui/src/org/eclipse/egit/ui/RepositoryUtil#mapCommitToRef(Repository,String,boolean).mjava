@@ -1,0 +1,143 @@
+	/**
+	 * Tries to map a commit to a symbolic reference.
+	 * <p>
+	 * This value will be cached for the given commit ID unless refresh is
+	 * specified. The return value will be the full name, e.g.
+	 * "refs/remotes/someBranch", "refs/tags/v.1.0"
+	 * <p>
+	 * Since this mapping is not unique, the following precedence rules are
+	 * used:
+	 * <ul>
+	 * <li>Tags take precedence over branches</li>
+	 * <li>Local branches take preference over remote branches</li>
+	 * <li>Newer references take precedence over older ones where time stamps
+	 * are available</li>
+	 * <li>If there are still ambiguities, the reference name with the highest
+	 * lexicographic value will be returned</li>
+	 * </ul>
+	 *
+	 * @param repository
+	 *            the {@link Repository}
+	 * @param commitId
+	 *            a commit
+	 * @param refresh
+	 *            if true, the cache will be invalidated
+	 * @return the symbolic reference, or <code>null</code> if no such reference
+	 *         can be found
+	 */
+	public String mapCommitToRef(Repository repository, String commitId,
+			boolean refresh) {
+
+		synchronized (commitMappingCache) {
+
+			if (!ObjectId.isId(commitId)) {
+				return null;
+			}
+
+			Map<String, String> cacheEntry = commitMappingCache.get(repository
+					.getDirectory().toString());
+			if (!refresh && cacheEntry != null
+					&& cacheEntry.containsKey(commitId)) {
+				// this may be null in fact
+				return cacheEntry.get(commitId);
+			}
+			if (cacheEntry == null) {
+				cacheEntry = new HashMap<String, String>();
+				commitMappingCache.put(repository.getDirectory().getPath(),
+						cacheEntry);
+			} else {
+				cacheEntry.clear();
+			}
+
+			Map<String, Date> tagMap = new HashMap<String, Date>();
+			try {
+				Map<String, Ref> tags = repository.getRefDatabase().getRefs(
+						Constants.R_TAGS);
+				for (Ref tagRef : tags.values()) {
+					Tag tag = repository.mapTag(tagRef.getName());
+					if (tag.getObjId().name().equals(commitId)) {
+						Date timestamp;
+						if (tag.getTagger() != null) {
+							timestamp = tag.getTagger().getWhen();
+						} else {
+							timestamp = null;
+						}
+						tagMap.put(tagRef.getName(), timestamp);
+					}
+				}
+			} catch (IOException e) {
+				// ignore here
+			}
+
+			String cacheValue = null;
+
+			if (!tagMap.isEmpty()) {
+				// we try to obtain the "latest" tag
+				Date compareDate = new Date(0);
+				for (Map.Entry<String, Date> tagEntry : tagMap.entrySet()) {
+					if (tagEntry.getValue() != null
+							&& tagEntry.getValue().after(compareDate)) {
+						compareDate = tagEntry.getValue();
+						cacheValue = tagEntry.getKey();
+					}
+				}
+				// if we don't have time stamps, we sort
+				if (cacheValue == null) {
+					String compareString = ""; //$NON-NLS-1$
+					for (String tagName : tagMap.keySet()) {
+						if (tagName.compareTo(compareString) >= 0) {
+							cacheValue = tagName;
+							compareString = tagName;
+						}
+					}
+				}
+			}
+
+			if (cacheValue == null) {
+				// we didnt't find a tag, so let's look for local branches
+				Set<String> branchNames = new TreeSet<String>();
+				// put this into a sorted set
+				try {
+					Map<String, Ref> remoteBranches = repository
+							.getRefDatabase().getRefs(Constants.R_HEADS);
+					for (Ref branch : remoteBranches.values()) {
+						if (branch.getObjectId().name().equals(commitId)) {
+							branchNames.add(branch.getName());
+						}
+					}
+				} catch (IOException e) {
+					// ignore here
+				}
+				if (!branchNames.isEmpty()) {
+					// get the last (sorted) entry
+					cacheValue = branchNames.toArray(new String[branchNames
+							.size()])[branchNames.size() - 1];
+				}
+			}
+
+			if (cacheValue == null) {
+				// last try: remote branches
+				Set<String> branchNames = new TreeSet<String>();
+				// put this into a sorted set
+				try {
+					Map<String, Ref> remoteBranches = repository
+							.getRefDatabase().getRefs(Constants.R_REMOTES);
+					for (Ref branch : remoteBranches.values()) {
+						if (branch.getObjectId().name().equals(commitId)) {
+							branchNames.add(branch.getName());
+						}
+					}
+					if (!branchNames.isEmpty()) {
+						// get the last (sorted) entry
+						cacheValue = branchNames.toArray(new String[branchNames
+								.size()])[branchNames.size() - 1];
+					}
+				} catch (IOException e) {
+					// ignore here
+				}
+			}
+			cacheEntry.put(commitId, cacheValue);
+			return cacheValue;
+		}
+	}
+
