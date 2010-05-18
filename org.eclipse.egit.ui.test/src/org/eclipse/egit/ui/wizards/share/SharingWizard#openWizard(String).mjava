@@ -1,0 +1,13 @@
+	public ExistingOrNewPage openWizard(String projectName) {
+		SWTBotTree tree = bot.viewByTitle("Package Explorer").bot().tree();
+
+		final SWTBotTreeItem item = tree.getTreeItem(projectName);
+		item.select();
+		ContextMenuHelper.clickContextMenu(tree, "Team", "Share Project...");
+
+		bot.table().getTableItem("Git").select();
+		bot.button("Next >").click();
+
+		return new ExistingOrNewPage();
+	}
+
