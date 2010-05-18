@@ -1,38 +1,12 @@
 	@Override
-	public void execute(IAction action) {
+	public void execute(IAction action) throws InvocationTargetException {
 		final IResource resource = getSelectedResources()[0];
-		final RepositoryMapping mapping = RepositoryMapping.getMapping(resource.getProject());
-		final Repository repository = mapping.getRepository();
-		final String gitPath = mapping.getRepoRelativePath(resource);
-
-		final IFileRevision nextFile = GitFileRevision.inIndex(repository, gitPath);
 
 		final IFile baseFile = (IFile) resource;
-		final ITypedElement base = SaveableCompareEditorInput.createFileElement(baseFile);
+		final ITypedElement base = SaveableCompareEditorInput
+				.createFileElement(baseFile);
 
-		final EditableRevision next = new EditableRevision(nextFile);
-
-		IContentChangeListener listener = new IContentChangeListener() {
-			public void contentChanged(IContentChangeNotifier source) {
-				final byte[] newContent = next.getModifiedContent();
-				try {
-					final GitIndex index = repository.getIndex();
-					final File file = new File(baseFile.getLocation().toString());
-					index.add(mapping.getWorkDir(), file, newContent);
-					index.write();
-				} catch (IOException e) {
-					handle(
-							new TeamException(
-									UIText.CompareWithIndexAction_errorOnAddToIndex,
-									e),
-							UIText.CompareWithIndexAction_errorOnAddToIndex,
-							UIText.CompareWithIndexAction_errorOnAddToIndex);
-					return;
-				}
-			}
-		};
-
-		next.addContentChangeListener(listener);
+		final ITypedElement next = getHeadTypedElement(baseFile);
 
 		final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
 				base, next, null);
