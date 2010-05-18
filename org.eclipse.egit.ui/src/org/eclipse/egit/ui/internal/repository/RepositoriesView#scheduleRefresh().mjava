@@ -1,69 +1,78 @@
 	/**
-	 * Schedules a refreh
+	 * Schedules a refresh
 	 */
-	public void scheduleRefresh() {
+	private void scheduleRefresh() {
 
 		Job job = new Job("Refreshing Git Repositories view") { //$NON-NLS-1$
 
+			@SuppressWarnings("unchecked")
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-
-				final List<RepositoryTreeNode<Repository>> input;
-				try {
-					input = getRepositoriesFromDirs(monitor);
-				} catch (InterruptedException e) {
-					return new Status(IStatus.ERROR, Activator.getPluginId(), e
-							.getMessage(), e);
-				}
+				// first, let's check if the list of Directories has changed
+				final List<String> directories = getDirs();
 
 				boolean needsNewInput = tv.getInput() == null;
-				List oldInput = (List) tv.getInput();
+				List<RepositoryTreeNode<Repository>> oldInput = (List) tv
+						.getInput();
 				if (!needsNewInput)
-					needsNewInput = oldInput.size() != input.size();
+					needsNewInput = oldInput.size() != directories.size();
 
 				if (!needsNewInput) {
-					for (int i = 0; i < input.size(); i++) {
-						needsNewInput = !input.get(i).equals(oldInput.get(i));
-						if (needsNewInput)
-							break;
+					List<String> oldDirectories = new ArrayList<String>();
+					for (RepositoryTreeNode<Repository> node : oldInput) {
+						oldDirectories.add(node.getRepository().getDirectory()
+								.getPath());
 					}
+					needsNewInput = !directories.containsAll(oldDirectories);
 				}
 
 				final boolean updateInput = needsNewInput;
-
-				Display.getDefault().syncExec(new Runnable() {
-
-					public void run() {
-						// keep expansion state and selection so that we can
-						// restore the tree
-						// after update
-						Object[] expanded = tv.getExpandedElements();
-						IStructuredSelection sel = (IStructuredSelection) tv
-								.getSelection();
-						if (updateInput)
-							tv.setInput(input);
-						else
-							tv.refresh();
-						tv.setExpandedElements(expanded);
-
-						Object selected = sel.getFirstElement();
-						if (selected != null)
-							tv.reveal(selected);
-
-						IViewPart part = PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow().getActivePage()
-								.findView(IPageLayout.ID_PROP_SHEET);
-						if (part != null) {
-							PropertySheet sheet = (PropertySheet) part;
-							PropertySheetPage page = (PropertySheetPage) sheet
-									.getCurrentPage();
-							page.refresh();
-						}
+				final List newInput;
+				if (updateInput)
+					try {
+						newInput = getRepositoriesFromDirs(monitor);
+					} catch (InterruptedException e) {
+						return new Status(IStatus.ERROR, Activator
+								.getPluginId(), e.getMessage(), e);
 					}
-				});
+				else
+					newInput = null;
 
+				// we only check for Repository changes if we don't
+				// have a new input
+				if (updateInput || checkForRepositoryChanges()) {
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							// keep expansion state and selection so that we can
+							// restore the tree
+							// after update
+							Object[] expanded = tv.getExpandedElements();
+							IStructuredSelection sel = (IStructuredSelection) tv
+									.getSelection();
+
+							if (updateInput)
+								tv.setInput(newInput);
+							else
+								tv.refresh();
+							tv.setExpandedElements(expanded);
+
+							Object selected = sel.getFirstElement();
+							if (selected != null)
+								tv.reveal(selected);
+
+							IViewPart part = PlatformUI.getWorkbench()
+									.getActiveWorkbenchWindow().getActivePage()
+									.findView(IPageLayout.ID_PROP_SHEET);
+							if (part != null) {
+								PropertySheet sheet = (PropertySheet) part;
+								PropertySheetPage page = (PropertySheetPage) sheet
+										.getCurrentPage();
+								page.refresh();
+							}
+						}
+					});
+				}
 				return new Status(IStatus.OK, Activator.getPluginId(), ""); //$NON-NLS-1$
-
 			}
 
 		};

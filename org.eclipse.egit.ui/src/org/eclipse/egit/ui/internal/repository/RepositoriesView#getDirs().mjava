@@ -11,7 +11,7 @@
 			while (tok.hasMoreTokens()) {
 				String dirName = tok.nextToken();
 				File testFile = new File(dirName);
-				if (testFile.exists()) {
+				if (testFile.exists() && !resultStrings.contains(dirName)) {
 					resultStrings.add(dirName);
 				}
 			}
