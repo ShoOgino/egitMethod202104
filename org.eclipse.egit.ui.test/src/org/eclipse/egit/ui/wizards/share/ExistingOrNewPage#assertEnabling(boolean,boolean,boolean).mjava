@@ -1,0 +1,9 @@
+	@SuppressWarnings("boxing")
+	public void assertEnabling(boolean createRepository, boolean textField,
+			boolean finish) {
+		assertEquals(createRepository, bot.button("Create Repository")
+				.isEnabled());
+		assertEquals(textField, bot.text().isEnabled());
+		assertEquals(finish, bot.button("Finish").isEnabled());
+	}
+
