@@ -388,6 +388,18 @@
 
 			final String configName = (String) node.getParent().getObject();
 
+			MenuItem doFetch = new MenuItem(men, SWT.PUSH);
+			doFetch.setText(UIText.RepositoriesView_FetchMenu);
+			doFetch.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent evt) {
+					new FetchConfiguredRemoteAction(node.getRepository(),
+							configName).run(getSite().getShell());
+				}
+
+			});
+
 			MenuItem configureUrlFetch = new MenuItem(men, SWT.PUSH);
 			configureUrlFetch
 					.setText(UIText.RepositoriesView_ConfigureFetchMenu);
@@ -434,8 +446,18 @@
 
 			final String configName = (String) node.getParent().getObject();
 
-			MenuItem configureUrlPush = new MenuItem(men, SWT.PUSH);
+			MenuItem doPush = new MenuItem(men, SWT.PUSH);
+			doPush.setText(UIText.RepositoriesView_DoPushMenuItem);
+			doPush.addSelectionListener(new SelectionAdapter() {
 
+				@Override
+				public void widgetSelected(SelectionEvent evt) {
+					new PushConfiguredRemoteAction(node.getRepository(),
+							configName).run(getSite().getShell(), false);
+				}
+			});
+
+			MenuItem configureUrlPush = new MenuItem(men, SWT.PUSH);
 			configureUrlPush.setText(UIText.RepositoriesView_ConfigurePushMenu);
 
 			configureUrlPush.addSelectionListener(new SelectionAdapter() {
