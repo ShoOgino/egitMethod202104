@@ -1,5 +1,6 @@
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
+		repositoryUtil = new RepositoryUtil();
 
 		if (isDebugging()) {
 			ServiceTracker debugTracker = new ServiceTracker(context,

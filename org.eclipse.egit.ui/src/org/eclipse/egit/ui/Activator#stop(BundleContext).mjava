@@ -21,6 +21,8 @@
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.UI.getLocation(), "Jobs terminated"); //$NON-NLS-1$
 
+		repositoryUtil.dispose();
+		repositoryUtil = null;
 		super.stop(context);
 		plugin = null;
 	}

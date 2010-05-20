@@ -1,0 +1,25 @@
+	/**
+	 * Return a cached UI "name" for a Repository
+	 * <p>
+	 * This uses the name of the parent of the repository's directory.
+	 *
+	 * @param repository
+	 * @return the name
+	 */
+	public String getRepositoryName(Repository repository) {
+		synchronized (repositoryNameCache) {
+			File gitDir = repository.getDirectory();
+			if (gitDir != null) {
+				String name = repositoryNameCache.get(gitDir.getPath()
+						.toString());
+				if (name != null) {
+					return name;
+				}
+				name = gitDir.getParentFile().getName();
+				repositoryNameCache.put(gitDir.getPath().toString(), name);
+				return name;
+			}
+		}
+		return ""; //$NON-NLS-1$
+	}
+
