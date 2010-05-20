@@ -1,0 +1,14 @@
+	/**
+	* Create a MergeOperation object
+	* @param repository
+	* @param refName name of a commit which should be merged
+	* @param mergeStrategy the strategy to use for merge
+	*/
+	public MergeOperation(Repository repository, String refName,
+		String mergeStrategy) {
+		this.repository = repository;
+		this.refName = refName;
+		if (mergeStrategy != null)
+			this.mergeStrategy = MergeStrategy.get(mergeStrategy);
+	}
+

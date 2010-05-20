@@ -1,0 +1,39 @@
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+
+			public void run(IProgressMonitor mymonitor) throws CoreException {
+				mymonitor.beginTask(NLS.bind(CoreText.MergeOperation_ProgressMerge, refName), 3);
+				Git git = new Git(repository);
+				mymonitor.worked(1);
+				MergeCommand merge;
+				try {
+					merge = git.merge().include(repository.getRef(refName));
+				} catch (IOException e) {
+					throw new TeamException(CoreText.MergeOperation_InternalError, e);
+				}
+				if (mergeStrategy != null) {
+					merge.setStrategy(mergeStrategy);
+				}
+				try {
+					mergeResult = merge.call();
+					mymonitor.worked(1);
+					if (MergeResult.MergeStatus.FAILED.equals(mergeResult.getMergeStatus()))
+						throw new TeamException(mergeResult.toString());
+					else if (MergeResult.MergeStatus.NOT_SUPPORTED.equals(mergeResult.getMergeStatus()))
+						throw new TeamException(new Status(IStatus.INFO, Activator.getPluginId(), mergeResult.toString()));
+				} catch (NoHeadException e) {
+					throw new TeamException(CoreText.MergeOperation_MergeFailedNoHead, e);
+				} catch (ConcurrentRefUpdateException e) {
+					throw new TeamException(CoreText.MergeOperation_MergeFailedRefUpdate, e);
+				} catch (CheckoutConflictException e) {
+					throw new TeamException(e.getLocalizedMessage(), e.getCause());
+				}
+				ProjectUtil.refreshProjects(repository, new SubProgressMonitor(
+						mymonitor, 1));
+				mymonitor.done();
+			}
+		};
+		// lock workspace to protect working tree changes
+		ResourcesPlugin.getWorkspace().run(action, monitor);
+	}
+
