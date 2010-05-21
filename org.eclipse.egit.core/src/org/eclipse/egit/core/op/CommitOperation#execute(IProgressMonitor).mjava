@@ -1,0 +1,42 @@
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+
+			public void run(IProgressMonitor monitor) throws CoreException {
+				if (amending || filesToCommit != null
+						&& filesToCommit.length > 0) {
+					monitor.beginTask(
+							CoreText.CommitOperation_PerformingCommit,
+							filesToCommit.length * 2);
+					monitor
+							.setTaskName(CoreText.CommitOperation_PerformingCommit);
+					HashMap<Repository, Tree> treeMap = new HashMap<Repository, Tree>();
+					try {
+						if (!prepareTrees(filesToCommit, treeMap, monitor)) {
+							// reread the indexes, they were changed in memory
+							for (Repository repo : treeMap.keySet())
+								repo.getIndex().read();
+							return;
+						}
+					} catch (IOException e) {
+						throw new TeamException(
+								CoreText.CommitOperation_errorPreparingTrees, e);
+					}
+
+					try {
+						doCommits(message, treeMap);
+						monitor.worked(filesToCommit.length);
+					} catch (IOException e) {
+						throw new TeamException(
+								CoreText.CommitOperation_errorCommittingChanges,
+								e);
+					}
+				} else if (commitWorkingDirChanges) {
+					// TODO commit -a
+				} else {
+					// TODO commit
+				}
+			}
+		};
+		ResourcesPlugin.getWorkspace().run(action, monitor);
+	}
+

@@ -74,19 +74,42 @@
 		if (previousCommit != null) {
 			commitDialog.setPreviousCommitMessage(previousCommit.getMessage());
 			PersonIdent previousAuthor = previousCommit.getAuthor();
-			commitDialog.setPreviousAuthor(previousAuthor.getName() + " <" + previousAuthor.getEmailAddress() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
+			commitDialog.setPreviousAuthor(previousAuthor.getName()
+					+ " <" + previousAuthor.getEmailAddress() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		if (commitDialog.open() != IDialogConstants.OK_ID)
 			return;
 
-		String commitMessage = commitDialog.getCommitMessage();
-		amending = commitDialog.isAmending();
-		try {
-			performCommit(commitDialog, commitMessage);
-		} catch (TeamException e) {
-			handle(e, UIText.CommitAction_errorDuringCommit,
-					UIText.CommitAction_errorOnCommit);
+		final CommitOperation commitOperation = new CommitOperation(
+				commitDialog.getSelectedFiles(), notIndexed, notTracked,
+				commitDialog.getAuthor(), commitDialog.getCommitter(),
+				commitDialog.getCommitMessage());
+		if (commitDialog.isAmending()) {
+			commitOperation.setAmending(true);
+			commitOperation.setPreviousCommit(previousCommit);
+			commitOperation.setRepos(repos);
 		}
+		String jobname = UIText.CommitAction_CommittingChanges;
+		Job job = new Job(jobname) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					commitOperation.execute(monitor);
+
+					for (IProject proj : getProjectsForSelectedResources()) {
+						RepositoryMapping.getMapping(proj).fireRepositoryChanged();
+					}
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(
+							UIText.CommitAction_CommittingFailed, e);
+				} finally {
+					GitLightweightDecorator.refresh();
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.schedule();
 	}
 

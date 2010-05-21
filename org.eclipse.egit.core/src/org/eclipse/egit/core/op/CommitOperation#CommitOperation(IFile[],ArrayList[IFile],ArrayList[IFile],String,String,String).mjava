@@ -1,0 +1,26 @@
+	/**
+	 *
+	 * @param filesToCommit
+	 *            a list of files which will be included in the commit
+	 * @param notIndexed
+	 *            a list of all files with changes not in the index
+	 * @param notTracked
+	 *            a list of all untracked files
+	 * @param author
+	 *            the author of the commit
+	 * @param committer
+	 *            the committer of the commit
+	 * @param message
+	 *            the commit message
+	 */
+	public CommitOperation(IFile[] filesToCommit, ArrayList<IFile> notIndexed,
+			ArrayList<IFile> notTracked, String author, String committer,
+			String message) {
+		this.filesToCommit = filesToCommit;
+		this.notIndexed = notIndexed;
+		this.notTracked = notTracked;
+		this.author = author;
+		this.committer = committer;
+		this.message = message;
+	}
+

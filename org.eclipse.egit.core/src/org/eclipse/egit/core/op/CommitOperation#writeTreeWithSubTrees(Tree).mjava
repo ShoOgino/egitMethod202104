@@ -1,9 +1,9 @@
 	private void writeTreeWithSubTrees(Tree tree) throws TeamException {
 		if (tree.getId() == null) {
 			// TODO is this the right Location?
-			if (GitTraceLocation.UI.isActive())
+			if (GitTraceLocation.CORE.isActive())
 				GitTraceLocation.getTrace().trace(
-						GitTraceLocation.UI.getLocation(),
+						GitTraceLocation.CORE.getLocation(),
 						"writing tree for: " + tree.getFullName()); //$NON-NLS-1$
 			try {
 				for (TreeEntry entry : tree.members()) {
@@ -14,9 +14,9 @@
 							// this shouldn't happen.... not quite sure what to
 							// do here :)
 							// TODO is this the right Location?
-							if (GitTraceLocation.UI.isActive())
+							if (GitTraceLocation.CORE.isActive())
 								GitTraceLocation.getTrace().trace(
-										GitTraceLocation.UI.getLocation(),
+										GitTraceLocation.CORE.getLocation(),
 										"BAD JUJU: " //$NON-NLS-1$
 												+ entry.getFullName());
 						}
@@ -25,7 +25,8 @@
 				ObjectWriter writer = new ObjectWriter(tree.getRepository());
 				tree.setId(writer.writeTree(tree));
 			} catch (IOException e) {
-				throw new TeamException(UIText.CommitAction_errorWritingTrees, e);
+				throw new TeamException(
+						CoreText.CommitOperation_errorWritingTrees, e);
 			}
 		}
 	}

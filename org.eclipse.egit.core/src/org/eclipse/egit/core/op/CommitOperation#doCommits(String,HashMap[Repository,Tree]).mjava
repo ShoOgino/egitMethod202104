@@ -1,8 +1,7 @@
-	private void doCommits(CommitDialog commitDialog, String commitMessage,
-			HashMap<Repository, Tree> treeMap) throws IOException, TeamException {
+	private void doCommits(String commitMessage,
+			HashMap<Repository, Tree> treeMap) throws IOException,
+			TeamException {
 
-		final String author = commitDialog.getAuthor();
-		final String committer = commitDialog.getCommitter();
 		final Date commitDate = new Date();
 		final TimeZone timeZone = TimeZone.getDefault();
 
@@ -12,6 +11,7 @@
 		for (java.util.Map.Entry<Repository, Tree> entry : treeMap.entrySet()) {
 			Tree tree = entry.getValue();
 			Repository repo = tree.getRepository();
+			repo.getIndex().write();
 			writeTreeWithSubTrees(tree);
 
 			ObjectId currentHeadId = repo.resolve(Constants.HEAD);
@@ -27,8 +27,11 @@
 			Commit commit = new Commit(repo, parentIds);
 			commit.setTree(tree);
 			commit.setMessage(commitMessage);
-			commit.setAuthor(new PersonIdent(authorIdent, commitDate, timeZone));
-			commit.setCommitter(new PersonIdent(committerIdent, commitDate, timeZone));
+			commit
+					.setAuthor(new PersonIdent(authorIdent, commitDate,
+							timeZone));
+			commit.setCommitter(new PersonIdent(committerIdent, commitDate,
+					timeZone));
 
 			ObjectWriter writer = new ObjectWriter(repo);
 			commit.setCommitId(writer.writeCommit(commit));
@@ -37,8 +40,8 @@
 			ru.setNewObjectId(commit.getCommitId());
 			ru.setRefLogMessage(buildReflogMessage(commitMessage), false);
 			if (ru.forceUpdate() == RefUpdate.Result.LOCK_FAILURE) {
-				throw new TeamException(
-						NLS.bind(UIText.CommitAction_failedToUpdate, ru.getName(),
+				throw new TeamException(NLS.bind(
+						CoreText.CommitOperation_failedToUpdate, ru.getName(),
 						commit.getCommitId()));
 			}
 		}
