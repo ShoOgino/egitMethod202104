@@ -20,7 +20,7 @@
 
 		commitCombo = new CommitCombo(advancedComposite, SWT.NORMAL);
 		commitCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
-				false).create());
+				false).hint(300, SWT.DEFAULT).create());
 
 		for (RevCommit revCommit : revCommits)
 			commitCombo.add(revCommit);
