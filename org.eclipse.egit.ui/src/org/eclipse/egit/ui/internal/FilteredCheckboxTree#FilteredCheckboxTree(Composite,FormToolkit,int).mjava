@@ -1,0 +1,11 @@
+	/**
+	 * Constructor that creates a tree with preset style bits and a CachedContainerCheckedTreeViewer for the tree.
+	 *
+	 * @param parent parent composite
+	 * @param toolkit optional toolkit to create UI elements with, required if the tree is being created in a form editor
+	 * @param treeStyle
+	 */
+	public FilteredCheckboxTree(Composite parent, FormToolkit toolkit, int treeStyle) {
+		this(parent, toolkit, treeStyle, new PatternFilter());
+	}
+

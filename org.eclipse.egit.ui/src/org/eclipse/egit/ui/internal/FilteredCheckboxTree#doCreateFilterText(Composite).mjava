@@ -1,0 +1,14 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.dialogs.FilteredTree#doCreateFilterText(org.eclipse.swt.widgets.Composite)
+	 */
+	protected Text doCreateFilterText(Composite parent) {
+		// Overridden so the text gets create using the toolkit if we have one
+		Text parentText = super.doCreateFilterText(parent);
+		if (fToolkit != null) {
+			int style = parentText.getStyle();
+			parentText.dispose();
+			return fToolkit.createText(parent, null, style);
+		}
+		return parentText;
+	}
+

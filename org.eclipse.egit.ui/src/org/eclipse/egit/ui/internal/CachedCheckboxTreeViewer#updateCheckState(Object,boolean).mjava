@@ -1,0 +1,48 @@
+	/**
+	 * @param element
+	 * @param state
+	 */
+	protected void updateCheckState(final Object element, final boolean state) {
+		if (state) {
+			// Add the item (or its children) to the cache
+			if (checkState == null) {
+				checkState = new HashSet();
+			}
+
+			ITreeContentProvider contentProvider = null;
+			if (getContentProvider() instanceof ITreeContentProvider) {
+				contentProvider = (ITreeContentProvider) getContentProvider();
+			}
+
+			if (contentProvider != null) {
+				Object[] children = contentProvider.getChildren(element);
+				if (children != null && children.length > 0) {
+					for (int i = 0; i < children.length; i++) {
+						updateCheckState(children[i], state);
+					}
+				} else {
+					checkState.add(element);
+				}
+			} else {
+				checkState.add(element);
+			}
+		} else if (checkState != null) {
+			// Remove the item (or its children) from the cache
+			ITreeContentProvider contentProvider = null;
+			if (getContentProvider() instanceof ITreeContentProvider) {
+				contentProvider = (ITreeContentProvider) getContentProvider();
+			}
+
+			if (contentProvider != null) {
+				Object[] children = contentProvider.getChildren(element);
+				if (children.length > 0) {
+					for (int i = 0; i < children.length; i++) {
+						updateCheckState(children[i], state);
+					}
+
+				}
+			}
+			checkState.remove(element);
+		}
+	}
+

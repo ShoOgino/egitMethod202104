@@ -1,0 +1,13 @@
+	/**
+	 * Returns the contents of the cached check state.  The contents will be all
+	 * checked leaf nodes ignoring any filters.
+	 *
+	 * @return checked leaf elements
+	 */
+	public Object[] getCheckedLeafElements() {
+		if (checkState == null) {
+			return new Object[0];
+		}
+		return checkState.toArray(new Object[checkState.size()]);
+	}
+

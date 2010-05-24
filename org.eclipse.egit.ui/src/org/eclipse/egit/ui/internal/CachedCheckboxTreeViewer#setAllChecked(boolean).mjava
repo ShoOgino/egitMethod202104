@@ -1,0 +1,40 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.CheckboxTreeViewer#setAllChecked(boolean)
+	 */
+	public void setAllChecked(boolean state) {
+		super.setAllChecked(state);
+		if (state) {
+
+			// Find all visible children, add only the visible leaf nodes to the check state cache
+			Object[] visible = getFilteredChildren(getRoot());
+			if (checkState == null) {
+				checkState = new HashSet();
+			}
+
+			ITreeContentProvider contentProvider = null;
+			if (getContentProvider() instanceof ITreeContentProvider) {
+				contentProvider = (ITreeContentProvider) getContentProvider();
+			}
+
+			if (contentProvider == null) {
+				for (int i = 0; i < visible.length; i++) {
+					checkState.add(visible[i]);
+				}
+			} else {
+				Set toCheck = new HashSet();
+				for (int i = 0; i < visible.length; i++) {
+					addFilteredChildren(visible[i], contentProvider, toCheck);
+				}
+				checkState.addAll(toCheck);
+			}
+		} else {
+			// Remove any item in the check state that is visible (passes the filters)
+			if (checkState != null) {
+				Object[] visible = filter(checkState.toArray());
+				for (int i = 0; i < visible.length; i++) {
+					checkState.remove(visible[i]);
+				}
+			}
+		}
+	}
+

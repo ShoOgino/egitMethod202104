@@ -1,9 +1,9 @@
 	@Override
 	protected void okPressed() {
-		result = new HashSet<String>();
-		Object[] checked = tv.getCheckedElements();
+		fResult = new HashSet<String>();
+		Object[] checked = fTreeViewer.getCheckedElements();
 		for (Object o : checked) {
-			result.add((String) o);
+			fResult.add((String) o);
 		}
 		super.okPressed();
 	}

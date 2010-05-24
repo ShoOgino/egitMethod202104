@@ -1,6 +1,8 @@
 	@Override
 	protected Control createDialogArea(Composite parent) {
-
+		super.createDialogArea(parent);
+		setTitle(UIText.RepositorySearchDialog_searchRepositories);
+		setMessage(UIText.RepositorySearchDialog_searchRepositoriesMessage);
 		final IEclipsePreferences prefs = new InstanceScope().getNode(Activator
 				.getPluginId());
 
@@ -43,22 +45,24 @@
 
 		});
 
-		// we fill the room under the "Directory" label
-		new Label(main, SWT.NONE);
+		fTree = new FilteredCheckboxTree(main, null, SWT.BORDER);
+		fTreeViewer = fTree.getCheckboxTreeViewer();
+		GridDataFactory.fillDefaults().grab(true, true).span(4, 1).minSize(0, 300).applyTo(fTree);
+		fTree.setEnabled(false);
 
-		final Button btnLookForNested = new Button(main, SWT.CHECK);
-		btnLookForNested.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
+		final Button lookForNestedButton = new Button(main, SWT.CHECK);
+		lookForNestedButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
 				false, false, 2, 1));
-		btnLookForNested
+		lookForNestedButton
 				.setSelection(prefs.getBoolean(PREF_DEEP_SEARCH, false));
-		btnLookForNested
+		lookForNestedButton
 				.setText(UIText.RepositorySearchDialog_DeepSearch_button);
 
-		btnLookForNested.addSelectionListener(new SelectionAdapter() {
+		lookForNestedButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				prefs.putBoolean(PREF_DEEP_SEARCH, btnLookForNested
+				prefs.putBoolean(PREF_DEEP_SEARCH, lookForNestedButton
 						.getSelection());
 				try {
 					prefs.flush();
@@ -69,57 +73,48 @@
 
 		});
 
-		Button search = new Button(main, SWT.PUSH);
-		search.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false,
-				1, 1));
-		search.setText(UIText.RepositorySearchDialog_search);
 
-		tv = CheckboxTableViewer.newCheckList(main, SWT.BORDER);
-		tab = tv.getTable();
-		tab.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-		tab.setEnabled(false);
-
-		btnToggleSelect = new Button(main, SWT.NONE);
-		btnToggleSelect.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false,
+		fSelectAllButton = new Button(main, SWT.NONE);
+		fSelectAllButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false,
 				false, 1, 1));
-		btnToggleSelect
-				.setText(UIText.RepositorySearchDialog_ToggleSelection_button);
-		btnToggleSelect.setEnabled(false);
-		btnToggleSelect.addSelectionListener(new SelectionAdapter() {
+		fSelectAllButton
+				.setText(UIText.RepositorySearchDialog_SelectAll_button);
+		fSelectAllButton.setEnabled(false);
+		fSelectAllButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
-				for (int i = 0; i < tab.getItemCount(); i++) {
-					if (!existingRepositoryDirs.contains(tv.getElementAt(i)))
-						tv.setChecked(tv.getElementAt(i), !tv.getChecked(tv
-								.getElementAt(i)));
-				}
+				fTreeViewer.setAllChecked(true);
 				getButton(IDialogConstants.OK_ID).setEnabled(
-						tv.getCheckedElements().length > 0);
+						fTreeViewer.getCheckedElements().length > 0);
 			}
 		});
 
-		tv.addCheckStateListener(new ICheckStateListener() {
-
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				if (existingRepositoryDirs.contains(event.getElement()))
-					event.getCheckable().setChecked(event.getElement(), false);
-				getButton(IDialogConstants.OK_ID).setEnabled(
-						tv.getCheckedElements().length > 0);
-			}
-		});
-
-		tv.setContentProvider(new ContentProvider());
-		tv.setLabelProvider(new LabelProvider());
-
-		search.addSelectionListener(new SelectionAdapter() {
+		fDeselectAllButton = new Button(main, SWT.NONE);
+		fDeselectAllButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false,
+				false, 1, 1));
+		fDeselectAllButton
+				.setText(UIText.RepositorySearchDialog_DeselectAll_button);
+		fDeselectAllButton.setEnabled(false);
+		fDeselectAllButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				fTreeViewer.setAllChecked(false);
+				getButton(IDialogConstants.OK_ID).setEnabled(
+						fTreeViewer.getCheckedElements().length > 0);
+			}
+		});
+
+		// TODO this isn't the most optimal way of handling this... ideally we should have some type of delay
+		// if we could use databinding an observeDelayedValue would totally work here
+		dir.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				// perform the search...
 				final TreeSet<String> directories = new TreeSet<String>();
 				final File file = new File(dir.getText());
-				final boolean lookForNested = btnLookForNested.getSelection();
+				final boolean lookForNested = lookForNestedButton.getSelection();
 				if (file.exists()) {
 					try {
 						prefs.put(PREF_PATH, file.getCanonicalPath());
@@ -169,19 +164,32 @@
 					boolean foundNew = false;
 
 					for (String foundDir : directories) {
-						if (!existingRepositoryDirs.contains(foundDir)) {
+						if (!fExistingDirectories.contains(foundDir)) {
 							foundNew = true;
 							break;
 						}
 					}
 
-					btnToggleSelect.setEnabled(foundNew);
-					tab.setEnabled(directories.size() > 0);
-					tv.setInput(directories);
+					fSelectAllButton.setEnabled(foundNew);
+					fDeselectAllButton.setEnabled(foundNew);
+					fTree.setEnabled(directories.size() > 0);
+					fTreeViewer.setInput(directories);
 				}
 			}
-
 		});
+
+		fTreeViewer.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				if (fExistingDirectories.contains(event.getElement()))
+					event.getCheckable().setChecked(event.getElement(), false);
+				getButton(IDialogConstants.OK_ID).setEnabled(
+						fTreeViewer.getCheckedElements().length > 0);
+			}
+		});
+
+		fTreeViewer.setContentProvider(new ContentProvider());
+		fTreeViewer.setLabelProvider(new RepositoryLabelProvider());
 
 		return main;
 	}

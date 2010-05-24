@@ -1,0 +1,14 @@
+	/**
+	 * Constructor for ContainerCheckedTreeViewer.
+	 * @see CheckboxTreeViewer#CheckboxTreeViewer(Tree)
+	 */
+	protected CachedCheckboxTreeViewer(Tree tree) {
+		super(tree);
+		addCheckStateListener(new ICheckStateListener() {
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				updateCheckState(event.getElement(), event.getChecked());
+			}
+		});
+		setUseHashlookup(true);
+	}
+

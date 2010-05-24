@@ -1,0 +1,14 @@
+	/**
+	 * Returns the number of leaf nodes checked.  This method uses its internal check
+	 * state cache to determine what has been checked, not what is visible in the viewer.
+	 * The cache does not count duplicate items in the tree.
+	 *
+	 * @return number of leaf nodes checked according to the cached check state
+	 */
+	public int getCheckedLeafCount() {
+		if (checkState == null) {
+			return 0;
+		}
+		return checkState.size();
+	}
+

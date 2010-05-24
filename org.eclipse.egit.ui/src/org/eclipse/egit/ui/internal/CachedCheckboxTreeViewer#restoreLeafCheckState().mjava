@@ -1,0 +1,27 @@
+	/**
+	 * Restores the checked state of items based on the cached check state.  This
+	 * will only check leaf nodes, but parent items will be updated by the container
+	 * viewer.  No events will be fired.
+	 */
+	public void restoreLeafCheckState() {
+		if (checkState == null)
+			return;
+
+		getTree().setRedraw(false);
+		// Call the super class so we don't mess up the cache
+		super.setCheckedElements(new Object[0]);
+		setGrayedElements(new Object[0]);
+		// Now we are only going to set the check state of the leaf nodes
+		// and rely on our container checked code to update the parents properly.
+		Iterator iter = checkState.iterator();
+		Object element = null;
+		if (iter.hasNext())
+			expandAll();
+		while (iter.hasNext()) {
+			element = iter.next();
+			// Call the super class as there is no need to update the check state
+			super.setChecked(element, true);
+		}
+		getTree().setRedraw(true);
+	}
+

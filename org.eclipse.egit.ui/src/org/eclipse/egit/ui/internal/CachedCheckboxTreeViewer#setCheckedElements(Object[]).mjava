@@ -1,0 +1,25 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.CheckboxTreeViewer#setCheckedElements(java.lang.Object[])
+	 */
+	public void setCheckedElements(Object[] elements) {
+		super.setCheckedElements(elements);
+		if (checkState == null) {
+			checkState = new HashSet();
+		} else {
+			checkState.clear();
+		}
+		ITreeContentProvider contentProvider = null;
+		if (getContentProvider() instanceof ITreeContentProvider) {
+			contentProvider = (ITreeContentProvider) getContentProvider();
+		}
+
+		for (int i = 0; i < elements.length; i++) {
+			Object[] children = contentProvider != null ? contentProvider.getChildren(elements[i]) : null;
+			if (!getGrayed(elements[i]) && (children == null || children.length == 0)) {
+				if (!checkState.contains(elements[i])) {
+					checkState.add(elements[i]);
+				}
+			}
+		}
+	}
+
