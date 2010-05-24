@@ -2,8 +2,8 @@
 	protected void createCustomArea(Composite parent) {
 		Group g = new Group(parent, SWT.NONE);
 		g.setText(UIText.BranchSelectionDialog_ResetType);
-		g.setLayoutData(GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.CENTER).create());
-		g.setLayout(new RowLayout(SWT.VERTICAL));
+		g.setLayoutData(GridDataFactory.fillDefaults().align(SWT.CENTER, SWT.CENTER).create());
+		g.setLayout(new GridLayout(1, false));
 
 		Button soft = new Button(g, SWT.RADIO);
 		soft.setText(UIText.BranchSelectionDialog_ResetTypeSoft);
