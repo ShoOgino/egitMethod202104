@@ -1,0 +1,5 @@
+	private static String getName(String gitPath) {
+		final int last = gitPath.lastIndexOf('/');
+		return last >= 0 ? gitPath.substring(last + 1) : gitPath;
+	}
+

@@ -14,8 +14,10 @@
 					final String gitPath = map
 							.getRepoRelativePath(resource);
 
-					final ITypedElement base = getFileRevisionTypedElement(resource, gitPath, commit1);
-					final ITypedElement next = getFileRevisionTypedElement(resource, gitPath, commit2);
+					final ITypedElement base = CompareUtils
+							.getFileRevisionTypedElement(gitPath, commit1, db);
+					final ITypedElement next = CompareUtils
+							.getFileRevisionTypedElement(gitPath, commit2, db);
 					CompareEditorInput in = new GitCompareFileRevisionEditorInput(base, next, null);
 					openInCompare(in);
 				}

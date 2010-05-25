@@ -33,7 +33,8 @@
 					final String gitPath = mapping.getRepoRelativePath(resource);
 					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 					SWTCommit commit = (SWTCommit) selection.getFirstElement();
-					ITypedElement right = getFileRevisionTypedElement(resource, gitPath, commit);
+					ITypedElement right = CompareUtils
+							.getFileRevisionTypedElement(gitPath, commit, db);
 					final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
 							SaveableCompareEditorInput.createFileElement(resource),
 							right,

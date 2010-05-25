@@ -1,0 +1,32 @@
+	/**
+	 * @param gitPath
+	 *            path within the commit's tree of the file.
+	 * @param commit
+	 *            the commit the blob was identified to be within.
+	 * @param db
+	 *            the repository this commit was loaded out of, and that this
+	 *            file's blob should also be reachable through.
+	 * @param blobId
+	 *            unique name of the content.
+	 * @return an instance of {@link ITypedElement} which can be used in
+	 *         {@link CompareEditorInput}
+	 */
+	public static ITypedElement getFileRevisionTypedElement(
+			final String gitPath, final RevCommit commit, final Repository db,
+			ObjectId blobId) {
+		ITypedElement right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
+				NLS
+						.bind(UIText.GitHistoryPage_FileNotInCommit, getName(gitPath),
+								commit));
+
+		try {
+			IFileRevision nextFile = getFileRevision(gitPath, commit, db, blobId);
+			if (nextFile != null)
+				right = new FileRevisionTypedElement(nextFile);
+		} catch (IOException e) {
+			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
+					gitPath, commit.getId()), e);
+		}
+		return right;
+	}
+

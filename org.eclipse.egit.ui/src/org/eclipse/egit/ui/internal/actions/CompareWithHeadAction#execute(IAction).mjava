@@ -14,14 +14,8 @@
 			RevWalk rw = new RevWalk(repository);
 			RevCommit commit = rw.parseCommit(head.getObjectId());
 
-			next = new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS.bind(UIText.GitHistoryPage_FileNotInCommit,
-					resource.getName(), commit));
-			TreeWalk w = TreeWalk.forPath(repository, gitPath, commit.getTree());
-			// check if file is contained in commit
-			if (w != null) {
-				final IFileRevision nextFile = GitFileRevision.inCommit(repository, commit, gitPath, null);
-				next = new FileRevisionTypedElement(nextFile);
-			}
+			next = CompareUtils.getFileRevisionTypedElement(gitPath, commit,
+					repository);
 		} catch (IOException e) {
 			// this exception is handled by TeamAction.run
 			throw new InvocationTargetException(e);

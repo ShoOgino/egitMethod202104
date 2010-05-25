@@ -1,0 +1,29 @@
+	/**
+	 *
+	 * @param gitPath
+	 *            path within the commit's tree of the file.
+	 * @param commit
+	 *            the commit the blob was identified to be within.
+	 * @param db
+	 *            the repository this commit was loaded out of, and that this
+	 *            file's blob should also be reachable through.
+	 * @param blobId
+	 *            unique name of the content.
+	 * @return an instance of {@link IFileRevision} or null if the file is not
+	 *         contained in {@code commit}
+	 * @throws IOException
+	 */
+	public static IFileRevision getFileRevision(final String gitPath,
+			final RevCommit commit, final Repository db, ObjectId blobId)
+			throws IOException {
+
+		TreeWalk w = TreeWalk.forPath(db, gitPath, commit.getTree());
+		// check if file is contained in commit
+		if (w != null) {
+			final IFileRevision fileRevision = GitFileRevision.inCommit(db,
+					commit, gitPath, blobId);
+			return fileRevision;
+		}
+		return null;
+	}
+

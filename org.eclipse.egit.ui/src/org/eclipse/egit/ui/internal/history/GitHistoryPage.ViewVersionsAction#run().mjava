@@ -17,7 +17,7 @@
 				SWTCommit commit = (SWTCommit) it.next();
 				IFileRevision rev = null;
 				try {
-					rev = getFileRevision(resource, gitPath, commit);
+					rev = CompareUtils.getFileRevision(gitPath, commit, db, null);
 				} catch (IOException e) {
 					Activator.logError(NLS.bind(
 							UIText.GitHistoryPage_errorLookingUpPath, gitPath,
