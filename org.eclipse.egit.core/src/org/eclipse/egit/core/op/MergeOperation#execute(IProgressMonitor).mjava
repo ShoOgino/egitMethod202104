@@ -1,4 +1,9 @@
-	public void execute(IProgressMonitor monitor) throws CoreException {
+	public void execute(IProgressMonitor m) throws CoreException {
+		IProgressMonitor monitor;
+		if (m == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = m;
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor mymonitor) throws CoreException {
