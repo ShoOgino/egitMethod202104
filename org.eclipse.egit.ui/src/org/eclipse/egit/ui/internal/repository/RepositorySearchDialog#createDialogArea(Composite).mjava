@@ -3,8 +3,6 @@
 		super.createDialogArea(parent);
 		setTitle(UIText.RepositorySearchDialog_searchRepositories);
 		setMessage(UIText.RepositorySearchDialog_searchRepositoriesMessage);
-		final IEclipsePreferences prefs = new InstanceScope().getNode(Activator
-				.getPluginId());
 
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(4, false));
@@ -12,9 +10,9 @@
 
 		Label dirLabel = new Label(main, SWT.NONE);
 		dirLabel.setText(UIText.RepositorySearchDialog_directory);
-		final Text dir = new Text(main, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).span(2, 1).hint(300,
-				SWT.DEFAULT).applyTo(dir);
+		dir = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+				false).span(2, 1).hint(300, SWT.DEFAULT).applyTo(dir);
 
 		String initialPath = prefs.get(PREF_PATH, ResourcesPlugin
 				.getWorkspace().getRoot().getLocation().toOSString());
@@ -45,16 +43,30 @@
 
 		});
 
-		fTree = new FilteredCheckboxTree(main, null, SWT.BORDER);
-		fTreeViewer = fTree.getCheckboxTreeViewer();
-		GridDataFactory.fillDefaults().grab(true, true).span(4, 1).minSize(0, 300).applyTo(fTree);
+		// TODO for 3.4 compatibility, we must use this constructor
+		fTree = new FilteredTree(main, SWT.CHECK | SWT.BORDER,
+				new PatternFilter());
+		fTreeViewer = fTree.getViewer();
+		fTreeViewer
+				.addSelectionChangedListener(new ISelectionChangedListener() {
+
+					public void selectionChanged(SelectionChangedEvent event) {
+						// this is used to update the OK button when the
+						// keyboard
+						// is used to toggle the check boxes
+						getButton(OK).setEnabled(hasCheckedItems());
+					}
+				});
+
+		GridDataFactory.fillDefaults().grab(true, true).span(4, 1).minSize(0,
+				300).applyTo(fTree);
 		fTree.setEnabled(false);
 
-		final Button lookForNestedButton = new Button(main, SWT.CHECK);
+		lookForNestedButton = new Button(main, SWT.CHECK);
 		lookForNestedButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
 				false, false, 2, 1));
-		lookForNestedButton
-				.setSelection(prefs.getBoolean(PREF_DEEP_SEARCH, false));
+		lookForNestedButton.setSelection(prefs.getBoolean(PREF_DEEP_SEARCH,
+				false));
 		lookForNestedButton
 				.setText(UIText.RepositorySearchDialog_DeepSearch_button);
 
@@ -69,10 +81,10 @@
 				} catch (BackingStoreException e1) {
 					// ignore
 				}
+				doSearch();
 			}
 
 		});
-
 
 		fSelectAllButton = new Button(main, SWT.NONE);
 		fSelectAllButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false,
@@ -84,15 +96,13 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				fTreeViewer.setAllChecked(true);
-				getButton(IDialogConstants.OK_ID).setEnabled(
-						fTreeViewer.getCheckedElements().length > 0);
+				setAllSelected(true);
 			}
 		});
 
 		fDeselectAllButton = new Button(main, SWT.NONE);
-		fDeselectAllButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false,
-				false, 1, 1));
+		fDeselectAllButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP,
+				false, false, 1, 1));
 		fDeselectAllButton
 				.setText(UIText.RepositorySearchDialog_DeselectAll_button);
 		fDeselectAllButton.setEnabled(false);
@@ -100,92 +110,20 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				fTreeViewer.setAllChecked(false);
-				getButton(IDialogConstants.OK_ID).setEnabled(
-						fTreeViewer.getCheckedElements().length > 0);
+				setAllSelected(false);
 			}
 		});
 
-		// TODO this isn't the most optimal way of handling this... ideally we should have some type of delay
-		// if we could use databinding an observeDelayedValue would totally work here
+		// TODO this isn't the most optimal way of handling this... ideally we
+		// should have some type of delay
+		// if we could use databinding an observeDelayedValue would totally work
+		// here
 		dir.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
-				// perform the search...
-				final TreeSet<String> directories = new TreeSet<String>();
-				final File file = new File(dir.getText());
-				final boolean lookForNested = lookForNestedButton.getSelection();
-				if (file.exists()) {
-					try {
-						prefs.put(PREF_PATH, file.getCanonicalPath());
-						try {
-							prefs.flush();
-						} catch (BackingStoreException e1) {
-							// ignore here
-						}
-					} catch (IOException e2) {
-						// ignore
-					}
-
-					IRunnableWithProgress action = new IRunnableWithProgress() {
-
-						public void run(IProgressMonitor monitor)
-								throws InvocationTargetException,
-								InterruptedException {
-
-							try {
-								findGitDirsRecursive(file, directories,
-										monitor, lookForNested);
-							} catch (Exception ex) {
-								Activator.getDefault().getLog().log(
-										new Status(IStatus.ERROR, Activator
-												.getPluginId(),
-												ex.getMessage(), ex));
-							}
-						}
-					};
-					try {
-						ProgressMonitorDialog pd = new ProgressMonitorDialog(
-								getShell());
-						pd
-								.getProgressMonitor()
-								.setTaskName(
-										UIText.RepositorySearchDialog_ScanningForRepositories_message);
-						pd.run(true, true, action);
-
-					} catch (InvocationTargetException e1) {
-						org.eclipse.egit.ui.Activator.handleError(
-								UIText.RepositorySearchDialog_errorOccurred,
-								e1, true);
-					} catch (InterruptedException e1) {
-						// ignore
-					}
-
-					boolean foundNew = false;
-
-					for (String foundDir : directories) {
-						if (!fExistingDirectories.contains(foundDir)) {
-							foundNew = true;
-							break;
-						}
-					}
-
-					fSelectAllButton.setEnabled(foundNew);
-					fDeselectAllButton.setEnabled(foundNew);
-					fTree.setEnabled(directories.size() > 0);
-					fTreeViewer.setInput(directories);
-				}
+				doSearch();
 			}
-		});
 
-		fTreeViewer.addCheckStateListener(new ICheckStateListener() {
-
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				if (fExistingDirectories.contains(event.getElement()))
-					event.getCheckable().setChecked(event.getElement(), false);
-				getButton(IDialogConstants.OK_ID).setEnabled(
-						fTreeViewer.getCheckedElements().length > 0);
-			}
 		});
 
 		fTreeViewer.setContentProvider(new ContentProvider());
