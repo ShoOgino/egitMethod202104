@@ -30,7 +30,8 @@
 		}
 
 		try {
-			m.setRepository(lookupRepository(git));
+			m.setRepository(Activator.getDefault().getRepositoryCache()
+					.lookupRepository(git));
 		} catch (IOException ioe) {
 			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
 					new FileNotFoundException(m.getContainerPath().toString()));
