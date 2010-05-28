@@ -1,0 +1,20 @@
+	/**
+	 *
+	 * @param gitDir
+	 * @return an existing instance of Repository for <code>gitDir</code> or a
+	 *         new one if no Repository instance for <code>gitDir</code> exists
+	 *         in the cache.
+	 * @throws IOException
+	 */
+	public synchronized Repository lookupRepository(final File gitDir)
+			throws IOException {
+		Reference<Repository> r = repositoryCache.get(gitDir);
+		Repository d = r != null ? r.get() : null;
+		if (d == null) {
+			d = new Repository(gitDir);
+			repositoryCache.put(gitDir, new WeakReference<Repository>(d));
+		}
+		prune(repositoryCache);
+		return d;
+	}
+
