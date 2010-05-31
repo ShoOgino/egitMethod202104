@@ -27,8 +27,7 @@
 					// repository changes does not trigger an unnecessary
 					// refresh
 					repo.scanForRepoChanges();
-					RepositoryTreeNode<Repository> node = new RepositoryTreeNode<Repository>(
-							null, RepositoryTreeNodeType.REPO, repo, repo);
+					RepositoryNode node = new RepositoryNode(null, repo);
 					input.add(node);
 				}
 			} catch (IOException e) {

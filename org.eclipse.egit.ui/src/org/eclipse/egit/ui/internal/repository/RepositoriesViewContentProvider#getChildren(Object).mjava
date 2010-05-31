@@ -9,10 +9,8 @@
 
 			List<RepositoryTreeNode<Repository>> nodes = new ArrayList<RepositoryTreeNode<Repository>>();
 
-			nodes.add(new RepositoryTreeNode<Repository>(node,
-					RepositoryTreeNodeType.LOCALBRANCHES, repo, repo));
-			nodes.add(new RepositoryTreeNode<Repository>(node,
-					RepositoryTreeNodeType.REMOTEBRANCHES, repo, repo));
+			nodes.add(new LocalBranchesNode(node, repo));
+			nodes.add(new RemoteBranchesNode(node, repo));
 
 			return nodes.toArray();
 		}
@@ -24,9 +22,7 @@
 				for (Entry<String, Ref> refEntry : repo.getRefDatabase()
 						.getRefs(Constants.R_HEADS).entrySet()) {
 					if (!refEntry.getValue().isSymbolic())
-						refs.add(new RepositoryTreeNode<Ref>(node,
-								RepositoryTreeNodeType.REF, repo, refEntry
-										.getValue()));
+						refs.add(new RefNode(node, repo, refEntry.getValue()));
 				}
 			} catch (IOException e) {
 				handleException(e, node);
@@ -42,9 +38,7 @@
 				for (Entry<String, Ref> refEntry : repo.getRefDatabase()
 						.getRefs(Constants.R_REMOTES).entrySet()) {
 					if (!refEntry.getValue().isSymbolic())
-						refs.add(new RepositoryTreeNode<Ref>(node,
-								RepositoryTreeNodeType.REF, repo, refEntry
-										.getValue()));
+						refs.add(new RefNode(node, repo, refEntry.getValue()));
 				}
 			} catch (IOException e) {
 				handleException(e, node);
@@ -58,9 +52,7 @@
 			try {
 				for (Entry<String, Ref> refEntry : repo.getRefDatabase()
 						.getRefs(Constants.R_TAGS).entrySet()) {
-					refs.add(new RepositoryTreeNode<Ref>(node,
-							RepositoryTreeNodeType.TAG, repo, refEntry
-									.getValue()));
+					refs.add(new TagNode(node, repo, refEntry.getValue()));
 				}
 			} catch (IOException e) {
 				handleException(e, node);
@@ -76,9 +68,8 @@
 				for (Entry<String, Ref> refEntry : repo.getRefDatabase()
 						.getRefs(RefDatabase.ALL).entrySet()) {
 					if (refEntry.getValue().isSymbolic())
-						refs.add(new RepositoryTreeNode<Ref>(node,
-								RepositoryTreeNodeType.SYMBOLICREF, repo,
-								refEntry.getValue()));
+						refs.add(new SymbolicRefNode(node, repo, refEntry
+								.getValue()));
 				}
 			} catch (IOException e) {
 				handleException(e, node);
@@ -96,8 +87,7 @@
 					RepositoriesView.REMOTE);
 
 			for (String configName : configNames) {
-				remotes.add(new RepositoryTreeNode<String>(node,
-						RepositoryTreeNodeType.REMOTE, repo, configName));
+				remotes.add(new RemoteNode(node, repo, configName));
 			}
 
 			return remotes.toArray();
@@ -107,23 +97,11 @@
 
 			List<RepositoryTreeNode<? extends Object>> nodeList = new ArrayList<RepositoryTreeNode<? extends Object>>();
 
-			nodeList.add(new RepositoryTreeNode<Repository>(node,
-					RepositoryTreeNodeType.BRANCHES, node.getRepository(), node
-							.getRepository()));
-
-			nodeList.add(new RepositoryTreeNode<Repository>(node,
-					RepositoryTreeNodeType.TAGS, repo, repo));
-
-			nodeList.add(new RepositoryTreeNode<Repository>(node,
-					RepositoryTreeNodeType.SYMBOLICREFS, repo, repo));
-
-			nodeList.add(new RepositoryTreeNode<Repository>(node,
-					RepositoryTreeNodeType.WORKINGDIR, node.getRepository(),
-					node.getRepository()));
-
-			nodeList.add(new RepositoryTreeNode<Repository>(node,
-					RepositoryTreeNodeType.REMOTES, node.getRepository(), node
-							.getRepository()));
+			nodeList.add(new BranchesNode(node, repo));
+			nodeList.add(new TagsNode(node, repo));
+			nodeList.add(new SymbolicRefsNode(node, repo));
+			nodeList.add(new WorkingDirNode(node, repo));
+			nodeList.add(new RemotesNode(node, repo));
 
 			return nodeList.toArray();
 		}
@@ -154,11 +132,9 @@
 			});
 			for (File file : childFiles) {
 				if (file.isDirectory()) {
-					children.add(new RepositoryTreeNode<File>(node,
-							RepositoryTreeNodeType.FOLDER, repo, file));
+					children.add(new FolderNode(node, repo, file));
 				} else {
-					children.add(new RepositoryTreeNode<File>(node,
-							RepositoryTreeNodeType.FILE, repo, file));
+					children.add(new FileNode(node, repo, file));
 				}
 			}
 
@@ -186,11 +162,9 @@
 			});
 			for (File file : childFiles) {
 				if (file.isDirectory()) {
-					children.add(new RepositoryTreeNode<File>(node,
-							RepositoryTreeNodeType.FOLDER, repo, file));
+					children.add(new FolderNode(node, repo, file));
 				} else {
-					children.add(new RepositoryTreeNode<File>(node,
-							RepositoryTreeNodeType.FILE, repo, file));
+					children.add(new FileNode(node, repo, file));
 				}
 			}
 
@@ -212,19 +186,17 @@
 			}
 
 			if (!rc.getURIs().isEmpty())
-				children.add(new RepositoryTreeNode<String>(node,
-						RepositoryTreeNodeType.FETCH, node.getRepository(), rc
-								.getURIs().get(0).toPrivateString()));
+				children.add(new FetchNode(node, node.getRepository(), rc
+						.getURIs().get(0).toPrivateString()));
 
 			if (!rc.getPushURIs().isEmpty())
 				if (rc.getPushURIs().size() == 1)
-					children.add(new RepositoryTreeNode<String>(node,
-							RepositoryTreeNodeType.PUSH, node.getRepository(),
-							rc.getPushURIs().get(0).toPrivateString()));
+					children.add(new PushNode(node, node.getRepository(), rc
+							.getURIs().get(0).toPrivateString()));
 				else
-					children.add(new RepositoryTreeNode<String>(node,
-							RepositoryTreeNodeType.PUSH, node.getRepository(),
-							rc.getPushURIs().get(0).toPrivateString() + "...")); //$NON-NLS-1$
+					children.add(new PushNode(node, node.getRepository(), rc
+							.getURIs().get(0).toPrivateString()
+							+ "...")); //$NON-NLS-1$
 
 			return children.toArray();
 

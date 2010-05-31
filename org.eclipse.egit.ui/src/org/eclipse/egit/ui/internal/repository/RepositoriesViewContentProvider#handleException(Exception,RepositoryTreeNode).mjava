@@ -1,8 +1,7 @@
 	private void handleException(Exception e, RepositoryTreeNode parentNode) {
 		Activator.handleError(e.getMessage(), e, false);
 		// add a node indicating that there was an Exception
-		new RepositoryTreeNode<String>(parentNode,
-				RepositoryTreeNodeType.ERROR, parentNode.getRepository(),
+		new ErrorNode(parentNode, parentNode.getRepository(),
 				UIText.RepositoriesViewContentProvider_ExceptionNodeText);
 	}
 
