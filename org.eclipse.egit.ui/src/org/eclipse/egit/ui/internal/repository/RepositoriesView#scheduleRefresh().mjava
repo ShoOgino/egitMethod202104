@@ -30,51 +30,53 @@
 				}
 
 				final boolean updateInput = needsNewInput;
-				final List newInput;
-				if (updateInput)
+				final List<RepositoryTreeNode<Repository>> newInput;
+				if (updateInput) {
 					try {
 						newInput = getRepositoriesFromDirs(monitor);
 					} catch (InterruptedException e) {
 						return new Status(IStatus.ERROR, Activator
 								.getPluginId(), e.getMessage(), e);
 					}
-				else
+					for (RepositoryTreeNode<Repository> node: newInput) {
+						Repository repo = node.getRepository();
+						// add listener if not already added
+						repo.removeRepositoryChangedListener(RepositoriesView.this);
+						repo.addRepositoryChangedListener(RepositoriesView.this);
+					}
+				} else {
 					newInput = null;
-
-				// we only check for Repository changes if we don't
-				// have a new input
-				if (updateInput || checkForRepositoryChanges()) {
-					Display.getDefault().asyncExec(new Runnable() {
-						public void run() {
-							// keep expansion state and selection so that we can
-							// restore the tree
-							// after update
-							Object[] expanded = tv.getExpandedElements();
-							IStructuredSelection sel = (IStructuredSelection) tv
-									.getSelection();
-
-							if (updateInput)
-								tv.setInput(newInput);
-							else
-								tv.refresh();
-							tv.setExpandedElements(expanded);
-
-							Object selected = sel.getFirstElement();
-							if (selected != null)
-								tv.reveal(selected);
-
-							IViewPart part = PlatformUI.getWorkbench()
-									.getActiveWorkbenchWindow().getActivePage()
-									.findView(IPageLayout.ID_PROP_SHEET);
-							if (part != null) {
-								PropertySheet sheet = (PropertySheet) part;
-								PropertySheetPage page = (PropertySheetPage) sheet
-										.getCurrentPage();
-								page.refresh();
-							}
-						}
-					});
 				}
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						// keep expansion state and selection so that we can
+						// restore the tree
+						// after update
+						Object[] expanded = tv.getExpandedElements();
+						IStructuredSelection sel = (IStructuredSelection) tv
+								.getSelection();
+
+						if (updateInput)
+							tv.setInput(newInput);
+						else
+							tv.refresh();
+						tv.setExpandedElements(expanded);
+
+						Object selected = sel.getFirstElement();
+						if (selected != null)
+							tv.reveal(selected);
+
+						IViewPart part = PlatformUI.getWorkbench()
+								.getActiveWorkbenchWindow().getActivePage()
+								.findView(IPageLayout.ID_PROP_SHEET);
+						if (part != null) {
+							PropertySheet sheet = (PropertySheet) part;
+							PropertySheetPage page = (PropertySheetPage) sheet
+									.getCurrentPage();
+							page.refresh();
+						}
+					}
+				});
 				return new Status(IStatus.OK, Activator.getPluginId(), ""); //$NON-NLS-1$
 			}
 
