@@ -22,11 +22,9 @@
 			try {
 				File dir = new File(dirString);
 				if (dir.exists() && dir.isDirectory()) {
-					Repository repo = new Repository(dir);
-					// reset repository change events here so that check for
-					// repository changes does not trigger an unnecessary
-					// refresh
-					repo.scanForRepoChanges();
+					Repository repo = org.eclipse.egit.core.Activator
+							.getDefault().getRepositoryCache()
+							.lookupRepository(dir);
 					RepositoryNode node = new RepositoryNode(null, repo);
 					input.add(node);
 				}
