@@ -10,8 +10,25 @@
 		settings.put(PREF_ACT, getActionSelection());
 
 		setErrorMessage(null);
+
+		if (newProjectWizard.getSelection()) {
+			setPageComplete(true);
+			return;
+		}
+
+		IStructuredSelection sel = (IStructuredSelection) tv.getSelection();
 		try {
-			// no special checks yet
+			if (sel.isEmpty()) {
+				setErrorMessage(UIText.GitImportWithDirectoriesPage_SelectFolderMessage);
+				return;
+			}
+			RepositoryTreeNode node = (RepositoryTreeNode) sel
+					.getFirstElement();
+			if (node.getType() != RepositoryTreeNodeType.FOLDER
+					&& node.getType() != RepositoryTreeNodeType.WORKINGDIR) {
+				setErrorMessage(UIText.GitImportWithDirectoriesPage_SelectFolderMessage);
+				return;
+			}
 		} finally {
 			setPageComplete(getErrorMessage() == null);
 		}

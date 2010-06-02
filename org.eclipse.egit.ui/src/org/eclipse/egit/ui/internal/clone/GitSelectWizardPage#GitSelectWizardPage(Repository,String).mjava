@@ -1,11 +1,14 @@
 	/**
 	 * Default constructor
+	 *
+	 * @param repository
+	 * @param path
 	 */
-	public GitSelectWizardPage() {
+	public GitSelectWizardPage(Repository repository, String path) {
 		super(GitSelectWizardPage.class.getName());
 		setTitle(UIText.GitImportWithDirectoriesPage_PageTitle);
 		setMessage(UIText.GitImportWithDirectoriesPage_PageMessage);
-		initialRepository = null;
-		initialPath = null;
+		initialRepository = repository;
+		initialPath = path;
 	}
 

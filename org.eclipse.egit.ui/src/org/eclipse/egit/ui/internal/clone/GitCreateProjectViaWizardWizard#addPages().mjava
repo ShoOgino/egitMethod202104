@@ -1,7 +1,6 @@
 	@Override
 	public void addPages() {
-
-		mySelectionPage = new GitSelectWizardPage();
+		mySelectionPage = new GitSelectWizardPage(myRepository, myGitDir);
 		addPage(mySelectionPage);
 		myCreateGeneralProjectPage = new GitCreateGeneralProjectPage(myGitDir);
 		addPage(myCreateGeneralProjectPage);
@@ -9,7 +8,7 @@
 
 			@Override
 			public void setVisible(boolean visible) {
-				setProjectsList(myGitDir);
+				setProjectsList(mySelectionPage.getPath());
 				super.setVisible(visible);
 			}
 
