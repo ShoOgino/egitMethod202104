@@ -18,8 +18,7 @@
 
 		cloneRepo = new Button(tb, SWT.PUSH);
 		cloneRepo.setText(UIText.GitSelectRepositoryPage_CloneButton);
-		cloneRepo
-				.setToolTipText(UIText.GitSelectRepositoryPage_CloneTooltip);
+		cloneRepo.setToolTipText(UIText.GitSelectRepositoryPage_CloneTooltip);
 
 		GridDataFactory.fillDefaults().grab(false, false).align(SWT.FILL,
 				SWT.BEGINNING).applyTo(cloneRepo);
@@ -28,6 +27,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				List<String> dirsBefore = RepositoriesView.getDirs();
 				WizardDialog dlg = new WizardDialog(getShell(),
 						new GitCloneWizard());
 
@@ -35,6 +35,24 @@
 					try {
 						tv.setInput(RepositoriesView
 								.getRepositoriesFromDirs(null));
+						List<String> dirsAfter = RepositoriesView.getDirs();
+						if (!dirsBefore.containsAll(dirsAfter)) {
+							for (String dir : dirsAfter) {
+								if (!dirsBefore.contains(dir)) {
+									try {
+										RepositoryNode node = new RepositoryNode(
+												null, new Repository(new File(
+														dir)));
+										tv
+												.setSelection(new StructuredSelection(
+														node));
+									} catch (IOException e1) {
+										Activator.handleError(e1.getMessage(),
+												e1, false);
+									}
+								}
+							}
+						}
 						checkPage();
 					} catch (InterruptedException e1) {
 						// ignore
@@ -48,8 +66,7 @@
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL,
 				SWT.BEGINNING).applyTo(addRepo);
 		addRepo.setText(UIText.GitSelectRepositoryPage_AddButton);
-		addRepo
-				.setToolTipText(UIText.GitSelectRepositoryPage_AddTooltip);
+		addRepo.setToolTipText(UIText.GitSelectRepositoryPage_AddTooltip);
 		addRepo.addSelectionListener(new SelectionAdapter() {
 
 			@Override
