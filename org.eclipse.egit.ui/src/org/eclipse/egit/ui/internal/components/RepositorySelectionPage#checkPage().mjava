@@ -36,7 +36,7 @@
 						return;
 					}
 
-					final File d = FS.resolve(new File("."), uri.getPath()); //$NON-NLS-1$
+					final File d = FS.DETECTED.resolve(new File("."), uri.getPath()); //$NON-NLS-1$
 					if (!d.exists()) {
 						selectionIncomplete(NLS.bind(
 								UIText.RepositorySelectionPage_fileNotFound, d

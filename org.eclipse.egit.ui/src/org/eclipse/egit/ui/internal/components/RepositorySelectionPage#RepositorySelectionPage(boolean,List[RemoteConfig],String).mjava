@@ -34,7 +34,7 @@
 			try {
 				if(text != null) {
 					text = text.trim();
-					if(Transport.canHandleProtocol(new URIish(text)))
+					if(Transport.canHandleProtocol(new URIish(text), FS.DETECTED))
 						preset = text;
 				}
 			} catch (URISyntaxException e) {

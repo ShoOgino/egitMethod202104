@@ -11,7 +11,7 @@
 		addActions();
 
 		effectiveConfig = rep.getConfig();
-		userHomeConfig = SystemReader.getInstance().openUserConfig();
+		userHomeConfig = SystemReader.getInstance().openUserConfig(FS.DETECTED);
 		// TODO constant?
 		File configFile = new File(rep.getDirectory(), "config"); //$NON-NLS-1$
 		repositoryConfig = new FileBasedConfig(configFile);
