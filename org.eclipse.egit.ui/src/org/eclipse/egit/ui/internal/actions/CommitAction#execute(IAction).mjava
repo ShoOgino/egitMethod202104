@@ -1,5 +1,11 @@
 	@Override
 	public void execute(IAction act) {
+		// let's see if there is any dirty editor around and
+		// ask the user if they want to save or abort
+		if (!PlatformUI.getWorkbench().saveAllEditors(true)) {
+			return;
+		}
+
 		resetState();
 		try {
 			buildIndexHeadDiffList();
