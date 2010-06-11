@@ -1,0 +1,7 @@
+	private void enableOk() {
+		boolean enable = hasCheckedItems();
+		getButton(OK).setEnabled(enable);
+		if (enable)
+			getButton(OK).setFocus();
+	}
+

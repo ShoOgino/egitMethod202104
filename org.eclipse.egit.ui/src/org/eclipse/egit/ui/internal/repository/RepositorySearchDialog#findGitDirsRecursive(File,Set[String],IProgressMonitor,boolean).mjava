@@ -15,7 +15,8 @@
 			}
 
 			if (child.isDirectory()
-					&& RepositoryCache.FileKey.isGitRepository(child, FS.DETECTED)) {
+					&& RepositoryCache.FileKey.isGitRepository(child,
+							FS.DETECTED)) {
 				try {
 					strings.add(child.getCanonicalPath());
 				} catch (IOException e) {

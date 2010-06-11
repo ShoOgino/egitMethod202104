@@ -1,5 +1,7 @@
 	private void doSearch() {
 
+		setMessage(null);
+		setErrorMessage(null);
 		// perform the search...
 		final Set<String> directories = new HashSet<String>();
 		final File file = new File(dir.getText());
@@ -29,6 +31,9 @@
 								new Status(IStatus.ERROR, Activator
 										.getPluginId(), ex.getMessage(), ex));
 					}
+					if (monitor.isCanceled()) {
+						throw new InterruptedException();
+					}
 				}
 			};
 			try {
@@ -46,7 +51,6 @@
 				// ignore
 			}
 
-			boolean foundNew = false;
 			int foundOld = 0;
 
 			TreeSet<String> validDirs = new TreeSet<String>();
@@ -54,7 +58,6 @@
 			for (String foundDir : directories) {
 				if (!fExistingDirectories.contains(foundDir)) {
 					validDirs.add(foundDir);
-					foundNew = true;
 				} else {
 					foundOld++;
 				}
@@ -66,12 +69,13 @@
 								UIText.RepositorySearchDialog_SomeDirectoriesHiddenMessage,
 								Integer.valueOf(foundOld));
 				setMessage(message, IMessageProvider.INFORMATION);
-			} else
-				setMessage(null);
-			fSelectAllButton.setEnabled(foundNew);
-			fDeselectAllButton.setEnabled(foundNew);
-			fTree.setEnabled(validDirs.size() > 0);
+			} else if (directories.isEmpty())
+				setMessage(UIText.RepositorySearchDialog_NothingFoundMessage,
+						IMessageProvider.INFORMATION);
+			toggleSelectionButton.setEnabled(!validDirs.isEmpty());
 			fTreeViewer.setInput(validDirs);
+			// this sets all to selected
+			toggleSelection();
 		}
 
 	}
