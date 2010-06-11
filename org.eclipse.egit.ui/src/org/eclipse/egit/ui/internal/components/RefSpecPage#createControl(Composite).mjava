@@ -42,6 +42,7 @@
 		saveButton.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false));
 		saveButton.addSelectionListener(changesNotifier);
 
+		Dialog.applyDialogFont(panel);
 		setControl(panel);
 		notifySelectionChanged();
 		checkPage();

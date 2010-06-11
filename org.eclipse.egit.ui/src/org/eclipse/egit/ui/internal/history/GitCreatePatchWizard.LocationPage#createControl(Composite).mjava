@@ -5,7 +5,6 @@
 			composite.setLayout(gridLayout);
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			initializeDialogUnits(composite);
-			setControl(composite);
 
 			// clipboard
 			GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -82,5 +81,9 @@
 					validatePage();
 				}
 			});
+
+			Dialog.applyDialogFont(composite);
+			setControl(composite);
+
 		}
 
