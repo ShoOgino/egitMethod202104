@@ -75,8 +75,7 @@
 
 		d.append(LF);
 
-		addDiff(d);
-
+		addDiff(d, styles);
 
 		Matcher matcher = p.matcher(msg);
 		while (matcher.find()) {
@@ -85,6 +84,11 @@
 
 		final StyleRange[] arr = new StyleRange[styles.size()];
 		styles.toArray(arr);
+		Arrays.sort(arr, new Comparator<StyleRange>() {
+			public int compare(StyleRange o1, StyleRange o2) {
+				return o1.start - o2.start;
+			}
+		});
 		setDocument(new Document(d.toString()));
 		getTextWidget().setStyleRanges(arr);
 	}
