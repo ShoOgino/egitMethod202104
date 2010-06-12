@@ -17,13 +17,9 @@
 			if (e instanceof InvocationTargetException) {
 				e = e.getCause();
 			}
-			final IStatus status;
 			if (e instanceof CoreException) {
-				status = ((CoreException) e).getStatus();
+				IStatus status = ((CoreException) e).getStatus();
 				e = status.getException();
-			} else {
-				status = new Status(IStatus.ERROR, Activator.getPluginId(), 1,
-						UIText.SharingWizard_failed, e);
 			}
 			Activator.handleError(UIText.SharingWizard_failed, e, true);
 			return false;
