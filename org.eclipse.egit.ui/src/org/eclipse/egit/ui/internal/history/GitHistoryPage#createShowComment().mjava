@@ -1,9 +1,11 @@
 	private IAction createShowComment() {
-		return new BooleanPrefAction(SHOW_COMMENT,
+		BooleanPrefAction a = new BooleanPrefAction(SHOW_COMMENT,
 				UIText.ResourceHistory_toggleRevComment) {
 			void apply(final boolean value) {
 				layout();
 			}
 		};
+		actionsToDispose.add(a);
+		return a;
 	}
 

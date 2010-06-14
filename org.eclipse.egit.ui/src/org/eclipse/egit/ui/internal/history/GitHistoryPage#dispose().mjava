@@ -1,5 +1,9 @@
 	public void dispose() {
 		Repository.removeAnyRepositoryChangedListener(this);
+		// dispose of the actions (the history framework doesn't do this for us)
+		for (BooleanPrefAction action: actionsToDispose)
+			action.dispose();
+		actionsToDispose.clear();
 		cancelRefreshJob();
 		if (popupMgr != null) {
 			for (final IContributionItem i : popupMgr.getItems()) {
