@@ -1,0 +1,10 @@
+	public RepoPropertiesPage openCloneWizard() {
+		bot.shell("Import Projects from Git").activate();
+
+		bot.button("Clone...").click();
+
+		bot.shell("Clone Git Repository").activate();
+
+		return new RepoPropertiesPage();
+	}
+

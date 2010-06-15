@@ -1,10 +1,11 @@
 	@Test
 	public void alteringSomeParametersDuringClone() throws Exception {
 
-		File destRepo = new File(ResourcesPlugin.getWorkspace()
-				.getRoot().getLocation().toFile(), "egit2");
+		File destRepo = new File(ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().toFile(), "egit2");
 
-		RepoPropertiesPage repoProperties = importWizard.openWizard();
+		importWizard.openWizard();
+		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
 				.nextToRemoteBranches("git://repo.or.cz/egit.git");
 		remoteBranches.deselectAllBranches();

@@ -2,7 +2,8 @@
 	public void updatesParameterFieldsInImportDialogWhenURIIsUpdated()
 			throws Exception {
 
-		RepoPropertiesPage propertiesPage = importWizard.openWizard();
+		importWizard.openWizard();
+		RepoPropertiesPage propertiesPage = importWizard.openCloneWizard();
 
 		propertiesPage.setURI("git://www.jgit.org/EGIT");
 		propertiesPage.assertSourceParams(null, "www.jgit.org", "/EGIT", "git",

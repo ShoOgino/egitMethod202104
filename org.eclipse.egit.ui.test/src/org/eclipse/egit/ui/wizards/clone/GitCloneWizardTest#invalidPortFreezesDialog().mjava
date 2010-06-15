@@ -2,7 +2,8 @@
 	// an error. Perhaps set a higher timeout for this test ?
 	@Ignore
 	public void invalidPortFreezesDialog() throws Exception {
-		RepoPropertiesPage repoProperties = importWizard.openWizard();
+		importWizard.openWizard();
+		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
 				.nextToRemoteBranches("git://localhost:80/EGIT");
 		remoteBranches

@@ -1,6 +1,7 @@
 	@Test
 	public void invalidHostnameFreezesDialog() throws Exception {
-		RepoPropertiesPage repoProperties = importWizard.openWizard();
+		importWizard.openWizard();
+		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
 				.nextToRemoteBranches("git://no.example.com/EGIT");
 		remoteBranches

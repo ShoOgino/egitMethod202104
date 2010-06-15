@@ -1,10 +1,11 @@
 	@SuppressWarnings("boxing")
 	@Test
 	public void canCloneARemoteRepo() throws Exception {
-		File destRepo = new File(ResourcesPlugin.getWorkspace()
-				.getRoot().getLocation().toFile(), "egit");
+		File destRepo = new File(ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().toFile(), "egit");
 
-		RepoPropertiesPage propertiesPage = importWizard.openWizard();
+		importWizard.openWizard();
+		RepoPropertiesPage propertiesPage = importWizard.openCloneWizard();
 
 		RepoRemoteBranchesPage remoteBranches = propertiesPage
 				.nextToRemoteBranches("git://repo.or.cz/egit.git");
