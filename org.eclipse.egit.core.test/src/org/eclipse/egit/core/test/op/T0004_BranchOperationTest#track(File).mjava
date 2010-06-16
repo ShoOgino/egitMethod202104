@@ -1,0 +1,7 @@
+	private void track(File file) throws IOException {
+		GitIndex index = repository.getIndex();
+		Entry entry = index.add(repository.getWorkDir(), file);
+		entry.setAssumeValid(false);
+		index.write();
+	}
+

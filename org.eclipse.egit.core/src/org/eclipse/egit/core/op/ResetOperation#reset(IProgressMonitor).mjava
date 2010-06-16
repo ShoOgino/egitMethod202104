@@ -2,6 +2,9 @@
 		monitor.beginTask(NLS.bind(CoreText.ResetOperation_performingReset,
 				type.toString().toLowerCase(), refName), 7);
 
+		IProject[] validProjects = null;
+		if (type == ResetType.HARD)
+			validProjects = ProjectUtil.getValidProjects(repository);
 		mapObjects();
 		monitor.worked(1);
 
@@ -31,7 +34,7 @@
 
 		if (type == ResetType.HARD)
 			// only refresh if working tree changes
-			ProjectUtil.refreshProjects(repository, new SubProgressMonitor(
+			ProjectUtil.refreshValidProjects(validProjects, new SubProgressMonitor(
 					monitor, 1));
 
 		monitor.done();

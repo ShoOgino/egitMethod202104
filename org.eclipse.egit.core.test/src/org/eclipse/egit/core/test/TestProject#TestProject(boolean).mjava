@@ -10,6 +10,7 @@
 			project.delete(true, null);
 		project.create(null);
 		project.open(null);
+		location = project.getLocation().toOSString();
 		javaProject = JavaCore.create(project);
 		IFolder binFolder = createBinFolder();
 		setJavaNature();

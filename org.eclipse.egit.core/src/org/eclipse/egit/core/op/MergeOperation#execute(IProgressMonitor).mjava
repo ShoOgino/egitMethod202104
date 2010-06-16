@@ -7,6 +7,7 @@
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor mymonitor) throws CoreException {
+				IProject[] validProjects = ProjectUtil.getValidProjects(repository);
 				mymonitor.beginTask(NLS.bind(CoreText.MergeOperation_ProgressMerge, refName), 3);
 				Git git = new Git(repository);
 				mymonitor.worked(1);
@@ -35,7 +36,7 @@
 				} catch (InvalidMergeHeadsException e) {
 					throw new TeamException(e.getLocalizedMessage(), e.getCause());
 				}
-				ProjectUtil.refreshProjects(repository, new SubProgressMonitor(
+				ProjectUtil.refreshValidProjects(validProjects, new SubProgressMonitor(
 						mymonitor, 1));
 				mymonitor.done();
 			}

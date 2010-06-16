@@ -14,7 +14,6 @@
 			updateRepo();
 			monitor.worked(1);
 
-			ProjectUtil.refreshProjects(repo, SubMonitor.convert(monitor, 1));
 		} finally {
 			monitor.done();
 		}

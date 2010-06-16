@@ -1,5 +1,8 @@
-	public void dispose() throws CoreException {
+	public void dispose() throws CoreException, IOException {
 		waitForIndexer();
-		project.delete(true, true, null);
+		if (project.exists())
+			project.delete(true, true, null);
+		else
+			TestUtils.rmrf(new File(location));
 	}
 
