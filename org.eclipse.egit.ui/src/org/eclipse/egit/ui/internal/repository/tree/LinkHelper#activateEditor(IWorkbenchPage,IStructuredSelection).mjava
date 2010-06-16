@@ -1,0 +1,32 @@
+	public void activateEditor(IWorkbenchPage aPage,
+			IStructuredSelection aSelection) {
+
+		try {
+			FileNode node = (FileNode) aSelection.getFirstElement();
+
+			File file = node.getObject();
+
+			for (IEditorReference ref : aPage.getEditorReferences()) {
+				IEditorPart part = ref.getEditor(false);
+				if (part != null) {
+					IEditorInput input = part.getEditorInput();
+					if (input instanceof IFileEditorInput) {
+						if (((IFileEditorInput) input).getFile().equals(file)) {
+							aPage.activate(part);
+							return;
+						}
+					}
+					if (input instanceof IURIEditorInput) {
+						if (((IURIEditorInput) input).getURI().equals(
+								file.toURI())) {
+							aPage.activate(part);
+							return;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			// simply ignore here
+		}
+	}
+

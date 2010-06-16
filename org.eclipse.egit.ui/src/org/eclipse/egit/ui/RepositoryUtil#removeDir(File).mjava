@@ -1,0 +1,24 @@
+	/**
+	 * @param file
+	 * @return <code>true</code> if the configuration was changed by the remove
+	 */
+	public boolean removeDir(File file) {
+		synchronized (prefs) {
+
+			String dir;
+			try {
+				dir = file.getCanonicalPath();
+			} catch (IOException e1) {
+				dir = file.getAbsolutePath();
+			}
+
+			Set<String> dirStrings = new HashSet<String>();
+			dirStrings.addAll(getConfiguredRepositories(false));
+			if (dirStrings.remove(dir)) {
+				saveDirs(dirStrings);
+				return true;
+			}
+			return false;
+		}
+	}
+

@@ -1,0 +1,38 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		RepositoryTreeNode node = getSelectedNodes(event).get(0);
+		String path;
+
+		switch (node.getType()) {
+		case REPO:
+			path = node.getRepository().getDirectory().toString();
+			break;
+		case WORKINGDIR:
+			if (node.getRepository().getConfig().getBoolean(
+					"core", "bare", false)) { //$NON-NLS-1$ //$NON-NLS-2$
+				return null;
+			}
+			path = node.getRepository().getWorkDir().toString();
+			break;
+		case FILE:
+			path = ((FileNode) node).getObject().getPath().toString();
+			break;
+		case FOLDER:
+			path = ((FolderNode) node).getObject().getPath().toString();
+			break;
+		default:
+			return null;
+		}
+
+		Clipboard clipboard = new Clipboard(null);
+		try {
+			TextTransfer textTransfer = TextTransfer.getInstance();
+			Transfer[] transfers = new Transfer[] { textTransfer };
+			Object[] data = new Object[] { path };
+			clipboard.setContents(data, transfers);
+		} finally {
+			clipboard.dispose();
+		}
+
+		return null;
+	}
+

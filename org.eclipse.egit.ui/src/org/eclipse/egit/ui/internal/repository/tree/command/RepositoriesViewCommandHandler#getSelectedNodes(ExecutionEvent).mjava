@@ -1,0 +1,7 @@
+	@SuppressWarnings("unchecked")
+	public List<T> getSelectedNodes(ExecutionEvent event) {
+		TreeSelection selection = (TreeSelection) ((IEvaluationContext) event
+				.getApplicationContext()).getRoot().getVariable("selection"); //$NON-NLS-1$ TODO constant for this?
+		return selection.toList();
+	}
+

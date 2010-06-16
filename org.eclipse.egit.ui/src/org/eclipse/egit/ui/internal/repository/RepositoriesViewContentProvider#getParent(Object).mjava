@@ -1,5 +1,6 @@
 	public Object getParent(Object element) {
-
-		return ((RepositoryTreeNode) element).getParent();
+		if (element instanceof RepositoryTreeNode)
+			return ((RepositoryTreeNode) element).getParent();
+		return null;
 	}
 

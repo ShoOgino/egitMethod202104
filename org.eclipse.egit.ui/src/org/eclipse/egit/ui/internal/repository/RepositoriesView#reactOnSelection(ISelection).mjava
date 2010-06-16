@@ -3,9 +3,8 @@
 			StructuredSelection ssel = (StructuredSelection) selection;
 			if (ssel.size() != 1)
 				return;
-			if (ssel.getFirstElement() instanceof IResource) {
+			if (ssel.getFirstElement() instanceof IResource)
 				showResource((IResource) ssel.getFirstElement());
-			}
 			if (ssel.getFirstElement() instanceof IAdaptable) {
 				IResource adapted = (IResource) ((IAdaptable) ssel
 						.getFirstElement()).getAdapter(IResource.class);

@@ -1,80 +1,86 @@
 	/**
-	 * Opens the tree and marks the folder to which a project is pointing
+	 * Opens the tree and marks the working directory file or folder that points
+	 * to a resource if possible
 	 *
 	 * @param resource
-	 *            TODO exceptions?
+	 *            the resource to show
 	 */
 	@SuppressWarnings("unchecked")
-	public void showResource(final IResource resource) {
-		IProject project = resource.getProject();
-		RepositoryMapping mapping = RepositoryMapping.getMapping(project);
-		if (mapping == null)
-			return;
+	private void showResource(final IResource resource) {
+		try {
+			IProject project = resource.getProject();
+			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+			if (mapping == null)
+				return;
 
-		if (addDir(mapping.getRepository().getDirectory())) {
-			scheduleRefresh();
-		}
-
-		boolean doSetSelection = false;
-
-		if (this.scheduledJob != null) {
-			int state = this.scheduledJob.getState();
-			if (state == Job.WAITING || state == Job.RUNNING) {
-				this.scheduledJob.addJobChangeListener(new JobChangeAdapter() {
-
-					@Override
-					public void done(IJobChangeEvent event) {
-						showResource(resource);
-					}
-				});
-			} else {
-				doSetSelection = true;
+			boolean added = repositoryUtil.addConfiguredRepository(mapping
+					.getRepository().getDirectory());
+			if (added) {
+				scheduleRefresh();
 			}
-		}
 
-		if (doSetSelection) {
-			RepositoriesViewContentProvider cp = (RepositoriesViewContentProvider) tv
-					.getContentProvider();
-			RepositoryTreeNode currentNode = null;
-			Object[] repos = cp.getElements(tv.getInput());
-			for (Object repo : repos) {
-				RepositoryTreeNode node = (RepositoryTreeNode) repo;
-				// TODO equals implementation of Repository?
-				if (mapping.getRepository().getDirectory().equals(
-						((Repository) node.getObject()).getDirectory())) {
-					for (Object child : cp.getChildren(node)) {
-						RepositoryTreeNode childNode = (RepositoryTreeNode) child;
-						if (childNode.getType() == RepositoryTreeNodeType.WORKINGDIR) {
+			boolean doSetSelection = false;
+
+			if (this.scheduledJob != null) {
+				int state = this.scheduledJob.getState();
+				if (state == Job.WAITING || state == Job.RUNNING) {
+					this.scheduledJob
+							.addJobChangeListener(new JobChangeAdapter() {
+
+								@Override
+								public void done(IJobChangeEvent event) {
+									showResource(resource);
+								}
+							});
+				} else {
+					doSetSelection = true;
+				}
+			}
+
+			if (doSetSelection) {
+				RepositoryTreeNode currentNode = null;
+				ITreeContentProvider cp = (ITreeContentProvider) getCommonViewer()
+						.getContentProvider();
+				for (Object repo : cp.getElements(getCommonViewer().getInput())) {
+					RepositoryTreeNode node = (RepositoryTreeNode) repo;
+					// TODO equals implementation of Repository?
+					if (mapping.getRepository().getDirectory().equals(
+							((Repository) node.getObject()).getDirectory())) {
+						for (Object child : cp.getChildren(node)) {
+							RepositoryTreeNode childNode = (RepositoryTreeNode) child;
+							if (childNode.getType() == RepositoryTreeNodeType.WORKINGDIR) {
+								currentNode = childNode;
+								break;
+							}
+						}
+						break;
+					}
+				}
+
+				IPath relPath = new Path(mapping.getRepoRelativePath(resource));
+
+				for (String segment : relPath.segments()) {
+					for (Object child : cp.getChildren(currentNode)) {
+						RepositoryTreeNode<File> childNode = (RepositoryTreeNode<File>) child;
+						if (childNode.getObject().getName().equals(segment)) {
 							currentNode = childNode;
 							break;
 						}
 					}
-					break;
 				}
-			}
 
-			IPath relPath = new Path(mapping.getRepoRelativePath(resource));
+				final RepositoryTreeNode selNode = currentNode;
 
-			for (String segment : relPath.segments()) {
-				for (Object child : cp.getChildren(currentNode)) {
-					RepositoryTreeNode<File> childNode = (RepositoryTreeNode<File>) child;
-					if (childNode.getObject().getName().equals(segment)) {
-						currentNode = childNode;
-						break;
+				Display.getDefault().asyncExec(new Runnable() {
+
+					public void run() {
+						selectReveal(new StructuredSelection(selNode));
 					}
-				}
+				});
+
 			}
-
-			final RepositoryTreeNode selNode = currentNode;
-
-			Display.getDefault().asyncExec(new Runnable() {
-
-				public void run() {
-					tv.setSelection(new StructuredSelection(selNode), true);
-				}
-			});
-
+		} catch (RuntimeException rte) {
+			Activator.handleError(rte.getMessage(), rte, false);
 		}
-
 	}
 

@@ -1,0 +1,20 @@
+	/**
+	 * Allows access to the localized values of the EGit UI Plug-in
+	 * <p>
+	 * This will effectively read the plugin.properties. Ampersands (often used
+	 * in menu items and field labels for keyboard shortcuts) will be filtered
+	 * out (see also {@link #getPluginLocalizedValue(String, boolean)} in order
+	 * to be able to reference these fields using SWTBot).
+	 *
+	 * @param key
+	 *            the key, must not be null
+	 * @return the localized value in the current default {@link Locale}, or
+	 *         null
+	 * @throws MissingResourceException
+	 *             if no value is found for the given key
+	 */
+	public synchronized String getPluginLocalizedValue(String key)
+			throws MissingResourceException {
+		return getPluginLocalizedValue(key, false);
+	}
+

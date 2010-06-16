@@ -27,7 +27,6 @@
 	 */
 	public String mapCommitToRef(Repository repository, String commitId,
 			boolean refresh) {
-
 		synchronized (commitMappingCache) {
 
 			if (!ObjectId.isId(commitId)) {

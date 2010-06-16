@@ -1,0 +1,17 @@
+	private void saveDirs(Set<String> gitDirStrings) {
+		StringBuilder sb = new StringBuilder();
+		for (String gitDirString : gitDirStrings) {
+			sb.append(gitDirString);
+			sb.append(File.pathSeparatorChar);
+		}
+
+		prefs.put(PREFS_DIRECTORIES, sb.toString());
+		try {
+			prefs.flush();
+		} catch (BackingStoreException e) {
+			IStatus error = new Status(IStatus.ERROR, Activator.getPluginId(),
+					e.getMessage(), e);
+			Activator.getDefault().getLog().log(error);
+		}
+	}
+

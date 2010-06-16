@@ -5,9 +5,18 @@
 			this.scheduledJob.cancel();
 			this.scheduledJob = null;
 		}
+
+		repositoryUtil.getPreferences().removePreferenceChangeListener(
+				configurationListener);
+
+		ISelectionService srv = (ISelectionService) getSite().getService(
+				ISelectionService.class);
+		srv.removePostSelectionListener(selectionChangedListener);
+
 		// remove RepositoryChangedListener
 		unregisterRepositoryListener();
 		repositories.clear();
+
 		super.dispose();
 	}
 

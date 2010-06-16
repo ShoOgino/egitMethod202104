@@ -1,0 +1,45 @@
+	/**
+	 * Allows access to the localized values of the EGit UI Plug-in
+	 * <p>
+	 *
+	 * @param key
+	 *            see {@link #getPluginLocalizedValue(String)}
+	 * @param keepAmpersands
+	 *            if <code>true</code>, ampersands will be kept
+	 * @return see {@link #getPluginLocalizedValue(String)}
+	 * @throws MissingResourceException
+	 *             see {@link #getPluginLocalizedValue(String)}
+	 */
+	public synchronized String getPluginLocalizedValue(String key,
+			boolean keepAmpersands) throws MissingResourceException {
+		if (myBundle == null) {
+			ServiceTracker localizationTracker;
+
+			BundleContext context = Activator.getDefault().getBundle()
+					.getBundleContext();
+
+			localizationTracker = new ServiceTracker(context,
+					BundleLocalization.class.getName(), null);
+			localizationTracker.open();
+
+			BundleLocalization location = (BundleLocalization) localizationTracker
+					.getService();
+			if (location != null)
+				myBundle = location.getLocalization(Activator.getDefault()
+						.getBundle(), Locale.getDefault().toString());
+		}
+
+		String raw = myBundle.getString(key);
+
+		if (keepAmpersands || raw.indexOf(AMPERSAND) < 0)
+			return raw;
+
+		StringBuilder sb = new StringBuilder(raw.length());
+		for (int i = 0; i < raw.length(); i++) {
+			char c = raw.charAt(i);
+			if (c != AMPERSAND)
+				sb.append(c);
+		}
+		return sb.toString();
+	}
+

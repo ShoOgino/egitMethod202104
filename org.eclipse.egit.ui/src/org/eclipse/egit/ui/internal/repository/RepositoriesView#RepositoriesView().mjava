@@ -1,0 +1,36 @@
+	/**
+	 * The default constructor
+	 */
+	public RepositoriesView() {
+		repositoryUtil = Activator.getDefault().getRepositoryUtil();
+		repositoryCache = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryCache();
+
+		configurationListener = new IPreferenceChangeListener() {
+			public void preferenceChange(PreferenceChangeEvent event) {
+				lastInputChange = System.currentTimeMillis();
+				scheduleRefresh();
+			}
+		};
+
+		selectionChangedListener = new ISelectionListener() {
+			public void selectionChanged(IWorkbenchPart part,
+					ISelection selection) {
+				if (!reactOnSelection)
+					return;
+
+				// this may happen if we switch between editors
+				if (part instanceof IEditorPart) {
+					IEditorInput input = ((IEditorPart) part).getEditorInput();
+					if (input instanceof IFileEditorInput)
+						reactOnSelection(new StructuredSelection(
+								((IFileEditorInput) input).getFile()));
+
+				} else {
+					reactOnSelection(selection);
+				}
+			}
+		};
+		createRepositoryChangedListener();
+	}
+

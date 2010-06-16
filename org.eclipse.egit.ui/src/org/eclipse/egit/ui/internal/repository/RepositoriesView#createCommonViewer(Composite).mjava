@@ -1,0 +1,52 @@
+	@Override
+	protected CommonViewer createCommonViewer(Composite aParent) {
+		CommonViewer viewer = super.createCommonViewer(aParent);
+		// handle the double-click event
+		viewer.addOpenListener(new IOpenListener() {
+
+			public void open(OpenEvent event) {
+				TreeSelection sel = (TreeSelection) event.getSelection();
+				RepositoryTreeNode element = (RepositoryTreeNode) sel
+						.getFirstElement();
+
+				if (element instanceof RefNode || element instanceof FileNode
+						|| element instanceof TagNode) {
+					IHandlerService srv = (IHandlerService) getViewSite()
+							.getService(IHandlerService.class);
+					ICommandService csrv = (ICommandService) getViewSite()
+							.getService(ICommandService.class);
+					Command openCommand = csrv
+							.getCommand("org.eclipse.egit.ui.RepositoriesViewOpen"); //$NON-NLS-1$
+					ExecutionEvent evt = srv.createExecutionEvent(openCommand,
+							null);
+
+					try {
+						openCommand.executeWithChecks(evt);
+					} catch (Exception e) {
+						Activator.handleError(e.getMessage(), e, false);
+					}
+				}
+			}
+		});
+		// react on selection changes
+		ISelectionService srv = (ISelectionService) getSite().getService(
+				ISelectionService.class);
+		srv.addPostSelectionListener(selectionChangedListener);
+		// react on changes in the configured repositories
+		repositoryUtil.getPreferences().addPreferenceChangeListener(
+				configurationListener);
+
+		// listen for repository changes
+		for (String dir : repositoryUtil.getConfiguredRepositories()) {
+			try {
+				Repository repo = repositoryCache
+						.lookupRepository(new File(dir));
+				repo.addRepositoryChangedListener(repositoryListener);
+				repositories.add(repo);
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, false);
+			}
+		}
+		return viewer;
+	}
+

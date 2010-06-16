@@ -1,0 +1,15 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		PushNode node = getSelectedNodes(event).get(0);
+		RemoteNode remote = (RemoteNode) node.getParent();
+		RepositoryConfig config = node.getRepository().getConfig();
+		config.unset("remote", remote.getObject(), "pushurl"); //$NON-NLS-1$ //$NON-NLS-2$
+		config.unset("remote", remote.getObject(), "push"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			config.save();
+		} catch (IOException e1) {
+			Activator.handleError(e1.getMessage(), e1, true);
+		}
+
+		return null;
+	}
+

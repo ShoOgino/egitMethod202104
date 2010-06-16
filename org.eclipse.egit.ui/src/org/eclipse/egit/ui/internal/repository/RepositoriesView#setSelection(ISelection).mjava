@@ -1,8 +1,0 @@
-	public void setSelection(ISelection selection) {
-		currentSelection = selection;
-		for (ISelectionChangedListener listener : selectionListeners) {
-			listener.selectionChanged(new SelectionChangedEvent(
-					RepositoriesView.this, selection));
-		}
-	}
-

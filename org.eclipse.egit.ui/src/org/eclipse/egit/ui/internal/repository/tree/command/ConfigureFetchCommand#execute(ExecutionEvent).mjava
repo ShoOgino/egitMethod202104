@@ -1,0 +1,19 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		RepositoryTreeNode selectedNode = getSelectedNodes(event).get(0);
+		final String configName;
+
+		if (selectedNode instanceof RemoteNode)
+			configName = ((RemoteNode) selectedNode).getObject();
+		else if (selectedNode instanceof FetchNode)
+			configName = ((RemoteNode) selectedNode.getParent()).getObject();
+		else
+			return null;
+
+		WizardDialog dlg = new WizardDialog(
+				getView(event).getSite().getShell(), new ConfigureRemoteWizard(
+						selectedNode.getRepository(), configName, false));
+		dlg.open();
+
+		return null;
+	}
+
