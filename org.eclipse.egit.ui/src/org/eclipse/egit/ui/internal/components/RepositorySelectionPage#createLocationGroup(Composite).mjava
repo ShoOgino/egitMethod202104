@@ -17,7 +17,7 @@
 			}
 		});
 
-		addContentProposalToUriText(uriText);
+		uriProposalHandler = UIUtils.addPreviousValuesContentProposalToText(uriText, USED_URIS_PREF);
 
 		Button browseButton = new Button(g, SWT.NULL);
 		browseButton.setText(UIText.RepositorySelectionPage_BrowseLocalFile);

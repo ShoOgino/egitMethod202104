@@ -1,27 +1,29 @@
-	private void addContentProposalToText(Text textField,
-			final String preferenceKey) {
-
+	/**
+	 * Adds a "previously used values" content proposal handler to a text field.
+	 * <p>
+	 * The keyboard shortcut will be "M1+SPACE" and the list will be limited to
+	 * 10 values.
+	 *
+	 * @param textField
+	 *            the text field
+	 * @param preferenceKey
+	 *            the key under which to store the "previously used values" in
+	 *            the dialog settings
+	 * @return the handler the proposal handler
+	 */
+	public static IPreviousValueProposalHandler addPreviousValuesContentProposalToText(
+			final Text textField, final String preferenceKey) {
 		KeyStroke stroke;
 		try {
 			stroke = KeyStroke.getInstance("M1+SPACE"); //$NON-NLS-1$
+			addBulbDecorator(textField, NLS.bind(
+					UIText.UIUtils_PressShortcutMessage, stroke.format()));
 		} catch (ParseException e1) {
-			org.eclipse.egit.ui.Activator.getDefault().getLog().log(
-					new Status(IStatus.ERROR, org.eclipse.egit.ui.Activator
-							.getPluginId(), e1.getMessage(), e1));
-			return;
+			Activator.handleError(e1.getMessage(), e1, false);
+			stroke = null;
+			addBulbDecorator(textField,
+					UIText.UIUtils_StartTypingForPreviousValuesMessage);
 		}
-
-		ControlDecoration dec = new ControlDecoration(textField, SWT.TOP
-				| SWT.LEFT);
-
-		dec.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(
-				FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage());
-
-		dec.setShowOnlyOnFocus(true);
-		dec.setShowHover(true);
-
-		dec.setDescriptionText(NLS.bind(UIText.CommitDialog_ValueHelp_Message,
-				stroke.format()));
 
 		IContentProposalProvider cp = new IContentProposalProvider() {
 
@@ -101,5 +103,47 @@
 		adapter
 				.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 
+		return new IPreviousValueProposalHandler() {
+			public void updateProposals() {
+				String value = textField.getText();
+				// don't store empty values
+				if (value.length() > 0) {
+					// we don't want to save too much in the preferences
+					if (value.length() > 2000) {
+						value = value.substring(0, 1999);
+					}
+					// now we need to mix the value into the list
+					IDialogSettings settings = org.eclipse.egit.ui.Activator
+							.getDefault().getDialogSettings();
+					String[] existingValues = settings.getArray(preferenceKey);
+					if (existingValues == null) {
+						existingValues = new String[] { value };
+						settings.put(preferenceKey, existingValues);
+					} else {
+
+						List<String> values = new ArrayList<String>(
+								existingValues.length + 1);
+
+						for (String existingValue : existingValues)
+							values.add(existingValue);
+						// if it is already the first value, we don't need to do
+						// anything
+						if (values.indexOf(value) == 0)
+							return;
+
+						values.remove(value);
+						// we insert at the top
+						values.add(0, value);
+						// make sure to not store more than the maximum number
+						// of values
+						while (values.size() > 10)
+							values.remove(values.size() - 1);
+
+						settings.put(preferenceKey, values
+								.toArray(new String[values.size()]));
+					}
+				}
+			}
+		};
 	}
 

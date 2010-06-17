@@ -1,0 +1,19 @@
+		/**
+		 * Updates the proposal list from the value in the text field.
+		 * <p>
+		 * The value will be truncated to the first 2000 characters in order to
+		 * limit data size.
+		 * <p>
+		 * Note that this must be called in the UI thread, since it accesses the
+		 * text field.
+		 * <p>
+		 * If the value is already in the list, it will become the first entry,
+		 * otherwise it will be added at the beginning. Note that empty Strings
+		 * will not be stored. The length of the list is limited, and the
+		 * "oldest" entries will be removed once the limit is exceeded.
+		 * <p>
+		 * This call should only be issued if the value in the text field is
+		 * "valid" in terms of the application.
+		 */
+		public void updateProposals();
+

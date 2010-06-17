@@ -49,8 +49,8 @@
 			return;
 		}
 
-		addValueToPrefs(author, AUTHOR_VALUES_PREF);
-		addValueToPrefs(committer, COMMITTER_VALUES_PREF);
+		authorHandler.updateProposals();
+		committerHandler.updateProposals();
 
 		IDialogSettings settings = org.eclipse.egit.ui.Activator
 			.getDefault().getDialogSettings();

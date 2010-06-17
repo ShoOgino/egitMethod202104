@@ -34,7 +34,7 @@
 		if (author != null)
 			authorText.setText(author);
 
-		addContentProposalToText(authorText, AUTHOR_VALUES_PREF);
+		authorHandler = UIUtils.addPreviousValuesContentProposalToText(authorText, AUTHOR_VALUES_PREF);
 		new Label(container, SWT.LEFT).setText(UIText.CommitDialog_Committer);
 		committerText = new Text(container, SWT.BORDER);
 		committerText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
@@ -55,7 +55,7 @@
 			}
 		});
 
-		addContentProposalToText(committerText, COMMITTER_VALUES_PREF);
+		committerHandler = UIUtils.addPreviousValuesContentProposalToText(committerText, COMMITTER_VALUES_PREF);
 
 		amendingButton = new Button(container, SWT.CHECK);
 		if (amending) {

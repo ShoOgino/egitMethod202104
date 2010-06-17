@@ -27,15 +27,6 @@
 
 		try {
 			myConfiguration.save();
-
-			// Save the uris in the RepositorySelectionPage preferences
-
-			for (URIish uri : config.getURIs())
-				RepositorySelectionPage.saveUriInPrefs(uri.toPrivateString());
-
-			for (URIish uri : config.getPushURIs())
-				RepositorySelectionPage.saveUriInPrefs(uri.toPrivateString());
-
 			return true;
 		} catch (IOException e) {
 			// TODO better Exception handling
