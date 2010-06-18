@@ -1,4 +1,13 @@
-	private void createBranch(String refName, String newRefName) throws IOException {
+	/**
+	 * Creates a new branch
+	 *
+	 * @param refName
+	 *            starting point for the new branch
+	 * @param newRefName
+	 * @throws IOException
+	 */
+	public void createBranch(String refName, String newRefName)
+			throws IOException {
 		RefUpdate updateRef;
 		updateRef = repository.updateRef(newRefName);
 		Ref startRef = repository.getRef(refName);
@@ -10,7 +19,8 @@
 			startBranch = startAt.name();
 		startBranch = repository.shortenRefName(startBranch);
 		updateRef.setNewObjectId(startAt);
-		updateRef.setRefLogMessage("branch: Created from " + startBranch, false); //$NON-NLS-1$
+		updateRef
+				.setRefLogMessage("branch: Created from " + startBranch, false); //$NON-NLS-1$
 		updateRef.update();
 	}
 

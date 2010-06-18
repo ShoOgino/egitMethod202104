@@ -1,0 +1,20 @@
+	@Test
+	public void testSoftReset() throws Exception {
+		setupRepository();
+		String fileInIndexPath = fileInIndex.getLocation().toOSString();
+		new ResetOperation(repository, initialCommit.getName(),
+				ResetOperation.ResetType.SOFT).execute(null);
+		// .project must remain
+		assertTrue(projectFile.exists());
+		assertTrue(project.getProject().exists());
+		// check if HEAD points to initial commit now
+		assertTrue(repository.resolve("HEAD").equals(initialCommit));
+		// untrackedFile and fileInIndex must still exist
+		assertTrue(untrackedFile.exists());
+		assertTrue(fileInIndex.exists());
+		// fileInIndex must no longer be in HEAD
+		assertFalse(testRepository.inHead(fileInIndexPath));
+		// fileInIndex must exist in the index
+		assertTrue(testRepository.inIndex(fileInIndexPath));
+	}
+

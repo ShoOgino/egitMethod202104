@@ -1,0 +1,19 @@
+	@Test
+	public void testHardReset() throws Exception {
+		setupRepository();
+		String fileInIndexPath = fileInIndex.getLocation().toOSString();
+		new ResetOperation(repository, initialCommit.getName(),
+				ResetOperation.ResetType.HARD).execute(null);
+		// .project must disappear, related Eclipse project must be deleted
+		assertFalse(projectFile.exists());
+		assertFalse(project.getProject().exists());
+		// check if HEAD points to initial commit now
+		assertTrue(repository.resolve("HEAD").equals(initialCommit));
+		// check if files were removed
+		assertFalse(untrackedFile.exists());
+		assertFalse(fileInIndex.exists());
+		// fileInIndex must no longer be in HEAD and in the index
+		assertFalse(testRepository.inHead(fileInIndexPath));
+		assertFalse(testRepository.inIndex(fileInIndexPath));
+	}
+

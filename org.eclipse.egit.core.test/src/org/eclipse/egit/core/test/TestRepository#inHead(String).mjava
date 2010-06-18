@@ -1,0 +1,13 @@
+	/**
+	 * Checks if a file with the given path exists in the HEAD tree
+	 * @param path
+	 * @return true if the file exists
+	 * @throws IOException
+	 */
+	public boolean inHead(String path) throws IOException {
+		Tree headTree = repository.mapTree(Constants.HEAD);
+		String repoPath = getRepoRelativePath(path);
+		boolean headExists = headTree.existsBlob(repoPath);
+		return headExists;
+	}
+

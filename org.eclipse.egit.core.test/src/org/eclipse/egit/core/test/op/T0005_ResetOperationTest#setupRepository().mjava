@@ -1,0 +1,22 @@
+	private void setupRepository() throws Exception {
+		// create first commit containing a dummy file
+		initialCommit = testRepository
+				.createInitialCommit("testResetOperation\n\nfirst commit\n");
+		// add .project to version control
+		String path = project.getProject().getLocation().append(".project")
+				.toOSString();
+		projectFile = new File(path);
+		testRepository.track(projectFile);
+		// add fileInIndex to version control
+		fileInIndex = createFile("fileInIndex");
+		testRepository.track(new File(fileInIndex.getLocation().toOSString()));
+		testRepository.commit("Add .project file");
+		// modify fileInIndex and add it to the index
+		InputStream stream = new ByteArrayInputStream(new byte[] { 'I', 'n',
+				'd', 'e', 'x' });
+		fileInIndex.setContents(stream, 0, null);
+		testRepository.addToIndex(fileInIndex);
+		// create an untracked file
+		untrackedFile = createFile("untrackedFile");
+	}
+

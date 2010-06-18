@@ -1,0 +1,23 @@
+	/**
+	 * create an initial commit containing a file "dummy" in the
+	 *
+	 * @param message
+	 *            commit message
+	 * @return commit object
+	 * @throws IOException
+	 * @throws NoHeadException
+	 * @throws NoMessageException
+	 * @throws ConcurrentRefUpdateException
+	 * @throws JGitInternalException
+	 * @throws WrongRepositoryStateException
+	 */
+	public RevCommit createInitialCommit(String message) throws IOException,
+			NoHeadException, NoMessageException, ConcurrentRefUpdateException,
+			JGitInternalException, WrongRepositoryStateException {
+		String repoPath = repository.getWorkDir().getAbsolutePath();
+		File file = new File(repoPath, "dummy");
+		file.createNewFile();
+		track(file);
+		return commit(message);
+	}
+

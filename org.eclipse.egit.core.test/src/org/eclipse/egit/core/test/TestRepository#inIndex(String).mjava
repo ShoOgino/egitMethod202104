@@ -1,0 +1,6 @@
+	public boolean inIndex(String path) throws IOException {
+		String repoPath = getRepoRelativePath(path);
+		GitIndex index = repository.getIndex();
+		return index.getEntry(repoPath) != null;
+	}
+

@@ -1,8 +1,0 @@
-	private void createInitialCommit() throws IOException, NoHeadException, NoMessageException, ConcurrentRefUpdateException, JGitInternalException, WrongRepositoryStateException {
-		String repoPath = project.getProject().getWorkspace().getRoot().getLocation().toOSString();
-		File file = new File(repoPath, "dummy");
-		file.createNewFile();
-		track(file);
-		commit("testBranchOperation\n\nfirst commit\n");
-	}
-

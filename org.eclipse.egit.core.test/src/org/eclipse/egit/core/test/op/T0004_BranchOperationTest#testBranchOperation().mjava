@@ -1,16 +1,16 @@
 	@Test
 	public void testBranchOperation() throws Exception {
 		// create first commit containing a dummy file
-		createInitialCommit();
+		testRepository.createInitialCommit("testBranchOperation\n\nfirst commit\n");
 		// create branch test and switch to branch test
-		createBranch(MASTER, TEST);
+		testRepository.createBranch(MASTER, TEST);
 		new BranchOperation(repository, TEST).execute(null);
 		assertTrue(repository.getFullBranch().equals(TEST));
 		// add .project to version control and commit
 		String path = project.getProject().getLocation().append(".project").toOSString();
 		File file = new File(path);
-		track(file);
-		commit("Add .project file");
+		testRepository.track(file);
+		testRepository.commit("Add .project file");
 		// switch back to master branch
 		// .project must disappear, related Eclipse project must be deleted
 		new BranchOperation(repository, MASTER).execute(null);

@@ -1,4 +1,10 @@
-	private void track(File file) throws IOException {
+	/**
+	 * Adds file to version control
+	 *
+	 * @param file
+	 * @throws IOException
+	 */
+	public void track(File file) throws IOException {
 		GitIndex index = repository.getIndex();
 		Entry entry = index.add(repository.getWorkDir(), file);
 		entry.setAssumeValid(false);

@@ -1,0 +1,16 @@
+	/**
+	 * create a file with the given name in the root folder of testproject
+	 *
+	 * @param name
+	 *            name of file
+	 * @return new file
+	 * @throws CoreException
+	 */
+	private IFile createFile(String name) throws CoreException {
+		IFile file = project.project.getFile(name);
+		file.create(
+				new ByteArrayInputStream(new byte[] { 'T', 'e', 's', 't' }),
+				true, null);
+		return file;
+	}
+
