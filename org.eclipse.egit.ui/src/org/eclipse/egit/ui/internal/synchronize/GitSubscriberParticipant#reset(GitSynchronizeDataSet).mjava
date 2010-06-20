@@ -4,6 +4,7 @@
 	void reset(GitSynchronizeDataSet data) {
 		GitResourceVariantTreeSubscriber subscriber = (GitResourceVariantTreeSubscriber) getSubscriber();
 		subscriber.reset(data);
+		setName(data.toString());
 		reset();
 	}
 
