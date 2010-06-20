@@ -1,7 +1,10 @@
 	private IResourceVariant findFileVariant(IResource resource,
 			Repository repository) throws TeamException {
-		String gitPath = RepositoryMapping.getMapping(resource)
-				.getRepoRelativePath(resource);
+		RepositoryMapping repoMapping = RepositoryMapping.getMapping(resource);
+		if (repoMapping == null)
+			return null;
+
+		String gitPath = repoMapping.getRepoRelativePath(resource);
 		ObjectId objectId = updated.get(gitPath);
 		if (objectId != null) {
 			File root = repository.getWorkDir();

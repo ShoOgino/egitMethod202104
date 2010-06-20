@@ -1,6 +1,8 @@
 	private IResourceVariant findFolderVariant(IResource resource,
 			Repository repository) {
 		File workDir = repository.getWorkDir();
+		if (resource.getLocation() == null)
+			return null;
 		File resourceLocation = resource.getLocation().toFile();
 		String resLocationAbsolutePath = resourceLocation.getAbsolutePath();
 
@@ -8,10 +10,8 @@
 			String entryName = entry.getKey();
 			File file = new File(workDir, entryName);
 
-			if (file.getAbsolutePath().startsWith(resLocationAbsolutePath)) {
+			if (file.getAbsolutePath().startsWith(resLocationAbsolutePath))
 				return new GitFolderResourceVariant(resource);
-			}
-
 		}
 
 		return null;
