@@ -3,8 +3,7 @@
 			Tag tag = repo.mapTag(rev);
 			Commit commit = repo.mapCommit(tag.getObjId());
 			return commit.getTree();
-		} else {
+		} else
 			return repo.mapTree(rev);
-		}
 	}
 

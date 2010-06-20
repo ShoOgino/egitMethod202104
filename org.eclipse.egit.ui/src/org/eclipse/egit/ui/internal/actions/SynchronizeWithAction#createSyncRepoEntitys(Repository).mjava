@@ -5,9 +5,9 @@
 		List<SyncRepoEntity> syncRepoEntitys = new ArrayList<SyncRepoEntity>();
 
 		syncRepoEntitys.add(getLocalSyncRepo(repo));
-		for (RemoteConfig rc : remoteConfigs) {
+		for (RemoteConfig rc : remoteConfigs)
 			syncRepoEntitys.add(getRemoteSyncRepo(refDatabase, rc));
-		}
+
 		return syncRepoEntitys;
 	}
 

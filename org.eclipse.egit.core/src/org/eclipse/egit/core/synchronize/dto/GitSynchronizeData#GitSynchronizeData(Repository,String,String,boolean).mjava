@@ -1,0 +1,29 @@
+	/**
+	 * Constructs {@link GitSynchronizeData} object
+	 *
+	 * @param repository
+	 * @param srcRev
+	 * @param dstRev
+	 * @param includeLocal
+	 *            <code>true</code> if local changes should be included in
+	 *            comparison
+	 */
+	public GitSynchronizeData(Repository repository, String srcRev,
+			String dstRev, boolean includeLocal) {
+		repo = repository;
+		this.srcRev = srcRev;
+		this.dstRev = dstRev;
+		this.includeLocal = includeLocal;
+		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();
+
+		projects = new HashSet<IProject>();
+		final IProject[] workspaceProjects = ResourcesPlugin.getWorkspace()
+				.getRoot().getProjects();
+		for (IProject project : workspaceProjects) {
+			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+			if (mapping != null && mapping.getRepository() == repo)
+				projects.add(project);
+		}
+
+	}
+

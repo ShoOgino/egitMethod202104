@@ -1,9 +1,8 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final RepositoryTreeNode node = getSelectedNodes(event).get(0);
 		Object object = node.getObject();
-		if (!(object instanceof Ref)) {
+		if (!(object instanceof Ref))
 			return null;
-		}
 
 		final Ref ref = (Ref) object;
 		final Repository repo = node.getRepository();
@@ -13,18 +12,8 @@
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				Set<IProject> repoProjects = new HashSet<IProject>();
-				final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-				for (IProject project : projects) {
-					RepositoryMapping mapping = RepositoryMapping.getMapping(project);
-					if (mapping != null && mapping.getRepository() == repo) {
-						repoProjects.add(project);
-					}
-				}
-
 				GitSynchronizeData data = new GitSynchronizeData(node
-						.getRepository(), Constants.HEAD, ref.getName(),
-						repoProjects, false);
+						.getRepository(), Constants.HEAD, ref.getName(), false);
 
 				new GitSynchronize(data);
 
