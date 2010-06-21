@@ -16,7 +16,7 @@
 			boolean added = repositoryUtil.addConfiguredRepository(mapping
 					.getRepository().getDirectory());
 			if (added) {
-				scheduleRefresh();
+				scheduleRefresh(0);
 			}
 
 			boolean doSetSelection = false;
