@@ -1,0 +1,12 @@
+		private Font getBoldFont() {
+			if (boldFont != null)
+				return boldFont;
+			Font defaultFont = JFaceResources.getDefaultFont();
+			FontData[] data = defaultFont.getFontData();
+			for (int i = 0; i < data.length; i++)
+				data[i].setStyle(SWT.BOLD);
+
+			boldFont = new Font(Display.getDefault(), data);
+			return boldFont;
+		}
+

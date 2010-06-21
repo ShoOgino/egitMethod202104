@@ -1,0 +1,38 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		getShell().setText(UIText.AddConfigEntryDialog_AddConfigTitle);
+		setTitle(UIText.AddConfigEntryDialog_AddConfigTitle);
+		setMessage(UIText.AddConfigEntryDialog_DialogMessage);
+		Composite titleParent = (Composite) super.createDialogArea(parent);
+		Composite main = new Composite(titleParent, SWT.NONE);
+		main.setLayout(new GridLayout(2, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		Label keylLabel = new Label(main, SWT.NONE);
+		keylLabel.setText(UIText.AddConfigEntryDialog_KeyLabel);
+		keylLabel.setToolTipText(UIText.AddConfigEntryDialog_ConfigKeyTooltip);
+		keyText = new Text(main, SWT.BORDER);
+		if (suggestedKey != null) {
+			keyText.setText(suggestedKey);
+			keyText.selectAll();
+		}
+
+		keyText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				check();
+			}
+		});
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(keyText);
+		new Label(main, SWT.NONE)
+				.setText(UIText.AddConfigEntryDialog_ValueLabel);
+		valueText = new Text(main, SWT.BORDER);
+		valueText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				check();
+			}
+		});
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(valueText);
+
+		applyDialogFont(main);
+		return main;
+	}
+

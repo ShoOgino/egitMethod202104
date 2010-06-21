@@ -1,0 +1,39 @@
+	private void check() {
+		setErrorMessage(null);
+		boolean hasError = false;
+		try {
+			if (keyText.getText().isEmpty()) {
+				setErrorMessage(UIText.AddConfigEntryDialog_MustEnterKeyMessage);
+				hasError = true;
+				return;
+			}
+			StringTokenizer st = new StringTokenizer(keyText.getText(), "."); //$NON-NLS-1$
+			if (st.countTokens() < 2 || st.countTokens() > 3) {
+				setErrorMessage(UIText.AddConfigEntryDialog_KeyComponentsMessage);
+				hasError = true;
+				return;
+			}
+			boolean exists = false;
+			if (st.countTokens() == 2)
+				exists = currentConfig.getString(st.nextToken(), null, st
+						.nextToken()) != null;
+			if (st.countTokens() == 3)
+				exists = currentConfig.getString(st.nextToken(),
+						st.nextToken(), st.nextToken()) != null;
+			if (exists) {
+				setErrorMessage(NLS.bind(
+						UIText.AddConfigEntryDialog_EntryExistsMessage, keyText
+								.getText()));
+				hasError = true;
+				return;
+			}
+			if (valueText.getText().isEmpty()) {
+				setErrorMessage(UIText.AddConfigEntryDialog_EnterValueMessage);
+				hasError = true;
+				return;
+			}
+		} finally {
+			getButton(OK).setEnabled(!hasError);
+		}
+	}
+

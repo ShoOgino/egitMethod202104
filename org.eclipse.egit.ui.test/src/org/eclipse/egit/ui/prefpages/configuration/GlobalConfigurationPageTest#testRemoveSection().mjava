@@ -1,0 +1,22 @@
+	@Test
+	public void testRemoveSection() throws Exception {
+		List<String> values = new ArrayList<String>(2);
+		values.add("true");
+		values.add("false");
+		config.setStringList(TESTSECTION, null, TESTNAME, values);
+		config.setStringList(TESTSECTION, TESTSUBSECTION, TESTNAME, values);
+		config.save();
+		getPreferencePage();
+		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).select();
+
+		bot.button(UIText.GlobalConfigurationPreferencePage_RemoveAllButton)
+				.click();
+		SWTBotShell confirm = bot
+				.shell(UIText.GlobalConfigurationPreferencePage_RemoveSectionTitle);
+		confirm.activate();
+		confirm.bot().button(IDialogConstants.OK_LABEL).click();
+		config.load();
+		assertTrue("Values in section should be deleted", config.getStringList(
+				TESTSECTION, null, TESTNAME).length == 0);
+	}
+

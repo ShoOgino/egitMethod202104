@@ -1,0 +1,20 @@
+	@Test
+	public void testCantCreateSameEntryValue() throws Exception {
+		config.setString(TESTSECTION, null, TESTNAME, "already");
+		config.save();
+		getPreferencePage();
+		preferencePage.bot().button(
+				UIText.GlobalConfigurationPreferencePage_NewValueButton)
+				.click();
+		SWTBotShell addDialog = bot
+				.shell(UIText.AddConfigEntryDialog_AddConfigTitle);
+		addDialog.activate();
+		addDialog.bot().textWithLabel(UIText.AddConfigEntryDialog_KeyLabel)
+				.setText(TESTSECTION + "." + TESTNAME);
+		addDialog.bot().textWithLabel(UIText.AddConfigEntryDialog_ValueLabel)
+				.setText("true");
+		assertTrue(!addDialog.bot().button(IDialogConstants.OK_LABEL)
+				.isEnabled());
+		addDialog.close();
+	}
+

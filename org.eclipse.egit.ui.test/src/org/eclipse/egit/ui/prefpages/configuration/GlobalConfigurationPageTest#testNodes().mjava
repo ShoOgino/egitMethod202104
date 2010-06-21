@@ -1,0 +1,26 @@
+	@Test
+	public void testNodes() throws Exception {
+		SWTBotTree configTree = preferencePage.bot().tree(1);
+		for (String section : config.getSections()) {
+			SWTBotTreeItem sectionItem = configTree.getTreeItem(section);
+			for (String subsection : config.getSubsections(section)) {
+				SWTBotTreeItem subsectionItem = sectionItem.getNode(subsection);
+				for (String entryName : config.getNames(section, subsection)) {
+					try {
+						subsectionItem.getNode(entryName);
+					} catch (WidgetNotFoundException e) {
+						subsectionItem.getNode(entryName + "[0]");
+					}
+				}
+
+			}
+			for (String entryName : config.getNames(section)) {
+				try {
+					sectionItem.getNode(entryName);
+				} catch (WidgetNotFoundException e) {
+					sectionItem.getNode(entryName + "[0]");
+				}
+			}
+		}
+	}
+

@@ -1,0 +1,14 @@
+		public Object getParent(Object element) {
+			if (element instanceof Section)
+				return null;
+			if (element instanceof SubSection)
+				return ((SubSection) element).parent;
+			if (element instanceof Entry) {
+				Entry entry = (Entry) element;
+				if (entry.sectionparent != null)
+					return entry.sectionparent;
+				return entry.subsectionparent;
+			}
+			return null;
+		}
+

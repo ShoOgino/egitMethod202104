@@ -1,0 +1,32 @@
+		public void changeValue(String newValue)
+				throws IllegalArgumentException {
+			if (newValue.isEmpty())
+				throw new IllegalArgumentException(
+						UIText.GlobalConfigurationPreferencePage_EmptyStringNotAllowed);
+			Config config = getConfig();
+
+			if (index < 0) {
+				if (sectionparent != null)
+					config.setString(sectionparent.name, null, name, newValue);
+				else
+					config.setString(subsectionparent.parent.name,
+							subsectionparent.name, name, newValue);
+			} else {
+				String[] entries;
+				if (sectionparent != null) {
+					entries = config.getStringList(sectionparent.name, null,
+							name);
+					entries[index] = newValue;
+					config.setStringList(sectionparent.name, null, name, Arrays
+							.asList(entries));
+				} else {
+					entries = config.getStringList(
+							subsectionparent.parent.name,
+							subsectionparent.name, name);
+					entries[index] = newValue;
+					config.setStringList(subsectionparent.parent.name,
+							subsectionparent.name, name, Arrays.asList(entries));
+				}
+			}
+		}
+

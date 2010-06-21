@@ -1,0 +1,23 @@
+		public String getColumnText(Object element, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				if (element instanceof Section)
+					return ((Section) element).name;
+				if (element instanceof SubSection)
+					return ((SubSection) element).name;
+				if (element instanceof Entry) {
+					Entry entry = (Entry) element;
+					if (entry.index < 0)
+						return entry.name;
+					return entry.name + "[" + entry.index + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				return null;
+			case 1:
+				if (element instanceof Entry)
+					return ((Entry) element).value;
+				return null;
+			default:
+				return null;
+			}
+		}
+

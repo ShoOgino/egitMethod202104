@@ -1,0 +1,8 @@
+	@Before
+	public void before() throws Exception {
+		config.unsetSection(TESTSECTION, TESTSUBSECTION);
+		config.unsetSection(TESTSECTION, null);
+		config.save();
+		getPreferencePage();
+	}
+

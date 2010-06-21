@@ -1,0 +1,44 @@
+		public Object[] getChildren(Object parentElement) {
+			List<Object> result = new ArrayList<Object>();
+			if (parentElement instanceof Section) {
+				Section section = (Section) parentElement;
+				Set<String> subSectionNames = userConfig
+						.getSubsections(((Section) parentElement).name);
+				for (String subSectionName : subSectionNames)
+					result.add(new SubSection(section, subSectionName));
+
+				Set<String> entryNames = userConfig.getNames(section.name);
+				for (String entryName : entryNames) {
+					String[] values = userConfig.getStringList(section.name,
+							null, entryName);
+					if (values.length == 1)
+						result.add(new Entry(section, entryName, values[0], -1));
+					else {
+						int index = 0;
+						for (String value : values)
+							result.add(new Entry(section, entryName, value,
+									index++));
+					}
+				}
+			}
+			if (parentElement instanceof SubSection) {
+				SubSection subSection = (SubSection) parentElement;
+				Set<String> entryNames = userConfig.getNames(
+						subSection.parent.name, subSection.name);
+				for (String entryName : entryNames) {
+					String[] values = userConfig.getStringList(
+							subSection.parent.name, subSection.name, entryName);
+					if (values.length == 1)
+						result.add(new Entry(subSection, entryName, values[0],
+								-1));
+					else {
+						int index = 0;
+						for (String value : values)
+							result.add(new Entry(subSection, entryName, value,
+									index++));
+					}
+				}
+			}
+			return result.toArray();
+		}
+

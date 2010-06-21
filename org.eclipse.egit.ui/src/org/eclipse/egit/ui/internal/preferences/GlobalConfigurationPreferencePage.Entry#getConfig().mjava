@@ -1,0 +1,9 @@
+		private Config getConfig() {
+			Config config;
+			if (sectionparent != null)
+				config = sectionparent.config;
+			else
+				config = subsectionparent.parent.config;
+			return config;
+		}
+

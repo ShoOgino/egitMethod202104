@@ -1,0 +1,23 @@
+	@Test
+	public void testRemoveSubSection() throws Exception {
+		List<String> values = new ArrayList<String>(2);
+		values.add("true");
+		values.add("false");
+		config.setStringList(TESTSECTION, null, TESTNAME, values);
+		config.setStringList(TESTSECTION, TESTSUBSECTION, TESTNAME, values);
+		config.save();
+		getPreferencePage();
+		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
+				TESTSUBSECTION).select();
+
+		bot.button(UIText.GlobalConfigurationPreferencePage_RemoveAllButton)
+				.click();
+		SWTBotShell confirm = bot
+				.shell(UIText.GlobalConfigurationPreferencePage_RemoveSubsectionTitle);
+		confirm.activate();
+		confirm.bot().button(IDialogConstants.OK_LABEL).click();
+		config.load();
+		assertTrue("Subsection should be deleted", !config.getSubsections(
+				TESTSECTION).contains(TESTSUBSECTION));
+	}
+

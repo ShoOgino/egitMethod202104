@@ -1,0 +1,34 @@
+		public void removeValue() {
+			Config config = getConfig();
+
+			if (index < 0) {
+				if (sectionparent != null)
+					config.unset(sectionparent.name, null, name);
+				else
+					config.unset(subsectionparent.parent.name,
+							subsectionparent.name, name);
+			} else {
+				List<String> entries;
+				if (sectionparent != null) {
+					// Arrays.asList returns a fixed-size list, so we need to
+					// copy over to a mutable list
+					entries = new ArrayList<String>(Arrays.asList(config
+							.getStringList(sectionparent.name, null, name)));
+
+					entries.remove(index);
+					config.setStringList(sectionparent.name, null, name,
+							entries);
+				} else {
+					// Arrays.asList returns a fixed-size list, so we need to
+					// copy over to a mutable list
+					entries = new ArrayList<String>(Arrays.asList(config
+							.getStringList(subsectionparent.parent.name,
+									subsectionparent.name, name)));
+					// the list is fixed-size, so we have to copy over
+					entries.remove(index);
+					config.setStringList(subsectionparent.parent.name,
+							subsectionparent.name, name, entries);
+				}
+			}
+		}
+

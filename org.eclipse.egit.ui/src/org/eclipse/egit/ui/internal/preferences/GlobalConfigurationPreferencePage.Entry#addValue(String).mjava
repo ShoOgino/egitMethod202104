@@ -1,0 +1,27 @@
+		public void addValue(String newValue) {
+			if (newValue.isEmpty())
+				throw new IllegalArgumentException(
+						UIText.GlobalConfigurationPreferencePage_EmptyStringNotAllowed);
+			Config config = getConfig();
+
+			List<String> entries;
+			if (sectionparent != null) {
+				// Arrays.asList returns a fixed-size list, so we need to copy
+				// over to a mutable list
+				entries = new ArrayList<String>(Arrays.asList(config
+						.getStringList(sectionparent.name, null, name)));
+				entries.add(Math.max(index, 0), newValue);
+				config.setStringList(sectionparent.name, null, name, entries);
+			} else {
+				// Arrays.asList returns a fixed-size list, so we need to copy
+				// over to a mutable list
+				entries = new ArrayList<String>(Arrays.asList(config
+						.getStringList(subsectionparent.parent.name,
+								subsectionparent.name, name)));
+				entries.add(Math.max(index, 0), newValue);
+				config.setStringList(subsectionparent.parent.name,
+						subsectionparent.name, name, entries);
+			}
+
+		}
+

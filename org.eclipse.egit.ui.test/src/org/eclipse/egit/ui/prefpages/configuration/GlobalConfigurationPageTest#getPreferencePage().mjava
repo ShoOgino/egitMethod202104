@@ -1,0 +1,15 @@
+	private void getPreferencePage() {
+		if (preferencePage != null)
+			preferencePage.close();
+		bot.perspectiveById("org.eclipse.ui.resourcePerspective").activate();
+		bot.menu("Window").menu("Preferences").click();
+		preferencePage = bot.shell("Preferences").activate();
+		SWTBotTreeItem team = preferencePage.bot().tree().getTreeItem("Team");
+		team
+				.expand()
+				.getNode(util.getPluginLocalizedValue("GitPreferences_name"))
+				.expand()
+				.getNode(util.getPluginLocalizedValue("ConfigurationPage.name"))
+				.select();
+	}
+

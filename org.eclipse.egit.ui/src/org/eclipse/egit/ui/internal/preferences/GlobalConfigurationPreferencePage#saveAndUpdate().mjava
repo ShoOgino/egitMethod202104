@@ -1,0 +1,12 @@
+	private void saveAndUpdate() {
+		try {
+			userConfig.save();
+			ISelection sel = tv.getSelection();
+			tv.setInput(userConfig);
+			tv.expandAll();
+			tv.setSelection(sel, true);
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+	}
+

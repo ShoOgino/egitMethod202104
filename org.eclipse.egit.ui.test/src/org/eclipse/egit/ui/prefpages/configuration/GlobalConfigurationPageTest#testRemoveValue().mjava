@@ -1,0 +1,20 @@
+	@Test
+	public void testRemoveValue() throws Exception {
+		List<String> values = new ArrayList<String>(2);
+		values.add("true");
+		values.add("false");
+		config.setStringList(TESTSECTION, null, TESTNAME, values);
+		config.save();
+		getPreferencePage();
+		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
+				TESTNAME + "[0]").select();
+
+		bot.button(UIText.GlobalConfigurationPreferencePage_RemoveButton)
+				.click();
+		config.load();
+		values = Arrays.asList(config
+				.getStringList(TESTSECTION, null, TESTNAME));
+		assertEquals("Wrong number of values", 1, values.size());
+		assertTrue(values.contains("false"));
+	}
+

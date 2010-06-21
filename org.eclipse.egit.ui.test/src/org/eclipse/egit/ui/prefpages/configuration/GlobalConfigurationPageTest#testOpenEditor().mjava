@@ -1,0 +1,14 @@
+	@Test
+	public void testOpenEditor() throws Exception {
+		try {
+			preferencePage.bot().button(
+					UIText.GlobalConfigurationPreferencePage_OpenEditorButton)
+					.click();
+			preferencePage.close();
+			assertEquals(config.getFile().getName(), bot.activeEditor()
+					.getTitle());
+		} finally {
+			bot.activeEditor().close();
+		}
+	}
+
