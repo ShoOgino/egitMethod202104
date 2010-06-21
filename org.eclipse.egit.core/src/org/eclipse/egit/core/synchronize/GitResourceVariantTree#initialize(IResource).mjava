@@ -18,9 +18,11 @@
 			Tree tree = getRevTree(resource);
 			ObjectId objId = getRevObjId(resource);
 
-			trees.put(db, tree);
-			// walk the tree to retrieve information
-			walk(db, objId, tree);
+			if (objId != null && tree != null) {
+				trees.put(db, tree);
+				// walk the tree to retrieve information
+				walk(db, objId, tree);
+			}
 		}
 	}
 
