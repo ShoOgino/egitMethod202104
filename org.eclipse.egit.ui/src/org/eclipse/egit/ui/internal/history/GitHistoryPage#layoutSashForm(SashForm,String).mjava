@@ -2,9 +2,16 @@
 		sf.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				final int[] w = sf.getWeights();
-				UIPreferences.setValue(prefs, key, w);
+				store.putValue(key, UIPreferences.intArrayToString(w));
+				if (store.needsSaving())
+					try {
+						store.save();
+					} catch (IOException e1) {
+						Activator.handleError(e1.getMessage(), e1, false);
+					}
+
 			}
 		});
-		sf.setWeights(UIPreferences.getIntArray(prefs, key, 2));
+		sf.setWeights(UIPreferences.stringToIntArray(store.getString(key), 2));
 	}
 

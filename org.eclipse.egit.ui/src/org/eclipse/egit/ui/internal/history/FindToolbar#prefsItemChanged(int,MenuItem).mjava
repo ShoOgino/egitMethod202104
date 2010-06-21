@@ -1,6 +1,12 @@
 	private void prefsItemChanged(int findin, MenuItem item) {
-		prefs.setValue(UIPreferences.FINDTOOLBAR_FIND_IN, findin);
-		Activator.getDefault().savePluginPreferences();
+		store.setValue(UIPreferences.FINDTOOLBAR_FIND_IN, findin);
+		if (store.needsSaving()){
+			try {
+				store.save();
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, false);
+			}
+		}
 		commitIdItem.setSelection(false);
 		commentsItem.setSelection(false);
 		authorItem.setSelection(false);

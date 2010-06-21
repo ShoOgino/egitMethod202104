@@ -1,7 +1,7 @@
 	private void layout() {
-		final boolean showComment = prefs.getBoolean(SHOW_COMMENT);
-		final boolean showFiles = prefs.getBoolean(SHOW_FILES);
-		final boolean showFindToolbar = prefs.getBoolean(SHOW_FIND_TOOLBAR);
+		final boolean showComment = store.getBoolean(SHOW_COMMENT);
+		final boolean showFiles = store.getBoolean(SHOW_FILES);
+		final boolean showFindToolbar = store.getBoolean(SHOW_FIND_TOOLBAR);
 
 		if (showComment && showFiles) {
 			graphDetailSplit.setMaximizedControl(null);

@@ -58,7 +58,7 @@
 					prefsMenu.setLocation(point);
 					prefsMenu.setVisible(true);
 				} else {
-					switch (prefs.getInt(UIPreferences.FINDTOOLBAR_FIND_IN)) {
+					switch (store.getInt(UIPreferences.FINDTOOLBAR_FIND_IN)) {
 					case PREFS_FINDIN_COMMITID:
 						commentsItem.notifyListeners(SWT.Selection, null);
 						break;
@@ -181,16 +181,22 @@
 
 		caseItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				prefs.setValue(UIPreferences.FINDTOOLBAR_IGNORE_CASE, caseItem
-						.getSelection());
-				Activator.getDefault().savePluginPreferences();
+				store.setValue(UIPreferences.FINDTOOLBAR_IGNORE_CASE,
+						caseItem.getSelection());
+				if (store.needsSaving()){
+					try {
+						store.save();
+					} catch (IOException e1) {
+						Activator.handleError(e1.getMessage(), e1, false);
+					}
+				}
 				clear();
 			}
 		});
-		caseItem.setSelection(prefs
+		caseItem.setSelection(store
 				.getBoolean(UIPreferences.FINDTOOLBAR_IGNORE_CASE));
 
-		int selectedPrefsItem = prefs.getInt(UIPreferences.FINDTOOLBAR_FIND_IN);
+		int selectedPrefsItem = store.getInt(UIPreferences.FINDTOOLBAR_FIND_IN);
 
 		commitIdItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {

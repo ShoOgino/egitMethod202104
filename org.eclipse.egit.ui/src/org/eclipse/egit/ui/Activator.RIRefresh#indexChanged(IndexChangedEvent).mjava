@@ -1,7 +1,9 @@
 		public void indexChanged(IndexChangedEvent e) {
 			// Check the workspace setting "refresh automatically" setting first
-			if (!ResourcesPlugin.getPlugin().getPluginPreferences().getBoolean(
-					ResourcesPlugin.PREF_AUTO_REFRESH))
+			boolean autoRefresh = new InstanceScope().getNode(
+					ResourcesPlugin.getPlugin().getBundle().getSymbolicName())
+					.getBoolean(ResourcesPlugin.PREF_AUTO_REFRESH, false);
+			if (!autoRefresh)
 				return;
 
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
