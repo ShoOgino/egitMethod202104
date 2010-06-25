@@ -1,0 +1,17 @@
+	private void createBranch(String branchName) throws Exception {
+		RefUpdate updateRef;
+		updateRef = repo.updateRef(Constants.R_HEADS + branchName);
+		Ref startRef = repo.getRef(branchName);
+		ObjectId startAt = repo.resolve(Constants.HEAD);
+		String startBranch;
+		if (startRef != null)
+			startBranch = branchName;
+		else
+			startBranch = startAt.name();
+		startBranch = repo.shortenRefName(startBranch);
+		updateRef.setNewObjectId(startAt);
+		updateRef
+				.setRefLogMessage("branch: Created from " + startBranch, false); //$NON-NLS-1$
+		updateRef.update();
+	}
+

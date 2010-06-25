@@ -1,0 +1,41 @@
+	/**
+	 * Compare() should return false when comparing two files with different
+	 * content length
+	 * @throws Exception
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnFalseWhenContentLengthIsDifferent()
+			throws Exception {
+		// when
+		byte[] shortContent = "short content".getBytes();
+		byte[] longContent = "very long long content".getBytes();
+		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", true);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
+				dataSet, null);
+
+		// given
+		IFile local = createMock(IFile.class);
+		expect(local.exists()).andReturn(true);
+		expect(local.getProject()).andReturn(project.getProject()).anyTimes();
+		expect(local.getContents()).andReturn(
+				new ByteArrayInputStream(longContent));
+		replay(local);
+
+		IStorage storage = createMock(IStorage.class);
+		expect(storage.getContents()).andReturn(
+				new ByteArrayInputStream(shortContent));
+		replay(storage);
+
+		IResourceVariant remote = createMock(IResourceVariant.class);
+		expect(remote.isContainer()).andReturn(false);
+		expect(remote.getStorage((IProgressMonitor) anyObject())).andReturn(
+				storage).anyTimes();
+		replay(remote);
+
+		// then
+		assertFalse(grvc.compare(local, remote));
+		verify(local, remote, storage);
+	}
+

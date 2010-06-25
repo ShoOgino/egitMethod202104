@@ -1,0 +1,34 @@
+	// this test fails when is run inside eclipse with Maven POM editor
+	@Test
+	public void shouldReturnNoChanges() throws Exception {
+		// when
+		changeFilesInProject();
+		showSynchronizationDialog("org.eclipse.egit.ui");
+
+		// given
+		bot.shell("Synchronize repository: egit" + File.separator + ".git")
+				.activate();
+
+		bot.comboBox(0).setSelection("local .git");
+		bot.comboBox(1).setSelection("HEAD");
+
+		bot.comboBox(2).setSelection("local .git");
+		bot.comboBox(3).setSelection("master");
+
+		// do not check 'Include local changes'
+
+		// fire action
+		bot.button("OK").click();
+
+		handleConfirmOpenPerspective();
+
+		// wait for dispose "Git Resource Synchronization"
+		bot.waitUntil(shellIsActive("Git Resource Synchronization"), 15000);
+		SWTBotShell gitResSyncShell = bot.shell("Git Resource Synchronization");
+		bot.waitUntil(shellCloses(gitResSyncShell), 300000);
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		assertEquals(0, syncViewTree.getAllItems().length);
+	}
+

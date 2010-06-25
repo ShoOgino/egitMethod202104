@@ -1,0 +1,19 @@
+	public void selectAndCloneRepository(String repoName) {
+		bot.shell("Import Projects from Git").activate();
+
+		SWTBotTable table = bot.table(0);
+		for (int i = 0; i < table.rowCount(); i++) {
+			String rowName = table.getTableItem(i).getText();
+			if (rowName != null && rowName.startsWith(repoName)) {
+				table.select(i);
+				break;
+			}
+		}
+
+		bot.button("Next >").click();
+
+		bot.button("Next >").click();
+
+		bot.button("Select All").click();
+	}
+

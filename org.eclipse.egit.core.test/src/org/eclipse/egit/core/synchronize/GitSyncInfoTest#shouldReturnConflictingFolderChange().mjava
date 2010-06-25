@@ -1,0 +1,36 @@
+	/**
+	 * Conflicting change when folder exists locally and remotely but it does
+	 * not exist in base resource variant.
+	 * @throws Exception
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnConflictingFolderChange() throws Exception {
+		// when
+
+		// given
+		IResource local = createMock(IResource.class);
+		expect(local.exists()).andReturn(true);
+		expect(local.isDerived()).andReturn(false);
+		expect(local.getName()).andReturn("Mian.java").anyTimes();
+		replay(local);
+
+		IResource baseResource = createMock(IResource.class);
+		expect(baseResource.exists()).andReturn(false);
+		replay(baseResource);
+		GitFolderResourceVariant base = new GitFolderResourceVariant(
+				baseResource);
+
+		IResource remoteResource = createMock(IResource.class);
+		expect(remoteResource.exists()).andReturn(true);
+		replay(remoteResource);
+		GitFolderResourceVariant remote = new GitFolderResourceVariant(
+				remoteResource);
+		GitSyncInfo gsi = new GitSyncInfo(local, base, remote, comparator);
+		gsi.init();
+
+		// then
+		assertEquals(CONFLICTING | CHANGE, gsi.getKind());
+		verify(local, baseResource, remoteResource);
+	}
+

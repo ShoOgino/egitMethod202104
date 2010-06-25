@@ -1,0 +1,38 @@
+	// this test always fails with cause:
+	// Timeout after: 5000 ms.: Could not find context menu with text:
+	// Synchronize
+	@Ignore
+	@Test
+	public void shouldLaunchSynchronizationFromGitRepositories()
+			throws Exception {
+		// when
+		bot.menu("Window").menu("Show View").menu("Other...").click();
+		bot.shell("Show View").bot().tree().expandNode("Git").getNode(
+				"Git Repositories").doubleClick();
+
+		SWTBotTree repositoriesTree = bot.viewByTitle("Git Repositories").bot()
+				.tree();
+		SWTBotTreeItem egitRoot = repositoriesTree.getAllItems()[0];
+		egitRoot.expand();
+		egitRoot.collapse();
+		egitRoot.expand();
+		SWTBotTreeItem remoteBranch = egitRoot.expandNode("Branches")
+				.expandNode("Remote Branches");
+		SWTBotTreeItem branchNode = remoteBranch.getNode("origin/stable-0.7");
+		branchNode.select();
+		branchNode.contextMenu("Synchronize").click();
+
+		handleConfirmOpenPerspective();
+
+		// wait for dispose "Git Resource Synchronization"
+		bot.waitUntil(shellIsActive("Git Resource Synchronization"), 15000);
+		SWTBotShell shell = bot.shell("Git Resource Synchronization");
+		bot.waitUntil(shellCloses(shell), 300000);
+
+		// given
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		assertEquals(8, syncViewTree.getAllItems().length);
+	}
+

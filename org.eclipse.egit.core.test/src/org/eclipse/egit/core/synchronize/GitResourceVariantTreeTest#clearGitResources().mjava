@@ -1,0 +1,9 @@
+	@After
+	public void clearGitResources() throws Exception {
+		List<IProject> projects = new ArrayList<IProject>();
+		projects.add(project.project);
+		new DisconnectProviderOperation(projects).execute(null);
+
+		repo.close();
+	}
+

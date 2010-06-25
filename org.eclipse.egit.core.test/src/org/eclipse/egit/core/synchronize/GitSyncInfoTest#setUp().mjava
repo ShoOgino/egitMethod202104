@@ -1,0 +1,15 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		IProject iProject = project.project;
+		if (!gitDir.exists())
+			new Repository(gitDir).create();
+
+		new ConnectProviderOperation(iProject, gitDir).execute(null);
+		repo = RepositoryMapping.getMapping(iProject).getRepository();
+
+		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", true);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+		comparator = new GitResourceVariantComparator(dataSet, null);
+	}
+

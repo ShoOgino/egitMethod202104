@@ -1,0 +1,31 @@
+	/**
+	 *  Comparing two folders that have different path should return false.
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnFalseWhenComparingContainerAndContainer() {
+		// when
+		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
+				null, null);
+
+		// given
+		IPath localPath = createMock(IPath.class);
+		replay(localPath);
+		IContainer local = createMock(IContainer.class);
+		expect(local.exists()).andReturn(true);
+		expect(local.getFullPath()).andReturn(localPath);
+		replay(local);
+
+		IPath remotePath = createMock(IPath.class);
+		replay(remotePath);
+		IResource remoteResource = createMock(IResource.class);
+		expect(remoteResource.getFullPath()).andReturn(remotePath);
+		replay(remoteResource);
+		GitFolderResourceVariant remote = new GitFolderResourceVariant(
+				remoteResource);
+
+		// then
+		assertFalse(grvc.compare(local, remote));
+		verify(local, localPath, remotePath, remoteResource);
+	}
+

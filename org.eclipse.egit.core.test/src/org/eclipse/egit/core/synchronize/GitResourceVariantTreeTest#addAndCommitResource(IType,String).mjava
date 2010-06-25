@@ -1,0 +1,9 @@
+	private void addAndCommitResource(IType mainJava, String commitMsg)
+			throws Exception {
+		List<IResource> resources = new ArrayList<IResource>();
+		resources.add(mainJava.getResource());
+		IResource[] track = resources.toArray(new IResource[resources.size()]);
+		new TrackOperation(track).execute(null); // add resource to git
+		new Git(repo).commit().setMessage(commitMsg).call(); // make commit
+	}
+

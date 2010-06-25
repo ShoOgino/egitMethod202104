@@ -1,0 +1,36 @@
+	/**
+	 * Check if getResourceVariant() does return the same resource that was
+	 * committed. Passes only when it is run as a single test, not as a part of
+	 * largest test suite
+	 * @throws Exception
+	 */
+	@Ignore
+	@Test
+	public void shoulReturnSameResourceVariant() throws Exception {
+		// when
+		IType mainJava = createResourceAndCommit("org.egit.test", "Main.java",
+				"class Main {}", "Initial commit");
+		GitSynchronizeData data = new GitSynchronizeData(repo, Constants.HEAD,
+				Constants.MASTER, false);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+
+		// given
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet,
+				store);
+
+		// then
+		IResourceVariant actual = grvt.getResourceVariant(mainJava
+				.getResource());
+		assertNotNull(actual);
+		assertEquals("Main.java", actual.getName());
+
+		InputStream actualIn = actual.getStorage(new NullProgressMonitor())
+				.getContents();
+		byte[] actualByte = new byte[actualIn.available()];
+		actualIn.read(actualByte);
+		InputStream expectedIn = ((IFile) mainJava.getResource()).getContents();
+		byte[] expectedByte = new byte[expectedIn.available()];
+		expectedIn.read(expectedByte);
+		assertArrayEquals(expectedByte, actualByte);
+	}
+

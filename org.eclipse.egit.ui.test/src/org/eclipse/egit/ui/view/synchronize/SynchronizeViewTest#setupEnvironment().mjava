@@ -1,0 +1,22 @@
+	@BeforeClass
+	public static void setupEnvironment() throws Exception {
+		// turn off auto building
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceDescription description = workspace.getDescription();
+		description.setAutoBuilding(false);
+		workspace.setDescription(description);
+
+		// obtain copy of EGit project
+		GitImportRepoWizard importWizard = new GitImportRepoWizard();
+
+		importWizard.openWizard();
+		String repoName = "egit";
+		String repoUrl = "git://egit.eclipse.org/egit.git";
+		if (!importWizard.containsRepo(repoName))
+			addRepository(importWizard, repoUrl);
+
+		importWizard.selectAndCloneRepository(repoName);
+		importWizard.waitForCreate();
+		waitForWorkspaceRefresh();
+	}
+

@@ -1,0 +1,50 @@
+	/**
+	 * Create and commit Main.java file in master branch, then create branch
+	 * "test" checkout nearly created branch and modify Main.java file.
+	 * getResourceVariant() should obtain Main.java file content from "master"
+	 * branch. Passes only when it is run as a single test, not as a part of
+	 * largest test suite
+	 * @throws Exception
+	 */
+	@Ignore
+	@Test
+	public void shouldReturnDifferentResourceVariant() throws Exception {
+		// when
+		IType mainJava = createResourceAndCommit("org.egit.test", "Main.java",
+				"class Main {}", "Initial commit");
+		createBranch("test");
+		// checkout branch
+		new BranchOperation(repo, "refs/heads/test").execute(null);
+		((IFile) mainJava.getResource()).appendContents(
+				new ByteArrayInputStream("// test".getBytes()), 0, null);
+		addAndCommitResource(mainJava, "Second commit");
+		GitSynchronizeData data = new GitSynchronizeData(repo, Constants.HEAD,
+				Constants.MASTER, false);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+
+		// given
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet,
+				store);
+
+		// then
+		IResourceVariant actual = grvt.getResourceVariant(mainJava
+				.getResource());
+		assertNotNull(actual);
+		assertEquals("Main.java", actual.getName());
+
+		InputStream actualIn = actual.getStorage(new NullProgressMonitor())
+				.getContents();
+		byte[] actualByte = new byte[actualIn.available()];
+		actualIn.read(actualByte);
+		InputStream expectedIn = ((IFile) mainJava.getResource()).getContents();
+		byte[] expectedByte = new byte[expectedIn.available()];
+		expectedIn.read(expectedByte);
+
+		// assert arrays not equals
+		if (Arrays.equals(expectedByte, actualByte)) {
+			fail();
+		} else {
+			assertTrue(true);
+		}
+	}
+

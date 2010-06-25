@@ -1,0 +1,43 @@
+	/**
+	 * Comparing two 'large' files that have same length and almost identical
+	 * content should return false.
+	 * @throws Exception
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnFalseWhenLongContentIsDifferent() throws Exception {
+		// when
+		byte[] localContent = new byte[8192];
+		Arrays.fill(localContent, (byte) 'a');
+		byte[] remoteContent = new byte[8192];
+		Arrays.fill(remoteContent, (byte) 'a');
+		remoteContent[8101] = 'b';
+		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", true);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
+				dataSet, null);
+
+		// given
+		IFile local = createMock(IFile.class);
+		expect(local.exists()).andReturn(true);
+		expect(local.getProject()).andReturn(project.getProject());
+		expect(local.getContents()).andReturn(
+				new ByteArrayInputStream(localContent));
+		replay(local);
+
+		IStorage storage = createMock(IStorage.class);
+		expect(storage.getContents()).andReturn(
+				new ByteArrayInputStream(remoteContent));
+		replay(storage);
+
+		IResourceVariant remote = createMock(IResourceVariant.class);
+		expect(remote.isContainer()).andReturn(false);
+		expect(remote.getStorage((IProgressMonitor) anyObject())).andReturn(
+				storage).anyTimes();
+		replay(remote);
+
+		// then
+		assertFalse(grvc.compare(local, remote));
+		verify(local, remote);
+	}
+

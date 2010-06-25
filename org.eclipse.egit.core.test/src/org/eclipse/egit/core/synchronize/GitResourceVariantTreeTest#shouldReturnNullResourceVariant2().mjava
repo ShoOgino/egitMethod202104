@@ -1,0 +1,23 @@
+	/**
+	 * getResourceVariant() should return null when given resource doesn't exist
+	 * in repository.
+	 * @throws Exception
+	 */
+	@Test
+	public void shouldReturnNullResourceVariant2() throws Exception {
+		// when
+		IPackageFragment iPackage = project.createPackage("org.egit.test");
+		IType mainJava = project.createType(iPackage, "Main.java",
+				"class Main {}");
+		GitSynchronizeData data = new GitSynchronizeData(repo, Constants.HEAD,
+				Constants.MASTER, false);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+
+		// given
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet,
+				store);
+
+		// then
+		assertNull(grvt.getResourceVariant(mainJava.getResource()));
+	}
+

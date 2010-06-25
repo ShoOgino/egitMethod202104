@@ -1,0 +1,31 @@
+	@Test
+	@SuppressWarnings("boxing")
+	/**
+	 * Comparing two remote files that have different git ObjectId should return false.
+	 */
+	public void shouldReturnFalseWhenComparingRemoteVariantWithDifferentObjectId() {
+		// when
+		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
+				null, null);
+
+		// given
+		IResource baseResource = createMock(IResource.class);
+		expect(baseResource.exists()).andReturn(true);
+		replay(baseResource);
+		GitBlobResourceVariant base = new GitBlobResourceVariant(
+				baseResource,
+				repo,
+				ObjectId.fromString("0123456789012345678901234567890123456789"),
+				null);
+
+		IResource remoteResource = createMock(IResource.class);
+		expect(remoteResource.exists()).andReturn(true);
+		replay(remoteResource);
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(
+				remoteResource, repo, ObjectId.zeroId(), null);
+
+		// then
+		assertFalse(grvc.compare(base, remote));
+		verify(baseResource, remoteResource);
+	}
+

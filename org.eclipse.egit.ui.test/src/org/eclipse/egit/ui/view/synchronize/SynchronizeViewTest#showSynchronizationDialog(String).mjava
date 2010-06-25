@@ -1,0 +1,20 @@
+	private void showSynchronizationDialog(String projectName) {
+		SWTBot packageExplorerBot = bot.viewByTitle("Package Explorer").bot();
+		packageExplorerBot.activeShell();
+		SWTBotTree tree = packageExplorerBot.tree();
+
+		// EGit decorates the project node shown in the package explorer. The
+		// '>' decorator indicates that there are uncommitted changes present in
+		// the project. Also the repository and branch name are added as a
+		// suffix ('[<repo name> <branch name>]' suffix). To bypass this
+		// decoration we use here this loop.
+		for (SWTBotTreeItem item : tree.getAllItems()) {
+			if (item.getText().contains(projectName)) {
+				item.select();
+				break;
+			}
+		}
+
+		ContextMenuHelper.clickContextMenu(tree, "Team", "Synchronize...");
+	}
+
