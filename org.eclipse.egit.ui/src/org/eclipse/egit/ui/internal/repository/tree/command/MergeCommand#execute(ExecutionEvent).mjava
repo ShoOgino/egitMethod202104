@@ -1,0 +1,56 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+		RepositoryTreeNode node = getSelectedNodes(event).get(0);
+
+		final Repository repository = node.getRepository();
+
+		if (!canMerge(repository))
+			return null;
+
+		String targetRef;
+		if (node instanceof RefNode) {
+			String refName = ((RefNode) node).getObject().getName();
+			try {
+				if (repository.getFullBranch().equals(refName))
+					targetRef = null;
+				else
+					targetRef = refName;
+			} catch (IOException e) {
+				targetRef = null;
+			}
+		} else if (node instanceof TagNode)
+			targetRef = ((TagNode) node).getObject().getName();
+		else
+			targetRef = null;
+
+		final String refName;
+		if (targetRef != null)
+			refName = targetRef;
+		else {
+			MergeTargetSelectionDialog mergeTargetSelectionDialog = new MergeTargetSelectionDialog(
+					getView(event).getSite().getShell(), repository);
+			if (mergeTargetSelectionDialog.open() == IDialogConstants.OK_ID) {
+				refName = mergeTargetSelectionDialog.getRefName();
+			} else {
+				return null;
+			}
+		}
+
+		String jobname = NLS.bind(UIText.MergeAction_JobNameMerge, refName);
+		Job job = new Job(jobname) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					new MergeOperation(repository, refName).execute(monitor);
+				} catch (final CoreException e) {
+					Activator.handleError(e.getMessage(), e, true);
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.schedule();
+
+		return null;
+	}
+

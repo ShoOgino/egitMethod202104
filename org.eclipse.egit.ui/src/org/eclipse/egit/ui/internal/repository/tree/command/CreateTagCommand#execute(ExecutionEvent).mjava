@@ -1,0 +1,73 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		RepositoryTreeNode node = getSelectedNodes(event).get(0);
+
+		final Repository repo = node.getRepository();
+
+		if (!repo.getRepositoryState().canCheckout()) {
+			MessageDialog.openError(getView(event).getSite().getShell(),
+					UIText.TagAction_cannotCheckout, NLS.bind(
+							UIText.TagAction_repositoryState, repo
+									.getRepositoryState().getDescription()));
+			return null;
+		}
+
+		String currentBranchName;
+		try {
+			currentBranchName = repo.getBranch();
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+			// TODO correct message
+			throw new ExecutionException(e.getMessage(), e);
+		}
+
+		CreateTagDialog dialog = new CreateTagDialog(getView(event).getSite()
+				.getShell(), ValidationUtils.getRefNameInputValidator(repo,
+				Constants.R_TAGS), currentBranchName);
+
+		// get and set commits
+		RevWalk revCommits = getRevCommits(repo);
+		dialog.setRevCommitList(revCommits);
+
+		// get and set existing tags
+		List<Tag> tags = getRevTags(repo);
+		dialog.setExistingTags(tags);
+
+		if (dialog.open() != IDialogConstants.OK_ID)
+			return null;
+
+		final Tag tag = new Tag(repo);
+		PersonIdent personIdent = new PersonIdent(repo);
+		String tagName = dialog.getTagName();
+
+		tag.setTag(tagName);
+		tag.setTagger(personIdent);
+		tag.setMessage(dialog.getTagMessage());
+
+		ObjectId tagCommit = getTagCommit(dialog.getTagCommit(), repo);
+		tag.setObjId(tagCommit);
+
+		String tagJobName = NLS.bind(UIText.TagAction_creating, tagName);
+		final boolean shouldMoveTag = dialog.shouldOverWriteTag();
+
+		Job tagJob = new Job(tagJobName) {
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					new TagOperation(repo, tag, shouldMoveTag).execute(monitor);
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(
+							UIText.TagAction_taggingFailed, e);
+				} finally {
+					GitLightweightDecorator.refresh();
+				}
+
+				return Status.OK_STATUS;
+			}
+
+		};
+
+		tagJob.setUser(true);
+		tagJob.schedule();
+
+		return null;
+	}
+
