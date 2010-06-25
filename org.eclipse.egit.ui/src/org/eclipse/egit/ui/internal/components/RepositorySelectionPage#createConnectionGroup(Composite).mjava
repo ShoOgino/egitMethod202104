@@ -8,10 +8,13 @@
 		scheme.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				final int idx = scheme.getSelectionIndex();
-				if (idx < 0)
+				if (idx < 0) {
 					setURI(uri.setScheme(null));
-				else
+					scheme.setToolTipText(""); //$NON-NLS-1$
+				} else {
 					setURI(uri.setScheme(nullString(scheme.getItem(idx))));
+					scheme.setToolTipText(SCHEME_TOOLTIPS[idx]);
+				}
 				updateAuthGroup();
 			}
 		});
