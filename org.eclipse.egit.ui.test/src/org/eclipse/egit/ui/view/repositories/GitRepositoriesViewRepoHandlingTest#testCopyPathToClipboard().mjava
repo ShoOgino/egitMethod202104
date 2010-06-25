@@ -1,8 +1,12 @@
 	@Test
 	public void testCopyPathToClipboard() throws Exception {
-		final SWTBotView view = getOrOpenView();
-		final SWTBotTreeItem[] items = view.bot().tree().getAllItems();
-		items[0].select();
+		clearView();
+		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+				repositoryFile);
+		refreshAndWait();
+		final SWTBotTree tree = getOrOpenView().bot().tree();
+		tree.getAllItems()[0].select();
+		waitInUI();
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
@@ -14,12 +18,12 @@
 						.getInstance());
 				assertEquals("Clipboard content should be x", "x", value);
 
-				ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
+				ContextMenuHelper.clickContextMenu(tree, myUtil
 						.getPluginLocalizedValue("CopyPathCommand"));
-
 				value = (String) clp.getContents(TextTransfer.getInstance());
-				assertTrue("Clipboard content should be a repository path",
-						FileKey.isGitRepository(new File(value), FS.DETECTED));
+				assertTrue("Clipboard content (" + value
+						+ ")should be a repository path", FileKey
+						.isGitRepository(new File(value), FS.DETECTED));
 
 				clp.dispose();
 			}

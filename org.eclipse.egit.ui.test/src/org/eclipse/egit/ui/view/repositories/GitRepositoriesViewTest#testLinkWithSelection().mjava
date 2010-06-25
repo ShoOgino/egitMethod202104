@@ -1,6 +1,48 @@
 	@Test
-	@Ignore
 	public void testLinkWithSelection() throws Exception {
-		// TODO implement
+		deleteAllProjects();
+		shareProjects(repositoryFile);
+		SWTBotPerspective perspective = null;
+		try {
+			perspective = bot.activePerspective();
+			bot.perspectiveById("org.eclipse.ui.resourcePerspective")
+					.activate();
+			SWTBotTree tree = getOrOpenView().bot().tree();
+			getRootItem(tree, repositoryFile).select();
+			// the selection should be root
+			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
+
+			SWTBotTree projectExplorerTree = bot.viewById(
+					"org.eclipse.ui.navigator.ProjectExplorer").bot().tree();
+			getProjectItem(projectExplorerTree, PROJ1).select();
+
+			// the selection should be still be root
+			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
+
+			// activate the link with selection
+			getOrOpenView().toolbarButton(
+					myUtil.getPluginLocalizedValue("LinkWithSelectionCommand"))
+					.click();
+
+			// the selection should be still be root
+			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
+
+			// select again the project
+			projectExplorerTree = bot.viewById(
+					"org.eclipse.ui.navigator.ProjectExplorer").bot().tree();
+			getProjectItem(projectExplorerTree, PROJ1).select();
+
+			// the selection should be project
+			assertTrue(tree.selection().get(0, 0).equals(PROJ1));
+
+			// deactivate the link with selection
+			getOrOpenView().toolbarButton(
+					myUtil.getPluginLocalizedValue("LinkWithSelectionCommand"))
+					.click();
+
+		} finally {
+			if (perspective != null)
+				perspective.activate();
+		}
 	}
 

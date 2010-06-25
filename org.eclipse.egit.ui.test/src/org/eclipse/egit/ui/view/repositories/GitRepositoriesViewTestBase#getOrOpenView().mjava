@@ -1,4 +1,4 @@
-	private SWTBotView getOrOpenView() throws Exception {
+	protected SWTBotView getOrOpenView() throws Exception {
 		if (viewbot == null) {
 			bot.menu("Window").menu("Show View").menu("Other...").click();
 			SWTBotShell shell = bot.shell("Show View").activate();
@@ -9,7 +9,8 @@
 			viewbot = bot.viewByTitle(viewName);
 
 			assertNotNull("Repositories View should not be null", viewbot);
-		}
+		} else
+			viewbot.setFocus();
 		return viewbot;
 	}
 

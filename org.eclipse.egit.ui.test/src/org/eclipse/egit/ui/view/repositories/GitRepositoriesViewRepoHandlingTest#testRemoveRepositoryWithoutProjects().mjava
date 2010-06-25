@@ -1,0 +1,16 @@
+	@Test
+	public void testRemoveRepositoryWithoutProjects() throws Exception {
+		deleteAllProjects();
+		clearView();
+		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+				repositoryFile);
+		refreshAndWait();
+		assertHasRepo(repositoryFile);
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		tree.getAllItems()[0].select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("RemoveRepositoryCommand"));
+		refreshAndWait();
+		assertEmpty();
+	}
+

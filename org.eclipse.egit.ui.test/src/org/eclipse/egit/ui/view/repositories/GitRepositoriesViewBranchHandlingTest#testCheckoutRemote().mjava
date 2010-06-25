@@ -1,0 +1,71 @@
+	/**
+	 * Tests checkout of remote branches and project label decoration
+	 * @throws Exception
+	 */
+	@Test
+	public void testCheckoutRemote() throws Exception {
+		SWTBotPerspective perspective = null;
+		try {
+			perspective = bot.activePerspective();
+			bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
+			clearView();
+			Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+					clonedRepositoryFile);
+			shareProjects(clonedRepositoryFile);
+			refreshAndWait();
+
+			SWTBotTree tree = getOrOpenView().bot().tree();
+
+			SWTBotTreeItem item = getLocalBranchesItem(tree,
+					clonedRepositoryFile).expand();
+
+			List<String> children = item.getNodes();
+			assertEquals("Wrong number of local children", 2, children.size());
+
+			// make sure to checkout master
+			item.getNode(0).select();
+			ContextMenuHelper.clickContextMenu(tree, myUtil
+					.getPluginLocalizedValue("CheckoutCommand"));
+			refreshAndWait();
+			touchAndSubmit();
+			refreshAndWait();
+
+			item = getRemoteBranchesItem(tree, clonedRepositoryFile).expand();
+			children = item.getNodes();
+			assertEquals("Wrong number of remote children", 2, children.size());
+
+			item.getNode("origin/stable").select();
+			ContextMenuHelper.clickContextMenu(tree, myUtil
+					.getPluginLocalizedValue("CheckoutCommand"));
+			refreshAndWait();
+
+			SWTBotTree projectExplorerTree = bot.viewById(
+					"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+			SWTBotTreeItem projectItem = getProjectItem(projectExplorerTree, PROJ1).select();
+			waitInUI();
+			assertTrue("Wrong project label decoration", projectItem.getText()
+					.contains("refs"));
+			// TODO Bug 315166 prevents this from properly working, but then it
+			// should go:
+			// assertTrue(projectItem.getText().contains(
+			// tree.selection().get(0, 0)));
+
+			// now let's try to create a local branch from the remote one
+			item = getRemoteBranchesItem(tree, clonedRepositoryFile).expand();
+			item.getNode("origin/stable").select();
+			ContextMenuHelper.clickContextMenu(tree, myUtil
+					.getPluginLocalizedValue("CreateBranchCommand"));
+
+			SWTBotShell createPage = bot
+					.shell(UIText.RepositoriesView_NewBranchTitle);
+			createPage.activate();
+			assertEquals("Wrong suggested branch name", "stable", createPage
+					.bot().text(1).getText());
+			createPage.close();
+
+		} finally {
+			if (perspective != null)
+				perspective.activate();
+		}
+	}
+

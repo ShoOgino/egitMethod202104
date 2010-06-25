@@ -1,0 +1,30 @@
+	@Test
+	@Ignore
+	public void testCloneRepoButton() throws Exception {
+		clearView();
+		refreshAndWait();
+		assertEmpty();
+		getOrOpenView().toolbarButton(
+				myUtil.getPluginLocalizedValue("CloneRepositoryCommand"))
+				.click();
+		SWTBotShell shell = bot.shell(UIText.GitCloneWizard_title).activate();
+		// for some reason, textWithLabel doesn't seem to work
+		shell.bot()
+				.textInGroup(UIText.RepositorySelectionPage_groupLocation, 0)
+				.setText(repositoryFile.getPath());
+		// for some reason, buttonWithLabel doesn't work; 2 is next
+		shell.bot().button(2).click();
+		waitInUI();
+		// for some reason, buttonWithLabel doesn't work; 3 is next
+		shell.bot().button(3).click();
+		waitInUI();
+		// for some reason textWithLabel doesn't work; 0 is path text
+		SWTBotText pathText = shell.bot().text(0);
+		pathText.setText(pathText.getText() + "Cloned");
+		// for some reason, buttonWithLabel doesn't work; 3 is finish
+		shell.bot().button(3).click();
+		waitInUI();
+		refreshAndWait();
+		assertHasClonedRepo();
+	}
+

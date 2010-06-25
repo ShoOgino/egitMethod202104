@@ -1,6 +1,7 @@
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		repositoryFile = createProjectAndCommitToRepository();
+		remoteRepositoryFile = createRemoteRepository(repositoryFile);
 		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
 				repositoryFile);
 	}

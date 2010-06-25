@@ -1,0 +1,32 @@
+	@Test
+	public void testPasteRepoPath() throws Exception {
+		clearView();
+		refreshAndWait();
+		final Exception[] exceptions = new Exception[1];
+		final SWTBotTree tree = getOrOpenView().bot().tree();
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				Clipboard clip = null;
+				try {
+					clip = new Clipboard(Display.getDefault());
+					clip.setContents(new Object[] { repositoryFile.getPath() },
+							new Transfer[] { TextTransfer.getInstance() });
+
+					ContextMenuHelper.clickContextMenu(tree, myUtil
+							.getPluginLocalizedValue("PastePathCommand"));
+				} catch (Exception e) {
+					exceptions[0] = e;
+				} finally {
+					if (clip != null)
+						clip.dispose();
+				}
+			}
+		});
+
+		if (exceptions[0] != null)
+			throw exceptions[0];
+		refreshAndWait();
+		assertHasRepo(repositoryFile);
+	}
+

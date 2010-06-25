@@ -1,0 +1,25 @@
+	@Test
+	public void testRemoveRepositoryWithProjectsYes() throws Exception {
+		deleteAllProjects();
+		assertProjectExistence(PROJ1, false);
+		clearView();
+		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+				repositoryFile);
+		shareProjects(repositoryFile);
+		assertProjectExistence(PROJ1, true);
+		refreshAndWait();
+		assertHasRepo(repositoryFile);
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		tree.getAllItems()[0].select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("RemoveRepositoryCommand"));
+		SWTBotShell shell = bot
+				.shell(UIText.RepositoriesView_ConfirmProjectDeletion_WindowTitle);
+		shell.activate();
+		shell.bot().button(IDialogConstants.YES_LABEL).click();
+		waitInUI();
+		refreshAndWait();
+		assertEmpty();
+		assertProjectExistence(PROJ1, false);
+	}
+

@@ -1,0 +1,14 @@
+	protected void assertHasRepo(File repositoryDir) throws Exception {
+		final SWTBotTree tree = getOrOpenView().bot().tree();
+		final SWTBotTreeItem[] items = tree.getAllItems();
+		boolean found = false;
+		for (SWTBotTreeItem item : items) {
+			if (item.getText().startsWith(
+					repositoryDir.getParentFile().getName())) {
+				found = true;
+				break;
+			}
+		}
+		assertTrue("Tree should have item with correct text", found);
+	}
+
