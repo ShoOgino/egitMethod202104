@@ -1,0 +1,10 @@
+	@AfterClass
+	public static void afterClassBase() throws Exception {
+		// close all editors/dialogs
+		new Eclipse().reset();
+		// cleanup
+		clearView();
+		deleteAllProjects();
+		deleteRecursive(testDirectory);
+	}
+

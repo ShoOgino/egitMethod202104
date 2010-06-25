@@ -1,0 +1,17 @@
+	protected SWTBotTreeItem getLocalBranchesItem(SWTBotTree tree, File repo)
+			throws Exception {
+		Repository repository = lookupRepository(repo);
+		RepositoryNode root = new RepositoryNode(null, repository);
+		BranchesNode branches = new BranchesNode(root, repository);
+		LocalBranchesNode localBranches = new LocalBranchesNode(branches,
+				repository);
+
+		String rootText = labelProvider.getText(root);
+		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
+		SWTBotTreeItem branchesItem = rootItem.expand().getNode(
+				labelProvider.getText(branches));
+		SWTBotTreeItem localItem = branchesItem.expand().getNode(
+				labelProvider.getText(localBranches));
+		return localItem;
+	}
+

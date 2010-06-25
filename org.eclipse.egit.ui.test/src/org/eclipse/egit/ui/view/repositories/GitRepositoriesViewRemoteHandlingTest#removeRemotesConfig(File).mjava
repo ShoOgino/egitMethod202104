@@ -1,0 +1,9 @@
+	private void removeRemotesConfig(File file) throws Exception {
+		Repository repo = lookupRepository(file);
+		RepositoryConfig config = repo.getConfig();
+		for (String remote : config.getSubsections("remote"))
+			config.unsetSection("remote", remote);
+		config.save();
+		waitInUI();
+	}
+

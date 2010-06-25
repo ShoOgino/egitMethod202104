@@ -1,0 +1,20 @@
+	protected static void touchAndSubmit() throws Exception {
+		IProject prj = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				PROJ1);
+		if (!prj.isAccessible())
+			throw new IllegalStateException("No project to touch");
+		IFile file = prj.getFile(new Path("folder/test.txt"));
+		String newContent = "Touched at " + System.currentTimeMillis();
+		file.setContents(new ByteArrayInputStream(newContent.getBytes(prj
+				.getDefaultCharset())), 0, null);
+
+		IFile[] commitables = new IFile[] { file };
+		ArrayList<IFile> untracked = new ArrayList<IFile>();
+		untracked.addAll(Arrays.asList(commitables));
+		CommitOperation op = new CommitOperation(commitables,
+				new ArrayList<IFile>(), untracked,
+				"Test Author <test.author@test.com>",
+				"Test Committer <test.commiter@test.com>", newContent);
+		op.execute(null);
+	}
+

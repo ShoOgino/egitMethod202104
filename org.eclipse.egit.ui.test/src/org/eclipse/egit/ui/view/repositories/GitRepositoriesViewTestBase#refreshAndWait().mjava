@@ -1,0 +1,7 @@
+	protected void refreshAndWait() throws Exception {
+		RepositoriesView view = (RepositoriesView) getOrOpenView()
+				.getReference().getPart(false);
+		Job refreshJob = view.refresh();
+		refreshJob.join();
+	}
+

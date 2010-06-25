@@ -1,0 +1,18 @@
+	@BeforeClass
+	public static void beforeClassBase() throws Exception {
+		// close the welcome page
+		try {
+			bot.viewByTitle("Welcome").close();
+		} catch (WidgetNotFoundException e) {
+			// somebody else probably closed it, lets not feel bad about it.
+		}
+		clearView();
+		deleteAllProjects();
+		// create our temporary directory in the user space
+		File userHome = FS.DETECTED.userHome();
+		testDirectory = new File(userHome, "GitRepositoriesTest");
+		if (testDirectory.exists())
+			deleteRecursive(testDirectory);
+		testDirectory.mkdir();
+	}
+

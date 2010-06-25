@@ -1,0 +1,83 @@
+	@Test
+	@Ignore
+	public void testFetchFromOrigin() throws Exception {
+
+		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+				clonedRepositoryFile);
+		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+				clonedRepositoryFile2);
+
+		Repository repository = lookupRepository(clonedRepositoryFile2);
+		// add the configuration for push from cloned2
+		repository.getConfig().setString("remote", "origin", "push",
+				"refs/heads/*:refs/heads/*");
+		repository.getConfig().save();
+
+		SWTBotTree tree = getOrOpenView().bot().tree();
+
+		String destinationString = clonedRepositoryFile.getParentFile()
+				.getName()
+				+ " - " + "origin";
+		String dialogTitle = NLS.bind(UIText.FetchResultDialog_title,
+				destinationString);
+
+		getRemotesItem(tree, clonedRepositoryFile).expand().getNode("origin")
+				.expand().getNode(0).select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("SimpleFetchCommand"));
+
+		SWTBotShell confirm = bot.shell(dialogTitle);
+		assertEquals("Wrong result table row count", 0, confirm.bot().table()
+				.rowCount());
+		confirm.close();
+
+		deleteAllProjects();
+		shareProjects(clonedRepositoryFile2);
+		String objid = repository.getRef("refs/heads/master").getTarget()
+				.getObjectId().name();
+		objid = objid.substring(0, 7);
+		touchAndSubmit();
+		// push from other repository
+		PushConfiguredRemoteAction action = new PushConfiguredRemoteAction(
+				repository, "origin");
+
+		action.run(bot.activeShell().widget, false);
+
+		destinationString = clonedRepositoryFile2.getParentFile().getName()
+				+ " - " + "origin";
+
+		String pushdialogTitle = NLS.bind(UIText.ResultDialog_title,
+				destinationString);
+
+		bot.shell(pushdialogTitle).close();
+
+		deleteAllProjects();
+
+		refreshAndWait();
+
+		getRemotesItem(tree, clonedRepositoryFile).expand().getNode("origin")
+				.expand().getNode(0).select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("SimpleFetchCommand"));
+
+		confirm = bot.shell(dialogTitle);
+		SWTBotTable table = confirm.bot().table();
+		boolean found = false;
+		for (int i = 0; i < table.rowCount(); i++) {
+			found = table.getTableItem(i).getText(2).startsWith(objid);
+			if (found)
+				break;
+		}
+		assertTrue(found);
+		confirm.close();
+
+		getRemotesItem(tree, clonedRepositoryFile).expand().getNode("origin")
+				.expand().getNode(0).select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("SimpleFetchCommand"));
+
+		confirm = bot.shell(dialogTitle);
+		assertEquals("Wrong result table row count", 0, confirm.bot().table()
+				.rowCount());
+	}
+

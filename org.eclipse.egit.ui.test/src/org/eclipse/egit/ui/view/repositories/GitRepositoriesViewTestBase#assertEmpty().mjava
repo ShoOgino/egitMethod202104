@@ -1,0 +1,6 @@
+	protected void assertEmpty() throws Exception {
+		final SWTBotView view = getOrOpenView();
+		final SWTBotTreeItem[] items = view.bot().tree().getAllItems();
+		assertTrue("Tree should have no items", items.length == 0);
+	}
+

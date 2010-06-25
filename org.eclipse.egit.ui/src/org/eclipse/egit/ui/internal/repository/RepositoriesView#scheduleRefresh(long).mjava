@@ -1,4 +1,4 @@
-	private void scheduleRefresh(long delay) {
+	private Job scheduleRefresh(long delay) {
 		boolean trace = GitTraceLocation.REPOSITORIESVIEW.isActive();
 		if (trace)
 			GitTraceLocation.getTrace().trace(
@@ -13,7 +13,7 @@
 				GitTraceLocation.getTrace().trace(
 						GitTraceLocation.REPOSITORIESVIEW.getLocation(),
 						"Pending refresh job, returning"); //$NON-NLS-1$
-			return;
+			return scheduledJob;
 		}
 
 		final CommonViewer tv = getCommonViewer();
@@ -128,5 +128,6 @@
 		service.schedule(job, delay);
 
 		scheduledJob = job;
+		return scheduledJob;
 	}
 

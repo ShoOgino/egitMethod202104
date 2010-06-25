@@ -1,0 +1,60 @@
+	/**
+	 * Verify that remote configuration is shown correctly; also check error
+	 * node display
+	 * @throws Exception
+	 */
+	@Test
+	@Ignore
+	public void testExpandRemotes() throws Exception {
+		removeRemotesConfig(repositoryFile);
+		refreshAndWait();
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		SWTBotTreeItem remotesItem = getRemotesItem(tree, repositoryFile)
+				.expand();
+		assertEquals("Wrong number of remotes", 0, remotesItem.getNodes()
+				.size());
+		RepositoryConfig cfg = lookupRepository(repositoryFile).getConfig();
+		String remoteUri = "file:///" + remoteRepositoryFile.getPath();
+
+		cfg.setString("remote", "test", "url", remoteUri);
+		cfg.setString("remote", "test", "fetch", "somejunk");
+		cfg.setString("remote", "test2", "url", remoteUri);
+		cfg.setString("remote", "test2", "fetch", "somejunk");
+		cfg.setString("remote", "test2", "pushurl", remoteUri);
+		cfg.setString("remote", "test2", "push", "somejunk");
+		cfg.setString("remote", "test3", "pushurl", "somejunk");
+		cfg.setString("remote", "test3", "push", "somejunk");
+		cfg.save();
+		cfg.load();
+		refreshAndWait();
+		remotesItem = getRemotesItem(tree, repositoryFile).expand();
+		assertEquals("Wrong number of remotes", 3, remotesItem.getNodes()
+				.size());
+
+		remotesItem = getRemotesItem(tree, repositoryFile).expand();
+		List<String> testnodes = remotesItem.getNode("test").expand()
+				.getNodes();
+		assertTrue(testnodes.size() == 1);
+		List<String> test2nodes = remotesItem.getNode("test2").expand()
+				.getNodes();
+		assertTrue(test2nodes.size() == 2);
+		// error node should be shown
+		remotesItem.getNode("test3").expand().getNodes();
+		assertTrue(remotesItem.getNode("test3").expand().getNodes().size() == 1);
+		final SWTBotTreeItem errorItem = remotesItem.getNode("test3")
+				.getNode(0);
+		// check that we see an error node
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				Object data = errorItem.widget.getData();
+				assertTrue(data instanceof ErrorNode);
+			}
+		});
+
+		removeRemotesConfig(repositoryFile);
+		refreshAndWait();
+		remotesItem = getRemotesItem(tree, repositoryFile).expand();
+		assertEquals("Wrong number of remotes", 0, remotesItem.getNodes()
+				.size());
+	}
+
