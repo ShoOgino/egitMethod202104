@@ -1,11 +1,16 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		try {
-			// TODO should we get this from the event?
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().showView(IPageLayout.ID_PROP_SHEET);
-		} catch (PartInitException e1) {
-			// just ignore
-		}
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				try {
+					// TODO should we get this from the event?
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage()
+							.showView(IPageLayout.ID_PROP_SHEET);
+				} catch (PartInitException e1) {
+					// just ignore
+				}
+			}
+		});
 
 		return null;
 	}
