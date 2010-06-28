@@ -13,7 +13,7 @@
 			}
 
 			Set<String> dirStrings = new HashSet<String>();
-			dirStrings.addAll(getConfiguredRepositories(false));
+			dirStrings.addAll(getConfiguredRepositories());
 			if (dirStrings.remove(dir)) {
 				saveDirs(dirStrings);
 				return true;
