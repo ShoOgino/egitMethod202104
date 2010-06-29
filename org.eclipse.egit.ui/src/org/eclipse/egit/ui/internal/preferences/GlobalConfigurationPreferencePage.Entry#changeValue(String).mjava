@@ -1,6 +1,6 @@
 		public void changeValue(String newValue)
 				throws IllegalArgumentException {
-			if (newValue.isEmpty())
+			if (newValue.length() == 0)
 				throw new IllegalArgumentException(
 						UIText.GlobalConfigurationPreferencePage_EmptyStringNotAllowed);
 			Config config = getConfig();
