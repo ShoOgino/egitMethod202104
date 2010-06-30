@@ -1,0 +1,9 @@
+	private void createWorkingSetGroup(Composite workArea) {
+		// TODO: replace hardcoded ids once bug 245106 is fixed
+		String[] workingSetTypes = new String[] {
+			"org.eclipse.ui.resourceWorkingSetPage", //$NON-NLS-1$
+			"org.eclipse.jdt.ui.JavaWorkingSetPage" //$NON-NLS-1$
+		};
+		workingSetGroup = new WorkingSetGroup(workArea, null, workingSetTypes);
+	}
+
