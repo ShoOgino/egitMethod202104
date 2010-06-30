@@ -1,0 +1,16 @@
+	private List<Tag> getRevTags(Repository repo) throws ExecutionException {
+		Collection<Ref> revTags = repo.getTags().values();
+		List<Tag> tags = new ArrayList<Tag>();
+		for (Ref ref : revTags) {
+			try {
+				Tag tag = repo.mapTag(ref.getName());
+				tags.add(tag);
+			} catch (IOException e) {
+				throw new ExecutionException(NLS
+						.bind(UIText.TagAction_errorWhileMappingRevTag, ref
+								.getName()), e);
+			}
+		}
+		return tags;
+	}
+

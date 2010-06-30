@@ -1,0 +1,16 @@
+	private ObjectId getTagCommit(ObjectId objectId, Repository repo)
+			throws ExecutionException {
+		ObjectId result = null;
+		if (objectId == null) {
+			try {
+				result = repo.resolve(Constants.HEAD);
+			} catch (IOException e) {
+				throw new ExecutionException(
+						UIText.TagAction_unableToResolveHeadObjectId, e);
+			}
+		} else {
+			result = objectId;
+		}
+		return result;
+	}
+
