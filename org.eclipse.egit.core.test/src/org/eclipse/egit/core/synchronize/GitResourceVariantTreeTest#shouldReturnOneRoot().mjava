@@ -1,0 +1,21 @@
+	/**
+	 * roots() method should return list of projects that are associated with
+	 * given repository. In this case there is only one project associated with
+	 * this repository therefore only one root should be returned.
+	 */
+	@Test
+	public void shouldReturnOneRoot() {
+		// when
+		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", false);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+
+		// given
+		GitResourceVariantTree grvt = new GitTestResourceVariantTree(dataSet,
+				store);
+
+		// then
+		assertEquals(1, grvt.roots().length);
+		IResource actualProject = grvt.roots()[0];
+		assertEquals(this.project.getProject(), actualProject);
+	}
+

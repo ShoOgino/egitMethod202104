@@ -1,0 +1,8 @@
+	public void waitForCreate() {
+		bot.button("Finish").click();
+
+		SWTBotShell shell = bot.shell("Import Projects from Git");
+
+		bot.waitUntil(shellCloses(shell), 120000);
+	}
+

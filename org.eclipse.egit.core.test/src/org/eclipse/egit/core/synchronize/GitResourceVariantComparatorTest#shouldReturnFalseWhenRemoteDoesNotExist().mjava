@@ -1,0 +1,21 @@
+	/**
+	 * When remote variant wasn't found, compare method is called with null as
+	 * second parameter. In this case compare should return false.
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnFalseWhenRemoteDoesNotExist() {
+		// when
+		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
+				null, null);
+
+		// given
+		IResource local = createMock(IResource.class);
+		expect(local.exists()).andReturn(false);
+		replay(local);
+
+		// then
+		assertFalse(grvc.compare(local, null));
+		verify(local);
+	}
+

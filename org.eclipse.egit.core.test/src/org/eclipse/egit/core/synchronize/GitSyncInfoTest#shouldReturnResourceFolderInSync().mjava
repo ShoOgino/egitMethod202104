@@ -1,0 +1,27 @@
+	/**
+	 * Folders are in sync when they have same name.
+	 * @throws Exception
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnResourceFolderInSync() throws Exception {
+		// when
+
+		// given
+		IResource local = createMock(IResource.class);
+		expect(local.isDerived()).andReturn(false);
+		expect(local.exists()).andReturn(true).times(3);
+		expect(local.getName()).andReturn("src").anyTimes();
+		replay(local);
+
+		GitFolderResourceVariant base = new GitFolderResourceVariant(local);
+		GitFolderResourceVariant remote = new GitFolderResourceVariant(local);
+
+		GitSyncInfo gsi = new GitSyncInfo(local, base, remote, comparator);
+		gsi.init();
+
+		// then
+		assertEquals(IN_SYNC, gsi.getKind());
+		verify(local);
+	}
+

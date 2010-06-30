@@ -1,0 +1,12 @@
+	public boolean containsRepo(String projectName) {
+		SWTBotTable table = bot.table(0);
+		int repoCount = configuredRepoCount();
+
+		for (int i = 0; i < repoCount; i++) {
+			String rowName = table.getTableItem(i).getText();
+			if (rowName.contains(projectName))
+				return true;
+		}
+		return false;
+	}
+

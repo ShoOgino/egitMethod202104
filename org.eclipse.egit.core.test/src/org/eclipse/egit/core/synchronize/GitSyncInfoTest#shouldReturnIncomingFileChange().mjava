@@ -1,0 +1,56 @@
+	/**
+	 * Should return incoming change when remote RevCommitList has more commit
+	 * objects then base RevCommitList
+	 * @throws Exception
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnIncomingFileChange() throws Exception {
+		// when
+
+		// given
+		String fileName = "test-file";
+		byte[] localBytes = new byte[8200];
+		Arrays.fill(localBytes, (byte) 'a');
+
+		IFile local = createMock(IFile.class);
+		expect(local.isDerived()).andReturn(false);
+		expect(local.exists()).andReturn(true).times(2);
+		expect(local.getName()).andReturn(fileName).anyTimes();
+		expect(local.getProject()).andReturn(project.getProject());
+		expect(local.getContents()).andReturn(
+				new ByteArrayInputStream(localBytes));
+		replay(local);
+
+		ObjectId objectId = stage(fileName, localBytes);
+		RevCommit firstCommit = commit();
+		RevCommitList<RevCommit> baseCommits = new RevCommitList<RevCommit>();
+		baseCommits.add(firstCommit);
+
+		IFile baseResource = createMock(IFile.class);
+		replay(baseResource);
+		GitBlobResourceVariant base = new GitBlobResourceVariant(baseResource,
+				repo, objectId, baseCommits); // baseCommits has one element
+
+		IResource remoteResource = createMock(IResource.class);
+		replay(remoteResource);
+
+		stage(fileName, localBytes);
+		RevCommit secondCommit = commit();
+		RevCommitList<RevCommit> remoteCommits = new RevCommitList<RevCommit>();
+		remoteCommits.add(secondCommit);
+		remoteCommits.add(firstCommit);
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(
+				remoteResource,
+				repo,
+				ObjectId.fromString("0123456789012345678901234567890123456789"),
+				remoteCommits); // remoteCommits has two elements
+
+		GitSyncInfo gsi = new GitSyncInfo(local, base, remote, comparator);
+		gsi.init();
+
+		// then
+		assertEquals(INCOMING | CHANGE, gsi.getKind());
+		verify(local, baseResource, remoteResource);
+	}
+

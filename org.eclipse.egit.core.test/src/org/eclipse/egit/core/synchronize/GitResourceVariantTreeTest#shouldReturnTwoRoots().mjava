@@ -1,0 +1,29 @@
+	/**
+	 * When we have two or more project associated with repository, roots()
+	 * method should return list of project. In this case we have two project
+	 * associated with particular repository, therefore '2' value is expected.
+	 * @throws Exception
+	 */
+	@Test
+	public void shouldReturnTwoRoots() throws Exception {
+		// when
+		// create second project
+		TestProject secondProject = new TestProject(false, "Project-2");
+		IProject secondIProject = secondProject.project;
+		// add connect project with repository
+		new ConnectProviderOperation(secondIProject, gitDir).execute(null);
+		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", false);
+		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+
+		// given
+		GitResourceVariantTree grvt = new GitTestResourceVariantTree(dataSet,
+				store);
+
+		// then
+		assertEquals(2, grvt.roots().length);
+		IResource actualProject = grvt.roots()[1];
+		assertEquals(this.project.project, actualProject);
+		IResource actualProject1 = grvt.roots()[0];
+		assertEquals(secondIProject, actualProject1);
+	}
+

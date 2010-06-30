@@ -1,0 +1,24 @@
+	/**
+	 * Outgoing addition should be returned when resource exists locally but it
+	 * can't be found in base and remote resource variant.
+	 * @throws Exception
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnOutgoingAddition() throws Exception {
+		// when
+
+		// given
+		IResource baseResource = createMock(IResource.class);
+		expect(baseResource.exists()).andReturn(true).times(2);
+		expect(baseResource.isDerived()).andReturn(false);
+		expect(baseResource.getName()).andReturn("Mian.java").anyTimes();
+		replay(baseResource);
+		GitSyncInfo gsi = new GitSyncInfo(baseResource, null, null, comparator);
+		gsi.init();
+
+		// then
+		assertEquals(OUTGOING | ADDITION, gsi.getKind());
+		verify(baseResource);
+	}
+

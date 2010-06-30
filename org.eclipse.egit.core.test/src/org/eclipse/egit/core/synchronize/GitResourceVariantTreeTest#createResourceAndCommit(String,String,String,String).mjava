@@ -1,0 +1,7 @@
+	private IType createResourceAndCommit(String packageName, String fileName,
+			String fileContent, String commitMsg) throws Exception {
+		IPackageFragment iPackage = project.createPackage(packageName);
+		return createResourceAndCommit(iPackage, fileName, fileContent,
+				commitMsg);
+	}
+

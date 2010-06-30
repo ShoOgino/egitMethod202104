@@ -1,0 +1,27 @@
+	/**
+	 * When comparing locally not existing file with file that exists in remote,
+	 * compare method should return false.
+	 */
+	@Test
+	@SuppressWarnings("boxing")
+	public void shouldReturnFalseWhenBaseDoesntExist() {
+		// when
+		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
+				null, null);
+
+		// given
+		IResource baseResource = createMock(IResource.class);
+		expect(baseResource.exists()).andReturn(false);
+		replay(baseResource);
+		GitBlobResourceVariant base = new GitBlobResourceVariant(baseResource,
+				repo, ObjectId.zeroId(), null);
+		IResource remoteResource = createMock(IResource.class);
+		replay(remoteResource);
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(
+				remoteResource, repo, ObjectId.zeroId(), null);
+
+		// then
+		assertFalse(grvc.compare(base, remote));
+		verify(baseResource, remoteResource);
+	}
+

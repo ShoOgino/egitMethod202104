@@ -1,0 +1,6 @@
+	public int configuredRepoCount() {
+		bot.shell("Import Projects from Git").activate();
+
+		return bot.table(0).rowCount();
+	}
+
