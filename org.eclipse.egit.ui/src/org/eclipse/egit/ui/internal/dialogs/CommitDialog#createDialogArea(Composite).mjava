@@ -63,8 +63,10 @@
 			amendingButton.setEnabled(false); // if already set, don't allow any changes
 			commitText.setText(previousCommitMessage);
 			authorText.setText(previousAuthor);
+			saveOriginalChangeId();
 		} else if (!amendAllowed) {
 			amendingButton.setEnabled(false);
+			originalChangeId = null;
 		}
 		amendingButton.addSelectionListener(new SelectionListener() {
 			boolean alreadyAdded = false;
@@ -80,6 +82,7 @@
 							+ previousCommitMessage.replaceAll(
 									"\n", Text.DELIMITER)); //$NON-NLS-1$
 					authorText.setText(previousAuthor);
+					saveOriginalChangeId();
 				}
 			}
 
@@ -116,6 +119,39 @@
 			}
 		});
 
+		changeIdButton = new Button(container, SWT.CHECK);
+		changeIdButton.setText(UIText.CommitDialog_AddChangeIdLabel);
+		changeIdButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		changeIdButton.setToolTipText(UIText.CommitDialog_AddChangeIdTooltip);
+		changeIdButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				createChangeId = changeIdButton.getSelection();
+				String text = commitText.getText().replaceAll(Text.DELIMITER, "\n"); //$NON-NLS-1$
+				if (createChangeId) {
+					String changedText = ChangeIdUtil.insertId(text,
+							originalChangeId != null ? originalChangeId : ObjectId.zeroId());
+					if (!text.equals(changedText)) {
+						changedText = changedText.replaceAll("\n", Text.DELIMITER); //$NON-NLS-1$
+						commitText.setText(changedText);
+					}
+				} else {
+					int changeIdOffset = findOffsetOfChangeIdLine(text);
+					if (changeIdOffset > 0) {
+						int endOfChangeId = findNextEOL(changeIdOffset, text);
+						String cleanedText = text.substring(0, changeIdOffset)
+								+ text.substring(endOfChangeId);
+						cleanedText = cleanedText.replaceAll("\n", Text.DELIMITER); //$NON-NLS-1$
+						commitText.setText(cleanedText);
+					}
+				}
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// empty
+			}
+		});
+
 		showUntrackedButton = new Button(container, SWT.CHECK);
 		showUntrackedButton.setText(UIText.CommitDialog_ShowUntrackedFiles);
 		showUntrackedButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
@@ -144,9 +180,11 @@
 		commitText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				updateSignedOffButton();
+				updateChangeIdButton();
 			}
 		});
 		updateSignedOffButton();
+		updateChangeIdButton();
 
 		Table resourcesTable = new Table(container, SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.FULL_SELECTION | SWT.MULTI | SWT.CHECK | SWT.BORDER);
