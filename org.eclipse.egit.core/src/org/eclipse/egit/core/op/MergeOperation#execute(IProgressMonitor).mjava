@@ -1,4 +1,7 @@
 	public void execute(IProgressMonitor m) throws CoreException {
+		if (mergeResult != null)
+			throw new CoreException(new Status(IStatus.ERROR, Activator
+					.getPluginId(), CoreText.OperationAlreadyExecuted));
 		IProgressMonitor monitor;
 		if (m == null)
 			monitor = new NullProgressMonitor();

@@ -1,4 +1,5 @@
 	public RepositoriesView getView(ExecutionEvent event) {
+		// TODO replace with HandlerUtil checked call when unifying command handling
 		Object part = ((IEvaluationContext) event.getApplicationContext())
 				.getRoot().getVariable("activePart"); //$NON-NLS-1$ TODO constant for this?
 		return (RepositoriesView) part;
