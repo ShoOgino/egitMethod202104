@@ -1,5 +1,6 @@
-	public void selectAndCloneRepository(String repoName) {
-		bot.shell("Import Projects from Git").activate();
+	public void selectAndCloneRepository(String repoName) throws Exception {
+		SWTBotShell importShell = bot.shell("Import Projects from Git")
+				.activate();
 
 		SWTBotTable table = bot.table(0);
 		for (int i = 0; i < table.rowCount(); i++) {
@@ -9,11 +10,19 @@
 				break;
 			}
 		}
+		// TODO investigate why we need Thread.sleep here
+		bot.button("Next >").click();
+		Thread.sleep(1000);
+		// set the radio buttons properly
+		pressAltAndChar(importShell, 'E');
+		Thread.sleep(1000);
+		pressAltAndChar(importShell, 'a');
+		Thread.sleep(1000);
 
 		bot.button("Next >").click();
-
-		bot.button("Next >").click();
+		Thread.sleep(1000);
 
 		bot.button("Select All").click();
+		Thread.sleep(1000);
 	}
 

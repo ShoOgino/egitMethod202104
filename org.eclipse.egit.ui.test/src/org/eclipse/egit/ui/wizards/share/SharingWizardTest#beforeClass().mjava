@@ -19,5 +19,6 @@
 		bot.textWithLabel("Project name:").setText(projectName);
 
 		bot.button("Finish").click();
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
