@@ -1,8 +1,7 @@
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		confirmationBtn = createButton(parent, IDialogConstants.OK_ID,
-				UIText.MergeTargetSelectionDialog_ButtonMerge, true);
-		createButton(parent, IDialogConstants.CANCEL_ID,
-				IDialogConstants.CANCEL_LABEL, false);
+		super.createButtonsForButtonBar(parent);
+		getButton(Window.OK).setText(
+				UIText.MergeTargetSelectionDialog_ButtonMerge);
 	}
 

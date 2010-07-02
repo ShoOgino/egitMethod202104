@@ -1,12 +1,13 @@
 	@Override
 	protected void createCustomArea(Composite parent) {
 		Group g = new Group(parent, SWT.NONE);
-		g.setText(UIText.BranchSelectionDialog_ResetType);
-		g.setLayoutData(GridDataFactory.fillDefaults().align(SWT.CENTER, SWT.CENTER).create());
+		g.setText(UIText.ResetTargetSelectionDialog_ResetTypeGroup);
+		g.setLayoutData(GridDataFactory.fillDefaults().align(SWT.CENTER,
+				SWT.CENTER).create());
 		g.setLayout(new GridLayout(1, false));
 
 		Button soft = new Button(g, SWT.RADIO);
-		soft.setText(UIText.BranchSelectionDialog_ResetTypeSoft);
+		soft.setText(UIText.ResetTargetSelectionDialog_ResetTypeSoftButton);
 		soft.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				resetType = ResetType.SOFT;
@@ -15,7 +16,7 @@
 
 		Button medium = new Button(g, SWT.RADIO);
 		medium.setSelection(true);
-		medium.setText(UIText.BranchSelectionDialog_ResetTypeMixed);
+		medium.setText(UIText.ResetTargetSelectionDialog_ResetTypeMixedButton);
 		medium.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				resetType = ResetType.MIXED;
@@ -23,7 +24,7 @@
 		});
 
 		Button hard = new Button(g, SWT.RADIO);
-		hard.setText(UIText.BranchSelectionDialog_ResetTypeHard);
+		hard.setText(UIText.ResetTargetSelectionDialog_ResetTypeHardButton);
 		hard.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				resetType = ResetType.HARD;

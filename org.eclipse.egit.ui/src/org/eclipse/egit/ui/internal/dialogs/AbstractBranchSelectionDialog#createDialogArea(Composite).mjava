@@ -1,0 +1,49 @@
+	@Override
+	protected final Composite createDialogArea(Composite base) {
+		Composite parent = (Composite) super.createDialogArea(base);
+		parent.setLayout(GridLayoutFactory.fillDefaults().create());
+
+		// TODO deprecated constructor for now
+		FilteredTree tree = new FilteredTree(parent, SWT.SINGLE | SWT.BORDER,
+				new PatternFilter());
+		branchTree = tree.getViewer();
+		branchTree.setLabelProvider(new RepositoriesViewLabelProvider());
+		branchTree.setContentProvider(new RepositoriesViewContentProvider());
+
+		GridDataFactory.fillDefaults().grab(true, true).hint(500, 300).applyTo(
+				tree);
+		branchTree.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				String refName = refNameFromDialog();
+				refNameSelected(refName);
+			}
+		});
+
+		// double-click support
+		branchTree.addOpenListener(new IOpenListener() {
+
+			public void open(OpenEvent event) {
+				RepositoryTreeNode node = (RepositoryTreeNode) ((IStructuredSelection) branchTree
+						.getSelection()).getFirstElement();
+				if (node.getType() != RepositoryTreeNodeType.REF
+						&& node.getType() != RepositoryTreeNodeType.TAG)
+					branchTree.setExpandedState(node, !branchTree
+							.getExpandedState(node));
+				else if (getButton(Window.OK).isEnabled())
+					okPressed();
+
+			}
+		});
+
+		createCustomArea(parent);
+
+		setTitle(getTitle());
+		setMessage(getMessageText());
+		getShell().setText(getWindowTitle());
+
+		applyDialogFont(parent);
+
+		return parent;
+	}
+

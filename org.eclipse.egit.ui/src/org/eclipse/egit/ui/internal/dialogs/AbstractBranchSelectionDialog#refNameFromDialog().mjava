@@ -1,0 +1,16 @@
+	/**
+	 * @return the selected ref name from the tree, may be null
+	 */
+	protected String refNameFromDialog() {
+		IStructuredSelection sel = (IStructuredSelection) branchTree
+				.getSelection();
+		if (sel.size() != 1)
+			return null;
+		RepositoryTreeNode node = (RepositoryTreeNode) sel.getFirstElement();
+		if (node.getType() == RepositoryTreeNodeType.REF
+				|| node.getType() == RepositoryTreeNodeType.TAG) {
+			return ((Ref) node.getObject()).getName();
+		}
+		return null;
+	}
+
