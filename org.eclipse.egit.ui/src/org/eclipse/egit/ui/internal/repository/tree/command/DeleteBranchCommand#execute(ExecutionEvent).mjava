@@ -2,14 +2,15 @@
 		final RefNode node = getSelectedNodes(event).get(0);
 		final Ref ref = node.getObject();
 
-		if (!MessageDialog.openConfirm(getView(event).getSite().getShell(),
+		Shell shell = getShell(event);
+		if (!MessageDialog.openConfirm(shell,
 				UIText.RepositoriesView_ConfirmDeleteTitle, NLS.bind(
 						UIText.RepositoriesView_ConfirmBranchDeletionMessage,
 						ref.getName())))
 			return null;
 
 		try {
-			new ProgressMonitorDialog(getView(event).getSite().getShell()).run(
+			new ProgressMonitorDialog(shell).run(
 					false, false, new IRunnableWithProgress() {
 						public void run(IProgressMonitor monitor)
 								throws InvocationTargetException,

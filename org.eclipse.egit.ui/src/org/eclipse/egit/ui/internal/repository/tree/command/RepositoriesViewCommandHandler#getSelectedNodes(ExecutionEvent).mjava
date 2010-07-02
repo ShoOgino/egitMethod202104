@@ -1,8 +1,6 @@
 	@SuppressWarnings("unchecked")
-	public List<T> getSelectedNodes(ExecutionEvent event) {
-		// TODO replace with HandlerUtil checked call when unifying command handling
-		TreeSelection selection = (TreeSelection) ((IEvaluationContext) event
-				.getApplicationContext()).getRoot().getVariable("selection"); //$NON-NLS-1$ TODO constant for this?
+	public List<T> getSelectedNodes(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		return selection.toList();
 	}
 

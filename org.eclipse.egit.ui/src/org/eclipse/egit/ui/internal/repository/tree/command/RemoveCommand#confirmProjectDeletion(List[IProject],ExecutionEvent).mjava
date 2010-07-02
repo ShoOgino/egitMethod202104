@@ -5,8 +5,7 @@
 		String message = NLS.bind(
 				UIText.RepositoriesView_ConfirmProjectDeletion_Question,
 				projectsToDelete.size());
-		MessageDialog dlg = new MessageDialog(getView(event).getSite()
-				.getShell(),
+		MessageDialog dlg = new MessageDialog(getShell(event),
 				UIText.RepositoriesView_ConfirmProjectDeletion_WindowTitle,
 				null, message, MessageDialog.INFORMATION, new String[] {
 						IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL,
