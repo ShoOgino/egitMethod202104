@@ -7,7 +7,12 @@
 		headId = repository.resolve(Constants.HEAD);
 
 		store = Activator.getDefault().getPreferenceStore();
-		repositoryName = Activator.getDefault().getRepositoryUtil().getRepositoryName(repository);
+		String repoName = Activator.getDefault().getRepositoryUtil().getRepositoryName(repository);
+		RepositoryState state = repository.getRepositoryState();
+		if (state != RepositoryState.SAFE)
+			repositoryName = repoName + '|' + state.getDescription();
+		else
+			repositoryName = repoName;
 
 		branch = getShortBranch();
 
