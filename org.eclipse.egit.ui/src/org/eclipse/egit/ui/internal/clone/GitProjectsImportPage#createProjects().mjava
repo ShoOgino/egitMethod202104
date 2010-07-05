@@ -5,17 +5,17 @@
 	 *         successful.
 	 */
 	boolean createProjects() {
-		final Object[] selected = getCheckedProjects().toArray();
+		final Set<ProjectRecord> selected = getCheckedProjects();
 		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
 			protected void execute(IProgressMonitor monitor)
 					throws InvocationTargetException, InterruptedException {
 				try {
-					monitor.beginTask("", selected.length); //$NON-NLS-1$
+					monitor.beginTask("", selected.size()); //$NON-NLS-1$
 					if (monitor.isCanceled()) {
 						throw new OperationCanceledException();
 					}
-					for (int i = 0; i < selected.length; i++) {
-						createExistingProject((ProjectRecord) selected[i],
+					for (ProjectRecord projectRecord : selected) {
+						createExistingProject(projectRecord,
 								new SubProgressMonitor(monitor, 1));
 					}
 				} finally {

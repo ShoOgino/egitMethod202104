@@ -1,11 +1,11 @@
 	/**
 	 * @return All the currently checked projects in the projectsList tree
 	 */
-	private HashSet<Object> getCheckedProjects() {
-		HashSet<Object> ret = new HashSet<Object>();
+	private Set<ProjectRecord> getCheckedProjects() {
+		HashSet<ProjectRecord> ret = new HashSet<ProjectRecord>();
 		for (TreeItem item : projectsList.getTree().getItems())
 			if (item.getChecked())
-				ret.add(item.getData());
+				ret.add((ProjectRecord) item.getData());
 
 		return ret;
 	}
