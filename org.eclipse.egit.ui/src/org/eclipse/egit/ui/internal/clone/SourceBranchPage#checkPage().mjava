@@ -4,6 +4,8 @@
 	 */
 	private void checkPage() {
 		setMessage(null);
+		selectB.setEnabled(selectedRefs.size() != availableRefs.size());
+		unselectB.setEnabled(selectedRefs.size() != 0);
 		if (transportError != null) {
 			setErrorMessage(transportError);
 			setPageComplete(false);
@@ -21,7 +23,6 @@
 			setPageComplete(false);
 			return;
 		}
-
 		setErrorMessage(null);
 		setPageComplete(true);
 	}

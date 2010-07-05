@@ -7,17 +7,10 @@
 				new GridData(SWT.FILL, SWT.FILL, true, true));
 		specsPanel.addRefSpecTableListener(new SelectionChangeListener() {
 			public void selectionChanged() {
-				notifySelectionChanged();
 				checkPage();
 			}
 		});
 
-		final SelectionAdapter changesNotifier = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				notifySelectionChanged();
-			}
-		};
 		if (!pushPage) {
 			final Group tagsGroup = new Group(panel, SWT.NULL);
 			tagsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
@@ -31,20 +24,14 @@
 			tagsFetchTagsButton
 					.setText(UIText.RefSpecPage_annotatedTagsFetchTags);
 			tagsNoTagsButton = new Button(tagsGroup, SWT.RADIO);
-			tagsNoTagsButton
-					.setText(UIText.RefSpecPage_annotatedTagsNoTags);
-			tagsAutoFollowButton.addSelectionListener(changesNotifier);
-			tagsFetchTagsButton.addSelectionListener(changesNotifier);
-			tagsNoTagsButton.addSelectionListener(changesNotifier);
+			tagsNoTagsButton.setText(UIText.RefSpecPage_annotatedTagsNoTags);
 		}
 
 		saveButton = new Button(panel, SWT.CHECK);
 		saveButton.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false));
-		saveButton.addSelectionListener(changesNotifier);
 
 		Dialog.applyDialogFont(panel);
 		setControl(panel);
-		notifySelectionChanged();
 		checkPage();
 	}
 

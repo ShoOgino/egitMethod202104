@@ -1,10 +1,9 @@
 	@Override
 	public void setVisible(final boolean visible) {
 		if (visible) {
-			if (branchPage.isSourceRepoEmpty()) {
+			if (this.availableRefs.isEmpty()) {
 				initialBranch.setEnabled(false);
 			}
-			revalidate();
 		}
 		super.setVisible(visible);
 		if (visible)

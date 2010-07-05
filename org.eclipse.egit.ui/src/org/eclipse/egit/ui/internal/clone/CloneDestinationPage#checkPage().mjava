@@ -24,7 +24,7 @@
 			setPageComplete(false);
 			return;
 		}
-		if (!branchPage.isSourceRepoEmpty()
+		if (!availableRefs.isEmpty()
 				&& initialBranch.getSelectionIndex() < 0) {
 			setErrorMessage(NLS.bind(UIText.CloneDestinationPage_fieldRequired,
 					UIText.CloneDestinationPage_promptInitialBranch));

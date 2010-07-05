@@ -1,6 +1,7 @@
 	private void revalidate() {
 
-		if (currentRepoSelection != null && currentRepoSelection.equals(validatedRepoSelection)) {
+		if (currentRepoSelection != null
+				&& currentRepoSelection.equals(validatedRepoSelection)) {
 			// nothing changed on previous page
 			checkPage();
 			return;
@@ -13,7 +14,6 @@
 		specsPanel.setEnable(false);
 		saveButton.setVisible(false);
 		saveButton.setSelection(false);
-		notifySelectionChanged();
 		validatedRepoSelection = null;
 		transportError = null;
 		getControl().getDisplay().asyncExec(new Runnable() {

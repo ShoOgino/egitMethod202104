@@ -29,14 +29,12 @@
 				} else
 					selectedRefs.remove(ref);
 
-				notifySelectionChanged();
 				checkPage();
 			}
 		});
 
 		final Composite bPanel = new Composite(panel, SWT.NONE);
 		bPanel.setLayout(new RowLayout());
-		final Button selectB;
 		selectB = new Button(bPanel, SWT.PUSH);
 		selectB.setText(UIText.SourceBranchPage_selectAll);
 		selectB.addSelectionListener(new SelectionAdapter() {
@@ -45,29 +43,20 @@
 					refsTable.getItem(i).setChecked(true);
 				selectedRefs.clear();
 				selectedRefs.addAll(availableRefs);
-				notifySelectionChanged();
 				checkPage();
 			}
 		});
-		final Button unselectB = new Button(bPanel, SWT.PUSH);
+		unselectB = new Button(bPanel, SWT.PUSH);
 		unselectB.setText(UIText.SourceBranchPage_selectNone);
 		unselectB.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				for (int i = 0; i < refsTable.getItemCount(); i++)
 					refsTable.getItem(i).setChecked(false);
 				selectedRefs.clear();
-				notifySelectionChanged();
 				checkPage();
 			}
 		});
 		bPanel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-
-		addSelectionListener(new SelectionChangeListener() {
-			public void selectionChanged() {
-				selectB.setEnabled(selectedRefs.size() != availableRefs.size());
-				unselectB.setEnabled(selectedRefs.size() != 0);
-			}
-		});
 
 		Dialog.applyDialogFont(panel);
 		setControl(panel);

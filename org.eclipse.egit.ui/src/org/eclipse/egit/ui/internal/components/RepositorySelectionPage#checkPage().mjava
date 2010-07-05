@@ -30,7 +30,8 @@
 						badField = UIText.RepositorySelectionPage_promptPassword;
 					if (badField != null) {
 						selectionIncomplete(NLS
-								.bind(UIText.RepositorySelectionPage_fieldNotSupported,
+								.bind(
+										UIText.RepositorySelectionPage_fieldNotSupported,
 										unamp(badField), proto));
 						return;
 					}
@@ -40,7 +41,7 @@
 					if (!d.exists()) {
 						selectionIncomplete(NLS.bind(
 								UIText.RepositorySelectionPage_fileNotFound,
-								d.getAbsolutePath()));
+										d.getAbsolutePath()));
 						return;
 					}
 
@@ -64,7 +65,8 @@
 						badField = UIText.RepositorySelectionPage_promptPassword;
 					if (badField != null) {
 						selectionIncomplete(NLS
-								.bind(UIText.RepositorySelectionPage_fieldNotSupported,
+								.bind(
+										UIText.RepositorySelectionPage_fieldNotSupported,
 										unamp(badField), proto));
 						return;
 					}

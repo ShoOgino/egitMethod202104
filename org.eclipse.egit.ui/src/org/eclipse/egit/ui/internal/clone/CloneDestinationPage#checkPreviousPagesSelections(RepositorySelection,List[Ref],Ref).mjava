@@ -1,0 +1,11 @@
+	private void checkPreviousPagesSelections(
+			RepositorySelection repositorySelection, List<Ref> branches,
+			Ref head) {
+		if (!repositorySelection.equals(validatedRepoSelection)
+				|| !branches.equals(validatedSelectedBranches)
+				|| !head.equals(validatedHEAD))
+			setPageComplete(false);
+		else
+			checkPage();
+	}
+

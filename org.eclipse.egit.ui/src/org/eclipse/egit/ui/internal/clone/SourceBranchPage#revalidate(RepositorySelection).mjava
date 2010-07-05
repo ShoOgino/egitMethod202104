@@ -1,11 +1,10 @@
-	private void revalidate() {
-		if (sourcePage.selectionEquals(validatedRepoSelection)) {
+	private void revalidate(final RepositorySelection newRepoSelection) {
+		if (newRepoSelection.equals(validatedRepoSelection)) {
 			// URI hasn't changed, no need to refill the page with new data
 			checkPage();
 			return;
 		}
 
-		final RepositorySelection newRepoSelection = sourcePage.getSelection();
 		label.setText(NLS.bind(UIText.SourceBranchPage_branchList,
 				newRepoSelection.getURI().toString()));
 		label.getParent().layout();
