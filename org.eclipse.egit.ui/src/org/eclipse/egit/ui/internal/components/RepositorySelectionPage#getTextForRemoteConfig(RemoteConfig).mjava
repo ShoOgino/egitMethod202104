@@ -1,0 +1,31 @@
+	private String getTextForRemoteConfig(final RemoteConfig rc) {
+		final StringBuilder sb = new StringBuilder(rc.getName());
+		sb.append(": "); //$NON-NLS-1$
+		boolean first = true;
+		List<URIish> uris;
+		if (sourceSelection) {
+			uris = rc.getURIs();
+		} else {
+			uris = rc.getPushURIs();
+			// if no push URIs are defined, use fetch URIs instead
+			if (uris.isEmpty()) {
+				uris = rc.getURIs();
+			}
+		}
+
+		for (final URIish u : uris) {
+			final String uString = u.toString();
+			if (first)
+				first = false;
+			else {
+				sb.append(", "); //$NON-NLS-1$
+				if (sb.length() + uString.length() > REMOTE_CONFIG_TEXT_MAX_LENGTH) {
+					sb.append("..."); //$NON-NLS-1$
+					break;
+				}
+			}
+			sb.append(uString);
+		}
+		return sb.toString();
+	}
+

@@ -1,0 +1,19 @@
+	public void createControl(final Composite parent) {
+		final Composite panel = new Composite(parent, SWT.NULL);
+		panel.setLayout(new GridLayout());
+
+		if (configuredRemotes != null)
+			createRemotePanel(panel);
+
+		createUriPanel(panel);
+
+		if (presetUri != null)
+			updateFields(presetUri);
+
+		updateRemoteAndURIPanels();
+		Dialog.applyDialogFont(panel);
+		setControl(panel);
+
+		checkPage();
+	}
+

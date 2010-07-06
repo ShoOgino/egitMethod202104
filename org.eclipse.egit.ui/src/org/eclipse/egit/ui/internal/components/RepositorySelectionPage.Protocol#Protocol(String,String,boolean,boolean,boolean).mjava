@@ -1,0 +1,10 @@
+		private Protocol(String defaultScheme, String tooltip,
+				boolean hasHost, boolean hasPort, boolean canAuthenticate) {
+			this.defaultScheme = defaultScheme;
+			this.tooltip = tooltip;
+			this.hasHost = hasHost;
+			this.hasPort = hasPort;
+			this.canAuthenticate = canAuthenticate;
+			protocols.put(defaultScheme, this);
+		}
+

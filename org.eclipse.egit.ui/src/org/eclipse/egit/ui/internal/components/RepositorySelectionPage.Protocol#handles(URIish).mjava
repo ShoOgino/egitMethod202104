@@ -1,0 +1,9 @@
+		/**
+		 * @param uri
+		 *            URI to match against this protocol
+		 * @return {@code true} if the uri is handled by this protocol
+		 */
+		public boolean handles(URIish uri) {
+			return getDefaultScheme().equals(uri.getScheme());
+		}
+

@@ -1,0 +1,14 @@
+		/**
+		 * Lookup protocol handling given URI
+		 *
+		 * @param uri URI to lookup protocol for
+		 * @return protocol handling this URI
+		 */
+		public static Protocol fromUri(URIish uri) {
+			for (Protocol p : protocols.values()) {
+				if (p.handles(uri))
+					return p;
+			}
+			return null;
+		}
+

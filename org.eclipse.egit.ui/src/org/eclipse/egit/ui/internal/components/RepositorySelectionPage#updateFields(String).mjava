@@ -1,0 +1,38 @@
+	private void updateFields(final String text) {
+		try {
+			eventDepth++;
+			if (eventDepth != 1)
+				return;
+
+			final URIish u = new URIish(text);
+			safeSet(hostText, u.getHost());
+			safeSet(pathText, u.getPath());
+			safeSet(userText, u.getUser());
+			safeSet(passText, u.getPass());
+
+			if (u.getPort() > 0)
+				portText.setText(Integer.toString(u.getPort()));
+			else
+				portText.setText(""); //$NON-NLS-1$
+
+			Protocol p = Protocol.fromUri(u);
+			scheme.select(scheme.indexOf(p.getDefaultScheme()));
+
+			updateAuthGroup();
+			uri = u;
+		} catch (URISyntaxException err) {
+			// leave uriText as it is, but clean up underlying uri and
+			// decomposed fields
+			uri = new URIish();
+			hostText.setText(""); //$NON-NLS-1$
+			pathText.setText(""); //$NON-NLS-1$
+			userText.setText(""); //$NON-NLS-1$
+			passText.setText(""); //$NON-NLS-1$
+			portText.setText(""); //$NON-NLS-1$
+			scheme.select(0);
+		} finally {
+			eventDepth--;
+		}
+		checkPage();
+	}
+

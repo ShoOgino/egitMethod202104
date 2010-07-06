@@ -1,0 +1,13 @@
+	private void setURI(final URIish u) {
+		try {
+			eventDepth++;
+			if (eventDepth == 1) {
+				uri = u;
+				uriText.setText(uri.toString());
+				checkPage();
+			}
+		} finally {
+			eventDepth--;
+		}
+	}
+

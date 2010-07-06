@@ -1,0 +1,25 @@
+	private void createUriPanel(final Composite parent) {
+		if (configuredRemotes != null) {
+			uriButton = new Button(parent, SWT.RADIO);
+			uriButton.setText(UIText.RepositorySelectionPage_uriChoice + ":"); //$NON-NLS-1$
+			uriButton.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					// occurs either on selection or unselection event
+					updateRemoteAndURIPanels();
+					checkPage();
+				}
+			});
+		}
+
+		uriPanel = new Composite(parent, SWT.NULL);
+		uriPanel.setLayout(new GridLayout());
+		final GridData gd = new GridData();
+		gd.grabExcessHorizontalSpace = true;
+		gd.horizontalAlignment = SWT.FILL;
+		uriPanel.setLayoutData(gd);
+
+		createLocationGroup(uriPanel);
+		createConnectionGroup(uriPanel);
+		authGroup = createAuthenticationGroup(uriPanel);
+	}
+
