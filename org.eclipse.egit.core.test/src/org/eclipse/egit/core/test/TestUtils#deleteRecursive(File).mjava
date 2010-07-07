@@ -4,8 +4,9 @@
 	 * @param d
 	 *            file / folder to delete
 	 * @throws IOException
+	 *             if file can not be deleted
 	 */
-	public static void rmrf(File d) throws IOException {
+	public void deleteRecursive(File d) throws IOException {
 		if (!d.exists())
 			return;
 
@@ -13,7 +14,7 @@
 		if (files != null) {
 			for (int i = 0; i < files.length; ++i) {
 				if (files[i].isDirectory())
-					rmrf(files[i]);
+					deleteRecursive(files[i]);
 				else if (!files[i].delete())
 					throw new IOException(files[i] + " in use or undeletable");
 			}

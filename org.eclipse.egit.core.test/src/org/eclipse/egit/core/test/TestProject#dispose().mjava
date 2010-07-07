@@ -3,6 +3,6 @@
 		if (project.exists())
 			project.delete(true, true, null);
 		else
-			TestUtils.rmrf(new File(location));
+			testUtils.deleteRecursive(new File(location));
 	}
 

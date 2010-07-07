@@ -1,0 +1,6 @@
+	private Status getStatus(PushOperationResult operationResult) {
+		URIish uri = operationResult.getURIs().iterator().next();
+		return operationResult.getPushResult(uri).getRemoteUpdates().iterator()
+				.next().getStatus();
+	}
+

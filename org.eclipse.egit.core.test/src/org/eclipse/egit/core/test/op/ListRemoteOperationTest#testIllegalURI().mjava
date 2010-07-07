@@ -1,0 +1,19 @@
+	/**
+	 * Test with illegal URI
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testIllegalURI() throws Exception {
+
+		URIish uri = new URIish("file:///" + "no/path");
+		ListRemoteOperation lrop = new ListRemoteOperation(repository1
+				.getRepository(), uri);
+		try {
+			lrop.run(new NullProgressMonitor());
+			fail("Expected Exception not thrown");
+		} catch (InvocationTargetException e) {
+			// expected
+		}
+	}
+

@@ -1,0 +1,31 @@
+	/**
+	 * Add a file to an existing project
+	 *
+	 * @param project
+	 *            the project
+	 * @param path
+	 *            e.g. "folder1/folder2/test.txt"
+	 * @param content
+	 *            the contents
+	 * @return the file
+	 * @throws Exception
+	 *             if the file can not be created
+	 */
+	public IFile addFileToProject(IProject project, String path, String content)
+			throws Exception {
+		IPath filePath = new Path(path);
+		IFolder folder = null;
+		for (int i = 0; i < filePath.segmentCount() - 1; i++) {
+			if (folder == null) {
+				folder = project.getFolder(filePath.segment(i));
+			} else {
+				folder = folder.getFolder(filePath.segment(i));
+			}
+			folder.create(false, true, null);
+		}
+		IFile file = project.getFile(filePath);
+		file.create(new ByteArrayInputStream(content.getBytes(project
+				.getDefaultCharset())), true, null);
+		return file;
+	}
+

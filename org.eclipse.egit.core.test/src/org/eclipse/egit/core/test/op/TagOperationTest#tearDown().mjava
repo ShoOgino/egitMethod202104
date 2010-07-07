@@ -1,0 +1,7 @@
+	@After
+	public void tearDown() throws Exception {
+		repository1.dispose();
+		repository1 = null;
+		testUtils.deleteRecursive(workdir);
+	}
+

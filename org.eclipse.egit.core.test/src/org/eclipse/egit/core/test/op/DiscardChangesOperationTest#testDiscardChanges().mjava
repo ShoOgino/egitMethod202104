@@ -1,0 +1,21 @@
+	@Test
+	public void testDiscardChanges() throws Exception {
+		IFile file = project.getFile(new Path("folder1/file1.txt"));
+		String contents = testUtils.slurpAndClose(file.getContents());
+		assertEquals("Hello world", contents);
+
+		file.setContents(new ByteArrayInputStream("Changed".getBytes(project
+				.getDefaultCharset())), 0, null);
+
+		contents = testUtils.slurpAndClose(file.getContents());
+		assertEquals("Changed", contents);
+
+		DiscardChangesOperation dcop = new DiscardChangesOperation(
+				new IResource[] { file });
+		dcop.execute(new NullProgressMonitor());
+
+		contents = testUtils.slurpAndClose(file.getContents());
+		assertEquals("Hello world", contents);
+
+	}
+

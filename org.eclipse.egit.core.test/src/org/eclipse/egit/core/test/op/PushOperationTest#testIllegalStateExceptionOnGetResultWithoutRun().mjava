@@ -1,0 +1,19 @@
+	/**
+	 * We should get an {@link IllegalStateException} if we run
+	 * getOperationResult before run()
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testIllegalStateExceptionOnGetResultWithoutRun()
+			throws Exception {
+		// push from repository1 to repository2
+		PushOperation pop = createPushOperation();
+		try {
+			pop.getOperationResult();
+			fail("Expected Exception not thrown");
+		} catch (IllegalStateException e) {
+			// expected
+		}
+	}
+
