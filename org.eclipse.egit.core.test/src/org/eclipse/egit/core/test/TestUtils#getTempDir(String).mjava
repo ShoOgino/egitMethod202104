@@ -1,0 +1,18 @@
+	/**
+	 * Create a "temporary" directory
+	 *
+	 * @param name
+	 *            the name of the directory
+	 * @return a directory as child of a "temporary" folder in the user home
+	 *         directory; may or may not exist
+	 * @throws IOException
+	 */
+	public File getTempDir(String name) throws IOException {
+		File userHome = FS.DETECTED.userHome();
+		File rootDir = new File(userHome, "EGitCoreTestTempDir");
+		File result = new File(rootDir, name);
+		if (result.exists())
+			deleteRecursive(result);
+		return result;
+	}
+

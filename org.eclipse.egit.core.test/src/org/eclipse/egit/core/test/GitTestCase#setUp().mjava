@@ -8,6 +8,6 @@
 		project = new TestProject(true);
 		gitDir = new File(project.getProject().getWorkspace().getRoot()
 				.getRawLocation().toFile(), Constants.DOT_GIT);
-		TestUtils.rmrf(gitDir);
+		testUtils.deleteRecursive(gitDir);
 	}
 

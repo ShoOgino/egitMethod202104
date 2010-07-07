@@ -1,0 +1,60 @@
+	/**
+	 * Push from repository1 "master" into "test" of repository2.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testPush() throws Exception {
+
+		// push from repository1 to repository2
+		PushOperation pop = createPushOperation();
+		pop.run(new NullProgressMonitor());
+		assertEquals(Status.UP_TO_DATE, getStatus(pop.getOperationResult()));
+
+		// let's add a new file to the project shared with repository1
+		IProject proj = importProject(repository1, projectName);
+		ArrayList<IFile> files = new ArrayList<IFile>();
+		IFile newFile = testUtils.addFileToProject(proj, "folder2/file2.txt",
+				"New file");
+		files.add(newFile);
+		IFile[] fileArr = files.toArray(new IFile[files.size()]);
+
+		TrackOperation trop = new TrackOperation(fileArr);
+		trop.execute(null);
+		CommitOperation cop = new CommitOperation(fileArr, files, files,
+				TestUtils.AUTHOR, TestUtils.COMMITTER, "Added file");
+		cop.execute(null);
+
+		proj.delete(false, false, null);
+
+		pop = createPushOperation();
+		pop.run(null);
+		assertEquals(Status.OK, getStatus(pop.getOperationResult()));
+
+		try {
+			// assert that we can not run this again
+			pop.run(null);
+			fail("Expected Exception not thrown");
+		} catch (IllegalStateException e) {
+			// expected
+		}
+
+		pop = createPushOperation();
+		pop.run(null);
+		assertEquals(Status.UP_TO_DATE, getStatus(pop.getOperationResult()));
+
+		String newFilePath = newFile.getFullPath().toOSString();
+
+		File testFile = new File(workdir2, newFilePath);
+		assertFalse(testFile.exists());
+		testFile = new File(workdir, newFilePath);
+		assertTrue(testFile.exists());
+
+		// check out test and verify the file is there
+		BranchOperation bop = new BranchOperation(repository2.getRepository(),
+				"refs/heads/test");
+		bop.execute(null);
+		testFile = new File(workdir2, newFilePath);
+		assertTrue(testFile.exists());
+	}
+

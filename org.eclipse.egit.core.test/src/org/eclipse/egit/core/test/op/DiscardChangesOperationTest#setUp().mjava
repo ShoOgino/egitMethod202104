@@ -1,0 +1,33 @@
+	@Before
+	public void setUp() throws Exception {
+
+		workdir = testUtils.getTempDir("Repository1");
+
+		repository1 = new TestRepository(new File(workdir, Constants.DOT_GIT));
+
+		// now we create a project in repo1
+		project = testUtils
+				.createProjectInLocalFileSystem(workdir, projectName);
+		testUtils.addFileToProject(project, "folder1/file1.txt", "Hello world");
+
+		repository1.connect(project);
+
+		project.accept(new IResourceVisitor() {
+
+			public boolean visit(IResource resource) throws CoreException {
+				if (resource instanceof IFile) {
+					try {
+						repository1
+								.track(EFS.getStore(resource.getLocationURI())
+										.toLocalFile(0, null));
+					} catch (IOException e) {
+						throw new CoreException(Activator.error(e.getMessage(),
+								e));
+					}
+				}
+				return true;
+			}
+		});
+		repository1.commit("Initial commit");
+	}
+

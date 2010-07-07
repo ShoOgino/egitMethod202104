@@ -1,0 +1,33 @@
+	@Test
+	public void testTrackFiles() throws Exception {
+
+		final ArrayList<IFile> files = new ArrayList<IFile>();
+
+		DirCache cache = DirCache.read(repository1.getRepository());
+		assertEquals("Wrong cache entry count", 0, cache.getEntryCount());
+
+		project.accept(new IResourceVisitor() {
+
+			public boolean visit(IResource resource) throws CoreException {
+				if (resource instanceof IFile)
+					files.add((IFile) resource);
+				return true;
+			}
+		});
+
+		IFile[] fileArr = files.toArray(new IFile[files.size()]);
+
+		TrackOperation trop = new TrackOperation(fileArr);
+		trop.execute(new NullProgressMonitor());
+
+		cache.read();
+		assertEquals("Wrong cache entry count", 2, cache.getEntryCount());
+
+		UntrackOperation utop = new UntrackOperation(Arrays.asList(fileArr));
+		utop.execute(new NullProgressMonitor());
+
+		cache.read();
+		assertEquals("Wrong cache entry count", 0, cache.getEntryCount());
+
+	}
+

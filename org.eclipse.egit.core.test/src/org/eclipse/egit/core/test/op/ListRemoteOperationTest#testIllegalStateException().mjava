@@ -1,0 +1,20 @@
+	/**
+	 * Call getRemoteRefs without having run the op
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testIllegalStateException() throws Exception {
+
+		URIish uri = new URIish("file:///"
+				+ repository2.getRepository().getDirectory().getPath());
+		ListRemoteOperation lrop = new ListRemoteOperation(repository1
+				.getRepository(), uri);
+		try {
+			lrop.getRemoteRefs();
+			fail("Expected Exception not thrown");
+		} catch (IllegalStateException e) {
+			// expected
+		}
+	}
+
