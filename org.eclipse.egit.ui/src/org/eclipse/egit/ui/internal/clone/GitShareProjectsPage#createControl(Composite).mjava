@@ -15,21 +15,7 @@
 
 		tv.getTable().setHeaderVisible(true);
 
-		tv.setContentProvider(new IStructuredContentProvider() {
-
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {
-				// nothing
-			}
-
-			public void dispose() {
-				// nothing
-			}
-
-			public Object[] getElements(Object inputElement) {
-				return (Object[]) inputElement;
-			}
-		});
+		tv.setContentProvider(ArrayContentProvider.getInstance());
 
 		tv.setLabelProvider(new ITableLabelProvider() {
 

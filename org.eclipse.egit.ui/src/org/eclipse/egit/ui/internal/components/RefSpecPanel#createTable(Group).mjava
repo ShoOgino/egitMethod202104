@@ -15,20 +15,7 @@
 		createTableColumns(tablePanel);
 		createCellEditors(table);
 
-		tableViewer.setContentProvider(new IStructuredContentProvider() {
-			public Object[] getElements(final Object inputElement) {
-				return ((List) inputElement).toArray();
-			}
-
-			public void dispose() {
-				// nothing to dispose
-			}
-
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {
-				// input is hard coded
-			}
-		});
+		tableViewer.setContentProvider(new ArrayContentProvider());
 		tableViewer.setInput(specs);
 
 		tableViewer.setComparer(new IElementComparer() {

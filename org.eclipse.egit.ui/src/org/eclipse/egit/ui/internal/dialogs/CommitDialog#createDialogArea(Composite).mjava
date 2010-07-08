@@ -205,7 +205,7 @@
 		resourceCol.addSelectionListener(new HeaderSelectionListener(CommitItem.Order.ByFile));
 
 		filesViewer = new CheckboxTableViewer(resourcesTable);
-		filesViewer.setContentProvider(new CommitContentProvider());
+		filesViewer.setContentProvider(ArrayContentProvider.getInstance());
 		filesViewer.setLabelProvider(new CommitLabelProvider());
 		filesViewer.addFilter(new CommitItemFilter());
 		filesViewer.setInput(items);
