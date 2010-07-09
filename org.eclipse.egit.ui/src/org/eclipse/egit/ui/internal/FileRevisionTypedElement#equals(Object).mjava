@@ -1,0 +1,10 @@
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj instanceof FileRevisionTypedElement) {
+			FileRevisionTypedElement other = (FileRevisionTypedElement) obj;
+			return other.getFileRevision().equals(getFileRevision());
+		}
+		return false;
+	}
+

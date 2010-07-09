@@ -1,0 +1,7 @@
+	public String getLabel(Object o) {
+		IFileRevision rev = (IFileRevision) getAdapter(IFileRevision.class);
+		if (rev != null)
+			return rev.getName();
+		return storage.getName();
+	}
+

@@ -1,9 +1,9 @@
-	private DiffNode compare(ITypedElement left, ITypedElement right) {
-		if (left.getType().equals(ITypedElement.FOLDER_TYPE)) {
+	private DiffNode compare(ITypedElement actLeft, ITypedElement actRight) {
+		if (actLeft.getType().equals(ITypedElement.FOLDER_TYPE)) {
 			//			return new MyDiffContainer(null, left,right);
-			DiffNode diffNode = new DiffNode(null,Differencer.CHANGE,null,left,right);
-			ITypedElement[] lc = (ITypedElement[])((IStructureComparator)left).getChildren();
-			ITypedElement[] rc = (ITypedElement[])((IStructureComparator)right).getChildren();
+			DiffNode diffNode = new DiffNode(null,Differencer.CHANGE,null,actLeft,actRight);
+			ITypedElement[] lc = (ITypedElement[])((IStructureComparator)actLeft).getChildren();
+			ITypedElement[] rc = (ITypedElement[])((IStructureComparator)actRight).getChildren();
 			int li=0;
 			int ri=0;
 			while (li<lc.length && ri<rc.length) {
@@ -72,7 +72,7 @@
 			}
 			return diffNode;
 		} else {
-			return new DiffNode(left, right);
+			return new DiffNode(actLeft, actRight);
 		}
 	}
 

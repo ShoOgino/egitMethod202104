@@ -1,0 +1,7 @@
+	public String getContentIdentifier() {
+		if (file != null)
+			return baseRevision == null ? NLS.bind(
+					UIText.LocalFileRevision_CurrentVersion, "") : NLS.bind(UIText.LocalFileRevision_CurrentVersion, baseRevision.getContentIdentifier()); //$NON-NLS-1$
+		return ""; //$NON-NLS-1$
+	}
+

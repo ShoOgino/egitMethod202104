@@ -1,0 +1,14 @@
+	/**
+	 * Does not consider the content of the resources
+	 */
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj instanceof LocalResourceTypedElement) {
+			LocalResourceTypedElement otherElement = (LocalResourceTypedElement) obj;
+			return otherElement.getResource().equals(getResource())
+					&& exists == otherElement.exists;
+		}
+		return false;
+	}
+

@@ -1,0 +1,14 @@
+	/**
+	 * @param file
+	 *            the file to wrap<br>
+	 *            This is generally used to represent the local current version
+	 *            of the file being displayed in the history. Make sure to also
+	 *            pass in the base revision associated with this current version
+	 *            (see {@link #setBaseRevision(IFileRevision)})
+	 */
+	public LocalFileRevision(IFile file) {
+		this.file = file;
+		this.baseRevision = null;
+		this.state = null;
+	}
+

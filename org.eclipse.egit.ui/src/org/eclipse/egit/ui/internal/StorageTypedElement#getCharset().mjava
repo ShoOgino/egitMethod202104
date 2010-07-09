@@ -1,0 +1,13 @@
+	public String getCharset() throws CoreException {
+		if (localEncoding != null)
+			return localEncoding;
+		if (bufferedContents == null) {
+			cacheContents(new NullProgressMonitor());
+		}
+		if (bufferedContents instanceof IEncodedStorage) {
+			String charset = ((IEncodedStorage) bufferedContents).getCharset();
+			return charset;
+		}
+		return null;
+	}
+

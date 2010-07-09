@@ -1,0 +1,12 @@
+	/**
+	 * @return whether the contents provided by this typed element are in-sync
+	 *         with what is on disk <br>
+	 *         Sill return <code>false</code> if the file has been changed
+	 *         externally since the last time the contents were obtained or
+	 *         saved through this element.
+	 */
+	public boolean isSynchronized() {
+		long current = getResource().getLocalTimeStamp();
+		return current == getTimestamp();
+	}
+

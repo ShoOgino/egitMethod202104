@@ -1,0 +1,8 @@
+	public int hashCode() {
+		if (file != null)
+			return file.hashCode();
+		if (state != null)
+			return (int) state.getModificationTime();
+		return super.hashCode();
+	}
+

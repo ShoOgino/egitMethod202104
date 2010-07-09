@@ -1,0 +1,10 @@
+	public InputStream getContents() throws CoreException {
+		if (bufferedContents == null) {
+			cacheContents(new NullProgressMonitor());
+		}
+		if (bufferedContents != null) {
+			return bufferedContents.getContents();
+		}
+		return null;
+	}
+

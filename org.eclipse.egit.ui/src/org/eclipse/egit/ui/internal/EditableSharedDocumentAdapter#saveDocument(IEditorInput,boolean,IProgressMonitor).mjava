@@ -1,0 +1,28 @@
+	/**
+	 * @param input
+	 *            the document key of the element.
+	 * @param overwrite
+	 *            indicates whether overwrite should be performed while saving
+	 *            the given element if necessary
+	 * @param monitor
+	 *            a progress monitor
+	 * @return whether the save succeeded or not
+	 * @throws CoreException
+	 */
+	public boolean saveDocument(IEditorInput input, boolean overwrite,
+			IProgressMonitor monitor) throws CoreException {
+		if (isConnected()) {
+			IDocumentProvider provider = SharedDocumentAdapter
+					.getDocumentProvider(input);
+			try {
+				saveDocument(provider, input, provider.getDocument(input),
+						overwrite, monitor);
+			} finally {
+				// When we write the document, remove out hold on the buffer
+				releaseBuffer();
+			}
+			return true;
+		}
+		return false;
+	}
+

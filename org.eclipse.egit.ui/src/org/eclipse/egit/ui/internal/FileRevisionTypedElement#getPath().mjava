@@ -1,0 +1,10 @@
+	/**
+	 * @return the human readable path of this element
+	 */
+	public String getPath() {
+		URI uri = fileRevision.getURI();
+		if (uri != null)
+			return uri.getPath();
+		return getName();
+	}
+

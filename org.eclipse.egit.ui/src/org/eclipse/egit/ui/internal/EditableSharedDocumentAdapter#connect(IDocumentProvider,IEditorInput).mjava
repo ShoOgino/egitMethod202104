@@ -1,0 +1,10 @@
+	public void connect(IDocumentProvider provider, IEditorInput documentKey)
+			throws CoreException {
+		super.connect(provider, documentKey);
+		connectionCount++;
+		if (connectionCount == 1) {
+			provider.addElementStateListener(this);
+			listener.handleDocumentConnected();
+		}
+	}
+

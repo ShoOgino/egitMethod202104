@@ -1,0 +1,14 @@
+	/**
+	 * @return whether this element is dirty <br>
+	 *         The element is dirty if a merge viewer has flushed it's contents
+	 *         to the element and the contents have not been saved.
+	 * @see #commit(IProgressMonitor)
+	 * @see #saveDocument(boolean, IProgressMonitor)
+	 * @see #discardBuffer()
+	 */
+	public boolean isDirty() {
+		return fDirty
+				|| (sharedDocumentAdapter != null && sharedDocumentAdapter
+						.hasBufferedContents());
+	}
+

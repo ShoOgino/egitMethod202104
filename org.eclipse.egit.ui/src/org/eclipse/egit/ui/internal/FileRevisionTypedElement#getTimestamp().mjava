@@ -1,0 +1,9 @@
+	/**
+	 * @return the human readable timestamp of this element
+	 */
+	public String getTimestamp() {
+		long date = fileRevision.getTimestamp();
+		Date dateFromLong = new Date(date);
+		return DateFormat.getDateTimeInstance().format(dateFromLong);
+	}
+

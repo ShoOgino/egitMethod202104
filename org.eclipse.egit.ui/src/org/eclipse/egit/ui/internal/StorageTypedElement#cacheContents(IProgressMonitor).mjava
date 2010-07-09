@@ -1,0 +1,13 @@
+	/**
+	 * Cache the contents for the remote resource in a local buffer. This method
+	 * should be invoked before {@link #getContents()} to ensure that a round
+	 * trip is not made in that method.
+	 *
+	 * @param monitor
+	 *            a progress monitor.
+	 * @throws CoreException
+	 */
+	public void cacheContents(IProgressMonitor monitor) throws CoreException {
+		bufferedContents = fetchContents(monitor);
+	}
+

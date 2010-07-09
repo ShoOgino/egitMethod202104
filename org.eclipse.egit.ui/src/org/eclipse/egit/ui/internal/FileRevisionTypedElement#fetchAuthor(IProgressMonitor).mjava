@@ -1,0 +1,11 @@
+	/**
+	 * @param monitor
+	 * @throws CoreException
+	 */
+	public void fetchAuthor(IProgressMonitor monitor) throws CoreException {
+		if (getAuthor() == null && fileRevision.isPropertyMissing()) {
+			IFileRevision other = fileRevision.withAllProperties(monitor);
+			author = other.getAuthor();
+		}
+	}
+

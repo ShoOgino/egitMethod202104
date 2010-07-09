@@ -1,22 +1,10 @@
 	private void initLabels(ICompareInput input) {
 		CompareConfiguration cc = getCompareConfiguration();
-		if(left != null && left instanceof GitResourceNode) {
-			String ci = ((GitResourceNode)left).getContentIdentifier();
-			if(ci != null) {
-				cc.setLeftLabel(truncatedRevision(ci));
-			}
-		}
-		if(right != null && right instanceof GitResourceNode) {
-			String ci = ((GitResourceNode)right).getContentIdentifier();
-			if(ci != null) {
-				cc.setRightLabel(truncatedRevision(ci));
-			}
-		}
 		if (getLeftRevision() != null) {
 			String leftLabel = getFileRevisionLabel(getLeftRevision());
 			cc.setLeftLabel(leftLabel);
 		} else if (getResource(input) != null) {
-			String label = NLS.bind(TeamUIMessages.CompareFileRevisionEditorInput_workspace, new Object[]{ input.getLeft().getName() });
+			String label = NLS.bind(UIText.GitCompareFileRevisionEditorInput_LocalLabel, new Object[]{ input.getLeft().getName() });
 			cc.setLeftLabel(label);
 		} else {
 			cc.setLeftLabel(left.getName());

@@ -1,0 +1,8 @@
+	public long getTimestamp() {
+		if (file != null) {
+			return file.getLocalTimeStamp();
+		}
+
+		return state.getModificationTime();
+	}
+

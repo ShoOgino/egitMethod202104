@@ -1,0 +1,67 @@
+	private static IStorage wrapStorage(final IStorage storage,
+			final String charset) {
+		if (charset == null)
+			return storage;
+		if (storage instanceof IFileState) {
+			return new IFileState() {
+				public Object getAdapter(Class adapter) {
+					return storage.getAdapter(adapter);
+				}
+
+				public boolean isReadOnly() {
+					return storage.isReadOnly();
+				}
+
+				public String getName() {
+					return storage.getName();
+				}
+
+				public IPath getFullPath() {
+					return storage.getFullPath();
+				}
+
+				public InputStream getContents() throws CoreException {
+					return storage.getContents();
+				}
+
+				public String getCharset() throws CoreException {
+					return charset;
+				}
+
+				public boolean exists() {
+					return ((IFileState) storage).exists();
+				}
+
+				public long getModificationTime() {
+					return ((IFileState) storage).getModificationTime();
+				}
+			};
+		}
+
+		return new IEncodedStorage() {
+			public Object getAdapter(Class adapter) {
+				return storage.getAdapter(adapter);
+			}
+
+			public boolean isReadOnly() {
+				return storage.isReadOnly();
+			}
+
+			public String getName() {
+				return storage.getName();
+			}
+
+			public IPath getFullPath() {
+				return storage.getFullPath();
+			}
+
+			public InputStream getContents() throws CoreException {
+				return storage.getContents();
+			}
+
+			public String getCharset() throws CoreException {
+				return charset;
+			}
+		};
+	}
+

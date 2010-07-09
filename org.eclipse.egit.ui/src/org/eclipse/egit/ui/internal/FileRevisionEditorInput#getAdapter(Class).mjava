@@ -1,0 +1,11 @@
+	public Object getAdapter(Class adapter) {
+		if (adapter == IWorkbenchAdapter.class)
+			return this;
+		if (adapter == IStorage.class)
+			return storage;
+		Object object = super.getAdapter(adapter);
+		if (object != null)
+			return object;
+		return CompareUtils.getAdapter(fileRevision, adapter);
+	}
+

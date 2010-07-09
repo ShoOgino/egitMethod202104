@@ -1,0 +1,10 @@
+	/**
+	 * Update the cached timestamp of the resource.
+	 */
+	void updateTimestamp() {
+		if (getResource().exists())
+			timestamp = getResource().getLocalTimeStamp();
+		else
+			exists = false;
+	}
+

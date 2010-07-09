@@ -4,14 +4,14 @@
 			try {
 				left.cacheContents(monitor);
 			} catch (CoreException e) {
-				TeamUIPlugin.log(e);
+				Activator.logError(e.getMessage(), e);
 			}
 		}
 		if (right != null) {
 			try {
 				right.cacheContents(monitor);
 			} catch (CoreException e) {
-				TeamUIPlugin.log(e);
+				Activator.logError(e.getMessage(), e);
 			}
 		}
 	}

@@ -1,0 +1,12 @@
+	/**
+	 * @return whether the element is connected to a shared document<br>
+	 *         When connected, the element can be saved using
+	 *         {@link #saveDocument(boolean, IProgressMonitor)}. Otherwise,
+	 *         {@link #commit(IProgressMonitor)} should be used to save the
+	 *         buffered contents.
+	 */
+	public boolean isConnected() {
+		return sharedDocumentAdapter != null
+				&& sharedDocumentAdapter.isConnected();
+	}
+

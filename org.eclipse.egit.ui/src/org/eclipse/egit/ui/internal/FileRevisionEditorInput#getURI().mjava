@@ -1,0 +1,11 @@
+	/**
+	 * @return the revision
+	 */
+	public URI getURI() {
+		if (fileRevision instanceof IFileRevision) {
+			IFileRevision fr = (IFileRevision) fileRevision;
+			return fr.getURI();
+		}
+		return null;
+	}
+

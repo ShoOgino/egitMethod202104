@@ -1,0 +1,13 @@
+	public void flushDocument(IDocumentProvider provider,
+			IEditorInput documentKey, IDocument document, boolean overwrite)
+			throws CoreException {
+		if (!hasBufferedContents()) {
+			// On a flush, make an extra connection to the shared document so it
+			// will be kept even
+			// if it is no longer being viewed.
+			bufferedKey = documentKey;
+			provider.connect(bufferedKey);
+		}
+		this.listener.handleDocumentFlushed();
+	}
+

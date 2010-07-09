@@ -1,0 +1,11 @@
+			/* (non-Javadoc)
+			 * see IContentChangeNotifier.removeChangeListener
+			 */
+			public void removeContentChangeListener(IContentChangeListener listener) {
+				if (fListenerList != null) {
+					fListenerList.remove(listener);
+					if (fListenerList.isEmpty())
+						fListenerList= null;
+				}
+			}
+

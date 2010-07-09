@@ -1,0 +1,9 @@
+	/**
+	 * @param revision
+	 * @return the result
+	 */
+	public boolean isPredecessorOf(IFileRevision revision) {
+		long compareRevisionTime = revision.getTimestamp();
+		return (this.getTimestamp() < compareRevisionTime);
+	}
+

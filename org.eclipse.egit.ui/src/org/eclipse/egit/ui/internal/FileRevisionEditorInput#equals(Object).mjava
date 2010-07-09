@@ -1,0 +1,8 @@
+	public boolean equals(Object obj) {
+		if (obj instanceof FileRevisionEditorInput) {
+			FileRevisionEditorInput other = (FileRevisionEditorInput) obj;
+			return (other.fileRevision.equals(this.fileRevision));
+		}
+		return false;
+	}
+

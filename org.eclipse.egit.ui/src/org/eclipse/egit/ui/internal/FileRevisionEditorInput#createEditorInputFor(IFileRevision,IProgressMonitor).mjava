@@ -1,0 +1,14 @@
+	/**
+	 * @param revision
+	 *            the file revision
+	 * @param monitor
+	 * @return a file revision editor input
+	 * @throws CoreException
+	 */
+	public static FileRevisionEditorInput createEditorInputFor(
+			IFileRevision revision, IProgressMonitor monitor)
+			throws CoreException {
+		IStorage storage = revision.getStorage(monitor);
+		return new FileRevisionEditorInput(revision, storage);
+	}
+

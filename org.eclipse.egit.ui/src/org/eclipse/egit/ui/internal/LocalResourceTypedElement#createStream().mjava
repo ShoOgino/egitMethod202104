@@ -1,0 +1,6 @@
+	protected InputStream createStream() throws CoreException {
+		InputStream inputStream = super.createStream();
+		updateTimestamp();
+		return inputStream;
+	}
+

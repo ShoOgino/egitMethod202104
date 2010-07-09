@@ -1,9 +1,9 @@
 	private String getFileRevisionLabel(FileRevisionTypedElement element) {
 		Object fileObject = element.getFileRevision();
 		if (fileObject instanceof LocalFileRevision){
-			return NLS.bind(TeamUIMessages.CompareFileRevisionEditorInput_localRevision, new Object[]{element.getName(), element.getTimestamp()});
+			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_LocalHistoryLabel, new Object[]{element.getName(), element.getTimestamp()});
 		} else {
-			return NLS.bind(TeamUIMessages.CompareFileRevisionEditorInput_repository, new Object[]{element.getName(), truncatedRevision(element.getContentIdentifier()), element.getAuthor()});
+			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_RevisionLabel, new Object[]{element.getName(), truncatedRevision(element.getContentIdentifier()), element.getAuthor()});
 		}
 	}
 

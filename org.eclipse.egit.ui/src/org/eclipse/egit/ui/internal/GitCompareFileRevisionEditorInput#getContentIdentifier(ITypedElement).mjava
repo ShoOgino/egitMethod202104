@@ -5,12 +5,12 @@
 			if (fileObject instanceof LocalFileRevision){
 				try {
 					IStorage storage = ((LocalFileRevision) fileObject).getStorage(new NullProgressMonitor());
-					if (Utils.getAdapter(storage, IFileState.class) != null){
+					if (CompareUtils.getAdapter(storage, IFileState.class) != null){
 						//local revision
-						return TeamUIMessages.CompareFileRevisionEditorInput_0;
-					} else if (Utils.getAdapter(storage, IFile.class) != null) {
+						return UIText.GitCompareFileRevisionEditorInput_LocalRevision;
+					} else if (CompareUtils.getAdapter(storage, IFile.class) != null) {
 						//current revision
-						return TeamUIMessages.CompareFileRevisionEditorInput_1;
+						return UIText.GitCompareFileRevisionEditorInput_CurrentRevision;
 					}
 				} catch (CoreException e) {
 					Activator
@@ -22,6 +22,6 @@
 				return fileRevisionElement.getContentIdentifier();
 			}
 		}
-		return TeamUIMessages.CompareFileRevisionEditorInput_2;
+		return UIText.GitCompareFileRevisionEditorInput_CurrentTitle;
 	}
 
