@@ -4,17 +4,32 @@
 		final ArrayList<IContainer> containers = new ArrayList<IContainer>();
 		containers.add(project);
 
-		DirCache cache = DirCache.read(repository1.getRepository());
-
-		assertEquals("Wrong cache entry count", 0, cache.getEntryCount());
-
-		IContainer[] fileArr = containers.toArray(new IContainer[containers
+		IContainer[] projectArr = containers.toArray(new IContainer[containers
 				.size()]);
 
-		TrackOperation trop = new TrackOperation(fileArr);
+		final ArrayList<IFile> files = new ArrayList<IFile>();
+
+		project.accept(new IResourceVisitor() {
+
+			public boolean visit(IResource resource) throws CoreException {
+				if (resource instanceof IFile)
+					files.add((IFile) resource);
+				return true;
+			}
+		});
+
+		IFile[] fileArr = files.toArray(new IFile[files.size()]);
+
+		assertTrackedState(fileArr, false);
+
+		TrackOperation trop = new TrackOperation(projectArr);
 		trop.execute(new NullProgressMonitor());
 
-		cache.read();
-		assertEquals("Wrong cache entry count", 2, cache.getEntryCount());
+		assertTrackedState(fileArr, true);
+
+		UntrackOperation utrop = new UntrackOperation(containers);
+		utrop.execute(new NullProgressMonitor());
+
+		assertTrackedState(fileArr, false);
 	}
 
