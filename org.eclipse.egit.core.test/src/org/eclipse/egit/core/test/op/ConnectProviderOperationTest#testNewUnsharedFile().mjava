@@ -40,7 +40,6 @@
 		new Job("wait") {
 			protected IStatus run(IProgressMonitor monitor) {
 
-				System.out.println("MyJob");
 				f[0] = true;
 				return null;
 			}
@@ -51,10 +50,8 @@
 			}
 		};
 		while (!f[0]) {
-			System.out.println("Waiting");
 			Thread.sleep(1000);
 		}
-		System.out.println("DONE");
 
 		assertNotNull(RepositoryProvider.getProvider(project.getProject()));
 
