@@ -21,6 +21,11 @@
 				if (!ref.getValue().isSymbolic())
 					this.branchCombo.add(ref.getValue().getName());
 			}
+			for (Entry<String, Ref> ref : myRepository.getRefDatabase()
+					.getRefs(Constants.R_TAGS).entrySet()) {
+				if (!ref.getValue().isSymbolic())
+					this.branchCombo.add(ref.getValue().getName());
+			}
 
 		} catch (IOException e1) {
 			// ignore here
@@ -79,7 +84,8 @@
 		setControl(main);
 		nameText.setFocus();
 		if (myBaseBranch != null
-				&& myBaseBranch.getName().startsWith(Constants.R_REMOTES)) {
+				&& (myBaseBranch.getName().startsWith(Constants.R_REMOTES) || myBaseBranch
+						.getName().startsWith(Constants.R_TAGS))) {
 			// additional convenience: the last part of the name is suggested
 			// as name for the local branch
 			nameText.setText(myBaseBranch.getName().substring(
