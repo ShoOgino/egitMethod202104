@@ -50,10 +50,12 @@
 
 			Map<String, Date> tagMap = new HashMap<String, Date>();
 			try {
+				RevWalk rw = new RevWalk(repository);
 				Map<String, Ref> tags = repository.getRefDatabase().getRefs(
 						Constants.R_TAGS);
 				for (Ref tagRef : tags.values()) {
-					Tag tag = repository.mapTag(tagRef.getName());
+					Tag tag = rw.parseTag(repository.resolve(tagRef.getName()))
+							.asTag(rw);
 					if (tag.getObjId().name().equals(commitId)) {
 						Date timestamp;
 						if (tag.getTagger() != null) {
