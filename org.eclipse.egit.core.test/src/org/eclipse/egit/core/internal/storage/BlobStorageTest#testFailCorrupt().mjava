@@ -2,7 +2,6 @@
 	public void testFailCorrupt() throws Exception {
 		try {
 			createFileCorruptShort(repository, project.getProject(), "file", "data");
-			createEmptyTree(repository);
 			BlobStorage blobStorage = new BlobStorage(repository, "file", ObjectId.fromString("6320cd248dd8aeaab759d5871f8781b5c0505172"));
 			assertEquals("file", blobStorage.getName());
 			blobStorage.getContents();
