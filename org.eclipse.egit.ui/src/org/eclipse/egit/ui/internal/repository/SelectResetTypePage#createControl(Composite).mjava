@@ -1,9 +1,5 @@
-	@Override
-	protected void createCustomArea(Composite parent) {
-		Composite main = new Composite(parent, SWT.NONE);
-		main.setLayout(new GridLayout(1, false));
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(main);
-		Group g = new Group(main, SWT.NONE);
+	public void createControl(Composite parent) {
+		Group g = new Group(parent, SWT.NONE);
 		g.setText(UIText.ResetTargetSelectionDialog_ResetTypeGroup);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(g);
 		g.setLayout(new GridLayout(1, false));
@@ -32,5 +28,7 @@
 				resetType = ResetType.HARD;
 			}
 		});
+		Dialog.applyDialogFont(g);
+		setControl(g);
 	}
 

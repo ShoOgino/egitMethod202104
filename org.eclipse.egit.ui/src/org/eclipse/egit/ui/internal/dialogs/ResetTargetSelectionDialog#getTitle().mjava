@@ -1,6 +1,7 @@
 	@Override
 	protected String getTitle() {
-		return NLS.bind(UIText.ResetTargetSelectionDialog_ResetTitle, repo
-				.getDirectory().toString());
+		String repoName = Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repo);
+		return NLS.bind(UIText.ResetTargetSelectionDialog_ResetTitle, repoName);
 	}
 

@@ -1,0 +1,16 @@
+	private String getObjectIdOfCommit() throws Exception {
+
+		String branch = repository.getFullBranch();
+		if (ObjectId.isId(branch))
+			return branch;
+		if (branch.startsWith(Constants.R_REFS)) {
+			RevCommit commit = revWalk.parseCommit(repository.resolve(branch));
+			return commit.getId().getName();
+		}
+		if (branch.startsWith(Constants.R_TAGS)) {
+			RevTag tag = revWalk.parseTag(repository.resolve(branch));
+			return tag.getObject().getId().name();
+		}
+		throw new IllegalStateException("Can't resolve commit");
+	}
+

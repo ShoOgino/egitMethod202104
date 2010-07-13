@@ -1,0 +1,5 @@
+	private String getCommitIdOfTag(String tagName) throws Exception {
+		return revWalk.parseTag(repository.resolve(tagName)).getObject()
+				.getId().name();
+	}
+

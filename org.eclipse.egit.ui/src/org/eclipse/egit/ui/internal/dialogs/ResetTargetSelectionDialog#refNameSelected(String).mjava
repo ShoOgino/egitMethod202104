@@ -1,14 +1,5 @@
 	@Override
 	protected void refNameSelected(String refName) {
-		// TODO pending bug about missing reset for tags: 317350
-		// boolean tagSelected = refName != null
-		// && refName.startsWith(Constants.R_TAGS);
-
-		boolean branchSelected = refName != null
-				&& (refName.startsWith(Constants.R_HEADS) || refName
-						.startsWith(Constants.R_REMOTES));
-
-		getButton(Window.OK).setEnabled(branchSelected);
-
+		getButton(Window.OK).setEnabled(refName != null);
 	}
 

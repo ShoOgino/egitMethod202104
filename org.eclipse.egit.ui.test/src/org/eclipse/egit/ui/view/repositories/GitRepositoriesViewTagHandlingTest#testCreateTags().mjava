@@ -1,0 +1,22 @@
+	@Test
+	public void testCreateTags() throws Exception {
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		int initialCount = getTagsItem(tree, repositoryFile).expand()
+				.rowCount();
+
+		String initialObjid = getObjectIdOfCommit();
+		createTag("FirstTag", "The first tag");
+		touchAndSubmit();
+		String newObject = getObjectIdOfCommit();
+		createTag("SecondTag", "The second tag");
+		refreshAndWait();
+		SWTBotTreeItem[] items = getTagsItem(tree, repositoryFile).expand()
+				.getItems();
+		assertEquals("Wrong number of tags", initialCount + 2, items.length);
+
+		assertTrue("Wrong commit id", initialObjid
+				.equals(getCommitIdOfTag("FirstTag")));
+		assertTrue("Wrong commit id", newObject
+				.equals(getCommitIdOfTag("SecondTag")));
+	}
+
