@@ -7,7 +7,7 @@
 	 *         if the collector is empty.
 	 */
 	public IStatus getStatus() {
-		if (statuses != null && statuses.isEmpty()) {
+		if (statuses.isEmpty()) {
 			return Status.OK_STATUS;
 		} else {
 			final MultiStatus multiStatus = new MultiStatus(pluginId, severity,
