@@ -26,7 +26,7 @@
 				}
 
 				spec = new PushOperationSpecification();
-				for (final URIish uri : repoPage.getSelection().getPushURIs())
+				for (final URIish uri : repoPage.getSelection().getAllURIs())
 					spec.addURIRefUpdates(uri, ConfirmationPage
 							.copyUpdates(updates));
 			}
