@@ -1,0 +1,14 @@
+	/**
+	 * Stop the git daemon and delete test data from disk. If the system
+	 * property <code>test-repo-no-cleanup</code> is defined the test data will
+	 * be left on disk for analysis.
+	 *
+	 * @throws FileNotFoundException
+	 *             deletion of test repository failed
+	 */
+	public void shutDown() throws FileNotFoundException {
+		d.stop();
+		if (!System.getProperties().contains("test-repo-no-cleanup"))
+			delete(trash);
+	}
+

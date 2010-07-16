@@ -1,0 +1,13 @@
+	private String randomAciiString() {
+		String randstring = "";
+		Random rand = new Random();
+		int strlen = rand.nextInt(20) + 10;
+		for (int i = 0; i < strlen; i++) {
+			if (rand.nextInt(2) == 1)
+				randstring += "" + (char) (rand.nextInt(26) + 97);
+			else
+				randstring += "" + (char) (rand.nextInt(26) + 65);
+		}
+		return randstring;
+	}
+

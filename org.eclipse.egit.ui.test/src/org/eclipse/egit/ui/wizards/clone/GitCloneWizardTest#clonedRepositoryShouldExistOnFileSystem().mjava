@@ -3,8 +3,9 @@
 		importWizard.openWizard();
 		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
-				.nextToRemoteBranches("git://repo.or.cz/egit.git");
+				.nextToRemoteBranches(r.getUri());
+		remoteBranches.assertRemoteBranches(SampleTestRepository.FIX, Constants.MASTER);
 		WorkingCopyPage workingCopy = remoteBranches.nextToWorkingCopy();
-		workingCopy.assertWorkingCopyExists();
+		workingCopy.assertWorkingCopyExists(r.getUri());
 	}
 

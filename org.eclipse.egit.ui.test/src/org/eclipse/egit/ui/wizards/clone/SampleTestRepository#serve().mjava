@@ -1,0 +1,8 @@
+	private void serve() throws IOException {
+		d = new Daemon();
+		d.exportRepository(REPO_NAME, src.getRepository());
+		d.start();
+		uri = "git://localhost:" + d.getAddress().getPort() + "/" + REPO_NAME
+				+ Constants.DOT_GIT;
+	}
+

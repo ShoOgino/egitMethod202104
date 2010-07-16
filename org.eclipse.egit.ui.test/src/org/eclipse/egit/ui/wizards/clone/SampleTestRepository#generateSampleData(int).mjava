@@ -1,0 +1,25 @@
+	private void generateSampleData(int n) throws Exception {
+		A_txt = src.blob("A");
+		A = src.commit().add(A_txt_name, A_txt).create();
+		src.update(Constants.R_HEADS + Constants.MASTER, A);
+
+		// create some random commits
+		RevCommit X = A;
+		for (int i = 0; i < n; i++) {
+			X = src.commit().parent(X)
+					.add(randomAciiString(), randomAciiString()).create();
+		}
+
+		B = src.commit().parent(X).add(A_txt_name, "C").add("B", "B").create();
+		src.update(Constants.R_HEADS + Constants.MASTER, B);
+
+		v1_0 = src.tag(v1_0_name, B);
+		src.update(Constants.R_TAGS + v1_0_name, v1_0);
+
+		C = src.commit().parent(A).add(A_txt_name, "D").add("C", "C").create();
+		src.update(Constants.R_HEADS + FIX, C);
+
+		v2_0 = src.tag(v2_0_name, C);
+		src.update(Constants.R_TAGS + v2_0_name, v2_0);
+	}
+

@@ -1,42 +1,40 @@
 	@Test
 	public void alteringSomeParametersDuringClone() throws Exception {
-
-		File destRepo = new File(ResourcesPlugin.getWorkspace().getRoot()
-				.getLocation().toFile(), "egit2");
+		File destRepo = new File(ResourcesPlugin.getWorkspace()
+				.getRoot().getLocation().toFile(), "test2");
 
 		importWizard.openWizard();
 		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
-				.nextToRemoteBranches("git://repo.or.cz/egit.git");
+				.nextToRemoteBranches(r.getUri());
 		remoteBranches.deselectAllBranches();
 		remoteBranches
 				.assertErrorMessage("At least one branch must be selected.");
 		remoteBranches.assertNextIsDisabled();
 
-		remoteBranches.selectBranches("historical/pre-eclipse");
+		remoteBranches.selectBranches(SampleTestRepository.FIX);
 		remoteBranches.assertNextIsEnabled();
 
 		WorkingCopyPage workingCopy = remoteBranches.nextToWorkingCopy();
 		workingCopy.setDirectory(destRepo.toString());
-		workingCopy.assertBranch("historical/pre-eclipse");
+		workingCopy.assertBranch(SampleTestRepository.FIX);
 		workingCopy.setRemoteName("src");
 		workingCopy.waitForCreate();
 
 		// Some random sampling to see we got something. We do not test
-		// the integrity of the repo here. Only a few basic properties
+		// the integrity of the repository here. Only a few basic properties
 		// we'd expect from a clone made this way, that would possibly
-		// not hold true given othe parameters in the GUI.
-		Repository repository = new Repository(new File(destRepo, ".git"));
-		assertNotNull(repository.resolve("src/historical/pre-eclipse"));
+		// not hold true given other parameters in the GUI.
+		Repository repository = new Repository(new File(destRepo, Constants.DOT_GIT));
+		assertNotNull(repository.resolve("src/" + SampleTestRepository.FIX));
 		// we didn't clone that one
 		assertNull(repository.resolve("src/master"));
 		// and a local master initialized from origin/master (default!)
 		assertEquals(repository.resolve("stable"), repository
 				.resolve("src/stable"));
 		// A well known tag
-		assertEquals("90b818e596660b813b6fcf68f1e9e9b62c615130", repository
-				.resolve("refs/tags/v0.4.0").name());
+		assertNotNull(repository.resolve(Constants.R_TAGS + SampleTestRepository.v2_0_name).name());
 		// lots of refs
-		assertTrue(repository.getAllRefs().size() >= 10);
+		assertTrue(repository.getAllRefs().size() >= 4);
 	}
 
