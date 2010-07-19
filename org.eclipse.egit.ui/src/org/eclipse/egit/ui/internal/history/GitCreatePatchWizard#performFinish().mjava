@@ -7,8 +7,15 @@
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) {
-					StringBuilder sb = new StringBuilder();
-					DiffFormatter diffFmt = new DiffFormatter();
+					final StringBuilder sb = new StringBuilder();
+					DiffFormatter diffFmt = new DiffFormatter(new OutputStream() {
+
+						@Override
+						public void write(int c) throws IOException {
+							sb.append((char) c);
+
+						}
+					});
 					try {
 						if (isGit)
 							writeGitPatch(sb, diffFmt);
