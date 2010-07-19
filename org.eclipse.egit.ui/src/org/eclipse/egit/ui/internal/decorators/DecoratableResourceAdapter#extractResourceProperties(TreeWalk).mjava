@@ -48,12 +48,10 @@
 			dirty = false;
 			assumeValid = true;
 		} else {
-			if (!timestampMatches(indexEntry, resourceEntry))
+			if (workspaceIterator != null
+					&& workspaceIterator.isModified(indexEntry, true, true,
+							repository.getFS()))
 				dirty = true;
-
-			// TODO: Consider doing a content check here, to rule out false
-			// positives, as we might get mismatch between timestamps, even
-			// if the content is the same.
 		}
 	}
 
