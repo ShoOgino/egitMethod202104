@@ -3,15 +3,17 @@
 	 *
 	 * @param files
 	 * @param directory
-	 * @param directoriesVisited
+	 * @param visistedDirs
 	 *            Set of canonical paths of directories, used as recursion guard
 	 * @param monitor
 	 *            The monitor to report to
 	 * @return boolean <code>true</code> if the operation was completed.
 	 */
 	private boolean collectProjectFilesFromDirectory(Collection<File> files,
-			File directory, Set<String> directoriesVisited,
+			File directory, Set<String> visistedDirs,
 			IProgressMonitor monitor) {
+
+		Set<String> directoriesVisited;
 
 		if (monitor.isCanceled()) {
 			return false;
@@ -24,7 +26,7 @@
 			return false;
 
 		// Initialize recursion guard for recursive symbolic links
-		if (directoriesVisited == null) {
+		if (visistedDirs == null) {
 			directoriesVisited = new HashSet<String>();
 			try {
 				directoriesVisited.add(directory.getCanonicalPath());
@@ -33,6 +35,8 @@
 						new Status(IStatus.ERROR, Activator.getPluginId(),
 								exception.getLocalizedMessage(), exception));
 			}
+		} else {
+			directoriesVisited = visistedDirs;
 		}
 
 		// first look for project description files

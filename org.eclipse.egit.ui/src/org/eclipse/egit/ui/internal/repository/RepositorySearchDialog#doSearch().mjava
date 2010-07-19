@@ -53,7 +53,7 @@
 
 			int foundOld = 0;
 
-			TreeSet<String> validDirs = new TreeSet<String>();
+			final TreeSet<String> validDirs = new TreeSet<String>();
 
 			for (String foundDir : directories) {
 				if (!fExistingDirectories.contains(foundDir)) {
@@ -72,10 +72,14 @@
 			} else if (directories.isEmpty())
 				setMessage(UIText.RepositorySearchDialog_NothingFoundMessage,
 						IMessageProvider.INFORMATION);
+
 			toggleSelectionButton.setEnabled(!validDirs.isEmpty());
+			fTree.clearFilter();
 			fTreeViewer.setInput(validDirs);
 			// this sets all to selected
-			toggleSelection();
+			fTreeViewer.setAllChecked(true);
+			enableOk();
+
 		}
 
 	}

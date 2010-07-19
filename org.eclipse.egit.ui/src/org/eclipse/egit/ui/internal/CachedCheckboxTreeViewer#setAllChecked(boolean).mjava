@@ -7,9 +7,6 @@
 
 			// Find all visible children, add only the visible leaf nodes to the check state cache
 			Object[] visible = getFilteredChildren(getRoot());
-			if (checkState == null) {
-				checkState = new HashSet();
-			}
 
 			ITreeContentProvider contentProvider = null;
 			if (getContentProvider() instanceof ITreeContentProvider) {
@@ -21,7 +18,7 @@
 					checkState.add(visible[i]);
 				}
 			} else {
-				Set toCheck = new HashSet();
+				Set<Object> toCheck = new HashSet<Object>();
 				for (int i = 0; i < visible.length; i++) {
 					addFilteredChildren(visible[i], contentProvider, toCheck);
 				}

@@ -49,7 +49,8 @@
 						selectedProjects = new ProjectRecord[files.size()];
 						int index = 0;
 						monitor.worked(50);
-						monitor.subTask(UIText.WizardProjectsImportPage_ProcessingMessage);
+						monitor
+								.subTask(UIText.WizardProjectsImportPage_ProcessingMessage);
 						while (filesIterator.hasNext()) {
 							File file = filesIterator.next();
 							selectedProjects[index] = new ProjectRecord(file);

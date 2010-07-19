@@ -84,20 +84,27 @@
 		searchResultGroup.setLayout(new GridLayout(2, false));
 		GridDataFactory.fillDefaults().applyTo(searchResultGroup);
 
-		// TODO for 3.4 compatibility, we must use this constructor
-		fTree = new FilteredTree(searchResultGroup, SWT.CHECK | SWT.BORDER,
-				new PatternFilter());
-		fTreeViewer = fTree.getViewer();
-		fTreeViewer
-				.addSelectionChangedListener(new ISelectionChangedListener() {
+		PatternFilter filter = new PatternFilter() {
 
-					public void selectionChanged(SelectionChangedEvent event) {
-						// this is used to update the OK button when the
-						// keyboard
-						// is used to toggle the check boxes
-						enableOk();
-					}
-				});
+			@Override
+			public boolean isElementVisible(Viewer viewer, Object element) {
+
+				if (getCheckedItems().contains(element))
+					return true;
+
+				return super.isElementVisible(viewer, element);
+			}
+		};
+
+		fTree = new FilteredCheckboxTree(searchResultGroup, null, SWT.NONE,
+				filter);
+		fTreeViewer = fTree.getCheckboxTreeViewer();
+		fTreeViewer.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				enableOk();
+			}
+		});
 
 		GridDataFactory.fillDefaults().grab(true, true).minSize(0, 300)
 				.applyTo(fTree);
@@ -119,7 +126,6 @@
 			public void widgetSelected(SelectionEvent e) {
 				doSearch();
 			}
-
 		});
 
 		toggleSelectionButton = new Button(buttonColumn, SWT.NONE);
@@ -132,7 +138,9 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				toggleSelection();
+				for (TreeItem item : fTreeViewer.getTree().getItems())
+					fTreeViewer.setChecked(item.getData(), !item.getChecked());
+				enableOk();
 			}
 		});
 

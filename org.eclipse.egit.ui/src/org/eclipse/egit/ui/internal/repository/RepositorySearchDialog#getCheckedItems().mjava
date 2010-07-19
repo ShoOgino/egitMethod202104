@@ -1,9 +1,7 @@
 	private HashSet<String> getCheckedItems() {
 		HashSet<String> ret = new HashSet<String>();
-		for (TreeItem item : fTreeViewer.getTree().getItems())
-			if (item.getChecked())
-				ret.add((String) item.getData());
-
+		for (Object item : fTreeViewer.getCheckedElements())
+			ret.add((String) item);
 		return ret;
 	}
 

@@ -3,9 +3,8 @@
 	 */
 	private Set<ProjectRecord> getCheckedProjects() {
 		HashSet<ProjectRecord> ret = new HashSet<ProjectRecord>();
-		for (TreeItem item : projectsList.getTree().getItems())
-			if (item.getChecked())
-				ret.add((ProjectRecord) item.getData());
+		for (Object selected : projectsList.getCheckedElements())
+			ret.add((ProjectRecord) selected);
 
 		return ret;
 	}

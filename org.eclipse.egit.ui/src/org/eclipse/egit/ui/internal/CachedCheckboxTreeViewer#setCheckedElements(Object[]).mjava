@@ -3,11 +3,8 @@
 	 */
 	public void setCheckedElements(Object[] elements) {
 		super.setCheckedElements(elements);
-		if (checkState == null) {
-			checkState = new HashSet();
-		} else {
 			checkState.clear();
-		}
+
 		ITreeContentProvider contentProvider = null;
 		if (getContentProvider() instanceof ITreeContentProvider) {
 			contentProvider = (ITreeContentProvider) getContentProvider();
