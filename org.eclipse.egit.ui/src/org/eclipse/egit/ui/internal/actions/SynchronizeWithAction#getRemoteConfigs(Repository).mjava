@@ -1,9 +1,0 @@
-	private List<RemoteConfig> getRemoteConfigs(Repository repo)
-			throws InvocationTargetException {
-		try {
-			return RemoteConfig.getAllRemoteConfigs(repo.getConfig());
-		} catch (URISyntaxException e) {
-			throw new InvocationTargetException(e);
-		}
-	}
-

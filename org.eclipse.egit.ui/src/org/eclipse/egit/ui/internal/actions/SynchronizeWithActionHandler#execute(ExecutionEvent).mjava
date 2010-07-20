@@ -1,0 +1,29 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository[] repos = getRepositories(event);
+
+		if (repos.length != repos.length)
+			return null;
+
+		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
+		for (Repository repo : repos) {
+			try {
+				List<SyncRepoEntity> syncRepoEntitys = createSyncRepoEntitys(repo);
+				SelectSynchronizeResourceDialog dialog = new SelectSynchronizeResourceDialog(
+						getShell(event), repo.getDirectory(), syncRepoEntitys);
+
+				if (dialog.open() != IDialogConstants.OK_ID)
+					return null;
+
+				gsdSet.add(new GitSynchronizeData(repo, dialog.getSrcRef(),
+						dialog.getDstRef(), dialog.shouldIncludeLocal()));
+			} catch (URISyntaxException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+		}
+
+		new GitSynchronize(gsdSet);
+		return null;
+	}
+

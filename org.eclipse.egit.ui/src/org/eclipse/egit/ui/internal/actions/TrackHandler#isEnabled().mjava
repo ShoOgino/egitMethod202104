@@ -1,0 +1,10 @@
+	@Override
+	public boolean isEnabled() {
+		try {
+			return getSelectedAdaptables(getSelection(null), IResource.class).length > 0;
+		} catch (ExecutionException e) {
+			Activator.handleError(e.getMessage(), e, false);
+			return false;
+		}
+	}
+

@@ -1,0 +1,39 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final Repository repository = getRepository(true, event);
+		if (repository == null)
+			return null;
+		if (!repository.getRepositoryState().canResetHead()) {
+			MessageDialog.openError(getShell(event),
+					UIText.ResetAction_errorResettingHead, NLS.bind(
+							UIText.ResetAction_repositoryState, repository
+									.getRepositoryState().getDescription()));
+			return null;
+		}
+		ResetTargetSelectionDialog branchSelectionDialog = new ResetTargetSelectionDialog(
+				getShell(event), repository);
+		if (branchSelectionDialog.open() == IDialogConstants.OK_ID) {
+			final String refName = branchSelectionDialog.getRefName();
+			final ResetType type = branchSelectionDialog.getResetType();
+			String jobname = NLS.bind(UIText.ResetAction_reset, refName);
+			final ResetOperation operation = new ResetOperation(repository,
+					refName, type);
+			Job job = new Job(jobname) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						operation.execute(monitor);
+						GitLightweightDecorator.refresh();
+					} catch (CoreException e) {
+						return Activator.createErrorStatus(e.getStatus()
+								.getMessage(), e);
+					}
+					return Status.OK_STATUS;
+				}
+			};
+			job.setRule(operation.getSchedulingRule());
+			job.setUser(true);
+			job.schedule();
+		}
+		return null;
+	}
+

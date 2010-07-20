@@ -1,0 +1,10 @@
+	/**
+	 * @param event
+	 * @return the page
+	 * @throws ExecutionException
+	 */
+	protected IWorkbenchPage getPartPage(ExecutionEvent event)
+			throws ExecutionException {
+		return HandlerUtil.getActivePartChecked(event).getSite().getPage();
+	}
+

@@ -1,0 +1,11 @@
+	private ObjectId getTagCommit(ObjectId objectId) throws IOException {
+		ObjectId result = null;
+		if (objectId == null) {
+			result = repo.resolve(Constants.HEAD);
+
+		} else {
+			result = objectId;
+		}
+		return result;
+	}
+

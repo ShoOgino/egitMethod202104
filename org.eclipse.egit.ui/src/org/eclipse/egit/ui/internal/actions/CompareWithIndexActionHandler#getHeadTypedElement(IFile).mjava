@@ -1,0 +1,39 @@
+	private ITypedElement getHeadTypedElement(final IFile baseFile)
+			throws IOException {
+		final RepositoryMapping mapping = RepositoryMapping.getMapping(baseFile
+				.getProject());
+		final Repository repository = mapping.getRepository();
+		String gitPath = mapping.getRepoRelativePath(baseFile);
+
+		GitIndex index = repository.getIndex();
+		if (index.getEntry(gitPath) == null) {
+			// the file cannot be found in the index
+			return new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS
+					.bind(UIText.CompareWithIndexAction_FileNotInIndex,
+							baseFile.getName()));
+		}
+
+		IFileRevision nextFile = GitFileRevision.inIndex(repository, gitPath);
+		final EditableRevision next = new EditableRevision(nextFile);
+
+		IContentChangeListener listener = new IContentChangeListener() {
+			public void contentChanged(IContentChangeNotifier source) {
+				final byte[] newContent = next.getModifiedContent();
+				try {
+					final GitIndex index = repository.getIndex();
+					final File file = new File(baseFile.getLocation()
+							.toString());
+					index.add(mapping.getWorkDir(), file, newContent);
+					index.write();
+				} catch (IOException e) {
+					Activator.handleError(
+							UIText.CompareWithIndexAction_errorOnAddToIndex, e,
+							true);
+				}
+			}
+		};
+
+		next.addContentChangeListener(listener);
+		return next;
+	}
+

@@ -1,0 +1,5 @@
+	private Collection<Ref> getRemoteRef(RefDatabase refDb, String remoteName)
+			throws IOException {
+		return refDb.getRefs(Constants.R_REMOTES + remoteName + "/").values(); //$NON-NLS-1$
+	}
+

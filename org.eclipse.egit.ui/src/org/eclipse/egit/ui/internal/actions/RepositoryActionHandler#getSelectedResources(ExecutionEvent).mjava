@@ -1,0 +1,16 @@
+	/**
+	 * @param event
+	 * @return the resources in the selection
+	 * @throws ExecutionException
+	 */
+	protected IResource[] getSelectedResources(ExecutionEvent event)
+			throws ExecutionException {
+		Set<IResource> result = new HashSet<IResource>();
+		for (Object o : getSelection(event).toList()) {
+			IResource resource = (IResource) getAdapter(o, IResource.class);
+			if (resource != null)
+				result.add(resource);
+		}
+		return result.toArray(new IResource[result.size()]);
+	}
+
