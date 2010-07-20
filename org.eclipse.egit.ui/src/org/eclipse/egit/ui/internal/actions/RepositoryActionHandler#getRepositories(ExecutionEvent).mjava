@@ -1,0 +1,23 @@
+	/**
+	 * Figure out which repositories to use. All selected resources must map to
+	 * a Git repository.
+	 *
+	 * @param event
+	 *
+	 * @return repository for current project, or null
+	 * @throws ExecutionException
+	 */
+	protected Repository[] getRepositories(ExecutionEvent event)
+			throws ExecutionException {
+		IProject[] selectedProjects = getSelectedProjects(event);
+		Set<Repository> repos = new HashSet<Repository>(selectedProjects.length);
+		for (IProject project : selectedProjects) {
+			RepositoryMapping repositoryMapping = RepositoryMapping
+					.getMapping(project);
+			if (repositoryMapping == null)
+				return new Repository[0];
+			repos.add(repositoryMapping.getRepository());
+		}
+		return repos.toArray(new Repository[repos.size()]);
+	}
+

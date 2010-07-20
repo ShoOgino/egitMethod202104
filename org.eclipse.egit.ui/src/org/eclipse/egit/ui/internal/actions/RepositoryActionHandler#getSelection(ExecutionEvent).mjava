@@ -1,0 +1,29 @@
+	/**
+	 * @param event
+	 *            the execution event, may be null
+	 * @return the current selection
+	 * @throws ExecutionException
+	 *             if the selection can't be determined
+	 */
+	protected IStructuredSelection getSelection(ExecutionEvent event)
+			throws ExecutionException {
+		ISelection selection;
+		if (event != null)
+			selection = HandlerUtil.getCurrentSelectionChecked(event);
+		else {
+			// the event is sometimes null, in particular, during
+			// isEnabled()
+			ISelectionService srv = (ISelectionService) PlatformUI
+					.getWorkbench().getActiveWorkbenchWindow().getService(
+							ISelectionService.class);
+			if (srv == null)
+				throw new ExecutionException(
+						UIText.RepositoryActionHandler_CouldNotGetSelection_message);
+			else
+				selection = srv.getSelection();
+		}
+		if (selection instanceof IStructuredSelection)
+			return (IStructuredSelection) selection;
+		return new StructuredSelection();
+	}
+

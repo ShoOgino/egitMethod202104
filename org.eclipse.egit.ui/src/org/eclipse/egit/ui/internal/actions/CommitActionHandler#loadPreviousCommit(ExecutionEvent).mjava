@@ -1,0 +1,15 @@
+	private void loadPreviousCommit(ExecutionEvent event)
+			throws ExecutionException {
+		IProject project = getProjectsForSelectedResources(event)[0];
+
+		Repository repo = RepositoryMapping.getMapping(project).getRepository();
+		try {
+			ObjectId parentId = repo.resolve(Constants.HEAD);
+			if (parentId != null)
+				previousCommit = repo.mapCommit(parentId);
+		} catch (IOException e) {
+			Activator.handleError(UIText.CommitAction_errorRetrievingCommit, e,
+					true);
+		}
+	}
+

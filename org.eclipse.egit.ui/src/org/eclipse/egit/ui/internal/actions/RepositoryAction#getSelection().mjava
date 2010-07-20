@@ -1,0 +1,13 @@
+	/**
+	 * @return the current selection
+	 */
+	protected IStructuredSelection getSelection() {
+		// TODO Synchronize CommitOperation overwrites this, can we get rid
+		// of it?
+		ISelectionService srv = (ISelectionService) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getService(ISelectionService.class);
+		if (srv == null)
+			return new StructuredSelection();
+		return (IStructuredSelection) srv.getSelection();
+	}
+

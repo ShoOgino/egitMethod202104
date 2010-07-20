@@ -1,0 +1,14 @@
+	/**
+	 * @param event
+	 * @return the projects hosting the selected resources
+	 * @throws ExecutionException
+	 */
+	protected IProject[] getProjectsForSelectedResources(ExecutionEvent event)
+			throws ExecutionException {
+		Set<IProject> ret = new HashSet<IProject>();
+		for (IResource resource : (IResource[]) getSelectedAdaptables(
+				getSelection(event), IResource.class))
+			ret.add(resource.getProject());
+		return ret.toArray(new IProject[ret.size()]);
+	}
+
