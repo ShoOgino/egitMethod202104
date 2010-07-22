@@ -1,0 +1,14 @@
+	protected static void addAndCommit(IFile file, String commitMessage)
+			throws Exception {
+		IProject prj = file.getProject();
+		if (!prj.isAccessible())
+			throw new IllegalStateException("No project to touch");
+		IFile[] commitables = new IFile[] { file };
+		ArrayList<IFile> untracked = new ArrayList<IFile>();
+		untracked.addAll(Arrays.asList(commitables));
+		CommitOperation op = new CommitOperation(commitables,
+				new ArrayList<IFile>(), untracked, TestUtil.TESTAUTHOR,
+				TestUtil.TESTCOMMITTER, commitMessage);
+		op.execute(null);
+	}
+

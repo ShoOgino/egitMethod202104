@@ -1,6 +1,6 @@
 	private void createTag(String name, String message) throws Exception {
 		SWTBotTree tree = getOrOpenView().bot().tree();
-		getTagsItem(tree, repositoryFile).select();
+		myRepoViewUtil.getTagsItem(tree, repositoryFile).select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("CreateTagCommand"));
 		String branchName = repository.getBranch();
@@ -9,9 +9,6 @@
 		SWTBotShell createDialog = bot.shell(shellTitle).activate();
 		createDialog.bot().textWithLabel(UIText.CreateTagDialog_tagName)
 				.setText(name);
-		createDialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
-				.setText("dummy");
-		// TODO the ok button does not enable upon the first setText
 		createDialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
 				.setText(message);
 		waitInUI();

@@ -1,0 +1,43 @@
+	@Test
+	public void testFetchFromOriginThenMerge() throws Exception {
+		String previousCommit = prepare();
+		String oldContent = getTestFileContent();
+		SWTBotShell fetchDialog = openFetchDialog();
+		fetchDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
+		fetchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		SWTBotShell confirm = bot.shell(NLS.bind(
+				UIText.FetchResultDialog_title, "origin"));
+		SWTBotTable table = confirm.bot().table();
+		String branch = table.getTableItem(0).getText(2);
+		assertTrue("Wrong result", previousCommit.startsWith(branch.substring(
+				0, 7)));
+
+		confirm.close();
+
+		String newContent = getTestFileContent();
+		assertEquals(oldContent, newContent);
+
+		fetchDialog = openFetchDialog();
+		fetchDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
+		fetchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		confirm = bot.shell(NLS.bind(UIText.FetchResultDialog_title, "origin"));
+		int count = confirm.bot().table().rowCount();
+
+		confirm.close();
+
+		assertEquals("Wrong result count", 0, count);
+
+		newContent = getTestFileContent();
+		assertEquals(oldContent, newContent);
+
+		SWTBotShell mergeDialog = openMergeDialog();
+
+		mergeDialog.bot().tree().getTreeItem(REMOTE_BRANCHES).expand().getNode(
+				"origin/master").select();
+		mergeDialog.bot().button(UIText.MergeTargetSelectionDialog_ButtonMerge)
+				.click();
+		bot.shell(UIText.MergeAction_MergeResultTitle).close();
+		newContent = getTestFileContent();
+		assertFalse(oldContent.equals(newContent));
+	}
+

@@ -1,0 +1,13 @@
+	public SWTBotTreeItem getTagsItem(SWTBotTree tree, File repo)
+			throws Exception {
+		Repository repository = lookupRepository(repo);
+		RepositoryNode root = new RepositoryNode(null, repository);
+		TagsNode tags = new TagsNode(root, repository);
+
+		String rootText = labelProvider.getText(root);
+		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
+		SWTBotTreeItem tagsItem = rootItem.expand().getNode(
+				labelProvider.getText(tags));
+		return tagsItem;
+	}
+

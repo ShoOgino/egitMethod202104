@@ -1,0 +1,26 @@
+	@Test
+	public void testOpenHistoryOnFileNoFilter() throws Exception {
+		initFilter(0);
+
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ1).rowCount());
+		assertEquals("Wrong number of commits", commitCount - 1,
+				getHistoryViewTable(PROJ1, FOLDER).rowCount());
+		assertEquals("Wrong number of commits", commitCount - 1,
+				getHistoryViewTable(PROJ1, FOLDER, FILE1).rowCount());
+		assertEquals("Wrong number of commits", 1, getHistoryViewTable(PROJ1,
+				FOLDER, FILE2).rowCount());
+		assertEquals("Wrong number of commits", 1, getHistoryViewTable(PROJ1,
+				SECONDFOLDER).rowCount());
+		assertEquals("Wrong number of commits", 1, getHistoryViewTable(PROJ1,
+				SECONDFOLDER, ADDEDFILE).rowCount());
+		assertEquals("Wrong number of commits", 1, getHistoryViewTable(PROJ2)
+				.rowCount());
+
+		assertEquals("Wrong commit message", ADDEDMESSAGE, getHistoryViewTable(
+				PROJ1, SECONDFOLDER, ADDEDFILE).getTableItem(0).getText(0));
+		assertEquals("Wrong commit message", "Initial commit",
+				getHistoryViewTable(PROJ1, FOLDER, FILE2).getTableItem(0)
+						.getText(0));
+	}
+

@@ -1,0 +1,8 @@
+	@SuppressWarnings("boxing")
+	protected void assertProjectExistence(String projectName, boolean existence) {
+		IProject prj = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				projectName);
+		assertEquals("Project existence " + projectName, prj.exists(),
+				existence);
+	}
+

@@ -1,0 +1,14 @@
+	private SWTBotShell openMergeDialog() throws Exception {
+		SWTBotTree projectExplorerTree = bot.viewById(
+				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		getProjectItem(projectExplorerTree, PROJ1).select();
+		String menuString = util.getPluginLocalizedValue("MergeAction_label");
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+				menuString);
+		Repository repo = lookupRepository(childRepositoryFile);
+		SWTBotShell dialog = bot.shell(NLS.bind(
+				UIText.MergeTargetSelectionDialog_TitleMerge, repo
+						.getDirectory().toString()));
+		return dialog;
+	}
+

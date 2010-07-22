@@ -1,0 +1,24 @@
+	@BeforeClass
+	public static void setup() throws Exception {
+		repositoryFile = createProjectAndCommitToRepository();
+		Repository repo = lookupRepository(repositoryFile);
+		perspective = bot.activePerspective();
+		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
+
+		Tag tag = new Tag(repo);
+		tag.setTag("SomeTag");
+		tag.setAuthor(new PersonIdent(TestUtil.TESTAUTHOR));
+		tag.setMessage("I'm just a little tag");
+		tag.setObjId(repo.resolve(repo.getFullBranch()));
+		TagOperation top = new TagOperation(repo, tag, false);
+		top.execute(null);
+		touchAndSubmit(null);
+
+		RepositoriesViewLabelProvider provider = new RepositoriesViewLabelProvider();
+		LOCAL_BRANCHES = provider.getText(new LocalBranchesNode(
+				new RepositoryNode(null, repo), repo));
+		TAGS = provider.getText(new TagsNode(new RepositoryNode(null, repo),
+				repo));
+		waitInUI();
+	}
+

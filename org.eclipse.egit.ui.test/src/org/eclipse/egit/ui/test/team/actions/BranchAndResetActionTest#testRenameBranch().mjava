@@ -1,0 +1,30 @@
+	@Test
+	public void testRenameBranch() throws Exception {
+		SWTBotShell dialog = openBranchDialog();
+		dialog.bot().button(UIText.BranchSelectionDialog_NewBranch).click();
+		SWTBotShell branchNameDialog = bot
+				.shell(UIText.BranchSelectionDialog_QuestionNewBranchTitle);
+		branchNameDialog.bot().text().setText("master");
+		assertFalse(branchNameDialog.bot().button(IDialogConstants.OK_LABEL)
+				.isEnabled());
+		branchNameDialog.bot().text().setText("Unrenamed");
+		branchNameDialog.bot().button(IDialogConstants.OK_LABEL).click();
+
+		assertEquals("New Branch should be selected", "Unrenamed", bot.tree()
+				.selection().get(0, 0));
+
+		bot.button(UIText.BranchSelectionDialog_Rename).click();
+
+		branchNameDialog = bot
+				.shell(UIText.BranchSelectionDialog_QuestionNewBranchTitle);
+		assertFalse(branchNameDialog.bot().button(IDialogConstants.OK_LABEL)
+				.isEnabled());
+		branchNameDialog.bot().text().setText("Renamed");
+		bot.button(IDialogConstants.OK_LABEL).click();
+
+		bot.button(UIText.BranchSelectionDialog_OkCheckout).click();
+		waitInUI();
+		assertEquals("New Branch should be checked out", "Renamed",
+				lookupRepository(repositoryFile).getBranch());
+	}
+

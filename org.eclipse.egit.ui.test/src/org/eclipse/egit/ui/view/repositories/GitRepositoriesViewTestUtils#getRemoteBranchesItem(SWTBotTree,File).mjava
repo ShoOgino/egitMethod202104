@@ -1,0 +1,17 @@
+	public SWTBotTreeItem getRemoteBranchesItem(SWTBotTree tree,
+			File repositoryFile) throws Exception {
+		Repository repository = lookupRepository(repositoryFile);
+		RepositoryNode root = new RepositoryNode(null, repository);
+		BranchesNode branches = new BranchesNode(root, repository);
+		RemoteBranchesNode remoteBranches = new RemoteBranchesNode(branches,
+				repository);
+
+		String rootText = labelProvider.getText(root);
+		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
+		SWTBotTreeItem branchesItem = rootItem.expand().getNode(
+				labelProvider.getText(branches));
+		SWTBotTreeItem remoteItem = branchesItem.expand().getNode(
+				labelProvider.getText(remoteBranches));
+		return remoteItem;
+	}
+

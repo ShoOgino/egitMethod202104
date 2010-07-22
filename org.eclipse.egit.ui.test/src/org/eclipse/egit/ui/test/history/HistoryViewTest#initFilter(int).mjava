@@ -1,0 +1,40 @@
+	/**
+	 * @param filter
+	 *            0: none, 1: repository, 2: project, 3: folder
+	 */
+	private void initFilter(int filter) {
+		getHistoryViewTable(PROJ1);
+		SWTBotView view = bot
+				.viewById("org.eclipse.team.ui.GenericHistoryView");
+		SWTBotToolbarToggleButton folder = (SWTBotToolbarToggleButton) view
+				.toolbarButton(UIText.HistoryPage_ShowAllVersionsForFolder);
+		SWTBotToolbarToggleButton project = (SWTBotToolbarToggleButton) view
+				.toolbarButton(UIText.HistoryPage_ShowAllVersionsForProject);
+		SWTBotToolbarToggleButton repo = (SWTBotToolbarToggleButton) view
+				.toolbarButton(UIText.HistoryPage_ShowAllVersionsForRepo);
+		switch (filter) {
+		case 0:
+			if (folder.isChecked())
+				folder.click();
+			if (project.isChecked())
+				project.click();
+			if (repo.isChecked())
+				repo.click();
+			break;
+		case 1:
+			if (!repo.isChecked())
+				repo.click();
+			break;
+		case 2:
+			if (!project.isChecked())
+				project.click();
+			break;
+		case 3:
+			if (!folder.isChecked())
+				folder.click();
+			break;
+		default:
+			break;
+		}
+	}
+

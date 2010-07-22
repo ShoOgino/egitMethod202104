@@ -1,0 +1,22 @@
+	@Test
+	public void testDisconnectAndReconnect() throws Exception {
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				PROJ1);
+		RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+		assertNotNull(mapping);
+		clickOnDisconnect();
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(
+				IResource.DEPTH_INFINITE, null);
+		waitInUI();
+		mapping = RepositoryMapping.getMapping(project);
+		assertNull(mapping);
+		SWTBotShell connectDialog = openConnectDialog();
+		connectDialog.bot().tree().getAllItems()[0].select();
+		connectDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(
+				IResource.DEPTH_INFINITE, null);
+		waitInUI();
+		mapping = RepositoryMapping.getMapping(project);
+		assertNotNull(mapping);
+	}
+
