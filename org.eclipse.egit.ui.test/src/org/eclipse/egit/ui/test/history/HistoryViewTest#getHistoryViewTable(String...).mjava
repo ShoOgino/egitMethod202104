@@ -1,0 +1,22 @@
+	/**
+	 * @param path
+	 *            must be length 2 or three (folder or file)
+	 * @return the bale
+	 */
+	private SWTBotTable getHistoryViewTable(String... path) {
+		SWTBotTree projectExplorerTree = bot.viewById(
+				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		if (path.length == 1)
+			getProjectItem(projectExplorerTree, path[0]).select();
+		else if (path.length == 2)
+			getProjectItem(projectExplorerTree, path[0]).expand().getNode(
+					path[1]).select();
+		else
+			getProjectItem(projectExplorerTree, path[0]).expand().getNode(
+					path[1]).expand().getNode(path[2]).select();
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Show In",
+				"History");
+		return bot.viewById("org.eclipse.team.ui.GenericHistoryView").bot()
+				.table();
+	}
+

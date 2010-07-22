@@ -1,0 +1,19 @@
+	@Test
+	public void testOpenHistoryOnFileRepoFilter() throws Exception {
+		initFilter(1);
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ1).rowCount());
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ1, FOLDER).rowCount());
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ1, FOLDER, FILE1).rowCount());
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ1, FOLDER, FILE2).rowCount());
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ1, SECONDFOLDER).rowCount());
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ1, SECONDFOLDER, ADDEDFILE).rowCount());
+		assertEquals("Wrong number of commits", commitCount,
+				getHistoryViewTable(PROJ2).rowCount());
+	}
+

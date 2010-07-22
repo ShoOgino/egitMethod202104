@@ -1,0 +1,36 @@
+	@Test
+	public void testChangeTagMessage() throws Exception {
+		SWTBotShell tagDialog = openTagDialog();
+		assertFalse("Ok should be disabled", tagDialog.bot().button(
+				IDialogConstants.OK_LABEL).isEnabled());
+		tagDialog.bot().textWithLabel(UIText.CreateTagDialog_tagName).setText(
+				"MessageChangeTag");
+		assertFalse("Ok should be disabled", tagDialog.bot().button(
+				IDialogConstants.OK_LABEL).isEnabled());
+		tagDialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
+				.setText("Here's the first message");
+		tagDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		waitInUI();
+		assertTrue(lookupRepository(repositoryFile).getTags().keySet()
+				.contains("MessageChangeTag"));
+		tagDialog = openTagDialog();
+		tagDialog.bot().tableWithLabel(UIText.CreateTagDialog_existingTags)
+				.getTableItem("MessageChangeTag").select();
+		assertFalse("Ok should be disabled", tagDialog.bot().button(
+				IDialogConstants.OK_LABEL).isEnabled());
+		String oldText = tagDialog.bot().textWithLabel(
+				UIText.CreateTagDialog_tagMessage).getText();
+		assertEquals("Wrong message text", "Here's the first message", oldText);
+		tagDialog.bot().checkBox(UIText.CreateTagDialog_overwriteTag).click();
+		tagDialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
+				.setText("New message");
+		tagDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		tagDialog = openTagDialog();
+		tagDialog.bot().tableWithLabel(UIText.CreateTagDialog_existingTags)
+				.getTableItem("MessageChangeTag").select();
+		String newText = tagDialog.bot().textWithLabel(
+				UIText.CreateTagDialog_tagMessage).getText();
+		assertEquals("Wrong message text", "New message", newText);
+		tagDialog.close();
+	}
+

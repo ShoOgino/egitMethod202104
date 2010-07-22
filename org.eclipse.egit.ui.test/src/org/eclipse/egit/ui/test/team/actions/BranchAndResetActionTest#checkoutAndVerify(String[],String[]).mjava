@@ -1,0 +1,26 @@
+	private void checkoutAndVerify(String[] currentBranch, String[] newBranch)
+			throws IOException, Exception {
+		SWTBotShell dialog = openBranchDialog();
+		TableCollection tc = dialog.bot().tree().selection();
+		assertEquals("Wrong selection count", 1, tc.rowCount());
+		assertEquals("Wrong item selected", currentBranch[1], tc.get(0, 0));
+
+		dialog.bot().tree().getTreeItem(newBranch[0]).expand().getNode(
+				newBranch[1]).select();
+		tc = dialog.bot().tree().selection();
+		assertEquals("Wrong selection count", 1, tc.rowCount());
+		assertEquals("Wrong item selected", newBranch[1], tc.get(0, 0));
+
+		Repository repo = lookupRepository(repositoryFile);
+
+		dialog.bot().button(UIText.BranchSelectionDialog_OkCheckout).click();
+		waitInUI();
+		if (ObjectId.isId(repo.getBranch())) {
+			String mapped = Activator.getDefault().getRepositoryUtil()
+					.mapCommitToRef(repo, repo.getBranch(), false);
+			assertEquals("Wrong branch", newBranch[1], mapped.substring(mapped
+					.lastIndexOf('/') + 1));
+		} else
+			assertEquals("Wrong branch", newBranch[1], repo.getBranch());
+	}
+

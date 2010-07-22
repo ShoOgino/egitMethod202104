@@ -1,6 +1,7 @@
 	/**
 	 * Verify that remote configuration is shown correctly; also check error
 	 * node display
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -9,8 +10,8 @@
 		removeRemotesConfig(repositoryFile);
 		refreshAndWait();
 		SWTBotTree tree = getOrOpenView().bot().tree();
-		SWTBotTreeItem remotesItem = getRemotesItem(tree, repositoryFile)
-				.expand();
+		SWTBotTreeItem remotesItem = myRepoViewUtil.getRemotesItem(tree,
+				repositoryFile).expand();
 		assertEquals("Wrong number of remotes", 0, remotesItem.getNodes()
 				.size());
 		RepositoryConfig cfg = lookupRepository(repositoryFile).getConfig();
@@ -27,11 +28,11 @@
 		cfg.save();
 		cfg.load();
 		refreshAndWait();
-		remotesItem = getRemotesItem(tree, repositoryFile).expand();
+		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile).expand();
 		assertEquals("Wrong number of remotes", 3, remotesItem.getNodes()
 				.size());
 
-		remotesItem = getRemotesItem(tree, repositoryFile).expand();
+		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile).expand();
 		List<String> testnodes = remotesItem.getNode("test").expand()
 				.getNodes();
 		assertTrue(testnodes.size() == 1);
@@ -53,7 +54,7 @@
 
 		removeRemotesConfig(repositoryFile);
 		refreshAndWait();
-		remotesItem = getRemotesItem(tree, repositoryFile).expand();
+		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile).expand();
 		assertEquals("Wrong number of remotes", 0, remotesItem.getNodes()
 				.size());
 	}

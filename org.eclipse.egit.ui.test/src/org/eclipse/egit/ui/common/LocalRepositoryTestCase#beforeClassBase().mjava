@@ -1,0 +1,11 @@
+	@BeforeClass
+	public static void beforeClassBase() throws Exception {
+		deleteAllProjects();
+		// create our temporary directory in the user space
+		File userHome = FS.DETECTED.userHome();
+		testDirectory = new File(userHome, "LocalRepositoriesTests");
+		if (testDirectory.exists())
+			deleteRecursive(testDirectory);
+		testDirectory.mkdir();
+	}
+

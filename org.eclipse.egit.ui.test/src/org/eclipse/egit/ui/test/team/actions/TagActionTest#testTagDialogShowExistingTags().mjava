@@ -1,0 +1,8 @@
+	@Test
+	public void testTagDialogShowExistingTags() throws Exception {
+		SWTBotShell tagDialog = openTagDialog();
+		int index = tagDialog.bot().tableWithLabel(
+				UIText.CreateTagDialog_existingTags).indexOf("SomeTag");
+		assertTrue("Tag is not showing", index >= 0);
+	}
+

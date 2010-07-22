@@ -1,0 +1,20 @@
+	@Test
+	public void testCreateBranch() throws Exception {
+		SWTBotShell dialog = openBranchDialog();
+		dialog.bot().button(UIText.BranchSelectionDialog_NewBranch).click();
+		SWTBotShell branchNameDialog = bot
+				.shell(UIText.BranchSelectionDialog_QuestionNewBranchTitle);
+		branchNameDialog.bot().text().setText("master");
+		assertFalse(branchNameDialog.bot().button(IDialogConstants.OK_LABEL)
+				.isEnabled());
+		branchNameDialog.bot().text().setText("NewBranch");
+		branchNameDialog.bot().button(IDialogConstants.OK_LABEL).click();
+
+		assertEquals("New Branch should be selected", "NewBranch", bot.tree()
+				.selection().get(0, 0));
+		bot.button(UIText.BranchSelectionDialog_OkCheckout).click();
+		waitInUI();
+		assertEquals("New Branch should be checked out", "NewBranch",
+				lookupRepository(repositoryFile).getBranch());
+	}
+

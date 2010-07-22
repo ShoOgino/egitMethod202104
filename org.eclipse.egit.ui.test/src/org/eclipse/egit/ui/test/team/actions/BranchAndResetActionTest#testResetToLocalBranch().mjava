@@ -1,0 +1,25 @@
+	@Test
+	public void testResetToLocalBranch() throws Exception {
+		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "master" },
+				new String[] { LOCAL_BRANCHES, "stable" });
+		String stable = getTestFileContent();
+		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "stable" },
+				new String[] { LOCAL_BRANCHES, "master" });
+		String master = getTestFileContent();
+		assertFalse(stable.equals(master));
+		SWTBotShell resetDialog = openResetDialog();
+		resetDialog.bot().tree().getTreeItem(LOCAL_BRANCHES).getNode("stable")
+				.select();
+		activateItemByKeyboard(resetDialog,
+				UIText.ResetTargetSelectionDialog_ResetTypeHardButton);
+
+		resetDialog.bot().button(UIText.ResetTargetSelectionDialog_ResetButton)
+				.click();
+
+		bot.shell(UIText.ResetTargetSelectionDialog_ResetQuestion).bot()
+				.button(IDialogConstants.YES_LABEL).click();
+		waitInUI();
+		String reset = getTestFileContent();
+		assertEquals("Wrong content after reset", stable, reset);
+	}
+

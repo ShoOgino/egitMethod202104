@@ -1,0 +1,19 @@
+	@BeforeClass
+	public static void setup() throws Exception {
+		perspective = bot.activePerspective();
+		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
+
+		repositoryFile = createProjectAndCommitToRepository();
+		Repository repo = lookupRepository(repositoryFile);
+
+		Tag tag = new Tag(repo);
+		tag.setTag("SomeTag");
+		tag.setAuthor(new PersonIdent(TestUtil.TESTAUTHOR));
+		tag.setMessage("I'm just a little tag");
+		tag.setObjId(repo.resolve(repo.getFullBranch()));
+		TagOperation top = new TagOperation(repo, tag, false);
+		top.execute(null);
+		touchAndSubmit(null);
+		waitInUI();
+	}
+

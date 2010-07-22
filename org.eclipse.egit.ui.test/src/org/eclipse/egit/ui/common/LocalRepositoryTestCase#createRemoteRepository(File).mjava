@@ -1,0 +1,64 @@
+	protected static File createRemoteRepository(File repositoryDir)
+			throws Exception {
+		Repository myRepository = lookupRepository(repositoryDir);
+		File gitDir = new File(testDirectory, REPO2);
+		Repository myRemoteRepository = new Repository(gitDir);
+		myRemoteRepository.create();
+		// double-check that this is bare
+		assertTrue(myRemoteRepository.isBare());
+
+		createStableBranch(myRepository);
+
+		// now we configure a pure push destination
+		myRepository.getConfig().setString("remote", "push", "pushurl",
+				"file:///" + myRemoteRepository.getDirectory().getPath());
+		myRepository.getConfig().setString("remote", "push", "push",
+				"+refs/heads/*:refs/heads/*");
+
+		// and a pure fetch destination
+		myRepository.getConfig().setString("remote", "fetch", "url",
+				"file:///" + myRemoteRepository.getDirectory().getPath());
+		myRepository.getConfig().setString("remote", "fetch", "fetch",
+				"+refs/heads/*:refs/heads/*");
+
+		// a destination with both fetch and push urls and specs
+		myRepository.getConfig().setString("remote", "both", "pushurl",
+				"file:///" + myRemoteRepository.getDirectory().getPath());
+		myRepository.getConfig().setString("remote", "both", "push",
+				"+refs/heads/*:refs/heads/*");
+		myRepository.getConfig().setString("remote", "both", "url",
+				"file:///" + myRemoteRepository.getDirectory().getPath());
+		myRepository.getConfig().setString("remote", "both", "fetch",
+				"+refs/heads/*:refs/heads/*");
+
+		// a destination with only a fetch url and push and fetch specs
+		myRepository.getConfig().setString("remote", "mixed", "push",
+				"+refs/heads/*:refs/heads/*");
+		myRepository.getConfig().setString("remote", "mixed", "url",
+				"file:///" + myRemoteRepository.getDirectory().getPath());
+		myRepository.getConfig().setString("remote", "mixed", "fetch",
+				"+refs/heads/*:refs/heads/*");
+
+		myRepository.getConfig().save();
+		// and push
+		PushConfiguredRemoteAction pa = new PushConfiguredRemoteAction(
+				myRepository, "push");
+
+		pa.run(null, false);
+
+		try {
+			// delete the stable branch again
+			RefUpdate op = myRepository.updateRef("refs/heads/stable");
+			op.setRefLogMessage("branch deleted", //$NON-NLS-1$
+					false);
+			// we set the force update in order
+			// to avoid having this rejected
+			// due to minor issues
+			op.setForceUpdate(true);
+			op.delete();
+		} catch (IOException ioe) {
+			throw new InvocationTargetException(ioe);
+		}
+		return myRemoteRepository.getDirectory();
+	}
+

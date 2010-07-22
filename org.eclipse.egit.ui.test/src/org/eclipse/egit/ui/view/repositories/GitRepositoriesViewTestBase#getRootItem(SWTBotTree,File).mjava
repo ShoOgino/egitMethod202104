@@ -1,9 +1,0 @@
-	protected SWTBotTreeItem getRootItem(SWTBotTree tree, File repositoryFile)
-			throws Exception {
-		Repository repository = lookupRepository(repositoryFile);
-		RepositoryNode root = new RepositoryNode(null, repository);
-		String rootText = labelProvider.getText(root);
-		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
-		return rootItem;
-	}
-

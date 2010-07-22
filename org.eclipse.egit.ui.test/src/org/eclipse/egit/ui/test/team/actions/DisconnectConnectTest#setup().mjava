@@ -1,0 +1,8 @@
+	@BeforeClass
+	public static void setup() throws Exception {
+		createProjectAndCommitToRepository();
+		perspective = bot.activePerspective();
+		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
+		waitInUI();
+	}
+

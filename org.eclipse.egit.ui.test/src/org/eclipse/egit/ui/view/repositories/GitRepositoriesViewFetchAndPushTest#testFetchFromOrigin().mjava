@@ -21,8 +21,8 @@
 		String dialogTitle = NLS.bind(UIText.FetchResultDialog_title,
 				destinationString);
 
-		getRemotesItem(tree, clonedRepositoryFile).expand().getNode("origin")
-				.expand().getNode(0).select();
+		myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand().getNode(
+				"origin").expand().getNode(0).select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
@@ -36,7 +36,7 @@
 		String objid = repository.getRef("refs/heads/master").getTarget()
 				.getObjectId().name();
 		objid = objid.substring(0, 7);
-		touchAndSubmit();
+		touchAndSubmit(null);
 		// push from other repository
 		PushConfiguredRemoteAction action = new PushConfiguredRemoteAction(
 				repository, "origin");
@@ -55,8 +55,8 @@
 
 		refreshAndWait();
 
-		getRemotesItem(tree, clonedRepositoryFile).expand().getNode("origin")
-				.expand().getNode(0).select();
+		myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand().getNode(
+				"origin").expand().getNode(0).select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
@@ -71,8 +71,8 @@
 		assertTrue(found);
 		confirm.close();
 
-		getRemotesItem(tree, clonedRepositoryFile).expand().getNode("origin")
-				.expand().getNode(0).select();
+		myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand().getNode(
+				"origin").expand().getNode(0).select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 

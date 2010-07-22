@@ -1,0 +1,18 @@
+	@Test
+	public void testCreateTag() throws Exception {
+		SWTBotShell tagDialog = openTagDialog();
+		tagDialog.bot().textWithLabel(UIText.CreateTagDialog_tagName).setText(
+				"SomeTag");
+		assertFalse("Ok should be disabled", tagDialog.bot().button(
+				IDialogConstants.OK_LABEL).isEnabled());
+		tagDialog.bot().textWithLabel(UIText.CreateTagDialog_tagName).setText(
+				"AnotherTag");
+		assertFalse("Ok should be disabled", tagDialog.bot().button(
+				IDialogConstants.OK_LABEL).isEnabled());
+		tagDialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
+				.setText("Here's the message text");
+		tagDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		assertTrue(lookupRepository(repositoryFile).getTags().keySet()
+				.contains("AnotherTag"));
+	}
+

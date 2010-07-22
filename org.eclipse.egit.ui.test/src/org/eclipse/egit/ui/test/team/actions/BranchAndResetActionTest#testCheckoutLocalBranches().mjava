@@ -1,0 +1,8 @@
+	@Test
+	public void testCheckoutLocalBranches() throws Exception {
+		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "master" },
+				new String[] { LOCAL_BRANCHES, "stable" });
+		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "stable" },
+				new String[] { LOCAL_BRANCHES, "master" });
+	}
+
