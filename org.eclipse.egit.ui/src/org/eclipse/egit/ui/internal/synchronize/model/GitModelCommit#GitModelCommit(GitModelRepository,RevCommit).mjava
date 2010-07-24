@@ -1,0 +1,23 @@
+	/**
+	 * @param parent
+	 *            instance of repository model object that is parent for this
+	 *            commit
+	 * @param commit
+	 *            instance of commit that will be associated with this model
+	 *            object
+	 * @throws IOException
+	 */
+	public GitModelCommit(GitModelRepository parent, RevCommit commit)
+			throws IOException {
+		super(parent);
+		remoteCommit = commit;
+		ancestorCommit = calculateAncestor(remoteCommit);
+
+		RevCommit[] parents = remoteCommit.getParents();
+		if (parents != null && parents.length > 0)
+			baseCommit = remoteCommit.getParent(0);
+		else {
+			baseCommit = null;
+		}
+	}
+

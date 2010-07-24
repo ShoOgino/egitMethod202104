@@ -1,0 +1,14 @@
+	@Override
+	public ResourceTraversal[] getTraversals(ResourceMappingContext context,
+			IProgressMonitor monitor) throws CoreException {
+		IPath path = gitBlob.getLocation();
+		IResource file = workspaceRoot.getFileForLocation(path);
+
+		if (file != null)
+			return new ResourceTraversal[] { new ResourceTraversal(
+					new IResource[] { file }, IResource.DEPTH_ZERO,
+					IResource.ALLOW_MISSING_LOCAL) };
+
+		return new ResourceTraversal[0];
+	}
+

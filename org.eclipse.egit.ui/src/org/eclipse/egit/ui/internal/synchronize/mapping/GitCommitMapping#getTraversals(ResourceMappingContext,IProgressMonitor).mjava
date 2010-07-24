@@ -1,0 +1,30 @@
+	@Override
+	public ResourceTraversal[] getTraversals(ResourceMappingContext context,
+			IProgressMonitor monitor) throws CoreException {
+		Repository repo = gitCommit.getRepository();
+		TreeWalk tw = new TreeWalk(repo);
+		List<ResourceTraversal> result = new ArrayList<ResourceTraversal>();
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+
+		tw.reset();
+		tw.setRecursive(false);
+		tw.setFilter(TreeFilter.ANY_DIFF);
+		try {
+			RevCommit commit = gitCommit.getRemoteCommit();
+			tw.addTree(commit.getParent(0).getTree());
+			int nth = tw.addTree(commit.getTree());
+
+			while (tw.next()) {
+				ResourceTraversal traversal = getTraversal(tw, workspaceRoot,
+						nth);
+
+				if (traversal != null)
+					result.add(traversal);
+			}
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+
+		return result.toArray(new ResourceTraversal[result.size()]);
+	}
+

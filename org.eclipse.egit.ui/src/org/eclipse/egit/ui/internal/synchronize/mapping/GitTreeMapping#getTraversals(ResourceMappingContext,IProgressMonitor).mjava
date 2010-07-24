@@ -1,0 +1,19 @@
+	@Override
+	public ResourceTraversal[] getTraversals(ResourceMappingContext context,
+			IProgressMonitor monitor) throws CoreException {
+		GitModelObject[] objects = tree.getChildren();
+		ResourceTraversal[] result = new ResourceTraversal[objects.length];
+
+		for (int i = 0; i < objects.length; i++) {
+			if (objects[i] instanceof GitModelTree)
+				result[i] = new GitTreeTraversal((GitModelTree) objects[i]);
+			else {
+				IResource[] resources = getResources((GitModelBlob) objects[i]);
+				result[i] = new ResourceTraversal(resources,
+						IResource.DEPTH_ZERO, IResource.ALLOW_MISSING_LOCAL);
+			}
+		}
+
+		return result;
+	}
+

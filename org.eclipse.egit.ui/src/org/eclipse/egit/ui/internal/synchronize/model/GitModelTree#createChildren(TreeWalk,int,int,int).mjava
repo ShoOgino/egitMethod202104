@@ -1,0 +1,18 @@
+	private GitModelObject createChildren(TreeWalk tw, int ancestorNth,
+			int baseNth, int remoteNth) throws IOException {
+		String objName = tw.getNameString();
+		ObjectId objBaseId = tw.getObjectId(baseNth);
+		ObjectId objRemoteId = tw.getObjectId(remoteNth);
+		ObjectId objAncestorId = tw.getObjectId(ancestorNth);
+		int objectType = tw.getFileMode(remoteNth).getObjectType();
+
+		if (objectType == Constants.OBJ_BLOB)
+			return new GitModelBlob(this, getRemoteCommit(), objAncestorId,
+					objBaseId, objRemoteId, objName);
+		else if (objectType == Constants.OBJ_TREE)
+			return new GitModelTree(this, getRemoteCommit(), objAncestorId,
+					objBaseId, objRemoteId, objName);
+
+		return null;
+	}
+

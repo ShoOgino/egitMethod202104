@@ -1,0 +1,24 @@
+	@Override
+	public ModelProvider[] getEnabledModelProviders() {
+		ModelProvider[] enabledProviders = super.getEnabledModelProviders();
+		for (int i = 0; i < enabledProviders.length; i++) {
+			ModelProvider provider = enabledProviders[i];
+			if (provider.getId().equals(GitChangeSetModelProvider.ID))
+				return enabledProviders;
+		}
+
+		ModelProvider[] extended = new ModelProvider[enabledProviders.length + 1];
+		for (int i = 0; i < enabledProviders.length; i++) {
+			extended[i] = enabledProviders[i];
+		}
+
+		GitChangeSetModelProvider provider = GitChangeSetModelProvider
+				.getProvider();
+
+		if (provider == null)
+			return enabledProviders;
+
+		extended[extended.length - 1] = provider;
+		return extended;
+	}
+

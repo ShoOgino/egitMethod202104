@@ -1,0 +1,8 @@
+	@Override
+	public GitModelObject[] getChildren() {
+		if (childrens == null)
+			getChildrenImpl();
+
+		return childrens;
+	}
+

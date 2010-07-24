@@ -1,0 +1,22 @@
+		public Image getImage(Object element) {
+			if (element instanceof GitModelBlob) {
+				Object adapter = ((GitModelBlob) element)
+						.getAdapter(IResource.class);
+				return workbenchLabelProvider.getImage(adapter);
+			}
+
+			if (element instanceof GitModelTree) {
+				Object adapter = ((GitModelTree) element)
+						.getAdapter(IResource.class);
+				return workbenchLabelProvider.getImage(adapter);
+			}
+
+			if (element instanceof GitModelCommit)
+				return fImageCache.createImage(UIIcons.PUSH);
+
+			if (element instanceof GitModelRepository)
+				return fImageCache.createImage(UIIcons.REPOSITORY);
+
+			return super.getImage(element);
+		}
+

@@ -1,0 +1,16 @@
+	/**
+	 * Returns preinitialized instance of {@link TreeWalk}. Set of
+	 * initialization call's is common for all model object's.
+	 *
+	 * @return tree walk
+	 */
+	protected TreeWalk createTreeWalk() {
+		TreeWalk tw = new TreeWalk(getRepository());
+
+		tw.reset();
+		tw.setRecursive(false);
+		tw.setFilter(TreeFilter.ANY_DIFF);
+
+		return tw;
+	}
+

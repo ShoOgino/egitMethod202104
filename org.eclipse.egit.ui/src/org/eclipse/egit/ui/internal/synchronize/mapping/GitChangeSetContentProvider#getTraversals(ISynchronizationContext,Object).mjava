@@ -1,0 +1,17 @@
+	@Override
+	protected ResourceTraversal[] getTraversals(
+			ISynchronizationContext context, Object object) {
+		if (object instanceof IAdaptable) {
+			ResourceMapping rm = getResourceMapping(object);
+			GitSubscriberMergeContext ctx = (GitSubscriberMergeContext) getContext();
+			ResourceMappingContext rmCtx = new GitSubscriberResourceMappingContext(
+					ctx.getSyncData());
+			try {
+				return rm.getTraversals(rmCtx, new NullProgressMonitor());
+			} catch (CoreException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+		return null;
+	}
+

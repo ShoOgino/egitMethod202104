@@ -12,10 +12,15 @@
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				GitSynchronizeData data = new GitSynchronizeData(node
-						.getRepository(), Constants.HEAD, ref.getName(), false);
+				GitSynchronizeData data;
+				try {
+					data = new GitSynchronizeData(node
+							.getRepository(), Constants.HEAD, ref.getName(), false);
 
-				new GitSynchronize(data);
+					new GitSynchronize(data);
+				} catch (IOException e) {
+					Activator.logError(e.getMessage(), e);
+				}
 
 				return Status.OK_STATUS;
 			}

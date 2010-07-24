@@ -11,6 +11,7 @@
 			throws IOException {
 		this.repo = repo;
 		this.revCommit = revCommit;
+		this.path = path;
 		TreeWalk tw = getTreeWalk(repo, revCommit.getTree(), path);
 		if (tw == null) {
 			objectId = null;
