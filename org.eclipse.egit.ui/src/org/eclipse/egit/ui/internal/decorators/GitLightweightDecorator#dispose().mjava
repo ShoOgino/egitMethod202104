@@ -10,7 +10,8 @@
 				.removePropertyChangeListener(this);
 		TeamUI.removePropertyChangeListener(this);
 		Activator.removePropertyChangeListener(this);
-		Repository.removeAnyRepositoryChangedListener(this);
+		myIndexChangedHandle.remove();
+		myRefsChangedHandle.remove();
 		GitProjectData.removeRepositoryChangeListener(this);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 	}

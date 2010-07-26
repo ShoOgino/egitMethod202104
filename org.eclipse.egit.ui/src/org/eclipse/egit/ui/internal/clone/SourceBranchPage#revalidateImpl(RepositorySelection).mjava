@@ -5,7 +5,7 @@
 		final ListRemoteOperation listRemoteOp;
 		try {
 			final URIish uri = newRepoSelection.getURI();
-			final Repository db = new Repository(new File("/tmp")); //$NON-NLS-1$
+			final Repository db = new FileRepository(new File("/tmp")); //$NON-NLS-1$
 			listRemoteOp = new ListRemoteOperation(db, uri);
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)

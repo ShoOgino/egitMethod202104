@@ -6,9 +6,9 @@
 	public TestRepository(Repository repository) throws IOException {
 		this.repository = repository;
 		try {
-			workdirPrefix = repository.getWorkDir().getCanonicalPath();
+			workdirPrefix = repository.getWorkTree().getCanonicalPath();
 		} catch (IOException err) {
-			workdirPrefix = repository.getWorkDir().getAbsolutePath();
+			workdirPrefix = repository.getWorkTree().getAbsolutePath();
 		}
 		workdirPrefix = workdirPrefix.replace('\\', '/');
 		if (!workdirPrefix.endsWith("/"))  //$NON-NLS-1$

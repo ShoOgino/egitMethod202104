@@ -38,7 +38,7 @@
 							if (!dirsBefore.contains(dir)) {
 								try {
 									RepositoryNode node = new RepositoryNode(
-											null, new Repository(new File(dir)));
+											null, new FileRepository(new File(dir)));
 									tv.setSelection(new StructuredSelection(
 											node));
 								} catch (IOException e1) {

@@ -5,7 +5,7 @@
 			String repoRelativePath = map.getRepoRelativePath(resource);
 			Entry entry = index.getEntry(repoRelativePath);
 			if (entry != null)
-				return entry.isModified(map.getWorkDir());
+				return entry.isModified(map.getWorkTree());
 			return false;
 		} catch (UnsupportedEncodingException e) {
 			if (GitTraceLocation.UI.isActive())

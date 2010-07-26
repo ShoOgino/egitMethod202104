@@ -7,7 +7,7 @@
 		String gitPath = repoMapping.getRepoRelativePath(resource);
 		ObjectId objectId = updated.get(gitPath);
 		if (objectId != null) {
-			File root = repository.getWorkDir();
+			File root = repository.getWorkTree();
 			File file = new File(root, gitPath);
 
 			if (resource.getLocation().toFile().equals(file)) {

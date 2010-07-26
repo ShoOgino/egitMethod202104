@@ -49,7 +49,7 @@
 				"refs/heads/master", "origin");
 		clop.run(null);
 
-		repository2 = new TestRepository(new Repository(new File(workdir2,
+		repository2 = new TestRepository(new FileRepository(new File(workdir2,
 				Constants.DOT_GIT)));
 		// we push to branch "test" of repository2
 		RefUpdate createBranch = repository2.getRepository().updateRef(

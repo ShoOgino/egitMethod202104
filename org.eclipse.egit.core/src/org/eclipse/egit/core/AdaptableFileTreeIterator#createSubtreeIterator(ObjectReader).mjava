@@ -1,5 +1,5 @@
 	@Override
-	public AbstractTreeIterator createSubtreeIterator(Repository repo)
+	public AbstractTreeIterator createSubtreeIterator(ObjectReader repo)
 			throws IncorrectObjectTypeException, IOException {
 		final File currentFile = ((FileEntry) current()).getFile();
 		final IContainer[] containers = root.findContainersForLocation(new Path(

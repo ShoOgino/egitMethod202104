@@ -2,7 +2,7 @@
 			throws URISyntaxException, IOException {
 		monitor.setTaskName(CoreText.CloneOperation_initializingRepository);
 
-		local = new Repository(gitdir);
+		local = new FileRepository(gitdir);
 		local.create();
 
 		final RefUpdate head = local.updateRef(Constants.HEAD);
@@ -37,10 +37,8 @@
 		String branchName = branch.substring(Constants.R_HEADS.length());
 
 		// setup the default remote branch for branchName
-		local.getConfig().setString(RepositoryConfig.BRANCH_SECTION,
-				branchName, "remote", remoteName); //$NON-NLS-1$
-		local.getConfig().setString(RepositoryConfig.BRANCH_SECTION,
-				branchName, "merge", branch); //$NON-NLS-1$
+		local.getConfig().setString("branch", branchName, "remote", remoteName); //$NON-NLS-1$ //$NON-NLS-2$
+		local.getConfig().setString("branch", branchName, "merge", branch); //$NON-NLS-1$ //$NON-NLS-2$
 
 		local.getConfig().save();
 	}

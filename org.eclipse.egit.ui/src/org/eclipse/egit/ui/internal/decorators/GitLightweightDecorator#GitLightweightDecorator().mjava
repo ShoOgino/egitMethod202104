@@ -6,7 +6,10 @@
 		Activator.addPropertyChangeListener(this);
 		PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
 				.addPropertyChangeListener(this);
-		Repository.addAnyRepositoryChangedListener(this);
+		myIndexChangedHandle = Repository.getGlobalListenerList()
+				.addIndexChangedListener(this);
+		myRefsChangedHandle = Repository.getGlobalListenerList()
+				.addRefsChangedListener(this);
 		GitProjectData.addRepositoryChangeListener(this);
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this,
 				IResourceChangeEvent.POST_CHANGE);

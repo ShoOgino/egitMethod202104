@@ -19,7 +19,7 @@
 			monitor.beginTask(NLS.bind(
 					CoreText.GitResourceVariantTree_fetchingMembers, container
 							.getLocation()), updated.size());
-			File root = repository.getWorkDir();
+			File root = repository.getWorkTree();
 
 			for (Map.Entry<String, ObjectId> entry : updated.entrySet()) {
 				String entryName = entry.getKey();

@@ -1,5 +1,9 @@
 	public void dispose() {
-		Repository.removeAnyRepositoryChangedListener(this);
+		if (myRefsChangedHandle != null) {
+			myRefsChangedHandle.remove();
+			myRefsChangedHandle = null;
+		}
+
 		// dispose of the actions (the history framework doesn't do this for us)
 		for (BooleanPrefAction action: actionsToDispose)
 			action.dispose();

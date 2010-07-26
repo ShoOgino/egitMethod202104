@@ -77,7 +77,7 @@
 			public void widgetSelected(SelectionEvent e) {
 				File gitDir = new File(repositoryToCreate.getText(),Constants.DOT_GIT);
 				try {
-					Repository repository = new Repository(gitDir);
+					Repository repository = new FileRepository(gitDir);
 					repository.create();
 					for (IProject project : getProjects().keySet()) {
 						// If we don't refresh the project directories right

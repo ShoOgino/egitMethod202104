@@ -9,7 +9,7 @@
 
 		File gitDir = new File(project.getProject().getWorkspace().getRoot()
 				.getRawLocation().toFile(), Constants.DOT_GIT);
-		Repository thisGit = new Repository(gitDir);
+		Repository thisGit = new FileRepository(gitDir);
 		thisGit.create();
 		Tree rootTree = new Tree(thisGit);
 		Tree prjTree = rootTree.addTree(project.getProject().getName());

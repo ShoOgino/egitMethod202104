@@ -9,7 +9,7 @@
 			return false;
 
 		try {
-			final DirCache dirc = DirCache.lock(map.getRepository());
+			final DirCache dirc = map.getRepository().lockDirCache();
 			final int first = dirc.findEntry(map.getRepoRelativePath(file));
 			if (first < 0) {
 				dirc.unlock();

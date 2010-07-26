@@ -3,7 +3,7 @@
 				|| GitFileRevision.WORKSPACE.equals(id))
 			return new WorkspaceFileRevision(resource);
 		if (GitFileRevision.INDEX.equals(id))
-			return new IndexFileRevision(walk.getRepository(), gitPath);
+			return new IndexFileRevision(db, gitPath);
 
 		// Only return a revision if it was matched by this filtered history
 		for (IFileRevision r : revisions) {

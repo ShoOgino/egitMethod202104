@@ -116,7 +116,7 @@
 				RepositoryTreeNode parentNode = node;
 
 				IPath fullPath = new Path(initialPath);
-				IPath workdirPath = new Path(initialRepository.getWorkDir()
+				IPath workdirPath = new Path(initialRepository.getWorkTree()
 						.getPath());
 				if (workdirPath.isPrefixOf(fullPath)) {
 					IPath relPath = fullPath.removeFirstSegments(workdirPath

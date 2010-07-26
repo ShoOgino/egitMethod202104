@@ -54,7 +54,7 @@
 		String author = null;
 		String committer = null;
 		if (repository != null) {
-			final RepositoryConfig config = repository.getConfig();
+			final UserConfig config = repository.getConfig().get(UserConfig.KEY);
 			author = config.getAuthorName();
 			final String authorEmail = config.getAuthorEmail();
 			author = author + " <" + authorEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$

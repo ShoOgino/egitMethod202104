@@ -5,8 +5,10 @@
 					GitTraceLocation.UI.getLocation(),
 					"(GitDocument) dispose: " + resource); //$NON-NLS-1$
 		doc2repo.remove(this);
-		Repository repository = getRepository();
-		if (repository != null)
-			repository.removeRepositoryChangedListener(this);
+
+		if (myRefsChangedHandle != null) {
+			myRefsChangedHandle.remove();
+			myRefsChangedHandle = null;
+		}
 	}
 

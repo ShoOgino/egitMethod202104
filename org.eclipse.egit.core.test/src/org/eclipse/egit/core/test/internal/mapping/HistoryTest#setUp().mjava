@@ -5,8 +5,8 @@
 		project.createSourceFolder();
 		gitDir = new File(project.getProject().getWorkspace().getRoot()
 				.getRawLocation().toFile(), Constants.DOT_GIT);
-		thisGit = new Repository(gitDir);
-		workDir = thisGit.getWorkDir();
+		thisGit = new FileRepository(gitDir);
+		workDir = thisGit.getWorkTree();
 		thisGit.create();
 		objectWriter = new ObjectWriter(thisGit);
 

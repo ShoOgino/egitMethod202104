@@ -2,7 +2,7 @@
 		final RemoteConfig rc = repoPage.getSelection().getConfig();
 		rc.setFetchRefSpecs(refSpecPage.getRefSpecs());
 		rc.setTagOpt(refSpecPage.getTagOpt());
-		final RepositoryConfig config = localDb.getConfig();
+		final StoredConfig config = localDb.getConfig();
 		rc.update(config);
 		try {
 			config.save();

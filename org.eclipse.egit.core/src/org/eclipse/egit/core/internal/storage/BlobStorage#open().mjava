@@ -1,13 +1,11 @@
 	private InputStream open() throws IOException, CoreException,
 			IncorrectObjectTypeException {
-		final ObjectLoader reader = db.openBlob(blobId);
-		if (reader == null)
+		try {
+			return db.open(blobId, Constants.OBJ_BLOB).openStream();
+		} catch (MissingObjectException notFound) {
 			throw new CoreException(Activator.error(NLS.bind(
 					CoreText.BlobStorage_blobNotFound, blobId.name(), path),
 					null));
-		final byte[] data = reader.getBytes();
-		if (reader.getType() != Constants.OBJ_BLOB)
-			throw new IncorrectObjectTypeException(blobId, Constants.TYPE_BLOB);
-		return new ByteArrayInputStream(data);
+		}
 	}
 

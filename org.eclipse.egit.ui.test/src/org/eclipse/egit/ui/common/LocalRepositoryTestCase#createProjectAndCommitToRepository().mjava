@@ -3,7 +3,7 @@
 		File gitDir = new File(new File(testDirectory, REPO1),
 				Constants.DOT_GIT);
 		gitDir.mkdir();
-		Repository myRepository = new Repository(gitDir);
+		Repository myRepository = new FileRepository(gitDir);
 		myRepository.create();
 
 		// we need to commit into master first
@@ -14,7 +14,7 @@
 			firstProject.delete(true, null);
 		IProjectDescription desc = ResourcesPlugin.getWorkspace()
 				.newProjectDescription(PROJ1);
-		desc.setLocation(new Path(new File(myRepository.getWorkDir(), PROJ1)
+		desc.setLocation(new Path(new File(myRepository.getWorkTree(), PROJ1)
 				.getPath()));
 		firstProject.create(desc, null);
 		firstProject.open(null);
@@ -37,7 +37,7 @@
 			secondPoject.delete(true, null);
 
 		desc = ResourcesPlugin.getWorkspace().newProjectDescription(PROJ2);
-		desc.setLocation(new Path(new File(myRepository.getWorkDir(), PROJ2)
+		desc.setLocation(new Path(new File(myRepository.getWorkTree(), PROJ2)
 				.getPath()));
 		secondPoject.create(desc, null);
 		secondPoject.open(null);

@@ -9,7 +9,8 @@
 			if (tree.existsBlob(memberRelPath)) {
 				// read file content and add it into store
 				TreeEntry entry = tree.findBlobMember(memberRelPath);
-				ObjectLoader objLoader = repo.openBlob(entry.getId());
+				ObjectLoader objLoader = repo.open(entry.getId(),
+						Constants.OBJ_BLOB);
 				store.setBytes(member, objLoader.getCachedBytes());
 				membersSet.add(member);
 			} else if (tree.existsTree(memberRelPath)) {

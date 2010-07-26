@@ -12,6 +12,10 @@
 			return false;
 
 		db = null;
+		if (currentWalk != null) {
+			currentWalk.release();
+			currentWalk = null;
+		}
 
 		final ArrayList<String> paths = new ArrayList<String>(in.length);
 		for (final IResource r : in) {
@@ -53,9 +57,8 @@
 			return false;
 		}
 
-		if (currentWalk == null || currentWalk.getRepository() != db
-				|| pathChange(pathFilters, paths) || headId != null
-				&& !headId.equals(currentHeadId)) {
+		if (currentWalk == null || pathChange(pathFilters, paths)
+				|| headId != null && !headId.equals(currentHeadId)) {
 			// TODO Do not dispose SWTWalk just because HEAD changed
 			// In theory we should be able to update the graph and
 			// not dispose of the SWTWalk, even if HEAD was reset to
@@ -92,7 +95,7 @@
 			currentWalk.setTreeFilter(TreeFilter.ALL);
 			fileWalker.setFilter(TreeFilter.ANY_DIFF);
 		}
-		fileViewer.setTreeWalk(fileWalker);
+		fileViewer.setTreeWalk(db, fileWalker);
 		fileViewer.addSelectionChangedListener(commentViewer);
 		commentViewer.setTreeWalk(fileWalker);
 		commentViewer.setDb(db);

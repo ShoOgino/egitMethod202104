@@ -10,7 +10,8 @@
 			ret.populate();
 			final Repository repository = ret.getRepository();
 			if (repository != null)
-				repository.addRepositoryChangedListener(ret);
+				ret.myRefsChangedHandle = repository.getListenerList()
+						.addRefsChangedListener(ret);
 		}
 		return ret;
 	}

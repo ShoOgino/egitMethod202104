@@ -7,7 +7,7 @@
 	 * @param e
 	 *            The original change event
 	 */
-	private void repositoryChanged(RepositoryChangedEvent e) {
+	private void repositoryChanged(RepositoryEvent e) {
 		final Set<RepositoryMapping> ms = new HashSet<RepositoryMapping>();
 		for (final IProject p : ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects()) {

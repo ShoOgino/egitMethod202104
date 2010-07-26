@@ -1,5 +1,5 @@
 	private String getMemberRelPath(Repository repo, IResource member) {
-		String repoWorkDir = repo.getWorkDir().toString();
+		String repoWorkDir = repo.getWorkTree().toString();
 		if (!"/".equals(File.separator)) { //$NON-NLS-1$
 			// fix file separator issue on windows
 			repoWorkDir = repoWorkDir.replace(File.separatorChar, '/');

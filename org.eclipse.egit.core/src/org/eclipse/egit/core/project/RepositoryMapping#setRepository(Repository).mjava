@@ -2,9 +2,9 @@
 		db = r;
 
 		try {
-			workdirPrefix = getWorkDir().getCanonicalPath();
+			workdirPrefix = getWorkTree().getCanonicalPath();
 		} catch (IOException err) {
-			workdirPrefix = getWorkDir().getAbsolutePath();
+			workdirPrefix = getWorkTree().getAbsolutePath();
 		}
 		workdirPrefix = workdirPrefix.replace('\\', '/');
 		if (!workdirPrefix.endsWith("/"))  //$NON-NLS-1$

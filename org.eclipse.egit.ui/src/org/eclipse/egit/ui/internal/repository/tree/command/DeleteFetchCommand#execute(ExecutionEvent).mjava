@@ -1,7 +1,7 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		FetchNode node = getSelectedNodes(event).get(0);
 		RemoteNode remote = (RemoteNode) node.getParent();
-		RepositoryConfig config = node.getRepository().getConfig();
+		StoredConfig config = node.getRepository().getConfig();
 		config.unset("remote", remote.getObject(), "url"); //$NON-NLS-1$ //$NON-NLS-2$
 		config.unset("remote", remote.getObject(), "fetch"); //$NON-NLS-1$//$NON-NLS-2$
 		try {

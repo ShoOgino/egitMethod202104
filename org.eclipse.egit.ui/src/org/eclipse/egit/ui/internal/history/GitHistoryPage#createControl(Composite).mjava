@@ -68,7 +68,9 @@
 		attachContextMenu(fileViewer.getControl());
 		layout();
 
-		Repository.addAnyRepositoryChangedListener(this);
+		if (myRefsChangedHandle == null)
+			myRefsChangedHandle = Repository.getGlobalListenerList()
+					.addRefsChangedListener(this);
 
 		getSite().setSelectionProvider(revObjectSelectionProvider);
 	}

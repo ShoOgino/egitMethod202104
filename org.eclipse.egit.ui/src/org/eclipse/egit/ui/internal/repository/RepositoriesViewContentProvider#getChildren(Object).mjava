@@ -111,7 +111,7 @@
 
 			if (node.getRepository().isBare())
 				return children.toArray();
-			File workingDir = repo.getWorkDir();
+			File workingDir = repo.getWorkTree();
 			if (workingDir == null || !workingDir.exists())
 				return children.toArray();
 

@@ -6,7 +6,7 @@
 	 */
 	public void track(File file) throws IOException {
 		GitIndex index = repository.getIndex();
-		Entry entry = index.add(repository.getWorkDir(), file);
+		Entry entry = index.add(repository.getWorkTree(), file);
 		entry.setAssumeValid(false);
 		index.write();
 	}

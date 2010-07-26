@@ -13,15 +13,18 @@
 			}
 		};
 
-		repositoryListener = new RepositoryListener() {
-			public void refsChanged(RefsChangedEvent e) {
+		myRefsChangedListener = new RefsChangedListener() {
+			public void onRefsChanged(RefsChangedEvent e) {
 				lastRepositoryChange = System.currentTimeMillis();
 				scheduleRefresh(DEFAULT_REFRESH_DELAY);
 			}
+		};
 
-			public void indexChanged(IndexChangedEvent e) {
+		myIndexChangedListener = new IndexChangedListener() {
+			public void onIndexChanged(IndexChangedEvent event) {
 				lastRepositoryChange = System.currentTimeMillis();
 				scheduleRefresh(DEFAULT_REFRESH_DELAY);
+
 			}
 		};
 

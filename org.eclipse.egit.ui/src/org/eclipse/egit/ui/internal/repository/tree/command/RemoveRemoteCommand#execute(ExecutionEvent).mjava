@@ -7,7 +7,7 @@
 						UIText.RepositoriesView_ConfirmDeleteRemoteMessage,
 						configName));
 		if (ok) {
-			RepositoryConfig config = node.getRepository().getConfig();
+			StoredConfig config = node.getRepository().getConfig();
 			config.unsetSection(RepositoriesView.REMOTE, configName);
 			try {
 				config.save();

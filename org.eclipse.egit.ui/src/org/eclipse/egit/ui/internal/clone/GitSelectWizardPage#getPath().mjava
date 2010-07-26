@@ -7,7 +7,7 @@
 		if (node != null && node.getType() == RepositoryTreeNodeType.FOLDER)
 			return ((File) node.getObject()).getPath();
 		if (node != null && node.getType() == RepositoryTreeNodeType.WORKINGDIR)
-			return node.getRepository().getWorkDir().getPath();
+			return node.getRepository().getWorkTree().getPath();
 		return null;
 	}
 

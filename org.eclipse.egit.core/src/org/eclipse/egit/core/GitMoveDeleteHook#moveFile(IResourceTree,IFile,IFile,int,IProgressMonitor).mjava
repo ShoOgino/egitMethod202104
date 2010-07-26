@@ -11,7 +11,7 @@
 		final RepositoryMapping dstm = RepositoryMapping.getMapping(dstf);
 
 		try {
-			final DirCache sCache = DirCache.lock(srcm.getRepository());
+			final DirCache sCache = srcm.getRepository().lockDirCache();
 			final String sPath = srcm.getRepoRelativePath(srcf);
 			final DirCacheEntry sEnt = sCache.getEntry(sPath);
 			if (sEnt == null) {

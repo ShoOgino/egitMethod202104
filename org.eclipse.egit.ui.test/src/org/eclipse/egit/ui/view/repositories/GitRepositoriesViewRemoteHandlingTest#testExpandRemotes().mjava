@@ -14,7 +14,7 @@
 				repositoryFile).expand();
 		assertEquals("Wrong number of remotes", 0, remotesItem.getNodes()
 				.size());
-		RepositoryConfig cfg = lookupRepository(repositoryFile).getConfig();
+		StoredConfig cfg = lookupRepository(repositoryFile).getConfig();
 		String remoteUri = "file:///" + remoteRepositoryFile.getPath();
 
 		cfg.setString("remote", "test", "url", remoteUri);

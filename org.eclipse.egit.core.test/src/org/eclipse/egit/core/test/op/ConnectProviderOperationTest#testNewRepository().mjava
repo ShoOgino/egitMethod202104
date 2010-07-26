@@ -3,7 +3,7 @@
 
 		File gitDir = new File(project.getProject().getWorkspace().getRoot()
 				.getRawLocation().toFile(), Constants.DOT_GIT);
-		Repository repository = new Repository(gitDir);
+		Repository repository = new FileRepository(gitDir);
 		repository.create();
 		repository.close();
 		ConnectProviderOperation operation = new ConnectProviderOperation(

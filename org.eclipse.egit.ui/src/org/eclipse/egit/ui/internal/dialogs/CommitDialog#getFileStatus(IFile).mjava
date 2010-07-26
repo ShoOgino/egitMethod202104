@@ -19,7 +19,7 @@
 				if (indexEntry == null) {
 					prefix = UIText.CommitDialog_StatusUntracked;
 				}
-				else if (indexEntry.isModified(repositoryMapping.getWorkDir()))
+				else if (indexEntry.isModified(repositoryMapping.getWorkTree()))
 					prefix = UIText.CommitDialog_StatusAddedIndexDiff;
 			} else if (indexEntry == null) {
 				prefix = UIText.CommitDialog_StatusRemoved;
@@ -27,12 +27,12 @@
 					&& !headEntry.getId().equals(indexEntry.getObjectId())) {
 				prefix = UIText.CommitDialog_StatusModified;
 
-				if (indexEntry.isModified(repositoryMapping.getWorkDir()))
+				if (indexEntry.isModified(repositoryMapping.getWorkTree()))
 					prefix = UIText.CommitDialog_StatusModifiedIndexDiff;
-			} else if (!new File(repositoryMapping.getWorkDir(), indexEntry
+			} else if (!new File(repositoryMapping.getWorkTree(), indexEntry
 					.getName()).isFile()) {
 				prefix = UIText.CommitDialog_StatusRemovedNotStaged;
-			} else if (indexEntry.isModified(repositoryMapping.getWorkDir())) {
+			} else if (indexEntry.isModified(repositoryMapping.getWorkTree())) {
 				prefix = UIText.CommitDialog_StatusModifiedNotStaged;
 			}
 

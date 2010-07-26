@@ -25,6 +25,6 @@
 		if (blob == null)
 			return true; // added in index
 		boolean hashesDiffer = !entry.getObjectId().equals(blob.getId());
-		return hashesDiffer || entry.isModified(getWorkDir());
+		return hashesDiffer || entry.isModified(getWorkTree());
 	}
 

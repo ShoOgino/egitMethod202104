@@ -1,8 +1,8 @@
 	protected static File createRemoteRepository(File repositoryDir)
 			throws Exception {
-		Repository myRepository = lookupRepository(repositoryDir);
+		FileRepository myRepository = lookupRepository(repositoryDir);
 		File gitDir = new File(testDirectory, REPO2);
-		Repository myRemoteRepository = new Repository(gitDir);
+		Repository myRemoteRepository = new FileRepository(gitDir);
 		myRemoteRepository.create();
 		// double-check that this is bare
 		assertTrue(myRemoteRepository.isBare());

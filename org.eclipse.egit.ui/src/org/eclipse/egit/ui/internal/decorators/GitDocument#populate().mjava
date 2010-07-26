@@ -62,7 +62,8 @@
 				GitTraceLocation.getTrace().trace(
 						GitTraceLocation.UI.getLocation(),
 						"(GitDocument) compareTo: " + baseline); //$NON-NLS-1$
-			ObjectLoader loader = repository.openBlob(blobEntry.getId());
+			ObjectLoader loader = repository.open(blobEntry.getId(),
+					Constants.OBJ_BLOB);
 			byte[] bytes = loader.getBytes();
 			String charset;
 			// Get the encoding for the current version. As a matter of

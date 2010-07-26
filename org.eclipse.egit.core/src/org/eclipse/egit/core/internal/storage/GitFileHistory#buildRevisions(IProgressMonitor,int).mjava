@@ -3,7 +3,6 @@
 		if (walk == null)
 			return NO_REVISIONS;
 
-		final Repository db = walk.getRepository();
 		final RevCommit root;
 		try {
 			final AnyObjectId headId = db.resolve(Constants.HEAD);

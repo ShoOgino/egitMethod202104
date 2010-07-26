@@ -1,5 +1,6 @@
 	private void setupRepoIndexRefresh() {
 		refreshJob = new RIRefresh();
-		Repository.addAnyRepositoryChangedListener(refreshJob);
+		refreshHandle = Repository.getGlobalListenerList()
+				.addIndexChangedListener(refreshJob);
 	}
 

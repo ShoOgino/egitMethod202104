@@ -1,5 +1,5 @@
 	@Override
-	public AbstractTreeIterator createSubtreeIterator(final Repository db)
+	public AbstractTreeIterator createSubtreeIterator(ObjectReader reader)
 			throws IncorrectObjectTypeException, IOException {
 		if (FileMode.TREE.equals(mode))
 			return new ContainerTreeIterator(this,

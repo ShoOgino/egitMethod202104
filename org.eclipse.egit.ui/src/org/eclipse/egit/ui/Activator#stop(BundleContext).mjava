@@ -1,4 +1,8 @@
 	public void stop(final BundleContext context) throws Exception {
+		if (refreshHandle != null) {
+			refreshHandle.remove();
+			refreshHandle = null;
+		}
 
 		if (GitTraceLocation.UI.isActive())
 			GitTraceLocation.getTrace().trace(

@@ -1,6 +1,6 @@
 	private IResourceVariant findFolderVariant(IResource resource,
 			Repository repository) {
-		File workDir = repository.getWorkDir();
+		File workDir = repository.getWorkTree();
 		if (resource.getLocation() == null)
 			return null;
 		File resourceLocation = resource.getLocation().toFile();

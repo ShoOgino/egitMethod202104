@@ -11,7 +11,7 @@
 		Reference<Repository> r = repositoryCache.get(gitDir);
 		Repository d = r != null ? r.get() : null;
 		if (d == null) {
-			d = new Repository(gitDir);
+			d = new FileRepository(gitDir);
 			repositoryCache.put(gitDir, new WeakReference<Repository>(d));
 		}
 		prune(repositoryCache);

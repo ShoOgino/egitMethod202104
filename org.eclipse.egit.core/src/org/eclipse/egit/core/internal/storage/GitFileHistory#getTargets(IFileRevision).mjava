@@ -3,7 +3,6 @@
 			return NO_REVISIONS;
 
 		final CommitFileRevision rev = (CommitFileRevision) ifr;
-		final Repository db = walk.getRepository();
 		final String p = rev.getGitPath();
 		final RevCommit rc = rev.getRevCommit();
 		if (!(rc instanceof KidCommit))

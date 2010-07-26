@@ -14,7 +14,7 @@
 		u.forceUpdate();
 
 		monitor.setTaskName(CoreText.CloneOperation_checkingOutFiles);
-		co = new WorkDirCheckout(local, local.getWorkDir(), index, tree);
+		co = new WorkDirCheckout(local, local.getWorkTree(), index, tree);
 		co.checkout();
 		monitor.setTaskName(CoreText.CloneOperation_writingIndex);
 		index.write();

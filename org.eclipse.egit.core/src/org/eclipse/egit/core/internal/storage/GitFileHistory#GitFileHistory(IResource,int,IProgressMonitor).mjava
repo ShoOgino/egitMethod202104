@@ -1,7 +1,22 @@
 	GitFileHistory(final IResource rsrc, final int flags,
 			final IProgressMonitor monitor) {
 		resource = rsrc;
-		walk = buildWalk();
+
+		final RepositoryMapping rm = RepositoryMapping.getMapping(resource);
+		if (rm == null) {
+			Activator.logError(NLS.bind(CoreText.GitFileHistory_gitNotAttached,
+					resource.getProject().getName()), null);
+			db = null;
+			walk = null;
+		} else {
+			db = rm.getRepository();
+			walk = new KidWalk(db);
+			gitPath = rm.getRepoRelativePath(resource);
+			walk.setTreeFilter(AndTreeFilter.create(PathFilterGroup
+					.createFromStrings(Collections.singleton(gitPath)),
+					TreeFilter.ANY_DIFF));
+		}
+
 		revisions = buildRevisions(monitor, flags);
 	}
 

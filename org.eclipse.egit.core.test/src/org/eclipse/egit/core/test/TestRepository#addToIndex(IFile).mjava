@@ -7,8 +7,8 @@
 		GitIndex index = repository.getIndex();
 		Entry entry = index.getEntry(getRepoRelativePath(file.getLocation().toOSString()));
 		assertNotNull(entry);
-		if (entry.isModified(repository.getWorkDir()))
-			entry.update(new File(repository.getWorkDir(), entry.getName()));
+		if (entry.isModified(repository.getWorkTree()))
+			entry.update(new File(repository.getWorkTree(), entry.getName()));
 		index.write();
 	}
 
