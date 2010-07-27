@@ -55,8 +55,12 @@
 					resultList.add(desc);
 				}
 			}
-			categoryString = UIText.RepositoryPropertySource_RepositoryConfigurationCategory
-					+ repositoryConfig.getFile().getAbsolutePath();
+
+			categoryString = UIText.RepositoryPropertySource_RepositoryConfigurationCategory;
+			if (repositoryConfig instanceof FileBasedConfig) {
+				categoryString += ((FileBasedConfig) repositoryConfig)
+						.getFile().getAbsolutePath();
+			}
 
 			boolean editable = true;
 
