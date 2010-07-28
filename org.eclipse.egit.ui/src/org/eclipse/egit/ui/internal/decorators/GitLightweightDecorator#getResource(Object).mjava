@@ -1,4 +1,5 @@
-	private static IResource getResource(Object element) {
+	private static IResource getResource(Object actElement) {
+		Object element = actElement;
 		if (element instanceof ResourceMapping) {
 			element = ((ResourceMapping) element).getModelObject();
 		}

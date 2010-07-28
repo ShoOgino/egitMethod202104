@@ -73,7 +73,7 @@
 		button = new Button(g, SWT.PUSH);
 		button.setLayoutData(GridDataFactory.fillDefaults().create());
 		button.setText(UIText.ExistingOrNewPage_CreateButton);
-		button.addSelectionListener(new SelectionListener() {
+		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				File gitDir = new File(repositoryToCreate.getText(),Constants.DOT_GIT);
 				try {
@@ -114,8 +114,6 @@
 				updateCreateOptions();
 				getContainer().updateButtons();
 			}
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
 		});
 		repositoryToCreate = new Text(g, SWT.SINGLE | SWT.BORDER);
 		repositoryToCreate.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(1,1).create());
@@ -135,12 +133,9 @@
 		dotGitSegment.setText(File.separatorChar + Constants.DOT_GIT);
 		dotGitSegment.setLayoutData(GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).create());
 
-		tree.addSelectionListener(new SelectionListener() {
+		tree.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				updateCreateOptions();
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// Empty
 			}
 		});
 		updateCreateOptions();
