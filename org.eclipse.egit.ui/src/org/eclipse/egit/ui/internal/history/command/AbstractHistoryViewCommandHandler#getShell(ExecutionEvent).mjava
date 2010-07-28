@@ -1,0 +1,15 @@
+	/**
+	 * @param event
+	 * @return the shell
+	 * @throws ExecutionException
+	 */
+	protected Shell getShell(ExecutionEvent event) throws ExecutionException {
+		try {
+			IHistoryView view = (IHistoryView) HandlerUtil
+					.getActivePartChecked(event);
+			return view.getHistoryPage().getHistoryPageSite().getShell();
+		} catch (ClassCastException e) {
+			throw new ExecutionException(e.getMessage(), e);
+		}
+	}
+

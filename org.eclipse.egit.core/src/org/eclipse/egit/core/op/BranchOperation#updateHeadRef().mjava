@@ -3,7 +3,7 @@
 		// in case of a non-local branch or a tag,
 		// we "detach" HEAD, i.e. point it to the
 		// underlying commit instead of to the Ref
-		if (!refName.startsWith(Constants.R_HEADS))
+		if (refName == null || !refName.startsWith(Constants.R_HEADS))
 			detach = true;
 		try {
 			RefUpdate u = repository.updateRef(Constants.HEAD, detach);

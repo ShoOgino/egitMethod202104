@@ -1,18 +1,21 @@
 	private void lookupRefs() throws TeamException {
+		RevWalk walk = new RevWalk(repository);
 		try {
-			// if we have a tag, we have to make an indirection
-			if (refName.startsWith(Constants.R_TAGS)) {
-				Tag tag = repository.mapTag(refName);
-				newCommit = repository.mapCommit(tag.getObjId());
-			} else
-				newCommit = repository.mapCommit(refName);
+			if (refName != null) {
+				newCommit = walk.parseCommit(repository.resolve(refName))
+						.asCommit(walk);
+			}
+			if (commitId != null) {
+				newCommit = walk.parseCommit(commitId).asCommit(walk);
+			}
 		} catch (IOException e) {
 			throw new TeamException(NLS.bind(
 					CoreText.BranchOperation_mappingCommit, refName), e);
 		}
 
 		try {
-			oldCommit = repository.mapCommit(Constants.HEAD);
+			oldCommit = walk.parseCommit(repository.resolve(Constants.HEAD))
+					.asCommit(walk);
 		} catch (IOException e) {
 			throw new TeamException(CoreText.BranchOperation_mappingCommitHead,
 					e);

@@ -1,0 +1,14 @@
+	/**
+	 * @param event
+	 * @return the selection
+	 * @throws ExecutionException
+	 */
+	protected PlotCommit getSingleCommit(ExecutionEvent event)
+			throws ExecutionException {
+		List<PlotCommit> selection = getSelection(event);
+		if (selection.size() == 1)
+			return selection.get(0);
+		throw new ExecutionException(
+				UIText.AbstractHitoryViewCommandHandler_CanNotGetCommitMessage);
+	}
+

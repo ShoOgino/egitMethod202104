@@ -8,7 +8,7 @@
 		else
 			monitor = m;
 
-		if (!refName.startsWith(Constants.R_REFS))
+		if (refName !=null && !refName.startsWith(Constants.R_REFS))
 			throw new TeamException(NLS.bind(
 					CoreText.BranchOperation_CheckoutOnlyBranchOrTag, refName));
 

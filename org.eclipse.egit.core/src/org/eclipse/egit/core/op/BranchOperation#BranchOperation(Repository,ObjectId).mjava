@@ -1,0 +1,11 @@
+	/**
+	 * Construct a {@link BranchOperation} object for a {@link Commit}.
+	 * @param repository
+	 * @param commit
+	 */
+	public BranchOperation(Repository repository, ObjectId commit) {
+		this.repository = repository;
+		this.refName = null;
+		this.commitId = commit;
+	}
+
