@@ -1,0 +1,19 @@
+	private void addToCommand(IResource resource, Map<RepositoryMapping, AddCommand> addCommands) {
+		IProject project = resource.getProject();
+		RepositoryMapping map = RepositoryMapping.getMapping(project);
+		AddCommand command = addCommands.get(map);
+		if (command == null) {
+			Repository repo = map.getRepository();
+			Git git = new Git(repo);
+			AdaptableFileTreeIterator it =
+				new AdaptableFileTreeIterator(repo.getWorkTree(),
+						resource.getWorkspace().getRoot());
+			command = git.add().setWorkingTreeIterator(it);
+			addCommands.put(map, command);
+		}
+		String filepattern = map.getRepoRelativePath(resource);
+		if ("".equals(filepattern)) //$NON-NLS-1$
+			filepattern = "."; //$NON-NLS-1$
+		command.addFilepattern(filepattern);
+	}
+

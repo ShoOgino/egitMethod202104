@@ -1,7 +1,7 @@
 	@Test
 	public void testSoftReset() throws Exception {
 		setupRepository();
-		String fileInIndexPath = fileInIndex.getLocation().toOSString();
+		String fileInIndexPath = fileInIndex.getLocation().toPortableString();
 		new ResetOperation(repository, initialCommit.getName(),
 				ResetOperation.ResetType.SOFT).execute(null);
 		// .project must remain

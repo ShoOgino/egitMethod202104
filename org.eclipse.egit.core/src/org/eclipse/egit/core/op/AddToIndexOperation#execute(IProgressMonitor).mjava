@@ -7,31 +7,24 @@
 			monitor = new NullProgressMonitor();
 		else
 			monitor = m;
-		Collection<GitIndex> changedIndexes = new ArrayList<GitIndex>();
-		// GitIndex can not be updated if it contains staged entries
-		Collection<GitIndex> indexesWithStagedEntries = new ArrayList<GitIndex>();
+
+		Map<RepositoryMapping, AddCommand> addCommands = new HashMap<RepositoryMapping, AddCommand>();
 		try {
 			for (IResource obj : rsrcList) {
-				if (obj instanceof IFile) {
-					addToIndex((IFile) obj, changedIndexes,
-							indexesWithStagedEntries);
-				}
+				addToCommand(obj, addCommands);
 				monitor.worked(200);
 			}
-			if (!changedIndexes.isEmpty()) {
-				for (GitIndex idx : changedIndexes) {
-					idx.write();
-				}
 
+			for (AddCommand command : addCommands.values()) {
+				command.call();
 			}
 		} catch (RuntimeException e) {
 			throw new CoreException(Activator.error(CoreText.AddToIndexOperation_failed, e));
-		} catch (IOException e) {
+		} catch (NoFilepatternException e) {
 			throw new CoreException(Activator.error(CoreText.AddToIndexOperation_failed, e));
 		} finally {
-			for (final RepositoryMapping rm : mappings.keySet())
+			for (final RepositoryMapping rm : addCommands.keySet())
 				rm.fireRepositoryChanged();
-			mappings.clear();
 			monitor.done();
 		}
 	}

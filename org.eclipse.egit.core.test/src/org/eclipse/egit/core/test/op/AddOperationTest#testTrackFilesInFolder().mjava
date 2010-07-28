@@ -1,0 +1,20 @@
+	@Test
+	public void testTrackFilesInFolder() throws Exception {
+		IFile file1 = testUtils.addFileToProject(project.getProject(),
+				"sub/a.txt", "some text");
+		IFile file2 = testUtils.addFileToProject(project.getProject(),
+				"sub/b.txt", "some text");
+
+		resources.add(project.getProject().getFolder("sub"));
+		new AddToIndexOperation(resources).execute(null);
+
+		assertTrue(testRepository.inIndex(file1.getLocation()
+				.toPortableString()));
+		assertTrue(testRepository.inIndex(file2.getLocation()
+				.toPortableString()));
+		assertTrue(testRepository.getDirCacheEntryLength(file1.getLocation()
+				.toPortableString()) == 9);
+		assertTrue(testRepository.getDirCacheEntryLength(file2.getLocation()
+				.toPortableString()) == 9);
+	}
+
