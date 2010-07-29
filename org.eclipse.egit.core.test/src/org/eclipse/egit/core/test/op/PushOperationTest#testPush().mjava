@@ -25,7 +25,7 @@
 		// java.io.File.lastModified.
 		Thread.sleep(1000);
 
-		TrackOperation trop = new TrackOperation(fileArr);
+		AddToIndexOperation trop = new AddToIndexOperation(files);
 		trop.execute(null);
 		CommitOperation cop = new CommitOperation(fileArr, files, files,
 				TestUtils.AUTHOR, TestUtils.COMMITTER, "Added file");

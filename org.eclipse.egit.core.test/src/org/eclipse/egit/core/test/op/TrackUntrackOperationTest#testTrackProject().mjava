@@ -4,9 +4,6 @@
 		final ArrayList<IContainer> containers = new ArrayList<IContainer>();
 		containers.add(project);
 
-		IContainer[] projectArr = containers.toArray(new IContainer[containers
-				.size()]);
-
 		final ArrayList<IFile> files = new ArrayList<IFile>();
 
 		project.accept(new IResourceVisitor() {
@@ -22,7 +19,7 @@
 
 		assertTrackedState(fileArr, false);
 
-		TrackOperation trop = new TrackOperation(projectArr);
+		AddToIndexOperation trop = new AddToIndexOperation(containers);
 		trop.execute(new NullProgressMonitor());
 
 		assertTrackedState(fileArr, true);

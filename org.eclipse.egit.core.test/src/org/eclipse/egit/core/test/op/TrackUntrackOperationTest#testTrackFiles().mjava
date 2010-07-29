@@ -16,7 +16,7 @@
 
 		assertTrackedState(fileArr, false);
 
-		TrackOperation trop = new TrackOperation(fileArr);
+		AddToIndexOperation trop = new AddToIndexOperation(files);
 		trop.execute(new NullProgressMonitor());
 
 		assertTrackedState(fileArr, true);
