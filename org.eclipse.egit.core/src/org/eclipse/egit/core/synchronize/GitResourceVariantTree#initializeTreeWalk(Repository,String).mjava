@@ -1,0 +1,8 @@
+	private TreeWalk initializeTreeWalk(Repository repo, String path) {
+		TreeWalk tw = new TreeWalk(repo);
+		tw.reset();
+		tw.setFilter(PathFilter.create(path));
+
+		return tw;
+	}
+

@@ -2,11 +2,9 @@
 	public void setUp() throws Exception {
 		super.setUp();
 
-		IProject iProject = project.project;
-		if (!gitDir.exists())
-			new FileRepository(gitDir).create();
-
-		new ConnectProviderOperation(iProject, gitDir).execute(null);
+		iProject = project.project;
+		testRepo = new TestRepository(gitDir);
+		testRepo.connect(iProject);
 		repo = RepositoryMapping.getMapping(iProject).getRepository();
 	}
 

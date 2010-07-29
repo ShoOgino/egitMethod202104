@@ -1,12 +1,8 @@
 	@Before
 	public void createGitRepository() throws Exception {
-		IProject iProject = project.project;
-		if (!gitDir.exists())
-			new FileRepository(gitDir).create();
-
-		new ConnectProviderOperation(iProject, gitDir).execute(null);
+		iProject = project.project;
+		testRepo = new TestRepository(gitDir);
+		testRepo.connect(iProject);
 		repo = RepositoryMapping.getMapping(iProject).getRepository();
-
-		store = new SessionResourceVariantByteStore();
 	}
 

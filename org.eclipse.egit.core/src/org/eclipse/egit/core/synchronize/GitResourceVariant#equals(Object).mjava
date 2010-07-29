@@ -1,0 +1,8 @@
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof GitResourceVariant)
+			return objectId.equals(((GitResourceVariant) obj).getObjectId());
+
+		return false;
+	}
+

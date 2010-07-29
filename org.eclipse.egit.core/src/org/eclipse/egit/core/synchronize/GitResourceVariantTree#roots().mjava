@@ -1,8 +1,8 @@
 	public IResource[] roots() {
 		Set<IResource> roots = new HashSet<IResource>();
-		for (GitSynchronizeData gsd : gsdData) {
+		for (GitSynchronizeData gsd : gsds)
 			roots.addAll(gsd.getProjects());
-		}
+
 		return roots.toArray(new IResource[roots.size()]);
 	}
 

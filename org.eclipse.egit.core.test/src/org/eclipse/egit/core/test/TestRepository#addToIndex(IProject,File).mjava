@@ -1,0 +1,12 @@
+	/**
+	 * Adds the given file to the index
+	 *
+	 * @param project
+	 * @param file
+	 * @throws Exception
+	 */
+	public void addToIndex(IProject project, File file) throws Exception {
+		IFile iFile = getIFile(project, file);
+		addToIndex(iFile);
+	}
+

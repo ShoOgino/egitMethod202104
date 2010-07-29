@@ -1,28 +1,32 @@
 	/**
 	 * Return false when comparing incompatible types (folder against file) that
 	 * also map onto different resources
+	 *
+	 * @throws Exception
 	 */
 	@Test
 	@SuppressWarnings("boxing")
-	public void shouldReturnFalseWhenComparingRemoteVariantContainerWithFile() {
+	public void shouldReturnFalseWhenComparingRemoteVariantContainerWithFile()
+			throws Exception {
 		// when
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
-				null, null);
+				null);
 
 		// given
-		IResource baseResource = createMock(IResource.class);
-		expect(baseResource.exists()).andReturn(true);
-		replay(baseResource);
-		GitFolderResourceVariant base = new GitFolderResourceVariant(
-				baseResource);
-		IResource remoteResource = createMock(IResource.class);
-		expect(remoteResource.exists()).andReturn(true);
-		replay(remoteResource);
-		GitBlobResourceVariant remote = new GitBlobResourceVariant(
-				remoteResource, repo, ObjectId.zeroId(), null);
+		File file = testRepo.createFile(iProject, "test" + File.separator
+				+ "keep");
+		RevCommit commit = testRepo.addAndCommit(iProject, file,
+				"initial commit");
+		String filePath = Repository.stripWorkDir(repo.getWorkTree(), file);
+		String folderPath = Repository.stripWorkDir(repo.getWorkTree(),
+				new File(file.getParent()));
+
+		GitFolderResourceVariant base = new GitFolderResourceVariant(repo,
+				commit, folderPath);
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo,
+				commit, filePath);
 
 		// then
 		assertFalse(grvc.compare(base, remote));
-		verify(baseResource, remoteResource);
 	}
 

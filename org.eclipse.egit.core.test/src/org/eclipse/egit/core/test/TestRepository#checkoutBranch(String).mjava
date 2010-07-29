@@ -1,0 +1,11 @@
+	/**
+	 * Checkouts branch
+	 *
+	 * @param refName
+	 *            full name of branch
+	 * @throws CoreException
+	 */
+	public void checkoutBranch(String refName) throws CoreException {
+		new BranchOperation(repository, refName).execute(null);
+	}
+

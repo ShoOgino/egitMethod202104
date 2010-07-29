@@ -1,9 +1,0 @@
-	private IType createResourceAndCommit(IPackageFragment iPackage,
-			String fileName, String fileContent, String commitMsg)
-			throws Exception {
-		IType mainJava = project.createType(iPackage, fileName, fileContent);
-		addAndCommitResource(mainJava, commitMsg);
-
-		return mainJava;
-	}
-

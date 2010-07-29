@@ -1,0 +1,13 @@
+	/**
+	 * Creates a new branch and immediately checkout it.
+	 *
+	 * @param refName
+	 *            starting point for the new branch
+	 * @param newRefName
+	 * @throws Exception
+	 */
+	public void createAndCheckoutBranch(String refName, String newRefName) throws Exception {
+		createBranch(refName, newRefName);
+		checkoutBranch(newRefName);
+	}
+

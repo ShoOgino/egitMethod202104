@@ -4,7 +4,7 @@
 	public void add(GitSynchronizeData data) {
 		gsd.add(data);
 		for (IProject proj : data.getProjects()) {
-			projectMapping.put(proj, data);
+			projectMapping.put(proj.getName(), data);
 		}
 	}
 

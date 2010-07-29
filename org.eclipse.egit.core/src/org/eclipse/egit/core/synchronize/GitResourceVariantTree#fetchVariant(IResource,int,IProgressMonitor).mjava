@@ -1,13 +1,15 @@
 	@Override
 	protected IResourceVariant fetchVariant(IResource resource, int depth,
 			IProgressMonitor monitor) throws TeamException {
+		SubMonitor subMonitor = SubMonitor.convert(monitor);
+		subMonitor.beginTask(NLS.bind(
+				CoreText.GitResourceVariantTree_fetchingVariant,
+				resource.getName()), IProgressMonitor.UNKNOWN);
+
 		try {
-			if (resource != null)
-				return fetchVariant(resource, monitor);
-			else
-				return null;
+			return getResourceVariant(resource);
 		} finally {
-			monitor.done();
+			subMonitor.done();
 		}
 	}
 

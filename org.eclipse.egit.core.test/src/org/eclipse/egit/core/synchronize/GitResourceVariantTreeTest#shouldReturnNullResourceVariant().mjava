@@ -2,6 +2,7 @@
 	 * Checks that getResourceVariant will not throw NPE for null argument. This
 	 * method is called with null argument when local or remote resource does
 	 * not exist.
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -12,8 +13,7 @@
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 
 		// given
-		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet,
-				store);
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet);
 
 		// then
 		assertNull(grvt.getResourceVariant(null));

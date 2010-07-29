@@ -1,6 +1,7 @@
 	/**
 	 * getResourceVariant() should return null when given resource doesn't exist
 	 * in repository.
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -14,8 +15,7 @@
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 
 		// given
-		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet,
-				store);
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet);
 
 		// then
 		assertNull(grvt.getResourceVariant(mainJava.getResource()));

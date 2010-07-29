@@ -1,7 +1,7 @@
 	@Override
 	protected SyncInfo getSyncInfo(IResource local, IResourceVariant base,
 			IResourceVariant remote) throws TeamException {
-		GitSyncInfo info = new GitSyncInfo(local, base, remote,
+		SyncInfo info = new SyncInfo(local, base, remote,
 				getResourceComparator());
 		info.init();
 		return info;

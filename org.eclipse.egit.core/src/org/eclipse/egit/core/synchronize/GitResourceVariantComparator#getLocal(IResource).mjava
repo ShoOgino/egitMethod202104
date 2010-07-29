@@ -1,14 +1,14 @@
 	private InputStream getLocal(IResource resource) throws CoreException {
-		if (gsd.getData(resource.getProject()).shouldIncludeLocal()) {
+		if (gsd.getData(resource.getProject().getName()).shouldIncludeLocal())
 			return ((IFile) resource).getContents();
-		} else {
+		else
 			try {
-				byte[] bytes = store.getBytes(resource);
-				return new ByteArrayInputStream(bytes != null ? bytes : new byte[0]);
+				if (resource.getType() == IResource.FILE)
+					return ((IFile) resource).getContents();
+				else
+					return new ByteArrayInputStream(null);
 			} catch (TeamException e) {
 				throw new CoreException(e.getStatus());
 			}
-		}
-
 	}
 

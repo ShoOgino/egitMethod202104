@@ -1,12 +1,15 @@
 	/**
-	 *  Comparing two folders that have different path should return false.
+	 * Comparing two folders that have different path should return false.
+	 *
+	 * @throws Exception
 	 */
 	@Test
 	@SuppressWarnings("boxing")
-	public void shouldReturnFalseWhenComparingContainerAndContainer() {
+	public void shouldReturnFalseWhenComparingContainerAndContainer()
+			throws Exception {
 		// when
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
-				null, null);
+				null);
 
 		// given
 		IPath localPath = createMock(IPath.class);
@@ -16,16 +19,17 @@
 		expect(local.getFullPath()).andReturn(localPath);
 		replay(local);
 
-		IPath remotePath = createMock(IPath.class);
-		replay(remotePath);
-		IResource remoteResource = createMock(IResource.class);
-		expect(remoteResource.getFullPath()).andReturn(remotePath);
-		replay(remoteResource);
-		GitFolderResourceVariant remote = new GitFolderResourceVariant(
-				remoteResource);
+		File file = testRepo.createFile(iProject, "test" + File.separator
+				+ "keep");
+		RevCommit commit = testRepo.addAndCommit(iProject, file,
+				"initial commit");
+		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
+
+		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo,
+				commit, path);
 
 		// then
 		assertFalse(grvc.compare(local, remote));
-		verify(local, localPath, remotePath, remoteResource);
+		verify(local, localPath);
 	}
 

@@ -5,6 +5,7 @@
 	 * This and previous three test cases cover almost the same functionality
 	 * but they are covering all return points in compare methods that can be
 	 * used when comparing files content
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -19,7 +20,7 @@
 		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", true);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
-				dataSet, null);
+				dataSet);
 
 		// given
 		IFile local = createMock(IFile.class);

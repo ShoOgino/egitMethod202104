@@ -1,0 +1,10 @@
+	GitBlobResourceVariant(Repository repo, RevCommit revCommit, String path)
+			throws IOException {
+		super(repo, revCommit, path);
+
+		if (getObjectId() != null) {
+			ObjectLoader blob = repo.open(getObjectId());
+			bytes = blob.getBytes();
+		}
+	}
+

@@ -1,28 +1,32 @@
 	/**
 	 * Compare() should return false when remote file does not exists, but
 	 * equivalent local file exist.
+	 *
+	 * @throws Exception
 	 */
 	@Test
 	@SuppressWarnings("boxing")
-	public void shouldReturnFalseWhenRemoteVariantDoesntExist() {
+	public void shouldReturnFalseWhenRemoteVariantDoesntExist()
+			throws Exception {
 		// when
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
-				null, null);
+				null);
 
 		// given
-		IResource baseResource = createMock(IResource.class);
-		expect(baseResource.exists()).andReturn(true);
-		replay(baseResource);
-		GitBlobResourceVariant base = new GitBlobResourceVariant(baseResource,
-				repo, ObjectId.zeroId(), null);
-		IResource remoteResource = createMock(IResource.class);
-		expect(remoteResource.exists()).andReturn(false);
-		replay(remoteResource);
-		GitBlobResourceVariant remote = new GitBlobResourceVariant(
-				remoteResource, repo, ObjectId.zeroId(), null);
+		RevCommit remoteCommit = testRepo.createInitialCommit("initial commit");
+		testRepo.createAndCheckoutBranch(Constants.HEAD, Constants.R_HEADS
+				+ "test");
+		File file = testRepo.createFile(iProject, "test-file");
+		RevCommit baseCommit = testRepo.addAndCommit(iProject, file,
+				"second commit");
+		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
+
+		GitBlobResourceVariant base = new GitBlobResourceVariant(repo,
+				baseCommit, path);
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo,
+				remoteCommit, path);
 
 		// then
 		assertFalse(grvc.compare(base, remote));
-		verify(baseResource, remoteResource);
 	}
 

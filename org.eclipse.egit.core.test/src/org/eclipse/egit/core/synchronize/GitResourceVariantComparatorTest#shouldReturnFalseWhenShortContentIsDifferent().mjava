@@ -1,6 +1,7 @@
 	/**
 	 * Comparing two files that have same content length but having small
 	 * difference inside content should return false.
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -13,7 +14,7 @@
 		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", true);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
-				dataSet, null);
+				dataSet);
 
 		// given
 		IFile local = createMock(IFile.class);

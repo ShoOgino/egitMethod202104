@@ -2,30 +2,30 @@
 	@SuppressWarnings("boxing")
 	/**
 	 * Comparing two remote files that have different git ObjectId should return false.
+	 *
+	 * @throws Exception
 	 */
-	public void shouldReturnFalseWhenComparingRemoteVariantWithDifferentObjectId() {
+	public void shouldReturnFalseWhenComparingRemoteVariantWithDifferentObjectId()
+			throws Exception {
 		// when
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
-				null, null);
-
-		// given
-		IResource baseResource = createMock(IResource.class);
-		expect(baseResource.exists()).andReturn(true);
-		replay(baseResource);
-		GitBlobResourceVariant base = new GitBlobResourceVariant(
-				baseResource,
-				repo,
-				ObjectId.fromString("0123456789012345678901234567890123456789"),
 				null);
 
-		IResource remoteResource = createMock(IResource.class);
-		expect(remoteResource.exists()).andReturn(true);
-		replay(remoteResource);
-		GitBlobResourceVariant remote = new GitBlobResourceVariant(
-				remoteResource, repo, ObjectId.zeroId(), null);
+		// given
+		File file = testRepo.createFile(iProject, "test-file");
+		RevCommit baseCommit = testRepo.appendContentAndCommit(iProject, file,
+				"a", "initial commit");
+		RevCommit remoteCommit = testRepo.appendContentAndCommit(iProject,
+				file, "bc", "second commit");
+
+		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
+		GitBlobResourceVariant base = new GitBlobResourceVariant(repo,
+				baseCommit, path);
+
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo,
+				remoteCommit, path);
 
 		// then
 		assertFalse(grvc.compare(base, remote));
-		verify(baseResource, remoteResource);
 	}
 

@@ -1,0 +1,15 @@
+	/**
+	 * Appends content to given file.
+	 *
+	 * @param file
+	 * @param content
+	 * @param append
+	 *            if true, then bytes will be written to the end of the file
+	 *            rather than the beginning
+	 * @throws IOException
+	 */
+	public void appendFileContent(File file, byte[] content, boolean append)
+			throws IOException {
+		appendFileContent(file, new String(content), append);
+	}
+

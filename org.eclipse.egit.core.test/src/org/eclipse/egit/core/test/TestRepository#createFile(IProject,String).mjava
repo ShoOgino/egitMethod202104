@@ -1,0 +1,21 @@
+	/**
+	 * Create new file
+	 *
+	 * @param project
+	 *            instance of project inside with file will be created
+	 * @param name
+	 *            name of file
+	 * @return nearly created file
+	 * @throws IOException
+	 */
+	public File createFile(IProject project, String name) throws IOException {
+		String path = project.getLocation().append(name).toOSString();
+		int lastSeparator = path.lastIndexOf(File.separator);
+		new File(path.substring(0, lastSeparator)).mkdirs();
+
+		File file = new File(path);
+		file.createNewFile();
+
+		return file;
+	}
+

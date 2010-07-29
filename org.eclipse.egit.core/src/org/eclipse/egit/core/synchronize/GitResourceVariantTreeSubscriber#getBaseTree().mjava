@@ -1,7 +1,7 @@
 	@Override
 	protected IResourceVariantTree getBaseTree() {
 		if (baseTree == null) {
-			baseTree = new GitBaseResourceVariantTree(gitSynchronizeDataSet, store);
+			baseTree = new GitBaseResourceVariantTree(gsds);
 		}
 		return baseTree;
 	}

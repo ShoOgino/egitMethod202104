@@ -1,0 +1,17 @@
+	/**
+	 * Track, add to index and finally commit given file
+	 *
+	 * @param project
+	 * @param file
+	 * @param commitMessage
+	 * @return commit object
+	 * @throws Exception
+	 */
+	public RevCommit addAndCommit(IProject project, File file, String commitMessage)
+			throws Exception {
+		track(file);
+		addToIndex(project, file);
+
+		return commit(commitMessage);
+	}
+

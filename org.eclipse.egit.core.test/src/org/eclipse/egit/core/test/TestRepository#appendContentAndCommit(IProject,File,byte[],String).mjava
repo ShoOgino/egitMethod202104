@@ -1,0 +1,17 @@
+	/**
+	 * Appends file content to given file, then track, add to index and finally
+	 * commit it.
+	 *
+	 * @param project
+	 * @param file
+	 * @param content
+	 * @param commitMessage
+	 * @return commit object
+	 * @throws Exception
+	 */
+	public RevCommit appendContentAndCommit(IProject project, File file,
+			byte[] content, String commitMessage) throws Exception {
+		return appendContentAndCommit(project, file, new String(content),
+				commitMessage);
+	}
+

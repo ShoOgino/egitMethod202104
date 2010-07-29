@@ -1,14 +1,14 @@
 	/**
-	 * It is possible to have a local file that has same name as a remote folder.
-	 * In some cases that two resources can be compared. In this case compare
-	 * method should return false, because they aren't same resources
+	 * It is possible to have a local file that has same name as a remote
+	 * folder. In some cases that two resources can be compared. In this case
+	 * compare method should return false, because they aren't same resources
 	 */
 	@Test
 	@SuppressWarnings("boxing")
 	public void shouldReturnFalseWhenComparingFileAndContainer() {
 		// when
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
-				null, null);
+				null);
 
 		// given
 		IFile local = createMock(IFile.class);

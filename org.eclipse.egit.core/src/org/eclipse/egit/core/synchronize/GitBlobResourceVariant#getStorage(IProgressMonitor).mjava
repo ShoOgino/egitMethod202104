@@ -18,13 +18,7 @@
 				}
 
 				public InputStream getContents() throws CoreException {
-					try {
-						return repository.open(id, Constants.OBJ_BLOB)
-								.openStream();
-					} catch (IOException err) {
-						throw new TeamException(new Status(IStatus.ERROR,
-								Activator.getPluginId(), err.getMessage(), err));
-					}
+					return new ByteArrayInputStream(bytes);
 				}
 
 				public String getCharset() throws CoreException {
@@ -43,6 +37,7 @@
 				}
 			};
 		}
+
 		return storage;
 	}
 

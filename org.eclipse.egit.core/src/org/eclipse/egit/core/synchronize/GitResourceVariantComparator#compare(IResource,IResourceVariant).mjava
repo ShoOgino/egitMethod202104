@@ -11,8 +11,8 @@
 			InputStream stream = null;
 			InputStream remoteStream = null;
 			try {
-				remoteStream = remote.getStorage(
-						new NullProgressMonitor()).getContents();
+				remoteStream = remote.getStorage(new NullProgressMonitor())
+						.getContents();
 				stream = getLocal(local);
 				byte[] remoteBytes = new byte[8096];
 				byte[] bytes = new byte[8096];
@@ -49,9 +49,8 @@
 				return false;
 			}
 
-			GitFolderResourceVariant gitVariant = (GitFolderResourceVariant) remote;
-			return local.getFullPath().equals(
-					gitVariant.getResource().getFullPath());
+			GitResourceVariant gitVariant = (GitResourceVariant) remote;
+			return local.getFullPath().equals(gitVariant.getFullPath());
 		}
 		return false;
 	}

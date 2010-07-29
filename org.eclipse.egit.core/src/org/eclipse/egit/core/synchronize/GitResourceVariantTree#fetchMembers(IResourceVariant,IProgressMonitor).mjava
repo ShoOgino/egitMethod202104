@@ -1,40 +1,17 @@
 	@Override
 	protected IResourceVariant[] fetchMembers(IResourceVariant variant,
 			IProgressMonitor progress) throws TeamException {
-		if (!variant.isContainer()) {
+		if (variant == null || !(variant instanceof GitFolderResourceVariant))
 			return new IResourceVariant[0];
-		}
 
-		IProgressMonitor monitor = SubMonitor.convert(progress);
+		GitFolderResourceVariant gitVariant = (GitFolderResourceVariant) variant;
 
-		Set<IResourceVariant> members = new HashSet<IResourceVariant>();
 		try {
-			GitFolderResourceVariant folderVariant = (GitFolderResourceVariant) variant;
-			IContainer container = folderVariant.getContainer();
-			File resourceLocation = container.getLocation().toFile();
-			IProject project = container.getProject();
-
-			Repository repository = gsdData.getData(project).getRepository();
-
-			monitor.beginTask(NLS.bind(
-					CoreText.GitResourceVariantTree_fetchingMembers, container
-							.getLocation()), updated.size());
-			File root = repository.getWorkTree();
-
-			for (Map.Entry<String, ObjectId> entry : updated.entrySet()) {
-				String entryName = entry.getKey();
-				File file = new File(root, entryName);
-
-				if (file.getAbsolutePath().startsWith(
-						resourceLocation.getAbsolutePath())) {
-					members.add(getMember(container, repository, entryName));
-				}
-
-				monitor.worked(1);
-			}
-		} finally {
-			monitor.done();
+			return gitVariant.getMembers(progress);
+		} catch (IOException e) {
+			throw new TeamException(NLS.bind(
+					CoreText.GitResourceVariantTree_couldNotFetchMembers,
+					gitVariant), e);
 		}
-		return members.toArray(new IResourceVariant[members.size()]);
 	}
 

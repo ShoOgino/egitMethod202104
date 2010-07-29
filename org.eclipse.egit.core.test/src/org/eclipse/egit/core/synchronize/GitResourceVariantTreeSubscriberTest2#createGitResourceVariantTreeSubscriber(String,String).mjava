@@ -1,0 +1,8 @@
+	private GitResourceVariantTreeSubscriber createGitResourceVariantTreeSubscriber(
+			String src, String dst) {
+		GitSynchronizeData gsd = new GitSynchronizeData(repo, src, dst, false);
+		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
+		new GitResourceVariantTreeSubscriber(gsds);
+		return new GitResourceVariantTreeSubscriber(gsds);
+	}
+
