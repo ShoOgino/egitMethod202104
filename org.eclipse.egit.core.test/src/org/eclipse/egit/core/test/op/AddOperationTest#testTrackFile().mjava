@@ -1,0 +1,14 @@
+	@Test
+	public void testTrackFile() throws Exception {
+		IFile file1 = testUtils.addFileToProject(project.getProject(), "a.txt",
+				"some text");
+
+		resources.add(file1);
+		new AddToIndexOperation(resources).execute(null);
+
+		assertTrue(testRepository.inIndex(file1.getLocation()
+				.toPortableString()));
+		assertTrue(testRepository.getDirCacheEntryLength(file1.getLocation()
+				.toPortableString()) == 9);
+	}
+

@@ -1,0 +1,42 @@
+	@Test
+	public void testAddFilesInFolder() throws Exception {
+		IFile file1 = testUtils.addFileToProject(project.getProject(),
+				"sub/a.txt", "some text");
+		IFile file2 = testUtils.addFileToProject(project.getProject(),
+				"sub/b.txt", "some text");
+
+		resources.add(project.getProject().getFolder("sub"));
+		new AddToIndexOperation(resources).execute(null);
+
+		testRepository.commit("first commit");
+
+		assertEquals(file1.getLocalTimeStamp(),
+				testRepository.lastModifiedInIndex(file1.getLocation()
+						.toPortableString()));
+
+		file1.setContents(
+				new ByteArrayInputStream("other text".getBytes(project.project
+						.getDefaultCharset())), 0, null);
+		file2.setContents(
+				new ByteArrayInputStream("other text".getBytes(project.project
+						.getDefaultCharset())), 0, null);
+
+		Thread.sleep(1000);
+		assertFalse(file1.getLocalTimeStamp() == testRepository
+				.lastModifiedInIndex(file1.getLocation().toPortableString()));
+		assertFalse(file2.getLocalTimeStamp() == testRepository
+				.lastModifiedInIndex(file1.getLocation().toPortableString()));
+
+		new AddToIndexOperation(resources).execute(null);
+
+		assertTrue(testRepository.inIndex(file1.getLocation()
+				.toPortableString()));
+		assertTrue(testRepository.inIndex(file2.getLocation()
+				.toPortableString()));
+
+		 assertEquals(file1.getLocalTimeStamp() / 10,
+				 testRepository.lastModifiedInIndex(file1.getLocation().toPortableString()) / 10);
+		 assertEquals(file2.getLocalTimeStamp() / 10,
+				 testRepository.lastModifiedInIndex(file1.getLocation().toPortableString()) / 10);
+	}
+
