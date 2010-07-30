@@ -1,0 +1,19 @@
+	@Test
+	public void testOpenHistory() throws Exception {
+		try {
+			SWTBotView view = bot.viewById(IHistoryView.VIEW_ID);
+			view.close();
+		} catch (Exception e) {
+			// ignore
+		}
+
+		SWTBotTree projectExplorerTree = bot.viewById(
+				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		getProjectItem(projectExplorerTree, PROJ1).select();
+		String menuString = util
+				.getPluginLocalizedValue("ShowResourceInHistoryAction_label");
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+				menuString);
+		bot.viewById(IHistoryView.VIEW_ID).close();
+	}
+

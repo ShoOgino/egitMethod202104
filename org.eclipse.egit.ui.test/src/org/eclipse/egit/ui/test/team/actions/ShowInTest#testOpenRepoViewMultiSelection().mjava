@@ -1,0 +1,17 @@
+	@Test
+	public void testOpenRepoViewMultiSelection() throws Exception {
+		SWTBotTree projectExplorerTree = bot.viewById(
+				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		projectExplorerTree.select(0, 1);
+		String menuString = util
+				.getPluginLocalizedValue("ShowRepositoryAction_label");
+		try {
+			ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+					menuString);
+			fail("This should have failed");
+		} catch (SWTException e) {
+			// expected
+			assertTrue(e.getCause() instanceof IllegalStateException);
+		}
+	}
+
