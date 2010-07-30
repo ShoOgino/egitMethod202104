@@ -9,42 +9,20 @@
 					return;
 				}
 				try {
-					ArrayList<GitIndex> changedIndexes = new ArrayList<GitIndex>();
+					List<IResource> filesToAdd = new ArrayList<IResource>();
 					for (Iterator<?> it = sel.iterator(); it.hasNext();) {
 						CommitItem commitItem = (CommitItem) it.next();
-
-						IProject project = commitItem.file.getProject();
-						RepositoryMapping map = RepositoryMapping.getMapping(project);
-
-						Repository repo = map.getRepository();
-						GitIndex index = null;
-						index = repo.getIndex();
-						String repoRelativePath = map.getRepoRelativePath(commitItem.file);
-						Entry entry = index.getEntry(repoRelativePath);
-						if (entry != null && entry.isModified(map.getWorkTree())) {
-							entry.update(new File(map.getWorkTree(), entry.getName()));
-							if (!changedIndexes.contains(index))
-								changedIndexes.add(index);
-							commitItem.status = UIText.CommitDialog_StatusModified;
-						} else if (entry == null) {
-							final Tree headTree = repo.mapTree(Constants.HEAD);
-							TreeEntry  headEntry = (headTree == null ? null : headTree.findBlobMember(repoRelativePath));
-							if (headEntry == null){
-								entry = index.add(map.getWorkTree(), new File(map.getWorkTree(), repoRelativePath));
-								if (!changedIndexes.contains(index))
-									changedIndexes.add(index);
-								commitItem.status = UIText.CommitDialog_StatusAdded;
-							}
-						}
+						filesToAdd.add(commitItem.file);
 					}
-					if (!changedIndexes.isEmpty()) {
-						for (GitIndex idx : changedIndexes) {
-							idx.write();
-						}
-						filesViewer.refresh(true);
+					AddToIndexOperation op = new AddToIndexOperation(filesToAdd);
+					op.execute(new NullProgressMonitor());
+					for (Iterator<?> it = sel.iterator(); it.hasNext();) {
+						CommitItem commitItem = (CommitItem) it.next();
+						commitItem.status = getFileStatus(commitItem.file);
 					}
-				} catch (IOException e) {
-
+					filesViewer.refresh(true);
+				} catch (CoreException e) {
+					Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
 					return;
 				}
 			}
