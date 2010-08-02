@@ -1,0 +1,10 @@
+	@Override
+	public boolean isEnabled() {
+		ISelectionService srv = (ISelectionService) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getService(ISelectionService.class);
+		if (srv.getSelection() instanceof StructuredSelection) {
+			return ((StructuredSelection) srv.getSelection()).size() == 1;
+		}
+		return false;
+	}
+

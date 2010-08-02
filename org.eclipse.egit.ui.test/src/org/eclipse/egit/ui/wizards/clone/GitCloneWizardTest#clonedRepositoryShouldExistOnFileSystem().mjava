@@ -6,6 +6,6 @@
 				.nextToRemoteBranches(r.getUri());
 		remoteBranches.assertRemoteBranches(SampleTestRepository.FIX, Constants.MASTER);
 		WorkingCopyPage workingCopy = remoteBranches.nextToWorkingCopy();
-		workingCopy.assertWorkingCopyExists(r.getUri());
+		workingCopy.assertWorkingCopyExists();
 	}
 
