@@ -1,0 +1,21 @@
+	private static IContentType getContentType(
+			FileRevisionEditorInput editorInput) {
+		IContentType type = null;
+		try {
+			InputStream contents = editorInput.getStorage().getContents();
+			try {
+				type = getContentType(editorInput.getFileRevision().getName(),
+						contents);
+			} finally {
+				try {
+					contents.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+		} catch (CoreException e) {
+			Activator.handleError(e.getMessage(), e, false);
+		}
+		return type;
+	}
+

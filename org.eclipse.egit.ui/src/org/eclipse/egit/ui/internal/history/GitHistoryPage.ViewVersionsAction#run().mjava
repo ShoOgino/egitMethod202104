@@ -26,7 +26,7 @@
 				}
 				if (rev != null) {
 					try {
-						Utils.openEditor(getSite().getPage(), rev,
+						EgitUiEditorUtils.openEditor(getSite().getPage(), rev,
 								new NullProgressMonitor());
 					} catch (CoreException e) {
 						Activator.logError(UIText.GitHistoryPage_openFailed, e);

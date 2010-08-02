@@ -1,0 +1,18 @@
+	private static IContentType getContentType(String fileName,
+			InputStream contents) {
+		IContentType type = null;
+		if (contents != null) {
+			try {
+				type = Platform.getContentTypeManager().findContentTypeFor(
+						contents, fileName);
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, false);
+			}
+		}
+		if (type == null) {
+			type = Platform.getContentTypeManager()
+					.findContentTypeFor(fileName);
+		}
+		return type;
+	}
+

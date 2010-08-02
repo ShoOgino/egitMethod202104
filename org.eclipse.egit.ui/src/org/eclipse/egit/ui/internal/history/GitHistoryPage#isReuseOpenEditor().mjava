@@ -1,4 +1,5 @@
 	private static boolean isReuseOpenEditor() {
-		return TeamUIPlugin.getPlugin().getPreferenceStore().getBoolean(IPreferenceIds.REUSE_OPEN_COMPARE_EDITOR);
+		boolean defaultReuse = new DefaultScope().getNode(TEAM_UI_PLUGIN).getBoolean(REUSE_COMPARE_EDITOR_PREFID, false);
+		return new InstanceScope().getNode(TEAM_UI_PLUGIN).getBoolean(REUSE_COMPARE_EDITOR_PREFID, defaultReuse);
 	}
 

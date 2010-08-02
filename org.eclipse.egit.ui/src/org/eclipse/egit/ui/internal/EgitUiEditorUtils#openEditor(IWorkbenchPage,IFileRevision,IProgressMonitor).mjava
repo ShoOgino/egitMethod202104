@@ -1,0 +1,23 @@
+	/**
+	 * @param page
+	 * @param revision
+	 * @param monitor
+	 * @return the part
+	 * @throws CoreException
+	 */
+	public static IEditorPart openEditor(IWorkbenchPage page,
+			IFileRevision revision, IProgressMonitor monitor)
+			throws CoreException {
+		IStorage file = revision.getStorage(monitor);
+		if (file instanceof IFile) {
+			// if this is the current workspace file, open it
+			return IDE.openEditor(page, (IFile) file, OpenStrategy
+					.activateOnOpen());
+		} else {
+			FileRevisionEditorInput fileRevEditorInput = FileRevisionEditorInput
+					.createEditorInputFor(revision, monitor);
+			IEditorPart part = openEditor(page, fileRevEditorInput);
+			return part;
+		}
+	}
+
