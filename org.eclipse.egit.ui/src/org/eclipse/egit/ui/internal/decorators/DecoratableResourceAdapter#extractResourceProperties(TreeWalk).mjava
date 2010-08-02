@@ -1,4 +1,4 @@
-	private void extractResourceProperties(TreeWalk treeWalk) {
+	private void extractResourceProperties(TreeWalk treeWalk) throws IOException {
 		final ContainerTreeIterator workspaceIterator = treeWalk.getTree(
 				T_WORKSPACE, ContainerTreeIterator.class);
 		final ResourceEntry resourceEntry = workspaceIterator != null ? workspaceIterator
@@ -7,7 +7,7 @@
 		if (resourceEntry == null)
 			return;
 
-		if (isIgnored(resourceEntry.getResource())) {
+		if (workspaceIterator != null && workspaceIterator.isEntryIgnored()) {
 			ignored = true;
 			return;
 		}
