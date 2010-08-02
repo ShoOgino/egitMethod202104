@@ -7,13 +7,39 @@
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor monitor) throws CoreException {
-				if (amending || filesToCommit != null
+				final PersonIdent authorIdent = new PersonIdent(author);
+				final PersonIdent committerIdent = new PersonIdent(committer);
+				if (mergeResolve) {
+					for (Repository repo : repos) {
+						Git git = new Git(repo);
+						try {
+							git.commit().setAll(true).setAuthor(authorIdent)
+									.setCommitter(committerIdent)
+									.setMessage(message).call();
+						} catch (NoHeadException e) {
+							throw new TeamException(e.getLocalizedMessage(), e);
+						} catch (NoMessageException e) {
+							throw new TeamException(e.getLocalizedMessage(), e);
+						} catch (UnmergedPathException e) {
+							throw new TeamException(e.getLocalizedMessage(), e);
+						} catch (ConcurrentRefUpdateException e) {
+							throw new TeamException(
+									CoreText.MergeOperation_InternalError, e);
+						} catch (JGitInternalException e) {
+							throw new TeamException(
+									CoreText.MergeOperation_InternalError, e);
+						} catch (WrongRepositoryStateException e) {
+							throw new TeamException(e.getLocalizedMessage(), e);
+						}
+					}
+				}
+
+				else if (amending || filesToCommit != null
 						&& filesToCommit.length > 0) {
 					monitor.beginTask(
 							CoreText.CommitOperation_PerformingCommit,
 							filesToCommit.length * 2);
-					monitor
-							.setTaskName(CoreText.CommitOperation_PerformingCommit);
+					monitor.setTaskName(CoreText.CommitOperation_PerformingCommit);
 					HashMap<Repository, Tree> treeMap = new HashMap<Repository, Tree>();
 					try {
 						if (!prepareTrees(filesToCommit, treeMap, monitor)) {

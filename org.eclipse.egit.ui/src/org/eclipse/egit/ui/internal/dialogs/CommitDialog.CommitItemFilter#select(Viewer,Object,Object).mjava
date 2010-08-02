@@ -2,7 +2,7 @@
 		public boolean select(Viewer viewer, Object parentElement,
 				Object element) {
 			boolean result = true;
-			if (!showUntracked){
+			if (!showUntracked || !allowToChangeSelection){
 				if (element instanceof CommitItem) {
 					CommitItem item = (CommitItem)element;
 					if (item.status.equals(UIText.CommitDialog_StatusUntracked))

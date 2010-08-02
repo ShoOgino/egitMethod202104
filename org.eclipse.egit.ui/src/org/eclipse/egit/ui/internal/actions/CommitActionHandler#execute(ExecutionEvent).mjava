@@ -16,17 +16,22 @@
 
 		Repository[] repos = getRepositoriesFor(getProjectsForSelectedResources(event));
 		Repository repository = null;
+		Repository mergeRepository = null;
 		amendAllowed = repos.length == 1;
+		boolean isMergedResolved = false;
 		for (Repository repo : repos) {
 			repository = repo;
 			RepositoryState state = repo.getRepositoryState();
-			// currently we don't support committing a merge commit
-			if (state == RepositoryState.MERGING_RESOLVED || !state.canCommit()) {
+			if (!state.canCommit()) {
 				MessageDialog.openError(getShell(event),
 						UIText.CommitAction_cannotCommit, NLS.bind(
 								UIText.CommitAction_repositoryState, state
 										.getDescription()));
 				return null;
+			}
+			else if (state.equals(RepositoryState.MERGING_RESOLVED)) {
+				isMergedResolved = true;
+				mergeRepository = repo;
 			}
 		}
 
@@ -67,12 +72,16 @@
 		commitDialog.setPreselectedFiles(getSelectedFiles(event));
 		commitDialog.setAuthor(author);
 		commitDialog.setCommitter(committer);
+		commitDialog.setAllowToChangeSelection(!isMergedResolved);
 
 		if (previousCommit != null) {
 			commitDialog.setPreviousCommitMessage(previousCommit.getMessage());
 			PersonIdent previousAuthor = previousCommit.getAuthor();
 			commitDialog.setPreviousAuthor(previousAuthor.getName()
 					+ " <" + previousAuthor.getEmailAddress() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		if (isMergedResolved) {
+			commitDialog.setCommitMessage(getMergeResolveMessage(mergeRepository, event));
 		}
 
 		if (commitDialog.open() != IDialogConstants.OK_ID)
@@ -88,6 +97,9 @@
 			commitOperation.setRepos(repos);
 		}
 		commitOperation.setComputeChangeId(commitDialog.getCreateChangeId());
+		commitOperation.setMergeResolve(isMergedResolved);
+		if (isMergedResolved)
+			commitOperation.setRepos(repos);
 		String jobname = UIText.CommitAction_CommittingChanges;
 		Job job = new Job(jobname) {
 			@Override

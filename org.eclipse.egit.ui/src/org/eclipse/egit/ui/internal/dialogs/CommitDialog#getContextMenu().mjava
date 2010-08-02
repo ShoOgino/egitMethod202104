@@ -1,4 +1,6 @@
 	private Menu getContextMenu() {
+		if (!allowToChangeSelection)
+			return null;
 		Menu menu = new Menu(filesViewer.getTable());
 		MenuItem item = new MenuItem(menu, SWT.PUSH);
 		item.setText(UIText.CommitDialog_AddFileOnDiskToIndex);
