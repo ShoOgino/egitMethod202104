@@ -3,12 +3,8 @@
 	 * UI.
 	 *
 	 * @return String the label
-	 * @since 3.4
 	 */
 	public String getProjectLabel() {
-		if (description == null)
-			return projectName;
-
 		String path = projectSystemFile.getParent();
 
 		return NLS.bind(UIText.WizardProjectsImportPage_projectLabel,
