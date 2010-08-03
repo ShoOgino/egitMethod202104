@@ -20,7 +20,10 @@
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				final FileDiff d = (FileDiff) iss.getFirstElement();
 				if (walker != null && d.blobs.length <= 2)
-					showTwoWayFileDiff(d);
+					if (compareMode)
+						showTwoWayFileDiff(d);
+					else
+						openFileInEditor(d);
 			}
 		});
 
