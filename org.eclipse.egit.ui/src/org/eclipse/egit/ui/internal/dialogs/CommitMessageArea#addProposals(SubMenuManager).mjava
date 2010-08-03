@@ -1,0 +1,25 @@
+	private void addProposals(final SubMenuManager quickFixMenu) {
+		IAnnotationModel sourceModel = sourceViewer.getAnnotationModel();
+		Iterator annotationIterator = sourceModel.getAnnotationIterator();
+		while (annotationIterator.hasNext()) {
+			Annotation annotation = (Annotation) annotationIterator.next();
+			boolean isDeleted = annotation.isMarkedDeleted();
+			boolean isIncluded = includes(sourceModel.getPosition(annotation),
+					getTextWidget().getCaretOffset());
+			boolean isFixable = sourceViewer.getQuickAssistAssistant().canFix(
+					annotation);
+			if (!isDeleted && isIncluded && isFixable) {
+				IQuickAssistProcessor processor = sourceViewer
+				.getQuickAssistAssistant()
+				.getQuickAssistProcessor();
+				IQuickAssistInvocationContext context = sourceViewer
+				.getQuickAssistInvocationContext();
+				ICompletionProposal[] proposals = processor
+				.computeQuickAssistProposals(context);
+
+				for (ICompletionProposal proposal : proposals)
+					quickFixMenu.add(createQuickFixAction(proposal));
+			}
+		}
+	}
+

@@ -1,0 +1,10 @@
+	private IHandlerActivation installQuickFixActionHandler() {
+		IHandlerService handlerService = getHandlerService();
+		ActionHandler handler = createQuickFixActionHandler(sourceViewer);
+		ActiveShellExpression expression = new ActiveShellExpression(
+				sourceViewer.getTextWidget().getShell());
+		return handlerService.activateHandler(
+				ITextEditorActionDefinitionIds.QUICK_ASSIST, handler,
+				expression);
+	}
+

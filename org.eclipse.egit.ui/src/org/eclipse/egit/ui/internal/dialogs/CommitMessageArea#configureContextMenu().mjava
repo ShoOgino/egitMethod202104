@@ -1,0 +1,87 @@
+	private void configureContextMenu() {
+		final TextViewerAction cutAction = new TextViewerAction(sourceViewer, ITextOperationTarget.CUT);
+		cutAction.setText(UIText.CommitMessageArea_cut);
+		cutAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_CUT);
+
+		final TextViewerAction copyAction = new TextViewerAction(sourceViewer, ITextOperationTarget.COPY);
+		copyAction.setText(UIText.CommitMessageArea_copy);
+		copyAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
+
+		final TextViewerAction pasteAction = new TextViewerAction(sourceViewer, ITextOperationTarget.PASTE);
+		pasteAction.setText(UIText.CommitMessageArea_paste);
+		pasteAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_PASTE);
+
+		final TextViewerAction selectAllAction = new TextViewerAction(sourceViewer, ITextOperationTarget.SELECT_ALL);
+		selectAllAction.setText(UIText.CommitMessageArea_selectAll);
+		selectAllAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_SELECT_ALL);
+
+		MenuManager contextMenu = new MenuManager();
+		contextMenu.add(cutAction);
+		contextMenu.add(copyAction);
+		contextMenu.add(pasteAction);
+		contextMenu.add(selectAllAction);
+		contextMenu.add(new Separator());
+
+		final SubMenuManager quickFixMenu = new SubMenuManager(contextMenu);
+		quickFixMenu.setVisible(true);
+		quickFixMenu.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				quickFixMenu.removeAll();
+				addProposals(quickFixMenu);
+			}
+		});
+		StyledText textWidget = getTextWidget();
+		getTextWidget().setMenu(contextMenu.createContextMenu(textWidget));
+
+		getTextWidget().addFocusListener(new FocusListener() {
+
+			private IHandlerActivation cutHandlerActivation;
+			private IHandlerActivation copyHandlerActivation;
+			private IHandlerActivation pasteHandlerActivation;
+			private IHandlerActivation selectAllHandlerActivation;
+
+			public void focusGained(FocusEvent e) {
+				cutAction.update();
+				copyAction.update();
+				IHandlerService service = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+				this.cutHandlerActivation = service.activateHandler(IWorkbenchCommandConstants.EDIT_CUT, new ActionHandler(cutAction), new ActiveShellExpression(getParent().getShell()));
+	            this.copyHandlerActivation = service.activateHandler(IWorkbenchCommandConstants.EDIT_COPY, new ActionHandler(copyAction), new ActiveShellExpression(getParent().getShell()));
+	            this.pasteHandlerActivation = service.activateHandler(IWorkbenchCommandConstants.EDIT_PASTE, new ActionHandler(pasteAction), new ActiveShellExpression(getParent().getShell()));
+	            this.selectAllHandlerActivation = service.activateHandler(IWorkbenchCommandConstants.EDIT_SELECT_ALL, new ActionHandler(selectAllAction), new ActiveShellExpression(getParent().getShell()));
+			}
+
+			/* (non-Javadoc)
+			 * @see org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.events.FocusEvent)
+			 */
+			public void focusLost(FocusEvent e) {
+				IHandlerService service = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+
+				if (cutHandlerActivation != null) {
+					service.deactivateHandler(cutHandlerActivation);
+				}
+
+				if (copyHandlerActivation != null) {
+					service.deactivateHandler(copyHandlerActivation);
+				}
+
+				if (pasteHandlerActivation != null) {
+					service.deactivateHandler(pasteHandlerActivation);
+				}
+
+				if (selectAllHandlerActivation != null) {
+					service.deactivateHandler(selectAllHandlerActivation);
+				}
+			}
+
+		});
+
+        sourceViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+        	public void selectionChanged(SelectionChangedEvent event) {
+        		cutAction.update();
+        		copyAction.update();
+        	}
+
+        });
+	}
+

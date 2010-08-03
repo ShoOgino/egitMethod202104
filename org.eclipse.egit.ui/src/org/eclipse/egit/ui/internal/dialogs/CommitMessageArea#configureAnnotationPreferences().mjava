@@ -1,0 +1,16 @@
+	private SourceViewerDecorationSupport configureAnnotationPreferences() {
+		ISharedTextColors textColors = EditorsUI.getSharedTextColors();
+		IAnnotationAccess annotationAccess = new DefaultMarkerAnnotationAccess();
+		final SourceViewerDecorationSupport support = new SourceViewerDecorationSupport(
+				sourceViewer, null, annotationAccess, textColors);
+
+		List annotationPreferences = new MarkerAnnotationPreferences()
+		.getAnnotationPreferences();
+		Iterator e = annotationPreferences.iterator();
+		while (e.hasNext())
+			support.setAnnotationPreference((AnnotationPreference) e.next());
+
+		support.install(EditorsUI.getPreferenceStore());
+		return support;
+	}
+

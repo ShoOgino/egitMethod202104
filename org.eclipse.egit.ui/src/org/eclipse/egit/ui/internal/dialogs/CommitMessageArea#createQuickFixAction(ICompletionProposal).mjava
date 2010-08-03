@@ -1,0 +1,17 @@
+	private IAction createQuickFixAction(final ICompletionProposal proposal) {
+		return new Action(proposal.getDisplayString()) {
+
+			public void run() {
+				proposal.apply(sourceViewer.getDocument());
+			}
+
+			public ImageDescriptor getImageDescriptor() {
+				Image image = proposal.getImage();
+				if (image != null) {
+					return ImageDescriptor.createFromImage(image);
+				}
+				return null;
+			}
+		};
+	}
+
