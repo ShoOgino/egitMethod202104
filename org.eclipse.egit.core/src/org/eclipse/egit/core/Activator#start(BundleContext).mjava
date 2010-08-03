@@ -2,14 +2,12 @@
 
 		super.start(context);
 
-		if (isDebugging()) {
-			ServiceTracker debugTracker = new ServiceTracker(context,
-					DebugOptions.class.getName(), null);
-			debugTracker.open();
-
-			DebugOptions opts = (DebugOptions) debugTracker.getService();
-			GitTraceLocation.initializeFromOptions(opts, true);
-		}
+		// we want to be notified about debug options changes
+		Dictionary<String, String> props = new Hashtable<String, String>(4);
+		props.put(DebugOptions.LISTENER_SYMBOLICNAME, context.getBundle()
+				.getSymbolicName());
+		context.registerService(DebugOptionsListener.class.getName(), this,
+				props);
 
 		repositoryCache = new RepositoryCache();
 		try {
