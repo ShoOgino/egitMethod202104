@@ -12,10 +12,6 @@
 			Activator.handleError(UIText.CommitAction_errorComputingDiffs, e,
 					true);
 			return null;
-		} catch (CoreException e) {
-			Activator.handleError(UIText.CommitAction_errorComputingDiffs, e,
-					true);
-			return null;
 		}
 
 		Repository[] repos = getRepositoriesFor(getProjectsForSelectedResources(event));

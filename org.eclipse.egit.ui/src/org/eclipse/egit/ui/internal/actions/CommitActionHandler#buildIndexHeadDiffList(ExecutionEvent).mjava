@@ -1,5 +1,5 @@
 	private void buildIndexHeadDiffList(ExecutionEvent event)
-			throws IOException, CoreException, ExecutionException {
+			throws IOException, ExecutionException {
 		HashMap<Repository, HashSet<IProject>> repositories = new HashMap<Repository, HashSet<IProject>>();
 
 		for (IProject project : getProjectsInRepositoryOfSelectedResources(event)) {
@@ -24,9 +24,11 @@
 			Repository repository = entry.getKey();
 			HashSet<IProject> projects = entry.getValue();
 
-			Tree head = repository.mapTree(Constants.HEAD);
-			GitIndex index = repository.getIndex();
-			IndexDiff indexDiff = new IndexDiff(head, index);
+			AdaptableFileTreeIterator fileTreeIterator =
+				new AdaptableFileTreeIterator(repository.getWorkTree(),
+						ResourcesPlugin.getWorkspace().getRoot());
+
+			IndexDiff indexDiff = new IndexDiff(repository, Constants.HEAD, fileTreeIterator);
 			indexDiff.diff();
 
 			for (IProject project : projects) {
@@ -35,7 +37,7 @@
 				includeList(project, indexDiff.getRemoved(), indexChanges);
 				includeList(project, indexDiff.getMissing(), notIndexed);
 				includeList(project, indexDiff.getModified(), notIndexed);
-				addUntrackedFiles(repository, project);
+				includeList(project, indexDiff.getUntracked(), notTracked);
 			}
 		}
 	}
