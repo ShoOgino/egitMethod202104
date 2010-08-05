@@ -1,7 +1,9 @@
 	@After
 	public void tearDown() throws Exception {
+		project.close(null);
+		project.delete(false, false, null);
 		repository1.dispose();
 		repository1 = null;
-		testUtils.deleteRecursive(workdir);
+		testUtils.deleteTempDirs();
 	}
 
