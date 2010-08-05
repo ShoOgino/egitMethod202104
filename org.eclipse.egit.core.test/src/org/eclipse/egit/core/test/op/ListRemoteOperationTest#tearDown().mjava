@@ -2,7 +2,6 @@
 	public void tearDown() throws Exception {
 		repository1.dispose();
 		repository2.dispose();
-		testUtils.deleteRecursive(workdir);
-		testUtils.deleteRecursive(workdir2);
+		testUtils.deleteTempDirs();
 	}
 
