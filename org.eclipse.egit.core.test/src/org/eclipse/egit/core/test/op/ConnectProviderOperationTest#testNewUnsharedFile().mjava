@@ -1,14 +1,11 @@
 	@Test
-	public void testNewUnsharedFile() throws CoreException, IOException,
-			InterruptedException {
+	public void testNewUnsharedFile() throws CoreException, IOException {
 
 		project.createSourceFolder();
 		IFile fileA = project.getProject().getFolder("src").getFile("A.java");
 		String srcA = "class A {\n" + "}\n";
 		fileA.create(new ByteArrayInputStream(srcA.getBytes()), false, null);
 
-		File gitDir = new File(project.getProject().getWorkspace().getRoot()
-				.getRawLocation().toFile(), Constants.DOT_GIT);
 		Repository thisGit = new FileRepository(gitDir);
 		thisGit.create();
 		Tree rootTree = new Tree(thisGit);
@@ -35,23 +32,6 @@
 		ConnectProviderOperation operation = new ConnectProviderOperation(
 				project.getProject(), gitDir);
 		operation.execute(null);
-
-		final boolean f[] = new boolean[1];
-		new Job("wait") {
-			protected IStatus run(IProgressMonitor monitor) {
-
-				f[0] = true;
-				return null;
-			}
-
-			{
-				setRule(project.getProject());
-				schedule();
-			}
-		};
-		while (!f[0]) {
-			Thread.sleep(1000);
-		}
 
 		assertNotNull(RepositoryProvider.getProvider(project.getProject()));
 
