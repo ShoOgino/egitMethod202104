@@ -1,7 +1,7 @@
 	@BeforeClass
 	public static void setup() throws Exception {
 		// File repoFile =
-		createProjectAndCommitToRepository();
+		repoFile = createProjectAndCommitToRepository();
 		perspective = bot.activePerspective();
 		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
 		IProject prj = ResourcesPlugin.getWorkspace().getRoot().getProject(

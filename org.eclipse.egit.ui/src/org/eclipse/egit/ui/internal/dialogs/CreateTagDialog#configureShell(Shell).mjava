@@ -5,6 +5,10 @@
 		if (branchName != null) {
 			newShell.setText(NLS.bind(
 					UIText.CreateTagDialog_questionNewTagTitle, branchName));
+		} else if (commitId != null) {
+			newShell.setText(NLS.bind(
+					UIText.CreateTagDialog_CreateTagOnCommitTitle, commitId
+							.name()));
 		}
 
 		newShell.setMinimumSize(600, 400);

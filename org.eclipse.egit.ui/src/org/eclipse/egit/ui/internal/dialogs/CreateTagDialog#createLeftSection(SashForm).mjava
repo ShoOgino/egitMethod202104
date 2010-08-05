@@ -76,7 +76,8 @@
 			public void widgetSelected(SelectionEvent e) {
 				boolean state = overwriteButton.getSelection();
 				tagNameText.setEnabled(state);
-				commitCombo.setEnabled(state);
+				if (commitCombo != null)
+					commitCombo.setEnabled(state);
 				tagMessageText.setEnabled(state);
 				validateInput();
 			}

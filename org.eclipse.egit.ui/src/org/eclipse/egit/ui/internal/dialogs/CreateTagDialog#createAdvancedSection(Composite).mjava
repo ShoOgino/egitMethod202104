@@ -1,4 +1,6 @@
 	private void createAdvancedSection(final Composite composite) {
+		if (commitId!=null)
+			return;
 		ExpandableComposite advanced = new ExpandableComposite(composite,
 				ExpandableComposite.TREE_NODE
 						| ExpandableComposite.CLIENT_INDENT);

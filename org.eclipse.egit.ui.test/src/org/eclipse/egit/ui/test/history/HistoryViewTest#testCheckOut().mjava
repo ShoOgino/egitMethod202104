@@ -1,0 +1,25 @@
+	@Test
+	public void testCheckOut() throws Exception {
+		Repository repo = lookupRepository(repoFile);
+		assertEquals(Constants.MASTER, repo.getBranch());
+
+		final SWTBotTable table = getHistoryViewTable(PROJ1);
+		// check out the second line
+		table.getTableItem(1).select();
+		final RevCommit[] commit = new RevCommit[1];
+
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				commit[0] = (RevCommit) table.widget.getSelection()[0]
+						.getData();
+			}
+		});
+
+		ContextMenuHelper.clickContextMenu(table, util
+				.getPluginLocalizedValue("CheckoutCommand"));
+
+		waitInUI();
+		assertEquals(commit[0].getId().name(), repo.getBranch());
+	}
+

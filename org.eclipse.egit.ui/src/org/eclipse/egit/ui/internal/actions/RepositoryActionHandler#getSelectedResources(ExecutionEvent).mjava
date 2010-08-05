@@ -7,7 +7,7 @@
 			throws ExecutionException {
 		Set<IResource> result = new HashSet<IResource>();
 		for (Object o : getSelection(event).toList()) {
-			IResource resource = (IResource) getAdapter(o, IResource.class);
+			IResource resource = (IResource) getAdapter(o, IResource.class, event);
 			if (resource != null)
 				result.add(resource);
 		}

@@ -7,7 +7,7 @@
 			throws ExecutionException {
 		Set<IProject> ret = new HashSet<IProject>();
 		for (IResource resource : (IResource[]) getSelectedAdaptables(
-				getSelection(event), IResource.class))
+				getSelection(event), IResource.class, event))
 			ret.add(resource.getProject());
 		return ret.toArray(new IProject[ret.size()]);
 	}

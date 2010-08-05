@@ -3,13 +3,13 @@
 	 *
 	 * @param parent
 	 * @param tagNameValidator
-	 * @param branchName
+	 * @param commitId
 	 */
 	public CreateTagDialog(Shell parent, IInputValidator tagNameValidator,
-			String branchName) {
+			ObjectId commitId) {
 		super(parent);
 		this.tagNameValidator = tagNameValidator;
-		this.branchName = branchName;
-		this.commitId = null;
+		this.branchName = null;
+		this.commitId = commitId;
 	}
 

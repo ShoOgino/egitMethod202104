@@ -4,9 +4,10 @@
 		case CLEAR_ID:
 			tagNameText.setText(""); //$NON-NLS-1$
 			tagMessageText.setText(""); //$NON-NLS-1$
-			commitCombo.clearSelection();
-
-			commitCombo.setEnabled(true);
+			if (commitCombo != null) {
+				commitCombo.clearSelection();
+				commitCombo.setEnabled(true);
+			}
 			tagNameText.setEnabled(true);
 			tagMessageText.setEnabled(true);
 			overwriteButton.setEnabled(false);
@@ -15,7 +16,8 @@
 		case IDialogConstants.OK_ID:
 			// read and store data from widgets
 			tagName = tagNameText.getText();
-			tagCommit = commitCombo.getValue();
+			if (commitCombo != null)
+				tagCommit = commitCombo.getValue();
 			tagMessage = tagMessageText.getText();
 			overwriteTag = overwriteButton.getSelection();
 			//$FALL-THROUGH$ continue propagating OK button action

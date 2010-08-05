@@ -11,16 +11,13 @@
 		if (event != null)
 			selection = HandlerUtil.getCurrentSelectionChecked(event);
 		else {
-			// the event is sometimes null, in particular, during
-			// isEnabled()
-			ISelectionService srv = (ISelectionService) PlatformUI
-					.getWorkbench().getActiveWorkbenchWindow().getService(
-							ISelectionService.class);
-			if (srv == null)
+			IHandlerService hsr = (IHandlerService) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getService(IHandlerService.class);
+			IEvaluationContext ctx = hsr.getCurrentState();
+			selection = (ISelection) ctx.getVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
+			if (selection == null)
 				throw new ExecutionException(
 						UIText.RepositoryActionHandler_CouldNotGetSelection_message);
-			else
-				selection = srv.getSelection();
+
 		}
 		if (selection instanceof IStructuredSelection)
 			return (IStructuredSelection) selection;

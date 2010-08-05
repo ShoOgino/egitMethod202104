@@ -3,8 +3,8 @@
 	 * @return the page
 	 * @throws ExecutionException
 	 */
-	protected IWorkbenchPage getPartPage(ExecutionEvent event)
+	protected IWorkbenchPart getPart(ExecutionEvent event)
 			throws ExecutionException {
-		return getPart(event).getSite().getPage();
+		return HandlerUtil.getActivePartChecked(event);
 	}
 

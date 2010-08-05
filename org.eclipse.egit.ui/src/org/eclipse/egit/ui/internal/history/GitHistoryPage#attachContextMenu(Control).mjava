@@ -1,13 +1,6 @@
 	private void attachContextMenu(final Control c) {
 		c.setMenu(popupMgr.createContextMenu(c));
 
-		if (checkoutItem == null) {
-			CommandContributionItemParameter p = new CommandContributionItemParameter(
-					getSite(), SharedCommands.CHECKOUT,
-					SharedCommands.CHECKOUT, CommandContributionItem.STYLE_PUSH);
-			checkoutItem = new CommandContributionItem(p);
-		}
-
 		if (c == graph.getControl()) {
 
 			c.addMenuDetectListener(new MenuDetectListener() {
@@ -19,11 +12,9 @@
 							compareVersionsAction));
 					popupMgr.remove(new ActionContributionItem(
 							viewVersionsAction));
-					popupMgr.remove(checkoutItem);
 					int size = ((IStructuredSelection) revObjectSelectionProvider
 							.getSelection()).size();
 					if (size == 1) {
-						popupMgr.add(checkoutItem);
 						popupMgr.add(new Separator());
 						popupMgr.add(createPatchAction);
 						createPatchAction.setEnabled(createPatchAction.isEnabled());
