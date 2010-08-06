@@ -5,6 +5,7 @@
 	 *      org.eclipse.jface.viewers.IDecoration)
 	 */
 	public void decorate(Object element, IDecoration decoration) {
+
 		final IResource resource = getResource(element);
 		if (resource == null)
 			return;
@@ -25,7 +26,9 @@
 		// Don't decorate non-existing resources
 		if (!resource.exists() && !resource.isPhantom())
 			return;
-
+		// Don't decorate ignored resources (e.g. bin folder content)
+		if (Team.isIgnoredHint(resource))
+			return;
 		// Make sure we're dealing with a project under Git revision control
 		final RepositoryMapping mapping = RepositoryMapping
 				.getMapping(resource);
