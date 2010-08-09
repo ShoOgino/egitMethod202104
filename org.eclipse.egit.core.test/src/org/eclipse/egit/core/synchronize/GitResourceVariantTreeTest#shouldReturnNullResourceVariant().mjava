@@ -8,8 +8,10 @@
 	@Test
 	public void shouldReturnNullResourceVariant() throws Exception {
 		// when
-		GitSynchronizeData data = new GitSynchronizeData(repo, Constants.HEAD,
-				Constants.MASTER, false);
+		new Git(repo).commit().setAuthor("JUnit", "junit@egit.org")
+				.setMessage("Initial commit").call();
+		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, MASTER,
+				false);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 
 		// given

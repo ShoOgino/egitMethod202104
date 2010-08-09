@@ -10,8 +10,10 @@
 		IPackageFragment iPackage = project.createPackage("org.egit.test");
 		IType mainJava = project.createType(iPackage, "Main.java",
 				"class Main {}");
-		GitSynchronizeData data = new GitSynchronizeData(repo, Constants.HEAD,
-				Constants.MASTER, false);
+		new Git(repo).commit().setAuthor("JUnit", "junit@egit.org")
+				.setMessage("Initial commit").call();
+		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, MASTER,
+				false);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 
 		// given

@@ -12,8 +12,14 @@
 	public GitSynchronizeData(Repository repository, String srcRev,
 			String dstRev, boolean includeLocal) throws IOException {
 		repo = repository;
-		this.srcRev = repo.getRef(srcRev);
-		this.dstRev = repo.getRef(dstRev);
+
+		Ref srcRef = repo.getRef(srcRev);
+		Ref dstRef = repo.getRef(dstRev);
+		ObjectWalk ow = new ObjectWalk(repo);
+
+		this.srcRev = ow.parseCommit(srcRef.getObjectId());
+		this.dstRev = ow.parseCommit(dstRef.getObjectId());
+
 		this.includeLocal = includeLocal;
 		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();
 

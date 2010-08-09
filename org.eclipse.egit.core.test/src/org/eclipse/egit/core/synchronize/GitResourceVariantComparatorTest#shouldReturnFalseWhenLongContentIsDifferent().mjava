@@ -13,7 +13,7 @@
 		byte[] remoteContent = new byte[8192];
 		Arrays.fill(remoteContent, (byte) 'a');
 		remoteContent[8101] = 'b';
-		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", true);
+		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, HEAD, true);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
 				dataSet);

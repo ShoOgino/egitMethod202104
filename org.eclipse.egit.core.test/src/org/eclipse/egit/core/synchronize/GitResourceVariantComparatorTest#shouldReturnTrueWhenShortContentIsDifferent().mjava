@@ -10,7 +10,7 @@
 		// when
 		byte[] localContent = "very long long content".getBytes();
 		byte[] remoteContent = "very long long content".getBytes();
-		GitSynchronizeData data = new GitSynchronizeData(repo, "", "", true);
+		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, HEAD, true);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(
 				dataSet);
