@@ -1,0 +1,11 @@
+	/**
+	 * construct an IgnoreOperation
+	 *
+	 * @param resources
+	 */
+	public IgnoreOperation(IResource[] resources) {
+		this.resources = resources;
+		gitignoreOutsideWSChanged = false;
+		calcSchedulingRule();
+	}
+
