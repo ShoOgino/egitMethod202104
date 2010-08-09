@@ -1,0 +1,7 @@
+	public int getKind() {
+		if (kind == -1)
+			calculateKind(getAncestorSha1(), getBaseSha1(), getRemoteSha1());
+
+		return kind;
+	}
+
