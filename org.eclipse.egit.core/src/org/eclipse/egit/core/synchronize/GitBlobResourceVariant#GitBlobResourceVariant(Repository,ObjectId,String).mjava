@@ -1,6 +1,6 @@
-	GitBlobResourceVariant(Repository repo, RevCommit revCommit, String path)
+	GitBlobResourceVariant(Repository repo, ObjectId objectId, String path)
 			throws IOException {
-		super(repo, revCommit, path);
+		super(repo, objectId, path);
 
 		if (getObjectId() != null) {
 			ObjectLoader blob = repo.open(getObjectId());

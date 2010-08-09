@@ -26,7 +26,7 @@
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 
 		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo,
-				commit, path);
+				commit.getTree(), path);
 
 		// then
 		assertFalse(grvc.compare(local, remote));

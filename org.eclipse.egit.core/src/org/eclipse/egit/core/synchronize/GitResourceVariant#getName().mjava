@@ -1,10 +1,10 @@
 	public String getName() {
-		if (name == null && variantPath != null) {
-			int lastSeparator = variantPath.lastIndexOf('/');
+		if (name == null && path != null) {
+			int lastSeparator = path.lastIndexOf('/');
 			if (lastSeparator > -1)
-				name = variantPath.substring(lastSeparator + 1);
+				name = path.substring(lastSeparator + 1);
 			else
-				name = variantPath;
+				name = path;
 		}
 
 		return name;

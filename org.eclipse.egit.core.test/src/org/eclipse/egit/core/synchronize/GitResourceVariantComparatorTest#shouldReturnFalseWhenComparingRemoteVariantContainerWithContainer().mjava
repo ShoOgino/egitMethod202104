@@ -23,15 +23,18 @@
 		testRepo.addToIndex(testRepo.getIFile(iProject, file2));
 		RevCommit commit = testRepo.commit("initial commit");
 
-		String path1 = Repository.stripWorkDir(repo.getWorkTree(), new File(
-				file1.getParent()));
-		String path2 = Repository.stripWorkDir(repo.getWorkTree(), new File(
-				file2.getParent()));
+		TreeWalk tw = new TreeWalk(repo);
+		int nth = tw.addTree(commit.getTree());
 
+		tw.next();
+		tw.enterSubtree(); // enter project node
+		tw.next();
 		GitFolderResourceVariant base = new GitFolderResourceVariant(repo,
-				commit, path1);
+				tw.getObjectId(nth), tw.getNameString());
+
+		tw.next();
 		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo,
-				commit, path2);
+				tw.getObjectId(nth), tw.getNameString());
 
 		// then
 		assertFalse(grvc.compare(base, remote));

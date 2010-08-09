@@ -22,9 +22,9 @@
 				file1.getParent()));
 
 		GitFolderResourceVariant base = new GitFolderResourceVariant(repo,
-				commit, path1);
+				commit.getTree(), path1);
 		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo,
-				commit, path1);
+				commit.getTree(), path1);
 
 		// then
 		assertTrue(grvc.compare(base, remote));

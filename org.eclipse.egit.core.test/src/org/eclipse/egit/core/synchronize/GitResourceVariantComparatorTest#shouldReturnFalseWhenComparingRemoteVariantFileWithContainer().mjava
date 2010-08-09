@@ -21,9 +21,9 @@
 		String folderPath = Repository.stripWorkDir(repo.getWorkTree(),
 				new File(file.getParent()));
 		GitBlobResourceVariant base = new GitBlobResourceVariant(repo,
-				commit, filePath);
+				commit.getTree(), filePath);
 		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo,
-				commit, folderPath);
+				commit.getTree(), folderPath);
 
 		// then
 		assertFalse(grvc.compare(base, remote));

@@ -20,10 +20,10 @@
 
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 		GitBlobResourceVariant base = new GitBlobResourceVariant(repo,
-				baseCommit, path);
+				baseCommit.getTree(), path);
 
 		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo,
-				remoteCommit, path);
+				remoteCommit.getTree(), path);
 
 		// then
 		assertFalse(grvc.compare(base, remote));
