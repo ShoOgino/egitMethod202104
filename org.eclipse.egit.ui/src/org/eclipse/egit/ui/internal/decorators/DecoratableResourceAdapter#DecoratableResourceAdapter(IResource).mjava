@@ -1,36 +1,53 @@
 	@SuppressWarnings("fallthrough")
 	public DecoratableResourceAdapter(IResource resourceToWrap)
 			throws IOException {
+		trace = GitTraceLocation.DECORATION.isActive();
 		resource = resourceToWrap;
-		mapping = RepositoryMapping.getMapping(resource);
-		repository = mapping.getRepository();
-		headId = repository.resolve(Constants.HEAD);
+		long start = 0;
+		if (trace) {
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.DECORATION.getLocation(),
+					"Decorate " + resource.getFullPath()); //$NON-NLS-1$
+			start = System.currentTimeMillis();
+		}
+		try {
+			mapping = RepositoryMapping.getMapping(resource);
+			repository = mapping.getRepository();
+			headId = repository.resolve(Constants.HEAD);
 
-		store = Activator.getDefault().getPreferenceStore();
-		String repoName = Activator.getDefault().getRepositoryUtil().getRepositoryName(repository);
-		RepositoryState state = repository.getRepositoryState();
-		if (state != RepositoryState.SAFE)
-			repositoryName = repoName + '|' + state.getDescription();
-		else
-			repositoryName = repoName;
+			store = Activator.getDefault().getPreferenceStore();
+			String repoName = Activator.getDefault().getRepositoryUtil().getRepositoryName(repository);
+			RepositoryState state = repository.getRepositoryState();
+			if (state != RepositoryState.SAFE)
+				repositoryName = repoName + '|' + state.getDescription();
+			else
+				repositoryName = repoName;
 
-		branch = getShortBranch();
+			branch = getShortBranch();
 
-		TreeWalk treeWalk = createThreeWayTreeWalk();
-		if (treeWalk == null)
-			return;
-
-		switch (resource.getType()) {
-		case IResource.FILE:
-			if (!treeWalk.next())
+			TreeWalk treeWalk = createThreeWayTreeWalk();
+			if (treeWalk == null)
 				return;
-			extractResourceProperties(treeWalk);
-			break;
-		case IResource.PROJECT:
-			tracked = true;
-		case IResource.FOLDER:
-			extractContainerProperties(treeWalk);
-			break;
+
+			switch (resource.getType()) {
+			case IResource.FILE:
+				if (!treeWalk.next())
+					return;
+				extractResourceProperties(treeWalk);
+				break;
+			case IResource.PROJECT:
+				tracked = true;
+			case IResource.FOLDER:
+				extractContainerProperties(treeWalk);
+				break;
+			}
+		} finally {
+			if (trace)
+				GitTraceLocation
+						.getTrace()
+						.trace(GitTraceLocation.DECORATION.getLocation(),
+								"Decoration took " + (System.currentTimeMillis() - start) //$NON-NLS-1$
+										+ " ms"); //$NON-NLS-1$
 		}
 	}
 
