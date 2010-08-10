@@ -5,7 +5,7 @@
 			firstLine = commitMessage.substring(0, newlineIndex);
 		}
 		String commitStr = amending ? "commit (amend):" : "commit: "; //$NON-NLS-1$ //$NON-NLS-2$
-		String message = commitStr + firstLine;
-		return message;
+		String result = commitStr + firstLine;
+		return result;
 	}
 

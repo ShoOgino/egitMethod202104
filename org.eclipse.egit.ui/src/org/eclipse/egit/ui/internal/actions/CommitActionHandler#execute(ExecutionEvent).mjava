@@ -75,8 +75,8 @@
 		commitDialog.setAllowToChangeSelection(!isMergedResolved);
 
 		if (previousCommit != null) {
-			commitDialog.setPreviousCommitMessage(previousCommit.getMessage());
-			PersonIdent previousAuthor = previousCommit.getAuthor();
+			commitDialog.setPreviousCommitMessage(previousCommit.getFullMessage());
+			PersonIdent previousAuthor = previousCommit.getAuthorIdent();
 			commitDialog.setPreviousAuthor(previousAuthor.getName()
 					+ " <" + previousAuthor.getEmailAddress() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
 		}

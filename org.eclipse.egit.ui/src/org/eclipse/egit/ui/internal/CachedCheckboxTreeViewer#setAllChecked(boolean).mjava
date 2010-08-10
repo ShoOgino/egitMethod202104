@@ -2,7 +2,8 @@
 	 * @see org.eclipse.jface.viewers.CheckboxTreeViewer#setAllChecked(boolean)
 	 */
 	public void setAllChecked(boolean state) {
-		super.setAllChecked(state);
+		for (TreeItem item: super.getTree().getItems())
+			item.setChecked(state);
 		if (state) {
 
 			// Find all visible children, add only the visible leaf nodes to the check state cache
