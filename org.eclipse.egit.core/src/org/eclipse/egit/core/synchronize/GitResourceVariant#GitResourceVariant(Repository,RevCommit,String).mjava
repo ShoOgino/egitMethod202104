@@ -14,10 +14,10 @@
 		TreeWalk tw = getTreeWalk(repo, revCommit.getTree(), path);
 		if (tw == null) {
 			objectId = null;
-			this.path = null;
+			this.variantPath = null;
 		} else {
 			objectId = tw.getObjectId(0);
-			this.path = new String(tw.getRawPath());
+			this.variantPath = new String(tw.getRawPath());
 		}
 	}
 

@@ -1,7 +1,8 @@
-	private void doCommits(String commitMessage,
+	private void doCommits(String actMessage,
 			HashMap<Repository, Tree> treeMap) throws IOException,
 			TeamException {
 
+		String commitMessage = actMessage;
 		final Date commitDate = new Date();
 		final TimeZone timeZone = TimeZone.getDefault();
 
@@ -17,7 +18,10 @@
 			ObjectId currentHeadId = repo.resolve(Constants.HEAD);
 			ObjectId[] parentIds;
 			if (amending) {
-				parentIds = previousCommit.getParentIds();
+				RevCommit[] parents = previousCommit.getParents();
+				parentIds = new ObjectId[parents.length];
+				for (int i = 0; i < parents.length; i++)
+					parentIds[i] = parents[i].getId();
 			} else {
 				if (currentHeadId != null)
 					parentIds = new ObjectId[] { currentHeadId };
