@@ -2,7 +2,10 @@
 		public boolean include(TreeWalk treeWalk)
 				throws MissingObjectException, IncorrectObjectTypeException,
 				IOException {
-
+			if (trace)
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.DECORATION.getLocation(),
+						treeWalk.getPathString());
 			final WorkingTreeIterator workingTreeIterator = treeWalk.getTree(
 					T_WORKSPACE, WorkingTreeIterator.class);
 			if (workingTreeIterator != null) {
@@ -16,6 +19,20 @@
 						ignored = true;
 						return false;
 					}
+					if (resource.getFullPath().isPrefixOf(
+							resourceEntry.getResource().getFullPath())
+							&& treeWalk.getFileMode(T_HEAD) == FileMode.MISSING
+							&& treeWalk.getFileMode(T_INDEX) == FileMode.MISSING) {
+						// we reached the folder to decorate (or are beyond)
+						// we can cut if the current entry does not
+						// exist in head and index
+						if (trace)
+							GitTraceLocation.getTrace().trace(
+									GitTraceLocation.DECORATION.getLocation(),
+									"CUT"); //$NON-NLS-1$
+						return false;
+					}
+
 				} else {
 					// For the project resource, it's still the
 					// AdaptableFileTreeIterator. So we have to compare the path
@@ -28,12 +45,22 @@
 							&& workingTreeIterator.isEntryIgnored()) {
 						ignored = true;
 						return false;
+
+					}
+					if (resPath.isPrefixOf(wdPath)
+							&& treeWalk.getFileMode(T_HEAD) == FileMode.MISSING
+							&& treeWalk.getFileMode(T_INDEX) == FileMode.MISSING) {
+						// we reached the folder to decorate (or are beyond)
+						// we can cut if the current entry does not
+						// exist in head and index
+						if (trace)
+							GitTraceLocation.getTrace().trace(
+									GitTraceLocation.DECORATION.getLocation(),
+									"CUT"); //$NON-NLS-1$
+						return false;
 					}
 				}
 			}
-			// Note: for obtaining the ignored info we have to go through the
-			// whole working tree and can no longer cut here if the current
-			// entry is not contained in the index and not contained in head
 
 			if (FileMode.TREE.equals(treeWalk.getRawMode(T_WORKSPACE)))
 				return shouldRecurse(treeWalk);
