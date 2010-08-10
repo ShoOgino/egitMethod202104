@@ -1,46 +1,45 @@
 	private void attachContextMenu(final Control c) {
-		c.setMenu(popupMgr.createContextMenu(c));
-
 		if (c == graph.getControl()) {
-
+			// commit table
+			c.setMenu(popupMgr.createContextMenu(c));
 			c.addMenuDetectListener(new MenuDetectListener() {
-
 				public void menuDetected(MenuDetectEvent e) {
-					popupMgr.remove(new ActionContributionItem(createPatchAction));
-					popupMgr.remove(new ActionContributionItem(compareAction));
-					popupMgr.remove(new ActionContributionItem(
-							compareVersionsAction));
-					popupMgr.remove(new ActionContributionItem(
-							viewVersionsAction));
-					int size = ((IStructuredSelection) revObjectSelectionProvider
-							.getSelection()).size();
-					if (size == 1) {
+					if (popupMgr.isEmpty()) {
+						// copy and such after additions
+						popupMgr.add(new Separator(
+								IWorkbenchActionConstants.MB_ADDITIONS));
+						popupMgr.add(copyAction);
 						popupMgr.add(new Separator());
-						popupMgr.add(createPatchAction);
-						createPatchAction.setEnabled(createPatchAction.isEnabled());
+						popupMgr.add(showCommentAction);
+						popupMgr.add(showFilesAction);
 					}
-					if (IFile.class.isAssignableFrom(getInput().getClass())) {
-						popupMgr.add(new Separator());
-						if (size == 1) {
-							popupMgr.add(compareAction);
-						} else if (size == 2) {
-							popupMgr.add(compareVersionsAction);
-						}
-						if (size >= 1)
-							popupMgr.add(viewVersionsAction);
+				}
+			});
+		} else if (c == commentViewer.getControl()) {
+			// comment viewer
+			final MenuManager mgr = new MenuManager();
+			c.setMenu(mgr.createContextMenu(c));
+			c.addMenuDetectListener(new MenuDetectListener() {
+				public void menuDetected(MenuDetectEvent e) {
+					if (mgr.isEmpty()) {
+						mgr.add(selectAllAction);
+						mgr.add(copyAction);
+						mgr.add(new Separator());
+						mgr.add(wrapCommentAction);
+						mgr.add(fillCommentAction);
 					}
 				}
 			});
 		} else {
+			// file list
+			final MenuManager mgr = new MenuManager();
+			c.setMenu(mgr.createContextMenu(c));
 			c.addMenuDetectListener(new MenuDetectListener() {
-
 				public void menuDetected(MenuDetectEvent e) {
-					popupMgr.remove(new ActionContributionItem(createPatchAction));
-					popupMgr.remove(new ActionContributionItem(compareAction));
-					popupMgr.remove(new ActionContributionItem(
-							compareVersionsAction));
-					popupMgr.remove(new ActionContributionItem(
-							viewVersionsAction));
+					if (mgr.isEmpty()) {
+						mgr.add(selectAllAction);
+						mgr.add(copyAction);
+					}
 				}
 			});
 		}

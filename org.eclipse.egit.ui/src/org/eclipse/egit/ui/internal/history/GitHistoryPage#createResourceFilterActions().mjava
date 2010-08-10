@@ -18,22 +18,31 @@
 				ShowFilter.SHOWALLFOLDER, UIIcons.FILTERFOLDER,
 				UIText.HistoryPage_ShowAllVersionsForFolder);
 
+		showAllResourceVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLRESOURCE, UIIcons.FILTERRESOURCE,
+				UIText.GitHistoryPage_ShowAllVersionsForResource);
+
 		showAllRepoVersionsAction
 				.setChecked(showAllFilter == showAllRepoVersionsAction.filter);
 		showAllProjectVersionsAction
 				.setChecked(showAllFilter == showAllProjectVersionsAction.filter);
 		showAllFolderVersionsAction
 				.setChecked(showAllFilter == showAllFolderVersionsAction.filter);
+		showAllResourceVersionsAction
+				.setChecked(showAllFilter == showAllResourceVersionsAction.filter);
 
-		getSite().getActionBars().getToolBarManager().add(new Separator());
+		IToolBarManager mgr = getSite().getActionBars().getToolBarManager();
+		mgr.add(new Separator());
+		mgr.add(showAllRepoVersionsAction);
+		mgr.add(showAllProjectVersionsAction);
+		mgr.add(showAllFolderVersionsAction);
+		mgr.add(showAllResourceVersionsAction);
 
-		getSite().getActionBars().getToolBarManager().add(
-				showAllRepoVersionsAction);
-
-		getSite().getActionBars().getToolBarManager().add(
-				showAllProjectVersionsAction);
-
-		getSite().getActionBars().getToolBarManager().add(
-				showAllFolderVersionsAction);
+		IMenuManager viewMenuMgr = getSite().getActionBars().getMenuManager();
+		viewMenuMgr.add(new Separator());
+		viewMenuMgr.add(showAllRepoVersionsAction);
+		viewMenuMgr.add(showAllProjectVersionsAction);
+		viewMenuMgr.add(showAllFolderVersionsAction);
+		viewMenuMgr.add(showAllResourceVersionsAction);
 	}
 

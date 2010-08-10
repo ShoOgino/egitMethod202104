@@ -1,7 +1,9 @@
 	private IAction createFindToolbarAction() {
-		final IAction r = new Action(UIText.GitHistoryPage_find, UIIcons.ELCL16_FIND) {
+		final IAction r = new Action(UIText.GitHistoryPage_find,
+				UIIcons.ELCL16_FIND) {
 			public void run() {
-				store.setValue(SHOW_FIND_TOOLBAR, isChecked());
+				store.setValue(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR,
+						isChecked());
 				if (store.needsSaving()) {
 					try {
 						store.save();
@@ -12,7 +14,8 @@
 				layout();
 			}
 		};
-		r.setChecked(store.getBoolean(SHOW_FIND_TOOLBAR));
+		r.setChecked(store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR));
 		r.setToolTipText(UIText.HistoryPage_findbar_findTooltip);
 		return r;
 	}

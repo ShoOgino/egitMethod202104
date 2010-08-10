@@ -1,7 +1,9 @@
-		ShowFilterAction(ShowFilter filter, ImageDescriptor icon, String toolTipText) {
+		ShowFilterAction(ShowFilter filter, ImageDescriptor icon,
+				String toolTipText) {
 			super(null, IAction.AS_CHECK_BOX);
 			this.filter = filter;
 			setImageDescriptor(icon);
+			setText(toolTipText);
 			setToolTipText(toolTipText);
 		}
 

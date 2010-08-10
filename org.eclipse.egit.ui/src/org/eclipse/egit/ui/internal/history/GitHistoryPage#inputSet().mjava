@@ -38,7 +38,7 @@
 					paths.add(name);
 			} else if (showAllFilter == ShowFilter.SHOWALLREPO) {
 				// nothing
-			} else /*if (showAllFilter == ShowFilter.SHOWALLRESOURCE)*/ {
+			} else /* if (showAllFilter == ShowFilter.SHOWALLRESOURCE) */{
 				final String name = map.getRepoRelativePath(r);
 				if (name != null && name.length() > 0)
 					paths.add(name);
@@ -77,8 +77,9 @@
 		try {
 			currentWalk.markStart(currentWalk.parseCommit(headId));
 		} catch (IOException e) {
-			Activator.logError(NLS.bind(UIText.GitHistoryPage_errorReadingHeadCommit,
-					headId, db.getDirectory().getAbsolutePath()), e);
+			Activator.logError(NLS.bind(
+					UIText.GitHistoryPage_errorReadingHeadCommit, headId, db
+							.getDirectory().getAbsolutePath()), e);
 			return false;
 		}
 
@@ -99,7 +100,6 @@
 		fileViewer.addSelectionChangedListener(commentViewer);
 		commentViewer.setTreeWalk(fileWalker);
 		commentViewer.setDb(db);
-		createPatchAction.setTreeWalk(fileWalker);
 		findToolbar.clear();
 		graph.setInput(highlightFlag, null, null);
 

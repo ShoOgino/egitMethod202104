@@ -1,0 +1,14 @@
+	/**
+	 * Creates a wizard which is used to export the changes introduced by a
+	 * commit, filtered by a TreeWalk
+	 *
+	 * @param commit
+	 * @param walker
+	 * @param db
+	 */
+	public GitCreatePatchWizard(RevCommit commit, TreeWalk walker, Repository db) {
+		this.commit = commit;
+		this.walker = walker;
+		this.db = db;
+	}
+

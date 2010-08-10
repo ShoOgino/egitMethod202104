@@ -1,0 +1,22 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection selection = getSelection(event);
+		if (selection.size() == 1) {
+			Iterator<?> it = selection.iterator();
+			RevCommit commit = (RevCommit) it.next();
+			Object input = getInput(event);
+			if (input instanceof IFile) {
+				IFile file = (IFile) input;
+				final RepositoryMapping mapping = RepositoryMapping
+						.getMapping(file.getProject());
+				final String gitPath = mapping.getRepoRelativePath(file);
+				ITypedElement right = CompareUtils.getFileRevisionTypedElement(
+						gitPath, commit, mapping.getRepository());
+				final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+						SaveableCompareEditorInput.createFileElement(file),
+						right, null);
+				openInCompare(event, in);
+			}
+		}
+		return null;
+	}
+

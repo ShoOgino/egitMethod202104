@@ -1,0 +1,16 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection selection = getSelection(event);
+		if (selection.size() == 1) {
+			RevCommit commit = (RevCommit) selection.getFirstElement();
+			Object input = getInput(event);
+			if (!(input instanceof IResource))
+				return null;
+			RepositoryMapping mapping = RepositoryMapping
+					.getMapping((IResource) getInput(event));
+
+			GitCreatePatchWizard.run(getPart(event), commit, new TreeWalk(
+					mapping.getRepository()), mapping.getRepository());
+		}
+		return null;
+	}
+

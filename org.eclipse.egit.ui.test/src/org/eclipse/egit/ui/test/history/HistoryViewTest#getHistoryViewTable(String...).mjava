@@ -6,16 +6,19 @@
 	private SWTBotTable getHistoryViewTable(String... path) {
 		SWTBotTree projectExplorerTree = bot.viewById(
 				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		SWTBotTreeItem explorerItem;
 		if (path.length == 1)
-			getProjectItem(projectExplorerTree, path[0]).select();
+			explorerItem = getProjectItem(projectExplorerTree, path[0]);
 		else if (path.length == 2)
-			getProjectItem(projectExplorerTree, path[0]).expand().getNode(
-					path[1]).select();
+			explorerItem = getProjectItem(projectExplorerTree, path[0])
+					.expand().getNode(path[1]);
 		else
-			getProjectItem(projectExplorerTree, path[0]).expand().getNode(
-					path[1]).expand().getNode(path[2]).select();
+			explorerItem = getProjectItem(projectExplorerTree, path[0])
+					.expand().getNode(path[1]).expand().getNode(path[2]);
+		explorerItem.select();
 		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Show In",
 				"History");
+		// explorerItem.select();
 		return bot.viewById("org.eclipse.team.ui.GenericHistoryView").bot()
 				.table();
 	}

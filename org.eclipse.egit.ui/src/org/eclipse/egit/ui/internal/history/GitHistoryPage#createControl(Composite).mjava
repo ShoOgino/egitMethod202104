@@ -22,36 +22,47 @@
 		graph.getTableView().addOpenListener(new IOpenListener() {
 			public void open(OpenEvent event) {
 				final Object input = getInput();
-				// if multiple resources (IResourceList) or something not a file is selected we do nothing
+				// if multiple resources (IResourceList) or something not a file
+				// is selected we do nothing
 				if (!(input instanceof IFile)) {
 					return;
 				}
+
+				ICommandService srv = (ICommandService) getSite().getService(
+						ICommandService.class);
+				IHandlerService hsrv = (IHandlerService) getSite().getService(
+						IHandlerService.class);
+				Command cmd = srv.getCommand(HistoryViewCommands.SHOWVERSIONS);
+				Parameterization[] parms;
 				if (compareMode) {
-					final IFile resource = (IFile) input;
-					final RepositoryMapping mapping = RepositoryMapping.getMapping(resource.getProject());
-					final String gitPath = mapping.getRepoRelativePath(resource);
-					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-					SWTCommit commit = (SWTCommit) selection.getFirstElement();
-					ITypedElement right = CompareUtils
-							.getFileRevisionTypedElement(gitPath, commit, db);
-					final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
-							SaveableCompareEditorInput.createFileElement(resource),
-							right,
-							null);
-					openInCompare(in);
-				} else {
-					new ViewVersionsAction().run();
+					try {
+						IParameter parm = cmd
+								.getParameter(HistoryViewCommands.COMPARE_MODE_PARAM);
+						parms = new Parameterization[] { new Parameterization(
+								parm, Boolean.TRUE.toString()) };
+					} catch (NotDefinedException e) {
+						Activator.handleError(e.getMessage(), e, true);
+						parms = null;
+					}
+				} else
+					parms = null;
+				ParameterizedCommand pcmd = new ParameterizedCommand(cmd, parms);
+				try {
+					hsrv.executeCommandInContext(pcmd, null, hsrv
+							.getCurrentState());
+				} catch (Exception e) {
+					Activator.handleError(e.getMessage(), e, true);
 				}
 			}
-
 		});
 		revInfoSplit = new SashForm(graphDetailSplit, SWT.HORIZONTAL);
 		commentViewer = new CommitMessageViewer(revInfoSplit);
 		fileViewer = new CommitFileDiffViewer(revInfoSplit);
 		findToolbar = new FindToolbar(ourControl);
 
-		layoutSashForm(graphDetailSplit, SPLIT_GRAPH);
-		layoutSashForm(revInfoSplit, SPLIT_INFO);
+		layoutSashForm(graphDetailSplit,
+				UIPreferences.RESOURCEHISTORY_GRAPH_SPLIT);
+		layoutSashForm(revInfoSplit, UIPreferences.RESOURCEHISTORY_REV_SPLIT);
 
 		revObjectSelectionProvider = new RevObjectSelectionProvider();
 		popupMgr = new MenuManager(null, POPUP_ID);
@@ -60,9 +71,12 @@
 		createResourceFilterActions();
 		createCompareModeAction();
 		createStandardActions();
-		createViewMenu();
 
-		finishContextMenu();
+		getSite().registerContextMenu(POPUP_ID, popupMgr,
+				revObjectSelectionProvider);
+		getHistoryPageSite().getPart().getSite().setSelectionProvider(
+				revObjectSelectionProvider);
+
 		attachContextMenu(graph.getControl());
 		attachContextMenu(commentViewer.getControl());
 		attachContextMenu(fileViewer.getControl());
@@ -71,7 +85,5 @@
 		if (myRefsChangedHandle == null)
 			myRefsChangedHandle = Repository.getGlobalListenerList()
 					.addRefsChangedListener(this);
-
-		getSite().setSelectionProvider(revObjectSelectionProvider);
 	}
 

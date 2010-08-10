@@ -15,9 +15,12 @@
 					showAllProjectVersionsAction.setChecked(false);
 				if (this != showAllFolderVersionsAction)
 					showAllFolderVersionsAction.setChecked(false);
+				if (this != showAllResourceVersionsAction)
+					showAllResourceVersionsAction.setChecked(false);
 				refresh();
 			}
-			GitHistoryPage.this.firePropertyChange(GitHistoryPage.this, P_NAME, oldName, getName());
+			GitHistoryPage.this.firePropertyChange(GitHistoryPage.this, P_NAME,
+					oldName, getName());
 			Activator.getDefault().getPreferenceStore().setValue(
 					PREF_SHOWALLFILTER, showAllFilter.toString());
 		}

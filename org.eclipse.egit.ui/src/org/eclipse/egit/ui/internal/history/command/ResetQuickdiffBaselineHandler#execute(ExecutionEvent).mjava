@@ -1,0 +1,17 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+		String baseline = event
+				.getParameter(HistoryViewCommands.BASELINE_TARGET);
+		Repository repo = getRepository(event);
+		if (baseline == null)
+			throw new ExecutionException(
+					UIText.ResetQuickdiffBaselineHandler_NoTargetMessage);
+
+		try {
+			GitQuickDiffProvider.setBaselineReference(repo, baseline);
+		} catch (IOException e) {
+			throw new ExecutionException(e.getMessage(), e);
+		}
+		return null;
+	}
+

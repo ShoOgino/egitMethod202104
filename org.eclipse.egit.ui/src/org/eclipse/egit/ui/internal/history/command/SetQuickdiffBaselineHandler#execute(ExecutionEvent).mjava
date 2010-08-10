@@ -1,0 +1,17 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repo = getRepository(event);
+		String baseline = ((RevCommit) getSelection(event).getFirstElement())
+				.getId().name();
+		if (baseline == null)
+			throw new ExecutionException(
+					UIText.ResetQuickdiffBaselineHandler_NoTargetMessage);
+
+		try {
+			GitQuickDiffProvider.setBaselineReference(repo, baseline);
+		} catch (IOException e) {
+			throw new ExecutionException(e.getMessage(), e);
+		}
+
+		return null;
+	}
+

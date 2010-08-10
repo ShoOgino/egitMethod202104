@@ -1,0 +1,6 @@
+	protected Repository getRepository(ExecutionEvent event)
+			throws ExecutionException {
+		Object input = getInput(event);
+		return RepositoryMapping.getMapping((IResource) input).getRepository();
+	}
+

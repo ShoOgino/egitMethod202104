@@ -1,0 +1,14 @@
+	protected IStructuredSelection getSelection(ExecutionEvent event)
+			throws ExecutionException {
+		ISelection selection;
+		if (event != null)
+			selection = HandlerUtil.getCurrentSelectionChecked(event);
+		else
+			selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+					.getActivePage().getSelection();
+		if (selection instanceof IStructuredSelection) {
+			return (IStructuredSelection) selection;
+		}
+		return new StructuredSelection();
+	}
+
