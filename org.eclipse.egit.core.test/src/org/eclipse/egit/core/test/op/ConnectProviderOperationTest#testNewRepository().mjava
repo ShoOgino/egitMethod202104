@@ -1,8 +1,6 @@
 	@Test
 	public void testNewRepository() throws CoreException, IOException {
 
-		File gitDir = new File(project.getProject().getWorkspace().getRoot()
-				.getRawLocation().toFile(), Constants.DOT_GIT);
 		Repository repository = new FileRepository(gitDir);
 		repository.create();
 		repository.close();
