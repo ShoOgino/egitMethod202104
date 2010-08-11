@@ -1,0 +1,20 @@
+	/**
+	 * Constructs this page.
+	 * <p>
+	 * If a base branch is provided, the drop down will be selected accordingly
+	 *
+	 * @param repo
+	 *            the repository
+	 * @param baseCommit
+	 *            the commit to base the new branch on, must not be null
+	 */
+	public CreateBranchPage(Repository repo, RevCommit baseCommit) {
+		super(CreateBranchPage.class.getName());
+		commitMode = true;
+		this.myRepository = repo;
+		this.myBaseBranch = null;
+		this.myBaseCommit = baseCommit;
+		setTitle(UIText.CreateBranchPage_Title);
+		setMessage(UIText.CreateBranchPage_ChooseNameMessage);
+	}
+

@@ -1,0 +1,26 @@
+	@Override
+	public boolean performFinish() {
+		try {
+			getContainer().run(false, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor)
+						throws InvocationTargetException, InterruptedException {
+					CreateBranchPage cp = (CreateBranchPage) getPages()[0];
+					try {
+						cp.createBranch(monitor);
+					} catch (CoreException ce) {
+						throw new InvocationTargetException(ce);
+					} catch (IOException ioe) {
+						throw new InvocationTargetException(ioe);
+					}
+				}
+			});
+		} catch (InvocationTargetException ite) {
+			Activator.handleError(UIText.CreateBranchWizard_CreationFailed, ite
+					.getCause(), true);
+			return false;
+		} catch (InterruptedException ie) {
+			// ignore here
+		}
+		return true;
+	}
+

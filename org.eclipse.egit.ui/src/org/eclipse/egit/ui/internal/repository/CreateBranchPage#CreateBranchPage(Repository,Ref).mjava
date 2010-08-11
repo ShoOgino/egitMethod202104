@@ -10,8 +10,11 @@
 	 */
 	public CreateBranchPage(Repository repo, Ref baseBranch) {
 		super(CreateBranchPage.class.getName());
+		commitMode = false;
 		this.myRepository = repo;
 		this.myBaseBranch = baseBranch;
+		this.myBaseCommit = null;
 		setTitle(UIText.CreateBranchPage_Title);
+		setMessage(UIText.CreateBranchPage_ChooseBranchAndNameMessage);
 	}
 

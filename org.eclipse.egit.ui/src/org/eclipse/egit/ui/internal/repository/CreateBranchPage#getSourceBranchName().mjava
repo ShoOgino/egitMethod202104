@@ -1,4 +1,6 @@
 	private String getSourceBranchName() {
+		if (commitMode)
+			return myBaseCommit.name();
 		if (myBaseBranch != null)
 			return myBaseBranch.getName();
 		else if (this.branchCombo != null)
