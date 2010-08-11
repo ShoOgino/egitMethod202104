@@ -10,5 +10,11 @@
 		setPageComplete(false);
 		setTitle(UIText.WizardProjectsImportPage_ImportProjectsTitle);
 		setDescription(UIText.WizardProjectsImportPage_ImportProjectsDescription);
+		// check for default location: is workspace location parent of path?
+		IPath parent = new Path(path).removeLastSegments(1);
+		if(ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(parent))
+			defaultLocation = true;
+		else
+			defaultLocation = false;
 	}
 

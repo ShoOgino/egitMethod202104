@@ -13,7 +13,10 @@
 				.setText(UIText.GitCreateGeneralProjectPage_ProjectNameLabel);
 		projectText = new Text(workArea, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(projectText);
-		projectText.addModifyListener(new ModifyListener() {
+		if(defaultLocation)
+			projectText.setEnabled(false);
+		else
+			projectText.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
 				checkPage();
