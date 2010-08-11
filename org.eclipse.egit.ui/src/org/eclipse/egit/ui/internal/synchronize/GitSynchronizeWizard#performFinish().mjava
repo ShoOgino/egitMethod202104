@@ -4,7 +4,11 @@
 
 		Map<Repository, String> branches = page.getSelectedBranches();
 		for (Repository repo : branches.keySet())
-			gsdSet.add(new GitSynchronizeData(repo, Constants.HEAD, branches.get(repo), false));
+			try {
+				gsdSet.add(new GitSynchronizeData(repo, Constants.HEAD, branches.get(repo), false));
+			} catch (IOException e) {
+				Activator.logError(e.getMessage(), e);
+			}
 
 		new GitSynchronize(gsdSet);
 

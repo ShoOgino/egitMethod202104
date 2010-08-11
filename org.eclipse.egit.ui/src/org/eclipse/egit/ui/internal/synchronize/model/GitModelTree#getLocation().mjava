@@ -1,0 +1,8 @@
+	@Override
+	public IPath getLocation() {
+		if (location == null)
+			location = getParent().getLocation().append(name);
+
+		return location;
+	}
+

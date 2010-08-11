@@ -1,0 +1,8 @@
+	public ITypedElement getLeft() {
+		if (objectExist(getRemoteCommit(), remoteId))
+		return CompareUtils.getFileRevisionTypedElement(gitPath,
+				getRemoteCommit(), getRepository(), remoteId);
+
+		return null;
+	}
+

@@ -1,0 +1,29 @@
+	/**
+	 *
+	 * @param parent
+	 *            parent of this object
+	 * @param commit
+	 *            remote commit
+	 * @param ancestorId
+	 *            common ancestor id
+	 * @param baseId
+	 *            id of base object variant
+	 * @param remoteId
+	 *            id of remote object variant
+	 * @param name
+	 *            human readable blob name (file name)
+	 * @throws IOException
+	 */
+	public GitModelBlob(GitModelObject parent, RevCommit commit,
+			ObjectId ancestorId, ObjectId baseId, ObjectId remoteId, String name)
+			throws IOException {
+		super(parent, commit);
+		this.name = name;
+		this.baseId = baseId;
+		this.remoteId = remoteId;
+		this.ancestorId = ancestorId;
+		location = getParent().getLocation().append(name);
+		gitPath = Repository.stripWorkDir(getRepository().getWorkTree(),
+				getLocation().toFile());
+	}
+

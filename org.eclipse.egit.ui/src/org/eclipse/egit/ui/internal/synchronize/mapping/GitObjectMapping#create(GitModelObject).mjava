@@ -1,0 +1,17 @@
+	/**
+	 * @param object
+	 * @return resource mapping
+	 */
+	public static ResourceMapping create(GitModelObject object) {
+		if (object instanceof GitModelBlob)
+			return new GitBlobMapping((GitModelBlob) object);
+		if (object instanceof GitModelTree)
+			return new GitTreeMapping((GitModelTree) object);
+		if (object instanceof GitModelCommit)
+			return new GitCommitMapping((GitModelCommit) object);
+		if (object instanceof GitModelRepository)
+			return new GitRepositoryMapping((GitModelRepository) object);
+
+		return null;
+	}
+

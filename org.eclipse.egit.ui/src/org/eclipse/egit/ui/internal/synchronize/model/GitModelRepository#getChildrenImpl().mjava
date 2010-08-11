@@ -1,0 +1,18 @@
+	private void getChildrenImpl() {
+		List<GitModelCommit> result = new ArrayList<GitModelCommit>();
+
+		try {
+			RevCommit ancestorCommit = RevUtils.getCommonAncestor(repo, srcRev,
+					dstRev);
+			RevCommitList<RevCommit> commits = getRevCommits(ancestorCommit, dstRev);
+			commits.addAll(getRevCommits(ancestorCommit, srcRev));
+
+			for (RevCommit commit : commits)
+				result.add(new GitModelCommit(this, commit));
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+
+		childrens = result.toArray(new GitModelCommit[result.size()]);
+	}
+

@@ -1,0 +1,10 @@
+	@Override
+	protected Object getModelRoot() {
+		if (modelRoot == null) {
+			GitSubscriberMergeContext context = (GitSubscriberMergeContext) getContext();
+			modelRoot = new GitModelRoot(context.getSyncData());
+		}
+
+		return modelRoot;
+	}
+

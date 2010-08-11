@@ -1,0 +1,33 @@
+	private static IResource[] getResourcesImpl(Repository repo, IPath path,
+			AnyObjectId baseId, AnyObjectId remoteId) {
+		TreeWalk tw = new TreeWalk(repo);
+		List<IResource> result = new ArrayList<IResource>();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
+		tw.reset();
+		tw.setRecursive(false);
+		tw.setFilter(TreeFilter.ANY_DIFF);
+		try {
+			tw.addTree(baseId);
+			int actualNth = tw.addTree(remoteId);
+
+			while (tw.next()) {
+				int objectType = tw.getFileMode(actualNth).getObjectType();
+				IPath childPath = path.append(tw.getNameString());
+
+				IResource resource = null;
+				if (objectType == Constants.OBJ_BLOB)
+					resource = root.getFileForLocation(childPath);
+				else if (objectType == Constants.OBJ_TREE)
+					resource = root.getContainerForLocation(childPath);
+
+				if (resource != null)
+					result.add(resource);
+			}
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+
+		return result.toArray(new IResource[result.size()]);
+	}
+

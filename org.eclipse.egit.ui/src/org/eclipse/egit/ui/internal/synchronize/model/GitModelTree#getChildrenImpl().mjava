@@ -1,0 +1,22 @@
+	private void getChildrenImpl() {
+		TreeWalk tw = createTreeWalk();
+		List<GitModelObject> result = new ArrayList<GitModelObject>();
+
+		try {
+			int ancestorNth = tw.addTree(ancestorId);
+			int baseNth = tw.addTree(baseId);
+			int remoteNth = tw.addTree(remoteId);
+
+			while (tw.next()) {
+				GitModelObject obj = createChildren(tw, ancestorNth, baseNth,
+						remoteNth);
+				if (obj != null)
+					result.add(obj);
+			}
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+
+		children = result.toArray(new GitModelObject[result.size()]);
+	}
+

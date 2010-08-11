@@ -1,0 +1,28 @@
+	@Override
+	public ResourceMapping[] getMappings(IResource resource,
+			ResourceMappingContext context, IProgressMonitor monitor)
+			throws CoreException {
+		if (context instanceof GitSubscriberResourceMappingContext) {
+			GitSubscriberResourceMappingContext gitContext = (GitSubscriberResourceMappingContext) context;
+			GitSynchronizeDataSet gsds = gitContext.getSyncData();
+			GitSynchronizeData data = gsds.getData(resource.getProject());
+
+			if (data != null) {
+				GitModelObject object = null;
+				try {
+					object = GitModelObject.createRoot(data);
+				} catch (IOException e) {
+					Activator.logError(e.getMessage(), e);
+				}
+
+				if (object != null) {
+					ResourceMapping rm = (ResourceMapping) object
+							.getAdapter(ResourceMapping.class);
+					return new ResourceMapping[] { rm };
+				}
+			}
+		}
+
+		return super.getMappings(resource, context, monitor);
+	}
+

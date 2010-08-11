@@ -1,0 +1,14 @@
+	/**
+	 * Creates root of Git ChangeSet model.
+	 *
+	 * @param data
+	 *            synchronization data
+	 * @return Git ChangeSet model root
+	 * @throws IOException
+	 * @throws MissingObjectException
+	 */
+	public static GitModelObject createRoot(GitSynchronizeData data)
+			throws MissingObjectException, IOException {
+		return new GitModelRepository(data);
+	}
+

@@ -1,0 +1,10 @@
+	public Object[] getChildren(Object o) {
+		if (o instanceof GitModelObject)
+			return ((GitModelObject) o).getChildren();
+
+		if (o instanceof GitModelRoot)
+			return ((GitModelRoot) o).getChildren();
+
+		return null;
+	}
+

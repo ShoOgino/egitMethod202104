@@ -1,0 +1,6 @@
+	private GitTreeTraversal(Repository repo, AnyObjectId baseId,
+			AnyObjectId actualId, IPath path) {
+		super(getResourcesImpl(repo, path, baseId, actualId),
+				IResource.DEPTH_INFINITE, IResource.NONE);
+	}
+

@@ -1,0 +1,5 @@
+	public GitTreeTraversal(Repository repo, RevCommit commit) {
+		this(repo, commit.getParent(0).getTree().getId(), commit.getTree()
+				.getId(), new Path(repo.getWorkTree().toString()));
+	}
+

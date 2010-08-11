@@ -1,0 +1,8 @@
+	@Override
+	public IPath getLocation() {
+		if (location == null)
+			location = new Path(repo.getWorkTree().toString());
+
+		return location;
+	}
+

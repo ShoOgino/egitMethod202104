@@ -1,0 +1,9 @@
+	public ImageDescriptor getImageDescriptor(Object object) {
+		if (gitLabelProvider == null)
+			gitLabelProvider = new GitChangeSetLabelProvider();
+
+		Image image = gitLabelProvider.getImage(object);
+
+		return ImageDescriptor.createFromImage(image);
+	}
+

@@ -1,0 +1,16 @@
+    /**
+     * Copied from TeamAction#getResourceMapping(Object)
+     *
+     * @param object
+     * @return resource mapping
+     */
+    private Object getResourceMapping(Object object) {
+        if (object instanceof ResourceMapping)
+            return object;
+
+        if (object instanceof IAdaptable)
+        	return ((IAdaptable) object).getAdapter(ResourceMapping.class);
+
+        return Utils.getResourceMapping(object);
+    }
+

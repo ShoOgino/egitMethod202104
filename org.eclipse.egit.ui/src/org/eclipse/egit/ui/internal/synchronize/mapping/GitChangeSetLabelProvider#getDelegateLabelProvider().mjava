@@ -1,0 +1,8 @@
+	@Override
+	protected ILabelProvider getDelegateLabelProvider() {
+		if (delegateLabelProvider == null)
+			delegateLabelProvider = new DelegateLabelProvider();
+
+		return delegateLabelProvider;
+	}
+

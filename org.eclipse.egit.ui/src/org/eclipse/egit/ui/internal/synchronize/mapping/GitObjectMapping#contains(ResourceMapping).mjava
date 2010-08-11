@@ -1,0 +1,10 @@
+	@Override
+	public boolean contains(ResourceMapping mapping) {
+		if (mapping.getModelProviderId().equals(getModelProviderId())) {
+			GitModelObject obj = (GitModelObject) mapping.getModelObject();
+			return obj.getRepository().equals(object.getRepository());
+		}
+
+		return false;
+	}
+

@@ -1,0 +1,8 @@
+	public ITypedElement getRight() {
+		if (objectExist(getBaseCommit(), baseId))
+			return CompareUtils.getFileRevisionTypedElement(gitPath,
+					getBaseCommit(), getRepository(), baseId);
+
+		return null;
+	}
+

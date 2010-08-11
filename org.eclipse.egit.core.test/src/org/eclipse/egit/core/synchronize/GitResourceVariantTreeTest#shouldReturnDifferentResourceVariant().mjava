@@ -16,8 +16,10 @@
 				"initial commit");
 		IFile mainJava = testRepo.getIFile(iProject, file);
 
-		testRepo.createAndCheckoutBranch(Constants.R_HEADS + Constants.MASTER, Constants.R_HEADS + "test");
-		testRepo.appendContentAndCommit(iProject, file, "// test", "first commit");
+		testRepo.createAndCheckoutBranch(Constants.R_HEADS + Constants.MASTER,
+				Constants.R_HEADS + "test");
+		testRepo.appendContentAndCommit(iProject, file, "// test",
+				"first commit");
 		GitSynchronizeData data = new GitSynchronizeData(repo, Constants.HEAD,
 				Constants.MASTER, false);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
@@ -31,7 +33,7 @@
 		assertEquals(fileName, actual.getName());
 
 		InputStream actualIn = actual.getStorage(new NullProgressMonitor())
-		.getContents();
+				.getContents();
 		byte[] actualByte = getBytesAndCloseStream(actualIn);
 		InputStream expectedIn = mainJava.getContents();
 		byte[] expectedByte = getBytesAndCloseStream(expectedIn);
