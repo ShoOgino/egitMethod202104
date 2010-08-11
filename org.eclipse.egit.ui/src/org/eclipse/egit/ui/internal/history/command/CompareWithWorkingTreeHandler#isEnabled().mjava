@@ -1,12 +1,10 @@
 	@Override
 	public boolean isEnabled() {
-		try {
-			int size = getSelection(null).size();
-			return IFile.class.isAssignableFrom(getInput(null).getClass())
-					&& size == 1;
-		} catch (ExecutionException e) {
-			Activator.handleError(e.getMessage(), e, false);
+		GitHistoryPage page = getPage();
+		if (page == null)
 			return false;
-		}
+		int size = getSelection(page).size();
+		return IFile.class.isAssignableFrom(page.getInput().getClass())
+				&& size == 1;
 	}
 

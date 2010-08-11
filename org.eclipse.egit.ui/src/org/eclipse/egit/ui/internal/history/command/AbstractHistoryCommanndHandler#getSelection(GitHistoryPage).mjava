@@ -1,0 +1,8 @@
+	protected IStructuredSelection getSelection(GitHistoryPage page) {
+		ISelection pageSelection = page.getSelectionProvider().getSelection();
+		if (pageSelection instanceof IStructuredSelection) {
+			return (IStructuredSelection) pageSelection;
+		} else
+			return new StructuredSelection();
+	}
+

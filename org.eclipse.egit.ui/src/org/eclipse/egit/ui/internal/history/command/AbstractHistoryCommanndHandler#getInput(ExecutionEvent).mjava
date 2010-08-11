@@ -1,11 +1,5 @@
 	protected Object getInput(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchPart part;
-		if (event != null)
-			part = getPart(event);
-		else
-			part = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().getActivePart();
-
+		IWorkbenchPart part = getPart(event);
 		if (!(part instanceof IHistoryView))
 			throw new ExecutionException(
 					UIText.AbstractHistoryCommanndHandler_NoInputMessage);
