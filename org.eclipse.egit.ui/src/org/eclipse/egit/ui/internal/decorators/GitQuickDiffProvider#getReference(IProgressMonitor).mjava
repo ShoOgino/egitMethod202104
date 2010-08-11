@@ -1,9 +1,8 @@
 	public IDocument getReference(IProgressMonitor monitor)
 			throws CoreException {
-		// TODO is this the right location?
-		if (GitTraceLocation.UI.isActive())
+		if (GitTraceLocation.QUICKDIFF.isActive())
 			GitTraceLocation.getTrace().trace(
-					GitTraceLocation.UI.getLocation(),
+					GitTraceLocation.QUICKDIFF.getLocation(),
 					"(GitQuickDiffProvider) file: " + resource); //$NON-NLS-1$
 		if (resource == null)
 			return null;
@@ -13,7 +12,6 @@
 			try {
 				document = GitDocument.create(resource);
 			} catch (IOException e) {
-				// TODO throw an exception or log this?
 				Activator.error(UIText.QuickDiff_failedLoading, e);
 			}
 			return document;

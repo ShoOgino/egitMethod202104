@@ -1,8 +1,7 @@
 	void dispose() {
-		// TODO is this the right location?
-		if (GitTraceLocation.UI.isActive())
+		if (GitTraceLocation.QUICKDIFF.isActive())
 			GitTraceLocation.getTrace().trace(
-					GitTraceLocation.UI.getLocation(),
+					GitTraceLocation.QUICKDIFF.getLocation(),
 					"(GitDocument) dispose: " + resource); //$NON-NLS-1$
 		doc2repo.remove(this);
 

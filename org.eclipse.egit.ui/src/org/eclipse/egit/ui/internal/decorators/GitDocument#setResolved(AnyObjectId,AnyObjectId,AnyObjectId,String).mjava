@@ -4,18 +4,16 @@
 		lastBlob = blob != null ? blob.copy() : null;
 		set(value);
 		if (blob != null)
-			// TODO is this the right location?
-			if (GitTraceLocation.UI.isActive())
+			if (GitTraceLocation.QUICKDIFF.isActive())
 				GitTraceLocation
 						.getTrace()
 						.trace(
-								GitTraceLocation.UI.getLocation(),
+								GitTraceLocation.QUICKDIFF.getLocation(),
 								"(GitDocument) resolved " + resource + " to " + lastBlob + " in " + lastCommit + "/" + lastTree); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			else
-			// TODO is this the right location?
-			if (GitTraceLocation.UI.isActive())
+			if (GitTraceLocation.QUICKDIFF.isActive())
 				GitTraceLocation.getTrace().trace(
-						GitTraceLocation.UI.getLocation(),
+						GitTraceLocation.QUICKDIFF.getLocation(),
 						"(GitDocument) unresolved " + resource); //$NON-NLS-1$
 	}
 

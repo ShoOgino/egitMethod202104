@@ -2,9 +2,7 @@
 	 * Create the GitQuickDiffProvider instance
 	 */
 	public GitQuickDiffProvider() {
-		// TODO is this the right location?
-		if (GitTraceLocation.UI.isActive())
-			GitTraceLocation.getTrace().traceEntry(GitTraceLocation.UI.getLocation());
-		// Empty
+		if (GitTraceLocation.QUICKDIFF.isActive())
+			GitTraceLocation.getTrace().traceEntry(GitTraceLocation.QUICKDIFF.getLocation());
 	}
 

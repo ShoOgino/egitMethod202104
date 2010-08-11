@@ -1,8 +1,7 @@
 	static GitDocument create(final IResource resource) throws IOException {
-		// TODO is this the right location?
-		if (GitTraceLocation.UI.isActive())
+		if (GitTraceLocation.QUICKDIFF.isActive())
 			GitTraceLocation.getTrace().trace(
-					GitTraceLocation.UI.getLocation(),
+					GitTraceLocation.QUICKDIFF.getLocation(),
 					"(GitDocument) create: " + resource); //$NON-NLS-1$
 		GitDocument ret = null;
 		if (RepositoryProvider.getProvider(resource.getProject()) instanceof GitProvider) {
