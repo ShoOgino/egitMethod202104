@@ -4,8 +4,8 @@
 	public String getTitle() {
 		Object[] titleObject = new Object[3];
 		titleObject[0] = getShortName(left);
-		titleObject[1] = truncatedRevision(getContentIdentifier(getLeftRevision()));
-		titleObject[2] = truncatedRevision(getContentIdentifier(getRightRevision()));
+		titleObject[1] = CompareUtils.truncatedRevision(getContentIdentifier(getLeftRevision()));
+		titleObject[2] = CompareUtils.truncatedRevision(getContentIdentifier(getRightRevision()));
 		return NLS.bind(UIText.GitCompareFileRevisionEditorInput_CompareTooltip, titleObject);
 	}
 

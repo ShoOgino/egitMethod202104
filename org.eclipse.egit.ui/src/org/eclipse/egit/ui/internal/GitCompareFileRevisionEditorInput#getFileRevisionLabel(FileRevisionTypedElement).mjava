@@ -3,7 +3,8 @@
 		if (fileObject instanceof LocalFileRevision){
 			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_LocalHistoryLabel, new Object[]{element.getName(), element.getTimestamp()});
 		} else {
-			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_RevisionLabel, new Object[]{element.getName(), truncatedRevision(element.getContentIdentifier()), element.getAuthor()});
+			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_RevisionLabel, new Object[]{element.getName(),
+					CompareUtils.truncatedRevision(element.getContentIdentifier()), element.getAuthor()});
 		}
 	}
 
