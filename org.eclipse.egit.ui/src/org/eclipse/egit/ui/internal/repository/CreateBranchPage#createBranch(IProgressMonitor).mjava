@@ -5,15 +5,18 @@
 	 */
 	public void createBranch(IProgressMonitor monitor) throws CoreException,
 			IOException {
-
 		monitor.beginTask(UIText.CreateBranchPage_CreatingBranchMessage,
 				IProgressMonitor.UNKNOWN);
 
 		String newRefName = getBranchName();
 
 		RefUpdate updateRef = myRepository.updateRef(newRefName);
-		ObjectId startAt = new RevWalk(myRepository).parseCommit(myRepository
-				.resolve(getSourceBranchName()));
+		ObjectId startAt;
+		if (commitMode)
+			startAt = myBaseCommit.getId();
+		else
+			startAt = new RevWalk(myRepository).parseCommit(myRepository
+					.resolve(getSourceBranchName()));
 
 		updateRef.setNewObjectId(startAt);
 		updateRef.setRefLogMessage(

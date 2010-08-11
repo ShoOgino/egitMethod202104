@@ -72,10 +72,10 @@
 					.getPluginLocalizedValue("CreateBranchCommand"));
 
 			SWTBotShell createPage = bot
-					.shell(UIText.RepositoriesView_NewBranchTitle);
+					.shell(UIText.CreateBranchWizard_NewBranchTitle);
 			createPage.activate();
 			assertEquals("Wrong suggested branch name", "stable", createPage
-					.bot().text(1).getText());
+					.bot().textWithId("BranchName").getText());
 			createPage.close();
 
 		} finally {
