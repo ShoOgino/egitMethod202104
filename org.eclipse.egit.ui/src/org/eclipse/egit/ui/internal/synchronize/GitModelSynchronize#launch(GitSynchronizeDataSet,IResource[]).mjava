@@ -23,6 +23,6 @@
 				new ISynchronizeParticipant[] { participant });
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
-		participant.run((IWorkbenchPart) window.getActivePage());
+		participant.run(window.getActivePage().getActivePart());
 	}
 
