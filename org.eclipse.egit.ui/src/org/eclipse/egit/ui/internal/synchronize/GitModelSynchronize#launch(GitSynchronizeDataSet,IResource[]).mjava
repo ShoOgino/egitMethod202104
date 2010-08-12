@@ -21,6 +21,8 @@
 
 		TeamUI.getSynchronizeManager().addSynchronizeParticipants(
 				new ISynchronizeParticipant[] { participant });
-		participant.run(getTargetPart());
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		participant.run((IWorkbenchPart) window.getActivePage());
 	}
 

@@ -1,0 +1,19 @@
+	/**
+	 * Copied from TeamAction#isMappedToProvider(ResourceMapping, String)
+	 *
+	 * @param element
+	 * @return <code>true</code> if resource is mapped to Git provider,
+	 *         <code>false</code> otherwise
+	 */
+	private static boolean isMappedToProvider(ResourceMapping element) {
+		IProject[] projects = element.getProjects();
+		for (IProject project: projects) {
+			RepositoryProvider provider = RepositoryProvider
+					.getProvider(project);
+
+			if (provider != null && provider.getID().equals(providerId))
+				return true;
+		}
+		return false;
+	}
+
