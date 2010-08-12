@@ -21,7 +21,7 @@
 		IPath iPath = new Path(File.separator + path);
 
 		IContainer local = createMock(IContainer.class);
-		expect(local.exists()).andReturn(true);
+		expect(local.exists()).andReturn(true).times(2);
 		expect(local.getFullPath()).andReturn(iPath).anyTimes();
 		replay(local);
 
