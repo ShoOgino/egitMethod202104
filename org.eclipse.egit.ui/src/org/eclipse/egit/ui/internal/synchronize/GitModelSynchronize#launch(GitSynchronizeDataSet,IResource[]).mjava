@@ -1,0 +1,26 @@
+	/**
+	 * Launches Git Model synchronization action
+	 *
+	 * @param gsdSet
+	 * @param resources
+	 */
+	public static final void launch(GitSynchronizeDataSet gsdSet,
+			IResource[] resources) {
+		ResourceMapping[] mappings = getSelectedResourceMappings(resources);
+
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				gsdSet);
+		RemoteResourceMappingContext remoteContext = new GitSubscriberResourceMappingContext(
+				gsdSet);
+		SubscriberScopeManager manager = new SubscriberScopeManager(
+				subscriber.getName(), mappings, subscriber, remoteContext, true);
+		SynchronizationContext context = new GitSubscriberMergeContext(
+				subscriber, manager, gsdSet);
+		GitModelSynchronizeParticipant participant = new GitModelSynchronizeParticipant(
+				context);
+
+		TeamUI.getSynchronizeManager().addSynchronizeParticipants(
+				new ISynchronizeParticipant[] { participant });
+		participant.run(getTargetPart());
+	}
+

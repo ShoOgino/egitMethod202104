@@ -17,7 +17,11 @@
 					data = new GitSynchronizeData(node
 							.getRepository(), Constants.HEAD, ref.getName(), false);
 
-					new GitSynchronize(data);
+					Set<IProject> projects = data.getProjects();
+					IResource[] resources = projects
+							.toArray(new IResource[projects.size()]);
+
+					GitModelSynchronize.launch(data, resources);
 				} catch (IOException e) {
 					Activator.logError(e.getMessage(), e);
 				}
