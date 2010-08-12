@@ -1,5 +1,5 @@
 	@Override
 	public boolean isSupervised(IResource resource) throws TeamException {
-		return true; //gitSynchronizeDataSet.contains(resource.getProject());
+		return gsds.contains(resource.getProject()) && !isIgnoredHint(resource);
 	}
 
