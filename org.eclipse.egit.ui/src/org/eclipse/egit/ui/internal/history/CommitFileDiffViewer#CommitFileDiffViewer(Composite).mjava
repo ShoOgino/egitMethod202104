@@ -19,7 +19,7 @@
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				final FileDiff d = (FileDiff) iss.getFirstElement();
-				if (walker != null && d.blobs.length <= 2)
+				if (walker != null && d.getBlobs().length <= 2)
 					if (compareMode)
 						showTwoWayFileDiff(d);
 					else

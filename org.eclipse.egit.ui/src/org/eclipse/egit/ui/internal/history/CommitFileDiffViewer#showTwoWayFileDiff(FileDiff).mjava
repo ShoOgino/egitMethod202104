@@ -1,18 +1,18 @@
 	void showTwoWayFileDiff(final FileDiff d) {
 		final GitCompareFileRevisionEditorInput in;
 
-		final String p = d.path;
-		final RevCommit c = d.commit;
+		final String p = d.getPath();
+		final RevCommit c = d.getCommit();
 		final ITypedElement base;
 		final ITypedElement next;
 
-		if (d.blobs.length == 2) {
-			base = CompareUtils.getFileRevisionTypedElement(p, c.getParent(0), db, d.blobs[0]);
-			next = CompareUtils.getFileRevisionTypedElement(p, c, db, d.blobs[1]);
+		if (d.getBlobs().length == 2) {
+			base = CompareUtils.getFileRevisionTypedElement(p, c.getParent(0), db, d.getBlobs()[0]);
+			next = CompareUtils.getFileRevisionTypedElement(p, c, db, d.getBlobs()[1]);
 		} else {
 			// Initial import
 			base = new GitCompareFileRevisionEditorInput.EmptyTypedElement(""); //$NON-NLS-1$
-			next = CompareUtils.getFileRevisionTypedElement(p, c, db, d.blobs[0]);
+			next = CompareUtils.getFileRevisionTypedElement(p, c, db, d.getBlobs()[0]);
 		}
 
 		in = new GitCompareFileRevisionEditorInput(next, base, null);

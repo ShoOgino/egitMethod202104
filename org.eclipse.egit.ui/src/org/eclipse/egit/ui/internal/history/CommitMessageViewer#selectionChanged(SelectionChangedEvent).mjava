@@ -4,7 +4,7 @@
 			IStructuredSelection sel = (IStructuredSelection)selection;
 			Object obj = sel.getFirstElement();
 			if (obj instanceof FileDiff) {
-				String path = ((FileDiff)obj).path;
+				String path = ((FileDiff)obj).getPath();
 				findAndSelect(0, formatPathLine(path), true, true, false, false);
 			}
 		}

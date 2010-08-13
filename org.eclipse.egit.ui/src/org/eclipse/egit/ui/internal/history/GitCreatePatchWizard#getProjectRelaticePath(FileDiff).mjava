@@ -2,7 +2,7 @@
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 		IPath absolutePath = new Path(db.getWorkTree().getAbsolutePath())
-				.append(diff.path);
+				.append(diff.getPath());
 		IResource resource = root.getFileForLocation(absolutePath);
 		return resource.getProjectRelativePath().toString();
 	}
