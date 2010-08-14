@@ -12,28 +12,32 @@
 				progress.done();
 			}
 
-		TreeWalk tw = new TreeWalk(getRepository());
+		Repository repo = getRepository();
+		TreeWalk tw = new TreeWalk(repo);
 		tw.reset();
+
 		int nth = tw.addTree(getObjectId());
+		int iteratorNth = tw.addTree(new FileTreeIterator(repo));
+
+		tw.setFilter(new NotIgnoredFilter(iteratorNth));
 
 		IProgressMonitor monitor = SubMonitor.convert(progress);
 		monitor.beginTask(
 				NLS.bind(CoreText.GitFolderResourceVariant_fetchingMembers, this),
 				tw.getTreeCount());
 
-		Repository repo = getRepository();
 		List<IResourceVariant> result = new ArrayList<IResourceVariant>();
-
 		try {
 			while (tw.next()) {
 				ObjectId newObjectId = tw.getObjectId(nth);
 				String path = getPath() + "/" + new String(tw.getRawPath()); //$NON-NLS-1$
-				if (tw.isSubtree())
-					result.add(new GitFolderResourceVariant(repo, newObjectId,
-							path));
-				else
-					result.add(new GitBlobResourceVariant(repo, newObjectId,
-							path));
+				if (!newObjectId.equals(zeroId()))
+					if (tw.isSubtree())
+						result.add(new GitFolderResourceVariant(repo,
+								newObjectId, path));
+					else
+						result.add(new GitBlobResourceVariant(repo,
+								newObjectId, path));
 				monitor.worked(1);
 			}
 

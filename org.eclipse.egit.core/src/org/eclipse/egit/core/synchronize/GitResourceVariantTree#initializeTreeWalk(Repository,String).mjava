@@ -1,7 +1,12 @@
-	private TreeWalk initializeTreeWalk(Repository repo, String path) {
+	private TreeWalk initializeTreeWalk(Repository repo, String path)
+			throws CorruptObjectException {
 		TreeWalk tw = new TreeWalk(repo);
 		tw.reset();
-		tw.setFilter(PathFilter.create(path));
+		int ignoreNth = tw.addTree(new FileTreeIterator(repo));
+
+		TreeFilter pathFilter = PathFilter.create(path);
+		TreeFilter ignoreFilter = new NotIgnoredFilter(ignoreNth);
+		tw.setFilter(AndTreeFilter.create(pathFilter, ignoreFilter));
 
 		return tw;
 	}

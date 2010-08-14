@@ -3,19 +3,22 @@
 		List<GitModelObject> result = new ArrayList<GitModelObject>();
 
 		try {
-			int ancestorNth = -1;
-			if (!ancestorId.equals(zeroId()))
-				ancestorNth = tw.addTree(ancestorId);
+			List<String> notIgnored = getNotIgnoredNodes(remoteId);
+
+			int remoteNth = tw.addTree(remoteId);
 
 			int baseNth = -1;
 			if (!baseId.equals(zeroId()))
 				baseNth = tw.addTree(baseId);
 
-			int remoteNth = -1;
-			if (!remoteId.equals(zeroId()))
-				remoteNth = tw.addTree(remoteId);
+			int ancestorNth = -1;
+			if (!ancestorId.equals(zeroId()))
+				ancestorNth = tw.addTree(ancestorId);
 
 			while (tw.next()) {
+				if (!notIgnored.contains(tw.getNameString()))
+					continue;
+
 				GitModelObject obj = createChildren(tw, ancestorNth, baseNth,
 						remoteNth);
 				if (obj != null)

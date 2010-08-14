@@ -16,21 +16,23 @@
 		if (path.length() == 0)
 			return handleRepositoryRoot(resource, repo, revCommit);
 
-		TreeWalk tw = initializeTreeWalk(repo, path);
-
 		try {
+			TreeWalk tw = initializeTreeWalk(repo, path);
+
 			int nth = tw.addTree(revCommit.getTree());
 			if (resource.getType() == IResource.FILE) {
 				tw.setRecursive(true);
-				if (tw.next())
+				if (tw.next() && !tw.getObjectId(nth).equals(zeroId()))
 					return new GitBlobResourceVariant(repo,
 							tw.getObjectId(nth), path);
 			} else {
 				while (tw.next() && !path.equals(tw.getPathString()))
 					if (tw.isSubtree())
 						tw.enterSubtree();
-				return new GitFolderResourceVariant(repo, tw.getObjectId(nth),
-						path);
+
+				ObjectId objectId = tw.getObjectId(nth);
+				if (!objectId.equals(zeroId()))
+					return new GitFolderResourceVariant(repo, objectId, path);
 			}
 		} catch (IOException e) {
 			throw new TeamException(
