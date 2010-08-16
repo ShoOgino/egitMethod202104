@@ -17,10 +17,10 @@
 						}
 					});
 					try {
-						if (isGit)
-							writeGitPatch(sb, diffFmt);
-						else
-							writePatch(sb, diffFmt);
+						FileDiff[] diffs = FileDiff.compute(walker, commit);
+						for (FileDiff diff : diffs) {
+							diff.outputDiff(sb, db, diffFmt, isGit);
+						}
 
 						if (isFile) {
 							Writer output = new BufferedWriter(new FileWriter(
