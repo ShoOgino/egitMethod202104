@@ -2,7 +2,6 @@
 			throws IOException {
 		super(repo, objectId, path);
 
-		ObjectLoader blob = repo.open(getObjectId());
-		bytes = blob.getBytes();
+		blob = repo.open(getObjectId());
 	}
 

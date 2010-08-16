@@ -18,7 +18,11 @@
 				}
 
 				public InputStream getContents() throws CoreException {
-					return new ByteArrayInputStream(bytes);
+					try {
+						return blob.openStream();
+					} catch (IOException e) {
+						throw new TeamException(e.getMessage(), e);
+					}
 				}
 
 				public String getCharset() throws CoreException {
