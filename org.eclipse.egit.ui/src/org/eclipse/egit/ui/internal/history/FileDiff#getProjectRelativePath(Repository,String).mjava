@@ -1,8 +1,7 @@
-	private String getProjectRelaticePath(FileDiff diff) {
+	private String getProjectRelativePath(Repository db, String repoPath) {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
-		IPath absolutePath = new Path(db.getWorkTree().getAbsolutePath())
-				.append(diff.getPath());
+		IPath absolutePath = new Path(db.getWorkTree().getAbsolutePath()).append(repoPath);
 		IResource resource = root.getFileForLocation(absolutePath);
 		return resource.getProjectRelativePath().toString();
 	}

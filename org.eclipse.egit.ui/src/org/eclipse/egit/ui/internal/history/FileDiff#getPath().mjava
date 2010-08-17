@@ -1,4 +1,6 @@
 	public String getPath() {
-		return path;
+		if (ChangeType.DELETE.equals(diffEntry.getChangeType()))
+			return diffEntry.getOldPath();
+		return diffEntry.getNewPath();
 	}
 

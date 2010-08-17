@@ -1,0 +1,27 @@
+	/**
+	 * Creates a textual diff together with meta information.
+	 * TODO So far this works only in case of one parent commit.
+	 *
+	 * @param d
+	 *            the StringBuilder where the textual diff is added to
+	 * @param db
+	 *            the Repo
+	 * @param diffFmt
+	 *            the DiffFormatter used to create the textual diff
+	 * @param gitFormat
+	 *            if false, do not show any source or destination prefix,
+	 *            and the paths are calculated relative to the eclipse
+	 *            project, otherwise relative to the git repository
+	 * @throws IOException
+	 */
+	public void outputDiff(final StringBuilder d, final Repository db,
+			final DiffFormatter diffFmt, boolean gitFormat) throws IOException {
+		if (gitFormat) {
+			diffFmt.setRepository(db);
+			diffFmt.format(diffEntry);
+			return;
+		}
+
+		outputEclipseDiff(d, db, diffFmt);
+	}
+
