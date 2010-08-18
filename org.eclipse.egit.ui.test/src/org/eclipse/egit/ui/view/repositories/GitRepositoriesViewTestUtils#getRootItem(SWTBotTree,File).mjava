@@ -2,7 +2,7 @@
 			throws Exception {
 		Repository repository = lookupRepository(repositoryFile);
 		RepositoryNode root = new RepositoryNode(null, repository);
-		String rootText = labelProvider.getText(root);
+		String rootText = labelProvider.getStyledText(root).getString();
 		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
 		return rootItem;
 	}

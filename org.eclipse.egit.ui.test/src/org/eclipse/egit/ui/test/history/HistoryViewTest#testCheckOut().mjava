@@ -16,8 +16,8 @@
 			}
 		});
 
-		ContextMenuHelper.clickContextMenu(table, util
-				.getPluginLocalizedValue("Checkout.label"));
+		ContextMenuHelper.clickContextMenu(table,
+				UIText.GitHistoryPage_CheckoutMenuLabel);
 
 		waitInUI();
 		assertEquals(commit[0].getId().name(), repo.getBranch());

@@ -3,8 +3,8 @@
 		Repository repository = lookupRepository(repositoryFile);
 		RepositoryNode root = new RepositoryNode(null, repository);
 		SymbolicRefsNode symrefsnode = new SymbolicRefsNode(root, repository);
-		SWTBotTreeItem rootItem = tree.getTreeItem(labelProvider.getText(root))
-				.expand();
+		SWTBotTreeItem rootItem = tree.getTreeItem(
+				labelProvider.getStyledText(root).getString()).expand();
 		SWTBotTreeItem symrefsitem = rootItem.getNode(labelProvider
 				.getText(symrefsnode));
 		return symrefsitem;
