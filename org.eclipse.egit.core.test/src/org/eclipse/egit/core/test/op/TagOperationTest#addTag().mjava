@@ -5,7 +5,7 @@
 		Tag newTag = new Tag(repository1.getRepository());
 		newTag.setTag("TheNewTag");
 		newTag.setMessage("Well, I'm the tag");
-		newTag.setAuthor(new PersonIdent(TestUtils.AUTHOR));
+		newTag.setTagger(new PersonIdent(TestUtils.AUTHOR));
 		newTag.setObjId(repository1.getRepository()
 				.resolve("refs/heads/master"));
 		TagOperation top = new TagOperation(repository1.getRepository(),
