@@ -1,6 +1,6 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repo = getRepository(event);
-		String baseline = ((RevCommit) getSelection(event).getFirstElement())
+		String baseline = ((RevCommit) getSelection(getPage()).getFirstElement())
 				.getId().name();
 		if (baseline == null)
 			throw new ExecutionException(

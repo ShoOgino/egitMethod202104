@@ -4,10 +4,10 @@
 		RepositoryNode root = new RepositoryNode(null, repository);
 		RemotesNode remotes = new RemotesNode(root, repository);
 
-		String rootText = labelProvider.getText(root);
+		String rootText = labelProvider.getStyledText(root).getString();
 		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
 		SWTBotTreeItem remotesItem = rootItem.expand().getNode(
-				labelProvider.getText(remotes));
+				labelProvider.getStyledText(remotes).getString());
 		return remotesItem;
 	}
 

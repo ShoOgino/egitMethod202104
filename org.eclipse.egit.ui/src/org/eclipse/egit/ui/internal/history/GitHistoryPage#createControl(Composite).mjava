@@ -64,7 +64,6 @@
 				UIPreferences.RESOURCEHISTORY_GRAPH_SPLIT);
 		layoutSashForm(revInfoSplit, UIPreferences.RESOURCEHISTORY_REV_SPLIT);
 
-		revObjectSelectionProvider = new RevObjectSelectionProvider();
 		popupMgr = new MenuManager(null, POPUP_ID);
 		attachCommitSelectionChanged();
 		createLocalToolbarActions();
@@ -72,10 +71,9 @@
 		createCompareModeAction();
 		createStandardActions();
 
-		getSite().registerContextMenu(POPUP_ID, popupMgr,
-				revObjectSelectionProvider);
-		getHistoryPageSite().getPart().getSite().setSelectionProvider(
-				revObjectSelectionProvider);
+		getSite().registerContextMenu(POPUP_ID, popupMgr, graph.getTableView());
+		// due to the issues described in bug 322751, it makes no
+		// sense to set a selection provider for the site here
 
 		attachContextMenu(graph.getControl());
 		attachContextMenu(commentViewer.getControl());

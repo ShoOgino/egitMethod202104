@@ -5,10 +5,10 @@
 
 		WorkingDirNode workdir = new WorkingDirNode(root, repository);
 
-		String rootText = labelProvider.getText(root);
+		String rootText = labelProvider.getStyledText(root).getString();
 		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
 		SWTBotTreeItem workdirItem = rootItem.expand().getNode(
-				labelProvider.getText(workdir));
+				labelProvider.getStyledText(workdir).getString());
 		return workdirItem;
 	}
 
