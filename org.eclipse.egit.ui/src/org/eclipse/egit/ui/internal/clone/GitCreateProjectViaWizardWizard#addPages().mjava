@@ -2,7 +2,13 @@
 	public void addPages() {
 		mySelectionPage = new GitSelectWizardPage(myRepository, myGitDir);
 		addPage(mySelectionPage);
-		myCreateGeneralProjectPage = new GitCreateGeneralProjectPage(myGitDir);
+		myCreateGeneralProjectPage = new GitCreateGeneralProjectPage(myGitDir) {
+			@Override
+			public void setVisible(boolean visible) {
+				setPath(mySelectionPage.getPath());
+				super.setVisible(visible);
+			}
+		};
 		addPage(myCreateGeneralProjectPage);
 		myProjectsImportPage = new GitProjectsImportPage() {
 
@@ -11,7 +17,6 @@
 				setProjectsList(mySelectionPage.getPath());
 				super.setVisible(visible);
 			}
-
 		};
 		addPage(myProjectsImportPage);
 		mySharePage = new GitShareProjectsPage();
