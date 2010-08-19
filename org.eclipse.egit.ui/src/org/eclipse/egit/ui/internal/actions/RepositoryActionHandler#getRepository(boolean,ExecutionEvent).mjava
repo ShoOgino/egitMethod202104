@@ -11,31 +11,8 @@
 	 */
 	protected Repository getRepository(boolean warn, ExecutionEvent event)
 			throws ExecutionException {
-		RepositoryMapping mapping = null;
-		for (IProject project : getSelectedProjects(event)) {
-			RepositoryMapping repositoryMapping = RepositoryMapping
-					.getMapping(project);
-			if (mapping == null)
-				mapping = repositoryMapping;
-			if (repositoryMapping == null)
-				return null;
-			if (mapping.getRepository() != repositoryMapping.getRepository()) {
-				if (warn)
-					MessageDialog.openError(getShell(event),
-							UIText.RepositoryAction_multiRepoSelectionTitle,
-							UIText.RepositoryAction_multiRepoSelection);
-				return null;
-			}
-		}
-		if (mapping == null) {
-			if (warn)
-				MessageDialog.openError(getShell(event),
-						UIText.RepositoryAction_errorFindingRepoTitle,
-						UIText.RepositoryAction_errorFindingRepo);
-			return null;
-		}
-
-		final Repository repository = mapping.getRepository();
-		return repository;
+		IStructuredSelection selection = getSelection(event);
+		Shell shell = getShell(event);
+		return getRepository(warn, selection, shell);
 	}
 

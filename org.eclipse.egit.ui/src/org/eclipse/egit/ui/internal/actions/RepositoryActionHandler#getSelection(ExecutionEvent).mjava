@@ -1,29 +1,18 @@
 	/**
 	 * @param event
-	 *            the execution event, may be null
+	 *            the execution event, must not be null
 	 * @return the current selection
 	 * @throws ExecutionException
 	 *             if the selection can't be determined
 	 */
 	protected IStructuredSelection getSelection(ExecutionEvent event)
 			throws ExecutionException {
+		if (event == null)
+			throw new IllegalArgumentException("event must not be NULL"); //$NON-NLS-1$
 		ISelection selection;
-		if (event != null)
-			selection = HandlerUtil.getCurrentSelectionChecked(event);
-		else {
-			IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			if (activeWorkbenchWindow == null) // During Eclipse shutdown there is no active window
-				return new StructuredSelection();
-			IHandlerService hsr = (IHandlerService) activeWorkbenchWindow.getService(IHandlerService.class);
-			IEvaluationContext ctx = hsr.getCurrentState();
-			selection = (ISelection) ctx.getVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
-			if (selection == null)
-				throw new ExecutionException(
-						UIText.RepositoryActionHandler_CouldNotGetSelection_message);
-
-		}
+		selection = HandlerUtil.getCurrentSelectionChecked(event);
 		if (selection instanceof IStructuredSelection)
 			return (IStructuredSelection) selection;
-		return new StructuredSelection();
+		return StructuredSelection.EMPTY;
 	}
 

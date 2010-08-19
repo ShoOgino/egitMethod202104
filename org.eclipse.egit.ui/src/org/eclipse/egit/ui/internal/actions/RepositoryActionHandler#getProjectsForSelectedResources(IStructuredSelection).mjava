@@ -1,0 +1,12 @@
+	/**
+	 * @param selection
+	 * @return the projects hosting the selected resources
+	 */
+	private IProject[] getProjectsForSelectedResources(IStructuredSelection selection) {
+		Set<IProject> ret = new HashSet<IProject>();
+		for (IResource resource : (IResource[]) getSelectedAdaptables(
+				selection, IResource.class))
+			ret.add(resource.getProject());
+		return ret.toArray(new IProject[ret.size()]);
+	}
+

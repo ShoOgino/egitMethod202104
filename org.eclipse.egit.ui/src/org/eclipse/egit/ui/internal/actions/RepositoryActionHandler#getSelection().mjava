@@ -1,0 +1,18 @@
+	/**
+	 * @return the current selection
+	 */
+	protected IStructuredSelection getSelection() {
+		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		if (activeWorkbenchWindow == null) // During Eclipse shutdown there is
+											// no active window
+			return StructuredSelection.EMPTY;
+		IHandlerService hsr = (IHandlerService) activeWorkbenchWindow
+				.getService(IHandlerService.class);
+		IEvaluationContext ctx = hsr.getCurrentState();
+		Object selection = ctx.getVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
+		if (selection instanceof IStructuredSelection)
+			return (IStructuredSelection) selection;
+		return StructuredSelection.EMPTY;
+	}
+

@@ -4,19 +4,16 @@
 	 *
 	 * @param selection
 	 * @param c
-	 * @param event
 	 * @return the selected adaptables
-	 * @throws ExecutionException
 	 */
 	@SuppressWarnings("unchecked")
-	protected Object[] getSelectedAdaptables(ISelection selection, Class c,
-			ExecutionEvent event) throws ExecutionException {
+	private Object[] getSelectedAdaptables(ISelection selection, Class c) {
 		ArrayList result = null;
 		if (selection != null && !selection.isEmpty()) {
 			result = new ArrayList();
 			Iterator elements = ((IStructuredSelection) selection).iterator();
 			while (elements.hasNext()) {
-				Object adapter = getAdapter(elements.next(), c, event);
+				Object adapter = getAdapter(elements.next(), c);
 				if (c.isInstance(adapter)) {
 					result.add(adapter);
 				}

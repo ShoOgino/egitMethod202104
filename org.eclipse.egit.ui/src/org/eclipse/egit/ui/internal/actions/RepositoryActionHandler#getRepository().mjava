@@ -1,0 +1,11 @@
+	/**
+	 * Figure out which repository to use. All selected resources must map to
+	 * the same Git repository.
+	 *
+	 * @return repository for current project, or null
+	 */
+	protected Repository getRepository() {
+		IStructuredSelection selection = getSelection();
+		return getRepository(false, selection, null);
+	}
+
