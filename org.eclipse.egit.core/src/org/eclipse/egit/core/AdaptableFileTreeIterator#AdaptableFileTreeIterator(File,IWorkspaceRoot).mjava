@@ -14,7 +14,7 @@
 	 */
 	public AdaptableFileTreeIterator(final File path,
 			final IWorkspaceRoot workspaceRoot) {
-		super(path, FS.DETECTED);
+		super(path, FS.DETECTED, WorkingTreeOptions.createDefaultInstance());
 		root = workspaceRoot;
 	}
 

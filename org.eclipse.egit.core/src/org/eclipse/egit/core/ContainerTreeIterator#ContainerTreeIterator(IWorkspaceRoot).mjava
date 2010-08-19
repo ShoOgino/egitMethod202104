@@ -10,7 +10,7 @@
 	 *            the workspace root to walk over.
 	 */
 	public ContainerTreeIterator(final IWorkspaceRoot root) {
-		super("");  //$NON-NLS-1$
+		super("", WorkingTreeOptions.createDefaultInstance());  //$NON-NLS-1$
 		node = root;
 		init(entries());
 	}

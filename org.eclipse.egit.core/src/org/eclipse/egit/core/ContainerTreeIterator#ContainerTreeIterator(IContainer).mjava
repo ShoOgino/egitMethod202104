@@ -11,7 +11,7 @@
 	 *            the part of the workspace the iterator will walk over.
 	 */
 	public ContainerTreeIterator(final IContainer base) {
-		super(computePrefix(base));
+		super(computePrefix(base), WorkingTreeOptions.createDefaultInstance());
 		node = base;
 		init(entries());
 	}
