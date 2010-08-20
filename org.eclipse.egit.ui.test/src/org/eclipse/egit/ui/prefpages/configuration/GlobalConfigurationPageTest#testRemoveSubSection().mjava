@@ -10,10 +10,9 @@
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
 				TESTSUBSECTION).select();
 
-		bot.button(UIText.GlobalConfigurationPreferencePage_RemoveAllButton)
-				.click();
+		bot.button(UIText.ConfigurationEditorComponent_RemoveAllButton).click();
 		SWTBotShell confirm = bot
-				.shell(UIText.GlobalConfigurationPreferencePage_RemoveSubsectionTitle);
+				.shell(UIText.ConfigurationEditorComponent_RemoveSubsectionTitle);
 		confirm.activate();
 		confirm.bot().button(IDialogConstants.OK_LABEL).click();
 		config.load();

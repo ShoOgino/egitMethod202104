@@ -1,33 +1,161 @@
 	/**
-	 * @param rep
+	 * @param repository
 	 *            the repository
 	 * @param page
+	 *            the page showing the properties
 	 */
-	public RepositoryPropertySource(Repository rep, PropertySheetPage page) {
-
+	public RepositoryPropertySource(Repository repository,
+			PropertySheetPage page) {
 		myPage = page;
 
-		makeActions();
-		addActions();
-
-		effectiveConfig = rep.getConfig();
+		effectiveConfig = repository.getConfig();
 		userHomeConfig = SystemReader.getInstance().openUserConfig(FS.DETECTED);
 
 		if (effectiveConfig instanceof FileBasedConfig) {
 			File configFile = ((FileBasedConfig) effectiveConfig).getFile();
-			repositoryConfig = new FileBasedConfig(configFile, rep.getFS());
+			repositoryConfig = new FileBasedConfig(configFile, repository
+					.getFS());
 		} else {
 			repositoryConfig = effectiveConfig;
 		}
 
-		try {
-			effectiveConfig.load();
-			userHomeConfig.load();
-			repositoryConfig.load();
-		} catch (IOException e) {
-			showExceptionMessage(e);
-		} catch (ConfigInvalidException e) {
-			showExceptionMessage(e);
+		synchronized (myPage) {
+			// check if the actions are already there, if not, create them
+			IActionBars bars = myPage.getSite().getActionBars();
+
+			changeModeAction = (ActionContributionItem) bars
+					.getToolBarManager().find(CHANGEMODEACTIONID);
+			singleValueToggleAction = (ActionContributionItem) bars
+					.getToolBarManager().find(SINGLEVALUEACTIONID);
+
+			if (changeModeAction != null) {
+				return;
+			}
+
+			changeModeAction = new ActionContributionItem(new Action(
+					DisplayMode.REPO.getText(), IAction.AS_DROP_DOWN_MENU) {
+				@Override
+				public String getId() {
+					return CHANGEMODEACTIONID;
+				}
+
+				@Override
+				public void run() {
+					MenuManager mgr = new MenuManager();
+					ToolItem item = (ToolItem) changeModeAction.getWidget();
+					ToolBar control = item.getParent();
+					final Menu ctxMenu = mgr.createContextMenu(control);
+
+					for (final DisplayMode aMode : DisplayMode.values()) {
+						mgr.add(new Action(aMode.getText()) {
+							@Override
+							public void run() {
+								changeModeAction.getAction().setText(
+										aMode.getText());
+								editAction.getAction().setEnabled(
+										aMode != DisplayMode.EFFECTIVE);
+								myPage.refresh();
+							}
+
+							@Override
+							public boolean isEnabled() {
+								return aMode != getCurrentMode();
+							}
+
+							@Override
+							public boolean isChecked() {
+								return aMode == getCurrentMode();
+							}
+
+							@Override
+							public int getStyle() {
+								return IAction.AS_CHECK_BOX;
+							}
+						});
+					}
+
+					ctxMenu.setVisible(true);
+				}
+
+				@Override
+				public String getToolTipText() {
+					return UIText.RepositoryPropertySource_SelectModeTooltip;
+				}
+
+				@Override
+				public int getStyle() {
+					return IAction.AS_DROP_DOWN_MENU;
+				}
+
+			});
+
+			editAction = new ActionContributionItem(new Action(
+					UIText.RepositoryPropertySource_EditConfigButton,
+					UIIcons.EDITCONFIG) {
+				@Override
+				public String getId() {
+					return "Edit"; //$NON-NLS-1$
+				}
+
+				@Override
+				public void run() {
+
+					final StoredConfig config;
+
+					switch (getCurrentMode()) {
+					case EFFECTIVE:
+						return;
+					case USER:
+						config = userHomeConfig;
+						break;
+					case REPO:
+						config = repositoryConfig;
+						break;
+					default:
+						return;
+					}
+
+					new EditDialog(myPage.getSite().getShell(),
+							(FileBasedConfig) config, getCurrentMode()
+									.getText()).open();
+					myPage.refresh();
+				}
+
+				@Override
+				public int getStyle() {
+					return IAction.AS_PUSH_BUTTON;
+				}
+			});
+
+			singleValueToggleAction = new ActionContributionItem(new Action(
+					UIText.RepositoryPropertySource_SingleValueButton) {
+				@Override
+				public String getId() {
+					return SINGLEVALUEACTIONID;
+				}
+
+				@Override
+				public void run() {
+					myPage.refresh();
+				}
+
+				@Override
+				public int getStyle() {
+					return IAction.AS_CHECK_BOX;
+				}
+
+				@Override
+				public String getToolTipText() {
+					return UIText.RepositoryPropertySource_SuppressMultipleValueTooltip;
+				}
+			});
+
+			bars.getToolBarManager().add(new Separator());
+			bars.getToolBarManager().add(changeModeAction);
+			bars.getToolBarManager().add(singleValueToggleAction);
+			bars.getToolBarManager().add(editAction);
+
+			bars.getToolBarManager().update(false);
 		}
 	}
 

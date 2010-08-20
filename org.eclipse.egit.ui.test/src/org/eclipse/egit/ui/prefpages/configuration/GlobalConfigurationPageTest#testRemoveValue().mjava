@@ -9,8 +9,7 @@
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
 				TESTNAME + "[0]").select();
 
-		bot.button(UIText.GlobalConfigurationPreferencePage_RemoveButton)
-				.click();
+		bot.button(UIText.ConfigurationEditorComponent_DeleteButton).click();
 		config.load();
 		values = Arrays.asList(config
 				.getStringList(TESTSECTION, null, TESTNAME));

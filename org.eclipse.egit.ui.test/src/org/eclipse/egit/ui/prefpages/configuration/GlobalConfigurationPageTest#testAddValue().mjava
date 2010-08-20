@@ -6,9 +6,9 @@
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(TESTNAME)
 				.select();
 		preferencePage.bot().textWithLabel(
-				UIText.GlobalConfigurationPreferencePage_ValueLabel).setText(
+				UIText.ConfigurationEditorComponent_ValueLabel).setText(
 				"second");
-		bot.button(UIText.GlobalConfigurationPreferencePage_AddButton).click();
+		bot.button(UIText.ConfigurationEditorComponent_AddButton).click();
 		config.load();
 		List<String> values = Arrays.asList(config.getStringList(TESTSECTION,
 				null, TESTNAME));
@@ -19,9 +19,9 @@
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
 				TESTNAME + "[1]").select();
 		preferencePage.bot().textWithLabel(
-				UIText.GlobalConfigurationPreferencePage_ValueLabel).setText(
+				UIText.ConfigurationEditorComponent_ValueLabel).setText(
 				"middle");
-		bot.button(UIText.GlobalConfigurationPreferencePage_AddButton).click();
+		bot.button(UIText.ConfigurationEditorComponent_AddButton).click();
 		config.load();
 		values = Arrays.asList(config
 				.getStringList(TESTSECTION, null, TESTNAME));

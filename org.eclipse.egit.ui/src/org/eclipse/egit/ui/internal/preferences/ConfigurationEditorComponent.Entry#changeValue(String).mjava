@@ -2,7 +2,7 @@
 				throws IllegalArgumentException {
 			if (newValue.length() == 0)
 				throw new IllegalArgumentException(
-						UIText.GlobalConfigurationPreferencePage_EmptyStringNotAllowed);
+						UIText.ConfigurationEditorComponent_EmptyStringNotAllowed);
 			Config config = getConfig();
 
 			if (index < 0) {
@@ -24,8 +24,10 @@
 							subsectionparent.parent.name,
 							subsectionparent.name, name);
 					entries[index] = newValue;
-					config.setStringList(subsectionparent.parent.name,
-							subsectionparent.name, name, Arrays.asList(entries));
+					config
+							.setStringList(subsectionparent.parent.name,
+									subsectionparent.name, name, Arrays
+											.asList(entries));
 				}
 			}
 		}
