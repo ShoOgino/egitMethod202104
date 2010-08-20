@@ -1,5 +1,24 @@
 	@Override
 	public boolean equals(Object obj) {
-		return remoteCommit.equals(obj);
+		if (obj instanceof GitModelCommit) {
+			GitModelCommit objCommit = (GitModelCommit) obj;
+
+			boolean equalsBaseCommit;
+			RevCommit objBaseCommit = objCommit.getBaseCommit();
+			if (objBaseCommit != null)
+				equalsBaseCommit = objBaseCommit.equals(baseCommit);
+			else
+				equalsBaseCommit = baseCommit == null;
+
+			// it is impossible to have different common ancestor commit if
+			// remote and base commit are equal, therefore we don't compare
+			// common ancestor's
+
+			return equalsBaseCommit
+					&& objCommit.getRemoteCommit().equals(remoteCommit)
+					&& objCommit.getLocation().equals(getLocation());
+		}
+
+		return false;
 	}
 
