@@ -13,10 +13,11 @@
 	 *            name resource associated with this tree
 	 * @throws IOException
 	 */
-	public GitModelTree(GitModelObject parent, RevCommit commit,
+	public GitModelTree(GitModelCommit parent, RevCommit commit,
 			ObjectId ancestorId, ObjectId baseId, ObjectId remoteId, String name)
 			throws IOException {
-		super(parent, commit);
+		// only direction is important for us, therefore we mask rest of bits in kind
+		super(parent, commit, parent.getKind() & (LEFT | RIGHT));
 		this.name = name;
 		this.baseId = baseId;
 		this.remoteId = remoteId;

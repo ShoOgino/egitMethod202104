@@ -1,0 +1,9 @@
+	private void calculateKind(ObjectId baseId, ObjectId remoteId) {
+		if (baseId.equals(zeroId()))
+			kind = kind | ADDITION;
+		else if (remoteId.equals(zeroId()))
+			kind = kind | DELETION;
+		else
+			kind = kind | CHANGE;
+	}
+

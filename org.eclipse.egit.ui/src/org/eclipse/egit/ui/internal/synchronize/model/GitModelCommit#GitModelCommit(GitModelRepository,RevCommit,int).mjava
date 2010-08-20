@@ -5,11 +5,13 @@
 	 * @param commit
 	 *            instance of commit that will be associated with this model
 	 *            object
+	 * @param direction
 	 * @throws IOException
 	 */
-	public GitModelCommit(GitModelRepository parent, RevCommit commit)
-			throws IOException {
+	public GitModelCommit(GitModelRepository parent, RevCommit commit,
+			int direction) throws IOException {
 		super(parent);
+		kind = direction;
 		remoteCommit = commit;
 		ancestorCommit = calculateAncestor(remoteCommit);
 
