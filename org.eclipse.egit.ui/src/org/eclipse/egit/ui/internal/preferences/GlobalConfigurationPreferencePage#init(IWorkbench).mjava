@@ -1,5 +1,6 @@
 	public void init(IWorkbench workbench) {
 		super.noDefaultAndApplyButton();
-		userConfig = SystemReader.getInstance().openUserConfig(FS.DETECTED);
+		if (userConfig == null)
+			userConfig = SystemReader.getInstance().openUserConfig(FS.DETECTED);
 	}
 

@@ -1,0 +1,268 @@
+	/**
+	 * @return the control being created
+	 */
+	public Control createContents() {
+		final Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(1, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+
+		if (editableConfig instanceof FileBasedConfig) {
+			Composite locationPanel = new Composite(main, SWT.NONE);
+			locationPanel.setLayout(new GridLayout(3, false));
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(
+					locationPanel);
+			Label locationLabel = new Label(locationPanel, SWT.NONE);
+			locationLabel
+					.setText(UIText.ConfigurationEditorComponent_ConfigLocationLabel);
+			// GridDataFactory.fillDefaults().applyTo(locationLabel);
+			location = new Text(locationPanel, SWT.BORDER);
+			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(
+					true, false).applyTo(location);
+			location.setEditable(false);
+			Button openEditor = new Button(locationPanel, SWT.PUSH);
+			// GridDataFactory.fillDefaults().applyTo(openEditor);
+			openEditor
+					.setText(UIText.ConfigurationEditorComponent_OpenEditorButton);
+			openEditor
+					.setToolTipText(UIText.ConfigurationEditorComponent_OpenEditorTooltip);
+			openEditor.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					IFileStore store = EFS.getLocalFileSystem().getStore(
+							new Path(((FileBasedConfig) editableConfig)
+									.getFile().getAbsolutePath()));
+					try {
+						IDE.openEditor(PlatformUI.getWorkbench()
+								.getActiveWorkbenchWindow().getActivePage(),
+								new FileStoreEditorInput(store),
+								EditorsUI.DEFAULT_TEXT_EDITOR_ID);
+					} catch (PartInitException ex) {
+						Activator.handleError(ex.getMessage(), ex, true);
+					}
+				}
+			});
+		}
+		tv = new TreeViewer(main, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+		Tree tree = tv.getTree();
+		GridDataFactory.fillDefaults().hint(100, 60).grab(true, true).applyTo(
+				tree);
+		TreeColumn key = new TreeColumn(tree, SWT.NONE);
+		key.setText(UIText.ConfigurationEditorComponent_KeyColumnHeader);
+		key.setWidth(150);
+
+		TreeColumn value = new TreeColumn(tree, SWT.NONE);
+		value.setText(UIText.ConfigurationEditorComponent_ValueColumnHeader);
+		value.setWidth(250);
+
+		tv.setContentProvider(new ConfigEditorContentProvider());
+		Font defaultFont;
+		if (useDialogFont)
+			defaultFont = JFaceResources.getDialogFont();
+		else
+			defaultFont = JFaceResources.getDefaultFont();
+		tv.setLabelProvider(new ConfigEditorLabelProvider(defaultFont));
+
+		tree.setHeaderVisible(true);
+		tree.setLinesVisible(true);
+
+		// if section or subsection is selected, we show the remove button
+		Composite buttonPanel = new Composite(main, SWT.NONE);
+		buttonPanel.setLayout(new GridLayout(2, false));
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(buttonPanel);
+		final Button newEntry = new Button(buttonPanel, SWT.PUSH);
+		GridDataFactory.fillDefaults().applyTo(newEntry);
+		newEntry.setText(UIText.ConfigurationEditorComponent_NewValueButton);
+		newEntry.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				String suggestedKey;
+				IStructuredSelection sel = (IStructuredSelection) tv
+						.getSelection();
+				Object first = sel.getFirstElement();
+				if (first instanceof Section)
+					suggestedKey = ((Section) first).name + DOT;
+				else if (first instanceof SubSection) {
+					SubSection sub = (SubSection) first;
+					suggestedKey = sub.parent.name + DOT + sub.name + DOT;
+				} else if (first instanceof Entry) {
+					Entry entry = (Entry) first;
+					if (entry.sectionparent != null)
+						suggestedKey = entry.sectionparent.name + DOT;
+					else
+						suggestedKey = entry.subsectionparent.parent.name + DOT
+								+ entry.subsectionparent.name + DOT;
+				} else
+					suggestedKey = null;
+
+				AddConfigEntryDialog dlg = new AddConfigEntryDialog(getShell(),
+						editableConfig, suggestedKey);
+				if (dlg.open() == Window.OK) {
+					StringTokenizer st = new StringTokenizer(dlg.getKey(), DOT);
+					if (st.countTokens() == 2) {
+						editableConfig.setString(st.nextToken(), null, st
+								.nextToken(), dlg.getValue());
+						saveAndUpdate();
+					} else if (st.countTokens() == 3) {
+						editableConfig.setString(st.nextToken(),
+								st.nextToken(), st.nextToken(), dlg.getValue());
+						saveAndUpdate();
+					} else
+						Activator
+								.handleError(
+										UIText.ConfigurationEditorComponent_WrongNumberOfTokensMessage,
+										null, true);
+				}
+			}
+
+		});
+		remove = new Button(buttonPanel, SWT.PUSH);
+		GridDataFactory.fillDefaults().applyTo(remove);
+		remove.setText(UIText.ConfigurationEditorComponent_RemoveAllButton);
+		remove
+				.setToolTipText(UIText.ConfigurationEditorComponent_RemoveAllTooltip);
+		remove.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection sel = (IStructuredSelection) tv
+						.getSelection();
+				Object first = sel.getFirstElement();
+				if (first instanceof Section) {
+					Section section = (Section) first;
+					if (MessageDialog
+							.openConfirm(
+									getShell(),
+									UIText.ConfigurationEditorComponent_RemoveSectionTitle,
+									NLS
+											.bind(
+													UIText.ConfigurationEditorComponent_RemoveSectionMessage,
+													section.name))) {
+						editableConfig.unsetSection(section.name, null);
+						saveAndUpdate();
+					}
+				} else if (first instanceof SubSection) {
+					SubSection section = (SubSection) first;
+					if (MessageDialog
+							.openConfirm(
+									getShell(),
+									UIText.ConfigurationEditorComponent_RemoveSubsectionTitle,
+									NLS
+											.bind(
+													UIText.ConfigurationEditorComponent_RemoveSubsectionMessage,
+													section.parent.name + DOT
+															+ section.name))) {
+						editableConfig.unsetSection(section.parent.name,
+								section.name);
+						saveAndUpdate();
+					}
+				} else {
+					Activator
+							.handleError(
+									UIText.ConfigurationEditorComponent_NoSectionSubsectionMessage,
+									null, true);
+				}
+
+				super.widgetSelected(e);
+			}
+		});
+
+		// if an entry is selected, then we show the value plus change button
+		Composite valuePanel = new Composite(main, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(valuePanel);
+		valuePanel.setLayout(new GridLayout(3, false));
+		new Label(valuePanel, SWT.NONE)
+				.setText(UIText.ConfigurationEditorComponent_ValueLabel);
+		valueText = new Text(valuePanel, SWT.BORDER);
+		valueText
+				.setText(UIText.ConfigurationEditorComponent_NoEntrySelectedMessage);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+				false).applyTo(valueText);
+		// make the buttons equal width
+		Composite buttonContainer = new Composite(valuePanel, SWT.NONE);
+		buttonContainer.setLayout(new GridLayout(3, true));
+		changeValue = new Button(buttonContainer, SWT.PUSH);
+		GridDataFactory.fillDefaults().applyTo(changeValue);
+		changeValue.setText(UIText.ConfigurationEditorComponent_ChangeButton);
+		changeValue.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection sel = (IStructuredSelection) tv
+						.getSelection();
+				Object first = sel.getFirstElement();
+				if (first instanceof Entry) {
+					Entry entry = (Entry) first;
+					entry.changeValue(valueText.getText());
+					saveAndUpdate();
+				}
+			}
+		});
+		deleteValue = new Button(buttonContainer, SWT.PUSH);
+		GridDataFactory.fillDefaults().applyTo(deleteValue);
+		deleteValue.setText(UIText.ConfigurationEditorComponent_DeleteButton);
+		deleteValue.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection sel = (IStructuredSelection) tv
+						.getSelection();
+				Object first = sel.getFirstElement();
+				if (first instanceof Entry) {
+					Entry entry = (Entry) first;
+					entry.removeValue();
+					saveAndUpdate();
+				}
+
+			}
+		});
+		addValue = new Button(buttonContainer, SWT.PUSH);
+		GridDataFactory.fillDefaults().applyTo(addValue);
+		addValue.setText(UIText.ConfigurationEditorComponent_AddButton);
+		addValue.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection sel = (IStructuredSelection) tv
+						.getSelection();
+				Object first = sel.getFirstElement();
+				if (first instanceof Entry) {
+					Entry entry = (Entry) first;
+					entry.addValue(valueText.getText());
+					saveAndUpdate();
+				}
+
+			}
+		});
+
+		tv.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				updateEnablement();
+			}
+		});
+
+		valueText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (valueText.getText().length() == 0) {
+					setErrorMessage(UIText.ConfigurationEditorComponent_EmptyStringNotAllowed);
+					changeValue.setEnabled(false);
+				} else {
+					setErrorMessage(null);
+					changeValue.setEnabled(true);
+				}
+			}
+		});
+
+		try {
+			editableConfig.load();
+			tv.setInput(editableConfig);
+			if (editableConfig instanceof FileBasedConfig) {
+				location.setText(((FileBasedConfig) editableConfig).getFile()
+						.getPath());
+			}
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		} catch (ConfigInvalidException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+		tv.expandAll();
+		updateEnablement();
+		return main;
+	}
+

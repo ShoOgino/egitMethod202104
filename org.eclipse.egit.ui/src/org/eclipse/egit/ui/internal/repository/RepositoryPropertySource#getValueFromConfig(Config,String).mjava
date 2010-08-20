@@ -1,5 +1,4 @@
 	private Object getValueFromConfig(Config config, String keyString) {
-
 		StringTokenizer tok = new StringTokenizer(keyString, "."); //$NON-NLS-1$
 
 		String section;
@@ -16,11 +15,14 @@
 			subsection = tok.nextToken();
 			name = tok.nextToken();
 		} else {
-			// TODO exception?
-			return null;
+			return ""; //$NON-NLS-1$
 		}
 
-		valueList = config.getStringList(section, subsection, name);
+		if (getSingleValueMode())
+			valueList = new String[] { config.getString(section, subsection,
+					name) };
+		else
+			valueList = config.getStringList(section, subsection, name);
 
 		if (valueList == null || valueList.length == 0)
 			return null;
@@ -30,13 +32,12 @@
 		}
 
 		StringBuilder sb = new StringBuilder();
-		for (String value: valueList){
+		for (String value : valueList) {
 			sb.append('[');
 			sb.append(value);
 			sb.append(']');
 		}
 
 		return sb.toString();
-
 	}
 

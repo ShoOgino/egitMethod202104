@@ -1,7 +1,4 @@
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-
-		// initFromConfig();
-
 		try {
 			userHomeConfig.load();
 			repositoryConfig.load();
@@ -14,69 +11,61 @@
 
 		List<IPropertyDescriptor> resultList = new ArrayList<IPropertyDescriptor>();
 
-		List<String> configuredKeys = getConfiguredKeys();
-
-		boolean effectiveMode = false;
-
-		ActionContributionItem item = (ActionContributionItem) myPage.getSite()
-				.getActionBars().getToolBarManager().find(
-						modeToggleAction.getId());
-		if (item != null) {
-			effectiveMode = ((Action) item.getAction()).isChecked();
-		}
-
-		if (effectiveMode) {
-			for (String key : configuredKeys) {
-
-				for (String sub : getSubSections(effectiveConfig, key)) {
-					PropertyDescriptor desc = new PropertyDescriptor(
-							EFFECTIVE_ID_PREFIX + sub, sub);
-
-					desc
-							.setCategory(UIText.RepositoryPropertySource_EffectiveConfigurationCategory);
-					resultList.add(desc);
-				}
-
-			}
-		} else {
-
-			String categoryString = UIText.RepositoryPropertySource_GlobalConfigurationCategory
-					+ userHomeConfig.getFile().getAbsolutePath();
-			for (String key : configuredKeys) {
-
-				// no remote configuration globally....
-				if (key.startsWith(RepositoriesView.REMOTE + ".")) //$NON-NLS-1$
-					continue;
-
-				for (String sub : getSubSections(effectiveConfig, key)) {
-					TextPropertyDescriptor desc = new TextPropertyDescriptor(
-							USER_ID_PREFIX + sub, sub);
-					desc.setCategory(categoryString);
-					resultList.add(desc);
-				}
-			}
-
-			categoryString = UIText.RepositoryPropertySource_RepositoryConfigurationCategory;
+		StoredConfig config;
+		String category;
+		String prefix;
+		switch (getCurrentMode()) {
+		case EFFECTIVE:
+			prefix = EFFECTIVE_ID_PREFIX;
+			category = UIText.RepositoryPropertySource_EffectiveConfigurationCategory;
+			config = effectiveConfig;
+			break;
+		case REPO: {
+			prefix = REPO_ID_PREFIX;
+			String location = ""; //$NON-NLS-1$
 			if (repositoryConfig instanceof FileBasedConfig) {
-				categoryString += ((FileBasedConfig) repositoryConfig)
-						.getFile().getAbsolutePath();
+				location = ((FileBasedConfig) repositoryConfig).getFile()
+						.getAbsolutePath();
 			}
+			category = NLS
+					.bind(
+							UIText.RepositoryPropertySource_RepositoryConfigurationCategory,
+							location);
+			config = repositoryConfig;
+			break;
+		}
+		case USER: {
+			prefix = USER_ID_PREFIX;
+			String location = ""; //$NON-NLS-1$
+			if (userHomeConfig instanceof FileBasedConfig) {
+				location = ((FileBasedConfig) userHomeConfig).getFile()
+						.getAbsolutePath();
+			}
+			category = NLS
+					.bind(
+							UIText.RepositoryPropertySource_GlobalConfigurationCategory,
+							location);
 
-			boolean editable = true;
-
-			for (String key : configuredKeys) {
-
-				// remote stuff is not configurable
-				editable = !key.startsWith("remote"); //$NON-NLS-1$
-
-				for (String sub : getSubSections(effectiveConfig, key)) {
-					PropertyDescriptor desc;
-					if (editable)
-						desc = new TextPropertyDescriptor(REPO_ID_PREFIX + sub,
-								sub);
-					else
-						desc = new PropertyDescriptor(REPO_ID_PREFIX + sub, sub);
-					desc.setCategory(categoryString);
+			config = userHomeConfig;
+			break;
+		}
+		default:
+			return new IPropertyDescriptor[0];
+		}
+		for (String key : config.getSections()) {
+			for (String sectionItem : config.getNames(key)) {
+				String sectionId = key + "." + sectionItem; //$NON-NLS-1$
+				PropertyDescriptor desc = new PropertyDescriptor(prefix
+						+ sectionId, sectionId);
+				desc.setCategory(category);
+				resultList.add(desc);
+			}
+			for (String sub : config.getSubsections(key)) {
+				for (String sectionItem : config.getNames(key, sub)) {
+					String sectionId = key + "." + sub + "." + sectionItem; //$NON-NLS-1$ //$NON-NLS-2$
+					PropertyDescriptor desc = new PropertyDescriptor(prefix
+							+ sectionId, sectionId);
+					desc.setCategory(category);
 					resultList.add(desc);
 				}
 			}

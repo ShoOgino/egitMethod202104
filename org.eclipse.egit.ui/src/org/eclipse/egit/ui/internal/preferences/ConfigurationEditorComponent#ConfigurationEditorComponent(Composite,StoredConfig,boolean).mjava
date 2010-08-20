@@ -1,0 +1,16 @@
+	/**
+	 * @param parent
+	 *            the parent
+	 * @param config
+	 *            to be used instead of the user configuration
+	 * @param useDialogFont
+	 *            if <code>true</code>, the current dialog font is used
+	 */
+	public ConfigurationEditorComponent(Composite parent, StoredConfig config,
+			boolean useDialogFont) {
+		editableConfig = config;
+		this.shellProvider = new SameShellProvider(parent);
+		this.parent = parent;
+		this.useDialogFont = useDialogFont;
+	}
+

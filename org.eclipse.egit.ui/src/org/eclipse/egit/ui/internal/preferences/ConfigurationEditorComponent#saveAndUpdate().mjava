@@ -1,8 +1,8 @@
 	private void saveAndUpdate() {
 		try {
-			userConfig.save();
+			editableConfig.save();
 			ISelection sel = tv.getSelection();
-			tv.setInput(userConfig);
+			tv.setInput(editableConfig);
 			tv.expandAll();
 			tv.setSelection(sel, true);
 		} catch (IOException e) {

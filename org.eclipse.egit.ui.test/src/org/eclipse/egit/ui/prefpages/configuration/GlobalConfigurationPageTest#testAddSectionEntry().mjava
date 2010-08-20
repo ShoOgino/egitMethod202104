@@ -1,8 +1,7 @@
 	@Test
 	public void testAddSectionEntry() throws Exception {
 		preferencePage.bot().button(
-				UIText.GlobalConfigurationPreferencePage_NewValueButton)
-				.click();
+				UIText.ConfigurationEditorComponent_NewValueButton).click();
 		SWTBotShell addDialog = bot
 				.shell(UIText.AddConfigEntryDialog_AddConfigTitle);
 		addDialog.activate();

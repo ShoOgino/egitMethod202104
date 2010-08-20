@@ -12,7 +12,9 @@
 					String[] values = userConfig.getStringList(section.name,
 							null, entryName);
 					if (values.length == 1)
-						result.add(new Entry(section, entryName, values[0], -1));
+						result
+								.add(new Entry(section, entryName, values[0],
+										-1));
 					else {
 						int index = 0;
 						for (String value : values)
