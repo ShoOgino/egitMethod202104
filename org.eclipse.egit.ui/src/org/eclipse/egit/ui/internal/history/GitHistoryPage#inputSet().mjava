@@ -75,14 +75,8 @@
 
 		try {
 			if (showAllBranches) {
-				for (Entry<String, Ref> refEntry : db.getRefDatabase()
-						.getRefs(Constants.R_HEADS).entrySet()) {
-					Ref ref = refEntry.getValue();
-					if (ref.isSymbolic())
-						continue;
-					currentWalk.markStart(currentWalk.parseCommit(ref
-							.getObjectId()));
-				}
+				markStartAllRefs(Constants.R_HEADS);
+				markStartAllRefs(Constants.R_REMOTES);
 			} else
 				currentWalk.markStart(currentWalk.parseCommit(headId));
 		} catch (IOException e) {
