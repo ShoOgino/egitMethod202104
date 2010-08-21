@@ -2,11 +2,10 @@
 		RevWalk walk = new RevWalk(repository);
 		try {
 			if (refName != null) {
-				newCommit = walk.parseCommit(repository.resolve(refName))
-						.asCommit(walk);
+				newCommit = walk.parseCommit(repository.resolve(refName));
 			}
 			if (commitId != null) {
-				newCommit = walk.parseCommit(commitId).asCommit(walk);
+				newCommit = walk.parseCommit(commitId);
 			}
 		} catch (IOException e) {
 			throw new TeamException(NLS.bind(
@@ -14,8 +13,7 @@
 		}
 
 		try {
-			oldCommit = walk.parseCommit(repository.resolve(Constants.HEAD))
-					.asCommit(walk);
+			oldCommit = walk.parseCommit(repository.resolve(Constants.HEAD));
 		} catch (IOException e) {
 			throw new TeamException(CoreText.BranchOperation_mappingCommitHead,
 					e);

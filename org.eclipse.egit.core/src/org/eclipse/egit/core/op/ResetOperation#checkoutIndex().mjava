@@ -2,7 +2,7 @@
 		final File parentFile = repository.getWorkTree();
 		try {
 			WorkDirCheckout workDirCheckout =
-				new WorkDirCheckout(repository, parentFile, index, newTree);
+				new WorkDirCheckout(repository, parentFile, index, repository.mapTree(newTree));
 			workDirCheckout.setFailOnConflict(false);
 			workDirCheckout.checkout();
 		} catch (IOException e) {

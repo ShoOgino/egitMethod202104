@@ -1,9 +1,8 @@
 	private void updateTagObject() throws TeamException {
-		ObjectId startPointRef = tag.getObjId();
+		ObjectId startPointRef = tag.getObjectId();
 
 		try {
-			ObjectLoader object = repo.open(startPointRef);
-			tag.setType(Constants.typeString(object.getType()));
+			repo.open(startPointRef);
 			ObjectWriter objWriter = new ObjectWriter(repo);
 			tag.setTagId(objWriter.writeTag(tag));
 		} catch (IOException e) {

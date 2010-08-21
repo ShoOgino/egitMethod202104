@@ -2,7 +2,7 @@
 		try {
 			newTree = commit.getTree();
 			index = repository.getIndex();
-			index.readTree(newTree);
+			index.readTree(repository.mapTree(newTree));
 		} catch (IOException e) {
 			throw new TeamException(CoreText.ResetOperation_readingIndex, e);
 		}

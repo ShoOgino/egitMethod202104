@@ -1,7 +1,7 @@
 	private void writeRef() throws TeamException {
 		try {
 			final RefUpdate ru = repository.updateRef(Constants.HEAD);
-			ru.setNewObjectId(commit.getCommitId());
+			ru.setNewObjectId(commit.getId());
 			String name = refName;
 			if (name.startsWith("refs/heads/"))  //$NON-NLS-1$
 				name = name.substring(11);

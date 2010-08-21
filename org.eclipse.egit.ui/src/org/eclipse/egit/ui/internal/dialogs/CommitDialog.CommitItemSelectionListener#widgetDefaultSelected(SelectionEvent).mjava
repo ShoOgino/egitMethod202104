@@ -16,13 +16,13 @@
 			}
 			Repository repository = mapping.getRepository();
 
-			Commit headCommit;
 			try {
-				headCommit = repository.mapCommit(Constants.HEAD);
+				ObjectId id = repository.resolve(Constants.HEAD);
+				if (id == null
+						|| repository.open(id, Constants.OBJ_COMMIT).getType() != Constants.OBJ_COMMIT) {
+					return;
+				}
 			} catch (IOException e1) {
-				headCommit = null;
-			}
-			if (headCommit == null) {
 				return;
 			}
 

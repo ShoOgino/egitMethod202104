@@ -54,12 +54,11 @@
 				Map<String, Ref> tags = repository.getRefDatabase().getRefs(
 						Constants.R_TAGS);
 				for (Ref tagRef : tags.values()) {
-					Tag tag = rw.parseTag(repository.resolve(tagRef.getName()))
-							.asTag(rw);
-					if (tag.getObjId().name().equals(commitId)) {
+					RevTag tag = rw.parseTag(repository.resolve(tagRef.getName()));
+					if (tag.getObject().name().equals(commitId)) {
 						Date timestamp;
-						if (tag.getTagger() != null) {
-							timestamp = tag.getTagger().getWhen();
+						if (tag.getTaggerIdent() != null) {
+							timestamp = tag.getTaggerIdent().getWhen();
 						} else {
 							timestamp = null;
 						}

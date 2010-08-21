@@ -19,9 +19,9 @@
 				break;
 			case Constants.OBJ_TAG:
 				RevWalk walk = new RevWalk(db);
-				Tag t = walk.parseTag(objectId).asTag(walk);
+				RevTag t = walk.parseTag(objectId);
 				appendObjectSummary(sb, UIText.RefContentProposal_tag, t
-						.getTagger(), t.getMessage());
+						.getTaggerIdent(), t.getFullMessage());
 				break;
 			case Constants.OBJ_TREE:
 				sb.append(UIText.RefContentProposal_tree);

@@ -29,22 +29,20 @@
 		dialog.setRevCommitList(revCommits);
 
 		// get and set existing tags
-		List<Tag> tags = getRevTags(repo);
+		List<RevTag> tags = getRevTags(repo);
 		dialog.setExistingTags(tags);
 
 		if (dialog.open() != IDialogConstants.OK_ID)
 			return null;
 
-		final Tag tag = new Tag(repo);
+		final Tag tag = new Tag();
 		PersonIdent personIdent = new PersonIdent(repo);
 		String tagName = dialog.getTagName();
 
 		tag.setTag(tagName);
 		tag.setTagger(personIdent);
 		tag.setMessage(dialog.getTagMessage());
-
-		ObjectId tagCommit = getTagCommit(dialog.getTagCommit(), repo);
-		tag.setObjId(tagCommit);
+		tag.setObjectId(getTagTarget(dialog.getTagCommit(), repo));
 
 		String tagJobName = NLS.bind(UIText.TagAction_creating, tagName);
 		final boolean shouldMoveTag = dialog.shouldOverWriteTag();

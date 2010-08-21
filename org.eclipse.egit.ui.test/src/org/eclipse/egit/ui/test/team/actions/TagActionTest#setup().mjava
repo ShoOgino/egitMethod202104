@@ -6,11 +6,11 @@
 		repositoryFile = createProjectAndCommitToRepository();
 		Repository repo = lookupRepository(repositoryFile);
 
-		Tag tag = new Tag(repo);
+		Tag tag = new Tag();
 		tag.setTag("SomeTag");
 		tag.setTagger(new PersonIdent(TestUtil.TESTAUTHOR));
 		tag.setMessage("I'm just a little tag");
-		tag.setObjId(repo.resolve(repo.getFullBranch()));
+		tag.setObjectId(repo.resolve(repo.getFullBranch()), Constants.OBJ_COMMIT);
 		TagOperation top = new TagOperation(repo, tag, false);
 		top.execute(null);
 		touchAndSubmit(null);

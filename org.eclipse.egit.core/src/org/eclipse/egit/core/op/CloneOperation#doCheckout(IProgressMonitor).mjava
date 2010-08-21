@@ -4,17 +4,24 @@
 			return;
 
 		final GitIndex index = new GitIndex(local);
-		final Commit mapCommit = local.mapCommit(head.getObjectId());
-		final Tree tree = mapCommit.getTree();
+		final RevWalk rw = new RevWalk(local);
+		final RevCommit mapCommit;
+		try {
+			mapCommit = rw.parseCommit(head.getObjectId());
+		} finally {
+			rw.release();
+		}
+
 		final RefUpdate u;
 		final WorkDirCheckout co;
 
 		u = local.updateRef(Constants.HEAD);
-		u.setNewObjectId(mapCommit.getCommitId());
+		u.setNewObjectId(mapCommit.getId());
 		u.forceUpdate();
 
 		monitor.setTaskName(CoreText.CloneOperation_checkingOutFiles);
-		co = new WorkDirCheckout(local, local.getWorkTree(), index, tree);
+		co = new WorkDirCheckout(local, local.getWorkTree(), index, local
+				.mapTree(mapCommit.getTree()));
 		co.checkout();
 		monitor.setTaskName(CoreText.CloneOperation_writingIndex);
 		index.write();

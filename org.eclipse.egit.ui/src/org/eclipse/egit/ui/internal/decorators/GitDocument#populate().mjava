@@ -28,15 +28,20 @@
 			setResolved(null, null, null, ""); //$NON-NLS-1$
 			return;
 		}
-		Commit baselineCommit = repository.mapCommit(commitId);
-		if (baselineCommit == null) {
+		RevWalk rw = new RevWalk(repository);
+		RevCommit baselineCommit;
+		try {
+			baselineCommit = rw.parseCommit(commitId);
+		} catch (IOException err) {
 			String msg = NLS.bind(UIText.GitDocument_errorLoadCommit,
 					new Object[] { commitId, baseline, resource, repository });
-			Activator.logError(msg, new Throwable());
+			Activator.logError(msg, err);
 			setResolved(null, null, null, ""); //$NON-NLS-1$
 			return;
+		} finally {
+			rw.release();
 		}
-		ObjectId treeId = baselineCommit.getTreeId();
+		RevTree treeId = baselineCommit.getTree();
 		if (treeId.equals(lastTree)) {
 			if (GitTraceLocation.QUICKDIFF.isActive())
 				GitTraceLocation.getTrace().trace(
@@ -44,7 +49,7 @@
 						"(GitDocument) already resolved"); //$NON-NLS-1$
 			return;
 		}
-		Tree baselineTree = baselineCommit.getTree();
+		Tree baselineTree = repository.mapTree(treeId);
 		if (baselineTree == null) {
 			String msg = NLS.bind(UIText.GitDocument_errorLoadTree,
 					new Object[] { treeId, baseline, resource, repository });

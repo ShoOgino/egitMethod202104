@@ -1,7 +1,8 @@
 	private void checkoutTree() throws TeamException {
 		try {
-			new WorkDirCheckout(repository, repository.getWorkTree(), oldTree,
-					index, newTree).checkout();
+			new WorkDirCheckout(repository, repository.getWorkTree(),
+					repository.mapTree(oldTree), index, repository
+							.mapTree(newTree)).checkout();
 		} catch (CheckoutConflictException e) {
 			TeamException teamException = new TeamException(e.getMessage());
 			throw teamException;

@@ -9,13 +9,13 @@
 			RefUpdate u = repository.updateRef(Constants.HEAD, detach);
 			Result res;
 			if (detach) {
-				u.setNewObjectId(newCommit.getCommitId());
+				u.setNewObjectId(newCommit.getId());
 				// using forceUpdate instead of update avoids
 				// the merge tests which would otherwise make
 				// this fail
 				u.setRefLogMessage(NLS.bind(
 						CoreText.BranchOperation_checkoutMovingTo, newCommit
-								.getCommitId().toString()), false);
+								.getId().name()), false);
 				res = u.forceUpdate();
 			} else {
 				u.setRefLogMessage(NLS.bind(

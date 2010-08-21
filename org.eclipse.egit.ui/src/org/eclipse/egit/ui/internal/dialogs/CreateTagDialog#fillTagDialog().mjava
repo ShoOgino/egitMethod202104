@@ -3,11 +3,11 @@
 				.getSelection();
 		Object firstSelected = selection.getFirstElement();
 
-		if (firstSelected instanceof Tag) {
-			tag = (Tag) firstSelected;
+		if (firstSelected instanceof RevTag) {
+			tag = (RevTag) firstSelected;
 
 			if (!overwriteButton.isEnabled()) {
-				String tagMessageValue = tag.getMessage();
+				String tagMessageValue = tag.getFullMessage();
 				// don't enable OK button if we are dealing with un-annotated
 				// tag because JGit doesn't support them
 				if (tagMessageValue != null
