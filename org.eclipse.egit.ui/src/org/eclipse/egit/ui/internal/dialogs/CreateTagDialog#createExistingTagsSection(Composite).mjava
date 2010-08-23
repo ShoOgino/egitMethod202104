@@ -29,10 +29,10 @@
 			@Override
 			public boolean select(Viewer viewer, Object parentElement,
 					Object element) {
-				Tag actTag = (Tag) element;
+				RevTag actTag = (RevTag) element;
 
 				if (tagNamePattern != null)
-					return tagNamePattern.matcher(actTag.getTag()).find();
+					return tagNamePattern.matcher(actTag.getTagName()).find();
 				else
 					return true;
 			}
