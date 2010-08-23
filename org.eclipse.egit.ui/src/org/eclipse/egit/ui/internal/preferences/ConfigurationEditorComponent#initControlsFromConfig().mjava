@@ -1,0 +1,17 @@
+	private void initControlsFromConfig() {
+		try {
+			editableConfig.load();
+			tv.setInput(editableConfig);
+			if (editableConfig instanceof FileBasedConfig) {
+				location.setText(((FileBasedConfig) editableConfig).getFile()
+						.getPath());
+			}
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		} catch (ConfigInvalidException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+		tv.expandAll();
+		updateEnablement();
+	}
+

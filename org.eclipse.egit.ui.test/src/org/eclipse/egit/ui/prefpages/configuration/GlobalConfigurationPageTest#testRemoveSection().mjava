@@ -14,6 +14,8 @@
 				.shell(UIText.ConfigurationEditorComponent_RemoveSectionTitle);
 		confirm.activate();
 		confirm.bot().button(IDialogConstants.OK_LABEL).click();
+		// close the editor
+		preferencePage.bot().button(IDialogConstants.OK_LABEL).click();
 		config.load();
 		assertTrue("Values in section should be deleted", config.getStringList(
 				TESTSECTION, null, TESTNAME).length == 0);
