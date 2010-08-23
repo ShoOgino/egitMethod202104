@@ -10,6 +10,8 @@
 				TESTNAME + "[0]").select();
 
 		bot.button(UIText.ConfigurationEditorComponent_DeleteButton).click();
+		// close the editor
+		preferencePage.bot().button(IDialogConstants.OK_LABEL).click();
 		config.load();
 		values = Arrays.asList(config
 				.getStringList(TESTSECTION, null, TESTNAME));

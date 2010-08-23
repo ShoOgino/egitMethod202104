@@ -1,0 +1,15 @@
+	/**
+	 * Restores and (in case of success) reloads the current configuration
+	 *
+	 * @throws IOException
+	 */
+	public void restore() throws IOException {
+		try {
+			editableConfig.load();
+			tv.refresh();
+		} catch (ConfigInvalidException e) {
+			throw new IOException(e.getMessage());
+		}
+		initControlsFromConfig();
+	}
+

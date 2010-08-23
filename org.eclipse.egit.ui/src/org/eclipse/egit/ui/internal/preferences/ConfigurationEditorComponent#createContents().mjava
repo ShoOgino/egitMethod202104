@@ -102,11 +102,11 @@
 					if (st.countTokens() == 2) {
 						editableConfig.setString(st.nextToken(), null, st
 								.nextToken(), dlg.getValue());
-						saveAndUpdate();
+						markDirty();
 					} else if (st.countTokens() == 3) {
 						editableConfig.setString(st.nextToken(),
 								st.nextToken(), st.nextToken(), dlg.getValue());
-						saveAndUpdate();
+						markDirty();
 					} else
 						Activator
 								.handleError(
@@ -138,7 +138,7 @@
 													UIText.ConfigurationEditorComponent_RemoveSectionMessage,
 													section.name))) {
 						editableConfig.unsetSection(section.name, null);
-						saveAndUpdate();
+						markDirty();
 					}
 				} else if (first instanceof SubSection) {
 					SubSection section = (SubSection) first;
@@ -153,7 +153,7 @@
 															+ section.name))) {
 						editableConfig.unsetSection(section.parent.name,
 								section.name);
-						saveAndUpdate();
+						markDirty();
 					}
 				} else {
 					Activator
@@ -192,7 +192,7 @@
 				if (first instanceof Entry) {
 					Entry entry = (Entry) first;
 					entry.changeValue(valueText.getText());
-					saveAndUpdate();
+					markDirty();
 				}
 			}
 		});
@@ -208,7 +208,7 @@
 				if (first instanceof Entry) {
 					Entry entry = (Entry) first;
 					entry.removeValue();
-					saveAndUpdate();
+					markDirty();
 				}
 
 			}
@@ -225,7 +225,7 @@
 				if (first instanceof Entry) {
 					Entry entry = (Entry) first;
 					entry.addValue(valueText.getText());
-					saveAndUpdate();
+					markDirty();
 				}
 
 			}
@@ -249,20 +249,7 @@
 			}
 		});
 
-		try {
-			editableConfig.load();
-			tv.setInput(editableConfig);
-			if (editableConfig instanceof FileBasedConfig) {
-				location.setText(((FileBasedConfig) editableConfig).getFile()
-						.getPath());
-			}
-		} catch (IOException e) {
-			Activator.handleError(e.getMessage(), e, true);
-		} catch (ConfigInvalidException e) {
-			Activator.handleError(e.getMessage(), e, true);
-		}
-		tv.expandAll();
-		updateEnablement();
+		initControlsFromConfig();
 		return main;
 	}
 

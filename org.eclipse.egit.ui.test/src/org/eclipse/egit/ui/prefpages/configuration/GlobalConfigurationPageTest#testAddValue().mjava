@@ -9,6 +9,8 @@
 				UIText.ConfigurationEditorComponent_ValueLabel).setText(
 				"second");
 		bot.button(UIText.ConfigurationEditorComponent_AddButton).click();
+		// press apply
+		preferencePage.bot().button(JFaceResources.getString("apply")).click();
 		config.load();
 		List<String> values = Arrays.asList(config.getStringList(TESTSECTION,
 				null, TESTNAME));
@@ -22,6 +24,8 @@
 				UIText.ConfigurationEditorComponent_ValueLabel).setText(
 				"middle");
 		bot.button(UIText.ConfigurationEditorComponent_AddButton).click();
+		// close the editor
+		preferencePage.bot().button(IDialogConstants.OK_LABEL).click();
 		config.load();
 		values = Arrays.asList(config
 				.getStringList(TESTSECTION, null, TESTNAME));

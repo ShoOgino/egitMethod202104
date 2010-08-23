@@ -3,13 +3,19 @@
 			Composite main = (Composite) super.createDialogArea(parent);
 			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true,
 					true).applyTo(main);
-			Control result = new ConfigurationEditorComponent(main, myConfig,
-					true) {
+			editor = new ConfigurationEditorComponent(main, myConfig, true) {
 				@Override
 				protected void setErrorMessage(String message) {
 					EditDialog.this.setErrorMessage(message);
 				}
-			}.createContents();
+
+				@Override
+				protected void setDirty(boolean dirty) {
+					getButton(IDialogConstants.OK_ID).setEnabled(dirty);
+				}
+			};
+
+			Control result = editor.createContents();
 			applyDialogFont(main);
 			return result;
 		}

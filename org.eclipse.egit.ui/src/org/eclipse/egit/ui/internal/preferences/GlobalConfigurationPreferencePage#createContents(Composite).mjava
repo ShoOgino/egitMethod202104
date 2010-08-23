@@ -1,12 +1,19 @@
 	@Override
 	protected Control createContents(Composite parent) {
-		Control result = new ConfigurationEditorComponent(parent, userConfig,
-				true) {
+
+		editor = new ConfigurationEditorComponent(parent, userConfig, true) {
 			@Override
 			protected void setErrorMessage(String message) {
 				GlobalConfigurationPreferencePage.this.setErrorMessage(message);
 			}
-		}.createContents();
+
+			@Override
+			protected void setDirty(boolean dirty) {
+				isDirty = dirty;
+				updateApplyButton();
+			}
+		};
+		Control result = editor.createContents();
 		Dialog.applyDialogFont(result);
 		return result;
 	}

@@ -31,6 +31,8 @@
 		preferencePage.bot().textWithLabel(
 				UIText.ConfigurationEditorComponent_ValueLabel).setText("new");
 		bot.button(UIText.ConfigurationEditorComponent_ChangeButton).click();
+		// close the editor
+		preferencePage.bot().button(IDialogConstants.OK_LABEL).click();
 		config.load();
 		assertEquals(1, Arrays.asList(
 				config.getStringList(TESTSECTION, null, TESTNAME)).indexOf(

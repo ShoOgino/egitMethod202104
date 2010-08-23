@@ -1,0 +1,11 @@
+	/**
+	 * Saves and (in case of success) reloads the current configuration
+	 *
+	 * @throws IOException
+	 */
+	public void save() throws IOException {
+		editableConfig.save();
+		setDirty(false);
+		initControlsFromConfig();
+	}
+
