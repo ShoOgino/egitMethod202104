@@ -6,14 +6,16 @@
 		final ITypedElement base;
 		final ITypedElement next;
 
-		if (d.getBlobs().length == 2) {
+		if (d.getBlobs().length == 2 && !d.getChange().equals(ChangeType.ADD))
 			base = CompareUtils.getFileRevisionTypedElement(p, c.getParent(0), db, d.getBlobs()[0]);
-			next = CompareUtils.getFileRevisionTypedElement(p, c, db, d.getBlobs()[1]);
-		} else {
+		else
 			// Initial import
 			base = new GitCompareFileRevisionEditorInput.EmptyTypedElement(""); //$NON-NLS-1$
-			next = CompareUtils.getFileRevisionTypedElement(p, c, db, d.getBlobs()[0]);
-		}
+
+		if (d.getChange().equals(ChangeType.DELETE))
+			next = new GitCompareFileRevisionEditorInput.EmptyTypedElement(""); //$NON-NLS-1$
+		else
+			next = CompareUtils.getFileRevisionTypedElement(p, c, db, d.getBlobs()[1]);
 
 		in = new GitCompareFileRevisionEditorInput(next, base, null);
 		CompareUI.openCompareEditor(in);

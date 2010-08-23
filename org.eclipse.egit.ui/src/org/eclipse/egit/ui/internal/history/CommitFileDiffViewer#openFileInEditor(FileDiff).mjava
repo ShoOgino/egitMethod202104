@@ -4,8 +4,10 @@
 					.getActiveWorkbenchWindow();
 			IWorkbenchPage page = window.getActivePage();
 			IFileRevision rev = CompareUtils.getFileRevision(d.getPath(),
-					d.getChange().equals("D")? d.getCommit().getParent(0) : d.getCommit(), //$NON-NLS-1$
-					db, d.getChange().equals("D")? d.getBlobs()[0] : d.getBlobs()[1]); //$NON-NLS-1$
+					d.getChange().equals(ChangeType.DELETE)?
+							d.getCommit().getParent(0) : d.getCommit(),
+					db, d.getChange().equals(ChangeType.DELETE)?
+							d.getBlobs()[0] : d.getBlobs()[1]);
 			if (rev != null)
 				EgitUiEditorUtils.openEditor(page, rev,
 						new NullProgressMonitor());
