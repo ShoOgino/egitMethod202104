@@ -1,14 +1,13 @@
 	public String getDescription() {
 		if (objectId == null)
 			return null;
-		final ObjectLoader loader;
+		ObjectReader reader = db.newObjectReader();
 		try {
-			loader = db.open(objectId);
-
+			final ObjectLoader loader = reader.open(objectId);
 			final StringBuilder sb = new StringBuilder();
 			sb.append(refName);
 			sb.append('\n');
-			sb.append(objectId.abbreviate(db).name());
+			sb.append(reader.abbreviate(objectId).name());
 			sb.append(" - "); //$NON-NLS-1$
 
 			switch (loader.getType()) {
@@ -37,6 +36,8 @@
 			Activator.logError(NLS.bind(
 					UIText.RefContentProposal_errorReadingObject, objectId), e);
 			return null;
+		} finally {
+			reader.release();
 		}
 	}
 

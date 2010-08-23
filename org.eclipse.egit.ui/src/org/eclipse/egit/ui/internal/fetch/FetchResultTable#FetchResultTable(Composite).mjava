@@ -16,6 +16,9 @@
 
 		tablePanel.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
+				if (reader != null)
+					reader.release();
+
 				// dispose of our allocated Color instances
 				rejectedColor.dispose();
 				updatedColor.dispose();
