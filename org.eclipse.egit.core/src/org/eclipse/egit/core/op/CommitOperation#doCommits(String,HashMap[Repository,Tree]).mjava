@@ -49,8 +49,13 @@
 			commit.setCommitter(new PersonIdent(committerIdent, commitDate,
 					timeZone));
 
-			ObjectWriter writer = new ObjectWriter(repo);
-			commit.setCommitId(writer.writeCommit(commit));
+			ObjectInserter inserter = repo.newObjectInserter();
+			try {
+				inserter.insert(commit);
+				inserter.flush();
+			} finally {
+				inserter.release();
+			}
 
 			final RefUpdate ru = repo.updateRef(Constants.HEAD);
 			ru.setNewObjectId(commit.getCommitId());
