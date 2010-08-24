@@ -1,0 +1,36 @@
+	public void createControl(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(3, false));
+		Label directoryLabel = new Label(main, SWT.NONE);
+		directoryLabel.setText(UIText.CreateRepositoryPage_DirectoryLabel);
+		directoryText = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+				false).applyTo(directoryText);
+		Button browseButton = new Button(main, SWT.PUSH);
+		browseButton.setText(UIText.CreateRepositoryPage_BrowseButton);
+		browseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String previous = directoryText.getText();
+				File previousFile = new File(previous);
+				String result;
+				DirectoryDialog dialog = new DirectoryDialog(getShell());
+				if (previousFile.exists() && previousFile.isDirectory()) {
+					dialog.setFilterPath(previousFile.getPath());
+				}
+				result = dialog.open();
+				if (result != null)
+					directoryText.setText(result);
+			}
+		});
+		bareButton = new Button(main, SWT.CHECK);
+		bareButton.setText(UIText.CreateRepositoryPage_BareCheckbox);
+		GridDataFactory.fillDefaults().indent(10, 0).span(3, 1).applyTo(bareButton);
+		directoryText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+		setControl(main);
+	}
+

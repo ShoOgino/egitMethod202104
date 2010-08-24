@@ -1,0 +1,18 @@
+	@Override
+	public boolean performFinish() {
+		RepositoryCache cache = Activator.getDefault().getRepositoryCache();
+		try {
+			File repoFile = new File(myCreatePage.getDirectory());
+			if (!myCreatePage.getBare())
+				repoFile = new File(repoFile, Constants.DOT_GIT);
+
+			Repository newRepo = cache.lookupRepository(repoFile);
+			newRepo.create(myCreatePage.getBare());
+			Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+					repoFile);
+		} catch (IOException e) {
+			org.eclipse.egit.ui.Activator.handleError(e.getMessage(), e, false);
+		}
+		return true;
+	}
+

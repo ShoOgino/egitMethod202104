@@ -1,0 +1,29 @@
+	void checkPage() {
+		setErrorMessage(null);
+		try {
+			String dir = directoryText.getText();
+			if (dir.length() == 0) {
+				setErrorMessage(UIText.CreateRepositoryPage_PleaseSelectDirectoryMessage);
+				return;
+			}
+			File testFile = new File(dir);
+			IPath path = new Path(dir);
+			if (!path.isAbsolute()) {
+				setErrorMessage(UIText.CreateRepositoryPage_PleaseUseAbsoluePathMessage);
+				return;
+			}
+			if (testFile.exists() && !testFile.isDirectory()) {
+				setErrorMessage(NLS.bind(
+						UIText.CreateRepositoryPage_NotADirectoryMessage, dir));
+				return;
+			}
+			if (testFile.exists() && testFile.list().length > 0) {
+				setErrorMessage(NLS.bind(
+						UIText.CreateRepositoryPage_NotEmptyMessage, dir));
+				return;
+			}
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+
