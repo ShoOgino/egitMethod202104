@@ -22,8 +22,14 @@
 						}
 					}
 				}
-				ObjectWriter writer = new ObjectWriter(tree.getRepository());
-				tree.setId(writer.writeTree(tree));
+
+				ObjectInserter inserter = tree.getRepository().newObjectInserter();
+				try {
+					tree.setId(inserter.insert(Constants.OBJ_TREE, tree.format()));
+					inserter.flush();
+				} finally {
+					inserter.release();
+				}
 			} catch (IOException e) {
 				throw new TeamException(
 						CoreText.CommitOperation_errorWritingTrees, e);

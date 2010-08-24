@@ -3,8 +3,13 @@
 
 		try {
 			repo.open(startPointRef);
-			ObjectWriter objWriter = new ObjectWriter(repo);
-			tag.setTagId(objWriter.writeTag(tag));
+			ObjectInserter inserter = repo.newObjectInserter();
+			try {
+				inserter.insert(tag);
+				inserter.flush();
+			} finally {
+				inserter.release();
+			}
 		} catch (IOException e) {
 			throw new TeamException(NLS.bind(CoreText.TagOperation_objectIdNotFound,
 					tag.getTag(), e.getMessage()), e);
