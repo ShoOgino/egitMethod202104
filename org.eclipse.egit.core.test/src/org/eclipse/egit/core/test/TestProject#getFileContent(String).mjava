@@ -1,0 +1,6 @@
+	public String getFileContent(String filepath) throws Exception {
+		IFile file = project.getFile(filepath);
+		InputStream stream = file.getContents();
+		return testUtils.slurpAndClose(stream);
+	}
+

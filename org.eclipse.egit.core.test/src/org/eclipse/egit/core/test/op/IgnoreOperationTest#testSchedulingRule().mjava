@@ -1,0 +1,11 @@
+	@Test
+	public void testSchedulingRule() throws Exception {
+		IFolder binFolder = project.getProject().getFolder("bin");
+		IgnoreOperation operation = new IgnoreOperation(
+				new IResource[] { binFolder });
+		NullProgressMonitor monitor = new NullProgressMonitor();
+		operation.execute(monitor);
+
+		assertNotNull(operation.getSchedulingRule());
+	}
+

@@ -1,0 +1,12 @@
+	@Test
+	public void testIgnoreFileCancel() throws Exception {
+		IFolder binFolder = project.getProject().getFolder("bin");
+		IgnoreOperation operation = new IgnoreOperation(
+				new IResource[] { binFolder });
+		NullProgressMonitor monitor = new NullProgressMonitor();
+		monitor.setCanceled(true);
+		operation.execute(monitor);
+
+		assertFalse(project.getProject().getFile(Constants.GITIGNORE_FILENAME).exists());
+	}
+
