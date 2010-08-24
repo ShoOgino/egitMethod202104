@@ -2,7 +2,7 @@
 	public void addTag() throws Exception {
 		assertTrue("Tags should be empty", repository1.getRepository()
 				.getTags().isEmpty());
-		Tag newTag = new Tag();
+		TagBuilder newTag = new TagBuilder();
 		newTag.setTag("TheNewTag");
 		newTag.setMessage("Well, I'm the tag");
 		newTag.setTagger(new PersonIdent(TestUtils.AUTHOR));

@@ -11,7 +11,7 @@
 		if (dialog.open() != Window.OK)
 			return null;
 
-		final Tag tag = new Tag();
+		final TagBuilder tag = new TagBuilder();
 		PersonIdent personIdent = new PersonIdent(repo);
 		String tagName = dialog.getTagName();
 
