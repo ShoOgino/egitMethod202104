@@ -5,14 +5,25 @@
 		IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		if (activeWorkbenchWindow == null) // During Eclipse shutdown there is
-											// no active window
+			// no active window
 			return StructuredSelection.EMPTY;
 		IHandlerService hsr = (IHandlerService) activeWorkbenchWindow
 				.getService(IHandlerService.class);
 		IEvaluationContext ctx = hsr.getCurrentState();
 		Object selection = ctx.getVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
+		if (selection == null)
+			selection = ctx.getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
 		if (selection instanceof IStructuredSelection)
 			return (IStructuredSelection) selection;
+		if (selection instanceof TextSelection) {
+			IEditorInput input = (IEditorInput) ctx
+					.getVariable(ISources.ACTIVE_EDITOR_INPUT_NAME);
+			if (input == null)
+				return StructuredSelection.EMPTY;
+			IResource resource = ResourceUtil.getResource(input);
+			if (resource != null)
+				return new StructuredSelection(resource);
+		}
 		return StructuredSelection.EMPTY;
 	}
 
