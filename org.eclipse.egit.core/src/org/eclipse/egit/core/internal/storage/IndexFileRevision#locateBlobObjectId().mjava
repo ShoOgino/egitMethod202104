@@ -1,13 +1,11 @@
 	private ObjectId locateBlobObjectId() throws CoreException {
 		try {
-			final GitIndex idx = db.getIndex();
-			final Entry e = idx.getEntry(path);
-			if (e == null)
+			DirCacheEntry entry = db.readDirCache().getEntry(path);
+			if (entry == null)
 				throw new CoreException(Activator.error(NLS.bind(
 						CoreText.IndexFileRevision_indexEntryNotFound, path),
 						null));
-			return e.getObjectId();
-
+			return entry.getObjectId();
 		} catch (IOException e) {
 			throw new CoreException(Activator.error(NLS.bind(
 					CoreText.IndexFileRevision_errorLookingUpPath, path), e));
