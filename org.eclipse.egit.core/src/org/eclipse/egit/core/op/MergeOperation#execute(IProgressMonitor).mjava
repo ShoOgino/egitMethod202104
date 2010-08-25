@@ -34,9 +34,7 @@
 					throw new TeamException(CoreText.MergeOperation_MergeFailedNoHead, e);
 				} catch (ConcurrentRefUpdateException e) {
 					throw new TeamException(CoreText.MergeOperation_MergeFailedRefUpdate, e);
-				} catch (CheckoutConflictException e) {
-					throw new TeamException(e.getLocalizedMessage(), e.getCause());
-				} catch (InvalidMergeHeadsException e) {
+				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(), e.getCause());
 				}
 				ProjectUtil.refreshValidProjects(validProjects, new SubProgressMonitor(
