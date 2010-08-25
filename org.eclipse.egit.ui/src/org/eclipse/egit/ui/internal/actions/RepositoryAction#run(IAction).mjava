@@ -9,7 +9,7 @@
 		ExecutionEvent event = hsrv.createExecutionEvent(command, null);
 		if (event.getApplicationContext() instanceof IEvaluationContext) {
 			((IEvaluationContext) event.getApplicationContext()).addVariable(
-					ISources.ACTIVE_CURRENT_SELECTION_NAME, getSelection());
+					ISources.ACTIVE_CURRENT_SELECTION_NAME, mySelection);
 		}
 
 		try {
