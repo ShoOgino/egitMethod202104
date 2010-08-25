@@ -1,26 +1,18 @@
 	private void checkPage() {
 		setErrorMessage(null);
-
 		try {
-
 			if (branchCombo.getText().length() == 0) {
 				setErrorMessage(UIText.CreateBranchPage_MissingSourceMessage);
 				return;
 			}
 			if (nameText.getText().length() == 0) {
-				setErrorMessage(UIText.CreateBranchPage_MissingNameMessage);
+				setErrorMessage(UIText.CreateBranchPage_ChooseNameMessage);
 				return;
 			}
-
-			String fullName = getBranchName();
-			try {
-				if (myRepository.getRef(fullName) != null)
-					setErrorMessage(NLS.bind(
-							UIText.CreateBranchPage_BranchAlreadyExistsMessage,
-							fullName));
+			String message = this.myValidator.isValid(nameText.getText());
+			if (message != null) {
+				setErrorMessage(message);
 				return;
-			} catch (IOException e) {
-				// ignore here
 			}
 		} finally {
 			setPageComplete(getErrorMessage() == null);

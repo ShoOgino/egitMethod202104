@@ -69,12 +69,6 @@
 		nameText.setData("org.eclipse.swtbot.widget.key", "BranchName"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(nameText);
 
-		nameText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				checkPage();
-			}
-		});
-
 		boolean isBare = myRepository.isBare();
 		checkout = new Button(main, SWT.CHECK);
 		checkout.setText(UIText.CreateBranchPage_CheckoutButton);
@@ -108,5 +102,11 @@
 			// in any case, we will have to enter the name
 			setPageComplete(false);
 		}
+		// add the listener just now to avoid unneeded checkPage()
+		nameText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
 	}
 

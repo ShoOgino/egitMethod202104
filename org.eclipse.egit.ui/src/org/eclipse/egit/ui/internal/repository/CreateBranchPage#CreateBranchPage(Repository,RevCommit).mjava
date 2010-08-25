@@ -14,6 +14,8 @@
 		this.myRepository = repo;
 		this.myBaseBranch = null;
 		this.myBaseCommit = baseCommit;
+		this.myValidator = ValidationUtils.getRefNameInputValidator(
+				myRepository, Constants.R_HEADS);
 		setTitle(UIText.CreateBranchPage_Title);
 		setMessage(UIText.CreateBranchPage_ChooseNameMessage);
 	}
