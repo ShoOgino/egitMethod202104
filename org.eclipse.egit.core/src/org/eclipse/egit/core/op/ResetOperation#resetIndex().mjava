@@ -2,6 +2,7 @@
 		try {
 			newTree = commit.getTree();
 			index = repository.getIndex();
+			// FIXME: reads index twice
 			index.readTree(repository.mapTree(newTree));
 		} catch (IOException e) {
 			throw new TeamException(CoreText.ResetOperation_readingIndex, e);
