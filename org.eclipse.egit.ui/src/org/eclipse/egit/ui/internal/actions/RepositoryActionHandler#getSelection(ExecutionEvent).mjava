@@ -15,11 +15,8 @@
 		if (selection instanceof IStructuredSelection)
 			return (IStructuredSelection) selection;
 		if (selection instanceof TextSelection) {
-			IEditorInput input = (IEditorInput) HandlerUtil.getVariable(event,
-					ISources.ACTIVE_EDITOR_INPUT_NAME);
-			if (input == null)
-				return StructuredSelection.EMPTY;
-			IResource resource = ResourceUtil.getResource(input);
+			IResource resource = ResourceUtil.getResource(HandlerUtil
+					.getVariable(event, ISources.ACTIVE_EDITOR_INPUT_NAME));
 			if (resource != null)
 				return new StructuredSelection(resource);
 		}
