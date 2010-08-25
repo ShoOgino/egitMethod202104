@@ -23,6 +23,12 @@
 						overlay = stagedImage;
 				}
 
+				// Dirty overrides staged
+				if(store
+						.getBoolean(UIPreferences.DECORATOR_SHOW_DIRTY_ICON) && resource.isDirty()) {
+					overlay = dirtyImage;
+				}
+
 				// Conflicts override everything
 				if (store
 						.getBoolean(UIPreferences.DECORATOR_SHOW_CONFLICTS_ICON)

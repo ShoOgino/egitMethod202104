@@ -12,12 +12,15 @@
 					UIText.DecoratorPreferencesPage_iconsShowConflicts);
 			showAssumeValid = SWTUtils.createCheckBox(composite,
 					UIText.DecoratorPreferencesPage_iconsShowAssumeValid);
+			showDirty = SWTUtils.createCheckBox(composite,
+					UIText.GitDecoratorPreferencePage_iconsShowDirty);
 
 			showTracked.addSelectionListener(this);
 			showUntracked.addSelectionListener(this);
 			showStaged.addSelectionListener(this);
 			showConflicts.addSelectionListener(this);
 			showAssumeValid.addSelectionListener(this);
+			showDirty.addSelectionListener(this);
 
 			final TabItem tabItem = new TabItem(parent, SWT.NONE);
 			tabItem.setText(UIText.DecoratorPreferencesPage_iconLabel);
