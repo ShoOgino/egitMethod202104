@@ -3,11 +3,8 @@
 		final Repository repo = getRepository(event);
 
 		CreateTagDialog dialog = new CreateTagDialog(HandlerUtil
-				.getActiveShellChecked(event), ValidationUtils
-				.getRefNameInputValidator(repo, Constants.R_TAGS), commit
-				.getId());
+				.getActiveShellChecked(event), commit.getId(), repo);
 
-		dialog.setExistingTags(getRevTags(event));
 		if (dialog.open() != Window.OK)
 			return null;
 

@@ -1,6 +1,12 @@
 	@Override
 	protected Control createDialogArea(final Composite parent) {
+		existingTags = getRevTags();
+		if (commitId == null)
+			revCommits = getRevCommits();
 		initializeDialogUnits(parent);
+
+		setTitle(getTitle());
+		setMessage(getMessage());
 
 		Composite composite = (Composite) super.createDialogArea(parent);
 

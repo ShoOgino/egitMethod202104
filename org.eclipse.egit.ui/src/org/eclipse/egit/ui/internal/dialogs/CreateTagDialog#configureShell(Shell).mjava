@@ -1,16 +1,7 @@
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-
-		if (branchName != null) {
-			newShell.setText(NLS.bind(
-					UIText.CreateTagDialog_questionNewTagTitle, branchName));
-		} else if (commitId != null) {
-			newShell.setText(NLS.bind(
-					UIText.CreateTagDialog_CreateTagOnCommitTitle, commitId
-							.name()));
-		}
-
+		newShell.setText(UIText.CreateTagDialog_NewTag);
 		newShell.setMinimumSize(600, 400);
 	}
 

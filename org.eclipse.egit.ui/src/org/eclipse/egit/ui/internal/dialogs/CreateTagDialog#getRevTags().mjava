@@ -1,4 +1,7 @@
-	private List<RevTag> getRevTags(Repository repo) throws ExecutionException {
+	/**
+	 * @return the tags
+	 */
+	private List<RevTag> getRevTags() {
 		Collection<Ref> revTags = repo.getTags().values();
 		List<RevTag> tags = new ArrayList<RevTag>();
 		RevWalk walk = new RevWalk(repo);
@@ -6,9 +9,8 @@
 			try {
 				tags.add(walk.parseTag(repo.resolve(ref.getName())));
 			} catch (IOException e) {
-				throw new ExecutionException(NLS
-						.bind(UIText.TagAction_errorWhileMappingRevTag, ref
-								.getName()), e);
+				Activator.logError(UIText.TagAction_unableToResolveHeadObjectId, e);
+				setErrorMessage(UIText.TagAction_unableToResolveHeadObjectId);
 			}
 		}
 		return tags;

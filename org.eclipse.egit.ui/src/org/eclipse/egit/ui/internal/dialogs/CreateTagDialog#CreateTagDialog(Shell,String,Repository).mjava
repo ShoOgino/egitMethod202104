@@ -1,0 +1,17 @@
+	/**
+	 * Construct dialog to creating or editing tag.
+	 *
+	 * @param parent
+	 * @param branchName
+	 * @param repo
+	 */
+	public CreateTagDialog(Shell parent, String branchName, Repository repo) {
+		super(parent);
+		this.tagNameValidator =
+			ValidationUtils
+				.getRefNameInputValidator(repo, Constants.R_TAGS);
+		this.branchName = branchName;
+		this.commitId = null;
+		this.repo = repo;
+	}
+
