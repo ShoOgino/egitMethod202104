@@ -1,5 +1,5 @@
 	/**
-	 * @return the tags
+	 * @return the annotated tags
 	 */
 	private List<RevTag> getRevTags() {
 		Collection<Ref> revTags = repo.getTags().values();
@@ -8,6 +8,8 @@
 		for (Ref ref : revTags) {
 			try {
 				tags.add(walk.parseTag(repo.resolve(ref.getName())));
+			} catch (IncorrectObjectTypeException e) {
+				// repo.getTags() returns also lightweight tags
 			} catch (IOException e) {
 				Activator.logError(UIText.TagAction_unableToResolveHeadObjectId, e);
 				setErrorMessage(UIText.TagAction_unableToResolveHeadObjectId);
