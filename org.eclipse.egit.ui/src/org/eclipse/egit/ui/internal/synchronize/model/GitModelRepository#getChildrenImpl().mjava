@@ -1,14 +1,32 @@
 	private void getChildrenImpl() {
+		RevWalk rw = new RevWalk(repo);
+		RevFlag localFlag = rw.newFlag("local"); //$NON-NLS-1$
+		RevFlag remoteFlag = rw.newFlag("remote"); //$NON-NLS-1$
+		RevFlagSet allFlags = new RevFlagSet();
+		allFlags.add(localFlag);
+		allFlags.add(remoteFlag);
+		rw.carry(allFlags);
 		List<GitModelCommit> result = new ArrayList<GitModelCommit>();
 
+		rw.setRetainBody(true);
 		try {
-			RevCommit ancestorCommit = RevUtils.getCommonAncestor(repo, srcRev,
-					dstRev);
-			RevCommitList<RevCommit> commits = getRevCommits(ancestorCommit, dstRev);
-			commits.addAll(getRevCommits(ancestorCommit, srcRev));
+			RevCommit srcCommit = rw.parseCommit(srcRev);
+			srcCommit.add(localFlag);
+			rw.markStart(srcCommit);
 
-			for (RevCommit commit : commits)
-				result.add(new GitModelCommit(this, commit));
+			RevCommit dstCommit = rw.parseCommit(dstRev);
+			dstCommit.add(remoteFlag);
+			rw.markStart(dstCommit);
+
+			for (RevCommit nextCommit : rw) {
+				if (nextCommit.hasAll(allFlags))
+					break;
+
+				if (nextCommit.has(localFlag))
+					result.add(new GitModelCommit(this, nextCommit, RIGHT));
+				else if (nextCommit.has(remoteFlag))
+					result.add(new GitModelCommit(this, nextCommit, LEFT));
+			}
 		} catch (IOException e) {
 			Activator.logError(e.getMessage(), e);
 		}

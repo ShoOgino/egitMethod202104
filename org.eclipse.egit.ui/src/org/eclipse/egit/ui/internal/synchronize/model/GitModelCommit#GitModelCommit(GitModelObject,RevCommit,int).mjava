@@ -7,11 +7,15 @@
 	 * @param commit
 	 *            instance of commit that will be associated with this model
 	 *            object
+	 * @param direction
+	 *            use {@link Differencer#LEFT} and {@link Differencer#RIGHT} to
+	 *            determinate commit direction (is it incoming or outgoing)
 	 * @throws IOException
 	 */
-	protected GitModelCommit(GitModelObject parent, RevCommit commit)
-			throws IOException {
+	protected GitModelCommit(GitModelObject parent, RevCommit commit,
+			int direction) throws IOException {
 		super(parent);
+		kind = direction;
 		remoteCommit = commit;
 		ancestorCommit = calculateAncestor(remoteCommit);
 
