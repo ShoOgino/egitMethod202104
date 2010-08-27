@@ -1,5 +1,4 @@
 	public void createControl(Composite parent) {
-
 		Composite main = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 
@@ -8,6 +7,7 @@
 			// we only use the first URI
 			Label uriLabel = new Label(main, SWT.NONE);
 			uriLabel.setText(UIText.ConfigureUriPage_FetchUri_label);
+			uriLabel.setToolTipText(UIText.ConfigureUriPage_UriTooltip);
 			uriText = new Text(main, SWT.BORDER);
 			// manual entry is dangerous, as the validate may wait forever
 			uriText.setEnabled(false);
@@ -31,7 +31,6 @@
 			});
 
 			if (myConfig != null && !myConfig.getURIs().isEmpty()) {
-
 				uriText.setText(myConfig.getURIs().get(0).toPrivateString());
 				checkPage();
 			} else {
@@ -41,29 +40,55 @@
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(uriText);
 
 		} else {
-			main.setLayout(new GridLayout(1, false));
+			main.setLayout(new GridLayout(2, false));
+
+			Label uriLabel = new Label(main, SWT.NONE);
+			uriLabel.setText(UIText.ConfigureUriPage_FetchUri_label);
+			uriLabel.setToolTipText(UIText.ConfigureUriPage_UriTooltip);
+			uriText = new Text(main, SWT.BORDER);
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(uriText);
+			// push mode, display only
+			uriText.setEnabled(false);
+
+			Label pushLabel = new Label(main, SWT.NONE);
+			pushLabel.setText(UIText.ConfigureUriPage_PushUriLabel);
+			pushLabel.setToolTipText(UIText.ConfigureUriPage_PushUriTooltip);
+			GridDataFactory.fillDefaults().span(2, 1).applyTo(pushLabel);
+
 			tv = new TableViewer(main);
 
-			GridDataFactory.fillDefaults().grab(true, true).applyTo(
+			GridDataFactory.fillDefaults().span(2, 1).grab(true, true).applyTo(
 					tv.getTable());
 
 			tv.setLabelProvider(new LabelProvider());
 			tv.setContentProvider(ArrayContentProvider.getInstance());
 
-			ToolBar tb = new ToolBar(main, SWT.HORIZONTAL);
-			ToolItem add = new ToolItem(tb, SWT.PUSH);
+			Composite buttonBar = new Composite(main, SWT.NONE);
+			GridDataFactory.fillDefaults().span(2, 1).applyTo(buttonBar);
+			buttonBar.setLayout(new RowLayout());
+			Button add = new Button(buttonBar, SWT.PUSH);
 			add.setText(UIText.ConfigureUriPage_Add_button);
 
 			add.addSelectionListener(new SelectionAdapter() {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					SelectUriWizard slwz = new SelectUriWizard(false);
-					WizardDialog dlg = new WizardDialog(getShell(), slwz);
+					SelectUriWizard selectWizard = new SelectUriWizard(false);
+					WizardDialog dlg = new WizardDialog(getShell(),
+							selectWizard);
 					if (dlg.open() == Window.OK) {
-						URIish uri = slwz.getUri();
-						if (!myUris.contains(uri))
-							myUris.add(uri);
+						URIish uri = selectWizard.getUri();
+						if (uri.equals(myUri) || myUris.contains(uri)) {
+							String message = NLS
+									.bind(
+											UIText.ConfigureUriPage_DuplicateUriMessage,
+											uri.toPrivateString());
+							MessageDialog.openInformation(getShell(),
+									UIText.ConfigureUriPage_DuplicateUriTitle,
+									message);
+							return;
+						}
+						myUris.add(uri);
 						tv.setInput(myUris);
 						checkPage();
 					}
@@ -71,7 +96,7 @@
 
 			});
 
-			final ToolItem remove = new ToolItem(tb, SWT.PUSH);
+			final Button remove = new Button(buttonBar, SWT.PUSH);
 			remove.setText(UIText.ConfigureUriPage_Remove_button);
 			remove.setEnabled(false);
 
@@ -96,8 +121,24 @@
 				}
 			});
 
-			if (myConfig != null && !myConfig.getPushURIs().isEmpty()) {
+			// to enable keyboard-only operation, let's set the selection upon
+			// traverse
+			tv.getControl().addTraverseListener(new TraverseListener() {
+				public void keyTraversed(TraverseEvent e) {
+					if (tv.getTable().getSelection().length == 0) {
+						if (tv.getTable().getItemCount() > 0) {
+							tv.setSelection(new StructuredSelection(tv
+									.getTable().getItem(0)));
+						}
+					}
+				}
+			});
 
+			if (myConfig != null) {
+				if (!myConfig.getURIs().isEmpty()) {
+					myUri = myConfig.getURIs().get(0);
+					uriText.setText(myUri.toPrivateString());
+				}
 				for (URIish uri : myConfig.getPushURIs())
 					myUris.add(uri);
 				tv.setInput(myUris);
@@ -109,6 +150,5 @@
 
 		Dialog.applyDialogFont(main);
 		setControl(main);
-
 	}
 

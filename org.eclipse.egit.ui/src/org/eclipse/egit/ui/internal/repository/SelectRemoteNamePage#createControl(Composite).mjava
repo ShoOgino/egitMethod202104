@@ -1,7 +1,4 @@
 	public void createControl(Composite parent) {
-
-		setMessage(UIText.SelectRemoteNamePage_SelectRemoteNameMessage);
-
 		Composite main = new Composite(parent, SWT.NONE);
 
 		main.setLayout(new GridLayout(2, false));
@@ -12,7 +9,6 @@
 		remoteName = new Text(main, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(remoteName);
 		remoteName.addModifyListener(new ModifyListener() {
-
 			public void modifyText(ModifyEvent e) {
 				checkPage();
 			}
@@ -22,12 +18,10 @@
 		configureFetch
 				.setText(UIText.SelectRemoteNamePage_ConfigureFetch_button);
 		configureFetch.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				checkPage();
 			}
-
 		});
 
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(configureFetch);
@@ -35,18 +29,15 @@
 		configurePush = new Button(main, SWT.CHECK);
 		configurePush.setText(UIText.SelectRemoteNamePage_ConfigurePush_button);
 		configurePush.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				checkPage();
 			}
-
 		});
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(configurePush);
 
 		Dialog.applyDialogFont(main);
 		setControl(main);
 		setPageComplete(false);
-
 	}
 

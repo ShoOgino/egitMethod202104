@@ -1,6 +1,5 @@
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-
 		if (page == selNamePage)
 			if (selNamePage.configureFetch.getSelection())
 				return configureFetchUriPage;
@@ -10,15 +9,57 @@
 		if (page == configureFetchSpecPage)
 			if (!selNamePage.configurePush.getSelection())
 				return null;
+			else
+				configurePushUriPage.setURI(configureFetchUriPage.getUri());
 
-		if (page == configureFetchUriPage)
-			configureFetchSpecPage.setSelection(new RepositorySelection(
-					configureFetchUriPage.getUri(), null));
+		if (page == configureFetchUriPage) {
+			try {
+				getContainer().run(false, false, new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						String taskName = NLS.bind(
+								UIText.NewRemoteWizard_CheckingUriTaskName,
+								configureFetchUriPage.getUri()
+										.toPrivateString());
+						monitor.beginTask(taskName, IProgressMonitor.UNKNOWN);
+						configureFetchSpecPage
+								.setSelection(new RepositorySelection(
+										configureFetchUriPage.getUri(), null));
+						monitor.done();
+
+					}
+				});
+			} catch (InvocationTargetException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			} catch (InterruptedException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+		}
 
 		if (page == configurePushUriPage)
-			configurePushSpecPage.setSelection(new RepositorySelection(
-					configurePushUriPage.getUris().get(0), null));
-
+			try {
+				getContainer().run(false, false, new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						String taskName = NLS.bind(
+								UIText.NewRemoteWizard_CheckingUriTaskName,
+								configurePushUriPage.getAllUris().get(0)
+										.toPrivateString());
+						monitor.beginTask(taskName, IProgressMonitor.UNKNOWN);
+						configurePushSpecPage
+								.setSelection(new RepositorySelection(
+										configurePushUriPage.getAllUris()
+												.get(0), null));
+						monitor.done();
+					}
+				});
+			} catch (InvocationTargetException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			} catch (InterruptedException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
 		return super.getNextPage(page);
 	}
 

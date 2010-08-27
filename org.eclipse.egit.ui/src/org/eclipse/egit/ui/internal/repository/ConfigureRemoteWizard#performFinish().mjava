@@ -1,6 +1,5 @@
 	@Override
 	public boolean performFinish() {
-
 		if (pushMode) {
 			while (!myRemoteConfiguration.getPushURIs().isEmpty())
 				myRemoteConfiguration.removePushURI(myRemoteConfiguration
@@ -19,7 +18,7 @@
 			myRemoteConfiguration.setTagOpt(configureFetchSpecPage.getTagOpt());
 		}
 
-    	myRemoteConfiguration.update(myConfiguration);
+		myRemoteConfiguration.update(myConfiguration);
 
 		try {
 			myConfiguration.save();

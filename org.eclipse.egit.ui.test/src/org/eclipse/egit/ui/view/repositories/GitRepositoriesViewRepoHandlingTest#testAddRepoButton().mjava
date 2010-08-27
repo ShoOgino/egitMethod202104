@@ -4,8 +4,11 @@
 		clearView();
 		refreshAndWait();
 		assertEmpty();
-		getOrOpenView().toolbarButton(
-				myUtil.getPluginLocalizedValue("AddRepositoryCommand")).click();
+		getOrOpenView()
+				.toolbarButton(
+						myUtil
+								.getPluginLocalizedValue("RepoViewAddRepository.tooltip"))
+				.click();
 		SWTBotShell shell = bot.shell(
 				UIText.RepositorySearchDialog_AddGitRepositories).activate();
 		shell.bot().textWithLabel(UIText.RepositorySearchDialog_directory)

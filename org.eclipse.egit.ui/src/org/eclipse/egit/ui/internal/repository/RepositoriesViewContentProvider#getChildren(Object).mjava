@@ -25,7 +25,7 @@
 						refs.add(new RefNode(node, repo, refEntry.getValue()));
 				}
 			} catch (IOException e) {
-				handleException(e, node);
+				return handleException(e, node);
 			}
 
 			return refs.toArray();
@@ -41,7 +41,7 @@
 						refs.add(new RefNode(node, repo, refEntry.getValue()));
 				}
 			} catch (IOException e) {
-				handleException(e, node);
+				return handleException(e, node);
 			}
 
 			return refs.toArray();
@@ -55,7 +55,7 @@
 					refs.add(new TagNode(node, repo, refEntry.getValue()));
 				}
 			} catch (IOException e) {
-				handleException(e, node);
+				return handleException(e, node);
 			}
 
 			return refs.toArray();
@@ -72,7 +72,7 @@
 								.getValue()));
 				}
 			} catch (IOException e) {
-				handleException(e, node);
+				return handleException(e, node);
 			}
 
 			return refs.toArray();
@@ -180,23 +180,33 @@
 				rc = new RemoteConfig(node.getRepository().getConfig(),
 						remoteName);
 			} catch (URISyntaxException e) {
-				handleException(e, node);
-				return children.toArray();
+				return handleException(e, node);
 			}
 
 			if (!rc.getURIs().isEmpty())
 				children.add(new FetchNode(node, node.getRepository(), rc
 						.getURIs().get(0).toPrivateString()));
 
-			if (!rc.getPushURIs().isEmpty())
-				if (rc.getPushURIs().size() == 1)
-					children.add(new PushNode(node, node.getRepository(), rc
-							.getPushURIs().get(0).toPrivateString()));
-				else
-					children.add(new PushNode(node, node.getRepository(), rc
-							.getPushURIs().get(0).toPrivateString()
-							+ "...")); //$NON-NLS-1$
+			int uriCount = rc.getPushURIs().size();
+			if (uriCount == 0 && !rc.getURIs().isEmpty())
+				uriCount++;
 
+			// show push if either a fetch or push URI is specified and
+			// at least one push specification
+			if (uriCount > 0 && !rc.getPushRefSpecs().isEmpty()) {
+				URIish firstUri;
+				if (!rc.getPushURIs().isEmpty())
+					firstUri = rc.getPushURIs().get(0);
+				else
+					firstUri = rc.getURIs().get(0);
+
+				if (uriCount == 1)
+					children.add(new PushNode(node, node.getRepository(),
+							firstUri.toPrivateString()));
+				else
+					children.add(new PushNode(node, node.getRepository(),
+							firstUri.toPrivateString() + "...")); //$NON-NLS-1$
+			}
 			return children.toArray();
 
 		}

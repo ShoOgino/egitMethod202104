@@ -3,25 +3,24 @@
 	 * @param repository
 	 */
 	public NewRemoteWizard(Repository repository) {
-
+		super.setNeedsProgressMonitor(true);
 		myConfiguration = repository.getConfig();
 
 		selNamePage = new SelectRemoteNamePage();
 		addPage(selNamePage);
 
-		configureFetchUriPage = new ConfigureUriPage(true);
+		configureFetchUriPage = new ConfigureUriPage(true, null);
 		addPage(configureFetchUriPage);
 
 		configureFetchSpecPage = new RefSpecPage(repository, false);
 		addPage(configureFetchSpecPage);
 
-		configurePushUriPage = new ConfigureUriPage(false);
+		configurePushUriPage = new ConfigureUriPage(false, null);
 		addPage(configurePushUriPage);
 
 		configurePushSpecPage = new RefSpecPage(repository, true);
 		addPage(configurePushSpecPage);
 
 		setWindowTitle(UIText.ConfigureRemoteWizard_WizardTitle_New);
-
 	}
 

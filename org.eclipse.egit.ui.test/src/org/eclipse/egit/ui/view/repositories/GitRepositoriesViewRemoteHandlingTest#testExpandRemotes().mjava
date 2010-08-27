@@ -5,7 +5,6 @@
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
 	public void testExpandRemotes() throws Exception {
 		removeRemotesConfig(repositoryFile);
 		refreshAndWait();
@@ -28,11 +27,13 @@
 		cfg.save();
 		cfg.load();
 		refreshAndWait();
-		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile).expand();
+		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile)
+				.expand();
 		assertEquals("Wrong number of remotes", 3, remotesItem.getNodes()
 				.size());
 
-		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile).expand();
+		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile)
+				.expand();
 		List<String> testnodes = remotesItem.getNode("test").expand()
 				.getNodes();
 		assertTrue(testnodes.size() == 1);
@@ -54,7 +55,8 @@
 
 		removeRemotesConfig(repositoryFile);
 		refreshAndWait();
-		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile).expand();
+		remotesItem = myRepoViewUtil.getRemotesItem(tree, repositoryFile)
+				.expand();
 		assertEquals("Wrong number of remotes", 0, remotesItem.getNodes()
 				.size());
 	}

@@ -4,16 +4,17 @@
 	 *
 	 */
 	public ConfigureUriPage(boolean fetchMode, RemoteConfig remoteConfig) {
-
 		super(ConfigureUriPage.class.getName());
 
 		myFetchMode = fetchMode;
 		myConfig = remoteConfig;
-		// myRepository = repository;
 
-		if (fetchMode)
+		if (fetchMode) {
 			setTitle(UIText.ConfigureUriPage_ConfigureFetch_pagetitle);
-		else
+			setMessage(UIText.ConfigureUriPage_FetchPageMessage);
+		} else {
 			setTitle(UIText.ConfigureUriPage_ConfigurePush_pagetitle);
+			setMessage(UIText.ConfigureUriPage_PushPageMessage);
+		}
 	}
 

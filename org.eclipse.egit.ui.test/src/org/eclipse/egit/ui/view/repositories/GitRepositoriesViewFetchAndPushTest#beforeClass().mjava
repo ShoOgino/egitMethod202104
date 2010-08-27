@@ -4,8 +4,8 @@
 		remoteRepositoryFile = createRemoteRepository(repositoryFile);
 		waitInUI();
 		// now let's clone the remote repository
-		URIish uri = new URIish(remoteRepositoryFile.getPath());
-		File workdir = new File(testDirectory, "Cloned");
+		URIish uri = new URIish("file:///" + remoteRepositoryFile.getPath());
+		File workdir = new File(testDirectory, "ClonedRepo");
 
 		CloneOperation op = new CloneOperation(uri, true, null, workdir,
 				"refs/heads/master", "origin");
@@ -15,7 +15,7 @@
 
 		// now let's clone the remote repository
 		uri = new URIish(remoteRepositoryFile.getPath());
-		workdir = new File(testDirectory, "Cloned2");
+		workdir = new File(testDirectory, "ClonedRepo2");
 
 		op = new CloneOperation(uri, true, null, workdir, "refs/heads/master",
 				"origin");

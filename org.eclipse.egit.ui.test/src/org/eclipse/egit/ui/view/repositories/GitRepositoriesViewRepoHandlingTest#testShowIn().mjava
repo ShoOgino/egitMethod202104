@@ -17,7 +17,8 @@
 
 			SWTBotTree explorerTree = bot.viewById(
 					"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
-			SWTBotTreeItem projectItem = getProjectItem(explorerTree, PROJ1).select();
+			SWTBotTreeItem projectItem = getProjectItem(explorerTree, PROJ1)
+					.select();
 			ContextMenuHelper.clickContextMenu(explorerTree, "Show In",
 					viewName);
 			refreshAndWait();

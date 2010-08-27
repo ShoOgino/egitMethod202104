@@ -1,0 +1,42 @@
+	protected static File createRemoteRepository(File repositoryDir)
+			throws Exception {
+		Repository myRepository = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryCache().lookupRepository(repositoryDir);
+		File gitDir = new File(testDirectory, REPO2);
+		Repository myRemoteRepository = lookupRepository(gitDir);
+		myRemoteRepository.create();
+
+		createStableBranch(myRepository);
+
+		// now we configure the push destination
+		myRepository.getConfig().setString("remote", "push", "pushurl",
+				"file:///" + myRemoteRepository.getDirectory().getPath());
+		myRepository.getConfig().setString("remote", "push", "push",
+				"+refs/heads/*:refs/heads/*");
+		// TODO Bug: for some reason, this seems to be required
+		myRepository.getConfig().setString(ConfigConstants.CONFIG_CORE_SECTION,
+				null, ConfigConstants.CONFIG_KEY_REPO_FORMAT_VERSION, "0");
+
+		myRepository.getConfig().save();
+		// and push
+		PushConfiguredRemoteAction pa = new PushConfiguredRemoteAction(
+				myRepository, "push");
+
+		pa.run(null, false);
+
+		try {
+			// delete the stable branch again
+			RefUpdate op = myRepository.updateRef("refs/heads/stable");
+			op.setRefLogMessage("branch deleted", //$NON-NLS-1$
+					false);
+			// we set the force update in order
+			// to avoid having this rejected
+			// due to minor issues
+			op.setForceUpdate(true);
+			op.delete();
+		} catch (IOException ioe) {
+			throw new InvocationTargetException(ioe);
+		}
+		return myRemoteRepository.getDirectory();
+	}
+

@@ -5,6 +5,7 @@
 				.getPluginLocalizedValue("CreateTagCommand"));
 		String shellTitle = UIText.CreateTagDialog_NewTag;
 		SWTBotShell createDialog = bot.shell(shellTitle).activate();
+		waitInUI();
 		createDialog.bot().textWithLabel(UIText.CreateTagDialog_tagName)
 				.setText(name);
 		createDialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
