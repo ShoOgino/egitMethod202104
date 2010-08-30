@@ -1,21 +1,20 @@
 		@Override
-		public Color getBackground(Object element) {
+		public Image getImage(Object element) {
 			final RefUpdateElement rue = (RefUpdateElement) element;
 			if (!rue.isSuccessfulConnection(uri))
-				return rejectedColor;
-
+				return imageRegistry.get(IMAGE_DELETE);
 			final Status status = rue.getRemoteRefUpdate(uri).getStatus();
 			switch (status) {
 			case OK:
-				return updatedColor;
+				return null; // no icon for ok
 			case UP_TO_DATE:
 			case NON_EXISTING:
-				return upToDateColor;
+				return null; // no icon for up to date
 			case REJECTED_NODELETE:
 			case REJECTED_NONFASTFORWARD:
 			case REJECTED_REMOTE_CHANGED:
 			case REJECTED_OTHER_REASON:
-				return rejectedColor;
+				return imageRegistry.get(IMAGE_DELETE);
 			default:
 				throw new IllegalArgumentException(NLS.bind(
 						UIText.PushResultTable_statusUnexpected, status));

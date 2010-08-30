@@ -14,19 +14,10 @@
 		imageRegistry.put(IMAGE_ADD, UIIcons.ELCL16_ADD);
 		imageRegistry.put(IMAGE_DELETE, UIIcons.ELCL16_DELETE);
 
-		rejectedColor = new Color(parent.getDisplay(), 255, 0, 0);
-		updatedColor = new Color(parent.getDisplay(), 0, 255, 0);
-		upToDateColor = new Color(parent.getDisplay(), 245, 245, 245);
-
 		tablePanel.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				if (reader != null)
 					reader.release();
-
-				// dispose of our allocated Color instances
-				rejectedColor.dispose();
-				updatedColor.dispose();
-				upToDateColor.dispose();
 				imageRegistry.dispose();
 			}
 		});
@@ -44,5 +35,29 @@
 		});
 		tableViewer.setContentProvider(new RefUpdateContentProvider());
 		tableViewer.setInput(null);
+		// detail message
+		final Text text = new Text(parent, SWT.MULTI | SWT.READ_ONLY
+				| SWT.BORDER);
+		GridData textLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		textLayoutData.heightHint = TEXT_PREFERRED_HEIGHT;
+		text.setLayoutData(textLayoutData);
+		tableViewer
+				.addSelectionChangedListener(new ISelectionChangedListener() {
+					public void selectionChanged(SelectionChangedEvent event) {
+						ISelection selection = event.getSelection();
+						if (!(selection instanceof IStructuredSelection)) {
+							text.setText(EMPTY_STRING);
+							return;
+						}
+						IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+						if (structuredSelection.size() != 1) {
+							text.setText(EMPTY_STRING);
+							return;
+						}
+						RefUpdateElement element = (RefUpdateElement) structuredSelection
+								.getFirstElement();
+						text.setText(getResult(element));
+					}
+				});
 	}
 
