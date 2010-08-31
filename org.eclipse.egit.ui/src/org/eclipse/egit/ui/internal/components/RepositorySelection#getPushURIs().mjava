@@ -1,13 +1,18 @@
 	/**
-	 * @return list of all selected URIs - either the one specified as custom
-	 *         URI or all URIs from selected configuration. May be null in case
-	 *         of no valid selection.
+	 * @return list of all push URIs - either the one specified as custom URI or
+	 *         all push URIs of the selected configuration; if not push URIs
+	 *         were specified, the first URI is returned
 	 */
 	public List<URIish> getPushURIs() {
 		if (isURISelected())
 			return Collections.singletonList(uri);
-		if (isConfigSelected())
-			return config.getPushURIs();
+		if (isConfigSelected()) {
+			List<URIish> pushUris = new ArrayList<URIish>();
+			pushUris.addAll(config.getPushURIs());
+			if (pushUris.isEmpty())
+				pushUris.add(config.getURIs().get(0));
+			return pushUris;
+		}
 		return null;
 	}
 
