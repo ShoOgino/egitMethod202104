@@ -15,6 +15,9 @@
 			// fall through
 		case REMOTEBRANCHES:
 			// fall through
+		case BRANCHHIERARCHY:
+			return myObject.toString().compareTo(
+					otherNode.getObject().toString());
 		case REMOTES:
 			// fall through
 		case SYMBOLICREFS:

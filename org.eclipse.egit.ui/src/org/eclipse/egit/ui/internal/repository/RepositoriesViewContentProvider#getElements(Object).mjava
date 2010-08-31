@@ -3,7 +3,8 @@
 
 		List<RepositoryTreeNode> nodes = new ArrayList<RepositoryTreeNode>();
 		List<String> directories = new ArrayList<String>();
-		RepositoryUtil repositoryUtil = Activator.getDefault().getRepositoryUtil();
+		RepositoryUtil repositoryUtil = Activator.getDefault()
+				.getRepositoryUtil();
 
 		if (inputElement instanceof Collection) {
 			for (Iterator it = ((Collection) inputElement).iterator(); it
@@ -22,8 +23,8 @@
 			try {
 				File gitDir = new File(directory);
 				if (gitDir.exists()) {
-					RepositoryNode rNode = new RepositoryNode(null, repositoryCache
-							.lookupRepository(gitDir));
+					RepositoryNode rNode = new RepositoryNode(null,
+							repositoryCache.lookupRepository(gitDir));
 					nodes.add(rNode);
 				} else
 					repositoryUtil.removeDir(gitDir);

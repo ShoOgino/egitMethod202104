@@ -1,0 +1,10 @@
+	private List<IPath> getPathList() throws IOException {
+		List<IPath> result = new ArrayList<IPath>();
+		Set<String> children = getRepository().getRefDatabase().getRefs(
+				getObject().toPortableString()).keySet();
+		for (String pathEntry : children) {
+			result.add(getObject().append(new Path(pathEntry)));
+		}
+		return result;
+	}
+

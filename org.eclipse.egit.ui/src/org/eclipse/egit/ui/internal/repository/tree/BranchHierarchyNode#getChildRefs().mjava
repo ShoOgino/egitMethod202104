@@ -1,0 +1,19 @@
+	/**
+	 * @return the child Refs (branches)
+	 * @throws IOException
+	 */
+	public List<Ref> getChildRefs() throws IOException {
+		List<Ref> childRefs = new ArrayList<Ref>();
+		for (IPath myPath : getPathList()) {
+			if (getObject().isPrefixOf(myPath)) {
+				int segmentDiff = myPath.segmentCount()
+						- getObject().segmentCount();
+				if (segmentDiff == 1) {
+					Ref ref = getRepository().getRef(myPath.toPortableString());
+					childRefs.add(ref);
+				}
+			}
+		}
+		return childRefs;
+	}
+
