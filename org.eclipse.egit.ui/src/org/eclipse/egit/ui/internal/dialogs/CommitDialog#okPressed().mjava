@@ -18,12 +18,7 @@
 
 		boolean authorValid = false;
 		if (author.length() > 0) {
-			try {
-				new PersonIdent(author);
-				authorValid = true;
-			} catch (IllegalArgumentException e) {
-				authorValid = false;
-			}
+			authorValid = RawParseUtils.parsePersonIdent(author) != null;
 		}
 		if (!authorValid) {
 			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorInvalidAuthor, UIText.CommitDialog_ErrorInvalidAuthorSpecified);
@@ -32,12 +27,7 @@
 
 		boolean committerValid = false;
 		if (committer.length() > 0) {
-			try {
-				new PersonIdent(committer);
-				committerValid = true;
-			} catch (IllegalArgumentException e) {
-				committerValid = false;
-			}
+			committerValid = RawParseUtils.parsePersonIdent(committer)!=null;
 		}
 		if (!committerValid) {
 			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorInvalidAuthor, UIText.CommitDialog_ErrorInvalidCommitterSpecified);

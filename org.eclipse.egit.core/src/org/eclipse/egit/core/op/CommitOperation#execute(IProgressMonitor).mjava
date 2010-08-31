@@ -9,8 +9,8 @@
 			public void run(IProgressMonitor monitor) throws CoreException {
 				final Date commitDate = new Date();
 				final TimeZone timeZone = TimeZone.getDefault();
-				final PersonIdent authorIdent = new PersonIdent(author);
-				final PersonIdent committerIdent = new PersonIdent(committer);
+				final PersonIdent authorIdent = RawParseUtils.parsePersonIdent(author);
+				final PersonIdent committerIdent = RawParseUtils.parsePersonIdent(committer);
 				if (commitAll) {
 					for (Repository repo : repos) {
 						Git git = new Git(repo);
