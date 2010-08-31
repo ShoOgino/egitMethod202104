@@ -6,8 +6,8 @@
 		final Date commitDate = new Date();
 		final TimeZone timeZone = TimeZone.getDefault();
 
-		final PersonIdent authorIdent = new PersonIdent(author);
-		final PersonIdent committerIdent = new PersonIdent(committer);
+		final PersonIdent authorIdent = RawParseUtils.parsePersonIdent(author);
+		final PersonIdent committerIdent = RawParseUtils.parsePersonIdent(committer);
 
 		for (java.util.Map.Entry<Repository, Tree> entry : treeMap.entrySet()) {
 			Tree tree = entry.getValue();
