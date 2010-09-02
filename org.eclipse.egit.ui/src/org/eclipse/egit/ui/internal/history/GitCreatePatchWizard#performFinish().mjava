@@ -14,7 +14,13 @@
 						@Override
 						public synchronized void write(byte[] b, int off, int len) {
 							super.write(b, off, len);
-							sb.append(toString());
+							if (currentEncoding == null)
+								sb.append(toString());
+							else try {
+								sb.append(toString(currentEncoding));
+							} catch (UnsupportedEncodingException e) {
+								sb.append(toString());
+							}
 							reset();
 						}
 
@@ -22,6 +28,8 @@
 					try {
 						FileDiff[] diffs = FileDiff.compute(walker, commit);
 						for (FileDiff diff : diffs) {
+							currentEncoding = CompareUtils.
+								getResourceEncoding(db, diff.getPath());
 							diff.outputDiff(sb, db, diffFmt, isGit);
 							diffFmt.flush();
 						}

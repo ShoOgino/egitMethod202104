@@ -1,0 +1,20 @@
+	/**
+	 * Determine the encoding used by eclipse for the resource which belongs
+	 * to repoPath to in the eclipse workspace or null if no resource is found
+	 * @param db the repository
+	 * @param repoPath the path in the git repository
+	 * @return the encoding used in eclipse for the resource or null if
+	 *
+	 */
+	public static String getResourceEncoding(Repository db, String repoPath) {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot root = workspace.getRoot();
+		IPath absolutePath = new Path(db.getWorkTree().getAbsolutePath())
+				.append(repoPath);
+		IResource resource = root.getFileForLocation(absolutePath);
+		if (resource == null)
+			return null;
+
+		return getResourceEncoding(resource);
+	}
+
