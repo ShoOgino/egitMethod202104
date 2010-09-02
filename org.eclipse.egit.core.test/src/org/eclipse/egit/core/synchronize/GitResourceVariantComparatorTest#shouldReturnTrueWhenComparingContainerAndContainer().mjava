@@ -25,7 +25,7 @@
 		expect(local.getFullPath()).andReturn(iPath).anyTimes();
 		replay(local);
 
-		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo,
+		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo, null,
 				commit.getTree(), path);
 
 		// then

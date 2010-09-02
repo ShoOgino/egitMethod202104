@@ -25,7 +25,7 @@
 				"initial commit");
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 
-		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo,
+		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo, null,
 				commit.getTree(), path);
 
 		// then

@@ -15,10 +15,10 @@
 				"a", "initial commit");
 
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
-		GitBlobResourceVariant base = new GitBlobResourceVariant(repo,
+		GitBlobResourceVariant base = new GitBlobResourceVariant(repo, null,
 				commit.getTree(), path);
 
-		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo,
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo, null,
 				commit.getTree(), path);
 
 		// then

@@ -20,9 +20,9 @@
 				"second commit");
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 
-		GitBlobResourceVariant base = new GitBlobResourceVariant(repo,
+		GitBlobResourceVariant base = new GitBlobResourceVariant(repo, null,
 				baseCommit.getTree(), path);
-		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo,
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo, null,
 				remoteCommit.getTree(), path);
 
 		// then

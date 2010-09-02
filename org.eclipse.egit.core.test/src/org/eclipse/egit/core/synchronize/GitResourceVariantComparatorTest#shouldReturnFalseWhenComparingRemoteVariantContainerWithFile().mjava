@@ -20,9 +20,9 @@
 		String folderPath = Repository.stripWorkDir(repo.getWorkTree(),
 				new File(file.getParent()));
 
-		GitFolderResourceVariant base = new GitFolderResourceVariant(repo,
+		GitFolderResourceVariant base = new GitFolderResourceVariant(repo, null,
 				commit.getTree(), folderPath);
-		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo,
+		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo, null,
 				commit.getTree(), filePath);
 
 		// then

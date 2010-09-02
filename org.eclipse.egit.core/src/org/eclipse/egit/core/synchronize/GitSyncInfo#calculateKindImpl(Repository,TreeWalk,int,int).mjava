@@ -1,0 +1,27 @@
+	private int calculateKindImpl(Repository repo, TreeWalk tw, int srcNth,
+			int dstNth) throws IOException {
+		ObjectId srcId = tw.getObjectId(srcNth);
+		ObjectId dstId = tw.getObjectId(dstNth);
+
+		if (srcId.equals(zeroId()))
+			return INCOMING | ADDITION;
+		if (dstId.equals(zeroId()))
+			return OUTGOING | ADDITION;
+		if (!srcId.equals(dstId)) {
+			RevWalk rw = new RevWalk(repo);
+			RevFlag srcFlag = rw.newFlag("source"); //$NON-NLS-1$
+			RevFlag dstFlag = rw.newFlag("destination"); //$NON-NLS-1$
+			initializeRevWalk(rw, srcFlag, dstFlag);
+
+			RevCommit commit = rw.next();
+			if (commit.has(srcFlag))
+				return OUTGOING | CHANGE;
+			else if (commit.has(dstFlag))
+				return INCOMING | CHANGE;
+			else
+				return CONFLICTING | CHANGE;
+		}
+
+		return IN_SYNC;
+	}
+

@@ -2,15 +2,18 @@
 	 * Construct Git representation of {@link IResourceVariant}.
 	 *
 	 * @param repo
+	 * @param revCommit
+	 *            associated with this resource varinat
 	 * @param objectId
 	 * @param path
 	 *            should be repository relative
 	 * @throws IOException
 	 */
-	GitResourceVariant(Repository repo, ObjectId objectId, String path)
-			throws IOException {
+	GitResourceVariant(Repository repo, RevCommit revCommit, ObjectId objectId,
+			String path) throws IOException {
 		this.path = path;
 		this.repo = repo;
 		this.objectId = objectId;
+		this.revCommit = revCommit;
 	}
 
