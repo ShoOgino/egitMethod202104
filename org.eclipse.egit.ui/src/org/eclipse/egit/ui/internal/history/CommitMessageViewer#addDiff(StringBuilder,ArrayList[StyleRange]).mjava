@@ -6,7 +6,14 @@
 			@Override
 			public synchronized void write(byte[] b, int off, int len) {
 				super.write(b, off, len);
-				d.append(toString());
+				if (currentEncoding == null)
+					d.append(toString());
+
+				else try {
+					d.append(toString(currentEncoding));
+				} catch (UnsupportedEncodingException e) {
+					d.append(toString());
+				}
 				reset();
 			}
 
@@ -56,6 +63,7 @@
 			for (FileDiff diff : diffs) {
 				if (diff.getBlobs().length == 2) {
 					String path = diff.getPath();
+					currentEncoding = CompareUtils.getResourceEncoding(db, path);
 					d.append(formatPathLine(path)).append("\n"); //$NON-NLS-1$
 					diff.outputDiff(d, db, diffFmt, true);
 					diffFmt.flush();
