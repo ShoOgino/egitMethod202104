@@ -1,4 +1,7 @@
 	List<Ref> getSelectedBranches() {
-		return new ArrayList<Ref>(selectedRefs);
+		Object[] checkedElements = refsViewer.getCheckedElements();
+		Ref[] checkedRefs = new Ref[checkedElements.length];
+		System.arraycopy(checkedElements, 0, checkedRefs, 0, checkedElements.length);
+		return Arrays.asList(checkedRefs);
 	}
 
