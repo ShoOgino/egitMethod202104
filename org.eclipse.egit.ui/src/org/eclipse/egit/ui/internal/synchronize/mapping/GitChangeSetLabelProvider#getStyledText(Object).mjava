@@ -1,0 +1,14 @@
+	public StyledString getStyledText(Object element) {
+		String rawText = getText(element);
+		// need to compare classes as everything is 'instanceof GitModelCommit'
+		if (element.getClass().equals(GitModelCommit.class)) {
+			StyledString string = new StyledString(rawText);
+			GitModelCommit commit = (GitModelCommit) element;
+			String format = " [" + getAbbreviatedId(commit) + "]"; //$NON-NLS-1$//$NON-NLS-2$
+			string.append(format, StyledString.DECORATIONS_STYLER);
+			return string;
+		}
+
+		return new StyledString(rawText);
+	}
+
