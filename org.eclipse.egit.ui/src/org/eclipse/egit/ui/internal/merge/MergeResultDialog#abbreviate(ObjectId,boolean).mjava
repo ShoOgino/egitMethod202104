@@ -1,0 +1,14 @@
+	private String abbreviate(ObjectId id, boolean addBrackets) {
+		StringBuilder result = new StringBuilder(EMPTY);
+		if (addBrackets)
+			result.append("["); //$NON-NLS-1$
+		try {
+			result.append(objectReader.abbreviate(id).name());
+		} catch (IOException e) {
+			result.append(id.name());
+		}
+		if (addBrackets)
+			result.append("]"); //$NON-NLS-1$
+		return result.toString();
+	}
+

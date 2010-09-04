@@ -1,0 +1,14 @@
+	/**
+	 * @param parentShell
+	 * @param repository
+	 * @param mergeResult
+	 */
+	public MergeResultDialog(Shell parentShell, Repository repository,
+			MergeResult mergeResult) {
+		super(parentShell);
+		setShellStyle(getShellStyle() | SWT.RESIZE);
+		this.repository = repository;
+		this.mergeResult = mergeResult;
+		objectReader = repository.newObjectReader();
+	}
+
