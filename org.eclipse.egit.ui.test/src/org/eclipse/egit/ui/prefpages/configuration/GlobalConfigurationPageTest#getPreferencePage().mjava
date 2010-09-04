@@ -7,7 +7,10 @@
 		// Launch preferences programmatically instead
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				new OpenPreferencesAction().run();
+				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow();
+				ActionFactory.PREFERENCES.create(workbenchWindow).run();
+
 			}
 		});
 		preferencePage = bot.shell("Preferences").activate();
