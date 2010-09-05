@@ -3,14 +3,18 @@
 	 * initialization call's is common for all model object's.
 	 *
 	 * @return tree walk
+	 * @throws CorruptObjectException
 	 */
-	protected TreeWalk createTreeWalk() {
-		TreeWalk tw = new TreeWalk(getRepository());
+	protected TreeWalk createTreeWalk() throws CorruptObjectException {
+		Repository repo = getRepository();
+		TreeWalk tw = new TreeWalk(repo);
 
 		tw.reset();
 		tw.setRecursive(false);
-		tw.setFilter(TreeFilter.ANY_DIFF);
+		int ignoreNth = tw.addTree(new FileTreeIterator(repo));
+		NotIgnoredFilter notIgnoredFilter = new NotIgnoredFilter(ignoreNth);
 
+		tw.setFilter(AndTreeFilter.create(ANY_DIFF, notIgnoredFilter));
 		return tw;
 	}
 
