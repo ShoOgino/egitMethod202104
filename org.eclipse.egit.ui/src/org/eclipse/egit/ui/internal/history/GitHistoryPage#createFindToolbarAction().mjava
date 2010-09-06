@@ -1,5 +1,5 @@
 	private IAction createFindToolbarAction() {
-		final IAction r = new Action(UIText.GitHistoryPage_find,
+		final IAction r = new Action(UIText.GitHistoryPage_FindMenuLabel,
 				UIIcons.ELCL16_FIND) {
 			public void run() {
 				store.setValue(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR,
@@ -16,7 +16,7 @@
 		};
 		r.setChecked(store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR));
-		r.setToolTipText(UIText.HistoryPage_findbar_findTooltip);
+		r.setToolTipText(UIText.GitHistoryPage_FindTooltip);
 		return r;
 	}
 

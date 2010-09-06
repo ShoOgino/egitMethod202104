@@ -66,10 +66,7 @@
 
 		popupMgr = new MenuManager(null, POPUP_ID);
 		attachCommitSelectionChanged();
-		createLocalToolbarActions();
-		createResourceFilterActions();
-		createCompareModeAction();
-		createShowAllBranchesAction();
+		initActions();
 		createStandardActions();
 
 		getSite().registerContextMenu(POPUP_ID, popupMgr, graph.getTableView());

@@ -1,0 +1,99 @@
+	private void initActions() {
+		IAction findAction = createFindToolbarAction();
+		IAction refreshAction = new Action(
+				UIText.GitHistoryPage_RefreshMenuLabel, UIIcons.ELCL16_REFRESH) {
+			@Override
+			public void run() {
+				refresh();
+			}
+		};
+		try {
+			showAllFilter = ShowFilter.valueOf(Activator.getDefault()
+					.getPreferenceStore().getString(PREF_SHOWALLFILTER));
+		} catch (IllegalArgumentException e) {
+			showAllFilter = ShowFilter.SHOWALLRESOURCE;
+		}
+
+		showAllRepoVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLREPO, UIIcons.REPOSITORY,
+				UIText.GitHistoryPage_AllInRepoMenuLabel,
+				UIText.GitHistoryPage_AllInRepoTooltip);
+
+		showAllProjectVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLPROJECT, UIIcons.FILTERPROJECT,
+				UIText.GitHistoryPage_AllInProjectMenuLabel,
+				UIText.GitHistoryPage_AllInProjectTooltip);
+
+		showAllFolderVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLFOLDER, UIIcons.FILTERFOLDER,
+				UIText.GitHistoryPage_AllInParentMenuLabel,
+				UIText.GitHistoryPage_AllInParentTooltip);
+
+		showAllResourceVersionsAction = new ShowFilterAction(
+				ShowFilter.SHOWALLRESOURCE, UIIcons.FILTERRESOURCE,
+				UIText.GitHistoryPage_AllOfResourceMenuLabel,
+				UIText.GitHistoryPage_AllOfResourceTooltip);
+
+		showAllRepoVersionsAction
+				.setChecked(showAllFilter == showAllRepoVersionsAction.filter);
+		showAllProjectVersionsAction
+				.setChecked(showAllFilter == showAllProjectVersionsAction.filter);
+		showAllFolderVersionsAction
+				.setChecked(showAllFilter == showAllFolderVersionsAction.filter);
+		showAllResourceVersionsAction
+				.setChecked(showAllFilter == showAllResourceVersionsAction.filter);
+
+		compareModeAction = new Action(UIText.GitHistoryPage_compareMode,
+				IAction.AS_CHECK_BOX) {
+			public void run() {
+				compareMode = !compareMode;
+				setChecked(compareMode);
+				fileViewer.setCompareMode(compareMode);
+			}
+		};
+		compareModeAction.setImageDescriptor(UIIcons.ELCL16_COMPARE_VIEW);
+		compareModeAction.setChecked(compareMode);
+		compareModeAction.setText(UIText.GitHistoryPage_CompareModeMenuLabel);
+		compareModeAction.setToolTipText(UIText.GitHistoryPage_compareMode);
+		fileViewer.setCompareMode(compareMode);
+
+		showAllBranchesAction = new Action(
+				UIText.GitHistoryPage_showAllBranches, IAction.AS_CHECK_BOX) {
+			public void run() {
+				showAllBranches = !showAllBranches;
+				setChecked(showAllBranches);
+				refresh();
+			}
+		};
+		showAllBranchesAction.setImageDescriptor(UIIcons.BRANCH);
+		showAllBranchesAction.setChecked(showAllBranches);
+		showAllBranchesAction
+				.setText(UIText.GitHistoryPage_ShowAllBranchesMenuLabel);
+		showAllBranchesAction
+				.setToolTipText(UIText.GitHistoryPage_showAllBranches);
+
+		IToolBarManager mgr = getSite().getActionBars().getToolBarManager();
+		IMenuManager viewMenuMgr = getSite().getActionBars().getMenuManager();
+
+		mgr.add(findAction);
+		mgr.add(new Separator());
+		mgr.add(showAllRepoVersionsAction);
+		mgr.add(showAllProjectVersionsAction);
+		mgr.add(showAllFolderVersionsAction);
+		mgr.add(showAllResourceVersionsAction);
+		mgr.add(new Separator());
+		mgr.add(compareModeAction);
+		mgr.add(showAllBranchesAction);
+
+		viewMenuMgr.add(refreshAction);
+		viewMenuMgr.add(findAction);
+		viewMenuMgr.add(new Separator());
+		viewMenuMgr.add(showAllRepoVersionsAction);
+		viewMenuMgr.add(showAllProjectVersionsAction);
+		viewMenuMgr.add(showAllFolderVersionsAction);
+		viewMenuMgr.add(showAllResourceVersionsAction);
+		viewMenuMgr.add(new Separator());
+		viewMenuMgr.add(compareModeAction);
+		viewMenuMgr.add(showAllBranchesAction);
+	}
+
