@@ -7,42 +7,34 @@
 		label = new Label(panel, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		refsTable = new Table(panel, SWT.CHECK | SWT.V_SCROLL | SWT.BORDER);
+		Table refsTable = new Table(panel, SWT.CHECK | SWT.V_SCROLL | SWT.BORDER);
 		refsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		refsTable.addSelectionListener(new SelectionAdapter() {
+		refsViewer = new CheckboxTableViewer(refsTable);
+		refsViewer.setContentProvider(ArrayContentProvider.getInstance());
+		refsViewer.setLabelProvider(new LabelProvider() {
 			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				if (e.detail != SWT.CHECK)
-					return;
+			public String getText(Object element) {
+				return ((Ref)element).getName().substring(Constants.R_HEADS.length());
+			}
 
-				final TableItem tableItem = (TableItem) e.item;
-				final int i = refsTable.indexOf(tableItem);
-				final Ref ref = availableRefs.get(i);
-
-				if (tableItem.getChecked()) {
-					int insertionPos = 0;
-					for (int j = 0; j < i; j++) {
-						if (selectedRefs.contains(availableRefs.get(j)))
-							insertionPos++;
-					}
-					selectedRefs.add(insertionPos, ref);
-				} else
-					selectedRefs.remove(ref);
-
-				checkPage();
+			@Override
+			public Image getImage(Object element) {
+				return RepositoryTreeNodeType.REF.getIcon();
 			}
 		});
 
+		refsViewer.addCheckStateListener(new ICheckStateListener() {
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				checkPage();
+			}
+		});
 		final Composite bPanel = new Composite(panel, SWT.NONE);
 		bPanel.setLayout(new RowLayout());
 		selectB = new Button(bPanel, SWT.PUSH);
 		selectB.setText(UIText.SourceBranchPage_selectAll);
 		selectB.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				for (int i = 0; i < refsTable.getItemCount(); i++)
-					refsTable.getItem(i).setChecked(true);
-				selectedRefs.clear();
-				selectedRefs.addAll(availableRefs);
+				refsViewer.setAllChecked(true);
 				checkPage();
 			}
 		});
@@ -50,9 +42,7 @@
 		unselectB.setText(UIText.SourceBranchPage_selectNone);
 		unselectB.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				for (int i = 0; i < refsTable.getItemCount(); i++)
-					refsTable.getItem(i).setChecked(false);
-				selectedRefs.clear();
+				refsViewer.setAllChecked(false);
 				checkPage();
 			}
 		});
