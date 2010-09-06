@@ -1,24 +1,45 @@
 	public String getName() {
+		// we always visualize the current input in the form
+		// <type>: <path> [<respository name>]
+		// in order to give the user an understanding which context
+		// menus they can expect with the current input
+		// we show the filter hint only upon getDescription()
+		// as it wrongly pollutes the navigation history
+		final String repositoryName = Activator.getDefault()
+				.getRepositoryUtil().getRepositoryName(db);
 		final ResourceList in = (ResourceList) super.getInput();
-		if (currentWalk == null || in == null)
-			return ""; //$NON-NLS-1$
-		final IResource[] items = in.getItems();
-		if (items.length == 0)
+		if (currentWalk == null || in == null || in.getItems().length == 0)
 			return ""; //$NON-NLS-1$
 
-		final StringBuilder b = new StringBuilder();
-		b.append(db.getDirectory().getParentFile().getName());
-		if (currentWalk.getRevFilter() != RevFilter.ALL) {
-			b.append(": "); //$NON-NLS-1$
-			b.append(currentWalk.getRevFilter());
-		}
-		if (currentWalk.getTreeFilter() != TreeFilter.ALL) {
-			b.append(":"); //$NON-NLS-1$
-			for (final String p : pathFilters) {
-				b.append(' ');
-				b.append(p);
+		if (in.getItems().length == 1) {
+			IResource resource = in.getItems()[0];
+			final String type;
+			switch (resource.getType()) {
+			case IResource.FILE:
+				type = UIText.GitHistoryPage_FileType;
+				break;
+			case IResource.PROJECT:
+				type = UIText.GitHistoryPage_ProjectType;
+				break;
+			default:
+				type = UIText.GitHistoryPage_FolderType;
+				break;
 			}
+			String path = resource.getFullPath().makeRelative().toString();
+			if (resource.getType() == IResource.FOLDER)
+				path = path + '/';
+			return NLS.bind(NAME_PATTERN, new Object[] { type, path,
+					repositoryName });
+		} else {
+			// can this happen at all? the generic history view can't
+			// handle multiple selection
+			StringBuilder b = new StringBuilder();
+			for (final String p : pathFilters) {
+				b.append(p);
+				b.append(' ');
+			}
+			return NLS.bind(NAME_PATTERN, new Object[] {
+					UIText.GitHistoryPage_MultiResourcesType, b.toString(), repositoryName });
 		}
-		return b.toString();
 	}
 

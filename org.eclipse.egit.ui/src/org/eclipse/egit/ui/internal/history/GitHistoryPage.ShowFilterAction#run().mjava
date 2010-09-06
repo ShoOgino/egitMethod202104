@@ -1,6 +1,7 @@
 		@Override
 		public void run() {
 			String oldName = getName();
+			String oldDescription = getDescription();
 			if (!isChecked()) {
 				if (showAllFilter == filter) {
 					showAllFilter = ShowFilter.SHOWALLRESOURCE;
@@ -22,6 +23,11 @@
 			}
 			GitHistoryPage.this.firePropertyChange(GitHistoryPage.this, P_NAME,
 					oldName, getName());
+			// even though this is currently ending nowhere (see bug 324386), we
+			// still create the event
+			GitHistoryPage.this.firePropertyChange(GitHistoryPage.this,
+					P_DESCRIPTION, oldDescription, GitHistoryPage.this
+							.getDescription());
 			Activator.getDefault().getPreferenceStore().setValue(
 					PREF_SHOWALLFILTER, showAllFilter.toString());
 		}
