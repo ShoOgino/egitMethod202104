@@ -1,11 +1,10 @@
 	/**
-	 * @return the selected URI (if specified by user as valid custom URI) or
-	 *         first URI from selected configuration (if specified by user as
-	 *         May be null if there is no valid selection.
+	 * @return the selected URI, <code>null</code> if a configuration was
+	 *         selected
 	 */
 	public URIish getURI() {
 		if (isConfigSelected())
-			return config.getURIs().get(0);
+			return null;
 		return uri;
 	}
 
