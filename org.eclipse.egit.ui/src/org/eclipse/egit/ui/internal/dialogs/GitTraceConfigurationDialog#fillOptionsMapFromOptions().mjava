@@ -1,0 +1,44 @@
+	private void fillOptionsMapFromOptions() {
+		Map<String, String> oldValues = new HashMap<String, String>();
+		for (Properties props : optionsMap.values())
+			for (Object keyObject : props.keySet()) {
+				String key = (String) keyObject;
+				oldValues.put(key, props.getProperty(key));
+			}
+
+		optionsMap.clear();
+		for (PluginNode plugin : PLUGIN_LIST) {
+			Properties props = new Properties();
+			try {
+				InputStream is = Platform.getBundle(plugin.getPlugin())
+						.getResource(".options").openStream(); //$NON-NLS-1$
+				props.load(is);
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+			optionsMap.put(plugin, props);
+		}
+
+		Map<String, String> newValues = new HashMap<String, String>();
+		for (Properties props : optionsMap.values())
+			for (Object keyObject : props.keySet()) {
+				String key = (String) keyObject;
+				oldValues.put(key, props.getProperty(key));
+			}
+
+		boolean dirty = false;
+		if (oldValues.keySet().containsAll(newValues.keySet())
+				&& newValues.keySet().containsAll(oldValues.keySet())) {
+			for (String key : oldValues.keySet()) {
+				if (!oldValues.get(key).equals(newValues.get(key))) {
+					dirty = true;
+					break;
+				}
+			}
+		} else {
+			dirty = true;
+		}
+		if (dirty)
+			setDirty(true);
+	}
+

@@ -1,0 +1,16 @@
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			OptionNode other = (OptionNode) obj;
+			if (!option.equals(other.option))
+				return false;
+			if (!plugin.equals(other.plugin))
+				return false;
+			return true;
+		}
+

@@ -1,0 +1,40 @@
+	private void initValues() {
+		DebugOptions options = getOptions();
+		fillOptionsMapFromCurrent(options);
+		tv.setCheckStateProvider(new ICheckStateProvider() {
+			public boolean isGrayed(Object element) {
+				return false;
+			}
+
+			public boolean isChecked(Object element) {
+				Object data = element;
+				Properties props;
+				String key;
+				if (data instanceof PluginNode) {
+					PluginNode node = (PluginNode) data;
+					props = optionsMap.get(node);
+					key = node.getPlugin() + MAINSWITCH;
+				} else if (data instanceof OptionNode) {
+					OptionNode node = (OptionNode) data;
+					props = optionsMap.get(node.getPlugin());
+					key = node.getOption();
+				} else {
+					return false;
+				}
+				boolean active = Boolean.valueOf(props.getProperty(key))
+						.booleanValue();
+				return active;
+			}
+		});
+
+		tv.setInput(PLUGIN_LIST);
+		tv.expandAll();
+
+		if (platformSwitch.getSelection() != options.isDebugEnabled()) {
+			platformSwitch.setSelection(options.isDebugEnabled());
+		}
+
+		traceFileLocation.setText(getOptions().getFile().getPath());
+		updateEnablement();
+	}
+

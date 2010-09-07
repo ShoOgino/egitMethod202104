@@ -1,0 +1,37 @@
+	@Test
+	public void testMainSwitch() throws Exception {
+		SWTBotCheckBox box = configurationDialog.bot().checkBox(
+				UIText.GitTraceConfigurationDialog_PlatformSwitchCheckbox);
+		SWTBotTree tree = findTree();
+		assertFalse(box.isChecked());
+		assertFalse(tree.isEnabled());
+		box.click();
+		assertTrue(box.isChecked());
+		assertTrue(tree.isEnabled());
+
+		configurationDialog.close();
+		getDialog();
+		box = configurationDialog.bot().checkBox(
+				UIText.GitTraceConfigurationDialog_PlatformSwitchCheckbox);
+
+		tree = findTree();
+		assertFalse(box.isChecked());
+		assertFalse(tree.isEnabled());
+		box.click();
+		assertTrue(box.isChecked());
+		assertTrue(tree.isEnabled());
+
+		configurationDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		getDialog();
+		box = configurationDialog.bot().checkBox(
+				UIText.GitTraceConfigurationDialog_PlatformSwitchCheckbox);
+
+		tree = findTree();
+		assertTrue(box.isChecked());
+		assertTrue(tree.isEnabled());
+		box.click();
+		assertFalse(box.isChecked());
+		assertFalse(tree.isEnabled());
+		configurationDialog.bot().button(IDialogConstants.OK_LABEL).click();
+	}
+

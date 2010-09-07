@@ -1,0 +1,20 @@
+	private void fillOptionsMapFromCurrent(DebugOptions options) {
+		optionsMap.clear();
+		for (PluginNode plugin : PLUGIN_LIST) {
+			Properties props = new Properties();
+			try {
+				InputStream is = Platform.getBundle(plugin.getPlugin())
+						.getResource(".options").openStream(); //$NON-NLS-1$
+				props.load(is);
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+			for (Object keyObject : props.keySet()) {
+				String key = (String) keyObject;
+				boolean isActive = options.getBooleanOption(key, false);
+				props.setProperty(key, Boolean.toString(isActive));
+			}
+			optionsMap.put(plugin, props);
+		}
+	}
+

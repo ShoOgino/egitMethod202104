@@ -1,0 +1,19 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		switch (buttonId) {
+		case IDialogConstants.OK_ID:
+			performOk();
+			break;
+		case DEFAULT_ID:
+			fillOptionsMapFromOptions();
+			tv.refresh();
+			break;
+		case APPLY_ID:
+			performOk();
+			break;
+		default:
+			break;
+		}
+		super.buttonPressed(buttonId);
+	}
+

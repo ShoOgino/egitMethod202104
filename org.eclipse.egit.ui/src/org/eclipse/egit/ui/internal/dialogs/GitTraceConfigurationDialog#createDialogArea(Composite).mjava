@@ -1,0 +1,78 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(3, false));
+
+		platformSwitch = new Button(main, SWT.CHECK);
+		platformSwitch
+				.setText(UIText.GitTraceConfigurationDialog_PlatformSwitchCheckbox);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(platformSwitch);
+		platformSwitch.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateEnablement();
+			}
+		});
+
+		tv = new CheckboxTreeViewer(main, SWT.BORDER);
+		tv.setContentProvider(new TraceTableContentProvider(optionsMap));
+
+		Tree tree = tv.getTree();
+		GridDataFactory.fillDefaults().span(3, 1).grab(true, true)
+				.applyTo(tree);
+
+		// enable testing with SWTBot
+		tree.setData("org.eclipse.swtbot.widget.key", "LocationTree"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		TreeColumn c1 = new TreeColumn(tree, SWT.NONE);
+		c1.setWidth(400);
+		c1.setText(UIText.GitTraceConfigurationDialog_LocationHeader);
+		tree.setHeaderVisible(true);
+
+		Label fileLabel = new Label(main, SWT.NONE);
+		fileLabel
+				.setText(UIText.GitTraceConfigurationDialog_TraceFileLocationLabel);
+		traceFileLocation = new Text(main, SWT.BORDER);
+		traceFileLocation.setEditable(false);
+		GridDataFactory.defaultsFor(traceFileLocation).grab(true, false)
+				.applyTo(traceFileLocation);
+
+		Button openButton = new Button(main, SWT.PUSH);
+		openButton
+				.setText(UIText.GitTraceConfigurationDialog_OpenInEditorButton);
+		openButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IFileStore store = EFS.getLocalFileSystem().getStore(
+						new Path(traceFileLocation.getText()));
+				try {
+					IDE.openEditor(PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage(),
+							new FileStoreEditorInput(store),
+							EditorsUI.DEFAULT_TEXT_EDITOR_ID);
+
+				} catch (PartInitException ex) {
+					Activator.handleError(ex.getMessage(), ex, true);
+				}
+			}
+		});
+
+		initValues();
+
+		platformSwitch.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setDirty(true);
+			}
+		});
+
+		tv.addCheckStateListener(new ICheckStateListener() {
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				setDirty(true);
+			}
+		});
+
+		Dialog.applyDialogFont(main);
+		return main;
+	}
+

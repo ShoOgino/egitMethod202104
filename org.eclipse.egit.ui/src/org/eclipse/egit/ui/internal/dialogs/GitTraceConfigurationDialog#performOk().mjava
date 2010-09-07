@@ -1,0 +1,35 @@
+	private void performOk() {
+		DebugOptions options = getOptions();
+		if (isDirty) {
+			options.setDebugEnabled(platformSwitch.getSelection());
+			if (platformSwitch.getSelection()) {
+				// if this is off, we won't be able to save anything
+				List<String> checkedKeys = new ArrayList<String>();
+				for (Object checked : Arrays.asList(tv.getCheckedElements())) {
+					if (checked instanceof PluginNode)
+						checkedKeys.add(((PluginNode) checked).getPlugin()
+								+ MAINSWITCH);
+					else if (checked instanceof OptionNode)
+						checkedKeys.add(((OptionNode) checked).getOption());
+				}
+
+				for (PluginNode plugin : optionsMap.keySet()) {
+					Properties props = optionsMap.get(plugin);
+					for (Object keyObject : props.keySet()) {
+						String key = (String) keyObject;
+						boolean isOn = options.getBooleanOption(key, false);
+						boolean shouldBeOn = checkedKeys.contains(key);
+						if (isOn != shouldBeOn) {
+							options
+									.setOption(key, Boolean
+											.toString(shouldBeOn));
+						}
+					}
+				}
+			}
+			fillOptionsMapFromCurrent(options);
+			tv.refresh();
+			setDirty(false);
+		}
+	}
+

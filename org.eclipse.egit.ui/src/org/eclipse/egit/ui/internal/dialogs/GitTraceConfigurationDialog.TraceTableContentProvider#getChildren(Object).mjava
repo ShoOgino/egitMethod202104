@@ -1,0 +1,16 @@
+		public Object[] getChildren(Object parentElement) {
+			if (parentElement instanceof PluginNode) {
+				PluginNode node = (PluginNode) parentElement;
+				List<OptionNode> result = new ArrayList<OptionNode>();
+				for (Object key : myOptionsMap.get(node).keySet()) {
+					// hide the main switch
+					if (key.equals(node.getPlugin() + MAINSWITCH))
+						continue;
+					result.add(new OptionNode(node, (String) key));
+				}
+				Collections.sort(result);
+				return result.toArray();
+			}
+			return null;
+		}
+

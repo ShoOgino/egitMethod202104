@@ -1,0 +1,10 @@
+	private void updateEnablement() {
+		setMessage(null);
+		if (!platformSwitch.getSelection())
+			setMessage(
+					UIText.GitTraceConfigurationDialog_PlatformTraceDisabledMessage,
+					IMessageProvider.INFORMATION);
+		tv.getTree().setEnabled(platformSwitch.getSelection());
+		updateApplyButton();
+	}
+

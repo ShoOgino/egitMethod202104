@@ -1,0 +1,53 @@
+	@Test
+	public void testTreeNode() throws Exception {
+		SWTBotCheckBox box = configurationDialog.bot().checkBox(
+				UIText.GitTraceConfigurationDialog_PlatformSwitchCheckbox);
+		SWTBotTree tree = findTree();
+		assertFalse(box.isChecked());
+		assertFalse(tree.isEnabled());
+		box.click();
+		assertTrue(box.isChecked());
+		assertTrue(tree.isEnabled());
+
+		SWTBotTreeItem item = tree.getAllItems()[0];
+		assertFalse(item.isChecked());
+		item.check();
+		assertTrue(item.isChecked());
+
+		configurationDialog.close();
+		getDialog();
+		box = configurationDialog.bot().checkBox(
+				UIText.GitTraceConfigurationDialog_PlatformSwitchCheckbox);
+
+		tree = findTree();
+		assertFalse(box.isChecked());
+		assertFalse(tree.isEnabled());
+		box.click();
+		assertTrue(box.isChecked());
+		assertTrue(tree.isEnabled());
+
+		item = tree.getAllItems()[0];
+		assertFalse(item.isChecked());
+		item.check();
+		assertTrue(item.isChecked());
+
+		configurationDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		getDialog();
+		box = configurationDialog.bot().checkBox(
+				UIText.GitTraceConfigurationDialog_PlatformSwitchCheckbox);
+
+		tree = findTree();
+		assertTrue(box.isChecked());
+		assertTrue(tree.isEnabled());
+
+		item = tree.getAllItems()[0];
+		assertTrue(item.isChecked());
+
+		configurationDialog.bot().button(
+				UIText.GitTraceConfigurationDialog_DefaultButton).click();
+
+		assertFalse(item.isChecked());
+		box.click();
+		configurationDialog.bot().button(IDialogConstants.OK_LABEL).click();
+	}
+
