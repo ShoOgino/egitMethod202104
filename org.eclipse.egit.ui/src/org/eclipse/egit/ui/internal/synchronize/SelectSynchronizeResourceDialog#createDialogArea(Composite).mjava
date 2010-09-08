@@ -14,7 +14,7 @@
 		srcRefCombo = new RemoteSelectionCombo(composite, syncRepos,
 				UIText.RemoteSelectionCombo_sourceName,
 				UIText.RemoteSelectionCombo_sourceRef);
-		srcRefCombo.setDefautlValue(UIText.SynchronizeWithAction_localRepoName, HEAD);
+		srcRefCombo.setDefaultValue(UIText.SynchronizeWithAction_localRepoName, HEAD);
 		srcRefCombo.setLayoutData(data);
 		srcRefCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
 				false).create());
@@ -29,7 +29,7 @@
 		dstRefCombo = new RemoteSelectionCombo(composite, syncRepos,
 				UIText.RemoteSelectionCombo_destinationName,
 				UIText.RemoteSelectionCombo_destinationRef);
-		dstRefCombo.setDefautlValue(DEFAULT_REMOTE_NAME, MASTER);
+		dstRefCombo.setDefaultValue(getDefaultRemoteName(), MASTER);
 		dstRefCombo.setLayoutData(data);
 		dstRefCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
 				false).create());
