@@ -10,26 +10,22 @@
 		bot.button("Finish").click();
 
 		try {
-			SWTBotShell shell = bot.shell("Cloning from " + cloneUrl);
-
-			// This is not a performance test. Allow lots of time to complete
-			bot.waitUntil(shellCloses(shell), 120000);
-		} catch (WidgetNotFoundException e1) {
-			// if the "Cloning from" window opens and closes very quickly
-			// (faster than the replay delay), we end up here, and we do an
-			// alternate test to see if the repository was cloned
-			// This is not a performance test. Allow lots of time to complete
-			for (int i = 0; i < 10; i++) {
-				if (Activator.getDefault().getRepositoryUtil()
-						.getConfiguredRepositories().contains(targetDir))
-					return;
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// ignore here
-				}
+			Job.getJobManager().join(GitCloneWizard.CLONE_JOB_FAMILY, new NullProgressMonitor());
+		} catch (Exception e) {
+			fail( "Unable to join cloning job");
+		}
+		// depending on the timing, the clone job may already be run
+		// but the repository is not yet added to our list, of
+		// repositories. Wait until that happend.
+		for (int i = 0; i < 3; i++) {
+			if (Activator.getDefault().getRepositoryUtil()
+					.getConfiguredRepositories().contains(targetDir))
+				return;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// ignore here
 			}
-			fail("The Repository was not created");
 		}
 	}
 
