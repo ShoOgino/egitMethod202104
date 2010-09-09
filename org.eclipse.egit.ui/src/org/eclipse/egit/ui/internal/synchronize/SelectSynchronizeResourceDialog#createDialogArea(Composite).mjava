@@ -22,6 +22,16 @@
 		shouldIncludeLocalButton = new Button(composite, SWT.CHECK | SWT.WRAP);
 		shouldIncludeLocalButton
 				.setText(UIText.SelectSynchronizeResourceDialog_includeUncommitedChanges);
+		shouldIncludeLocalButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean includeLocal = shouldIncludeLocalButton.getSelection();
+				srcRefCombo.setEnabled(!includeLocal);
+				if (includeLocal)
+					srcRefCombo.setDefaultValue(
+							UIText.SynchronizeWithAction_localRepoName, HEAD);
+			}
+		});
 
 		new Label(composite, SWT.WRAP)
 				.setText(UIText.SelectSynchronizeResourceDialog_dstRef);
