@@ -1,5 +1,5 @@
-	private void delete() {
-		final File dir = propertyFile().getParentFile();
+	private static void deletePropertyFiles(IProject project) {
+		final File dir = propertyFile(project).getParentFile();
 		final File[] todel = dir.listFiles();
 		if (todel != null) {
 			for (int k = 0; k < todel.length; k++) {
@@ -10,8 +10,7 @@
 		}
 		dir.delete();
 		trace("deleteDataFor("  //$NON-NLS-1$
-				+ getProject().getName()
+				+ project.getName()
 				+ ")");  //$NON-NLS-1$
-		uncache(getProject());
 	}
 
