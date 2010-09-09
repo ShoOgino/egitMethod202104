@@ -11,10 +11,8 @@
 
 		tw.reset();
 		tw.setRecursive(false);
-		int ignoreNth = tw.addTree(new FileTreeIterator(repo));
-		NotIgnoredFilter notIgnoredFilter = new NotIgnoredFilter(ignoreNth);
 
-		tw.setFilter(AndTreeFilter.create(ANY_DIFF, notIgnoredFilter));
+		tw.setFilter(ANY_DIFF);
 		return tw;
 	}
 
