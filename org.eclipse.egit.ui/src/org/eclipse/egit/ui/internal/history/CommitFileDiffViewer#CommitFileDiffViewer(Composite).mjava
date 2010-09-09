@@ -1,8 +1,28 @@
+	/**
+	 * Shows a list of file changed by a commit.
+	 *
+	 * If no input is available, an error message is shown instead.
+	 * @param parent
+	 */
 	CommitFileDiffViewer(final Composite parent) {
-		super(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER
-				| SWT.FULL_SELECTION);
-
+        // since out parent is a SashForm, we can't add the alternate
+		// text to be displayed in case of no input directly to that
+		// parent; we create our own parent instead and set the
+		// StackLayout on it instead
+		super(new Composite(parent, SWT.NONE), SWT.MULTI | SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		final Table rawTable = getTable();
+		Composite main = rawTable.getParent();
+		stackLayout = new StackLayout();
+		main.setLayout(stackLayout);
+
+		// this is the text to be displayed if there is no input
+		noInputText = new StyledText(main, SWT.NONE);
+		// use the same font as in message viewer
+		noInputText.setFont(UIUtils
+				.getFont(UIPreferences.THEME_CommitMessageFont));
+		noInputText.setText(UIText.CommitFileDiffViewer_SelectOneCommitMessage);
+
 		rawTable.setHeaderVisible(true);
 		rawTable.setLinesVisible(true);
 
