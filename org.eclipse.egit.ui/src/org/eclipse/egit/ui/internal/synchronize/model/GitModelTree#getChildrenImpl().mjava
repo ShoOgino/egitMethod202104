@@ -1,4 +1,4 @@
-	private void getChildrenImpl() {
+	protected GitModelObject[] getChildrenImpl() {
 		List<GitModelObject> result = new ArrayList<GitModelObject>();
 
 		try {
@@ -14,7 +14,7 @@
 				ancestorNth = tw.addTree(ancestorId);
 
 			while (tw.next()) {
-				GitModelObject obj = createChildren(tw, ancestorNth, baseNth,
+				GitModelObject obj = getModelObject(tw, ancestorNth, baseNth,
 						remoteNth);
 				if (obj != null)
 					result.add(obj);
@@ -23,6 +23,6 @@
 			Activator.logError(e.getMessage(), e);
 		}
 
-		children = result.toArray(new GitModelObject[result.size()]);
+		return result.toArray(new GitModelObject[result.size()]);
 	}
 

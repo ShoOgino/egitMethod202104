@@ -1,4 +1,4 @@
-	private GitModelObject getModelObject(TreeWalk tw, int ancestorNth,
+	protected GitModelObject getModelObject(TreeWalk tw, int ancestorNth,
 			int baseNth, int actualNth) throws IOException {
 		String objName = tw.getNameString();
 
@@ -13,10 +13,10 @@
 		int objectType = tw.getFileMode(actualNth).getObjectType();
 
 		if (objectType == Constants.OBJ_BLOB)
-			return new GitModelBlob(this, remoteCommit, objAncestorId,
+			return new GitModelBlob(this, getRemoteCommit(), objAncestorId,
 					objBaseId, objRemoteId, objName);
 		else if (objectType == Constants.OBJ_TREE)
-			return new GitModelTree(this, remoteCommit, objAncestorId,
+			return new GitModelTree(this, getRemoteCommit(), objAncestorId,
 					objBaseId, objRemoteId, objName);
 
 		return null;

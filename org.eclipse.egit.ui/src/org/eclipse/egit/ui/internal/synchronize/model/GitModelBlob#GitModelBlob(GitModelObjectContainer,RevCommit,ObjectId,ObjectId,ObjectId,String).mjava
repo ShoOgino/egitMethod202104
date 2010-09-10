@@ -1,19 +1,20 @@
 	/**
+	 *
 	 * @param parent
-	 *            parent of this tree
+	 *            parent of this object
 	 * @param commit
-	 *            commit associated with this tree
+	 *            remote commit
 	 * @param ancestorId
-	 *            id of common ancestor tree for this on
+	 *            common ancestor id
 	 * @param baseId
-	 *            id of base tree
+	 *            id of base object variant
 	 * @param remoteId
-	 *            this tree id
+	 *            id of remote object variants
 	 * @param name
-	 *            name resource associated with this tree
+	 *            human readable blob name (file name)
 	 * @throws IOException
 	 */
-	public GitModelTree(GitModelCommit parent, RevCommit commit,
+	public GitModelBlob(GitModelObjectContainer parent, RevCommit commit,
 			ObjectId ancestorId, ObjectId baseId, ObjectId remoteId, String name)
 			throws IOException {
 		// only direction is important for us, therefore we mask rest of bits in kind
@@ -22,5 +23,8 @@
 		this.baseId = baseId;
 		this.remoteId = remoteId;
 		this.ancestorId = ancestorId;
+		location = getParent().getLocation().append(name);
+		gitPath = Repository.stripWorkDir(getRepository().getWorkTree(),
+				getLocation().toFile());
 	}
 

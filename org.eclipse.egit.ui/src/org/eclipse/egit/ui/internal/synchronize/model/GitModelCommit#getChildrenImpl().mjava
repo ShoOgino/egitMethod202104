@@ -1,4 +1,5 @@
-	private void getChildrenImpl() {
+	@Override
+	protected GitModelObject[] getChildrenImpl() {
 		List<GitModelObject> result = new ArrayList<GitModelObject>();
 
 		try {
@@ -21,6 +22,6 @@
 			Activator.logError(e.getMessage(), e);
 		}
 
-		children = result.toArray(new GitModelObject[result.size()]);
+		return result.toArray(new GitModelObject[result.size()]);
 	}
 
