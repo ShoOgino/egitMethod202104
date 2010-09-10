@@ -1,0 +1,15 @@
+	private GitModelObject handleCacheTree(ObjectId repoId, ObjectId cacheId,
+			String path) throws IOException {
+		String pathKey = path.split("/")[0]; //$NON-NLS-1$
+		GitModelCacheTree cacheTree = cacheTreeMap.get(pathKey);
+		if (cacheTree == null) {
+			cacheTree = new GitModelCacheTree(this, remoteCommit, repoId,
+					cacheId, pathKey);
+			cacheTreeMap.put(pathKey, cacheTree);
+		}
+
+		cacheTree.addChild(repoId, cacheId, path.substring(path.indexOf('/') + 1));
+
+		return cacheTree;
+	}
+

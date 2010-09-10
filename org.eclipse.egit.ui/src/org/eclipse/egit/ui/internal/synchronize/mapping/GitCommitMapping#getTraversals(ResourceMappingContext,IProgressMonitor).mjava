@@ -4,7 +4,7 @@
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		List<ResourceTraversal> result = new ArrayList<ResourceTraversal>();
 
-		for (GitModelObject child : gitCommit.getChildren()) {
+		for (GitModelObject child : children) {
 			ResourceTraversal traversal;
 			IPath location = child.getLocation();
 

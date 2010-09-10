@@ -11,7 +11,8 @@
 				return workbenchLabelProvider.getImage(adapter);
 			}
 
-			if (element instanceof GitModelCommit)
+			if (element instanceof GitModelCommit
+					|| element instanceof GitModelCache)
 				return fImageCache.createImage(UIIcons.CHANGESET);
 
 			if (element instanceof GitModelRepository)

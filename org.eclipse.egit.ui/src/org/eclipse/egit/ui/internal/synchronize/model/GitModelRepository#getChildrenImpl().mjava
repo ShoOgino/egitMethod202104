@@ -27,6 +27,9 @@
 				else if (nextCommit.has(remoteFlag))
 					result.add(new GitModelCommit(this, nextCommit, LEFT));
 			}
+
+			if (includeLocal)
+				result.add(new GitModelCache(this, dstCommit));
 		} catch (IOException e) {
 			Activator.logError(e.getMessage(), e);
 		}

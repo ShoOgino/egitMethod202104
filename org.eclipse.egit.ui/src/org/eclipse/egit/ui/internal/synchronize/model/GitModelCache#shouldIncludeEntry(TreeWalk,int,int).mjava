@@ -1,0 +1,10 @@
+	private boolean shouldIncludeEntry(TreeWalk tw, int cacheNth, int repoNth) {
+		final int mHead = tw.getRawMode(repoNth);
+		final int mCache = tw.getRawMode(cacheNth);
+
+		return mHead == MISSING.getBits() // initial add to cache
+				|| mCache == MISSING.getBits() // removed from cache
+				|| (mHead != mCache || (mCache != TREE.getBits() && !tw
+						.idEqual(repoNth, cacheNth))); // modified
+	}
+

@@ -1,0 +1,19 @@
+	/**
+	 * @param parent
+	 *            parent object
+	 * @param repoId
+	 *            {@link ObjectId} of blob in repository
+	 * @param cacheId
+	 *            {@link ObjectId} of blob in cache
+	 * @param commit
+	 *            last {@link RevCommit} in repository
+	 * @param name
+	 *            name of tree
+	 * @throws IOException
+	 */
+	public GitModelCacheTree(GitModelObjectContainer parent, RevCommit commit,
+			ObjectId repoId, ObjectId cacheId, String name) throws IOException {
+		super(parent, commit, repoId, repoId, cacheId, name);
+		cacheTreeMap = new HashMap<String, GitModelObject>();
+	}
+
