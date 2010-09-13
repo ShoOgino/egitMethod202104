@@ -9,7 +9,7 @@
 		IResource local = createMock(IResource.class);
 		expect(local.exists()).andReturn(false);
 		replay(local);
-		IResourceVariant remote = new GitFolderResourceVariant(repo,
+		IResourceVariant remote = new GitFolderResourceVariant(repo, null,
 				ObjectId.zeroId(), "./");
 
 		// then
