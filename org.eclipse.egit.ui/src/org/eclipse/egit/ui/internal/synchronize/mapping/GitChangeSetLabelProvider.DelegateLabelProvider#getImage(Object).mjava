@@ -12,7 +12,8 @@
 			}
 
 			if (element instanceof GitModelCommit
-					|| element instanceof GitModelCache)
+					|| element instanceof GitModelCache
+					|| element instanceof GitModelWorkingTree)
 				return fImageCache.createImage(UIIcons.CHANGESET);
 
 			if (element instanceof GitModelRepository)

@@ -7,14 +7,13 @@
 					.get(pathKey);
 			if (cacheEntry == null) {
 				cacheEntry = new GitModelCacheTree(this, remoteCommit, repoId,
-						cacheId, pathKey);
+						cacheId, pathKey, factory);
 				cacheTreeMap.put(pathKey, cacheEntry);
 			}
 			cacheEntry.addChild(repoId, cacheId,
 					path.substring(path.indexOf('/') + 1));
-		} else {
-			cacheTreeMap.put(pathKey, new GitModelBlob(this, remoteCommit,
-					repoId, repoId, cacheId, pathKey));
-		}
+		} else
+			cacheTreeMap.put(pathKey, factory.createFileModel(this,
+					remoteCommit, repoId, cacheId, pathKey));
 	}
 

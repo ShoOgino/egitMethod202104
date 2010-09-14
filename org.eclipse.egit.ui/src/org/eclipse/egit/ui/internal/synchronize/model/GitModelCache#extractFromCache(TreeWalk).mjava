@@ -1,0 +1,25 @@
+	private GitModelObject extractFromCache(TreeWalk tw) throws IOException {
+		DirCacheIterator cacheIterator = tw.getTree(dirCacheIteratorNth,
+				DirCacheIterator.class);
+		if (cacheIterator == null)
+			return null;
+
+		DirCacheEntry cacheEntry = cacheIterator.getDirCacheEntry();
+		if (cacheEntry == null)
+			return null;
+
+		if (shouldIncludeEntry(tw)) {
+			String path = new String(tw.getRawPath());
+			ObjectId repoId = tw.getObjectId(BASE_NTH);
+			ObjectId cacheId = tw.getObjectId(REMOTE_NTH);
+
+			if (path.split("/").length > 1) //$NON-NLS-1$
+				return handleCacheTree(repoId, cacheId, path);
+
+			return fileFactory.createFileModel(this, remoteCommit, repoId,
+					cacheId, path);
+		}
+
+		return null;
+	}
+

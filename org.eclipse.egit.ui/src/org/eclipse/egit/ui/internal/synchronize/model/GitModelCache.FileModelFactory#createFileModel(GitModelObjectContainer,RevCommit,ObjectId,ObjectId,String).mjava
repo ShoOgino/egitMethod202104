@@ -1,0 +1,21 @@
+		/**
+		 * Creates proper instance of {@link GitModelBlob} for cache and working
+		 * tree model representation
+		 *
+		 * @param parent
+		 *            parent object
+		 * @param commit
+		 *            last {@link RevCommit} in repository
+		 * @param repoId
+		 *            {@link ObjectId} of blob in repository
+		 * @param cacheId
+		 *            {@link ObjectId} of blob in cache
+		 * @param name
+		 *            of blob
+		 * @return instance of {@link GitModelBlob}
+		 * @throws IOException
+		 */
+		GitModelBlob createFileModel(GitModelObjectContainer parent,
+				RevCommit commit, ObjectId repoId, ObjectId cacheId, String name)
+				throws IOException;
+

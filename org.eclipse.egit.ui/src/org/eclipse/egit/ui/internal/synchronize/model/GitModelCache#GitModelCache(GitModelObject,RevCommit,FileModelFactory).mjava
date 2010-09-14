@@ -1,0 +1,13 @@
+	/**
+	 * @param parent
+	 * @param baseCommit
+	 * @param fileFactory
+	 * @throws IOException
+	 */
+	protected GitModelCache(GitModelObject parent, RevCommit baseCommit,
+			FileModelFactory fileFactory) throws IOException {
+		super(parent, baseCommit, RIGHT);
+		this.fileFactory = fileFactory;
+		cacheTreeMap = new HashMap<String, GitModelCacheTree>();
+	}
+

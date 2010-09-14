@@ -4,11 +4,12 @@
 		GitModelCacheTree cacheTree = cacheTreeMap.get(pathKey);
 		if (cacheTree == null) {
 			cacheTree = new GitModelCacheTree(this, remoteCommit, repoId,
-					cacheId, pathKey);
+					cacheId, pathKey, fileFactory);
 			cacheTreeMap.put(pathKey, cacheTree);
 		}
 
-		cacheTree.addChild(repoId, cacheId, path.substring(path.indexOf('/') + 1));
+		cacheTree.addChild(repoId, cacheId,
+				path.substring(path.indexOf('/') + 1));
 
 		return cacheTree;
 	}

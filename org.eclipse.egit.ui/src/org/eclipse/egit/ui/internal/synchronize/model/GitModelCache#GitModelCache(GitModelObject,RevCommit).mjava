@@ -2,12 +2,22 @@
 	 * Constructs model node that represents current status of Git cache.
 	 *
 	 * @param parent
+	 *            parent object
 	 * @param baseCommit
+	 *            last {@link RevCommit} in repository
 	 * @throws IOException
 	 */
 	public GitModelCache(GitModelObject parent, RevCommit baseCommit)
 			throws IOException {
-		super(parent, baseCommit, RIGHT);
-		cacheTreeMap = new HashMap<String, GitModelCacheTree>();
+		this(parent, baseCommit, new FileModelFactory() {
+
+			public GitModelBlob createFileModel(
+					GitModelObjectContainer modelParent, RevCommit commit,
+					ObjectId repoId, ObjectId cacheId, String name)
+					throws IOException {
+				return new GitModelBlob(modelParent, commit, repoId, repoId,
+						cacheId, name);
+			}
+		});
 	}
 
