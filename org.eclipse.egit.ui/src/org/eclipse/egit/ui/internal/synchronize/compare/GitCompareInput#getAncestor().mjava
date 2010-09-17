@@ -1,0 +1,8 @@
+	public ITypedElement getAncestor() {
+		if (objectExist(ancestorCommit, ancestorId))
+			return CompareUtils.getFileRevisionTypedElement(gitPath,
+					ancestorCommit, repo, ancestorId);
+
+		return null;
+	}
+

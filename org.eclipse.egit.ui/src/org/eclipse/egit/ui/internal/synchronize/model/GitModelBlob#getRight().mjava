@@ -1,7 +1,6 @@
 	@Override
 	public ITypedElement getRight() {
-			return CompareUtils.getFileRevisionTypedElement(gitPath,
-					getBaseCommit(), getRepository(), baseId);
-
+		createCompareInput();
+		return compareInput.getRight();
 	}
 

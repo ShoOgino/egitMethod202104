@@ -14,7 +14,7 @@
 				gsdSet);
 		SubscriberScopeManager manager = new SubscriberScopeManager(
 				subscriber.getName(), mappings, subscriber, remoteContext, true);
-		SynchronizationContext context = new GitSubscriberMergeContext(
+		GitSubscriberMergeContext context = new GitSubscriberMergeContext(
 				subscriber, manager, gsdSet);
 		GitModelSynchronizeParticipant participant = new GitModelSynchronizeParticipant(
 				context);

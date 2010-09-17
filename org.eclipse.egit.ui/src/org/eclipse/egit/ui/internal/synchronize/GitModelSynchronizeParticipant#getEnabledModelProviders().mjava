@@ -1,13 +1,19 @@
 	@Override
 	public ModelProvider[] getEnabledModelProviders() {
 		List<ModelProvider> providers = new ArrayList<ModelProvider>();
-		if (!includeResourceModelProvider())
-			providers.add(GitChangeSetModelProvider.getProvider());
-		else {
-			boolean addGitProvider = true;
-			ModelProvider[] enabledProviders = super.getEnabledModelProviders();
+		ModelProvider[] avaliableProviders = super.getEnabledModelProviders();
+		if (!includeResourceModelProvider()) {
+			for (ModelProvider provider : avaliableProviders)
+				if (provider.getId().equals(WORKSPACE_MODEL_PROVIDER_ID)) {
+					providers.add(provider);
+					break;
+				}
 
-			for (ModelProvider provider : enabledProviders) {
+			providers.add(GitChangeSetModelProvider.getProvider());
+		} else {
+			boolean addGitProvider = true;
+
+			for (ModelProvider provider : avaliableProviders) {
 				String providerId = provider.getId();
 				providers.add(provider);
 

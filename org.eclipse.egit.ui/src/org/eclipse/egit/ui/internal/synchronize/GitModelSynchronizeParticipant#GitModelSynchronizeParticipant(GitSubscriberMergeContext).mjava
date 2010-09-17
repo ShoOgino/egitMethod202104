@@ -3,8 +3,10 @@
 	 *
 	 * @param context
 	 */
-	public GitModelSynchronizeParticipant(SynchronizationContext context) {
+	public GitModelSynchronizeParticipant(GitSubscriberMergeContext context) {
 		super(context);
+		gsds = context.getSyncData();
+
 		try {
 			setInitializationData(TeamUI.getSynchronizeManager()
 					.getParticipantDescriptor(ID));

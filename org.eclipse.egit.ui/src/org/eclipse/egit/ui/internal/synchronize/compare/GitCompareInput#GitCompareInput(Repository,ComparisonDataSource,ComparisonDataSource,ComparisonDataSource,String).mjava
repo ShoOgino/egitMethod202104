@@ -1,0 +1,29 @@
+	/**
+	 * Creates {@link GitCompareInput}
+	 *
+	 * @param repo
+	 *            repository that is connected with this object
+	 * @param ancestroDataSource
+	 *            data that should be use to obtain common ancestor object data
+	 * @param baseDataSource
+	 *            data that should be use to obtain base object data
+	 * @param remoteDataSource
+	 *            data that should be used to obtain remote object data
+	 * @param gitPath
+	 *            repository relative path of object
+	 */
+	public GitCompareInput(Repository repo,
+			ComparisonDataSource ancestroDataSource,
+			ComparisonDataSource baseDataSource,
+			ComparisonDataSource remoteDataSource, String gitPath) {
+		this.repo = repo;
+		this.gitPath = gitPath;
+		this.baseId = baseDataSource.getObjectId();
+		this.remoteId = remoteDataSource.getObjectId();
+		this.baseCommit = baseDataSource.getRevCommit();
+		this.ancestorId = ancestroDataSource.getObjectId();
+		this.remoteCommit = remoteDataSource.getRevCommit();
+		this.ancestorCommit = ancestroDataSource.getRevCommit();
+		this.name = gitPath.substring(gitPath.lastIndexOf('/'));
+	}
+
