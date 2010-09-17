@@ -1,0 +1,15 @@
+		/**
+		 * Record which projects have changes. Initiate a resource refresh job
+		 * if the user settings allow it.
+		 *
+		 * @param e
+		 *            The {@link RepositoryEvent} that triggered this refresh
+		 */
+		private void mayTriggerRefresh(RepositoryEvent e) {
+			repositoriesChanged.add(e.getRepository());
+			if (!Activator.getDefault().getPreferenceStore()
+					.getBoolean(UIPreferences.REFESH_ONLY_WHEN_ACTIVE)
+					|| isActive())
+				triggerRefresh();
+		}
+

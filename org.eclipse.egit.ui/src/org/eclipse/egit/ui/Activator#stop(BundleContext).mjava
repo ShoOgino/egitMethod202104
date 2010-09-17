@@ -4,6 +4,11 @@
 			refreshHandle = null;
 		}
 
+		if (focusListener != null) {
+			PlatformUI.getWorkbench().removeWindowListener(focusListener);
+			focusListener = null;
+		}
+
 		if (GitTraceLocation.UI.isActive())
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.UI.getLocation(),

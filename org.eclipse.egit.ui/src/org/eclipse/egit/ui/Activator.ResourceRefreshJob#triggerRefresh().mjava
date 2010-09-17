@@ -1,0 +1,29 @@
+		/**
+		 * Figure which projects belong to a repository, add them to a set of
+		 * project to refresh and schedule the refresh as a job.
+		 */
+		void triggerRefresh() {
+			if (GitTraceLocation.UI.isActive())
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.UI.getLocation(), "Triggered refresh"); //$NON-NLS-1$
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+					.getProjects();
+			Set<IProject> toRefresh = new HashSet<IProject>();
+			synchronized (repositoriesChanged) {
+				for (IProject p : projects) {
+					RepositoryMapping mapping = RepositoryMapping.getMapping(p);
+					if (mapping != null
+							&& repositoriesChanged.contains(mapping
+									.getRepository())) {
+						toRefresh.add(p);
+					}
+				}
+				repositoriesChanged.clear();
+			}
+			synchronized (projectsToScan) {
+				projectsToScan.addAll(toRefresh);
+			}
+			if (projectsToScan.size() > 0)
+				schedule();
+		}
+
