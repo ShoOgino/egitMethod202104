@@ -3,9 +3,8 @@
 	 * initialization call's is common for all model object's.
 	 *
 	 * @return tree walk
-	 * @throws CorruptObjectException
 	 */
-	protected TreeWalk createTreeWalk() throws CorruptObjectException {
+	protected TreeWalk createTreeWalk() {
 		Repository repo = getRepository();
 		TreeWalk tw = new TreeWalk(repo);
 
