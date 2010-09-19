@@ -1,5 +1,5 @@
-	private static IResource[] getResourcesImpl(Repository repo, IPath path,
-			AnyObjectId baseId, AnyObjectId remoteId) {
+	private static IResource[] getResourcesImpl(Repository repo,
+			AnyObjectId baseId, AnyObjectId remoteId, IPath path) {
 		if (remoteId.equals(zeroId()))
 			return new IResource[0];
 
