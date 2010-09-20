@@ -1,6 +1,6 @@
 	private IResource getResource(@SuppressWarnings("unused") ICompareInput input) {
 		if (getLocalElement() != null) {
-			return ((IResourceProvider) getLocalElement()).getResource();
+			return getLocalElement().getResource();
 		}
 		return null;
 	}
