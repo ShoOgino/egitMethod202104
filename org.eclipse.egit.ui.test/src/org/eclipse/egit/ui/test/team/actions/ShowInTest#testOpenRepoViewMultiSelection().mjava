@@ -5,13 +5,8 @@
 		projectExplorerTree.select(0, 1);
 		String menuString = util
 				.getPluginLocalizedValue("ShowRepositoryAction_label");
-		try {
-			ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
-					menuString);
-			fail("This should have failed");
-		} catch (SWTException e) {
-			// expected
-			assertTrue(e.getCause() instanceof IllegalStateException);
-		}
+		// Team->show in repository must be disabled on a multiple selection
+		assertFalse(ContextMenuHelper.isContextMenuItemEnabled(projectExplorerTree, "Team",
+				menuString));
 	}
 

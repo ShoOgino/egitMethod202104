@@ -1,29 +1,26 @@
 	/**
-	 * Clicks the context menu matching the text.
+	 * Checks if the context menu matching the text is enabled
 	 *
 	 * @param bot
 	 *
 	 * @param texts
 	 *            the text on the context menu.
+	 * @return true if the context menu is enabled
 	 * @throws WidgetNotFoundException
 	 *             if the widget is not found.
-	 * @throws SWTException
-	 *             if the menu item is disabled (the root cause being an
-	 *             {@link IllegalStateException})
 	 */
-	public static void clickContextMenu(final AbstractSWTBot<?> bot,
+	public static boolean isContextMenuItemEnabled(final AbstractSWTBot<?> bot,
 			final String... texts) {
 
+		final AtomicBoolean enabled = new AtomicBoolean(false);
 		// show
 		final MenuItem menuItem = UIThreadRunnable
 				.syncExec(new WidgetResult<MenuItem>() {
 					@SuppressWarnings("unchecked")
 					public MenuItem run() {
 						MenuItem theItem = getMenuItem(bot, texts);
-						if (theItem != null && !theItem.isEnabled())
-							throw new IllegalStateException(
-									"Menu item is diabled");
-
+						if (theItem != null && theItem.isEnabled())
+							enabled.set(true);
 						return theItem;
 					}
 				});
@@ -31,15 +28,12 @@
 			throw new WidgetNotFoundException("Could not find menu: "
 					+ Arrays.asList(texts));
 		}
-
-		// click
-		click(menuItem);
-
 		// hide
 		UIThreadRunnable.syncExec(new VoidResult() {
 			public void run() {
 				hide(menuItem.getParent());
 			}
 		});
+		return enabled.get();
 	}
 
