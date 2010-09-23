@@ -9,8 +9,9 @@
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
-				commit[0] = (RevCommit) table.widget.getSelection()[0]
-						.getData();
+				TableItem tableItem = table.widget.getSelection()[0];
+				ensureTableItemLoaded(tableItem);
+				commit[0] = (RevCommit) tableItem.getData();
 			}
 		});
 
