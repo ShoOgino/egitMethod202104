@@ -1,8 +1,8 @@
-	private void buildIndexHeadDiffList(ExecutionEvent event)
-			throws IOException, ExecutionException {
+	private void buildIndexHeadDiffList(IProject[] selectedProjects, IProgressMonitor monitor)
+			throws IOException, OperationCanceledException {
 		HashMap<Repository, HashSet<IProject>> repositories = new HashMap<Repository, HashSet<IProject>>();
 
-		for (IProject project : getProjectsInRepositoryOfSelectedResources(event)) {
+		for (IProject project : selectedProjects) {
 			RepositoryMapping repositoryMapping = RepositoryMapping
 					.getMapping(project);
 			assert repositoryMapping != null;
@@ -19,9 +19,13 @@
 			projects.add(project);
 		}
 
+		monitor.beginTask(UIText.CommitActionHandler_caculatingChanges,
+				repositories.size());
 		for (Map.Entry<Repository, HashSet<IProject>> entry : repositories
 				.entrySet()) {
 			Repository repository = entry.getKey();
+			monitor.subTask(NLS.bind(UIText.CommitActionHandler_repository,
+					repository.getDirectory().getPath()));
 			HashSet<IProject> projects = entry.getValue();
 
 			AdaptableFileTreeIterator fileTreeIterator =
@@ -39,6 +43,10 @@
 				includeList(project, indexDiff.getModified(), notIndexed);
 				includeList(project, indexDiff.getUntracked(), notTracked);
 			}
+			if (monitor.isCanceled())
+				throw new OperationCanceledException();
+			monitor.worked(1);
 		}
+		monitor.done();
 	}
 
