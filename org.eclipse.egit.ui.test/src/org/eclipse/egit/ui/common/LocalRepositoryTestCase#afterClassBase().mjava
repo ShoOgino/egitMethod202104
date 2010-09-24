@@ -4,6 +4,7 @@
 		new Eclipse().reset();
 		// cleanup
 		deleteAllProjects();
+		shutDownRepositories();
 		deleteRecursive(testDirectory);
 		Activator.getDefault().getRepositoryCache().clear();
 	}
