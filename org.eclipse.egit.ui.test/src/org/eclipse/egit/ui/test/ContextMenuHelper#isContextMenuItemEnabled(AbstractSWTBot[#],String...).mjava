@@ -31,6 +31,8 @@
 		// hide
 		UIThreadRunnable.syncExec(new VoidResult() {
 			public void run() {
+				if (menuItem.isDisposed())
+					return; // menu already gone
 				hide(menuItem.getParent());
 			}
 		});
