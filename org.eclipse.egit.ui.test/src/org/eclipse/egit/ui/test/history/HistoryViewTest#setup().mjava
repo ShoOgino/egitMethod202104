@@ -4,13 +4,14 @@
 		repoFile = createProjectAndCommitToRepository();
 		perspective = bot.activePerspective();
 		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
-		IProject prj = ResourcesPlugin.getWorkspace().getRoot().getProject(
-				PROJ1);
+		IProject prj = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
 		IFolder folder2 = prj.getFolder(SECONDFOLDER);
 		folder2.create(false, true, null);
 		IFile addedFile = folder2.getFile(ADDEDFILE);
-		addedFile.create(new ByteArrayInputStream("More content".getBytes(prj
-				.getDefaultCharset())), false, null);
+		addedFile.create(
+				new ByteArrayInputStream("More content".getBytes(prj
+						.getDefaultCharset())), false, null);
 		addAndCommit(addedFile, ADDEDMESSAGE);
 		// TODO count the commits
 		commitCount = 3;

@@ -18,10 +18,10 @@
 		ContextMenuHelper.clickContextMenu(table,
 				UIText.GitHistoryPage_CreateTagMenuLabel);
 		SWTBotShell dialog = bot.shell(UIText.CreateTagDialog_NewTag);
-		dialog.bot().textWithLabel(UIText.CreateTagDialog_tagName).setText(
-				"NewTag");
-		dialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage).setText(
-				"New Tag message");
+		dialog.bot().textWithLabel(UIText.CreateTagDialog_tagName)
+				.setText("NewTag");
+		dialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
+				.setText("New Tag message");
 		dialog.bot().button(IDialogConstants.OK_LABEL).click();
 		waitInUI();
 		assertNotNull(repo.resolve(Constants.R_TAGS + "NewTag"));
