@@ -25,29 +25,28 @@
 				for (Repository repo : repos) {
 					if (monitor.isCanceled())
 						break;
-					// TODO is this the right location?
-					if (GitTraceLocation.UI.isActive())
+					if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
 						GitTraceLocation.getTrace().trace(
-								GitTraceLocation.UI.getLocation(),
+								GitTraceLocation.REPOSITORYCHANGESCANNER
+										.getLocation(),
 								"Scanning " + repo + " for changes"); //$NON-NLS-1$ //$NON-NLS-2$
 
 					repo.scanForRepoChanges();
 					monitor.worked(1);
 				}
 			} catch (IOException e) {
-				// TODO is this the right location?
-				if (GitTraceLocation.UI.isActive())
+				if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
 					GitTraceLocation.getTrace().trace(
-							GitTraceLocation.UI.getLocation(),
+							GitTraceLocation.REPOSITORYCHANGESCANNER
+									.getLocation(),
 							"Stopped rescheduling " + getName() + "job"); //$NON-NLS-1$ //$NON-NLS-2$
 				return createErrorStatus(UIText.Activator_scanError, e);
 			} finally {
 				monitor.done();
 			}
-			// TODO is this the right location?
-			if (GitTraceLocation.UI.isActive())
+			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
 				GitTraceLocation.getTrace().trace(
-						GitTraceLocation.UI.getLocation(),
+						GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
 						"Rescheduling " + getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (doReschedule)
 				schedule(REPO_SCAN_INTERVAL);
