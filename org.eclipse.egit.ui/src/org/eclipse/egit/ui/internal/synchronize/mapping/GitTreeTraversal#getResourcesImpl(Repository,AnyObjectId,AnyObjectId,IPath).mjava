@@ -11,8 +11,10 @@
 		tw.setRecursive(false);
 		tw.setFilter(TreeFilter.ANY_DIFF);
 		try {
+			tw.addTree(new FileTreeIterator(repo));
 			if (!baseId.equals(zeroId()))
 				tw.addTree(baseId);
+
 			int actualNth = tw.addTree(remoteId);
 
 			while (tw.next()) {
