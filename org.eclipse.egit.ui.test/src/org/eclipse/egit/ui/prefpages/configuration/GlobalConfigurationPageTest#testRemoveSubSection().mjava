@@ -6,7 +6,7 @@
 		config.setStringList(TESTSECTION, null, TESTNAME, values);
 		config.setStringList(TESTSECTION, TESTSUBSECTION, TESTNAME, values);
 		config.save();
-		getPreferencePage();
+		getGitConfigurationPreferencePage();
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
 				TESTSUBSECTION).select();
 

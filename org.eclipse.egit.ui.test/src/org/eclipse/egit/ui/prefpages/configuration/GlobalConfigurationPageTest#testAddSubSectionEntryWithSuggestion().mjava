@@ -2,7 +2,7 @@
 	public void testAddSubSectionEntryWithSuggestion() throws Exception {
 		config.setString(TESTSECTION, TESTSUBSECTION, TESTNAME, "true");
 		config.save();
-		getPreferencePage();
+		getGitConfigurationPreferencePage();
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
 				TESTSUBSECTION).select();
 		preferencePage.bot().button(

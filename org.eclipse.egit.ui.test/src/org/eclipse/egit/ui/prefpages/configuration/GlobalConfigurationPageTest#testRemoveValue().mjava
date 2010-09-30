@@ -5,7 +5,7 @@
 		values.add("false");
 		config.setStringList(TESTSECTION, null, TESTNAME, values);
 		config.save();
-		getPreferencePage();
+		getGitConfigurationPreferencePage();
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(
 				TESTNAME + "[0]").select();
 

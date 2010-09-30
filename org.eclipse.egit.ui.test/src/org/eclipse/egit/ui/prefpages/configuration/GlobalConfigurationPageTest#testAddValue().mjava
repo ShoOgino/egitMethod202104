@@ -2,7 +2,7 @@
 	public void testAddValue() throws Exception {
 		config.setString(TESTSECTION, null, TESTNAME, "true");
 		config.save();
-		getPreferencePage();
+		getGitConfigurationPreferencePage();
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).getNode(TESTNAME)
 				.select();
 		preferencePage.bot().textWithLabel(
