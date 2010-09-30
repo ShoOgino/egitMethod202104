@@ -1,0 +1,11 @@
+	@Override
+	protected void createFieldEditors() {
+		IntegerFieldEditor editor = new IntegerFieldEditor(
+				UIPreferences.REMOTE_CONNECTION_TIMEOUT,
+				UIText.RemoteConnectionPreferencePage_TimeoutLabel,
+				getFieldEditorParent());
+		editor.getLabelControl(getFieldEditorParent()).setToolTipText(
+				UIText.RemoteConnectionPreferencePage_ZeroValueTooltip);
+		addField(editor);
+	}
+

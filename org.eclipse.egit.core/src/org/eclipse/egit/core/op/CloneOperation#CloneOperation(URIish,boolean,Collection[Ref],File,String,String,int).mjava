@@ -17,10 +17,11 @@
 	 * @param remoteName
 	 *            name of created remote config as source remote (typically
 	 *            named "origin").
+	 * @param timeout timeout in seconds
 	 */
 	public CloneOperation(final URIish uri, final boolean allSelected,
 			final Collection<Ref> selectedBranches, final File workdir,
-			final String branch, final String remoteName) {
+			final String branch, final String remoteName, int timeout) {
 		this.uri = uri;
 		this.allSelected = allSelected;
 		this.selectedBranches = selectedBranches;
@@ -28,5 +29,6 @@
 		this.gitdir = new File(workdir, Constants.DOT_GIT);
 		this.branch = branch;
 		this.remoteName = remoteName;
+		this.timeout = timeout;
 	}
 

@@ -11,6 +11,7 @@
 		Connection connection = null;
 		try {
 			transport = Transport.open(localDb, uri);
+			transport.setTimeout(this.timeout);
 
 			if (pm != null)
 				pm.beginTask(CoreText.ListRemoteOperation_title,

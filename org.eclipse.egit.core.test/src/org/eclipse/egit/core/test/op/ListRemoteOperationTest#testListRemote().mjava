@@ -9,14 +9,14 @@
 		URIish uri = new URIish("file:///"
 				+ repository2.getRepository().getDirectory().getPath());
 		ListRemoteOperation lrop = new ListRemoteOperation(repository1
-				.getRepository(), uri);
+				.getRepository(), uri, 0);
 		lrop.run(null);
 		assertEquals(4, lrop.getRemoteRefs().size());
 		assertNotNull(lrop.getRemoteRef("refs/heads/test"));
 
 		uri = new URIish("file:///"
 				+ repository1.getRepository().getDirectory().getPath());
-		lrop = new ListRemoteOperation(repository2.getRepository(), uri);
+		lrop = new ListRemoteOperation(repository2.getRepository(), uri, 0);
 		lrop.run(new NullProgressMonitor());
 		assertEquals(2, lrop.getRemoteRefs().size());
 		assertNotNull(lrop.getRemoteRef("refs/heads/master"));

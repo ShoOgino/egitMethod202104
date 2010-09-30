@@ -3,7 +3,9 @@
 		try {
 			final URIish uri;
 			uri = newRepoSelection.getURI(pushPage);
-			listRemotesOp = new ListRemoteOperation(local, uri);
+			int timeout = Activator.getDefault().getPreferenceStore().getInt(
+					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+			listRemotesOp = new ListRemoteOperation(local, uri, timeout);
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {

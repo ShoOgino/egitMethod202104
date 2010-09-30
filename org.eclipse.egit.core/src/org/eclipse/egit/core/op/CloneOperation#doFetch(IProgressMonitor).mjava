@@ -1,6 +1,7 @@
 	private void doFetch(final IProgressMonitor monitor)
 			throws NotSupportedException, TransportException {
 		final Transport tn = Transport.open(local, remoteConfig);
+		tn.setTimeout(this.timeout);
 		try {
 			final EclipseGitProgressTransformer pm;
 			pm = new EclipseGitProgressTransformer(monitor);

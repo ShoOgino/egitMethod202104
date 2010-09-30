@@ -7,9 +7,13 @@
 	 *            occur.
 	 * @param uri
 	 *            URI of remote repository to list.
+	 * @param timeout
+	 *            timeout is seconds; 0 means no timeout
 	 */
-	public ListRemoteOperation(final Repository localDb, final URIish uri) {
+	public ListRemoteOperation(final Repository localDb, final URIish uri,
+			int timeout) {
 		this.localDb = localDb;
 		this.uri = uri;
+		this.timeout = timeout;
 	}
 

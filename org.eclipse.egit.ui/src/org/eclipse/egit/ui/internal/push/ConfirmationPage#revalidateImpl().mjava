@@ -23,9 +23,10 @@
 			final PushOperationSpecification spec = new PushOperationSpecification();
 			for (final URIish uri : displayedRepoSelection.getPushURIs())
 				spec.addURIRefUpdates(uri, copyUpdates(updates));
-
+			int timeout = Activator.getDefault().getPreferenceStore().getInt(
+					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 			operation = new PushOperation(local, spec, true,
-					displayedRepoSelection.getConfig());
+					displayedRepoSelection.getConfig(), timeout);
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {

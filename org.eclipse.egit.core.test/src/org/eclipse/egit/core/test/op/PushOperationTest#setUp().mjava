@@ -46,7 +46,7 @@
 		URIish uri = new URIish("file:///"
 				+ repository1.getRepository().getDirectory().toString());
 		CloneOperation clop = new CloneOperation(uri, true, null, workdir2,
-				"refs/heads/master", "origin");
+				"refs/heads/master", "origin", 0);
 		clop.run(null);
 
 		repository2 = new TestRepository(new FileRepository(new File(workdir2,

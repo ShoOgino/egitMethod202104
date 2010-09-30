@@ -51,6 +51,7 @@
 					continue;
 				}
 				transport = Transport.open(localDb, uri);
+				transport.setTimeout(this.timeout);
 
 				if (rc != null)
 					transport.applyConfig(rc);

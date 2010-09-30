@@ -6,7 +6,9 @@
 		try {
 			final URIish uri = newRepoSelection.getURI();
 			final Repository db = new FileRepository(new File("/tmp")); //$NON-NLS-1$
-			listRemoteOp = new ListRemoteOperation(db, uri);
+			int timeout = Activator.getDefault().getPreferenceStore().getInt(
+					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+			listRemoteOp = new ListRemoteOperation(db, uri, timeout);
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
