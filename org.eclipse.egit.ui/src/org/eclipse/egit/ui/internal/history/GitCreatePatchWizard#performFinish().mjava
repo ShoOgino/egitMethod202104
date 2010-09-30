@@ -25,6 +25,9 @@
 						}
 
 					}));
+
+					if (isGit)
+						writeGitPatchHeader(sb);
 					try {
 						FileDiff[] diffs = FileDiff.compute(walker, commit);
 						for (FileDiff diff : diffs) {
