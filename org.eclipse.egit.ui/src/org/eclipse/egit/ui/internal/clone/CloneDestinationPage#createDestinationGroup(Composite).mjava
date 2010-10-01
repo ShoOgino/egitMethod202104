@@ -2,7 +2,10 @@
 		final Group g = createGroup(parent,
 				UIText.CloneDestinationPage_groupDestination);
 
-		newLabel(g, UIText.CloneDestinationPage_promptDirectory + ":"); //$NON-NLS-1$
+		Label dirLabel = new Label(g, SWT.NONE);
+		dirLabel.setText(UIText.CloneDestinationPage_promptDirectory + ":"); //$NON-NLS-1$
+		dirLabel
+				.setToolTipText(UIText.CloneDestinationPage_DefaultRepoFolderTooltip);
 		final Composite p = new Composite(g, SWT.NONE);
 		final GridLayout grid = new GridLayout();
 		grid.numColumns = 2;
