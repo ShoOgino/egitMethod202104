@@ -18,7 +18,6 @@
 				"class Main {}", "initial commit");
 		IFile mainJava = testRepo.getIFile(iProject, file);
 		// this should be our common ancestor
-		ObjectId fileId = findFileId(commit, mainJava);
 
 		testRepo.createAndCheckoutBranch(Constants.HEAD, Constants.R_HEADS
 				+ "test");
@@ -38,6 +37,7 @@
 		// then
 		IResourceVariant actual = commonAssertionsForBaseTree(baseTree,
 				mainJava);
-		assertEquals(fileId.getName(), actual.getContentIdentifier());
+		assertEquals(commit.abbreviate(7).name() + "...",
+				actual.getContentIdentifier());
 	}
 
