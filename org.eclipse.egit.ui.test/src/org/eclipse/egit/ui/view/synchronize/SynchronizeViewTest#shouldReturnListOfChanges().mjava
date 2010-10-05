@@ -1,47 +1,36 @@
 	// this test fails when is run inside eclipse with Maven POM editor
 	@Test
 	public void shouldReturnListOfChanges() throws Exception {
-		// when
-		changeFilesInProject();
-		showSynchronizationDialog("org.eclipse.egit.ui");
-
 		// given
-		bot.shell("Synchronize repository: egit" + File.separator + ".git")
+		resetRepository(PROJ1);
+		changeFilesInProject();
+		showDialog(PROJ1, "Team", "Synchronize...");
+
+		// when
+		bot.shell("Synchronize repository: " + REPO1 + File.separator + ".git")
 				.activate();
 
-		bot.comboBox(0).setSelection("local .git");
-		bot.comboBox(1).setSelection("HEAD");
+		bot.comboBox(0)
+				.setSelection(UIText.SynchronizeWithAction_localRepoName);
+		bot.comboBox(1).setSelection(HEAD);
 
-		bot.comboBox(2).setSelection("local .git");
-		bot.comboBox(3).setSelection("master");
+		bot.comboBox(2)
+				.setSelection(UIText.SynchronizeWithAction_localRepoName);
+		bot.comboBox(3).setSelection(MASTER);
 
 		// include local changes
 		bot.checkBox("Include local uncommited changes in comparison").click();
 
 		// fire action
-		bot.button("OK").click();
-
-		handleConfirmOpenPerspective();
-
-		// wait for dispose "Git Resource Synchronization"
-		bot.waitUntil(shellIsActive("Git Resource Synchronization"), 15000);
-		SWTBotShell shell = bot.shell("Git Resource Synchronization");
-		bot.waitUntil(shellCloses(shell), 300000);
+		bot.button(IDialogConstants.OK_LABEL).click();
+		bot.sleep(1000);
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		assertEquals(2, syncViewTree.getAllItems().length);
+		assertEquals(1, syncViewTree.getAllItems().length);
 
 		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
-		assertEquals("org.eclipse.egit.core", syncItems[0].getText());
-		assertEquals("org.eclipse.egit.ui", syncItems[1].getText());
-
-		syncItems[0].expand();
-		syncItems[1].expand();
-
-		assertEquals(1, syncItems[0].getNodes().size());
-		assertEquals("pom.xml", syncItems[0].getNodes().get(0));
-		assertEquals(1, syncItems[1].getNodes().size());
-		assertEquals("pom.xml", syncItems[1].getNodes().get(0));
+		assertEquals(UIText.GitModelWorkingTree_workingTree,
+				syncItems[0].getText());
 	}
 

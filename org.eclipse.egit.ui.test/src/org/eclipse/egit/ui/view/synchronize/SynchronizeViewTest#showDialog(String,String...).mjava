@@ -1,4 +1,4 @@
-	private void showSynchronizationDialog(String projectName) {
+	private void showDialog(String projectName, String... cmd) {
 		SWTBot packageExplorerBot = bot.viewByTitle("Package Explorer").bot();
 		packageExplorerBot.activeShell();
 		SWTBotTree tree = packageExplorerBot.tree();
@@ -15,6 +15,6 @@
 			}
 		}
 
-		ContextMenuHelper.clickContextMenu(tree, "Team", "Synchronize...");
+		clickContextMenu(tree, cmd);
 	}
 

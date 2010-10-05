@@ -1,22 +1,17 @@
 	@BeforeClass
 	public static void setupEnvironment() throws Exception {
-		// turn off auto building
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IWorkspaceDescription description = workspace.getDescription();
-		description.setAutoBuilding(false);
-		workspace.setDescription(description);
+		// disable perspective synchronize selection
+		new Eclipse().openPreferencePage(null);
+		bot.tree().getTreeItem("Team").expand().select();
+		SWTBotRadio syncPerspectiveCheck = bot.radio("Never");
+		if (!syncPerspectiveCheck.isSelected())
+			syncPerspectiveCheck.click();
 
-		// obtain copy of EGit project
-		GitImportRepoWizard importWizard = new GitImportRepoWizard();
+		bot.button(IDialogConstants.OK_LABEL).click();
 
-		importWizard.openWizard();
-		String repoName = "egit";
-		String repoUrl = "git://egit.eclipse.org/egit.git";
-		if (!importWizard.containsRepo(repoName))
-			addRepository(importWizard, repoUrl);
-
-		importWizard.selectAndCloneRepository(repoName);
-		importWizard.waitForCreate();
-		waitForWorkspaceRefresh();
+		File repositoryFile = createProjectAndCommitToRepository();
+		createChildRepository(repositoryFile);
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(repositoryFile);
 	}
 

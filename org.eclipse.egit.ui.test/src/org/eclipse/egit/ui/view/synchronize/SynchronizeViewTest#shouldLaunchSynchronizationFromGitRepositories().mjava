@@ -5,7 +5,7 @@
 	@Test
 	public void shouldLaunchSynchronizationFromGitRepositories()
 			throws Exception {
-		// when
+		// given
 		bot.menu("Window").menu("Show View").menu("Other...").click();
 		bot.shell("Show View").bot().tree().expandNode("Git").getNode(
 				"Git Repositories").doubleClick();
@@ -22,14 +22,7 @@
 		branchNode.select();
 		branchNode.contextMenu("Synchronize").click();
 
-		handleConfirmOpenPerspective();
-
-		// wait for dispose "Git Resource Synchronization"
-		bot.waitUntil(shellIsActive("Git Resource Synchronization"), 15000);
-		SWTBotShell shell = bot.shell("Git Resource Synchronization");
-		bot.waitUntil(shellCloses(shell), 300000);
-
-		// given
+		// when
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();

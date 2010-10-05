@@ -1,0 +1,14 @@
+	private void resetRepository(String projectName) {
+		showDialog(projectName, "Team", "Reset...");
+
+		bot.shell(UIText.ResetCommand_WizardTitle).bot().activeShell();
+		bot.radio(UIText.ResetTargetSelectionDialog_ResetTypeHardButton)
+				.click();
+		bot.button(UIText.ResetTargetSelectionDialog_ResetButton).click();
+
+		bot.shell(UIText.ResetTargetSelectionDialog_ResetQuestion).bot()
+				.activeShell();
+		bot.button("Yes").click();
+
+	}
+

@@ -3,33 +3,20 @@
 		packageExplorerBot.activeShell();
 		SWTBotTree tree = packageExplorerBot.tree();
 
-		SWTBotTreeItem coreTreeItem = tree.getAllItems()[3];
-		coreTreeItem.expand();
-		for (String node : coreTreeItem.getNodes()) {
-			if (node.contains("pom.xml")) {
-				coreTreeItem.getNode(node).doubleClick();
-				break;
-			}
-		}
+		SWTBotTreeItem coreTreeItem = tree.getAllItems()[0];
+		SWTBotTreeItem rootNode = coreTreeItem.expand().getNode(0)
+				.expand().select();
+		rootNode.getNode(0).select().doubleClick();
 
-		SWTBotEditor corePomEditor = bot.editorByTitle("pom.xml");
+		SWTBotEditor corePomEditor = bot.editorByTitle(FILE1);
 		corePomEditor.toTextEditor()
 				.insertText("<!-- EGit jUnit test case -->");
 		corePomEditor.saveAndClose();
-		coreTreeItem.collapse();
 
-		SWTBotTreeItem uiTreeItem = tree.getAllItems()[6];
-		uiTreeItem.expand();
-		for (String node : uiTreeItem.getNodes()) {
-			if (node.contains("pom.xml")) {
-				uiTreeItem.getNode(node).doubleClick();
-				break;
-			}
-		}
-
-		SWTBotEditor uiPomEditor = bot.editorByTitle("pom.xml");
+		rootNode.getNode(1).select().doubleClick();
+		SWTBotEditor uiPomEditor = bot.editorByTitle(FILE2);
 		uiPomEditor.toTextEditor().insertText("<!-- EGit jUnit test case -->");
 		uiPomEditor.saveAndClose();
-		uiTreeItem.collapse();
+		coreTreeItem.collapse();
 	}
 

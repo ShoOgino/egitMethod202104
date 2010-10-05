@@ -1,30 +1,33 @@
 	@Test
 	public void shouldCompareTagAgainstTag() throws Exception {
-		// when
-		showSynchronizationDialog("org.eclipse.egit.ui");
-
 		// given
-		bot.shell("Synchronize repository: egit" + File.separator + ".git")
+		resetRepository(PROJ1);
+		createTag(PROJ1, "v0.1");
+		makeChangesAndCommit(PROJ1);
+		createTag(PROJ1, "v0.2");
+		makeChangesAndCommit(PROJ1);
+		showDialog(PROJ1, "Team", "Synchronize...");
+
+		// when
+		bot.shell("Synchronize repository: " + REPO1 + File.separator + ".git")
 				.activate();
 
-		bot.comboBox(0).setSelection("local .git");
-		bot.comboBox(1).setSelection("v0.7.0");
+		bot.comboBox(0)
+				.setSelection(UIText.SynchronizeWithAction_localRepoName);
+		bot.comboBox(1).setSelection("v0.1");
 
-		bot.comboBox(2).setSelection("local .git");
-		bot.comboBox(3).setSelection("v0.8.1");
+		bot.comboBox(2)
+				.setSelection(UIText.SynchronizeWithAction_localRepoName);
+		bot.comboBox(3).setSelection("v0.2");
 
 		// fire action
-		bot.button("OK").click();
+		bot.button(IDialogConstants.OK_LABEL).click();
 
-		handleConfirmOpenPerspective();
-
-		// wait for dispose "Git Resource Synchronization"
-		bot.waitUntil(shellIsActive("Git Resource Synchronization"), 15000);
-		SWTBotShell shell = bot.shell("Git Resource Synchronization");
-		bot.waitUntil(shellCloses(shell), 300000);
+		// wait for synchronization process finish
+		bot.sleep(1000);
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		assertEquals(8, syncViewTree.getAllItems().length);
+		assertEquals(1, syncViewTree.getAllItems().length);
 	}
 
