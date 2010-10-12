@@ -1,0 +1,26 @@
+	public void execute(IProgressMonitor m) throws CoreException {
+		if (pullResult != null)
+			throw new CoreException(new Status(IStatus.ERROR, Activator
+					.getPluginId(), CoreText.OperationAlreadyExecuted));
+		IProgressMonitor monitor;
+		if (m == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = m;
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor mymonitor) throws CoreException {
+				PullCommand pull = new Git(repository).pull();
+				try {
+					pull.setProgressMonitor(new EclipseGitProgressTransformer(
+							mymonitor));
+					pull.setTimeout(timeout);
+					pullResult = pull.call();
+				} catch (GitAPIException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				}
+			}
+		};
+		// lock workspace to protect working tree changes
+		ResourcesPlugin.getWorkspace().run(action, monitor);
+	}
+

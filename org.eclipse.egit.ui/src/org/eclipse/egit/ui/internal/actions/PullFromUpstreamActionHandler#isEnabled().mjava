@@ -1,0 +1,15 @@
+	@Override
+	public boolean isEnabled() {
+		// we don't do the full canMerge check here, but
+		// ensure that a branch is checked out
+		Repository repo = getRepository();
+		if (repo == null)
+			return false;
+		try {
+			String fullBranch = repo.getFullBranch();
+			return (fullBranch.startsWith(Constants.R_REFS));
+		} catch (IOException e) {
+			return false;
+		}
+	}
+

@@ -1,5 +1,5 @@
 	@Override
-	protected Control createDialogArea(final Composite parent) {
+	public Control createDialogArea(final Composite parent) {
 		final Composite composite = (Composite) super.createDialogArea(parent);
 
 		final Label label = new Label(composite, SWT.NONE);
@@ -22,8 +22,6 @@
 		tableLayout.heightHint = 300;
 		tableControl.setLayoutData(tableLayout);
 
-		getShell().setText(
-				NLS.bind(UIText.FetchResultDialog_title, sourceString));
 		applyDialogFont(composite);
 		return composite;
 	}
