@@ -1,0 +1,22 @@
+	@Override
+	public IStatus validateDrop(Object target, int operation,
+			TransferData transferData) {
+		// check that all paths are valid repository paths
+		String[] folders = (String[]) FileTransfer.getInstance().nativeToJava(
+				transferData);
+		for (String folder : folders) {
+			File repoFile = new File(folder);
+			if (FileKey.isGitRepository(repoFile, FS.DETECTED)) {
+				continue;
+			}
+			// convenience: also allow the direct parent of .git
+			if (!repoFile.getName().equals(Constants.DOT_GIT)) {
+				File dotgitfile = new File(repoFile, Constants.DOT_GIT);
+				if (FileKey.isGitRepository(dotgitfile, FS.DETECTED))
+					continue;
+			}
+			return Status.CANCEL_STATUS;
+		}
+		return Status.OK_STATUS;
+	}
+
