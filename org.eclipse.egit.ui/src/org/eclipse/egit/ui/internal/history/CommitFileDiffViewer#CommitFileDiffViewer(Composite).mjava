@@ -39,11 +39,20 @@
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				final FileDiff d = (FileDiff) iss.getFirstElement();
-				if (walker != null && d.getBlobs().length <= 2)
-					if (compareMode)
+				if (compareMode) {
+					if (d.getBlobs().length <= 2)
 						showTwoWayFileDiff(d);
 					else
-						openFileInEditor(d);
+						MessageDialog
+								.openInformation(
+										PlatformUI.getWorkbench()
+												.getActiveWorkbenchWindow()
+												.getShell(),
+										UIText.CommitFileDiffViewer_CanNotOpenCompareEditorTitle,
+										UIText.CommitFileDiffViewer_MergeCommitMultiAncestorMessage);
+				}
+				else
+					openFileInEditor(d);
 			}
 		});
 

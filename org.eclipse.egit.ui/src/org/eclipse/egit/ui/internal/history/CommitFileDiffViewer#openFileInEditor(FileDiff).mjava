@@ -7,7 +7,7 @@
 					d.getChange().equals(ChangeType.DELETE)?
 							d.getCommit().getParent(0) : d.getCommit(),
 					db, d.getChange().equals(ChangeType.DELETE)?
-							d.getBlobs()[0] : d.getBlobs()[1]);
+							d.getBlobs()[0] : d.getBlobs()[d.getBlobs().length - 1]);
 			if (rev != null)
 				EgitUiEditorUtils.openEditor(page, rev,
 						new NullProgressMonitor());
