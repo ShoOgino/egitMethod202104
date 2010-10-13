@@ -3,7 +3,7 @@
 		Repository repository = lookupRepository(repo);
 		RepositoryNode root = new RepositoryNode(null, repository);
 		BranchesNode branches = new BranchesNode(root, repository);
-		LocalBranchesNode localBranches = new LocalBranchesNode(branches,
+		LocalNode localBranches = new LocalNode(branches,
 				repository);
 
 		String rootText = labelProvider.getStyledText(root).getString();

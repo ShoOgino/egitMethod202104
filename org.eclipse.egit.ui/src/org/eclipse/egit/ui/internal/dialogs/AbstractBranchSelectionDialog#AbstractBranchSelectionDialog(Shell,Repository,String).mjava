@@ -11,8 +11,8 @@
 			Repository repository, String refToMark) {
 		super(parentShell);
 		this.repo = repository;
-		localBranches = new LocalBranchesNode(null, this.repo);
-		remoteBranches = new RemoteBranchesNode(null, this.repo);
+		localBranches = new LocalNode(null, this.repo);
+		remoteBranches = new RemoteTrackingNode(null, this.repo);
 		tags = new TagsNode(null, this.repo);
 		this.refToMark = refToMark;
 	}
