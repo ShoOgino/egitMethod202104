@@ -1,4 +1,4 @@
-	private RevWalk getRevCommits() {
+	private void getRevCommits(Collection<RevCommit> commits) {
 		RevWalk revWalk = new RevWalk(repo);
 		revWalk.sort(RevSort.COMMIT_TIME_DESC, true);
 		revWalk.sort(RevSort.BOUNDARY, true);
@@ -11,7 +11,8 @@
 			Activator.logError(UIText.TagAction_errorWhileGettingRevCommits, e);
 			setErrorMessage(UIText.TagAction_errorWhileGettingRevCommits);
 		}
-
-		return revWalk;
+		// do the walk to get the commits
+		for(RevCommit commit:revWalk)
+			commits.add(commit);
 	}
 

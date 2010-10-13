@@ -11,7 +11,8 @@
 			} catch (IncorrectObjectTypeException e) {
 				// repo.getTags() returns also lightweight tags
 			} catch (IOException e) {
-				Activator.logError(UIText.TagAction_unableToResolveHeadObjectId, e);
+				Activator.logError(
+						UIText.TagAction_unableToResolveHeadObjectId, e);
 				setErrorMessage(UIText.TagAction_unableToResolveHeadObjectId);
 			}
 		}

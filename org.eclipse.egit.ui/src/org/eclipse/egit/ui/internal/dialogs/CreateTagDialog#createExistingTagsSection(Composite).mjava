@@ -16,19 +16,19 @@
 
 		tagViewer = new TableViewer(table);
 		tagViewer.setLabelProvider(new TagLabelProvider());
-		tagViewer.setContentProvider(new WorkbenchContentProvider());
+		tagViewer.setContentProvider(ArrayContentProvider.getInstance());
 		tagViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				fillTagDialog();
 			}
 		});
-
-		tagViewer.setInput(new TagInputList(existingTags));
 		tagViewer.addFilter(new ViewerFilter() {
 
 			@Override
 			public boolean select(Viewer viewer, Object parentElement,
 					Object element) {
+				if (element instanceof String)
+					return true;
 				RevTag actTag = (RevTag) element;
 
 				if (tagNamePattern != null)
@@ -37,7 +37,12 @@
 					return true;
 			}
 		});
-
+		// let's set the table inactive initially and display a "Loading..."
+		// message and fill the list asynchronously during create() in order to
+		// improve UI responsiveness
+		tagViewer
+				.setInput(new String[] { UIText.CreateTagDialog_LoadingMessageText });
+		tagViewer.getTable().setEnabled(false);
 		applyDialogFont(parent);
 	}
 

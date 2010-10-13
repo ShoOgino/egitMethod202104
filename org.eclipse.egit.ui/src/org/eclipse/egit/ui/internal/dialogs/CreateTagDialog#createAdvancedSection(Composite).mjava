@@ -1,5 +1,5 @@
 	private void createAdvancedSection(final Composite composite) {
-		if (commitId!=null)
+		if (commitId != null)
 			return;
 		ExpandableComposite advanced = new ExpandableComposite(composite,
 				ExpandableComposite.TREE_NODE
@@ -24,13 +24,33 @@
 		commitCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
 				false).hint(300, SWT.DEFAULT).create());
 
-		for (RevCommit revCommit : revCommits)
-			commitCombo.add(revCommit);
-
 		advanced.setClient(advancedComposite);
 		advanced.addExpansionListener(new ExpansionAdapter() {
 			public void expansionStateChanged(ExpansionEvent e) {
-				composite.layout();
+				// fill the Combo lazily to improve UI responsiveness
+				if (((Boolean) e.data).booleanValue()
+						&& commitCombo.getItemCount() == 0) {
+					final Collection<RevCommit> commits = new ArrayList<RevCommit>();
+					try {
+						PlatformUI.getWorkbench().getProgressService()
+								.busyCursorWhile(new IRunnableWithProgress() {
+
+									public void run(IProgressMonitor monitor)
+											throws InvocationTargetException,
+											InterruptedException {
+										// TODO Auto-generated method stub
+										getRevCommits(commits);
+									}
+								});
+					} catch (InvocationTargetException e1) {
+						Activator.logError(e1.getMessage(), e1);
+					} catch (InterruptedException e1) {
+						// ignore here
+					}
+					for (RevCommit revCommit : commits)
+						commitCombo.add(revCommit);
+				}
+				composite.layout(true);
 			}
 		});
 	}
