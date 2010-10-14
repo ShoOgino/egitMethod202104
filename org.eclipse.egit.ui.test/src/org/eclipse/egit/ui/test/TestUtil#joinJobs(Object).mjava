@@ -1,0 +1,10 @@
+	/**
+	 * Utility for waiting until the execution of jobs of a given
+	 * family has finished.
+	 * @param family
+	 * @throws InterruptedException
+	 */
+	public static void joinJobs(Object family) throws InterruptedException  {
+		Job.getJobManager().join(family, null);
+	}
+

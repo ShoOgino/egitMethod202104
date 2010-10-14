@@ -41,6 +41,7 @@
 		localItem.getNode(1).select();
 		ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("CheckoutCommand"));
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 
 		try {
 			ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
@@ -52,8 +53,9 @@
 		localItem.getNode(0).select();
 		ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("CheckoutCommand"));
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		localItem.getNode(1).select();
-		Job.getJobManager().join(JobFamilies.CHECKOUT, null);
+		refreshAndWait();
 		ContextMenuHelper.clickContextMenu(bot.tree(), myUtil
 				.getPluginLocalizedValue("DeleteBranchCommand"));
 		SWTBotShell confirmPopup = bot
