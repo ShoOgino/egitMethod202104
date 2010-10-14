@@ -31,15 +31,29 @@
 			return NLS.bind(NAME_PATTERN, new Object[] { type, path,
 					repositoryName });
 		} else {
-			// can this happen at all? the generic history view can't
-			// handle multiple selection
+			// user has selected multiple resources and then hits Team->Show in
+			// History (the generic history view can not deal with multiple
+			// selection)
 			StringBuilder b = new StringBuilder();
-			for (final String p : pathFilters) {
-				b.append(p);
-				b.append(' ');
+			for (IResource res : in.getItems()) {
+				b.append(res.getFullPath());
+				if (res.getType() == IResource.FOLDER)
+					b.append('/');
+				// limit the total length
+				if (b.length() > 100) {
+					b.append("...  "); //$NON-NLS-1$
+					break;
+				}
+				b.append(", "); //$NON-NLS-1$
 			}
-			return NLS.bind(NAME_PATTERN, new Object[] {
-					UIText.GitHistoryPage_MultiResourcesType, b.toString(), repositoryName });
+			// trim off the last ", " (or "  " if total length exceeded)
+			if (b.length() > 2)
+				b.setLength(b.length() - 2);
+			String multiResourcePrefix = NLS.bind(
+					UIText.GitHistoryPage_MultiResourcesType, Integer
+							.valueOf(in.getItems().length));
+			return NLS.bind(NAME_PATTERN, new Object[] { multiResourcePrefix,
+					b.toString(), repositoryName });
 		}
 	}
 

@@ -2,16 +2,11 @@
 		IStructuredSelection selection = getSelection(getPage());
 		if (selection.size() == 1) {
 			RevCommit commit = (RevCommit) selection.getFirstElement();
-			Object input = getInput(event);
-			if (!(input instanceof IResource))
-				return null;
-			RepositoryMapping mapping = RepositoryMapping
-					.getMapping((IResource) getInput(event));
-
-			TreeWalk fileWalker = new TreeWalk(mapping.getRepository());
+            Repository repo = getRepository(event);
+			TreeWalk fileWalker = new TreeWalk(repo);
 			fileWalker.setRecursive(true);
 			fileWalker.setFilter(TreeFilter.ANY_DIFF);
-			GitCreatePatchWizard.run(getPart(event), commit, fileWalker, mapping.getRepository());
+			GitCreatePatchWizard.run(getPart(event), commit, fileWalker, repo);
 		}
 		return null;
 	}

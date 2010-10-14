@@ -1,5 +1,15 @@
 	private Composite createMainPanel(final Composite parent) {
+		StackLayout layout = new StackLayout();
+		parent.setLayout(layout);
 		final Composite c = new Composite(parent, SWT.NULL);
+		layout.topControl = c;
+		// shown instead of the splitter if an error message was set
+		errorText = new StyledText(parent, SWT.NONE);
+		// use the same font as in message viewer
+		errorText.setFont(UIUtils
+				.getFont(UIPreferences.THEME_CommitMessageFont));
+		errorText.setText(UIText.CommitFileDiffViewer_SelectOneCommitMessage);
+
 		final GridLayout parentLayout = new GridLayout();
 		parentLayout.marginHeight = 0;
 		parentLayout.marginWidth = 0;

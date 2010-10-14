@@ -2,8 +2,14 @@
 	public boolean inputSet() {
 		cancelRefreshJob();
 
-		if (graph == null || super.getInput() == null)
+		if (graph == null)
 			return false;
+
+		setErrorMessage(null);
+		if (super.getInput() == null) {
+			setErrorMessage(UIText.GitHistoryPage_NoInputMessage);
+			return false;
+		}
 
 		final IResource[] in = ((ResourceList) super.getInput()).getItems();
 		if (in == null || in.length == 0)
@@ -19,8 +25,12 @@
 
 			if (db == null)
 				db = map.getRepository();
-			else if (db != map.getRepository())
+			else if (db != map.getRepository()) {
+				super.setInput(null);
+				db = null;
+				setErrorMessage(UIText.GitHistoryPage_DifferentRepositoriesMessage);
 				return false;
+			}
 
 			if (showAllFilter == ShowFilter.SHOWALLFOLDER) {
 				final String name = map.getRepoRelativePath(r.getParent());
