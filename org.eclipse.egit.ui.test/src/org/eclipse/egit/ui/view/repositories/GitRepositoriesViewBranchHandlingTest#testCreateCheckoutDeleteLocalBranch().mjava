@@ -53,7 +53,7 @@
 		ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("CheckoutCommand"));
 		localItem.getNode(1).select();
-		waitInUI();
+		Job.getJobManager().join(JobFamilies.CHECKOUT, null);
 		ContextMenuHelper.clickContextMenu(bot.tree(), myUtil
 				.getPluginLocalizedValue("DeleteBranchCommand"));
 		SWTBotShell confirmPopup = bot
