@@ -5,14 +5,13 @@
 	 *
 	 * @param repo
 	 *            the repository
-	 * @param baseBranch
-	 *            the branch to base the new branch on, may be null
+	 * @param baseRef
+	 *            the branch or tag to base the new branch on, may be null
 	 */
-	public CreateBranchPage(Repository repo, Ref baseBranch) {
+	public CreateBranchPage(Repository repo, Ref baseRef) {
 		super(CreateBranchPage.class.getName());
-		commitMode = false;
 		this.myRepository = repo;
-		this.myBaseBranch = baseBranch;
+		this.myBaseRef = baseRef.getName();
 		this.myBaseCommit = null;
 		this.myValidator = ValidationUtils.getRefNameInputValidator(
 				myRepository, Constants.R_HEADS, true);

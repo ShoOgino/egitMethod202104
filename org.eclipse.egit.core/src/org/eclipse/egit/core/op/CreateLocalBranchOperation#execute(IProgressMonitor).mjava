@@ -1,0 +1,35 @@
+	public void execute(IProgressMonitor m) throws CoreException {
+		IProgressMonitor monitor;
+		if (m == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = m;
+
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor actMonitor) throws CoreException {
+				String taskName = NLS
+						.bind(
+								CoreText.CreateLocalBranchOperation_CreatingBranchMessage,
+								name);
+				actMonitor.beginTask(taskName, 1);
+				Git git = new Git(repository);
+				try {
+					if (ref != null)
+						git.branchCreate().setName(name).setStartPoint(ref.getName())
+								.setUpstreamMode(SetupUpstreamMode.TRACK)
+								.call();
+					else
+						git.branchCreate().setName(name).setStartPoint(commit)
+								.setUpstreamMode(SetupUpstreamMode.NOTRACK)
+								.call();
+				} catch (Exception e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				}
+				actMonitor.worked(1);
+				actMonitor.done();
+			}
+		};
+		// lock workspace to protect working tree changes
+		ResourcesPlugin.getWorkspace().run(action, monitor);
+	}
+

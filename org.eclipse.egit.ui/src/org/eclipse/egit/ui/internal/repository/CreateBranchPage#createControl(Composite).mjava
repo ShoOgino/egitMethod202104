@@ -3,7 +3,7 @@
 		main.setLayout(new GridLayout(3, false));
 
 		Label sourceLabel = new Label(main, SWT.NONE);
-		if (commitMode) {
+		if (this.myBaseCommit != null) {
 			sourceLabel.setText(UIText.CreateBranchPage_SourceCommitLabel);
 			sourceLabel
 					.setToolTipText(UIText.CreateBranchPage_SourceCommitTooltip);
@@ -18,7 +18,7 @@
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(
 				this.branchCombo);
 
-		if (commitMode) {
+		if (this.myBaseCommit != null) {
 			this.branchCombo.add(myBaseCommit.name());
 			this.branchCombo.setText(myBaseCommit.name());
 			this.branchCombo.setEnabled(false);
@@ -51,8 +51,8 @@
 				}
 			});
 			// select the current branch in the drop down
-			if (myBaseBranch != null) {
-				this.branchCombo.setText(myBaseBranch.getName());
+			if (myBaseRef != null) {
+				this.branchCombo.setText(myBaseRef);
 			}
 		}
 
@@ -90,13 +90,13 @@
 		Dialog.applyDialogFont(main);
 		setControl(main);
 		nameText.setFocus();
-		if (myBaseBranch != null
-				&& (myBaseBranch.getName().startsWith(Constants.R_REMOTES) || myBaseBranch
-						.getName().startsWith(Constants.R_TAGS))) {
+		if (myBaseRef != null
+				&& (myBaseRef.startsWith(Constants.R_REMOTES) || myBaseRef
+						.startsWith(Constants.R_TAGS))) {
 			// additional convenience: the last part of the name is suggested
 			// as name for the local branch
-			nameText.setText(myBaseBranch.getName().substring(
-					myBaseBranch.getName().lastIndexOf('/') + 1));
+			nameText.setText(myBaseRef
+					.substring(myBaseRef.lastIndexOf('/') + 1));
 			checkPage();
 		} else {
 			// in any case, we will have to enter the name

@@ -43,15 +43,6 @@
 		// error node should be shown
 		remotesItem.getNode("test3").expand().getNodes();
 		assertTrue(remotesItem.getNode("test3").expand().getNodes().size() == 1);
-		final SWTBotTreeItem errorItem = remotesItem.getNode("test3")
-				.getNode(0);
-		// check that we see an error node
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				Object data = errorItem.widget.getData();
-				assertTrue(data instanceof ErrorNode);
-			}
-		});
 
 		// test the properties view on remote
 		remotesItem.getNode("test").select();

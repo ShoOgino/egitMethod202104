@@ -1,0 +1,15 @@
+	/**
+	 * @param repository
+	 * @param name
+	 *            the name for the new local branch (without prefix)
+	 * @param commit
+	 *            a commit to base the new branch upon
+	 */
+	public CreateLocalBranchOperation(Repository repository, String name,
+			RevCommit commit) {
+		this.name = name;
+		this.repository = repository;
+		this.ref = null;
+		this.commit = commit;
+	}
+

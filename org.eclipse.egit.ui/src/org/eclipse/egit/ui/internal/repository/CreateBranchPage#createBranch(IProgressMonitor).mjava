@@ -10,25 +10,24 @@
 
 		String newRefName = getBranchName();
 
-		RefUpdate updateRef = myRepository.updateRef(newRefName);
-		ObjectId startAt;
-		if (commitMode)
-			startAt = myBaseCommit.getId();
-		else
-			startAt = new RevWalk(myRepository).parseCommit(myRepository
-					.resolve(getSourceBranchName()));
+		final CreateLocalBranchOperation cbop;
 
-		updateRef.setNewObjectId(startAt);
-		updateRef.setRefLogMessage(
-				"branch: Created from " + getSourceBranchName(), false); //$NON-NLS-1$
-		updateRef.update();
+		if (myBaseCommit != null)
+			cbop = new CreateLocalBranchOperation(myRepository, newRefName,
+					myBaseCommit);
+		else
+			cbop = new CreateLocalBranchOperation(myRepository, newRefName,
+					myRepository.getRef(this.branchCombo.getText()));
+
+		cbop.execute(monitor);
 
 		if (checkout.getSelection()) {
 			if (monitor.isCanceled())
 				return;
 			monitor.beginTask(UIText.CreateBranchPage_CheckingOutMessage,
 					IProgressMonitor.UNKNOWN);
-			new BranchOperation(myRepository, getBranchName()).execute(monitor);
+			new BranchOperation(myRepository, Constants.R_HEADS + newRefName)
+					.execute(monitor);
 		}
 	}
 

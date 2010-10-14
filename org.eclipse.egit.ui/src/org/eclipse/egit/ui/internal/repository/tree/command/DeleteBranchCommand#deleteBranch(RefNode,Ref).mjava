@@ -1,13 +1,8 @@
-	private void deleteBranch(final RefNode node, final Ref ref)
-			throws IOException {
-		RefUpdate op = node.getRepository().updateRef(ref.getName());
-		op.setRefLogMessage("branch deleted", //$NON-NLS-1$
-				false);
-		// TODO: This uses the force option always, so a warning pop-up is shown to the
-		// user; instead this should check if deletion can be performed without data
-		// loss and in this case the deletion should be done quietly; the warning pop-up
-		// should only be shown if the force option is really needed.
-		op.setForceUpdate(true);
-		op.delete();
+	private int deleteBranch(final RefNode node, final Ref ref)
+			throws CoreException {
+		DeleteBranchOperation dbop = new DeleteBranchOperation(node
+				.getRepository(), ref, true);
+		dbop.execute(null);
+		return dbop.getStatus();
 	}
 

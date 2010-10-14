@@ -10,9 +10,8 @@
 	 */
 	public CreateBranchPage(Repository repo, RevCommit baseCommit) {
 		super(CreateBranchPage.class.getName());
-		commitMode = true;
 		this.myRepository = repo;
-		this.myBaseBranch = null;
+		this.myBaseRef = null;
 		this.myBaseCommit = baseCommit;
 		this.myValidator = ValidationUtils.getRefNameInputValidator(
 				myRepository, Constants.R_HEADS, true);
