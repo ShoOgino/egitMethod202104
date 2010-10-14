@@ -7,12 +7,12 @@
 
 		case BRANCHES: {
 			List<RepositoryTreeNode> nodes = new ArrayList<RepositoryTreeNode>();
-			nodes.add(new LocalBranchesNode(node, repo));
-			nodes.add(new RemoteBranchesNode(node, repo));
+			nodes.add(new LocalNode(node, repo));
+			nodes.add(new RemoteTrackingNode(node, repo));
 			return nodes.toArray();
 		}
 
-		case LOCALBRANCHES: {
+		case LOCAL: {
 			if (branchHierarchyMode) {
 				BranchHierarchyNode hierNode = new BranchHierarchyNode(node,
 						repo, new Path(Constants.R_HEADS));
@@ -46,7 +46,7 @@
 			}
 		}
 
-		case REMOTEBRANCHES: {
+		case REMOTETRACKING: {
 			if (branchHierarchyMode) {
 				BranchHierarchyNode hierNode = new BranchHierarchyNode(node,
 						repo, new Path(Constants.R_REMOTES));

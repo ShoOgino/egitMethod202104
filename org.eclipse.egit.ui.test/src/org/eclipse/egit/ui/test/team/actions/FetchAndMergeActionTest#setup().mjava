@@ -6,7 +6,7 @@
 		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
 		RepositoriesViewLabelProvider provider = new RepositoriesViewLabelProvider();
 		Repository repo = lookupRepository(childRepositoryFile);
-		REMOTE_BRANCHES = provider.getText(new RemoteBranchesNode(
+		REMOTE_BRANCHES = provider.getText(new RemoteTrackingNode(
 				new RepositoryNode(null, repo), repo));
 	}
 
