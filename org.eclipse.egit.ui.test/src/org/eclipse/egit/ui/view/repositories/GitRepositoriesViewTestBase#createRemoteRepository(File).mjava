@@ -23,7 +23,7 @@
 				myRepository, "push");
 
 		pa.run(null, false);
-
+		TestUtil.joinJobs(JobFamilies.PUSH);
 		try {
 			// delete the stable branch again
 			RefUpdate op = myRepository.updateRef("refs/heads/stable");
