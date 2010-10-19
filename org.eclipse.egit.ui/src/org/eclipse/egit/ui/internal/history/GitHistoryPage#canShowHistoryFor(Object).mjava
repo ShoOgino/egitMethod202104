@@ -8,8 +8,8 @@
 	 *         FOLDER or PROJECT and we can show it; false otherwise.
 	 */
 	public static boolean canShowHistoryFor(final Object object) {
-		if (object instanceof ResourceList) {
-			final IResource[] array = ((ResourceList) object).getItems();
+		if (object instanceof HistoryPageInput) {
+			final IResource[] array = ((HistoryPageInput) object).getItems();
 			if (array.length == 0)
 				return false;
 			for (final IResource r : array) {
