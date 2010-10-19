@@ -21,7 +21,7 @@
 		graph = new CommitGraphTable(graphDetailSplit);
 		graph.getTableView().addOpenListener(new IOpenListener() {
 			public void open(OpenEvent event) {
-				if (!inputIsSingleFile()) {
+				if (!input.isSingleFile()) {
 					return;
 				}
 

@@ -1,10 +1,10 @@
 	protected Repository getRepository(ExecutionEvent event)
 			throws ExecutionException {
 		Object input = getInput(event);
-		if (input instanceof HistoryPageInput) {
+		if (input instanceof HistoryPageInput)
 			return ((HistoryPageInput) input).getRepository();
-		} else
-			return RepositoryMapping.getMapping((IResource) input)
-					.getRepository();
+		if (input instanceof RepositoryTreeNode)
+			return ((RepositoryTreeNode) input).getRepository();
+		return RepositoryMapping.getMapping((IResource) input).getRepository();
 	}
 

@@ -100,6 +100,7 @@
 			}
 		} else if (inFiles != null) {
 			IPath workdirPath = new Path(db.getWorkTree().getPath());
+			IPath gitDirPath = new Path(db.getDirectory().getPath());
 			int segmentCount = workdirPath.segmentCount();
 			paths = new ArrayList<String>(inFiles.length);
 			for (File file : inFiles) {
@@ -113,6 +114,15 @@
 				} else /* if (showAllFilter == ShowFilter.SHOWALLRESOURCE) */{
 					filePath = new Path(file.getPath());
 				}
+
+				if (gitDirPath.isPrefixOf(filePath)) {
+					setErrorMessage(NLS
+							.bind(
+									UIText.GitHistoryPage_FileOrFolderPartOfGitDirMessage,
+									filePath.toOSString()));
+					return false;
+				}
+
 				IPath pathToAdd = filePath.removeFirstSegments(segmentCount)
 						.setDevice(null);
 				if (!pathToAdd.isEmpty()) {

@@ -4,7 +4,8 @@
 		if (page == null)
 			return false;
 		int size = getSelection(page).size();
-		return size >= 1
-				&& IFile.class.isAssignableFrom(page.getInput().getClass());
+		if (size == 0)
+			return false;
+		return page.getInputInternal().isSingleFile();
 	}
 

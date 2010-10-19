@@ -1,4 +1,4 @@
-	protected Object getInput(ExecutionEvent event) throws ExecutionException {
+	private Object getInput(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = getPart(event);
 		if (!(part instanceof IHistoryView))
 			throw new ExecutionException(

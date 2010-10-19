@@ -8,6 +8,11 @@
 			final IResource[] resourceItems) {
 		this.repo = repository;
 		list = resourceItems;
+		if (resourceItems.length == 1
+				&& resourceItems[0].getType() == IResource.FILE)
+			singleFile = resourceItems[0];
+		else
+			singleFile = null;
 		files = null;
 	}
 
