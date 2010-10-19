@@ -1,13 +1,8 @@
-	public boolean setInput(final Object o) {
-		final Object in;
-		if (o instanceof IResource)
-			in = new HistoryPageInput(RepositoryMapping.getMapping(
-					(IResource) o).getRepository(),
-					new IResource[] { (IResource) o });
-		else if (o instanceof HistoryPageInput)
-			in = o;
-		else
-			in = null;
-		return super.setInput(in);
+	@Override
+	public boolean setInput(Object object) {
+		if (object == getInput())
+			return true;
+		this.input = null;
+		return super.setInput(object);
 	}
 

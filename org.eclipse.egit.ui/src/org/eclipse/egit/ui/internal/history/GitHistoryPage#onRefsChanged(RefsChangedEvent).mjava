@@ -1,5 +1,5 @@
 	public void onRefsChanged(final RefsChangedEvent e) {
-		if (e.getRepository() != db)
+		if (input == null || e.getRepository() != input.getRepository())
 			return;
 
 		if (getControl().isDisposed())
