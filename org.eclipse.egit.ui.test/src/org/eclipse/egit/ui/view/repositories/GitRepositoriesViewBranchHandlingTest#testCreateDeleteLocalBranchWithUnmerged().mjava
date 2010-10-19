@@ -1,7 +1,8 @@
 	@Test
-	public void testCreateCheckoutDeleteLocalBranch() throws Exception {
+	public void testCreateDeleteLocalBranchWithUnmerged() throws Exception {
 		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
 				repositoryFile);
+		shareProjects(repositoryFile);
 		refreshAndWait();
 		final SWTBotView view = getOrOpenView();
 		SWTBotTreeItem localItem = myRepoViewUtil.getLocalBranchesItem(view
@@ -21,7 +22,7 @@
 		// getting text with label doesn't work
 		createPage.bot().textWithId("BranchName").setText("newLocal");
 		createPage.bot().checkBox(UIText.CreateBranchPage_CheckoutButton)
-				.deselect();
+				.select();
 		createPage.bot().button(IDialogConstants.FINISH_LABEL).click();
 		getOrOpenView().toolbarButton("Refresh").click();
 		refreshAndWait();
@@ -30,6 +31,8 @@
 				repositoryFile);
 		localItem.expand();
 		assertEquals("Wrong number of children", 2, localItem.getNodes().size());
+		
+		touchAndSubmit("Some more changes");
 
 		localItem.getNode(0).select();
 		try {
@@ -58,6 +61,10 @@
 		refreshAndWait();
 		ContextMenuHelper.clickContextMenu(bot.tree(), myUtil
 				.getPluginLocalizedValue("RepoViewDeleteBranch.label"));
+		SWTBotShell confirmPopup = bot
+				.shell(UIText.RepositoriesView_ConfirmDeleteTitle);
+		confirmPopup.activate();
+		confirmPopup.bot().button(IDialogConstants.OK_LABEL).click();
 		refreshAndWait();
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),
 				repositoryFile);
