@@ -10,12 +10,23 @@
 		fetchResultGroup.setLayout(new GridLayout(1, false));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(
 				fetchResultGroup);
-		if (result.getFetchResult() != null) {
+		FetchResult fRes = result.getFetchResult();
+		if (fRes != null && !fRes.getTrackingRefUpdates().isEmpty()) {
 			FetchResultDialog dlg = new FetchResultDialog(getParentShell(),
-					repo, result.getFetchResult(), result.getFetchedFrom());
+					repo, fRes, result.getFetchedFrom());
 			Control fresult = dlg.createDialogArea(fetchResultGroup);
 			GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT,
 					130).applyTo(fresult);
+		} else {
+			Label noResult = new Label(fetchResultGroup, SWT.NONE);
+			if (result.getFetchedFrom().equals(".")) //$NON-NLS-1$
+				noResult
+						.setText(UIText.PullResultDialog_NothingToFetchFromLocal);
+			else
+				noResult.setText(NLS.bind(
+						UIText.FetchResultDialog_labelEmptyResult, result
+								.getFetchedFrom()));
+
 		}
 		Group mergeResultGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		mergeResultGroup
@@ -23,10 +34,16 @@
 		mergeResultGroup.setLayout(new GridLayout(1, false));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(
 				mergeResultGroup);
-		if (result.getMergeResult() != null) {
+		MergeResult mRes = result.getMergeResult();
+		if (mRes != null
+				&& mRes.getMergeStatus() != MergeStatus.ALREADY_UP_TO_DATE) {
 			MergeResultDialog dlg = new MergeResultDialog(getParentShell(),
 					repo, result.getMergeResult());
 			dlg.createDialogArea(mergeResultGroup);
+		} else {
+			Label noResult = new Label(mergeResultGroup, SWT.NONE);
+			noResult
+					.setText(UIText.PullResultDialog_MergeAlreadyUpToDateMessage);
 		}
 		return main;
 	}
