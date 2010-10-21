@@ -1,0 +1,7 @@
+	@Override
+	protected void handleDispose() {
+		Activator.getDefault().getPreferenceStore()
+				.removePropertyChangeListener(listener);
+		super.handleDispose();
+	}
+

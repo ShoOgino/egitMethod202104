@@ -179,8 +179,7 @@
 		}
 
 		try {
-
-			if (showAllBranches) {
+			if (store.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES)) {
 				markStartAllRefs(Constants.R_HEADS);
 				markStartAllRefs(Constants.R_REMOTES);
 			} else

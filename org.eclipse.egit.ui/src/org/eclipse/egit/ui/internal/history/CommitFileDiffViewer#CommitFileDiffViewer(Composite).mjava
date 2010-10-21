@@ -39,7 +39,7 @@
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				final FileDiff d = (FileDiff) iss.getFirstElement();
-				if (compareMode) {
+				if (Activator.getDefault().getPreferenceStore().getBoolean(UIPreferences.RESOURCEHISTORY_COMPARE_MODE)) {
 					if (d.getBlobs().length <= 2)
 						showTwoWayFileDiff(d);
 					else

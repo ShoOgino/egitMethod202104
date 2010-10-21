@@ -58,5 +58,22 @@
 		setTextDoubleClickStrategy(new DefaultTextDoubleClickStrategy(),
 				IDocument.DEFAULT_CONTENT_TYPE);
 		activatePlugins();
+		listener = new IPropertyChangeListener() {
+
+			public void propertyChange(PropertyChangeEvent event) {
+				if (event.getProperty().equals(
+						UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP)) {
+					setWrap(((Boolean) event.getNewValue()).booleanValue());
+					return;
+				}
+				if (event.getProperty().equals(
+						UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL)) {
+					setFill(((Boolean) event.getNewValue()).booleanValue());
+					return;
+				}
+			}
+		};
+		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(
+				listener);
 	}
 

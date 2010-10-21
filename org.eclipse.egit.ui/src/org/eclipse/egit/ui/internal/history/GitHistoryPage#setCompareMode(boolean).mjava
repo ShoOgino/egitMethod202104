@@ -3,9 +3,6 @@
 	 *            switch compare mode button of the view on / off
 	 */
 	public void setCompareMode(boolean compareMode) {
-		if (compareModeAction != null) {
-			this.compareMode = compareMode;
-			compareModeAction.setChecked(compareMode);
-		}
+		store.setValue(UIPreferences.RESOURCEHISTORY_COMPARE_MODE, compareMode);
 	}
 

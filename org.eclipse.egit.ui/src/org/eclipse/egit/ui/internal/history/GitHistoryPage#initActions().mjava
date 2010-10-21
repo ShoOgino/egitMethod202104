@@ -43,32 +43,31 @@
 		showAllResourceVersionsAction
 				.setChecked(showAllFilter == showAllResourceVersionsAction.filter);
 
-		compareModeAction = new Action(UIText.GitHistoryPage_compareMode,
-				IAction.AS_CHECK_BOX) {
-			public void run() {
-				compareMode = !compareMode;
-				setChecked(compareMode);
-				fileViewer.setCompareMode(compareMode);
+		compareModeAction = new BooleanPrefAction(
+				UIPreferences.RESOURCEHISTORY_COMPARE_MODE,
+				UIText.GitHistoryPage_CompareModeMenuLabel) {
+			@Override
+			void apply(boolean value) {
+				// nothing, just switch the preference
 			}
 		};
-		compareModeAction.setImageDescriptor(UIIcons.ELCL16_COMPARE_VIEW);
-		compareModeAction.setChecked(compareMode);
-		compareModeAction.setText(UIText.GitHistoryPage_CompareModeMenuLabel);
-		compareModeAction.setToolTipText(UIText.GitHistoryPage_compareMode);
-		fileViewer.setCompareMode(compareMode);
+		actionsToDispose.add(compareModeAction);
 
-		showAllBranchesAction = new Action(
-				UIText.GitHistoryPage_showAllBranches, IAction.AS_CHECK_BOX) {
-			public void run() {
-				showAllBranches = !showAllBranches;
-				setChecked(showAllBranches);
+		compareModeAction.setImageDescriptor(UIIcons.ELCL16_COMPARE_VIEW);
+		compareModeAction.setToolTipText(UIText.GitHistoryPage_compareMode);
+
+		showAllBranchesAction = new BooleanPrefAction(
+				UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES,
+				UIText.GitHistoryPage_ShowAllBranchesMenuLabel) {
+
+			@Override
+			void apply(boolean value) {
 				refresh();
 			}
 		};
+		actionsToDispose.add(showAllBranchesAction);
+
 		showAllBranchesAction.setImageDescriptor(UIIcons.BRANCH);
-		showAllBranchesAction.setChecked(showAllBranches);
-		showAllBranchesAction
-				.setText(UIText.GitHistoryPage_ShowAllBranchesMenuLabel);
 		showAllBranchesAction
 				.setToolTipText(UIText.GitHistoryPage_showAllBranches);
 
