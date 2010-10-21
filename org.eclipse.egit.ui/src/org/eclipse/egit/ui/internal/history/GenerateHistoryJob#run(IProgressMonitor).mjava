@@ -2,6 +2,9 @@
 	protected IStatus run(final IProgressMonitor monitor) {
 		IStatus status = Status.OK_STATUS;
 		try {
+			page.setErrorMessage(NLS.bind(
+					UIText.GenerateHistoryJob_BuildingListMessage,
+					page.getName()));
 			try {
 				for (;;) {
 					final int oldsz = allCommits.size();
@@ -24,6 +27,7 @@
 				return Status.CANCEL_STATUS;
 			updateUI();
 		} finally {
+			page.setErrorMessage(null);
 			monitor.done();
 		}
 		return status;

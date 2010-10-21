@@ -43,7 +43,7 @@
 		showAllResourceVersionsAction
 				.setChecked(showAllFilter == showAllResourceVersionsAction.filter);
 
-		compareModeAction = new BooleanPrefAction(
+		BooleanPrefAction compareModeAction = new BooleanPrefAction(
 				UIPreferences.RESOURCEHISTORY_COMPARE_MODE,
 				UIText.GitHistoryPage_CompareModeMenuLabel) {
 			@Override
@@ -56,7 +56,7 @@
 		compareModeAction.setImageDescriptor(UIIcons.ELCL16_COMPARE_VIEW);
 		compareModeAction.setToolTipText(UIText.GitHistoryPage_compareMode);
 
-		showAllBranchesAction = new BooleanPrefAction(
+		BooleanPrefAction showAllBranchesAction = new BooleanPrefAction(
 				UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES,
 				UIText.GitHistoryPage_ShowAllBranchesMenuLabel) {
 
