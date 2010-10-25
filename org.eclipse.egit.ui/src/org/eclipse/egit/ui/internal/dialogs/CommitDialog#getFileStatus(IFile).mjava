@@ -1,46 +1,19 @@
-	private static String getFileStatus(IFile file) {
-		String prefix = UIText.CommitDialog_StatusUnknown;
-
-		try {
-			RepositoryMapping repositoryMapping = RepositoryMapping
-					.getMapping(file.getProject());
-
-			Repository repo = repositoryMapping.getRepository();
-			GitIndex index = repo.getIndex();
-			Tree headTree = repo.mapTree(Constants.HEAD);
-
-			String repoPath = repositoryMapping.getRepoRelativePath(file);
-			TreeEntry headEntry = (headTree == null ? null : headTree.findBlobMember(repoPath));
-			boolean headExists = (headTree == null ? false : headTree.existsBlob(repoPath));
-
-			Entry indexEntry = index.getEntry(repoPath);
-			if (headEntry == null) {
-				prefix = UIText.CommitDialog_StatusAdded;
-				if (indexEntry == null) {
-					prefix = UIText.CommitDialog_StatusUntracked;
-				}
-				else if (indexEntry.isModified(repositoryMapping.getWorkTree()))
-					prefix = UIText.CommitDialog_StatusAddedIndexDiff;
-			} else if (indexEntry == null) {
-				prefix = UIText.CommitDialog_StatusRemoved;
-			} else if (headExists
-					&& !headEntry.getId().equals(indexEntry.getObjectId())) {
-				prefix = UIText.CommitDialog_StatusModified;
-
-				if (indexEntry.isModified(repositoryMapping.getWorkTree()))
-					prefix = UIText.CommitDialog_StatusModifiedIndexDiff;
-			} else if (!new File(repositoryMapping.getWorkTree(), indexEntry
-					.getName()).isFile()) {
-				prefix = UIText.CommitDialog_StatusRemovedNotStaged;
-			} else if (indexEntry.isModified(repositoryMapping.getWorkTree())) {
-				prefix = UIText.CommitDialog_StatusModifiedNotStaged;
-			}
-
-		} catch (Exception e) {
-			Activator.logError(UIText.CommitDialog_problemFindingFileStatus, e);
-			prefix = e.getMessage();
-		}
-
-		return prefix;
+	/** Retrieve file status
+	 * @param file
+	 * @return file status
+	 * @throws IOException
+	 */
+	private static String getFileStatus(IFile file) throws IOException {
+		RepositoryMapping mapping = RepositoryMapping.getMapping(file);
+		String path = mapping.getRepoRelativePath(file);
+		Repository repo = mapping.getRepository();
+		AdaptableFileTreeIterator fileTreeIterator =
+			new AdaptableFileTreeIterator(repo.getWorkTree(),
+					ResourcesPlugin.getWorkspace().getRoot());
+		IndexDiff indexDiff = new IndexDiff(repo, Constants.HEAD, fileTreeIterator);
+		Set<String> repositoryPaths = Collections.singleton(path);
+		indexDiff.setFilter(PathFilterGroup.createFromStrings(repositoryPaths));
+		indexDiff.diff();
+		return getFileStatus(path, indexDiff);
 	}
 

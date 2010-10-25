@@ -81,7 +81,7 @@
 		CommitDialog commitDialog = new CommitDialog(getShell(event));
 		commitDialog.setAmending(amending);
 		commitDialog.setAmendAllowed(amendAllowed);
-		commitDialog.setFileList(files);
+		commitDialog.setFileList(files, indexDiffs);
 		commitDialog.setPreselectedFiles(getSelectedFiles(event));
 		commitDialog.setAuthor(author);
 		commitDialog.setCommitter(committer);

@@ -34,6 +34,7 @@
 
 			IndexDiff indexDiff = new IndexDiff(repository, Constants.HEAD, fileTreeIterator);
 			indexDiff.diff();
+			indexDiffs.put(repository, indexDiff);
 
 			for (IProject project : projects) {
 				includeList(project, indexDiff.getAdded(), indexChanges);

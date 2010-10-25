@@ -1,0 +1,35 @@
+	/** Retrieve file status from an already calculated IndexDiff
+	 * @param path
+	 * @param indexDiff
+	 * @return file status
+	 */
+	private static String getFileStatus(String path, IndexDiff indexDiff) {
+		String prefix = UIText.CommitDialog_StatusUnknown;
+		if (indexDiff.getAdded().contains(path)) {
+			// added
+			if (indexDiff.getModified().contains(path))
+				prefix = UIText.CommitDialog_StatusAddedIndexDiff;
+			else
+				prefix = UIText.CommitDialog_StatusAdded;
+		} else if (indexDiff.getChanged().contains(path)) {
+			// changed
+			if (indexDiff.getModified().contains(path))
+				prefix = UIText.CommitDialog_StatusModifiedIndexDiff;
+			else
+				prefix = UIText.CommitDialog_StatusModified;
+		} else if (indexDiff.getUntracked().contains(path)) {
+			// untracked
+			prefix = UIText.CommitDialog_StatusUntracked;
+		} else if (indexDiff.getRemoved().contains(path)) {
+			// removed
+			prefix = UIText.CommitDialog_StatusRemoved;
+		} else if (indexDiff.getMissing().contains(path)) {
+			// missing
+			prefix = UIText.CommitDialog_StatusRemovedNotStaged;
+		} else if (indexDiff.getModified().contains(path)) {
+			// modified (and not changed!)
+			prefix = UIText.CommitDialog_StatusModifiedNotStaged;
+		}
+		return prefix;
+	}
+

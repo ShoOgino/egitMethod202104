@@ -26,6 +26,9 @@
 				} catch (CoreException e) {
 					Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
 					return;
+				} catch (IOException e) {
+					Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
+					return;
 				}
 			}
 		});
