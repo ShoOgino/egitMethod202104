@@ -1,9 +1,8 @@
 	/**
-	 * @return the job used to perform the refresh
+	 * Refresh Repositories View
 	 */
-	public Job refresh() {
-		// TODO make this void and change the tests accordingly
+	public void refresh() {
 		lastInputUpdate = -1L;
-		return scheduleRefresh(0);
+		scheduleRefresh(0);
 	}
 
