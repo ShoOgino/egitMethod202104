@@ -13,7 +13,7 @@
 			// fall through
 		case BRANCHES:
 			// fall through
-		case SYMBOLICREFS:
+		case ADDITIONALREFS:
 			// fall through
 		case WORKINGDIR:
 			result = prime
@@ -25,7 +25,7 @@
 			// fall through
 		case TAG:
 			// fall through
-		case SYMBOLICREF:
+		case ADDITIONALREF:
 			result = prime
 					* result
 					+ ((myObject == null) ? 0 : ((Ref) myObject).getName()

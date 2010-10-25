@@ -113,23 +113,21 @@
 			return refs.toArray();
 		}
 
-		case SYMBOLICREFS: {
+		case ADDITIONALREFS: {
 			List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
-
 			try {
 				for (Entry<String, Ref> refEntry : repo.getRefDatabase()
 						.getRefs(RefDatabase.ALL).entrySet()) {
 					String name=refEntry.getKey();
 					if (!(name.startsWith(Constants.R_HEADS) || name.startsWith(Constants.R_TAGS)|| name.startsWith(Constants.R_REMOTES)))
-						refs.add(new SymbolicRefNode(node, repo, refEntry
+						refs.add(new AdditionalRefNode(node, repo, refEntry
 								.getValue()));
 				}
 				for (Ref r : repo.getRefDatabase().getAdditionalRefs())
-					refs.add(new SymbolicRefNode(node, repo, r));
+					refs.add(new AdditionalRefNode(node, repo, r));
 			} catch (IOException e) {
 				return handleException(e, node);
 			}
-
 			return refs.toArray();
 		}
 
@@ -154,7 +152,7 @@
 
 			nodeList.add(new BranchesNode(node, repo));
 			nodeList.add(new TagsNode(node, repo));
-			nodeList.add(new SymbolicRefsNode(node, repo));
+			nodeList.add(new AdditionalRefsNode(node, repo));
 			nodeList.add(new WorkingDirNode(node, repo));
 			nodeList.add(new RemotesNode(node, repo));
 
@@ -278,7 +276,7 @@
 			// fall through
 		case ERROR:
 			// fall through
-		case SYMBOLICREF:
+		case ADDITIONALREF:
 			return null;
 
 		}

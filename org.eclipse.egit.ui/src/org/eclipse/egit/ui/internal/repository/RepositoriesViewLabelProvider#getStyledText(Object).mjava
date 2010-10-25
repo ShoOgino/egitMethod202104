@@ -15,17 +15,32 @@
 			case REPO:
 				Repository repository = (Repository) node.getObject();
 				File directory = repository.getDirectory();
-				StyledString string = new StyledString(directory.getParentFile().getName());
-				string.append(" - " + directory.getAbsolutePath(), StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-				string.append(" [" + repository.getBranch() + "]", StyledString.DECORATIONS_STYLER);  //$NON-NLS-1$//$NON-NLS-2$
+				StyledString string = new StyledString(directory
+						.getParentFile().getName());
+				string
+						.append(
+								" - " + directory.getAbsolutePath(), StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
+				string
+						.append(
+								" [" + repository.getBranch() + "]", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$//$NON-NLS-2$
 				return string;
-			case SYMBOLICREF:
+			case ADDITIONALREF:
 				Ref ref = (Ref) node.getObject();
 				// shorten the name
-				StyledString refName = new StyledString(node.getRepository().shortenRefName(ref.getName()));
+				StyledString refName = new StyledString(node.getRepository()
+						.shortenRefName(ref.getName()));
 				if (ref.isSymbolic()) {
 					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-					refName.append(ref.getLeaf().getName(), StyledString.QUALIFIER_STYLER);
+					refName.append(ref.getLeaf().getName(),
+							StyledString.QUALIFIER_STYLER);
+					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
+					refName.append(ref.getLeaf().getObjectId().name(),
+							StyledString.QUALIFIER_STYLER);
+				} else {
+					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
+					refName.append(ref.getObjectId().name(),
+							StyledString.QUALIFIER_STYLER);
+
 				}
 				return refName;
 			case WORKINGDIR:
@@ -60,7 +75,7 @@
 				// fall through
 			case TAGS:
 				// fall through;
-			case SYMBOLICREFS:
+			case ADDITIONALREFS:
 				// fall through
 			case REMOTES:
 				// fall through

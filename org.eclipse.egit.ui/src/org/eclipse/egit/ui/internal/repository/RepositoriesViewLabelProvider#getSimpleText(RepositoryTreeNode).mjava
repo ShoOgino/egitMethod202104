@@ -22,7 +22,7 @@
 			return fullPath.lastSegment();
 		case TAGS:
 			return UIText.RepositoriesViewLabelProvider_TagsNodeText;
-		case SYMBOLICREFS:
+		case ADDITIONALREFS:
 			return UIText.RepositoriesViewLabelProvider_SymbolicRefNodeText;
 		case REMOTES:
 			return UIText.RepositoriesView_RemotesNodeText;
@@ -34,13 +34,18 @@
 			// fall through
 		case TAG:
 			// fall through
-		case SYMBOLICREF:
+		case ADDITIONALREF:
 			Ref ref = (Ref) node.getObject();
 			// shorten the name
 			String refName = node.getRepository().shortenRefName(ref.getName());
 			if (ref.isSymbolic()) {
+				refName = refName
+						+ " - " //$NON-NLS-1$
+						+ ref.getLeaf().getName()
+						+ " - " + ref.getLeaf().getObjectId(); //$NON-NLS-1$
+			} else {
 				refName = refName + " - " //$NON-NLS-1$
-				+ ref.getLeaf().getName();
+						+ ref.getObjectId().name();
 			}
 			if (node.getParent().getType() == RepositoryTreeNodeType.BRANCHHIERARCHY) {
 				int index = refName.lastIndexOf('/');

@@ -2,7 +2,7 @@
 			File repositoryFile) throws Exception {
 		Repository repository = lookupRepository(repositoryFile);
 		RepositoryNode root = new RepositoryNode(null, repository);
-		SymbolicRefsNode symrefsnode = new SymbolicRefsNode(root, repository);
+		AdditionalRefsNode symrefsnode = new AdditionalRefsNode(root, repository);
 		SWTBotTreeItem rootItem = tree.getTreeItem(
 				labelProvider.getStyledText(root).getString()).expand();
 		SWTBotTreeItem symrefsitem = rootItem.getNode(labelProvider

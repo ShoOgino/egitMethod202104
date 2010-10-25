@@ -5,11 +5,14 @@
 
 		case TAG:
 			// fall through
+		case ADDITIONALREF:
+			// fall through
 		case REF:
 			// if the branch or tag is checked out,
 			// we want to decorate the corresponding
 			// node with a little check indicator
 			String refName = ((Ref) node.getObject()).getName();
+			Ref leaf = ((Ref) node.getObject()).getLeaf();
 
 			String branchName;
 			String compareString;
@@ -40,7 +43,17 @@
 					RevWalk rw = new RevWalk(node.getRepository());
 					RevCommit commit = rw.parseCommit(id);
 					compareString = commit.getId().name();
-				} else {
+				} else if (refName.equals(Constants.HEAD))
+					return getDecoratedImage(image);
+				else {
+					String leafname = leaf.getName();
+					if (leafname.startsWith(Constants.R_REFS)
+							&& leafname.equals(node.getRepository()
+									.getFullBranch()))
+						return getDecoratedImage(image);
+					else if (leaf.getObjectId().equals(
+							node.getRepository().resolve(Constants.HEAD)))
+						return getDecoratedImage(image);
 					// some other symbolic reference
 					return image;
 				}

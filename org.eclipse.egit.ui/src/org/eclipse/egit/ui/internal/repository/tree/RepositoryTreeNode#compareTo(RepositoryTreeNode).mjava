@@ -20,7 +20,7 @@
 					otherNode.getObject().toString());
 		case REMOTES:
 			// fall through
-		case SYMBOLICREFS:
+		case ADDITIONALREFS:
 			// fall through
 		case TAGS:
 			// fall through
@@ -43,7 +43,7 @@
 					((File) otherNode.getObject()).getName());
 		case TAG:
 			// fall through
-		case SYMBOLICREF:
+		case ADDITIONALREF:
 			// fall through
 		case REF:
 			return ((Ref) myObject).getName().compareTo(
