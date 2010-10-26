@@ -23,7 +23,7 @@
 		dialog.bot().textWithLabel(UIText.CreateTagDialog_tagMessage)
 				.setText("New Tag message");
 		dialog.bot().button(IDialogConstants.OK_LABEL).click();
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.TAG);
 		assertNotNull(repo.resolve(Constants.R_TAGS + "NewTag"));
 	}
 

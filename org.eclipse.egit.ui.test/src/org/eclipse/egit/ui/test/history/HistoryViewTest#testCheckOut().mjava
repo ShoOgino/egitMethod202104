@@ -19,8 +19,7 @@
 
 		ContextMenuHelper.clickContextMenu(table,
 				UIText.GitHistoryPage_CheckoutMenuLabel);
-
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		assertEquals(commit[0].getId().name(), repo.getBranch());
 	}
 
