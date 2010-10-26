@@ -3,7 +3,6 @@
 		String commitMessage = "The special commit";
 		int countBefore = getHistoryViewTable(PROJ1).rowCount();
 		touchAndSubmit(commitMessage);
-		waitInUI();
 		int countAfter = getHistoryViewTable(PROJ1).rowCount();
 		assertEquals("Wrong number of entries", countBefore + 1, countAfter);
 		assertEquals("Wrong comit message", commitMessage,
