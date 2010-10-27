@@ -4,12 +4,6 @@
 
 		RepositoryTreeNode node = (RepositoryTreeNode) element;
 
-		String label = getSimpleText(node);
-		if (label == null)
-			return new StyledString(element.toString());
-
-		StyledString text = new StyledString(label);
-
 		try {
 			switch (node.getType()) {
 			case REPO:
@@ -34,8 +28,8 @@
 					refName.append(ref.getLeaf().getName(),
 							StyledString.QUALIFIER_STYLER);
 					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-					refName.append(ObjectId.toString(ref.getLeaf().getObjectId()),
-							StyledString.QUALIFIER_STYLER);
+					refName.append(ObjectId.toString(ref.getLeaf()
+							.getObjectId()), StyledString.QUALIFIER_STYLER);
 				} else {
 					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
 					refName.append(ObjectId.toString(ref.getObjectId()),
@@ -85,15 +79,18 @@
 				// fall through
 			case REF:
 				// fall through
-			case TAG:
-				// fall through
+			case TAG: {
+				String label = getSimpleText(node);
+				if (label != null)
+					return new StyledString(label);
+			}
 
 			}
 		} catch (IOException e) {
 			Activator.logError(e.getMessage(), e);
 		}
 
-		return text;
+		return null;
 
 	}
 
