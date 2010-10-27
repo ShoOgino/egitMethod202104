@@ -42,10 +42,10 @@
 				refName = refName
 						+ " - " //$NON-NLS-1$
 						+ ref.getLeaf().getName()
-						+ " - " + ref.getLeaf().getObjectId(); //$NON-NLS-1$
+						+ " - " + ObjectId.toString(ref.getLeaf().getObjectId()); //$NON-NLS-1$
 			} else {
 				refName = refName + " - " //$NON-NLS-1$
-						+ ref.getObjectId().name();
+						+ ObjectId.toString(ref.getObjectId());
 			}
 			if (node.getParent().getType() == RepositoryTreeNodeType.BRANCHHIERARCHY) {
 				int index = refName.lastIndexOf('/');
