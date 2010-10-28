@@ -1,10 +1,11 @@
 	@Override
 	public boolean isPageComplete() {
-		if (tree.getSelectionCount() == 0)
+		if (viewer.getCheckedElements().length == 0)
 			return false;
-		for (TreeItem ti : tree.getSelection()) {
-			String path = ti.getText(2);
-			if (path.equals("")) { //$NON-NLS-1$
+		for (Object checkedElement : viewer.getCheckedElements()) {
+			String path = ((ProjectAndRepo)checkedElement).getRepo();
+			if (((ProjectAndRepo)checkedElement).getRepo() != null &&
+					path.equals("")) { //$NON-NLS-1$
 				return false;
 			}
 		}
