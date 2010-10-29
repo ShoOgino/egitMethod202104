@@ -6,7 +6,7 @@
 				if (showAllFilter == filter) {
 					showAllFilter = ShowFilter.SHOWALLRESOURCE;
 					showAllResourceVersionsAction.setChecked(true);
-					refresh();
+					initAndStartRevWalk(false);
 				}
 			}
 			if (isChecked() && showAllFilter != filter) {
@@ -19,7 +19,7 @@
 					showAllFolderVersionsAction.setChecked(false);
 				if (this != showAllResourceVersionsAction)
 					showAllResourceVersionsAction.setChecked(false);
-				refresh();
+				initAndStartRevWalk(false);
 			}
 			GitHistoryPage.this.firePropertyChange(GitHistoryPage.this, P_NAME,
 					oldName, getName());

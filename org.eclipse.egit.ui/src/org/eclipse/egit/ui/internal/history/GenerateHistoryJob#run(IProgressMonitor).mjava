@@ -3,8 +3,8 @@
 		IStatus status = Status.OK_STATUS;
 		try {
 			page.setErrorMessage(NLS.bind(
-					UIText.GenerateHistoryJob_BuildingListMessage,
-					page.getName()));
+					UIText.GenerateHistoryJob_BuildingListMessage, page
+							.getName()));
 			try {
 				for (;;) {
 					final int oldsz = allCommits.size();
@@ -23,11 +23,14 @@
 						UIText.GenerateHistoryJob_errorComputingHistory, e);
 			}
 
-			if (monitor.isCanceled())
+			if (monitor.isCanceled()) {
+				page.setErrorMessage(NLS
+						.bind(UIText.GenerateHistoryJob_CancelMessage, page
+								.getName()));
 				return Status.CANCEL_STATUS;
+			}
 			updateUI();
 		} finally {
-			page.setErrorMessage(null);
 			monitor.done();
 		}
 		return status;

@@ -1,5 +1,7 @@
 	GenerateHistoryJob(final GitHistoryPage ghp, final SWTCommitList list) {
-		super(UIText.HistoryPage_refreshJob);
+		super(NLS.bind(UIText.HistoryPage_refreshJob, Activator.getDefault()
+				.getRepositoryUtil().getRepositoryName(
+						ghp.getInputInternal().getRepository())));
 		page = ghp;
 		allCommits = list;
 	}
