@@ -1,0 +1,27 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(1, false));
+		final Button useWorkspace = new Button(main, SWT.RADIO);
+		useWorkspace.setText(UIText.MergeModeDialog_MergeMode_1_Label);
+		useWorkspace.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				useWs = useWorkspace.getSelection();
+			}
+		});
+		final Button useHead = new Button(main, SWT.RADIO);
+		useHead.setText(UIText.MergeModeDialog_MergeMode_2_Label);
+		useHead.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				useWs = !useHead.getSelection();
+			}
+		});
+
+		dontAskAgain = new Button(main, SWT.CHECK);
+		dontAskAgain.setText(UIText.MergeModeDialog_DontAskAgainLabel);
+		useWorkspace.setSelection(useWs);
+		return main;
+	}
+

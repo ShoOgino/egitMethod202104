@@ -1,0 +1,14 @@
+	@Override
+	protected void okPressed() {
+		boolean save = dontAskAgain.getSelection();
+		super.okPressed();
+		if (save) {
+			int value = 1;
+			if (!useWs)
+				value = 2;
+			IPreferenceStore store = Activator.getDefault()
+					.getPreferenceStore();
+			store.setValue(UIPreferences.MERGE_MODE, value);
+		}
+	}
+

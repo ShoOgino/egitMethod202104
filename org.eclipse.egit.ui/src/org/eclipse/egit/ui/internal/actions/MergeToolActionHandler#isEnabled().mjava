@@ -1,0 +1,20 @@
+	public boolean isEnabled() {
+		Repository[] repos = getRepositoriesFor(getProjectsForSelectedResources());
+		if (repos.length != 1)
+			return false;
+		switch (repos[0].getRepositoryState()) {
+		case MERGING:
+			// fall through
+		case REBASING:
+			// fall through
+		case REBASING_INTERACTIVE:
+			// fall through
+		case REBASING_MERGE:
+			// fall through
+		case REBASING_REBASING:
+			return true;
+		default:
+			return false;
+		}
+	}
+

@@ -1,5 +1,7 @@
 	@Override
 	public boolean isEnabled() {
-		return getRepository() != null;
+		Repository repo = getRepository();
+		return repo != null
+				&& repo.getRepositoryState() == RepositoryState.SAFE;
 	}
 

@@ -1,0 +1,114 @@
+	private void fileToDiffNode(final IFile file, String gitPath,
+			RepositoryMapping map, IDiffContainer root, RevCommit rightCommit,
+			RevCommit headCommit, RevCommit ancestorCommit, RevWalk rw,
+			IProgressMonitor monitor) throws IOException, InterruptedException {
+
+		if (monitor.isCanceled())
+			throw new InterruptedException();
+
+		TreeWalk tw = new TreeWalk(map.getRepository());
+
+		List<String> paths = new ArrayList<String>();
+		paths.add(map.getRepoRelativePath(file));
+		tw.setFilter(PathFilterGroup.createFromStrings(paths));
+
+		int dcindex = tw.addTree(new DirCacheIterator(map.getRepository()
+				.readDirCache()));
+		int ftindex = tw.addTree(new FileTreeIterator(map.getRepository()));
+		int rtindex = tw.addTree(rw.parseTree(map.getRepository().resolve(
+				Constants.HEAD)));
+
+		tw.setRecursive(tw.getFilter().shouldBeRecursive());
+		tw.next();
+
+		DirCacheIterator dit = tw.getTree(dcindex, DirCacheIterator.class);
+
+		final DirCacheEntry indexEntry = dit == null ? null : dit
+				.getDirCacheEntry();
+
+		boolean conflicting = indexEntry != null && indexEntry.getStage() > 0;
+
+		AbstractTreeIterator rt = tw.getTree(rtindex,
+				AbstractTreeIterator.class);
+
+		FileTreeIterator fit = tw.getTree(ftindex, FileTreeIterator.class);
+		if (fit != null && fit.isEntryIgnored())
+			return;
+		// compare local file against HEAD to see if it was modified
+		boolean modified = fit != null && rt != null
+				&& !fit.getEntryObjectId().equals(rt.getEntryObjectId());
+
+		// if this is neither conflicting nor changed, we skip it
+		if (!conflicting && !modified)
+			return;
+
+		ITypedElement right;
+		if (conflicting)
+			right = CompareUtils.getFileRevisionTypedElement(gitPath,
+					rightCommit, map.getRepository());
+		else
+			right = CompareUtils.getFileRevisionTypedElement(gitPath,
+					headCommit, map.getRepository());
+
+		// can this really happen?
+		if (right instanceof EmptyTypedElement)
+			return;
+
+		IFileRevision rev;
+		// if the file is not conflicting (as it was auto-merged)
+		// we will show the auto-merged (local) version
+		if (!conflicting || useWorkspace)
+			rev = new LocalFileRevision(file);
+		else
+			rev = GitFileRevision.inCommit(map.getRepository(), headCommit,
+					gitPath, null);
+
+		EditableRevision leftEditable = new EditableRevision(rev) {
+			@Override
+			public void setContent(final byte[] newContent) {
+				try {
+					run(false, false, new IRunnableWithProgress() {
+						public void run(IProgressMonitor myMonitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							try {
+								file.setContents(new ByteArrayInputStream(
+										newContent), false, true, myMonitor);
+							} catch (CoreException e) {
+								throw new InvocationTargetException(e);
+							}
+						}
+					});
+				} catch (InvocationTargetException e) {
+					Activator.handleError(e.getTargetException().getMessage(),
+							e.getTargetException(), true);
+				} catch (InterruptedException e) {
+					// ignore here
+				}
+			}
+		};
+		// make sure we don't need a round trip later
+		try {
+			leftEditable.cacheContents(monitor);
+		} catch (CoreException e) {
+			throw new IOException(e.getMessage());
+		}
+
+		int kind = Differencer.NO_CHANGE;
+		if (conflicting)
+			kind = Differencer.CONFLICTING;
+		else if (modified)
+			kind = Differencer.PSEUDO_CONFLICT;
+
+		DiffNode fileParent = getFileParent(root, file);
+
+		ITypedElement anc;
+		if (ancestorCommit != null)
+			anc = CompareUtils.getFileRevisionTypedElement(gitPath,
+					ancestorCommit, map.getRepository());
+		else
+			anc = null;
+		// create the node as child
+		new DiffNode(fileParent, kind, anc, leftEditable, right);
+	}
+

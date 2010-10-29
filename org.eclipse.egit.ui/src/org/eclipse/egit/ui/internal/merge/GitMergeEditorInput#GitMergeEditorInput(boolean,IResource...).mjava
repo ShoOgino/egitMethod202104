@@ -1,0 +1,16 @@
+	/**
+	 * @param useWorkspace
+	 *            if <code>true</code>, use the workspace content (i.e. the
+	 *            Git-merged version) as "left" content, otherwise use HEAD
+	 *            (i.e. the previous, non-merged version)
+	 * @param resources
+	 *            as selected by the user
+	 */
+	public GitMergeEditorInput(boolean useWorkspace, IResource... resources) {
+		super(new CompareConfiguration());
+		this.useWorkspace = useWorkspace;
+		this.resources = resources;
+		CompareConfiguration config = getCompareConfiguration();
+		config.setLeftEditable(true);
+	}
+
