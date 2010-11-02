@@ -1,6 +1,7 @@
 	private void format() {
 		if (commit == null) {
-			setDocument(new Document(UIText.CommitMessageViewer_SelectOneCommitMessage));
+			setDocument(new Document(
+					UIText.CommitMessageViewer_SelectOneCommitMessage));
 			return;
 		}
 
@@ -16,7 +17,7 @@
 
 		if (author != null) {
 			d.append(UIText.CommitMessageViewer_author);
-			d.append(": ");  //$NON-NLS-1$
+			d.append(": "); //$NON-NLS-1$
 			d.append(author.getName());
 			d.append(" <"); //$NON-NLS-1$
 			d.append(author.getEmailAddress());
@@ -27,7 +28,7 @@
 
 		if (committer != null) {
 			d.append(UIText.CommitMessageViewer_committer);
-			d.append(": ");  //$NON-NLS-1$
+			d.append(": "); //$NON-NLS-1$
 			d.append(committer.getName());
 			d.append(" <"); //$NON-NLS-1$
 			d.append(committer.getEmailAddress());
@@ -39,7 +40,7 @@
 		for (int i = 0; i < commit.getParentCount(); i++) {
 			final RevCommit p = commit.getParent(i);
 			d.append(UIText.CommitMessageViewer_parent);
-			d.append(": ");  //$NON-NLS-1$
+			d.append(": "); //$NON-NLS-1$
 			addLink(d, styles, p);
 			d.append(" ("); //$NON-NLS-1$
 			d.append(p.getShortMessage());
@@ -50,7 +51,7 @@
 		for (int i = 0; i < commit.getChildCount(); i++) {
 			final RevCommit p = commit.getChild(i);
 			d.append(UIText.CommitMessageViewer_child);
-			d.append(":  ");  //$NON-NLS-1$
+			d.append(":  "); //$NON-NLS-1$
 			addLink(d, styles, p);
 			d.append(" ("); //$NON-NLS-1$
 			d.append(p.getShortMessage());
@@ -79,7 +80,8 @@
 
 		Matcher matcher = p.matcher(msg);
 		while (matcher.find()) {
-			styles.add(new StyleRange(h0 + matcher.start(), matcher.end()-matcher.start(), null,  null, SWT.ITALIC));
+			styles.add(new StyleRange(h0 + matcher.start(), matcher.end()
+					- matcher.start(), null, null, SWT.ITALIC));
 		}
 
 		final StyleRange[] arr = new StyleRange[styles.size()];

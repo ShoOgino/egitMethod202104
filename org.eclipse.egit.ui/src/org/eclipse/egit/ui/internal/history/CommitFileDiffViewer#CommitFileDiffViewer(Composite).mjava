@@ -2,10 +2,11 @@
 	 * Shows a list of file changed by a commit.
 	 *
 	 * If no input is available, an error message is shown instead.
+	 *
 	 * @param parent
 	 */
 	CommitFileDiffViewer(final Composite parent) {
-        // since out parent is a SashForm, we can't add the alternate
+		// since out parent is a SashForm, we can't add the alternate
 		// text to be displayed in case of no input directly to that
 		// parent; we create our own parent instead and set the
 		// StackLayout on it instead
@@ -39,7 +40,8 @@
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				final FileDiff d = (FileDiff) iss.getFirstElement();
-				if (Activator.getDefault().getPreferenceStore().getBoolean(UIPreferences.RESOURCEHISTORY_COMPARE_MODE)) {
+				if (Activator.getDefault().getPreferenceStore().getBoolean(
+						UIPreferences.RESOURCEHISTORY_COMPARE_MODE)) {
 					if (d.getBlobs().length <= 2)
 						showTwoWayFileDiff(d);
 					else
@@ -50,8 +52,7 @@
 												.getShell(),
 										UIText.CommitFileDiffViewer_CanNotOpenCompareEditorTitle,
 										UIText.CommitFileDiffViewer_MergeCommitMultiAncestorMessage);
-				}
-				else
+				} else
 					openFileInEditor(d);
 			}
 		});

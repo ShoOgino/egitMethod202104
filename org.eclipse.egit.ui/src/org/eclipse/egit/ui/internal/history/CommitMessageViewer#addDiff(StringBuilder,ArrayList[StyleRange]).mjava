@@ -3,21 +3,22 @@
 		final DiffFormatter diffFmt = new DiffFormatter(
 				new BufferedOutputStream(new ByteArrayOutputStream() {
 
-			@Override
-			public synchronized void write(byte[] b, int off, int len) {
-				super.write(b, off, len);
-				if (currentEncoding == null)
-					d.append(toString());
+					@Override
+					public synchronized void write(byte[] b, int off, int len) {
+						super.write(b, off, len);
+						if (currentEncoding == null)
+							d.append(toString());
 
-				else try {
-					d.append(toString(currentEncoding));
-				} catch (UnsupportedEncodingException e) {
-					d.append(toString());
-				}
-				reset();
-			}
+						else
+							try {
+								d.append(toString(currentEncoding));
+							} catch (UnsupportedEncodingException e) {
+								d.append(toString());
+							}
+						reset();
+					}
 
-		})) {
+				})) {
 			@Override
 			protected void writeHunkHeader(int aCur, int aEnd, int bCur,
 					int bEnd) throws IOException {
@@ -63,7 +64,8 @@
 			for (FileDiff diff : diffs) {
 				if (diff.getBlobs().length == 2) {
 					String path = diff.getPath();
-					currentEncoding = CompareUtils.getResourceEncoding(db, path);
+					currentEncoding = CompareUtils
+							.getResourceEncoding(db, path);
 					d.append(formatPathLine(path)).append("\n"); //$NON-NLS-1$
 					diff.outputDiff(d, db, diffFmt, true);
 					diffFmt.flush();
