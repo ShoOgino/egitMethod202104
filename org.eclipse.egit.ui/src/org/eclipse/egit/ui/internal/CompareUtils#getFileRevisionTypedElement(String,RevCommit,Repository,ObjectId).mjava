@@ -15,12 +15,12 @@
 			final String gitPath, final RevCommit commit, final Repository db,
 			ObjectId blobId) {
 		ITypedElement right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
-				NLS
-						.bind(UIText.GitHistoryPage_FileNotInCommit, getName(gitPath),
-								commit));
+				NLS.bind(UIText.GitHistoryPage_FileNotInCommit,
+						getName(gitPath), commit));
 
 		try {
-			IFileRevision nextFile = getFileRevision(gitPath, commit, db, blobId);
+			IFileRevision nextFile = getFileRevision(gitPath, commit, db,
+					blobId);
 			if (nextFile != null)
 				right = new FileRevisionTypedElement(nextFile);
 		} catch (IOException e) {

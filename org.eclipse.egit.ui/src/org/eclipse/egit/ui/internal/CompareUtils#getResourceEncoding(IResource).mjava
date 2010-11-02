@@ -1,7 +1,9 @@
 	/**
 	 * Determine the encoding used by eclipse for the resource.
-	 * @param resource must be an instance of IEncodedStorage
-	 * @return the encoding used in eclipse for the resource or null if
+	 *
+	 * @param resource
+	 *            must be an instance of IEncodedStorage
+	 * @return the encoding used in Eclipse for the resource if found or null
 	 */
 	public static String getResourceEncoding(IResource resource) {
 		// Get the encoding for the current version. As a matter of
@@ -9,7 +11,7 @@
 		// version we are retrieving as that may be defined by the
 		// project settings, but there is no historic API for this.
 		String charset;
-		IEncodedStorage encodedStorage = ((IEncodedStorage)resource);
+		IEncodedStorage encodedStorage = ((IEncodedStorage) resource);
 		try {
 			charset = encodedStorage.getCharset();
 			if (charset == null)

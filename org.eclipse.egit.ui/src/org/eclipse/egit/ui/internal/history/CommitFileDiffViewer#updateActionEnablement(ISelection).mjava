@@ -6,5 +6,7 @@
 				&& sel.size() == getTable().getItemCount();
 		selectAll.setEnabled(!allSelected);
 		copy.setEnabled(!sel.isEmpty());
+		open.setEnabled(!sel.isEmpty());
+		compare.setEnabled(sel.size() == 1);
 	}
 

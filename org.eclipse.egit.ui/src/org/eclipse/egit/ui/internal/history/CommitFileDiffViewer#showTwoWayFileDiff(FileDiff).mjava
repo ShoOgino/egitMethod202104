@@ -20,6 +20,8 @@
 					.getBlobs()[1]);
 
 		in = new GitCompareFileRevisionEditorInput(next, base, null);
-		CompareUI.openCompareEditor(in);
+		CompareUtils.openInCompare(site.getWorkbenchWindow().getActivePage(),
+				in);
+
 	}
 
