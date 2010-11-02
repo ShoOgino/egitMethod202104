@@ -17,8 +17,11 @@
 		selectAll.setText(UIText.WizardProjectsImportPage_selectAll);
 		selectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				for (TreeItem item : projectsList.getTree().getItems())
-					projectsList.setChecked(item.getData(), true);
+				for (TreeItem item : projectsList.getTree().getItems()) {
+					ProjectRecord record = (ProjectRecord) item.getData();
+					if (!isProjectInWorkspace(record.getProjectName()))
+						projectsList.setChecked(item.getData(), true);
+				}
 				enableSelectAllButtons();
 				setPageComplete(true);
 			}

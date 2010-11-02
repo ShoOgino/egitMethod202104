@@ -1,0 +1,7 @@
+		public Color getForeground(Object element) {
+			if (isProjectInWorkspace(((ProjectRecord) element).getProjectName()))
+				return PlatformUI.getWorkbench().getDisplay().getSystemColor(
+						SWT.COLOR_GRAY);
+			return null;
+		}
+

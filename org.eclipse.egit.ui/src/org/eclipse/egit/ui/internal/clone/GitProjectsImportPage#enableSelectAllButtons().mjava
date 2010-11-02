@@ -1,5 +1,5 @@
 	private void enableSelectAllButtons() {
-		int itemCount = projectsList.getTree().getItemCount();
+		int itemCount = getValidProjects().length;
 		int selectionCount = projectsList.getCheckedLeafCount();
 		selectAll.setEnabled(itemCount > selectionCount && itemCount > 0);
 		deselectAll.setEnabled(selectionCount > 0);

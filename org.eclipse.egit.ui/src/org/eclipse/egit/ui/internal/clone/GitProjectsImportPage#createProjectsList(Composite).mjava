@@ -40,6 +40,10 @@
 		projectsList.addCheckStateListener(new ICheckStateListener() {
 
 			public void checkStateChanged(CheckStateChangedEvent event) {
+				ProjectRecord element = (ProjectRecord) event.getElement();
+				if (isProjectInWorkspace(element.getProjectName())) {
+					projectsList.setChecked(element, false);
+				}
 				enableSelectAllButtons();
 			}
 		});
@@ -54,7 +58,7 @@
 			}
 
 			public Object[] getElements(Object inputElement) {
-				return getValidProjects();
+				return selectedProjects;
 			}
 
 			public boolean hasChildren(Object element) {
@@ -82,11 +86,7 @@
 			}
 		});
 
-		projectsList.setLabelProvider(new LabelProvider() {
-			public String getText(Object element) {
-				return ((ProjectRecord) element).getProjectLabel();
-			}
-		});
+		projectsList.setLabelProvider(new ProjectLabelProvider());
 
 		projectsList.setInput(this);
 		projectsList.setComparator(new ViewerComparator());
