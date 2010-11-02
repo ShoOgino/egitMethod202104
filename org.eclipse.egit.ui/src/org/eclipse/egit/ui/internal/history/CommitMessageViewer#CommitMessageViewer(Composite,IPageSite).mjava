@@ -1,4 +1,4 @@
-	CommitMessageViewer(final Composite parent) {
+	CommitMessageViewer(final Composite parent, final IPageSite site) {
 		super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
 		fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
 
@@ -75,7 +75,48 @@
 				}
 			}
 		};
+
+		final IAction selectAll = new Action() {
+			@Override
+			public void run() {
+				doOperation(ITextOperationTarget.SELECT_ALL);
+			}
+
+			@Override
+			public boolean isEnabled() {
+				return canDoOperation(ITextOperationTarget.SELECT_ALL);
+			}
+		};
+
+		final IAction copy = new Action() {
+			@Override
+			public void run() {
+				doOperation(ITextOperationTarget.COPY);
+			}
+
+			@Override
+			public boolean isEnabled() {
+				return canDoOperation(ITextOperationTarget.COPY);
+			}
+		};
 		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(
 				listener);
+		getControl().addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				site.getActionBars().setGlobalActionHandler(
+						ActionFactory.SELECT_ALL.getId(), null);
+				site.getActionBars().setGlobalActionHandler(
+						ActionFactory.COPY.getId(), null);
+				site.getActionBars().updateActionBars();
+			}
+
+			public void focusGained(FocusEvent e) {
+				site.getActionBars().setGlobalActionHandler(
+						ActionFactory.SELECT_ALL.getId(), selectAll);
+				site.getActionBars().setGlobalActionHandler(
+						ActionFactory.COPY.getId(), copy);
+				site.getActionBars().updateActionBars();
+			}
+		});
 	}
 

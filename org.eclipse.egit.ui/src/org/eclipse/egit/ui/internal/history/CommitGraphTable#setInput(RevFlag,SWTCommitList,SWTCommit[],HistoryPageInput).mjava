@@ -1,5 +1,7 @@
 	void setInput(final RevFlag hFlag, final SWTCommitList list,
-			final SWTCommit[] asArray) {
+			final SWTCommit[] asArray, HistoryPageInput input) {
+		this.input = input;
+		menuListener.setInput(input);
 		final SWTCommitList oldList = allCommits;
 		highlight = hFlag;
 		allCommits = list;

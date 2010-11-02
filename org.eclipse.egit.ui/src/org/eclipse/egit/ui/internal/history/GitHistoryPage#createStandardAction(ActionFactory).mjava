@@ -1,8 +1,0 @@
-	private IAction createStandardAction(final ActionFactory af) {
-		final IPageSite s = getSite();
-		final IWorkbenchAction a = af.create(s.getWorkbenchWindow());
-		if (af instanceof IPartListener)
-			((IPartListener) a).partActivated(s.getPage().getActivePart());
-		return a;
-	}
-

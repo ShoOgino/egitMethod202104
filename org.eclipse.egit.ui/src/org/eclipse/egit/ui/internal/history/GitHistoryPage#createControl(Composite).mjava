@@ -18,66 +18,25 @@
 		graphDetailSplit = new SashForm(ourControl, SWT.VERTICAL);
 		graphDetailSplit.setLayoutData(gd);
 
-		graph = new CommitGraphTable(graphDetailSplit);
-		graph.getTableView().addOpenListener(new IOpenListener() {
-			public void open(OpenEvent event) {
-				if (!input.isSingleFile()) {
-					return;
-				}
-
-				ICommandService srv = (ICommandService) getSite().getService(
-						ICommandService.class);
-				IHandlerService hsrv = (IHandlerService) getSite().getService(
-						IHandlerService.class);
-				Command cmd = srv.getCommand(HistoryViewCommands.SHOWVERSIONS);
-				Parameterization[] parms;
-				if (store
-						.getBoolean(UIPreferences.RESOURCEHISTORY_COMPARE_MODE)) {
-					try {
-						IParameter parm = cmd
-								.getParameter(HistoryViewCommands.COMPARE_MODE_PARAM);
-						parms = new Parameterization[] { new Parameterization(
-								parm, Boolean.TRUE.toString()) };
-					} catch (NotDefinedException e) {
-						Activator.handleError(e.getMessage(), e, true);
-						parms = null;
-					}
-				} else
-					parms = null;
-				ParameterizedCommand pcmd = new ParameterizedCommand(cmd, parms);
-				try {
-					hsrv.executeCommandInContext(pcmd, null, hsrv
-							.getCurrentState());
-				} catch (Exception e) {
-					Activator.handleError(e.getMessage(), e, true);
-				}
-			}
-		});
+		graph = new CommitGraphTable(graphDetailSplit, getSite(), popupMgr);
 		revInfoSplit = new SashForm(graphDetailSplit, SWT.HORIZONTAL);
-		commentViewer = new CommitMessageViewer(revInfoSplit);
-		fileViewer = new CommitFileDiffViewer(revInfoSplit);
+		commentViewer = new CommitMessageViewer(revInfoSplit, getSite());
+		fileViewer = new CommitFileDiffViewer(revInfoSplit, getSite());
 		findToolbar = new FindToolbar(ourControl);
 
 		layoutSashForm(graphDetailSplit,
 				UIPreferences.RESOURCEHISTORY_GRAPH_SPLIT);
 		layoutSashForm(revInfoSplit, UIPreferences.RESOURCEHISTORY_REV_SPLIT);
 
-		popupMgr = new MenuManager(null, POPUP_ID);
 		attachCommitSelectionChanged();
 		initActions();
-		createStandardActions();
 
 		getSite().registerContextMenu(POPUP_ID, popupMgr, graph.getTableView());
 		// due to the issues described in bug 322751, it makes no
 		// sense to set a selection provider for the site here
-
-		attachContextMenu(graph.getControl());
-		attachContextMenu(commentViewer.getControl());
-		attachContextMenu(fileViewer.getControl());
 		layout();
 
-		if (myRefsChangedHandle == null)
-			myRefsChangedHandle = Repository.getGlobalListenerList()
-					.addRefsChangedListener(this);
+		myRefsChangedHandle = Repository.getGlobalListenerList()
+				.addRefsChangedListener(this);
 	}
 

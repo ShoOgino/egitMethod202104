@@ -1,0 +1,10 @@
+	private void updateActionEnablement(ISelection selection) {
+		if (!(selection instanceof IStructuredSelection))
+			return;
+		IStructuredSelection sel = (IStructuredSelection) selection;
+		boolean allSelected = !sel.isEmpty()
+				&& sel.size() == getTable().getItemCount();
+		selectAll.setEnabled(!allSelected);
+		copy.setEnabled(!sel.isEmpty());
+	}
+
