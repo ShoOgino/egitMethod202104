@@ -1,0 +1,7 @@
+	@Test
+	public void wrapOverlengthTextByOne() {
+		String input = "123456789 123456789 123456789 123456789 123456789 123456789 123456789ab";
+		String expected = "123456789 123456789 123456789 123456789 123456789 123456789\n123456789ab";
+		assertWrappedEquals(expected, input);
+	}
+

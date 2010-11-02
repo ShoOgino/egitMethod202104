@@ -1,0 +1,10 @@
+	@Override
+	protected void createFieldEditors() {
+		BooleanFieldEditor hardWrap = new BooleanFieldEditor(
+				UIPreferences.COMMIT_DIALOG_HARD_WRAP_MESSAGE,
+				UIText.CommitDialogPreferencePage_hardWrapMessage,
+				getFieldEditorParent());
+		hardWrap.getDescriptionControl(getFieldEditorParent()).setToolTipText(UIText.CommitDialogPreferencePage_hardWrapMessageTooltip);
+		addField(hardWrap);
+	}
+

@@ -1,0 +1,6 @@
+	private static void assertWrappedEqualsOnWindows(String expected,
+			String input) {
+		String wrapped = wrap(input.replaceAll("\n", "\r\n"), "\r\n");
+		assertEquals(expected.replaceAll("\n", "\r\n"), wrapped);
+	}
+

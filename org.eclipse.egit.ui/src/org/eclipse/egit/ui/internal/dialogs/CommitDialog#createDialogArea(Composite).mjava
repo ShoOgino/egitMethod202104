@@ -11,8 +11,10 @@
 		label.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
 
 		commitText = new CommitMessageArea(container, commitMessage);
+		Point size = commitText.getTextWidget().getSize();
+		int minHeight = commitText.getTextWidget().getLineHeight() * 3;
 		commitText.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true)
-				.hint(600, 200).create());
+				.hint(size).minSize(size.x, minHeight).align(SWT.FILL, SWT.FILL).create());
 		commitText.setText(commitMessage);
 
 		// allow to commit with ctrl-enter
@@ -57,6 +59,20 @@
 		});
 
 		committerHandler = UIUtils.addPreviousValuesContentProposalToText(committerText, COMMITTER_VALUES_PREF);
+
+		Link preferencesLink = new Link(container, SWT.NONE);
+		preferencesLink.setText(UIText.CommitDialog_ConfigureLink);
+		preferencesLink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String preferencePageId = "org.eclipse.egit.ui.internal.preferences.CommitDialogPreferencePage"; //$NON-NLS-1$
+				PreferenceDialog dialog = PreferencesUtil
+						.createPreferenceDialogOn(null, preferencePageId,
+								new String[] { preferencePageId }, null);
+				dialog.open();
+				commitText.reconfigure();
+			}
+		});
 
 		amendingButton = new Button(container, SWT.CHECK);
 		if (amending) {

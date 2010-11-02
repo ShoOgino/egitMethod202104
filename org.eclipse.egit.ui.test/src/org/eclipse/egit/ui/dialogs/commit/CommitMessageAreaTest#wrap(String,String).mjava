@@ -1,0 +1,11 @@
+	private static String wrap(String text, String lineDelimiter) {
+		StringBuilder sb = new StringBuilder(text);
+		List<WrapEdit> wrapEdits = CommitMessageArea.calculateWrapEdits(text, 70,
+				lineDelimiter);
+		for (WrapEdit wrapEdit : wrapEdits) {
+			sb.replace(wrapEdit.getStart(),
+					wrapEdit.getStart() + wrapEdit.getLength(), lineDelimiter);
+		}
+		return sb.toString();
+	}
+
