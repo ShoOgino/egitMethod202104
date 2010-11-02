@@ -1,5 +1,9 @@
 	void showCommitList(final Job j, final SWTCommitList list,
 			final SWTCommit[] asArray) {
+		if (trace)
+			GitTraceLocation.getTrace().traceEntry(
+					GitTraceLocation.HISTORYVIEW.getLocation(),
+					new Object[] { list, asArray });
 		if (job != j || graph.getControl().isDisposed())
 			return;
 
@@ -7,11 +11,18 @@
 			public void run() {
 				if (!graph.getControl().isDisposed() && job == j) {
 					graph.setInput(highlightFlag, list, asArray, input);
+					if (trace)
+						GitTraceLocation.getTrace().trace(
+								GitTraceLocation.HISTORYVIEW.getLocation(),
+								"Setting input to table"); //$NON-NLS-1$
 					findToolbar.setInput(highlightFlag, graph.getTableView()
 							.getTable(), asArray);
 					setErrorMessage(null);
 				}
 			}
 		});
+		if (trace)
+			GitTraceLocation.getTrace().traceExit(
+					GitTraceLocation.HISTORYVIEW.getLocation());
 	}
 

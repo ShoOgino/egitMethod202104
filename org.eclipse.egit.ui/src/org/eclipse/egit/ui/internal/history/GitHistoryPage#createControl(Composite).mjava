@@ -1,5 +1,10 @@
 	@Override
 	public void createControl(final Composite parent) {
+		trace = GitTraceLocation.HISTORYVIEW.isActive();
+		if (trace)
+			GitTraceLocation.getTrace().traceEntry(
+					GitTraceLocation.HISTORYVIEW.getLocation());
+
 		ourControl = createMainPanel(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(ourControl);
 		graphDetailSplit = new SashForm(ourControl, SWT.VERTICAL);
@@ -25,5 +30,9 @@
 
 		myRefsChangedHandle = Repository.getGlobalListenerList()
 				.addRefsChangedListener(this);
+
+		if (trace)
+			GitTraceLocation.getTrace().traceExit(
+					GitTraceLocation.HISTORYVIEW.getLocation());
 	}
 

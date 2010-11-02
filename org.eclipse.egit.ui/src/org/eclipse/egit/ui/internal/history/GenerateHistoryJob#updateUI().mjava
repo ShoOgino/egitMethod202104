@@ -1,10 +1,19 @@
 	void updateUI() {
-		if (allCommits.size() == lastUpdateCnt)
-			return;
+		if (trace)
+			GitTraceLocation.getTrace().traceEntry(
+					GitTraceLocation.HISTORYVIEW.getLocation());
+		try {
+			if (allCommits.size() == lastUpdateCnt)
+				return;
 
-		final SWTCommit[] asArray = new SWTCommit[allCommits.size()];
-		allCommits.toArray(asArray);
-		page.showCommitList(this, allCommits, asArray);
-		lastUpdateCnt = allCommits.size();
+			final SWTCommit[] asArray = new SWTCommit[allCommits.size()];
+			allCommits.toArray(asArray);
+			page.showCommitList(this, allCommits, asArray);
+			lastUpdateCnt = allCommits.size();
+		} finally {
+			if (trace)
+				GitTraceLocation.getTrace().traceExit(
+						GitTraceLocation.HISTORYVIEW.getLocation());
+		}
 	}
 
