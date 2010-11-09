@@ -21,8 +21,8 @@
 			case ADDITIONALREF:
 				Ref ref = (Ref) node.getObject();
 				// shorten the name
-				StyledString refName = new StyledString(node.getRepository()
-						.shortenRefName(ref.getName()));
+				StyledString refName = new StyledString(
+						Repository.shortenRefName(ref.getName()));
 				if (ref.isSymbolic()) {
 					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
 					refName.append(ref.getLeaf().getName(),

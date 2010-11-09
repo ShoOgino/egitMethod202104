@@ -31,7 +31,7 @@
 		case TAG: {
 			Ref ref = (Ref) node.getObject();
 			// shorten the name
-			String refName = node.getRepository().shortenRefName(ref.getName());
+			String refName = Repository.shortenRefName(ref.getName());
 			if (node.getParent().getType() == RepositoryTreeNodeType.BRANCHHIERARCHY) {
 				int index = refName.lastIndexOf('/');
 				refName = refName.substring(index + 1);
@@ -41,7 +41,7 @@
 		case ADDITIONALREF: {
 			Ref ref = (Ref) node.getObject();
 			// shorten the name
-			String refName = node.getRepository().shortenRefName(ref.getName());
+			String refName = Repository.shortenRefName(ref.getName());
 			if (ref.isSymbolic()) {
 				refName = refName
 						+ " - " //$NON-NLS-1$
