@@ -14,30 +14,27 @@
 
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
-			public void run(IProgressMonitor monitor) throws CoreException {
+			public void run(IProgressMonitor pm) throws CoreException {
 				IProject[] validProjects = ProjectUtil.getValidProjects(repository);
-				monitor.beginTask(NLS.bind(
-						CoreText.BranchOperation_performingBranch, refName), 6);
+				pm.beginTask(NLS.bind(
+						CoreText.BranchOperation_performingBranch, refName), 5);
 				lookupRefs();
-				monitor.worked(1);
+				pm.worked(1);
 
 				mapObjects();
-				monitor.worked(1);
+				pm.worked(1);
 
 				checkoutTree();
-				monitor.worked(1);
-
-				writeIndex();
-				monitor.worked(1);
+				pm.worked(1);
 
 				updateHeadRef();
-				monitor.worked(1);
+				pm.worked(1);
 
 				ProjectUtil.refreshValidProjects(validProjects, new SubProgressMonitor(
-						monitor, 1));
-				monitor.worked(1);
+						pm, 1));
+				pm.worked(1);
 
-				monitor.done();
+				pm.done();
 			}
 		};
 		// lock workspace to protect working tree changes

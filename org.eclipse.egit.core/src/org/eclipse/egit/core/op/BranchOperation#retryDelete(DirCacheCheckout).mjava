@@ -1,0 +1,8 @@
+	private void retryDelete(DirCacheCheckout dirCacheCheckout) throws IOException {
+		List<String> files = dirCacheCheckout.getToBeDeleted();
+		for(String path:files) {
+			File file = new File(repository.getWorkTree(), path);
+			deleteFile(file);
+		}
+	}
+
