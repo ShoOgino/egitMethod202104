@@ -1,0 +1,22 @@
+	/**
+	 * The method searches a container resource related to the given file. The
+	 * container must reside in a project that is shared with Git
+	 *
+	 * @param root
+	 *            the workspace root
+	 * @param file
+	 * @return a container that matches the description above or null if such a
+	 *         container does not exist
+	 */
+	public static IContainer findContainer(IWorkspaceRoot root, File file) {
+		if (!file.isDirectory())
+			throw new IllegalArgumentException(
+					"file " + file.getAbsolutePath() + " is no directory"); //$NON-NLS-1$//$NON-NLS-2$
+		final IContainer[] containers = root.findContainersForLocationURI(file
+				.toURI());
+		for (IContainer container : containers)
+			if (container.isAccessible() && isProjectSharedWithGit(container))
+				return container;
+		return null;
+	}
+

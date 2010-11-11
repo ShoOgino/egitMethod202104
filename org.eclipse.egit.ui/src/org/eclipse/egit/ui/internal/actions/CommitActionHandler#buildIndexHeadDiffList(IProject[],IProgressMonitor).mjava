@@ -28,11 +28,8 @@
 					repository.getDirectory().getPath()));
 			HashSet<IProject> projects = entry.getValue();
 
-			AdaptableFileTreeIterator fileTreeIterator =
-				new AdaptableFileTreeIterator(repository.getWorkTree(),
-						ResourcesPlugin.getWorkspace().getRoot());
-
-			IndexDiff indexDiff = new IndexDiff(repository, Constants.HEAD, fileTreeIterator);
+			IndexDiff indexDiff = new IndexDiff(repository, Constants.HEAD,
+					IteratorService.createInitialIterator(repository));
 			indexDiff.diff();
 			indexDiffs.put(repository, indexDiff);
 
