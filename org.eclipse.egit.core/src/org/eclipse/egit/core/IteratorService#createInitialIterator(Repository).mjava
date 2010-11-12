@@ -1,0 +1,18 @@
+	/**
+	 * Creates a {@link WorkingTreeIterator} for a tree walk starting on the
+	 * repository work tree folder.
+	 *
+	 * @param repository
+	 * @return <li>a {@link ContainerTreeIterator} if the work tree folder of
+	 *         the given repository resides in a project shared with Git <li>an
+	 *         {@link AdaptableFileTreeIterator} otherwise
+	 */
+	public static WorkingTreeIterator createInitialIterator(
+			Repository repository) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IContainer container = findContainer(root, repository.getWorkTree());
+		if (container != null)
+			return new ContainerTreeIterator(container);
+		return new AdaptableFileTreeIterator(repository.getWorkTree(), root);
+	}
+
