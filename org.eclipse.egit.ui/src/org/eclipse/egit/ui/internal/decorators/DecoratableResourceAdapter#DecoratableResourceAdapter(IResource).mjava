@@ -13,6 +13,9 @@
 		try {
 			mapping = RepositoryMapping.getMapping(resource);
 			repository = mapping.getRepository();
+			fileMode = Boolean.valueOf(
+					repository.getConfig().getBoolean("core", null, //$NON-NLS-1$
+							"filemode", true)).booleanValue(); //$NON-NLS-1$
 			headId = repository.resolve(Constants.HEAD);
 
 			store = Activator.getDefault().getPreferenceStore();
