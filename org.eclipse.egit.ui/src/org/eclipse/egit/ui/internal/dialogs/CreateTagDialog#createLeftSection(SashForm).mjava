@@ -32,7 +32,7 @@
 
 		new Label(left, SWT.WRAP).setText(UIText.CreateTagDialog_tagMessage);
 
-		tagMessageText = new Text(left, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
+		tagMessageText = new SpellcheckableMessageArea(left, tagMessage);
 		tagMessageText.setLayoutData(GridDataFactory.fillDefaults().minSize(50,
 				50).grab(true, true).create());
 
@@ -54,7 +54,7 @@
 			}
 		});
 
-		tagMessageText.addModifyListener(new ModifyListener() {
+		tagMessageText.getTextWidget().addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				validateInput();
 			}
