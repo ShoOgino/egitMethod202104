@@ -1,0 +1,35 @@
+	public void execute(IProgressMonitor m) throws CoreException {
+		if (result != null)
+			throw new CoreException(new Status(IStatus.ERROR, Activator
+					.getPluginId(), CoreText.OperationAlreadyExecuted));
+		IProgressMonitor monitor;
+		if (m == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = m;
+
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor actMonitor) throws CoreException {
+				RebaseCommand cmd = new Git(repository).rebase()
+						.setProgressMonitor(
+								new EclipseGitProgressTransformer(actMonitor));
+				try {
+					if (operation == Operation.BEGIN)
+						result = cmd.setUpstream(ref.getName()).call();
+					else
+						result = cmd.setOperation(operation).call();
+
+				} catch (NoHeadException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				} catch (RefNotFoundException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				} catch (JGitInternalException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				} catch (GitAPIException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				}
+			}
+		};
+		ResourcesPlugin.getWorkspace().run(action, monitor);
+	}
+

@@ -1,0 +1,39 @@
+	@Test
+	@Ignore
+	// currently not working as expected; see also TODO in RebaseCommand
+	public void testUpToDate() throws Exception {
+		IFile file = project.createFile("theFile.txt", "Hello, world"
+				.getBytes("UTF-8"));
+		// first commit in master: add theFile.txt
+		RevCommit first = testRepository.addAndCommit(project.project,
+				new File(file.getLocationURI()), "Adding theFile.txt");
+
+		testRepository.createBranch(MASTER, TOPIC);
+
+		// checkout topic
+		testRepository.checkoutBranch(TOPIC);
+
+		file = project.createFile("theSecondFile.txt", "Hello, world"
+				.getBytes("UTF-8"));
+		// topic commit: add second file
+		RevCommit topicCommit = testRepository.addAndCommit(project.project,
+				new File(file.getLocationURI()), "Adding theSecondFile.txt");
+
+		// parent of topic commit should be first master commit before rebase
+		assertEquals(first, topicCommit.getParent(0));
+
+		// rebase topic onto master
+		RebaseOperation op = new RebaseOperation(
+				testRepository.getRepository(), testRepository.getRepository()
+						.getRef(MASTER));
+		op.execute(null);
+
+		RebaseResult res = op.getResult();
+		assertEquals(RebaseResult.Status.UP_TO_DATE, res.getStatus());
+
+		RevCommit newTopic = new RevWalk(repository).parseCommit(repository
+				.resolve(TOPIC));
+		assertEquals(topicCommit, newTopic);
+		assertEquals(first, newTopic.getParent(0));
+	}
+

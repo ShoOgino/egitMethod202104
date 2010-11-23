@@ -1,0 +1,11 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		testRepository = new TestRepository(gitDir);
+		repository = testRepository.getRepository();
+		// create first commit containing a dummy file
+		testRepository
+				.createInitialCommit("testRebaseOperation\n\nfirst commit\n");
+		git = new Git(repository);
+	}
+

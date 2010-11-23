@@ -1,0 +1,16 @@
+	/**
+	 * Used to abort, skip, or continue a stopped rebase operation that has been
+	 * started before.
+	 *
+	 * @param repository
+	 *            the {@link Repository}
+	 * @param operation
+	 *            one of {@link Operation#ABORT}, {@link Operation#CONTINUE},
+	 *            {@link Operation#SKIP}
+	 */
+	public RebaseOperation(Repository repository, Operation operation) {
+		this.repository = repository;
+		this.operation = operation;
+		this.ref = null;
+	}
+

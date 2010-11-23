@@ -1,0 +1,50 @@
+	@Test
+	public void testExceptionWhenRestartingStoppedRebase() throws Exception {
+		IFile file = project.createFile("theFile.txt", "Hello, world"
+				.getBytes("UTF-8"));
+		// first commit in master: add theFile.txt
+		RevCommit first = testRepository.addAndCommit(project.project,
+				new File(file.getLocationURI()), "Adding theFile.txt");
+
+		testRepository.createBranch(MASTER, TOPIC);
+
+		file.setContents(new ByteArrayInputStream("master".getBytes("UTF-8")),
+				0, null);
+		// second commit in master: modify theFile.txt
+		RevCommit second = git.commit().setAll(true).setMessage(
+				"Modify theFile.txt").call();
+		assertEquals(first, second.getParent(0));
+
+		// checkout topic
+		testRepository.checkoutBranch(TOPIC);
+
+		// set conflicting content in topic
+		file.setContents(new ByteArrayInputStream("topic".getBytes("UTF-8")),
+				0, null);
+		// topic commit: add second file
+		RevCommit topicCommit = testRepository.addAndCommit(project.project,
+				new File(file.getLocationURI()), "Changing theFile.txt again");
+
+		// parent of topic commit should be first master commit before rebase
+		assertEquals(first, topicCommit.getParent(0));
+
+		// rebase topic onto master
+		RebaseOperation op = new RebaseOperation(repository, repository
+				.getRef(MASTER));
+		op.execute(null);
+
+		RebaseResult res = op.getResult();
+		assertEquals(RebaseResult.Status.STOPPED, res.getStatus());
+
+		try {
+			// let's try to start again, we should get a wrapped
+			// WrongRepositoryStateException
+			op = new RebaseOperation(repository, repository.getRef(MASTER));
+			op.execute(null);
+			fail("Expected Exception not thrown");
+		} catch (CoreException e) {
+			Throwable cause = e.getCause();
+			assertTrue(cause instanceof WrongRepositoryStateException);
+		}
+	}
+

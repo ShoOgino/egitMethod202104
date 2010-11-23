@@ -1,0 +1,17 @@
+	/**
+	 * Construct a {@link RebaseOperation} object for a {@link Ref}.
+	 * <p>
+	 * Upon {@link #execute(IProgressMonitor)}, the current HEAD will be rebased
+	 * onto the provided {@link Ref}
+	 *
+	 * @param repository
+	 *            the {@link Repository}
+	 * @param ref
+	 *            the branch or tag
+	 */
+	public RebaseOperation(Repository repository, Ref ref) {
+		this.repository = repository;
+		this.operation = Operation.BEGIN;
+		this.ref = ref;
+	}
+
