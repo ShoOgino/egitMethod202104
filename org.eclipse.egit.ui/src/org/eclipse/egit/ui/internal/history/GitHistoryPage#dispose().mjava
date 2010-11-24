@@ -10,19 +10,19 @@
 		}
 
 		// dispose of the actions (the history framework doesn't do this for us)
-		for (BooleanPrefAction action : actionsToDispose)
+		for (IWorkbenchAction action : actionsToDispose)
 			action.dispose();
 		actionsToDispose.clear();
 		cancelRefreshJob();
 		if (popupMgr != null) {
 			for (final IContributionItem i : popupMgr.getItems()) {
-				if (i instanceof ActionFactory.IWorkbenchAction)
-					((ActionFactory.IWorkbenchAction) i).dispose();
+				if (i instanceof IWorkbenchAction)
+					((IWorkbenchAction) i).dispose();
 			}
 			for (final IContributionItem i : getSite().getActionBars()
 					.getMenuManager().getItems()) {
-				if (i instanceof ActionFactory.IWorkbenchAction)
-					((ActionFactory.IWorkbenchAction) i).dispose();
+				if (i instanceof IWorkbenchAction)
+					((IWorkbenchAction) i).dispose();
 			}
 		}
 		super.dispose();

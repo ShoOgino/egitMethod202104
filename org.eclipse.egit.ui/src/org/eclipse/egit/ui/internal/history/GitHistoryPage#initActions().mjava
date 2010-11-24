@@ -53,6 +53,9 @@
 		};
 		actionsToDispose.add(compareModeAction);
 
+		CompareUtils.ReuseCompareEditorAction reuseCompareEditorAction = new CompareUtils.ReuseCompareEditorAction();
+		actionsToDispose.add(reuseCompareEditorAction);
+
 		compareModeAction.setImageDescriptor(UIIcons.ELCL16_COMPARE_VIEW);
 		compareModeAction.setToolTipText(UIText.GitHistoryPage_compareMode);
 
@@ -93,6 +96,7 @@
 		viewMenuMgr.add(showAllResourceVersionsAction);
 		viewMenuMgr.add(new Separator());
 		viewMenuMgr.add(compareModeAction);
+		viewMenuMgr.add(reuseCompareEditorAction);
 		viewMenuMgr.add(showAllBranchesAction);
 
 		final IAction showCommentAction = createShowComment();
