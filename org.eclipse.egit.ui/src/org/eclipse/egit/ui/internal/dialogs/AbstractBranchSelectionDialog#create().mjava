@@ -7,9 +7,12 @@
 		super.create();
 
 		List<RepositoryTreeNode> roots = new ArrayList<RepositoryTreeNode>();
-		roots.add(localBranches);
-		roots.add(remoteBranches);
-		roots.add(tags);
+		if (showLocalBranches)
+			roots.add(localBranches);
+		if (showRemoteBranches)
+			roots.add(remoteBranches);
+		if (showTags)
+			roots.add(tags);
 
 		branchTree.setInput(roots);
 

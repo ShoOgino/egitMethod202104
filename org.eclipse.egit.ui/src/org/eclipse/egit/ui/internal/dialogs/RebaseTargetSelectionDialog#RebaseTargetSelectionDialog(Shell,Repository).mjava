@@ -1,0 +1,10 @@
+	/**
+	 * @param parentShell
+	 * @param repo
+	 */
+	public RebaseTargetSelectionDialog(Shell parentShell, Repository repo) {
+		super(parentShell, repo);
+		// local and remote branches only
+		setRootsToShow(true, true, false);
+	}
+
