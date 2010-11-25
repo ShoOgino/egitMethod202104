@@ -37,9 +37,12 @@
 		assertTrue(refs >= 4);
 		// and a known file in the working dir
 		assertTrue(new File(destRepo, SampleTestRepository.A_txt_name).exists());
-		assertFalse(repository.getIndex().isChanged());
-		assertFalse(repository.getIndex().getEntry(SampleTestRepository.A_txt_name).isModified(
-				destRepo));
+		DirCacheEntry fileEntry = null;
+		DirCache dc = repository.lockDirCache();
+		fileEntry = dc.getEntry(SampleTestRepository.A_txt_name);
+		dc.unlock();
+		// check that we have the file in the index
+		assertNotNull(fileEntry);
 		// No project have been imported
 		assertEquals(0,
 				ResourcesPlugin.getWorkspace().getRoot().getProjects().length);
