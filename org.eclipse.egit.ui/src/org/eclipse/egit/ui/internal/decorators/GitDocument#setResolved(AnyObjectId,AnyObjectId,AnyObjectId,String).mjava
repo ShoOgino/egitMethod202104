@@ -1,4 +1,5 @@
-	private void setResolved(final AnyObjectId commit, final AnyObjectId tree, final AnyObjectId blob, final String value) {
+	private void setResolved(final AnyObjectId commit, final AnyObjectId tree,
+			final AnyObjectId blob, final String value) {
 		lastCommit = commit != null ? commit.copy() : null;
 		lastTree = tree != null ? tree.copy() : null;
 		lastBlob = blob != null ? blob.copy() : null;
@@ -10,8 +11,7 @@
 						.trace(
 								GitTraceLocation.QUICKDIFF.getLocation(),
 								"(GitDocument) resolved " + resource + " to " + lastBlob + " in " + lastCommit + "/" + lastTree); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			else
-			if (GitTraceLocation.QUICKDIFF.isActive())
+			else if (GitTraceLocation.QUICKDIFF.isActive())
 				GitTraceLocation.getTrace().trace(
 						GitTraceLocation.QUICKDIFF.getLocation(),
 						"(GitDocument) unresolved " + resource); //$NON-NLS-1$
