@@ -8,16 +8,15 @@
 					GitTraceLocation.HISTORYVIEW.getLocation(), message);
 		getHistoryPageSite().getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				StackLayout layout = (StackLayout) getControl().getParent()
-						.getLayout();
+				StackLayout layout = (StackLayout) topControl.getLayout();
 				if (message != null) {
 					errorText.setText(message);
 					layout.topControl = errorText;
 				} else {
 					errorText.setText(""); //$NON-NLS-1$
-					layout.topControl = getControl();
+					layout.topControl = historyControl;
 				}
-				getControl().getParent().layout();
+				topControl.layout();
 			}
 		});
 		if (trace)

@@ -5,16 +5,16 @@
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation());
 
-		ourControl = createMainPanel(parent);
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(ourControl);
-		graphDetailSplit = new SashForm(ourControl, SWT.VERTICAL);
+		historyControl = createMainPanel(parent);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(historyControl);
+		graphDetailSplit = new SashForm(historyControl, SWT.VERTICAL);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(
 				graphDetailSplit);
 		graph = new CommitGraphTable(graphDetailSplit, getSite(), popupMgr);
 		revInfoSplit = new SashForm(graphDetailSplit, SWT.HORIZONTAL);
 		commentViewer = new CommitMessageViewer(revInfoSplit, getSite());
 		fileViewer = new CommitFileDiffViewer(revInfoSplit, getSite());
-		findToolbar = new FindToolbar(ourControl);
+		findToolbar = new FindToolbar(historyControl);
 
 		layoutSashForm(graphDetailSplit,
 				UIPreferences.RESOURCEHISTORY_GRAPH_SPLIT);
