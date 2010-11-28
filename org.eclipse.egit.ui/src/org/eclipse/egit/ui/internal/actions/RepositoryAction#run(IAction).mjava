@@ -1,9 +1,9 @@
 	public void run(IAction action) {
 
-		ICommandService srv = (ICommandService) part.getSite().getService(
-				ICommandService.class);
-		IHandlerService hsrv = (IHandlerService) part.getSite().getService(
-				IHandlerService.class);
+		ICommandService srv = (ICommandService) serviceLocator
+				.getService(ICommandService.class);
+		IHandlerService hsrv = (IHandlerService) serviceLocator
+				.getService(IHandlerService.class);
 		Command command = srv.getCommand(commandId);
 
 		ExecutionEvent event = hsrv.createExecutionEvent(command, null);
