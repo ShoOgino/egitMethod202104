@@ -1,0 +1,24 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final IResource[] sel = getSelectedResources(event);
+		if (sel.length == 0)
+			return null;
+		final AddToIndexOperation operation = new AddToIndexOperation(sel);
+		String jobname = UIText.AddToIndexAction_addingFiles;
+		Job job = new Job(jobname) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					operation.execute(monitor);
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(e.getStatus()
+							.getMessage(), e);
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.setRule(operation.getSchedulingRule());
+		job.schedule();
+		return null;
+	}
+
