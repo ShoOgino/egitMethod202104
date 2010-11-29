@@ -1,0 +1,9 @@
+	@Override
+	public int hashCode() {
+		int result = baseId.hashCode();
+		if (remoteId != null)
+			result ^= remoteId.hashCode();
+
+		return result;
+	}
+

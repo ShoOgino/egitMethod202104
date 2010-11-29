@@ -6,8 +6,7 @@
 					remoteCommit, remoteId);
 			ComparisonDataSource ancestorData = new ComparisonDataSource(
 					ancestorCommit, ancestorId);
-			compareInput = new GitCompareInput(getRepository(), ancestorData,
-					baseData, remoteData, gitPath);
+			compareInput = getCompareInput(baseData, remoteData, ancestorData);
 		}
 	}
 

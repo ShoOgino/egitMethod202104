@@ -20,9 +20,9 @@
 
 		try {
 			IFileRevision nextFile = getFileRevision(gitPath, commit, db,
-					blobId);
-			if (nextFile != null)
-				right = new FileRevisionTypedElement(nextFile);
+							blobId);
+				if (nextFile != null)
+					right = new FileRevisionTypedElement(nextFile);
 		} catch (IOException e) {
 			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
 					gitPath, commit.getId()), e);

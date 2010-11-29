@@ -1,8 +1,0 @@
-	@Override
-	public ITypedElement getLeft() {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IFile file = root.getFileForLocation(getLocation());
-
-		return new LocalResourceTypedElement(file);
-	}
-

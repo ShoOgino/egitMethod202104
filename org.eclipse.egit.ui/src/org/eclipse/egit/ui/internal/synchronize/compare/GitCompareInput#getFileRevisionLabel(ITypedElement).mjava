@@ -1,15 +1,24 @@
 	private String getFileRevisionLabel(ITypedElement element) {
 		if (element instanceof FileRevisionTypedElement) {
 			FileRevisionTypedElement castElement = (FileRevisionTypedElement) element;
-			return NLS.bind(
-					UIText.GitCompareFileRevisionEditorInput_RevisionLabel,
-					new Object[] {
-							element.getName(),
-							CompareUtils.truncatedRevision(castElement
-									.getContentIdentifier()),
-							castElement.getAuthor() });
+			if (INDEX.equals(castElement.getContentIdentifier()))
+				return NLS.bind(
+						UIText.GitCompareFileRevisionEditorInput_StagedVersion,
+						element.getName());
+			else
+				return NLS.bind(
+						UIText.GitCompareFileRevisionEditorInput_RevisionLabel,
+						new Object[] {
+								element.getName(),
+								CompareUtils.truncatedRevision(castElement
+										.getContentIdentifier()),
+								castElement.getAuthor() });
 
-		} else
+		} else if (element instanceof LocalResourceTypedElement)
+			return NLS.bind(
+					UIText.GitCompareFileRevisionEditorInput_LocalVersion,
+					element.getName());
+		else
 			return element.getName();
 	}
 
