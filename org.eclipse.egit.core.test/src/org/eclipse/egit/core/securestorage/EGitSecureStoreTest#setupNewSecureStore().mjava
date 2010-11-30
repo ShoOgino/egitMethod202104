@@ -1,0 +1,14 @@
+	private void setupNewSecureStore() throws IOException,
+			MalformedURLException {
+		HashMap<String, Object> options = new HashMap<String, Object>();
+		options.put(IProviderHints.DEFAULT_PASSWORD, new PBEKeySpec(
+				"masterpass".toCharArray()));
+		String secureStorePath = ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().append("testSecureStore").toOSString();
+		File file = new File(secureStorePath);
+		testUtils.deleteRecursive(file);
+		URL url = file.toURI().toURL();
+		secureStoreForTest = SecurePreferencesFactory.open(url, options);
+		secureStoreForTest.node("/GIT").removeNode();
+	}
+
