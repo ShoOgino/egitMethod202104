@@ -15,7 +15,7 @@
 				rsrcList.size() * 200);
 		try {
 			for (IResource resource : rsrcList) {
-				assumeValid(resource);
+				assumeValid(resource, assumeUnchanged);
 				monitor.worked(200);
 			}
 

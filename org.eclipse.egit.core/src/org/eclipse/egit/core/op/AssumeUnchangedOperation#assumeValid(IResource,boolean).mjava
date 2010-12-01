@@ -1,4 +1,4 @@
-	private void assumeValid(final IResource resource) throws CoreException {
+	private void assumeValid(final IResource resource, boolean assumeUnchanged) throws CoreException {
 		final IProject proj = resource.getProject();
 		final GitProjectData pd = GitProjectData.get(proj);
 		if (pd == null)
@@ -22,11 +22,11 @@
 		final String path = rm.getRepoRelativePath(resource);
 		if (resource instanceof IContainer) {
 			for (final DirCacheEntry ent : cache.getEntriesWithin(path))
-				ent.setAssumeValid(true);
+				ent.setAssumeValid(assumeUnchanged);
 		} else {
 			final DirCacheEntry ent = cache.getEntry(path);
 			if (ent != null)
-				ent.setAssumeValid(true);
+				ent.setAssumeValid(assumeUnchanged);
 		}
 	}
 

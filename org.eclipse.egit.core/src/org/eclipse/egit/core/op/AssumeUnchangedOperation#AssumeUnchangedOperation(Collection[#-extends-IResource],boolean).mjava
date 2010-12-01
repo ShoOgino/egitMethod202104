@@ -4,10 +4,16 @@
 	 * @param rsrcs
 	 *            collection of {@link IResource}s which should be ignored when
 	 *            looking for changes or committing.
+	 * @param assumeUnchanged
+	 *            {@code true} to set the assume-valid flag in the git index
+	 *            entry, {@code false} to unset the assume-valid flag in the git
+	 *            index entry
 	 */
-	public AssumeUnchangedOperation(final Collection<? extends IResource> rsrcs) {
+	public AssumeUnchangedOperation(
+			final Collection<? extends IResource> rsrcs, boolean assumeUnchanged) {
 		rsrcList = rsrcs;
 		caches = new IdentityHashMap<Repository, DirCache>();
 		mappings = new IdentityHashMap<RepositoryMapping, Object>();
+		this.assumeUnchanged = assumeUnchanged;
 	}
 
