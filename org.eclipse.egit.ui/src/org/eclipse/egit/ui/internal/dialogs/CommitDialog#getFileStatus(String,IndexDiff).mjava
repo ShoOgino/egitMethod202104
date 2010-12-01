@@ -5,7 +5,9 @@
 	 */
 	private static String getFileStatus(String path, IndexDiff indexDiff) {
 		String prefix = UIText.CommitDialog_StatusUnknown;
-		if (indexDiff.getAdded().contains(path)) {
+		if (indexDiff.getAssumeUnchanged().contains(path)) {
+			prefix = UIText.CommitDialog_StatusAssumeUnchaged;
+		} else if (indexDiff.getAdded().contains(path)) {
 			// added
 			if (indexDiff.getModified().contains(path))
 				prefix = UIText.CommitDialog_StatusAddedIndexDiff;
