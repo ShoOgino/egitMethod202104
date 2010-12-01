@@ -5,9 +5,12 @@
 	 * @throws IOException
 	 */
 	public void track(File file) throws IOException {
-		GitIndex index = repository.getIndex();
-		Entry entry = index.add(repository.getWorkTree(), file);
-		entry.setAssumeValid(false);
-		index.write();
+		String repoPath = getRepoRelativePath(new Path(file.getPath())
+				.toString());
+		try {
+			new Git(repository).add().addFilepattern(repoPath).call();
+		} catch (NoFilepatternException e) {
+			throw new IOException(e.getMessage());
+		}
 	}
 
