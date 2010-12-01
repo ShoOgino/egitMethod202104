@@ -51,6 +51,8 @@
 					continue;
 				}
 				transport = Transport.open(localDb, uri);
+				if (credentialsProvider != null)
+					transport.setCredentialsProvider(credentialsProvider);
 				transport.setTimeout(this.timeout);
 
 				if (rc != null)

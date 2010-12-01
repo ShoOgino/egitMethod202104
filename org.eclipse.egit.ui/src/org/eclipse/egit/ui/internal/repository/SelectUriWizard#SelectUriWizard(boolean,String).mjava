@@ -3,7 +3,8 @@
 	 * @param presetUri
 	 */
 	public SelectUriWizard(boolean sourceSelection, String presetUri) {
-		addPage(new RepositorySelectionPage(sourceSelection, presetUri));
+		page = new RepositorySelectionPage(sourceSelection, presetUri);
+		addPage(page);
 		setWindowTitle(UIText.SelectUriWiazrd_Title);
 	}
 

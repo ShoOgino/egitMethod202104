@@ -27,6 +27,9 @@
 					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 			operation = new PushOperation(local, spec, true,
 					displayedRepoSelection.getConfig(), timeout);
+			if (credentials != null)
+				operation.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+						credentials.getUser(), credentials.getPassword()));
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {

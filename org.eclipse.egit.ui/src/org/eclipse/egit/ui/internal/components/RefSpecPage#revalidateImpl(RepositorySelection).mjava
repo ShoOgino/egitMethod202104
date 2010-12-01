@@ -6,6 +6,10 @@
 			int timeout = Activator.getDefault().getPreferenceStore().getInt(
 					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 			listRemotesOp = new ListRemoteOperation(local, uri, timeout);
+			if (credentials != null)
+				listRemotesOp
+						.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+								credentials.getUser(), credentials.getPassword()));
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {

@@ -5,9 +5,19 @@
 			saveRefSpecs();
 		}
 
+		if (repoPage.getStoreInSecureStore()) {
+			if (!SecureStoreUtils.storeCredentials(repoPage
+					.getCredentials(), repoPage.getSelection().getURI()))
+				return false;
+		}
+
 		final PushOperation operation = createPushOperation();
 		if (operation == null)
 			return false;
+		UserPasswordCredentials credentials = repoPage.getCredentials();
+		if (credentials != null)
+			operation.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+					credentials.getUser(), credentials.getPassword()));
 		final PushOperationResult resultToCompare;
 		if (confirmPage.isShowOnlyIfChangedSelected())
 			resultToCompare = confirmPage.getConfirmedResult();

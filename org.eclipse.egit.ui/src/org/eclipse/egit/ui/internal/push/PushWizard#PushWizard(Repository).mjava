@@ -14,17 +14,21 @@
 		refSpecPage = new RefSpecPage(localDb, true) {
 			@Override
 			public void setVisible(boolean visible) {
-				if (visible)
+				if (visible) {
 					setSelection(repoPage.getSelection());
+					setCredentials(repoPage.getCredentials());
+				}
 				super.setVisible(visible);
 			}
 		};
 		confirmPage = new ConfirmationPage(localDb) {
 			@Override
 			public void setVisible(boolean visible) {
-				if (visible)
+				if (visible) {
 					setSelection(repoPage.getSelection(), refSpecPage
 							.getRefSpecs());
+					setCredentials(repoPage.getCredentials());
+				}
 				super.setVisible(visible);
 			}
 		};

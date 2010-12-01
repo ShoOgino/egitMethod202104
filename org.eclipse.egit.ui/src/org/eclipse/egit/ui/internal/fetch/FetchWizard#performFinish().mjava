@@ -3,6 +3,11 @@
 		if (repoPage.getSelection().isConfigSelected()
 				&& refSpecPage.isSaveRequested())
 			saveConfig();
+		if (repoPage.getStoreInSecureStore()) {
+			if (!SecureStoreUtils.storeCredentials(repoPage
+					.getCredentials(), repoPage.getSelection().getURI()))
+				return false;
+		}
 
 		final Transport transport;
 		final RepositorySelection repoSelection = repoPage.getSelection();
@@ -19,6 +24,11 @@
 							.getPluginId(), e.getMessage(), e));
 			return false;
 		}
+		UserPasswordCredentials credentials = repoPage.getCredentials();
+		if (credentials != null)
+			transport.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+					credentials.getUser(), credentials.getPassword()));
+
 		transport.setTagOpt(refSpecPage.getTagOpt());
 
 		final Job fetchJob = new FetchJob(transport, refSpecPage.getRefSpecs(),

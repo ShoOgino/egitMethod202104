@@ -23,6 +23,7 @@
 					WizardDialog dlg = new WizardDialog(getShell(), slwz);
 					if (dlg.open() == Window.OK) {
 						URIish uri = slwz.getUri();
+						credentials = slwz.getCredentials();
 						uriText.setText(uri.toPrivateString());
 						checkPage();
 					}
@@ -88,6 +89,7 @@
 									message);
 							return;
 						}
+						credentials = selectWizard.getCredentials();
 						myUris.add(uri);
 						tv.setInput(myUris);
 						checkPage();
