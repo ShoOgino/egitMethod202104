@@ -2,15 +2,15 @@
 	 * Adds the given file to the index
 	 *
 	 * @param file
+	 * @throws CoreException
 	 * @throws IOException
 	 */
-	public void addToIndex(IFile file) throws IOException {
-		GitIndex index = repository.getIndex();
-		Entry entry = index.getEntry(getRepoRelativePath(file.getLocation()
-				.toOSString()));
-		assertNotNull(entry);
-		if (entry.isModified(repository.getWorkTree()))
-			entry.update(new File(repository.getWorkTree(), entry.getName()));
-		index.write();
+	public void addToIndex(IFile file) throws CoreException, IOException {
+		String repoPath = getRepoRelativePath(file.getLocation().toOSString());
+		try {
+			new Git(repository).add().addFilepattern(repoPath).call();
+		} catch (NoFilepatternException e) {
+			throw new IOException(e.getMessage());
+		}
 	}
 
