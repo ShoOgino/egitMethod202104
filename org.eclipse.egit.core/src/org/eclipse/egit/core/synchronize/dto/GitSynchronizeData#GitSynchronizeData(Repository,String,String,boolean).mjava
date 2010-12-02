@@ -11,6 +11,9 @@
 	 */
 	public GitSynchronizeData(Repository repository, String srcRev,
 			String dstRev, boolean includeLocal) throws IOException {
+		isNotNull(repository);
+		isNotNull(srcRev);
+		isNotNull(dstRev);
 		repo = repository;
 
 		ObjectWalk ow = new ObjectWalk(repo);
