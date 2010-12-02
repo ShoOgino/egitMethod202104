@@ -4,9 +4,5 @@
 		remoteRepositoryFile = createRemoteRepository(repositoryFile);
 		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
 				repositoryFile);
-		File repoRoot = new File(testDirectory, "RepositoryRoot");
-		repoRoot.mkdir();
-		Activator.getDefault().getPreferenceStore().setValue(
-				UIPreferences.DEFAULT_REPO_DIR, repoRoot.getPath());
 	}
 
