@@ -1,4 +1,4 @@
-	private void assumeValid(final IResource resource, boolean assumeUnchanged) throws CoreException {
+	private void assumeValid(final IResource resource) throws CoreException {
 		final IProject proj = resource.getProject();
 		final GitProjectData pd = GitProjectData.get(proj);
 		if (pd == null)
