@@ -22,10 +22,10 @@
 		int objectType = tw.getFileMode(actualNth).getObjectType();
 
 		if (objectType == Constants.OBJ_BLOB)
-			return new GitModelBlob(this, getRemoteCommit(), objAncestorId,
+			return new GitModelBlob(this, getBaseCommit(), objAncestorId,
 					objBaseId, objRemoteId, objName);
 		else if (objectType == Constants.OBJ_TREE)
-			return new GitModelTree(this, getRemoteCommit(), objAncestorId,
+			return new GitModelTree(this, getBaseCommit(), objAncestorId,
 					objBaseId, objRemoteId, objName);
 
 		return null;

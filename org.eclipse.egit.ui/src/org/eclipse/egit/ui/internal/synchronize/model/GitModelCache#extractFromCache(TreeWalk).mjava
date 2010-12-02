@@ -16,7 +16,7 @@
 			if (path.split("/").length > 1) //$NON-NLS-1$
 				return handleCacheTree(repoId, cacheId, path);
 
-			return fileFactory.createFileModel(this, remoteCommit, repoId,
+			return fileFactory.createFileModel(this, baseCommit, repoId,
 					cacheId, path);
 		}
 

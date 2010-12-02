@@ -1,8 +1,8 @@
 	private void calculateKind() {
-		ObjectId base = baseCommit != null ? baseCommit.getId() : zeroId();
-		if (base.equals(zeroId()))
+		ObjectId remote = remoteCommit != null ? remoteCommit.getId() : zeroId();
+		if (remote.equals(zeroId()))
 			kind = kind | ADDITION;
-		else if (remoteCommit.equals(zeroId()))
+		else if (baseCommit.equals(zeroId()))
 			kind = kind | DELETION;
 		else
 			kind = kind | CHANGE;
