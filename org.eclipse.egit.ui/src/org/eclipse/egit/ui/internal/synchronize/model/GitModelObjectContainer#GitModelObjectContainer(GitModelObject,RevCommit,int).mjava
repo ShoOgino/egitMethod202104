@@ -9,14 +9,14 @@
 			int direction) throws IOException {
 		super(parent);
 		kind = direction;
-		remoteCommit = commit;
-		ancestorCommit = calculateAncestor(remoteCommit);
+		baseCommit = commit;
+		ancestorCommit = calculateAncestor(baseCommit);
 
-		RevCommit[] parents = remoteCommit.getParents();
+		RevCommit[] parents = baseCommit.getParents();
 		if (parents != null && parents.length > 0)
-			baseCommit = remoteCommit.getParent(0);
+			remoteCommit = baseCommit.getParent(0);
 		else {
-			baseCommit = null;
+			remoteCommit = null;
 		}
 	}
 

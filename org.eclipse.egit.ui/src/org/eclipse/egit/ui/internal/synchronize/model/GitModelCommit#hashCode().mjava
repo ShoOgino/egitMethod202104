@@ -1,8 +1,8 @@
 	@Override
 	public int hashCode() {
-		int result = getLocation().hashCode() ^ remoteCommit.hashCode();
-		if (baseCommit != null)
-			result ^= baseCommit.hashCode();
+		int result = getLocation().hashCode() ^ baseCommit.hashCode();
+		if (remoteCommit != null)
+			result ^= remoteCommit.hashCode();
 
 		return result;
 	}
