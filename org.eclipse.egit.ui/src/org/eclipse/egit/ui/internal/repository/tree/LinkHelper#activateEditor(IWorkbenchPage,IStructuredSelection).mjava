@@ -11,7 +11,8 @@
 				if (part != null) {
 					IEditorInput input = part.getEditorInput();
 					if (input instanceof IFileEditorInput) {
-						if (((IFileEditorInput) input).getFile().equals(file)) {
+						IFile r = ((IFileEditorInput) input).getFile();
+						if (r.getLocation().toFile().equals(file)) {
 							aPage.activate(part);
 							return;
 						}
