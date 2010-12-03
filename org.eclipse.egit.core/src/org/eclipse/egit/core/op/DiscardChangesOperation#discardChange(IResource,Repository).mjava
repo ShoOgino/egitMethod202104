@@ -1,0 +1,11 @@
+	private void discardChange(IResource res, Repository repository)
+			throws IOException {
+		String resRelPath = RepositoryMapping.getMapping(res)
+				.getRepoRelativePath(res);
+		DirCache dc = repository.lockDirCache();
+		DirCacheEntry entry = dc.getEntry(resRelPath);
+		File file = new File(res.getLocationURI());
+		DirCacheCheckout.checkoutEntry(repository, file, entry, true);
+		dc.unlock();
+	}
+

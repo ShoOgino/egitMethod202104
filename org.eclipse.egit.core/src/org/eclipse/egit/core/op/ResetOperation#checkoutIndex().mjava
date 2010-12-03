@@ -1,13 +1,17 @@
 	private void checkoutIndex() throws TeamException {
-		final File parentFile = repository.getWorkTree();
+		DirCache dc = null;
 		try {
-			WorkDirCheckout workDirCheckout =
-				new WorkDirCheckout(repository, parentFile, index, repository.mapTree(newTree));
-			workDirCheckout.setFailOnConflict(false);
-			workDirCheckout.checkout();
+			dc = repository.lockDirCache();
+			DirCacheCheckout checkout = new DirCacheCheckout(repository, dc,
+					commit.getTree());
+			checkout.setFailOnConflict(false);
+			checkout.checkout();
 		} catch (IOException e) {
 			throw new TeamException(
 					CoreText.ResetOperation_mappingTreeForCommit, e);
+		} finally {
+			if (dc != null)
+				dc.unlock();
 		}
 	}
 

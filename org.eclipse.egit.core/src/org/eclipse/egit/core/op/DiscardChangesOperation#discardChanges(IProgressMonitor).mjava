@@ -1,12 +1,11 @@
 	private void discardChanges(IProgressMonitor monitor) throws CoreException {
-		monitor.beginTask(CoreText.DiscardChangesOperation_discardingChanges, 3);
+		monitor.beginTask(CoreText.DiscardChangesOperation_discardingChanges, 2);
 		boolean errorOccured = false;
 		List<IResource> allFiles = new ArrayList<IResource>();
 		// find all files
 		for (IResource res : files) {
 			allFiles.addAll(getAllMembers(res));
 		}
-		Set<GitIndex> modifiedIndexes = new HashSet<GitIndex>();
 		for (IResource res : allFiles) {
 			Repository repo = getRepository(res);
 			if (repo == null) {
@@ -15,23 +14,13 @@
 				throw new CoreException(status);
 			}
 			try {
-				discardChange(res, repo, modifiedIndexes);
+				discardChange(res, repo);
 			} catch (IOException e) {
 				errorOccured = true;
 				String message = NLS.bind(
 						CoreText.DiscardChangesOperation_discardFailed, res
 								.getFullPath());
 				Activator.logError(message, e);
-			}
-		}
-		monitor.worked(1);
-		for (GitIndex index : modifiedIndexes) {
-			try {
-				index.write();
-			} catch (IOException e) {
-				errorOccured = true;
-				Activator.logError(
-						CoreText.DiscardChangesOperation_writeIndexFailed, e);
 			}
 		}
 		monitor.worked(1);
