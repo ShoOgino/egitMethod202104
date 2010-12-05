@@ -8,10 +8,10 @@
 			monitor.beginTask(NLS.bind(CoreText.TagOperation_performingTagging,
 					tag.getTag()), 3);
 
-			updateTagObject();
+			ObjectId tagId = updateTagObject();
 			monitor.worked(1);
 
-			updateRepo();
+			updateRepo(tagId);
 			monitor.worked(1);
 
 		} finally {

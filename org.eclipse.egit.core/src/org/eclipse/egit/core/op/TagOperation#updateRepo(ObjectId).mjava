@@ -1,9 +1,9 @@
-	private void updateRepo() throws TeamException {
+	private void updateRepo(ObjectId tagId) throws TeamException {
 		String refName = Constants.R_TAGS + tag.getTag();
 
 		try {
 			RefUpdate tagRef = repo.updateRef(refName);
-			tagRef.setNewObjectId(tag.getTagId());
+			tagRef.setNewObjectId(tagId);
 
 			tagRef.setForceUpdate(shouldMoveTag);
 			Result updateResult = tagRef.update();
