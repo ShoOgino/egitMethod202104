@@ -12,7 +12,7 @@
 		SWTBotShell shell = bot.shell(
 				UIText.RepositorySearchDialog_AddGitRepositories).activate();
 		shell.bot().textWithLabel(UIText.RepositorySearchDialog_directory)
-				.setText(testDirectory.getPath());
+				.setText(getTestDirectory().getPath());
 		shell.bot().button(UIText.RepositorySearchDialog_Search).click();
 		shell.bot().button(IDialogConstants.OK_LABEL).click();
 		refreshAndWait();

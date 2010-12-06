@@ -2,7 +2,7 @@
 			throws Exception {
 		Repository myRepository = org.eclipse.egit.core.Activator.getDefault()
 				.getRepositoryCache().lookupRepository(repositoryDir);
-		File gitDir = new File(testDirectory, REPO2);
+		File gitDir = new File(getTestDirectory(), REPO2);
 		Repository myRemoteRepository = lookupRepository(gitDir);
 		myRemoteRepository.create();
 

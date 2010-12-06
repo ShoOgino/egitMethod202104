@@ -1,6 +1,6 @@
 	protected static File createProjectAndCommitToRepository() throws Exception {
 
-		File gitDir = new File(new File(testDirectory, REPO1),
+		File gitDir = new File(new File(getTestDirectory(), REPO1),
 				Constants.DOT_GIT);
 		gitDir.mkdir();
 		Repository myRepository = lookupRepository(gitDir);
