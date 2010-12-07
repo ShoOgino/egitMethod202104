@@ -2,6 +2,8 @@
 	 * @return the modified content
 	 */
 	public byte[] getModifiedContent() {
-		return Arrays.copyOf(modifiedContent, modifiedContent.length);
+		byte[] result = new byte[modifiedContent.length];
+		System.arraycopy(modifiedContent, 0, result, 0, modifiedContent.length);
+		return result;
 	}
 
