@@ -7,13 +7,17 @@
 				Activator.getDefault().getRepositoryUtil()
 						.getConfiguredRepositories().contains(targetDir));
 
+		SWTBotShell dialogShell = bot.shell("Import Projects from Git");
+		SWTBotTable table = dialogShell.bot().table();
+		int expectedRowCount = table.rowCount() + 1;
 		bot.button("Finish").click();
 
-		try {
-			Job.getJobManager().join(GitCloneWizard.CLONE_JOB_FAMILY, new NullProgressMonitor());
-		} catch (Exception e) {
-			fail( "Unable to join cloning job");
-		}
+		// wait until clone operation finished.
+		// wizard executes clone operation using getContainer.run
+		// wait until the repository table gets an additional entry
+		bot.waitUntil(Conditions.tableHasRows(table, expectedRowCount), 20000);
+
+
 		// depending on the timing, the clone job may already be run
 		// but the repository is not yet added to our list, of
 		// repositories. Wait until that happend.
