@@ -5,11 +5,14 @@
 
 		importWizard.openWizard();
 		RepoPropertiesPage propertiesPage = importWizard.openCloneWizard();
+		propertiesPage.setURI(r.getUri());
+		propertiesPage.setUser("agitter");
+		propertiesPage.setPassword("letmein");
+		propertiesPage.setStoreInSecureStore(false);
 
 		RepoRemoteBranchesPage remoteBranches = propertiesPage
-				.nextToRemoteBranches(r.getUri());
+				.nextToRemoteBranches();
 
 		cloneRepo(destRepo, remoteBranches);
-
 	}
 

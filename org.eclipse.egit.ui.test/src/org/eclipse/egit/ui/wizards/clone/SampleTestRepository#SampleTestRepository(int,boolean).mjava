@@ -4,12 +4,18 @@
 	 *
 	 * @param n
 	 *            hint how many random commits should be generated
+	 * @param
+	 * 			  serveHttp 
 	 *
 	 * @throws Exception
 	 */
-	public SampleTestRepository(int n) throws Exception {
+	public SampleTestRepository(int n, boolean serveHttp) throws Exception {
+		this.serveHttp = serveHttp;
 		src = createRepository();
 		generateSampleData(n);
-		serve();
+		if (serveHttp)
+			serveHttp();
+		else
+			serve();
 	}
 
