@@ -13,7 +13,6 @@
 		try {
 			mapping = RepositoryMapping.getMapping(resource);
 			repository = mapping.getRepository();
-			fileMode = repository.getConfig().get(CoreConfig.KEY).isFileMode();
 			headId = repository.resolve(Constants.HEAD);
 
 			store = Activator.getDefault().getPreferenceStore();

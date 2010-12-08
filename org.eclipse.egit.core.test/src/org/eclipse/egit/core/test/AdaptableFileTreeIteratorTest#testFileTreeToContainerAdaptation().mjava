@@ -4,7 +4,7 @@
 				.getRoot();
 
 		final TreeWalk treeWalk = new TreeWalk(repository);
-		treeWalk.addTree(new AdaptableFileTreeIterator(repositoryRoot, root));
+		treeWalk.addTree(new AdaptableFileTreeIterator(repository, root));
 		treeWalk.setRecursive(true);
 
 		final IFile eclipseFile = project.getProject().getFile(file.getName());

@@ -3,7 +3,6 @@
 		super.setUp();
 
 		repository = new FileRepository(gitDir);
-		repositoryRoot = repository.getWorkTree();
 		repository.create();
 
 		file = new File(project.getProject().getLocation().toFile(), "a.txt");

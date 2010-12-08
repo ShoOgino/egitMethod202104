@@ -1,0 +1,20 @@
+	/**
+	 * Create a new iterator to traverse the work tree of the given repository
+	 * <p>
+	 * The iterator will automatically adapt to a {@link ContainerTreeIterator}
+	 * when encountering directories what can be mapped into the given workspace
+	 * root.
+	 *
+	 * @param repository
+	 *            the repository this iterator should traverse the working tree
+	 *            of
+	 * @param workspaceRoot
+	 *            the workspace root to check resource mapping against.
+	 */
+	public AdaptableFileTreeIterator(final Repository repository,
+			final IWorkspaceRoot workspaceRoot) {
+		super(repository.getWorkTree(), FS.DETECTED, repository.getConfig()
+				.get(WorkingTreeOptions.KEY));
+		root = workspaceRoot;
+	}
+

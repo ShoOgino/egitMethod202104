@@ -7,11 +7,13 @@
 	 * iteration the paths will be automatically generated to match the proper
 	 * repository paths for this container's children.
 	 *
+	 * @param repository
+	 *            repository the given base is mapped to
 	 * @param base
 	 *            the part of the workspace the iterator will walk over.
 	 */
-	public ContainerTreeIterator(final IContainer base) {
-		super(computePrefix(base), WorkingTreeOptions.createDefaultInstance());
+	public ContainerTreeIterator(final Repository repository, final IContainer base) {
+		super(computePrefix(base), repository.getConfig().get(WorkingTreeOptions.KEY));
 		node = base;
 		init(entries());
 	}

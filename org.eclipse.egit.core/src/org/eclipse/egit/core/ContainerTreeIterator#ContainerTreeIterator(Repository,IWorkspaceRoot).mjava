@@ -6,11 +6,13 @@
 	 * During the iteration the paths will be automatically generated to match
 	 * the proper repository paths for this container's children.
 	 *
+	 * @param repository
+	 *            repository the given base is mapped to
 	 * @param root
 	 *            the workspace root to walk over.
 	 */
-	public ContainerTreeIterator(final IWorkspaceRoot root) {
-		super("", WorkingTreeOptions.createDefaultInstance());  //$NON-NLS-1$
+	public ContainerTreeIterator(final Repository repository, final IWorkspaceRoot root) {
+		super("", repository.getConfig().get(WorkingTreeOptions.KEY));  //$NON-NLS-1$
 		node = root;
 		init(entries());
 	}
