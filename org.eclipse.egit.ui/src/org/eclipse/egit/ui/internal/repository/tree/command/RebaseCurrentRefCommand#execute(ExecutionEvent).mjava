@@ -2,7 +2,6 @@
 
 		RepositoryTreeNode node = getSelectedNodes(event).get(0);
 
-		final AtomicBoolean abortedDueToConflict = new AtomicBoolean();
 		final Repository repository = node.getRepository();
 
 		Ref ref;
@@ -31,14 +30,6 @@
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					rebase.execute(monitor);
-					// TODO for the time being, we will abort immediately once
-					// we have found a conflict
-					RebaseResult result = rebase.getResult();
-					if (result.getStatus() == org.eclipse.jgit.api.RebaseResult.Status.STOPPED) {
-						abortedDueToConflict.set(true);
-						new RebaseOperation(repository, Operation.ABORT)
-								.execute(monitor);
-					}
 				} catch (final CoreException e) {
 					try {
 						new RebaseOperation(repository, Operation.ABORT)
@@ -73,23 +64,7 @@
 						}
 					});
 				} else if (result.isOK()) {
-					Display.getDefault().asyncExec(new Runnable() {
-						public void run() {
-							// don't get the shell from the event, as this is
-							// asynchronous
-							Shell shell = PlatformUI.getWorkbench()
-									.getActiveWorkbenchWindow().getShell();
-							if (abortedDueToConflict.get())
-								MessageDialog
-										.openError(
-												shell,
-												UIText.RebaseCurrentRefCommand_AbortedDialogTitle,
-												UIText.RebaseCurrentRefCommand_AbortedDialogMessage);
-							else
-								new RebaseResultDialog(shell, repository,
-										rebase.getResult()).open();
-						}
-					});
+					RebaseResultDialog.show(rebase.getResult(), repository);
 				}
 			}
 		});
