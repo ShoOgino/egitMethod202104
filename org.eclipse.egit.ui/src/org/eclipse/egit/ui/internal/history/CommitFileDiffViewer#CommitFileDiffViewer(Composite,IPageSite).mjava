@@ -26,12 +26,7 @@
 				.getFont(UIPreferences.THEME_CommitMessageFont));
 		noInputText.setText(UIText.CommitFileDiffViewer_SelectOneCommitMessage);
 
-		rawTable.setHeaderVisible(true);
 		rawTable.setLinesVisible(true);
-
-		final TableLayout layout = new TableLayout();
-		rawTable.setLayout(layout);
-		createColumns(rawTable, layout);
 
 		setLabelProvider(new FileDiffLabelProvider());
 		setContentProvider(new FileDiffContentProvider());
