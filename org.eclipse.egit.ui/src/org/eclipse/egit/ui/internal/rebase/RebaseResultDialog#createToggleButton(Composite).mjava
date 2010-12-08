@@ -1,0 +1,8 @@
+	private void createToggleButton(Composite parent) {
+		boolean toggleState = Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.REBASE_HIDE_CONFIRM);
+		toggleButton = new Button(parent, SWT.CHECK | SWT.LEFT);
+		toggleButton.setText(UIText.RebaseResultDialog_ToggleShowButton);
+		toggleButton.setSelection(toggleState);
+	}
+
