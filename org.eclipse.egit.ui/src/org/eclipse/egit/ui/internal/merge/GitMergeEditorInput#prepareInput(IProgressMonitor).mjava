@@ -73,6 +73,11 @@
 			String target;
 			if (repo.getRepositoryState().equals(RepositoryState.MERGING))
 				target = Constants.MERGE_HEAD;
+			else if (repo.getRepositoryState().equals(
+					RepositoryState.REBASING_INTERACTIVE))
+				target = readFile(repo.getDirectory(),
+						RebaseCommand.REBASE_MERGE + File.separatorChar
+								+ RebaseCommand.STOPPED_SHA);
 			else
 				target = Constants.ORIG_HEAD;
 			ObjectId mergeHead = repo.resolve(target);

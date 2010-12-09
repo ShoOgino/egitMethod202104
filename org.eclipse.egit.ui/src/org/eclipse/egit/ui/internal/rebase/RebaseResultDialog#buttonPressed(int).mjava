@@ -62,18 +62,27 @@
 				}
 				CompareUI.openCompareEditor(input);
 				return;
+			} else if (skipCommitButton.getSelection()) {
+				// skip the rebase
+				try {
+					final RebaseOperation op = new RebaseOperation(repo,
+							Operation.SKIP);
+					op.execute(null);
+
+					show(op.getResult(), repo);
+				} catch (CoreException e) {
+					Activator.handleError(e.getMessage(), e, true);
+				}
 			} else if (abortRebaseButton.getSelection()) {
 				// abort the rebase
-				if (result.getStatus() == Status.STOPPED) {
-					try {
-						final RebaseOperation op = new RebaseOperation(repo,
-								Operation.ABORT);
-						op.execute(null);
+				try {
+					final RebaseOperation op = new RebaseOperation(repo,
+							Operation.ABORT);
+					op.execute(null);
 
-						show(op.getResult(), repo);
-					} catch (CoreException e) {
-						Activator.handleError(e.getMessage(), e, true);
-					}
+					show(op.getResult(), repo);
+				} catch (CoreException e) {
+					Activator.handleError(e.getMessage(), e, true);
 				}
 			} else if (doNothingButton.getSelection()) {
 				// nothing
