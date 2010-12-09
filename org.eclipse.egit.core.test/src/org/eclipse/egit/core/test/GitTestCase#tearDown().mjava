@@ -1,6 +1,7 @@
 	@After
 	public void tearDown() throws Exception {
 		project.dispose();
-		testUtils.deleteRecursive(gitDir);
+		if (gitDir.exists())
+			FileUtils.delete(gitDir, FileUtils.RECURSIVE | FileUtils.RETRY);
 	}
 

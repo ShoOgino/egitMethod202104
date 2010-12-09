@@ -24,7 +24,11 @@
 				closeLocal();
 			}
 		} catch (final Exception e) {
-			delete(workdir);
+			try {
+				FileUtils.delete(workdir, FileUtils.RECURSIVE);
+			} catch (IOException ioe) {
+				throw new InvocationTargetException(ioe);
+			}
 			if (monitor.isCanceled())
 				throw new InterruptedException();
 			else

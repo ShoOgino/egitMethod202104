@@ -7,6 +7,6 @@
 		File userHome = FS.DETECTED.userHome();
 		File rootDir = new File(userHome, "EGitCoreTestTempDir");
 		if (rootDir.exists())
-			deleteRecursive(rootDir);
+			FileUtils.delete(rootDir, FileUtils.RECURSIVE | FileUtils.RETRY);
 	}
 

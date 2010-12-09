@@ -6,8 +6,7 @@
 		File rootFile = root.getRawLocation().toFile();
 		File ignoreFile = new File(rootFile, Constants.GITIGNORE_FILENAME);
 		if (ignoreFile.exists()) {
-			if (!ignoreFile.delete())
-				throw new IOException(ignoreFile + " in use or undeletable");
+			FileUtils.delete(ignoreFile, FileUtils.RETRY);
 			assert !ignoreFile.exists();
 		}
 		super.tearDown();

@@ -1,10 +1,13 @@
 	/**
 	 * Drop the Eclipse project from our association of projects/repositories
 	 *
-	 * @param p Eclipse project
+	 * @param p
+	 *            Eclipse project
+	 * @throws IOException
+	 *             if deletion of property files failed
 	 */
-	public static void delete(final IProject p) {
-		trace("delete(" + p.getName() + ")");   //$NON-NLS-1$ //$NON-NLS-2$
+	public static void delete(final IProject p) throws IOException {
+		trace("delete(" + p.getName() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		GitProjectData d = lookup(p);
 		if (d == null)
 			deletePropertyFiles(p);

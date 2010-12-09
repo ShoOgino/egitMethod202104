@@ -5,7 +5,7 @@
 		File userHome = FS.DETECTED.userHome();
 		testDirectory = new File(userHome, "LocalRepositoriesTests");
 		if (testDirectory.exists())
-			deleteRecursive(testDirectory);
+			FileUtils.delete(testDirectory, FileUtils.RECURSIVE | FileUtils.RETRY);
 		testDirectory.mkdir();
 		// we don't want to clone into <user_home> but into our test directory
 		File repoRoot = new File(testDirectory, "RepositoryRoot");

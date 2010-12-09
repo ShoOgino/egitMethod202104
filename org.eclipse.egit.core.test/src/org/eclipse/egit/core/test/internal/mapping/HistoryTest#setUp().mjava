@@ -3,7 +3,8 @@
 		super.setUp();
 
 		// ensure we are working on an empty repository
-		testUtils.deleteRecursive(gitDir);
+		if (gitDir.exists())
+			FileUtils.delete(gitDir, FileUtils.RECURSIVE | FileUtils.RETRY);
 		thisGit = new FileRepository(gitDir);
 		workDir = thisGit.getWorkTree();
 		thisGit.create();

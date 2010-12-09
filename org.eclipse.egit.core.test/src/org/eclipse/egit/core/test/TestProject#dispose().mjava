@@ -2,7 +2,10 @@
 		waitForIndexer();
 		if (project.exists())
 			project.delete(true, true, null);
-		else
-			testUtils.deleteRecursive(new File(location));
+		else {
+			File f = new File(location);
+			if (f.exists())
+				FileUtils.delete(f, FileUtils.RECURSIVE | FileUtils.RETRY);
+		}
 	}
 

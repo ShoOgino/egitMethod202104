@@ -11,6 +11,7 @@
 		project = new TestProject(true);
 		gitDir = new File(project.getProject().getWorkspace().getRoot()
 				.getRawLocation().toFile(), Constants.DOT_GIT);
-		testUtils.deleteRecursive(gitDir);
+		if (gitDir.exists())
+			FileUtils.delete(gitDir, FileUtils.RECURSIVE | FileUtils.RETRY);
 	}
 

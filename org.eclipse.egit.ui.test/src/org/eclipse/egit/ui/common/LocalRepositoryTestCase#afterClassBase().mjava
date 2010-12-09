@@ -5,7 +5,7 @@
 		// cleanup
 		deleteAllProjects();
 		shutDownRepositories();
-		deleteRecursive(testDirectory);
+		FileUtils.delete(testDirectory, FileUtils.RECURSIVE | FileUtils.RETRY);
 		Activator.getDefault().getRepositoryCache().clear();
 	}
 

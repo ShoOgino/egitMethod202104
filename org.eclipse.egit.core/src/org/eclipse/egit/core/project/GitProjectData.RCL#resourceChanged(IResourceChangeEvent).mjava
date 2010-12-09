@@ -5,7 +5,11 @@
 				uncache((IProject) event.getResource());
 				break;
 			case IResourceChangeEvent.PRE_DELETE:
-				delete((IProject) event.getResource());
+				try {
+					delete((IProject) event.getResource());
+				} catch (IOException e) {
+					Activator.logError(e.getMessage(), e);
+				}
 				break;
 			default:
 				break;

@@ -2,7 +2,7 @@
 		List<String> files = dirCacheCheckout.getToBeDeleted();
 		for(String path:files) {
 			File file = new File(repository.getWorkTree(), path);
-			deleteFile(file);
+			FileUtils.delete(file, FileUtils.RECURSIVE | FileUtils.RETRY);
 		}
 	}
 

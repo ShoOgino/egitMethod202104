@@ -112,30 +112,14 @@
 						for (RepositoryNode node : selectedNodes) {
 							Repository repo = node.getRepository();
 							if (!repo.isBare())
-								deleteRecursive(repo.getWorkTree());
-							deleteRecursive(repo.getDirectory());
+								FileUtils.delete(repo.getWorkTree(), FileUtils.RECURSIVE | FileUtils.RETRY);
+							FileUtils.delete(repo.getDirectory(), FileUtils.RECURSIVE | FileUtils.RETRY);
 						}
 					} catch (IOException e) {
 						return Activator.createErrorStatus(e.getMessage(), e);
 					}
 				}
 				return Status.OK_STATUS;
-			}
-
-			private void deleteRecursive(File fileToDelete) throws IOException {
-				if (fileToDelete == null)
-					return;
-				if (fileToDelete.exists()) {
-					if (fileToDelete.isDirectory()) {
-						for (File file : fileToDelete.listFiles()) {
-							deleteRecursive(file);
-						}
-					}
-					if (!fileToDelete.delete())
-						throw new IOException(NLS.bind(
-								UIText.RemoveCommand_DeleteFailureMessage,
-								fileToDelete.getAbsolutePath()));
-				}
 			}
 		};
 

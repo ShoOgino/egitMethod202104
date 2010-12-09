@@ -5,13 +5,16 @@
 	 *
 	 * @throws Exception
 	 *             deletion of test repository failed
+	 * @throws IOException
+	 *             deletion of test repository failed
 	 */
 	public void shutDown() throws Exception {
 		if (serveHttp)
 			httpServer.stop();
 		else
 			d.stop();
+
 		if (!System.getProperties().contains("test-repo-no-cleanup"))
-			delete(trash);
+			FileUtils.delete(trash, FileUtils.RECURSIVE | FileUtils.RETRY);
 	}
 

@@ -6,7 +6,8 @@
 		String secureStorePath = ResourcesPlugin.getWorkspace().getRoot()
 				.getLocation().append("testSecureStore").toOSString();
 		File file = new File(secureStorePath);
-		testUtils.deleteRecursive(file);
+		if (file.exists())
+			FileUtils.delete(file, FileUtils.RECURSIVE | FileUtils.RETRY);
 		URL url = file.toURI().toURL();
 		secureStoreForTest = SecurePreferencesFactory.open(url, options);
 		secureStoreForTest.node("/GIT").removeNode();

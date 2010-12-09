@@ -24,20 +24,22 @@
 				ok = true;
 			} finally {
 				o.close();
-				if (!ok) {
-					tmp.delete();
+				if (!ok && tmp.exists()) {
+					FileUtils.delete(tmp);
 				}
 			}
+			if (dat.exists())
+				FileUtils.delete(dat);
+			if (!tmp.renameTo(dat)) {
+				if (tmp.exists())
+					FileUtils.delete(tmp);
+				throw new CoreException(
+						Activator.error(NLS.bind(
+								CoreText.GitProjectData_saveFailed, dat), null));
+			}
 		} catch (IOException ioe) {
-			throw new CoreException(Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
-					dat), ioe));
-		}
-
-		dat.delete();
-		if (!tmp.renameTo(dat)) {
-			tmp.delete();
-			throw new CoreException(Activator.error(NLS.bind(CoreText.GitProjectData_saveFailed,
-					dat), null));
+			throw new CoreException(Activator.error(
+					NLS.bind(CoreText.GitProjectData_saveFailed, dat), ioe));
 		}
 	}
 

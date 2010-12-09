@@ -12,7 +12,7 @@
 		File rootDir = new File(userHome, "EGitCoreTestTempDir");
 		File result = new File(rootDir, name);
 		if (result.exists())
-			deleteRecursive(result);
+			FileUtils.delete(result, FileUtils.RECURSIVE | FileUtils.RETRY);
 		return result;
 	}
 
