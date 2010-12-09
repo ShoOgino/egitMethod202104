@@ -4,9 +4,8 @@
 
 		final Repository repository = node.getRepository();
 
-		String jobname = UIText.AbortRebaseCommand_JobName;
 		final RebaseOperation rebase = new RebaseOperation(repository,
-				Operation.ABORT);
+				this.operation);
 		Job job = new Job(jobname) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -32,11 +31,9 @@
 							// execution has been triggered.
 							Shell shell = PlatformUI.getWorkbench()
 									.getActiveWorkbenchWindow().getShell();
-							MessageDialog
-									.openInformation(
-											shell,
-											UIText.AbortRebaseCommand_CancelDialogTitle,
-											UIText.AbortRebaseCommand_CancelDialogMessage);
+							MessageDialog.openInformation(shell,
+									UIText.AbstractRebaseCommand_DialogTitle,
+									dialogMessage);
 						}
 					});
 				} else if (result.isOK()) {
