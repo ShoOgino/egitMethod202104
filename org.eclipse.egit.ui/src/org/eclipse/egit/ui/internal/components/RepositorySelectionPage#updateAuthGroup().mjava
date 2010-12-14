@@ -1,7 +1,6 @@
 	private void updateAuthGroup() {
-		int idx = scheme.getSelectionIndex();
-		if (idx >= 0) {
-			Protocol p = Protocol.values()[idx];
+		Protocol p = getProtocol();
+		if (p != null) {
 			hostText.setEnabled(p.hasHost());
 			portText.setEnabled(p.hasPort());
 			setEnabledRecursively(authGroup, p.canAuthenticate());

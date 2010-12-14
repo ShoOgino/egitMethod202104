@@ -7,7 +7,9 @@
 		userText.setLayoutData(createFieldGridData());
 		userText.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				setURI(uri.setUser(nullString(userText.getText())));
+				Protocol protocol = getProtocol();
+				if (protocol != Protocol.HTTP && protocol != Protocol.HTTPS)
+					setURI(uri.setUser(nullString(userText.getText())));
 				user = userText.getText();
 			}
 		});
