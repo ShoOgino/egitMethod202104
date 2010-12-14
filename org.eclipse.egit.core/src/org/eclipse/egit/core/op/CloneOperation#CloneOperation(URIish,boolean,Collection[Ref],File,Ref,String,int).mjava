@@ -12,8 +12,8 @@
 	 * @param workdir
 	 *            working directory to clone to. The directory may or may not
 	 *            already exist.
-	 * @param branch
-	 *            branch to initially clone from.
+	 * @param ref
+	 *            ref to be checked out after clone.
 	 * @param remoteName
 	 *            name of created remote config as source remote (typically
 	 *            named "origin").
@@ -21,13 +21,13 @@
 	 */
 	public CloneOperation(final URIish uri, final boolean allSelected,
 			final Collection<Ref> selectedBranches, final File workdir,
-			final String branch, final String remoteName, int timeout) {
+			final Ref ref, final String remoteName, int timeout) {
 		this.uri = uri;
 		this.allSelected = allSelected;
 		this.selectedBranches = selectedBranches;
 		this.workdir = workdir;
 		this.gitdir = new File(workdir, Constants.DOT_GIT);
-		this.branch = branch;
+		this.ref = ref;
 		this.remoteName = remoteName;
 		this.timeout = timeout;
 	}

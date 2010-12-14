@@ -5,11 +5,14 @@
 		local = new FileRepository(gitdir);
 		local.create();
 
-		final RefUpdate head = local.updateRef(Constants.HEAD);
-		head.disableRefLog();
-		head.link(branch);
+		if (ref.getName().startsWith(Constants.R_HEADS)) {
+			final RefUpdate head = local.updateRef(Constants.HEAD);
+			head.disableRefLog();
+			head.link(ref.getName());
+		}
 
-		remoteConfig = new RemoteConfig(local.getConfig(), remoteName);
+		FileBasedConfig config = local.getConfig();
+		remoteConfig = new RemoteConfig(config, remoteName);
 		remoteConfig.addURI(uri);
 
 		final String dst = Constants.R_REMOTES + remoteConfig.getName();
@@ -27,19 +30,20 @@
 		}
 
 		// we're setting up for a clone with a checkout
-		local.getConfig().setBoolean(
+		config.setBoolean(
 				"core", null, "bare", false); //$NON-NLS-1$ //$NON-NLS-2$
 
-		remoteConfig.update(local.getConfig());
+		remoteConfig.update(config);
 
 		// branch is like 'Constants.R_HEADS + branchName', we need only
 		// the 'branchName' part
-		String branchName = branch.substring(Constants.R_HEADS.length());
+		if (ref.getName().startsWith(Constants.R_HEADS)) {
+			String branchName = ref.getName().substring(Constants.R_HEADS.length());
 
-		// setup the default remote branch for branchName
-		local.getConfig().setString("branch", branchName, "remote", remoteName); //$NON-NLS-1$ //$NON-NLS-2$
-		local.getConfig().setString("branch", branchName, "merge", branch); //$NON-NLS-1$ //$NON-NLS-2$
-
-		local.getConfig().save();
+			// setup the default remote branch for branchName
+			config.setString("branch", branchName, "remote", remoteName); //$NON-NLS-1$ //$NON-NLS-2$
+			config.setString("branch", branchName, "merge", ref.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		config.save();
 	}
 

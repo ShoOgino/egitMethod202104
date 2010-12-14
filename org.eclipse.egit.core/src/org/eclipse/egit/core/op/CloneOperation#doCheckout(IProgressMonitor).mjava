@@ -1,5 +1,5 @@
 	private void doCheckout(final IProgressMonitor monitor) throws IOException {
-		final Ref head = fetchResult.getAdvertisedRef(branch);
+		final Ref head = fetchResult.getAdvertisedRef(ref.getName());
 		if (head == null || head.getObjectId() == null)
 			return;
 
@@ -13,7 +13,8 @@
 
 		final RefUpdate u;
 
-		u = local.updateRef(Constants.HEAD);
+		boolean detached = !head.getName().startsWith(Constants.R_HEADS);
+		u = local.updateRef(Constants.HEAD, detached);
 		u.setNewObjectId(mapCommit.getId());
 		u.forceUpdate();
 
