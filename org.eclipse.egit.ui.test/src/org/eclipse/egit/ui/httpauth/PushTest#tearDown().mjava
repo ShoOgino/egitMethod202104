@@ -1,0 +1,8 @@
+	@After
+	public void tearDown() throws Exception {
+		remoteRepository.shutDown();
+		Activator.getDefault().getRepositoryCache().clear();
+		localRepository.close();
+		FileUtils.delete(localRepoPath, FileUtils.RECURSIVE | FileUtils.RETRY);
+	}
+
