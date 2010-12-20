@@ -1,0 +1,21 @@
+	public RepoPropertiesPage openPushWizard(final Repository repository)
+			throws Exception {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				try {
+					Shell shell = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getShell();
+					PushWizard pushWizard = new PushWizard(repository);
+					WizardDialog dlg = new WizardDialog(shell, pushWizard);
+					dlg.setHelpAvailable(false);
+					dlg.open();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+		bot.waitUntil(Conditions.shellIsActive(UIText.PushWizard_windowTitleDefault),
+				20000);
+		return new RepoPropertiesPage();
+	}
+

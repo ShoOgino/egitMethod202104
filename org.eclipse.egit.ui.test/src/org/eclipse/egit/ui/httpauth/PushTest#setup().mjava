@@ -1,0 +1,20 @@
+	@Before
+	public void setup() throws Exception {
+		remoteRepository = new SampleTestRepository(NUMBER_RANDOM_COMMITS, true);
+		localRepoPath = new File(ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().toFile(), "test1");
+		String branch = Constants.R_HEADS + SampleTestRepository.FIX;
+		Ref ref = createRef(branch);
+		CloneOperation cloneOperation = new CloneOperation(new URIish(
+				remoteRepository.getUri()), true, null, localRepoPath, ref,
+				"origin", 30);
+		cloneOperation
+				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+						"agitter", "letmein"));
+		cloneOperation.run(null);
+		file = new File(localRepoPath, SampleTestRepository.A_txt_name);
+		assertTrue(file.exists());
+		localRepository = Activator.getDefault().getRepositoryCache()
+				.lookupRepository(new File(localRepoPath, ".git"));
+	}
+

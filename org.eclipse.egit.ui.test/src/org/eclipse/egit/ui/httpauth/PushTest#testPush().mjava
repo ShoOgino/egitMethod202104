@@ -1,0 +1,28 @@
+	@Test
+	public void testPush() throws Exception {
+		// change file
+		TestUtil.appendFileContent(file, "additional content", true);
+		// commit change
+		String repoRelativePath = "test1/" + SampleTestRepository.A_txt_name;
+		Git git = new Git(localRepository);
+		git.add().addFilepattern(repoRelativePath).call();
+		git.commit().setMessage("Change").call();
+		configurePush();
+		// push change
+		PushWizardTester wizardTester = new PushWizardTester();
+		RepoPropertiesPage repoPropertiesPage = wizardTester.openPushWizard(localRepository);
+		repoPropertiesPage.setPushDestination("push");
+		wizardTester.nextPage();
+		// now login dialog appears
+		LoginDialogTester loginDialogTester = new LoginDialogTester();
+		loginDialogTester.login("agitter", "letmein");
+		RefSpecPageTester refSpecPageTester = new RefSpecPageTester();
+		refSpecPageTester.waitUntilPageIsReady(1);
+		wizardTester.finish();
+		loginDialogTester.login("agitter", "letmein");
+		PushResultDialogTester pushResultDialogTester = new PushResultDialogTester();
+		String expectedMessage = "Repository " + remoteRepository.getUri();
+		pushResultDialogTester.assertResultMessage(expectedMessage);
+		pushResultDialogTester.closeDialog();
+	}
+

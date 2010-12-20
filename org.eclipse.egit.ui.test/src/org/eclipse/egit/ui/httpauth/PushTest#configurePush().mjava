@@ -1,0 +1,7 @@
+	private void configurePush() throws Exception {
+		StoredConfig config = localRepository.getConfig();
+		config.setString("remote", "push", "pushurl", remoteRepository.getUri());
+		config.setString("remote", "push", "push", "+refs/heads/*:refs/heads/*");
+		config.save();
+	}
+
