@@ -21,11 +21,12 @@
 		// fire action
 		bot.button(IDialogConstants.OK_LABEL).click();
 
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+
 		// wait for synchronization process finish
-		bot.sleep(1000);
+		waitUntilTreeHasNodeWithText(syncViewTree, "test commit");
 
 		// then
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
 		assertEquals(1, syncViewTree.getAllItems().length);
 	}
 
