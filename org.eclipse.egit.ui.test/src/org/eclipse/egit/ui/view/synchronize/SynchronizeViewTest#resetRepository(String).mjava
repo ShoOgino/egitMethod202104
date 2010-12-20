@@ -1,4 +1,4 @@
-	private void resetRepository(String projectName) {
+	private void resetRepository(String projectName) throws Exception {
 		showDialog(projectName, "Team", "Reset...");
 
 		bot.shell(UIText.ResetCommand_WizardTitle).bot().activeShell();
@@ -9,6 +9,6 @@
 		bot.shell(UIText.ResetTargetSelectionDialog_ResetQuestion).bot()
 				.activeShell();
 		bot.button("Yes").click();
-
+		TestUtil.joinJobs(JobFamilies.RESET);
 	}
 
