@@ -1,8 +1,8 @@
 	public void assertRemoteBranches(String... branches) {
-		SWTBotTable table = bot.table();
-		bot.waitUntil(widgetIsEnabled(table), 20000);
+		SWTBotTree tree = bot.tree();
+		bot.waitUntil(widgetIsEnabled(tree), 20000);
 		for (String branch : branches) {
-			table.getTableItem(branch);
+			tree.getTreeItem(branch);
 		}
 	}
 

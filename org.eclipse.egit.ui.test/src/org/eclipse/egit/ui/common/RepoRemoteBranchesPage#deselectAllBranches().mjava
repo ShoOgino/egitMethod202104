@@ -1,11 +1,11 @@
 	public void deselectAllBranches() {
-		SWTBotTable table = bot.table();
+		SWTBotTree tree = bot.tree();
 
-		bot.waitUntil(widgetIsEnabled(table));
+		bot.waitUntil(widgetIsEnabled(tree));
 
-		int rowCount = table.rowCount();
-		for (int i = 0; i < rowCount; i++) {
-			table.getTableItem(i).uncheck();
+		SWTBotTreeItem[] items = tree.getAllItems();
+		for (int i = 0; i < items.length; i++) {
+			items[i].uncheck();
 		}
 	}
 
