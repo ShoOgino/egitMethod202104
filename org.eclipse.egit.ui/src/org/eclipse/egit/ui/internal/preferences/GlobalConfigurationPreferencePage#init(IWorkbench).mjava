@@ -1,5 +1,7 @@
 	public void init(IWorkbench workbench) {
+		if (sysConfig == null)
+			sysConfig = SystemReader.getInstance().openSystemConfig(null, FS.DETECTED);
 		if (userConfig == null)
-			userConfig = SystemReader.getInstance().openUserConfig(FS.DETECTED);
+			userConfig = SystemReader.getInstance().openUserConfig(null, FS.DETECTED); // no inherit here!
 	}
 

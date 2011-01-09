@@ -9,7 +9,8 @@
 		myPage = page;
 
 		effectiveConfig = repository.getConfig();
-		userHomeConfig = SystemReader.getInstance().openUserConfig(FS.DETECTED);
+		systemConfig = SystemReader.getInstance().openSystemConfig(null, FS.DETECTED);
+		userHomeConfig = SystemReader.getInstance().openUserConfig(systemConfig, FS.DETECTED);
 
 		if (effectiveConfig instanceof FileBasedConfig) {
 			File configFile = ((FileBasedConfig) effectiveConfig).getFile();
@@ -105,6 +106,9 @@
 					switch (getCurrentMode()) {
 					case EFFECTIVE:
 						return;
+					case SYSTEM:
+						config = systemConfig;
+						break;
 					case USER:
 						config = userHomeConfig;
 						break;

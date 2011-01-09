@@ -1,5 +1,6 @@
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		try {
+			systemConfig.load();
 			userHomeConfig.load();
 			repositoryConfig.load();
 			effectiveConfig.load();
@@ -41,6 +42,15 @@
 					.bind(UIText.RepositoryPropertySource_GlobalConfigurationCategory,
 							location);
 			config = userHomeConfig;
+			break;
+		}
+		case SYSTEM: {
+			prefix = SYSTEM_ID_PREFIX;
+			String location = systemConfig.getFile().getAbsolutePath();
+			category = NLS
+					.bind(UIText.RepositoryPropertySource_GlobalConfigurationCategory,
+							location);
+			config = systemConfig;
 			break;
 		}
 		default:

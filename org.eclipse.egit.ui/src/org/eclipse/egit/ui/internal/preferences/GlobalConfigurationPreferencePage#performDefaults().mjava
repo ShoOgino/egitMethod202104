@@ -1,7 +1,8 @@
 	@Override
 	protected void performDefaults() {
 		try {
-			editor.restore();
+			userConfigEditor.restore();
+			sysConfigEditor.restore();
 		} catch (IOException e) {
 			Activator.handleError(e.getMessage(), e, true);
 		}

@@ -1,7 +1,11 @@
 	@Override
 	protected Control createContents(Composite parent) {
 
-		editor = new ConfigurationEditorComponent(parent, userConfig, true) {
+		Composite composite = SWTUtils.createHVFillComposite(parent,
+				SWTUtils.MARGINS_NONE);
+		TabFolder tabFolder = new TabFolder(composite, SWT.NONE);
+		tabFolder.setLayoutData(SWTUtils.createHVFillGridData());
+		userConfigEditor = new ConfigurationEditorComponent(tabFolder, userConfig, true) {
 			@Override
 			protected void setErrorMessage(String message) {
 				GlobalConfigurationPreferencePage.this.setErrorMessage(message);
@@ -9,12 +13,32 @@
 
 			@Override
 			protected void setDirty(boolean dirty) {
-				isDirty = dirty;
+				userIsDirty = dirty;
 				updateApplyButton();
 			}
 		};
-		Control result = editor.createContents();
+		sysConfigEditor = new ConfigurationEditorComponent(tabFolder, sysConfig, true) {
+			@Override
+			protected void setErrorMessage(String message) {
+				GlobalConfigurationPreferencePage.this.setErrorMessage(message);
+			}
+
+			@Override
+			protected void setDirty(boolean dirty) {
+				sysIsDirty = dirty;
+				updateApplyButton();
+			}
+		};
+		Control result = userConfigEditor.createContents();
 		Dialog.applyDialogFont(result);
+		TabItem userTabItem = new TabItem(tabFolder, SWT.FILL);
+		userTabItem.setControl(result);
+		userTabItem.setText(UIText.GlobalConfigurationPreferencePage_userSettingTabTitle);
+		result = sysConfigEditor.createContents();
+		Dialog.applyDialogFont(result);
+		TabItem sysTabItem = new TabItem(tabFolder, SWT.FILL);
+		sysTabItem.setControl(result);
+		sysTabItem.setText(UIText.GlobalConfigurationPreferencePage_systemSettingTabTitle);
 		return result;
 	}
 

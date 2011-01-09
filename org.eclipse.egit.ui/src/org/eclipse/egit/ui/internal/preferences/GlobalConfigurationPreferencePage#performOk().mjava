@@ -1,13 +1,22 @@
 	@Override
 	public boolean performOk() {
-		if (isDirty)
+		boolean ok = true;
+		if (userIsDirty) {
 			try {
-				editor.save();
-				return super.performOk();
+				userConfigEditor.save();
 			} catch (IOException e) {
 				Activator.handleError(e.getMessage(), e, true);
-				return false;
+				ok = false;
 			}
-		return super.performOk();
+		}
+		if (sysIsDirty) {
+			try {
+				sysConfigEditor.save();
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+				ok = false;
+			}
+		}
+		return ok;
 	}
 

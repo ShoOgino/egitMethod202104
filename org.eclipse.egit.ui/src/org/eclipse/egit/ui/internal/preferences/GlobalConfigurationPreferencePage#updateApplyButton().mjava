@@ -1,6 +1,6 @@
 	@Override
 	protected void updateApplyButton() {
 		if (getApplyButton() != null)
-			getApplyButton().setEnabled(isDirty);
+			getApplyButton().setEnabled(userIsDirty || sysIsDirty);
 	}
 
