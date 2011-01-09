@@ -1,0 +1,18 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		RevCommit commit = (RevCommit) getSelection(getPage()).getFirstElement();
+		RevCommit newHead;
+		Repository repo = getRepository(event);
+
+		RevertCommand revert;
+		Git git = new Git(repo);
+		try {
+			revert = git.revert().include(commit.getId());
+			newHead = revert.call();
+		} catch (Exception e) {
+			throw new ExecutionException(CoreText.RevertOperation_InternalError, e);
+		}
+		if (newHead == null)
+			throw new ExecutionException(CoreText.RevertOperation_Failed);
+		return null;
+	}
+
