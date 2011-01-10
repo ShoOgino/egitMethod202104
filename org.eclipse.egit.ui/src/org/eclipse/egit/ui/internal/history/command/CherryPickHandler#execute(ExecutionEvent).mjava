@@ -8,6 +8,10 @@
 		try {
 			cherryPick = git.cherryPick().include(commit.getId());
 			newHead = cherryPick.call();
+			if (newHead != null && cherryPick.getCherryPickedRefs().isEmpty())
+				MessageDialog.openWarning(getPart(event).getSite().getShell(),
+						UIText.CherryPickHandler_NoCherryPickPerformedTitle,
+						UIText.CherryPickHandler_NoCherryPickPerformedMessage);
 		} catch (Exception e) {
 			throw new ExecutionException(UIText.CherryPickOperation_InternalError, e);
 		}

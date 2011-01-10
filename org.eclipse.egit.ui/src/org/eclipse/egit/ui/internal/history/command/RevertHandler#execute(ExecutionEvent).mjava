@@ -8,6 +8,10 @@
 		try {
 			revert = git.revert().include(commit.getId());
 			newHead = revert.call();
+			if (newHead != null && revert.getRevertedRefs().isEmpty())
+				MessageDialog.openWarning(getPart(event).getSite().getShell(),
+						UIText.RevertHandler_NoRevertTitle,
+						UIText.RevertHandler_AlreadyRevertedMessae);
 		} catch (Exception e) {
 			throw new ExecutionException(UIText.RevertOperation_InternalError, e);
 		}
