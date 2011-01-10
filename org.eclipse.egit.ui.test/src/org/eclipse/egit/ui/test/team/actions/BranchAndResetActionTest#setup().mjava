@@ -9,14 +9,15 @@
 		tag.setTag("SomeTag");
 		tag.setTagger(RawParseUtils.parsePersonIdent(TestUtil.TESTAUTHOR));
 		tag.setMessage("I'm just a little tag");
-		tag.setObjectId(repo.resolve(repo.getFullBranch()), Constants.OBJ_COMMIT);
+		tag.setObjectId(repo.resolve(repo.getFullBranch()),
+				Constants.OBJ_COMMIT);
 		TagOperation top = new TagOperation(repo, tag, false);
 		top.execute(null);
 		touchAndSubmit(null);
 
 		RepositoriesViewLabelProvider provider = new RepositoriesViewLabelProvider();
-		LOCAL_BRANCHES = provider.getText(new LocalNode(
-				new RepositoryNode(null, repo), repo));
+		LOCAL_BRANCHES = provider.getText(new LocalNode(new RepositoryNode(
+				null, repo), repo));
 		TAGS = provider.getText(new TagsNode(new RepositoryNode(null, repo),
 				repo));
 		waitInUI();

@@ -1,0 +1,16 @@
+	/**
+	 * @param shell
+	 * @param repository
+	 * @param filePaths
+	 */
+	public NonDeletedFilesDialog(Shell shell, Repository repository,
+			List<String> filePaths) {
+		super(shell, UIText.NonDeletedFilesDialog_NonDeletedFilesTitle, INFO,
+				UIText.NonDeletedFilesDialog_NonDeletedFilesMessage,
+				MessageDialog.INFORMATION,
+				new String[] { IDialogConstants.OK_LABEL }, 0);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.repository = repository;
+		this.filePaths = filePaths;
+	}
+

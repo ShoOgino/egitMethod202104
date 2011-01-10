@@ -13,7 +13,7 @@
 		assertEquals("New Branch should be selected", "NewBranch", bot.tree()
 				.selection().get(0, 0));
 		bot.button(UIText.BranchSelectionDialog_OkCheckout).click();
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		assertEquals("New Branch should be checked out", "NewBranch",
 				lookupRepository(repositoryFile).getBranch());
 	}

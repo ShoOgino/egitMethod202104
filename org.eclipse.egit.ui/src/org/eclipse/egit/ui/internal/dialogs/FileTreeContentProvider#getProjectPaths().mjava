@@ -1,0 +1,16 @@
+	private List<IPath> getProjectPaths() {
+		if (projectPaths == null) {
+			projectPaths = new ArrayList<IPath>();
+			for (IProject project : ResourcesPlugin.getWorkspace().getRoot()
+					.getProjects()) {
+				RepositoryMapping mapping = RepositoryMapping
+						.getMapping(project);
+				if (mapping != null
+						&& mapping.getRepository().equals(repository)) {
+					projectPaths.add(project.getLocation());
+				}
+			}
+		}
+		return projectPaths;
+	}
+

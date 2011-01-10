@@ -1,6 +1,3 @@
-	/* (non-Javadoc)
-	 * @see org.eclipse.egit.core.op.IEGitOperation#execute(org.eclipse.core.runtime.IProgressMonitor)
-	 */
 	public void execute(IProgressMonitor m) throws CoreException {
 		IProgressMonitor monitor;
 		if (m == null)
@@ -8,30 +5,35 @@
 		else
 			monitor = m;
 
-		if (refName !=null && !refName.startsWith(Constants.R_REFS))
+		if (refName != null && !refName.startsWith(Constants.R_REFS))
 			throw new TeamException(NLS.bind(
 					CoreText.BranchOperation_CheckoutOnlyBranchOrTag, refName));
 
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor pm) throws CoreException {
-				IProject[] validProjects = ProjectUtil.getValidProjects(repository);
+				IProject[] validProjects = ProjectUtil
+						.getValidProjects(repository);
 				pm.beginTask(NLS.bind(
-						CoreText.BranchOperation_performingBranch, refName), 5);
-				lookupRefs();
-				pm.worked(1);
+						CoreText.BranchOperation_performingBranch, refName), 1);
 
-				mapObjects();
-				pm.worked(1);
+				CheckoutCommand co = new Git(repository).checkout();
+				co.setName(getTarget());
 
-				checkoutTree();
+				try {
+					co.call();
+				} catch (JGitInternalException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				} catch (GitAPIException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				} finally {
+					BranchOperation.this.result = co.getResult();
+				}
+				if (result.getStatus() == Status.NONDELETED)
+					retryDelete(result.getUndeletedList());
 				pm.worked(1);
-
-				updateHeadRef();
-				pm.worked(1);
-
-				ProjectUtil.refreshValidProjects(validProjects, new SubProgressMonitor(
-						pm, 1));
+				ProjectUtil.refreshValidProjects(validProjects,
+						new SubProgressMonitor(pm, 1));
 				pm.worked(1);
 
 				pm.done();

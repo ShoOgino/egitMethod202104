@@ -1,0 +1,10 @@
+	private IPath resolveResourcePath(IPath fullPath) {
+		for (IPath projectPath : getProjectPaths()) {
+			if (projectPath.isPrefixOf(fullPath)) {
+				return fullPath
+						.removeFirstSegments(projectPath.segmentCount() - 1);
+			}
+		}
+		return null;
+	}
+

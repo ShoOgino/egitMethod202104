@@ -1,0 +1,57 @@
+	@SuppressWarnings("unchecked")
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		rootNodes = new Node[0];
+
+		input = (List<String>) newInput;
+		if (input == null)
+			return;
+
+		VirtualNode virtualNode = new VirtualNode();
+		Node parentNode = virtualNode;
+		NoResourceNode noResourceNode = null;
+
+		IPath repositoryRoot = new Path(repository.getWorkTree()
+				.getAbsolutePath());
+
+		for (String pathString : input) {
+			IPath path;
+			if (mode == Mode.FULL_PATHS)
+				path = repositoryRoot.append(pathString);
+			else if (mode == Mode.RESOURCE_PATHS)
+				path = resolveResourcePath(repositoryRoot.append(pathString));
+			else
+				path = new Path(pathString);
+			if (path == null) {
+				path = repositoryRoot.append(pathString);
+				if (noResourceNode == null) {
+					noResourceNode = new NoResourceNode(
+							virtualNode,
+							UIText.FileTreeContentProvider_NonWorkspaceResourcesNode);
+				}
+				parentNode = noResourceNode;
+			} else
+				parentNode = virtualNode;
+			for (int i = 0; i < path.segmentCount(); i++) {
+				String segment = path.segment(i);
+				Node foundNode = null;
+				for (Node node : parentNode.getChildren()) {
+					if (node.getName().equals(segment)) {
+						foundNode = node;
+						break;
+					}
+				}
+				if (foundNode == null) {
+					if (i < path.segmentCount() - 1)
+						parentNode = new FolderNode(parentNode, segment);
+					else
+						new FileNode(parentNode, segment);
+				} else {
+					parentNode = foundNode;
+				}
+			}
+		}
+
+		rootNodes = virtualNode.getChildren().toArray(
+				new Node[virtualNode.getChildren().size()]);
+	}
+

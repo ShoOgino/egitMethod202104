@@ -1,0 +1,13 @@
+	@Override
+	protected Control createCustomArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(
+				main);
+		main.setLayout(new GridLayout(1, false));
+
+		tree = new NonDeletedFilesTree(main, repository, filePaths);
+		applyDialogFont(main);
+
+		return main;
+	}
+

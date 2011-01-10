@@ -23,7 +23,7 @@
 		bot.button(IDialogConstants.OK_LABEL).click();
 
 		bot.button(UIText.BranchSelectionDialog_OkCheckout).click();
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		assertEquals("New Branch should be checked out", "Renamed",
 				lookupRepository(repositoryFile).getBranch());
 	}

@@ -26,8 +26,8 @@
 				return;
 			monitor.beginTask(UIText.CreateBranchPage_CheckingOutMessage,
 					IProgressMonitor.UNKNOWN);
-			new BranchOperation(myRepository, Constants.R_HEADS + newRefName)
-					.execute(monitor);
+			new BranchOperationUI(myRepository, Constants.R_HEADS + newRefName)
+					.run(monitor);
 		}
 	}
 

@@ -1,0 +1,33 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == RETRY) {
+			boolean refresh = false;
+			List<String> newPaths = new ArrayList<String>();
+			for (String filePath : filePaths) {
+				File file = new File(repository.getWorkTree(), filePath);
+				try {
+					FileUtils.delete(file, FileUtils.SKIP_MISSING
+							| FileUtils.RECURSIVE);
+					refresh = true;
+				} catch (IOException e) {
+					newPaths.add(filePath);
+				}
+			}
+			filePaths.clear();
+			filePaths.addAll(newPaths);
+			tree.setInput(filePaths);
+			tree.expandAll();
+			if (refresh) {
+				try {
+					ResourcesPlugin.getWorkspace().getRoot().refreshLocal(
+							IResource.DEPTH_INFINITE, null);
+				} catch (CoreException e) {
+					Activator.handleError(e.getMessage(), e, false);
+				}
+			}
+			retry.setEnabled(!filePaths.isEmpty());
+			return;
+		}
+		super.buttonPressed(buttonId);
+	}
+

@@ -14,7 +14,7 @@
 		Repository repo = lookupRepository(repositoryFile);
 
 		dialog.bot().button(UIText.BranchSelectionDialog_OkCheckout).click();
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		if (ObjectId.isId(repo.getBranch())) {
 			String mapped = Activator.getDefault().getRepositoryUtil()
 					.mapCommitToRef(repo, repo.getBranch(), false);

@@ -1,0 +1,8 @@
+		@Override
+		public Image getImage() {
+			if (mode == Mode.RESOURCE_PATHS
+					&& getParent() instanceof VirtualNode)
+				return projectImage;
+			return folderImage;
+		}
+

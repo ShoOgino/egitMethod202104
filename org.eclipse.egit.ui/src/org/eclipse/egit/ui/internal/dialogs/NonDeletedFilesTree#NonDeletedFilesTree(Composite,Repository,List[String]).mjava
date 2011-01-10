@@ -1,0 +1,68 @@
+	/**
+	 * @param parent
+	 * @param repository
+	 * @param pathList
+	 */
+	public NonDeletedFilesTree(Composite parent, Repository repository,
+			List<String> pathList) {
+		super(createComposite(parent, repository), SWT.BORDER);
+		this.filePaths = pathList;
+
+		Composite main = getTree().getParent();
+
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, true).applyTo(
+				getTree());
+
+		final FileTreeContentProvider cp = new FileTreeContentProvider(
+				repository);
+
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, true).applyTo(
+				getTree());
+
+		setContentProvider(cp);
+		setLabelProvider(new FileTreeLabelProvider());
+		setInput(this.filePaths);
+		expandAll();
+
+		showRepoRelative = new Button(main, SWT.RADIO);
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(
+				showRepoRelative);
+		showRepoRelative
+				.setText(UIText.NonDeletedFilesTree_RepoRelativePathsButton);
+		showRepoRelative.setSelection(true);
+		showRepoRelative.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				cp.setMode(Mode.REPO_RELATIVE_PATHS);
+				setInput(getInput());
+				expandAll();
+			}
+		});
+
+		showFull = new Button(main, SWT.RADIO);
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(
+				showFull);
+		showFull.setText(UIText.NonDeletedFilesTree_FileSystemPathsButton);
+		showFull.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				cp.setMode(Mode.FULL_PATHS);
+				setInput(getInput());
+				expandAll();
+			}
+		});
+
+		showResource = new Button(main, SWT.RADIO);
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(
+				showResource);
+		showResource.setText(UIText.NonDeletedFilesTree_ResourcePathsButton);
+		showResource.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				cp.setMode(Mode.RESOURCE_PATHS);
+				setInput(getInput());
+				expandAll();
+			}
+		});
+	}
+

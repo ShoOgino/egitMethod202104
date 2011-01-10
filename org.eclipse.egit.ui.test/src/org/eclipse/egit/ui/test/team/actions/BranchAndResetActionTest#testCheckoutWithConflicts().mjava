@@ -1,0 +1,25 @@
+	@Test
+	public void testCheckoutWithConflicts() throws Exception {
+		String charset = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				PROJ1).getDefaultCharset();
+		try {
+			checkoutAndVerify(new String[] { LOCAL_BRANCHES, "master" },
+					new String[] { LOCAL_BRANCHES, "stable" });
+			ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1)
+					.getFolder(FOLDER).getFile(FILE1).setContents(
+							new ByteArrayInputStream("New content"
+									.getBytes(charset)), IResource.NONE, null);
+			checkout(new String[] { LOCAL_BRANCHES, "master" });
+			SWTBotShell showConflicts = bot
+					.shell(UIText.BranchResultDialog_CheckoutConflictsTitle);
+			assertEquals(FILE1, showConflicts.bot().tree().getAllItems()[0]
+					.getItems()[0].getItems()[0].getText());
+			showConflicts.close();
+		} finally {
+			ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1)
+					.getFolder(FOLDER).getFile(FILE1).setContents(
+							new ByteArrayInputStream("Hello, world"
+									.getBytes(charset)), IResource.NONE, null);
+		}
+	}
+

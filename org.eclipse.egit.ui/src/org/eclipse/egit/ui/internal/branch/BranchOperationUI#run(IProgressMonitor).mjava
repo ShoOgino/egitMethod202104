@@ -1,0 +1,34 @@
+	/**
+	 * Runs the operation synchronously
+	 *
+	 * @param monitor
+	 * @throws CoreException
+	 *
+	 */
+	public void run(IProgressMonitor monitor) throws CoreException {
+		if (!repository.getRepositoryState().canCheckout()) {
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					MessageDialog.openError(getShell(),
+							UIText.BranchAction_cannotCheckout, NLS.bind(
+									UIText.BranchAction_repositoryState,
+									repository.getRepositoryState()
+											.getDescription()));
+				}
+			});
+			return;
+		}
+		if (refName == null) {
+			BranchSelectionDialog dialog = new BranchSelectionDialog(
+					getShell(), repository);
+			if (dialog.open() != Window.OK) {
+				return;
+			}
+			refName = dialog.getRefName();
+		}
+
+		bop = new BranchOperation(repository, refName);
+		bop.execute(monitor);
+		BranchResultDialog.show(bop.getResult(), repository, refName);
+	}
+

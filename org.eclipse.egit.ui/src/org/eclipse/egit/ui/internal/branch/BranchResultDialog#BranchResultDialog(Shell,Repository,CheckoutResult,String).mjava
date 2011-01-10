@@ -1,0 +1,17 @@
+	/**
+	 * @param shell
+	 * @param repository
+	 * @param result
+	 * @param target
+	 */
+	private BranchResultDialog(Shell shell, Repository repository,
+			CheckoutResult result, String target) {
+		super(shell, UIText.BranchResultDialog_CheckoutConflictsTitle, INFO,
+				NLS.bind(UIText.BranchResultDialog_CheckoutConflictsMessage,
+						target), MessageDialog.INFORMATION,
+				new String[] { IDialogConstants.OK_LABEL }, 0);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.repository = repository;
+		this.result = result;
+	}
+
