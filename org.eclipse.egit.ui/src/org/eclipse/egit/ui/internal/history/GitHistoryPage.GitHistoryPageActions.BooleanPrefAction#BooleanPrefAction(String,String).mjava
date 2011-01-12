@@ -1,0 +1,7 @@
+			BooleanPrefAction(final String pn, final String text) {
+				setText(text);
+				prefName = pn;
+				historyPage.store.addPropertyChangeListener(this);
+				setChecked(historyPage.store.getBoolean(prefName));
+			}
+

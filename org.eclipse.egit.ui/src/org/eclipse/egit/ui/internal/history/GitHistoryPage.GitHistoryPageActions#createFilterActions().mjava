@@ -1,0 +1,31 @@
+		private void createFilterActions() {
+			showAllRepoVersionsAction = new ShowFilterAction(
+					ShowFilter.SHOWALLREPO, UIIcons.REPOSITORY,
+					UIText.GitHistoryPage_AllInRepoMenuLabel,
+					UIText.GitHistoryPage_AllInRepoTooltip);
+
+			showAllProjectVersionsAction = new ShowFilterAction(
+					ShowFilter.SHOWALLPROJECT, UIIcons.FILTERPROJECT,
+					UIText.GitHistoryPage_AllInProjectMenuLabel,
+					UIText.GitHistoryPage_AllInProjectTooltip);
+
+			showAllFolderVersionsAction = new ShowFilterAction(
+					ShowFilter.SHOWALLFOLDER, UIIcons.FILTERFOLDER,
+					UIText.GitHistoryPage_AllInParentMenuLabel,
+					UIText.GitHistoryPage_AllInParentTooltip);
+
+			showAllResourceVersionsAction = new ShowFilterAction(
+					ShowFilter.SHOWALLRESOURCE, UIIcons.FILTERRESOURCE,
+					UIText.GitHistoryPage_AllOfResourceMenuLabel,
+					UIText.GitHistoryPage_AllOfResourceTooltip);
+
+			showAllRepoVersionsAction
+					.setChecked(historyPage.showAllFilter == showAllRepoVersionsAction.filter);
+			showAllProjectVersionsAction
+					.setChecked(historyPage.showAllFilter == showAllProjectVersionsAction.filter);
+			showAllFolderVersionsAction
+					.setChecked(historyPage.showAllFilter == showAllFolderVersionsAction.filter);
+			showAllResourceVersionsAction
+					.setChecked(historyPage.showAllFilter == showAllResourceVersionsAction.filter);
+		}
+

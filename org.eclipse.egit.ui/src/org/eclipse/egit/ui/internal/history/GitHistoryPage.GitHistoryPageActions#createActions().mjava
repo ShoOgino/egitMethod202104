@@ -1,0 +1,16 @@
+		private void createActions() {
+			createFindToolbarAction();
+			createRefreshAction();
+			createFilterActions();
+			createCompareModeAction();
+			createReuseCompareEditorAction();
+			createShowAllBranchesAction();
+			createShowCommentAction();
+			createShowFilesAction();
+			createWrapCommentAction();
+			createFillCommentAction();
+
+			wrapCommentAction.setEnabled(showCommentAction.isChecked());
+			fillCommentAction.setEnabled(showCommentAction.isChecked());
+		}
+

@@ -1,0 +1,23 @@
+		private void createFindToolbarAction() {
+			findAction = new Action(UIText.GitHistoryPage_FindMenuLabel,
+					UIIcons.ELCL16_FIND) {
+				public void run() {
+					historyPage.store.setValue(
+							UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR,
+							isChecked());
+					if (historyPage.store.needsSaving()) {
+						try {
+							historyPage.store.save();
+						} catch (IOException e) {
+							Activator.handleError(e.getMessage(), e, false);
+						}
+					}
+					historyPage.layout();
+				}
+			};
+			findAction
+					.setChecked(historyPage.store
+							.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR));
+			findAction.setToolTipText(UIText.GitHistoryPage_FindTooltip);
+		}
+

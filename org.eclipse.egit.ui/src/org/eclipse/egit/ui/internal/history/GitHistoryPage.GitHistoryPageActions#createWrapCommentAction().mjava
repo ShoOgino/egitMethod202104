@@ -1,0 +1,12 @@
+		private void createWrapCommentAction() {
+			wrapCommentAction = new BooleanPrefAction(
+					UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP,
+					UIText.ResourceHistory_toggleCommentWrap) {
+				void apply(boolean wrap) {
+					// nothing, just set the Preference
+				}
+			};
+			wrapCommentAction.apply(wrapCommentAction.isChecked());
+			actionsToDispose.add(wrapCommentAction);
+		}
+

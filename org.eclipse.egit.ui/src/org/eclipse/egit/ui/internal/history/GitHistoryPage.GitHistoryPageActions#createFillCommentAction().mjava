@@ -1,0 +1,12 @@
+		private void createFillCommentAction() {
+			fillCommentAction = new BooleanPrefAction(
+					UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL,
+					UIText.ResourceHistory_toggleCommentFill) {
+				void apply(boolean fill) {
+					// nothing, just set the Preference
+				}
+			};
+			fillCommentAction.apply(fillCommentAction.isChecked());
+			actionsToDispose.add(fillCommentAction);
+		}
+

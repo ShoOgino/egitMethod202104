@@ -1,0 +1,16 @@
+		private void createShowAllBranchesAction() {
+			showAllBranchesAction = new BooleanPrefAction(
+					UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES,
+					UIText.GitHistoryPage_ShowAllBranchesMenuLabel) {
+
+				@Override
+				void apply(boolean value) {
+					historyPage.refresh();
+				}
+			};
+			showAllBranchesAction.setImageDescriptor(UIIcons.BRANCH);
+			showAllBranchesAction
+					.setToolTipText(UIText.GitHistoryPage_showAllBranches);
+			actionsToDispose.add(showAllBranchesAction);
+		}
+

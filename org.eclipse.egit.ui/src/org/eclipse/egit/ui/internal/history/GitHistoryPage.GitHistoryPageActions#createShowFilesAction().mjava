@@ -1,0 +1,11 @@
+		private void createShowFilesAction() {
+			showFilesAction = new BooleanPrefAction(
+					UIPreferences.RESOURCEHISTORY_SHOW_REV_DETAIL,
+					UIText.ResourceHistory_toggleRevDetail) {
+				void apply(final boolean value) {
+					historyPage.layout();
+				}
+			};
+			actionsToDispose.add(showFilesAction);
+		}
+
