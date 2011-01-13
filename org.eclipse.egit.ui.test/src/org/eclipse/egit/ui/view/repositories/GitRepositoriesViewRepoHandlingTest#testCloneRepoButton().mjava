@@ -21,7 +21,6 @@
 		SWTBotText pathText = shell.bot().text(0);
 		pathText.setText(pathText.getText() + "Cloned");
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
-		waitInUI();
 		refreshAndWait();
 		assertHasClonedRepo();
 	}
