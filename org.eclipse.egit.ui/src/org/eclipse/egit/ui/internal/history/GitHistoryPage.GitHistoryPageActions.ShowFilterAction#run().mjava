@@ -1,0 +1,37 @@
+			@Override
+			public void run() {
+				String oldName = historyPage.getName();
+				String oldDescription = historyPage.getDescription();
+				if (!isChecked()) {
+					if (historyPage.showAllFilter == filter) {
+						historyPage.showAllFilter = ShowFilter.SHOWALLRESOURCE;
+						showAllResourceVersionsAction.setChecked(true);
+						historyPage.initAndStartRevWalk(false);
+					}
+				}
+				if (isChecked() && historyPage.showAllFilter != filter) {
+					historyPage.showAllFilter = filter;
+					if (this != showAllRepoVersionsAction)
+						showAllRepoVersionsAction.setChecked(false);
+					if (this != showAllProjectVersionsAction)
+						showAllProjectVersionsAction.setChecked(false);
+					if (this != showAllFolderVersionsAction)
+						showAllFolderVersionsAction.setChecked(false);
+					if (this != showAllResourceVersionsAction)
+						showAllResourceVersionsAction.setChecked(false);
+					historyPage.initAndStartRevWalk(false);
+				}
+				historyPage.firePropertyChange(historyPage, P_NAME, oldName,
+						historyPage.getName());
+				// even though this is currently ending nowhere (see bug
+				// 324386), we
+				// still create the event
+				historyPage.firePropertyChange(historyPage, P_DESCRIPTION,
+						oldDescription, historyPage.getDescription());
+				Activator
+						.getDefault()
+						.getPreferenceStore()
+						.setValue(PREF_SHOWALLFILTER,
+								historyPage.showAllFilter.toString());
+			}
+

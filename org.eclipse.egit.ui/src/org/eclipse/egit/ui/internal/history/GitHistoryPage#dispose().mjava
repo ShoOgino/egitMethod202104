@@ -10,9 +10,9 @@
 		}
 
 		// dispose of the actions (the history framework doesn't do this for us)
-		for (IWorkbenchAction action : actionsToDispose)
+		for (IWorkbenchAction action : actions.actionsToDispose)
 			action.dispose();
-		actionsToDispose.clear();
+		actions.actionsToDispose.clear();
 		cancelRefreshJob();
 		if (popupMgr != null) {
 			for (final IContributionItem i : popupMgr.getItems()) {
