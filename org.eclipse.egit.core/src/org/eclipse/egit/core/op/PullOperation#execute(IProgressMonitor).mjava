@@ -17,6 +17,8 @@
 					pullResult = pull.call();
 				} catch (GitAPIException e) {
 					throw new CoreException(Activator.error(e.getMessage(), e));
+				} catch (JGitInternalException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
 				}
 			}
 		};
