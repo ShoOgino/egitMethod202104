@@ -1,5 +1,6 @@
 	@BeforeClass
 	public static void setup() throws Exception {
+		TestUtil.disableProxy();
 		r = new SampleTestRepository(NUMBER_RANDOM_COMMITS, true);
 	}
 
