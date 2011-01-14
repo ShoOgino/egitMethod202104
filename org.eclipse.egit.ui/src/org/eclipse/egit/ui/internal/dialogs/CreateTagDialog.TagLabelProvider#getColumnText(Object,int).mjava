@@ -2,6 +2,9 @@
 			// initially, we just display a single String ("Loading...")
 			if (element instanceof String)
 				return (String) element;
-			return ((RevTag) element).getTagName();
+			else if (element instanceof Ref)
+				return ((Ref) element).getName().substring(10);
+			else
+				return ((RevTag) element).getTagName();
 		}
 

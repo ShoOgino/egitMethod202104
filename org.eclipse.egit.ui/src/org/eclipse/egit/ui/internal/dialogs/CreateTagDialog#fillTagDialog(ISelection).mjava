@@ -1,0 +1,27 @@
+	private void fillTagDialog(ISelection actSelection) {
+		IStructuredSelection selection = (IStructuredSelection) actSelection;
+		Object firstSelected = selection.getFirstElement();
+
+		if (firstSelected instanceof RevTag)
+			tag = (RevTag) firstSelected;
+		else {
+			setErrorMessage(UIText.CreateTagDialog_LightweightTagMessage);
+			return;
+		}
+
+		if (!overwriteButton.isEnabled()) {
+			String tagMessageValue = tag.getFullMessage();
+			// don't enable OK button if we are dealing with un-annotated
+			// tag because JGit doesn't support them
+			if (tagMessageValue != null && tagMessageValue.trim().length() != 0)
+				overwriteButton.setEnabled(true);
+
+			tagNameText.setEnabled(false);
+			if (commitCombo != null)
+				commitCombo.setEnabled(false);
+			tagMessageText.setEnabled(false);
+		}
+
+		setTagImpl();
+	}
+

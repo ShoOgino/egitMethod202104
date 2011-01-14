@@ -1,21 +1,24 @@
 	/**
 	 * @return the annotated tags
+	 * @throws IOException
 	 */
-	private List<RevTag> getRevTags() {
-		Collection<Ref> revTags = repo.getTags().values();
-		List<RevTag> tags = new ArrayList<RevTag>();
-		RevWalk walk = new RevWalk(repo);
-		for (Ref ref : revTags) {
+	private List<Object> getRevTags() throws IOException {
+		List<Object> result = new ArrayList<Object>();
+		Collection<Ref> refs = repo.getRefDatabase().getRefs(Constants.R_TAGS)
+				.values();
+		for (Ref ref : refs) {
+			RevObject any;
 			try {
-				tags.add(walk.parseTag(repo.resolve(ref.getName())));
-			} catch (IncorrectObjectTypeException e) {
-				// repo.getTags() returns also lightweight tags
+				any = rw.parseAny(repo.resolve(ref.getName()));
 			} catch (IOException e) {
-				Activator.logError(
-						UIText.TagAction_unableToResolveHeadObjectId, e);
-				setErrorMessage(UIText.TagAction_unableToResolveHeadObjectId);
+				Activator.handleError(e.getMessage(), e, true);
+				break;
 			}
+			if (any instanceof RevTag)
+				result.add(any);
+			else
+				result.add(ref);
 		}
-		return tags;
+		return result;
 	}
 

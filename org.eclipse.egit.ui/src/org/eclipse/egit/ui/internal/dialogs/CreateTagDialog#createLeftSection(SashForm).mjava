@@ -9,7 +9,7 @@
 		GridData data = new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.HORIZONTAL_ALIGN_FILL
 				| GridData.VERTICAL_ALIGN_CENTER);
-		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH/2);
+		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2);
 		label.setLayoutData(data);
 		label.setFont(left.getFont());
 
@@ -33,8 +33,8 @@
 		new Label(left, SWT.WRAP).setText(UIText.CreateTagDialog_tagMessage);
 
 		tagMessageText = new SpellcheckableMessageArea(left, tagMessage);
-		tagMessageText.setLayoutData(GridDataFactory.fillDefaults().minSize(50,
-				50).grab(true, true).create());
+		tagMessageText.setLayoutData(GridDataFactory.fillDefaults()
+				.minSize(50, 50).grab(true, true).create());
 
 		// key listener taken from CommitDialog.createDialogArea() allow to
 		// commit with ctrl-enter

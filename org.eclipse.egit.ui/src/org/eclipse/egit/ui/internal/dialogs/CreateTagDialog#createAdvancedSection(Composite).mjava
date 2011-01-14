@@ -12,17 +12,17 @@
 
 		Composite advancedComposite = new Composite(advanced, SWT.WRAP);
 		advancedComposite.setLayout(GridLayoutFactory.swtDefaults().create());
-		advancedComposite.setLayoutData(GridDataFactory.fillDefaults().grab(
-				true, true).create());
+		advancedComposite.setLayoutData(GridDataFactory.fillDefaults()
+				.grab(true, true).create());
 
 		Label advancedLabel = new Label(advancedComposite, SWT.WRAP);
 		advancedLabel.setText(UIText.CreateTagDialog_advancedMessage);
-		advancedLabel.setLayoutData(GridDataFactory.fillDefaults().grab(true,
-				false).create());
+		advancedLabel.setLayoutData(GridDataFactory.fillDefaults()
+				.grab(true, false).create());
 
 		commitCombo = new CommitCombo(advancedComposite, SWT.NORMAL);
-		commitCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
-				false).hint(300, SWT.DEFAULT).create());
+		commitCombo.setLayoutData(GridDataFactory.fillDefaults()
+				.grab(true, false).hint(300, SWT.DEFAULT).create());
 
 		advanced.setClient(advancedComposite);
 		advanced.addExpansionListener(new ExpansionAdapter() {
@@ -38,7 +38,6 @@
 									public void run(IProgressMonitor monitor)
 											throws InvocationTargetException,
 											InterruptedException {
-										// TODO Auto-generated method stub
 										getRevCommits(commits);
 									}
 								});
