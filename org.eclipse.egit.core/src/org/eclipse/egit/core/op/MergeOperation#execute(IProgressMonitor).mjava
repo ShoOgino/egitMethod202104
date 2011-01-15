@@ -16,7 +16,11 @@
 				mymonitor.worked(1);
 				MergeCommand merge;
 				try {
-					merge = git.merge().include(repository.getRef(refName));
+					Ref ref = repository.getRef(refName);
+					if (ref != null)
+						merge = git.merge().include(ref);
+					else
+						merge = git.merge().include(ObjectId.fromString(refName));
 				} catch (IOException e) {
 					throw new TeamException(CoreText.MergeOperation_InternalError, e);
 				}
