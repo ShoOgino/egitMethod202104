@@ -1,0 +1,15 @@
+	/**
+	 * Opens the dialog if the {@link UIPreferences#SHOW_INITIAL_CONFIG_DIALOG}
+	 * is true
+	 */
+	public static void show() {
+		if (Activator.getDefault().getPreferenceStore().getBoolean(
+				UIPreferences.SHOW_INITIAL_CONFIG_DIALOG))
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					new BasicConfigurationDialog(PlatformUI.getWorkbench()
+							.getDisplay().getActiveShell()).open();
+				}
+			});
+	}
+

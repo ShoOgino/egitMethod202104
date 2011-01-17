@@ -1,0 +1,24 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == Window.OK) {
+			if (needsUpdate) {
+				userScopedConfig.setString(ConfigConstants.CONFIG_USER_SECTION,
+						null, ConfigConstants.CONFIG_KEY_NAME, userName
+								.getText());
+				userScopedConfig
+						.setString(ConfigConstants.CONFIG_USER_SECTION, null,
+								ConfigConstants.CONFIG_KEY_EMAIL, email
+										.getText());
+				try {
+					userScopedConfig.save();
+				} catch (IOException e) {
+					Activator.handleError(e.getMessage(), e, true);
+				}
+			}
+			if (dontShowAgain.getSelection())
+				Activator.getDefault().getPreferenceStore().setValue(
+						UIPreferences.SHOW_INITIAL_CONFIG_DIALOG, false);
+		}
+		super.buttonPressed(buttonId);
+	}
+
