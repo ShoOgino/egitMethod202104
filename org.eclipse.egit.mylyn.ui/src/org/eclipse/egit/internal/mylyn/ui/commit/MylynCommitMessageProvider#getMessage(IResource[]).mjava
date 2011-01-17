@@ -1,0 +1,16 @@
+	/**
+	 * @return the mylyn commit message template defined in the preferences
+	 */
+	public String getMessage(IResource[] resources) {
+		String message = "";
+		ITaskActivityManager tam = TasksUi.getTaskActivityManager();
+		ITask task = tam.getActiveTask();
+		if(task == null)
+			return message;
+		// generate the comment based on the active mylyn task
+		String template = FocusedTeamUiPlugin.getDefault().getPreferenceStore().getString(FocusedTeamUiPlugin.COMMIT_TEMPLATE);
+		FocusedTeamUiPlugin.getDefault().getCommitTemplateManager().generateComment(task, template);
+		message = FocusedTeamUiPlugin.getDefault().getCommitTemplateManager().generateComment(task, template);
+		return message;
+	}
+
