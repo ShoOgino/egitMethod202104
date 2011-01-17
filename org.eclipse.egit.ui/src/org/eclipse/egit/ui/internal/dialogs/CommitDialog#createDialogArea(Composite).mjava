@@ -15,7 +15,7 @@
 		int minHeight = commitText.getTextWidget().getLineHeight() * 3;
 		commitText.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true)
 				.hint(size).minSize(size.x, minHeight).align(SWT.FILL, SWT.FILL).create());
-		commitText.setText(commitMessage);
+		commitText.setText(calculateCommitMessage());
 
 		// allow to commit with ctrl-enter
 		commitText.getTextWidget().addKeyListener(new KeyAdapter() {
