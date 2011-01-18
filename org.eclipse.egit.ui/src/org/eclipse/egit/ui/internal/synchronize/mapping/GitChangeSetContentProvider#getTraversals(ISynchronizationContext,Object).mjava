@@ -2,12 +2,17 @@
 	protected ResourceTraversal[] getTraversals(
 			ISynchronizationContext context, Object object) {
 		if (object instanceof IAdaptable) {
+			if (traversalCache.containsKey(object))
+				return traversalCache.get(object);
+
 			ResourceMapping rm = getResourceMapping(object);
 			GitSubscriberMergeContext ctx = (GitSubscriberMergeContext) getContext();
 			ResourceMappingContext rmCtx = new GitSubscriberResourceMappingContext(
 					ctx.getSyncData());
 			try {
-				return rm.getTraversals(rmCtx, new NullProgressMonitor());
+				ResourceTraversal[] traversals = rm.getTraversals(rmCtx, new NullProgressMonitor());
+				traversalCache.put(object, traversals);
+				return traversals;
 			} catch (CoreException e) {
 				Activator.logError(e.getMessage(), e);
 			}

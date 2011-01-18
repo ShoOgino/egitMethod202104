@@ -3,6 +3,9 @@
 		if (element instanceof GitModelBlob)
 			return false;
 
+		if (element instanceof GitModelObjectContainer)
+			return ((GitModelObjectContainer) element).getChildren().length > 0;
+
 		return super.hasChildren(element);
 	}
 
