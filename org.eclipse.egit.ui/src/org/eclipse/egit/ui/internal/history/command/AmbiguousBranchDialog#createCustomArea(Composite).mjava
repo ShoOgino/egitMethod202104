@@ -1,0 +1,22 @@
+	@Override
+	protected Control createCustomArea(Composite parent) {
+		Composite area = new Composite(parent, SWT.NONE);
+		area.setLayoutData(new GridData(GridData.FILL_BOTH));
+		area.setLayout(new FillLayout());
+
+		branchesList = new TableViewer(area, SWT.SINGLE | SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.BORDER);
+		branchesList.setContentProvider(ArrayContentProvider.getInstance());
+		branchesList.setLabelProvider(new BranchLabelProvider());
+		branchesList.setInput(nodes);
+		branchesList
+				.addSelectionChangedListener(new ISelectionChangedListener() {
+
+					public void selectionChanged(SelectionChangedEvent event) {
+						getButton(OK).setEnabled(
+								!event.getSelection().isEmpty());
+					}
+				});
+		return area;
+	}
+
