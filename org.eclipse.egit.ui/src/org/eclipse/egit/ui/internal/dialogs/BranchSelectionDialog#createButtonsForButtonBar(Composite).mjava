@@ -1,0 +1,95 @@
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		newButton = new Button(parent, SWT.PUSH);
+		newButton.setFont(JFaceResources.getDialogFont());
+		newButton.setText(UIText.BranchSelectionDialog_NewBranch);
+		setButtonLayoutData(newButton);
+		((GridLayout) parent.getLayout()).numColumns++;
+
+		renameButton = new Button(parent, SWT.PUSH);
+		renameButton.setFont(JFaceResources.getDialogFont());
+		renameButton.setText(UIText.BranchSelectionDialog_Rename);
+		setButtonLayoutData(renameButton);
+		((GridLayout) parent.getLayout()).numColumns++;
+
+		renameButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+
+				String refName = refNameFromDialog();
+				String refPrefix;
+
+				if (refName.startsWith(Constants.R_HEADS))
+					refPrefix = Constants.R_HEADS;
+				else if (refName.startsWith(Constants.R_REMOTES))
+					refPrefix = Constants.R_REMOTES;
+				else if (refName.startsWith(Constants.R_TAGS))
+					refPrefix = Constants.R_TAGS;
+				else {
+					// the button should be disabled anyway, but we check again
+					return;
+				}
+
+				String branchName = refName.substring(refPrefix.length());
+
+				InputDialog labelDialog = getRefNameInputDialog(
+						NLS
+								.bind(
+										UIText.BranchSelectionDialog_QuestionNewBranchNameMessage,
+										branchName, refPrefix), refPrefix,
+						branchName);
+				if (labelDialog.open() == Window.OK) {
+					String newRefName = refPrefix + labelDialog.getValue();
+					try {
+						new Git(repo).branchRename().setOldName(refName)
+								.setNewName(labelDialog.getValue()).call();
+						branchTree.refresh();
+						markRef(newRefName);
+					} catch (Throwable e1) {
+						reportError(
+								e1,
+								UIText.BranchSelectionDialog_ErrorCouldNotRenameRef,
+								refName, newRefName, e1.getMessage());
+					}
+				}
+			}
+		});
+		newButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+				// check what Ref the user selected if any
+				Ref ref = refFromDialog();
+
+				InputDialog labelDialog = getRefNameInputDialog(NLS.bind(
+						UIText.BranchSelectionDialog_QuestionNewBranchMessage,
+						ref.getName(), Constants.R_HEADS), Constants.R_HEADS,
+						null);
+
+				if (labelDialog.open() == Window.OK) {
+					String newRefName = labelDialog.getValue();
+					CreateLocalBranchOperation cbop = new CreateLocalBranchOperation(
+							repo, newRefName, ref);
+					try {
+						cbop.execute(null);
+						branchTree.refresh();
+						markRef(Constants.R_HEADS + newRefName);
+					} catch (Throwable e1) {
+						reportError(
+								e1,
+								UIText.BranchSelectionDialog_ErrorCouldNotCreateNewRef,
+								newRefName);
+					}
+				}
+			}
+		});
+
+		super.createButtonsForButtonBar(parent);
+		getButton(Window.OK).setText(UIText.BranchSelectionDialog_OkCheckout);
+		// createButton(parent, IDialogConstants.OK_ID,
+		// UIText.BranchSelectionDialog_OkCheckout, true);
+		// createButton(parent, IDialogConstants.CANCEL_ID,
+		// IDialogConstants.CANCEL_LABEL, false);
+
+		// can't advance without a selection
+		getButton(Window.OK).setEnabled(!branchTree.getSelection().isEmpty());
+	}
+
