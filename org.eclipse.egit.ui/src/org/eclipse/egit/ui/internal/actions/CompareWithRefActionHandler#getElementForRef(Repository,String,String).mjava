@@ -1,0 +1,15 @@
+	private ITypedElement getElementForRef(final Repository repository,
+			final String gitPath, final String refName) throws IOException {
+		ObjectId commitId = repository.resolve(refName + "^{commit}"); //$NON-NLS-1$
+		RevWalk rw = new RevWalk(repository);
+		RevCommit commit = rw.parseCommit(commitId);
+		rw.release();
+
+		IFileRevision nextFile = GitFileRevision.inCommit(repository, commit,
+				gitPath, null);
+
+		FileRevisionTypedElement element = new FileRevisionTypedElement(
+				nextFile);
+		return element;
+	}
+
