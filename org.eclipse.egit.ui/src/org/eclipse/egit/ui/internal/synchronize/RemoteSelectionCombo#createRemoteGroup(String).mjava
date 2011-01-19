@@ -3,7 +3,8 @@
 		remoteComposite.setLayout(new GridLayout());
 		remoteComposite.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).hint(150, SWT.DEFAULT).create());
-		new Label(remoteComposite, SWT.NONE).setText(remoteLabel);
+		refLabel = new Label(remoteComposite, SWT.NONE);
+		refLabel.setText(remoteLabel);
 		remotesCombo = new Combo(remoteComposite, SWT.NONE);
 		remotesCombo.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).create());
