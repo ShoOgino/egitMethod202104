@@ -1,4 +1,5 @@
 	private void showDialog(String projectName, String... cmd) {
+		bot.activeView();
 		SWTBot packageExplorerBot = bot.viewByTitle("Package Explorer").bot();
 		packageExplorerBot.activeShell();
 		SWTBotTree tree = packageExplorerBot.tree();

@@ -10,16 +10,11 @@
 		bot.shell("Synchronize repository: " + REPO1 + File.separator + ".git")
 				.activate();
 
-		bot.comboBox(0)
-				.setSelection(UIText.SynchronizeWithAction_localRepoName);
-		bot.comboBox(1).setSelection(HEAD);
+		// include local changes are enabled by default
 
 		bot.comboBox(2)
 				.setSelection(UIText.SynchronizeWithAction_localRepoName);
 		bot.comboBox(3).setSelection(MASTER);
-
-		// include local changes
-		bot.checkBox("Include local uncommited changes in comparison").click();
 
 		// fire action
 		bot.button(IDialogConstants.OK_LABEL).click();
