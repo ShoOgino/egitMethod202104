@@ -19,13 +19,13 @@
 		ObjectWalk ow = new ObjectWalk(repo);
 		this.srcRev = ow.parseCommit(repo.resolve(srcRev));
 		this.dstRev = ow.parseCommit(repo.resolve(dstRev));
+		this.commonAncestorRev = getCommonAncestor(repo, this.srcRev, this.dstRev);
 
 		this.includeLocal = includeLocal;
 		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();
 
 		projects = new HashSet<IProject>();
-		final IProject[] workspaceProjects = ResourcesPlugin.getWorkspace()
-				.getRoot().getProjects();
+		final IProject[] workspaceProjects = ROOT.getProjects();
 		for (IProject project : workspaceProjects) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
 			if (mapping != null && mapping.getRepository() == repo)

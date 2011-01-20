@@ -6,8 +6,7 @@
 		composite.setLayout(layout);
 
 		repositories = new HashMap<Repository, Set<IProject>>();
-		for (IProject project : ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects()) {
+		for (IProject project : ROOT.getProjects()) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
 			if (mapping != null) {
 				Repository repository = mapping.getRepository();

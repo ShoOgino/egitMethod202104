@@ -1,5 +1,8 @@
 	private IResourceVariant fetchVariant(IResource resource,
 			IProgressMonitor monitor) throws TeamException {
+		if (cache.containsKey(resource))
+			return cache.get(resource);
+
 		GitSynchronizeData gsd = gsds.getData(resource.getProject());
 		if (gsd == null)
 			return null;
@@ -20,10 +23,11 @@
 			TreeWalk tw = initializeTreeWalk(repo, path);
 
 			int nth = tw.addTree(revCommit.getTree());
+			IResourceVariant variant = null;
 			if (resource.getType() == IResource.FILE) {
 				tw.setRecursive(true);
 				if (tw.next() && !tw.getObjectId(nth).equals(zeroId()))
-					return new GitBlobResourceVariant(repo, revCommit,
+					variant = new GitBlobResourceVariant(repo, revCommit,
 							tw.getObjectId(nth), path);
 			} else {
 				while (tw.next() && !path.equals(tw.getPathString())) {
@@ -36,15 +40,16 @@
 
 				ObjectId objectId = tw.getObjectId(nth);
 				if (!objectId.equals(zeroId()))
-					return new GitFolderResourceVariant(repo, revCommit, objectId, path);
+					variant = new GitFolderResourceVariant(repo, revCommit, objectId, path);
 			}
+			if (variant != null)
+				cache.put(resource, variant);
+			return variant;
 		} catch (IOException e) {
 			throw new TeamException(
 					NLS.bind(
 							CoreText.GitResourceVariantTree_couldNotFindResourceVariant,
 							resource), e);
 		}
-
-		return null;
 	}
 

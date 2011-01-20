@@ -1,11 +1,6 @@
 	@Override
 	protected RevCommit getRevCommit(GitSynchronizeData gsd)
 			throws TeamException {
-		try {
-			return RevUtils.getCommonAncestor(gsd.getRepository(), gsd
-					.getSrcRevCommit(), gsd.getDstRevCommit());
-		} catch (IOException e) {
-			throw new TeamException(e.getMessage(), e);
-		}
+		return gsd.getCommonAncestorRev();
 	}
 

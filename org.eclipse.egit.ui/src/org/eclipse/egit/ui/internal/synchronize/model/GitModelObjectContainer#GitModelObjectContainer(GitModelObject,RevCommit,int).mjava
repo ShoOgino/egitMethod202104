@@ -10,7 +10,6 @@
 		super(parent);
 		kind = direction;
 		baseCommit = commit;
-		ancestorCommit = calculateAncestor(baseCommit);
 
 		RevCommit[] parents = baseCommit.getParents();
 		if (parents != null && parents.length > 0)

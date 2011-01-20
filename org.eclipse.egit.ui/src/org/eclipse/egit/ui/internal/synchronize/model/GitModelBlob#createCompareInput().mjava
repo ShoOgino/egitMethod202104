@@ -5,7 +5,7 @@
 			ComparisonDataSource remoteData = new ComparisonDataSource(
 					remoteCommit, remoteId);
 			ComparisonDataSource ancestorData = new ComparisonDataSource(
-					ancestorCommit, ancestorId);
+					getAncestorCommit(), ancestorId);
 			compareInput = getCompareInput(baseData, remoteData, ancestorData);
 		}
 	}

@@ -11,5 +11,7 @@
 	public GitModelCommit(GitModelRepository parent, RevCommit commit,
 			int direction) throws IOException {
 		super(parent, commit, direction);
+
+		this.ancestorCommit = calculateAncestor(commit);
 	}
 
