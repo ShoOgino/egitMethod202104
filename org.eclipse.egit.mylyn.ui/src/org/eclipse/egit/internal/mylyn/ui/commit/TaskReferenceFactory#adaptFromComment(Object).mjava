@@ -1,0 +1,10 @@
+	private AbstractTaskReference adaptFromComment(Object element) {
+		String comment;
+		RevCommit commit = getCommitForElement(element);
+		if(commit != null)
+			comment = commit.getFullMessage();
+		else
+			return null;
+		return new LinkedTaskInfo(null, null, null, comment);
+	}
+

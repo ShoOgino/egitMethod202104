@@ -1,0 +1,11 @@
+	private static RevCommit getCommitForElement(Object element) {
+		RevCommit commit = null;
+		if (element instanceof RevCommit)
+			commit = (RevCommit) element;
+		else if (element instanceof GitModelCommit) {
+			GitModelCommit modelCommit = (GitModelCommit) element;
+			commit= modelCommit.getBaseCommit();
+		}
+		return commit;
+	}
+
