@@ -1,0 +1,8 @@
+	@Before
+	public void createGitRepository() throws Exception {
+		iProject = project.project;
+		testRepo = new TestRepository(gitDir);
+		testRepo.connect(iProject);
+		repo = RepositoryMapping.getMapping(iProject).getRepository();
+	}
+
