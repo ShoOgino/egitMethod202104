@@ -2,6 +2,9 @@
 	 * @return The GIT DIR absolute path
 	 */
 	public IPath getGitDirAbsolutePath() {
-		return container.getLocation().append(getGitDirPath());
+		if (gitDirAbsolutePath == null)
+			gitDirAbsolutePath = container.getLocation()
+					.append(getGitDirPath());
+		return gitDirAbsolutePath;
 	}
 

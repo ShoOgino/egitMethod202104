@@ -2,6 +2,8 @@
 	 * @return the container path corresponding to git repository
 	 */
 	public IPath getContainerPath() {
-		return Path.fromPortableString(containerPath);
+		if (containerPath == null)
+			containerPath = Path.fromPortableString(containerPathString);
+		return containerPath;
 	}
 
