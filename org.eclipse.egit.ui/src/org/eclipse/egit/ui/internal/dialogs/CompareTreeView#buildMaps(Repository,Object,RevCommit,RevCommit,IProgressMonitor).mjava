@@ -1,0 +1,119 @@
+	private void buildMaps(Repository repository, Object resource,
+			RevCommit leftCommit, RevCommit rightCommit,
+			IProgressMonitor monitor) throws InterruptedException, IOException {
+		monitor.beginTask(UIText.CompareTreeView_AnalyzingRepositoryTaskText,
+				IProgressMonitor.UNKNOWN);
+		rightOnly.clear();
+		equalIds.clear();
+		leftVersionMap.clear();
+		rightVersionMap.clear();
+		rightPathsWithChildren.clear();
+		leftOnly.clear();
+		leftPathsWithChildren.clear();
+		TreeWalk tw = new TreeWalk(repository);
+		try {
+			int leftTreeIndex;
+			if (leftCommit == null)
+				leftTreeIndex = tw.addTree(new FileTreeIterator(repository));
+			else
+				leftTreeIndex = tw.addTree(new CanonicalTreeParser(null,
+						repository.newObjectReader(), leftCommit.getTree()));
+			int rightTreeIndex = tw.addTree(new CanonicalTreeParser(null,
+					repository.newObjectReader(), rightCommit.getTree()));
+			if (resource instanceof IResource) {
+				String relPath = repositoryMapping
+						.getRepoRelativePath((IResource) resource);
+				if (relPath.length() > 0)
+					tw.setFilter(PathFilter.create(relPath));
+			}
+
+			tw.setRecursive(true);
+
+			if (monitor.isCanceled())
+				throw new InterruptedException();
+			while (tw.next()) {
+				if (monitor.isCanceled())
+					throw new InterruptedException();
+				AbstractTreeIterator rightVersionIterator = tw.getTree(
+						rightTreeIndex, AbstractTreeIterator.class);
+				AbstractTreeIterator leftVersionIterator = tw.getTree(
+						leftTreeIndex, AbstractTreeIterator.class);
+				if (rightVersionIterator != null && leftVersionIterator != null) {
+					monitor.setTaskName(leftVersionIterator
+							.getEntryPathString());
+					IPath currentPath = new Path(leftVersionIterator
+							.getEntryPathString());
+					rightVersionMap.put(currentPath, GitFileRevision.inCommit(
+							repository, rightCommit, leftVersionIterator
+									.getEntryPathString(), tw
+									.getObjectId(rightTreeIndex)));
+					if (leftCommit != null)
+						leftVersionMap.put(currentPath, GitFileRevision
+								.inCommit(repository, leftCommit,
+										leftVersionIterator
+												.getEntryPathString(), tw
+												.getObjectId(leftTreeIndex)));
+					boolean equalContent = rightVersionIterator
+							.getEntryObjectId().equals(
+									leftVersionIterator.getEntryObjectId());
+					if (equalContent)
+						equalIds.add(currentPath);
+
+					if (equalContent && !showEquals)
+						continue;
+
+					while (currentPath.segmentCount() > 0) {
+						currentPath = currentPath.removeLastSegments(1);
+						boolean addedLeft = showAddedOnly
+								|| !leftPathsWithChildren.add(currentPath);
+						boolean addedRight = showDeletedOnly
+								|| !rightPathsWithChildren.add(currentPath);
+						if (addedLeft && addedRight)
+							break;
+					}
+
+				} else if (leftVersionIterator != null
+						&& rightVersionIterator == null) {
+					monitor.setTaskName(leftVersionIterator
+							.getEntryPathString());
+					// only on left side
+					IPath currentPath = new Path(leftVersionIterator
+							.getEntryPathString());
+					leftOnly.add(currentPath);
+					if (leftCommit != null)
+						leftVersionMap.put(currentPath, GitFileRevision
+								.inCommit(repository, leftCommit,
+										leftVersionIterator
+												.getEntryPathString(), tw
+												.getObjectId(leftTreeIndex)));
+					while (currentPath.segmentCount() > 0) {
+						currentPath = currentPath.removeLastSegments(1);
+						if (!leftPathsWithChildren.add(currentPath))
+							break;
+					}
+
+				} else if (rightVersionIterator != null
+						&& leftVersionIterator == null) {
+					monitor.setTaskName(rightVersionIterator
+							.getEntryPathString());
+					// only on right side
+					IPath currentPath = new Path(rightVersionIterator
+							.getEntryPathString());
+					rightOnly.add(currentPath);
+					rightVersionMap.put(currentPath, GitFileRevision.inCommit(
+							repository, rightCommit, rightVersionIterator
+									.getEntryPathString(), tw
+									.getObjectId(rightTreeIndex)));
+					while (currentPath.segmentCount() > 0) {
+						currentPath = currentPath.removeLastSegments(1);
+						if (!rightPathsWithChildren.add(currentPath))
+							break;
+					}
+				}
+			}
+		} finally {
+			tw.release();
+			monitor.done();
+		}
+	}
+

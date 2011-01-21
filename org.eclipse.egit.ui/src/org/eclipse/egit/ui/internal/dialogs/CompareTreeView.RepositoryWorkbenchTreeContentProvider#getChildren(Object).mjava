@@ -1,0 +1,45 @@
+		@Override
+		public Object[] getChildren(Object element) {
+			boolean rebuildArray = false;
+			Object[] children = super.getChildren(element);
+			List<Object> childList = new ArrayList<Object>(children.length);
+			for (Object child : children) {
+				IPath path = new Path(repositoryMapping
+						.getRepoRelativePath((IResource) child));
+				if (child instanceof IFile && (leftOnly.contains(path))) {
+					rebuildArray = true;
+					continue;
+				}
+				if (child instanceof IFile && showDeletedOnly
+						&& !rightOnly.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
+				if (child instanceof IContainer
+						&& !rightPathsWithChildren.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
+				if (!showEquals && equalIds.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
+				childList.add(child);
+			}
+			// mix in "right only" children
+			if (element instanceof IContainer) {
+				IPath containerPath = new Path(repositoryMapping
+						.getRepoRelativePath((IContainer) element));
+				for (IPath rightOnlyPath : rightOnly) {
+					if (rightOnlyPath.removeLastSegments(1).equals(
+							containerPath)) {
+						childList.add(rightVersionMap.get(rightOnlyPath));
+						rebuildArray = true;
+					}
+				}
+			}
+			if (rebuildArray)
+				return childList.toArray();
+			return children;
+		}
+

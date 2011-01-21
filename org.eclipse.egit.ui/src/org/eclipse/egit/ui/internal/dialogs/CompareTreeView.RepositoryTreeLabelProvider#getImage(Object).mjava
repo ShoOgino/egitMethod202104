@@ -1,0 +1,17 @@
+		public Image getImage(Object element) {
+			Type type = ((PathNode) element).type;
+			switch (type) {
+			case FILE_BOTH_SIDES_SAME:
+				return SAME_CONTENT;
+			case FILE_BOTH_SIDES_DIFFER:
+				return FILE_IMAGE;
+			case FILE_ADDED:
+				return ADDED;
+			case FILE_DELETED:
+				return DELETED;
+			case FOLDER:
+				return FOLDER_IMAGE;
+			}
+			return null;
+		}
+

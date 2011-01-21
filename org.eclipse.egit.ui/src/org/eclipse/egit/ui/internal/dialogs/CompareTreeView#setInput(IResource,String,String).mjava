@@ -1,0 +1,20 @@
+	/**
+	 * Used to compare two versions with each other filtering by a workspace
+	 * resource
+	 *
+	 * @param input
+	 *            the {@link IResource} from which to build the tree
+	 * @param leftVersion
+	 *            a {@link Ref} name or {@link RevCommit} id
+	 * @param rightVersion
+	 *            a {@link Ref} name or {@link RevCommit} id
+	 */
+	public void setInput(final IResource input, String leftVersion,
+			String rightVersion) {
+		this.input = input;
+		this.leftVersion = leftVersion;
+		this.rightVersion = rightVersion;
+		buildTrees();
+		updateControls();
+	}
+

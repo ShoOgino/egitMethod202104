@@ -1,0 +1,19 @@
+	/**
+	 * Used if no workspace filtering should be applied
+	 *
+	 * @param input
+	 *            the {@link Repository} from which to build the tree
+	 * @param leftVersion
+	 *            a {@link Ref} name or {@link RevCommit} id
+	 * @param rightVersion
+	 *            a {@link Ref} name or {@link RevCommit} id
+	 */
+	public void setInput(final Repository input, String leftVersion,
+			String rightVersion) {
+		this.input = input;
+		this.leftVersion = leftVersion;
+		this.rightVersion = rightVersion;
+		buildTrees();
+		updateControls();
+	}
+

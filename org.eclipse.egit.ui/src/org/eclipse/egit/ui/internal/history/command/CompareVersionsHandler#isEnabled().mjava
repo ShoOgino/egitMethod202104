@@ -3,9 +3,6 @@
 		GitHistoryPage page = getPage();
 		if (page == null)
 			return false;
-		int size = getSelection(page).size();
-		if (size != 2)
-			return false;
-		return page.getInputInternal().isSingleFile();
+		return getSelection(page).size() == 2;
 	}
 

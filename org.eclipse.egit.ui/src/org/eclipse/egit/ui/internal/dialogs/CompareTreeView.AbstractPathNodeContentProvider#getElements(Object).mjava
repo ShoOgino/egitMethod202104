@@ -1,0 +1,9 @@
+		@Override
+		public Object[] getElements(Object inputElement) {
+			if (input instanceof IResource) {
+				return getChildren(new PathNode(new Path(repositoryMapping
+						.getRepoRelativePath((IResource) input)), Type.FOLDER));
+			} else
+				return getChildren(new PathNode(new Path(""), Type.FOLDER)); //$NON-NLS-1$
+		}
+

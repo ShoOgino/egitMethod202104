@@ -1,0 +1,28 @@
+	private void updateControls() {
+		for (IWorkbenchAction action : actionsToDispose)
+			action.setEnabled(input != null);
+		leftTree.getTree().setEnabled(input != null);
+		rightTree.getTree().setEnabled(input != null);
+		showEqualsAction.setEnabled(!(showAddedOnly || showDeletedOnly));
+		if (input == null)
+			setContentDescription(UIText.CompareTreeView_NoInputText);
+		else {
+			String name;
+			if (input instanceof IResource)
+				name = ((IResource) input).getFullPath().toString();
+			else if (input instanceof Repository)
+				name = Activator.getDefault().getRepositoryUtil()
+						.getRepositoryName(((Repository) input));
+			else
+				throw new IllegalStateException();
+			if (leftVersion == null)
+				setContentDescription(NLS
+						.bind(UIText.CompareTreeView_ComparingWorkspaceVersionDescription,
+								name, rightVersion));
+			else
+				setContentDescription(NLS.bind(
+						UIText.CompareTreeView_ComparingTwoVersionDescription,
+						new String[] { leftVersion, name, rightVersion }));
+		}
+	}
+

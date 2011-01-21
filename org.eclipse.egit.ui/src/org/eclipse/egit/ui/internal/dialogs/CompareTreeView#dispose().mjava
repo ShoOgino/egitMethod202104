@@ -1,0 +1,10 @@
+	@Override
+	public void dispose() {
+		super.dispose();
+		for (IWorkbenchAction action : actionsToDispose)
+			action.dispose();
+		ADDED.dispose();
+		DELETED.dispose();
+		SAME_CONTENT.dispose();
+	}
+

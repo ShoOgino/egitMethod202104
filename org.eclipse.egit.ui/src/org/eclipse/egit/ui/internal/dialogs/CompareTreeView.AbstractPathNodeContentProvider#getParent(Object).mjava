@@ -1,0 +1,9 @@
+		public Object getParent(Object element) {
+			if (!(element instanceof PathNode))
+				return null;
+			IPath currentPath = ((PathNode) element).path;
+			if (currentPath.segmentCount() > 0)
+				return currentPath.removeLastSegments(1);
+			return null;
+		}
+

@@ -1,0 +1,58 @@
+	private void createActions() {
+		IWorkbenchAction reuseCompareEditorAction = new CompareUtils.ReuseCompareEditorAction();
+		actionsToDispose.add(reuseCompareEditorAction);
+		getViewSite().getActionBars().getMenuManager().add(
+				reuseCompareEditorAction);
+
+		IWorkbenchAction addedOnlyAction = new BooleanPrefAction(store,
+				UIPreferences.TREE_COMPARE_ADDED_ONLY,
+				UIText.CompareTreeView_AddedOnlyTooltip) {
+			@Override
+			void apply(boolean value) {
+				buildTrees();
+			}
+		};
+		addedOnlyAction.setImageDescriptor(UIIcons.ELCL16_ADD);
+		addedOnlyAction.setEnabled(false);
+		actionsToDispose.add(addedOnlyAction);
+		getViewSite().getActionBars().getToolBarManager().add(addedOnlyAction);
+
+		showEqualsAction = new BooleanPrefAction(store,
+				UIPreferences.TREE_COMPARE_SHOW_EQUALS,
+				UIText.CompareTreeView_EqualFilesTooltip) {
+			@Override
+			void apply(boolean value) {
+				buildTrees();
+			}
+		};
+		showEqualsAction.setImageDescriptor(UIIcons.ELCL16_SYNCED);
+		showEqualsAction.setEnabled(false);
+		actionsToDispose.add(showEqualsAction);
+		getViewSite().getActionBars().getToolBarManager().add(showEqualsAction);
+
+		IWorkbenchAction deletedOnlyAction = new BooleanPrefAction(store,
+				UIPreferences.TREE_COMPARE_DELETED_ONLY,
+				UIText.CompareTreeView_DeletedOnlyTooltip) {
+			@Override
+			void apply(boolean value) {
+				buildTrees();
+			}
+		};
+		deletedOnlyAction.setImageDescriptor(UIIcons.ELCL16_DELETE);
+		deletedOnlyAction.setEnabled(false);
+		actionsToDispose.add(deletedOnlyAction);
+		getViewSite().getActionBars().getToolBarManager()
+				.add(deletedOnlyAction);
+
+		IAction expandAllAction = new Action(
+				UIText.CompareTreeView_CollapseAllTooltip) {
+			@Override
+			public void run() {
+				leftTree.collapseAll();
+				rightTree.collapseAll();
+			}
+		};
+		expandAllAction.setImageDescriptor(UIIcons.COLLAPSEALL);
+		getViewSite().getActionBars().getToolBarManager().add(expandAllAction);
+	}
+

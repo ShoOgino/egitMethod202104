@@ -1,0 +1,8 @@
+		@Override
+		public String getText(Object element) {
+			if (element instanceof GitFileRevision) {
+				return ((GitFileRevision) element).getName();
+			}
+			return myProvider.getText(element);
+		}
+

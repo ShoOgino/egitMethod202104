@@ -1,0 +1,33 @@
+		@Override
+		public Object[] getChildren(Object element) {
+			boolean rebuildArray = false;
+			Object[] children = super.getChildren(element);
+			List<Object> childList = new ArrayList<Object>(children.length);
+			for (Object child : children) {
+				IPath path = new Path(repositoryMapping
+						.getRepoRelativePath((IResource) child));
+				if (!showEquals && equalIds.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
+				if (child instanceof IContainer
+						&& !leftPathsWithChildren.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
+				if (child instanceof IFile && showAddedOnly
+						&& !leftOnly.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
+				if (!showEquals && equalIds.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
+				childList.add(child);
+			}
+			if (rebuildArray)
+				return childList.toArray();
+			return children;
+		}
+

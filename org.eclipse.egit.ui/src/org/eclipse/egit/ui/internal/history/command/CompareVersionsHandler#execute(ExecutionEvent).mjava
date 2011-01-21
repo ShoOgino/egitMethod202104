@@ -5,7 +5,9 @@
 			RevCommit commit1 = (RevCommit) it.next();
 			RevCommit commit2 = (RevCommit) it.next();
 
-			Object input = getPage().getInputInternal().getSingleFile();
+			Object input = getPage().getInputInternal().getSingleItem();
+			Repository repository = getPage().getInputInternal()
+					.getRepository();
 			if (input instanceof IFile) {
 				IFile resource = (IFile) input;
 				final RepositoryMapping map = RepositoryMapping
@@ -21,8 +23,7 @@
 				CompareEditorInput in = new GitCompareFileRevisionEditorInput(
 						base, next, null);
 				openInCompare(event, in);
-			}
-			if (input instanceof File) {
+			} else if (input instanceof File) {
 				File fileInput = (File) input;
 				Repository repo = getRepository(event);
 				final String gitPath = getRepoRelativePath(repo, fileInput);
@@ -34,7 +35,30 @@
 				CompareEditorInput in = new GitCompareFileRevisionEditorInput(
 						base, next, null);
 				openInCompare(event, in);
+			} else if (input instanceof IResource) {
+				CompareTreeView view;
+				try {
+					view = (CompareTreeView) PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage()
+							.showView(CompareTreeView.ID);
+					view.setInput((IResource) input, commit1.getId().name(),
+							commit2.getId().name());
+				} catch (PartInitException e) {
+					Activator.handleError(e.getMessage(), e, true);
+				}
+			} else if (input == null) {
+				CompareTreeView view;
+				try {
+					view = (CompareTreeView) PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage()
+							.showView(CompareTreeView.ID);
+					view.setInput(repository, commit1.getId().name(), commit2
+							.getId().name());
+				} catch (PartInitException e) {
+					Activator.handleError(e.getMessage(), e, true);
+				}
 			}
+
 		}
 		return null;
 	}
