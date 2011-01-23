@@ -1,0 +1,12 @@
+	private static String createProject(String projectName) {
+		bot.menu("File").menu("New").menu("Project...").click();
+		bot.tree().getTreeItem("General").expand().getNode("Project").select();
+		bot.button("Next >").click();
+
+		bot.textWithLabel("Project name:").setText(projectName);
+
+		String path = bot.textWithLabel("Location:").getText();
+		bot.button("Finish").click();
+		return path;
+	}
+

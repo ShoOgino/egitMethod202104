@@ -12,13 +12,6 @@
 		bot.perspectiveById("org.eclipse.jdt.ui.JavaPerspective").activate();
 		bot.viewByTitle("Package Explorer").show();
 
-		bot.menu("File").menu("New").menu("Project...").click();
-		bot.tree().getTreeItem("General").expand().getNode("Project").select();
-		bot.button("Next >").click();
-
-		bot.textWithLabel("Project name:").setText(projectName);
-
-		bot.button("Finish").click();
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 

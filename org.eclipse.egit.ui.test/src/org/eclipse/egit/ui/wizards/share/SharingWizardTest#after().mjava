@@ -1,0 +1,10 @@
+	@After
+	public void after() throws Exception {
+		erase(projectName0);
+		erase(projectName1);
+		erase(projectName2);
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(
+				IResource.DEPTH_INFINITE, null);
+		new Eclipse().reset();
+	}
+
