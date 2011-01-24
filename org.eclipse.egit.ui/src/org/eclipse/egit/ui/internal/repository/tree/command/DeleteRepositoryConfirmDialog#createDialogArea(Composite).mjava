@@ -1,0 +1,26 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		main.setLayout(new GridLayout(1, false));
+		// if the repository is bare, we don't have a working directory to
+		// delete; we should not use this dialog in this case, though
+		// as it would be rendered ugly
+		if (repository.isBare())
+			return main;
+		final Button deleteWorkDir = new Button(main, SWT.CHECK);
+		deleteWorkDir.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shouldDelete = deleteWorkDir.getSelection();
+			}
+		});
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(deleteWorkDir);
+		deleteWorkDir
+				.setText(NLS
+						.bind(
+								UIText.DeleteRepositoryConfirmDialog_DeleteWorkingDirectoryCheckbox,
+								repository.getWorkTree().getPath()));
+		return main;
+	}
+

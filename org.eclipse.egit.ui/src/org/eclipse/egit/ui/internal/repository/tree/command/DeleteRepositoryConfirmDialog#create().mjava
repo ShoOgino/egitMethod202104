@@ -1,0 +1,11 @@
+	@Override
+	public void create() {
+		super.create();
+		setTitle(NLS.bind(
+				UIText.DeleteRepositoryConfirmDialog_DeleteRepositoryTitle,
+				repository.getDirectory().getPath()));
+		setMessage(NLS.bind(
+				UIText.DeleteRepositoryConfirmDialog_DeleteRepositoryMessage,
+				repository.getDirectory().getPath()));
+	}
+
