@@ -9,11 +9,11 @@
 			return null;
 
 		if (shouldIncludeEntry(tw)) {
-			String path = new String(tw.getRawPath());
+			IPath path = new Path(tw.getPathString());
 			ObjectId repoId = tw.getObjectId(BASE_NTH);
 			ObjectId cacheId = tw.getObjectId(REMOTE_NTH);
 
-			if (path.split("/").length > 1) //$NON-NLS-1$
+			if (path.getFileExtension() == null)
 				return handleCacheTree(repoId, cacheId, path);
 
 			return fileFactory.createFileModel(this, baseCommit, repoId,

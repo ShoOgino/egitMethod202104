@@ -11,21 +11,20 @@
 	 *            id of base object variant
 	 * @param remoteId
 	 *            id of remote object variants
-	 * @param name
-	 *            human readable blob name (file name)
+	 * @param location
+	 *            absolute blob location
 	 * @throws IOException
 	 */
 	public GitModelBlob(GitModelObjectContainer parent, RevCommit commit,
-			RevCommit ancestorCommit, ObjectId ancestorId, ObjectId baseId, ObjectId remoteId, String name)
+			RevCommit ancestorCommit, ObjectId ancestorId, ObjectId baseId, ObjectId remoteId, IPath location)
 			throws IOException {
 		// only direction is important for us, therefore we mask rest of bits in
 		// kind
 		super(parent, commit, ancestorCommit, parent.getKind() & (LEFT | RIGHT));
-		this.name = name;
 		this.baseId = baseId;
 		this.remoteId = remoteId;
 		this.ancestorId = ancestorId;
-		location = getParent().getLocation().append(name);
+		this.location = location;
 		gitPath = Repository.stripWorkDir(getRepository().getWorkTree(),
 				getLocation().toFile());
 	}
