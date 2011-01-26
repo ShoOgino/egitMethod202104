@@ -1,0 +1,36 @@
+	/**
+	 * Starts the operation asynchronously showing a confirmation dialog after
+	 * completion
+	 */
+	public void start() {
+		Job job = new Job(NLS.bind(UIText.FetchOperationUI_FetchJobName,
+				sourceString)) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					execute(monitor);
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(e.getStatus()
+							.getMessage(), e);
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.FETCH.equals(family))
+					return true;
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.schedule();
+		job.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				FetchResultDialog.show(repository, op.getOperationResult(),
+						sourceString);
+			}
+		});
+	}
+

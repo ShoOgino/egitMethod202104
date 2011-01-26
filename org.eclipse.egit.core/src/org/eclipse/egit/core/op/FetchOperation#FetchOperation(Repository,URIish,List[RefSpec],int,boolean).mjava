@@ -1,0 +1,20 @@
+	/**
+	 * Constructs a FetchOperation based on URI and RefSpecs
+	 *
+	 * @param repository
+	 * @param uri
+	 * @param refSpecs
+	 * @param timeout
+	 * @param dryRun
+	 *
+	 */
+	public FetchOperation(Repository repository, URIish uri,
+			List<RefSpec> refSpecs, int timeout, boolean dryRun) {
+		this.repository = repository;
+		this.timeout = timeout;
+		this.dryRun = dryRun;
+		this.uri = uri;
+		this.specs = refSpecs;
+		this.rc = null;
+	}
+

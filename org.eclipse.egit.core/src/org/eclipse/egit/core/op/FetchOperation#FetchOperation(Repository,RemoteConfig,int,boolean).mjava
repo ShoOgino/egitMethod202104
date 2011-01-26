@@ -1,0 +1,18 @@
+	/**
+	 * Constructs a FetchOperation based on a RemoteConfig
+	 *
+	 * @param repository
+	 * @param config
+	 * @param timeout
+	 * @param dryRun
+	 */
+	public FetchOperation(Repository repository, RemoteConfig config,
+			int timeout, boolean dryRun) {
+		this.repository = repository;
+		this.timeout = timeout;
+		this.dryRun = dryRun;
+		this.uri = null;
+		this.specs = null;
+		this.rc = config;
+	}
+

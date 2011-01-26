@@ -4,37 +4,37 @@
 				&& refSpecPage.isSaveRequested())
 			saveConfig();
 		if (repoPage.getStoreInSecureStore()) {
-			if (!SecureStoreUtils.storeCredentials(repoPage
-					.getCredentials(), repoPage.getSelection().getURI()))
+			if (!SecureStoreUtils.storeCredentials(repoPage.getCredentials(),
+					repoPage.getSelection().getURI()))
 				return false;
 		}
 
-		final Transport transport;
+		final FetchOperationUI op;
+		int timeout = Activator.getDefault().getPreferenceStore().getInt(
+				UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 		final RepositorySelection repoSelection = repoPage.getSelection();
-		try {
-			if (repoSelection.isConfigSelected())
-				transport = Transport.open(localDb, repoSelection.getConfig());
-			else
-				transport = Transport.open(localDb, repoSelection.getURI(false));
-		} catch (final NotSupportedException e) {
-			ErrorDialog.openError(getShell(),
-					UIText.FetchWizard_transportNotSupportedTitle,
-					UIText.FetchWizard_transportNotSupportedMessage,
-					new Status(IStatus.ERROR, org.eclipse.egit.ui.Activator
-							.getPluginId(), e.getMessage(), e));
-			return false;
-		}
+
+		// even if a RemoteConfig is selected, we need to make sure to
+		// add the RefSpecs from the RefSpec page into the FetchOperation
+		// TODO once the FetchWizard learns to "complete early" (the user
+		// selects a remote configuration and the wizard allows to "finish"
+		// because there are some RefSpecs in that configuration), we need
+		// to call the other constructor
+		if (repoSelection.isConfigSelected())
+			op = new FetchOperationUI(localDb, repoSelection.getConfig()
+					.getURIs().get(0), refSpecPage.getRefSpecs(), timeout,
+					false);
+		else
+			op = new FetchOperationUI(localDb, repoSelection.getURI(false),
+					refSpecPage.getRefSpecs(), timeout, false);
+
 		UserPasswordCredentials credentials = repoPage.getCredentials();
 		if (credentials != null)
-			transport.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+			op.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
 					credentials.getUser(), credentials.getPassword()));
 
-		transport.setTagOpt(refSpecPage.getTagOpt());
-
-		final Job fetchJob = new FetchJob(transport, refSpecPage.getRefSpecs(),
-				getSourceString());
-		fetchJob.setUser(true);
-		fetchJob.schedule();
+		op.setTagOpt(refSpecPage.getTagOpt());
+		op.start();
 
 		repoPage.saveUriInPrefs();
 

@@ -1,0 +1,16 @@
+	/**
+	 * @param repository
+	 * @param config
+	 * @param timeout
+	 * @param dryRun
+	 *
+	 */
+	public FetchOperationUI(Repository repository, RemoteConfig config,
+			int timeout, boolean dryRun) {
+		this.repository = repository;
+		op = new FetchOperation(repository, config, timeout, dryRun);
+		sourceString = NLS.bind("{0} - {1}", repository.getDirectory() //$NON-NLS-1$
+				.getParentFile().getName(), config.getName());
+
+	}
+
