@@ -31,7 +31,7 @@
 				DirectoryDialog dialog = new DirectoryDialog(getShell());
 				// if a file-uri was selected before, let's try to open
 				// the directory dialog on the same directory
-				if (!uriText.getText().equals("")) { //$NON-NLS-1$
+				if (!uriText.getText().equals(EMPTY_STRING)) {
 					try {
 						URI testUri = URI.create(uriText.getText().replace(
 								'\\', '/'));

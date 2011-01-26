@@ -13,7 +13,7 @@
 			if (u.getPort() > 0)
 				portText.setText(Integer.toString(u.getPort()));
 			else
-				portText.setText(""); //$NON-NLS-1$
+				portText.setText(EMPTY_STRING);
 
 			if (u.getScheme() != null) {
 				scheme.select(scheme.indexOf(u.getScheme()));
@@ -26,11 +26,11 @@
 			// leave uriText as it is, but clean up underlying uri and
 			// decomposed fields
 			uri = new URIish();
-			hostText.setText(""); //$NON-NLS-1$
-			pathText.setText(""); //$NON-NLS-1$
-			userText.setText(""); //$NON-NLS-1$
-			passText.setText(""); //$NON-NLS-1$
-			portText.setText(""); //$NON-NLS-1$
+			hostText.setText(EMPTY_STRING);
+			pathText.setText(EMPTY_STRING);
+			userText.setText(EMPTY_STRING);
+			passText.setText(EMPTY_STRING);
+			portText.setText(EMPTY_STRING);
 			scheme.select(-1);
 		} finally {
 			eventDepth--;

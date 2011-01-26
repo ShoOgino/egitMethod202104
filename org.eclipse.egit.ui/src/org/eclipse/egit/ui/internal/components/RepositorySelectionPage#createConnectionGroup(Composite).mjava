@@ -12,7 +12,7 @@
 				final int idx = scheme.getSelectionIndex();
 				if (idx < 0) {
 					setURI(uri.setScheme(null));
-					scheme.setToolTipText(""); //$NON-NLS-1$
+					scheme.setToolTipText(EMPTY_STRING);
 				} else {
 					setURI(uri.setScheme(nullString(scheme.getItem(idx))));
 					scheme.setToolTipText(Protocol.values()[idx].getTooltip());
