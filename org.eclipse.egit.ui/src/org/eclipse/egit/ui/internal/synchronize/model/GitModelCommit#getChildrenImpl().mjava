@@ -13,8 +13,8 @@
 			int ancestorNth = tw.addTree(ancestorCommit.getTree());
 
 			while (tw.next()) {
-				GitModelObject obj = getModelObject(tw, ancestorNth, baseNth,
-						actualNth);
+				GitModelObject obj = getModelObject(tw, ancestorCommit, ancestorNth,
+						baseNth, actualNth);
 				if (obj != null)
 					result.add(obj);
 			}
