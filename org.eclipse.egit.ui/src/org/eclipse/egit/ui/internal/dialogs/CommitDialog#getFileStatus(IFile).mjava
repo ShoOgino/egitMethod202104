@@ -3,7 +3,7 @@
 	 * @return file status
 	 * @throws IOException
 	 */
-	private static String getFileStatus(IFile file) throws IOException {
+	private static Status getFileStatus(IFile file) throws IOException {
 		RepositoryMapping mapping = RepositoryMapping.getMapping(file);
 		String path = mapping.getRepoRelativePath(file);
 		Repository repo = mapping.getRepository();

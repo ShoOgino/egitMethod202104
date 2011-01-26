@@ -2,10 +2,10 @@
 		public boolean select(Viewer viewer, Object parentElement,
 				Object element) {
 			boolean result = true;
-			if (!showUntracked || !allowToChangeSelection){
+			if (!showUntracked || !allowToChangeSelection) {
 				if (element instanceof CommitItem) {
-					CommitItem item = (CommitItem)element;
-					if (item.status.equals(UIText.CommitDialog_StatusUntracked))
+					CommitItem item = (CommitItem) element;
+					if (item.status == Status.UNTRACKED)
 						result = false;
 				}
 			}
