@@ -5,9 +5,8 @@
 			if (commitItem == null) {
 				return;
 			}
-			if (commitItem.status.equals(UIText.CommitDialog_StatusUntracked)) {
+			if (commitItem.status == Status.UNTRACKED)
 				return;
-			}
 
 			IProject project = commitItem.file.getProject();
 			RepositoryMapping mapping = RepositoryMapping.getMapping(project);

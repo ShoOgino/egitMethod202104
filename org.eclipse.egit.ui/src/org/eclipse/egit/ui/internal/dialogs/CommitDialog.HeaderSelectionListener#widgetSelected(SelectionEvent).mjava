@@ -1,17 +1,36 @@
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			TableColumn column = (TableColumn)e.widget;
+			TableColumn column = (TableColumn) e.widget;
 			Table table = column.getParent();
 
 			if (column == table.getSortColumn()) {
-				reversed = !reversed;
-			} else {
-				reversed = false;
+				int currentDirection = table.getSortDirection();
+				switch (currentDirection) {
+				case SWT.NONE:
+					reversed = Boolean.FALSE;
+					break;
+				case SWT.UP:
+					reversed = Boolean.TRUE;
+					break;
+				case SWT.DOWN:
+					// fall through
+				default:
+					reversed = null;
+					break;
+				}
+			} else
+				reversed = Boolean.FALSE;
+
+			if (reversed == null) {
+				table.setSortColumn(null);
+				table.setSortDirection(SWT.NONE);
+				filesViewer.setComparator(null);
+				return;
 			}
 			table.setSortColumn(column);
 
 			Comparator<CommitItem> comparator;
-			if (reversed) {
+			if (reversed.booleanValue()) {
 				comparator = order.descending();
 				table.setSortDirection(SWT.DOWN);
 			} else {

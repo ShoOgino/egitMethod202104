@@ -3,38 +3,37 @@
 	 * @param indexDiff
 	 * @return file status
 	 */
-	private static String getFileStatus(String path, IndexDiff indexDiff) {
-		String prefix = UIText.CommitDialog_StatusUnknown;
+	private static Status getFileStatus(String path, IndexDiff indexDiff) {
 		if (indexDiff.getAssumeUnchanged().contains(path)) {
-			prefix = UIText.CommitDialog_StatusAssumeUnchaged;
+			return Status.ASSUME_UNCHANGED;
 		} else if (indexDiff.getAdded().contains(path)) {
 			// added
 			if (indexDiff.getModified().contains(path))
-				prefix = UIText.CommitDialog_StatusAddedIndexDiff;
+				return Status.ADDED_INDEX_DIFF;
 			else
-				prefix = UIText.CommitDialog_StatusAdded;
+				return Status.ADDED;
 		} else if (indexDiff.getChanged().contains(path)) {
 			// changed
 			if (indexDiff.getModified().contains(path))
-				prefix = UIText.CommitDialog_StatusModifiedIndexDiff;
+				return Status.MODIFIED_INDEX_DIFF;
 			else
-				prefix = UIText.CommitDialog_StatusModified;
+				return Status.MODIFIED;
 		} else if (indexDiff.getUntracked().contains(path)) {
 			// untracked
 			if (indexDiff.getRemoved().contains(path))
-				prefix = UIText.CommitDialog_StatusRemovedUntracked;
+				return Status.REMOVED_UNTRACKED;
 			else
-				prefix = UIText.CommitDialog_StatusUntracked;
+				return Status.UNTRACKED;
 		} else if (indexDiff.getRemoved().contains(path)) {
 			// removed
-			prefix = UIText.CommitDialog_StatusRemoved;
+			return Status.REMOVED;
 		} else if (indexDiff.getMissing().contains(path)) {
 			// missing
-			prefix = UIText.CommitDialog_StatusRemovedNotStaged;
+			return Status.REMOVED_NOT_STAGED;
 		} else if (indexDiff.getModified().contains(path)) {
 			// modified (and not changed!)
-			prefix = UIText.CommitDialog_StatusModifiedNotStaged;
+			return Status.MODIFIED_NOT_STAGED;
 		}
-		return prefix;
+		return Status.UNKNOWN;
 	}
 
