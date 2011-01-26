@@ -1,4 +1,15 @@
-	CommitBlobStorage(final Repository repository, final String fileName,
+	/**
+	 *
+	 * @param repository
+	 *            from with blob version should be taken
+	 * @param fileName
+	 *            name of blob file
+	 * @param blob
+	 *            blob id
+	 * @param commit
+	 *            from with blob version should be taken
+	 */
+	public CommitBlobStorage(final Repository repository, final String fileName,
 			final ObjectId blob, RevCommit commit) {
 		super(repository, fileName, blob);
 		this.commit = commit;
