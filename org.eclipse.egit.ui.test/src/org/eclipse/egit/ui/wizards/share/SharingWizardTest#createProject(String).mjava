@@ -1,5 +1,6 @@
 	private static String createProject(String projectName) {
 		bot.menu("File").menu("New").menu("Project...").click();
+		SWTBotShell createProjectDialogShell = bot.shell("New Project");
 		bot.tree().getTreeItem("General").expand().getNode("Project").select();
 		bot.button("Next >").click();
 
@@ -7,6 +8,7 @@
 
 		String path = bot.textWithLabel("Location:").getText();
 		bot.button("Finish").click();
+		bot.waitUntil(Conditions.shellCloses(createProjectDialogShell), 10000);
 		return path;
 	}
 
