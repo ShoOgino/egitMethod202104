@@ -1,0 +1,23 @@
+	private TaskRepository getTaskRepositoryByHost(String host) {
+		List<TaskRepository> repositories = TasksUiPlugin.getRepositoryManager().getAllRepositories();
+		if (repositories == null || repositories.isEmpty())
+			return null;
+
+		if (repositories.size() == 1)
+			return repositories.iterator().next();
+
+		for (TaskRepository repository : repositories) {
+			if (!repository.isOffline()) {
+				try {
+					URL url = new URL(repository.getRepositoryUrl());
+
+					if (isSameHosts(host, url.getHost()))
+						return repository;
+				} catch (MalformedURLException e) {
+					// We cannot do anything.
+				}
+			}
+		}
+		return null;
+	}
+

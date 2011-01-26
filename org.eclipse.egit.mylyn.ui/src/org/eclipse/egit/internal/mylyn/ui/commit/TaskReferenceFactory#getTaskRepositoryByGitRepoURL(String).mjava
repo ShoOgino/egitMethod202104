@@ -1,0 +1,20 @@
+	/**
+	 * Finds {@link TaskRepository} by provided Git repository Url
+	 * @param repoUrl Git repository url
+	 * @return {@link TaskRepository} associated with this Git repo or <code>null</code> if nothing found
+	 */
+	private TaskRepository getTaskRepositoryByGitRepoURL(final String repoUrl) {
+		try {
+			// replacing protocol name to avoid MalformedURIException
+			URI uri = repoUrl == null ? null : new URI(repoUrl.replaceFirst("\\w+://", "http://")); //$NON-NLS-1$ //$NON-NLS-2$
+			if (uri != null) {
+				String gitHost = uri.toURL().getHost();
+				return getTaskRepositoryByHost(gitHost);
+			}
+		} catch (Exception ex) {
+			EGitMylynUI.getDefault().getLog().log(
+					new Status(IStatus.ERROR, EGitMylynUI.PLUGIN_ID, "failed to get repo url", ex)); //$NON-NLS-1$
+		}
+		return null;
+	}
+

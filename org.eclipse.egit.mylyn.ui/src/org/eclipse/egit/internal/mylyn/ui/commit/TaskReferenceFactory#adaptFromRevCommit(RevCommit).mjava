@@ -1,0 +1,41 @@
+	/**
+	 * Finds {@link TaskRepository} for provided {@link RevCommit} object and returns new {@link LinkedTaskInfo} object
+	 * or <code>null</code> if nothing found.
+	 * @param commit a {@link RevCommit} object to look for
+	 * @return {@link LinkedTaskInfo} object, or <code>null</code> if repository not found
+	 */
+	private AbstractTaskReference adaptFromRevCommit(RevCommit commit) {
+		Repository[] repositories = Activator.getDefault().getRepositoryCache().getAllRepositories();
+		for (Repository r : repositories) {
+			RevWalk revWalk = new RevWalk(r);
+
+			String repoUrl = null;
+			String message = null;
+
+			// try to get repository url and commit message
+			try {
+				RevCommit revCommit = revWalk.parseCommit(commit);
+				if (revCommit != null) {
+					repoUrl = getRepoUrl(r);
+					message = revCommit.getFullMessage();
+				}
+			} catch (Exception e) {
+				continue;
+			}
+
+			if (message == null || message.trim().length() == 0)
+				continue;
+
+			String taskRepositoryUrl = null;
+			if (repoUrl != null) {
+				TaskRepository repository = getTaskRepositoryByGitRepoURL(repoUrl);
+				if (repository != null)
+					taskRepositoryUrl = repository.getRepositoryUrl();
+			}
+
+			return new LinkedTaskInfo(taskRepositoryUrl, null, null, message);
+		}
+
+		return null;
+	}
+
