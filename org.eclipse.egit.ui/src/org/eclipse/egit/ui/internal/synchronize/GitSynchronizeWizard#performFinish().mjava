@@ -3,9 +3,10 @@
 		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
 
 		Map<Repository, String> branches = page.getSelectedBranches();
-		for (Repository repo : branches.keySet())
+		for (Entry<Repository, String> branchesEntry : branches.entrySet())
 			try {
-				gsdSet.add(new GitSynchronizeData(repo, Constants.HEAD, branches.get(repo), false));
+				gsdSet.add(new GitSynchronizeData(branchesEntry.getKey(),
+						Constants.HEAD, branchesEntry.getValue(), false));
 			} catch (IOException e) {
 				Activator.logError(e.getMessage(), e);
 			}
