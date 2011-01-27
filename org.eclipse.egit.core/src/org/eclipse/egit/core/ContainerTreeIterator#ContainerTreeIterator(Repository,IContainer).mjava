@@ -14,6 +14,7 @@
 	 */
 	public ContainerTreeIterator(final Repository repository, final IContainer base) {
 		super(computePrefix(base), repository.getConfig().get(WorkingTreeOptions.KEY));
+		registerRCL();
 		node = base;
 		init(entries());
 	}

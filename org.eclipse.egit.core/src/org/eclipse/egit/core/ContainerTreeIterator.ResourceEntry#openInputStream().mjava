@@ -1,6 +1,6 @@
 		@Override
 		public InputStream openInputStream() throws IOException {
-			if (rsrc instanceof IFile) {
+			if (rsrc.getType() == IResource.FILE) {
 				try {
 					return ((IFile) rsrc).getContents(true);
 				} catch (CoreException err) {

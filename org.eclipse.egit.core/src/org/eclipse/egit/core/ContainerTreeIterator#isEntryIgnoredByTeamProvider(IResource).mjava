@@ -1,5 +1,5 @@
 	private boolean isEntryIgnoredByTeamProvider(IResource resource) {
-		if (resource instanceof IWorkspaceRoot)
+		if (resource.getType() == IResource.ROOT)
 			return false;
 		if (Team.isIgnoredHint(resource))
 			return true;

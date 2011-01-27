@@ -13,6 +13,7 @@
 	 */
 	public ContainerTreeIterator(final Repository repository, final IWorkspaceRoot root) {
 		super("", repository.getConfig().get(WorkingTreeOptions.KEY));  //$NON-NLS-1$
+		registerRCL();
 		node = root;
 		init(entries());
 	}
