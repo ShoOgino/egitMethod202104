@@ -1,0 +1,14 @@
+	private GitModelObject handleCacheTree(ObjectId repoId, ObjectId cacheId,
+			IPath path) throws IOException {
+		GitModelCacheTree cacheTree = cacheTreeMap.get(path);
+		if (cacheTree == null) {
+			cacheTree = new GitModelCacheTree(this, baseCommit, repoId,
+					cacheId, path, fileFactory);
+			cacheTreeMap.put(path, cacheTree);
+		}
+
+		cacheTree.addChild(repoId, cacheId, path);
+
+		return cacheTree;
+	}
+

@@ -1,0 +1,16 @@
+	void addChild(ObjectId repoId, ObjectId cacheId, IPath path)
+			throws IOException {
+		if (path.getFileExtension() == null) {
+			GitModelCacheTree cacheEntry = (GitModelCacheTree) cacheTreeMap
+					.get(path);
+			if (cacheEntry == null) {
+				cacheEntry = new GitModelCacheTree(this, baseCommit, repoId,
+						cacheId, path, factory);
+				cacheTreeMap.put(path, cacheEntry);
+			}
+			cacheEntry.addChild(repoId, cacheId, path);
+		} else
+			cacheTreeMap.put(path, factory.createFileModel(this,
+					baseCommit, repoId, cacheId, path));
+	}
+

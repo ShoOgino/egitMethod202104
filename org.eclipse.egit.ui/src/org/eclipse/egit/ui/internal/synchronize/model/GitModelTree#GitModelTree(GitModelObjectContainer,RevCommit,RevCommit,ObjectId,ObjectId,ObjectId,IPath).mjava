@@ -11,18 +11,18 @@
 	 *            id of base tree
 	 * @param remoteId
 	 *            this tree id
-	 * @param name
-	 *            name resource associated with this tree
+	 * @param location
+	 *            location of tree
 	 * @throws IOException
 	 */
 	public GitModelTree(GitModelObjectContainer parent, RevCommit commit,
 			RevCommit ancestorCommit, ObjectId ancestorId, ObjectId baseId,
-			ObjectId remoteId, String name) throws IOException {
+			ObjectId remoteId, IPath location) throws IOException {
 		// only direction is important for us, therefore we mask rest of bits in kind
 		super(parent, commit, ancestorCommit, parent.getKind() & (LEFT | RIGHT));
-		this.name = name;
 		this.baseId = baseId;
 		this.remoteId = remoteId;
 		this.ancestorId = ancestorId;
+		this.location = location;
 	}
 
