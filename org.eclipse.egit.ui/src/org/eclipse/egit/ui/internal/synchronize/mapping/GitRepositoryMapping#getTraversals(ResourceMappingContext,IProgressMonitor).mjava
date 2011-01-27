@@ -1,10 +1,7 @@
 	@Override
 	public ResourceTraversal[] getTraversals(ResourceMappingContext context,
 			IProgressMonitor monitor) throws CoreException {
-		if (traversals == null)
-			traversals = new ResourceTraversal[] { new ResourceTraversal(
+		return new ResourceTraversal[] { new ResourceTraversal(
 					getProjects(), DEPTH_INFINITE, NONE) };
-
-		return traversals;
 	}
 
