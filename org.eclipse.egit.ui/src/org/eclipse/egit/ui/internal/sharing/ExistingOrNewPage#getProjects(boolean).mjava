@@ -1,0 +1,32 @@
+	/**
+	 * @param checked
+	 *            pass true to get the checked elements, false to get the
+	 *            selected elements
+	 * @return map between project and repository root directory (converted to
+	 *         an absolute path) for all projects selected by user
+	 */
+	public Map<IProject, File> getProjects(boolean checked) {
+		final Object[] elements;
+		if (checked)
+			elements = viewer.getCheckedElements();
+		else {
+			ISelection selection = viewer.getSelection();
+			if (selection instanceof IStructuredSelection)
+				elements = ((IStructuredSelection) selection).toArray();
+			else
+				elements = new Object[0];
+		}
+		Map<IProject, File> ret = new HashMap<IProject, File>(elements.length);
+		for (Object ti : elements) {
+			final IProject project = ((ProjectAndRepo)ti).getProject();
+			String path = ((ProjectAndRepo)ti).getRepo();
+			final IPath selectedRepo = Path.fromOSString(path);
+			IPath localPathToRepo = selectedRepo;
+			if (!selectedRepo.isAbsolute()) {
+				localPathToRepo = project.getLocation().append(selectedRepo);
+			}
+			ret.put(project, localPathToRepo.toFile());
+		}
+		return ret;
+	}
+
