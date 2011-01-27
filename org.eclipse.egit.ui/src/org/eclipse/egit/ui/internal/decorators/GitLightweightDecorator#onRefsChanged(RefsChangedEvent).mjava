@@ -1,4 +1,4 @@
 	public void onRefsChanged(RefsChangedEvent e) {
-		repositoryChanged(e);
+		postLabelEvent(new LabelProviderChangedEvent(this));
 	}
 

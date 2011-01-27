@@ -5,10 +5,35 @@
 	 *            The event to post
 	 */
 	private void postLabelEvent(final LabelProviderChangedEvent event) {
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				fireLabelProviderChanged(event);
+		if (event.getElement() == null) {
+			// Update all elements
+			final IWorkspaceRoot root = ResourcesPlugin.getWorkspace()
+					.getRoot();
+			try {
+				// Set (new) 'refresh' timestamp
+				root.setSessionProperty(REFRESH_KEY,
+						new Long(System.currentTimeMillis()));
+			} catch (CoreException e) {
+				handleException(root, e);
 			}
-		});
+
+			fireLabelEvent(event);
+		} else {
+			// Update specific elements
+			Object[] elements = event.getElements();
+			for (Object element : elements) {
+				final IResource resource = getResource(element);
+				if (resource != null)
+					try {
+						// Remove 'refreshed' property
+						resource.setSessionProperty(REFRESHED_KEY, null);
+					} catch (CoreException e) {
+						// Ignore
+					}
+			}
+
+			// Fire a generic event
+			fireLabelEvent(new LabelProviderChangedEvent(this));
+		}
 	}
 

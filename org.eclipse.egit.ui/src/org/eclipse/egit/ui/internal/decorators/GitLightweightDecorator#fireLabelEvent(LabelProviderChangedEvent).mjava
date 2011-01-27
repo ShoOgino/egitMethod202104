@@ -1,0 +1,8 @@
+	private void fireLabelEvent(final LabelProviderChangedEvent event) {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				fireLabelProviderChanged(event);
+			}
+		});
+	}
+
