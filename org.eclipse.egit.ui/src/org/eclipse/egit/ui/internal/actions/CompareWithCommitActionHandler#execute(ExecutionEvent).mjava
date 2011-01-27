@@ -1,18 +1,26 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		// assert all resources map to the same repository
-		if (getRepository(true, event) == null)
+		final Repository repo = getRepository(true, event);
+		IResource[] resources = getSelectedResources(event);
+		if (repo == null)
 			return null;
-		final IResource[] resources = getSelectedResources(event);
+
+		CommitSelectionDialog dlg = new CommitSelectionDialog(getShell(event),
+				repo);
+		if (dlg.open() != Window.OK)
+			return null;
 
 		if (resources.length == 1 && resources[0] instanceof IFile) {
 			final IFile baseFile = (IFile) resources[0];
 
-			final ITypedElement base = SaveableCompareEditorInput
-					.createFileElement(baseFile);
+			final ITypedElement base = new FileRevisionTypedElement(
+					new LocalFileRevision(baseFile));
 
 			final ITypedElement next;
 			try {
-				next = getHeadTypedElement(baseFile);
+				RepositoryMapping mapping = RepositoryMapping
+						.getMapping(resources[0]);
+				next = getElementForCommit(mapping.getRepository(), mapping
+						.getRepoRelativePath(baseFile), dlg.getCommitId());
 			} catch (IOException e) {
 				Activator.handleError(
 						UIText.CompareWithIndexAction_errorOnAddToIndex, e,
@@ -22,6 +30,8 @@
 
 			final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
 					base, next, null);
+			in.getCompareConfiguration()
+					.setRightLabel(dlg.getCommitId().name());
 			CompareUI.openCompareEditor(in);
 		} else {
 			CompareTreeView view;
@@ -29,7 +39,7 @@
 				view = (CompareTreeView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(
 								CompareTreeView.ID);
-				view.setInput(resources, CompareTreeView.INDEX_VERSION);
+				view.setInput(resources, dlg.getCommitId().name());
 			} catch (PartInitException e) {
 				Activator.handleError(e.getMessage(), e, true);
 			}

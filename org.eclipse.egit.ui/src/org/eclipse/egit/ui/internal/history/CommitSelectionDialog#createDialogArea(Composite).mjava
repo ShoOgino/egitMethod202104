@@ -1,0 +1,30 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(1, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		table = new CommitGraphTable(main);
+		table.getTableView().addSelectionChangedListener(
+				new ISelectionChangedListener() {
+					public void selectionChanged(SelectionChangedEvent event) {
+						commitId = null;
+						IStructuredSelection sel = (IStructuredSelection) event
+								.getSelection();
+						if (sel.size() == 1)
+							commitId = ((SWTCommit) sel.getFirstElement())
+									.getId();
+						getButton(OK).setEnabled(commitId != null);
+					}
+				});
+		table.getTableView().addOpenListener(new IOpenListener() {
+			public void open(OpenEvent event) {
+				buttonPressed(OK);
+			}
+		});
+		// allow for some room here
+		GridDataFactory.fillDefaults().grab(true, true).minSize(SWT.DEFAULT,
+				400).applyTo(table.getControl());
+		allCommits = new SWTCommitList(getShell().getDisplay());
+		return main;
+	}
+
