@@ -1,0 +1,17 @@
+	/**
+	 * Used to compare the working tree with another version
+	 *
+	 * @param input
+	 *            the {@link IResource}s from which to build the tree
+	 * @param rightVersion
+	 *            a {@link Ref} name or {@link RevCommit} id or
+	 *            {@link #INDEX_VERSION}
+	 */
+	public void setInput(final IResource[] input, String rightVersion) {
+		setResourceInput(input);
+		this.leftVersion = null;
+		this.rightVersion = rightVersion;
+		buildTrees();
+		updateControls();
+	}
+

@@ -1,7 +1,11 @@
 		@Override
 		public Object[] getChildren(Object element) {
 			boolean rebuildArray = false;
-			Object[] children = super.getChildren(element);
+			Object[] children;
+			if (element == input)
+				children = (Object[]) input;
+			else
+				children = super.getChildren(element);
 			List<Object> childList = new ArrayList<Object>(children.length);
 			for (Object child : children) {
 				IPath path = new Path(repositoryMapping

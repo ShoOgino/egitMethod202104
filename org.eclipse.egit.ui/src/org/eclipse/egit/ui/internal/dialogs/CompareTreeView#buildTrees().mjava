@@ -7,7 +7,8 @@
 		leftTree.setInput(null);
 
 		if (leftVersion == null) {
-			leftTree.setContentProvider(new LocalWorkbenchTreeContentProvider());
+			leftTree
+					.setContentProvider(new LocalWorkbenchTreeContentProvider());
 			leftTree.setLabelProvider(new AddingWorkbenchLabelProvider());
 
 			rightTree
@@ -32,8 +33,9 @@
 		showEquals = Activator.getDefault().getPreferenceStore().getBoolean(
 				UIPreferences.TREE_COMPARE_SHOW_EQUALS);
 		final Repository repo;
-		if (input instanceof IResource) {
-			repositoryMapping = RepositoryMapping.getMapping((IResource) input);
+		if (input instanceof IResource[]) {
+			repositoryMapping = RepositoryMapping
+					.getMapping(((IResource[]) input)[0]);
 			if (repositoryMapping == null
 					|| repositoryMapping.getRepository() == null)
 				return;
@@ -47,7 +49,7 @@
 		RevWalk rw = new RevWalk(repo);
 		try {
 			ObjectId commitId = repo.resolve(rightVersion);
-			rightCommit = rw.parseCommit(commitId);
+			rightCommit = commitId != null ? rw.parseCommit(commitId) : null;
 			if (leftVersion == null)
 				leftCommit = null;
 			else {
@@ -69,14 +71,15 @@
 								throws InvocationTargetException,
 								InterruptedException {
 							try {
-								buildMaps(repo, input, leftCommit, rightCommit,
+								buildMaps(repo, leftCommit, rightCommit,
 										monitor);
 								PlatformUI.getWorkbench().getDisplay()
 										.asyncExec(new Runnable() {
 											public void run() {
 												leftTree.setInput(input);
 												rightTree.setInput(input);
-												leftTree.setExpandedElements(wsExpaneded);
+												leftTree
+														.setExpandedElements(wsExpaneded);
 												rightTree
 														.setExpandedElements(gitExpanded);
 												leftTree.setSelection(wsSel);

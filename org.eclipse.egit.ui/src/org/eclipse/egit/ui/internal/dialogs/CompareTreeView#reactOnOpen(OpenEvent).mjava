@@ -42,9 +42,10 @@
 					repositoryMapping.getRepoRelativePath(res)));
 			if (rightRevision == null)
 				right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
-						NLS.bind(
-								UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-								res.getName(), getRightVersion()));
+						NLS
+								.bind(
+										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
+										res.getName(), getRightVersion()));
 			else
 				right = new FileRevisionTypedElement(rightRevision);
 			GitCompareFileRevisionEditorInput compareInput = new GitCompareFileRevisionEditorInput(
@@ -76,9 +77,11 @@
 				GitFileRevision rightRevision = rightVersionMap.get(node.path);
 				right = new FileRevisionTypedElement(rightRevision);
 				left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
-						NLS.bind(
-								UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-								rightRevision.getName(), getLeftVersion()));
+						NLS
+								.bind(
+										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
+										rightRevision.getName(),
+										getLeftVersion()));
 				break;
 			}
 			case FILE_ADDED: {
@@ -86,9 +89,11 @@
 				GitFileRevision leftRevision = leftVersionMap.get(node.path);
 				left = new FileRevisionTypedElement(leftRevision);
 				right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
-						NLS.bind(
-								UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-								leftRevision.getName(), getRightVersion()));
+						NLS
+								.bind(
+										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
+										leftRevision.getName(),
+										getRightVersion()));
 				break;
 			}
 			case FOLDER:

@@ -8,21 +8,34 @@
 			setContentDescription(UIText.CompareTreeView_NoInputText);
 		else {
 			String name;
-			if (input instanceof IResource)
-				name = ((IResource) input).getFullPath().toString();
-			else if (input instanceof Repository)
+			if (input instanceof IResource[]) {
+				IResource[] resources = (IResource[]) input;
+				if (resources.length == 1)
+					name = (resources[0]).getFullPath().makeRelative()
+							.toString();
+				else
+					name = UIText.CompareTreeView_MultipleResourcesHeaderText;
+			} else if (input instanceof Repository)
 				name = Activator.getDefault().getRepositoryUtil()
 						.getRepositoryName(((Repository) input));
 			else
 				throw new IllegalStateException();
 			if (leftVersion == null)
 				setContentDescription(NLS
-						.bind(UIText.CompareTreeView_ComparingWorkspaceVersionDescription,
-								name, rightVersion));
+						.bind(
+								UIText.CompareTreeView_ComparingWorkspaceVersionDescription,
+								name,
+								rightVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
+										: rightVersion));
 			else
-				setContentDescription(NLS.bind(
-						UIText.CompareTreeView_ComparingTwoVersionDescription,
-						new String[] { leftVersion, name, rightVersion }));
+				setContentDescription(NLS
+						.bind(
+								UIText.CompareTreeView_ComparingTwoVersionDescription,
+								new String[] {
+										leftVersion,
+										name,
+										rightVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
+												: rightVersion }));
 		}
 	}
 

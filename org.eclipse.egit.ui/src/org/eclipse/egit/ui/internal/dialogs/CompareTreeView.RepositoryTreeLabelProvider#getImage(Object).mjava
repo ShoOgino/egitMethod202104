@@ -1,4 +1,6 @@
 		public Image getImage(Object element) {
+			if (element instanceof String)
+				return null;
 			Type type = ((PathNode) element).type;
 			switch (type) {
 			case FILE_BOTH_SIDES_SAME:
