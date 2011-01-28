@@ -1,0 +1,30 @@
+	/**
+	 * Checks the system configuration. Currently only the HOME variable on
+	 * Windows is checked
+	 */
+	public static void checkConfiguration() {
+		if (!runsOnWindows())
+			return;
+		if (!Activator.getDefault().getPreferenceStore()
+				.getString(UIPreferences.SHOW_HOME_DIR_WARNING)
+				.equals(MessageDialogWithToggle.PROMPT))
+			return;
+		// Schedule a job
+		// This avoids that the check is executed too early
+		// because in startup phase the JobManager is suspended
+		// and scheduled Jobs are executed later
+		Job job = new Job(UIText.ConfigurationChecker_checkConfiguration) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				PlatformUI.getWorkbench().getDisplay()
+						.asyncExec(new Runnable() {
+							public void run() {
+								check();
+							}
+						});
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
+	}
+

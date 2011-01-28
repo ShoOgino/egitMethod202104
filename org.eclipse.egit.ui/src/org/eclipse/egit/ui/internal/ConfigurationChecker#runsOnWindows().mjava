@@ -1,0 +1,10 @@
+	private static boolean runsOnWindows() {
+		String os;
+		try {
+			os = System.getProperty("os.name"); //$NON-NLS-1$
+		} catch (RuntimeException e) {
+			return false;
+		}
+		return os.indexOf("Windows") != -1; //$NON-NLS-1$
+	}
+

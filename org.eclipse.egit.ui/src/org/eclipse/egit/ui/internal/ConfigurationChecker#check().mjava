@@ -1,0 +1,18 @@
+	private static void check() {
+		String home = System.getenv("HOME"); //$NON-NLS-1$
+		if (home != null)
+			return; // home is set => ok
+		home = calcHomeDir();
+
+		String title = NLS.bind(UIText.ConfigurationChecker_checkHomeDirectory,
+				home);
+		String message = NLS.bind(UIText.ConfigurationChecker_homeNotSet, home);
+		String toggleMessage = UIText.ConfigurationChecker_doNotShowAgain;
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		MessageDialogWithToggle
+				.openInformation(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell(), title, message,
+						toggleMessage, true, store,
+						UIPreferences.SHOW_HOME_DIR_WARNING);
+	}
+
