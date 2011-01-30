@@ -8,6 +8,7 @@
 			FileModelFactory fileFactory) throws IOException {
 		super(parent, baseCommit, RIGHT);
 		this.fileFactory = fileFactory;
-		cacheTreeMap = new HashMap<IPath, GitModelCacheTree>();
+		cacheTreeMap = new HashMap<String, GitModelCacheTree>();
+		location = new Path(getRepository().getWorkTree().toString());
 	}
 
