@@ -18,11 +18,12 @@
 
 		// fire action
 		bot.button(IDialogConstants.OK_LABEL).click();
-		bot.sleep(1000);
 
-		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		bot.waitUntil(Conditions.treeHasRows(syncViewTree, 1), 10000);
+
+		// wait for synchronization process finish
+		waitUntilTreeHasNodeWithText(syncViewTree,
+				UIText.GitModelWorkingTree_workingTree);
 
 		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
 		assertEquals(UIText.GitModelWorkingTree_workingTree,
