@@ -1,13 +1,11 @@
 	/**
-	 * Gets the label to be used when rendering this project record in the
-	 * UI.
+	 * Gets the label to be used when rendering this project record in the UI.
 	 *
 	 * @return String the label
 	 */
 	public String getProjectLabel() {
 		String path = projectSystemFile.getParent();
 
-		return NLS.bind(UIText.WizardProjectsImportPage_projectLabel,
-				projectName, path);
+		return NLS.bind("{0} ({1})", projectName, path); //$NON-NLS-1$
 	}
 

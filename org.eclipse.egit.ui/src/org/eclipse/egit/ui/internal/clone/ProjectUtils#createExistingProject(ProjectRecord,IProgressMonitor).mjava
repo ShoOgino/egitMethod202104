@@ -1,0 +1,33 @@
+	private static IProject createExistingProject(final ProjectRecord record,
+			IProgressMonitor monitor) throws CoreException {
+		String projectName = record.getProjectName();
+		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		final IProject project = workspace.getRoot().getProject(projectName);
+		if (record.getProjectDescription() == null) {
+			// error case
+			record.setProjectDescription(workspace
+					.newProjectDescription(projectName));
+			IPath locationPath = new Path(record.getProjectSystemFile()
+					.getAbsolutePath());
+
+			// If it is under the root use the default location
+			if (Platform.getLocation().isPrefixOf(locationPath))
+				record.getProjectDescription().setLocation(null);
+			else
+				record.getProjectDescription().setLocation(locationPath);
+		} else
+			record.getProjectDescription().setName(projectName);
+
+		try {
+			monitor.beginTask(
+					UIText.WizardProjectsImportPage_CreateProjectsTask, 100);
+			project.create(record.getProjectDescription(),
+					new SubProgressMonitor(monitor, 30));
+			project.open(IResource.BACKGROUND_REFRESH, new SubProgressMonitor(
+					monitor, 50));
+			return project;
+		} finally {
+			monitor.done();
+		}
+	}
+

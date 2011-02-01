@@ -3,8 +3,16 @@
 	 *
 	 * @param file
 	 */
-	ProjectRecord(File file) {
+	public ProjectRecord(File file) {
 		projectSystemFile = file;
-		initProjectDescription();
+		IPath path = new Path(projectSystemFile.getPath());
+		try {
+			description = ResourcesPlugin.getWorkspace()
+					.loadProjectDescription(path);
+			projectName = description.getName();
+		} catch (CoreException e) {
+			description = null;
+			projectName = path.lastSegment();
+		}
 	}
 

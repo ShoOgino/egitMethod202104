@@ -1,7 +1,7 @@
 	/**
 	 * @return All the currently checked projects in the projectsList tree
 	 */
-	private Set<ProjectRecord> getCheckedProjects() {
+	public Set<ProjectRecord> getCheckedProjects() {
 		HashSet<ProjectRecord> ret = new HashSet<ProjectRecord>();
 		for (Object selected : projectsList.getCheckedElements())
 			ret.add((ProjectRecord) selected);
