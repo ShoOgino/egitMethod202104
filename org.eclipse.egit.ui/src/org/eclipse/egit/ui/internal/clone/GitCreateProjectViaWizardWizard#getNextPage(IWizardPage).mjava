@@ -7,11 +7,7 @@
 			case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
 				return myProjectsImportPage;
 			case GitSelectWizardPage.NEW_WIZARD:
-				if (mySelectionPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
-					return null;
-				else
-					return mySharePage;
-
+				return null;
 			case GitSelectWizardPage.GENERAL_WIZARD:
 				return myCreateGeneralProjectPage;
 
@@ -21,11 +17,7 @@
 
 		} else if (page == myCreateGeneralProjectPage
 				|| page == myProjectsImportPage) {
-
-			if (mySelectionPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
-				return null;
-			else
-				return mySharePage;
+			return null;
 		}
 		return super.getNextPage(page);
 	}

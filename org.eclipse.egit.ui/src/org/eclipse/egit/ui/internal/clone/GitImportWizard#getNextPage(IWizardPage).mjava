@@ -12,11 +12,7 @@
 						.getPath());
 				return projectsImportPage;
 			case GitSelectWizardPage.NEW_WIZARD:
-				if (importWithDirectoriesPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
 					return null;
-				else
-					return shareProjectsPage;
-
 			case GitSelectWizardPage.GENERAL_WIZARD:
 				createGeneralProjectPage.setPath(importWithDirectoriesPage
 						.getPath());
@@ -26,11 +22,7 @@
 
 		} else if (page == createGeneralProjectPage
 				|| page == projectsImportPage) {
-
-			if (importWithDirectoriesPage.getActionSelection() != GitSelectWizardPage.ACTION_DIALOG_SHARE)
 				return null;
-			else
-				return shareProjectsPage;
 		}
 		return super.getNextPage(page);
 	}

@@ -42,11 +42,6 @@
 		actionAutoShare.setText(UIText.GitSelectWizardPage_AutoShareButton);
 		actionAutoShare.addSelectionListener(sl);
 
-		actionDialogShare = new Button(afterImportAction, SWT.RADIO);
-		actionDialogShare
-				.setText(UIText.GitSelectWizardPage_InteractiveShareButton);
-		actionDialogShare.addSelectionListener(sl);
-
 		actionNothing = new Button(afterImportAction, SWT.RADIO);
 		actionNothing.setText(UIText.GitSelectWizardPage_NoShareButton);
 		actionNothing.addSelectionListener(sl);
@@ -80,9 +75,6 @@
 		switch (previousAct) {
 		case ACTION_AUTO_SHARE:
 			actionAutoShare.setSelection(true);
-			break;
-		case ACTION_DIALOG_SHARE:
-			actionDialogShare.setSelection(true);
 			break;
 		case ACTION_NO_SHARE:
 			actionNothing.setSelection(true);

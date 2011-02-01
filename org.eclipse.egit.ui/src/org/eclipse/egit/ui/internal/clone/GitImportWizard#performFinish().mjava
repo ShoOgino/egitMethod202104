@@ -1,54 +1,11 @@
 	@Override
 	public boolean performFinish() {
 		try {
-			final int actionSelection = importWithDirectoriesPage
-					.getActionSelection();
-
-			final IProject[] projectsToShare;
-			if (actionSelection == GitSelectWizardPage.ACTION_DIALOG_SHARE)
-				projectsToShare = shareProjectsPage.getSelectedProjects();
-			else
-				projectsToShare = null;
-
-			final File repoDir = selectRepoPage.getRepository().getDirectory();
-
 			getContainer().run(true, true, new IRunnableWithProgress() {
 
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
-
-					if (actionSelection != GitSelectWizardPage.ACTION_DIALOG_SHARE) {
-						// in case of the share page, the import is done by the
-						// share page itself
-						// TODO this currently must be run in the UI Thread due
-						// to access to
-						// SWT widgets
-						importProjects();
-					}
-
-					if (actionSelection != GitSelectWizardPage.ACTION_NO_SHARE) {
-
-						// TODO scheduling rule?
-						IProject[] projects;
-						if (projectsToShare == null)
-							projects = getAddedProjects();
-						else
-							projects = projectsToShare;
-						for (IProject prj : projects) {
-							if (monitor.isCanceled())
-								throw new InterruptedException();
-							//
-							ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
-									prj, repoDir);
-							try {
-								connectProviderOperation.execute(monitor);
-							} catch (CoreException e) {
-								throw new InvocationTargetException(e);
-							}
-						}
-
-					}
-
+					importProjects();
 				}
 			});
 		} catch (InvocationTargetException e) {
