@@ -1,0 +1,150 @@
+	private IDiffContainer buildDiffContainer(Repository repository,
+			RevCommit rightCommit, RevCommit headCommit,
+			RevCommit ancestorCommit, List<String> filterPaths, RevWalk rw,
+			IProgressMonitor monitor) throws IOException, InterruptedException {
+
+		monitor.setTaskName(UIText.GitMergeEditorInput_CalculatingDiffTaskName);
+		IDiffContainer result = new DiffNode(Differencer.CONFLICTING);
+
+		TreeWalk tw = new TreeWalk(repository);
+		try {
+			// filter by selected resources
+			if (filterPaths.size() > 1) {
+				List<TreeFilter> suffixFilters = new ArrayList<TreeFilter>();
+				for (String filterPath : filterPaths)
+					suffixFilters.add(PathFilter.create(filterPath));
+				TreeFilter otf = OrTreeFilter.create(suffixFilters);
+				tw.setFilter(otf);
+			} else if (filterPaths.size() > 0)
+				tw.setFilter(PathFilter.create(filterPaths.get(0)));
+
+			tw.setRecursive(true);
+
+			int dirCacheIndex = tw.addTree(new DirCacheIterator(repository
+					.readDirCache()));
+			int fileTreeIndex = tw.addTree(new FileTreeIterator(repository));
+			int repositoryTreeIndex = tw.addTree(rw.parseTree(repository
+					.resolve(Constants.HEAD)));
+
+			while (tw.next()) {
+				if (monitor.isCanceled())
+					throw new InterruptedException();
+
+				String gitPath = tw.getPathString();
+				monitor.setTaskName(gitPath);
+				DirCacheIterator dit = tw.getTree(dirCacheIndex,
+						DirCacheIterator.class);
+
+				final DirCacheEntry dirCacheEntry = dit == null ? null : dit
+						.getDirCacheEntry();
+
+				boolean conflicting = dirCacheEntry != null
+						&& dirCacheEntry.getStage() > 0;
+
+				AbstractTreeIterator rt = tw.getTree(repositoryTreeIndex,
+						AbstractTreeIterator.class);
+
+				FileTreeIterator fit = tw.getTree(fileTreeIndex,
+						FileTreeIterator.class);
+				if (fit == null || fit.isEntryIgnored())
+					continue;
+				// compare local file against HEAD to see if it was modified
+				boolean modified = rt != null
+						&& !fit.getEntryObjectId()
+								.equals(rt.getEntryObjectId());
+
+				// if this is neither conflicting nor changed, we skip it
+				if (!conflicting && !modified)
+					continue;
+
+				ITypedElement right;
+				if (conflicting)
+					right = CompareUtils.getFileRevisionTypedElement(gitPath,
+							rightCommit, repository);
+				else
+					right = CompareUtils.getFileRevisionTypedElement(gitPath,
+							headCommit, repository);
+
+				// can this really happen?
+				if (right instanceof EmptyTypedElement)
+					continue;
+
+				IFileRevision rev;
+				// if the file is not conflicting (as it was auto-merged)
+				// we will show the auto-merged (local) version
+
+				IPath locationPath = new Path(fit.getEntryFile().getPath());
+				final IFile file = ResourcesPlugin.getWorkspace().getRoot()
+						.getFileForLocation(locationPath);
+				if (file == null)
+					// TODO in the future, we should be able to show a version
+					// for a non-workspace file as well
+					continue;
+				if (!conflicting || useWorkspace)
+					rev = new LocalFileRevision(file);
+				else
+					rev = GitFileRevision.inCommit(repository, headCommit,
+							gitPath, null);
+
+				EditableRevision leftEditable = new EditableRevision(rev) {
+					@Override
+					public void setContent(final byte[] newContent) {
+						try {
+							run(false, false, new IRunnableWithProgress() {
+								public void run(IProgressMonitor myMonitor)
+										throws InvocationTargetException,
+										InterruptedException {
+									try {
+										file.setContents(
+												new ByteArrayInputStream(
+														newContent), false,
+												true, myMonitor);
+									} catch (CoreException e) {
+										throw new InvocationTargetException(e);
+									}
+								}
+							});
+						} catch (InvocationTargetException e) {
+							Activator
+									.handleError(e.getTargetException()
+											.getMessage(), e
+											.getTargetException(), true);
+						} catch (InterruptedException e) {
+							// ignore here
+						}
+					}
+				};
+				// make sure we don't need a round trip later
+				try {
+					leftEditable.cacheContents(monitor);
+				} catch (CoreException e) {
+					throw new IOException(e.getMessage());
+				}
+
+				int kind = Differencer.NO_CHANGE;
+				if (conflicting)
+					kind = Differencer.CONFLICTING;
+				else if (modified)
+					kind = Differencer.PSEUDO_CONFLICT;
+
+				DiffNode fileParent = getFileParent(result, file);
+
+				ITypedElement anc;
+				if (ancestorCommit != null)
+					anc = CompareUtils.getFileRevisionTypedElement(gitPath,
+							ancestorCommit, repository);
+				else
+					anc = null;
+				// we get an ugly black icon if we have an EmptyTypedElement
+				// instead of null
+				if (anc instanceof EmptyTypedElement)
+					anc = null;
+				// create the node as child
+				new DiffNode(fileParent, kind, anc, leftEditable, right);
+			}
+			return result;
+		} finally {
+			tw.release();
+		}
+	}
+
