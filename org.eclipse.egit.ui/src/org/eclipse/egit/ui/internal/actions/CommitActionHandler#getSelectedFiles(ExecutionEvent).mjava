@@ -10,9 +10,9 @@
 	 *         the user's selection
 	 * @throws ExecutionException
 	 */
-	private Collection<IFile> getSelectedFiles(ExecutionEvent event)
+	private Set<IFile> getSelectedFiles(ExecutionEvent event)
 			throws ExecutionException {
-		List<IFile> preselectionCandidates = new ArrayList<IFile>();
+		Set<IFile> preselectionCandidates = new LinkedHashSet<IFile>();
 		// get the resources the user selected
 		IResource[] selectedResources = getSelectedResources(event);
 		// iterate through all the files that may be committed

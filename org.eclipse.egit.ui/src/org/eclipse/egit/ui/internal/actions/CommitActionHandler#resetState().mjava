@@ -1,8 +1,8 @@
 	private void resetState() {
-		files = new ArrayList<IFile>();
-		notIndexed = new ArrayList<IFile>();
-		indexChanges = new ArrayList<IFile>();
-		notTracked = new ArrayList<IFile>();
+		files = new LinkedHashSet<IFile>();
+		notIndexed = new LinkedHashSet<IFile>();
+		indexChanges = new LinkedHashSet<IFile>();
+		notTracked = new LinkedHashSet<IFile>();
 		amending = false;
 		previousCommit = null;
 		indexDiffs = new HashMap<Repository, IndexDiff>();

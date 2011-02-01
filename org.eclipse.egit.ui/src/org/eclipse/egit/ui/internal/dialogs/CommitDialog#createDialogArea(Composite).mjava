@@ -202,9 +202,10 @@
 
 		filesViewer = new CheckboxTableViewer(resourcesTable);
 		filesViewer.setContentProvider(ArrayContentProvider.getInstance());
+		filesViewer.setUseHashlookup(true);
 		filesViewer.setLabelProvider(new CommitLabelProvider());
 		filesViewer.addFilter(new CommitItemFilter());
-		filesViewer.setInput(items);
+		filesViewer.setInput(items.toArray());
 		filesViewer.getTable().setMenu(getContextMenu());
 		if (!allowToChangeSelection) {
 			amendingButton.setSelection(false);
@@ -224,15 +225,11 @@
 			filesViewer.setAllChecked(true);
 		}
 		else {
-			// pre-emptively check any preselected files
-			for (IFile selectedFile : preselectedFiles) {
-				for (CommitItem item : items) {
-					if (item.file.equals(selectedFile) &&
-							item.status != Status.UNTRACKED &&
-							item.status != Status.ASSUME_UNCHANGED) {
-						filesViewer.setChecked(item, true);
-						break;
-					}
+			for (CommitItem item : items) {
+				if (preselectedFiles.contains(item.file) &&
+						item.status != Status.UNTRACKED &&
+						item.status != Status.ASSUME_UNCHANGED) {
+					filesViewer.setChecked(item, true);
 				}
 			}
 		}
