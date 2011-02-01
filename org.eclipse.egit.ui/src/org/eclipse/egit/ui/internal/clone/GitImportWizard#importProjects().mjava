@@ -6,7 +6,7 @@
 
 				switch (importWithDirectoriesPage.getWizardSelection()) {
 				case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
-					projectsImportPage.createProjects();
+					projectsImportPage.createProjects(selectRepoPage.getRepository());
 					break;
 				case GitSelectWizardPage.NEW_WIZARD:
 					new NewWizardAction(PlatformUI.getWorkbench()
@@ -39,6 +39,9 @@
 												.getProject(desc.getName());
 										prj.create(desc, monitor);
 										prj.open(monitor);
+										File repoDir = selectRepoPage.getRepository().getDirectory();
+										ConnectProviderOperation cpo = new ConnectProviderOperation(prj, repoDir);
+										cpo.execute(new NullProgressMonitor());
 
 										ResourcesPlugin.getWorkspace()
 												.getRoot().refreshLocal(

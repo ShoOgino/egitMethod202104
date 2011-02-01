@@ -31,21 +31,6 @@
 		generalWizard.setText(UIText.GitSelectWizardPage_ImportAsGeneralButton);
 		generalWizard.addSelectionListener(sl);
 
-		Group afterImportAction = new Group(main, SWT.SHADOW_ETCHED_IN);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(
-				afterImportAction);
-		afterImportAction
-				.setText(UIText.GitSelectWizardPage_SharingProjectsHeader);
-		afterImportAction.setLayout(new GridLayout(1, false));
-
-		actionAutoShare = new Button(afterImportAction, SWT.RADIO);
-		actionAutoShare.setText(UIText.GitSelectWizardPage_AutoShareButton);
-		actionAutoShare.addSelectionListener(sl);
-
-		actionNothing = new Button(afterImportAction, SWT.RADIO);
-		actionNothing.setText(UIText.GitSelectWizardPage_NoShareButton);
-		actionNothing.addSelectionListener(sl);
-
 		IDialogSettings settings = Activator.getDefault().getDialogSettings();
 		int previousWiz;
 		try {
@@ -64,21 +49,6 @@
 			newProjectWizard.setSelection(true);
 			break;
 
-		}
-
-		int previousAct;
-		try {
-			previousAct = settings.getInt(PREF_ACT);
-		} catch (NumberFormatException e) {
-			previousAct = ACTION_AUTO_SHARE;
-		}
-		switch (previousAct) {
-		case ACTION_AUTO_SHARE:
-			actionAutoShare.setSelection(true);
-			break;
-		case ACTION_NO_SHARE:
-			actionNothing.setSelection(true);
-			break;
 		}
 
 		tv = new TreeViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL

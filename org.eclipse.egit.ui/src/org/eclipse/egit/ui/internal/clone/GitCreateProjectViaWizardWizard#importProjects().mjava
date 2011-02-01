@@ -10,7 +10,7 @@
 
 				switch (mySelectionPage.getWizardSelection()) {
 				case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
-					myProjectsImportPage.createProjects();
+					myProjectsImportPage.createProjects(myRepository);
 					break;
 				case GitSelectWizardPage.NEW_WIZARD:
 					new NewProjectAction(PlatformUI.getWorkbench()
@@ -51,6 +51,11 @@
 												.getRoot().refreshLocal(
 														IResource.DEPTH_ONE,
 														monitor);
+
+										File repoDir = myRepository.getDirectory();
+										ConnectProviderOperation cpo = new ConnectProviderOperation(prj, repoDir);
+										cpo.execute(new NullProgressMonitor());
+
 
 									}
 								});

@@ -7,7 +7,7 @@
 	 * @throws InvocationTargetException
 	 * @throws InterruptedException
 	 */
-	private boolean createExistingProject(final ProjectRecord record,
+	private IProject createExistingProject(final ProjectRecord record,
 			IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 		String projectName = record.getProjectName();
@@ -36,12 +36,11 @@
 					30));
 			project.open(IResource.BACKGROUND_REFRESH, new SubProgressMonitor(
 					monitor, 50));
+			return project;
 		} catch (CoreException e) {
 			throw new InvocationTargetException(e);
 		} finally {
 			monitor.done();
 		}
-
-		return true;
 	}
 
