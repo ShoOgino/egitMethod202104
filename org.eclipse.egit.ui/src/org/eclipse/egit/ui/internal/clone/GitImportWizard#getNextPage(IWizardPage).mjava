@@ -12,7 +12,7 @@
 						.getPath());
 				return projectsImportPage;
 			case GitSelectWizardPage.NEW_WIZARD:
-					return null;
+				return null;
 			case GitSelectWizardPage.GENERAL_WIZARD:
 				createGeneralProjectPage.setPath(importWithDirectoriesPage
 						.getPath());
@@ -22,7 +22,7 @@
 
 		} else if (page == createGeneralProjectPage
 				|| page == projectsImportPage) {
-				return null;
+			return null;
 		}
 		return super.getNextPage(page);
 	}

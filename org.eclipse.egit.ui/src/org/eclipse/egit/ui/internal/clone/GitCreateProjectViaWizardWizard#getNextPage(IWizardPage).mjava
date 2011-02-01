@@ -1,8 +1,6 @@
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-
 		if (page == mySelectionPage) {
-
 			switch (mySelectionPage.getWizardSelection()) {
 			case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
 				return myProjectsImportPage;
@@ -10,11 +8,8 @@
 				return null;
 			case GitSelectWizardPage.GENERAL_WIZARD:
 				return myCreateGeneralProjectPage;
-
 			}
-
 			return super.getNextPage(page);
-
 		} else if (page == myCreateGeneralProjectPage
 				|| page == myProjectsImportPage) {
 			return null;

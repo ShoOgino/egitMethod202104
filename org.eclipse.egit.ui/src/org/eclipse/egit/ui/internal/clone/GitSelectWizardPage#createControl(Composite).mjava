@@ -5,10 +5,17 @@
 		main.setLayout(new GridLayout(1, false));
 
 		SelectionListener sl = new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				tv.getTree().setEnabled(!newProjectWizard.getSelection());
+				if (importExisting.getSelection())
+					wizardSelection = EXISTING_PROJECTS_WIZARD;
+				else if (newProjectWizard.getSelection())
+					wizardSelection = NEW_WIZARD;
+				else if (generalWizard.getSelection())
+					wizardSelection = GENERAL_WIZARD;
+				else
+					wizardSelection = EXISTING_PROJECTS_WIZARD;
 				checkPage();
 			}
 		};
@@ -32,13 +39,12 @@
 		generalWizard.addSelectionListener(sl);
 
 		IDialogSettings settings = Activator.getDefault().getDialogSettings();
-		int previousWiz;
 		try {
-			previousWiz = settings.getInt(PREF_WIZ);
+			wizardSelection = settings.getInt(PREF_WIZ);
 		} catch (NumberFormatException e) {
-			previousWiz = EXISTING_PROJECTS_WIZARD;
+			wizardSelection = EXISTING_PROJECTS_WIZARD;
 		}
-		switch (previousWiz) {
+		switch (wizardSelection) {
 		case EXISTING_PROJECTS_WIZARD:
 			importExisting.setSelection(true);
 			break;

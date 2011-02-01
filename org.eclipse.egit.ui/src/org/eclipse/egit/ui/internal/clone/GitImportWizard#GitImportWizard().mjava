@@ -4,8 +4,6 @@
 	public GitImportWizard() {
 		setWindowTitle(UIText.GitImportWizard_WizardTitle);
 		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
-		previousProjects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
 		selectRepoPage.setWizard(this);
 		setNeedsProgressMonitor(true);
 		ConfigurationChecker.checkConfiguration();

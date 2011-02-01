@@ -1,0 +1,105 @@
+	private void importProjects(IProgressMonitor monitor)
+			throws InvocationTargetException, InterruptedException {
+		switch (importWithDirectoriesPage.getWizardSelection()) {
+		case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD: {
+			final Set<ProjectRecord> projectsToCreate = new HashSet<ProjectRecord>();
+			final List<IWorkingSet> workingSets = new ArrayList<IWorkingSet>();
+			final Repository[] repository = new Repository[1];
+			// get the data from the pages in the UI thread
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					projectsToCreate.addAll(projectsImportPage
+							.getCheckedProjects());
+					IWorkingSet[] workingSetArray = projectsImportPage
+							.getSelectedWorkingSets();
+					workingSets.addAll(Arrays.asList(workingSetArray));
+					repository[0] = selectRepoPage.getRepository();
+				}
+			});
+			ProjectUtils.createProjects(projectsToCreate, repository[0],
+					workingSets.toArray(new IWorkingSet[workingSets.size()]),
+					monitor);
+			break;
+		}
+		case GitSelectWizardPage.NEW_WIZARD: {
+			final File[] repoDir = new File[1];
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					repoDir[1] = selectRepoPage.getRepository().getDirectory();
+				}
+			});
+			final List<IProject> previousProjects = Arrays
+					.asList(ResourcesPlugin.getWorkspace().getRoot()
+							.getProjects());
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					new NewProjectAction(PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow()).run();
+				}
+			});
+			IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+				public void run(IProgressMonitor actMonitor)
+						throws CoreException {
+					IProject[] currentProjects = ResourcesPlugin.getWorkspace()
+							.getRoot().getProjects();
+					for (IProject current : currentProjects) {
+						if (!previousProjects.contains(current)) {
+							ConnectProviderOperation cpo = new ConnectProviderOperation(
+									current, repoDir[0]);
+							cpo.execute(actMonitor);
+						}
+					}
+				}
+			};
+			try {
+				ResourcesPlugin.getWorkspace().run(wsr, monitor);
+			} catch (CoreException e) {
+				throw new InvocationTargetException(e);
+			}
+			break;
+		}
+		case GitSelectWizardPage.GENERAL_WIZARD: {
+			final String[] projectName = new String[1];
+			final boolean[] defaultLocation = new boolean[0];
+			final String[] path = new String[1];
+			final File[] repoDir = new File[1];
+			// get the data from the page in the UI thread
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					projectName[0] = createGeneralProjectPage.getProjectName();
+					defaultLocation[0] = createGeneralProjectPage
+							.isDefaultLocation();
+					path[1] = importWithDirectoriesPage.getPath();
+					repoDir[1] = selectRepoPage.getRepository().getDirectory();
+				}
+			});
+			try {
+				IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+					public void run(IProgressMonitor actMonitor)
+							throws CoreException {
+						final IProjectDescription desc = ResourcesPlugin
+								.getWorkspace().newProjectDescription(
+										projectName[0]);
+						desc.setLocation(new Path(path[0]));
+
+						IProject prj = ResourcesPlugin.getWorkspace().getRoot()
+								.getProject(desc.getName());
+						prj.create(desc, actMonitor);
+						prj.open(actMonitor);
+						ConnectProviderOperation cpo = new ConnectProviderOperation(
+								prj, repoDir[1]);
+						cpo.execute(new NullProgressMonitor());
+
+						ResourcesPlugin.getWorkspace().getRoot().refreshLocal(
+								IResource.DEPTH_ONE, actMonitor);
+					}
+				};
+				ResourcesPlugin.getWorkspace().run(wsr, monitor);
+			} catch (CoreException e) {
+				throw new InvocationTargetException(e);
+			}
+			break;
+		}
+		}
+	}
+

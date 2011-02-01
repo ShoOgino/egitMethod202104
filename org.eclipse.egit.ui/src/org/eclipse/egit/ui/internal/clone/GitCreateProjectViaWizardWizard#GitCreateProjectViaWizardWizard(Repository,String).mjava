@@ -4,10 +4,9 @@
 	 */
 	public GitCreateProjectViaWizardWizard(Repository repository, String path) {
 		super();
-		previousProjects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
 		myRepository = repository;
 		myGitDir = path;
+		setNeedsProgressMonitor(true);
 		setWindowTitle(NLS.bind(
 				UIText.GitCreateProjectViaWizardWizard_WizardTitle,
 				myRepository.getDirectory().getPath()));

@@ -2,10 +2,9 @@
 	public boolean performFinish() {
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
-
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
-					importProjects();
+					importProjects(monitor);
 				}
 			});
 		} catch (InvocationTargetException e) {
