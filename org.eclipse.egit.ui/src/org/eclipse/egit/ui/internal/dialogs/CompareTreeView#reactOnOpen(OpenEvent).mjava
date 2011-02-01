@@ -38,14 +38,14 @@
 					}
 				}
 			};
-			GitFileRevision rightRevision = rightVersionMap.get(new Path(
+			GitFileRevision rightRevision = compareVersionMap.get(new Path(
 					repositoryMapping.getRepoRelativePath(res)));
 			if (rightRevision == null)
 				right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
 						NLS
 								.bind(
 										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-										res.getName(), getRightVersion()));
+										res.getName(), getCompareVersion()));
 			else
 				right = new FileRevisionTypedElement(rightRevision);
 			GitCompareFileRevisionEditorInput compareInput = new GitCompareFileRevisionEditorInput(
@@ -57,7 +57,7 @@
 			GitFileRevision rightRevision = (GitFileRevision) selected;
 			left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS
 					.bind(UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-							rightRevision.getName(), getLeftVersion()));
+							rightRevision.getName(), getBaseVersion()));
 			right = new FileRevisionTypedElement(rightRevision);
 		} else if (selected instanceof PathNode) {
 			PathNode node = (PathNode) selected;
@@ -66,34 +66,36 @@
 				// fall through
 			case FILE_BOTH_SIDES_SAME: {
 				// open a compare editor with both sides filled
-				GitFileRevision rightRevision = rightVersionMap.get(node.path);
+				GitFileRevision rightRevision = compareVersionMap
+						.get(node.path);
 				right = new FileRevisionTypedElement(rightRevision);
-				GitFileRevision leftRevision = leftVersionMap.get(node.path);
+				GitFileRevision leftRevision = baseVersionMap.get(node.path);
 				left = new FileRevisionTypedElement(leftRevision);
 				break;
 			}
 			case FILE_DELETED: {
 				// open compare editor with left side empty
-				GitFileRevision rightRevision = rightVersionMap.get(node.path);
+				GitFileRevision rightRevision = compareVersionMap
+						.get(node.path);
 				right = new FileRevisionTypedElement(rightRevision);
 				left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
 						NLS
 								.bind(
 										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
 										rightRevision.getName(),
-										getLeftVersion()));
+										getBaseVersion()));
 				break;
 			}
 			case FILE_ADDED: {
 				// open compare editor with right side empty
-				GitFileRevision leftRevision = leftVersionMap.get(node.path);
+				GitFileRevision leftRevision = baseVersionMap.get(node.path);
 				left = new FileRevisionTypedElement(leftRevision);
 				right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
 						NLS
 								.bind(
 										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
 										leftRevision.getName(),
-										getRightVersion()));
+										getCompareVersion()));
 				break;
 			}
 			case FOLDER:
@@ -105,6 +107,15 @@
 				return;
 			}
 
+		} else if (selected instanceof PathNodeAdapter) {
+			// deleted in workspace
+			PathNodeAdapter node = (PathNodeAdapter) selected;
+			GitFileRevision rightRevision = compareVersionMap
+					.get(node.pathNode.path);
+			right = new FileRevisionTypedElement(rightRevision);
+			left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS
+					.bind(UIText.CompareTreeView_ItemNotFoundInVersionMessage,
+							node.pathNode.path.lastSegment(), getBaseVersion()));
 		} else
 			return;
 

@@ -1,33 +1,33 @@
-	private void buildMaps(Repository repository, RevCommit leftCommit,
-			RevCommit rightCommit, IProgressMonitor monitor)
+	private void buildMaps(Repository repository, RevCommit baseCommit,
+			RevCommit compareCommit, IProgressMonitor monitor)
 			throws InterruptedException, IOException {
 		monitor.beginTask(UIText.CompareTreeView_AnalyzingRepositoryTaskText,
 				IProgressMonitor.UNKNOWN);
-		boolean useIndex = rightVersion.equals(INDEX_VERSION);
-		rightOnly.clear();
-		equalIds.clear();
-		leftVersionMap.clear();
-		rightVersionMap.clear();
-		rightPathsWithChildren.clear();
-		leftOnly.clear();
-		leftPathsWithChildren.clear();
+		boolean useIndex = compareVersion.equals(INDEX_VERSION);
+		deletedPaths.clear();
+		equalContentPaths.clear();
+		baseVersionMap.clear();
+		compareVersionMap.clear();
+		compareVersionPathsWithChildren.clear();
+		addedPaths.clear();
+		baseVersionPathsWithChildren.clear();
 		boolean checkIgnored = false;
 		TreeWalk tw = new TreeWalk(repository);
 		try {
-			int leftTreeIndex;
-			if (leftCommit == null) {
+			int baseTreeIndex;
+			if (baseCommit == null) {
 				checkIgnored = true;
-				leftTreeIndex = tw.addTree(new AdaptableFileTreeIterator(
+				baseTreeIndex = tw.addTree(new AdaptableFileTreeIterator(
 						repository, ResourcesPlugin.getWorkspace().getRoot()));
 			} else
-				leftTreeIndex = tw.addTree(new CanonicalTreeParser(null,
-						repository.newObjectReader(), leftCommit.getTree()));
-			int rightTreeIndex;
+				baseTreeIndex = tw.addTree(new CanonicalTreeParser(null,
+						repository.newObjectReader(), baseCommit.getTree()));
+			int compareTreeIndex;
 			if (!useIndex)
-				rightTreeIndex = tw.addTree(new CanonicalTreeParser(null,
-						repository.newObjectReader(), rightCommit.getTree()));
+				compareTreeIndex = tw.addTree(new CanonicalTreeParser(null,
+						repository.newObjectReader(), compareCommit.getTree()));
 			else
-				rightTreeIndex = tw.addTree(new DirCacheIterator(repository
+				compareTreeIndex = tw.addTree(new DirCacheIterator(repository
 						.readDirCache()));
 
 			if (input instanceof IResource[]) {
@@ -54,100 +54,102 @@
 			while (tw.next()) {
 				if (monitor.isCanceled())
 					throw new InterruptedException();
-				AbstractTreeIterator rightVersionIterator = tw.getTree(
-						rightTreeIndex, AbstractTreeIterator.class);
-				AbstractTreeIterator leftVersionIterator = tw.getTree(
-						leftTreeIndex, AbstractTreeIterator.class);
+				AbstractTreeIterator compareVersionIterator = tw.getTree(
+						compareTreeIndex, AbstractTreeIterator.class);
+				AbstractTreeIterator baseVersionIterator = tw.getTree(
+						baseTreeIndex, AbstractTreeIterator.class);
 				if (checkIgnored
-						&& leftVersionIterator != null
-						&& ((WorkingTreeIterator) leftVersionIterator)
+						&& baseVersionIterator != null
+						&& ((WorkingTreeIterator) baseVersionIterator)
 								.isEntryIgnored())
 					continue;
-				if (rightVersionIterator != null && leftVersionIterator != null) {
-					monitor.setTaskName(leftVersionIterator
+				if (compareVersionIterator != null
+						&& baseVersionIterator != null) {
+					monitor.setTaskName(baseVersionIterator
 							.getEntryPathString());
-					IPath currentPath = new Path(leftVersionIterator
+					IPath currentPath = new Path(baseVersionIterator
 							.getEntryPathString());
 					if (!useIndex)
-						rightVersionMap.put(currentPath, GitFileRevision
-								.inCommit(repository, rightCommit,
-										leftVersionIterator
+						compareVersionMap
+								.put(currentPath, GitFileRevision.inCommit(
+										repository, compareCommit,
+										baseVersionIterator
 												.getEntryPathString(), tw
-												.getObjectId(rightTreeIndex)));
+												.getObjectId(compareTreeIndex)));
 					else
-						rightVersionMap.put(currentPath, GitFileRevision
-								.inIndex(repository, leftVersionIterator
+						compareVersionMap.put(currentPath, GitFileRevision
+								.inIndex(repository, baseVersionIterator
 										.getEntryPathString()));
-					if (leftCommit != null)
-						leftVersionMap.put(currentPath, GitFileRevision
-								.inCommit(repository, leftCommit,
-										leftVersionIterator
+					if (baseCommit != null)
+						baseVersionMap.put(currentPath, GitFileRevision
+								.inCommit(repository, baseCommit,
+										baseVersionIterator
 												.getEntryPathString(), tw
-												.getObjectId(leftTreeIndex)));
-					boolean equalContent = rightVersionIterator
+												.getObjectId(baseTreeIndex)));
+					boolean equalContent = compareVersionIterator
 							.getEntryObjectId().equals(
-									leftVersionIterator.getEntryObjectId());
+									baseVersionIterator.getEntryObjectId());
 					if (equalContent)
-						equalIds.add(currentPath);
+						equalContentPaths.add(currentPath);
 
 					if (equalContent && !showEquals)
 						continue;
 
 					while (currentPath.segmentCount() > 0) {
 						currentPath = currentPath.removeLastSegments(1);
-						boolean addedLeft = showAddedOnly
-								|| !leftPathsWithChildren.add(currentPath);
-						boolean addedRight = showDeletedOnly
-								|| !rightPathsWithChildren.add(currentPath);
-						if (addedLeft && addedRight)
+						if (!baseVersionPathsWithChildren.add(currentPath))
 							break;
 					}
 
-				} else if (leftVersionIterator != null
-						&& rightVersionIterator == null) {
-					monitor.setTaskName(leftVersionIterator
+				} else if (baseVersionIterator != null
+						&& compareVersionIterator == null) {
+					monitor.setTaskName(baseVersionIterator
 							.getEntryPathString());
-					// only on left side
-					IPath currentPath = new Path(leftVersionIterator
+					// only on base side
+					IPath currentPath = new Path(baseVersionIterator
 							.getEntryPathString());
-					leftOnly.add(currentPath);
-					if (leftCommit != null)
-						leftVersionMap.put(currentPath, GitFileRevision
-								.inCommit(repository, leftCommit,
-										leftVersionIterator
+					addedPaths.add(currentPath);
+					if (baseCommit != null)
+						baseVersionMap.put(currentPath, GitFileRevision
+								.inCommit(repository, baseCommit,
+										baseVersionIterator
 												.getEntryPathString(), tw
-												.getObjectId(leftTreeIndex)));
+												.getObjectId(baseTreeIndex)));
 					while (currentPath.segmentCount() > 0) {
 						currentPath = currentPath.removeLastSegments(1);
-						if (!leftPathsWithChildren.add(currentPath))
+						if (!baseVersionPathsWithChildren.add(currentPath))
 							break;
 					}
 
-				} else if (rightVersionIterator != null
-						&& leftVersionIterator == null) {
-					monitor.setTaskName(rightVersionIterator
+				} else if (compareVersionIterator != null
+						&& baseVersionIterator == null) {
+					monitor.setTaskName(compareVersionIterator
 							.getEntryPathString());
-					// only on right side
-					IPath currentPath = new Path(rightVersionIterator
+					// only on compare side
+					IPath currentPath = new Path(compareVersionIterator
 							.getEntryPathString());
-					rightOnly.add(currentPath);
+					deletedPaths.add(currentPath);
+					List<PathNodeAdapter> children = compareVersionPathsWithChildren
+							.get(currentPath.removeLastSegments(1));
+					if (children == null) {
+						children = new ArrayList<PathNodeAdapter>(1);
+						compareVersionPathsWithChildren.put(currentPath
+								.removeLastSegments(1), children);
+					}
+					children.add(new PathNodeAdapter(new PathNode(currentPath,
+							Type.FILE_DELETED)));
 
 					if (!useIndex)
-						rightVersionMap.put(currentPath, GitFileRevision
-								.inCommit(repository, rightCommit,
-										rightVersionIterator
+						compareVersionMap
+								.put(currentPath, GitFileRevision.inCommit(
+										repository, compareCommit,
+										compareVersionIterator
 												.getEntryPathString(), tw
-												.getObjectId(rightTreeIndex)));
+												.getObjectId(compareTreeIndex)));
 					else
-						rightVersionMap.put(currentPath, GitFileRevision
-								.inIndex(repository, rightVersionIterator
+						compareVersionMap.put(currentPath, GitFileRevision
+								.inIndex(repository, compareVersionIterator
 										.getEntryPathString()));
-
-					while (currentPath.segmentCount() > 0) {
-						currentPath = currentPath.removeLastSegments(1);
-						if (!rightPathsWithChildren.add(currentPath))
-							break;
-					}
 				}
 			}
 		} finally {

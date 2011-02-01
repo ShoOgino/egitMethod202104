@@ -10,25 +10,30 @@
 			for (Object child : children) {
 				IPath path = new Path(repositoryMapping
 						.getRepoRelativePath((IResource) child));
-				if (!showEquals && equalIds.contains(path)) {
+				if (!showEquals && equalContentPaths.contains(path)) {
 					rebuildArray = true;
 					continue;
 				}
 				if (child instanceof IContainer
-						&& !leftPathsWithChildren.contains(path)) {
+						&& !baseVersionPathsWithChildren.contains(path)) {
 					rebuildArray = true;
 					continue;
 				}
-				if (child instanceof IFile && showAddedOnly
-						&& !leftOnly.contains(path)) {
-					rebuildArray = true;
-					continue;
-				}
-				if (!showEquals && equalIds.contains(path)) {
+				if (!showEquals && equalContentPaths.contains(path)) {
 					rebuildArray = true;
 					continue;
 				}
 				childList.add(child);
+			}
+			if (element instanceof IContainer) {
+				List<PathNodeAdapter> deletedChildren = compareVersionPathsWithChildren
+						.get(new Path(repositoryMapping
+								.getRepoRelativePath((IResource) element)));
+				if (deletedChildren != null) {
+					rebuildArray = true;
+					for (IWorkbenchAdapter path : deletedChildren)
+						childList.add(path);
+				}
 			}
 			if (rebuildArray)
 				return childList.toArray();

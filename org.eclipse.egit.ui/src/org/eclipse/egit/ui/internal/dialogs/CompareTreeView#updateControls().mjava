@@ -1,9 +1,7 @@
 	private void updateControls() {
 		for (IWorkbenchAction action : actionsToDispose)
 			action.setEnabled(input != null);
-		leftTree.getTree().setEnabled(input != null);
-		rightTree.getTree().setEnabled(input != null);
-		showEqualsAction.setEnabled(!(showAddedOnly || showDeletedOnly));
+		tree.getTree().setEnabled(input != null);
 		if (input == null)
 			setContentDescription(UIText.CompareTreeView_NoInputText);
 		else {
@@ -20,22 +18,22 @@
 						.getRepositoryName(((Repository) input));
 			else
 				throw new IllegalStateException();
-			if (leftVersion == null)
+			if (baseVersion == null)
 				setContentDescription(NLS
 						.bind(
 								UIText.CompareTreeView_ComparingWorkspaceVersionDescription,
 								name,
-								rightVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
-										: rightVersion));
+								compareVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
+										: compareVersion));
 			else
 				setContentDescription(NLS
 						.bind(
 								UIText.CompareTreeView_ComparingTwoVersionDescription,
 								new String[] {
-										leftVersion,
+										baseVersion,
 										name,
-										rightVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
-												: rightVersion }));
+										compareVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
+												: compareVersion }));
 		}
 	}
 

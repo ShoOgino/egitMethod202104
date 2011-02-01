@@ -3,17 +3,17 @@
 	 *
 	 * @param input
 	 *            the {@link Repository} from which to build the tree
-	 * @param leftVersion
+	 * @param baseVersion
 	 *            a {@link Ref} name or {@link RevCommit} id
-	 * @param rightVersion
+	 * @param compareVersion
 	 *            a {@link Ref} name or {@link RevCommit} id
 	 */
-	public void setInput(final Repository input, String leftVersion,
-			String rightVersion) {
+	public void setInput(final Repository input, String baseVersion,
+			String compareVersion) {
 		this.input = input;
-		this.leftVersion = leftVersion;
-		this.rightVersion = rightVersion;
-		buildTrees();
+		this.baseVersion = baseVersion;
+		this.compareVersion = compareVersion;
+		buildTrees(true);
 		updateControls();
 	}
 

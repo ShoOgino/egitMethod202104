@@ -1,0 +1,87 @@
+	private void buildTrees(final boolean buildMaps) {
+		final Object[] wsExpaneded = tree.getExpandedElements();
+		final ISelection wsSel = tree.getSelection();
+
+		tree.setInput(null);
+
+		if (baseVersion == null) {
+			tree.setContentProvider(new WorkbenchTreeContentProvider());
+			tree.setComparator(new WorkbenchTreeComparator());
+			tree.setLabelProvider(new WorkbenchTreeLabelProvider());
+		} else {
+			tree.setContentProvider(new PathNodeContentProvider());
+			tree.setComparator(new PathNodeTreeComparator());
+			tree.setLabelProvider(new PathNodeLabelProvider());
+		}
+		for (IWorkbenchAction action : actionsToDispose)
+			action.setEnabled(false);
+
+		showEquals = Activator.getDefault().getPreferenceStore().getBoolean(
+				UIPreferences.TREE_COMPARE_SHOW_EQUALS);
+		final Repository repo;
+		if (input instanceof IResource[]) {
+			repositoryMapping = RepositoryMapping
+					.getMapping(((IResource[]) input)[0]);
+			if (repositoryMapping == null
+					|| repositoryMapping.getRepository() == null)
+				return;
+			repo = repositoryMapping.getRepository();
+		} else if (input instanceof Repository) {
+			repo = (Repository) input;
+		} else
+			return;
+		final RevCommit baseCommit;
+		final RevCommit compareCommit;
+		RevWalk rw = new RevWalk(repo);
+		try {
+			ObjectId commitId = repo.resolve(compareVersion);
+			compareCommit = commitId != null ? rw.parseCommit(commitId) : null;
+			if (baseVersion == null)
+				baseCommit = null;
+			else {
+				commitId = repo.resolve(baseVersion);
+				baseCommit = rw.parseCommit(commitId);
+			}
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+			return;
+		} finally {
+			rw.release();
+		}
+		showBusy(true);
+		try {
+			// this does the hard work...
+			new ProgressMonitorDialog(getViewSite().getShell()).run(true, true,
+					new IRunnableWithProgress() {
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							try {
+								if (buildMaps)
+									buildMaps(repo, baseCommit, compareCommit,
+											monitor);
+								PlatformUI.getWorkbench().getDisplay()
+										.asyncExec(new Runnable() {
+											public void run() {
+												tree.setInput(input);
+												tree
+														.setExpandedElements(wsExpaneded);
+												tree.setSelection(wsSel);
+												updateControls();
+											}
+										});
+							} catch (IOException e) {
+								throw new InvocationTargetException(e);
+							}
+						}
+					});
+		} catch (InvocationTargetException e) {
+			Activator.handleError(e.getTargetException().getMessage(), e
+					.getTargetException(), true);
+		} catch (InterruptedException e) {
+			input = null;
+		} finally {
+			showBusy(false);
+		}
+	}
+

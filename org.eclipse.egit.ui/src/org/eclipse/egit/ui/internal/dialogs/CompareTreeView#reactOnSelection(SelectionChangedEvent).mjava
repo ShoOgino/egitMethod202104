@@ -1,9 +1,0 @@
-	private void reactOnSelection(SelectionChangedEvent event) {
-		if (rightTree.getTree().isFocusControl()
-				&& !(leftTree.getSelection().equals(event.getSelection())))
-			leftTree.setSelection(event.getSelection());
-		else if (leftTree.getTree().isFocusControl()
-				&& !(rightTree.getSelection().equals(event.getSelection())))
-			rightTree.setSelection(event.getSelection());
-	}
-

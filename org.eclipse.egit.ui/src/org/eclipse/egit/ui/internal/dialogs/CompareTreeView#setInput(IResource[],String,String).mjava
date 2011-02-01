@@ -4,18 +4,18 @@
 	 *
 	 * @param input
 	 *            the {@link IResource}s from which to build the tree
-	 * @param leftVersion
+	 * @param baseVersion
 	 *            a {@link Ref} name or {@link RevCommit} id
-	 * @param rightVersion
+	 * @param compareVersion
 	 *            a {@link Ref} name or {@link RevCommit} id or
 	 *            {@link #INDEX_VERSION}
 	 */
-	public void setInput(final IResource[] input, String leftVersion,
-			String rightVersion) {
+	public void setInput(final IResource[] input, String baseVersion,
+			String compareVersion) {
 		setResourceInput(input);
-		this.leftVersion = leftVersion;
-		this.rightVersion = rightVersion;
-		buildTrees();
+		this.baseVersion = baseVersion;
+		this.compareVersion = compareVersion;
+		buildTrees(true);
 		updateControls();
 	}
 
