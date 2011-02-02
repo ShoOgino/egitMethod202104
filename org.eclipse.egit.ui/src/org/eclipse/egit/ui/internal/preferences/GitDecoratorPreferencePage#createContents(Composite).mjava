@@ -14,24 +14,49 @@
 		TabFolder tabFolder = new TabFolder(composite, SWT.NONE);
 		tabFolder.setLayoutData(SWTUtils.createHVFillGridData());
 
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+				if (navigatorPreview != null && changeSetPreview != null) {
+					if (UIText.DecoratorPreferencesPage_otherDecorations.equals(e.item.getData())) {
+						navigatorPreview.hide();
+						changeSetPreview.show();
+					} else {
+						changeSetPreview.hide();
+						navigatorPreview.show();
+					}
+				}
+			}
+
+		});
+
+		changeSetPreview = new ChangeSetPreview(composite);
+		navigatorPreview = new NavigatorPreview(composite);
+
 		generalTab = new GeneralTab(tabFolder);
 		textDecorationTab = new TextDecorationTab(tabFolder);
 		iconDecorationTab = new IconDecorationTab(tabFolder);
+		otherDecorationTab = new OtherDecorationTab(tabFolder);
 
 		initializeValues();
 
-		preview = new Preview(composite);
-		preview.refresh();
+		changeSetPreview.hide();
 
-		generalTab.addObserver(preview);
-		textDecorationTab.addObserver(preview);
-		iconDecorationTab.addObserver(preview);
+		changeSetPreview.refresh();
+		navigatorPreview.refresh();
+
+		generalTab.addObserver(navigatorPreview);
+		textDecorationTab.addObserver(navigatorPreview);
+		iconDecorationTab.addObserver(navigatorPreview);
+
+		otherDecorationTab.addObserver(changeSetPreview);
 
 		// TODO: Add help text for this preference page
 
 		themeListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
-				preview.refresh();
+				navigatorPreview.refresh();
+				changeSetPreview.refresh();
 			}
 		};
 		PlatformUI.getWorkbench().getThemeManager().addPropertyChangeListener(

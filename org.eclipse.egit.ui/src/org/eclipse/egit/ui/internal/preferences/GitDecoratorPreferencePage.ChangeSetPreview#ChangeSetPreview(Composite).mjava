@@ -1,0 +1,26 @@
+		public ChangeSetPreview(Composite composite) {
+			super(composite);
+			fViewer.setContentProvider(this);
+			fViewer.setLabelProvider(new LabelProvider() {
+
+				@Override
+				public Image getImage(Object element) {
+					if (element instanceof GitModelCommitMokeup)
+						return fImageCache.createImage(UIIcons.CHANGESET);
+
+					return super.getImage(element);
+				}
+
+				public String getText(Object element) {
+					if (element instanceof GitModelCommitMokeup) {
+						String format = store.getString(UIPreferences.SYNC_VIEW_CHANGESET_LABEL_FORMAT);
+						String dateFormat = store.getString(UIPreferences.DATE_FORMAT);
+						return ((GitModelCommitMokeup)element).getMokeupText(format, dateFormat);
+					}
+					return super.getText(element);
+				}
+			});
+			fViewer.setContentProvider(this);
+			fViewer.setInput(new GitModelCommitMokeup());
+		}
+

@@ -1,0 +1,12 @@
+		public NavigatorPreview(Composite composite) {
+			super(composite);
+			// Has to happen before the tree control is constructed
+			reloadDecorationHelper();
+
+			fViewer.setContentProvider(this);
+			fViewer.setLabelProvider(new ResLabelProvider());
+			fViewer.setInput(PREVIEW_FILESYSTEM_ROOT);
+			fViewer.expandAll();
+			fHelper = new DecorationHelper(new PreferenceStore());
+		}
+

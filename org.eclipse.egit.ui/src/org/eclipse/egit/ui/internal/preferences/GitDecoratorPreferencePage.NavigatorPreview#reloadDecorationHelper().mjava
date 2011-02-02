@@ -1,6 +1,8 @@
 		private void reloadDecorationHelper() {
-			PreferenceStore store = new PreferenceStore();
-			performOk(store);
+			store = new PreferenceStore();
+			if (tabsInitialized)
+				performOk(store);
+
 			fHelper = new DecorationHelper(store);
 		}
 
