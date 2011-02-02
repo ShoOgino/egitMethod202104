@@ -10,8 +10,8 @@
 				// NB This does the same thing in
 				// DecoratableResourceAdapter, but neither currently
 				// consult .gitignore
-				addIgnore(monitor, resource);
-
+				if (!isIgnored(resource))
+					addIgnore(monitor, resource);
 				monitor.worked(1);
 			}
 			monitor.done();
