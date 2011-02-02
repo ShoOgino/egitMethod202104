@@ -1,0 +1,18 @@
+	/**
+	 * Executes this directly, without showing a confirmation dialog
+	 *
+	 * @param monitor
+	 * @return the result of the operation
+	 * @throws CoreException
+	 */
+	public PushOperationResult execute(IProgressMonitor monitor)
+			throws CoreException {
+		try {
+			op.run(monitor);
+			return op.getOperationResult();
+		} catch (InvocationTargetException e) {
+			throw new CoreException(Activator.createErrorStatus(e.getCause()
+					.getMessage(), e.getCause()));
+		}
+	}
+

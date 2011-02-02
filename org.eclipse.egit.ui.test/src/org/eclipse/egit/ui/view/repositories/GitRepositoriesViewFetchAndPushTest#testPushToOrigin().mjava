@@ -25,6 +25,7 @@
 				destinationString);
 
 		// first time: expect new branch
+		TestUtil.joinJobs(JobFamilies.PUSH);
 		SWTBotShell confirmed = bot.shell(dialogTitle);
 		SWTBotTable table = confirmed.bot().table();
 		int rowCount = table.rowCount();

@@ -1,0 +1,24 @@
+	/**
+	 * Shows this dialog asynchronously
+	 *
+	 * @param repository
+	 * @param result
+	 * @param sourceString
+	 */
+	public static void show(final Repository repository,
+			final PushOperationResult result, final String sourceString) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				PlatformUI.getWorkbench().getDisplay().asyncExec(
+						new Runnable() {
+							public void run() {
+								Shell shell = PlatformUI.getWorkbench()
+										.getActiveWorkbenchWindow().getShell();
+								new PushResultDialog(shell, repository, result,
+										sourceString).open();
+							}
+						});
+			}
+		});
+	}
+

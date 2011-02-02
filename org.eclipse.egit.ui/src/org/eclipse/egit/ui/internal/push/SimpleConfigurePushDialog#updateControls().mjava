@@ -1,0 +1,43 @@
+	private void updateControls() {
+		boolean anyFetchUri = !config.getURIs().isEmpty();
+		boolean anyPushUri = !config.getPushURIs().isEmpty();
+		boolean anyUri = anyFetchUri || anyPushUri;
+		setErrorMessage(null);
+		if (!anyUri)
+			setErrorMessage(UIText.SimpleConfigurePushDialog_MissingUriMessage);
+
+		if (anyFetchUri) {
+			commonUriText.setText(config.getURIs().get(0).toPrivateString());
+		} else {
+			commonUriText.setText(""); //$NON-NLS-1$
+		}
+		uriViewer.getTable().setEnabled(anyPushUri);
+		if (anyPushUri)
+			uriViewer.setInput(config.getPushURIs());
+		else if (anyFetchUri)
+			uriViewer.setInput(new String[] { NLS.bind(
+					UIText.SimpleConfigurePushDialog_UseUriForPushUriMessage,
+					commonUriText.getText()) });
+		else
+			uriViewer.setInput(null);
+
+		if (config.getPushRefSpecs().isEmpty())
+			specViewer.setInput(new String[] { NLS.bind(
+					UIText.SimpleConfigurePushDialog_PushAllBranchesMessage,
+					PushOperationUI.DEFAULT_PUSH_REF_SPEC) });
+		else
+			specViewer.setInput(config.getPushRefSpecs());
+
+		specViewer.getTable().setEnabled(!config.getPushRefSpecs().isEmpty());
+
+		addRefSpec.setEnabled(anyUri);
+		addRefSpecAdvanced.setEnabled(anyUri);
+		changeCommonUri.setEnabled(!anyPushUri);
+		deleteCommonUri.setEnabled(!anyPushUri);
+		commonUriText.setEnabled(!anyPushUri);
+
+		getButton(OK).setEnabled(anyUri);
+		getButton(DRY_RUN).setEnabled(anyUri);
+		getButton(SAVE_ONLY).setEnabled(anyUri);
+	}
+

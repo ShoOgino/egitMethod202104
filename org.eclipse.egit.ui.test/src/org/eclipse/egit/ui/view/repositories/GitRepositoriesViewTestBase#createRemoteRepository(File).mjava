@@ -19,10 +19,9 @@
 
 		myRepository.getConfig().save();
 		// and push
-		PushConfiguredRemoteAction pa = new PushConfiguredRemoteAction(
-				myRepository, "push");
-
-		pa.run(null, false);
+		RemoteConfig config = new RemoteConfig(myRepository.getConfig(), "push");
+		PushOperationUI pa = new PushOperationUI(myRepository, config, 0, false);
+		pa.execute(null);
 		TestUtil.joinJobs(JobFamilies.PUSH);
 		try {
 			// delete the stable branch again

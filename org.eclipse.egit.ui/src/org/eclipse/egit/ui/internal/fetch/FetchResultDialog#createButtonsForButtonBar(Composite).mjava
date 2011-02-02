@@ -1,9 +1,9 @@
 	@Override
 	protected void createButtonsForButtonBar(final Composite parent) {
 		if (!hideConfigure
-				&& SimpleConfigurePushDialog.getConfiguredRemote(localDb) != null)
+				&& SimpleConfigureFetchDialog.getConfiguredRemote(localDb) != null)
 			createButton(parent, CONFIGURE,
-					UIText.PushResultDialog_ConfigureButton, false);
+					UIText.FetchResultDialog_ConfigureButton, false);
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
 	}

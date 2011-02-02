@@ -1,0 +1,16 @@
+	private List<Ref> getRemoteRefs() {
+		if (this.trackingBranches == null) {
+			List<Ref> proposals = new ArrayList<Ref>();
+			try {
+				for (Ref ref : repository.getRefDatabase().getRefs(
+						Constants.R_REMOTES).values()) {
+					proposals.add(ref);
+				}
+				this.trackingBranches = proposals;
+			} catch (IOException e) {
+				setErrorMessage(UIText.FetchDestinationPage_CouldNotGetBranchesMessage);
+			}
+		}
+		return this.trackingBranches;
+	}
+

@@ -1,0 +1,119 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		main.setLayout(new GridLayout(2, false));
+		// source
+		Label sourceLabel = new Label(main, SWT.NONE);
+		if (pushMode)
+			sourceLabel.setText(UIText.RefSpecDialog_SourceBranchPushLabel);
+		else
+			sourceLabel.setText(UIText.RefSpecDialog_SourceBranchFetchLabel);
+		sourceText = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+				false).applyTo(sourceText);
+		if (spec != null && spec.getSource() != null)
+			sourceText.setText(spec.getSource());
+		sourceText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (sourceText.isFocusControl())
+					if (autoSuggestDestination) {
+						String name = sourceText.getText();
+						if (name.startsWith(Constants.R_HEADS))
+							name = name.substring(Constants.R_HEADS.length());
+						else if (name.startsWith(Constants.R_TAGS))
+							name = name.substring(Constants.R_TAGS.length());
+						RefSpec sourceChanged = getSpec().setSource(
+								sourceText.getText());
+						setSpec(sourceChanged
+								.setDestination(Constants.R_REMOTES
+										+ config.getName() + '/' + name));
+					} else
+						setSpec(getSpec().setSource(sourceText.getText()));
+			}
+		});
+		// content assist for source
+		UIUtils.addRefContentProposalToText(sourceText, repo,
+				new IRefListProvider() {
+					public List<Ref> getRefList() {
+						return getRefsForContentAssist(true);
+					}
+				});
+
+		// suggest remote tracking branch
+		if (!pushMode) {
+			final Button autoSuggest = new Button(main, SWT.CHECK);
+			GridDataFactory.fillDefaults().span(2, 1).applyTo(autoSuggest);
+			autoSuggest.setText(UIText.RefSpecDialog_AutoSuggestCheckbox);
+			autoSuggest.setSelection(true);
+			autoSuggest.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					autoSuggestDestination = autoSuggest.getSelection();
+				}
+			});
+		}
+
+		// destination
+		Label destinationLabel = new Label(main, SWT.NONE);
+		if (pushMode)
+			destinationLabel.setText(UIText.RefSpecDialog_DestinationPushLabel);
+		else
+			destinationLabel
+					.setText(UIText.RefSpecDialog_DestinationFetchLabel);
+		destinationText = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
+				false).applyTo(destinationText);
+		if (spec != null && spec.getDestination() != null)
+			destinationText.setText(spec.getDestination());
+		destinationText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (destinationText.isFocusControl())
+					setSpec(getSpec().setDestination(destinationText.getText()));
+			}
+		});
+		// content assist for destination
+		UIUtils.addRefContentProposalToText(destinationText, repo,
+				new IRefListProvider() {
+					public List<Ref> getRefList() {
+						return getRefsForContentAssist(false);
+					}
+				});
+
+		// force update
+		forceButton = new Button(main, SWT.CHECK);
+		forceButton.setText(UIText.RefSpecDialog_ForceUpdateCheckbox);
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(forceButton);
+		if (spec != null)
+			forceButton.setSelection(spec.isForceUpdate());
+		forceButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (getSpec().isForceUpdate() == forceButton.getSelection())
+					return;
+				setSpec(getSpec().setForceUpdate(forceButton.getSelection()));
+			}
+
+		});
+
+		// RefSpec as String
+		Label stringLabel = new Label(main, SWT.NONE);
+		stringLabel.setText(UIText.RefSpecDialog_SpecificationLabel);
+		specString = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(
+				specString);
+		if (spec != null)
+			specString.setText(spec.toString());
+		specString.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (!specString.isFocusControl()
+						|| getSpec().toString().equals(specString.getText()))
+					return;
+				setSpec(new RefSpec(specString.getText()));
+			}
+		});
+
+		applyDialogFont(main);
+		return main;
+	}
+

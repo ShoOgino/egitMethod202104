@@ -1,0 +1,26 @@
+	private void updateControls() {
+		setErrorMessage(null);
+		boolean anyUri = false;
+		if (!config.getURIs().isEmpty()) {
+			commonUriText.setText(config.getURIs().get(0).toPrivateString());
+			anyUri = true;
+		} else {
+			commonUriText.setText(""); //$NON-NLS-1$
+		}
+
+		specViewer.setInput(config.getFetchRefSpecs());
+		specViewer.getTable().setEnabled(true);
+
+		addRefSpec.setEnabled(anyUri);
+		addRefSpecAdvanced.setEnabled(anyUri);
+
+		if (config.getURIs().isEmpty())
+			setErrorMessage(UIText.SimpleConfigureFetchDialog_MissingUriMessage);
+		else if (config.getFetchRefSpecs().isEmpty())
+			setErrorMessage(UIText.SimpleConfigureFetchDialog_MissingMappingMessage);
+
+		boolean anySpec = !config.getFetchRefSpecs().isEmpty();
+		getButton(OK).setEnabled(anyUri && anySpec);
+		getButton(SAVE_ONLY).setEnabled(anyUri && anySpec);
+	}
+

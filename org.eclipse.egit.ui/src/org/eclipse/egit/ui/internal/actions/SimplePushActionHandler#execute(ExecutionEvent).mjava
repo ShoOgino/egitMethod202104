@@ -1,0 +1,21 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final Repository repository = getRepository(true, event);
+		if (repository == null)
+			return null;
+		RemoteConfig config = SimpleConfigurePushDialog
+				.getConfiguredRemote(repository);
+		if (config == null) {
+			MessageDialog.openInformation(getShell(event),
+					UIText.SimplePushActionHandler_NothingToPushDialogTitle,
+					UIText.SimplePushActionHandler_NothingToPushDialogMessage);
+			return null;
+		}
+
+		int timeout = Activator.getDefault().getPreferenceStore().getInt(
+				UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+		PushOperationUI op = new PushOperationUI(repository, config, timeout,
+				false);
+		op.start();
+		return null;
+	}
+

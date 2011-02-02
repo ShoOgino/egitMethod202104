@@ -1,0 +1,8 @@
+	@Override
+	public IWizardPage getStartingPage() {
+		// only now do we set the selection (which will be progress-monitored by
+		// the wizard)
+		page.setSelection(new RepositorySelection(null, config));
+		return super.getStartingPage();
+	}
+

@@ -1,0 +1,20 @@
+	private void checkPage() {
+		setMessage(null, IMessageProvider.WARNING);
+		setErrorMessage(null);
+		setMessage(UIText.FetchDestinationPage_PageMessage);
+		if (destinationText.getText().length() == 0) {
+			setPageComplete(false);
+			return;
+		}
+		boolean found = false;
+		for (Ref ref : getRemoteRefs()) {
+			if (ref.getName().equals(destinationText.getText()))
+				found = true;
+		}
+		if (!found)
+			setMessage(NLS.bind(
+					UIText.FetchDestinationPage_TrackingBranchNotFoundMessage,
+					destinationText.getText()), IMessageProvider.WARNING);
+		setPageComplete(true);
+	}
+

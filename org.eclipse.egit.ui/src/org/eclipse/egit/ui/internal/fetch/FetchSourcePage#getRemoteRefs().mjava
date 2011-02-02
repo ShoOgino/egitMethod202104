@@ -1,0 +1,44 @@
+	private List<Ref> getRemoteRefs() {
+		if (remoteRefs == null) {
+			URIish uriToCheck;
+			List<Ref> proposals = new ArrayList<Ref>();
+			uriToCheck = config.getURIs().get(0);
+			final ListRemoteOperation lop = new ListRemoteOperation(repository,
+					uriToCheck, Activator.getDefault().getPreferenceStore()
+							.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT));
+			try {
+				new ProgressMonitorDialog(getShell()).run(false, true,
+						new IRunnableWithProgress() {
+							public void run(IProgressMonitor monitor)
+									throws InvocationTargetException,
+									InterruptedException {
+								monitor
+										.beginTask(
+												UIText.FetchSourcePage_GettingRemoteRefsTaskname,
+												IProgressMonitor.UNKNOWN);
+								lop.run(monitor);
+								monitor.done();
+							}
+						});
+				for (Ref ref : lop.getRemoteRefs()) {
+					if (ref.getName().startsWith(Constants.R_HEADS)
+							|| ref.getName().startsWith(Constants.R_TAGS))
+						proposals.add(ref);
+				}
+				Collections.sort(proposals, new Comparator<Ref>() {
+					public int compare(Ref o1, Ref o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+				});
+				this.remoteRefs = proposals;
+			} catch (IllegalStateException e) {
+				setErrorMessage(e.getMessage());
+			} catch (InvocationTargetException e) {
+				setErrorMessage(e.getMessage());
+			} catch (InterruptedException e) {
+				setErrorMessage(e.getMessage());
+			}
+		}
+		return remoteRefs;
+	}
+

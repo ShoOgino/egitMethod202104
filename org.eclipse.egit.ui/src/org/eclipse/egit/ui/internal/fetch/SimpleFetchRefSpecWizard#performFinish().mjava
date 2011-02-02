@@ -1,0 +1,13 @@
+	@Override
+	public boolean performFinish() {
+		StringBuilder sb = new StringBuilder();
+		if (destinationPage.isForce()) {
+			sb.append('+');
+		}
+		sb.append(sourcePage.getSource());
+		sb.append(':');
+		sb.append(destinationPage.getDestination());
+		result = new RefSpec(sb.toString());
+		return true;
+	}
+

@@ -1,0 +1,14 @@
+	@Override
+	public void create() {
+		super.create();
+		if (pushMode) {
+			setTitle(UIText.RefSpecDialog_PushTitle);
+			setMessage(UIText.RefSpecDialog_PushMessage);
+		} else {
+			setTitle(UIText.RefSpecDialog_FetchTitle);
+			setMessage(UIText.RefSpecDialog_FetchMessage);
+		}
+		// the user must enter something
+		getButton(OK).setEnabled(false);
+	}
+
