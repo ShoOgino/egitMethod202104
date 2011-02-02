@@ -6,6 +6,7 @@
 						throws InvocationTargetException, InterruptedException {
 					CreateBranchPage cp = (CreateBranchPage) getPages()[0];
 					try {
+						newBranchName = cp.getBranchName();
 						cp.createBranch(monitor);
 					} catch (CoreException ce) {
 						throw new InvocationTargetException(ce);

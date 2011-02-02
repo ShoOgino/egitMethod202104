@@ -4,12 +4,15 @@
 	 *            the name for the new local branch (without prefix)
 	 * @param ref
 	 *            the branch or tag to base the new branch upon
+	 * @param config
+	 *            how to do the upstream configuration
 	 */
 	public CreateLocalBranchOperation(Repository repository, String name,
-			Ref ref) {
+			Ref ref, UpstreamConfig config) {
 		this.name = name;
 		this.repository = repository;
 		this.ref = ref;
 		this.commit = null;
+		this.upstreamConfig = config;
 	}
 
