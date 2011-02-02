@@ -12,7 +12,6 @@
 								configureFetchUriPage.getUri()
 										.toPrivateString());
 						monitor.beginTask(taskName, IProgressMonitor.UNKNOWN);
-						configureFetchSpecPage.setConfigName(myRemoteName);
 						configureFetchSpecPage
 								.setSelection(new RepositorySelection(
 										configureFetchUriPage.getUri(), null));
@@ -42,7 +41,6 @@
 										.toPrivateString());
 						monitor.beginTask(taskName, IProgressMonitor.UNKNOWN);
 						// use the first URI
-						configurePushSpecPage.setConfigName(myRemoteName);
 						configurePushSpecPage
 								.setSelection(new RepositorySelection(
 										configurePushUriPage.getAllUris()

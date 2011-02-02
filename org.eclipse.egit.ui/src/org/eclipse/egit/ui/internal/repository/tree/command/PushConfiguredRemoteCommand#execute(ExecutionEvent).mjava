@@ -1,8 +1,14 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		PushNode node = getSelectedNodes(event).get(0);
 		RemoteNode remote = (RemoteNode) node.getParent();
-
-		new PushConfiguredRemoteAction(node.getRepository(), remote.getObject())
+		RemoteConfig config;
+		try {
+			config = new RemoteConfig(node.getRepository().getConfig(), remote
+					.getObject());
+		} catch (URISyntaxException e) {
+			throw new ExecutionException(e.getMessage());
+		}
+		new PushConfiguredRemoteAction(node.getRepository(), config.getName())
 				.run(getShell(event), false);
 
 		return null;
