@@ -1,0 +1,7 @@
+	private void add(IDiffContainer result, String filePath, DiffNode diffNode) {
+		IDiffContainer container = getFileParent(result, filePath);
+		container.add(diffNode);
+		diffNode.setParent(container);
+
+	}
+

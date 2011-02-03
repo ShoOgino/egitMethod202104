@@ -1,0 +1,21 @@
+	private DiffNode getOrCreateChild(IDiffContainer parent, final String name) {
+		for (IDiffElement child : parent.getChildren()) {
+			if (child.getName().equals(name)) {
+				return ((DiffNode) child);
+			}
+		}
+		DiffNode child = new DiffNode(parent, Differencer.NO_CHANGE) {
+
+			@Override
+			public String getName() {
+				return name;
+			}
+
+			@Override
+			public Image getImage() {
+				return FOLDER_IMAGE;
+			}
+		};
+		return child;
+	}
+

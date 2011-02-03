@@ -1,0 +1,8 @@
+	@Override
+	public boolean isEnabled() {
+		GitHistoryPage page = getPage();
+		if (page == null)
+			return false;
+		return getSelection(page).size() == 2;
+	}
+

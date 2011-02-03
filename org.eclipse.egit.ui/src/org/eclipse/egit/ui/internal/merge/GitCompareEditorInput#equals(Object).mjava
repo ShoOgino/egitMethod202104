@@ -1,0 +1,30 @@
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GitCompareEditorInput other = (GitCompareEditorInput) obj;
+		if (baseVersion == null) {
+			if (other.baseVersion != null)
+				return false;
+		} else if (!baseVersion.equals(other.baseVersion))
+			return false;
+		if (compareVersion == null) {
+			if (other.compareVersion != null)
+				return false;
+		} else if (!compareVersion.equals(other.compareVersion))
+			return false;
+		if (repository == null) {
+			if (other.repository != null)
+				return false;
+		} else if (!repository.getDirectory().equals(
+				other.repository.getDirectory()))
+			return false;
+		if (!Arrays.equals(resources, other.resources))
+			return false;
+		return true;
+	}
+
