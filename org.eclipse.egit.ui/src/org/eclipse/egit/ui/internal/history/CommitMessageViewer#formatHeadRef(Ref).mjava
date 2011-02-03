@@ -1,0 +1,9 @@
+	private String formatHeadRef(Ref ref) {
+		final String name = ref.getName();
+		if (name.startsWith(Constants.R_HEADS))
+			return name.substring(Constants.R_HEADS.length());
+		else if (name.startsWith(Constants.R_REMOTES))
+			return name.substring(Constants.R_REMOTES.length());
+		return name;
+	}
+

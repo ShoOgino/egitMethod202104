@@ -1,0 +1,29 @@
+	/**
+	 * @return List of heads from those current commit is reachable
+	 */
+	private List<Ref> getBranches() {
+		RevWalk revWalk = new RevWalk(db);
+		List<Ref> result = new ArrayList<Ref>();
+
+		try {
+			Map<String, Ref> refsMap = new HashMap<String, Ref>();
+			refsMap.putAll(db.getRefDatabase().getRefs(Constants.R_HEADS));
+			// add remote heads to search
+			refsMap.putAll(db.getRefDatabase().getRefs(Constants.R_REMOTES));
+
+			for (String headName : refsMap.keySet()) {
+				RevCommit headCommit = revWalk.parseCommit(refsMap.get(headName).getObjectId());
+				// the base RevCommit also must be allocated using same RevWalk instance,
+				// otherwise isMergedInto returns wrong result!
+				RevCommit base = revWalk.parseCommit(commit);
+
+				if (revWalk.isMergedInto(base, headCommit))
+					result.add(refsMap.get(headName));	// commit is reachable from this head
+			}
+		} catch (IOException e) {
+			// skip exception
+		}
+
+		return result;
+	}
+

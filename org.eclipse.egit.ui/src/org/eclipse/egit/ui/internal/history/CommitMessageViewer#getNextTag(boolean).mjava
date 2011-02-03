@@ -1,0 +1,37 @@
+	/**
+	 * Finds nextdoor tagged revition. Searches forwards (in descendants) or backwards (in ancestors)
+	 * @param searchDescendant if <code>false</code>, will search for tagged revision in ancestors
+	 * @return {@link Ref} or <code>null</code> if no tag found
+	 * @throws IOException
+	 */
+	private Ref getNextTag(boolean searchDescendant) throws IOException {
+		RevWalk revWalk = new RevWalk(db);
+
+		Map<String, Ref> tagsMap = db.getTags();
+		Ref tagRef = null;
+
+		for (String tagName : tagsMap.keySet()) {
+			// both RevCommits must be allocated using same RevWalk instance,
+			// otherwise isMergedInto returns wrong result!
+			RevCommit current = revWalk.parseCommit(commit);
+			RevCommit newTag = revWalk.parseCommit(tagsMap.get(tagName).getObjectId());
+
+			if (newTag.getId().equals(commit))
+				continue;
+
+			// check if newTag matches our criteria
+			if (isMergedInto(revWalk, newTag, current, searchDescendant)) {
+				if (tagRef != null) {
+					RevCommit oldTag = revWalk.parseCommit(tagRef.getObjectId());
+
+					// both oldTag and newTag satisfy search criteria, so taking the closest one
+					if (isMergedInto(revWalk, oldTag, newTag, searchDescendant))
+						tagRef = tagsMap.get(tagName);
+				} else
+					tagRef = tagsMap.get(tagName);
+			}
+		}
+
+		return tagRef;
+	}
+

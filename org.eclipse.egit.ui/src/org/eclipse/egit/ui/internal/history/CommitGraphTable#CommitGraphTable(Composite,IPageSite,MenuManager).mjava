@@ -1,7 +1,7 @@
 	CommitGraphTable(final Composite parent, final IPageSite site,
 			final MenuManager menuMgr) {
-         this(parent);
- 		final IAction selectAll = createStandardAction(ActionFactory.SELECT_ALL);
+		this(parent);
+		final IAction selectAll = createStandardAction(ActionFactory.SELECT_ALL);
 		getControl().addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {
 				site.getActionBars().setGlobalActionHandler(
