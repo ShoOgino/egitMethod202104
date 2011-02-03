@@ -3,12 +3,9 @@
 		SyncRepoEntity syncRepoEnt = new SyncRepoEntity(rc.getName());
 		Collection<Ref> remoteRefs = getRemoteRef(refDatabase, rc.getName());
 
-		for (Ref ref : remoteRefs) {
-			String refName = ref.getName();
-			String refHumanName = refName
-					.substring(refName.lastIndexOf('/') + 1);
-			syncRepoEnt.addRef(new SyncRefEntity(refHumanName, refName));
-		}
+		for (Ref ref : remoteRefs)
+			syncRepoEnt.addRef(createSyncRepoEntity(ref.getName()));
+
 		return syncRepoEnt;
 	}
 

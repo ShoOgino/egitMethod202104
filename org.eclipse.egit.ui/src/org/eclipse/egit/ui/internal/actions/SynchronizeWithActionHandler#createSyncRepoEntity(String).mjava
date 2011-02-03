@@ -1,0 +1,5 @@
+	private SyncRefEntity createSyncRepoEntity(String ref) {
+		String name = ref.substring(ref.lastIndexOf('/') + 1);
+		return new SyncRefEntity(name, ref);
+	}
+
