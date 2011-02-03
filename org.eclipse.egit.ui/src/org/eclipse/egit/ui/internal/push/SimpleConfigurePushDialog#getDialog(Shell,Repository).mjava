@@ -1,0 +1,10 @@
+	/**
+	 * @param shell
+	 * @param repository
+	 * @return the dialog to open, or null
+	 */
+	public static Dialog getDialog(Shell shell, Repository repository) {
+		RemoteConfig configToUse = getConfiguredRemote(repository);
+		return new SimpleConfigurePushDialog(shell, repository, configToUse);
+	}
+

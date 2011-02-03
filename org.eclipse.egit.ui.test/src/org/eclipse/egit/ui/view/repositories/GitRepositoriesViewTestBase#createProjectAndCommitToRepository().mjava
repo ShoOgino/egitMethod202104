@@ -5,7 +5,7 @@
 		gitDir.mkdir();
 		Repository myRepository = lookupRepository(gitDir);
 		myRepository.create();
-		
+
 		// TODO Bug: for some reason, this seems to be required
 		myRepository.getConfig().setString(ConfigConstants.CONFIG_CORE_SECTION,
 				null, ConfigConstants.CONFIG_KEY_REPO_FORMAT_VERSION, "0");

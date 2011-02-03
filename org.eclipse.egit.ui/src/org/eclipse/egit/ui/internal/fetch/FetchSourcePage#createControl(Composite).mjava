@@ -1,0 +1,31 @@
+	public void createControl(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(2, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+
+		Label repositoryLabel = new Label(main, SWT.NONE);
+		repositoryLabel.setText(UIText.FetchSourcePage_RepositoryLabel);
+		Text repositoryText = new Text(main, SWT.READ_ONLY | SWT.BORDER);
+		repositoryText.setText(config.getURIs().get(0).toPrivateString());
+		GridDataFactory.fillDefaults().grab(true, false)
+				.applyTo(repositoryText);
+
+		Label sourceLabel = new Label(main, SWT.NONE);
+		sourceLabel.setText(UIText.FetchSourcePage_SourceLabel);
+		sourceText = new Text(main, SWT.BORDER);
+		sourceText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(sourceText);
+		UIUtils.addRefContentProposalToText(sourceText, repository,
+				new IRefListProvider() {
+					public List<Ref> getRefList() {
+						return getRemoteRefs();
+					}
+				});
+		checkPage();
+		setControl(main);
+	}
+

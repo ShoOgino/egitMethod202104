@@ -1,0 +1,11 @@
+	/**
+	 * @param localRepository
+	 * @param config
+	 */
+	public SimpleFetchRefSpecWizard(Repository localRepository,
+			RemoteConfig config) {
+		sourcePage = new FetchSourcePage(localRepository, config);
+		destinationPage = new FetchDestinationPage(localRepository, config);
+		setWindowTitle(UIText.SimpleFetchRefSpecWizard_WizardTitle);
+	}
+

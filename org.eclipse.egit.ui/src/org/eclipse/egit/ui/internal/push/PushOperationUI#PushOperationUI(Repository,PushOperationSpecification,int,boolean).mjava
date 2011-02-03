@@ -1,0 +1,19 @@
+	/**
+	 * @param repository
+	 * @param spec
+	 * @param timeout
+	 * @param dryRun
+	 */
+	public PushOperationUI(Repository repository,
+			PushOperationSpecification spec, int timeout, boolean dryRun) {
+		this.repository = repository;
+		op = new PushOperation(repository, spec, dryRun, timeout);
+		if (spec.getURIsNumber() == 1)
+			destinationString = spec.getURIs().iterator().next()
+					.toPrivateString();
+		else
+			destinationString = NLS.bind(
+					UIText.PushOperationUI_MultiRepositoriesDestinationString,
+					Integer.valueOf(spec.getURIsNumber()));
+	}
+

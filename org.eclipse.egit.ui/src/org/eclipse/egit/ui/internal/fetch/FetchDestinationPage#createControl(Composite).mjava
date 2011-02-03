@@ -1,0 +1,46 @@
+	public void createControl(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(2, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+
+		Label repositoryLabel = new Label(main, SWT.NONE);
+		repositoryLabel.setText(UIText.FetchDestinationPage_RepositoryLabel);
+		Text repositoryText = new Text(main, SWT.READ_ONLY | SWT.BORDER);
+		repositoryText.setText(Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repository));
+		GridDataFactory.fillDefaults().grab(true, false)
+				.applyTo(repositoryText);
+
+		Label sourceLabel = new Label(main, SWT.NONE);
+		sourceLabel.setText(UIText.FetchDestinationPage_SourceLabel);
+
+		sourceText = new Text(main, SWT.READ_ONLY | SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(sourceText);
+
+		Label destinationLabel = new Label(main, SWT.NONE);
+		destinationLabel.setText(UIText.FetchDestinationPage_DestinationLabel);
+		destinationText = new Text(main, SWT.BORDER);
+		destinationText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(
+				destinationText);
+		UIUtils.addRefContentProposalToText(sourceText, repository,
+				new IRefListProvider() {
+					public List<Ref> getRefList() {
+						return getRemoteRefs();
+					}
+				});
+
+		force = new Button(main, SWT.CHECK);
+		force.setText(UIText.FetchDestinationPage_ForceCheckbox);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(
+				force);
+
+		checkPage();
+		destinationText.setFocus();
+		setControl(main);
+	}
+

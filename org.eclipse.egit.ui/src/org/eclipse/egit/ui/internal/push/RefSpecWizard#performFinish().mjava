@@ -1,0 +1,11 @@
+	@Override
+	public boolean performFinish() {
+		if (pushMode) {
+			config.setPushRefSpecs(page.getRefSpecs());
+		} else {
+			config.setFetchRefSpecs(page.getRefSpecs());
+			config.setTagOpt(page.getTagOpt());
+		}
+		return true;
+	}
+

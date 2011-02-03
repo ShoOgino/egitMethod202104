@@ -1,0 +1,45 @@
+	private void doPaste() {
+		Clipboard clipboard = new Clipboard(getShell().getDisplay());
+		try {
+			String content = (String) clipboard.getContents(TextTransfer
+					.getInstance());
+			if (content == null) {
+				MessageDialog
+						.openConfirm(
+								getShell(),
+								UIText.SimpleConfigureFetchDialog_NothingToPasteMessage,
+								UIText.SimpleConfigureFetchDialog_EmptyClipboardMessage);
+			}
+			try {
+				RefSpec spec = new RefSpec(content);
+				Ref source;
+				try {
+					// TODO better checks for wild-cards and such
+					source = repository.getRef(spec.getDestination());
+				} catch (IOException e1) {
+					source = null;
+				}
+				if (source != null
+						|| MessageDialog
+								.openQuestion(
+										getShell(),
+										UIText.SimpleConfigureFetchDialog_InvalidRefDialogTitle,
+										NLS
+												.bind(
+														UIText.SimpleConfigureFetchDialog_InvalidRefDialogMessage,
+														spec.toString())))
+					config.addFetchRefSpec(spec);
+
+				updateControls();
+			} catch (IllegalArgumentException ex) {
+				MessageDialog
+						.openError(
+								getShell(),
+								UIText.SimpleConfigureFetchDialog_NotRefSpecDialogTitle,
+								UIText.SimpleConfigureFetchDialog_NotRefSpecDialogMessage);
+			}
+		} finally {
+			clipboard.dispose();
+		}
+	}
+

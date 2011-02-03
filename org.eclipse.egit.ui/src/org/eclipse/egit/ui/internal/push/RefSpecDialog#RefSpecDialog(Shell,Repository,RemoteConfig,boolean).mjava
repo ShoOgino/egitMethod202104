@@ -1,0 +1,19 @@
+	/**
+	 * Create a {@link RefSpec}
+	 *
+	 * @param parentShell
+	 * @param repository
+	 * @param config
+	 * @param push
+	 */
+	public RefSpecDialog(Shell parentShell, Repository repository,
+			RemoteConfig config, boolean push) {
+		super(parentShell);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.repo = repository;
+		this.config = config;
+		this.pushMode = push;
+		this.autoSuggestDestination = !pushMode;
+		setHelpAvailable(false);
+	}
+

@@ -1,0 +1,19 @@
+	private void checkPage() {
+		setMessage(null, IMessageProvider.WARNING);
+		setErrorMessage(null);
+		setMessage(UIText.FetchSourcePage_PageMessage);
+		if (sourceText.getText().length() == 0) {
+			setPageComplete(false);
+			return;
+		}
+		boolean found = false;
+		for (Ref ref : getRemoteRefs()) {
+			if (ref.getName().equals(sourceText.getText()))
+				found = true;
+		}
+		if (!found)
+			setMessage(NLS.bind(UIText.FetchSourcePage_RefNotFoundMessage,
+					sourceText.getText()), IMessageProvider.WARNING);
+		setPageComplete(true);
+	}
+

@@ -1,0 +1,16 @@
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if (visible) {
+			FetchSourcePage fsp = (FetchSourcePage) getWizard()
+					.getPreviousPage(this);
+			String sourceString = fsp.getSource();
+			sourceText.setText(sourceString);
+			if (sourceString.length() > 0) {
+				destinationText.setText(Constants.R_REMOTES + config.getName()
+						+ '/' + Repository.shortenRefName(sourceString));
+			}
+			destinationText.setFocus();
+		}
+	}
+

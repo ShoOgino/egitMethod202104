@@ -37,16 +37,12 @@
 		objid = objid.substring(0, 7);
 		touchAndSubmit(null);
 		// push from other repository
-		PushConfiguredRemoteAction action = new PushConfiguredRemoteAction(
-				repository, "origin");
-
-		action.run(bot.activeShell().widget, false);
-
-		destinationString = clonedRepositoryFile2.getParentFile().getName()
-				+ " - " + "origin";
+		RemoteConfig config = new RemoteConfig(repository.getConfig(), "origin");
+		PushOperationUI op =new PushOperationUI(repository, config, 0, false);
+		op.start();
 
 		String pushdialogTitle = NLS.bind(UIText.ResultDialog_title,
-				destinationString);
+				op.getDestinationString());
 
 		bot.shell(pushdialogTitle).close();
 
@@ -59,6 +55,7 @@
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
+		TestUtil.joinJobs(JobFamilies.FETCH);
 		confirm = bot.shell(dialogTitle);
 		SWTBotTable table = confirm.bot().table();
 		boolean found = false;
