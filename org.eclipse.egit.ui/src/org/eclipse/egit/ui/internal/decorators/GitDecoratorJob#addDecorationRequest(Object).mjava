@@ -1,0 +1,14 @@
+	/**
+	 * Add an element to the queue of decoration requests
+	 *
+	 * @param element
+	 *            the element to be decorated
+	 */
+	public synchronized void addDecorationRequest(Object element) {
+		if (elementList.add(element)) {
+			// Schedule job
+			if (getState() == NONE)
+				schedule(DELAY);
+		}
+	}
+

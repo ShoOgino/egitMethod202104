@@ -1,0 +1,15 @@
+	@Override
+	public IStatus run(IProgressMonitor monitor) {
+		while (!elementList.isEmpty()) {
+			final Object[] elements;
+			synchronized (this) {
+				// Get decoration requests as array and clear the queue
+				elements = elementList.toArray(new Object[elementList.size()]);
+				elementList.clear();
+			}
+			// Call GitLightweightDecorator to process the decoration requests
+			GitLightweightDecorator.processDecoration(elements);
+		}
+		return Status.OK_STATUS;
+	}
+

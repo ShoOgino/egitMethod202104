@@ -1,8 +1,8 @@
 	@SuppressWarnings("fallthrough")
 	public DecoratableResourceAdapter(IResource resourceToWrap)
 			throws IOException {
+		super(resourceToWrap);
 		trace = GitTraceLocation.DECORATION.isActive();
-		resource = resourceToWrap;
 		long start = 0;
 		if (trace) {
 			GitTraceLocation.getTrace().trace(

@@ -1,0 +1,52 @@
+	private void prepareDecoration(final Object[] elements) {
+		if (elements == null)
+			return;
+
+		final IResource[] resources = new IResource[elements.length];
+		for (int i = 0; i < elements.length; i++) {
+			if (elements[i] != null)
+				resources[i] = getResource(elements[i]);
+		}
+
+		try {
+			// Calculate resource decorations
+			IDecoratableResource[] decoratableResources = DecoratableResourceHelper
+					.createDecoratableResources(resources);
+
+			// Store decoration result in session property for each resource
+			for (int i = 0; i < decoratableResources.length; i++) {
+				try {
+					if (decoratableResources[i] != null) {
+						// Store decoratable resource in session
+						resources[i].setSessionProperty(
+								DECORATABLE_RESOURCE_KEY,
+								decoratableResources[i]);
+						// Set (new) 'refreshed' timestamp
+						resources[i].setSessionProperty(REFRESHED_KEY,
+								Long.valueOf(System.currentTimeMillis()));
+					} else {
+						if (resources[i] != null)
+							handleException(
+									resources[i],
+									new CoreException(
+											Activator
+													.createErrorStatus(UIText.GitLightweightDecorator_ResourceError)));
+					}
+				} catch (CoreException e) {
+					handleException(resources[i], e);
+				}
+			}
+		} catch (IOException e) {
+			exceptions
+					.handleException(new CoreException(
+							Activator
+									.createErrorStatus(
+											UIText.GitLightweightDecorator_AsynchronousDecorationError,
+											e)));
+			return;
+		}
+
+		// Re-trigger decoration process (in UI thread)
+		fireLabelEvent(new LabelProviderChangedEvent(this));
+	}
+

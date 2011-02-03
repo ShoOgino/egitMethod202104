@@ -7,7 +7,8 @@
 						GitTraceLocation.DECORATION.getLocation(),
 						treeWalk.getPathString());
 			final WorkingTreeIterator workingTreeIterator = treeWalk.getTree(
-					T_WORKSPACE, WorkingTreeIterator.class);
+					DecoratableResourceHelper.T_WORKSPACE,
+					WorkingTreeIterator.class);
 			if (workingTreeIterator != null) {
 				if (workingTreeIterator instanceof ContainerTreeIterator) {
 					final ContainerTreeIterator workspaceIterator =
@@ -21,8 +22,10 @@
 					}
 					if (resource.getFullPath().isPrefixOf(
 							resourceEntry.getResource().getFullPath())
-							&& treeWalk.getFileMode(T_HEAD) == FileMode.MISSING
-							&& treeWalk.getFileMode(T_INDEX) == FileMode.MISSING) {
+							&& treeWalk
+									.getFileMode(DecoratableResourceHelper.T_HEAD) == FileMode.MISSING
+							&& treeWalk
+									.getFileMode(DecoratableResourceHelper.T_INDEX) == FileMode.MISSING) {
 						// we reached the folder to decorate (or are beyond)
 						// we can cut if the current entry does not
 						// exist in head and index
@@ -48,8 +51,10 @@
 
 					}
 					if (resPath.isPrefixOf(wdPath)
-							&& treeWalk.getFileMode(T_HEAD) == FileMode.MISSING
-							&& treeWalk.getFileMode(T_INDEX) == FileMode.MISSING) {
+							&& treeWalk
+									.getFileMode(DecoratableResourceHelper.T_HEAD) == FileMode.MISSING
+							&& treeWalk
+									.getFileMode(DecoratableResourceHelper.T_INDEX) == FileMode.MISSING) {
 						// we reached the folder to decorate (or are beyond)
 						// we can cut if the current entry does not
 						// exist in head and index
@@ -62,7 +67,8 @@
 				}
 			}
 
-			if (FileMode.TREE.equals(treeWalk.getRawMode(T_WORKSPACE)))
+			if (FileMode.TREE.equals(treeWalk
+					.getRawMode(DecoratableResourceHelper.T_WORKSPACE)))
 				return shouldRecurse(treeWalk);
 
 			// Backup current state so far

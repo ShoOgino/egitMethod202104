@@ -1,0 +1,11 @@
+	/**
+	 * Creates an error status
+	 *
+	 * @param message
+	 *            a localized message
+	 * @return a new Status object
+	 */
+	public static IStatus createErrorStatus(String message) {
+		return new Status(IStatus.ERROR, getPluginId(), message);
+	}
+

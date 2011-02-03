@@ -1,6 +1,7 @@
 		private boolean shouldRecurse(TreeWalk treeWalk) throws IOException {
 			final WorkingTreeIterator workspaceIterator = treeWalk.getTree(
-					T_WORKSPACE, WorkingTreeIterator.class);
+					DecoratableResourceHelper.T_WORKSPACE,
+					WorkingTreeIterator.class);
 
 			if (workspaceIterator instanceof AdaptableFileTreeIterator)
 				return true;
