@@ -3,12 +3,13 @@
 		SWTBotShell dialog = openBranchDialog();
 		dialog.bot().button(UIText.BranchSelectionDialog_NewBranch).click();
 		SWTBotShell branchNameDialog = bot
-				.shell(UIText.BranchSelectionDialog_QuestionNewBranchTitle);
-		branchNameDialog.bot().text().setText("master");
-		assertFalse(branchNameDialog.bot().button(IDialogConstants.OK_LABEL)
+				.shell(UIText.CreateBranchWizard_NewBranchTitle);
+		SWTBotText branchName = bot.textWithId("BranchName");
+		branchName.setText("master");
+		assertFalse(branchNameDialog.bot().button(IDialogConstants.FINISH_LABEL)
 				.isEnabled());
-		branchNameDialog.bot().text().setText("NewBranch");
-		branchNameDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		branchName.setText("NewBranch");
+		branchNameDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
 
 		assertEquals("New Branch should be selected", "NewBranch", bot.tree()
 				.selection().get(0, 0));
