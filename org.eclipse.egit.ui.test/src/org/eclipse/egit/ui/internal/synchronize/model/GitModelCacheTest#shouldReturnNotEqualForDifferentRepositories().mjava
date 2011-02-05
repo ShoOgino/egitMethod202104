@@ -1,0 +1,18 @@
+	@Test public void shouldReturnNotEqualForDifferentRepositories()
+			throws Exception {
+		// given
+		File localRightRepoFile = createProjectAndCommitToRepository(REPO2);
+		GitModelRepository rightGsd = new GitModelRepository(
+				getGSD(lookupRepository(localRightRepoFile)));
+		GitModelCache left = new GitModelCache(createModelRepository(),
+				getCommit(leftRepoFile, HEAD));
+		GitModelCache right = new GitModelCache(rightGsd,
+				getCommit(localRightRepoFile, HEAD));
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

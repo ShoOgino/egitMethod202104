@@ -1,0 +1,17 @@
+	@Test public void shouldReturnNotEqualForDifferentBaseObjectId3()
+			throws Exception {
+		// given
+		GitModelBlob left = createGitModelBlob(zeroId(), ObjectId.zeroId(),
+				getFile1Location());
+		GitModelBlob right = createGitModelBlob(
+				fromString("4c879313cd1332e594b1ad20b1485bdff9533034"),
+				fromString("4c879313cd1332e0000000000000000111122233"),
+				getFile2Location());
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

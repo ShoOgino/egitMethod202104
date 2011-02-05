@@ -1,0 +1,6 @@
+	private GitModelWorkingFile createWorkingFile(IPath location)
+			throws Exception {
+		return new GitModelWorkingFile(createModelCommit(), getCommit(
+				leftRepoFile, HEAD), null, location);
+	}
+

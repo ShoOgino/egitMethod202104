@@ -3,7 +3,8 @@
 		if (obj == this)
 			return true;
 
-		if (obj instanceof GitModelBlob) {
+		if (obj instanceof GitModelBlob && !(obj instanceof GitModelCacheFile)
+				&& !(obj instanceof GitModelWorkingFile)) {
 			GitModelBlob objBlob = (GitModelBlob) obj;
 
 			boolean equalsRemoteId;
@@ -11,9 +12,10 @@
 			if (objRemoteId != null)
 				equalsRemoteId = objRemoteId.equals(remoteId);
 			else
-				equalsRemoteId = baseCommit == null;
+				equalsRemoteId = remoteId == null;
 
-			return objBlob.baseId.equals(baseId) && equalsRemoteId;
+			return objBlob.baseId.equals(baseId) && equalsRemoteId
+					&& objBlob.location.equals(location);
 		}
 
 		return false;

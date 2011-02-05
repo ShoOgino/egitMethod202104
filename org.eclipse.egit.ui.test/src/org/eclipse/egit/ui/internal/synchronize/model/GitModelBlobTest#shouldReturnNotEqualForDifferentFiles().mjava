@@ -1,0 +1,13 @@
+	@Test public void shouldReturnNotEqualForDifferentFiles()
+			throws Exception {
+		// given
+		GitModelBlob left = createGitModelBlob();
+		GitModelBlob right = createGitModelBlob(zeroId(), getFile2Location());
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

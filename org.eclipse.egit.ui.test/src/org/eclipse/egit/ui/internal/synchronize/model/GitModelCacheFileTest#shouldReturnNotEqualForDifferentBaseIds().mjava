@@ -1,0 +1,18 @@
+	@Test public void shouldReturnNotEqualForDifferentBaseIds()
+			throws Exception {
+		// given
+		GitModelCacheFile left = createCacheFile(
+				fromString("390b6b146aa218a9c985e6ce9df2845eb575be48"),
+				fromString("390b6b146aa218a9c985e6ce9df2845eb0000000"),
+				getFile1Location());
+		GitModelCacheFile right = createCacheFile(zeroId(),
+				fromString("390b6b146aa218a9c985e6ce9df2845eb575be48"),
+				getFile1Location());
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

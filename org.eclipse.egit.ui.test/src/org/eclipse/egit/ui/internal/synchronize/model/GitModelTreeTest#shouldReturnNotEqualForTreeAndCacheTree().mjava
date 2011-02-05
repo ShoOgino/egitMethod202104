@@ -1,0 +1,15 @@
+	@Test public void shouldReturnNotEqualForTreeAndCacheTree()
+			throws Exception {
+		// given
+		GitModelTree left = createModelTree(HEAD, getTreeLocation());
+		GitModelCacheTree right = new GitModelCacheTree(createModelCommit(),
+				getCommit(leftRepoFile, HEAD), null, null, getTreeLocation(),
+				null);
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

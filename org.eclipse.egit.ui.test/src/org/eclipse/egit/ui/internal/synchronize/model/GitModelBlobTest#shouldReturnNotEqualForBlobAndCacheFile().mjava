@@ -1,0 +1,14 @@
+	@Test public void shouldReturnNotEqualForBlobAndCacheFile()
+			throws Exception {
+		// given
+		GitModelBlob left = createGitModelBlob();
+		GitModelCacheFile right = new GitModelCacheFile(createModelCommit(),
+				getCommit(leftRepoFile, HEAD), null, null, getFile1Location());
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

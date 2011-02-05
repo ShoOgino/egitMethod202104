@@ -1,0 +1,14 @@
+	@Test public void shouldReturnNotEqualForDifferetnRepoId() throws Exception {
+		// given
+		GitModelCacheTree left = crateCacheTree(zeroId(), getTreeLocation());
+		GitModelCacheTree right = crateCacheTree(
+				fromString("4c879313cd1332e594b1ad20b1485bdff9533034"),
+				getTreeLocation());
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

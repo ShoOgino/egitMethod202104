@@ -1,0 +1,14 @@
+	@Test public void shouldReturnNotEqual() throws Exception {
+		// given
+		Repository leftRepo = lookupRepository(leftRepoFile);
+		Repository rightRepo = lookupRepository(rightRepoFile);
+		GitModelRepository left = new GitModelRepository(getGSD(leftRepo));
+		GitModelRepository right = new GitModelRepository(getGSD(rightRepo));
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

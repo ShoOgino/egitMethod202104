@@ -1,0 +1,15 @@
+	@Test public void shouldReturnNotEqualsWhenComparingWorkingTreeAndCache()
+			throws Exception {
+		// given
+		GitModelWorkingTree left = new GitModelWorkingTree(createModelCommit(),
+				getCommit(leftRepoFile, HEAD));
+		GitModelCache right = new GitModelCache(createModelCommit(),
+				getCommit(leftRepoFile, HEAD));
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

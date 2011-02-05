@@ -1,0 +1,11 @@
+	@Test public void shouldReturnEqualForSameInstance() throws Exception {
+		// given
+		GitModelBlob left = createGitModelBlob();
+
+		// when
+		boolean actual = left.equals(left);
+
+		// then
+		assertTrue(actual);
+	}
+

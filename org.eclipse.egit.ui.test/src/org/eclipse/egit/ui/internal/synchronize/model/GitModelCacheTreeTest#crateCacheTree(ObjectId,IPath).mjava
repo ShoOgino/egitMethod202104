@@ -1,0 +1,6 @@
+	private GitModelCacheTree crateCacheTree(ObjectId repoId, IPath location)
+			throws Exception {
+		return new GitModelCacheTree(createModelCommit(), getCommit(
+				leftRepoFile, HEAD), repoId, null, location, null);
+	}
+

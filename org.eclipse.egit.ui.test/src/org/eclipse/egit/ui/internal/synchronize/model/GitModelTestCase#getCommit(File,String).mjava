@@ -1,0 +1,7 @@
+	protected RevCommit getCommit(File repoDir, String revStr)
+			throws Exception {
+		FileRepository repo = lookupRepository(repoDir);
+		return new RevWalk(repo).parseCommit(repo
+				.resolve(revStr));
+	}
+

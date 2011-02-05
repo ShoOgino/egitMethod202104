@@ -1,6 +1,6 @@
 	@Override
 	public int hashCode() {
-		int result = baseId.hashCode();
+		int result = baseId.hashCode() ^ location.hashCode();
 		if (remoteId != null)
 			result ^= remoteId.hashCode();
 

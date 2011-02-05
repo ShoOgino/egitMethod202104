@@ -1,0 +1,6 @@
+	private GitModelCacheFile createCacheFile(ObjectId repoId,
+			ObjectId cacheId, IPath location) throws Exception {
+		return new GitModelCacheFile(createModelCommit(),
+				getCommit(leftRepoFile, HEAD), repoId, cacheId, location);
+	}
+

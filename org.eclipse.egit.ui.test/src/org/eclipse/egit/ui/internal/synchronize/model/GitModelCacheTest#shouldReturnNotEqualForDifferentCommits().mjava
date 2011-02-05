@@ -1,0 +1,15 @@
+	@Test public void shouldReturnNotEqualForDifferentCommits()
+			throws Exception {
+		// given
+		GitModelCache left = new GitModelCache(createModelRepository(),
+				getCommit(leftRepoFile, HEAD));
+		GitModelCache right = new GitModelCache(createModelRepository(),
+				getCommit(leftRepoFile, HEAD + "~1"));
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

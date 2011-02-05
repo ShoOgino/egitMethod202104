@@ -1,0 +1,14 @@
+	@Test public void shouldReturnEqualForSameData() throws Exception {
+		// given
+		GitModelBlob left = createGitModelBlob(zeroId(), zeroId(),
+				getFile1Location());
+		GitModelBlob right = createGitModelBlob(zeroId(), zeroId(),
+				getFile1Location());
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertTrue(actual);
+	}
+

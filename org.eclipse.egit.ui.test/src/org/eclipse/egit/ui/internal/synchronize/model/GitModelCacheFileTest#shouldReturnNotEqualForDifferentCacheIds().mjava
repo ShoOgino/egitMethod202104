@@ -1,0 +1,17 @@
+	@Test public void shouldReturnNotEqualForDifferentCacheIds()
+			throws Exception {
+		// given
+		GitModelCacheFile left = createCacheFile(zeroId(),
+				fromString("390b6b146aa218a9c985e6ce9df2845eb575be48"),
+				getFile1Location());
+		GitModelCacheFile right = createCacheFile(zeroId(),
+				fromString("000000006aa218a9c985e6ce9df2845eb575be48"),
+				getFile1Location());
+
+		// when
+		boolean actual = left.equals(right);
+
+		// then
+		assertFalse(actual);
+	}
+

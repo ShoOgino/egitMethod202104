@@ -1,0 +1,7 @@
+	@BeforeClass public static void setupEnvironment() throws Exception {
+		leftRepoFile = createProjectAndCommitToRepository();
+
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(leftRepoFile);
+	}
+
