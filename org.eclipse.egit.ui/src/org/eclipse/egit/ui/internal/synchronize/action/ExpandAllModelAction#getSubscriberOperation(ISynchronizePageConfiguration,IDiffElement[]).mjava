@@ -1,0 +1,14 @@
+	@Override
+	protected SynchronizeModelOperation getSubscriberOperation(
+			final ISynchronizePageConfiguration configuration,
+			IDiffElement[] elements) {
+		return new SynchronizeModelOperation(configuration, elements) {
+
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException, InterruptedException {
+				configuration.getSite().getShell().getDisplay()
+						.syncExec(new ExpandAllAction(configuration));
+			}
+		};
+	}
+
