@@ -1,0 +1,13 @@
+	/**
+	 * @param repository
+	 */
+	public FetchGerritChangePage(Repository repository) {
+		super(FetchGerritChangePage.class.getName());
+		this.repository = repository;
+		setTitle(NLS
+				.bind(UIText.FetchGerritChangePage_PageTitle,
+						Activator.getDefault().getRepositoryUtil()
+								.getRepositoryName(repository)));
+		setMessage(UIText.FetchGerritChangePage_PageMessage);
+	}
+

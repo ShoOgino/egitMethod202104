@@ -1,0 +1,58 @@
+	private void checkPage() {
+		boolean createBranchSelected = createBranch.getSelection();
+		branchText.setEnabled(createBranchSelected);
+		branchText.setVisible(createBranchSelected);
+		branchTextlabel.setVisible(createBranchSelected);
+		GridData gd = (GridData) branchText.getLayoutData();
+		gd.exclude = !createBranchSelected;
+		gd = (GridData) branchTextlabel.getLayoutData();
+		gd.exclude = !createBranchSelected;
+
+		boolean createTagSelected = createTag.getSelection();
+		tagText.setEnabled(createTagSelected);
+		tagText.setVisible(createTagSelected);
+		tagTextlabel.setVisible(createTagSelected);
+		gd = (GridData) tagText.getLayoutData();
+		gd.exclude = !createTagSelected;
+		gd = (GridData) tagTextlabel.getLayoutData();
+		gd.exclude = !createTagSelected;
+		branchText.getParent().layout(true);
+
+		setErrorMessage(null);
+		try {
+			if (refText.getText().length() > 0) {
+				Change change = Change.fromRef(refText.getText());
+				if (change == null) {
+					setErrorMessage(UIText.FetchGerritChangePage_MissingChangeMessage);
+					return;
+				}
+			} else {
+				setErrorMessage(UIText.FetchGerritChangePage_MissingChangeMessage);
+				return;
+			}
+
+			boolean emptyRefName = (createBranchSelected && branchText
+					.getText().length() == 0)
+					|| (createTagSelected && tagText.getText().length() == 0);
+			if (emptyRefName) {
+				setErrorMessage(UIText.FetchGerritChangePage_ProvideRefNameMessage);
+				return;
+			}
+
+			boolean existingRefName = (createBranchSelected && repository
+					.getRef(branchText.getText()) != null)
+					|| (createTagSelected && repository.getRef(tagText
+							.getText()) != null);
+			if (existingRefName) {
+				setErrorMessage(NLS.bind(
+						UIText.FetchGerritChangePage_ExistingRefMessage,
+						branchText.getText()));
+				return;
+			}
+		} catch (IOException e1) {
+			// ignore here
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+
