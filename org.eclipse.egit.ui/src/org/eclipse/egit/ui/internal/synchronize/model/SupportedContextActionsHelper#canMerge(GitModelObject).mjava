@@ -1,0 +1,9 @@
+	/**
+	 * @param object
+	 * @return {@code true} when merge operation can be performed on
+	 *         {@code object}
+	 */
+	public static boolean canMerge(GitModelObject object) {
+		return getRootObject(object) instanceof GitModelCommit;
+	}
+

@@ -1,0 +1,9 @@
+	private static GitModelObject getRootObject(GitModelObject object) {
+		GitModelObject root = object.getParent();
+
+		while (root != null && root instanceof GitModelTree)
+			root = root.getParent();
+
+		return root;
+	}
+

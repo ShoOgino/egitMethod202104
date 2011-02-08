@@ -1,0 +1,10 @@
+	/**
+	 * @param object
+	 * @return {@code true} if 'assume unchanged' operation can be performed on
+	 *         {@code object}
+	 */
+	public static boolean canAssumeUnchanged(GitModelObject object) {
+		return canStage(object) || object instanceof GitModelCacheFile
+				|| object instanceof GitModelCacheTree;
+	}
+

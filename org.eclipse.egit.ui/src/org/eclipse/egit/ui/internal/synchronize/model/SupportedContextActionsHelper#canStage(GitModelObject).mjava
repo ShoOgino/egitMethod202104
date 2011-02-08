@@ -1,0 +1,13 @@
+	/**
+	 * @param object
+	 * @return {@code true} if stage/add operation can be performed on
+	 *         {@code object}
+	 */
+	public static boolean canStage(GitModelObject object) {
+		// stage action is not available on root node (object instanceof
+		// GitModelWorkingTree) because in some cases we cannot determinate with
+		// resource should be staged
+		return object instanceof GitModelWorkingFile
+				|| getRootObject(object) instanceof GitModelWorkingTree;
+	}
+

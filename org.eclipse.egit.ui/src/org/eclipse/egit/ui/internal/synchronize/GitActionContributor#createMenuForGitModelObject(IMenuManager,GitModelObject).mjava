@@ -1,0 +1,14 @@
+	private void createMenuForGitModelObject(IMenuManager menu,
+			GitModelObject object) {
+		if (SupportedContextActionsHelper.canCommit(object))
+			menu.appendToGroup(GIT_ACTIONS, createItem(COMMIT_ACTION));
+
+		if (SupportedContextActionsHelper.canStage(object)) {
+			menu.appendToGroup(GIT_ACTIONS, createItem(ADD_TO_INDEX));
+			menu.appendToGroup(GIT_ACTIONS, createItem(IGNORE_ACTION));
+		}
+
+		if (canPush(object))
+			menu.appendToGroup(GIT_ACTIONS, createItem(PUSH_ACTION));
+	}
+

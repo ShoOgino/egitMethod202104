@@ -1,0 +1,8 @@
+	private static boolean isOutGoingCommit(GitModelObject object) {
+		int direction = LEFT;
+		if (getRootObject(object) instanceof GitModelCommit)
+			direction = ((GitModelCommit) object).getKind() & RIGHT;
+
+		return direction == RIGHT;
+	}
+

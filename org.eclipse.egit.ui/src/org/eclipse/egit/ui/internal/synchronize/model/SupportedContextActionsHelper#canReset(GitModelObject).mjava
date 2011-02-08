@@ -1,0 +1,9 @@
+	/**
+	 * @param object
+	 * @return {@code true} if reset operation can be performed on
+	 *         {@code object}
+	 */
+	public static boolean canReset(GitModelObject object) {
+		return isOutGoingCommit(object) || canCommit(object);
+	}
+
