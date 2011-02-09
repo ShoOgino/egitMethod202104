@@ -1,0 +1,20 @@
+	@Test
+	public void testDecorationNewFile() throws Exception {
+		// Create new file
+		write(new File(project.getLocation().toFile(), TEST_FILE), "Something");
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		IResource file = project.findMember(TEST_FILE);
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				new TestDecoratableResource(project, true, false, false, false,
+						Staged.NOT_STAGED),
+				new TestDecoratableResource(file, false, false, false, false,
+						Staged.NOT_STAGED) };
+
+		IDecoratableResource[] actualDRs = DecoratableResourceHelper
+				.createDecoratableResources(new IResource[] { project, file });
+
+		for (int i = 0; i < expectedDRs.length; i++)
+			assertTrue(expectedDRs[i].equals(actualDRs[i]));
+	}
+
