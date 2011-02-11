@@ -7,7 +7,10 @@
 	public PushOperationUI(Repository repository,
 			PushOperationSpecification spec, int timeout, boolean dryRun) {
 		this.repository = repository;
-		op = new PushOperation(repository, spec, dryRun, timeout);
+		this.spec = spec;
+		this.config = null;
+		this.timeout = timeout;
+		this.dryRun = dryRun;
 		if (spec.getURIsNumber() == 1)
 			destinationString = spec.getURIs().iterator().next()
 					.toPrivateString();
