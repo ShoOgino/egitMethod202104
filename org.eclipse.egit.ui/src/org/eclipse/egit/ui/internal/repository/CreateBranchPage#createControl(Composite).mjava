@@ -132,18 +132,6 @@
 		buttonConfigNone
 				.setToolTipText(UIText.CreateBranchPage_PullNoneTooltip);
 
-		switch (defaultUpstreamConfig) {
-		case REBASE:
-			buttonConfigRebase.setSelection(true);
-			break;
-		case MERGE:
-			buttonConfigMerge.setSelection(true);
-			break;
-		case NONE:
-			buttonConfigNone.setSelection(true);
-			break;
-		}
-
 		boolean isBare = myRepository.isBare();
 		checkout = new Button(main, SWT.CHECK);
 		checkout.setText(UIText.CreateBranchPage_CheckoutButton);
@@ -173,11 +161,10 @@
 			nameText.setText(myBaseRef
 					.substring(myBaseRef.lastIndexOf('/') + 1));
 			nameText.selectAll();
-			checkPage();
-		} else {
+		} else
 			// in any case, we will have to enter the name
 			setPageComplete(false);
-		}
+		checkPage();
 		// add the listener just now to avoid unneeded checkPage()
 		nameText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {

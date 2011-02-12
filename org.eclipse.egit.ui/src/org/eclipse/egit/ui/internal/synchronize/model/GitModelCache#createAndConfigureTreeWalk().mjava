@@ -2,8 +2,7 @@
 	 * Creates and configures {@link TreeWalk} instance for
 	 * {@link GitModelCache#getChildrenImpl()} method. It is IMPORTANT to add
 	 * tree that will be used as a base as first, remote tree should be added as
-	 * second; {@link GitModelCache#dirCacheIteratorNth} should be set with
-	 * value of NTH that corresponds with {@link DirCacheIterator}.
+	 * second;
 	 *
 	 * @return configured instance of TreeW
 	 * @throws IOException
@@ -17,7 +16,6 @@
 		ObjectId headId = repo.getRef(Constants.HEAD).getObjectId();
 		tw.addTree(new RevWalk(repo).parseTree(headId));
 		tw.addTree(new DirCacheIterator(index));
-		dirCacheIteratorNth = 1;
 
 		return tw;
 	}

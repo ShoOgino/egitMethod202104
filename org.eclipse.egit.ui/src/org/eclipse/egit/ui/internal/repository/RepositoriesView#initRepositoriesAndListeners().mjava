@@ -4,9 +4,9 @@
 			unregisterRepositoryListener();
 			// listen for repository changes
 			for (String dir : repositoryUtil.getConfiguredRepositories()) {
+				File repoDir = new File(dir);
 				try {
-					Repository repo = repositoryCache
-							.lookupRepository(new File(dir));
+					Repository repo = repositoryCache.lookupRepository(repoDir);
 					myListeners.add(repo.getListenerList()
 							.addIndexChangedListener(myIndexChangedListener));
 					myListeners.add(repo.getListenerList()
@@ -15,7 +15,11 @@
 							.addConfigChangedListener(myConfigChangeListener));
 					repositories.add(repo);
 				} catch (IOException e) {
-					Activator.handleError(e.getMessage(), e, false);
+					String message = NLS
+							.bind(UIText.RepositoriesView_ExceptionLookingUpRepoMessage,
+									repoDir.getPath());
+					Activator.handleError(message, e, false);
+					repositoryUtil.removeDir(repoDir);
 				}
 			}
 		}

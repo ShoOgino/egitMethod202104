@@ -2,7 +2,7 @@
 		setErrorMessage(null);
 		try {
 			GridData gd = (GridData) warningComposite.getLayoutData();
-			gd.exclude = branchCombo.getText().startsWith(Constants.R_REMOTES);
+			gd.exclude = !branchCombo.getText().startsWith(Constants.R_HEADS);
 			warningComposite.setVisible(!gd.exclude);
 
 			gd = (GridData) upstreamConfigGroup.getLayoutData();

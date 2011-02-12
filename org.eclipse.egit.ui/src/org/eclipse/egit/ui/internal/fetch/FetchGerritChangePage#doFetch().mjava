@@ -1,0 +1,92 @@
+	boolean doFetch() {
+		try {
+			final RefSpec spec = new RefSpec().setSource(refText.getText())
+					.setDestination(Constants.FETCH_HEAD);
+			final String uri = uriCombo.getText();
+			final boolean doCheckout = checkout.getSelection();
+			final boolean doCreateTag = createTag.getSelection();
+			final boolean doCreateBranch = createBranch.getSelection();
+			final String textForTag = tagText.getText();
+			final String textForBranch = branchText.getText();
+			getWizard().getContainer().run(true, true,
+					new IRunnableWithProgress() {
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							int totalWork = 1;
+							if (doCheckout)
+								totalWork++;
+							if (doCreateTag || doCreateBranch)
+								totalWork++;
+							monitor.beginTask(
+									UIText.FetchGerritChangePage_GetChangeTaskName,
+									totalWork);
+							List<RefSpec> specs = new ArrayList<RefSpec>(1);
+							specs.add(spec);
+							int timeout = Activator
+									.getDefault()
+									.getPreferenceStore()
+									.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+							FetchResult fetchRes;
+							try {
+								String taskName = NLS
+										.bind(UIText.FetchGerritChangePage_FetchingTaskName,
+												spec.getSource());
+								monitor.setTaskName(taskName);
+								fetchRes = new FetchOperationUI(repository,
+										new URIish(uri), specs, timeout, false)
+										.execute(monitor);
+
+								monitor.worked(1);
+								RevCommit commit = new RevWalk(repository)
+										.parseCommit(fetchRes.getAdvertisedRef(
+												spec.getSource()).getObjectId());
+
+								if (doCreateTag) {
+									monitor.setTaskName(UIText.FetchGerritChangePage_CreatingTagTaskName);
+									final TagBuilder tag = new TagBuilder();
+									PersonIdent personIdent = new PersonIdent(
+											repository);
+
+									tag.setTag(textForTag);
+									tag.setTagger(personIdent);
+									tag.setMessage(NLS
+											.bind(UIText.FetchGerritChangePage_GeneratedTagMessage,
+													spec.getSource()));
+									tag.setObjectId(commit);
+									new TagOperation(repository, tag, false)
+											.execute(monitor);
+									monitor.worked(1);
+								}
+								if (doCreateBranch) {
+									monitor.setTaskName(UIText.FetchGerritChangePage_CreatingBranchTaskName);
+									CreateLocalBranchOperation bop = new CreateLocalBranchOperation(
+											repository, textForBranch, commit);
+									bop.execute(monitor);
+									new Git(repository).checkout()
+											.setName(textForBranch).call();
+									monitor.worked(1);
+								}
+								if (doCheckout || doCreateTag) {
+									monitor.setTaskName(UIText.FetchGerritChangePage_CheckingOutTaskName);
+									new BranchOperation(repository, commit)
+											.execute(monitor);
+									monitor.worked(1);
+								}
+							} catch (Exception e) {
+								throw new InvocationTargetException(e);
+							} finally {
+								monitor.done();
+							}
+						}
+					});
+		} catch (InvocationTargetException e) {
+			Activator
+					.handleError(e.getCause().getMessage(), e.getCause(), true);
+			return false;
+		} catch (InterruptedException e) {
+			// just return
+		}
+		return true;
+	}
+

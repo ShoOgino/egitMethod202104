@@ -15,8 +15,7 @@
 		this.myBaseCommit = null;
 		this.myValidator = ValidationUtils.getRefNameInputValidator(
 				myRepository, Constants.R_HEADS, true);
-		this.defaultUpstreamConfig = getDefaultUpstreamConfig(repo, baseRef
-				.getName());
+		this.upstreamConfig = getDefaultUpstreamConfig(repo, baseRef.getName());
 		setTitle(UIText.CreateBranchPage_Title);
 		setMessage(UIText.CreateBranchPage_ChooseBranchAndNameMessage);
 	}

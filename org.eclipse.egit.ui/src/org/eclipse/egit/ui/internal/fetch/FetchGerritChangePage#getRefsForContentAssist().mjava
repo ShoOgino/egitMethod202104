@@ -1,0 +1,51 @@
+	private List<Change> getRefsForContentAssist()
+			throws InvocationTargetException, InterruptedException {
+		if (changeRefs == null) {
+			final String uriText = uriCombo.getText();
+			getWizard().getContainer().run(true, true,
+					new IRunnableWithProgress() {
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							changeRefs = new ArrayList<Change>();
+							ListRemoteOperation listOp;
+							try {
+								listOp = new ListRemoteOperation(
+										repository,
+										new URIish(uriText),
+										Activator
+												.getDefault()
+												.getPreferenceStore()
+												.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT));
+							} catch (URISyntaxException e) {
+								throw new InvocationTargetException(e);
+							}
+
+							listOp.run(monitor);
+							for (Ref ref : listOp.getRemoteRefs()) {
+								Change change = Change.fromRef(ref.getName());
+								if (change != null)
+									changeRefs.add(change);
+							}
+							Collections.sort(changeRefs,
+									new Comparator<Change>() {
+										public int compare(Change o1, Change o2) {
+											// change number descending
+											int changeDiff = o2.changeNumber
+													.compareTo(o1.changeNumber);
+											if (changeDiff == 0)
+												// patch set number descending
+												changeDiff = o2
+														.getPatchSetNumber()
+														.compareTo(
+																o1.getPatchSetNumber());
+											return changeDiff;
+										}
+									});
+						}
+					});
+
+		}
+		return changeRefs;
+	}
+

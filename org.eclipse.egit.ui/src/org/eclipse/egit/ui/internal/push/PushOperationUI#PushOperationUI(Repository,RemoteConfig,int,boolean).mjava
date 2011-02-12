@@ -8,9 +8,11 @@
 	public PushOperationUI(Repository repository, RemoteConfig config,
 			int timeout, boolean dryRun) {
 		this.repository = repository;
-		op = new PushOperation(repository, config, dryRun, timeout);
+		this.spec = null;
+		this.config = config;
+		this.timeout = timeout;
+		this.dryRun = dryRun;
 		destinationString = NLS.bind("{0} - {1}", repository.getDirectory() //$NON-NLS-1$
 				.getParentFile().getName(), config.getName());
-
 	}
 

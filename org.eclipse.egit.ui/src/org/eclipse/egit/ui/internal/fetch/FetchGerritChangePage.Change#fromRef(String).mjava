@@ -1,0 +1,19 @@
+		static Change fromRef(String refName) {
+			try {
+				if (!refName.startsWith("refs/changes/")) //$NON-NLS-1$
+					return null;
+				String[] tokens = refName.substring(13).split("/"); //$NON-NLS-1$
+				if (tokens.length != 3)
+					return null;
+				Integer changeNumber = Integer.valueOf(tokens[1]);
+				Integer patchSetNumber = Integer.valueOf(tokens[2]);
+				return new Change(refName, changeNumber, patchSetNumber);
+			} catch (NumberFormatException e) {
+				// if we can't parse this, just return null
+				return null;
+			} catch (IndexOutOfBoundsException e) {
+				// if we can't parse this, just return null
+				return null;
+			}
+		}
+
