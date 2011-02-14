@@ -1,0 +1,13 @@
+	public boolean test(Object receiver, String property, Object[] args,
+			Object expectedValue) {
+		if (!(receiver instanceof IResource))
+			return false;
+		IResource res = (IResource) receiver;
+		if ("isShared".equals(property)) { //$NON-NLS-1$
+			RepositoryMapping mapping = RepositoryMapping.getMapping(res
+					.getProject());
+			return mapping != null && mapping.getRepository() != null;
+		}
+		return false;
+	}
+
