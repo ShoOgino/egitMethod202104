@@ -1,0 +1,28 @@
+	private ConfigurationEditorComponent createConfigurationEditor(final Repository repository) {
+		StoredConfig repositoryConfig;
+		if (repository.getConfig() instanceof FileBasedConfig) {
+			File configFile = ((FileBasedConfig) repository.getConfig()).getFile();
+			repositoryConfig = new FileBasedConfig(configFile, repository
+					.getFS());
+		} else {
+			repositoryConfig = repository.getConfig();
+		}
+		ConfigurationEditorComponent editorComponent = new ConfigurationEditorComponent(repoConfigComposite, repositoryConfig, true) {
+			@Override
+			protected void setErrorMessage(String message) {
+				GlobalConfigurationPreferencePage.this.setErrorMessage(message);
+			}
+
+			@Override
+			protected void setDirty(boolean dirty) {
+				if (dirty)
+					dirtyRepositories.add(repository);
+				else
+					dirtyRepositories.remove(repository);
+				updateApplyButton();
+			}
+		};
+		editorComponent.createContents();
+		return editorComponent;
+	}
+
