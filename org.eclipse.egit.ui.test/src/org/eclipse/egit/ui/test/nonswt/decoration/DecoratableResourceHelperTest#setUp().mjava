@@ -1,0 +1,28 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
+		gitDir = new File(root.getLocation().toFile(), Constants.DOT_GIT);
+
+		repository = new FileRepository(gitDir);
+		repository.create();
+
+		project = root.getProject(TEST_PROJECT);
+		project.create(null);
+		project.open(null);
+
+		RepositoryMapping mapping = new RepositoryMapping(project, gitDir);
+
+		GitProjectData projectData = new GitProjectData(project);
+		projectData.setRepositoryMappings(Collections.singleton(mapping));
+		projectData.store();
+
+		RepositoryProvider.map(project, GitProvider.class.getName());
+
+		git = new Git(repository);
+		git.add().addFilepattern(".").call();
+		git.commit().setMessage("Initial commit").call();
+	}
+

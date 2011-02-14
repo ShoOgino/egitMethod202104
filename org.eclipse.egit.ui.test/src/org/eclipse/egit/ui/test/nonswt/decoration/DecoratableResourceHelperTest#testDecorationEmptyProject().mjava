@@ -1,0 +1,12 @@
+	@Test
+	public void testDecorationEmptyProject() throws Exception {
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] { new TestDecoratableResource(
+				project, true, false, false, false, Staged.NOT_STAGED) };
+
+		IDecoratableResource[] actualDRs = DecoratableResourceHelper
+				.createDecoratableResources(new IResource[] { project });
+
+		for (int i = 0; i < expectedDRs.length; i++)
+			assertTrue(expectedDRs[i].equals(actualDRs[i]));
+	}
+

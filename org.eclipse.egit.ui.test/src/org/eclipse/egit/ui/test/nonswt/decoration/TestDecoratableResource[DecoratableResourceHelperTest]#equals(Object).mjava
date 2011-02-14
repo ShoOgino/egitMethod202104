@@ -1,0 +1,23 @@
+	public boolean equals(Object obj) {
+		if (!(obj instanceof IDecoratableResource))
+			return false;
+
+		IDecoratableResource decoratableResource = (IDecoratableResource) obj;
+		if (!(decoratableResource.getType() == getType()))
+			return false;
+		if (!decoratableResource.getName().equals(getName()))
+			return false;
+		if (!(decoratableResource.isTracked() == isTracked()))
+			return false;
+		if (!(decoratableResource.isIgnored() == isIgnored()))
+			return false;
+		if (!(decoratableResource.isDirty() == isDirty()))
+			return false;
+		if (!(decoratableResource.hasConflicts() == hasConflicts()))
+			return false;
+		if (!decoratableResource.staged().equals(staged()))
+			return false;
+
+		return true;
+	}
+
