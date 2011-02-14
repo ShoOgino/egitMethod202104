@@ -3,6 +3,10 @@
 		try {
 			userConfigEditor.restore();
 			sysConfigEditor.restore();
+			for (ConfigurationEditorComponent editor : repoConfigEditors.values()) {
+				editor.restore();
+			}
+
 		} catch (IOException e) {
 			Activator.handleError(e.getMessage(), e, true);
 		}

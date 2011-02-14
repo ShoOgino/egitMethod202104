@@ -1,0 +1,11 @@
+	private void showRepositoryConfiguration(int index) {
+		Repository repository = repositories.get(index);
+		ConfigurationEditorComponent editor = repoConfigEditors.get(repository);
+		if (editor == null) {
+			editor = createConfigurationEditor(repository);
+			repoConfigEditors.put(repository, editor);
+		}
+		repoConfigStackLayout.topControl = editor.getContents();
+		repoConfigComposite.layout();
+	}
+

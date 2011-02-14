@@ -1,0 +1,9 @@
+	private String[] getRepositoryComboItems() {
+		List<String> items = new ArrayList<String>();
+		for (Repository repository : repositories) {
+			String repoName = repository.getDirectory().getParentFile().getName();
+			items.add(repoName);
+		}
+		return items.toArray(new String[items.size()]);
+	}
+
