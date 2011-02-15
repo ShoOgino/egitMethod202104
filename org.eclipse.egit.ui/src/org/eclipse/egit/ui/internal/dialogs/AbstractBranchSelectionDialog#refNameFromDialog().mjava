@@ -8,9 +8,9 @@
 			return null;
 		RepositoryTreeNode node = (RepositoryTreeNode) sel.getFirstElement();
 		if (node.getType() == RepositoryTreeNodeType.REF
-				|| node.getType() == RepositoryTreeNodeType.TAG) {
+				|| node.getType() == RepositoryTreeNodeType.TAG
+				|| node.getType() == RepositoryTreeNodeType.ADDITIONALREF)
 			return ((Ref) node.getObject()).getName();
-		}
 		return null;
 	}
 
