@@ -12,6 +12,8 @@
 
 		repository.close();
 
+		Activator.getDefault().getRepositoryCache().clear();
+
 		recursiveDelete(gitDir);
 	}
 

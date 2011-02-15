@@ -13,6 +13,7 @@
 		// file
 		git.checkout().setCreateBranch(true).setName("first_topic").call();
 		write(f, "SomethingElse");
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		git.add().addFilepattern(".").call();
 		RevCommit commitOnFirstTopicBranch = git.commit()
 				.setMessage("Commit on first topic branch").call();
@@ -22,6 +23,7 @@
 		git.checkout().setName("master").call();
 		git.checkout().setCreateBranch(true).setName("second_topic").call();
 		write(f, "SomethingDifferent");
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		git.add().addFilepattern(".").call();
 		git.commit().setMessage("Commit on second topic branch").call();
 
