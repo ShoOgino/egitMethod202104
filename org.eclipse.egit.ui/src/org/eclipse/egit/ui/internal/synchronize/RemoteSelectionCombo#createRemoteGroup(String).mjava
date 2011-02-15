@@ -5,7 +5,7 @@
 				.grab(true, false).hint(150, SWT.DEFAULT).create());
 		myRefLabel = new Label(remoteComposite, SWT.NONE);
 		myRefLabel.setText(remoteLabel);
-		remotesCombo = new Combo(remoteComposite, SWT.NONE);
+		remotesCombo = new Combo(remoteComposite, SWT.NONE | SWT.READ_ONLY);
 		remotesCombo.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).create());
 		for (SyncRepoEntity syncRepoEnt : syncRepos) {
