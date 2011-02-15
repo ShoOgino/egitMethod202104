@@ -1,8 +1,4 @@
-	private void loadPreviousCommit(ExecutionEvent event)
-			throws ExecutionException {
-		IProject project = getProjectsForSelectedResources(event)[0];
-
-		Repository repo = RepositoryMapping.getMapping(project).getRepository();
+	private void loadPreviousCommit(Repository repo) {
 		try {
 			ObjectId parentId = repo.resolve(Constants.HEAD);
 			if (parentId != null)

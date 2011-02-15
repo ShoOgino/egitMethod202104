@@ -4,17 +4,11 @@
 	 * user only selected one folder when the action was performed, if the
 	 * folder contains any files that could be committed, they will be returned.
 	 *
-	 * @param event
-	 *
 	 * @return a collection of files that is eligible to be committed based on
 	 *         the user's selection
-	 * @throws ExecutionException
 	 */
-	private Set<IFile> getSelectedFiles(ExecutionEvent event)
-			throws ExecutionException {
+	private Set<IFile> getSelectedFiles() {
 		Set<IFile> preselectionCandidates = new LinkedHashSet<IFile>();
-		// get the resources the user selected
-		IResource[] selectedResources = getSelectedResources(event);
 		// iterate through all the files that may be committed
 		for (IFile file : files) {
 			for (IResource resource : selectedResources) {

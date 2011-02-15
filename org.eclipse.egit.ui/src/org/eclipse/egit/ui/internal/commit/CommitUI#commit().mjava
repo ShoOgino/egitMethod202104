@@ -1,0 +1,152 @@
+	/**
+	 * Performs a commit
+	 */
+	public void commit() {
+		// let's see if there is any dirty editor around and
+		// ask the user if they want to save or abort
+		if (!PlatformUI.getWorkbench().saveAllEditors(true)) {
+			return;
+		}
+
+		BasicConfigurationDialog.show();
+		resetState();
+		final IProject[] projects = getProjectsOfRepositories();
+		try {
+			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress() {
+
+				public void run(IProgressMonitor monitor) throws InvocationTargetException,
+						InterruptedException {
+					try {
+						buildIndexHeadDiffList(projects, monitor);
+					} catch (IOException e) {
+						throw new InvocationTargetException(e);
+					}
+				}
+			});
+		} catch (InvocationTargetException e) {
+			Activator.handleError(UIText.CommitAction_errorComputingDiffs, e.getCause(),
+					true);
+			return;
+		} catch (InterruptedException e) {
+			return;
+		}
+
+		Repository repository = null;
+		Repository mergeRepository = null;
+		amendAllowed = repos.length == 1;
+		boolean isMergedResolved = false;
+		for (Repository repo : repos) {
+			repository = repo;
+			RepositoryState state = repo.getRepositoryState();
+			if (!state.canCommit()) {
+				MessageDialog.openError(shell,
+						UIText.CommitAction_cannotCommit, NLS.bind(
+								UIText.CommitAction_repositoryState, state
+										.getDescription()));
+				return;
+			}
+			else if (state.equals(RepositoryState.MERGING_RESOLVED)) {
+				isMergedResolved = true;
+				mergeRepository = repo;
+			}
+		}
+		if (amendAllowed)
+			loadPreviousCommit(repos[0]);
+		if (files.isEmpty()) {
+			if (amendAllowed && previousCommit != null) {
+				boolean result = MessageDialog.openQuestion(shell,
+						UIText.CommitAction_noFilesToCommit,
+						UIText.CommitAction_amendCommit);
+				if (!result)
+					return;
+				amending = true;
+			} else {
+				MessageDialog.openWarning(shell,
+						UIText.CommitAction_noFilesToCommit,
+						UIText.CommitAction_amendNotPossible);
+				return;
+			}
+		}
+
+		String author = null;
+		String committer = null;
+		if (repository != null) {
+			final UserConfig config = repository.getConfig().get(UserConfig.KEY);
+			author = config.getAuthorName();
+			final String authorEmail = config.getAuthorEmail();
+			author = author + " <" + authorEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+
+			committer = config.getCommitterName();
+			final String committerEmail = config.getCommitterEmail();
+			committer = committer + " <" + committerEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		CommitDialog commitDialog = new CommitDialog(shell);
+		commitDialog.setAmending(amending);
+		commitDialog.setAmendAllowed(amendAllowed);
+		commitDialog.setFiles(files, indexDiffs);
+		commitDialog.setPreselectedFiles(getSelectedFiles());
+		commitDialog.setAuthor(author);
+		commitDialog.setCommitter(committer);
+		commitDialog.setAllowToChangeSelection(!isMergedResolved);
+
+		if (previousCommit != null) {
+			commitDialog.setPreviousCommitMessage(previousCommit.getFullMessage());
+			PersonIdent previousAuthor = previousCommit.getAuthorIdent();
+			commitDialog.setPreviousAuthor(previousAuthor.getName()
+					+ " <" + previousAuthor.getEmailAddress() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		if (isMergedResolved) {
+			commitDialog.setCommitMessage(getMergeResolveMessage(mergeRepository));
+		}
+
+		if (commitDialog.open() != IDialogConstants.OK_ID)
+			return;
+
+		final CommitOperation commitOperation = new CommitOperation(
+				commitDialog.getSelectedFiles(), notIndexed, notTracked,
+				commitDialog.getAuthor(), commitDialog.getCommitter(),
+				commitDialog.getCommitMessage());
+		if (commitDialog.isAmending()) {
+			commitOperation.setAmending(true);
+			commitOperation.setPreviousCommit(previousCommit);
+			commitOperation.setRepos(repos);
+		}
+		commitOperation.setComputeChangeId(commitDialog.getCreateChangeId());
+		commitOperation.setCommitAll(isMergedResolved);
+		if (isMergedResolved)
+			commitOperation.setRepos(repos);
+		String jobname = UIText.CommitAction_CommittingChanges;
+		Job job = new Job(jobname) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					commitOperation.execute(monitor);
+					for (Repository repo : repos) {
+						RepositoryMapping mapping = RepositoryMapping
+								.findRepositoryMapping(repo);
+						if (mapping != null)
+							mapping.fireRepositoryChanged();
+					}
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(
+							UIText.CommitAction_CommittingFailed, e);
+				} finally {
+					GitLightweightDecorator.refresh();
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (family.equals(JobFamilies.COMMIT))
+					return true;
+				return super.belongsTo(family);
+			}
+
+		};
+		job.setUser(true);
+		job.schedule();
+		return;
+	}
+

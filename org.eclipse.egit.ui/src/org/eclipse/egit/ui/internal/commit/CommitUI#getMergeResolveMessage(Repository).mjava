@@ -1,5 +1,4 @@
-	private String getMergeResolveMessage(Repository mergeRepository,
-			ExecutionEvent event) throws ExecutionException {
+	private String getMergeResolveMessage(Repository mergeRepository) {
 		File mergeMsg = new File(mergeRepository.getDirectory(), Constants.MERGE_MSG);
 		FileReader reader;
 		try {
@@ -14,7 +13,7 @@
 				}
 				return message.toString();
 			} catch (IOException e) {
-				MessageDialog.openError(getShell(event),
+				MessageDialog.openError(shell,
 						UIText.CommitAction_MergeHeadErrorTitle,
 						UIText.CommitAction_ErrorReadingMergeMsg);
 				throw new IllegalStateException(e);
@@ -26,7 +25,7 @@
 				}
 			}
 		} catch (FileNotFoundException e) {
-			MessageDialog.openError(getShell(event),
+			MessageDialog.openError(shell,
 					UIText.CommitAction_MergeHeadErrorTitle,
 					UIText.CommitAction_MergeHeadErrorMessage);
 			throw new IllegalStateException(e);
