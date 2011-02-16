@@ -10,6 +10,7 @@
 	 */
 	public BranchHierarchyNode(RepositoryTreeNode parent,
 			Repository repository, IPath path) {
-		super(parent, RepositoryTreeNodeType.BRANCHHIERARCHY, repository, path);
+		// path must end with /
+		super(parent, RepositoryTreeNodeType.BRANCHHIERARCHY, repository, path.addTrailingSeparator());
 	}
 
