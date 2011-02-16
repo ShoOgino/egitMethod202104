@@ -12,6 +12,12 @@
 		setButtonLayoutData(renameButton);
 		((GridLayout) parent.getLayout()).numColumns++;
 
+		deleteteButton = new Button(parent, SWT.PUSH);
+		deleteteButton.setFont(JFaceResources.getDialogFont());
+		deleteteButton.setText(UIText.BranchSelectionDialog_Delete);
+		setButtonLayoutData(deleteteButton);
+		((GridLayout) parent.getLayout()).numColumns++;
+
 		renameButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 
@@ -68,6 +74,53 @@
 								UIText.BranchSelectionDialog_ErrorCouldNotCreateNewRef,
 								newRefName);
 					}
+				}
+			}
+		});
+
+		deleteteButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent selectionEvent) {
+				IWorkbench workbench = PlatformUI.getWorkbench();
+				IWorkbenchWindow activeWorkbenchWindow = workbench
+						.getActiveWorkbenchWindow();
+				IHandlerService hsr = (IHandlerService) activeWorkbenchWindow
+						.getService(IHandlerService.class);
+				// set selection in context
+				IEvaluationContext ctx = hsr.getCurrentState();
+				ctx.addVariable(ACTIVE_CURRENT_SELECTION_NAME,
+						branchTree.getSelection());
+
+				ICommandService commandService = (ICommandService) activeWorkbenchWindow
+						.getService(ICommandService.class);
+				Command deleteCommand = commandService
+						.getCommand("org.eclipse.egit.ui.RepositoriesViewDeleteBranch"); //$NON-NLS-1$
+
+				deleteCommand.addExecutionListener(new IExecutionListener() {
+					public void preExecute(String commandId,
+							ExecutionEvent event) {	/* do nothing */ }
+
+					public void postExecuteSuccess(String commandId,
+							Object returnValue) {
+						branchTree.refresh();
+					}
+
+					public void postExecuteFailure(String commandId,
+							ExecutionException exception) { /* do nothing */  }
+
+					public void notHandled(String commandId,
+							NotHandledException exception) { /* do nothing */ }
+				});
+
+				// launch deleteCommand
+				ExecutionEvent executionEvent = hsr.createExecutionEvent(
+						deleteCommand, null);
+				try {
+					deleteCommand.executeWithChecks(executionEvent);
+				} catch (Throwable e) {
+					reportError(
+							e,
+							UIText.BranchSelectionDialog_ErrorCouldNotDeleteRef,
+							refNameFromDialog());
 				}
 			}
 		});
