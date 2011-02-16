@@ -11,16 +11,13 @@
 				null);
 
 		// given
-		IFile local = createMock(IFile.class);
-		expect(local.exists()).andReturn(true);
-		replay(local);
+		IFile local = mock(IFile.class);
+		when(local.exists()).thenReturn(true);
 
-		IResourceVariant remote = createMock(IResourceVariant.class);
-		expect(remote.isContainer()).andReturn(true);
-		replay(remote);
+		IResourceVariant remote = mock(IResourceVariant.class);
+		when(remote.isContainer()).thenReturn(true);
 
 		// then
 		assertFalse(grvc.compare(local, remote));
-		verify(local, remote);
 	}
 

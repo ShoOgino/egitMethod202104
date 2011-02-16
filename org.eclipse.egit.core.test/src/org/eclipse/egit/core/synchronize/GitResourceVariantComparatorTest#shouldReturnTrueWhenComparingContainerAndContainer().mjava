@@ -20,16 +20,14 @@
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 		IPath iPath = new Path(File.separator + path);
 
-		IContainer local = createMock(IContainer.class);
-		expect(local.exists()).andReturn(true).times(2);
-		expect(local.getFullPath()).andReturn(iPath).anyTimes();
-		replay(local);
+		IContainer local = mock(IContainer.class);
+		when(local.exists()).thenReturn(true);
+		when(local.getFullPath()).thenReturn(iPath);
 
 		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo, null,
 				commit.getTree(), path);
 
 		// then
 		assertTrue(grvc.compare(local, remote));
-		verify(local);
 	}
 

@@ -17,26 +17,22 @@
 				dataSet);
 
 		// given
-		IFile local = createMock(IFile.class);
-		expect(local.exists()).andReturn(true);
-		expect(local.getProject()).andReturn(project.getProject());
-		expect(local.getContents()).andReturn(
+		IFile local = mock(IFile.class);
+		when(local.exists()).thenReturn(true);
+		when(local.getProject()).thenReturn(project.getProject());
+		when(local.getContents()).thenReturn(
 				new ByteArrayInputStream(localContent));
-		replay(local);
 
-		IStorage storage = createMock(IStorage.class);
-		expect(storage.getContents()).andReturn(
+		IStorage storage = mock(IStorage.class);
+		when(storage.getContents()).thenReturn(
 				new ByteArrayInputStream(remoteContent));
-		replay(storage);
 
-		IResourceVariant remote = createMock(IResourceVariant.class);
-		expect(remote.isContainer()).andReturn(false);
-		expect(remote.getStorage((IProgressMonitor) anyObject())).andReturn(
-				storage).anyTimes();
-		replay(remote);
+		IResourceVariant remote = mock(IResourceVariant.class);
+		when(remote.isContainer()).thenReturn(false);
+		when(remote.getStorage(any(IProgressMonitor.class))).thenReturn(
+				storage);
 
 		// then
 		assertFalse(grvc.compare(local, remote));
-		verify(local, remote);
 	}
 

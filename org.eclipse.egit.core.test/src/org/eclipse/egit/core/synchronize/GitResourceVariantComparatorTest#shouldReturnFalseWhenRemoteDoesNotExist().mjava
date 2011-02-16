@@ -10,12 +10,10 @@
 				null);
 
 		// given
-		IResource local = createMock(IResource.class);
-		expect(local.exists()).andReturn(false);
-		replay(local);
+		IResource local = mock(IResource.class);
+		when(local.exists()).thenReturn(false);
 
 		// then
 		assertFalse(grvc.compare(local, null));
-		verify(local);
 	}
 

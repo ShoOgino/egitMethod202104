@@ -6,14 +6,12 @@
 				null);
 
 		// given
-		IResource local = createMock(IResource.class);
-		expect(local.exists()).andReturn(false);
-		replay(local);
+		IResource local = mock(IResource.class);
+		when(local.exists()).thenReturn(false);
 		IResourceVariant remote = new GitFolderResourceVariant(repo, null,
 				ObjectId.zeroId(), "./");
 
 		// then
 		assertFalse(grvc.compare(local, remote));
-		verify(local);
 	}
 
