@@ -1,5 +1,10 @@
 	@Override
 	public void setInput(final Object input) {
+		// right-clicking on a commit will fire selection change events,
+		// so we only rebuild this when the commit did in fact change
+		if (input == commit)
+			return;
+		currentDiffs.clear();
 		commit = (PlotCommit<?>) input;
 		format();
 	}

@@ -2,12 +2,15 @@
 	 * @param rw
 	 * @param base
 	 * @param tip
-	 * @param swap if <code>true</code>, base and tip arguments are swapped
-	 * @return <code>true</code> if there is a path directly from tip to base (and thus base is fully merged into tip); <code>false</code> otherwise.
+	 * @param swap
+	 *            if <code>true</code>, base and tip arguments are swapped
+	 * @return <code>true</code> if there is a path directly from tip to base
+	 *         (and thus base is fully merged into tip); <code>false</code>
+	 *         otherwise.
 	 * @throws IOException
 	 */
-	private boolean isMergedInto(final RevWalk rw, final RevCommit base, final RevCommit tip, boolean swap)
-			throws IOException {
+	private boolean isMergedInto(final RevWalk rw, final RevCommit base,
+			final RevCommit tip, boolean swap) throws IOException {
 		return !swap ? rw.isMergedInto(base, tip) : rw.isMergedInto(tip, base);
 	}
 

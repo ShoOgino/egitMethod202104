@@ -1,6 +1,10 @@
 	/**
-	 * Finds nextdoor tagged revition. Searches forwards (in descendants) or backwards (in ancestors)
-	 * @param searchDescendant if <code>false</code>, will search for tagged revision in ancestors
+	 * Finds next door tagged revision. Searches forwards (in descendants) or
+	 * backwards (in ancestors)
+	 *
+	 * @param searchDescendant
+	 *            if <code>false</code>, will search for tagged revision in
+	 *            ancestors
 	 * @return {@link Ref} or <code>null</code> if no tag found
 	 * @throws IOException
 	 */
@@ -15,7 +19,8 @@
 			// otherwise isMergedInto returns wrong result!
 			RevCommit current = revWalk.parseCommit(commit);
 			Ref ref = tagsMap.get(tagName);
-			// tags can point to any object, we only want tags pointing at commits
+			// tags can point to any object, we only want tags pointing at
+			// commits
 			RevObject any = revWalk.peel(revWalk.parseAny(ref.getObjectId()));
 			if (!(any instanceof RevCommit))
 				continue;
@@ -26,16 +31,17 @@
 			// check if newTag matches our criteria
 			if (isMergedInto(revWalk, newTag, current, searchDescendant)) {
 				if (tagRef != null) {
-					RevCommit oldTag = revWalk.parseCommit(tagRef.getObjectId());
+					RevCommit oldTag = revWalk
+							.parseCommit(tagRef.getObjectId());
 
-					// both oldTag and newTag satisfy search criteria, so taking the closest one
+					// both oldTag and newTag satisfy search criteria, so taking
+					// the closest one
 					if (isMergedInto(revWalk, oldTag, newTag, searchDescendant))
 						tagRef = ref;
 				} else
 					tagRef = ref;
 			}
 		}
-
 		return tagRef;
 	}
 

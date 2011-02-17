@@ -24,8 +24,8 @@
 			}
 			setWalkStartPoints(db, headId);
 
-			final TreeWalk fileWalker = setupFileViewer(db, paths);
-			setupCommentViewer(db, fileWalker);
+			setupFileViewer(db, paths);
+			setupCommentViewer(db);
 
 			scheduleNewGenerateHistoryJob();
 		} finally {
