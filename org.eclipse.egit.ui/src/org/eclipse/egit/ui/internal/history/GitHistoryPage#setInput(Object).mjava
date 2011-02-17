@@ -1,6 +1,8 @@
 	@Override
 	public boolean setInput(Object object) {
 		try {
+			// hide the warning text initially
+			setWarningText(null);
 			trace = GitTraceLocation.HISTORYVIEW.isActive();
 			if (trace)
 				GitTraceLocation.getTrace().traceEntry(

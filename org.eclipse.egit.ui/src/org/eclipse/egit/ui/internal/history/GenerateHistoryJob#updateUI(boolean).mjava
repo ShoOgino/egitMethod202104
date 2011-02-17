@@ -1,14 +1,14 @@
-	void updateUI() {
+	void updateUI(boolean incomplete) {
 		if (trace)
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation());
 		try {
-			if (allCommits.size() == lastUpdateCnt)
+			if (!incomplete && allCommits.size() == lastUpdateCnt)
 				return;
 
 			final SWTCommit[] asArray = new SWTCommit[allCommits.size()];
 			allCommits.toArray(asArray);
-			page.showCommitList(this, allCommits, asArray);
+			page.showCommitList(this, allCommits, asArray, incomplete);
 			lastUpdateCnt = allCommits.size();
 		} finally {
 			if (trace)

@@ -5,16 +5,21 @@
 	 * @param searchDescendant
 	 *            if <code>false</code>, will search for tagged revision in
 	 *            ancestors
+	 * @param monitor
 	 * @return {@link Ref} or <code>null</code> if no tag found
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	private Ref getNextTag(boolean searchDescendant) throws IOException {
+	private Ref getNextTag(boolean searchDescendant, IProgressMonitor monitor)
+			throws IOException, InterruptedException {
 		RevWalk revWalk = new RevWalk(db);
 
 		Map<String, Ref> tagsMap = db.getTags();
 		Ref tagRef = null;
 
 		for (String tagName : tagsMap.keySet()) {
+			if (monitor.isCanceled())
+				throw new InterruptedException();
 			// both RevCommits must be allocated using same RevWalk instance,
 			// otherwise isMergedInto returns wrong result!
 			RevCommit current = revWalk.parseCommit(commit);

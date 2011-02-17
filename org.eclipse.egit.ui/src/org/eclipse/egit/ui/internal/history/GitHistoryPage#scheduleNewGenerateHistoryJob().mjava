@@ -1,5 +1,6 @@
 	private void scheduleNewGenerateHistoryJob() {
-		final SWTCommitList list = new SWTCommitList(graph.getControl().getDisplay());
+		final SWTCommitList list = new SWTCommitList(graph.getControl()
+				.getDisplay());
 		list.source(currentWalk);
 		final GenerateHistoryJob rj = new GenerateHistoryJob(this, list);
 		rj.addJobChangeListener(new JobChangeAdapter() {

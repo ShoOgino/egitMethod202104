@@ -28,10 +28,8 @@
 				// still create the event
 				historyPage.firePropertyChange(historyPage, P_DESCRIPTION,
 						oldDescription, historyPage.getDescription());
-				Activator
-						.getDefault()
-						.getPreferenceStore()
-						.setValue(PREF_SHOWALLFILTER,
-								historyPage.showAllFilter.toString());
+				Activator.getDefault().getPreferenceStore().setValue(
+						PREF_SHOWALLFILTER,
+						historyPage.showAllFilter.toString());
 			}
 
