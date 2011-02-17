@@ -1,0 +1,11 @@
+		@Override
+		protected void writeAddedLine(RawText b, int bCur) throws IOException {
+			flush();
+			int start = d.length();
+			super.writeAddedLine(b, bCur);
+			flush();
+			int end = d.length();
+			styles.add(new StyleRange(start, end - start,
+					SYS_LINES_ADDED_COLOR, null));
+		}
+

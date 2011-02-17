@@ -1,0 +1,11 @@
+		@Override
+		protected void writeRemovedLine(RawText b, int bCur) throws IOException {
+			flush();
+			int start = d.length();
+			super.writeRemovedLine(b, bCur);
+			flush();
+			int end = d.length();
+			styles.add(new StyleRange(start, end - start,
+					SYS_LINES_REMOVED_COLOR, null));
+		}
+

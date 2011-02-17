@@ -5,11 +5,16 @@
 			return;
 		}
 
+		final boolean trace = GitTraceLocation.HISTORYVIEW.isActive();
+		if (trace)
+			GitTraceLocation.getTrace().traceEntry(
+					GitTraceLocation.HISTORYVIEW.getLocation());
+
+		final List<StyleRange> styles = new ArrayList<StyleRange>();
+		final StringBuilder d = new StringBuilder();
+
 		final PersonIdent author = commit.getAuthorIdent();
 		final PersonIdent committer = commit.getCommitterIdent();
-		final StringBuilder d = new StringBuilder();
-		final ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
-
 		d.append(UIText.CommitMessageViewer_commit);
 		d.append(SPACE);
 		d.append(commit.getId().name());
@@ -63,7 +68,7 @@
 		if (!branches.isEmpty()) {
 			d.append(UIText.CommitMessageViewer_branches);
 			d.append(": "); //$NON-NLS-1$
-			for (Iterator<Ref> i = branches.iterator(); i.hasNext(); ) {
+			for (Iterator<Ref> i = branches.iterator(); i.hasNext();) {
 				Ref head = i.next();
 				RevCommit p;
 				try {
@@ -95,7 +100,8 @@
 			if (followingTag != null) {
 				d.append(UIText.CommitMessageViewer_follows);
 				d.append(": "); //$NON-NLS-1$
-				RevCommit p = new RevWalk(db).parseCommit(followingTag.getObjectId());
+				RevCommit p = new RevWalk(db).parseCommit(followingTag
+						.getObjectId());
 				addLink(d, formatTagRef(followingTag), styles, p);
 				d.append(LF);
 			}
@@ -108,7 +114,8 @@
 			if (precedingTag != null) {
 				d.append(UIText.CommitMessageViewer_precedes);
 				d.append(": "); //$NON-NLS-1$
-				RevCommit p = new RevWalk(db).parseCommit(precedingTag.getObjectId());
+				RevCommit p = new RevWalk(db).parseCommit(precedingTag
+						.getObjectId());
 				addLink(d, formatTagRef(precedingTag), styles, p);
 				d.append(LF);
 			}
@@ -130,16 +137,33 @@
 		}
 		int h0 = d.length();
 		d.append(msg);
-
 		d.append(LF);
-
-		addDiff(d, styles);
 
 		Matcher matcher = p.matcher(msg);
 		while (matcher.find()) {
 			styles.add(new StyleRange(h0 + matcher.start(), matcher.end()
 					- matcher.start(), null, null, SWT.ITALIC));
 		}
+
+		// build the asynchronously to ensure UI responsiveness
+		if (!currentDiffs.isEmpty() && commit.getParentCount() == 1)
+			try {
+				PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
+						new IRunnableWithProgress() {
+							public void run(IProgressMonitor monitor)
+									throws InvocationTargetException,
+									InterruptedException {
+								buildDiffs(d, styles, monitor, trace);
+							}
+						});
+			} catch (InvocationTargetException e) {
+				Activator.handleError(NLS.bind(
+						UIText.CommitMessageViewer_errorGettingFileDifference,
+						commit.getId()), e.getTargetException(), false);
+			} catch (InterruptedException e) {
+				// ignore here, the list of differences will simply be
+				// incomplete
+			}
 
 		final StyleRange[] arr = new StyleRange[styles.size()];
 		styles.toArray(arr);
@@ -150,5 +174,9 @@
 		});
 		setDocument(new Document(d.toString()));
 		getTextWidget().setStyleRanges(arr);
+
+		if (trace)
+			GitTraceLocation.getTrace().traceExit(
+					GitTraceLocation.HISTORYVIEW.getLocation());
 	}
 
