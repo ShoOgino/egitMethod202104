@@ -17,6 +17,9 @@
 			}
 		});
 
+		while (!ContextMenuHelper.isContextMenuItemEnabled(table, UIText.GitHistoryPage_CheckoutMenuLabel)){
+			waitInUI();
+		}
 		ContextMenuHelper.clickContextMenu(table,
 				UIText.GitHistoryPage_CheckoutMenuLabel);
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
