@@ -1,0 +1,14 @@
+	@Test public void blobShouldBeGreaterThanCommit() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelCommit commit = mock(GitModelCommit.class);
+
+		// when
+		int actual = sorter.compare(viewer, blob, commit);
+
+		// then
+		assertTrue(actual > 0);
+	}
+

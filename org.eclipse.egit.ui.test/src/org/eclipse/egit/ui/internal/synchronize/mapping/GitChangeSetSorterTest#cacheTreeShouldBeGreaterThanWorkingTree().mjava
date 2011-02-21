@@ -1,0 +1,17 @@
+	/*
+	 * Tests for GitModelCache
+	 */
+	@Test public void cacheTreeShouldBeGreaterThanWorkingTree() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCache cache = mock(GitModelCache.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		// when
+		int actual = sorter.compare(viewer, cache, workingTree);
+
+		// then
+		assertTrue(actual > 0);
+	}
+

@@ -1,0 +1,14 @@
+	@Test public void commitTreeShouldBeGreaterThanCache() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelCommit commit = mock(GitModelCommit.class);
+		GitModelCache cache = mock(GitModelCache.class);
+
+		// when
+		int actual = sorter.compare(viewer, commit, cache);
+
+		// then
+		assertTrue(actual > 0);
+	}
+

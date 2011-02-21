@@ -1,0 +1,14 @@
+	@Test public void commitTreeShouldBeLessThanTree() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelBlob blob = mock(GitModelBlob.class);
+
+		// when
+		int actual = sorter.compare(viewer, tree, blob);
+
+		// then
+		assertTrue(actual < 0);
+	}
+

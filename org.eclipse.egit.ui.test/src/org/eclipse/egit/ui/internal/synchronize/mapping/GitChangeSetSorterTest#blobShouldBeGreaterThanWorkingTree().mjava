@@ -1,0 +1,17 @@
+	/*
+	 * Tests for GitModelBlob
+	 */
+	@Test public void blobShouldBeGreaterThanWorkingTree() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		// when
+		int actual = sorter.compare(viewer, blob, workingTree);
+
+		// then
+		assertTrue(actual > 0);
+	}
+

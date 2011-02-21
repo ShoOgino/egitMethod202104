@@ -1,0 +1,17 @@
+	/*
+	 * Tests for GitModelTree
+	 */
+	@Test public void treeShouldBeGreaterThanWorkingTree() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelTree tree = mock(GitModelTree.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		// when
+		int actual = sorter.compare(viewer, tree, workingTree);
+
+		// then
+		assertTrue(actual > 0);
+	}
+

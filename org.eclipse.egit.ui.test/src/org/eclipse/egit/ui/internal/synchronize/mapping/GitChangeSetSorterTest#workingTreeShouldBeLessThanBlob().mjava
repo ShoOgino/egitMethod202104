@@ -1,0 +1,14 @@
+	@Test public void workingTreeShouldBeLessThanBlob() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelWorkingTree workingTree = mock(GitModelWorkingTree.class);
+
+		// when
+		int actual = sorter.compare(viewer, workingTree, blob);
+
+		// then
+		assertTrue(actual < 0);
+	}
+
