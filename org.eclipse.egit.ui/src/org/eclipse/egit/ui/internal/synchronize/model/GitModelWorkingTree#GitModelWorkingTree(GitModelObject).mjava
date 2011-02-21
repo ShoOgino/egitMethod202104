@@ -1,13 +1,11 @@
 	/**
 	 * @param parent
 	 *            parent of working tree instance
-	 * @param commit
-	 *            last {@link RevCommit} in repository
 	 * @throws IOException
 	 */
-	public GitModelWorkingTree(GitModelObject parent, RevCommit commit)
+	public GitModelWorkingTree(GitModelObject parent)
 			throws IOException {
-		super(parent, commit, new FileModelFactory() {
+		super(parent, null, new FileModelFactory() {
 			public GitModelBlob createFileModel(
 					GitModelObjectContainer modelParent, RevCommit modelCommit,
 					ObjectId repoId, ObjectId cacheId, IPath location)

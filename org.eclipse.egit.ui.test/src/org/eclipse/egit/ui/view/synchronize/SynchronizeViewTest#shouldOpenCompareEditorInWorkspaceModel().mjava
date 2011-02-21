@@ -6,20 +6,10 @@
 		showDialog(PROJ1, "Team", "Synchronize...");
 
 		// when
-		bot.shell("Synchronize repository: " + REPO1 + File.separator + ".git")
-				.activate();
+		launchSynchronization(null, null, SynchronizeWithAction_tagsName,
+				"compare2", true);
 
-		bot.comboBox(2)
-				.setSelection(UIText.SynchronizeWithAction_tagsName);
-		bot.comboBox(3).setSelection("compare2");
-
-		// fire action
-		bot.button(IDialogConstants.OK_LABEL).click();
-
-		SWTBotView syncView = bot.viewByTitle("Synchronize");
-		syncView.toolbarDropDownButton("Show File System Resources").click()
-				.menuItem("Workspace").click();
-		SWTBotTree syncViewTree = syncView.bot().tree();
+		SWTBotTree syncViewTree = setPresentationModel("Workspace").tree();
 		// try to open compare editor for FILE1
 		syncViewTree.getAllItems()[0].expand().getItems()[0].expand()
 				.getItems()[0].doubleClick();

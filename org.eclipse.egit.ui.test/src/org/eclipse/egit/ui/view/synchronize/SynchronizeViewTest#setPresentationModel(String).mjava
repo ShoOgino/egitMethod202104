@@ -1,0 +1,8 @@
+	private SWTBot setPresentationModel(String model) {
+		SWTBotView syncView = bot.viewByTitle("Synchronize");
+		syncView.toolbarDropDownButton("Show File System Resources").click()
+				.menuItem(model).click();
+
+		return syncView.bot();
+	}
+

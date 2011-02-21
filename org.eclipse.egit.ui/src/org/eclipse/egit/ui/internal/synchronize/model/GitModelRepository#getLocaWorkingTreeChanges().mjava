@@ -1,0 +1,13 @@
+	private GitModelWorkingTree getLocaWorkingTreeChanges() {
+		try {
+			GitModelWorkingTree gitModelWorkingTree = new GitModelWorkingTree(this);
+
+			if (gitModelWorkingTree.getChildren().length > 0)
+				return gitModelWorkingTree;
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+
+		return null;
+	}
+

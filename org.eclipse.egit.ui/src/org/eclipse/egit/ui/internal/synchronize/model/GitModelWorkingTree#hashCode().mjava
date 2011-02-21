@@ -1,7 +1,5 @@
 	@Override
 	public int hashCode() {
-		// increase hash code value for 31 to distinguish GitModelCashe from
-		// GitModelWorkingTree
-		return 31 + baseCommit.hashCode() ^ getParent().hashCode();
+		return getParent().hashCode();
 	}
 

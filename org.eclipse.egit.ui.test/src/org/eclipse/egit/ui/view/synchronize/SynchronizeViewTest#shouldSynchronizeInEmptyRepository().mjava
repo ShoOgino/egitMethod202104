@@ -1,14 +1,10 @@
-	@Test
-	public void shouldListFileDeletedChange() throws Exception {
+	@Test public void shouldSynchronizeInEmptyRepository() throws Exception {
 		// given
-		resetRepository(PROJ1);
-		createTag(PROJ1, "base");
-		deleteFileAndCommit(PROJ1);
-		showDialog(PROJ1, "Team", "Synchronize...");
+		createEmptyRepository();
+		showDialog("EmptyProject", "Team", "Synchronize...");
 
 		// when
-		launchSynchronization(null, null, SynchronizeWithAction_tagsName,
-				"base", true);
+		launchSynchronization("EmptyRepository", null, null, null, null, true);
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
@@ -17,11 +13,13 @@
 		commitTree.expand();
 		SWTBotTreeItem projectTree = commitTree.getItems()[0];
 		projectTree.expand();
-		assertEquals(1, projectTree.getItems().length);
+		assertEquals(2, projectTree.getItems().length);
 		SWTBotTreeItem folderTree = projectTree.getItems()[0];
 		folderTree.expand();
-		assertEquals(1, folderTree.getItems().length);
+		assertEquals(2, folderTree.getItems().length);
 		SWTBotTreeItem fileTree = folderTree.getItems()[0];
 		assertEquals("test.txt", fileTree.getText());
+		fileTree = folderTree.getItems()[1];
+		assertEquals("test2.txt", fileTree.getText());
 	}
 

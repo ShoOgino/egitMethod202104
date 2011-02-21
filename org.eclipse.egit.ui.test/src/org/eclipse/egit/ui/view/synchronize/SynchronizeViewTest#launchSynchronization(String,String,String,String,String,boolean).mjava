@@ -1,0 +1,36 @@
+	private void launchSynchronization(String repo, String srcRepo,
+			String srcRef, String dstRepo, String dstRef, boolean includeLocal) {
+		bot.shell("Synchronize repository: " + repo + File.separator + ".git")
+				.activate();
+
+		if (!includeLocal)
+			bot.checkBox(
+					UIText.SelectSynchronizeResourceDialog_includeUncommitedChanges)
+					.click();
+
+		if (srcRepo != null)
+			bot.comboBox(0)
+					.setSelection(srcRepo);
+		if (srcRef != null)
+			bot.comboBox(1).setSelection(srcRef);
+
+		if (dstRepo != null)
+			bot.comboBox(2)
+					.setSelection(dstRepo);
+		if (dstRef != null)
+			bot.comboBox(3).setSelection(dstRef);
+
+		// register synchronization finish hook
+		SynchronizeFinishHook sfh = new SynchronizeFinishHook();
+		Job.getJobManager().addJobChangeListener(sfh);
+
+		// fire action
+		bot.button(IDialogConstants.OK_LABEL).click();
+
+		try {
+			bot.waitUntil(sfh, 120000);
+		} finally {
+			Job.getJobManager().removeJobChangeListener(sfh);
+		}
+	}
+
