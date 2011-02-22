@@ -1,0 +1,20 @@
+	@Test
+	public void testCompareWithCommit() throws Exception {
+		String compareWithCommitMenuText = util
+				.getPluginLocalizedValue("CompareWithCommitAction.label");
+		String dialogTitle = UIText.CommitSelectionDialog_WindowTitle;
+		SWTBotShell dialog = openCompareWithDialog(compareWithCommitMenuText,
+				dialogTitle);
+		// use the default (the last commit) -> no changes
+		assertEquals(3, dialog.bot().table().rowCount());
+		dialog.bot().button(IDialogConstants.OK_LABEL).click();
+		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+		// use the second (previous) -> should have a change
+		dialog = openCompareWithDialog(compareWithCommitMenuText, dialogTitle);
+		dialog.bot().table().select(1);
+		dialog.bot().button(IDialogConstants.OK_LABEL).click();
+		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+	}
+

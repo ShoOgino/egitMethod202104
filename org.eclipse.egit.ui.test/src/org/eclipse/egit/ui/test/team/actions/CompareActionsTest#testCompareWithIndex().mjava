@@ -1,0 +1,37 @@
+	@Test
+	public void testCompareWithIndex() throws Exception {
+		String compareWithIndexActionLabel = util
+				.getPluginLocalizedValue("CompareWithIndexAction_label");
+		clickCompareWith(compareWithIndexActionLabel);
+
+		// compare with index should not have any changes
+		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+		// change test file -> should have one change
+		setTestFileContent("Hello there");
+
+		clickCompareWith(compareWithIndexActionLabel);
+
+		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+
+		// add to index -> no more changes
+		new Git(lookupRepository(repositoryFile)).add().addFilepattern(
+				PROJ1 + "/" + FOLDER + "/" + FILE1).call();
+
+		clickCompareWith(compareWithIndexActionLabel);
+
+		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+
+		// reset -> there should be no more changes
+		ResetOperation rop = new ResetOperation(
+				lookupRepository(repositoryFile), "refs/heads/master",
+				ResetType.HARD);
+		rop.execute(new NullProgressMonitor());
+
+		clickCompareWith(compareWithIndexActionLabel);
+		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+	}
+

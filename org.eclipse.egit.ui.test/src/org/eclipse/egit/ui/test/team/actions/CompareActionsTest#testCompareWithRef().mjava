@@ -1,0 +1,22 @@
+	@Test
+	public void testCompareWithRef() throws Exception {
+		String compareWithRefActionLabel = util
+				.getPluginLocalizedValue("CompareWithBranchOrTagAction.label");
+		String dialogTitle = UIText.CompareTargetSelectionDialog_WindowTitle;
+		SWTBotShell dialog = openCompareWithDialog(compareWithRefActionLabel,
+				dialogTitle);
+		// use the default (the last commit) -> no changes
+		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
+				.click();
+		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+		// use the tag -> should have a change
+		dialog = openCompareWithDialog(compareWithRefActionLabel, dialogTitle);
+		dialog.bot().tree().getTreeItem(TAGS).expand().getNode("SomeTag")
+				.select();
+		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
+				.click();
+		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+	}
+

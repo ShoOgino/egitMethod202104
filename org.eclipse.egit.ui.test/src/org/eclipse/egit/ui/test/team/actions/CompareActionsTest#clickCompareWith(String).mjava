@@ -1,0 +1,8 @@
+	private void clickCompareWith(String menuLabel) {
+		SWTBotTree projectExplorerTree = bot.viewById(
+				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		getProjectItem(projectExplorerTree, PROJ1).select();
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Compare With",
+				menuLabel);
+	}
+

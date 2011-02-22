@@ -1,0 +1,37 @@
+	@Test
+	public void testCompareWithHead() throws Exception {
+		String compareWithHeadMenuLabel = util
+				.getPluginLocalizedValue("CompareWithHeadAction_label");
+		clickCompareWith(compareWithHeadMenuLabel);
+
+		// compare with HEAD should not have any changes
+		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+		// change test file -> should have one change
+		setTestFileContent("Hello there");
+
+		clickCompareWith(compareWithHeadMenuLabel);
+
+		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+
+		// add to index -> should still show as change
+		new Git(lookupRepository(repositoryFile)).add().addFilepattern(
+				PROJ1 + "/" + FOLDER + "/" + FILE1).call();
+
+		clickCompareWith(compareWithHeadMenuLabel);
+
+		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+
+		// reset -> there should be no more changes
+		ResetOperation rop = new ResetOperation(
+				lookupRepository(repositoryFile), "refs/heads/master",
+				ResetType.HARD);
+		rop.execute(new NullProgressMonitor());
+
+		clickCompareWith(compareWithHeadMenuLabel);
+		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
+				.getAllItems().length);
+	}
+
