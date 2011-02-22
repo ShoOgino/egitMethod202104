@@ -1,0 +1,48 @@
+	/**
+	 * Starts this operation asynchronously
+	 */
+	public void start() {
+		String errorMessage = null;
+		String branchName;
+		try {
+			try {
+				branchName = repository.getFullBranch();
+			} catch (IOException e) {
+				Activator.logError(e.getMessage(), e);
+				errorMessage = UIText.PullOperationUI_UnexpectedExceptionGettingBranchMessage;
+				return;
+			}
+			if (!branchName.startsWith(Constants.R_HEADS)) {
+				errorMessage = UIText.PullOperationUI_NoLocalBranchMessage;
+				return;
+			}
+
+			String shortBranchName = branchName.substring(Constants.R_HEADS
+					.length());
+
+			String remoteBranchName = repository.getConfig().getString(
+					ConfigConstants.CONFIG_BRANCH_SECTION, shortBranchName,
+					ConfigConstants.CONFIG_KEY_MERGE);
+			if (remoteBranchName == null) {
+				errorMessage = NLS
+						.bind(
+								UIText.PullOperationUI_BranchNotConfiguredForPullMessage,
+								shortBranchName);
+				return;
+			}
+			String repoName = Activator.getDefault().getRepositoryUtil()
+					.getRepositoryName(repository);
+
+			String jobName = NLS.bind(UIText.PullOperationUI_PullingTaskName,
+					shortBranchName, repoName);
+			JobUtil.scheduleUserJob(this, jobName, JobFamilies.PULL, this);
+
+		} finally {
+			if (errorMessage != null)
+				MessageDialog.openError(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell(),
+						UIText.PullOperationUI_PullErrorWindowTitle,
+						errorMessage);
+		}
+	}
+

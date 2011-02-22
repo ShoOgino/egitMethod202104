@@ -1,0 +1,26 @@
+	public void done(IJobChangeEvent event) {
+		IStatus result = event.getJob().getResult();
+		if (result.getSeverity() == IStatus.CANCEL) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getShell();
+					MessageDialog
+							.openInformation(
+									shell,
+									UIText.PullOperationUI_PullCanceledWindowTitle,
+									UIText.PullOperationUI_PullOperationCanceledMessage);
+				}
+			});
+		} else if (result.isOK()) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getShell();
+					new PullResultDialog(shell, repository, pull.getResult())
+							.open();
+				}
+			});
+		}
+	}
+
