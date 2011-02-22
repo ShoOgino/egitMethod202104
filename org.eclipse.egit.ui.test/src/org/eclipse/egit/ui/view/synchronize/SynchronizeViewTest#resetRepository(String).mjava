@@ -2,6 +2,11 @@
 		showDialog(projectName, "Team", "Reset...");
 
 		bot.shell(UIText.ResetCommand_WizardTitle).bot().activeShell();
+
+		SWTBotTreeItem tagsNode = bot.tree().getTreeItem("Tags");
+		tagsNode.expand();
+		tagsNode.getNode(INITIAL_TAG).select();
+
 		bot.radio(UIText.ResetTargetSelectionDialog_ResetTypeHardButton)
 				.click();
 		bot.button(UIText.ResetTargetSelectionDialog_ResetButton).click();
