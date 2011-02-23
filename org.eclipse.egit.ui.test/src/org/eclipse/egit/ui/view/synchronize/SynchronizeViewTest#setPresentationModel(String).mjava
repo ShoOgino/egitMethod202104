@@ -1,7 +1,10 @@
-	private SWTBot setPresentationModel(String model) {
+	private SWTBot setPresentationModel(String model) throws Exception {
 		SWTBotView syncView = bot.viewByTitle("Synchronize");
-		syncView.toolbarDropDownButton("Show File System Resources").click()
-				.menuItem(model).click();
+		SWTBotToolbarDropDownButton dropDown = syncView
+				.toolbarDropDownButton("Show File System Resources");
+		dropDown.menuItem(model).click();
+		// hide drop down
+		dropDown.pressShortcut(KeyStroke.getInstance("ESC"));
 
 		return syncView.bot();
 	}

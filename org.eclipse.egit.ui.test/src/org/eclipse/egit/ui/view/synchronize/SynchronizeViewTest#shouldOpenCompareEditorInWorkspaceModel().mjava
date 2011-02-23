@@ -1,4 +1,5 @@
-	@Test public void shouldOpenCompareEditorInWorkspaceModel() throws Exception {
+	@Test public void shouldOpenCompareEditorInWorkspaceModel()
+			throws Exception {
 		// given
 		resetRepository(PROJ1);
 		createTag(PROJ1, "compare2");
@@ -9,15 +10,8 @@
 		launchSynchronization(null, null, SynchronizeWithAction_tagsName,
 				"compare2", true);
 
-		SWTBotTree syncViewTree = setPresentationModel("Workspace").tree();
-		// try to open compare editor for FILE1
-
-		TestUtil.waitUntilTreeHasNodeWithText(bot, syncViewTree, "> " + PROJ1, 10000);
-		syncViewTree.getAllItems()[0].expand().getItems()[0].expand()
-				.getItems()[0].doubleClick();
-
 		// then
-		SWTBot compare = bot.editorByTitle(FILE1).bot();
+		SWTBot compare = getCompareEditorForFileInWorkspaceModel(true).bot();
 		assertNotNull(compare);
 	}
 

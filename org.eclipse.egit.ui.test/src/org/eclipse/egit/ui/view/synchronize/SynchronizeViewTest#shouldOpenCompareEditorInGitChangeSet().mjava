@@ -9,17 +9,8 @@
 		launchSynchronization(null, null, SynchronizeWithAction_tagsName,
 				"compare1", true);
 
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		// wait for tree showing node "<working tree>"
-		syncViewTree.getTreeItem(UIText.GitModelWorkingTree_workingTree);
-		// expand all nodes
-		syncViewTree.getAllItems()[0].collapse().doubleClick();
-		// try to open compare editor for FILE1
-		syncViewTree.getAllItems()[0].getItems()[0].getNode(FOLDER)
-				.getNode(FILE1).doubleClick();
-
 		// then
-		SWTBot compare = bot.editorByTitle(FILE1).bot();
+		SWTBot compare = getCompareEditorForFileInGitChangeSet(FILE1, true);
 		assertNotNull(compare);
 	}
 
