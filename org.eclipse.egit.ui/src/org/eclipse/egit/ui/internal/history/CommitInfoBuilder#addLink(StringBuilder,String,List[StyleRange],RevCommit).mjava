@@ -2,7 +2,7 @@
 			final List<StyleRange> styles, final RevCommit to) {
 		final ObjectLink sr = new ObjectLink();
 		sr.targetCommit = to;
-		sr.foreground = SYS_LINKCOLOR;
+		sr.foreground = linkColor;
 		sr.underline = true;
 		sr.start = d.length();
 		d.append(linkLabel);

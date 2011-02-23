@@ -8,10 +8,12 @@
 	 * @param monitor
 	 * @return {@link Ref} or <code>null</code> if no tag found
 	 * @throws IOException
-	 * @throws InterruptedException
+	 * @throws OperationCanceledException
 	 */
 	private Ref getNextTag(boolean searchDescendant, IProgressMonitor monitor)
-			throws IOException, InterruptedException {
+			throws IOException, OperationCanceledException {
+		if (monitor.isCanceled())
+			throw new OperationCanceledException();
 		RevWalk revWalk = new RevWalk(db);
 
 		Map<String, Ref> tagsMap = db.getTags();
@@ -19,7 +21,7 @@
 
 		for (String tagName : tagsMap.keySet()) {
 			if (monitor.isCanceled())
-				throw new InterruptedException();
+				throw new OperationCanceledException();
 			// both RevCommits must be allocated using same RevWalk instance,
 			// otherwise isMergedInto returns wrong result!
 			RevCommit current = revWalk.parseCommit(commit);
@@ -35,6 +37,8 @@
 
 			// check if newTag matches our criteria
 			if (isMergedInto(revWalk, newTag, current, searchDescendant)) {
+				if (monitor.isCanceled())
+					throw new OperationCanceledException();
 				if (tagRef != null) {
 					RevCommit oldTag = revWalk
 							.parseCommit(tagRef.getObjectId());

@@ -1,5 +1,6 @@
-	CommitMessageViewer(final Composite parent, final IPageSite site) {
+	CommitMessageViewer(final Composite parent, final IPageSite site, IWorkbenchPartSite partSite) {
 		super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
+		this.partSite = partSite;
 
 		final StyledText t = getTextWidget();
 		t.setFont(UIUtils.getFont(UIPreferences.THEME_CommitMessageFont));

@@ -1,0 +1,36 @@
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		if(monitor.isCanceled())
+			return Status.CANCEL_STATUS;
+		final List<StyleRange> styles = new ArrayList<StyleRange>();
+		final String commitInfo;
+		CommitInfoBuilder builder;
+		synchronized(lock) {
+			builder = new CommitInfoBuilder(formatRequest.getRepository(), formatRequest.getCommit(),
+					formatRequest.getCurrentDiffs(), formatRequest.isFill());
+			builder.setColors(formatRequest.getLinkColor(),
+					formatRequest.getDarkGrey(),
+					formatRequest.getHunkheaderColor(),
+					formatRequest.getLinesAddedColor(),
+					formatRequest.getLinesRemovedColor());
+		}
+		try {
+			commitInfo = builder.format(styles, monitor);
+		} catch (IOException e) {
+			return Activator.createErrorStatus(e.getMessage(), e);
+		}
+		final StyleRange[] arr = new StyleRange[styles.size()];
+		styles.toArray(arr);
+		Arrays.sort(arr, new Comparator<StyleRange>() {
+			public int compare(StyleRange o1, StyleRange o2) {
+				return o1.start - o2.start;
+			}
+		});
+		if(monitor.isCanceled())
+			return Status.CANCEL_STATUS;
+		synchronized(lock) {
+			formatResult = new FormatResult(commitInfo, arr);
+		}
+		return Status.OK_STATUS;
+	}
+

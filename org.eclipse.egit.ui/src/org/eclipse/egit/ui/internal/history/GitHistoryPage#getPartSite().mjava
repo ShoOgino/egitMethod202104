@@ -1,0 +1,8 @@
+	private IWorkbenchPartSite getPartSite() {
+		final IWorkbenchPart part = getHistoryPageSite().getPart();
+		IWorkbenchPartSite site = null;
+		if (part != null)
+			site = part.getSite();
+		return site;
+	}
+

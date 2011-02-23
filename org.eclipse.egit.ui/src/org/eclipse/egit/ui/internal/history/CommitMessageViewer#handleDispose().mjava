@@ -1,5 +1,9 @@
 	@Override
 	protected void handleDispose() {
+		if (formatJob != null) {
+			formatJob.cancel();
+			formatJob = null;
+		}
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(listener);
 		super.handleDispose();

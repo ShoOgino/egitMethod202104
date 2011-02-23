@@ -4,37 +4,9 @@
 					UIText.CommitMessageViewer_SelectOneCommitMessage));
 			return;
 		}
-
-		final List<StyleRange> styles = new ArrayList<StyleRange>();
-		final StringBuilder d = new StringBuilder();
-		// we do the formatting asynchronously
-		try {
-			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
-					new IRunnableWithProgress() {
-						public void run(IProgressMonitor monitor)
-								throws InvocationTargetException,
-								InterruptedException {
-							format(styles, d, monitor);
-						}
-					});
-
-		} catch (InvocationTargetException e) {
-			Activator.handleError(NLS.bind(
-					UIText.CommitMessageViewer_errorGettingFileDifference,
-					commit.getId()), e.getTargetException(), false);
-		} catch (InterruptedException e) {
-			// ignore here, the list of differences will simply be
-			// incomplete
+		if (formatJob != null && formatJob.getState() != Job.NONE) {
+			formatJob.cancel();
 		}
-		// now we're back in the UI thread and update the control
-		final StyleRange[] arr = new StyleRange[styles.size()];
-		styles.toArray(arr);
-		Arrays.sort(arr, new Comparator<StyleRange>() {
-			public int compare(StyleRange o1, StyleRange o2) {
-				return o1.start - o2.start;
-			}
-		});
-		setDocument(new Document(d.toString()));
-		getTextWidget().setStyleRanges(arr);
+		scheduleFormatJob();
 	}
 

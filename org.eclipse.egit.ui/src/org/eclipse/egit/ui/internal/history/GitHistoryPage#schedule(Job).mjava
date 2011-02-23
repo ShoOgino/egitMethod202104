@@ -1,8 +1,5 @@
 	private void schedule(final Job j) {
-		final IWorkbenchPart part = getHistoryPageSite().getPart();
-		IWorkbenchPartSite site = null;
-		if (part != null)
-			site = part.getSite();
+		IWorkbenchPartSite site = getPartSite();
 		if (site != null) {
 			final IWorkbenchSiteProgressService p;
 			p = (IWorkbenchSiteProgressService) site

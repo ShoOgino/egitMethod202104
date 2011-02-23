@@ -1,7 +1,7 @@
 	private void buildDiffs(final StringBuilder d,
 			final List<StyleRange> styles, IProgressMonitor monitor,
-			boolean trace) throws InterruptedException,
-			InvocationTargetException {
+			boolean trace) throws OperationCanceledException,
+			IOException {
 
 		// the encoding for the currently processed file
 		final String[] currentEncoding = new String[1];
@@ -36,18 +36,15 @@
 
 					});
 			final DiffFormatter diffFmt = new MessageViewerFormatter(bos,
-					styles, d);
+					styles, d, hunkheaderColor, linesAddedColor, linesRemovedColor);
 
 			for (FileDiff currentDiff : currentDiffs) {
 				if (monitor.isCanceled())
-					throw new InterruptedException();
+					throw new OperationCanceledException();
 				if (currentDiff.getBlobs().length == 2) {
 					String path = currentDiff.getPath();
-					monitor
-							.setTaskName(NLS
-									.bind(
-											UIText.CommitMessageViewer_BuildDiffTaskName,
-											path));
+					monitor.setTaskName(NLS.bind(
+							UIText.CommitMessageViewer_BuildDiffTaskName, path));
 					currentEncoding[0] = CompareUtils.getResourceEncoding(db,
 							path);
 					d.append(formatPathLine(path)).append(LF);
@@ -57,8 +54,6 @@
 				monitor.worked(1);
 			}
 
-		} catch (IOException e) {
-			throw new InvocationTargetException(e);
 		} finally {
 			monitor.done();
 			if (trace)

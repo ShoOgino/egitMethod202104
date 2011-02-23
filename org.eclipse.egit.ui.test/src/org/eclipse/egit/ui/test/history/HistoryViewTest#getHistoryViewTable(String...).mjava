@@ -16,7 +16,6 @@
 		else
 			explorerItem = getProjectItem(projectExplorerTree, path[0])
 					.expand().getNode(path[1]).expand().getNode(path[2]);
-		bot.waitUntil(Conditions.widgetIsEnabled(explorerItem));
 		explorerItem.select();
 		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Show In",
 				"History");
