@@ -1,0 +1,14 @@
+	@Test public void blobShouldBeGreaterThanCache() {
+		// given
+		Viewer viewer = mock(Viewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob = mock(GitModelBlob.class);
+		GitModelCache cache = mock(GitModelCache.class);
+
+		// when
+		int actual = sorter.compare(viewer, blob, cache);
+
+		// then
+		assertTrue(actual > 0);
+	}
+

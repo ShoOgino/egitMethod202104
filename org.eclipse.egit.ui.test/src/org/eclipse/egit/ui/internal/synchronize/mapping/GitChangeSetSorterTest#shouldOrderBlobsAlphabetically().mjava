@@ -1,0 +1,20 @@
+	@Test public void shouldOrderBlobsAlphabetically() {
+		// given
+		CommonViewer viewer = mock(CommonViewer.class);
+		GitChangeSetSorter sorter = new GitChangeSetSorter();
+		GitModelBlob blob1 = mock(GitModelBlob.class);
+		GitModelBlob blob2 = mock(GitModelBlob.class);
+		ILabelProvider labelProvider = mock(ILabelProvider.class);
+		when(labelProvider.getText(blob1)).thenReturn("aaa");
+		when(labelProvider.getText(blob2)).thenReturn("zzz");
+		when(viewer.getLabelProvider()).thenReturn(labelProvider);
+
+		// when
+		int actual1 = sorter.compare(viewer, blob1, blob2);
+		int actual2 = sorter.compare(viewer, blob2, blob1);
+
+		// then
+		assertTrue(actual1 < 0);
+		assertTrue(actual2 > 0);
+	}
+

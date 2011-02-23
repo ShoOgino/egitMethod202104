@@ -18,6 +18,13 @@
 		if (e2 instanceof GitModelCache)
 			return 2;
 
+		if ((e1 instanceof GitModelTree && e1 instanceof GitModelTree) ||
+				(e1 instanceof GitModelBlob && e1 instanceof GitModelBlob))
+			return super.compare(viewer, e1, e2);
+
+		if (e1 instanceof GitModelTree && e2 instanceof GitModelCommit)
+			return 1;
+
 		if (e1 instanceof GitModelCommit && e2 instanceof GitModelCommit) {
 			RevCommit rc1 = ((GitModelCommit) e1).getBaseCommit();
 			RevCommit rc2 = ((GitModelCommit) e2).getBaseCommit();
