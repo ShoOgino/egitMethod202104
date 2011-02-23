@@ -10,6 +10,8 @@
 				"compare1", true);
 
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		// wait for tree showing node "<working tree>"
+		syncViewTree.getTreeItem(UIText.GitModelWorkingTree_workingTree);
 		// expand all nodes
 		syncViewTree.getAllItems()[0].collapse().doubleClick();
 		// try to open compare editor for FILE1
