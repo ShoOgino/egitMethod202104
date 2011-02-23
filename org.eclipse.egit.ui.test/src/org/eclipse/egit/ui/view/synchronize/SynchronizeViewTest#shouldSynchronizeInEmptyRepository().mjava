@@ -1,25 +1,26 @@
 	@Test public void shouldSynchronizeInEmptyRepository() throws Exception {
 		// given
 		createEmptyRepository();
-		showDialog("EmptyProject", "Team", "Synchronize...");
 
 		// when
-		launchSynchronization("EmptyRepository", null, null, null, null, true);
+		launchSynchronization(EMPTY_REPOSITORY, EMPTY_PROJECT, null, null,
+				null, null, true);
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTreeItem commitTree = waitForNodeWithText(syncViewTree,
+				GitModelWorkingTree_workingTree);
 		assertEquals(1, syncViewTree.getAllItems().length);
-		SWTBotTreeItem commitTree = syncViewTree.getAllItems()[0];
-		commitTree.expand();
-		SWTBotTreeItem projectTree = commitTree.getItems()[0];
-		projectTree.expand();
+		SWTBotTreeItem projectTree = waitForNodeWithText(commitTree,
+				EMPTY_PROJECT);
 		assertEquals(2, projectTree.getItems().length);
-		SWTBotTreeItem folderTree = projectTree.getItems()[0];
-		folderTree.expand();
+
+		SWTBotTreeItem folderTree = waitForNodeWithText(projectTree, FOLDER);
 		assertEquals(2, folderTree.getItems().length);
+
 		SWTBotTreeItem fileTree = folderTree.getItems()[0];
-		assertEquals("test.txt", fileTree.getText());
+		assertEquals(FILE1, fileTree.getText());
 		fileTree = folderTree.getItems()[1];
-		assertEquals("test2.txt", fileTree.getText());
+		assertEquals(FILE2, fileTree.getText());
 	}
 

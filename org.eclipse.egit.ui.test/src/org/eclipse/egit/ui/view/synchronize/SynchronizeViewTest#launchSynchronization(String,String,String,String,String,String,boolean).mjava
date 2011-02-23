@@ -1,5 +1,8 @@
-	private void launchSynchronization(String repo, String srcRepo,
-			String srcRef, String dstRepo, String dstRef, boolean includeLocal) {
+	private void launchSynchronization(String repo, String projectName,
+			String srcRepo, String srcRef, String dstRepo, String dstRef,
+			boolean includeLocal) {
+		showDialog(projectName, "Team", "Synchronize...");
+
 		bot.shell("Synchronize repository: " + repo + File.separator + ".git")
 				.activate();
 

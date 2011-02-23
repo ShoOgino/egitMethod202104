@@ -1,31 +1,16 @@
-	// this test fails when is run inside eclipse with Maven POM editor
 	@Test
 	public void shouldReturnListOfChanges() throws Exception {
 		// given
-		resetRepository(PROJ1);
+		resetRepositoryToCreateInitialTag(PROJ1);
 		changeFilesInProject();
-		showDialog(PROJ1, "Team", "Synchronize...");
 
 		// when
-		bot.shell("Synchronize repository: " + REPO1 + File.separator + ".git")
-				.activate();
+		launchSynchronization(null, null, SynchronizeWithAction_localRepoName,
+				HEAD, true);
 
-		// include local changes are enabled by default
-		bot.comboBox(2)
-				.setSelection(UIText.SynchronizeWithAction_localRepoName);
-		bot.comboBox(3).setSelection(MASTER);
-
-		// fire action
-		bot.button(IDialogConstants.OK_LABEL).click();
-
+		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-
-		// wait for synchronization process finish
-		waitUntilTreeHasNodeWithText(syncViewTree,
-				UIText.GitModelWorkingTree_workingTree);
-
 		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
-		assertEquals(UIText.GitModelWorkingTree_workingTree,
-				syncItems[0].getText());
+		assertEquals(GitModelWorkingTree_workingTree, syncItems[0].getText());
 	}
 

@@ -1,6 +1,6 @@
 	// based on LocalRepositoryTestCase#createProjectAndCommitToRepository(String)
 	private void createEmptyRepository() throws Exception {
-		File gitDir = new File(new File(getTestDirectory(), "EmptyRepository"),
+		File gitDir = new File(new File(getTestDirectory(), EMPTY_REPOSITORY),
 				Constants.DOT_GIT);
 		gitDir.mkdir();
 		Repository myRepository = new FileRepository(gitDir);
@@ -8,14 +8,14 @@
 
 		// we need to commit into master first
 		IProject firstProject = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject("EmptyProject");
+				.getProject(EMPTY_PROJECT);
 
 		if (firstProject.exists())
 			firstProject.delete(true, null);
 		IProjectDescription desc = ResourcesPlugin.getWorkspace()
-				.newProjectDescription("EmptyProject");
+				.newProjectDescription(EMPTY_PROJECT);
 		desc.setLocation(new Path(new File(myRepository.getWorkTree(),
-				"EmptyProject").getPath()));
+				EMPTY_PROJECT).getPath()));
 		firstProject.create(desc, null);
 		firstProject.open(null);
 

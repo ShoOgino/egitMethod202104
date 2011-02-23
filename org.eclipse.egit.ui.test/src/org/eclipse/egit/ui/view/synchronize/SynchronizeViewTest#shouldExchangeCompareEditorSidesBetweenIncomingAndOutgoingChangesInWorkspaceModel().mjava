@@ -1,31 +1,27 @@
 	@Test public void shouldExchangeCompareEditorSidesBetweenIncomingAndOutgoingChangesInWorkspaceModel()
 			throws Exception {
 		// given
-		String tagName = "exchangeCompareSidesInWorkspace";
-		resetRepository(PROJ1);
-		createTag(PROJ1, tagName);
-		changeFilesInProject();
-		commit(PROJ1);
-		showDialog(PROJ1, "Team", "Synchronize...");
+		resetRepositoryToCreateInitialTag(PROJ1);
+		makeChangesAndCommit(PROJ1);
 
 		// compare HEAD against tag
 		launchSynchronization(SynchronizeWithAction_localRepoName, HEAD,
-				SynchronizeWithAction_tagsName, tagName, false);
-		SWTBotEditor compEditor = getCompareEditorForFileInWorkspaceModel(false);
+				SynchronizeWithAction_tagsName, INITIAL_TAG, false);
+		SWTBotEditor compEditor = getCompareEditorForFileInWorkspaceModel();
 		SWTBot outgoingCompare = compEditor.bot();
 		// save left value from compare editor
 		String outgoingLeft = outgoingCompare.styledText(0).getText();
 		// save right value from compare editor
 		String outgoingRight = outgoingCompare.styledText(1).getText();
+		compEditor.close();
 
 		// when
 		// compare tag against HEAD
-		showDialog(PROJ1, "Team", "Synchronize...");
-		launchSynchronization(SynchronizeWithAction_tagsName, tagName,
+		launchSynchronization(SynchronizeWithAction_tagsName, INITIAL_TAG,
 				SynchronizeWithAction_localRepoName, HEAD, false);
 
 		// then
-		SWTBot incomingComp = getCompareEditorForFileInWorkspaceModel(false)
+		SWTBot incomingComp = getCompareEditorForFileInWorkspaceModel()
 				.bot();
 		String incomingLeft = incomingComp.styledText(0).getText();
 		String incomingRight = incomingComp.styledText(1).getText();

@@ -1,9 +1,8 @@
 	@Test
 	public void shouldReturnNoChanges() throws Exception {
 		// given
-		resetRepository(PROJ1);
+		resetRepositoryToCreateInitialTag(PROJ1);
 		changeFilesInProject();
-		showDialog(PROJ1, "Team", "Synchronize...");
 
 		// when
 		launchSynchronization(SynchronizeWithAction_localRepoName, HEAD,
