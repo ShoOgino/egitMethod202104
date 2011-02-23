@@ -18,5 +18,8 @@
 		super(p);
 		node = base;
 		init(entries());
+		Repository repository = RepositoryMapping.getMapping(base)
+				.getRepository();
+		initRootIterator(repository);
 	}
 
