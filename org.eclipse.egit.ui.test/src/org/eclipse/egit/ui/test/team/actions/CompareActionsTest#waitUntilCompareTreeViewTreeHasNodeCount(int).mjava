@@ -1,0 +1,5 @@
+	private void waitUntilCompareTreeViewTreeHasNodeCount(int nodeCount) {
+		SWTBotTree tree = bot.viewById(CompareTreeView.ID).bot().tree();
+		bot.waitUntil(Conditions.treeHasRows(tree, nodeCount), 10000);
+	}
+

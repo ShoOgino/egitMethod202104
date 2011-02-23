@@ -5,16 +5,13 @@
 		clickCompareWith(compareWithHeadMenuLabel);
 
 		// compare with HEAD should not have any changes
-		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		waitUntilCompareTreeViewTreeHasNodeCount(0);
 		// change test file -> should have one change
 		setTestFileContent("Hello there");
 
 		clickCompareWith(compareWithHeadMenuLabel);
 
-		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
-
+		waitUntilCompareTreeViewTreeHasNodeCount(1);
 		// add to index -> should still show as change
 		new Git(lookupRepository(repositoryFile)).add().addFilepattern(
 				PROJ1 + "/" + FOLDER + "/" + FILE1).call();
@@ -31,7 +28,6 @@
 		rop.execute(new NullProgressMonitor());
 
 		clickCompareWith(compareWithHeadMenuLabel);
-		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		waitUntilCompareTreeViewTreeHasNodeCount(0);
 	}
 

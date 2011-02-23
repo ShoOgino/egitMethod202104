@@ -8,15 +8,13 @@
 		// use the default (the last commit) -> no changes
 		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
 				.click();
-		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		waitUntilCompareTreeViewTreeHasNodeCount(0);
 		// use the tag -> should have a change
 		dialog = openCompareWithDialog(compareWithRefActionLabel, dialogTitle);
 		dialog.bot().tree().getTreeItem(TAGS).expand().getNode("SomeTag")
 				.select();
 		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
 				.click();
-		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		waitUntilCompareTreeViewTreeHasNodeCount(1);
 	}
 

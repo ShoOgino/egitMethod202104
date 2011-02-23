@@ -12,8 +12,7 @@
 
 		clickCompareWith(compareWithIndexActionLabel);
 
-		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		waitUntilCompareTreeViewTreeHasNodeCount(1);
 
 		// add to index -> no more changes
 		new Git(lookupRepository(repositoryFile)).add().addFilepattern(
@@ -31,7 +30,6 @@
 		rop.execute(new NullProgressMonitor());
 
 		clickCompareWith(compareWithIndexActionLabel);
-		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		waitUntilCompareTreeViewTreeHasNodeCount(0);
 	}
 

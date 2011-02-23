@@ -14,7 +14,6 @@
 		dialog = openCompareWithDialog(compareWithCommitMenuText, dialogTitle);
 		dialog.bot().table().select(1);
 		dialog.bot().button(IDialogConstants.OK_LABEL).click();
-		assertEquals(1, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		waitUntilCompareTreeViewTreeHasNodeCount(1);
 	}
 
