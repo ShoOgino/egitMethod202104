@@ -1,4 +1,4 @@
-	private void prepareDecoration(final Object[] elements) {
+	private void prepareDecoration(final Object[] elements) throws IOException {
 		if (elements == null)
 			return;
 
@@ -8,42 +8,36 @@
 				resources[i] = getResource(elements[i]);
 		}
 
-		try {
-			// Calculate resource decorations
-			IDecoratableResource[] decoratableResources = DecoratableResourceHelper
-					.createDecoratableResources(resources);
+		// Calculate resource decorations
+		IDecoratableResource[] decoratableResources = DecoratableResourceHelper
+				.createDecoratableResources(resources);
 
-			// Store decoration result in session property for each resource
-			for (int i = 0; i < decoratableResources.length; i++) {
-				try {
-					if (decoratableResources[i] != null) {
-						// Store decoratable resource in session
-						resources[i].setSessionProperty(
-								DECORATABLE_RESOURCE_KEY,
-								decoratableResources[i]);
-						// Set (new) 'refreshed' timestamp
-						resources[i].setSessionProperty(REFRESHED_KEY,
-								Long.valueOf(System.currentTimeMillis()));
-					} else {
-						if (resources[i] != null)
-							handleException(
-									resources[i],
-									new CoreException(
-											Activator
-													.createErrorStatus(UIText.GitLightweightDecorator_ResourceError)));
+		// Store decoration result in session property for each resource
+		for (int i = 0; i < decoratableResources.length; i++) {
+			try {
+				if (decoratableResources[i] != null) {
+					// Store decoratable resource in session
+					resources[i].setSessionProperty(DECORATABLE_RESOURCE_KEY,
+							decoratableResources[i]);
+					// Set (new) 'refreshed' timestamp
+					resources[i].setSessionProperty(REFRESHED_KEY,
+							Long.valueOf(System.currentTimeMillis()));
+				} else {
+					if (resources[i] != null) {
+						// Set 'notDecoratable' session property
+						resources[i].setSessionProperty(NOT_DECORATABLE_KEY,
+								Boolean.TRUE);
+						if (GitTraceLocation.DECORATION.isActive())
+							GitTraceLocation
+									.getTrace()
+									.trace(GitTraceLocation.DECORATION
+											.getLocation(),
+											"Could not decorate resource: " + resources[i].getFullPath()); //$NON-NLS-1$
 					}
-				} catch (CoreException e) {
-					handleException(resources[i], e);
 				}
+			} catch (CoreException e) {
+				handleException(resources[i], e);
 			}
-		} catch (IOException e) {
-			exceptions
-					.handleException(new CoreException(
-							Activator
-									.createErrorStatus(
-											UIText.GitLightweightDecorator_AsynchronousDecorationError,
-											e)));
-			return;
 		}
 
 		// Re-trigger decoration process (in UI thread)

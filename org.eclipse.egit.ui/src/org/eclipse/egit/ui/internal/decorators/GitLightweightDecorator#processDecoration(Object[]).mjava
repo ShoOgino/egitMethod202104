@@ -3,17 +3,16 @@
 	 *
 	 * @param elements
 	 *            the list of elements to be decorated
+	 * @throws IOException
 	 */
-	static void processDecoration(final Object[] elements) {
+	static void processDecoration(final Object[] elements) throws IOException {
 		final GitLightweightDecorator decorator = (GitLightweightDecorator) Activator
 				.getDefault().getWorkbench().getDecoratorManager()
 				.getBaseLabelProvider(DECORATOR_ID);
 		if (decorator != null)
 			decorator.prepareDecoration(elements);
 		else
-			exceptions
-					.handleException(new CoreException(
-							Activator
-									.createErrorStatus(UIText.GitLightweightDecorator_AsynchronousDecorationError)));
+			throw new RuntimeException(
+					"Could not retrieve GitLightweightDecorator"); //$NON-NLS-1$
 	}
 
