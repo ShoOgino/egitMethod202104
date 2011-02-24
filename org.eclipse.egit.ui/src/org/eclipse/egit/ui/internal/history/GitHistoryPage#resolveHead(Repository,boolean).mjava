@@ -1,4 +1,4 @@
-	private AnyObjectId resolveHead(Repository db) {
+	private AnyObjectId resolveHead(Repository db, boolean acceptNull) {
 		AnyObjectId headId;
 		try {
 			headId = db.resolve(Constants.HEAD);
@@ -6,9 +6,9 @@
 			throw new IllegalStateException(NLS.bind(
 					UIText.GitHistoryPage_errorParsingHead, Activator
 							.getDefault().getRepositoryUtil()
-							.getRepositoryName(db)));
+							.getRepositoryName(db)), e);
 		}
-		if (headId == null)
+		if (headId == null && !acceptNull)
 			throw new IllegalStateException(NLS.bind(
 					UIText.GitHistoryPage_errorParsingHead, Activator
 							.getDefault().getRepositoryUtil()
