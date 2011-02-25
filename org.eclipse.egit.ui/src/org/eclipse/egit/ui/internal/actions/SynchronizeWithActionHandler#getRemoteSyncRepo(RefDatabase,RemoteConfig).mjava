@@ -1,10 +1,11 @@
 	private SyncRepoEntity getRemoteSyncRepo(RefDatabase refDatabase,
 			RemoteConfig rc) throws IOException {
-		SyncRepoEntity syncRepoEnt = new SyncRepoEntity(rc.getName());
-		Collection<Ref> remoteRefs = getRemoteRef(refDatabase, rc.getName());
+		String name = rc.getName();
+		SyncRepoEntity syncRepoEnt = new SyncRepoEntity(name);
+		Collection<Ref> remoteRefs = getRemoteRef(refDatabase, name);
 
 		for (Ref ref : remoteRefs)
-			syncRepoEnt.addRef(createSyncRepoEntity(ref.getName()));
+			syncRepoEnt.addRef(createSyncRepoEntity(name, ref.getName()));
 
 		return syncRepoEnt;
 	}
