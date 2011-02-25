@@ -1,0 +1,7 @@
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		if (glwDecorator != null)
+			glwDecorator.fireLabelEvent();
+		return Status.OK_STATUS;
+	}
+

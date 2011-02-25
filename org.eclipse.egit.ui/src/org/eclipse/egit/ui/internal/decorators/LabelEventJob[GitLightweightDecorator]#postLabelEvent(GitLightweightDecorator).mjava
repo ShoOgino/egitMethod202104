@@ -1,0 +1,15 @@
+	/**
+	 * Post a label event
+	 *
+	 * @param decorator
+	 *            The GitLightweightDecorator that is used to fire a
+	 *            LabelProviderChangedEvent
+	 */
+	void postLabelEvent(final GitLightweightDecorator decorator) {
+		if (this.glwDecorator == null)
+			this.glwDecorator = decorator;
+		if (getState() == SLEEPING || getState() == WAITING)
+			cancel();
+		schedule(DELAY);
+	}
+

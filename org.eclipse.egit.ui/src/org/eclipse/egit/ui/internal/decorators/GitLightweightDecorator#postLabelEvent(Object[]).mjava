@@ -1,11 +1,11 @@
 	/**
-	 * Post the label event to the UI thread
+	 * Post a label event to the LabelEventJob
 	 *
-	 * @param event
-	 *            The event to post
+	 * @param elements
+	 *            The elements to update
 	 */
-	private void postLabelEvent(final LabelProviderChangedEvent event) {
-		if (event.getElement() == null) {
+	private void postLabelEvent(final Object[] elements) {
+		if (elements == null) {
 			// Update all elements
 			final IWorkspaceRoot root = ResourcesPlugin.getWorkspace()
 					.getRoot();
@@ -16,11 +16,8 @@
 			} catch (CoreException e) {
 				handleException(root, e);
 			}
-
-			fireLabelEvent(event);
 		} else {
 			// Update specific elements
-			Object[] elements = event.getElements();
 			for (Object element : elements) {
 				final IResource resource = getResource(element);
 				if (resource != null)
@@ -31,9 +28,8 @@
 						// Ignore
 					}
 			}
-
-			// Fire a generic event
-			fireLabelEvent(new LabelProviderChangedEvent(this));
 		}
+
+		LabelEventJob.getInstance().postLabelEvent(this);
 	}
 

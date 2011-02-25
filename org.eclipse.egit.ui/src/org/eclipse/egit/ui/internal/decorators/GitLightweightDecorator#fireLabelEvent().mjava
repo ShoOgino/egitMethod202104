@@ -1,0 +1,11 @@
+	void fireLabelEvent() {
+		final LabelProviderChangedEvent event = new LabelProviderChangedEvent(
+				this);
+		// Re-trigger decoration process (in UI thread)
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				fireLabelProviderChanged(event);
+			}
+		});
+	}
+

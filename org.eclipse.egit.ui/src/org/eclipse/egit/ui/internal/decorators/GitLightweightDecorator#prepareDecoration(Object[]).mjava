@@ -40,7 +40,7 @@
 			}
 		}
 
-		// Re-trigger decoration process (in UI thread)
-		fireLabelEvent(new LabelProviderChangedEvent(this));
+		// Immediately fire label provider changed event
+		fireLabelEvent();
 	}
 
