@@ -14,16 +14,11 @@
 			mapping = RepositoryMapping.getMapping(resource);
 			repository = mapping.getRepository();
 			headId = repository.resolve(Constants.HEAD);
-
 			store = Activator.getDefault().getPreferenceStore();
-			String repoName = Activator.getDefault().getRepositoryUtil().getRepositoryName(repository);
-			RepositoryState state = repository.getRepositoryState();
-			if (state != RepositoryState.SAFE)
-				repositoryName = repoName + '|' + state.getDescription();
-			else
-				repositoryName = repoName;
 
-			branch = getShortBranch();
+			repositoryName = DecoratableResourceHelper
+					.getRepositoryName(repository);
+			branch = DecoratableResourceHelper.getShortBranch(repository);
 
 			TreeWalk treeWalk = createThreeWayTreeWalk();
 			if (treeWalk == null)

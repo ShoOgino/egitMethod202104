@@ -1,0 +1,23 @@
+	/**
+	 * Creates a temporary decoratable resource for the given project
+	 *
+	 * This temporary decoratable resource only contains the name of the
+	 * repository and the current branch.
+	 *
+	 * @param project
+	 *            the project to be decorated
+	 * @return the decoratable resource
+	 * @throws IOException
+	 */
+	static IDecoratableResource createTemporaryDecoratableResource(
+			final IProject project) throws IOException {
+		final DecoratableResource decoratableResource = new DecoratableResource(
+				project);
+		final Repository repository = RepositoryMapping.getMapping(project)
+				.getRepository();
+		decoratableResource.repositoryName = getRepositoryName(repository);
+		decoratableResource.branch = getShortBranch(repository);
+		decoratableResource.tracked = true;
+		return decoratableResource;
+	}
+

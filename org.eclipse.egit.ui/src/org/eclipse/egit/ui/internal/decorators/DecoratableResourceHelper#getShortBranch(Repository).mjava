@@ -1,7 +1,9 @@
-	private String getShortBranch() throws IOException {
+	static String getShortBranch(Repository repository) throws IOException {
 		Ref head = repository.getRef(Constants.HEAD);
 		if (head != null && !head.isSymbolic()) {
-			String refString = Activator.getDefault().getRepositoryUtil()
+			String refString = Activator
+					.getDefault()
+					.getRepositoryUtil()
 					.mapCommitToRef(repository, repository.getFullBranch(),
 							false);
 			if (refString != null) {
