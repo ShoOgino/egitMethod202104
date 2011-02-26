@@ -84,7 +84,7 @@
 			actions.showAllResourceVersionsAction.setEnabled(filtersActive);
 
 			try {
-				initAndStartRevWalk(true);
+				initAndStartRevWalk(false);
 			} catch (IllegalStateException e) {
 				Activator.handleError(e.getMessage(), e, true);
 				return false;
