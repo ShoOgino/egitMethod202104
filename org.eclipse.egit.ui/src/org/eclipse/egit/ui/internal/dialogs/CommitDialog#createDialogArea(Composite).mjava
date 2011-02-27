@@ -151,6 +151,10 @@
 			}
 		});
 
+		changeIdButton.setSelection( org.eclipse.egit.ui.Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.COMMIT_DIALOG_CREATE_CHANGE_ID));
+		refreshChangeIdText();
+
 		showUntrackedButton = new Button(container, SWT.CHECK);
 		showUntrackedButton.setText(UIText.CommitDialog_ShowUntrackedFiles);
 		showUntrackedButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
@@ -179,6 +183,7 @@
 				updateChangeIdButton();
 			}
 		});
+
 		updateSignedOffButton();
 		updateChangeIdButton();
 
