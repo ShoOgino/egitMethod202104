@@ -113,22 +113,13 @@
 
 		signedOffButton = new Button(container, SWT.CHECK);
 		signedOffButton.setSelection(signedOff);
+		refreshSignedOffBy();
 		signedOffButton.setText(UIText.CommitDialog_AddSOB);
 		signedOffButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 
 		signedOffButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent arg0) {
-				String curText = commitText.getText();
-				if (signedOffButton.getSelection()) {
-					// add signed off line
-					commitText.setText(signOff(curText));
-				} else {
-					// remove signed off line
-					curText = replaceSignOff(curText, getSignedOff(), ""); //$NON-NLS-1$
-					if (curText.endsWith(Text.DELIMITER + Text.DELIMITER))
-						curText = curText.substring(0, curText.length() - Text.DELIMITER.length());
-					commitText.setText(curText);
-				}
+				refreshSignedOffBy();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent arg0) {
