@@ -1,0 +1,40 @@
+	private void postLabelEvent(final Object[] elements,
+			final boolean invalidateAllDecorations) {
+		final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		boolean updateRoot = false;
+
+		if (elements != null) {
+			// Update specific elements
+			for (Object element : elements) {
+				final IResource resource = getResource(element);
+				if (resource != null) {
+					if (resource.equals(root)) {
+						updateRoot = true;
+						break;
+					} else {
+						try {
+							// Remove 'refreshed' property
+							resource.setSessionProperty(REFRESHED_KEY, null);
+						} catch (CoreException e) {
+							// Ignore
+						}
+					}
+				}
+			}
+		}
+
+		if (invalidateAllDecorations || updateRoot) {
+			// Invalidate all decorations
+			try {
+				// Set (new) 'refresh' timestamp
+				root.setSessionProperty(REFRESH_KEY,
+						Long.valueOf(System.currentTimeMillis()));
+			} catch (CoreException e) {
+				handleException(root, e);
+			}
+		}
+
+		// Post label event to LabelEventJob
+		LabelEventJob.getInstance().postLabelEvent(this);
+	}
+

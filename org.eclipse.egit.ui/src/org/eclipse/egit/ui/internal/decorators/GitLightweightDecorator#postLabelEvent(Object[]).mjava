@@ -1,35 +1,13 @@
 	/**
 	 * Post a label event to the LabelEventJob
 	 *
+	 * Posts a label event for specific elements. Does not invalidate other
+	 * decorations. Same as <code>postLabelEvent(elements, false)</code>.
+	 *
 	 * @param elements
 	 *            The elements to update
 	 */
 	private void postLabelEvent(final Object[] elements) {
-		if (elements == null) {
-			// Update all elements
-			final IWorkspaceRoot root = ResourcesPlugin.getWorkspace()
-					.getRoot();
-			try {
-				// Set (new) 'refresh' timestamp
-				root.setSessionProperty(REFRESH_KEY,
-						Long.valueOf(System.currentTimeMillis()));
-			} catch (CoreException e) {
-				handleException(root, e);
-			}
-		} else {
-			// Update specific elements
-			for (Object element : elements) {
-				final IResource resource = getResource(element);
-				if (resource != null)
-					try {
-						// Remove 'refreshed' property
-						resource.setSessionProperty(REFRESHED_KEY, null);
-					} catch (CoreException e) {
-						// Ignore
-					}
-			}
-		}
-
-		LabelEventJob.getInstance().postLabelEvent(this);
+		postLabelEvent(elements, false);
 	}
 
