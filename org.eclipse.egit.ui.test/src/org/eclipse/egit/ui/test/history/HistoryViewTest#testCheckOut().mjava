@@ -5,21 +5,7 @@
 
 		final SWTBotTable table = getHistoryViewTable(PROJ1);
 		// check out the second line
-		table.getTableItem(1).select();
-		final RevCommit[] commit = new RevCommit[1];
-
-		Display.getDefault().syncExec(new Runnable() {
-
-			public void run() {
-				TableItem tableItem = table.widget.getSelection()[0];
-				ensureTableItemLoaded(tableItem);
-				commit[0] = (RevCommit) tableItem.getData();
-			}
-		});
-
-		ContextMenuHelper.clickContextMenu(table,
-				UIText.GitHistoryPage_CheckoutMenuLabel);
-		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+		final RevCommit[] commit = checkoutLine(table, 1);
 		assertEquals(commit[0].getId().name(), repo.getBranch());
 	}
 

@@ -1,0 +1,20 @@
+	private RevCommit[] checkoutLine(final SWTBotTable table, int line)
+			throws InterruptedException {
+		table.getTableItem(line).select();
+		final RevCommit[] commit = new RevCommit[1];
+
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				TableItem tableItem = table.widget.getSelection()[0];
+				ensureTableItemLoaded(tableItem);
+				commit[0] = (RevCommit) tableItem.getData();
+			}
+		});
+
+		ContextMenuHelper.clickContextMenu(table,
+				UIText.GitHistoryPage_CheckoutMenuLabel);
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+		return commit;
+	}
+
