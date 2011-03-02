@@ -5,7 +5,7 @@
 		local = new FileRepository(gitdir);
 		local.create();
 
-		if (ref.getName().startsWith(Constants.R_HEADS)) {
+		if (ref != null && ref.getName().startsWith(Constants.R_HEADS)) {
 			final RefUpdate head = local.updateRef(Constants.HEAD);
 			head.disableRefLog();
 			head.link(ref.getName());
@@ -37,7 +37,7 @@
 
 		// branch is like 'Constants.R_HEADS + branchName', we need only
 		// the 'branchName' part
-		if (ref.getName().startsWith(Constants.R_HEADS)) {
+		if (ref != null && ref.getName().startsWith(Constants.R_HEADS)) {
 			String branchName = ref.getName().substring(Constants.R_HEADS.length());
 
 			// setup the default remote branch for branchName
