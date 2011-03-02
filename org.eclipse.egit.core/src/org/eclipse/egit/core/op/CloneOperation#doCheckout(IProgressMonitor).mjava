@@ -1,4 +1,6 @@
 	private void doCheckout(final IProgressMonitor monitor) throws IOException {
+		if (ref == null)
+			return;
 		final Ref head = fetchResult.getAdvertisedRef(ref.getName());
 		if (head == null || head.getObjectId() == null)
 			return;
