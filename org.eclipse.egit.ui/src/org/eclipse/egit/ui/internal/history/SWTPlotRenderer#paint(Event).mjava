@@ -5,6 +5,8 @@
 		cellY = event.y;
 		cellFG = g.getForeground();
 		cellBG = g.getBackground();
+		if (textHeight == 0)
+			textHeight = g.stringExtent("/").y; //$NON-NLS-1$
 
 		final TableItem ti = (TableItem) event.item;
 		paintCommit((PlotCommit<SWTLane>) ti.getData(), event.height);
