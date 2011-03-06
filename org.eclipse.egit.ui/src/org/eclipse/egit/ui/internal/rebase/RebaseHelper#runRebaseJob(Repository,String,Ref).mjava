@@ -19,11 +19,14 @@
 				try {
 					rebase.execute(monitor);
 				} catch (final CoreException e) {
-					try {
-						new RebaseOperation(repository, Operation.ABORT)
-								.execute(monitor);
-					} catch (CoreException e1) {
-						return e1.getStatus();
+					if (!repository.getRepositoryState().equals(
+							RepositoryState.SAFE)) {
+						try {
+							new RebaseOperation(repository, Operation.ABORT)
+									.execute(monitor);
+						} catch (CoreException e1) {
+							return createMultiStatus(e, e1);
+						}
 					}
 					return e.getStatus();
 				}
