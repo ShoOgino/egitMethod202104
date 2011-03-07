@@ -1,0 +1,44 @@
+	/**
+	 * verifies that repository contains exactly the given files with the given
+	 * content. Usage example:<br>
+	 *
+	 * <code>
+	 * assertRepositoryContainsFiles(repository, "foo/a.txt", "content of A",
+	 *                                           "foo/b.txt", "content of B")
+	 * </code>
+	 * @param repository
+	 * @param args
+	 * @throws Exception
+	 */
+	public void assertRepositoryContainsFilesWithContent(Repository repository,
+			String... args) throws Exception {
+		HashMap<String, String> expectedfiles = mkmap(args);
+		TreeWalk treeWalk = new TreeWalk(repository);
+		treeWalk.addTree(repository.resolve("HEAD^{tree}"));
+		treeWalk.setRecursive(true);
+		while (treeWalk.next()) {
+			String path = treeWalk.getPathString();
+			assertTrue(expectedfiles.containsKey(path));
+			ObjectId objectId = treeWalk.getObjectId(0);
+			byte[] expectedContent = expectedfiles.get(path).getBytes();
+			byte[] repoContent = treeWalk.getObjectReader().open(objectId)
+					.getBytes();
+			if (!Arrays.equals(repoContent, expectedContent)) {
+				fail("File " + path + " has repository content "
+						+ new String(repoContent)
+						+ " instead of expected content "
+						+ new String(expectedContent));
+			}
+			expectedfiles.remove(path);
+		}
+		if (expectedfiles.size() > 0) {
+			StringBuilder message = new StringBuilder(
+					"Repository does not contain expected files: ");
+			for (String path : expectedfiles.keySet()) {
+				message.append(path);
+				message.append(" ");
+			}
+			fail(message.toString());
+		}
+	}
+
