@@ -1,0 +1,28 @@
+	@Test
+	public void testCommitWithStaging() throws Exception {
+		IFile fileA = testUtils.addFileToProject(project.getProject(),
+				"foo/a.txt", "some text");
+		IFile fileB = testUtils.addFileToProject(project.getProject(),
+				"foo/b.txt", "some text");
+		IFile[] filesToCommit = { fileA, fileB };
+		CommitOperation commitOperation = new CommitOperation(filesToCommit,
+				EMPTY_FILE_LIST, Arrays.asList(filesToCommit),
+				TestUtils.AUTHOR, TestUtils.COMMITTER, "first commit");
+		commitOperation.execute(null);
+
+		testUtils.changeContentOfFile(project.getProject(), fileA,
+				"new content of A");
+		testUtils.changeContentOfFile(project.getProject(), fileB,
+				"new content of B");
+		resources.add(fileA);
+		resources.add(fileB);
+		commitOperation = new CommitOperation(filesToCommit,
+				Arrays.asList(filesToCommit), EMPTY_FILE_LIST,
+				TestUtils.AUTHOR, TestUtils.COMMITTER, "first commit");
+		commitOperation.execute(null);
+
+		testUtils.assertRepositoryContainsFilesWithContent(repository,
+				"foo/a.txt", "new content of A", "foo/b.txt",
+				"new content of B");
+	}
+
