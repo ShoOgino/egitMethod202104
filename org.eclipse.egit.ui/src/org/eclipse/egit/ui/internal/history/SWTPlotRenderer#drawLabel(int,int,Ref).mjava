@@ -37,7 +37,17 @@
 		// Draw backgrounds
 		g.fillRoundRectangle(cellX + x + 1, cellY + texty -1, textsz.x + 3, textsz.y + 1, arc, arc);
 		g.setForeground(sys_black);
+
+		// highlight checked out branch
+		Font oldFont = g.getFont();
+		boolean isHead = isHead(name);
+		if (isHead)
+			g.setFont(CommitGraphTable.highlightFont());
+
 		g.drawString(txt,cellX + x + 2, cellY + texty, true);
+
+		if (isHead)
+			g.setFont(oldFont);
 		g.setLineWidth(2);
 
 		// And a two color shaded border, blend with whatever background there already is
