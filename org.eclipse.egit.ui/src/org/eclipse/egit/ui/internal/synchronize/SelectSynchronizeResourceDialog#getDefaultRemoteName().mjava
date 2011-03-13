@@ -1,7 +1,10 @@
 	private String getDefaultRemoteName() {
-		boolean onlyOneRemote = syncRepos.size() == 2;
+		int syncReposSize = syncRepos.size();
+		boolean onlyOneRemote = syncReposSize == 3
+				|| (syncReposSize == 2 && !SynchronizeWithAction_tagsName
+						.equals(syncRepos.get(1).getName()));
 		if (onlyOneRemote)
-			return syncRepos.get(1).getName();
+			return syncRepos.get(syncReposSize - 1).getName();
 		else {
 			for (SyncRepoEntity repo : syncRepos)
 				if (repo.getName().equals(DEFAULT_REMOTE_NAME))

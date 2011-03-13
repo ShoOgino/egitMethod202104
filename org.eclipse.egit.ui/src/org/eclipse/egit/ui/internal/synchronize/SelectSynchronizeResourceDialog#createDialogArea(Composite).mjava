@@ -44,7 +44,10 @@
 		dstRefCombo = new RemoteSelectionCombo(composite, syncRepos,
 				UIText.RemoteSelectionCombo_destinationName,
 				UIText.RemoteSelectionCombo_destinationRef);
-		dstRefCombo.setDefaultValue(getDefaultRemoteName(), MASTER);
+		if (!dstRefCombo.setDefaultValue(getDefaultRemoteName(), MASTER)) {
+			dstRefCombo.setDefaultValue(
+					UIText.SynchronizeWithAction_localRepoName, HEAD);
+		}
 		dstRefCombo.setLayoutData(data);
 		dstRefCombo.setLayoutData(GridDataFactory.fillDefaults().grab(true,
 				false).create());
