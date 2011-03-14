@@ -39,7 +39,7 @@
 					if (index > 0)
 						text = text.substring(0, index);
 					URIish u = new URIish(text);
-					if (Transport.canHandleProtocol(u, FS.DETECTED)) {
+					if (canHandleProtocol(u)) {
 						if (Protocol.GIT.handles(u) || Protocol.SSH.handles(u)
 								|| text.endsWith(Constants.DOT_GIT))
 							preset = text;
