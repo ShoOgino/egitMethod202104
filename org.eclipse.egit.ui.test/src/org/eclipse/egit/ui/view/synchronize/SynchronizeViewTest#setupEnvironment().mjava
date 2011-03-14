@@ -6,6 +6,7 @@
 		SWTBotRadio syncPerspectiveCheck = bot.radio("Never");
 		if (!syncPerspectiveCheck.isSelected())
 			syncPerspectiveCheck.click();
+		bot.comboBox(0).setSelection("None");
 
 		bot.comboBox().setSelection("None");
 

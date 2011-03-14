@@ -1,0 +1,20 @@
+	public Object getLocation() {
+		if (location == null) {
+			IResource resource;
+			IPath absolutePath = new Path(repo.getWorkTree() + File.separator
+					+ path);
+
+			if (isContainer())
+				resource = workspaceRoot.getContainerForLocation(absolutePath);
+			else
+				resource = workspaceRoot.getFileForLocation(absolutePath);
+
+			if (resource != null && resource.exists())
+				location = resource.getLocation();
+			else
+				location = new Path(path);
+		}
+
+		return location;
+	}
+

@@ -11,10 +11,10 @@
 					UIText.SelectSynchronizeResourceDialog_includeUncommitedChanges)
 					.click();
 
-		if (srcRepo != null)
+		if (!includeLocal && srcRepo != null)
 			bot.comboBox(0)
 					.setSelection(srcRepo);
-		if (srcRef != null)
+		if (!includeLocal && srcRef != null)
 			bot.comboBox(1).setSelection(srcRef);
 
 		if (dstRepo != null)

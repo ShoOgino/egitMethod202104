@@ -15,7 +15,7 @@
 		IPath localPath = mock(IPath.class);
 		IContainer local = mock(IContainer.class);
 		when(local.exists()).thenReturn(true);
-		when(local.getFullPath()).thenReturn(localPath);
+		when(local.getLocation()).thenReturn(localPath);
 
 		File file = testRepo.createFile(iProject, "test" + File.separator
 				+ "keep");
