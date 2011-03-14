@@ -1,0 +1,22 @@
+	/*
+	 * (non-Javadoc) Method declared on IAction.
+	 */
+	public void run() {
+		IStructuredSelection selection = getStructuredSelection();
+
+		IResource resource = getExistingResource(selection);
+
+		if (resource instanceof IFile)
+			openWorkspaceFile((IFile) resource);
+		else {
+			Object element = selection.getFirstElement();
+
+			if (element instanceof GitModelObject) {
+				IPath location = ((GitModelObject) element).getLocation();
+
+				if (location != null && location.toFile().exists())
+					openExternalFile(location.toFile());
+			}
+		}
+	}
+

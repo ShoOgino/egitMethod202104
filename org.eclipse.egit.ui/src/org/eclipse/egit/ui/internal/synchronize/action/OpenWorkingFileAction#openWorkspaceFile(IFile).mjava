@@ -1,0 +1,18 @@
+	/**
+	 * Opens a editor on the given file resource.
+	 *
+	 * @param file
+	 *            the workspace file
+	 */
+	protected void openWorkspaceFile(IFile file) {
+		try {
+			boolean activate = OpenStrategy.activateOnOpen();
+			IDE.openEditor(getWorkbenchPage(), file, activate);
+		} catch (PartInitException e) {
+			ErrorDialog.openError(getWorkbenchPage().getWorkbenchWindow()
+					.getShell(),
+					UIText.OpenWorkingFileAction_openWorkingFileShellTitle, e
+							.getMessage(), e.getStatus());
+		}
+	}
+

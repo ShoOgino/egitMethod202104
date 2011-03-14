@@ -1,0 +1,21 @@
+	/**
+	 * Opens external file, the editor that is used is based on best guess from
+	 * file name.
+	 *
+	 * @param file
+	 *            the external file
+	 */
+	protected void openExternalFile(File file) {
+		try {
+			boolean activate = OpenStrategy.activateOnOpen();
+			IEditorDescriptor desc = IDE.getEditorDescriptor(file.getName());
+			IDE.openEditor(getWorkbenchPage(), file.toURI(), desc.getId(),
+					activate);
+		} catch (PartInitException e) {
+			ErrorDialog.openError(getWorkbenchPage().getWorkbenchWindow()
+					.getShell(),
+					UIText.OpenWorkingFileAction_openWorkingFileShellTitle, e
+							.getMessage(), e.getStatus());
+		}
+	}
+

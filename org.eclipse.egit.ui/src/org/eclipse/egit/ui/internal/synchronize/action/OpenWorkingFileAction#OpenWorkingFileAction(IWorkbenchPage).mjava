@@ -1,0 +1,14 @@
+	/**
+	 * Creates a new action that will open editors on the selected working file
+	 * resources.
+	 *
+	 * @param page
+	 *            the workbench page in which to open the editor
+	 */
+	public OpenWorkingFileAction(IWorkbenchPage page) {
+		super(null);
+		setText(UIText.OpenWorkingFileAction_text);
+		setToolTipText(UIText.OpenWorkingFileAction_tooltip);
+		this.workbenchPage = page;
+	}
+

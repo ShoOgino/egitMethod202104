@@ -1,0 +1,8 @@
+	/**
+	 * Enable the action only if the selection contains IFiles
+	 */
+	protected boolean updateSelection(IStructuredSelection selection) {
+		return super.updateSelection(selection)
+				&& selectionIsOfType(IResource.FILE);
+	}
+
