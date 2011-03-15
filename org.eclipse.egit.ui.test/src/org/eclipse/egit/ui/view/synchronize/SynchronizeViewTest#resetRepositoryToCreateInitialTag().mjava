@@ -1,0 +1,7 @@
+	private void resetRepositoryToCreateInitialTag() throws Exception {
+		ResetOperation rop = new ResetOperation(
+				lookupRepository(repositoryFile), Constants.R_TAGS +
+						INITIAL_TAG, ResetType.HARD);
+		rop.execute(new NullProgressMonitor());
+	}
+

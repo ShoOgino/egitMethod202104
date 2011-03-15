@@ -7,9 +7,11 @@
 		if (!syncPerspectiveCheck.isSelected())
 			syncPerspectiveCheck.click();
 
+		bot.comboBox().setSelection("None");
+
 		bot.button(IDialogConstants.OK_LABEL).click();
 
-		File repositoryFile = createProjectAndCommitToRepository();
+		repositoryFile = createProjectAndCommitToRepository();
 		createChildRepository(repositoryFile);
 		Activator.getDefault().getRepositoryUtil()
 				.addConfiguredRepository(repositoryFile);
