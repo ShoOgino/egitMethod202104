@@ -1,6 +1,7 @@
 	@SuppressWarnings("unchecked")
-	void paint(final Event event) {
+	void paint(final Event event, Ref headRef) {
 		g = event.gc;
+		this.headRef = headRef;
 		cellX = event.x;
 		cellY = event.y;
 		cellFG = g.getForeground();
