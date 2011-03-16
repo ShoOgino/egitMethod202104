@@ -1,0 +1,40 @@
+	@Override
+	public IResource[] members(IResource res) throws TeamException {
+		if(res.getType() == IResource.FILE) {
+			return new IResource[0];
+		}
+
+		GitSynchronizeData gsd = gsds.getData(res.getProject());
+		Repository repo = gsd.getRepository();
+		String path = stripWorkDir(repo.getWorkTree(), res.getLocation()
+				.toFile());
+
+		TreeWalk tw = new TreeWalk(repo);
+		if (path.length() > 0)
+			tw.setFilter(PathFilter.create(path));
+		tw.setRecursive(true);
+
+		Set<IResource> gitMembers = new HashSet<IResource>();
+		Map<String, IResource> allMembers = new HashMap<String, IResource>();
+		try {
+			tw.addTree(new FileTreeIterator(repo));
+			for (IResource member : ((IContainer) res).members())
+				allMembers.put(member.getName(), member);
+
+			while (tw.next()) {
+				if (tw.getTree(0, FileTreeIterator.class).isEntryIgnored())
+					continue;
+
+				IResource member = allMembers.get(tw.getNameString());
+				if (member != null)
+					gitMembers.add(member);
+			}
+		} catch (IOException e) {
+			throw new TeamException(e.getMessage(), e);
+		} catch (CoreException e) {
+			throw TeamException.asTeamException(e);
+		}
+
+		return gitMembers.toArray(new IResource[gitMembers.size()]);
+	}
+
