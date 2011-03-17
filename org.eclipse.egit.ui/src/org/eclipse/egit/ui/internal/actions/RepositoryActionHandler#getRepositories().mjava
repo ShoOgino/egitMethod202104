@@ -1,0 +1,11 @@
+	/**
+	 * Get the currently selected repositories. All selected projects must map
+	 * to a repository.
+	 *
+	 * @return repositories for selection, or an empty array
+	 */
+	protected Repository[] getRepositories() {
+		IProject[] selectedProjects = getSelectedProjects(getSelection());
+		return getRepositoriesFor(selectedProjects);
+	}
+
