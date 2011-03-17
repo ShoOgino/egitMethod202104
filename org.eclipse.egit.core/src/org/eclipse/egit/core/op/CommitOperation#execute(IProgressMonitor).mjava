@@ -11,36 +11,8 @@
 				final TimeZone timeZone = TimeZone.getDefault();
 				final PersonIdent authorIdent = RawParseUtils.parsePersonIdent(author);
 				final PersonIdent committerIdent = RawParseUtils.parsePersonIdent(committer);
-				if (commitAll) {
-					for (Repository repo : repos) {
-						Git git = new Git(repo);
-						try {
-							git.commit()
-									.setAll(true)
-									.setAuthor(
-											new PersonIdent(authorIdent,
-													commitDate, timeZone))
-									.setCommitter(
-											new PersonIdent(committerIdent,
-													commitDate, timeZone))
-									.setMessage(message).call();
-						} catch (NoHeadException e) {
-							throw new TeamException(e.getLocalizedMessage(), e);
-						} catch (NoMessageException e) {
-							throw new TeamException(e.getLocalizedMessage(), e);
-						} catch (UnmergedPathException e) {
-							throw new TeamException(e.getLocalizedMessage(), e);
-						} catch (ConcurrentRefUpdateException e) {
-							throw new TeamException(
-									CoreText.MergeOperation_InternalError, e);
-						} catch (JGitInternalException e) {
-							throw new TeamException(
-									CoreText.MergeOperation_InternalError, e);
-						} catch (WrongRepositoryStateException e) {
-							throw new TeamException(e.getLocalizedMessage(), e);
-						}
-					}
-				}
+				if (commitAll)
+					commitAll(commitDate, timeZone, authorIdent, committerIdent);
 
 				else if (amending || filesToCommit != null
 						&& filesToCommit.length > 0) {
@@ -48,27 +20,9 @@
 							CoreText.CommitOperation_PerformingCommit,
 							filesToCommit.length * 2);
 					actMonitor.setTaskName(CoreText.CommitOperation_PerformingCommit);
-					HashMap<Repository, Tree> treeMap = new HashMap<Repository, Tree>();
-					try {
-						if (!prepareTrees(filesToCommit, treeMap, actMonitor)) {
-							// reread the indexes, they were changed in memory
-							for (Repository repo : treeMap.keySet())
-								repo.getIndex().read();
-							return;
-						}
-					} catch (IOException e) {
-						throw new TeamException(
-								CoreText.CommitOperation_errorPreparingTrees, e);
-					}
-
-					try {
-						doCommits(message, treeMap);
-						actMonitor.worked(filesToCommit.length);
-					} catch (IOException e) {
-						throw new TeamException(
-								CoreText.CommitOperation_errorCommittingChanges,
-								e);
-					}
+					Map<Repository, List<String>> filesByRepo = prepareCommit(actMonitor);
+					doCommits(filesByRepo);
+					actMonitor.worked(filesToCommit.length);
 				} else if (commitWorkingDirChanges) {
 					// TODO commit -a
 				} else {
