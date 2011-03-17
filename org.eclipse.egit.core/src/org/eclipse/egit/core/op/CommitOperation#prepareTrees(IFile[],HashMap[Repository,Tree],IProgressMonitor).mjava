@@ -4,7 +4,7 @@
 		if (selectedItems.length == 0) {
 			// amending commit - need to put something into the map
 			for (Repository repo : repos) {
-				treeMap.put(repo, repo.mapTree(Constants.HEAD));
+				treeMap.put(repo, mapTree(repo, Constants.HEAD));
 			}
 		}
 
@@ -20,7 +20,7 @@
 			Repository repository = repositoryMapping.getRepository();
 			Tree projTree = treeMap.get(repository);
 			if (projTree == null) {
-				projTree = repository.mapTree(Constants.HEAD);
+				projTree = mapTree(repository, Constants.HEAD);
 				if (projTree == null)
 					projTree = new Tree(repository);
 				treeMap.put(repository, projTree);
