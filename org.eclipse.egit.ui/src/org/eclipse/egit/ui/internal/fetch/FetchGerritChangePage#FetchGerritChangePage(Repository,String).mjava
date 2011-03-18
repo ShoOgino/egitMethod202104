@@ -1,9 +1,11 @@
 	/**
 	 * @param repository
+	 * @param refName initial value for the ref field
 	 */
-	public FetchGerritChangePage(Repository repository) {
+	public FetchGerritChangePage(Repository repository, String refName) {
 		super(FetchGerritChangePage.class.getName());
 		this.repository = repository;
+		this.refName = refName;
 		setTitle(NLS
 				.bind(UIText.FetchGerritChangePage_PageTitle,
 						Activator.getDefault().getRepositoryUtil()
