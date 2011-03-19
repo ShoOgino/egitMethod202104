@@ -1,0 +1,11 @@
+	private void showHead(Repository repo) {
+		RevWalk rw = new RevWalk(repo);
+		try {
+			ObjectId head = repo.resolve(Constants.HEAD);
+			RevCommit c = rw.parseCommit(head);
+			graph.selectCommitStored(c);
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+	}
+
