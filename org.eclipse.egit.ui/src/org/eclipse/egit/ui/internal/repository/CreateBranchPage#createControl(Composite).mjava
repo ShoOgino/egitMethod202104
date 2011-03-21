@@ -104,7 +104,8 @@
 		buttonConfigRebase.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				upstreamConfig = UpstreamConfig.REBASE;
+				if (buttonConfigRebase.getSelection())
+					upstreamConfig = UpstreamConfig.REBASE;
 			}
 		});
 		buttonConfigRebase
@@ -115,7 +116,8 @@
 		buttonConfigMerge.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				upstreamConfig = UpstreamConfig.MERGE;
+				if (buttonConfigMerge.getSelection())
+					upstreamConfig = UpstreamConfig.MERGE;
 			}
 		});
 		buttonConfigMerge
@@ -126,7 +128,8 @@
 		buttonConfigNone.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				upstreamConfig = UpstreamConfig.NONE;
+				if (buttonConfigNone.getSelection())
+					upstreamConfig = UpstreamConfig.NONE;
 			}
 		});
 		buttonConfigNone
