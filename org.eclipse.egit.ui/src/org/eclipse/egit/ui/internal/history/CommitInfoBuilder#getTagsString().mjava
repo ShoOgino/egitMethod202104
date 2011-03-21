@@ -1,12 +1,12 @@
 	private String getTagsString() {
 		StringBuilder sb = new StringBuilder();
 		Map<String, Ref> tagsMap = db.getTags();
-		for (String tagName : tagsMap.keySet()) {
-			ObjectId peeledId = tagsMap.get(tagName).getPeeledObjectId();
+		for (Entry<String, Ref> tagEntry : tagsMap.entrySet()) {
+			ObjectId peeledId = tagEntry.getValue().getPeeledObjectId();
 			if (peeledId != null && peeledId.equals(commit)) {
 				if (sb.length() > 0)
 					sb.append(", "); //$NON-NLS-1$
-				sb.append(tagName);
+				sb.append(tagEntry.getKey());
 			}
 		}
 		return sb.toString();

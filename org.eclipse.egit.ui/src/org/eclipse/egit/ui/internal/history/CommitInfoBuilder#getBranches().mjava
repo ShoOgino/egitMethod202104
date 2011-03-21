@@ -11,16 +11,15 @@
 			// add remote heads to search
 			refsMap.putAll(db.getRefDatabase().getRefs(Constants.R_REMOTES));
 
-			for (String headName : refsMap.keySet()) {
-				RevCommit headCommit = revWalk.parseCommit(refsMap
-						.get(headName).getObjectId());
+			for (Ref ref : refsMap.values()) {
+				RevCommit headCommit = revWalk.parseCommit(ref.getObjectId());
 				// the base RevCommit also must be allocated using same RevWalk
 				// instance,
 				// otherwise isMergedInto returns wrong result!
 				RevCommit base = revWalk.parseCommit(commit);
 
 				if (revWalk.isMergedInto(base, headCommit))
-					result.add(refsMap.get(headName)); // commit is reachable
+					result.add(ref); // commit is reachable
 				// from this head
 			}
 		} catch (IOException e) {
