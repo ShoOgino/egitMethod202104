@@ -50,8 +50,9 @@
 				master, "origin", 0);
 		clop.run(null);
 
-		repository2 = new TestRepository(new FileRepository(new File(workdir2,
-				Constants.DOT_GIT)));
+		Repository repo2 = Activator.getDefault().getRepositoryCache().lookupRepository(new File(workdir2,
+				Constants.DOT_GIT));
+		repository2 = new TestRepository(repo2);
 		// we push to branch "test" of repository2
 		RefUpdate createBranch = repository2.getRepository().updateRef(
 				"refs/heads/test");
