@@ -5,8 +5,11 @@
 	 * @throws IOException
 	 */
 	public TestRepository(File gitDir) throws IOException {
-		repository = new FileRepository(gitDir);
-		repository.create();
+		FileRepository tmpRepository = new FileRepository(gitDir);
+		tmpRepository.create();
+		tmpRepository.close();
+		// use repository instance from RepositoryCache!
+		repository = Activator.getDefault().getRepositoryCache().lookupRepository(gitDir);
 		try {
 			workdirPrefix = repository.getWorkTree().getCanonicalPath();
 		} catch (IOException err) {

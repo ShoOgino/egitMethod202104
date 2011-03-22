@@ -37,13 +37,10 @@
 		ArrayList<IFile> notIndexed = new ArrayList<IFile>();
 		notIndexed.add(filesToCommit[0]);
 		ArrayList<IFile> notTracked = new ArrayList<IFile>();
-		Thread.sleep(1100); // Trouble in "fresh" detection of something
-		// Do this like the commit dialog does it
 		commitOperation = new CommitOperation(filesToCommit, notIndexed, notTracked, TestUtils.AUTHOR, TestUtils.COMMITTER, "second commit");
 		commitOperation.setCommitAll(false);
 		commitOperation.execute(null);
 
-		Thread.sleep(1100); // Trouble in "fresh" detection of something
 		git = new Git(repository);
 		commits = git.log().call().iterator();
 		secondCommit = commits.next();
