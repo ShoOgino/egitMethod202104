@@ -16,7 +16,8 @@
 			JGitInternalException, WrongRepositoryStateException {
 		String repoPath = repository.getWorkTree().getAbsolutePath();
 		File file = new File(repoPath, "dummy");
-		file.createNewFile();
+		if (!file.exists())
+			FileUtils.createNewFile(file);
 		track(file);
 		return commit(message);
 	}
