@@ -1,6 +1,28 @@
 	@Override
 	public Image getImage(Object element) {
-		return decorateImage(
-				((RepositoryTreeNode) element).getType().getIcon(), element);
+		RepositoryTreeNode node = (RepositoryTreeNode) element;
+		if (node.getType() == RepositoryTreeNodeType.TAG) {
+			// determine if we have a lightweight tag and
+			// use the corresponding icon
+			RevObject any;
+			try {
+				ObjectId id = node.getRepository().resolve(
+						((Ref) node.getObject()).getName());
+				any = new RevWalk(node.getRepository()).parseAny(id);
+			} catch (MissingObjectException e) {
+				Activator.logError(e.getMessage(), e);
+				return null;
+			} catch (IOException e) {
+				Activator.logError(e.getMessage(), e);
+				return null;
+			}
+			if (any instanceof RevCommit)
+				// lightweight tag
+				return decorateImage(lightweightTagImage, element);
+			else
+				// annotated or signed tag
+				return decorateImage(node.getType().getIcon(), element);
+		} else
+			return decorateImage(node.getType().getIcon(), element);
 	}
 
