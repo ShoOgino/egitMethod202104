@@ -1,5 +1,8 @@
 	@Override
 	public boolean performFinish() {
+		boolean calledFromRepoPage = false;
+		if (getContainer().getCurrentPage()==repoPage)
+			calledFromRepoPage = true;
 		if (repoPage.getSelection().isConfigSelected()
 				&& refSpecPage.isSaveRequested()) {
 			saveRefSpecs();
@@ -11,7 +14,7 @@
 				return false;
 		}
 
-		final PushOperation operation = createPushOperation();
+		final PushOperation operation = createPushOperation(calledFromRepoPage);
 		if (operation == null)
 			return false;
 		UserPasswordCredentials credentials = repoPage.getCredentials();
