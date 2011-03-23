@@ -1,6 +1,6 @@
 	private void launchSynchronization(String repo, String projectName,
 			String srcRepo, String srcRef, String dstRepo, String dstRef,
-			boolean includeLocal) {
+			boolean includeLocal) throws InterruptedException {
 		showDialog(projectName, "Team", "Synchronize...");
 
 		bot.shell("Synchronize repository: " + repo + File.separator + ".git")
@@ -23,17 +23,8 @@
 		if (dstRef != null)
 			bot.comboBox(3).setSelection(dstRef);
 
-		// register synchronization finish hook
-		SynchronizeFinishHook sfh = new SynchronizeFinishHook();
-		Job.getJobManager().addJobChangeListener(sfh);
+		Job.getJobManager().join(ISynchronizeManager.FAMILY_SYNCHRONIZE_OPERATION, null);
 
-		// fire action
 		bot.button(IDialogConstants.OK_LABEL).click();
-
-		try {
-			bot.waitUntil(sfh, 120000);
-		} finally {
-			Job.getJobManager().removeJobChangeListener(sfh);
-		}
 	}
 
