@@ -10,6 +10,16 @@
 			for (Object child : children) {
 				IPath path = new Path(repositoryMapping
 						.getRepoRelativePath((IResource) child));
+				boolean isFile = ((IResource) child).getType() == IResource.FILE;
+
+				// each path that is not ignored creates an entry in either
+				// compareVersionMap or addedPaths, so we can check if a path
+				// was ignored by looking into these tables
+				if (isFile && !compareVersionMap.containsKey(path)
+						&& !addedPaths.contains(path)) {
+					rebuildArray = true;
+					continue;
+				}
 				if (!showEquals && equalContentPaths.contains(path)) {
 					rebuildArray = true;
 					continue;
