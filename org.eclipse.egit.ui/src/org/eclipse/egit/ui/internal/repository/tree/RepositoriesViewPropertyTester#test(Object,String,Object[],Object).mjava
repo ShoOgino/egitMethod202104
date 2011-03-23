@@ -8,6 +8,9 @@
 		if (property.equals("isBare")) //$NON-NLS-1$
 			return node.getRepository().isBare();
 
+		if (property.equals("containsHead")) //$NON-NLS-1$
+			return containsHead(node);
+
 		if (property.equals("isSafe")) //$NON-NLS-1$
 			return node.getRepository().getRepositoryState() == RepositoryState.SAFE;
 

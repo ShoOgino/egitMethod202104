@@ -13,6 +13,9 @@
 				return repository.getFullBranch().substring(0, 7) + "..."; //$NON-NLS-1$
 		}
 
+		if (head == null || head.getObjectId() == null)
+			return UIText.DecoratableResourceHelper_noHead;
+
 		return repository.getBranch();
 	}
 
