@@ -6,16 +6,8 @@
 		URIish uri = new URIish("file:///" + remoteRepositoryFile.getPath());
 		File workdir = new File(getTestDirectory(), "ClonedRepo");
 
-		Collection<Ref> remoteRefs = getRemoteRefs(uri);
-		Ref myref = null;
-		for (Ref ref : remoteRefs) {
-			if (ref.getName().equals("refs/heads/master")) {
-				myref = ref;
-				break;
-			}
-		}
 		CloneOperation op = new CloneOperation(uri, true, null, workdir,
-				myref, "origin", 0);
+				"refs/heads/master", "origin", 0);
 		op.run(null);
 
 		clonedRepositoryFile = new File(workdir, Constants.DOT_GIT);
@@ -24,15 +16,7 @@
 		uri = new URIish(remoteRepositoryFile.getPath());
 		workdir = new File(getTestDirectory(), "ClonedRepo2");
 
-		remoteRefs = getRemoteRefs(uri);
-		myref = null;
-		for (Ref ref : remoteRefs) {
-			if (ref.getName().equals("refs/heads/master")) {
-				myref = ref;
-				break;
-			}
-		}
-		op = new CloneOperation(uri, true, null, workdir, myref,
+		op = new CloneOperation(uri, true, null, workdir, "refs/heads/master",
 				"origin", 0);
 		op.run(null);
 

@@ -5,10 +5,10 @@
 		local = new FileRepository(gitdir);
 		local.create();
 
-		if (ref != null && ref.getName().startsWith(Constants.R_HEADS)) {
+		if (refName != null && refName.startsWith(Constants.R_HEADS)) {
 			final RefUpdate head = local.updateRef(Constants.HEAD);
 			head.disableRefLog();
-			head.link(ref.getName());
+			head.link(refName);
 		}
 
 		FileBasedConfig config = local.getConfig();
@@ -37,12 +37,12 @@
 
 		// branch is like 'Constants.R_HEADS + branchName', we need only
 		// the 'branchName' part
-		if (ref != null && ref.getName().startsWith(Constants.R_HEADS)) {
-			String branchName = ref.getName().substring(Constants.R_HEADS.length());
+		if (refName != null && refName.startsWith(Constants.R_HEADS)) {
+			String branchName = Repository.shortenRefName(refName);
 
 			// setup the default remote branch for branchName
 			config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, branchName, ConfigConstants.CONFIG_KEY_REMOTE, remoteName);
-			config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, branchName, ConfigConstants.CONFIG_KEY_MERGE, ref.getName());
+			config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, branchName, ConfigConstants.CONFIG_KEY_MERGE, refName);
 		}
 		config.save();
 	}

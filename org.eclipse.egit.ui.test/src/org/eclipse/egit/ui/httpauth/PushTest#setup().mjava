@@ -5,9 +5,8 @@
 		localRepoPath = new File(ResourcesPlugin.getWorkspace().getRoot()
 				.getLocation().toFile(), "test1");
 		String branch = Constants.R_HEADS + SampleTestRepository.FIX;
-		Ref ref = createRef(branch);
 		CloneOperation cloneOperation = new CloneOperation(new URIish(
-				remoteRepository.getUri()), true, null, localRepoPath, ref,
+				remoteRepository.getUri()), true, null, localRepoPath, branch,
 				"origin", 30);
 		cloneOperation
 				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
