@@ -5,20 +5,16 @@
 		else
 			monitor = m;
 
-		if (refName != null && !refName.startsWith(Constants.R_REFS))
-			throw new TeamException(NLS.bind(
-					CoreText.BranchOperation_CheckoutOnlyBranchOrTag, refName));
-
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor pm) throws CoreException {
 				IProject[] validProjects = ProjectUtil
 						.getValidProjects(repository);
 				pm.beginTask(NLS.bind(
-						CoreText.BranchOperation_performingBranch, refName), 1);
+						CoreText.BranchOperation_performingBranch, target), 1);
 
 				CheckoutCommand co = new Git(repository).checkout();
-				co.setName(getTarget());
+				co.setName(target);
 
 				try {
 					co.call();

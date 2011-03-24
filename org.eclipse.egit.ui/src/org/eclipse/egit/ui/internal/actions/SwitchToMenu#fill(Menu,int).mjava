@@ -74,8 +74,8 @@
 				item.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						new BranchOperationUI(repository, entry.getValue()
-								.getName()).start();
+						BranchOperationUI.checkout(repository,
+								entry.getValue().getName()).start();
 					}
 				});
 			}
@@ -86,7 +86,7 @@
 			others.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					new BranchOperationUI(repository).start();
+					BranchOperationUI.branch(repository).start();
 				}
 			});
 		} catch (IOException e) {
