@@ -1,0 +1,96 @@
+	@Override
+	public void fill(Menu menu, int index) {
+		if (srv == null)
+			return;
+		ISelection sel = srv.getSelection();
+		if (!(sel instanceof IStructuredSelection))
+			return;
+		Object selected = ((IStructuredSelection) sel).getFirstElement();
+		if (selected instanceof IAdaptable)
+			selected = ((IAdaptable) selected).getAdapter(IProject.class);
+		if (!(selected instanceof IProject))
+			return;
+		RepositoryMapping mapping = RepositoryMapping
+				.getMapping((IProject) selected);
+		if (mapping == null)
+			return;
+		final Repository repository = mapping.getRepository();
+		if (repository == null)
+			return;
+
+		MenuItem newBranch = new MenuItem(menu, SWT.PUSH);
+		newBranch.setText(UIText.SwitchToMenu_NewBranchMenuLabel);
+		newBranch.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RevCommit commit = null;
+				Ref currentBranch = null;
+				try {
+					String branch = repository.getFullBranch();
+					if (ObjectId.isId(branch)) {
+						commit = new RevWalk(repository).parseCommit(ObjectId
+								.fromString(branch));
+					} else {
+						currentBranch = repository.getRef(branch);
+					}
+				} catch (IOException e1) {
+					// ignore here
+				}
+				CreateBranchWizard wiz;
+				if (currentBranch != null)
+					wiz = new CreateBranchWizard(repository, currentBranch);
+				else
+					wiz = new CreateBranchWizard(repository, commit);
+				Shell shell = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell();
+				new WizardDialog(shell, wiz).open();
+			}
+		});
+		new MenuItem(menu, SWT.SEPARATOR);
+		String currentBranch;
+		Map<String, Ref> localBranches;
+		try {
+			currentBranch = mapping.getRepository().getFullBranch();
+			localBranches = mapping.getRepository().getRefDatabase().getRefs(
+					Constants.R_HEADS);
+			// sort by name
+			TreeMap<String, Ref> sortedRefs = new TreeMap<String, Ref>();
+			sortedRefs.putAll(localBranches);
+			int itemCount = 0;
+			for (final Entry<String, Ref> entry : sortedRefs.entrySet()) {
+				itemCount++;
+				// protect ourselves against a huge sub-menu
+				if (itemCount > MAX_NUM_MENU_ENTRIES)
+					break;
+				MenuItem item = new MenuItem(menu, SWT.PUSH);
+				item.setText(entry.getKey());
+				boolean checkedOut = currentBranch.equals(entry.getValue()
+						.getName());
+				if (checkedOut)
+					item.setImage(checkedOutImage);
+				else
+					item.setImage(branchImage);
+				item.setEnabled(!checkedOut);
+				item.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						new BranchOperationUI(repository, entry.getValue()
+								.getName()).start();
+					}
+				});
+			}
+			if (localBranches.size() > 0)
+				new MenuItem(menu, SWT.SEPARATOR);
+			MenuItem others = new MenuItem(menu, SWT.PUSH);
+			others.setText(UIText.SwitchToMenu_OtherMenuLabel);
+			others.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					new BranchOperationUI(repository).start();
+				}
+			});
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+	}
+
