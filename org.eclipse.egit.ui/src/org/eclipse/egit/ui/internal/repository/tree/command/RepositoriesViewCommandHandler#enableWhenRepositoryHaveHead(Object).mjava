@@ -10,7 +10,8 @@
 					Repository repo = treeNode.getRepository();
 					boolean enabled = false;
 					try {
-						enabled = repo.getRef(Constants.HEAD).getObjectId() != null;
+						Ref ref = repo.getRef(Constants.HEAD);
+						enabled = ref != null && ref.getObjectId() != null;
 					} catch (IOException e) {
 						enabled = false;
 					}
