@@ -1,0 +1,12 @@
+	private void checkPage() {
+		boolean errorFound = false;
+		setErrorMessage(null);
+		if (existingRemotes.contains(nameText.getText())) {
+			setErrorMessage(NLS.bind(
+					UIText.NewRemoteDialog_RemoteAlreadyExistsMessage, nameText
+							.getText()));
+			errorFound = true;
+		}
+		getButton(OK).setEnabled(!errorFound);
+	}
+
