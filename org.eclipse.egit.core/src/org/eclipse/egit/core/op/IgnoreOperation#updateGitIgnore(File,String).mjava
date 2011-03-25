@@ -1,6 +1,7 @@
 	private void updateGitIgnore(File gitIgnore, String entry)
 			throws CoreException {
 		try {
+			String ignoreLine = entry;
 			if (!gitIgnore.exists())
 				if (!gitIgnore.createNewFile()) {
 					String error = NLS.bind(
@@ -8,10 +9,12 @@
 							gitIgnore.getAbsolutePath());
 					throw new CoreException(Activator.error(error, null));
 				}
+			else
+				ignoreLine = getEntry(gitIgnore, ignoreLine);
 
 			FileOutputStream os = new FileOutputStream(gitIgnore, true);
 			try {
-				os.write(entry.getBytes());
+				os.write(ignoreLine.getBytes());
 			} finally {
 				os.close();
 			}
