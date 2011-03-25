@@ -9,10 +9,8 @@
 		else
 			return null;
 
-		WizardDialog dlg = new WizardDialog(
-				getShell(event), new ConfigureRemoteWizard(
-						selectedNode.getRepository(), configName, false));
-		dlg.setHelpAvailable(false);
+		Dialog dlg = SimpleConfigureFetchDialog.getDialog(getShell(event),
+				selectedNode.getRepository(), configName);
 		dlg.open();
 
 		return null;
