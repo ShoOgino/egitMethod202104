@@ -1,0 +1,5 @@
+	private boolean repoHasBeenRemoved(final Repository repo) {
+		return (repo != null && repo.getDirectory() != null && !repo
+				.getDirectory().exists());
+	}
+

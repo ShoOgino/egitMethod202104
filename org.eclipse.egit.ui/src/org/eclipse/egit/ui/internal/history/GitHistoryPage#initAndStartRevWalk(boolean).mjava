@@ -5,8 +5,18 @@
 						GitTraceLocation.HISTORYVIEW.getLocation());
 
 			cancelRefreshJob();
+
+			if (input == null)
+				return;
 			Repository db = input.getRepository();
-			AnyObjectId headId = resolveHead(db, false);
+			if (repoHasBeenRemoved(db)) {
+				clearHistoryPage();
+				return;
+			}
+
+			AnyObjectId headId = resolveHead(db, true);
+			if (headId == null)
+				return;
 
 			List<String> paths = buildFilterPaths(input.getItems(), input
 					.getFileList(), db);

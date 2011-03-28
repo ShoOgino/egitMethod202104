@@ -1,4 +1,7 @@
 	public void refresh() {
+		if (repoHasBeenRemoved(currentRepo))
+			clearHistoryPage();
+
 		this.input = null;
 		inputSet();
 	}
