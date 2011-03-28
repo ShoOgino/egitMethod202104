@@ -1,12 +1,17 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		RemotesNode node = getSelectedNodes(event).get(0);
+		Repository repository = node.getRepository();
 
-		WizardDialog dlg = new WizardDialog(
-				getShell(event), new NewRemoteWizard(node
-						.getRepository()));
-		dlg.setHelpAvailable(false);
-		dlg.open();
+		NewRemoteDialog nrd = new NewRemoteDialog(getShell(event), repository);
+		if (nrd.open() != Window.OK)
+			return null;
 
+		if (nrd.getPushMode())
+			SimpleConfigurePushDialog.getDialog(getShell(event), repository,
+					nrd.getName()).open();
+		else
+			SimpleConfigureFetchDialog.getDialog(getShell(event), repository,
+					nrd.getName()).open();
 		return null;
 	}
 

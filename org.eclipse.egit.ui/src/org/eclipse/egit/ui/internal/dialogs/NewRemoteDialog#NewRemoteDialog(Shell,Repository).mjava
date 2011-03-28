@@ -1,0 +1,10 @@
+	/**
+	 * @param parentShell
+	 * @param repository
+	 */
+	public NewRemoteDialog(Shell parentShell, Repository repository) {
+		super(parentShell);
+		existingRemotes = repository.getConfig().getSubsections(
+				ConfigConstants.CONFIG_REMOTE_SECTION);
+	}
+

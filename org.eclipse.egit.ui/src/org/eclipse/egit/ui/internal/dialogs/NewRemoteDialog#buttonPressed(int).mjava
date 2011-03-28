@@ -1,0 +1,9 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == OK) {
+			name = nameText.getText();
+			pushMode = forPush.getSelection();
+		}
+		super.buttonPressed(buttonId);
+	}
+

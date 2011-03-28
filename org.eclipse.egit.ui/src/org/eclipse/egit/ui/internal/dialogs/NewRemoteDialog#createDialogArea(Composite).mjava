@@ -1,0 +1,29 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(main);
+		GridDataFactory.fillDefaults().indent(5, 5).grab(true, true).applyTo(
+				main);
+		Label nameLabel = new Label(main, SWT.NONE);
+		nameLabel.setText(UIText.NewRemoteDialog_NameLabel);
+		nameText = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(nameText);
+		nameText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+
+		forPush = new Button(main, SWT.RADIO);
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(forPush);
+		forPush.setText(UIText.NewRemoteDialog_PushRadio);
+		forPush.setSelection(true);
+
+		Button forFetch = new Button(main, SWT.RADIO);
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(forFetch);
+		forFetch.setText(UIText.NewRemoteDialog_FetchRadio);
+		nameText.setFocus();
+		applyDialogFont(main);
+		return main;
+	}
+
