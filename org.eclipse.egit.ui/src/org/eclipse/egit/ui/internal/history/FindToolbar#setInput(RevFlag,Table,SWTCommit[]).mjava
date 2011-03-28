@@ -6,8 +6,11 @@
 	 * @param historyTable
 	 * @param commitArray
 	 */
-	public void setInput(final RevFlag hFlag, final Table historyTable,
+	void setInput(final RevFlag hFlag, final Table historyTable,
 			final SWTCommit[] commitArray) {
+		// this may cause a FindBugs warning, but
+		// copying the array is probably not a good
+		// idea
 		this.fileRevisions = commitArray;
 		this.historyTable = historyTable;
 		findResults.setHighlightFlag(hFlag);

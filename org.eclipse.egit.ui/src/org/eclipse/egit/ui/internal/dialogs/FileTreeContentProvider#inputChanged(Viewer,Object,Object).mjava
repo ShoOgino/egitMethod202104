@@ -1,6 +1,6 @@
 	@SuppressWarnings("unchecked")
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		rootNodes = new Node[0];
+		rootNodes.clear();
 
 		input = (List<String>) newInput;
 		if (input == null)
@@ -51,7 +51,6 @@
 			}
 		}
 
-		rootNodes = virtualNode.getChildren().toArray(
-				new Node[virtualNode.getChildren().size()]);
+		rootNodes.addAll(virtualNode.getChildren());
 	}
 

@@ -7,7 +7,7 @@
 	public HistoryPageInput(final Repository repository,
 			final IResource[] resourceItems) {
 		this.repo = repository;
-		list = resourceItems;
+		list = Arrays.asList(resourceItems);
 		if (resourceItems.length == 1) {
 			singleItem = resourceItems[0];
 			if (resourceItems[0].getType() == IResource.FILE)

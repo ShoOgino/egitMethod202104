@@ -9,8 +9,7 @@
 		super(null);
 		repo = data.getRepository();
 		includeLocal = data.shouldIncludeLocal();
-		Set<IProject> projectSet = data.getProjects();
-		projects = projectSet.toArray(new IProject[projectSet.size()]);
+		projects = data.getProjects();
 
 		srcRev = data.getSrcRevCommit();
 		dstRev = data.getDstRevCommit();
