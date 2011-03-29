@@ -13,6 +13,7 @@
 		hardWrap.getDescriptionControl(formattingGroup).setToolTipText(
 				UIText.CommitDialogPreferencePage_hardWrapMessageTooltip);
 		addField(hardWrap);
+		updateMargins(formattingGroup);
 
 		Group footersGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		footersGroup.setText(UIText.CommitDialogPreferencePage_footers);
@@ -38,5 +39,6 @@
 				.setToolTipText(
 						UIText.CommitDialogPreferencePage_signedOffByTooltip);
 		addField(signedOffBy);
+		updateMargins(footersGroup);
 	}
 
