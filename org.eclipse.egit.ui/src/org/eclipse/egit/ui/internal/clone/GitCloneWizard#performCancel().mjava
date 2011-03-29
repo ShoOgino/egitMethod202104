@@ -1,0 +1,18 @@
+	@Override
+	public boolean performCancel() {
+		if (alreadyClonedInto != null) {
+			File test = new File(alreadyClonedInto);
+			if (test.exists()
+					&& MessageDialog.openQuestion(getShell(),
+							UIText.GitCloneWizard_abortingCloneTitle,
+							UIText.GitCloneWizard_abortingCloneMsg)) {
+				try {
+					FileUtils.delete(test, FileUtils.RECURSIVE | FileUtils.RETRY);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+		return true;
+	}
+

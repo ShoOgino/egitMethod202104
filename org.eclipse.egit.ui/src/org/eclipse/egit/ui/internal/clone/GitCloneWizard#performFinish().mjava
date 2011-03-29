@@ -1,0 +1,14 @@
+	@Override
+	public boolean performFinish() {
+		try {
+			if (cloneSource.getStoreInSecureStore()) {
+				if (!SecureStoreUtils.storeCredentials(cloneSource
+						.getCredentials(), cloneSource.getSelection().getURI()))
+					return false;
+			}
+			return performClone();
+		} finally {
+			setWindowTitle(UIText.GitCloneWizard_title);
+		}
+	}
+

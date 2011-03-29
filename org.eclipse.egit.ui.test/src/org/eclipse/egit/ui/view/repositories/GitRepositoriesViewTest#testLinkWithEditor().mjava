@@ -1,0 +1,97 @@
+	/**
+	 * Link with editor, both ways
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testLinkWithEditor() throws Exception {
+		deleteAllProjects();
+		shareProjects(repositoryFile);
+		SWTBotPerspective perspective = null;
+		try {
+			perspective = bot.activePerspective();
+			bot.perspectiveById("org.eclipse.ui.resourcePerspective")
+					.activate();
+			SWTBotTree tree = getOrOpenView().bot().tree();
+			myRepoViewUtil.getRootItem(tree, repositoryFile).select();
+			// the selection should be root
+			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
+
+			SWTBotView view = bot
+					.viewById("org.eclipse.ui.navigator.ProjectExplorer");
+			SWTBotTree projectExplorerTree = view.bot().tree();
+
+			SWTBotTreeItem item = getProjectItem(projectExplorerTree, PROJ1)
+					.expand().getNode(FOLDER).expand().getNode(FILE1);
+			view.show();
+			item.doubleClick();
+
+			item = getProjectItem(projectExplorerTree, PROJ1).expand().getNode(
+					FOLDER).expand().getNode(FILE2);
+			view.show();
+			item.doubleClick();
+			// now we should have two editors
+
+			// the selection should be still be root
+			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
+
+			// activate the link with selection
+			getOrOpenView().toolbarButton("Link with Editor").click();
+			bot.editorByTitle(FILE2).show();
+			waitInUI();
+			// the selection should have changed to the latest editor
+			assertTrue(tree.selection().get(0, 0).equals(FILE2));
+
+			bot.editorByTitle(FILE1).show();
+			waitInUI();
+			// selection should have changed
+			assertTrue(tree.selection().get(0, 0).equals(FILE1));
+
+			// deactivate the link with editor
+			getOrOpenView().toolbarButton("Link with Editor").click();
+
+			bot.editorByTitle(FILE2).show();
+			waitInUI();
+			// the selection should be still be test.txt
+			assertTrue(tree.selection().get(0, 0).equals(FILE1));
+
+			bot.editorByTitle(FILE1).show();
+
+			myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
+					.getNode(PROJ1).expand().getNode(FOLDER).expand().getNode(
+							FILE2).select();
+
+			// the editor should still be test.txt
+			assertEquals(FILE1, bot.activeEditor().getTitle());
+
+			// activate again
+			getOrOpenView().toolbarButton("Link with Editor").click();
+			// make sure focus is here
+			waitInUI();
+			myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
+					.getNode(PROJ1).expand().getNode(FOLDER).expand().getNode(
+							FILE2).select();
+			waitInUI();
+			assertEquals(FILE2, bot.activeEditor().getTitle());
+
+			myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
+					.getNode(PROJ1).expand().getNode(FOLDER).expand().getNode(
+							FILE1).select();
+			waitInUI();
+			assertEquals(FILE1, bot.activeEditor().getTitle());
+
+			// deactivate the link with editor
+			getOrOpenView().toolbarButton("Link with Editor").click();
+
+			myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
+					.getNode(PROJ1).expand().getNode(FOLDER).expand().getNode(
+							FILE2).select();
+			waitInUI();
+			assertEquals(FILE1, bot.activeEditor().getTitle());
+
+		} finally {
+			if (perspective != null)
+				perspective.activate();
+		}
+	}
+

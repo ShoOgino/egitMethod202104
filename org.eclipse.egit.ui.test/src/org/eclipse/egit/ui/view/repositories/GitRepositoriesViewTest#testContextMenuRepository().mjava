@@ -1,0 +1,22 @@
+	/**
+	 * Checks is some context menus are available, should be replaced with real
+	 * tests
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testContextMenuRepository() throws Exception {
+		// We just check if the dialogs open, the actual commit and import projects
+		// is tested elsewhere
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		SWTBotTreeItem item = myRepoViewUtil.getRootItem(tree, repositoryFile);
+		item.select();
+		assertClickOpens(tree,
+				myUtil.getPluginLocalizedValue("RepoViewCommit.label"),
+				UIText.CommitDialog_CommitChanges);
+		assertClickOpens(tree,
+				myUtil.getPluginLocalizedValue("RepoViewImportProjects.label"),
+				NLS.bind(UIText.GitCreateProjectViaWizardWizard_WizardTitle,
+						repositoryFile));
+	}
+

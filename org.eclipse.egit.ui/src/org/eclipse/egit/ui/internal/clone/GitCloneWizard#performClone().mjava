@@ -1,0 +1,50 @@
+	boolean performClone() {
+		final URIish uri = cloneSource.getSelection().getURI();
+		setWindowTitle(NLS.bind(UIText.GitCloneWizard_jobName, uri.toString()));
+		final boolean allSelected;
+		final Collection<Ref> selectedBranches;
+		if (validSource.isSourceRepoEmpty()) {
+			// fetch all branches of empty repo
+			allSelected = true;
+			selectedBranches = Collections.emptyList();
+		} else {
+			allSelected = validSource.isAllSelected();
+			selectedBranches = validSource.getSelectedBranches();
+		}
+		final File workdir = cloneDestination.getDestinationFile();
+		final Ref ref = cloneDestination.getInitialBranch();
+		final String remoteName = cloneDestination.getRemote();
+
+		boolean created = workdir.exists();
+		if (!created)
+			created = workdir.mkdirs();
+
+		if (!created || !workdir.isDirectory()) {
+			final String errorMessage = NLS.bind(
+					UIText.GitCloneWizard_errorCannotCreate, workdir.getPath());
+			ErrorDialog.openError(getShell(), getWindowTitle(),
+					UIText.GitCloneWizard_failed, new Status(IStatus.ERROR,
+							Activator.getPluginId(), 0, errorMessage, null));
+			// let's give user a chance to fix this minor problem
+			return false;
+		}
+
+		int timeout = Activator.getDefault().getPreferenceStore().getInt(
+				UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+		final CloneOperation op = new CloneOperation(uri, allSelected,
+				selectedBranches, workdir, ref, remoteName, timeout);
+		UserPasswordCredentials credentials = cloneSource.getCredentials();
+		if (credentials != null)
+			op.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+					credentials.getUser(), credentials.getPassword()));
+
+		alreadyClonedInto = workdir.getPath();
+
+		cloneSource.saveUriInPrefs();
+		if (!callerRunsCloneOperation)
+			runAsJob(uri, op);
+		else
+			cloneOperation = op;
+		return true;
+	}
+
