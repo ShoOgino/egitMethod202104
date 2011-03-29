@@ -1,5 +1,4 @@
 	@Test
-	@Ignore // failing rather often on Hudson
 	public void shouldShowCompareEditorForNonWorkspaceFileFromSynchronization()
 			throws Exception {
 		// given
@@ -25,7 +24,10 @@
 		SWTBotEditor editor = bot.editorByTitle(name);
 		editor.setFocus();
 
-		assertNotNull(editor);
-		assertThat(editor.bot().styledText(1).getText(), equalTo(content));
+		// the WidgetNotFoundException will be thrown when widget with given content cannot be not found
+		SWTBotStyledText left = editor.bot().styledText(content);
+		SWTBotStyledText right = editor.bot().styledText("");
+		// to be complete sure asert that both sides are not the same
+		assertNotSame(left, right);
 	}
 
