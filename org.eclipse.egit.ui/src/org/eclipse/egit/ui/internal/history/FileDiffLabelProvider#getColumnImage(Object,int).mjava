@@ -3,22 +3,17 @@
 			final FileDiff c = (FileDiff) element;
 			switch (c.getChange()) {
 			case ADD:
-				return ADD;
-			case COPY:
-				return COPY;
+				return getDecoratedImage(getEditorImage(c),
+						UIIcons.OVR_STAGED_ADD);
 			case DELETE:
-				return DELETE;
+				return getDecoratedImage(getEditorImage(c),
+						UIIcons.OVR_STAGED_REMOVE);
+			case COPY:
+				// fall through
 			case RENAME:
 				// fall through
 			case MODIFY:
-				Image image = DEFAULT;
-				String name = new Path(c.getPath()).lastSegment();
-				if (name != null) {
-					ImageDescriptor descriptor = PlatformUI.getWorkbench()
-							.getEditorRegistry().getImageDescriptor(name);
-					image = (Image) this.resourceManager.get(descriptor);
-				}
-				return image;
+				return getEditorImage(c);
 			}
 		}
 		return null;
