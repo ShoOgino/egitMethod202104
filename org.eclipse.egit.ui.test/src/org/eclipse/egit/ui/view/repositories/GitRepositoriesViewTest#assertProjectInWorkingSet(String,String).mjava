@@ -1,0 +1,14 @@
+	private void assertProjectInWorkingSet(String workingSetName,
+			String projectName) {
+		IWorkingSetManager workingSetManager = PlatformUI.getWorkbench()
+				.getWorkingSetManager();
+		IWorkingSet workingSet = workingSetManager
+				.getWorkingSet(workingSetName);
+		IAdaptable[] elements = workingSet.getElements();
+		assertEquals("Wrong number of projects in working set", 1,
+				elements.length);
+		IProject project = (IProject) elements[0].getAdapter(IProject.class);
+		assertEquals("Wrong project in working set", projectName, project
+				.getName());
+	}
+

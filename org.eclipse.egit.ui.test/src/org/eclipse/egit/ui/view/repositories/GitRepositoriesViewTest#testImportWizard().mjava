@@ -1,0 +1,58 @@
+	/**
+	 * Import wizard golden path test
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testImportWizard() throws Exception {
+		deleteAllProjects();
+		assertProjectExistence(PROJ1, false);
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		SWTBotTreeItem item = myRepoViewUtil.getRootItem(tree, repositoryFile);
+		String wizardTitle = NLS.bind(
+				UIText.GitCreateProjectViaWizardWizard_WizardTitle,
+				repositoryFile.getPath());
+		// start wizard from root item
+		item.select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("ImportProjectsCommand"));
+		SWTBotShell shell = bot.shell(wizardTitle);
+		bot.radio(UIText.GitSelectWizardPage_ImportExistingButton).click();
+		TableCollection selected = shell.bot().tree().selection();
+		String wizardNode = selected.get(0, 0);
+		// wizard directory should be working dir
+		assertEquals(myRepoViewUtil.getWorkdirItem(tree, repositoryFile)
+				.getText(), wizardNode);
+		waitInUI();
+		shell.close();
+		// start wizard from .git
+		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand().getNode(
+				Constants.DOT_GIT).select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("ImportProjectsCommand"));
+		shell = bot.shell(wizardTitle);
+		selected = shell.bot().tree().selection();
+		wizardNode = selected.get(0, 0);
+		// wizard directory should be .git
+		assertEquals(Constants.DOT_GIT, wizardNode);
+		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
+		shell.bot().label("Import Projects"); // wait for import projects page
+		assertTrue(shell.bot().tree().getAllItems().length == 0);
+		shell.bot().button(IDialogConstants.BACK_LABEL).click();
+		// go to project with .project
+		shell.bot().tree().getAllItems()[0].getNode(PROJ1).select();
+		// next is 1
+		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
+		waitInUI();
+		assertTrue(shell.bot().tree().getAllItems().length == 1);
+		assertTrue(!shell.bot().button(IDialogConstants.FINISH_LABEL)
+				.isEnabled());
+		shell.bot().button(UIText.WizardProjectsImportPage_selectAll).click();
+		assertTrue(shell.bot().button(IDialogConstants.FINISH_LABEL)
+				.isEnabled());
+		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		waitInUI();
+		assertProjectExistence(PROJ1, true);
+		assertProjectIsShared(PROJ1, true);
+	}
+

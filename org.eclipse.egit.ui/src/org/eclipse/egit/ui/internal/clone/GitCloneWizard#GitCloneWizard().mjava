@@ -1,0 +1,34 @@
+	/**
+	 * The default constructor
+	 */
+	public GitCloneWizard() {
+		setWindowTitle(UIText.GitCloneWizard_title);
+		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
+		setNeedsProgressMonitor(true);
+		cloneSource = new RepositorySelectionPage(true, null);
+		cloneSource.setHelpContext(HELP_CONTEXT);
+		validSource = new SourceBranchPage() {
+
+			@Override
+			public void setVisible(boolean visible) {
+				if (visible) {
+					setSelection(cloneSource.getSelection());
+					setCredentials(cloneSource.getCredentials());
+				}
+				super.setVisible(visible);
+			}
+		};
+		validSource.setHelpContext(HELP_CONTEXT);
+		cloneDestination = new CloneDestinationPage() {
+			@Override
+			public void setVisible(boolean visible) {
+				if (visible)
+					setSelection(cloneSource.getSelection(), validSource
+							.getAvailableBranches(), validSource
+							.getSelectedBranches(), validSource.getHEAD());
+				super.setVisible(visible);
+			}
+		};
+		cloneDestination.setHelpContext(HELP_CONTEXT);
+	}
+

@@ -1,0 +1,37 @@
+	@Test
+	public void testDeleteSingleBranch() throws Exception {
+		// expand first level
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		refreshAndWait();
+		// create a branch (no checkout)
+		SWTBotTreeItem localBranchesItem = myRepoViewUtil.getLocalBranchesItem(
+				tree, repositoryFile).expand();
+		SWTBotTreeItem masterNode = localBranchesItem.getNode("master");
+		masterNode.select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("RepoViewCheckout.label"));
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("RepoViewCreateBranch.label"));
+		SWTBotShell createBranchShell = bot
+				.shell(UIText.CreateBranchWizard_NewBranchTitle);
+		createBranchShell.bot().textWithId("BranchName").setText("abc");
+		createBranchShell.bot().checkBox().deselect();
+		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		refreshAndWait();
+		// delete branch
+		// lookup node again. Widget might have changed due to refresh
+		localBranchesItem = myRepoViewUtil.getLocalBranchesItem(
+				tree, repositoryFile).expand();
+		localBranchesItem.getNode("abc").select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("RepoViewDeleteBranch.label"));
+
+		refreshAndWait();
+		SWTBotTreeItem[] items = myRepoViewUtil.getLocalBranchesItem(tree,
+				repositoryFile).getItems();
+		assertEquals("Wrong number of branches", 2, items.length);
+		assertEquals("master", items[0].getText());
+		assertEquals("stable", items[1].getText());
+	}
+
