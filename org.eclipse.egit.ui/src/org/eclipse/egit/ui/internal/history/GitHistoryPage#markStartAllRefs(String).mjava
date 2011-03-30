@@ -15,7 +15,9 @@
 			Ref ref = refEntry.getValue();
 			if (ref.isSymbolic())
 				continue;
-			currentWalk.markStart(currentWalk.parseCommit(ref.getObjectId()));
+			Object refTarget = currentWalk.parseAny(ref.getObjectId());
+			if (refTarget instanceof RevCommit)
+				currentWalk.markStart((RevCommit) refTarget);
 		}
 	}
 
