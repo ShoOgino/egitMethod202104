@@ -1,0 +1,31 @@
+	/**
+	 * Construct a dialog to select a branch and specify a {@link Ref} to mark
+	 *
+	 * @param parentShell
+	 * @param repository
+	 *            the {@link Repository}
+	 * @param refToMark
+	 *            the name of the {@link Ref} to mark initially
+	 * @param settings
+	 *            configuration options of this dialog like
+	 *            {@link AbstractBranchSelectionDialog#SHOW_LOCAL_BRANCHES},
+	 *            {@link AbstractBranchSelectionDialog#SHOW_REMOTE_BRANCHES},
+	 *            {@link AbstractBranchSelectionDialog#SHOW_TAGS},
+	 *            {@link AbstractBranchSelectionDialog#SHOW_REFERENCES},
+	 *            {@link AbstractBranchSelectionDialog#SELECT_CURRENT_REF},
+	 *            {@link AbstractBranchSelectionDialog#EXPAND_LOCAL_BRANCHES_NODE},
+	 *            {@link AbstractBranchSelectionDialog#EXPAND_REMOTE_BRANCHES_NODE}
+	 */
+	public AbstractBranchSelectionDialog(Shell parentShell,
+			Repository repository, String refToMark, int settings) {
+		super(parentShell);
+		this.repo = repository;
+		this.settings = settings;
+		localBranches = new LocalNode(null, this.repo);
+		remoteBranches = new RemoteTrackingNode(null, this.repo);
+		tags = new TagsNode(null, this.repo);
+		references = new AdditionalRefsNode(null, this.repo);
+		this.refToMark = refToMark;
+		setHelpAvailable(false);
+	}
+
