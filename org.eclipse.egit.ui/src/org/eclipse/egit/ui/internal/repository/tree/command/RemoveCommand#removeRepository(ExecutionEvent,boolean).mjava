@@ -70,7 +70,6 @@
 			}
 		}
 
-
 		final boolean deleteWorkDir = deleteWorkingDir;
 		final boolean removeProj = removeProjects;
 
@@ -82,26 +81,10 @@
 				monitor
 						.setTaskName(UIText.RepositoriesView_DeleteRepoDeterminProjectsMessage);
 
-
 				if (removeProj) {
 					// confirmed deletion
-					IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
-
-						public void run(IProgressMonitor actMonitor)
-								throws CoreException {
-
-							for (IProject prj : projectsToDelete)
-								prj.delete(false, false, actMonitor);
-						}
-					};
-
-					try {
-						ResourcesPlugin.getWorkspace().run(wsr,
-								ResourcesPlugin.getWorkspace().getRoot(),
-								IWorkspace.AVOID_UPDATE, monitor);
-					} catch (CoreException e1) {
-						Activator.logError(e1.getMessage(), e1);
-					}
+					deleteProjects(delete, projectsToDelete,
+							monitor);
 				}
 				for (RepositoryNode node : selectedNodes) {
 					util.removeDir(node.getRepository().getDirectory());
@@ -109,16 +92,7 @@
 
 				if (delete) {
 					try {
-						for (RepositoryNode node : selectedNodes) {
-							Repository repo = node.getRepository();
-							repo.close();
-							if (!repo.isBare() && deleteWorkDir)
-								FileUtils.delete(repo.getWorkTree(),
-										FileUtils.RECURSIVE | FileUtils.RETRY);
-							FileUtils.delete(repo.getDirectory(),
-									FileUtils.RECURSIVE | FileUtils.RETRY
-											| FileUtils.SKIP_MISSING);
-						}
+						deleteRepositoryContent(selectedNodes, deleteWorkDir);
 					} catch (IOException e) {
 						return Activator.createErrorStatus(e.getMessage(), e);
 					}
