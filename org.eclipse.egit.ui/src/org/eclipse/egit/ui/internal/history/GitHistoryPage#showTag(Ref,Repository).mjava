@@ -7,7 +7,9 @@
 				c = (RevCommit) any;
 			} else if (any instanceof RevTag) {
 				RevTag t = rw.parseTag(any);
-				c = rw.parseCommit(t.getObject());
+				Object anyCommit = rw.parseAny(t.getObject());
+				if (anyCommit instanceof RevCommit)
+					c = (RevCommit) anyCommit;
 			}
 			if (c != null)
 				graph.selectCommit(c);

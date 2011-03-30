@@ -9,8 +9,9 @@
 				currentWalk.markStart(currentWalk.parseCommit(headId));
 		} catch (IOException e) {
 			throw new IllegalStateException(NLS.bind(
-					UIText.GitHistoryPage_errorReadingHeadCommit, headId, db
-							.getDirectory().getAbsolutePath()), e);
+					UIText.GitHistoryPage_errorSettingStartPoints, Activator
+							.getDefault().getRepositoryUtil()
+							.getRepositoryName(db)), e);
 		}
 	}
 
