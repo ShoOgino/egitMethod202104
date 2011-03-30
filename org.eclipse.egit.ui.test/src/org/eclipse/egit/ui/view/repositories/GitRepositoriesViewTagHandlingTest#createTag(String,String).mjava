@@ -5,13 +5,13 @@
 				.getPluginLocalizedValue("CreateTagCommand"));
 		String shellTitle = UIText.CreateTagDialog_NewTag;
 		SWTBotShell createDialog = bot.shell(shellTitle).activate();
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.FILL_TAG_LIST);
 		createDialog.bot().textWithLabel(UIText.CreateTagDialog_tagName)
 				.setText(name);
 		createDialog.bot()
 				.styledTextWithLabel(UIText.CreateTagDialog_tagMessage)
 				.setText(message);
-		waitInUI();
 		createDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		TestUtil.joinJobs(JobFamilies.TAG);
 	}
 

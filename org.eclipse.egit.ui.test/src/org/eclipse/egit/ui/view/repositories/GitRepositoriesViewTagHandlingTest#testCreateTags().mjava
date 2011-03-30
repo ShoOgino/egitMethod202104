@@ -10,8 +10,9 @@
 		String newObject = getObjectIdOfCommit();
 		createTag("SecondTag", "The second tag");
 		refreshAndWait();
-		SWTBotTreeItem[] items = myRepoViewUtil.getTagsItem(tree,
-				repositoryFile).expand().getItems();
+		SWTBotTreeItem tagsItem = myRepoViewUtil.getTagsItem(tree,
+				repositoryFile).expand();
+		SWTBotTreeItem[] items = tagsItem.getItems();
 		assertEquals("Wrong number of tags", initialCount + 2, items.length);
 
 		assertTrue("Wrong commit id", initialObjid

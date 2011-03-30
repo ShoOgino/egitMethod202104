@@ -4,6 +4,13 @@
 		// start a job that fills the tag list lazily
 		Job job = new Job(UIText.CreateTagDialog_GetTagJobName) {
 			@Override
+			public boolean belongsTo(Object family) {
+				if (family.equals(JobFamilies.FILL_TAG_LIST))
+					return true;
+				return super.belongsTo(family);
+			}
+
+			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 
 				try {
