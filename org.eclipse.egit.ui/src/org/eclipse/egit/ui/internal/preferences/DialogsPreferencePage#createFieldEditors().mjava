@@ -1,0 +1,27 @@
+	@Override
+	protected void createFieldEditors() {
+		Composite main = getFieldEditorParent();
+
+		Group confirmGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
+		GridDataFactory.fillDefaults().grab(true, false).span(GROUP_SPAN, 1)
+				.applyTo(confirmGroup);
+		confirmGroup
+				.setText(UIText.DialogsPreferencePage_HideConfirmationGroupHeader);
+
+		GridDataFactory.fillDefaults().grab(true, false).span(GROUP_SPAN, 1)
+				.applyTo(confirmGroup);
+		addField(new BooleanFieldEditor(
+				UIPreferences.SHOW_INITIAL_CONFIG_DIALOG,
+				UIText.DialogsPreferencePage_ShowInitialConfigCheckbox,
+				confirmGroup));
+
+		addField(new BooleanFieldEditor(UIPreferences.SHOW_REBASE_CONFIRM,
+				UIText.DialogsPreferencePage_RebaseCheckbox, confirmGroup));
+		addField(new BooleanFieldEditor(
+				UIPreferences.SHOW_DETACHED_HEAD_WARNING,
+				UIText.DialogsPreferencePage_DetachedHeadCombo, confirmGroup));
+		addField(new BooleanFieldEditor(UIPreferences.SHOW_HOME_DIR_WARNING,
+				UIText.DialogsPreferencePage_HomeDirWarning, confirmGroup));
+		updateMargins(confirmGroup);
+	}
+

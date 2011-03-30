@@ -5,9 +5,8 @@
 	public static void checkConfiguration() {
 		if (!runsOnWindows())
 			return;
-		if (!Activator.getDefault().getPreferenceStore()
-				.getString(UIPreferences.SHOW_HOME_DIR_WARNING)
-				.equals(MessageDialogWithToggle.PROMPT))
+		if (!Activator.getDefault().getPreferenceStore().getBoolean(
+				UIPreferences.SHOW_HOME_DIR_WARNING))
 			return;
 		// Schedule a job
 		// This avoids that the check is executed too early

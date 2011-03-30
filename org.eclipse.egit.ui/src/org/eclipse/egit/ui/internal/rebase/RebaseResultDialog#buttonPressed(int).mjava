@@ -3,8 +3,8 @@
 		// store the preference to hide these dialogs
 		if (toggleButton != null)
 			Activator.getDefault().getPreferenceStore().setValue(
-					UIPreferences.REBASE_HIDE_CONFIRM,
-					toggleButton.getSelection());
+					UIPreferences.SHOW_REBASE_CONFIRM,
+					!toggleButton.getSelection());
 		if (buttonId == IDialogConstants.OK_ID) {
 			if (result.getStatus() != Status.STOPPED) {
 				super.buttonPressed(buttonId);

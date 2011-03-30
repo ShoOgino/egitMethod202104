@@ -6,8 +6,8 @@
 	public static void show(final RebaseResult result,
 			final Repository repository) {
 		boolean shouldShow = result.getStatus() == Status.STOPPED
-				|| !Activator.getDefault().getPreferenceStore().getBoolean(
-						UIPreferences.REBASE_HIDE_CONFIRM);
+				|| Activator.getDefault().getPreferenceStore().getBoolean(
+						UIPreferences.SHOW_REBASE_CONFIRM);
 		if (!shouldShow) {
 			Activator.getDefault().getLog().log(
 					new org.eclipse.core.runtime.Status(IStatus.INFO, Activator
