@@ -24,9 +24,14 @@
 		// then
 		// asserts for Git Change Set model
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		bot.waitUntil(Conditions.treeHasRows(syncViewTree, syncViewTree.rowCount()), 20000);
+
 		syncViewTree.expandNode(UIText.GitModelWorkingTree_workingTree);
+		bot.waitUntil(Conditions.treeHasRows(syncViewTree, syncViewTree.rowCount()), 20000);
 		assertEquals(1, syncViewTree.getAllItems().length);
+
 		SWTBotTreeItem proj1Node = syncViewTree.getAllItems()[0];
+		bot.waitUntil(Conditions.treeHasRows(syncViewTree, syncViewTree.rowCount()), 20000);
 		proj1Node.getItems()[0].expand();
 		assertEquals(1, proj1Node.getItems()[0].getItems().length);
 
