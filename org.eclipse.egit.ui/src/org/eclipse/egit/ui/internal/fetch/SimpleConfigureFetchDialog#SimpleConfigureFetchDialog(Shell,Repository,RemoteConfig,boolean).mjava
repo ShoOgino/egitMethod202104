@@ -2,13 +2,17 @@
 	 * @param shell
 	 * @param repository
 	 * @param config
+	 * @param showBranchInfo
+	 *            should be true if this is used for upstream configuration; if
+	 *            false, branch information will be hidden in the dialog
 	 */
 	private SimpleConfigureFetchDialog(Shell shell, Repository repository,
-			RemoteConfig config) {
+			RemoteConfig config, boolean showBranchInfo) {
 		super(shell);
 		setHelpAvailable(false);
 		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
 		this.repository = repository;
 		this.config = config;
+		this.showBranchInfo = showBranchInfo;
 	}
 
