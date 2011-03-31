@@ -1,0 +1,24 @@
+	/**
+	 * Construct a dialog to select a branch.
+	 * <p>
+	 * The currently checked out {@link Ref} is marked if possible
+	 *
+	 * @param parentShell
+	 * @param repository
+	 *            the {@link Repository}
+	 * @param settings
+	 *            configuration options of this dialog like
+	 *            {@link AbstractBranchSelectionDialog#SHOW_LOCAL_BRANCHES},
+	 *            {@link AbstractBranchSelectionDialog#SHOW_REMOTE_BRANCHES},
+	 *            {@link AbstractBranchSelectionDialog#SHOW_TAGS},
+	 *            {@link AbstractBranchSelectionDialog#SHOW_REFERENCES},
+	 *            {@link AbstractBranchSelectionDialog#SELECT_CURRENT_REF},
+	 *            {@link AbstractBranchSelectionDialog#EXPAND_LOCAL_BRANCHES_NODE},
+	 *            {@link AbstractBranchSelectionDialog#EXPAND_REMOTE_BRANCHES_NODE}
+	 */
+	public AbstractBranchSelectionDialog(Shell parentShell,
+			Repository repository, int settings) {
+		this(parentShell, repository, null, settings);
+		setHelpAvailable(false);
+	}
+
