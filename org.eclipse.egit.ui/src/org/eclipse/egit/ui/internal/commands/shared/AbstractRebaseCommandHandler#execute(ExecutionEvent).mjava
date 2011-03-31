@@ -1,9 +1,5 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		RepositoryTreeNode node = getSelectedNodes(event).get(0);
-
-		final Repository repository = node.getRepository();
-
+		final Repository repository = getRepository(event);
 		final RebaseOperation rebase = new RebaseOperation(repository,
 				this.operation);
 		Job job = new Job(jobname) {

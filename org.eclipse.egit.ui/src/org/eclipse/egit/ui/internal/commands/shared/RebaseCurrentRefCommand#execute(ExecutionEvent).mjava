@@ -1,13 +1,19 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		BasicConfigurationDialog.show();
-		RepositoryTreeNode node = getSelectedNodes(event).get(0);
-
-		final Repository repository = node.getRepository();
 
 		Ref ref;
-		if (node instanceof RefNode)
-			ref = ((RefNode) node).getObject();
-		else {
+		ISelection currentSelection = getCurrentSelectionChecked(event);
+		if (currentSelection instanceof IStructuredSelection) {
+			IStructuredSelection selection = (IStructuredSelection) currentSelection;
+			Object selected = selection.getFirstElement();
+
+			ref = getRef(selected);
+		} else
+			ref = null;
+
+		final Repository repository = getRepository(event);
+
+		if (ref == null) {
 			RebaseTargetSelectionDialog rebaseTargetSelectionDialog = new RebaseTargetSelectionDialog(
 					getShell(event), repository);
 			if (rebaseTargetSelectionDialog.open() == IDialogConstants.OK_ID) {

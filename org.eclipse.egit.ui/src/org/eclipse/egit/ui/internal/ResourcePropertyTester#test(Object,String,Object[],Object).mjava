@@ -7,6 +7,11 @@
 			RepositoryMapping mapping = RepositoryMapping.getMapping(res
 					.getProject());
 			return mapping != null && mapping.getRepository() != null;
+		} else if ("isSafe".equals(property)) { //$NON-NLS-1$
+			RepositoryMapping mapping = RepositoryMapping.getMapping(res
+					.getProject());
+			return mapping != null
+					&& SAFE == mapping.getRepository().getRepositoryState();
 		}
 		return false;
 	}
