@@ -1,0 +1,21 @@
+	private void deleteRepositoryContent(
+			final List<RepositoryNode> selectedNodes,
+			final boolean deleteWorkDir) throws IOException {
+		for (RepositoryNode node : selectedNodes) {
+			Repository repo = node.getRepository();
+			if (!repo.isBare() && deleteWorkDir) {
+				File[] files = repo.getWorkTree().listFiles();
+				if (files != null)
+					for (File file : files) {
+						if (isTracked(file, repo))
+							FileUtils.delete(file,
+									FileUtils.RECURSIVE | FileUtils.RETRY);
+					}
+			}
+			repo.close();
+			FileUtils.delete(repo.getDirectory(),
+					FileUtils.RECURSIVE | FileUtils.RETRY
+							| FileUtils.SKIP_MISSING);
+		}
+	}
+
