@@ -1,0 +1,14 @@
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LocalNonWorkspaceTypedElement other = (LocalNonWorkspaceTypedElement) obj;
+		if (!path.equals(other.path))
+			return false;
+		return true;
+	}
+
