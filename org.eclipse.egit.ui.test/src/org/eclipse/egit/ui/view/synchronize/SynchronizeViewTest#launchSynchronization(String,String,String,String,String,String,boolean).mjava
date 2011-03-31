@@ -3,8 +3,7 @@
 			boolean includeLocal) throws InterruptedException {
 		showDialog(projectName, "Team", "Synchronize...");
 
-		bot.shell("Synchronize repository: " + repo + File.separator + ".git")
-				.activate();
+		bot.shell("Synchronize repository: " + repo + File.separator + ".git");
 
 		if (!includeLocal)
 			bot.checkBox(
