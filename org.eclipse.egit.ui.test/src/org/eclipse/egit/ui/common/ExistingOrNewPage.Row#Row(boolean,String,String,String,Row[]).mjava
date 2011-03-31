@@ -3,6 +3,10 @@
 			this.project = project;
 			this.path = path;
 			this.repository = repository;
-			this.subrows = subrows;
+			if (subrows != null) {
+				this.subrows = new Row[subrows.length];
+				System.arraycopy(subrows, 0, this.subrows, 0, subrows.length);
+			} else
+				this.subrows = null;
 		}
 

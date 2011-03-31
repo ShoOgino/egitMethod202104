@@ -3,7 +3,6 @@
 
 		File gitDir = new File(new File(testDirectory, repoName),
 				Constants.DOT_GIT);
-		gitDir.mkdir();
 		Repository myRepository = new FileRepository(gitDir);
 		myRepository.create();
 
