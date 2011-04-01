@@ -20,7 +20,7 @@
 		// wizard directory should be PROJ2
 		assertEquals(PROJ2, wizardNode);
 		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
-		waitInUI();
+		shell.bot().text(" " + UIText.GitProjectsImportPage_NoProjectsMessage);
 		assertTrue(shell.bot().tree().getAllItems().length == 0);
 		shell.bot().button(IDialogConstants.BACK_LABEL).click();
 		// import as general
@@ -44,7 +44,7 @@
 				UIText.GitCreateGeneralProjectPage_ProjectNameLabel).getText());
 
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
-		waitInUI();
+		bot.waitUntil(Conditions.shellCloses(shell));
 		assertProjectExistence(PROJ2, true);
 		assertProjectIsShared(PROJ2, true);
 	}

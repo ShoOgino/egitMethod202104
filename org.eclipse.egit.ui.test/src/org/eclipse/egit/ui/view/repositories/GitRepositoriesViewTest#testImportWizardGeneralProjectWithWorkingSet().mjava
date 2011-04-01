@@ -22,7 +22,7 @@
 		// See also SWTBot Bug 337465
 		button.setFocus();
 		button.click();
-		waitInUI();
+		shell.bot().text(UIText.WizardProjectsImportPage_ImportProjectsDescription);
 		shell.bot().tree().getAllItems()[0].check();
 		// add to working set
 		shell.bot().checkBox().select();
@@ -39,7 +39,7 @@
 		workingSetDialog.bot().table().getTableItem(workingSetName).check();
 		workingSetDialog.bot().button(IDialogConstants.OK_LABEL).click();
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
-		waitInUI();
+		bot.waitUntil(Conditions.shellCloses(shell));
 		assertProjectExistence(PROJ1, true);
 		assertProjectInWorkingSet(workingSetName, PROJ1);
 		assertProjectIsShared(PROJ1, true);

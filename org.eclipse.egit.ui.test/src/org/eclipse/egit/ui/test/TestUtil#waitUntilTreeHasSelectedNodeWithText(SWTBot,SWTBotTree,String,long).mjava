@@ -1,0 +1,28 @@
+	/**
+	 * Waits until the given tree item has a selected node with the given text
+	 *
+	 * @param bot
+	 * @param tree
+	 * @param text
+	 * @param timeout
+	 * @throws TimeoutException
+	 */
+	public static void waitUntilTreeHasSelectedNodeWithText(SWTBot bot,
+			final SWTBotTree tree, final String text, long timeout)
+			throws TimeoutException {
+		bot.waitUntil(new ICondition() {
+
+			public boolean test() throws Exception {
+				return tree.selection().get(0, 0).equals(text);
+			}
+
+			public void init(SWTBot bot2) {
+				// empty
+			}
+
+			public String getFailureMessage() {
+				return null;
+			}
+		}, timeout);
+	}
+

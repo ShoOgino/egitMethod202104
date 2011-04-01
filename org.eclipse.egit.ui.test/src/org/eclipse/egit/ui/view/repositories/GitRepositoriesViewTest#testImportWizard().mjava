@@ -1,6 +1,6 @@
 	/**
 	 * Import wizard golden path test
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -23,7 +23,6 @@
 		// wizard directory should be working dir
 		assertEquals(myRepoViewUtil.getWorkdirItem(tree, repositoryFile)
 				.getText(), wizardNode);
-		waitInUI();
 		shell.close();
 		// start wizard from .git
 		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand().getNode(
@@ -43,7 +42,7 @@
 		shell.bot().tree().getAllItems()[0].getNode(PROJ1).select();
 		// next is 1
 		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
-		waitInUI();
+		bot.button(UIText.WizardProjectsImportPage_selectAll);
 		assertTrue(shell.bot().tree().getAllItems().length == 1);
 		assertTrue(!shell.bot().button(IDialogConstants.FINISH_LABEL)
 				.isEnabled());
@@ -51,7 +50,7 @@
 		assertTrue(shell.bot().button(IDialogConstants.FINISH_LABEL)
 				.isEnabled());
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
-		waitInUI();
+		bot.waitUntil(Conditions.shellCloses(shell));
 		assertProjectExistence(PROJ1, true);
 		assertProjectIsShared(PROJ1, true);
 	}
