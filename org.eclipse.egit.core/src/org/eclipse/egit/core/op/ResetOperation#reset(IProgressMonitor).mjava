@@ -10,6 +10,8 @@
 				|| repository.getRepositoryState().equals(
 						RepositoryState.MERGING_RESOLVED))
 			merging = true;
+		final boolean cherryPicking = repository.getRepositoryState().equals(RepositoryState.CHERRY_PICKING)
+			|| repository.getRepositoryState().equals(RepositoryState.CHERRY_PICKING_RESOLVED);
 
 		mapObjects();
 		monitor.worked(1);
@@ -23,6 +25,8 @@
 			monitor.worked(1);
 			if (merging)
 				resetMerge();
+			if (cherryPicking)
+				resetCherryPick();
 			monitor.worked(1);
 			// only refresh if working tree changes
 			ProjectUtil.refreshValidProjects(validProjects, new SubProgressMonitor(
@@ -36,6 +40,8 @@
 			monitor.worked(2);
 			if (merging)
 				resetMerge();
+			if (cherryPicking)
+				resetCherryPick();
 			monitor.worked(1);
 			break;
 

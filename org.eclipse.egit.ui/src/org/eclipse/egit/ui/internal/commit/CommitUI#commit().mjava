@@ -35,6 +35,7 @@
 		Repository mergeRepository = null;
 		amendAllowed = repos.length == 1;
 		boolean isMergedResolved = false;
+		boolean isCherryPickResolved = false;
 		for (Repository repo : repos) {
 			repository = repo;
 			RepositoryState state = repo.getRepositoryState();
@@ -47,6 +48,10 @@
 			}
 			else if (state.equals(RepositoryState.MERGING_RESOLVED)) {
 				isMergedResolved = true;
+				mergeRepository = repo;
+			}
+			else if (state.equals(RepositoryState.CHERRY_PICKING_RESOLVED)) {
+				isCherryPickResolved = true;
 				mergeRepository = repo;
 			}
 		}
@@ -88,7 +93,7 @@
 		commitDialog.setPreselectedFiles(getSelectedFiles());
 		commitDialog.setAuthor(author);
 		commitDialog.setCommitter(committer);
-		commitDialog.setAllowToChangeSelection(!isMergedResolved);
+		commitDialog.setAllowToChangeSelection(!isMergedResolved && !isCherryPickResolved);
 
 		if (previousCommit != null) {
 			commitDialog.setPreviousCommitMessage(previousCommit.getFullMessage());
@@ -96,8 +101,12 @@
 			commitDialog.setPreviousAuthor(previousAuthor.getName()
 					+ " <" + previousAuthor.getEmailAddress() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if (isMergedResolved) {
+		if (isMergedResolved || isCherryPickResolved) {
 			commitDialog.setCommitMessage(getMergeResolveMessage(mergeRepository));
+		}
+
+		if (isCherryPickResolved) {
+			commitDialog.setAuthor(getCherryPickOriginalAuthor(mergeRepository));
 		}
 
 		if (commitDialog.open() != IDialogConstants.OK_ID)

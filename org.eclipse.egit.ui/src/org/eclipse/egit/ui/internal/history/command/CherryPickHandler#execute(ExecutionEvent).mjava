@@ -5,18 +5,25 @@
 
 		CherryPickResult cherryPickResult;
 		Git git = new Git(repo);
+		Shell parent = getPart(event).getSite().getShell();
 		try {
 			cherryPickResult = git.cherryPick().include(commit.getId()).call();
 			newHead = cherryPickResult.getNewHead();
 			if (newHead != null && cherryPickResult.getCherryPickedRefs().isEmpty())
-				MessageDialog.openWarning(getPart(event).getSite().getShell(),
+				MessageDialog.openWarning(parent,
 						UIText.CherryPickHandler_NoCherryPickPerformedTitle,
 						UIText.CherryPickHandler_NoCherryPickPerformedMessage);
 		} catch (Exception e) {
 			throw new ExecutionException(UIText.CherryPickOperation_InternalError, e);
 		}
 		if (newHead == null)
-			throw new ExecutionException(UIText.CherryPickOperation_Failed);
+			if (cherryPickResult.getStatus() == CherryPickStatus.CONFLICTING)
+				MessageDialog.openWarning(parent,
+						UIText.CherryPickHandler_CherryPickConflictsTitle,
+						UIText.CherryPickHandler_CherryPickConflictsMessage);
+			else
+				throw new ExecutionException(UIText.CherryPickOperation_Failed);
+
 		return null;
 	}
 
