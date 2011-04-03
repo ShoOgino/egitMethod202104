@@ -1,4 +1,15 @@
-	static FileDiff[] compute(final TreeWalk walk, final RevCommit commit)
+	/**
+	 * Computer file diffs for specified tree walk and commit
+	 *
+	 * @param walk
+	 * @param commit
+	 * @return non-null but possibly empty array of file diffs
+	 * @throws MissingObjectException
+	 * @throws IncorrectObjectTypeException
+	 * @throws CorruptObjectException
+	 * @throws IOException
+	 */
+	public static FileDiff[] compute(final TreeWalk walk, final RevCommit commit)
 			throws MissingObjectException, IncorrectObjectTypeException,
 			CorruptObjectException, IOException {
 		final ArrayList<FileDiff> r = new ArrayList<FileDiff>();
