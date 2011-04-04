@@ -1,0 +1,13 @@
+	/**
+	 * @param parentShell
+	 * @param results
+	 *            maps {@link Repository}s to either {@link PullResult} or
+	 *            {@link IStatus}
+	 */
+	protected MultiPullResultDialog(Shell parentShell,
+			Map<Repository, Object> results) {
+		super(parentShell);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.results.putAll(results);
+	}
+

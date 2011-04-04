@@ -2,9 +2,9 @@
 		Repository[] repos = getRepositories(event);
 		if (repos.length == 0)
 			return null;
-
-		for (Repository repo : repos)
-			new PullOperationUI(repo).start();
+		Set<Repository> repositories = new HashSet<Repository>(
+				Arrays.asList(repos));
+		new PullOperationUI(repositories).start();
 		return null;
 	}
 

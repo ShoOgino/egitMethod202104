@@ -1,0 +1,12 @@
+	/**
+	 * @param repositories
+	 *            the repository
+	 * @param timeout
+	 *            in seconds
+	 */
+	public PullOperation(Set<Repository> repositories, int timeout) {
+		this.timeout = timeout;
+		this.repositories = repositories.toArray(new Repository[repositories
+				.size()]);
+	}
+

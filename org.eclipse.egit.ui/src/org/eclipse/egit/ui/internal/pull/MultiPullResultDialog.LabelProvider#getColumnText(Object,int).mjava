@@ -1,0 +1,51 @@
+		@SuppressWarnings("unchecked")
+		public String getColumnText(Object element, int columnIndex) {
+			Entry<Repository, Object> item = (Entry<Repository, Object>) element;
+			switch (columnIndex) {
+			case 0:
+				return utils.getRepositoryName(item.getKey());
+			case 1: {
+				if (item.getValue() instanceof IStatus)
+					return UIText.MultiPullResultDialog_UnknownStatus;
+				PullResult pullRes = (PullResult) item.getValue();
+				if (pullRes.getFetchResult() == null)
+					return UIText.MultiPullResultDialog_NothingFetchedStatus;
+				else if (pullRes.getFetchResult().getTrackingRefUpdates()
+						.isEmpty())
+					return UIText.MultiPullResultDialog_NothingUpdatedStatus;
+				else {
+					int updated = pullRes.getFetchResult()
+							.getTrackingRefUpdates().size();
+					return NLS.bind(
+							UIText.MultiPullResultDialog_UpdatedMessage,
+							Integer.valueOf(updated));
+				}
+			}
+			case 2: {
+				if (item.getValue() instanceof IStatus)
+					return UIText.MultiPullResultDialog_UnknownStatus;
+				PullResult pullRes = (PullResult) item.getValue();
+				if (pullRes.getMergeResult() != null) {
+					return NLS.bind(
+							UIText.MultiPullResultDialog_MergeResultMessage,
+							pullRes.getMergeResult().getMergeStatus().name());
+				} else if (pullRes.getRebaseResult() != null) {
+					RebaseResult res = pullRes.getRebaseResult();
+					return NLS.bind(
+							UIText.MultiPullResultDialog_RebaseResultMessage,
+							res.getStatus().name());
+				} else {
+					return UIText.MultiPullResultDialog_NothingUpdatedStatus;
+				}
+			}
+			case 3:
+				if (item.getValue() instanceof IStatus) {
+					IStatus status = (IStatus) item.getValue();
+					return status.getMessage();
+				}
+				return UIText.MultiPullResultDialog_OkStatus;
+			default:
+				return null;
+			}
+		}
+

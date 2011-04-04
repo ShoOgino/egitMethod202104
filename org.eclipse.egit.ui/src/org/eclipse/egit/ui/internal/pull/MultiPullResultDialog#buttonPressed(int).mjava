@@ -1,0 +1,16 @@
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == DETAIL_BUTTON) {
+			IStructuredSelection sel = (IStructuredSelection) tv.getSelection();
+			Entry<Repository, Object> item = (Entry<Repository, Object>) sel
+					.getFirstElement();
+			if (item.getValue() instanceof PullResult) {
+				PullResultDialog dialog = new PullResultDialog(getShell(), item
+						.getKey(), (PullResult) item.getValue());
+				dialog.open();
+			}
+		}
+		super.buttonPressed(buttonId);
+	}
+
