@@ -36,7 +36,7 @@
 				.expand();
 		List<String> testnodes = remotesItem.getNode("test").expand()
 				.getNodes();
-		assertTrue(testnodes.size() == 1);
+		assertEquals(2, testnodes.size());
 		List<String> test2nodes = remotesItem.getNode("test2").expand()
 				.getNodes();
 		assertTrue(test2nodes.size() == 2);
