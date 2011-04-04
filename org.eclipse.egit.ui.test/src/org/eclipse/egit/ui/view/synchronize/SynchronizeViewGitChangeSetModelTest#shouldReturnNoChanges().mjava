@@ -1,0 +1,16 @@
+	@Test
+	public void shouldReturnNoChanges() throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		changeFilesInProject();
+
+		// when
+		launchSynchronization(SynchronizeWithAction_localRepoName, HEAD,
+				SynchronizeWithAction_localRepoName, MASTER, false);
+		setGitChangeSetPresentationModel();
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		assertEquals(0, syncViewTree.getAllItems().length);
+	}
+

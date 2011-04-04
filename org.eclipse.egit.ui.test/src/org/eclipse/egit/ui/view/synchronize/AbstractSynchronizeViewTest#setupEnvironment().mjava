@@ -1,0 +1,24 @@
+	@BeforeClass public static void setupEnvironment() throws Exception {
+		// disable perspective synchronize selection
+		new Eclipse().openPreferencePage(null);
+		bot.tree().getTreeItem("Team").expand().select();
+		SWTBotRadio syncPerspectiveCheck = bot.radio("Never");
+		if (!syncPerspectiveCheck.isSelected())
+			syncPerspectiveCheck.click();
+		bot.comboBox(0).setSelection("None");
+
+		bot.comboBox().setSelection("None");
+
+		bot.button(IDialogConstants.OK_LABEL).click();
+
+		repositoryFile = createProjectAndCommitToRepository();
+		createChildRepository(repositoryFile);
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(repositoryFile);
+
+		bot.perspectiveById("org.eclipse.jdt.ui.JavaPerspective").activate();
+		bot.viewByTitle("Package Explorer").show();
+
+		createTag(PROJ1, INITIAL_TAG);
+	}
+

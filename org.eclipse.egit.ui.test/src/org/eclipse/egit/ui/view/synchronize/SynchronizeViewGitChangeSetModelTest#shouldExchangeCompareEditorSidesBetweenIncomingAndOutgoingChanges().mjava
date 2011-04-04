@@ -1,0 +1,34 @@
+	@Test public void shouldExchangeCompareEditorSidesBetweenIncomingAndOutgoingChanges()
+			throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		makeChangesAndCommit(PROJ1);
+
+		// compare HEAD against tag
+		launchSynchronization(SynchronizeWithAction_localRepoName, HEAD,
+				SynchronizeWithAction_tagsName, INITIAL_TAG, false);
+		setGitChangeSetPresentationModel();
+		SWTBotEditor outgoingCompare = getCompareEditorForFileInGitChangeSet(
+				FILE1, false);
+		SWTBot outgoingCompareBot = outgoingCompare.bot();
+		// save left value from compare editor
+		String outgoingLeft = outgoingCompareBot.styledText(0).getText();
+		// save right value from compare editor
+		String outgoingRight = outgoingCompareBot.styledText(1).getText();
+		outgoingCompare.close();
+
+		// when
+		// compare tag against HEAD
+		launchSynchronization(SynchronizeWithAction_tagsName, INITIAL_TAG,
+				SynchronizeWithAction_localRepoName, HEAD, false);
+		setGitChangeSetPresentationModel();
+
+		// then
+		SWTBot incomingComp = getCompareEditorForFileInGitChangeSet(
+				FILE1, false).bot();
+		// right side from compare editor should be equal with left
+		assertThat(outgoingLeft, equalTo(incomingComp.styledText(1).getText()));
+		// left side from compare editor should be equal with right
+		assertThat(outgoingRight, equalTo(incomingComp.styledText(0).getText()));
+	}
+

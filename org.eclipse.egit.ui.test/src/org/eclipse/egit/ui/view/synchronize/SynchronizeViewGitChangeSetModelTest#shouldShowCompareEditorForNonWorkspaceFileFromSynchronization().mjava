@@ -1,0 +1,34 @@
+	@Test
+	public void shouldShowCompareEditorForNonWorkspaceFileFromSynchronization()
+			throws Exception {
+		// given
+		String content = "file content";
+		String name = "non-workspace.txt";
+		File root = new File(getTestDirectory(), REPO1);
+		File nonWorkspace = new File(root, name);
+		BufferedWriter writer = new BufferedWriter(new FileWriter(nonWorkspace));
+		writer.append(content);
+		writer.close();
+
+		// when
+		launchSynchronization(SynchronizeWithAction_tagsName, INITIAL_TAG,
+				SynchronizeWithAction_localRepoName, HEAD, true);
+		setGitChangeSetPresentationModel();
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTreeItem workingTree = syncViewTree
+				.expandNode(UIText.GitModelWorkingTree_workingTree);
+		assertEquals(1, syncViewTree.getAllItems().length);
+		workingTree.expand().getNode(name).doubleClick();
+
+		SWTBotEditor editor = bot.editorByTitle(name);
+		editor.setFocus();
+
+		// the WidgetNotFoundException will be thrown when widget with given content cannot be not found
+		SWTBotStyledText left = editor.bot().styledText(content);
+		SWTBotStyledText right = editor.bot().styledText("");
+		// to be complete sure assert that both sides are not the same
+		assertNotSame(left, right);
+	}
+

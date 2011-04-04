@@ -1,0 +1,16 @@
+	@Test
+	public void shouldReturnListOfChanges() throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		changeFilesInProject();
+
+		// when
+		launchSynchronization(null, null, SynchronizeWithAction_localRepoName,
+				HEAD, true);
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
+		assertTrue(syncItems[0].getText().contains(PROJ1));
+	}
+

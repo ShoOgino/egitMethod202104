@@ -1,0 +1,17 @@
+	@Test
+	public void shouldOpenCompareEditor() throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		changeFilesInProject();
+
+		// when
+		launchSynchronization(null, null, SynchronizeWithAction_tagsName,
+				INITIAL_TAG, true);
+		setGitChangeSetPresentationModel();
+
+		// then
+		SWTBot compare = getCompareEditorForFileInGitChangeSet(FILE1, true)
+				.bot();
+		assertNotNull(compare);
+	}
+

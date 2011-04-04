@@ -1,0 +1,16 @@
+	@Test public void shouldOpenCompareEditor()
+			throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		changeFilesInProject();
+
+		// when
+		launchSynchronization(null, null, SynchronizeWithAction_tagsName,
+				INITIAL_TAG, true);
+
+		// then
+		SWTBot compare = getCompareEditorForFileInWorspaceModel(FILE1)
+				.bot();
+		assertNotNull(compare);
+	}
+

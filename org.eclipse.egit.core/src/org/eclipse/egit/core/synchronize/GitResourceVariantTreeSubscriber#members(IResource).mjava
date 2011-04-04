@@ -1,8 +1,7 @@
 	@Override
 	public IResource[] members(IResource res) throws TeamException {
-		if(res.getType() == IResource.FILE) {
+		if(res.getType() == IResource.FILE)
 			return new IResource[0];
-		}
 
 		GitSynchronizeData gsd = gsds.getData(res.getProject());
 		Repository repo = gsd.getRepository();
@@ -12,12 +11,12 @@
 		TreeWalk tw = new TreeWalk(repo);
 		if (path.length() > 0)
 			tw.setFilter(PathFilter.create(path));
-		tw.setRecursive(true);
 
 		Set<IResource> gitMembers = new HashSet<IResource>();
 		Map<String, IResource> allMembers = new HashMap<String, IResource>();
 		try {
 			tw.addTree(new FileTreeIterator(repo));
+			enterFilteredPath(path, tw);
 			for (IResource member : ((IContainer) res).members())
 				allMembers.put(member.getName(), member);
 

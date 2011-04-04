@@ -1,0 +1,17 @@
+	@Test
+	public void shouldCompareTagAgainstTag() throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		makeChangesAndCommit(PROJ1);
+		createTag(PROJ1, "v0.1");
+
+		// when
+		launchSynchronization(SynchronizeWithAction_tagsName, INITIAL_TAG,
+				SynchronizeWithAction_tagsName, "v0.1", false);
+		setGitChangeSetPresentationModel();
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		assertEquals(1, syncViewTree.getAllItems().length);
+	}
+

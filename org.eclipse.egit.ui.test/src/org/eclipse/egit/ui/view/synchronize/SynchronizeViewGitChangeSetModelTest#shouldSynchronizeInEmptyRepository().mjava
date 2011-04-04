@@ -1,0 +1,27 @@
+	@Test public void shouldSynchronizeInEmptyRepository() throws Exception {
+		// given
+		createEmptyRepository();
+
+		// when
+		launchSynchronization(EMPTY_REPOSITORY, EMPTY_PROJECT, null, null,
+				null, null, true);
+		setGitChangeSetPresentationModel();
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTreeItem commitTree = waitForNodeWithText(syncViewTree,
+				GitModelWorkingTree_workingTree);
+		assertEquals(1, syncViewTree.getAllItems().length);
+		SWTBotTreeItem projectTree = waitForNodeWithText(commitTree,
+				EMPTY_PROJECT);
+		assertEquals(2, projectTree.getItems().length);
+
+		SWTBotTreeItem folderTree = waitForNodeWithText(projectTree, FOLDER);
+		assertEquals(2, folderTree.getItems().length);
+
+		SWTBotTreeItem fileTree = folderTree.getItems()[0];
+		assertEquals(FILE1, fileTree.getText());
+		fileTree = folderTree.getItems()[1];
+		assertEquals(FILE2, fileTree.getText());
+	}
+

@@ -1,0 +1,5 @@
+	protected SWTBotTreeItem waitForNodeWithText(SWTBotTree tree, String name) {
+		waitUntilTreeHasNodeContainsText(bot, tree, name, 10000);
+		return getTreeItemContainingText(tree.getAllItems(), name).expand();
+	}
+

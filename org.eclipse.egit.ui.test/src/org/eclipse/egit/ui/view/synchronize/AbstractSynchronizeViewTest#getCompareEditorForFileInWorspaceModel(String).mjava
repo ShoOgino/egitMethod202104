@@ -1,0 +1,14 @@
+	protected SWTBotEditor getCompareEditorForFileInWorspaceModel(
+			String fileName) {
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+
+		SWTBotTreeItem projNode = waitForNodeWithText(syncViewTree, PROJ1);
+		SWTBotTreeItem folderNode = waitForNodeWithText(projNode, FOLDER);
+		waitForNodeWithText(folderNode, fileName).doubleClick();
+
+		SWTBotEditor editor = bot.editorByTitle(fileName);
+		editor.toTextEditor().setFocus();
+
+		return editor;
+	}
+
