@@ -4,7 +4,8 @@
 		tw.setRecursive(true);
 
 		Repository repo = getRepository();
-		int ftIndex = tw.addTree(new FileTreeIterator(repo));
+		int ftIndex = tw.addTree(new AdaptableFileTreeIterator(repo,
+				ResourcesPlugin.getWorkspace().getRoot()));
 		int dirCacheIteratorNth = tw.addTree(new DirCacheIterator(repo.readDirCache()));
 		IndexDiffFilter idf = new IndexDiffFilter(dirCacheIteratorNth, ftIndex, true);
 		tw.setFilter(idf);
