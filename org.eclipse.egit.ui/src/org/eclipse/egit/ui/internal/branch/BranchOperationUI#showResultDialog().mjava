@@ -1,5 +1,6 @@
 	private void showResultDialog() {
-		BranchResultDialog.show(bop.getResult(), repository, refName);
+		String displayedRef = createDisplayedRef();
+		BranchResultDialog.show(bop.getResult(), repository, displayedRef);
 		try {
 			if (ObjectId.isId(repository.getFullBranch()) && bop.getResult().getStatus() == CheckoutResult.Status.OK)
 				showDetachedHeadWarning();
