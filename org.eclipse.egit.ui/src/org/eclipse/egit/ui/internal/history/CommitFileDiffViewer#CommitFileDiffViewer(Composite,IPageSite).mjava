@@ -96,8 +96,9 @@
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();) {
 					String relativePath = it.next().getPath();
-					String path = new Path(db.getWorkTree().getAbsolutePath())
-							.append(relativePath).toOSString();
+					String path = new Path(getRepository().getWorkTree()
+							.getAbsolutePath()).append(relativePath)
+							.toOSString();
 					openFileInEditor(path);
 				}
 			}
