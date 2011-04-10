@@ -1,0 +1,6 @@
+	public static void createTag(String tagName)
+			throws Exception {
+		new Git(lookupRepository(repositoryFile)).tag().setName(tagName)
+				.setMessage(tagName).call();
+	}
+
