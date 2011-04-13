@@ -3,7 +3,7 @@
 		if (p != null) {
 			hostText.setEnabled(p.hasHost());
 			portText.setEnabled(p.hasPort());
-			setEnabledRecursively(authGroup, p.canAuthenticate());
+			UIUtils.setEnabledRecursively(authGroup, p.canAuthenticate());
 		}
 	}
 
