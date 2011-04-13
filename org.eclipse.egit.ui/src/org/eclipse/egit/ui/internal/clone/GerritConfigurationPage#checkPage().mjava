@@ -1,0 +1,25 @@
+	private void checkPage() {
+		if (!configureGerrit()) {
+			setPageComplete(true);
+			return;
+		}
+
+		try {
+			pushURI = new URIish(uriText.getText());
+			scheme.select(scheme.indexOf(pushURI.getScheme()));
+		} catch (URISyntaxException e) {
+			setErrorMessage(e.getLocalizedMessage());
+			setPageComplete(false);
+			return;
+		}
+		String branchName = branch.getText();
+		if (branchName.length() == 0) {
+			setErrorMessage(UIText.GerritConfigurationPage_errorBranchName);
+			setPageComplete(false);
+			return;
+		}
+
+		setErrorMessage(null);
+		setPageComplete(true);
+	}
+

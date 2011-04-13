@@ -1,0 +1,70 @@
+	private void createURIGroup(Composite panel) {
+		uriGroup = SWTUtils.createHFillGroup(panel,
+				UIText.GerritConfigurationPage_pushUri,
+				SWTUtils.MARGINS_DEFAULT, 2);
+
+		scheme = new Combo(uriGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+		uriText = SWTUtils.createText(uriGroup);
+
+		new Label(uriGroup, SWT.NULL).setText((UIText.RepositorySelectionPage_promptUser + ":")); //$NON-NLS-1$
+		user = SWTUtils.createText(uriGroup);
+		user.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				eventDepth++;
+				try {
+					if (eventDepth == 1) {
+						if (pushURI != null) {
+							pushURI = pushURI.setUser(user.getText());
+							uriText.setText(pushURI.toString());
+							checkPage();
+						}
+					}
+				} finally {
+					eventDepth--;
+				}
+			}
+		});
+
+		uriText.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				eventDepth++;
+				try {
+					if (eventDepth == 1) {
+						URIish u = new URIish(uriText.getText());
+						String newUser = u.getUser();
+						user.setText(newUser != null ? newUser : ""); //$NON-NLS-1$
+					}
+				} catch (URISyntaxException e1) {
+					// empty
+				} finally {
+					eventDepth--;
+				}
+				checkPage();
+			}
+		});
+
+		for (Protocol p : Protocol.values()) {
+			scheme.add(p.getDefaultScheme());
+		}
+		scheme.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				URIish oldPushURI = pushURI;
+				final int idx = scheme.getSelectionIndex();
+				pushURI = pushURI.setScheme(scheme.getItem(idx));
+
+				if (Protocol.SSH.handles(pushURI))
+					pushURI = pushURI.setPort(GERRIT_DEFAULT_SSH_PORT);
+				else
+					pushURI = pushURI.setPort(-1);
+
+				if (isHttpProtocol(pushURI))
+					pushURI = prependGerritHttpPathPrefix(pushURI);
+				else if (isHttpProtocol(oldPushURI))
+					pushURI = removeGerritHttpPathPrefix(pushURI);
+
+				uriText.setText(pushURI.toString());
+				scheme.setToolTipText(Protocol.values()[idx].getTooltip());
+			}
+		});
+	}
+

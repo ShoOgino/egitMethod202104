@@ -1,0 +1,11 @@
+	/**
+	 * @param u
+	 * @return URI without Gerrit smart HTTP path prefix
+	 */
+	private URIish removeGerritHttpPathPrefix(URIish u) {
+		String path = u.getPath();
+		if (path.startsWith(GERRIT_HTTP_PATH_PREFIX))
+			return u.setPath(path.substring(4));
+		return u;
+	}
+

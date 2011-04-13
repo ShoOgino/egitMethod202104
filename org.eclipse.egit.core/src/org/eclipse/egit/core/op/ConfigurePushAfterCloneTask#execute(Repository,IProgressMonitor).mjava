@@ -1,0 +1,22 @@
+	/**
+	 * @param repository
+	 * @param monitor
+	 * @throws CoreException
+	 */
+	public void execute(Repository repository, IProgressMonitor monitor)
+			throws CoreException {
+		try {
+			RemoteConfig configToUse = new RemoteConfig(
+					repository.getConfig(), remoteName);
+			if (pushRefSpec != null)
+				configToUse.addPushRefSpec(new RefSpec(pushRefSpec));
+			if (pushURI != null)
+				configToUse.addPushURI(pushURI);
+			configToUse.update(repository.getConfig());
+			repository.getConfig().save();
+		} catch (Exception e) {
+			throw new CoreException(Activator.error(e.getMessage(), e));
+		}
+
+	}
+

@@ -15,6 +15,7 @@
 
 		EclipseGitProgressTransformer gitMonitor = new EclipseGitProgressTransformer(
 				monitor);
+		Repository repository = null;
 		try {
 			monitor.beginTask(NLS.bind(CoreText.CloneOperation_title, uri),
 					5000);
@@ -34,9 +35,14 @@
 				cloneRepository.setBranchesToClone(branches);
 			}
 			Git git = cloneRepository.call();
-			git.getRepository().close();
+			repository = git.getRepository();
+			if (postCloneTasks != null)
+				for (PostCloneTask task : postCloneTasks)
+					task.execute(git.getRepository(), monitor);
 		} catch (final Exception e) {
 			try {
+				if (repository != null)
+					repository.close();
 				FileUtils.delete(workdir, FileUtils.RECURSIVE);
 			} catch (IOException ioe) {
 				throw new InvocationTargetException(ioe);
@@ -47,6 +53,8 @@
 				throw new InvocationTargetException(e);
 		} finally {
 			monitor.done();
+			if (repository != null)
+				repository.close();
 		}
 	}
 

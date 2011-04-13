@@ -1,0 +1,13 @@
+	private void createBranchGroup(Composite panel) {
+		branchGroup = SWTUtils.createHFillGroup(panel,
+				UIText.GerritConfigurationPage_groupPush,
+				SWTUtils.MARGINS_DEFAULT, 2);
+		new Label(branchGroup, SWT.NULL).setText(UIText.GerritConfigurationPage_labelDestinationBranch);
+		branch = SWTUtils.createText(branchGroup);
+		branch.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				checkPage();
+			}
+		});
+	}
+

@@ -1,0 +1,15 @@
+	@Before
+	public void setUp() throws Exception {
+		workdir = testUtils.createTempDir("Repository1");
+		workdir2 = testUtils.createTempDir("Repository2");
+
+		repository1 = new TestRepository(new File(workdir, Constants.DOT_GIT));
+
+		File file = new File(workdir, "file1.txt");
+		file.createNewFile();
+		Git git = new Git(repository1.getRepository());
+		git.add().addFilepattern("file1.txt").call();
+
+		git.commit().setMessage("first commit").call();
+	}
+

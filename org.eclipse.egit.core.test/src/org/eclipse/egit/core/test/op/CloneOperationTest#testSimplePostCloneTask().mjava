@@ -1,0 +1,21 @@
+	@Test
+	public void testSimplePostCloneTask() throws Exception {
+		URIish uri = new URIish("file:///"
+				+ repository1.getRepository().getDirectory().toString());
+		CloneOperation clop = new CloneOperation(uri, true, null, workdir2,
+				"refs/heads/master", "origin", 0);
+
+		final File[] repoDir = new File[1];
+		clop.addPostCloneTask(new PostCloneTask() {
+
+			public void execute(Repository repository, IProgressMonitor monitor)
+					throws CoreException {
+				repoDir[0] = repository.getDirectory();
+
+			}
+		});
+		clop.run(null);
+		File newRepoDir = new File(workdir2, Constants.DOT_GIT);
+		assertEquals(newRepoDir, repoDir[0]);
+	}
+

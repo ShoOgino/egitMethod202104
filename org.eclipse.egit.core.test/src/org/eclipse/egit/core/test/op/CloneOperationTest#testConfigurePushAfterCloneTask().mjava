@@ -1,0 +1,26 @@
+	@Test
+	public void testConfigurePushAfterCloneTask() throws Exception {
+		URIish uri = new URIish("file:///"
+				+ repository1.getRepository().getDirectory().toString());
+		CloneOperation clop = new CloneOperation(uri, true, null, workdir2,
+				"refs/heads/master", "origin", 0);
+
+		clop.addPostCloneTask(new ConfigurePushAfterCloneTask("origin",
+				"HEAD:refs/for/master", new URIish("file:///pushtarget")));
+		clop.run(null);
+		Repository clonedRepo = new FileRepository(new File(workdir2,
+				Constants.DOT_GIT));
+		assertEquals(
+				"",
+				"HEAD:refs/for/master",
+				clonedRepo.getConfig()
+				.getString(ConfigConstants.CONFIG_REMOTE_SECTION,
+						"origin", "push"));
+		assertEquals(
+				"",
+				"file:///pushtarget",
+				clonedRepo.getConfig().getString(
+						ConfigConstants.CONFIG_REMOTE_SECTION, "origin",
+						"pushurl"));
+	}
+
