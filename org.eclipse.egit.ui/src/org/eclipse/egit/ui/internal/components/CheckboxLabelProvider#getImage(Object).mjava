@@ -2,12 +2,14 @@
 	protected Image getImage(final Object element) {
 		if (isEnabled(element)) {
 			if (isChecked(element))
-				return imageCheckedEnabled;
-			return imageUncheckedEnabled;
+				return checkBoxes.checkedEnabled;
+
+			return checkBoxes.uncheckedEnabled;
 		} else {
 			if (isChecked(element))
-				return imageCheckedDisabled;
-			return imageUncheckedDisabled;
+				return checkBoxes.checkedDisabled;
+
+			return checkBoxes.uncheckedDisabled;
 		}
 	}
 
