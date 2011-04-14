@@ -33,7 +33,8 @@
 				UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 		final CloneOperation op = new CloneOperation(uri, allSelected,
 				selectedBranches, workdir, ref.getName(), remoteName, timeout);
-		doGerritConfiguration(remoteName, op);
+		if (gerritConfiguration.configureGerrit())
+			doGerritConfiguration(remoteName, op);
 		UserPasswordCredentials credentials = cloneSource.getCredentials();
 		if (credentials != null)
 			op.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
