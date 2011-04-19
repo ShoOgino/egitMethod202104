@@ -1,0 +1,6 @@
+	@Override
+	protected void refNameSelected(String refName) {
+		getButton(Window.OK).setEnabled(
+				refName != null && !refName.equals(currentBranch));
+	}
+

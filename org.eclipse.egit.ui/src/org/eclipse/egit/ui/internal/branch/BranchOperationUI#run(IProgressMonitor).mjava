@@ -18,14 +18,10 @@
 			});
 			return;
 		}
-		if (target == null) {
-			BranchSelectionDialog dialog = new BranchSelectionDialog(
-					getShell(), repository);
-			if (dialog.open() != Window.OK) {
-				return;
-			}
-			target = dialog.getRefName();
-		}
+		if (target == null)
+			target = getTargetWithDialog();
+		if (target == null)
+			return;
 
 		bop = new BranchOperation(repository, target);
 		bop.execute(monitor);
