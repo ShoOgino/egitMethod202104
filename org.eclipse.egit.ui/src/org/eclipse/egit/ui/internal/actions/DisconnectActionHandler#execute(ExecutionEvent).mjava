@@ -1,0 +1,15 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IProject[] projects = getProjectsForSelectedResources();
+		if (projects.length == 0)
+			return null;
+		JobUtil.scheduleUserJob(new DisconnectProviderOperation(Arrays
+				.asList(projects)), UIText.Disconnect_disconnect,
+				JobFamilies.DISCONNECT, new JobChangeAdapter() {
+					@Override
+					public void done(IJobChangeEvent actEvent) {
+						GitLightweightDecorator.refresh();
+					}
+				});
+		return null;
+	}
+
