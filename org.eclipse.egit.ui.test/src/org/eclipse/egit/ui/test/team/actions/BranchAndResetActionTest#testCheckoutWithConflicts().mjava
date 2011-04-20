@@ -3,8 +3,7 @@
 		String charset = ResourcesPlugin.getWorkspace().getRoot().getProject(
 				PROJ1).getDefaultCharset();
 		try {
-			checkoutAndVerify(new String[] { LOCAL_BRANCHES, "master" },
-					new String[] { LOCAL_BRANCHES, "stable" });
+			checkoutAndVerify(new String[] { LOCAL_BRANCHES, "stable" });
 			ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1)
 					.getFolder(FOLDER).getFile(FILE1).setContents(
 							new ByteArrayInputStream("New content"

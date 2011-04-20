@@ -1,0 +1,10 @@
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		super.createButtonsForButtonBar(parent);
+		getButton(Window.OK).setText(
+				UIText.RenameBranchDialog_RenameButtonLabel);
+
+		// can't advance without a selection
+		getButton(Window.OK).setEnabled(!branchTree.getSelection().isEmpty());
+	}
+

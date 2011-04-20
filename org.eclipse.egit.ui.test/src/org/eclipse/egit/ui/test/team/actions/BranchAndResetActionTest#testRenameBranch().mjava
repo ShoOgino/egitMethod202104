@@ -1,34 +1,43 @@
 	@Test
 	public void testRenameBranch() throws Exception {
-		SWTBotShell dialog = openBranchDialog();
-		dialog.bot().button(UIText.BranchSelectionDialog_NewBranch).click();
-		SWTBotShell branchNameDialog = bot
-				.shell(UIText.CreateBranchWizard_NewBranchTitle);
-		SWTBotText branchName = bot.textWithId("BranchName");
-		branchName.setText("master");
-		assertFalse(branchNameDialog.bot().button(IDialogConstants.FINISH_LABEL)
+		SWTBotShell dialog = openRenameBranchDialog();
+
+		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
+				.getNode("stable").select();
+		dialog.bot().button(UIText.RenameBranchDialog_RenameButtonLabel)
+				.click();
+		// rename stable to renamed
+		SWTBotShell newNameDialog = bot
+				.shell(UIText.RenameBranchDialog_RenameBranchDialogNewNameInputWindowTitle);
+		newNameDialog.bot().text().setText("master");
+		assertFalse(newNameDialog.bot().button(IDialogConstants.OK_LABEL)
 				.isEnabled());
-		branchName.setText("Unrenamed");
-		// suppress checkout so that the dialog remains open
-		branchNameDialog.bot().checkBox(UIText.CreateBranchPage_CheckoutButton)
-				.deselect();
-		branchNameDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
 
-		assertEquals("New Branch should be selected", "Unrenamed", bot.tree()
-				.selection().get(0, 0));
+		newNameDialog.bot().text().setText("renamed");
+		newNameDialog.bot().button(IDialogConstants.OK_LABEL).click();
 
-		bot.button(UIText.BranchSelectionDialog_Rename).click();
-
-		branchNameDialog = bot
-				.shell(UIText.BranchSelectionDialog_QuestionNewBranchTitle);
-		assertFalse(branchNameDialog.bot().button(IDialogConstants.OK_LABEL)
-				.isEnabled());
-		branchNameDialog.bot().text().setText("Renamed");
-		bot.button(IDialogConstants.OK_LABEL).click();
-
-		bot.button(UIText.BranchSelectionDialog_OkCheckout).click();
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
-		assertEquals("New Branch should be checked out", "Renamed",
-				lookupRepository(repositoryFile).getBranch());
+		dialog = openRenameBranchDialog();
+		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
+				.getNode("renamed");
+		dialog.close();
+
+		dialog = openRenameBranchDialog();
+		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
+				.getNode("renamed").select();
+		dialog.bot().button(UIText.RenameBranchDialog_RenameButtonLabel)
+				.click();
+		// rename renamed to stable
+		newNameDialog = bot
+				.shell(UIText.RenameBranchDialog_RenameBranchDialogNewNameInputWindowTitle);
+
+		newNameDialog.bot().text().setText("stable");
+		newNameDialog.bot().button(IDialogConstants.OK_LABEL).click();
+
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+		dialog = openRenameBranchDialog();
+		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
+				.getNode("stable");
+		dialog.close();
 	}
 
