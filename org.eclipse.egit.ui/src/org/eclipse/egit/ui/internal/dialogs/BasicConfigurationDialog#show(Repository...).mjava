@@ -1,0 +1,19 @@
+	/**
+	 * Opens the dialog if the {@link UIPreferences#SHOW_INITIAL_CONFIG_DIALOG}
+	 * is true and author or committer identity is based on implicit data
+	 *
+	 * @param repositories
+	 *            if called from repository context otherwise null
+	 */
+	public static void show(Repository... repositories) {
+		if (Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.SHOW_INITIAL_CONFIG_DIALOG)
+				&& isImplicitUserConfig(repositories))
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					new BasicConfigurationDialog(PlatformUI.getWorkbench()
+							.getDisplay().getActiveShell()).open();
+				}
+			});
+	}
+

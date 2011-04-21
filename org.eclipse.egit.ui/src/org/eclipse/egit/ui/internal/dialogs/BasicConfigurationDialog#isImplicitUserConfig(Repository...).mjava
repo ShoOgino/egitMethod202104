@@ -1,0 +1,16 @@
+	private static boolean isImplicitUserConfig(Repository... repositories) {
+		if (repositories == null)
+			return false;
+
+		for (Repository repository : repositories) {
+			UserConfig uc = loadRepoScopedConfig(repository)
+					.get(UserConfig.KEY);
+			if (uc.isAuthorNameImplicit() //
+					|| uc.isAuthorEmailImplicit()
+					|| uc.isCommitterNameImplicit()
+					|| uc.isCommitterEmailImplicit())
+				return true;
+		}
+		return false;
+	}
+
