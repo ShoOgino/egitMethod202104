@@ -1,6 +1,4 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		BasicConfigurationDialog.show();
-
 		Ref ref;
 		ISelection currentSelection = getCurrentSelectionChecked(event);
 		if (currentSelection instanceof IStructuredSelection) {
@@ -12,6 +10,8 @@
 			ref = null;
 
 		final Repository repository = getRepository(event);
+
+		BasicConfigurationDialog.show(repository);
 
 		if (ref == null) {
 			RebaseTargetSelectionDialog rebaseTargetSelectionDialog = new RebaseTargetSelectionDialog(

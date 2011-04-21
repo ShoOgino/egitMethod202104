@@ -7,5 +7,6 @@
 					"HEAD:refs/for/" + gerritBranch, pushURI); //$NON-NLS-1$
 			op.addPostCloneTask(push);
 		}
+		op.addPostCloneTask(new SetChangeIdTask(true));
 	}
 

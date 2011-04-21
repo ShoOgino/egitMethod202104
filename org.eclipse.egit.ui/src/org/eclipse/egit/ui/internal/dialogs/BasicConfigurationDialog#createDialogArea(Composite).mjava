@@ -1,15 +1,8 @@
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		userScopedConfig = SystemReader.getInstance().openUserConfig(null,
-				FS.DETECTED);
-		try {
-			userScopedConfig.load();
-		} catch (IOException e) {
-			Activator.handleError(e.getMessage(), e, true);
-		} catch (ConfigInvalidException e) {
-			Activator.handleError(e.getMessage(), e, true);
-		}
-		config = userScopedConfig.get(UserConfig.KEY);
+		userScopedConfig = loadUserScopedConfig();
+
+		UserConfig userConfig = userScopedConfig.get(UserConfig.KEY);
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(2, false));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
@@ -20,8 +13,8 @@
 		userName = new Text(main, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(userName);
 		String currentName = null;
-		if (config != null)
-			currentName = config.getAuthorName();
+		if (userConfig != null)
+			currentName = userConfig.getAuthorName();
 		if (currentName != null)
 			userName.setText(currentName);
 		userName.addModifyListener(new ModifyListener() {
@@ -36,8 +29,8 @@
 		email = new Text(main, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(email);
 		String currentMail = null;
-		if (config != null)
-			currentMail = config.getAuthorEmail();
+		if (userConfig != null)
+			currentMail = userConfig.getAuthorEmail();
 		if (currentMail != null)
 			email.setText(currentMail);
 		email.addModifyListener(new ModifyListener() {

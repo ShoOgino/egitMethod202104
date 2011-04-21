@@ -1,8 +1,8 @@
 	@Test
 	public void testAmendWithChangeIdPreferenceOff() throws Exception {
-		Activator.getDefault()
-			.getPreferenceStore()
-			.setValue(UIPreferences.COMMIT_DIALOG_CREATE_CHANGE_ID, true);
+		Repository repo = lookupRepository(repositoryFile);
+		repo.getConfig().setBoolean(ConfigConstants.CONFIG_GERRIT_SECTION,
+				null, ConfigConstants.CONFIG_KEY_CREATECHANGEID, true);
 		setTestFileContent("Another Change");
 		clickOnCommit();
 		SWTBotShell commitDialog = bot.shell(UIText.CommitDialog_CommitChanges);
@@ -25,9 +25,8 @@
 		Job.getJobManager().join(JobFamilies.COMMIT, null);
 
 		clickOnCommit();
-		Activator.getDefault()
-			.getPreferenceStore()
-			.setValue(UIPreferences.COMMIT_DIALOG_CREATE_CHANGE_ID, false);
+		repo.getConfig().setBoolean(ConfigConstants.CONFIG_GERRIT_SECTION,
+				null, ConfigConstants.CONFIG_KEY_CREATECHANGEID, false);
 		bot.shell(UIText.CommitAction_noFilesToCommit).bot().button(
 				IDialogConstants.YES_LABEL).click();
 		commitDialog = bot.shell(UIText.CommitDialog_CommitChanges);

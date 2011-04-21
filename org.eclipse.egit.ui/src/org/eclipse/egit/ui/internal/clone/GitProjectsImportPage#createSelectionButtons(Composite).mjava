@@ -17,11 +17,7 @@
 		selectAll.setText(UIText.WizardProjectsImportPage_selectAll);
 		selectAll.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				for (TreeItem item : projectsList.getTree().getItems()) {
-					ProjectRecord record = (ProjectRecord) item.getData();
-					if (!isProjectInWorkspace(record.getProjectName()))
-						projectsList.setChecked(item.getData(), true);
-				}
+				selectAllNewProjects();
 				enableSelectAllButtons();
 				setPageComplete(true);
 			}
@@ -42,6 +38,5 @@
 		});
 		Dialog.applyDialogFont(deselectAll);
 		setButtonLayoutData(deselectAll);
-
 	}
 

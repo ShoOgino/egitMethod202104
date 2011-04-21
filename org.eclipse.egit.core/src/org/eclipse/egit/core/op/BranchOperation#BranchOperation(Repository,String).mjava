@@ -2,12 +2,11 @@
 	 * Construct a {@link BranchOperation} object for a {@link Ref}.
 	 *
 	 * @param repository
-	 * @param refName
-	 *            Name of git ref to checkout
+	 * @param target
+	 *            a {@link Ref} name or {@link RevCommit} id
 	 */
-	public BranchOperation(Repository repository, String refName) {
+	public BranchOperation(Repository repository, String target) {
 		this.repository = repository;
-		this.refName = refName;
-		this.commitId = null;
+		this.target = target;
 	}
 

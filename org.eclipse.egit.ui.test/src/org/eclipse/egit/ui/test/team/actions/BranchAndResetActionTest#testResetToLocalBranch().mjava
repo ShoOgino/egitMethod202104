@@ -1,10 +1,8 @@
 	@Test
 	public void testResetToLocalBranch() throws Exception {
-		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "master" },
-				new String[] { LOCAL_BRANCHES, "stable" });
+		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "stable" });
 		String stable = getTestFileContent();
-		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "stable" },
-				new String[] { LOCAL_BRANCHES, "master" });
+		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "master" });
 		String master = getTestFileContent();
 		assertFalse(stable.equals(master));
 		SWTBotShell resetDialog = openResetDialog();

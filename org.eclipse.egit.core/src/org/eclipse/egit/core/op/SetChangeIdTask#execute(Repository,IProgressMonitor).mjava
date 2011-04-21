@@ -1,0 +1,11 @@
+	public void execute(Repository repository, IProgressMonitor monitor)
+			throws CoreException {
+		try {
+			repository.getConfig().setBoolean(ConfigConstants.CONFIG_GERRIT_SECTION,
+					null, ConfigConstants.CONFIG_KEY_CREATECHANGEID, createchangeid);
+			repository.getConfig().save();
+		} catch (IOException e) {
+			throw new CoreException(Activator.error(e.getMessage(), e));
+		}
+	}
+

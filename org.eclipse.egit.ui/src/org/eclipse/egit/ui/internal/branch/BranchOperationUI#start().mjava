@@ -9,25 +9,17 @@
 									.getRepositoryState().getDescription()));
 			return;
 		}
-		if (commitId == null && refName == null) {
-			BranchSelectionDialog dialog = new BranchSelectionDialog(
-					getShell(), repository);
-			if (dialog.open() != Window.OK) {
-				return;
-			}
-			refName = dialog.getRefName();
-		}
+		if (target == null)
+			target = getTargetWithDialog();
+		if (target == null)
+			return;
 
-		String jobname;
-		String repoName = Activator.getDefault().getRepositoryUtil().getRepositoryName(repository);
-		if (refName != null) {
-			bop = new BranchOperation(repository, refName);
-			jobname = NLS.bind(UIText.BranchAction_checkingOut, repoName, refName);
-		} else {
-			bop = new BranchOperation(repository, commitId);
-			jobname = NLS
-					.bind(UIText.BranchAction_checkingOut, repoName, commitId.name());
-		}
+		String repoName = Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repository);
+		String jobname = NLS.bind(UIText.BranchAction_checkingOut, repoName,
+				target);
+
+		final BranchOperation bop = new BranchOperation(repository, target);
 
 		Job job = new Job(jobname) {
 			@Override
@@ -60,7 +52,7 @@
 		job.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent cevent) {
-				showResultDialog();
+				BranchResultDialog.show(bop.getResult(), repository, target);
 			}
 		});
 		job.schedule();

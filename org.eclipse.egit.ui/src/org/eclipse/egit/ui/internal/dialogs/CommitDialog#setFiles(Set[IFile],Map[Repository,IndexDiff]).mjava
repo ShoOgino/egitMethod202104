@@ -7,16 +7,24 @@
 	 */
 	public void setFiles(Set<IFile> files, Map<Repository, IndexDiff> indexDiffs) {
 		items.clear();
+		Set<Repository> repos = new HashSet<Repository>();
 		for (IFile file : files) {
 			RepositoryMapping repositoryMapping = RepositoryMapping
 					.getMapping(file.getProject());
 			Repository repo = repositoryMapping.getRepository();
+			repos.add(repo);
 			String path = repositoryMapping.getRepoRelativePath(file);
 			CommitItem item = new CommitItem();
 			item.status = getFileStatus(path, indexDiffs.get(repo));
 			item.file = file;
 			items.add(item);
 		}
+		for (Repository repo : repos)
+			createChangeIdDefault = createChangeIdDefault
+					|| repo.getConfig().getBoolean(
+							ConfigConstants.CONFIG_GERRIT_SECTION,
+							ConfigConstants.CONFIG_KEY_CREATECHANGEID, false);
+
 		// initially, we sort by status plus project plus path
 		Collections.sort(items, new Comparator<CommitItem>() {
 			public int compare(CommitItem o1, CommitItem o2) {

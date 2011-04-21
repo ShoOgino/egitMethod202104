@@ -1,0 +1,8 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final Repository repository = getRepository(true, event);
+		if (repository == null)
+			return null;
+		BranchOperationUI.rename(repository).start();
+		return null;
+	}
+

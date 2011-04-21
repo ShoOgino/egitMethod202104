@@ -20,30 +20,11 @@
 
 		MenuItem newBranch = new MenuItem(menu, SWT.PUSH);
 		newBranch.setText(UIText.SwitchToMenu_NewBranchMenuLabel);
+		newBranch.setImage(newBranchImage);
 		newBranch.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				RevCommit commit = null;
-				Ref currentBranch = null;
-				try {
-					String branch = repository.getFullBranch();
-					if (ObjectId.isId(branch)) {
-						commit = new RevWalk(repository).parseCommit(ObjectId
-								.fromString(branch));
-					} else {
-						currentBranch = repository.getRef(branch);
-					}
-				} catch (IOException e1) {
-					// ignore here
-				}
-				CreateBranchWizard wiz;
-				if (currentBranch != null)
-					wiz = new CreateBranchWizard(repository, currentBranch);
-				else
-					wiz = new CreateBranchWizard(repository, commit);
-				Shell shell = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getShell();
-				new WizardDialog(shell, wiz).open();
+				BranchOperationUI.create(repository).start();
 			}
 		});
 		new MenuItem(menu, SWT.SEPARATOR);
@@ -74,8 +55,8 @@
 				item.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						new BranchOperationUI(repository, entry.getValue()
-								.getName()).start();
+						BranchOperationUI.checkout(repository,
+								entry.getValue().getName()).start();
 					}
 				});
 			}
@@ -86,7 +67,7 @@
 			others.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					new BranchOperationUI(repository).start();
+					BranchOperationUI.checkout(repository).start();
 				}
 			});
 		} catch (IOException e) {

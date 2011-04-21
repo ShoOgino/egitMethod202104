@@ -25,8 +25,7 @@
 		final Image projectImage = PlatformUI.getWorkbench().getSharedImages()
 				.getImage(SharedImages.IMG_OBJ_PROJECT);
 		// checkout stable
-		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "master" },
-				new String[] { LOCAL_BRANCHES, "stable" });
+		checkoutAndVerify(new String[] { LOCAL_BRANCHES, "stable" });
 		// add a file
 		IFile toBeDeleted = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(PROJ1).getFolder(FOLDER).getFile("ToBeDeleted");
