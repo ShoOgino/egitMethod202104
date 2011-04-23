@@ -1,0 +1,13 @@
+	/**
+	 * Save state of input to memento
+	 *
+	 * @param memento
+	 * @param input
+	 */
+	public static void saveState(IMemento memento, CommitEditorInput input) {
+		RepositoryCommit commit = input.getCommit();
+		memento.putString(COMMIT, commit.getRevCommit().name());
+		memento.putString(PATH, commit.getRepository().getDirectory()
+				.getAbsolutePath());
+	}
+

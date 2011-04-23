@@ -1,0 +1,25 @@
+	/**
+	 * Get commit from memento and repository
+	 *
+	 * @param memento
+	 * @param repository
+	 * @return rev commit
+	 */
+	protected RevCommit getCommit(IMemento memento, Repository repository) {
+		String id = memento.getString(COMMIT);
+		if (id == null)
+			return null;
+
+		RevWalk walk = new RevWalk(repository);
+		try {
+			RevCommit commit = walk.parseCommit(ObjectId.fromString(id));
+			for (RevCommit parent : commit.getParents())
+				walk.parseBody(parent);
+			return commit;
+		} catch (IOException e) {
+			return null;
+		} finally {
+			walk.release();
+		}
+	}
+

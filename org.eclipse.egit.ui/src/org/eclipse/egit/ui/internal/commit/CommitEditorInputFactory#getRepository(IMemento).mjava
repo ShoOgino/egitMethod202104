@@ -1,0 +1,23 @@
+	/**
+	 * Get repository from memento
+	 *
+	 * @param memento
+	 * @return repository
+	 */
+	protected Repository getRepository(IMemento memento) {
+		String path = memento.getString(PATH);
+		if (path == null)
+			return null;
+
+		File gitDir = new File(path);
+		if (!gitDir.exists())
+			return null;
+
+		try {
+			return Activator.getDefault().getRepositoryCache()
+					.lookupRepository(gitDir);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
