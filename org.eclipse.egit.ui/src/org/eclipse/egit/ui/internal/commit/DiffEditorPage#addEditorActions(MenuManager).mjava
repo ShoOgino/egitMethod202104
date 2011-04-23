@@ -1,0 +1,30 @@
+	/**
+	 * Add editor actions to menu manager
+	 *
+	 * @param manager
+	 */
+	protected void addEditorActions(MenuManager manager) {
+		final TextViewerAction copyAction = new TextViewerAction(viewer,
+				ITextOperationTarget.COPY);
+		copyAction.setText(UIText.SpellCheckingMessageArea_copy);
+		copyAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
+
+		final TextViewerAction selectAllAction = new TextViewerAction(viewer,
+				ITextOperationTarget.SELECT_ALL);
+		selectAllAction.setText(UIText.SpellCheckingMessageArea_selectAll);
+		selectAllAction
+				.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_SELECT_ALL);
+
+		manager.add(copyAction);
+		manager.add(selectAllAction);
+		manager.add(new Separator());
+
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				copyAction.update();
+				selectAllAction.update();
+			}
+		});
+	}
+

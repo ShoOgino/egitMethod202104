@@ -1,0 +1,42 @@
+	private void formatDiff() {
+		final IDocument document = new Document();
+		formatter = new DiffStyleRangeFormatter(document);
+		viewer.setFormatter(formatter);
+
+		Job job = new Job(UIText.DiffEditorPage_TaskGeneratingDiff) {
+
+			protected IStatus run(IProgressMonitor monitor) {
+				RepositoryCommit commit = (RepositoryCommit) getEditor()
+						.getAdapter(RepositoryCommit.class);
+				FileDiff diffs[] = commit.getDiffs();
+				monitor.beginTask("", diffs.length); //$NON-NLS-1$
+				Repository repository = commit.getRepository();
+				for (FileDiff diff : diffs) {
+					if (monitor.isCanceled())
+						break;
+					monitor.setTaskName(diff.getPath());
+					if (diff.getBlobs().length == 2)
+						try {
+							formatter.write(repository, diff);
+						} catch (IOException ignore) {
+							// Ignored
+						}
+					monitor.worked(1);
+				}
+				monitor.done();
+				new UIJob(UIText.DiffEditorPage_TaskUpdatingViewer) {
+
+					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
+						if (!viewer.getControl().isDisposed()) {
+							viewer.setDocument(document);
+							viewer.refreshStyleRanges();
+						}
+						return Status.OK_STATUS;
+					}
+				}.schedule();
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
+	}
+
