@@ -1,0 +1,9 @@
+	@Test
+	public void testConstructorAsserts() {
+		try {
+			assertNull(new CommitEditorInput(null));
+		} catch (AssertionFailedException afe) {
+			assertNotNull(afe);
+		}
+	}
+

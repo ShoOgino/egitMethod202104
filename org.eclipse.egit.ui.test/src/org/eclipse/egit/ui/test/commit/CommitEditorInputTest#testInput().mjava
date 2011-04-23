@@ -1,0 +1,9 @@
+	@Test
+	public void testInput() {
+		RepositoryCommit repoCommit = new RepositoryCommit(repository, commit);
+		CommitEditorInput input = new CommitEditorInput(repoCommit);
+		assertNotNull(input.getImageDescriptor());
+		assertNotNull(input.getToolTipText());
+		assertNotNull(input.getName());
+	}
+

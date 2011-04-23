@@ -1,0 +1,16 @@
+	/**
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
+	public Object getAdapter(Class adapter) {
+		if (RepositoryCommit.class == adapter)
+			return commit;
+
+		if (RevCommit.class == adapter)
+			return commit.getRevCommit();
+
+		if (Repository.class == adapter)
+			return commit.getRepository();
+
+		return super.getAdapter(adapter);
+	}
+

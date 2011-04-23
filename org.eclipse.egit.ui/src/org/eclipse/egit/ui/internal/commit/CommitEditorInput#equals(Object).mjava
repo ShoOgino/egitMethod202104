@@ -1,0 +1,15 @@
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		else if (obj instanceof CommitEditorInput) {
+			RepositoryCommit inputCommit = ((CommitEditorInput) obj).commit;
+			return commit.getRevCommit().equals(inputCommit.getRevCommit())
+					&& commit.getRepository().equals(
+							inputCommit.getRepository());
+		} else
+			return false;
+	}
+

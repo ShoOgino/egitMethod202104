@@ -1,0 +1,9 @@
+	@Test
+	public void testAdapters() {
+		RepositoryCommit repoCommit = new RepositoryCommit(repository, commit);
+		CommitEditorInput input = new CommitEditorInput(repoCommit);
+		assertEquals(repoCommit, input.getAdapter(RepositoryCommit.class));
+		assertEquals(repository, input.getAdapter(Repository.class));
+		assertEquals(commit, input.getAdapter(RevCommit.class));
+	}
+
