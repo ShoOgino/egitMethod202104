@@ -1,0 +1,17 @@
+	/**
+	 * Write diff
+	 *
+	 * @param repository
+	 * @param diff
+	 * @return this formatter
+	 * @throws IOException
+	 */
+	public DiffStyleRangeFormatter write(Repository repository, FileDiff diff)
+			throws IOException {
+		this.stream.charset = CompareUtils.getResourceEncoding(repository,
+				diff.getPath());
+		diff.outputDiff(null, repository, this, true);
+		flush();
+		return this;
+	}
+

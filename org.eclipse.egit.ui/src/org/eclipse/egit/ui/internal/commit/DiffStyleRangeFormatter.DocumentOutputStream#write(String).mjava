@@ -1,0 +1,9 @@
+		private void write(String content) throws IOException {
+			try {
+				this.document.replace(this.offset, 0, content);
+				this.offset += content.length();
+			} catch (BadLocationException e) {
+				throw new IOException(e);
+			}
+		}
+
