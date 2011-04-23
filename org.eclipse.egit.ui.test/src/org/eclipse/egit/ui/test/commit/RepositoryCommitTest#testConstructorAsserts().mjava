@@ -1,0 +1,19 @@
+	@Test
+	public void testConstructorAsserts() throws Exception {
+		try {
+			assertNull(new RepositoryCommit(null, null));
+		} catch (AssertionFailedException afe) {
+			assertNotNull(afe);
+		}
+		try {
+			assertNull(new RepositoryCommit(repository, null));
+		} catch (AssertionFailedException afe) {
+			assertNotNull(afe);
+		}
+		try {
+			assertNull(new RepositoryCommit(null, commit));
+		} catch (AssertionFailedException afe) {
+			assertNotNull(afe);
+		}
+	}
+

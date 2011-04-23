@@ -1,0 +1,7 @@
+	@Test
+	public void testAdapters() throws Exception {
+		RepositoryCommit repoCommit = new RepositoryCommit(repository, commit);
+		assertEquals(repository, repoCommit.getAdapter(Repository.class));
+		assertEquals(commit, repoCommit.getAdapter(RevCommit.class));
+	}
+

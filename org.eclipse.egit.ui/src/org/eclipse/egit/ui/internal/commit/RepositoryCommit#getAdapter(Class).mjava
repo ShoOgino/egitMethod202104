@@ -1,0 +1,13 @@
+	/**
+	 * @see org.eclipse.core.runtime.PlatformObject#getAdapter(java.lang.Class)
+	 */
+	public Object getAdapter(Class adapter) {
+		if (Repository.class == adapter)
+			return repository;
+
+		if (RevCommit.class == adapter)
+			return commit;
+
+		return super.getAdapter(adapter);
+	}
+

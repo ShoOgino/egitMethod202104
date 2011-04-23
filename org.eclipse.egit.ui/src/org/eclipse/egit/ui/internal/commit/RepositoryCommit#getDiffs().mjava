@@ -1,0 +1,26 @@
+	/**
+	 * Get file diffs
+	 *
+	 * @return non-null but possibly empty array of {@link FileDiff} instances.
+	 */
+	public FileDiff[] getDiffs() {
+		if (diffs == null) {
+			RevWalk revWalk = new RevWalk(repository);
+			TreeWalk treewalk = new TreeWalk(repository);
+			treewalk.setRecursive(true);
+			treewalk.setFilter(TreeFilter.ANY_DIFF);
+			try {
+				for (RevCommit parent : commit.getParents())
+					if (parent.getTree() == null)
+						revWalk.parseBody(parent);
+				diffs = FileDiff.compute(treewalk, commit);
+			} catch (IOException e) {
+				diffs = new FileDiff[0];
+			} finally {
+				revWalk.release();
+				treewalk.release();
+			}
+		}
+		return diffs;
+	}
+

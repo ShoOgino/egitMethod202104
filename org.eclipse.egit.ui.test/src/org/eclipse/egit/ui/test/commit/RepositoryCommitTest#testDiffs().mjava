@@ -1,0 +1,10 @@
+	@Test
+	public void testDiffs() throws Exception {
+		RepositoryCommit repoCommit = new RepositoryCommit(repository, commit);
+		FileDiff[] diffs = repoCommit.getDiffs();
+		assertNotNull(diffs);
+		assertTrue(diffs.length > 0);
+		for (FileDiff diff : diffs)
+			assertNotNull(diff);
+	}
+

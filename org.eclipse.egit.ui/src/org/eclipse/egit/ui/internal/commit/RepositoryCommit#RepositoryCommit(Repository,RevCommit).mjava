@@ -1,0 +1,13 @@
+	/**
+	 * Create a repository commit
+	 *
+	 * @param repository
+	 * @param commit
+	 */
+	public RepositoryCommit(Repository repository, RevCommit commit) {
+		Assert.isNotNull(repository, "Repository cannot be null"); //$NON-NLS-1$
+		Assert.isNotNull(commit, "Commit cannot be null"); //$NON-NLS-1$
+		this.repository = repository;
+		this.commit = commit;
+	}
+
