@@ -1,0 +1,31 @@
+	/**
+	 * Create search settings from dialog settings
+	 *
+	 * @param settings
+	 * @return search settings
+	 */
+	public static CommitSearchSettings create(IDialogSettings settings) {
+		IDialogSettings section = settings.getSection(SEARCH_SECTION);
+		CommitSearchSettings searchSettings = new CommitSearchSettings();
+		if (section != null) {
+			searchSettings.setTextPattern(section.get(TEXT_PATTERN));
+			searchSettings.setRegExSearch(section.getBoolean(REGEX_SEARCH));
+			searchSettings.setCaseSensitive(!section.getBoolean(IGNORE_CASE));
+			searchSettings.setMatchAuthor(section.getBoolean(MATCH_AUTHOR));
+			searchSettings.setMatchCommitter(section
+					.getBoolean(MATCH_COMMITTER));
+			searchSettings.setMatchMessage(section.getBoolean(MATCH_MESSAGE));
+			searchSettings.setMatchCommit(section.getBoolean(MATCH_COMMIT));
+			searchSettings.setMatchParents(section.getBoolean(MATCH_PARENTS));
+			searchSettings.setMatchTree(section.getBoolean(MATCH_TREE));
+			try {
+				int count = section.getInt(REPOSITORY_COUNT);
+				for (int i = 0; i < count; i++)
+					searchSettings.addRepository(section.get(REPOSITORY + i));
+			} catch (NumberFormatException ignored) {
+				// Ignored
+			}
+		}
+		return searchSettings;
+	}
+

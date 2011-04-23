@@ -1,0 +1,28 @@
+	/**
+	 * Store search settings in dialog settings
+	 *
+	 * @param settings
+	 */
+	public void store(IDialogSettings settings) {
+		IDialogSettings section = settings.getSection(SEARCH_SECTION);
+		if (section == null)
+			section = settings.addNewSection(SEARCH_SECTION);
+
+		section.put(IGNORE_CASE, !isCaseSensitive);
+		section.put(REGEX_SEARCH, isRegExSearch);
+		section.put(TEXT_PATTERN, textPattern);
+		section.put(MATCH_AUTHOR, isMatchAuthor);
+		section.put(MATCH_COMMIT, isMatchCommit);
+		section.put(MATCH_COMMITTER, isMatchCommitter);
+		section.put(MATCH_MESSAGE, isMatchMessage);
+		section.put(MATCH_PARENTS, isMatchParents);
+		section.put(MATCH_TREE, isMatchTree);
+
+		int count = 0;
+		for (String repo : this.repositories) {
+			section.put(REPOSITORY + count, repo);
+			count++;
+		}
+		section.put(REPOSITORY_COUNT, this.repositories.size());
+	}
+
