@@ -1,0 +1,13 @@
+	/**
+	 * @param repository
+	 * @param branches
+	 *            the list of branches to deleted
+	 * @param force
+	 */
+	public DeleteBranchOperation(Repository repository, Set<Ref> branches,
+			boolean force) {
+		this.repository = repository;
+		this.branches = branches;
+		this.force = force;
+	}
+

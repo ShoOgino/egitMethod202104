@@ -6,8 +6,6 @@
 	 */
 	public DeleteBranchOperation(Repository repository, Ref branch,
 			boolean force) {
-		this.repository = repository;
-		this.branch = branch;
-		this.force = force;
+		this(repository, new HashSet<Ref>(asList(branch)), force);
 	}
 

@@ -1,4 +1,4 @@
-	private int deleteBranch(final Ref ref, boolean force) throws CoreException {
+	private int deleteBranch(final Set<Ref> ref, boolean force) throws CoreException {
 		DeleteBranchOperation dbop = new DeleteBranchOperation(repo, ref, force);
 		dbop.execute(null);
 		return dbop.getStatus();

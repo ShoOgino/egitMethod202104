@@ -1,28 +1,23 @@
 	@Override
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == Window.OK) {
-			Ref ref = refFromDialog();
 			try {
-				int result = deleteBranch(ref, false);
+				int result = deleteBranch(selectedRefs, false);
 				if (result == DeleteBranchOperation.REJECTED_UNMERGED) {
-					List<RefNode> nodes = new ArrayList<RefNode>();
-					nodes
-							.add((RefNode) ((IStructuredSelection) super.branchTree
-									.getSelection()).getFirstElement());
+					List<RefNode> nodes = extractSelectedRefNodes();
+
 					MessageDialog messageDialog = new BranchMessageDialog(
 							getShell(), nodes);
-					if (messageDialog.open() == Window.OK) {
-						deleteBranch(ref, false);
-					} else {
+
+					if (messageDialog.open() == Window.OK)
+						deleteBranch(selectedRefs, true);
+					else
 						return;
-					}
-				} else if (result == DeleteBranchOperation.REJECTED_CURRENT) {
+				} else if (result == DeleteBranchOperation.REJECTED_CURRENT)
 					Activator
 							.handleError(
 									UIText.DeleteBranchCommand_CannotDeleteCheckedOutBranch,
 									null, true);
-				}
-
 			} catch (CoreException e) {
 				Activator.handleError(e.getMessage(), e, true);
 			}
