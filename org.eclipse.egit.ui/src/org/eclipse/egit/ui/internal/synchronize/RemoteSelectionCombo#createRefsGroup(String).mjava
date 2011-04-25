@@ -3,8 +3,8 @@
 		refsComposite.setLayout(new GridLayout());
 		refsComposite.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).hint(150, SWT.DEFAULT).create());
-		Label ref = new Label(refsComposite, SWT.NONE);
-		ref.setText(refLabel);
+		myRefLabel = new Label(refsComposite, SWT.NONE);
+		myRefLabel.setText(refLabel);
 		refsCombo = new Combo(refsComposite, SWT.NONE | SWT.READ_ONLY);
 		refsCombo.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).create());
