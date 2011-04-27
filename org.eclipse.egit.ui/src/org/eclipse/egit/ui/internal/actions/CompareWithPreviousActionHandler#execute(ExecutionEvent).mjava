@@ -1,0 +1,18 @@
+	/**
+	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 */
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(true, event);
+		if (repository == null)
+			return null;
+
+		IResource[] resources = getSelectedResources(event);
+		if (resources.length == 1)
+			JobUtil.scheduleUserJob(
+					new CompareWithPreviousOperation(event, repository,
+							resources[0]),
+					UIText.CompareWithPreviousActionHandler_TaskGeneratingInput,
+					null);
+		return null;
+	}
+

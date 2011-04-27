@@ -1,0 +1,18 @@
+		private void openCompareTreeView(final RevCommit previous) {
+			final Shell shell = HandlerUtil.getActiveShell(event);
+			shell.getDisplay().asyncExec(new Runnable() {
+
+				public void run() {
+					try {
+						CompareTreeView view = (CompareTreeView) PlatformUI
+								.getWorkbench().getActiveWorkbenchWindow()
+								.getActivePage().showView(CompareTreeView.ID);
+						view.setInput(new IResource[] { resource },
+								previous.name());
+					} catch (PartInitException e) {
+						Activator.handleError(e.getMessage(), e, true);
+					}
+				}
+			});
+		}
+

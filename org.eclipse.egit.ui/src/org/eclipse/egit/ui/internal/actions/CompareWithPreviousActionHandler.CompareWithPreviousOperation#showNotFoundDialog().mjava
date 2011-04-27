@@ -1,0 +1,17 @@
+		private void showNotFoundDialog() {
+			final Shell shell = HandlerUtil.getActiveShell(event);
+			final String message = MessageFormat
+					.format(UIText.CompareWithPreviousActionHandler_MessageRevisionNotFound,
+							resource.getName());
+			shell.getDisplay().asyncExec(new Runnable() {
+
+				public void run() {
+					MessageDialog
+							.openWarning(
+									shell,
+									UIText.CompareWithPreviousActionHandler_TitleRevisionNotFound,
+									message);
+				}
+			});
+		}
+
