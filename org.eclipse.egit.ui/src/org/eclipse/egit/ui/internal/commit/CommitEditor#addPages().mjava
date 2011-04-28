@@ -1,0 +1,12 @@
+	/**
+	 * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
+	 */
+	protected void addPages() {
+		try {
+			addPage(new CommitEditorPage(this));
+			addPage(new DiffEditorPage(this));
+		} catch (PartInitException e) {
+			Activator.error("Error adding page", e); //$NON-NLS-1$
+		}
+	}
+

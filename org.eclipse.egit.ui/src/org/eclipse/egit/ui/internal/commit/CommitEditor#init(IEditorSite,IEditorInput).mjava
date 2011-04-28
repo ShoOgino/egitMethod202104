@@ -1,0 +1,15 @@
+	/**
+	 * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite,
+	 *      org.eclipse.ui.IEditorInput)
+	 */
+	public void init(IEditorSite site, IEditorInput input)
+			throws PartInitException {
+		if (input.getAdapter(RepositoryCommit.class) == null) {
+			throw new PartInitException(
+					"Input could not be adapted to commit object"); //$NON-NLS-1$
+		}
+		super.init(site, input);
+		setPartName(input.getName());
+		setTitleToolTip(input.getToolTipText());
+	}
+
