@@ -1,0 +1,28 @@
+	/**
+	 * @see org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider#getStyledText(java.lang.Object)
+	 */
+	public StyledString getStyledText(Object element) {
+		StyledString styled = new StyledString();
+		if (element instanceof RepositoryCommit) {
+			RepositoryCommit commit = (RepositoryCommit) element;
+			RevCommit revCommit = commit.getRevCommit();
+
+			styled.append(MessageFormat.format(
+					UIText.CommitResultLabelProvider_SectionMessage,
+					commit.abbreviate(), revCommit.getShortMessage()));
+
+			PersonIdent author = revCommit.getAuthorIdent();
+			if (author != null)
+				styled.append(MessageFormat.format(
+						UIText.CommitResultLabelProvider_SectionAuthor,
+						author.getName(), dateFormat.format(author.getWhen())),
+						StyledString.QUALIFIER_STYLER);
+
+			styled.append(MessageFormat.format(
+					UIText.CommitResultLabelProvider_SectionRepository,
+					commit.getRepositoryName()),
+					StyledString.DECORATIONS_STYLER);
+		}
+		return styled;
+	}
+

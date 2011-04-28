@@ -1,0 +1,13 @@
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			if (e1 instanceof RepositoryCommit
+					&& e2 instanceof RepositoryCommit) {
+				PersonIdent person1 = ((RepositoryCommit) e1).getRevCommit()
+						.getAuthorIdent();
+				PersonIdent person2 = ((RepositoryCommit) e2).getRevCommit()
+						.getAuthorIdent();
+				if (person1 != null && person2 != null)
+					return person2.getWhen().compareTo(person1.getWhen());
+			}
+			return super.compare(viewer, e1, e2);
+		}
+

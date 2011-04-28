@@ -1,0 +1,7 @@
+	private void configureViewer(StructuredViewer viewer) {
+		viewer.setSorter(new CommitSorter());
+		viewer.setContentProvider(new WorkbenchContentProvider());
+		viewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+				new CommitResultLabelProvider()));
+	}
+
