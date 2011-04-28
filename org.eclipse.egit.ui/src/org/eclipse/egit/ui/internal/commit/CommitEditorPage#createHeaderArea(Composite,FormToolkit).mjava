@@ -1,0 +1,44 @@
+	private void createHeaderArea(Composite parent, FormToolkit toolkit) {
+		RevCommit commit = getCommit().getRevCommit();
+		Composite top = toolkit.createComposite(parent);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(top);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(top);
+
+		Composite userArea = toolkit.createComposite(top);
+		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(userArea);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(userArea);
+
+		PersonIdent author = commit.getAuthorIdent();
+		if (author != null) {
+			Text authorText = toolkit.createText(userArea, MessageFormat
+					.format(UIText.CommitEditorPage_LabelAuthor,
+							author.getName(), author.getWhen()));
+			GridDataFactory.fillDefaults().span(1, 1).applyTo(authorText);
+		}
+
+		PersonIdent committer = commit.getCommitterIdent();
+		if (committer != null && !committer.equals(author)) {
+			Text committerText = toolkit.createText(userArea, MessageFormat
+					.format(UIText.CommitEditorPage_LabelCommitter,
+							committer.getName(), committer.getWhen()));
+			committerText.setFont(parent.getFont());
+			GridDataFactory.fillDefaults().span(1, 1).applyTo(committerText);
+		}
+
+		int count = commit.getParentCount();
+		if (count > 0) {
+			Composite parents = toolkit.createComposite(top);
+			GridLayoutFactory.fillDefaults().numColumns(2).applyTo(parents);
+			GridDataFactory.fillDefaults().grab(false, false).applyTo(parents);
+
+			for (int i = 0; i < count; i++) {
+				final RevCommit parentCommit = commit.getParent(i);
+				toolkit.createLabel(parents,
+						UIText.CommitEditorPage_LabelParent).setForeground(
+						toolkit.getColors().getColor(IFormColors.TB_TOGGLE));
+				toolkit.createHyperlink(parents,
+						parentCommit.abbreviate(PARENT_LENGTH).name(), SWT.NONE);
+			}
+		}
+	}
+

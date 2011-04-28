@@ -1,0 +1,24 @@
+	private void createFilesArea(Composite parent, FormToolkit toolkit) {
+		Section files = toolkit.createSection(parent,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(files);
+
+		TableViewer viewer = new TableViewer(toolkit.createTable(files,
+				SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER));
+		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 80)
+				.applyTo(viewer.getControl());
+		viewer.setLabelProvider(new FileDiffLabelProvider());
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		files.setClient(viewer.getControl());
+
+		RepositoryCommit commit = getCommit();
+		FileDiff[] diffs = commit.getDiffs();
+		viewer.setInput(diffs);
+		files.setText(MessageFormat.format(
+				UIText.CommitEditorPage_SectionFiles,
+				Integer.valueOf(diffs.length)));
+
+		hookExpansionGrabbing(files);
+	}
+
