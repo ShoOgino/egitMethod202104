@@ -1,5 +1,5 @@
 	private String[] getRepositoryComboItems() {
-		Set<String> items = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		List<String> items = new ArrayList<String>();
 		for (Repository repository : repositories) {
 			String repoName = repository.getDirectory().getParentFile().getName();
 			items.add(repoName);
