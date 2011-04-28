@@ -1,0 +1,9 @@
+	@Test
+	public void testQuery() {
+		CommitSearchQuery query = new CommitSearchQuery(createSettings());
+		assertTrue(query.canRerun());
+		assertTrue(query.canRunInBackground());
+		assertNotNull(query.getLabel());
+		assertTrue(query.getLabel().length() > 0);
+	}
+

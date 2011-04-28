@@ -1,0 +1,12 @@
+	@Test
+	public void testMatchTree() throws Exception {
+		CommitSearchSettings settings = createSettings();
+		settings.setMatchTree(true);
+		settings.setTextPattern(commit.getTree().name());
+		CommitSearchQuery query = new CommitSearchQuery(settings);
+		IStatus status = query.run(new NullProgressMonitor());
+		assertNotNull(status);
+		assertTrue(status.isOK());
+		validateResult(commit, repository, query.getSearchResult());
+	}
+

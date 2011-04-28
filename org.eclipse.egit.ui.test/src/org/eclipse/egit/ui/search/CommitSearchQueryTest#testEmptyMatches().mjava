@@ -1,0 +1,12 @@
+	@Test
+	public void testEmptyMatches() {
+		CommitSearchSettings settings = createSettings();
+		settings.setMatchCommit(true);
+		settings.setTextPattern("badcommitid");
+		CommitSearchQuery query = new CommitSearchQuery(settings);
+		IStatus status = query.run(new NullProgressMonitor());
+		assertNotNull(status);
+		assertTrue(status.isOK());
+		validateEmpty(query.getSearchResult());
+	}
+

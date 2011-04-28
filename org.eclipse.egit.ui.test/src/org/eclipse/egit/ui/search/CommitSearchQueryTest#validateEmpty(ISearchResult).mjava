@@ -1,0 +1,10 @@
+	private void validateEmpty(ISearchResult result) {
+		assertNotNull(result);
+		assertTrue(result instanceof CommitSearchResult);
+		CommitSearchResult commitResult = (CommitSearchResult) result;
+		assertEquals(0, commitResult.getMatchCount());
+		Object[] elements = commitResult.getElements();
+		assertNotNull(elements);
+		assertEquals(0, elements.length);
+	}
+

@@ -1,0 +1,12 @@
+	@Test
+	public void testMatchParent() throws Exception {
+		CommitSearchSettings settings = createSettings();
+		settings.setMatchParents(true);
+		settings.setTextPattern(commit.getParent(0).name());
+		CommitSearchQuery query = new CommitSearchQuery(settings);
+		IStatus status = query.run(new NullProgressMonitor());
+		assertNotNull(status);
+		assertTrue(status.isOK());
+		validateResult(commit, repository, query.getSearchResult());
+	}
+

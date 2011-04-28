@@ -1,0 +1,14 @@
+	private CommitSearchSettings createSettings() {
+		CommitSearchSettings settings = new CommitSearchSettings();
+		settings.addRepository(repository.getDirectory().getAbsolutePath());
+		settings.setMatchTree(false);
+		settings.setMatchAuthor(false);
+		settings.setMatchCommit(false);
+		settings.setMatchCommitter(false);
+		settings.setMatchParents(false);
+		settings.setMatchMessage(false);
+		settings.setCaseSensitive(true);
+		settings.setRegExSearch(false);
+		return settings;
+	}
+

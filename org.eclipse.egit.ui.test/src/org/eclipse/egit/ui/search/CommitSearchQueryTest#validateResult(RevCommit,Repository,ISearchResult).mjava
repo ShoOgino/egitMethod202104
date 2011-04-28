@@ -1,0 +1,16 @@
+	private void validateResult(RevCommit expectedCommit,
+			Repository expectedRepository, ISearchResult result) {
+		assertNotNull(result);
+		assertTrue(result instanceof CommitSearchResult);
+		CommitSearchResult commitResult = (CommitSearchResult) result;
+		assertEquals(1, commitResult.getMatchCount());
+		Object[] elements = commitResult.getElements();
+		assertNotNull(elements);
+		assertEquals(1, elements.length);
+		assertTrue(elements[0] instanceof RepositoryCommit);
+		RepositoryCommit repoCommit = (RepositoryCommit) elements[0];
+		assertEquals(expectedRepository.getDirectory(), repoCommit
+				.getRepository().getDirectory());
+		assertEquals(expectedCommit, repoCommit.getRevCommit());
+	}
+

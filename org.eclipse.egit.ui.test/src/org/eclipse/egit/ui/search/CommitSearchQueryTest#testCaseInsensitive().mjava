@@ -1,0 +1,18 @@
+	@Test
+	public void testCaseInsensitive() {
+		CommitSearchSettings settings = createSettings();
+		settings.setMatchCommit(true);
+		settings.setCaseSensitive(true);
+		settings.setTextPattern(commit.name().toUpperCase(Locale.US));
+		CommitSearchQuery query = new CommitSearchQuery(settings);
+		IStatus status = query.run(new NullProgressMonitor());
+		assertNotNull(status);
+		assertTrue(status.isOK());
+		validateEmpty(query.getSearchResult());
+		settings.setCaseSensitive(false);
+		status = query.run(new NullProgressMonitor());
+		assertNotNull(status);
+		assertTrue(status.isOK());
+		validateResult(commit, repository, query.getSearchResult());
+	}
+

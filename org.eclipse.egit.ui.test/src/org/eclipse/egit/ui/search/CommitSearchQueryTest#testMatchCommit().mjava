@@ -1,0 +1,12 @@
+	@Test
+	public void testMatchCommit() throws Exception {
+		CommitSearchSettings settings = createSettings();
+		settings.setMatchCommit(true);
+		settings.setTextPattern(commit.name());
+		CommitSearchQuery query = new CommitSearchQuery(settings);
+		IStatus status = query.run(new NullProgressMonitor());
+		assertNotNull(status);
+		assertTrue(status.isOK());
+		validateResult(commit, repository, query.getSearchResult());
+	}
+
