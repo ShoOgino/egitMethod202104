@@ -1,0 +1,9 @@
+		public boolean matches(Pattern pattern, RevCommit commit) {
+			PersonIdent author = commit.getAuthorIdent();
+			if (author != null)
+				return matches(pattern, author.getName())
+						|| matches(pattern, author.getEmailAddress());
+			else
+				return false;
+		}
+

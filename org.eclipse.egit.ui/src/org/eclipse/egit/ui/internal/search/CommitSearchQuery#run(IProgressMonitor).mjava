@@ -1,0 +1,32 @@
+	/**
+	 * @see org.eclipse.search.ui.ISearchQuery#run(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public IStatus run(IProgressMonitor monitor)
+			throws OperationCanceledException {
+		this.result.removeAll();
+
+		Pattern pattern = PatternConstructor.createPattern(
+				this.settings.getTextPattern(),
+				this.settings.isCaseSensitive(), this.settings.isRegExSearch());
+		List<String> paths = settings.getRepositories();
+		try {
+			for (String path : paths) {
+				if (monitor.isCanceled())
+					throw new OperationCanceledException();
+
+				Repository repo = getRepository(path);
+				if (repo == null)
+					continue;
+
+				monitor.setTaskName(MessageFormat.format(
+						UIText.CommitSearchQuery_TaskSearchCommits, repo
+								.getDirectory().getParentFile().getName()));
+				walkRepository(repo, pattern, monitor);
+			}
+		} catch (IOException e) {
+			org.eclipse.egit.ui.Activator.handleError(
+					"Error searching commits", e, true); //$NON-NLS-1$
+		}
+		return Status.OK_STATUS;
+	}
+

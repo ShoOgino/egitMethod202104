@@ -1,0 +1,9 @@
+	private Repository getRepository(String name) throws IOException {
+		Repository repository = null;
+		File path = new File(name);
+		if (path.exists())
+			repository = Activator.getDefault().getRepositoryCache()
+					.lookupRepository(path);
+		return repository;
+	}
+

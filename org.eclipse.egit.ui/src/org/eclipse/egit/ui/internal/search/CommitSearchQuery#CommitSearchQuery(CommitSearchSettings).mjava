@@ -1,0 +1,22 @@
+	/**
+	 * Create git search query
+	 *
+	 * @param settings
+	 */
+	public CommitSearchQuery(CommitSearchSettings settings) {
+		this.settings = settings;
+
+		if (this.settings.isMatchAuthor())
+			matchers.add(new AuthorMatcher());
+		if (this.settings.isMatchCommitter())
+			matchers.add(new CommitterMatcher());
+		if (this.settings.isMatchMessage())
+			matchers.add(new MessageMatcher());
+		if (this.settings.isMatchCommit())
+			matchers.add(new CommitNameMatcher());
+		if (this.settings.isMatchTree())
+			matchers.add(new TreeMatcher());
+		if (this.settings.isMatchParents())
+			matchers.add(new ParentMatcher());
+	}
+

@@ -1,0 +1,27 @@
+	private void walkRepository(Repository repository, Pattern pattern,
+			IProgressMonitor monitor) throws IOException {
+		RevWalk walk = new RevWalk(repository);
+		try {
+			walk.setRetainBody(true);
+			RevCommit commit = walk.parseCommit(repository
+					.resolve(Constants.HEAD));
+			if (commit != null) {
+				walk.markStart(commit);
+				commit = walk.next();
+				while (commit != null) {
+					if (monitor.isCanceled())
+						throw new OperationCanceledException();
+					for (SearchMatcher matcher : this.matchers)
+						if (matcher.matches(pattern, commit)) {
+							result.addResult(new RepositoryCommit(repository,
+									commit));
+							break;
+						}
+					commit = walk.next();
+				}
+			}
+		} finally {
+			walk.dispose();
+		}
+	}
+
