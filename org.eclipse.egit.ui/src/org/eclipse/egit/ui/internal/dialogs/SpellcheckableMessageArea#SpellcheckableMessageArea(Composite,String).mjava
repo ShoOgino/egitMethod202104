@@ -30,7 +30,13 @@
 		Document document = new Document(initialText);
 
 		sourceViewer.configure(new TextSourceViewerConfiguration(EditorsUI
-				.getPreferenceStore()));
+				.getPreferenceStore()) {
+
+			protected Map getHyperlinkDetectorTargets(ISourceViewer targetViewer) {
+				return getHyperlinkTargets();
+			}
+
+		});
 		sourceViewer.setDocument(document, annotationModel);
 
 		getTextWidget().addDisposeListener(new DisposeListener() {
