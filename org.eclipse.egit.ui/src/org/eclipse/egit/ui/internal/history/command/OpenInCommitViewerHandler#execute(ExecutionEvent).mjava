@@ -1,0 +1,13 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(event);
+		if (repository != null)
+			for (Object selected : getSelection(getPage()).toList())
+				try {
+					CommitEditor.open(new RepositoryCommit(repository,
+							(RevCommit) selected));
+				} catch (PartInitException e) {
+					Activator.showError("Error opening commit viewer", e); //$NON-NLS-1$
+				}
+		return null;
+	}
+
