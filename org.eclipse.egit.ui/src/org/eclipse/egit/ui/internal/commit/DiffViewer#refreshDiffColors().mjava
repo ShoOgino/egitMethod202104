@@ -1,0 +1,11 @@
+	private void refreshDiffColors() {
+		ColorRegistry reg = PlatformUI.getWorkbench().getThemeManager()
+				.getCurrentTheme().getColorRegistry();
+		this.addBackgroundColor = reg.get(THEME_DiffAddBackgroundColor);
+		this.addForegroundColor = reg.get(THEME_DiffAddForegroundColor);
+		this.removeBackgroundColor = reg.get(THEME_DiffRemoveBackgroundColor);
+		this.removeForegroundColor = reg.get(THEME_DiffRemoveForegroundColor);
+		this.hunkBackgroundColor = reg.get(THEME_DiffHunkBackgroundColor);
+		this.hunkForegroundColor = reg.get(THEME_DiffHunkForegroundColor);
+	}
+
