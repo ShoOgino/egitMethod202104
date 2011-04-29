@@ -2,9 +2,17 @@
 			ISynchronizePageConfiguration configuration) {
 		configuration.setProperty(ISynchronizePageConfiguration.P_VIEWER_ID,
 				VIEWER_ID);
+		String modelProvider;
+		if (Activator
+				.getDefault()
+				.getPreferenceStore()
+				.getBoolean(UIPreferences.SYNC_VIEW_ALWAYS_SHOW_CHANGESET_MODEL))
+			modelProvider = GitChangeSetModelProvider.ID;
+		else
+			modelProvider = WORKSPACE_MODEL_PROVIDER_ID;
 		configuration.setProperty(
 				ModelSynchronizeParticipant.P_VISIBLE_MODEL_PROVIDER,
-				WORKSPACE_MODEL_PROVIDER_ID);
+				modelProvider);
 		super.initializeConfiguration(configuration);
 
 		configuration.addActionContribution(new GitActionContributor());
