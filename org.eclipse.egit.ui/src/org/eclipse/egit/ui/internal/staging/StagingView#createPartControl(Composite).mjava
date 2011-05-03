@@ -1,0 +1,158 @@
+	@Override
+	public void createPartControl(Composite parent) {
+		parent.setLayout(new GridLayout(1, false));
+
+		repositoryLabel = new Label(parent, SWT.NONE);
+		repositoryLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		SashForm horizontalSashForm = new SashForm(parent, SWT.NONE);
+		horizontalSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		Composite leftHandComposite = new Composite(horizontalSashForm, SWT.NONE);
+		leftHandComposite.setLayout(new GridLayout(1, false));
+
+		SashForm veriticalSashForm = new SashForm(leftHandComposite, SWT.VERTICAL);
+		veriticalSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		Composite unstagedComposite = new Composite(veriticalSashForm, SWT.NONE);
+		unstagedComposite.setLayout(new GridLayout(1, false));
+
+		new Label(unstagedComposite, SWT.NONE).setText(UIText.StagingView_UnstagedChanges);
+
+		Composite unstagedTableComposite = new Composite(unstagedComposite, SWT.NONE);
+		unstagedTableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		unstagedTableComposite.setLayout(new TableColumnLayout());
+
+		unstagedTableViewer = new TableViewer(unstagedTableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		unstagedTableViewer.getTable().setLinesVisible(true);
+		unstagedTableViewer.setLabelProvider(new StagingViewLabelProvider());
+		unstagedTableViewer.setContentProvider(new StagingViewContentProvider(true));
+		unstagedTableViewer.addDragSupport(DND.DROP_MOVE,
+				new Transfer[] { LocalSelectionTransfer.getTransfer() },
+				new DragSourceAdapter() {
+					public void dragStart(DragSourceEvent event) {
+						IStructuredSelection selection = (IStructuredSelection) stagedTableViewer
+								.getSelection();
+						event.doit = !selection.isEmpty();
+					}
+				});
+		unstagedTableViewer.addDropSupport(DND.DROP_MOVE,
+				new Transfer[] { LocalSelectionTransfer.getTransfer() },
+				new DropTargetAdapter() {
+					public void drop(DropTargetEvent event) {
+						final IStructuredSelection selection = (IStructuredSelection) stagedTableViewer
+								.getSelection();
+						unstage(selection);
+					}
+
+					public void dragOver(DropTargetEvent event) {
+						event.detail = DND.DROP_MOVE;
+					}
+				});
+
+		Composite commitMessageComposite = new Composite(horizontalSashForm, SWT.NONE);
+		commitMessageComposite.setLayout(new GridLayout(2, false));
+
+		Label commitMessageLabel = new Label(commitMessageComposite, SWT.NONE);
+		commitMessageLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		commitMessageLabel.setText(UIText.StagingView_CommitMessage);
+
+		commitMessageText = new SpellcheckableMessageArea(commitMessageComposite, ""); //$NON-NLS-1$
+		commitMessageText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		Composite composite = new Composite(commitMessageComposite, SWT.NONE);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		composite.setLayout(new GridLayout(2, false));
+
+		new Label(composite, SWT.NONE).setText(UIText.StagingView_Committer);
+
+		committerText = new Text(composite, SWT.BORDER);
+		committerText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		new Label(composite, SWT.NONE).setText(UIText.StagingView_Author);
+
+		authorText = new Text(composite, SWT.BORDER);
+		authorText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		Button amendPreviousCommitButton = new Button(commitMessageComposite, SWT.CHECK);
+		amendPreviousCommitButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		amendPreviousCommitButton.setText(UIText.StagingView_Ammend_Previous_Commit);
+
+		Button signedOffByButton = new Button(commitMessageComposite, SWT.CHECK);
+		signedOffByButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		signedOffByButton.setText(UIText.StagingView_Add_Signed_Off_By);
+
+		Button addChangeIdButton = new Button(commitMessageComposite, SWT.CHECK);
+		GridData addChangeIdButtonGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		addChangeIdButtonGridData.minimumHeight = 1;
+		addChangeIdButton.setLayoutData(addChangeIdButtonGridData);
+		addChangeIdButton.setText(UIText.StagingView_Add_Change_ID);
+
+		commitButton = new Button(commitMessageComposite, SWT.NONE);
+		commitButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		commitButton.setText(UIText.StagingView_Commit);
+
+		Composite stagedComposite = new Composite(veriticalSashForm, SWT.NONE);
+		stagedComposite.setLayout(new GridLayout(1, false));
+
+		new Label(stagedComposite, SWT.NONE).setText(UIText.StagingView_StagedChanges);
+
+		Composite stagedTableComposite = new Composite(stagedComposite, SWT.NONE);
+		stagedTableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		stagedTableComposite.setLayout(new TableColumnLayout());
+
+		stagedTableViewer = new TableViewer(stagedTableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		stagedTableViewer.getTable().setLinesVisible(true);
+		stagedTableViewer.setLabelProvider(new StagingViewLabelProvider());
+		stagedTableViewer.setContentProvider(new StagingViewContentProvider(false));
+		stagedTableViewer.addDragSupport(DND.DROP_MOVE,
+				new Transfer[] { LocalSelectionTransfer.getTransfer() },
+				new DragSourceAdapter() {
+					public void dragStart(DragSourceEvent event) {
+						IStructuredSelection selection = (IStructuredSelection) unstagedTableViewer
+								.getSelection();
+						event.doit = !selection.isEmpty();
+					}
+				});
+		stagedTableViewer.addDropSupport(DND.DROP_MOVE,
+				new Transfer[] { LocalSelectionTransfer.getTransfer() },
+				new DropTargetAdapter() {
+					public void drop(DropTargetEvent event) {
+						final IStructuredSelection selection = (IStructuredSelection) unstagedTableViewer
+								.getSelection();
+						stage(selection);
+					}
+
+					public void dragOver(DropTargetEvent event) {
+						event.detail = DND.DROP_MOVE;
+					}
+				});
+
+		selectionChangedListener = new ISelectionListener() {
+			public void selectionChanged(IWorkbenchPart part,
+					ISelection selection) {
+				if (!reactOnSelection)
+					return;
+
+				// this may happen if we switch between editors
+				if (part instanceof IEditorPart) {
+					IEditorInput input = ((IEditorPart) part).getEditorInput();
+					if (input instanceof IFileEditorInput)
+						reactOnSelection(new StructuredSelection(
+								((IFileEditorInput) input).getFile()));
+				} else
+					reactOnSelection(selection);
+			}
+		};
+
+		horizontalSashForm.setWeights(new int[] {40, 60});
+		veriticalSashForm.setWeights(new int[] {50, 50});
+
+		// react on selection changes
+		ISelectionService srv = (ISelectionService) getSite().getService(
+				ISelectionService.class);
+		srv.addPostSelectionListener(selectionChangedListener);
+
+		getSite().setSelectionProvider(unstagedTableViewer);
+	}
+

@@ -1,0 +1,13 @@
+	public Object getAdapter(Class adapter) {
+		if (adapter == IResource.class) {
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
+			IContainer findContainer = IteratorService.findContainer(root, repository.getWorkTree());
+			if (findContainer != null) {
+				IResource findMember = findContainer.findMember(path);
+				return findMember;
+			}
+		}
+		return null;
+	}
+

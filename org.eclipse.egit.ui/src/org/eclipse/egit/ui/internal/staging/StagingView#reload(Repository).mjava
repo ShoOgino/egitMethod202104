@@ -1,0 +1,40 @@
+	// TODO move to a Job?
+	private IndexDiff reload(final Repository repository) {
+		currentRepository = repository;
+
+
+		final IndexDiff indexDiff;
+		try {
+			// TODO IteratorService.createInitialIterator(repository)?
+			FileTreeIterator fileTreeIterator = new FileTreeIterator(repository);
+			indexDiff = new IndexDiff(repository, Constants.HEAD,
+					fileTreeIterator);
+			indexDiff.diff();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		removeListeners();
+		attachListeners(repository);
+
+		unstagedTableViewer.getTable().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				if (!unstagedTableViewer.getTable().isDisposed())
+					unstagedTableViewer.setInput(new Object[] { repository, indexDiff });
+				if (!stagedTableViewer.getTable().isDisposed())
+					stagedTableViewer.setInput(new Object[] { repository, indexDiff });
+				if (!commitButton.isDisposed())
+					commitButton.setEnabled(repository.getRepositoryState().canCommit());
+				if (!authorText.isDisposed())
+					updateAuthorAndCommitter(repository);
+				if (!commitMessageText.isDisposed())
+					updateCommitMessage(repository);
+				if (!repositoryLabel.isDisposed()) {
+					repositoryLabel.setText(StagingView.getRepositoryName(repository));
+				}
+			}
+		});
+
+		return indexDiff;
+	}
+
