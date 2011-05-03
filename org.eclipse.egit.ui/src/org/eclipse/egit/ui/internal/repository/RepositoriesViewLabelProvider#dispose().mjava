@@ -1,5 +1,6 @@
 	@Override
 	public void dispose() {
+		verboseBranchModeState.removeListener(this);
 		// dispose of our decorated images
 		for (Image image : decoratedImages.values()) {
 			image.dispose();
