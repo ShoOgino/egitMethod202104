@@ -2,6 +2,9 @@
 	 * @return index of selected element
 	 */
 	public int getSelectedIndex() {
-		return combo.getSelectionIndex();
+		int selectionIndex = combo.getSelectionIndex();
+		if (selectionIndex == -1)
+			selectionIndex = combo.indexOf(combo.getText());
+		return selectionIndex;
 	}
 
