@@ -5,12 +5,12 @@
 		String dialogTitle = UIText.CompareTargetSelectionDialog_WindowTitle;
 		SWTBotShell dialog = openCompareWithDialog(compareWithRefActionLabel,
 				dialogTitle);
-		// use the default (the last commit) -> no changes
-		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
-				.click();
-		waitUntilCompareTreeViewTreeHasNodeCount(0);
+		// use the default (the last commit) -> no changes -> compare button
+		// disabled
+		assertFalse(dialog.bot()
+				.button(UIText.CompareTargetSelectionDialog_CompareButton)
+				.isEnabled());
 		// use the tag -> should have a change
-		dialog = openCompareWithDialog(compareWithRefActionLabel, dialogTitle);
 		dialog.bot().tree().getTreeItem(TAGS).expand().getNode("SomeTag")
 				.select();
 		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
