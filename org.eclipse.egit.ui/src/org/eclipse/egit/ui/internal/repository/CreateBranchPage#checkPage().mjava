@@ -15,8 +15,7 @@
 				buttonConfigMerge.setSelection(false);
 			buttonConfigRebase.setSelection(false);
 			buttonConfigNone.setSelection(false);
-			switch (getDefaultUpstreamConfig(myRepository, branchCombo
-					.getText())) {
+			switch (upstreamConfig) {
 			case MERGE:
 				buttonConfigMerge.setSelection(true);
 				break;
