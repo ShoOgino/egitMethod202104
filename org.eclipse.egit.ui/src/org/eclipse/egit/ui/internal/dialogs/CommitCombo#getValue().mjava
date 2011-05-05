@@ -2,7 +2,7 @@
 	 * @return SHA-1 of selected commit
 	 */
 	public ObjectId getValue() {
-		int selectionIndex = combo.getSelectionIndex();
+		int selectionIndex = getSelectedIndex();
 		return -1 != selectionIndex ? getItem(selectionIndex) : null;
 	}
 
