@@ -13,6 +13,9 @@
 		configuration.setProperty(
 				ModelSynchronizeParticipant.P_VISIBLE_MODEL_PROVIDER,
 				modelProvider);
+
+		configuration.setProperty(SYNCHRONIZATION_DATA, gsds);
+
 		super.initializeConfiguration(configuration);
 
 		configuration.addActionContribution(new GitActionContributor());

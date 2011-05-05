@@ -16,22 +16,25 @@
 		isNotNull(dstRev);
 		repo = repository;
 
+		srcRemote = extractRemoteName(srcRev);
+		dstRemote = extractRemoteName(dstRev);
+
 		ObjectWalk ow = new ObjectWalk(repo);
 		if (srcRev.length() > 0)
-			this.srcRev = ow.parseCommit(repo.resolve(srcRev));
+			this.srcRevCommit = ow.parseCommit(repo.resolve(srcRev));
 		else
-			this.srcRev = null;
+			this.srcRevCommit = null;
 
 		if (dstRev.length() > 0)
-			this.dstRev = ow.parseCommit(repo.resolve(dstRev));
+			this.dstRevCommit = ow.parseCommit(repo.resolve(dstRev));
 		else
-			this.dstRev = null;
+			this.dstRevCommit = null;
 
-		if (this.dstRev != null || this.srcRev != null)
-			this.commonAncestorRev = getCommonAncestor(repo, this.srcRev,
-					this.dstRev);
+		if (this.dstRevCommit != null || this.srcRevCommit != null)
+			this.ancestorRevCommit = getCommonAncestor(repo, this.srcRevCommit,
+					this.dstRevCommit);
 		else
-			this.commonAncestorRev = null;
+			this.ancestorRevCommit = null;
 
 		this.includeLocal = includeLocal;
 		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();

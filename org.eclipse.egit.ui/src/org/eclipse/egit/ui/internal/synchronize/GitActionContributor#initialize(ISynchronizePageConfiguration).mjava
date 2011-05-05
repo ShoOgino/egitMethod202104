@@ -7,6 +7,12 @@
 		expandAllAction.setImageDescriptor(EXPAND_ALL);
 		appendToGroup(P_TOOLBAR_MENU, NAVIGATE_GROUP, expandAllAction);
 
+		PushAction pushAction = new PushAction(
+				UIText.GitActionContributor_Push, configuration);
+		pushAction.setImageDescriptor(PUSH);
+
+		appendToGroup(P_TOOLBAR_MENU, SYNCHRONIZE_GROUP, pushAction);
+
 		ISynchronizePageSite site = configuration.getSite();
 		IWorkbenchSite ws = site.getWorkbenchSite();
 		openWorkingFileAction = new OpenWorkingFileAction(ws.getWorkbenchWindow()

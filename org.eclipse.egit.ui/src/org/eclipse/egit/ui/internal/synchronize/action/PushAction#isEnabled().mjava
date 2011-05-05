@@ -1,0 +1,16 @@
+	@Override
+	public boolean isEnabled() {
+		GitSynchronizeDataSet gsds = (GitSynchronizeDataSet) getConfiguration()
+				.getProperty(SYNCHRONIZATION_DATA);
+
+		if (gsds == null || gsds.size() != 1)
+			return false;
+
+		GitSynchronizeData gsd = gsds.iterator().next();
+		String srcRemoteName = gsd.getSrcRemoteName();
+		String dstRemoteName = gsd.getDstRemoteName();
+
+		return srcRemoteName != dstRemoteName
+				&& (srcRemoteName != null || dstRemoteName != null);
+	}
+

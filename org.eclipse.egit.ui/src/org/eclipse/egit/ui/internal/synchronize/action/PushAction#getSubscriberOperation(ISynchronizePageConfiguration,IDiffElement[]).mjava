@@ -1,0 +1,35 @@
+	@Override
+	protected SynchronizeModelOperation getSubscriberOperation(
+			ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
+		final int timeout = Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+
+		return new SynchronizeModelOperation(configuration, elements) {
+
+			public void run(IProgressMonitor monitor) throws InvocationTargetException,
+					InterruptedException {
+				GitSynchronizeDataSet gsds = (GitSynchronizeDataSet) getConfiguration()
+						.getProperty(SYNCHRONIZATION_DATA);
+				GitSynchronizeData gsd = gsds.iterator().next();
+
+				String remoteName = gsd.getSrcRemoteName();
+				if (remoteName == null)
+					remoteName = gsd.getDstRemoteName();
+
+				RemoteConfig rc;
+				try {
+					rc = new RemoteConfig(gsd.getRepository()
+							.getConfig(), gsd.getDstRemoteName());
+					PushOperationUI push = new PushOperationUI(gsd.getRepository(),
+							rc, timeout, false);
+					push.setCredentialsProvider(new EGitCredentialsProvider());
+					push.execute(monitor);
+				} catch (URISyntaxException e) {
+					new InvocationTargetException(e);
+				} catch (CoreException e) {
+					new InvocationTargetException(e);
+				}
+			}
+		};
+	}
+
