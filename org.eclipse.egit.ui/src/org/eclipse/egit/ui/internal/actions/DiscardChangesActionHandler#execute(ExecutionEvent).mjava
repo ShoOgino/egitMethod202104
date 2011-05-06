@@ -5,8 +5,9 @@
 				UIText.DiscardChangesAction_confirmActionMessage);
 		if (!performAction)
 			return null;
-		final DiscardChangesOperation operation = new DiscardChangesOperation(
-				getSelectedResources(event));
+		final DiscardChangesOperation operation = createOperation(event);
+		if (operation == null)
+			return null;
 		String jobname = UIText.DiscardChangesAction_discardChanges;
 		Job job = new Job(jobname) {
 			@Override

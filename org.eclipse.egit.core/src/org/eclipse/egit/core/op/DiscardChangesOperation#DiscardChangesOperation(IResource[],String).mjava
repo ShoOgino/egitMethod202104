@@ -1,0 +1,13 @@
+	/**
+	 * Construct a {@link DiscardChangesOperation} object.
+	 *
+	 * @param files
+	 * @param revision
+	 */
+	public DiscardChangesOperation(IResource[] files, String revision) {
+		this.files = new IResource[files.length];
+		System.arraycopy(files, 0, this.files, 0, files.length);
+		this.revision = revision;
+		schedulingRule = calcRefreshRule(files);
+	}
+

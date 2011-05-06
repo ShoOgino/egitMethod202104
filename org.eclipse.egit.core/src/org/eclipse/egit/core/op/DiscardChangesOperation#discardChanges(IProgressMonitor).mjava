@@ -15,7 +15,7 @@
 			}
 			try {
 				discardChange(res, repo);
-			} catch (IOException e) {
+			} catch (GitAPIException e) {
 				errorOccurred = true;
 				String message = NLS.bind(
 						CoreText.DiscardChangesOperation_discardFailed, res

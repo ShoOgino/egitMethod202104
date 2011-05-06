@@ -1,0 +1,12 @@
+	@Override
+	protected DiscardChangesOperation createOperation(ExecutionEvent event)
+			throws ExecutionException {
+		final IResource[] resources = getSelectedResources(event);
+		CompareTargetSelectionDialog dlg = new CompareTargetSelectionDialog(
+				getShell(event), getRepository(true, event),
+				resources.length == 1 ? resources[0].getFullPath().toString()
+						: null);
+		return dlg.open() == Window.OK ? new DiscardChangesOperation(resources,
+				dlg.getRefName()) : null;
+	}
+
