@@ -7,10 +7,14 @@
 		expandAllAction.setImageDescriptor(EXPAND_ALL);
 		appendToGroup(P_TOOLBAR_MENU, NAVIGATE_GROUP, expandAllAction);
 
+		PullAction pullAction = new PullAction(
+				UIText.GitActionContributor_Pull, configuration);
+		pullAction.setImageDescriptor(PULL);
+		appendToGroup(P_TOOLBAR_MENU, SYNCHRONIZE_GROUP, pullAction);
+
 		PushAction pushAction = new PushAction(
 				UIText.GitActionContributor_Push, configuration);
 		pushAction.setImageDescriptor(PUSH);
-
 		appendToGroup(P_TOOLBAR_MENU, SYNCHRONIZE_GROUP, pushAction);
 
 		ISynchronizePageSite site = configuration.getSite();

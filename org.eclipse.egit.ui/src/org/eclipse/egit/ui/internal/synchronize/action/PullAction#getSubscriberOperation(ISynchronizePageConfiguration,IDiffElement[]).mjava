@@ -1,0 +1,21 @@
+	@Override
+	protected SynchronizeModelOperation getSubscriberOperation(
+			ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
+
+		return new SynchronizeModelOperation(configuration, elements) {
+
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException, InterruptedException {
+				GitSynchronizeDataSet gsds = (GitSynchronizeDataSet) getConfiguration()
+						.getProperty(SYNCHRONIZATION_DATA);
+
+				Set<Repository> repositories = new HashSet<Repository>();
+				for (GitSynchronizeData gsd : gsds)
+					repositories.add(gsd.getRepository());
+
+				PullOperationUI pull = new PullOperationUI(repositories);
+				pull.execute(monitor);
+			}
+		};
+	}
+
