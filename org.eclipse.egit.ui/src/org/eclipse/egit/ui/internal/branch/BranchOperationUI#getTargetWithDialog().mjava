@@ -5,11 +5,12 @@
 			dialog = new CheckoutDialog(getShell(), repository);
 			break;
 		case MODE_CREATE:
-			dialog = new CreateBranchDialog(getShell(), repository);
-			if (dialog.open() != Window.OK)
-				return null;
-			CreateBranchWizard wiz = new CreateBranchWizard(repository, dialog
-					.getRefName());
+			CreateBranchWizard wiz;
+			try {
+				wiz = new CreateBranchWizard(repository, repository.getFullBranch());
+			} catch (IOException e) {
+				wiz = new CreateBranchWizard(repository);
+			}
 			new WizardDialog(getShell(), wiz).open();
 			return null;
 		case MODE_DELETE:
