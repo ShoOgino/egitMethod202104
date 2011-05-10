@@ -1,0 +1,7 @@
+	@Test
+	public void dontWrapWordLongerThanOneLine() {
+		String input = "This has to be on its own line: 1234567890123456789012345678901234567890123456789012345678901234567890123456789012 this not";
+		String expected = "This has to be on its own line:\n1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nthis not";
+		assertWrappedEquals(expected, input);
+	}
+

@@ -1,0 +1,7 @@
+	@Test
+	public void dontWrapWordLongerThanOneLineAtStart() {
+		String input = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012 the previous was longer than a line";
+		String expected = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nthe previous was longer than a line";
+		assertWrappedEquals(expected, input);
+	}
+

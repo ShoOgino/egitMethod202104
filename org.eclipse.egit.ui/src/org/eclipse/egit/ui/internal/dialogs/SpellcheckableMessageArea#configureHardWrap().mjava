@@ -12,7 +12,9 @@
 							return;
 						}
 						String lineDelimiter = textWidget.getLineDelimiter();
-						List<WrapEdit> wrapEdits = calculateWrapEdits(textWidget.getText(), 70, lineDelimiter);
+						List<WrapEdit> wrapEdits = calculateWrapEdits(
+								textWidget.getText(), MAX_LINE_WIDTH,
+								lineDelimiter);
 						// Prevent infinite loop because replaceTextRange causes a ModifyEvent
 						active = false;
 						for (WrapEdit wrapEdit : wrapEdits) {

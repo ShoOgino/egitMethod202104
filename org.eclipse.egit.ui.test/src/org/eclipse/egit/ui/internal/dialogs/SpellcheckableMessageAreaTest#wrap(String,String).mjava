@@ -1,7 +1,8 @@
 	private static String wrap(String text, String lineDelimiter) {
 		StringBuilder sb = new StringBuilder(text);
-		List<WrapEdit> wrapEdits = SpellcheckableMessageArea.calculateWrapEdits(text, 70,
-				lineDelimiter);
+		List<WrapEdit> wrapEdits = SpellcheckableMessageArea
+				.calculateWrapEdits(text,
+						SpellcheckableMessageArea.MAX_LINE_WIDTH, lineDelimiter);
 		for (WrapEdit wrapEdit : wrapEdits) {
 			sb.replace(wrapEdit.getStart(),
 					wrapEdit.getStart() + wrapEdit.getLength(), lineDelimiter);
