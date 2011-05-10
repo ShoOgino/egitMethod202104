@@ -1,9 +1,5 @@
 	protected void drawBoundaryDot(final int x, final int y, final int w,
 			final int h) {
-		g.setForeground(sys_gray);
-		g.setBackground(cellBG);
-		g.setLineWidth(1);
-		g.fillOval(cellX + x, cellY + y, w, h);
-		g.drawOval(cellX + x, cellY + y, w, h);
+		drawDot(sys_gray, sys_white, x, y, w, h);
 	}
 
