@@ -1,0 +1,7 @@
+	SynchronizeFetchJob(GitSynchronizeDataSet gsdSet) {
+		super(UIText.SynchronizeFetchJob_JobName);
+		this.gsdSet = gsdSet;
+		timeout = Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+	}
+
