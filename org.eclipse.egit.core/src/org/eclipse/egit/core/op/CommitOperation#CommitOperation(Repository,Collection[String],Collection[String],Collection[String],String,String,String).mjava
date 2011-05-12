@@ -1,4 +1,5 @@
 	/**
+	 * @param repository
 	 * @param filesToCommit
 	 *            a list of files which will be included in the commit
 	 * @param notIndexed
@@ -13,19 +14,18 @@
 	 *            the commit message
 	 * @throws CoreException
 	 */
-	public CommitOperation(IFile[] filesToCommit, Collection<IFile> notIndexed,
-			Collection<IFile> notTracked, String author, String committer,
+	public CommitOperation(Repository repository, Collection<String> filesToCommit, Collection<String> notIndexed,
+			Collection<String> notTracked, String author, String committer,
 			String message) throws CoreException {
+		this.repo = repository;
 		this.author = author;
 		this.committer = committer;
 		this.message = message;
-		if (filesToCommit != null && filesToCommit.length > 0)
-			setRepository(filesToCommit[0]);
 		if (filesToCommit != null)
-			commitFileList = buildFileList(Arrays.asList(filesToCommit));
+			commitFileList = new HashSet<String>(filesToCommit);
 		if (notIndexed != null)
-			this.notIndexed = buildFileList(notIndexed);
+			this.notIndexed = new HashSet<String>(notIndexed);
 		if (notTracked != null)
-			this.notTracked = buildFileList(notTracked);
+			this.notTracked = new HashSet<String>(notTracked);
 	}
 

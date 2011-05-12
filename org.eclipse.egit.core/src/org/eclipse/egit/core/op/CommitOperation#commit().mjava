@@ -1,6 +1,9 @@
-	private void commit(Repository repo, List<String> commitFileList, final Date commitDate,
-			final TimeZone timeZone, final PersonIdent authorIdent,
-			final PersonIdent committerIdent) throws TeamException {
+	private void commit() throws TeamException {
+		final Date commitDate = new Date();
+		final TimeZone timeZone = TimeZone.getDefault();
+		final PersonIdent authorIdent = RawParseUtils.parsePersonIdent(author);
+		final PersonIdent committerIdent = RawParseUtils.parsePersonIdent(committer);
+
 		Git git = new Git(repo);
 		try {
 			CommitCommand commitCommand = git.commit();

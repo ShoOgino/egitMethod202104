@@ -1,10 +1,10 @@
 	private void resetState() {
-		files = new LinkedHashSet<IFile>();
-		notIndexed = new LinkedHashSet<IFile>();
-		indexChanges = new LinkedHashSet<IFile>();
-		notTracked = new LinkedHashSet<IFile>();
+		files = new LinkedHashSet<String>();
+		notIndexed = new LinkedHashSet<String>();
+		indexChanges = new LinkedHashSet<String>();
+		notTracked = new LinkedHashSet<String>();
 		amending = false;
 		previousCommit = null;
-		indexDiffs = new HashMap<Repository, IndexDiff>();
+		indexDiff = null;
 	}
 

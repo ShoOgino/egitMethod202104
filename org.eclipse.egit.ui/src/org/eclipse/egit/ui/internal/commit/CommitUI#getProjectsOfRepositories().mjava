@@ -4,12 +4,8 @@
 				.getProjects();
 		for (IProject project : projects) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
-			for (Repository repository : repos) {
-				if (mapping != null && mapping.getRepository() == repository) {
-					ret.add(project);
-					break;
-				}
-			}
+			if (mapping != null && mapping.getRepository() == repo)
+				ret.add(project);
 		}
 		return ret.toArray(new IProject[ret.size()]);
 	}

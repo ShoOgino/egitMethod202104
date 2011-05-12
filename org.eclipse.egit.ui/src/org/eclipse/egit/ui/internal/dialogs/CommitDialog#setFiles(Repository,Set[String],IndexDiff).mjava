@@ -1,0 +1,32 @@
+	/**
+	 * Set the total set of changed files, including additions and
+	 * removals
+	 * @param repository
+	 * @param paths paths of files potentially affected by a new commit
+	 * @param indexDiff IndexDiff of the related repository
+	 */
+	public void setFiles(Repository repository, Set<String> paths,
+			IndexDiff indexDiff) {
+		this.repository = repository;
+		items.clear();
+		for (String path : paths) {
+			CommitItem item = new CommitItem();
+			item.status = getFileStatus(path, indexDiff);
+			item.path = path;
+			items.add(item);
+		}
+		createChangeIdDefault = repository.getConfig().getBoolean(
+				ConfigConstants.CONFIG_GERRIT_SECTION,
+				ConfigConstants.CONFIG_KEY_CREATECHANGEID, false);
+
+		// initially, we sort by status plus path
+		Collections.sort(items, new Comparator<CommitItem>() {
+			public int compare(CommitItem o1, CommitItem o2) {
+				int diff = o1.status.ordinal() - o2.status.ordinal();
+				if (diff != 0)
+					return diff;
+				return o1.path.compareTo(o2.path);
+			}
+		});
+	}
+

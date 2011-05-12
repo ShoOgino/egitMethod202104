@@ -9,7 +9,7 @@
 		Object[] checkedElements = filesViewer.getCheckedElements();
 		selectedFiles.clear();
 		for (Object obj : checkedElements)
-			selectedFiles.add(((CommitItem) obj).file);
+			selectedFiles.add(((CommitItem) obj).path);
 
 		if (commitMessage.trim().length() == 0) {
 			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoMessage, UIText.CommitDialog_ErrorMustEnterCommitMessage);

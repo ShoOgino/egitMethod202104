@@ -1,0 +1,33 @@
+	// TODO: this method is both needed by UI tests and Core tests
+	// provide a common base for UI tests and core tests
+	/**
+	 * verifies that repository contains exactly the given files.
+	 * @param repository
+	 * @param paths
+	 * @throws Exception
+	 */
+	public static void assertRepositoryContainsFiles(Repository repository,
+			String[] paths) throws Exception {
+		Set<String> expectedfiles = new HashSet<String>();
+		for (String path : paths)
+			expectedfiles.add(path);
+		TreeWalk treeWalk = new TreeWalk(repository);
+		treeWalk.addTree(repository.resolve("HEAD^{tree}"));
+		treeWalk.setRecursive(true);
+		while (treeWalk.next()) {
+			String path = treeWalk.getPathString();
+			if (!expectedfiles.contains(path))
+				fail("Repository contains unexpected expected file " + path);
+			expectedfiles.remove(path);
+		}
+		if (expectedfiles.size() > 0) {
+			StringBuilder message = new StringBuilder(
+					"Repository does not contain expected files: ");
+			for (String path : expectedfiles) {
+				message.append(path);
+				message.append(" ");
+			}
+			fail(message.toString());
+		}
+	}
+

@@ -12,7 +12,7 @@
 				TestUtils.AUTHOR, TestUtils.COMMITTER,
 				"first commit");
 		commitOperation.setCommitAll(true);
-		commitOperation.setRepos(new Repository[]{repository});
+		commitOperation.setRepository(repository);
 		commitOperation.execute(null);
 
 		Git git = new Git(repository);

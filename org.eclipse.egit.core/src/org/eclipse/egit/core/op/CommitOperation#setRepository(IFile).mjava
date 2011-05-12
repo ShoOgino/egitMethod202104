@@ -1,0 +1,9 @@
+	private void setRepository(IFile file) throws CoreException {
+		RepositoryMapping mapping = RepositoryMapping.getMapping(file);
+		if (mapping == null)
+			throw new CoreException(Activator.error(NLS.bind(
+					CoreText.CommitOperation_couldNotFindRepositoryMapping,
+					file), null));
+		repo = mapping.getRepository();
+	}
+

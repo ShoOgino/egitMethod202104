@@ -1,0 +1,8 @@
+	private void includeList(Set<String> added, Set<String> category) {
+		for (String filename : added) {
+			if (!files.contains(filename))
+				files.add(filename);
+			category.add(filename);
+		}
+	}
+

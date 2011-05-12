@@ -7,14 +7,11 @@
 			}
 			if (commitItem.status == Status.UNTRACKED)
 				return;
-
-			IProject project = commitItem.file.getProject();
-			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
-			if (mapping == null) {
-				return;
-			}
-			Repository repository = mapping.getRepository();
-
+			IFile file = findFile(commitItem.path);
+			if (file == null)
+				return; // file is outside the workspace. TODO: support
+						// displaying diffs in this case.
+			IProject project = file.getProject();
 			try {
 				ObjectId id = repository.resolve(Constants.HEAD);
 				if (id == null
@@ -28,14 +25,14 @@
 			GitProvider provider = (GitProvider) RepositoryProvider.getProvider(project);
 			GitFileHistoryProvider fileHistoryProvider = (GitFileHistoryProvider) provider.getFileHistoryProvider();
 
-			IFileHistory fileHistory = fileHistoryProvider.getFileHistoryFor(commitItem.file, IFileHistoryProvider.SINGLE_REVISION, null);
+			IFileHistory fileHistory = fileHistoryProvider.getFileHistoryFor(file, IFileHistoryProvider.SINGLE_REVISION, null);
 
 			IFileRevision baseFile = fileHistory.getFileRevisions()[0];
-			IFileRevision nextFile = fileHistoryProvider.getWorkspaceFileRevision(commitItem.file);
+			IFileRevision nextFile = fileHistoryProvider.getWorkspaceFileRevision(file);
 
 			String encoding;
 			try {
-				encoding = commitItem.file.getCharset();
+				encoding = file.getCharset();
 			} catch (CoreException e1) {
 				encoding = null;
 			}

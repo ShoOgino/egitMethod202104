@@ -225,7 +225,7 @@
 		}
 		else {
 			for (CommitItem item : items) {
-				if (preselectedFiles.contains(item.file) &&
+				if ((preselectAll || preselectedFiles.contains(item.path)) &&
 						item.status != Status.UNTRACKED &&
 						item.status != Status.ASSUME_UNCHANGED) {
 					filesViewer.setChecked(item, true);

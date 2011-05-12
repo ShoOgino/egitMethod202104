@@ -2,23 +2,25 @@
 	 * Constructs a CommitUI object
 	 * @param shell
 	 *            Shell to use for UI interaction. Must not be null.
-	 * @param repos
-	 *            Repositories to commit. Must not be null
+	 * @param repo
+	 *            Repository to commit. Must not be null
 	 * @param selectedResources
 	 *            Resources selected by the user. A file is preselected in the
 	 *            commit dialog if the file is contained in selectedResources or
 	 *            if selectedResources contains a resource that is parent of the
 	 *            file. selectedResources must not be null.
+	 * @param preselectAll
+	 * 			  preselect all changed files in the commit dialog.
+	 * 			  If set to true selectedResources are ignored.
 	 */
-	public CommitUI(Shell shell, Repository[] repos,
-			IResource[] selectedResources) {
+	public CommitUI(Shell shell, Repository repo,
+			IResource[] selectedResources, boolean preselectAll) {
 		this.shell = shell;
-		this.repos = new Repository[repos.length];
-		// keep our own copy
-		System.arraycopy(repos, 0, this.repos, 0, repos.length);
+		this.repo = repo;
 		this.selectedResources = new IResource[selectedResources.length];
 		// keep our own copy
 		System.arraycopy(selectedResources, 0, this.selectedResources, 0,
 				selectedResources.length);
+		this.preselectAll = preselectAll;
 	}
 

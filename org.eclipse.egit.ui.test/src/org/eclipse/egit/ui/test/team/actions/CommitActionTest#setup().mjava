@@ -4,8 +4,10 @@
 		Repository repo = lookupRepository(repositoryFile);
 		// TODO delete the second project for the time being (.gitignore is
 		// currently not hiding the .project file from commit)
-		ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ2).delete(
-				false, null);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ2);
+		File dotProject = new File(project.getLocation().toOSString(), ".project");
+		project.delete(false, false, null);
+		assertTrue(dotProject.delete());
 
 		TagBuilder tag = new TagBuilder();
 		tag.setTag("SomeTag");

@@ -6,30 +6,30 @@
 		item.setText(UIText.CommitDialog_AddFileOnDiskToIndex);
 		item.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event arg0) {
-				IStructuredSelection sel = (IStructuredSelection) filesViewer.getSelection();
+				IStructuredSelection sel = (IStructuredSelection) filesViewer
+						.getSelection();
 				if (sel.isEmpty()) {
 					return;
 				}
-				try {
-					List<IResource> filesToAdd = new ArrayList<IResource>();
-					for (Iterator<?> it = sel.iterator(); it.hasNext();) {
-						CommitItem commitItem = (CommitItem) it.next();
-						filesToAdd.add(commitItem.file);
-					}
-					AddToIndexOperation op = new AddToIndexOperation(filesToAdd);
-					op.execute(new NullProgressMonitor());
-					for (Iterator<?> it = sel.iterator(); it.hasNext();) {
-						CommitItem commitItem = (CommitItem) it.next();
-						commitItem.status = getFileStatus(commitItem.file);
-					}
-					filesViewer.refresh(true);
-				} catch (CoreException e) {
-					Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
-					return;
-				} catch (IOException e) {
-					Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
-					return;
+				AddCommand addCommand = new Git(repository).add();
+				for (Iterator<?> it = sel.iterator(); it.hasNext();) {
+					CommitItem commitItem = (CommitItem) it.next();
+					addCommand.addFilepattern(commitItem.path);
 				}
+				try {
+					addCommand.call();
+				} catch (NoFilepatternException e) {
+					Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
+				}
+				for (Iterator<?> it = sel.iterator(); it.hasNext();) {
+					CommitItem commitItem = (CommitItem) it.next();
+					try {
+						commitItem.status = getFileStatus(commitItem.path);
+					} catch (IOException e) {
+						Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
+					}
+				}
+				filesViewer.refresh(true);
 			}
 		});
 

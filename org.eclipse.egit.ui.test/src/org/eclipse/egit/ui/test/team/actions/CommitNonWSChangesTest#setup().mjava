@@ -1,0 +1,9 @@
+	@BeforeClass
+	public static void setup() throws Exception {
+		repositoryFile = createProjectAndCommitToRepository();
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(repositoryFile);
+		repository = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryCache().lookupRepository(repositoryFile);
+	}
+

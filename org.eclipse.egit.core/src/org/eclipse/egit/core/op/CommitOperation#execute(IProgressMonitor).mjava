@@ -13,22 +13,22 @@
 				final PersonIdent committerIdent = RawParseUtils.parsePersonIdent(committer);
 				if (commitAll)
 					commitAll(commitDate, timeZone, authorIdent, committerIdent);
-
-				else if (amending || filesToCommit != null
-						&& filesToCommit.length > 0) {
+				else if (amending || commitFileList != null
+						&& commitFileList.size() > 0) {
 					actMonitor.beginTask(
 							CoreText.CommitOperation_PerformingCommit,
-							filesToCommit.length * 2);
+							commitFileList.size() * 2);
 					actMonitor.setTaskName(CoreText.CommitOperation_PerformingCommit);
-					Map<Repository, List<String>> filesByRepo = prepareCommit(actMonitor);
-					doCommits(filesByRepo);
-					actMonitor.worked(filesToCommit.length);
+					addUntracked();
+					commit();
+					actMonitor.worked(commitFileList.size());
 				} else if (commitWorkingDirChanges) {
 					// TODO commit -a
 				} else {
 					// TODO commit
 				}
 			}
+
 		};
 		ResourcesPlugin.getWorkspace().run(action, monitor);
 	}

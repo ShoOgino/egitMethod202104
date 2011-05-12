@@ -8,7 +8,7 @@
 			return;
 		}
 
-		BasicConfigurationDialog.show(repos);
+		BasicConfigurationDialog.show(new Repository[]{repo});
 
 		resetState();
 		final IProject[] projects = getProjectsOfRepositories();
@@ -32,32 +32,26 @@
 			return;
 		}
 
-		Repository repository = null;
 		Repository mergeRepository = null;
-		amendAllowed = repos.length == 1;
 		boolean isMergedResolved = false;
 		boolean isCherryPickResolved = false;
-		for (Repository repo : repos) {
-			repository = repo;
-			RepositoryState state = repo.getRepositoryState();
-			if (!state.canCommit()) {
-				MessageDialog.openError(shell,
-						UIText.CommitAction_cannotCommit, NLS.bind(
-								UIText.CommitAction_repositoryState, state
-										.getDescription()));
-				return;
-			}
-			else if (state.equals(RepositoryState.MERGING_RESOLVED)) {
-				isMergedResolved = true;
-				mergeRepository = repo;
-			}
-			else if (state.equals(RepositoryState.CHERRY_PICKING_RESOLVED)) {
-				isCherryPickResolved = true;
-				mergeRepository = repo;
-			}
+		RepositoryState state = repo.getRepositoryState();
+		if (!state.canCommit()) {
+			MessageDialog.openError(
+					shell,
+					UIText.CommitAction_cannotCommit,
+					NLS.bind(UIText.CommitAction_repositoryState,
+							state.getDescription()));
+			return;
+		} else if (state.equals(RepositoryState.MERGING_RESOLVED)) {
+			isMergedResolved = true;
+			mergeRepository = repo;
+		} else if (state.equals(RepositoryState.CHERRY_PICKING_RESOLVED)) {
+			isCherryPickResolved = true;
+			mergeRepository = repo;
 		}
 		if (amendAllowed)
-			loadPreviousCommit(repos[0]);
+			loadPreviousCommit();
 		if (files.isEmpty()) {
 			if (amendAllowed && previousCommit != null) {
 				boolean result = MessageDialog.openQuestion(shell,
@@ -76,22 +70,21 @@
 
 		String author = null;
 		String committer = null;
-		if (repository != null) {
-			final UserConfig config = repository.getConfig().get(UserConfig.KEY);
-			author = config.getAuthorName();
-			final String authorEmail = config.getAuthorEmail();
-			author = author + " <" + authorEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		final UserConfig config = repo.getConfig().get(UserConfig.KEY);
+		author = config.getAuthorName();
+		final String authorEmail = config.getAuthorEmail();
+		author = author + " <" + authorEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 
-			committer = config.getCommitterName();
-			final String committerEmail = config.getCommitterEmail();
-			committer = committer + " <" + committerEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		committer = config.getCommitterName();
+		final String committerEmail = config.getCommitterEmail();
+		committer = committer + " <" + committerEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 
 		CommitDialog commitDialog = new CommitDialog(shell);
 		commitDialog.setAmending(amending);
 		commitDialog.setAmendAllowed(amendAllowed);
-		commitDialog.setFiles(files, indexDiffs);
+		commitDialog.setFiles(repo, files, indexDiff);
 		commitDialog.setPreselectedFiles(getSelectedFiles());
+		commitDialog.setPreselectAll(preselectAll);
 		commitDialog.setAuthor(author);
 		commitDialog.setCommitter(committer);
 		commitDialog.setAllowToChangeSelection(!isMergedResolved && !isCherryPickResolved);
@@ -113,30 +106,33 @@
 		if (commitDialog.open() != IDialogConstants.OK_ID)
 			return;
 
-		final CommitOperation commitOperation = new CommitOperation(
-				commitDialog.getSelectedFiles(), notIndexed, notTracked,
-				commitDialog.getAuthor(), commitDialog.getCommitter(),
-				commitDialog.getCommitMessage());
-		if (commitDialog.isAmending()) {
-			commitOperation.setAmending(true);
-			commitOperation.setRepos(repos);
+		final CommitOperation commitOperation;
+		try {
+			commitOperation= new CommitOperation(
+					repo,
+					commitDialog.getSelectedFiles(), notIndexed, notTracked,
+					commitDialog.getAuthor(), commitDialog.getCommitter(),
+					commitDialog.getCommitMessage());
+		} catch (CoreException e1) {
+			Activator.handleError(UIText.CommitUI_commitFailed, e1, true);
+			return;
 		}
+		if (commitDialog.isAmending())
+			commitOperation.setAmending(true);
 		commitOperation.setComputeChangeId(commitDialog.getCreateChangeId());
 		commitOperation.setCommitAll(isMergedResolved);
 		if (isMergedResolved)
-			commitOperation.setRepos(repos);
+			commitOperation.setRepository(repo);
 		String jobname = UIText.CommitAction_CommittingChanges;
 		Job job = new Job(jobname) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					commitOperation.execute(monitor);
-					for (Repository repo : repos) {
-						RepositoryMapping mapping = RepositoryMapping
-								.findRepositoryMapping(repo);
-						if (mapping != null)
-							mapping.fireRepositoryChanged();
-					}
+					RepositoryMapping mapping = RepositoryMapping
+							.findRepositoryMapping(repo);
+					if (mapping != null)
+						mapping.fireRepositoryChanged();
 				} catch (CoreException e) {
 					return Activator.createErrorStatus(
 							UIText.CommitAction_CommittingFailed, e);
