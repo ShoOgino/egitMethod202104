@@ -129,6 +129,8 @@
 					for (Ref ref : additionalRefs)
 						refs.add(ref.getName());
 
+				Collections.sort(refs, CommonUtils.STRING_ASCENDING_COMPARATOR);
+
 				branchesEditor.setItems(refs.toArray(new String[refs.size()]));
 
 				return branchesEditor;
