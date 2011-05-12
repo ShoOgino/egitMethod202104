@@ -28,6 +28,7 @@
 			try {
 				fetchOperationUI.execute(subMonitor);
 			} catch (CoreException e) {
+				showInformationDialog(remoteName);
 				Activator.logError(e.getMessage(), e);
 			}
 

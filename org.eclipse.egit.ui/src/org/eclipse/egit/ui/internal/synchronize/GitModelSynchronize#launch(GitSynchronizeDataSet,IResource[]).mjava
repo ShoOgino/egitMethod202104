@@ -6,9 +6,14 @@
 	 */
 	public static final void launch(final GitSynchronizeDataSet gsdSet,
 			IResource[] resources) {
-		Job fetchJob = new SynchronizeFetchJob(gsdSet);
-		fetchJob.setUser(true);
-		fetchJob.schedule();
+		boolean launchFetch = Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH);
+		Job fetchJob = null;
+		if (launchFetch) {
+			fetchJob = new SynchronizeFetchJob(gsdSet);
+			fetchJob.setUser(true);
+			fetchJob.schedule();
+		}
 
 		ResourceMapping[] mappings = getSelectedResourceMappings(resources);
 
@@ -31,11 +36,13 @@
 		if (window != null)
 			activePart = window.getActivePage().getActivePart();
 
-		try {
-			fetchJob.join();
-		} catch (InterruptedException e) {
-			Activator.logError("Fetch operation interupted", e); //$NON-NLS-1$
-		}
+		if (launchFetch && fetchJob != null)
+			try {
+				fetchJob.join();
+			} catch (InterruptedException e) {
+				Activator.logError("Fetch operation interupted", e); //$NON-NLS-1$
+			}
+
 		participant.run(activePart);
 	}
 
