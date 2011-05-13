@@ -1,0 +1,29 @@
+	public IStorage getStorage(IProgressMonitor monitor) throws CoreException {
+		return new IStorage() {
+
+			public Object getAdapter(Class adapter) {
+				return null;
+			}
+
+			public boolean isReadOnly() {
+				return true;
+			}
+
+			public String getName() {
+				return file.getName();
+			}
+
+			public IPath getFullPath() {
+				return new Path(file.getAbsolutePath());
+			}
+
+			public InputStream getContents() throws CoreException {
+				try {
+					return new FileInputStream(file);
+				} catch (FileNotFoundException e) {
+					throw new CoreException(Activator.error(e.getMessage(), e));
+				}
+			}
+		};
+	}
+

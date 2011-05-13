@@ -1,0 +1,25 @@
+	/**
+	 * Opens a compare editor. The working tree version of the given file is
+	 * compared with the version in the HEAD commit. Use this method if the
+	 * given file is outide the workspace.
+	 *
+	 * @param repository
+	 * @param path
+	 */
+	public static void compareHeadWithWorkingTree(Repository repository,
+			String path) {
+		RevCommit headCommit = getHeadCommit(repository);
+		if (headCommit == null)
+			return;
+		ITypedElement base = CompareUtils.getFileRevisionTypedElement(path,
+				headCommit, repository);
+		IFileRevision nextFile;
+		nextFile = new WorkingTreeFileRevision(new File(
+				repository.getWorkTree(), path));
+		String encoding = ResourcesPlugin.getEncoding();
+		ITypedElement next = new FileRevisionTypedElement(nextFile, encoding);
+		GitCompareFileRevisionEditorInput input = new GitCompareFileRevisionEditorInput(
+				next, base, null);
+		CompareUI.openCompareDialog(input);
+	}
+

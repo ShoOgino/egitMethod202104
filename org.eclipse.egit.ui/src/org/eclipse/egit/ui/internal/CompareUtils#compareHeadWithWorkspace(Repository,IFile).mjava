@@ -1,0 +1,29 @@
+	/**
+	 * Opens a compare editor. The workspace version of the given file is
+	 * compared with the version in the HEAD commit.
+	 *
+	 * @param repository
+	 * @param file
+	 */
+	public static void compareHeadWithWorkspace(Repository repository,
+			IFile file) {
+		RevCommit headCommit = getHeadCommit(repository);
+		if (headCommit == null)
+			return;
+		String path = RepositoryMapping.getMapping(file).getRepoRelativePath(
+				file);
+		ITypedElement base = CompareUtils.getFileRevisionTypedElement(path,
+				headCommit, repository);
+		IFileRevision nextFile = new WorkspaceFileRevision(file);
+		String encoding = null;
+		try {
+			encoding = file.getCharset();
+		} catch (CoreException e) {
+			Activator.handleError(UIText.CompareUtils_errorGettingEncoding, e, true);
+		}
+		ITypedElement next = new FileRevisionTypedElement(nextFile, encoding);
+		GitCompareFileRevisionEditorInput input = new GitCompareFileRevisionEditorInput(
+				next, base, null);
+		CompareUI.openCompareDialog(input);
+	}
+
