@@ -1,0 +1,5 @@
+	private boolean isSignedOffBy(PersonIdent person) {
+		RevCommit commit = getCommit().getRevCommit();
+		return commit.getFullMessage().indexOf(getSignedOffByLine(person)) != -1;
+	}
+

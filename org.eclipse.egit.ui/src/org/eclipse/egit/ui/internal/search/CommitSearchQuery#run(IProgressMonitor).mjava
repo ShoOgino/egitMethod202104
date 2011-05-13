@@ -5,7 +5,7 @@
 			throws OperationCanceledException {
 		this.result.removeAll();
 
-		Pattern pattern = PatternConstructor.createPattern(
+		Pattern pattern = PatternUtils.createPattern(
 				this.settings.getTextPattern(),
 				this.settings.isCaseSensitive(), this.settings.isRegExSearch());
 		List<String> paths = settings.getRepositories();

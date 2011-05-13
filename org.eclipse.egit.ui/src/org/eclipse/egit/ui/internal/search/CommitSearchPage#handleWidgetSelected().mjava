@@ -1,0 +1,41 @@
+	private void handleWidgetSelected() {
+		int selectionIndex = patternCombo.getSelectionIndex();
+		if (selectionIndex < 0
+				|| selectionIndex >= fPreviousSearchPatterns.size())
+			return;
+
+		CommitSearchSettings settings = fPreviousSearchPatterns
+				.get(selectionIndex);
+		if (!patternCombo.getText().equals(settings.getTextPattern()))
+			return;
+
+		isCaseSensitiveButton.setSelection(settings.isCaseSensitive());
+		isRegExButton.setSelection(settings.isRegExSearch());
+		patternCombo.setText(settings.getTextPattern());
+		patternFieldContentAssist.setEnabled(settings.isRegExSearch());
+
+		searchAuthorButton.setSelection(settings.isMatchAuthor());
+		searchCommitButton.setSelection(settings.isMatchCommit());
+		searchCommitterButton.setSelection(settings.isMatchCommitter());
+		searchMessageButton.setSelection(settings.isMatchMessage());
+		searchParentsButton.setSelection(settings.isMatchParents());
+		searchTreeButton.setSelection(settings.isMatchTree());
+		searchAllBranchesButton.setSelection(settings.isAllBranches());
+
+		List<RepositoryNode> repositories = new LinkedList<RepositoryNode>();
+		for (String path : settings.getRepositories()) {
+			File file = new File(path);
+			if (file.exists())
+				try {
+					RepositoryNode node = new RepositoryNode(null,
+							org.eclipse.egit.core.Activator.getDefault()
+									.getRepositoryCache()
+									.lookupRepository(file));
+					repositories.add(node);
+				} catch (IOException ignore) {
+					// Ignore and don't check
+				}
+		}
+		repositoryViewer.setCheckedElements(repositories.toArray());
+	}
+

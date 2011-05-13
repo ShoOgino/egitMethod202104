@@ -1,0 +1,9 @@
+	private void updateOKStatus() {
+		boolean status = validateRegex();
+		if (status)
+			status = validateScope();
+		if (status)
+			status = validateRepositories();
+		getContainer().setPerformActionEnabled(status);
+	}
+

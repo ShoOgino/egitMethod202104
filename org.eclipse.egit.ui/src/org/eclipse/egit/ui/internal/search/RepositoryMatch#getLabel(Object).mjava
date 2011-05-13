@@ -1,0 +1,7 @@
+	public String getLabel(Object o) {
+		if (repository.isBare())
+			return repository.getDirectory().getName();
+		else
+			return repository.getDirectory().getParentFile().getName();
+	}
+

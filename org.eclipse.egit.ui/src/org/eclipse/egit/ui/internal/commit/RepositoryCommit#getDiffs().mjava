@@ -6,7 +6,7 @@
 	public FileDiff[] getDiffs() {
 		if (diffs == null) {
 			RevWalk revWalk = new RevWalk(repository);
-			TreeWalk treewalk = new TreeWalk(repository);
+			TreeWalk treewalk = new TreeWalk(revWalk.getObjectReader());
 			treewalk.setRecursive(true);
 			treewalk.setFilter(TreeFilter.ANY_DIFF);
 			try {

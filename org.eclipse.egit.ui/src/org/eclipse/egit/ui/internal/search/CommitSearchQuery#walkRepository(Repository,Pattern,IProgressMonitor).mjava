@@ -3,12 +3,25 @@
 		RevWalk walk = new RevWalk(repository);
 		try {
 			walk.setRetainBody(true);
-			RevCommit commit = walk.parseCommit(repository
-					.resolve(Constants.HEAD));
-			if (commit != null) {
-				walk.markStart(commit);
-				commit = walk.next();
-				while (commit != null) {
+			List<RevCommit> commits = new LinkedList<RevCommit>();
+			if (this.settings.isAllBranches()) {
+				for (Ref ref : repository.getRefDatabase()
+						.getRefs(Constants.R_HEADS).values())
+					if (!ref.isSymbolic())
+						commits.add(walk.parseCommit(ref.getObjectId()));
+				for (Ref ref : repository.getRefDatabase()
+						.getRefs(Constants.R_REMOTES).values())
+					if (!ref.isSymbolic())
+						commits.add(walk.parseCommit(ref.getObjectId()));
+			} else {
+				ObjectId headCommit = repository.resolve(Constants.HEAD);
+				if (headCommit != null)
+					commits.add(walk.parseCommit(headCommit));
+			}
+
+			if (!commits.isEmpty()) {
+				walk.markStart(commits);
+				for (RevCommit commit : walk) {
 					if (monitor.isCanceled())
 						throw new OperationCanceledException();
 					for (SearchMatcher matcher : this.matchers)
@@ -17,7 +30,6 @@
 									commit));
 							break;
 						}
-					commit = walk.next();
 				}
 			}
 		} finally {

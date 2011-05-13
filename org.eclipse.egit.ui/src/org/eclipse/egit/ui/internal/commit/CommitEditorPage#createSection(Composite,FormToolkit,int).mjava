@@ -1,0 +1,10 @@
+	private Section createSection(Composite parent, FormToolkit toolkit,
+			int span) {
+		Section section = toolkit.createSection(parent,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
+		GridDataFactory.fillDefaults().span(span, 1).grab(true, true)
+				.applyTo(section);
+		return section;
+	}
+

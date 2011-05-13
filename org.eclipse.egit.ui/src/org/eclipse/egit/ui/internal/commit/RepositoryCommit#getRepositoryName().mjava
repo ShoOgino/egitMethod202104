@@ -4,6 +4,9 @@
 	 * @return repo name
 	 */
 	public String getRepositoryName() {
-		return repository.getDirectory().getParentFile().getName();
+		if (!repository.isBare())
+			return repository.getDirectory().getParentFile().getName();
+		else
+			return repository.getDirectory().getName();
 	}
 

@@ -1,0 +1,16 @@
+	private void fillTags(Composite parent, FormToolkit toolkit) {
+		if (tagLabelArea != null)
+			tagLabelArea.dispose();
+		tagLabelArea = toolkit.createComposite(parent);
+		GridLayoutFactory.fillDefaults().spacing(1, 1).numColumns(4)
+				.applyTo(tagLabelArea);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tagLabelArea);
+		List<String> tags = getTags();
+		for (String tag : tags) {
+			CLabel tagLabel = new CLabel(tagLabelArea, SWT.NONE);
+			toolkit.adapt(tagLabel, false, false);
+			tagLabel.setImage(getImage(UIIcons.TAG));
+			tagLabel.setText(tag);
+		}
+	}
+

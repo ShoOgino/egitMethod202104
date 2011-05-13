@@ -1,0 +1,30 @@
+	private void addRepositoryControl(Composite parent) {
+		Group repoArea = new Group(parent, SWT.NONE);
+		repoArea.setText(UIText.CommitSearchPage_Repositories);
+		GridDataFactory.fillDefaults().grab(true, true).span(2, 1)
+				.applyTo(repoArea);
+		GridLayoutFactory.swtDefaults().numColumns(1).applyTo(repoArea);
+
+		this.repositoryViewer = CheckboxTableViewer.newCheckList(repoArea,
+				SWT.SINGLE | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+		this.repositoryViewer
+				.setLabelProvider(new DelegatingStyledCellLabelProvider(
+						new RepositoriesViewLabelProvider()));
+		this.repositoryViewer
+				.setContentProvider(new RepositoriesViewContentProvider());
+		this.repositoryViewer
+				.setInput(ResourcesPlugin.getWorkspace().getRoot());
+		this.repositoryViewer.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				updateOKStatus();
+			}
+		});
+		GridDataFactory.fillDefaults().grab(true, true)
+				.applyTo(this.repositoryViewer.getControl());
+
+		this.searchAllBranchesButton = new Button(repoArea, SWT.CHECK);
+		this.searchAllBranchesButton
+				.setText(UIText.CommitSearchPage_SearchAllBranches);
+	}
+

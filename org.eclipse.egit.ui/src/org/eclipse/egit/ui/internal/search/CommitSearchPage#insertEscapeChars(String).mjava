@@ -1,0 +1,23 @@
+	private String insertEscapeChars(String text) {
+		if (text == null || text.length() == 0)
+			return ""; //$NON-NLS-1$
+		StringBuilder sbIn = new StringBuilder(text);
+		BufferedReader reader = new BufferedReader(new StringReader(text));
+		int lengthOfFirstLine = 0;
+		try {
+			lengthOfFirstLine = reader.readLine().length();
+		} catch (IOException ex) {
+			return ""; //$NON-NLS-1$
+		}
+		StringBuilder sbOut = new StringBuilder(lengthOfFirstLine + 5);
+		int i = 0;
+		while (i < lengthOfFirstLine) {
+			char ch = sbIn.charAt(i);
+			if (ch == '*' || ch == '?' || ch == '\\')
+				sbOut.append('\\');
+			sbOut.append(ch);
+			i++;
+		}
+		return sbOut.toString();
+	}
+

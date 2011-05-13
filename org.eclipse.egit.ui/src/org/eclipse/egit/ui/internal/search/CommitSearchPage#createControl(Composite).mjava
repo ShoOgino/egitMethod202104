@@ -1,0 +1,15 @@
+	public void createControl(Composite parent) {
+		readConfiguration();
+
+		initializeDialogUnits(parent);
+		Composite result = new Composite(parent, SWT.NONE);
+		result.setFont(parent.getFont());
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false)
+				.applyTo(result);
+		addTextPatternControls(result);
+		addScopeControls(result);
+		addRepositoryControl(result);
+		setControl(result);
+		Dialog.applyDialogFont(result);
+	}
+

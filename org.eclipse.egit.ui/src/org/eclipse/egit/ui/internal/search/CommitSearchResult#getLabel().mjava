@@ -3,10 +3,12 @@
 	 */
 	public String getLabel() {
 		int matches = getMatchCount();
+		String pattern = ((CommitSearchQuery) query).getPattern();
 		if (matches != 1)
-			return UIText.CommitSearchResult_LabelSingle;
-		else
 			return MessageFormat.format(UIText.CommitSearchResult_LabelPlural,
-					Integer.valueOf(matches));
+					pattern, Integer.valueOf(matches));
+		else
+			return MessageFormat.format(UIText.CommitSearchResult_LabelSingle,
+					pattern);
 	}
 

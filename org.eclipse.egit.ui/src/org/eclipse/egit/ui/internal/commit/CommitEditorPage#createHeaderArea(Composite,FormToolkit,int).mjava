@@ -1,34 +1,29 @@
-	private void createHeaderArea(Composite parent, FormToolkit toolkit) {
+	private void createHeaderArea(Composite parent, FormToolkit toolkit,
+			int span) {
 		RevCommit commit = getCommit().getRevCommit();
 		Composite top = toolkit.createComposite(parent);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(top);
+		GridDataFactory.fillDefaults().grab(true, false).span(span, 1)
+				.applyTo(top);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(top);
 
 		Composite userArea = toolkit.createComposite(top);
-		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(userArea);
+		GridLayoutFactory.fillDefaults().spacing(2, 2).numColumns(1)
+				.applyTo(userArea);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(userArea);
 
 		PersonIdent author = commit.getAuthorIdent();
-		if (author != null) {
-			Text authorText = toolkit.createText(userArea, MessageFormat
-					.format(UIText.CommitEditorPage_LabelAuthor,
-							author.getName(), author.getWhen()));
-			GridDataFactory.fillDefaults().span(1, 1).applyTo(authorText);
-		}
+		if (author != null)
+			createUserArea(userArea, toolkit, author, true);
 
 		PersonIdent committer = commit.getCommitterIdent();
-		if (committer != null && !committer.equals(author)) {
-			Text committerText = toolkit.createText(userArea, MessageFormat
-					.format(UIText.CommitEditorPage_LabelCommitter,
-							committer.getName(), committer.getWhen()));
-			committerText.setFont(parent.getFont());
-			GridDataFactory.fillDefaults().span(1, 1).applyTo(committerText);
-		}
+		if (committer != null && !committer.equals(author))
+			createUserArea(userArea, toolkit, committer, false);
 
 		int count = commit.getParentCount();
 		if (count > 0) {
 			Composite parents = toolkit.createComposite(top);
-			GridLayoutFactory.fillDefaults().numColumns(2).applyTo(parents);
+			GridLayoutFactory.fillDefaults().spacing(2, 2).numColumns(2)
+					.applyTo(parents);
 			GridDataFactory.fillDefaults().grab(false, false).applyTo(parents);
 
 			for (int i = 0; i < count; i++) {
@@ -56,5 +51,7 @@
 				});
 			}
 		}
+
+		createTagsArea(userArea, toolkit, 2);
 	}
 

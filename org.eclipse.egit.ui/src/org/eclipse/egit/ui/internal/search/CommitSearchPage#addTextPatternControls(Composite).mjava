@@ -1,0 +1,67 @@
+	private void addTextPatternControls(Composite group) {
+		// Info text
+		Label label = new Label(group, SWT.NONE);
+		label.setText(UIText.CommitSearchPage_ContainingText);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2,
+				1));
+		label.setFont(group.getFont());
+
+		// Pattern combo
+		patternCombo = new Combo(group, SWT.SINGLE | SWT.BORDER);
+		patternCombo.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleWidgetSelected();
+				updateOKStatus();
+			}
+		});
+		// add some listeners for regex syntax checking
+		patternCombo.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateOKStatus();
+			}
+		});
+		patternCombo.setFont(group.getFont());
+		GridData data = new GridData(GridData.FILL, GridData.FILL, true, false,
+				1, 1);
+		data.widthHint = convertWidthInCharsToPixels(50);
+		patternCombo.setLayoutData(data);
+
+		ComboContentAdapter contentAdapter = new ComboContentAdapter();
+		FindReplaceDocumentAdapterContentProposalProvider findProposer = new FindReplaceDocumentAdapterContentProposalProvider(
+				true);
+		patternFieldContentAssist = new ContentAssistCommandAdapter(
+				patternCombo, contentAdapter, findProposer,
+				ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS,
+				new char[0], true);
+		patternFieldContentAssist.setEnabled(false);
+
+		isCaseSensitiveButton = new Button(group, SWT.CHECK);
+		isCaseSensitiveButton.setText(UIText.CommitSearchPage_CaseSensitive);
+		isCaseSensitiveButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+				false, false, 1, 1));
+		isCaseSensitiveButton.setFont(group.getFont());
+
+		// Text line which explains the special characters
+		statusLabel = new CLabel(group, SWT.LEAD);
+		statusLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false, 1, 1));
+		statusLabel.setFont(group.getFont());
+		statusLabel.setAlignment(SWT.LEFT);
+		statusLabel.setText(UIText.CommitSearchPage_ContainingTextHint);
+
+		// RegEx checkbox
+		isRegExButton = new Button(group, SWT.CHECK);
+		isRegExButton.setText(UIText.CommitSearchPage_RegularExpression);
+		isRegExButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				updateOKStatus();
+
+				patternFieldContentAssist.setEnabled(isRegExButton
+						.getSelection());
+			}
+		});
+		isRegExButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
+				false, 1, 1));
+		isRegExButton.setFont(group.getFont());
+	}
+

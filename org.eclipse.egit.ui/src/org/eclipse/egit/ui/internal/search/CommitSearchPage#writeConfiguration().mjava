@@ -1,0 +1,13 @@
+	/**
+	 * Stores it current configuration in the dialog store.
+	 */
+	private void writeConfiguration() {
+		IDialogSettings s = getDialogSettings();
+		int historySize = Math
+				.min(fPreviousSearchPatterns.size(), HISTORY_SIZE);
+		s.put(STORE_HISTORY_SIZE, historySize);
+		for (int i = 0; i < historySize; i++)
+			fPreviousSearchPatterns.get(i).store(
+					s.addNewSection(STORE_HISTORY + i));
+	}
+

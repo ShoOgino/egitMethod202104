@@ -1,0 +1,12 @@
+	private void createTagsArea(Composite parent, FormToolkit toolkit, int span) {
+		Composite tagArea = toolkit.createComposite(parent);
+		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false)
+				.applyTo(tagArea);
+		GridDataFactory.fillDefaults().span(span, 1).grab(true, false)
+				.applyTo(tagArea);
+		toolkit.createLabel(tagArea, UIText.CommitEditorPage_LabelTags)
+				.setForeground(
+						toolkit.getColors().getColor(IFormColors.TB_TOGGLE));
+		fillTags(tagArea, toolkit);
+	}
+

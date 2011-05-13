@@ -1,0 +1,10 @@
+	protected Comparator getItemsComparator() {
+		return new Comparator<RepositoryCommit>() {
+
+			public int compare(RepositoryCommit o1, RepositoryCommit o2) {
+				return o1.getRevCommit().name()
+						.compareTo(o2.getRevCommit().name());
+			}
+		};
+	}
+

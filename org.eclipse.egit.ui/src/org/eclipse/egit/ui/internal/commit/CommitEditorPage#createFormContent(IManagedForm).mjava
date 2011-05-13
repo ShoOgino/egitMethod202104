@@ -3,12 +3,25 @@
 	 */
 	protected void createFormContent(IManagedForm managedForm) {
 		Composite body = managedForm.getForm().getBody();
-		GridLayoutFactory.swtDefaults().numColumns(1).applyTo(body);
+		body.addDisposeListener(new DisposeListener() {
+
+			public void widgetDisposed(DisposeEvent e) {
+				resources.dispose();
+			}
+		});
+		FillLayout bodyLayout = new FillLayout();
+		bodyLayout.marginHeight = 5;
+		bodyLayout.marginWidth = 5;
+		body.setLayout(bodyLayout);
 
 		FormToolkit toolkit = managedForm.getToolkit();
 
-		createHeaderArea(body, toolkit);
-		createDescriptionArea(body, toolkit);
-		createFilesArea(body, toolkit);
+		Composite displayArea = toolkit.createComposite(body);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(displayArea);
+
+		createHeaderArea(displayArea, toolkit, 2);
+		createMessageArea(displayArea, toolkit, 2);
+		createFilesArea(displayArea, toolkit, 1);
+		createBranchesArea(displayArea, toolkit, 1);
 	}
 

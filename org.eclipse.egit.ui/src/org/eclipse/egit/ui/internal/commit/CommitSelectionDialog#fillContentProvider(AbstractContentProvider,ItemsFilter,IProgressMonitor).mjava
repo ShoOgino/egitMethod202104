@@ -1,0 +1,29 @@
+	protected void fillContentProvider(AbstractContentProvider contentProvider,
+			ItemsFilter itemsFilter, IProgressMonitor progressMonitor)
+			throws CoreException {
+		String pattern = itemsFilter.getPattern();
+		Repository[] repositories = getRepositories();
+		progressMonitor.beginTask(UIText.CommitSelectionDialog_TaskSearching,
+				repositories.length);
+		for (Repository repository : repositories) {
+			try {
+				ObjectId commitId;
+				if (ObjectId.isId(pattern))
+					commitId = ObjectId.fromString(pattern);
+				else
+					commitId = repository.resolve(itemsFilter.getPattern());
+				if (commitId != null) {
+					RevWalk walk = new RevWalk(repository);
+					walk.setRetainBody(true);
+					RevCommit commit = walk.parseCommit(commitId);
+					contentProvider.add(
+							new RepositoryCommit(repository, commit),
+							itemsFilter);
+				}
+			} catch (IOException ignored) {
+				// Ignore and advance
+			}
+			progressMonitor.worked(1);
+		}
+	}
+

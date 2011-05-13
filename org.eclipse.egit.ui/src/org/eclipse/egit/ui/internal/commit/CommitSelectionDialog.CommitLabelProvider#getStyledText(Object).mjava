@@ -1,0 +1,18 @@
+		public StyledString getStyledText(Object element) {
+			StyledString styled = new StyledString();
+			if (element instanceof RepositoryCommit) {
+				RepositoryCommit commit = (RepositoryCommit) element;
+				styled.append(commit.abbreviate());
+				styled.append(MessageFormat.format(
+						UIText.CommitSelectionDialog_SectionMessage, commit
+								.getRevCommit().getShortMessage()),
+						StyledString.QUALIFIER_STYLER);
+				styled.append(MessageFormat.format(
+						UIText.CommitSelectionDialog_SectionRepo,
+						commit.getRepositoryName()),
+						StyledString.DECORATIONS_STYLER);
+			} else if (element != null)
+				styled.append(element.toString());
+			return styled;
+		}
+

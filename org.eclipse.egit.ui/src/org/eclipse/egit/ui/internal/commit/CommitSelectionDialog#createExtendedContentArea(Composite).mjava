@@ -1,0 +1,17 @@
+	protected Control createExtendedContentArea(Composite parent) {
+		Composite displayArea = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().applyTo(displayArea);
+		Link link = new Link(displayArea, SWT.NONE);
+		link.setText(UIText.CommitSelectionDialog_LinkSearch);
+		link.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+				close();
+				NewSearchUI.openSearchDialog(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow(), CommitSearchPage.ID);
+			}
+
+		});
+		return displayArea;
+	}
+

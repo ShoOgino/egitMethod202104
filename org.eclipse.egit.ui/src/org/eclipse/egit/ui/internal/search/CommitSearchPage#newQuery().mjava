@@ -1,0 +1,19 @@
+	private ISearchQuery newQuery() {
+		CommitSearchSettings settings = new CommitSearchSettings();
+		settings.setTextPattern(patternCombo.getText());
+		settings.setRegExSearch(isRegExButton.getSelection());
+		settings.setCaseSensitive(isCaseSensitiveButton.getSelection());
+		settings.setMatchAuthor(searchAuthorButton.getSelection());
+		settings.setMatchCommitter(searchCommitterButton.getSelection());
+		settings.setMatchMessage(searchMessageButton.getSelection());
+		settings.setMatchCommit(searchCommitButton.getSelection());
+		settings.setMatchTree(searchTreeButton.getSelection());
+		settings.setMatchParents(searchParentsButton.getSelection());
+		settings.setAllBranches(searchAllBranchesButton.getSelection());
+		for (Object checked : repositoryViewer.getCheckedElements())
+			settings.addRepository(((RepositoryNode) checked).getRepository()
+					.getDirectory().getAbsolutePath());
+		fPreviousSearchPatterns.add(0, settings);
+		return new CommitSearchQuery(settings);
+	}
+

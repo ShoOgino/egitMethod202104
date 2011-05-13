@@ -1,0 +1,8 @@
+	private String[] getPreviousSearchPatterns() {
+		int size = fPreviousSearchPatterns.size();
+		String[] patterns = new String[size];
+		for (int i = 0; i < size; i++)
+			patterns[i] = fPreviousSearchPatterns.get(i).getTextPattern();
+		return patterns;
+	}
+

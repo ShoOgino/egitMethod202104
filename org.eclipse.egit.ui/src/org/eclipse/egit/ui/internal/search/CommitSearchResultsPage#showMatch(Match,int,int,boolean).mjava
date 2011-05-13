@@ -1,0 +1,6 @@
+	protected void showMatch(Match match, int currentOffset, int currentLength,
+			boolean activate) throws PartInitException {
+		if (match instanceof CommitMatch)
+			CommitEditor.open(((CommitMatch) match).getCommit());
+	}
+

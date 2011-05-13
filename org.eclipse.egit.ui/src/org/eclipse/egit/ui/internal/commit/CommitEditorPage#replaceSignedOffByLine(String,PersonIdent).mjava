@@ -1,0 +1,7 @@
+	private String replaceSignedOffByLine(String message, PersonIdent person) {
+		Pattern pattern = Pattern.compile(
+				"^\\s*" + Pattern.quote(getSignedOffByLine(person)) //$NON-NLS-1$
+						+ "\\s*$", Pattern.MULTILINE); //$NON-NLS-1$
+		return pattern.matcher(message).replaceAll(""); //$NON-NLS-1$
+	}
+

@@ -1,0 +1,21 @@
+	private boolean validateRegex() {
+		if (isRegExButton.getSelection()) {
+			try {
+				PatternUtils.createPattern(patternCombo.getText(),
+						isCaseSensitiveButton.getSelection(), true);
+			} catch (PatternSyntaxException e) {
+				String locMessage = e.getLocalizedMessage();
+				int i = 0;
+				while (i < locMessage.length()
+						&& "\n\r".indexOf(locMessage.charAt(i)) == -1) //$NON-NLS-1$
+					i++;
+				statusMessage(true, locMessage.substring(0, i));
+				return false;
+			}
+			statusMessage(false, ""); //$NON-NLS-1$
+		} else {
+			statusMessage(false, UIText.CommitSearchPage_ContainingTextHint);
+		}
+		return true;
+	}
+

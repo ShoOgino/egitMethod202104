@@ -3,47 +3,6 @@
 	 * @param initialText
 	 */
 	public SpellcheckableMessageArea(Composite parent, String initialText) {
-		super(parent, SWT.BORDER);
-		setLayout(new FillLayout());
-
-		AnnotationModel annotationModel = new AnnotationModel();
-		sourceViewer = new SourceViewer(this, null, null, true, SWT.MULTI
-				| SWT.V_SCROLL | SWT.WRAP);
-		getTextWidget().setFont(UIUtils
-				.getFont(UIPreferences.THEME_CommitMessageEditorFont));
-
-		int endSpacing = 2;
-		int textWidth = getCharWidth() * MAX_LINE_WIDTH + endSpacing;
-		int textHeight = getLineHeight() * 7;
-		Point size = getTextWidget().computeSize(textWidth, textHeight);
-		getTextWidget().setSize(size);
-
-		createMarginPainter();
-
-		configureHardWrap();
-
-		final SourceViewerDecorationSupport support = configureAnnotationPreferences();
-		final IHandlerActivation handlerActivation = installQuickFixActionHandler();
-
-		configureContextMenu();
-
-		Document document = new Document(initialText);
-
-		sourceViewer.configure(new TextSourceViewerConfiguration(EditorsUI
-				.getPreferenceStore()) {
-
-			protected Map getHyperlinkDetectorTargets(ISourceViewer targetViewer) {
-				return getHyperlinkTargets();
-			}
-
-		});
-		sourceViewer.setDocument(document, annotationModel);
-
-		getTextWidget().addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent disposeEvent) {
-				support.uninstall();
-				getHandlerService().deactivateHandler(handlerActivation);
-			}
-		});
+		this(parent, initialText, SWT.BORDER);
 	}
 

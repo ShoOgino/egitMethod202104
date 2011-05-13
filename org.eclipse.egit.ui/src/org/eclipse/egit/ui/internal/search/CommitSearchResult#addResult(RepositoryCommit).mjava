@@ -1,0 +1,12 @@
+	/**
+	 * Add commit to result
+	 *
+	 * @param commit
+	 * @return this result
+	 */
+	public CommitSearchResult addResult(RepositoryCommit commit) {
+		if (commit != null)
+			addMatch(new CommitMatch(commit));
+		return this;
+	}
+

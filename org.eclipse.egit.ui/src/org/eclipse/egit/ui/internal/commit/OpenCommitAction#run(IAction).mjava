@@ -1,0 +1,8 @@
+	@Override
+	public void run(IAction action) {
+		CommitSelectionDialog dialog = new CommitSelectionDialog(shell, true);
+		if (Window.OK == dialog.open())
+			for (Object result : dialog.getResult())
+				CommitEditor.openQuiet((RepositoryCommit) result);
+	}
+

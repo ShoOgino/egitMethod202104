@@ -1,0 +1,17 @@
+	private boolean initializePatternControl() {
+		ISelection selection = getSelection();
+		if (selection instanceof ITextSelection && !selection.isEmpty()) {
+			String text = ((ITextSelection) selection).getText();
+			if (text != null) {
+				if (isRegExButton.getSelection())
+					patternCombo.setText(FindReplaceDocumentAdapter
+							.escapeForRegExPattern(text));
+				else
+					patternCombo.setText(insertEscapeChars(text));
+
+				return true;
+			}
+		}
+		return false;
+	}
+

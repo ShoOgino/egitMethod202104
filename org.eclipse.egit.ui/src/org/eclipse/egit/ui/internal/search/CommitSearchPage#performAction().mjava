@@ -1,0 +1,10 @@
+	/**
+	 * Perform search by running query in background
+	 *
+	 * @see org.eclipse.search.ui.ISearchPage#performAction()
+	 */
+	public boolean performAction() {
+		NewSearchUI.runQueryInBackground(newQuery());
+		return true;
+	}
+

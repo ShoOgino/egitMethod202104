@@ -5,8 +5,13 @@
 		RepositoryCommit commit = getCommit();
 		ScrolledForm form = headerForm.getForm();
 		form.setText(MessageFormat.format(UIText.CommitEditor_TitleHeader,
-				commit.getRepositoryName(), commit.abbreviate()));
+				commit.getRepositoryName(), commit.getRevCommit().name()));
 		form.setToolTipText(commit.getRevCommit().name());
 		getToolkit().decorateFormHeading(form.getForm());
+
+		IToolBarManager toolbar = form.getToolBarManager();
+		toolbar.add(createCommandContributionItem(CreateTagHandler.ID));
+		toolbar.add(createCommandContributionItem(CreateBranchHandler.ID));
+		toolbar.update(true);
 	}
 

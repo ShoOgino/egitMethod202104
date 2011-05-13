@@ -3,10 +3,16 @@
 	 */
 	protected void addPages() {
 		try {
-			addPage(new CommitEditorPage(this));
-			addPage(new DiffEditorPage(this));
+			commitPage = new CommitEditorPage(this);
+			addPage(commitPage);
+			if (getCommit().getRevCommit().getParentCount() == 1) {
+				diffPage = new DiffEditorPage(this);
+				addPage(diffPage);
+			}
 		} catch (PartInitException e) {
 			Activator.error("Error adding page", e); //$NON-NLS-1$
 		}
+		refListenerHandle = Repository.getGlobalListenerList()
+				.addRefsChangedListener(this);
 	}
 

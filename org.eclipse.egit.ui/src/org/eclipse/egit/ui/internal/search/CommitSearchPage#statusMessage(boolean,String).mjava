@@ -1,0 +1,9 @@
+	private void statusMessage(boolean error, String message) {
+		statusLabel.setText(message);
+		if (error)
+			statusLabel.setForeground(JFaceColors.getErrorText(statusLabel
+					.getDisplay()));
+		else
+			statusLabel.setForeground(null);
+	}
+

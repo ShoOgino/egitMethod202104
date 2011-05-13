@@ -1,0 +1,46 @@
+	private void addScopeControls(Composite parent) {
+		SelectionAdapter statusAdapter = new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+				updateOKStatus();
+			}
+
+		};
+
+		Group scopeArea = new Group(parent, SWT.NONE);
+		scopeArea.setText(UIText.CommitSearchPage_Scope);
+		GridDataFactory.fillDefaults().grab(true, true).span(2, 1)
+				.applyTo(scopeArea);
+		GridLayoutFactory.swtDefaults().numColumns(3).applyTo(scopeArea);
+
+		this.searchMessageButton = new Button(scopeArea, SWT.CHECK);
+		this.searchMessageButton.setText(UIText.CommitSearchPage_Message);
+		this.searchMessageButton.setSelection(true);
+		this.searchMessageButton.addSelectionListener(statusAdapter);
+
+		this.searchAuthorButton = new Button(scopeArea, SWT.CHECK);
+		this.searchAuthorButton.setText(UIText.CommitSearchPage_Author);
+		this.searchAuthorButton.setSelection(true);
+		this.searchAuthorButton.addSelectionListener(statusAdapter);
+
+		this.searchCommitterButton = new Button(scopeArea, SWT.CHECK);
+		this.searchCommitterButton.setText(UIText.CommitSearchPage_Committer);
+		this.searchCommitterButton.setSelection(true);
+		this.searchCommitterButton.addSelectionListener(statusAdapter);
+
+		this.searchCommitButton = new Button(scopeArea, SWT.CHECK);
+		this.searchCommitButton.setText(UIText.CommitSearchPage_CommitId);
+		this.searchCommitButton.setSelection(true);
+		this.searchCommitButton.addSelectionListener(statusAdapter);
+
+		this.searchTreeButton = new Button(scopeArea, SWT.CHECK);
+		this.searchTreeButton.setText(UIText.CommitSearchPage_TreeId);
+		this.searchTreeButton.setSelection(true);
+		this.searchTreeButton.addSelectionListener(statusAdapter);
+
+		this.searchParentsButton = new Button(scopeArea, SWT.CHECK);
+		this.searchParentsButton.setText(UIText.CommitSearchPage_ParentIds);
+		this.searchParentsButton.setSelection(true);
+		this.searchParentsButton.addSelectionListener(statusAdapter);
+	}
+

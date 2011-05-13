@@ -1,0 +1,17 @@
+	protected ItemsFilter createFilter() {
+		return new ItemsFilter() {
+
+			public boolean isSubFilter(ItemsFilter filter) {
+				return false;
+			}
+
+			public boolean matchItem(Object item) {
+				return true;
+			}
+
+			public boolean isConsistentItem(Object item) {
+				return true;
+			}
+		};
+	}
+

@@ -1,0 +1,9 @@
+		public String getText(Object element) {
+			if (element instanceof RepositoryCommit)
+				return ((RepositoryCommit) element).getRepositoryName();
+			else if (element != null)
+				return element.toString();
+			else
+				return ""; //$NON-NLS-1$
+		}
+

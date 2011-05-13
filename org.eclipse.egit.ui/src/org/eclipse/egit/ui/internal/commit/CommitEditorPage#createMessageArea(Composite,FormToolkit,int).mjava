@@ -1,0 +1,44 @@
+	private void createMessageArea(Composite parent, FormToolkit toolkit,
+			int span) {
+		Section messageSection = createSection(parent, toolkit, span);
+		Composite messageArea = createSectionClient(messageSection, toolkit);
+
+		messageSection.setText(UIText.CommitEditorPage_SectionMessage);
+
+		RevCommit commit = getCommit().getRevCommit();
+		String message = commit.getFullMessage();
+
+		PersonIdent author = commit.getAuthorIdent();
+		if (author != null)
+			message = replaceSignedOffByLine(message, author);
+		PersonIdent committer = commit.getCommitterIdent();
+		if (committer != null)
+			message = replaceSignedOffByLine(message, committer);
+
+		SpellcheckableMessageArea textContent = new SpellcheckableMessageArea(
+				messageArea, message, SWT.NONE) {
+
+			@Override
+			protected IAdaptable getDefaultTarget() {
+				return new PlatformObject() {
+					public Object getAdapter(Class adapter) {
+						return Platform.getAdapterManager().getAdapter(
+								getEditorInput(), adapter);
+					}
+				};
+			}
+
+			protected void createMarginPainter() {
+				// Disabled intentionally
+			}
+
+		};
+		textContent.setData(FormToolkit.KEY_DRAW_BORDER,
+				FormToolkit.TEXT_BORDER);
+		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, 80).grab(true, true)
+				.applyTo(textContent);
+		textContent.getTextWidget().setEditable(false);
+
+		updateSectionClient(messageSection, messageArea, toolkit);
+	}
+

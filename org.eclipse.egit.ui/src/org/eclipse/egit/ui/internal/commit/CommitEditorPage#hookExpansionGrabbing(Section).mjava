@@ -4,7 +4,7 @@
 			public void expansionStateChanged(ExpansionEvent e) {
 				((GridData) section.getLayoutData()).grabExcessVerticalSpace = e
 						.getState();
-				getManagedForm().reflow(true);
+				getManagedForm().getForm().getBody().layout(true, true);
 			}
 		});
 	}

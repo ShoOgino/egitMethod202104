@@ -2,12 +2,13 @@
 	 * Open commit in editor
 	 *
 	 * @param commit
+	 * @return opened editor part
 	 * @throws PartInitException
 	 */
-	public static final void open(RepositoryCommit commit)
+	public static final IEditorPart open(RepositoryCommit commit)
 			throws PartInitException {
 		CommitEditorInput input = new CommitEditorInput(commit);
-		IDE.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage(), input, ID);
+		return IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), input, ID);
 	}
 

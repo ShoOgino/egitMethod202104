@@ -1,0 +1,17 @@
+	public void setVisible(boolean visible) {
+		if (visible && patternCombo != null) {
+			if (firstTime) {
+				firstTime = false;
+				// Set item and text here to prevent page from resizing
+				patternCombo.setItems(getPreviousSearchPatterns());
+				if (!initializePatternControl()) {
+					patternCombo.select(0);
+					handleWidgetSelected();
+				}
+			}
+			patternCombo.setFocus();
+		}
+		updateOKStatus();
+		super.setVisible(visible);
+	}
+

@@ -1,0 +1,9 @@
+	protected IDialogSettings getDialogSettings() {
+		IDialogSettings settings = Activator.getDefault().getDialogSettings();
+		IDialogSettings section = settings
+				.getSection(COMMIT_SELECTION_DIALOG_SECTION);
+		if (section == null)
+			section = settings.addNewSection(COMMIT_SELECTION_DIALOG_SECTION);
+		return section;
+	}
+
