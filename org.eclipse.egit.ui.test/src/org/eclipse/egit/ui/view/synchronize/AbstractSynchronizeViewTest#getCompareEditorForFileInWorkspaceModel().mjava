@@ -2,9 +2,6 @@
 			throws Exception {
 		SWTBotTree syncViewTree = setPresentationModel("Workspace").tree();
 		SWTBotTreeItem projectTree = waitForNodeWithText(syncViewTree, PROJ1);
-		SWTBotTreeItem folderTree = waitForNodeWithText(projectTree, FOLDER);
-		waitForNodeWithText(folderTree, FILE1).doubleClick();
-
-		return bot.editorByTitle(FILE1);
+		return getCompareEditor(projectTree, FILE1);
 	}
 
