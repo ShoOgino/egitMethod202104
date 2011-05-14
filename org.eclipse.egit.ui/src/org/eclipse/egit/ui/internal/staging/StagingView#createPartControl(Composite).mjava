@@ -49,6 +49,11 @@
 						event.detail = DND.DROP_MOVE;
 					}
 				});
+		unstagedTableViewer.addOpenListener(new IOpenListener() {
+			public void open(OpenEvent event) {
+				compareWith(event);
+			}
+		});
 
 		Composite commitMessageComposite = new Composite(horizontalSashForm, SWT.NONE);
 		commitMessageComposite.setLayout(new GridLayout(2, false));
@@ -127,6 +132,11 @@
 						event.detail = DND.DROP_MOVE;
 					}
 				});
+		stagedTableViewer.addOpenListener(new IOpenListener() {
+			public void open(OpenEvent event) {
+				compareWith(event);
+			}
+		});
 
 		selectionChangedListener = new ISelectionListener() {
 			public void selectionChanged(IWorkbenchPart part,

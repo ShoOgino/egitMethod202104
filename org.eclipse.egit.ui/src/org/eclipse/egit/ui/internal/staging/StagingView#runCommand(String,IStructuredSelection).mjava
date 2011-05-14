@@ -14,6 +14,7 @@
 			c = new EvaluationContext(handlerService
 					.createContextSnapshot(false), selection.toList());
 			c.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, selection);
+			c.removeVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
 		}
 		try {
 			if (c != null) {
