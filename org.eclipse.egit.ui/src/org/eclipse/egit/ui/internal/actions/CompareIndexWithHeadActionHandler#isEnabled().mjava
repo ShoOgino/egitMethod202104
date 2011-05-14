@@ -1,0 +1,17 @@
+	@Override
+	public boolean isEnabled() {
+		IStructuredSelection selection = getSelection();
+		if (selection.size() != 1)
+			return false;
+
+		IResource resource = (IResource) getAdapter(selection.getFirstElement(), IResource.class);
+		if (resource == null)
+			return false;
+
+		Repository repository = getRepository();
+		if (repository == null)
+			return false;
+
+		return isStaged(repository, resource);
+	}
+
