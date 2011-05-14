@@ -6,7 +6,7 @@
 		repository1 = new TestRepository(new File(workdir, Constants.DOT_GIT));
 
 		File file = new File(workdir, "file1.txt");
-		file.createNewFile();
+		FileUtils.createNewFile(file);
 		Git git = new Git(repository1.getRepository());
 		git.add().addFilepattern("file1.txt").call();
 
