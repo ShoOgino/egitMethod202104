@@ -25,7 +25,10 @@
 				((SWTCommit) element).widget = item;
 			}
 		};
-		table.setLabelProvider(new GraphLabelProvider());
+
+		graphLabelProvider = new GraphLabelProvider();
+
+		table.setLabelProvider(graphLabelProvider);
 		table.setContentProvider(new GraphContentProvider());
 		renderer = new SWTPlotRenderer(rawTable.getDisplay());
 
