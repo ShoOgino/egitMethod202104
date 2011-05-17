@@ -6,30 +6,12 @@
 		List<ResourceTraversal> result = new ArrayList<ResourceTraversal>();
 
 		for (GitModelObject child : children) {
-			ResourceTraversal traversal;
-			IPath location = child.getLocation();
-
-			if (child.isContainer()) {
-				IContainer container = ROOT.getContainerForLocation(location);
-
-				if (container == null)
-					continue;
-
-				traversal = new ResourceTraversal(
-						new IResource[] { container }, DEPTH_INFINITE,
-						ALLOW_MISSING_LOCAL);
-			} else {
-				IFile file = ROOT.getFileForLocation(location);
-				if (file == null)
-					continue;
-
-				traversal = new ResourceTraversal(new IResource[] { file },
-						DEPTH_ONE, ALLOW_MISSING_LOCAL);
-			}
-
-			result.add(traversal);
+			if (child.isContainer())
+				result.addAll(createTraversalForContainer(child));
+			else
+				result.add(createTraversalForFile(child));
 		}
-
+		result.removeAll(Collections.singleton(null));
 		return result.toArray(new ResourceTraversal[result.size()]);
 	}
 

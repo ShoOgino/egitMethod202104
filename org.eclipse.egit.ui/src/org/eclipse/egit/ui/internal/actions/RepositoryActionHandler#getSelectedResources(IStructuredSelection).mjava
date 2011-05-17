@@ -8,6 +8,8 @@
 			IResource resource = (IResource) getAdapter(o, IResource.class);
 			if (resource != null)
 				result.add(resource);
+			else
+				extractResourcesFromMapping(result, o);
 		}
 		return result.toArray(new IResource[result.size()]);
 	}

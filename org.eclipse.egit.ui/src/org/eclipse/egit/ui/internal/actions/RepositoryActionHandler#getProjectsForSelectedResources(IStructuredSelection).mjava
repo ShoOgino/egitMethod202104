@@ -8,6 +8,8 @@
 		for (IResource resource : (IResource[]) getSelectedAdaptables(
 				selection, IResource.class))
 			ret.add(resource.getProject());
+		ret.addAll(extractProjectsFromMappings(selection));
+
 		return ret.toArray(new IProject[ret.size()]);
 	}
 
