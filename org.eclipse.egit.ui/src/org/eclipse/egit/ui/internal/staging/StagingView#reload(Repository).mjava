@@ -5,10 +5,8 @@
 
 		final IndexDiff indexDiff;
 		try {
-			// TODO IteratorService.createInitialIterator(repository)?
-			FileTreeIterator fileTreeIterator = new FileTreeIterator(repository);
-			indexDiff = new IndexDiff(repository, Constants.HEAD,
-					fileTreeIterator);
+			WorkingTreeIterator iterator = IteratorService.createInitialIterator(repository);
+			indexDiff = new IndexDiff(repository, Constants.HEAD, iterator);
 			indexDiff.diff();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
