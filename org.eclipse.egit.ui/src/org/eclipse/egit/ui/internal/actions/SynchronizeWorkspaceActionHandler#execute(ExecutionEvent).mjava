@@ -1,0 +1,19 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository[] repos = getRepositories(event);
+
+		if (repos.length == 0)
+			return null;
+
+		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
+		for (Repository repo : repos)
+			try {
+				gsdSet.add(new GitSynchronizeData(repo, HEAD, HEAD, true));
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+
+		GitModelSynchronize.launch(gsdSet, getSelectedResources(event));
+
+		return null;
+	}
+
