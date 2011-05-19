@@ -5,8 +5,7 @@
 		makeChangesAndCommit(PROJ1);
 
 		// when
-		launchSynchronization(SynchronizeWithAction_tagsName, INITIAL_TAG,
-				SynchronizeWithAction_localRepoName, HEAD, false);
+		launchSynchronization(INITIAL_TAG, HEAD, false);
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();

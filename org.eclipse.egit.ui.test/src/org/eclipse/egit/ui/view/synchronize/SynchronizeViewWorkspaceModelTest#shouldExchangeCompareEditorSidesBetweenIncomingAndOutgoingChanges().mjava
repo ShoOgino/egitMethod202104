@@ -5,8 +5,7 @@
 		makeChangesAndCommit(PROJ1);
 
 		// compare HEAD against tag
-		launchSynchronization(SynchronizeWithAction_localRepoName, HEAD,
-				SynchronizeWithAction_tagsName, INITIAL_TAG, false);
+		launchSynchronization(HEAD, INITIAL_TAG, false);
 		SWTBotEditor compEditor = getCompareEditorForFileInWorspaceModel(
 				FILE1);
 		SWTBot outgoingCompare = compEditor.bot();
@@ -18,8 +17,7 @@
 
 		// when
 		// compare tag against HEAD
-		launchSynchronization(SynchronizeWithAction_tagsName, INITIAL_TAG,
-				SynchronizeWithAction_localRepoName, HEAD, false);
+		launchSynchronization(INITIAL_TAG, HEAD, false);
 
 		// then
 		SWTBot incomingComp = getCompareEditorForFileInWorspaceModel(

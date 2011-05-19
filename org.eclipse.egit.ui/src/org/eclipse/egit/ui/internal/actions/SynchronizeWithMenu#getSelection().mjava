@@ -1,0 +1,16 @@
+	private IProject getSelection() {
+		ISelection sel = srv.getSelection();
+
+		if (!(sel instanceof IStructuredSelection))
+			return null;
+
+		Object selected = ((IStructuredSelection) sel).getFirstElement();
+		if (selected instanceof IAdaptable)
+			return (IProject) ((IAdaptable) selected)
+					.getAdapter(IProject.class);
+		if (selected instanceof IProject)
+			return (IProject) selected;
+
+		return null;
+	}
+

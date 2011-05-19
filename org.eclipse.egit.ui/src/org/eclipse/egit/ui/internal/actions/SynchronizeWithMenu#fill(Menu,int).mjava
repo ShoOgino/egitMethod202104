@@ -1,0 +1,93 @@
+	@Override
+	public void fill(final Menu menu, int index) {
+		if (srv == null)
+			return;
+		final IProject selectedProject = getSelection();
+		if (selectedProject == null)
+			return;
+
+		RepositoryMapping mapping = RepositoryMapping
+				.getMapping(selectedProject);
+		if (mapping == null)
+			return;
+
+		final Repository repo = mapping.getRepository();
+		if (repo == null)
+			return;
+
+		List<Ref> refs = new LinkedList<Ref>();
+		RefDatabase refDatabase = repo.getRefDatabase();
+		try {
+			refs.addAll(refDatabase.getAdditionalRefs());
+		} catch (IOException e) {
+			// do nothing
+		}
+		try {
+			refs.addAll(refDatabase.getRefs(RefDatabase.ALL).values());
+		} catch (IOException e) {
+			// do nothing
+		}
+		Collections.sort(refs, CommonUtils.REF_ASCENDING_COMPARATOR);
+		String currentBranch;
+		try {
+			currentBranch = repo.getFullBranch();
+		} catch (IOException e) {
+			currentBranch = ""; //$NON-NLS-1$
+		}
+
+		int count = 0;
+		String oldName = null;
+		int refsLength = R_REFS.length();
+		int tagsLength = R_TAGS.substring(refsLength).length();
+		for (Ref ref : refs) {
+			final String name = ref.getName();
+			if (name.equals(Constants.HEAD) || name.equals(currentBranch) || excludeTag(ref, repo))
+				continue;
+			if (name.startsWith(R_REFS) && oldName != null
+					&& !oldName.regionMatches(refsLength, name, refsLength,
+							tagsLength))
+				new MenuItem(menu, SWT.SEPARATOR);
+
+			MenuItem item = new MenuItem(menu, SWT.PUSH);
+			item.setText(name);
+			if (name.startsWith(Constants.R_TAGS))
+				item.setImage(tagImage);
+			else if (name.startsWith(Constants.R_HEADS) || name.startsWith(Constants.R_REMOTES))
+				item.setImage(branchImage);
+
+			item.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent event) {
+					GitSynchronizeData data;
+					try {
+						data = new GitSynchronizeData(repo, HEAD, name, true);
+						GitModelSynchronize.launch(data, new IResource[] { selectedProject });
+					} catch (IOException e) {
+						Activator.logError(e.getMessage(), e);
+					}
+				}
+			});
+
+			if (++count == MAX_NUM_MENU_ENTRIES)
+				break;
+			oldName = name;
+		}
+
+		if (count > 1)
+			new MenuItem(menu, SWT.SEPARATOR);
+
+		MenuItem custom = new MenuItem(menu, SWT.PUSH);
+		custom.setText(UIText.SynchronizeWithMenu_custom);
+		custom.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				GitSynchronizeWizard gitWizard = new GitSynchronizeWizard();
+				gitWizard.selectProjects(selectedProject);
+				WizardDialog wizard = new WizardDialog(menu.getShell(),
+						gitWizard);
+				wizard.create();
+				wizard.open();
+			}
+		});
+	}
+

@@ -1,0 +1,15 @@
+	private boolean excludeTag(Ref ref, Repository repo) {
+		if (ref instanceof PeeledTag) {
+			RevWalk rw = new RevWalk(repo);
+			try {
+				RevTag tag = rw.parseTag(ref.getObjectId());
+
+				return !(rw.parseAny(tag.getObject()) instanceof RevCommit);
+			} catch (IOException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+
+		return false;
+	}
+

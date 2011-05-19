@@ -5,8 +5,7 @@
 		changeFilesInProject();
 
 		// when
-		launchSynchronization(SynchronizeWithAction_localRepoName, HEAD,
-				SynchronizeWithAction_localRepoName, MASTER, false);
+		launchSynchronization(HEAD, R_HEADS + MASTER, false);
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();

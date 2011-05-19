@@ -5,8 +5,7 @@
 		changeFilesInProject();
 
 		// when
-		launchSynchronization(null, null, SynchronizeWithAction_tagsName,
-				INITIAL_TAG, true);
+		launchSynchronization(HEAD, INITIAL_TAG, true);
 
 		// then
 		SWTBot compare = getCompareEditorForFileInWorspaceModel(FILE1)

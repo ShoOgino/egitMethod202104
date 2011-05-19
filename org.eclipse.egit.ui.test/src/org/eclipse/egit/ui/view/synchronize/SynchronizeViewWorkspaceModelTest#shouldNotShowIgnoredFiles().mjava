@@ -18,8 +18,7 @@
 		proj.refreshLocal(IResource.DEPTH_INFINITE, null);
 
 		// when
-		launchSynchronization(SynchronizeWithAction_tagsName, INITIAL_TAG,
-				SynchronizeWithAction_localRepoName, HEAD, true);
+		launchSynchronization(INITIAL_TAG, HEAD, true);
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
