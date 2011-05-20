@@ -7,9 +7,10 @@
 			try {
 				String fullBranch = repo.getFullBranch();
 				if (!fullBranch.startsWith(Constants.R_REFS)
-						|| repo.getAllRefs().isEmpty())
+						|| repo.getRef(Constants.HEAD).getObjectId() == null)
 					return false;
 			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, false);
 				return false;
 			}
 		}

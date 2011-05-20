@@ -1,6 +1,11 @@
 	@Override
 	public boolean isEnabled() {
-		return getRepository() != null
-				&& !getRepository().getAllRefs().isEmpty();
+		try {
+			return getRepository() != null
+					&& getRepository().getRef(Constants.HEAD).getObjectId() != null;
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, false);
+			return false;
+		}
 	}
 
