@@ -1,6 +1,12 @@
 	@Override
 	protected Control createContents(Composite parent) {
 		toolkit = new FormToolkit(parent.getDisplay());
+		parent.addDisposeListener(new DisposeListener() {
+
+			public void widgetDisposed(DisposeEvent e) {
+				toolkit.dispose();
+			}
+		});
 		return super.createContents(parent);
 	}
 
