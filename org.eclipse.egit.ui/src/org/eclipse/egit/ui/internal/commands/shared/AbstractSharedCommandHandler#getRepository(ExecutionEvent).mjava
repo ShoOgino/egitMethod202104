@@ -42,7 +42,13 @@
 			return result;
 		}
 		if (selection instanceof TextSelection) {
-			// TODO find editor input and adapt to IResource
+			IEditorInput activeEditor = WORKBENCH.getActiveWorkbenchWindow()
+					.getActivePage().getActiveEditor().getEditorInput();
+			IResource resource = (IResource) activeEditor
+					.getAdapter(IResource.class);
+
+			if (resource != null)
+				return RepositoryMapping.getMapping(resource).getRepository();
 		}
 		return null;
 	}
