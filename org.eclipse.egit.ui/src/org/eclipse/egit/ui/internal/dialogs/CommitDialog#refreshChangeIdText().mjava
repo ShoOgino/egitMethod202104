@@ -1,5 +1,5 @@
 	private void refreshChangeIdText() {
-		createChangeId = changeIdButton.getSelection();
+		createChangeId = changeIdItem.getSelection();
 		String text = commitText.getText().replaceAll(Text.DELIMITER, "\n"); //$NON-NLS-1$
 		if (createChangeId) {
 			String changedText = ChangeIdUtil.insertId(text,

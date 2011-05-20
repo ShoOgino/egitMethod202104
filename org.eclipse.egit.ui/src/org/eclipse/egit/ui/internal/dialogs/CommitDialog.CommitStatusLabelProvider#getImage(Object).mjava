@@ -1,0 +1,23 @@
+		public Image getImage(Object element) {
+			CommitItem item = (CommitItem) element;
+			ImageDescriptor decorator = null;
+			switch (item.status) {
+			case UNTRACKED:
+				decorator = UIIcons.OVR_UNTRACKED;
+				break;
+			case ADDED:
+			case ADDED_INDEX_DIFF:
+				decorator = UIIcons.OVR_STAGED_ADD;
+				break;
+			case REMOVED:
+			case REMOVED_NOT_STAGED:
+			case REMOVED_UNTRACKED:
+				decorator = UIIcons.OVR_STAGED_REMOVE;
+				break;
+			default:
+				break;
+			}
+			return decorator != null ? getDecoratedImage(getEditorImage(item),
+					decorator) : getEditorImage(item);
+		}
+

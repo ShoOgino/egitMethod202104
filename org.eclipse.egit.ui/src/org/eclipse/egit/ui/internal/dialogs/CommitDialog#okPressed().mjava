@@ -3,8 +3,8 @@
 		commitMessage = commitText.getCommitMessage();
 		author = authorText.getText().trim();
 		committer = committerText.getText().trim();
-		signedOff = signedOffButton.getSelection();
-		amending = amendingButton.getSelection();
+		signedOff = signedOffItem.getSelection();
+		amending = amendingItem.getSelection();
 
 		Object[] checkedElements = filesViewer.getCheckedElements();
 		selectedFiles.clear();
@@ -27,7 +27,7 @@
 
 		boolean committerValid = false;
 		if (committer.length() > 0) {
-			committerValid = RawParseUtils.parsePersonIdent(committer)!=null;
+			committerValid = RawParseUtils.parsePersonIdent(committer) != null;
 		}
 		if (!committerValid) {
 			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorInvalidAuthor, UIText.CommitDialog_ErrorInvalidCommitterSpecified);
