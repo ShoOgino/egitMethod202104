@@ -11,5 +11,7 @@
 						Activator.getDefault().getRepositoryUtil()
 								.getRepositoryName(repository)));
 		setMessage(UIText.FetchGerritChangePage_PageMessage);
+		settings = getDialogSettings();
+		lastUriKey = repository + LAST_URI_POSTFIX;
 	}
 
