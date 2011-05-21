@@ -4,11 +4,6 @@
 		RevCommit commit = rw.parseCommit(commitId);
 		rw.release();
 
-		IFileRevision nextFile = GitFileRevision.inCommit(repository, commit,
-				gitPath, null);
-
-		FileRevisionTypedElement element = new FileRevisionTypedElement(
-				nextFile);
-		return element;
+		return CompareUtils.getFileRevisionTypedElement(gitPath, commit, repository);
 	}
 
