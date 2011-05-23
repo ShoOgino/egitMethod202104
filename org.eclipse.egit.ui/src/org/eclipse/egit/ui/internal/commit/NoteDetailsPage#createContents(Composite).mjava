@@ -1,0 +1,24 @@
+	public void createContents(Composite parent) {
+		GridLayoutFactory.swtDefaults().applyTo(parent);
+		Section notesSection = toolkit.createSection(parent,
+				ExpandableComposite.TITLE_BAR);
+		notesSection.setText(UIText.NoteDetailsPage_ContentSection);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(notesSection);
+
+		Composite notesArea = toolkit.createComposite(notesSection);
+		toolkit.paintBordersFor(notesArea);
+		notesSection.setClient(notesArea);
+		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
+				.applyTo(notesArea);
+
+		notesText = new SpellcheckableMessageArea(notesArea, "", SWT.NONE) { //$NON-NLS-1$
+
+			protected void createMarginPainter() {
+				// Disabled intentionally
+			}
+
+		};
+		notesText.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(notesText);
+	}
+

@@ -1,0 +1,10 @@
+	/**
+	 * Select first note ref in table
+	 */
+	public void selectFirstNote() {
+		if (refsViewer.getTable().getItemCount() > 0) {
+			refsViewer.getTable().setSelection(0);
+			form.fireSelectionChanged(part, refsViewer.getSelection());
+		}
+	}
+

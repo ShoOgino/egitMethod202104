@@ -1,0 +1,10 @@
+	@Override
+	protected void createFormContent(IManagedForm managedForm) {
+		Composite body = managedForm.getForm().getBody();
+		GridLayoutFactory.swtDefaults().numColumns(1).applyTo(body);
+
+		NotesBlock block = new NotesBlock(getCommit());
+		block.createContent(managedForm, body);
+		block.selectFirstNote();
+	}
+

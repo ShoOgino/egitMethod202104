@@ -1,0 +1,16 @@
+	/**
+	 * Create repository commit note
+	 *
+	 * @param commit
+	 * @param ref
+	 * @param note
+	 */
+	public RepositoryCommitNote(RepositoryCommit commit, Ref ref, Note note) {
+		Assert.isNotNull(commit, "Commit cannot be null"); //$NON-NLS-1$
+		Assert.isNotNull(ref, "Ref cannot be null"); //$NON-NLS-1$
+		Assert.isNotNull(note, "Note cannot be null"); //$NON-NLS-1$
+		this.commit = commit;
+		this.ref = ref;
+		this.note = note;
+	}
+

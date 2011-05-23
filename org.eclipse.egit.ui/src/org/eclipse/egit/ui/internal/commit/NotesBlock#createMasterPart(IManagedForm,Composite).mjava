@@ -1,0 +1,41 @@
+	@Override
+	protected void createMasterPart(final IManagedForm managedForm,
+			Composite parent) {
+		form = managedForm;
+		FormToolkit toolkit = managedForm.getToolkit();
+		Composite masterArea = toolkit.createComposite(parent);
+		GridLayoutFactory.swtDefaults().applyTo(masterArea);
+
+		List<RepositoryCommitNote> notes = getNotes();
+
+		Section refsSection = toolkit.createSection(masterArea,
+				ExpandableComposite.TITLE_BAR);
+		refsSection.setText(MessageFormat.format(
+				UIText.NotesBlock_NotesSection, Integer.valueOf(notes.size())));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(refsSection);
+
+		Composite refsArea = toolkit.createComposite(refsSection);
+		refsSection.setClient(refsArea);
+		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
+				.applyTo(refsArea);
+		toolkit.paintBordersFor(refsArea);
+
+		Table refsTable = toolkit.createTable(refsArea, SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.SINGLE);
+		refsViewer = new TableViewer(refsTable);
+		refsViewer.setSorter(new ViewerSorter());
+		refsTable.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(refsTable);
+		refsViewer.setContentProvider(ArrayContentProvider.getInstance());
+		refsViewer.setLabelProvider(new WorkbenchLabelProvider());
+		refsViewer.setInput(notes);
+
+		part = new SectionPart(refsSection);
+		refsViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				managedForm.fireSelectionChanged(part, event.getSelection());
+			}
+		});
+	}
+

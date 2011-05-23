@@ -1,0 +1,23 @@
+	/**
+	 * Get note text. This method open and read the note blob each time it is
+	 * called.
+	 *
+	 * @return note text or empty string if lookup failed.
+	 */
+	public String getNoteText() {
+		try {
+			ObjectLoader loader = commit.getRepository().open(note.getData(),
+					Constants.OBJ_BLOB);
+			byte[] contents;
+			if (loader.isLarge())
+				contents = IO.readWholeStream(loader.openStream(),
+						(int) loader.getSize()).array();
+			else
+				contents = loader.getCachedBytes();
+			return new String(contents);
+		} catch (IOException e) {
+			Activator.logError("Error loading note text", e); //$NON-NLS-1$
+		}
+		return ""; //$NON-NLS-1$
+	}
+
