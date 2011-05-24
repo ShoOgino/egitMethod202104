@@ -6,12 +6,12 @@
 		Composite masterArea = toolkit.createComposite(parent);
 		GridLayoutFactory.swtDefaults().applyTo(masterArea);
 
-		List<RepositoryCommitNote> notes = getNotes();
+		RepositoryCommitNote[] notes = commit.getNotes();
 
 		Section refsSection = toolkit.createSection(masterArea,
 				ExpandableComposite.TITLE_BAR);
 		refsSection.setText(MessageFormat.format(
-				UIText.NotesBlock_NotesSection, Integer.valueOf(notes.size())));
+				UIText.NotesBlock_NotesSection, Integer.valueOf(notes.length)));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(refsSection);
 
 		Composite refsArea = toolkit.createComposite(refsSection);
