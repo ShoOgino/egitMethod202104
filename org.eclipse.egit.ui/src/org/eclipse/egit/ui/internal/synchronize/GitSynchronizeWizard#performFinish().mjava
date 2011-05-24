@@ -3,10 +3,11 @@
 		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
 
 		Map<Repository, String> branches = page.getSelectedBranches();
+		boolean shouldIncludeLocal = page.shouldIncludeLocal();
 		for (Entry<Repository, String> branchesEntry : branches.entrySet())
 			try {
-				gsdSet.add(new GitSynchronizeData(branchesEntry.getKey(),
-						Constants.HEAD, branchesEntry.getValue(), false));
+				gsdSet.add(new GitSynchronizeData(branchesEntry.getKey(), HEAD,
+						branchesEntry.getValue(), shouldIncludeLocal));
 			} catch (IOException e) {
 				Activator.logError(e.getMessage(), e);
 			}
