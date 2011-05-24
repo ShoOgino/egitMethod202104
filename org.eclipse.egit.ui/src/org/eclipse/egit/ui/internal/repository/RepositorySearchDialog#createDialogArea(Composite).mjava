@@ -22,8 +22,10 @@
 				false).hint(300, SWT.DEFAULT).applyTo(dir);
 		dir.setToolTipText(UIText.RepositorySearchDialog_EnterDirectoryToolTip);
 
-		String initialPath = prefs.get(PREF_PATH, FS.DETECTED.userHome()
-				.toString());
+		String defaultRepoPath = org.eclipse.egit.ui.Activator.getDefault()
+				.getPreferenceStore().getString(UIPreferences.DEFAULT_REPO_DIR);
+
+		String initialPath = prefs.get(PREF_PATH, defaultRepoPath);
 
 		dir.setText(initialPath);
 

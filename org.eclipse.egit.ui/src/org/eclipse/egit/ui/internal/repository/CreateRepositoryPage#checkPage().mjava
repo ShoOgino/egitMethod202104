@@ -1,11 +1,24 @@
 	void checkPage() {
 		setErrorMessage(null);
 		try {
-			String dir = directoryText.getText();
-			if (dir.length() == 0) {
+			String parentDir = directoryText.getText();
+			if (parentDir.length() == 0) {
 				setErrorMessage(UIText.CreateRepositoryPage_PleaseSelectDirectoryMessage);
 				return;
 			}
+			String name = nameText.getText();
+			if (name.length() == 0) {
+				setErrorMessage(UIText.CreateRepositoryPage_MissingNameMessage);
+				return;
+			}
+
+			IStatus status = ResourcesPlugin.getWorkspace().validateName(name, IResource.FOLDER);
+			if (!status.isOK()){
+				setErrorMessage(status.getMessage());
+				return;
+			}
+
+			String dir = getDirectory();
 			File testFile = new File(dir);
 			IPath path = new Path(dir);
 			if (!path.isAbsolute()) {

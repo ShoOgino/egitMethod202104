@@ -4,8 +4,10 @@
 		Label directoryLabel = new Label(main, SWT.NONE);
 		directoryLabel.setText(UIText.CreateRepositoryPage_DirectoryLabel);
 		directoryText = new Text(main, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
-				false).applyTo(directoryText);
+		directoryText.setText(Activator.getDefault().getPreferenceStore()
+				.getString(UIPreferences.DEFAULT_REPO_DIR));
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).applyTo(directoryText);
 		Button browseButton = new Button(main, SWT.PUSH);
 		browseButton.setText(UIText.CreateRepositoryPage_BrowseButton);
 		browseButton.addSelectionListener(new SelectionAdapter() {
@@ -23,14 +25,28 @@
 					directoryText.setText(result);
 			}
 		});
+
+		Label nameLabel = new Label(main, SWT.NONE);
+		nameLabel.setText(UIText.CreateRepositoryPage_RepositoryNameLabel);
+		nameText = new Text(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).applyTo(nameText);
+
 		bareButton = new Button(main, SWT.CHECK);
 		bareButton.setText(UIText.CreateRepositoryPage_BareCheckbox);
-		GridDataFactory.fillDefaults().indent(10, 0).span(3, 1).applyTo(bareButton);
+		GridDataFactory.fillDefaults().indent(10, 0).span(3, 1)
+				.applyTo(bareButton);
 		directoryText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				checkPage();
 			}
 		});
+		nameText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
 		setControl(main);
+		nameText.setFocus();
 	}
 

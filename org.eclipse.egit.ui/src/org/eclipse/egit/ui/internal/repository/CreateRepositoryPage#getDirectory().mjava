@@ -1,7 +1,9 @@
 	/**
-	 * @return the directory where to create the Repository
+	 * @return the directory where to create the Repository (with operating
+	 *         system specific path separators)
 	 */
 	public String getDirectory() {
-		return directoryText.getText();
+		IPath path = new Path(directoryText.getText()).append(nameText.getText());
+		return path.toOSString();
 	}
 
