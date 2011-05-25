@@ -1,6 +1,8 @@
-	private void fillTreeItemWithGitDirectory(RepositoryMapping m, TreeItem treeItem, boolean isAlternative) {
+	private void fillTreeItemWithGitDirectory(RepositoryMapping m,
+			TreeItem treeItem, boolean isAlternative) {
 		if (m.getGitDir() == null)
-			treeItem.setText(2, UIText.ExistingOrNewPage_SymbolicValueEmptyMapping);
+			treeItem.setText(2,
+					UIText.ExistingOrNewPage_SymbolicValueEmptyMapping);
 		else {
 			IPath container = m.getContainerPath();
 			if (!container.isEmpty())
@@ -18,19 +20,25 @@
 			treeItem.setText(2, relativePath.toOSString());
 			try {
 				IProject project = m.getContainer().getProject();
-				FileRepository repo = new FileRepository(m.getGitDirAbsolutePath().toFile());
+				FileRepository repo = new FileRepository(m
+						.getGitDirAbsolutePath().toFile());
 				File workTree = repo.getWorkTree();
-				IPath workTreePath = Path.fromOSString(workTree.getAbsolutePath());
+				IPath workTreePath = Path.fromOSString(workTree
+						.getAbsolutePath());
 				if (workTreePath.isPrefixOf(project.getLocation())) {
-					IPath makeRelativeTo = project.getLocation().makeRelativeTo(workTreePath);
-					String repoRelativePath = makeRelativeTo.append("/.project").toPortableString(); //$NON-NLS-1$
+					IPath makeRelativeTo = project.getLocation()
+							.makeRelativeTo(workTreePath);
+					String repoRelativePath = makeRelativeTo
+							.append("/.project").toPortableString(); //$NON-NLS-1$
 					ObjectId headCommitId = repo.resolve(Constants.HEAD);
 					if (headCommitId != null) {
 						// Not an empty repo
 						RevWalk revWalk = new RevWalk(repo);
-						RevCommit headCommit = revWalk.parseCommit(headCommitId);
+						RevCommit headCommit = revWalk
+								.parseCommit(headCommitId);
 						RevTree headTree = headCommit.getTree();
-						TreeWalk projectInRepo = TreeWalk.forPath(repo, repoRelativePath, headTree);
+						TreeWalk projectInRepo = TreeWalk.forPath(repo,
+								repoRelativePath, headTree);
 						if (projectInRepo != null) {
 							// the .project file is tracked by this repo
 							treeItem.setChecked(true);
@@ -40,7 +48,10 @@
 				}
 				repo.close();
 			} catch (IOException e1) {
-				Activator.logError("Failed to detect which repository to use", e1); //$NON-NLS-1$
+				Activator
+						.logError(
+								UIText.ExistingOrNewPage_FailedToDetectRepositoryMessage,
+								e1);
 			}
 		}
 	}

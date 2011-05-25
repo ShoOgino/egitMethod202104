@@ -1,0 +1,9 @@
+	public void setInternalMode(boolean internalMode) {
+		SWTBotCheckBox internalModeCheckbox = bot
+				.checkBox(UIText.ExistingOrNewPage_InternalModeCheckbox);
+		if (!internalMode)
+			internalModeCheckbox.deselect();
+		else
+			internalModeCheckbox.select();
+	}
+

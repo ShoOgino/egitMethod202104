@@ -1,0 +1,6 @@
+	public String getText(Object element) {
+		Repository repo = (Repository) element;
+		String repoName = util.getRepositoryName(repo);
+		return NLS.bind("{0} - {1}", repoName, repo.getDirectory().getPath()); //$NON-NLS-1$
+	}
+

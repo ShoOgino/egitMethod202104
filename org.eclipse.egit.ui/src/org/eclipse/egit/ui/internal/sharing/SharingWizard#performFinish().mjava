@@ -1,45 +1,100 @@
 	public boolean performFinish() {
-		final ConnectProviderOperation op = new ConnectProviderOperation(
-				existingPage.getProjects(true));
-		try {
-			getContainer().run(true, false, new IRunnableWithProgress() {
-				public void run(final IProgressMonitor monitor)
-						throws InvocationTargetException {
-					try {
-						op.execute(monitor);
-						PlatformUI.getWorkbench().getDisplay()
-								.syncExec(new Runnable() {
-									public void run() {
-										Set<File> filesToAdd = new HashSet<File>();
-										// collect all files first
-										for (Entry<IProject, File> entry : existingPage
-												.getProjects(true).entrySet())
-											filesToAdd.add(entry.getValue());
-										// add the files to the repository view
-										for (File file : filesToAdd)
-											Activator
-													.getDefault()
-													.getRepositoryUtil()
-													.addConfiguredRepository(
-															file);
-									}
-								});
-					} catch (CoreException ce) {
-						throw new InvocationTargetException(ce);
+		if (!existingPage.getInternalMode()) {
+			try {
+				final Map<IProject, File> projectsToMove = existingPage
+						.getProjects(true);
+				final Repository selectedRepository = existingPage
+						.getSelectedRepsoitory();
+				getContainer().run(false, false, new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						for (Map.Entry<IProject, File> entry : projectsToMove
+								.entrySet()) {
+
+							IPath targetLocation = new Path(entry.getValue()
+									.getPath());
+							IPath currentLocation = entry.getKey()
+									.getLocation();
+							if (!targetLocation.equals(currentLocation)) {
+								MoveProjectOperation op = new MoveProjectOperation(
+										entry.getKey(),
+										entry.getValue().toURI(),
+										UIText.SharingWizard_MoveProjectActionLabel);
+								try {
+									IStatus result = op.execute(monitor, null);
+									if (!result.isOK())
+										throw new RuntimeException();
+								} catch (ExecutionException e) {
+									if (e.getCause() != null)
+										throw new InvocationTargetException(e
+												.getCause());
+									throw new InvocationTargetException(e);
+								}
+							}
+							try {
+								new ConnectProviderOperation(entry.getKey(),
+										selectedRepository.getDirectory())
+										.execute(monitor);
+							} catch (CoreException e) {
+								throw new InvocationTargetException(e);
+							}
+						}
 					}
-				}
-			});
+				});
+			} catch (InvocationTargetException e) {
+				Activator.handleError(UIText.SharingWizard_failed,
+						e.getCause(), true);
+				return false;
+			} catch (InterruptedException e) {
+				// ignore for the moment
+			}
 			return true;
-		} catch (Throwable e) {
-			if (e instanceof InvocationTargetException) {
-				e = e.getCause();
+		} else {
+			final ConnectProviderOperation op = new ConnectProviderOperation(
+					existingPage.getProjects(true));
+			try {
+				getContainer().run(true, false, new IRunnableWithProgress() {
+					public void run(final IProgressMonitor monitor)
+							throws InvocationTargetException {
+						try {
+							op.execute(monitor);
+							PlatformUI.getWorkbench().getDisplay()
+									.syncExec(new Runnable() {
+										public void run() {
+											Set<File> filesToAdd = new HashSet<File>();
+											// collect all files first
+											for (Entry<IProject, File> entry : existingPage
+													.getProjects(true)
+													.entrySet())
+												filesToAdd.add(entry.getValue());
+											// add the files to the repository
+											// view
+											for (File file : filesToAdd)
+												Activator
+														.getDefault()
+														.getRepositoryUtil()
+														.addConfiguredRepository(
+																file);
+										}
+									});
+						} catch (CoreException ce) {
+							throw new InvocationTargetException(ce);
+						}
+					}
+				});
+				return true;
+			} catch (Throwable e) {
+				if (e instanceof InvocationTargetException) {
+					e = e.getCause();
+				}
+				if (e instanceof CoreException) {
+					IStatus status = ((CoreException) e).getStatus();
+					e = status.getException();
+				}
+				Activator.handleError(UIText.SharingWizard_failed, e, true);
+				return false;
 			}
-			if (e instanceof CoreException) {
-				IStatus status = ((CoreException) e).getStatus();
-				e = status.getException();
-			}
-			Activator.handleError(UIText.SharingWizard_failed, e, true);
-			return false;
 		}
 	}
 

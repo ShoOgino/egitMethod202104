@@ -6,10 +6,11 @@
 			if (!myCreatePage.getBare())
 				repoFile = new File(repoFile, Constants.DOT_GIT);
 
-			Repository newRepo = cache.lookupRepository(repoFile);
-			newRepo.create(myCreatePage.getBare());
-			Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-					repoFile);
+			Repository repoToCreate = cache.lookupRepository(repoFile);
+			repoToCreate.create(myCreatePage.getBare());
+			Activator.getDefault().getRepositoryUtil()
+					.addConfiguredRepository(repoFile);
+			this.newRepo = repoToCreate;
 		} catch (IOException e) {
 			org.eclipse.egit.ui.Activator.handleError(e.getMessage(), e, false);
 		}

@@ -1,0 +1,16 @@
+	public Object[] getElements(Object inputElement) {
+		List<Repository> nonBareRepos = new ArrayList<Repository>();
+		for (String dir : util.getConfiguredRepositories()) {
+			Repository repo;
+			try {
+				repo = cache.lookupRepository(new File(dir));
+			} catch (IOException e1) {
+				continue;
+			}
+			if (repo.isBare())
+				continue;
+			nonBareRepos.add(repo);
+		}
+		return nonBareRepos.toArray();
+	}
+
