@@ -1,0 +1,40 @@
+	private IndexDiff doReload(final Repository repository, IProgressMonitor monitor, String jobTitle) {
+		currentRepository = repository;
+		final boolean repositoryChanged = currentRepository == repository;
+
+		EclipseGitProgressTransformer jgitMonitor = new EclipseGitProgressTransformer(
+				monitor);
+
+		final IndexDiff indexDiff;
+		try {
+			WorkingTreeIterator iterator = IteratorService
+					.createInitialIterator(repository);
+			indexDiff = new IndexDiff(repository, Constants.HEAD, iterator);
+			indexDiff.diff(jgitMonitor, 0, 0, jobTitle);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		removeListeners();
+		attachListeners(repository);
+
+		form.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				if (form.isDisposed())
+					return;
+				unstagedTableViewer.setInput(new Object[] { repository,
+						indexDiff });
+				stagedTableViewer
+						.setInput(new Object[] { repository, indexDiff });
+				commitAction.setEnabled(repository.getRepositoryState()
+						.canCommit());
+				form.setText(StagingView.getRepositoryName(repository));
+				updateCommitMessageComponent(repositoryChanged);
+				updateSectionText();
+			}
+
+		});
+
+		return indexDiff;
+	}
+
