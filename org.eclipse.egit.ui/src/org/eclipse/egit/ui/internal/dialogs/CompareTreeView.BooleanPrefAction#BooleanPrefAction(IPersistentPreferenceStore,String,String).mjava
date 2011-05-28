@@ -1,9 +1,0 @@
-		BooleanPrefAction(final IPersistentPreferenceStore store,
-				final String pn, final String text) {
-			this.store = store;
-			setText(text);
-			prefName = pn;
-			store.addPropertyChangeListener(this);
-			setChecked(store.getBoolean(prefName));
-		}
-

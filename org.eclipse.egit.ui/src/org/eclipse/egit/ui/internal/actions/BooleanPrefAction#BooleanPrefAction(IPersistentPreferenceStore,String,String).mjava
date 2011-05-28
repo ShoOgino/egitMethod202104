@@ -1,0 +1,14 @@
+	/**
+	 * @param store the preference store
+	 * @param pn the preference name
+	 * @param text the text for the action
+	 */
+	protected BooleanPrefAction(final IPersistentPreferenceStore store,
+			final String pn, final String text) {
+		this.store = store;
+		setText(text);
+		prefName = pn;
+		store.addPropertyChangeListener(this);
+		setChecked(store.getBoolean(prefName));
+	}
+
