@@ -1,0 +1,10 @@
+	/**
+	 * @param id
+	 *            see {@link FontRegistry#getItalic(String)}
+	 * @return the font
+	 */
+	public static Font getItalicFont(final String id) {
+		return PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
+				.getFontRegistry().getItalic(id);
+	}
+

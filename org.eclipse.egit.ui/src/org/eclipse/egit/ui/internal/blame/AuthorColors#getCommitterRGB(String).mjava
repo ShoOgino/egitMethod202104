@@ -1,0 +1,18 @@
+	/**
+	 * Returns a unique color description for each string passed in. Colors for
+	 * new authors are allocated to be as different as possible from the
+	 * existing colors.
+	 *
+	 * @param author
+	 *            name
+	 * @return the corresponding color
+	 */
+	public RGB getCommitterRGB(String author) {
+		RGB rgb = colors.get(author);
+		if (rgb == null) {
+			rgb = COMMITTER_RGBs[count++ % COMMITTER_RGBs.length];
+			colors.put(author, rgb);
+		}
+		return rgb;
+	}
+

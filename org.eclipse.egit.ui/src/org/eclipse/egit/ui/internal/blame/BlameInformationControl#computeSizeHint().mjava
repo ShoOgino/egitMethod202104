@@ -1,0 +1,14 @@
+	public Point computeSizeHint() {
+		Point computed = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+
+		Point constraints = getSizeConstraints();
+		if (constraints == null)
+			return computed;
+
+		Point constrainedSize = getShell().computeSize(constraints.x,
+				SWT.DEFAULT, true);
+		int width = Math.min(computed.x, constrainedSize.x);
+		int height = Math.max(computed.y, constrainedSize.y);
+		return new Point(width, height);
+	}
+

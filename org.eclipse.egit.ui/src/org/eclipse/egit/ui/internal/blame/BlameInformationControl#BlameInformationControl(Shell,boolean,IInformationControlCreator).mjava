@@ -1,0 +1,12 @@
+	/**
+	 * @param parentShell
+	 * @param isResizable
+	 * @param creator
+	 */
+	public BlameInformationControl(Shell parentShell, boolean isResizable,
+			IInformationControlCreator creator) {
+		super(parentShell, isResizable);
+		this.creator = creator;
+		create();
+	}
+

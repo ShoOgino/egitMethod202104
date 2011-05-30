@@ -1,0 +1,6 @@
+	@Override
+	protected IInformationControl doCreateInformationControl(Shell parent) {
+		return new BlameInformationControl(parent, resizable,
+				new BlameInformationControlCreator(true));
+	}
+
