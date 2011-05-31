@@ -25,10 +25,8 @@
 				handlerService.executeCommand(commandId, null);
 			}
 			return true;
-		} catch (ExecutionException e) {
-		} catch (NotDefinedException e) {
-		} catch (NotEnabledException e) {
-		} catch (NotHandledException e) {
+		} catch (CommandException ignored) {
+			// Ignored
 		}
 		return false;
 	}

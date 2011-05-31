@@ -16,22 +16,19 @@
 		removeListeners();
 		attachListeners(repository);
 
-		unstagedTableViewer.getTable().getDisplay().asyncExec(new Runnable() {
+		form.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				if (!unstagedTableViewer.getTable().isDisposed())
-					unstagedTableViewer.setInput(new Object[] { repository,
-							indexDiff });
-				if (!stagedTableViewer.getTable().isDisposed())
-					stagedTableViewer.setInput(new Object[] { repository,
-							indexDiff });
-				if (!commitButton.isDisposed())
-					commitButton.setEnabled(repository.getRepositoryState()
-							.canCommit());
-				if (!repositoryLabel.isDisposed()) {
-					repositoryLabel.setText(StagingView
-							.getRepositoryName(repository));
-				}
+				if (form.isDisposed())
+					return;
+				unstagedTableViewer.setInput(new Object[] { repository,
+						indexDiff });
+				stagedTableViewer
+						.setInput(new Object[] { repository, indexDiff });
+				commitAction.setEnabled(repository.getRepositoryState()
+						.canCommit());
+				form.setText(StagingView.getRepositoryName(repository));
 				updateCommitMessageComponent(repositoryChanged);
+				updateSectionText();
 			}
 
 		});
