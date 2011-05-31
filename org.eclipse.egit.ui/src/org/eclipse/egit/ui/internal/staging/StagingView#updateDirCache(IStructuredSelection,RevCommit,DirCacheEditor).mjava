@@ -3,7 +3,7 @@
 		Iterator iterator = selection.iterator();
 		while (iterator.hasNext()) {
 			StagingEntry entry = (StagingEntry) iterator.next();
-			switch(entry.getState()) {
+			switch (entry.getState()) {
 			case ADDED:
 				edit.add(new DirCacheEditor.DeletePath(entry.getPath()));
 				break;
@@ -11,7 +11,8 @@
 			case REMOVED:
 				// set the index object id/file mode back to our head revision
 				try {
-					final TreeWalk tw = TreeWalk.forPath(currentRepository, entry.getPath(), headRev.getTree());
+					final TreeWalk tw = TreeWalk.forPath(currentRepository,
+							entry.getPath(), headRev.getTree());
 					if (tw != null) {
 						edit.add(new DirCacheEditor.PathEdit(entry.getPath()) {
 							@Override

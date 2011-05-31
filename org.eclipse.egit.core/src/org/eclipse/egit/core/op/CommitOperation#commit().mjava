@@ -17,8 +17,9 @@
 					.setAmend(amending)
 					.setMessage(message)
 					.setInsertChangeId(createChangeId);
-			for(String path:commitFileList)
-				commitCommand.setOnly(path);
+			if (!commitIndex)
+				for(String path:commitFileList)
+					commitCommand.setOnly(path);
 			commitCommand.call();
 		} catch (NoHeadException e) {
 			throw new TeamException(e.getLocalizedMessage(), e);

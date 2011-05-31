@@ -1,0 +1,24 @@
+	/**
+	 * Initial UI update
+	 */
+	public void updateUI() {
+		if (amending)
+			getHeadCommitInfo();
+
+		commitText.setText(calculateCommitMessage(filesToCommit));
+		authorText.setText(getSafeString(author));
+		committerText.setText(getSafeString(committer));
+		if (amending) {
+			authorText.setText(previousAuthor);
+			saveOriginalChangeId();
+		} else {
+			if (!amendAllowed) {
+				originalChangeId = null;
+			}
+			refreshSignedOffBy();
+			refreshChangeIdText();
+		}
+		updateSignedOffButton();
+		updateChangeIdButton();
+	}
+

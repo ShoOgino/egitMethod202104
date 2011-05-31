@@ -3,30 +3,40 @@
 		parent.setLayout(new GridLayout(1, false));
 
 		repositoryLabel = new Label(parent, SWT.NONE);
-		repositoryLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		repositoryLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false, 1, 1));
 
 		SashForm horizontalSashForm = new SashForm(parent, SWT.NONE);
-		horizontalSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		horizontalSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true, 1, 1));
 
-		Composite leftHandComposite = new Composite(horizontalSashForm, SWT.NONE);
+		Composite leftHandComposite = new Composite(horizontalSashForm,
+				SWT.NONE);
 		leftHandComposite.setLayout(new GridLayout(1, false));
 
-		SashForm veriticalSashForm = new SashForm(leftHandComposite, SWT.VERTICAL);
-		veriticalSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		SashForm veriticalSashForm = new SashForm(leftHandComposite,
+				SWT.VERTICAL);
+		veriticalSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true, 1, 1));
 
 		Composite unstagedComposite = new Composite(veriticalSashForm, SWT.NONE);
 		unstagedComposite.setLayout(new GridLayout(1, false));
 
-		new Label(unstagedComposite, SWT.NONE).setText(UIText.StagingView_UnstagedChanges);
+		new Label(unstagedComposite, SWT.NONE)
+				.setText(UIText.StagingView_UnstagedChanges);
 
-		Composite unstagedTableComposite = new Composite(unstagedComposite, SWT.NONE);
-		unstagedTableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Composite unstagedTableComposite = new Composite(unstagedComposite,
+				SWT.NONE);
+		unstagedTableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+				true, true, 1, 1));
 		unstagedTableComposite.setLayout(new TableColumnLayout());
 
-		unstagedTableViewer = new TableViewer(unstagedTableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		unstagedTableViewer = new TableViewer(unstagedTableComposite,
+				SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		unstagedTableViewer.getTable().setLinesVisible(true);
 		unstagedTableViewer.setLabelProvider(new StagingViewLabelProvider());
-		unstagedTableViewer.setContentProvider(new StagingViewContentProvider(true));
+		unstagedTableViewer.setContentProvider(new StagingViewContentProvider(
+				true));
 		unstagedTableViewer.addDragSupport(DND.DROP_MOVE,
 				new Transfer[] { LocalSelectionTransfer.getTransfer() },
 				new DragSourceAdapter() {
@@ -55,61 +65,124 @@
 			}
 		});
 
-		Composite commitMessageComposite = new Composite(horizontalSashForm, SWT.NONE);
+		Composite commitMessageComposite = new Composite(horizontalSashForm,
+				SWT.NONE);
 		commitMessageComposite.setLayout(new GridLayout(2, false));
 
 		Label commitMessageLabel = new Label(commitMessageComposite, SWT.NONE);
-		commitMessageLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		commitMessageLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
+				false, false, 2, 1));
 		commitMessageLabel.setText(UIText.StagingView_CommitMessage);
 
-		commitMessageText = new SpellcheckableMessageArea(commitMessageComposite, ""); //$NON-NLS-1$
-		commitMessageText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		commitMessageText = new SpellcheckableMessageArea(
+				commitMessageComposite, EMPTY_STRING);
+		commitMessageText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true, 2, 1));
 
 		Composite composite = new Composite(commitMessageComposite, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,
+				2, 1));
 		composite.setLayout(new GridLayout(2, false));
 
 		new Label(composite, SWT.NONE).setText(UIText.StagingView_Committer);
 
 		committerText = new Text(composite, SWT.BORDER);
-		committerText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		committerText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false, 1, 1));
 
 		new Label(composite, SWT.NONE).setText(UIText.StagingView_Author);
 
 		authorText = new Text(composite, SWT.BORDER);
-		authorText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		authorText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false, 1, 1));
 
-		Button amendPreviousCommitButton = new Button(commitMessageComposite, SWT.CHECK);
-		amendPreviousCommitButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		amendPreviousCommitButton.setText(UIText.StagingView_Ammend_Previous_Commit);
+		amendPreviousCommitButton = new Button(commitMessageComposite,
+				SWT.CHECK);
+		amendPreviousCommitButton.setLayoutData(new GridData(SWT.LEFT,
+				SWT.CENTER, false, false, 2, 1));
+		amendPreviousCommitButton
+				.setText(UIText.StagingView_Ammend_Previous_Commit);
 
-		Button signedOffByButton = new Button(commitMessageComposite, SWT.CHECK);
-		signedOffByButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		signedOffByButton = new Button(commitMessageComposite, SWT.CHECK);
+		signedOffByButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
+				false, false, 2, 1));
 		signedOffByButton.setText(UIText.StagingView_Add_Signed_Off_By);
 
-		Button addChangeIdButton = new Button(commitMessageComposite, SWT.CHECK);
-		GridData addChangeIdButtonGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		addChangeIdButton = new Button(commitMessageComposite, SWT.CHECK);
+		GridData addChangeIdButtonGridData = new GridData(SWT.LEFT, SWT.CENTER,
+				false, false, 1, 1);
 		addChangeIdButtonGridData.minimumHeight = 1;
 		addChangeIdButton.setLayoutData(addChangeIdButtonGridData);
 		addChangeIdButton.setText(UIText.StagingView_Add_Change_ID);
 
+		final ICommitMessageComponentNotifications listener = new ICommitMessageComponentNotifications() {
+
+			public void updateSignedOffToggleSelection(boolean selection) {
+				signedOffByButton.setSelection(selection);
+			}
+
+			public void updateChangeIdToggleSelection(boolean selection) {
+				addChangeIdButton.setSelection(selection);
+			}
+		};
+		commitMessageComponent = new CommitMessageComponent(listener);
+		commitMessageComponent.attachControls(commitMessageText, authorText,
+				committerText);
+		addChangeIdButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				commitMessageComponent
+						.setChangeIdButtonSelection(addChangeIdButton
+								.getSelection());
+			}
+		});
+		signedOffByButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				commitMessageComponent
+						.setSignedOffButtonSelection(signedOffByButton
+								.getSelection());
+			}
+		});
+		amendPreviousCommitButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				commitMessageComponent
+						.setAmendingButtonSelection(amendPreviousCommitButton
+								.getSelection());
+			}
+		});
+
 		commitButton = new Button(commitMessageComposite, SWT.NONE);
-		commitButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		commitButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
+				false, 1, 1));
 		commitButton.setText(UIText.StagingView_Commit);
+		commitButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				commit();
+			}
+
+		});
 
 		Composite stagedComposite = new Composite(veriticalSashForm, SWT.NONE);
 		stagedComposite.setLayout(new GridLayout(1, false));
 
-		new Label(stagedComposite, SWT.NONE).setText(UIText.StagingView_StagedChanges);
+		new Label(stagedComposite, SWT.NONE)
+				.setText(UIText.StagingView_StagedChanges);
 
-		Composite stagedTableComposite = new Composite(stagedComposite, SWT.NONE);
-		stagedTableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Composite stagedTableComposite = new Composite(stagedComposite,
+				SWT.NONE);
+		stagedTableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+				true, true, 1, 1));
 		stagedTableComposite.setLayout(new TableColumnLayout());
 
-		stagedTableViewer = new TableViewer(stagedTableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		stagedTableViewer = new TableViewer(stagedTableComposite, SWT.BORDER
+				| SWT.FULL_SELECTION | SWT.MULTI);
 		stagedTableViewer.getTable().setLinesVisible(true);
 		stagedTableViewer.setLabelProvider(new StagingViewLabelProvider());
-		stagedTableViewer.setContentProvider(new StagingViewContentProvider(false));
+		stagedTableViewer.setContentProvider(new StagingViewContentProvider(
+				false));
 		stagedTableViewer.addDragSupport(DND.DROP_MOVE,
 				new Transfer[] { LocalSelectionTransfer.getTransfer() },
 				new DragSourceAdapter() {
@@ -155,8 +228,8 @@
 			}
 		};
 
-		horizontalSashForm.setWeights(new int[] {40, 60});
-		veriticalSashForm.setWeights(new int[] {50, 50});
+		horizontalSashForm.setWeights(new int[] { 40, 60 });
+		veriticalSashForm.setWeights(new int[] { 50, 50 });
 
 		// react on selection changes
 		ISelectionService srv = (ISelectionService) getSite().getService(

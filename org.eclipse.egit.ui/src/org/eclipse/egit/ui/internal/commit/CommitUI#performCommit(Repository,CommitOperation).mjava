@@ -1,0 +1,39 @@
+	/**
+	 * Uses a Job to perform the given CommitOperation
+	 * @param repository
+	 * @param commitOperation
+	 */
+	public static void performCommit(final Repository repository, final CommitOperation commitOperation) {
+		String jobname = UIText.CommitAction_CommittingChanges;
+		Job job = new Job(jobname) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					commitOperation.execute(monitor);
+					CommitMessageComponentStateManager.deleteState(
+							repository);
+					RepositoryMapping mapping = RepositoryMapping
+							.findRepositoryMapping(repository);
+					if (mapping != null)
+						mapping.fireRepositoryChanged();
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(
+							UIText.CommitAction_CommittingFailed, e);
+				} finally {
+					GitLightweightDecorator.refresh();
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (family.equals(JobFamilies.COMMIT))
+					return true;
+				return super.belongsTo(family);
+			}
+
+		};
+		job.setUser(true);
+		job.schedule();
+	}
+

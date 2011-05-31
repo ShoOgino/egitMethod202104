@@ -1,0 +1,8 @@
+	private void updateSignedOffButton() {
+		String curText = commitText.getText();
+		if (!curText.endsWith(Text.DELIMITER))
+			curText += Text.DELIMITER;
+		signedOff = curText.indexOf(getSignedOff() + Text.DELIMITER) != -1;
+		listener.updateSignedOffToggleSelection(signedOff);
+	}
+

@@ -11,8 +11,9 @@
 				.getWorkbench().getService(IHandlerService.class);
 		EvaluationContext c = null;
 		if (selection != null) {
-			c = new EvaluationContext(handlerService
-					.createContextSnapshot(false), selection.toList());
+			c = new EvaluationContext(
+					handlerService.createContextSnapshot(false),
+					selection.toList());
 			c.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, selection);
 			c.removeVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
 		}

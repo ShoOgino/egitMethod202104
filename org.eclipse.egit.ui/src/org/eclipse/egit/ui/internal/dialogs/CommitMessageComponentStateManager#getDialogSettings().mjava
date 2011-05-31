@@ -1,0 +1,9 @@
+	private static IDialogSettings getDialogSettings() {
+		IDialogSettings settings = Activator.getDefault().getDialogSettings();
+		IDialogSettings section = settings
+				.getSection(COMMIT_MESSAGE_COMPONENT_SECTION);
+		if (section == null)
+			section = settings.addNewSection(COMMIT_MESSAGE_COMPONENT_SECTION);
+		return section;
+	}
+

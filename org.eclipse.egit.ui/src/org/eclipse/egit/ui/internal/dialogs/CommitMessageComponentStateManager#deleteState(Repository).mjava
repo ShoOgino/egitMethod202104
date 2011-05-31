@@ -1,0 +1,10 @@
+	/**
+	 * @param repository
+	 */
+	public static void deleteState(Repository repository) {
+		IDialogSettings dialogSettings = getDialogSettings();
+		String key = repository.getDirectory().getAbsolutePath();
+		if (dialogSettings != null && dialogSettings.getArray(key) != null)
+			dialogSettings.put(key, new String[] { EMPTY });
+	}
+

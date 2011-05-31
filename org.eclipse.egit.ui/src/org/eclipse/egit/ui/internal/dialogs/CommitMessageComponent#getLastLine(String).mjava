@@ -1,0 +1,16 @@
+	private String getLastLine(String input) {
+		String output = input;
+		int breakLength = Text.DELIMITER.length();
+
+		// remove last line break if exist
+		int lastIndexOfLineBreak = output.lastIndexOf(Text.DELIMITER);
+		if (lastIndexOfLineBreak != -1
+				&& lastIndexOfLineBreak == output.length() - breakLength)
+			output = output.substring(0, output.length() - breakLength);
+
+		// get the last line
+		lastIndexOfLineBreak = output.lastIndexOf(Text.DELIMITER);
+		return lastIndexOfLineBreak == -1 ? output : output.substring(
+				lastIndexOfLineBreak + breakLength, output.length());
+	}
+

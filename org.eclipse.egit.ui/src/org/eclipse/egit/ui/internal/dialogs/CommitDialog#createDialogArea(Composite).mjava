@@ -41,7 +41,6 @@
 		commitText.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, true).hint(size).minSize(size.x, minHeight)
 				.align(SWT.FILL, SWT.FILL).create());
-		commitText.setText(calculateCommitMessage());
 
 		// allow to commit with ctrl-enter
 		commitText.getTextWidget().addKeyListener(new KeyAdapter() {
@@ -70,11 +69,7 @@
 				.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		authorText.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).create());
-		if (author != null)
-			authorText.setText(author);
 
-		authorHandler = UIUtils.addPreviousValuesContentProposalToText(
-				authorText, AUTHOR_VALUES_PREF);
 		toolkit.createLabel(personArea, UIText.CommitDialog_Committer)
 				.setForeground(
 						toolkit.getColors().getColor(IFormColors.TB_TOGGLE));
@@ -83,57 +78,16 @@
 				.grab(true, false).create());
 		if (committer != null)
 			committerText.setText(committer);
-		committerText.addModifyListener(new ModifyListener() {
-			String oldCommitter = committerText.getText();
-
-			public void modifyText(ModifyEvent e) {
-				if (signedOffItem.getSelection()) {
-					// the commit message is signed
-					// the signature must be updated
-					String newCommitter = committerText.getText();
-					String oldSignOff = getSignedOff(oldCommitter);
-					String newSignOff = getSignedOff(newCommitter);
-					commitText.setText(replaceSignOff(commitText.getText(),
-							oldSignOff, newSignOff));
-					oldCommitter = newCommitter;
-				}
-			}
-		});
-
-		committerHandler = UIUtils.addPreviousValuesContentProposalToText(
-				committerText, COMMITTER_VALUES_PREF);
 
 		amendingItem = new ToolItem(messageToolbar, SWT.CHECK);
 		if (amending) {
 			amendingItem.setSelection(amending);
 			amendingItem.setEnabled(false); // if already set, don't allow any
 											// changes
-			authorText.setText(previousAuthor);
-			saveOriginalChangeId();
 		} else if (!amendAllowed) {
 			amendingItem.setEnabled(false);
 			originalChangeId = null;
 		}
-		amendingItem.addSelectionListener(new SelectionAdapter() {
-			boolean alreadyAdded = false;
-			public void widgetSelected(SelectionEvent arg0) {
-				if (!amendingItem.getSelection()) {
-					originalChangeId = null;
-					authorText.setText(author);
-				}
-				else {
-					saveOriginalChangeId();
-					if (!alreadyAdded) {
-						alreadyAdded = true;
-						commitText.setText(previousCommitMessage.replaceAll(
-								"\n", Text.DELIMITER)); //$NON-NLS-1$
-					}
-					if (previousAuthor != null)
-						authorText.setText(previousAuthor);
-				}
-				refreshChangeIdText();
-			}
-		});
 
 		amendingItem.setToolTipText(UIText.CommitDialog_AmendPreviousCommit);
 		Image amendImage = UIIcons.AMEND_COMMIT.createImage();
@@ -141,47 +95,59 @@
 		amendingItem.setImage(amendImage);
 
 		signedOffItem = new ToolItem(messageToolbar, SWT.CHECK);
-		signedOffItem.setSelection(signedOff);
-		if (!amending)
-			refreshSignedOffBy();
+
 		signedOffItem.setToolTipText(UIText.CommitDialog_AddSOB);
 		Image signedOffImage = UIIcons.SIGNED_OFF.createImage();
 		UIUtils.hookDisposal(signedOffItem, signedOffImage);
 		signedOffItem.setImage(signedOffImage);
-
-		signedOffItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent arg0) {
-				refreshSignedOffBy();
-			}
-
-		});
 
 		changeIdItem = new ToolItem(messageToolbar, SWT.CHECK);
 		Image changeIdImage = UIIcons.GERRIT.createImage();
 		UIUtils.hookDisposal(changeIdItem, changeIdImage);
 		changeIdItem.setImage(changeIdImage);
 		changeIdItem.setToolTipText(UIText.CommitDialog_AddChangeIdLabel);
+
+		final ICommitMessageComponentNotifications listener = new ICommitMessageComponentNotifications() {
+
+			public void updateSignedOffToggleSelection(boolean selection) {
+				signedOffItem.setSelection(selection);
+			}
+
+			public void updateChangeIdToggleSelection(boolean selection) {
+				changeIdItem.setSelection(selection);
+			}
+		};
+
+		commitMessageComponent = new CommitMessageComponent(repository, listener);
+		commitMessageComponent.enableListers(false);
+		commitMessageComponent.setDefaults();
+		commitMessageComponent.attachControls(commitText, authorText, committerText);
+		commitMessageComponent.setCommitMessage(commitMessage);
+		commitMessageComponent.setAuthor(author);
+		commitMessageComponent.setCommitter(committer);
+		commitMessageComponent.setAmending(amending);
+		commitMessageComponent.setFilesToCommit(getFileList());
+
+		amendingItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				commitMessageComponent.setAmendingButtonSelection(amendingItem.getSelection());
+			}
+		});
+
 		changeIdItem.addSelectionListener(new SelectionAdapter() {
-
-			public void widgetSelected(SelectionEvent e) {
-				refreshChangeIdText();
-			}
-
-		});
-
-		changeIdItem.setSelection(createChangeIdDefault);
-		if (!amending)
-			refreshChangeIdText();
-
-		commitText.getTextWidget().addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				updateSignedOffButton();
-				updateChangeIdButton();
+			public void widgetSelected(SelectionEvent arg0) {
+				commitMessageComponent.setChangeIdButtonSelection(changeIdItem.getSelection());
 			}
 		});
 
-		updateSignedOffButton();
-		updateChangeIdButton();
+		signedOffItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent arg0) {
+				commitMessageComponent.setSignedOffButtonSelection(signedOffItem.getSelection());
+			}
+		});
+
+		commitMessageComponent.updateUI();
+		commitMessageComponent.enableListers(true);
 
 		filesSection = toolkit.createSection(container,
 				ExpandableComposite.TITLE_BAR

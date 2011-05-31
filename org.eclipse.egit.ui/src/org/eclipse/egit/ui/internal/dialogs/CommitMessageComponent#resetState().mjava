@@ -1,0 +1,19 @@
+	/**
+	 * Resets all state
+	 */
+	public void resetState() {
+		originalChangeId = null;
+		commitMessage = null;
+		previousCommitMessage =EMPTY_STRING;
+		author = null;
+		previousAuthor = null;
+		committer = null;
+		signedOff = false;
+		amending = false;
+		amendAllowed = false;
+		createChangeId = false;
+		filesToCommit = new ArrayList<String>();
+		headCommitId = null;
+		listersEnabled = false;
+	}
+

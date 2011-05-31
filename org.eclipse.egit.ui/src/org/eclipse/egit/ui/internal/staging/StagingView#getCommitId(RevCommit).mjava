@@ -1,0 +1,6 @@
+	private ObjectId getCommitId(RevCommit commit) {
+		if (commit == null)
+			return ObjectId.zeroId();
+		return commit.getId();
+	}
+

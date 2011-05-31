@@ -1,0 +1,13 @@
+	private static RevCommit getHeadCommit(Repository repository) {
+		RevCommit headCommit = null;
+		try {
+			ObjectId parentId = repository.resolve(Constants.HEAD);
+			if (parentId != null)
+				headCommit = new RevWalk(repository).parseCommit(parentId);
+		} catch (IOException e) {
+			Activator.handleError(UIText.CommitAction_errorRetrievingCommit, e,
+					true);
+		}
+		return headCommit;
+	}
+

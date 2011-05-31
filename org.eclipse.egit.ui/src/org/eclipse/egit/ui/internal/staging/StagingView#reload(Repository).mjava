@@ -1,11 +1,12 @@
 	// TODO move to a Job?
 	private IndexDiff reload(final Repository repository) {
+		final boolean repositoryChanged = repository != currentRepository;
 		currentRepository = repository;
-
 
 		final IndexDiff indexDiff;
 		try {
-			WorkingTreeIterator iterator = IteratorService.createInitialIterator(repository);
+			WorkingTreeIterator iterator = IteratorService
+					.createInitialIterator(repository);
 			indexDiff = new IndexDiff(repository, Constants.HEAD, iterator);
 			indexDiff.diff();
 		} catch (IOException e) {
@@ -18,19 +19,21 @@
 		unstagedTableViewer.getTable().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (!unstagedTableViewer.getTable().isDisposed())
-					unstagedTableViewer.setInput(new Object[] { repository, indexDiff });
+					unstagedTableViewer.setInput(new Object[] { repository,
+							indexDiff });
 				if (!stagedTableViewer.getTable().isDisposed())
-					stagedTableViewer.setInput(new Object[] { repository, indexDiff });
+					stagedTableViewer.setInput(new Object[] { repository,
+							indexDiff });
 				if (!commitButton.isDisposed())
-					commitButton.setEnabled(repository.getRepositoryState().canCommit());
-				if (!authorText.isDisposed())
-					updateAuthorAndCommitter(repository);
-				if (!commitMessageText.isDisposed())
-					updateCommitMessage(repository);
+					commitButton.setEnabled(repository.getRepositoryState()
+							.canCommit());
 				if (!repositoryLabel.isDisposed()) {
-					repositoryLabel.setText(StagingView.getRepositoryName(repository));
+					repositoryLabel.setText(StagingView
+							.getRepositoryName(repository));
 				}
+				updateCommitMessageComponent(repositoryChanged);
 			}
+
 		});
 
 		return indexDiff;
