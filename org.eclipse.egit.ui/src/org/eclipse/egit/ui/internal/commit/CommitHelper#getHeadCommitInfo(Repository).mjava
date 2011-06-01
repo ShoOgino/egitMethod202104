@@ -1,0 +1,16 @@
+	/**
+	 * @param repository
+	 * @return info related to the HEAD commit
+	 */
+	public static CommitInfo getHeadCommitInfo(Repository repository) {
+		RevCommit headCommit = getHeadCommit(repository);
+		if (headCommit == null)
+			return null;
+		String commitMessage = headCommit.getFullMessage().replaceAll(
+				"\n", Text.DELIMITER); //$NON-NLS-1$
+		PersonIdent authorIdent = headCommit.getAuthorIdent();
+		String author = authorIdent.getName()
+				+ " <" + authorIdent.getEmailAddress() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		return new CommitInfo(headCommit, author, commitMessage);
+	}
+

@@ -1,0 +1,19 @@
+	/**
+	 * @param repository
+	 * @return state
+	 */
+	public static CommitMessageComponentState loadState(Repository repository) {
+		IDialogSettings dialogSettings = getDialogSettings();
+		String[] values = dialogSettings.getArray(repository.getDirectory()
+				.getAbsolutePath());
+		if (values == null || values.length < MEMBER_COUNT)
+			return null;
+		CommitMessageComponentState state = new CommitMessageComponentState();
+		state.setAmend(Boolean.parseBoolean(values[0]));
+		state.setAuthor(values[1]);
+		state.setCommitMessage(values[2]);
+		state.setCommitter(values[3]);
+		state.setHeadCommit(ObjectId.fromString(values[4]));
+		return state;
+	}
+

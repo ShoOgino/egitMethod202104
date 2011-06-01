@@ -1,0 +1,5 @@
+	private boolean amendAllowed(CommitHelper commitHelper) {
+		return !commitHelper.isMergedResolved()
+				&& !commitHelper.isCherryPickResolved();
+	}
+

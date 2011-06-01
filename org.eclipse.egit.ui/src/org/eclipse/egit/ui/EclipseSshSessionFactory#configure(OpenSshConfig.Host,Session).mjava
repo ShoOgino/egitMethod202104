@@ -1,7 +1,8 @@
 	@Override
 	protected void configure(final OpenSshConfig.Host hc, final Session session) {
-		if (!hc.isBatchMode() && session.getUserInfo() == null) {
+		UserInfo userInfo = session.getUserInfo();
+		if (!hc.isBatchMode()
+				&& (userInfo == null || userInfo.getPassword() == null))
 			new UserInfoPrompter(session);
-		}
 	}
 

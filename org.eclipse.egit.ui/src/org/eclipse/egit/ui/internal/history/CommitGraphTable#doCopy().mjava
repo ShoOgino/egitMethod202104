@@ -13,6 +13,8 @@
 			r.append(d.getId().name());
 		}
 
+		if (clipboard == null || clipboard.isDisposed())
+			return;
 		clipboard.setContents(new Object[] { r.toString() },
 				new Transfer[] { TextTransfer.getInstance() }, DND.CLIPBOARD);
 	}

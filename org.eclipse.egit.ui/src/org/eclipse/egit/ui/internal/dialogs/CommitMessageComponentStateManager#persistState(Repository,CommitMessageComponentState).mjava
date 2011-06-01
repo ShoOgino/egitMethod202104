@@ -1,0 +1,13 @@
+	/**
+	 * @param repository
+	 * @param state
+	 */
+	public static void persistState(Repository repository,
+			CommitMessageComponentState state) {
+		IDialogSettings dialogSettings = getDialogSettings();
+		String[] values = new String[] { Boolean.toString(state.getAmend()),
+				state.getAuthor(), state.getCommitMessage(),
+				state.getCommitter(), state.getHeadCommit().getName().toString() };
+		dialogSettings.put(repository.getDirectory().getAbsolutePath(), values);
+	}
+

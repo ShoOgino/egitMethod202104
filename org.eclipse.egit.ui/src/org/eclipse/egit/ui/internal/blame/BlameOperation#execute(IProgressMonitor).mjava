@@ -1,0 +1,59 @@
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		final RevisionInformation info = new RevisionInformation();
+		info.setHoverControlCreator(new BlameInformationControlCreator(false));
+		info.setInformationPresenterControlCreator(new BlameInformationControlCreator(
+				true));
+		RepositoryMapping mapping = RepositoryMapping.getMapping(file
+				.getProject());
+		if (mapping == null)
+			return;
+		BlameResult result = new BlameCommand(repository)
+				.setFollowFileRenames(true)
+				.setFilePath(mapping.getRepoRelativePath(file)).call();
+		if (result == null)
+			return;
+		Map<RevCommit, BlameRevision> revisions = new HashMap<RevCommit, BlameRevision>();
+		int lineCount = result.getResultContents().size();
+		monitor.beginTask("", lineCount); //$NON-NLS-1$
+		BlameRevision previous = null;
+		for (int i = 0; i < lineCount; i++) {
+			RevCommit commit = result.getSourceCommit(i);
+			BlameRevision revision = revisions.get(commit);
+			if (revision == null) {
+				revision = new BlameRevision();
+				revision.setRepository(repository);
+				revision.setCommit(commit);
+				revisions.put(commit, revision);
+				info.addRevision(revision);
+			}
+			if (previous != null)
+				if (previous == revision)
+					previous.addLine();
+				else {
+					previous.register();
+					previous = revision.reset(i);
+				}
+			else
+				previous = revision.reset(i);
+			monitor.worked(1);
+		}
+		if (previous != null)
+			previous.register();
+
+		shell.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				try {
+					AbstractDecoratedTextEditor editor = RevisionAnnotationController
+							.openEditor(page, file);
+					if (editor != null)
+						editor.showRevisionInformation(info,
+								"org.eclipse.egit.ui.internal.decorators.GitQuickDiffProvider"); //$NON-NLS-1$
+				} catch (PartInitException e) {
+					Activator.handleError(
+							"Error displaying blame annotations", e, //$NON-NLS-1$
+							false);
+				}
+			}
+		});
+	}
+

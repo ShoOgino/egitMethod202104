@@ -1,46 +1,23 @@
 	@Override
 	protected void okPressed() {
-		commitMessage = commitText.getCommitMessage();
-		author = authorText.getText().trim();
-		committer = committerText.getText().trim();
-		signedOff = signedOffItem.getSelection();
-		amending = amendingItem.getSelection();
+		if (!commitMessageComponent.checkCommitInfo())
+			return;
 
 		Object[] checkedElements = filesViewer.getCheckedElements();
 		selectedFiles.clear();
 		for (Object obj : checkedElements)
 			selectedFiles.add(((CommitItem) obj).path);
 
-		if (commitMessage.trim().length() == 0) {
-			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoMessage, UIText.CommitDialog_ErrorMustEnterCommitMessage);
-			return;
-		}
-
-		boolean authorValid = false;
-		if (author.length() > 0) {
-			authorValid = RawParseUtils.parsePersonIdent(author) != null;
-		}
-		if (!authorValid) {
-			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorInvalidAuthor, UIText.CommitDialog_ErrorInvalidAuthorSpecified);
-			return;
-		}
-
-		boolean committerValid = false;
-		if (committer.length() > 0) {
-			committerValid = RawParseUtils.parsePersonIdent(committer) != null;
-		}
-		if (!committerValid) {
-			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorInvalidAuthor, UIText.CommitDialog_ErrorInvalidCommitterSpecified);
-			return;
-		}
+		amending = commitMessageComponent.isAmending();
+		commitMessage = commitMessageComponent.getCommitMessage();
+		author = commitMessageComponent.getAuthor();
+		committer = commitMessageComponent.getCommitter();
+		createChangeId = changeIdItem.getSelection();
 
 		if (selectedFiles.isEmpty() && !amending) {
 			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoItemsSelected, UIText.CommitDialog_ErrorNoItemsSelectedToBeCommitted);
 			return;
 		}
-
-		authorHandler.updateProposals();
-		committerHandler.updateProposals();
 
 		IDialogSettings settings = org.eclipse.egit.ui.Activator
 			.getDefault().getDialogSettings();

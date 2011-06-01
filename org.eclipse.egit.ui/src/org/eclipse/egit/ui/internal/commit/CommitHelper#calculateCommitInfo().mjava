@@ -1,0 +1,37 @@
+	private void calculateCommitInfo() {
+		Repository mergeRepository = null;
+		isMergedResolved = false;
+		isCherryPickResolved = false;
+		RepositoryState state = repository.getRepositoryState();
+		canCommit = state.canCommit();
+		if (!canCommit) {
+			cannotCommitMessage = NLS.bind(UIText.CommitAction_repositoryState,
+					state.getDescription());
+			return;
+		}
+		if (state.equals(RepositoryState.MERGING_RESOLVED)) {
+			isMergedResolved = true;
+			mergeRepository = repository;
+		} else if (state.equals(RepositoryState.CHERRY_PICKING_RESOLVED)) {
+			isCherryPickResolved = true;
+			mergeRepository = repository;
+		}
+		previousCommit = getHeadCommit(repository);
+		final UserConfig config = repository.getConfig().get(UserConfig.KEY);
+		author = config.getAuthorName();
+		final String authorEmail = config.getAuthorEmail();
+		author = author + " <" + authorEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+
+		committer = config.getCommitterName();
+		final String committerEmail = config.getCommitterEmail();
+		committer = committer + " <" + committerEmail + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+
+		if (isMergedResolved || isCherryPickResolved) {
+			commitMessage = getMergeResolveMessage(mergeRepository);
+		}
+
+		if (isCherryPickResolved) {
+			author = getCherryPickOriginalAuthor(mergeRepository);
+		}
+	}
+

@@ -16,7 +16,7 @@
 			message = replaceSignedOffByLine(message, committer);
 
 		SpellcheckableMessageArea textContent = new SpellcheckableMessageArea(
-				messageArea, message, SWT.NONE) {
+				messageArea, message, toolkit.getBorderStyle()) {
 
 			@Override
 			protected IAdaptable getDefaultTarget() {
@@ -33,8 +33,9 @@
 			}
 
 		};
-		textContent.setData(FormToolkit.KEY_DRAW_BORDER,
-				FormToolkit.TEXT_BORDER);
+		if ((toolkit.getBorderStyle() & SWT.BORDER) == 0)
+			textContent.setData(FormToolkit.KEY_DRAW_BORDER,
+					FormToolkit.TEXT_BORDER);
 		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, 80).grab(true, true)
 				.applyTo(textContent);
 		textContent.getTextWidget().setEditable(false);

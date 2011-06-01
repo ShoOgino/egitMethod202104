@@ -1,4 +1,10 @@
-	private void commit() throws TeamException {
+	/**
+	 * Commit changes
+	 *
+	 * @return created commit
+	 * @throws TeamException
+	 */
+	protected RevCommit commit() throws TeamException {
 		final Date commitDate = new Date();
 		final TimeZone timeZone = TimeZone.getDefault();
 		final PersonIdent authorIdent = RawParseUtils.parsePersonIdent(author);
@@ -17,9 +23,10 @@
 					.setAmend(amending)
 					.setMessage(message)
 					.setInsertChangeId(createChangeId);
-			for(String path:commitFileList)
-				commitCommand.setOnly(path);
-			commitCommand.call();
+			if (!commitIndex)
+				for(String path:commitFileList)
+					commitCommand.setOnly(path);
+			return commitCommand.call();
 		} catch (NoHeadException e) {
 			throw new TeamException(e.getLocalizedMessage(), e);
 		} catch (NoMessageException e) {

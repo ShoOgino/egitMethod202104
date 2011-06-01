@@ -1,0 +1,15 @@
+	/**
+	 * @return state
+	 */
+	public CommitMessageComponentState getState() {
+		updateStateFromUI();
+		CommitMessageComponentState state = new CommitMessageComponentState();
+		state.setAmend(isAmending());
+		state.setAuthor(getAuthor());
+		// store text with platform specific line endings
+		state.setCommitMessage(commitText.getText());
+		state.setCommitter(getCommitter());
+		state.setHeadCommit(getHeadCommit());
+		return state;
+	}
+

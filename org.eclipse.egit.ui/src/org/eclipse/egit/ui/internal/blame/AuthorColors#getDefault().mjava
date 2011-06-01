@@ -1,0 +1,11 @@
+	/**
+	 * Returns the author color singleton.
+	 *
+	 * @return the author color singleton
+	 */
+	public static synchronized AuthorColors getDefault() {
+		if (instance == null)
+			instance = new AuthorColors();
+		return instance;
+	}
+

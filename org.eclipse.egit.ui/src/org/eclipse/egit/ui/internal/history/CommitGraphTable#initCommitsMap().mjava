@@ -4,7 +4,8 @@
 		// the commit list is thread safe
 		synchronized (allCommits) {
 			for (PlotCommit commit : allCommits)
-				commitsMap.put(commit.getId().name(), commit);
+				if (commit != null)
+					commitsMap.put(commit.getId().name(), commit);
 		}
 	}
 

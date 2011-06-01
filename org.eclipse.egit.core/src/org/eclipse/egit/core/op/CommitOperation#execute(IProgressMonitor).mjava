@@ -14,14 +14,14 @@
 				if (commitAll)
 					commitAll(commitDate, timeZone, authorIdent, committerIdent);
 				else if (amending || commitFileList != null
-						&& commitFileList.size() > 0) {
+						&& commitFileList.size() > 0 || commitIndex) {
 					actMonitor.beginTask(
 							CoreText.CommitOperation_PerformingCommit,
-							commitFileList.size() * 2);
+							20);
 					actMonitor.setTaskName(CoreText.CommitOperation_PerformingCommit);
 					addUntracked();
 					commit();
-					actMonitor.worked(commitFileList.size());
+					actMonitor.worked(10);
 				} else if (commitWorkingDirChanges) {
 					// TODO commit -a
 				} else {

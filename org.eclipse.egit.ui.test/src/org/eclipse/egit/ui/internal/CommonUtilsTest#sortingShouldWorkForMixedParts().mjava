@@ -1,0 +1,10 @@
+	@Test
+	public void sortingShouldWorkForMixedParts() {
+		assertSortedLike("v1c", "v2b", "v10a");
+		assertSortedLike("asdf", "asdf2", "asdf10");
+		assertSortedLike("1_1", "1_10");
+		assertSortedLike("project-1-0-0-final", "project-1-0-1-beta");
+		assertSortedLike("1-a", "01-b");
+		assertSortedLike("1", "asdf-2", "asdf-10", "b20");
+	}
+

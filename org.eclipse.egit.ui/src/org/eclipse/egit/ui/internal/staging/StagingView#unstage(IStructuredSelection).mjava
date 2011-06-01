@@ -5,7 +5,8 @@
 		final RevCommit headRev;
 		try {
 			final Ref head = currentRepository.getRef(Constants.HEAD);
-			headRev = new RevWalk(currentRepository).parseCommit(head.getObjectId());
+			headRev = new RevWalk(currentRepository).parseCommit(head
+					.getObjectId());
 		} catch (IOException e1) {
 			// TODO fix text
 			MessageDialog.openError(getSite().getShell(),

@@ -1,0 +1,8 @@
+	private Collection<String> getFileList() {
+		Collection<String> result = new ArrayList<String>();
+		for (CommitItem item : items) {
+			result.add(item.path);
+		}
+		return result;
+	}
+

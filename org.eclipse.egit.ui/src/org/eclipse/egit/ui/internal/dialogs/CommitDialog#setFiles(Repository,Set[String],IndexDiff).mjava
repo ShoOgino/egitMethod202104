@@ -15,9 +15,6 @@
 			item.path = path;
 			items.add(item);
 		}
-		createChangeIdDefault = repository.getConfig().getBoolean(
-				ConfigConstants.CONFIG_GERRIT_SECTION,
-				ConfigConstants.CONFIG_KEY_CREATECHANGEID, false);
 
 		// initially, we sort by status plus path
 		Collections.sort(items, new Comparator<CommitItem>() {
