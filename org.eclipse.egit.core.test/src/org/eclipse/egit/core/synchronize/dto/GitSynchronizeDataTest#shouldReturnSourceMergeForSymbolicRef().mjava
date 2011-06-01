@@ -1,0 +1,16 @@
+	@Test
+	public void shouldReturnSourceMergeForSymbolicRef() throws Exception {
+		// given
+		Git git = new Git(repo);
+		git.branchCreate().setName("test").setStartPoint("refs/heads/master")
+				.setUpstreamMode(SetupUpstreamMode.TRACK).call();
+		git.checkout().setName("test").call();
+		GitSynchronizeData gsd = new GitSynchronizeData(repo, HEAD, HEAD, false);
+
+		// when
+		String srcMerge = gsd.getSrcMerge();
+
+		// then
+		assertThat(srcMerge, is("refs/heads/master"));
+	}
+

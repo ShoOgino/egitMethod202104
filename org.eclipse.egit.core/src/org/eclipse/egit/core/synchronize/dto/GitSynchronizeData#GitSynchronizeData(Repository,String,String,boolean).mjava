@@ -19,8 +19,14 @@
 		this.dstRev = dstRev;
 		this.includeLocal = includeLocal;
 
-		srcRemote = extractRemoteName(srcRev);
-		dstRemote = extractRemoteName(dstRev);
+		RemoteConfig srcRemoteConfig = extractRemoteName(srcRev);
+		RemoteConfig dstRemoteConfig = extractRemoteName(dstRev);
+
+		srcRemote = srcRemoteConfig.remote;
+		srcMerge = srcRemoteConfig.merge;
+
+		dstRemote = dstRemoteConfig.remote;
+		dstMerge = dstRemoteConfig.merge;
 
 		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();
 
@@ -31,7 +37,6 @@
 			if (mapping != null && mapping.getRepository() == repo)
 				projects.add(project);
 		}
-
 		updateRevs();
 	}
 
