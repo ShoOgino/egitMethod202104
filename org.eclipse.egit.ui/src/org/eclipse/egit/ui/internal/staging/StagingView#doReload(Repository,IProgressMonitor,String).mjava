@@ -22,10 +22,9 @@
 			public void run() {
 				if (form.isDisposed())
 					return;
-				unstagedTableViewer.setInput(new Object[] { repository,
-						indexDiff });
-				stagedTableViewer
-						.setInput(new Object[] { repository, indexDiff });
+				StagingViewUpdate update = new StagingViewUpdate(repository, indexDiff, Collections.<String> emptyList());
+				unstagedTableViewer.setInput(update);
+				stagedTableViewer.setInput(update);
 				commitAction.setEnabled(repository.getRepositoryState()
 						.canCommit());
 				form.setText(StagingView.getRepositoryName(repository));

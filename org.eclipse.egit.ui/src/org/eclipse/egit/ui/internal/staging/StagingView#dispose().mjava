@@ -5,6 +5,7 @@
 		ISelectionService srv = (ISelectionService) getSite().getService(
 				ISelectionService.class);
 		srv.removePostSelectionListener(selectionChangedListener);
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 
 		removeListeners();
 	}

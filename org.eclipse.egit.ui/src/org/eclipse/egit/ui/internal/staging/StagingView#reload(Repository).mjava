@@ -26,10 +26,9 @@
 							return;
 
 						final IndexDiff indexDiff = results.get();
-						unstagedTableViewer.setInput(new Object[] { repository,
-								indexDiff });
-						stagedTableViewer
-								.setInput(new Object[] { repository, indexDiff });
+						final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, null);
+						unstagedTableViewer.setInput(update);
+						stagedTableViewer.setInput(update);
 						commitAction.setEnabled(repository.getRepositoryState()
 								.canCommit());
 						form.setText(StagingView.getRepositoryName(repository));
