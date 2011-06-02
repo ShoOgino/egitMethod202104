@@ -33,15 +33,13 @@
 
 				private void openNewCommit(final RevCommit newCommit) {
 					if (newCommit != null && openNewCommitsAction.isChecked())
-						PlatformUI.getWorkbench().getDisplay()
-								.asyncExec(new Runnable() {
+						asyncExec(new Runnable() {
 
-									public void run() {
-										CommitEditor
-												.openQuiet(new RepositoryCommit(
-														repository, newCommit));
-									}
-								});
+							public void run() {
+								CommitEditor.openQuiet(new RepositoryCommit(
+										repository, newCommit));
+							}
+						});
 				}
 
 			};

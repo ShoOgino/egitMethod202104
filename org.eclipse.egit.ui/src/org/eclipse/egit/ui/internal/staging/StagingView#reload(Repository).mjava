@@ -20,7 +20,7 @@
 
 		job.addJobChangeListener(new JobChangeAdapter() {
 			public void done(final IJobChangeEvent event) {
-				form.getDisplay().asyncExec(new Runnable() {
+				asyncExec(new Runnable() {
 					public void run() {
 						if (form.isDisposed())
 							return;

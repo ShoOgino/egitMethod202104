@@ -10,14 +10,14 @@
 			}
 		});
 
-		form = toolkit.createScrolledForm(parent);
+		form = toolkit.createForm(parent);
 
 		Image repoImage = UIIcons.REPOSITORY.createImage();
 		UIUtils.hookDisposal(form, repoImage);
 		form.setImage(repoImage);
 		form.setText(UIText.StagingView_NoSelectionTitle);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(form);
-		toolkit.decorateFormHeading(form.getForm());
+		toolkit.decorateFormHeading(form);
 		GridLayoutFactory.swtDefaults().applyTo(form.getBody());
 
 		SashForm horizontalSashForm = new SashForm(form.getBody(), SWT.NONE);
@@ -244,7 +244,7 @@
 					}
 
 					final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, resourcesToUpdate);
-					form.getDisplay().asyncExec(new Runnable() {
+					asyncExec(new Runnable() {
 						public void run() {
 							if (form.isDisposed())
 								return;
