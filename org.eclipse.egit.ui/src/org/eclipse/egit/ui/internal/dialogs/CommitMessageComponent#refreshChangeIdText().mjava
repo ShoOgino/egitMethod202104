@@ -1,6 +1,7 @@
 	private void refreshChangeIdText() {
-		String text = commitText.getText().replaceAll(Text.DELIMITER, "\n"); //$NON-NLS-1$
 		if (createChangeId) {
+			// ChangeIdUtil uses \n line endings
+			String text = commitText.getText().replaceAll(Text.DELIMITER, "\n"); //$NON-NLS-1$
 			String changedText = ChangeIdUtil.insertId(
 					text,
 					originalChangeId != null ? originalChangeId : ObjectId
@@ -10,6 +11,7 @@
 				commitText.setText(changedText);
 			}
 		} else {
+			String text = commitText.getText();
 			int changeIdOffset = findOffsetOfChangeIdLine(text);
 			if (changeIdOffset > 0) {
 				int endOfChangeId = findNextEOL(changeIdOffset, text);
