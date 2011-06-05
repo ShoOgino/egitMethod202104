@@ -1,5 +1,5 @@
 	private void reload(final Repository repository) {
-		final boolean repositoryChanged = currentRepository == repository;
+		final boolean repositoryChanged = currentRepository != repository;
 
 		final AtomicReference<IndexDiff> results = new AtomicReference<IndexDiff>();
 
@@ -20,23 +20,19 @@
 
 		job.addJobChangeListener(new JobChangeAdapter() {
 			public void done(final IJobChangeEvent event) {
-				form.getDisplay().asyncExec(new Runnable() {
+				asyncExec(new Runnable() {
 					public void run() {
 						if (form.isDisposed())
 							return;
 
 						final IndexDiff indexDiff = results.get();
-						unstagedTableViewer.setInput(new Object[] { repository,
-								indexDiff });
-						stagedTableViewer
-								.setInput(new Object[] { repository, indexDiff });
+						final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, null);
+						unstagedTableViewer.setInput(update);
+						stagedTableViewer.setInput(update);
 						commitAction.setEnabled(repository.getRepositoryState()
 								.canCommit());
 						form.setText(StagingView.getRepositoryName(repository));
-						if (repositoryChanged) {
-							updateCommitMessageComponent(repositoryChanged);
-							clearCommitMessageToggles();
-						}
+						updateCommitMessageComponent(repositoryChanged);
 						updateSectionText();
 					}
 
