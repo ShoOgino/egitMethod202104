@@ -1,6 +1,7 @@
 	private void getHeadCommitInfo() {
 		CommitInfo headCommitInfo = CommitHelper.getHeadCommitInfo(repository);
-		previousCommitMessage = headCommitInfo.getCommitMessage();
+		previousCommitMessage = headCommitInfo.getCommitMessage().replaceAll(
+				"\n", Text.DELIMITER); //$NON-NLS-1$;
 		previousAuthor = headCommitInfo.getAuthor();
 	}
 

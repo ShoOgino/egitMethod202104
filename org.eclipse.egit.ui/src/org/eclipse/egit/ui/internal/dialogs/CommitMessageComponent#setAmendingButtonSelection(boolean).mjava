@@ -9,8 +9,7 @@
 		} else {
 			getHeadCommitInfo();
 			saveOriginalChangeId();
-			commitText.setText(previousCommitMessage.replaceAll(
-					"\n", Text.DELIMITER)); //$NON-NLS-1$
+			commitText.setText(previousCommitMessage);
 			if (previousAuthor != null)
 				authorText.setText(previousAuthor);
 		}
