@@ -73,7 +73,8 @@
 				setMessage(UIText.RepositorySearchDialog_NothingFoundMessage,
 						IMessageProvider.INFORMATION);
 
-			toggleSelectionButton.setEnabled(!validDirs.isEmpty());
+			checkAllItem.setEnabled(!validDirs.isEmpty());
+			uncheckAllItem.setEnabled(!validDirs.isEmpty());
 			fTree.clearFilter();
 			fTreeViewer.setInput(validDirs);
 			// this sets all to selected
