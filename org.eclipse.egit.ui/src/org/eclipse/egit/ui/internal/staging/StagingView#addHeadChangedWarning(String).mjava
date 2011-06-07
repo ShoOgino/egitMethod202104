@@ -1,6 +1,6 @@
 	private void addHeadChangedWarning(String commitMessage) {
-		String message = UIText.StagingView_headCommitChanged + "\n\n" + //$NON-NLS-1$
-				commitMessage;
+		String message = UIText.StagingView_headCommitChanged + Text.DELIMITER
+				+ Text.DELIMITER + commitMessage;
 		commitMessageComponent.setCommitMessage(message);
 	}
 
