@@ -1,11 +1,20 @@
-	private static boolean runCommand(String commandId,
+	/**
+	 * Programatically run command based on it id and given selection
+	 *
+	 * @param commandId
+	 *            id of command that should be run
+	 * @param selection
+	 *            given selection
+	 * @return {@code true} when command was successfully executed,
+	 *         {@code false} otherwise
+	 */
+	public static boolean runCommand(String commandId,
 			IStructuredSelection selection) {
 		ICommandService commandService = (ICommandService) PlatformUI
 				.getWorkbench().getService(ICommandService.class);
 		Command cmd = commandService.getCommand(commandId);
-		if (!cmd.isDefined()) {
+		if (!cmd.isDefined())
 			return false;
-		}
 
 		IHandlerService handlerService = (IHandlerService) PlatformUI
 				.getWorkbench().getService(IHandlerService.class);
@@ -18,12 +27,12 @@
 			c.removeVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
 		}
 		try {
-			if (c != null) {
+			if (c != null)
 				handlerService.executeCommandInContext(
 						new ParameterizedCommand(cmd, null), null, c);
-			} else {
+			else
 				handlerService.executeCommand(commandId, null);
-			}
+
 			return true;
 		} catch (CommandException ignored) {
 			// Ignored
