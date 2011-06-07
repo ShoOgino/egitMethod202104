@@ -1,0 +1,7 @@
+	public void setAmend(boolean amend) {
+		SWTBotToolbarToggleButton button = commitDialog.bot()
+				.toolbarToggleButtonWithTooltip(
+						UIText.CommitDialog_AmendPreviousCommit);
+		selectToolbarToggle(button, amend);
+	}
+

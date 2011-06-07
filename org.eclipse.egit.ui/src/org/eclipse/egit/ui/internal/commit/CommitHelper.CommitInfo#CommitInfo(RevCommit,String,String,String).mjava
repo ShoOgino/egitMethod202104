@@ -1,12 +1,14 @@
 		/**
 		 * @param commit
 		 * @param author
+		 * @param committer
 		 * @param commitMessage
 		 */
-		public CommitInfo(RevCommit commit, String author, String commitMessage) {
+		public CommitInfo(RevCommit commit, String author, String committer, String commitMessage) {
 			super();
 			this.commit = commit;
 			this.author = author;
+			this.committer = committer;
 			this.commitMessage = commitMessage;
 		}
 

@@ -1,0 +1,6 @@
+	public boolean getSignedOff() {
+		SWTBotToolbarToggleButton button = commitDialog.bot()
+				.toolbarToggleButtonWithTooltip(UIText.CommitDialog_AddSOB);
+		return button.isChecked();
+	}
+
