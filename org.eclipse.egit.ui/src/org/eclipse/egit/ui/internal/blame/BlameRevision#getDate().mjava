@@ -1,4 +1,7 @@
 	public Date getDate() {
-		return commit.getAuthorIdent().getWhen();
+		PersonIdent person = commit.getAuthorIdent();
+		if( person == null)
+			person = commit.getCommitterIdent();
+		return person != null ? person.getWhen() : new Date(0);
 	}
 
