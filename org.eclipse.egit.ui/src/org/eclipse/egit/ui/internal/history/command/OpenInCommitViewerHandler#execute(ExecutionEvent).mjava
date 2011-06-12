@@ -1,13 +1,21 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repository = getRepository(event);
-		if (repository != null)
+		if (repository != null) {
+			RevWalk revWalk = new RevWalk(repository);
 			for (Object selected : getSelection(getPage()).toList())
 				try {
-					CommitEditor.open(new RepositoryCommit(repository,
-							(RevCommit) selected));
+					RevCommit selectedCommit = (RevCommit) selected;
+
+					// Re-parse commit to clear effects of TreeFilter
+					RevCommit reparsedCommit = revWalk.parseCommit(selectedCommit.getId());
+
+					CommitEditor.open(new RepositoryCommit(repository, reparsedCommit));
+				} catch (IOException e) {
+					Activator.showError("Error opening commit viewer", e); //$NON-NLS-1$
 				} catch (PartInitException e) {
 					Activator.showError("Error opening commit viewer", e); //$NON-NLS-1$
 				}
+		}
 		return null;
 	}
 
