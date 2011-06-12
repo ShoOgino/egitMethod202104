@@ -2,6 +2,7 @@
 	public static void setup() throws Exception {
 		repositoryFile = createProjectAndCommitToRepository();
 		Repository repo = lookupRepository(repositoryFile);
+		TestUtil.configureTestCommitterAsUser(repo);
 		// TODO delete the second project for the time being (.gitignore is
 		// currently not hiding the .project file from commit)
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ2);

@@ -1,0 +1,11 @@
+	@BeforeClass
+	public static void setup() throws Exception {
+		repositoryFile = createProjectAndCommitToRepository();
+		repository = lookupRepository(repositoryFile);
+		TestUtil.configureTestCommitterAsUser(repository);
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(repositoryFile);
+		repositoriesView = repoViewUtil.openRepositoriesView(bot);
+		repoViewTree = repositoriesView.bot().tree();
+	}
+

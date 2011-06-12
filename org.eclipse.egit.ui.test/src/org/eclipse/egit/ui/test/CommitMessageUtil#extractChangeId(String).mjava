@@ -8,7 +8,6 @@
 		if (changeIdOffset <= 0)
 			return null;
 		int endOfChangeId = findNextEOL(changeIdOffset, commitMessage);
-		return commitMessage.substring(
-				changeIdOffset + Text.DELIMITER.length(), endOfChangeId);
+		return commitMessage.substring(changeIdOffset, endOfChangeId);
 	}
 

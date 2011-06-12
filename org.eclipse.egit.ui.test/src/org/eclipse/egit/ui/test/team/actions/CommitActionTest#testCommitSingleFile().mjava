@@ -10,7 +10,8 @@
 		commitDialogTester.setCommitter(TestUtil.TESTCOMMITTER);
 		commitDialogTester.setCommitMessage("The new commit");
 		commitDialogTester.commit();
-		checkHeadCommit(TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER, "The new commit");
+		TestUtil.checkHeadCommit(lookupRepository(repositoryFile),
+				TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER, "The new commit");
 		NoFilesToCommitPopup popup = CommitDialogTester
 				.openCommitDialogExpectNoFilesToCommit(PROJ1);
 		popup.cancelPopup();
