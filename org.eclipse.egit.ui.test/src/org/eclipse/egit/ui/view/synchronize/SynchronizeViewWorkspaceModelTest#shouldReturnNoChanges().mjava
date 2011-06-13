@@ -7,8 +7,16 @@
 		// when
 		launchSynchronization(HEAD, R_HEADS + MASTER, false);
 
+		bot.shell("Synchronize Complete - Git").close();
+
 		// then
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		assertEquals(0, syncViewTree.getAllItems().length);
+		SWTBot viewBot = bot.viewByTitle("Synchronize").bot();
+		@SuppressWarnings("unchecked")
+		Matcher matcher = allOf(widgetOfType(Label.class),
+				withRegex("No changes in .*"));
+
+		@SuppressWarnings("unchecked")
+		SWTBotLabel l = new SWTBotLabel((Label) viewBot.widget(matcher));
+		assertNotNull(l);
 	}
 
