@@ -6,16 +6,6 @@
 	 */
 	protected SWTBotTreeItem getProjectItem(SWTBotTree projectExplorerTree,
 			String project) {
-		for (SWTBotTreeItem item : projectExplorerTree.getAllItems()) {
-			String itemText = item.getText();
-			StringTokenizer tok = new StringTokenizer(itemText, " ");
-			String name = tok.nextToken();
-			// may be a dirty marker
-			if (name.equals(">"))
-				name = tok.nextToken();
-			if (project.equals(name))
-				return item;
-		}
-		return null;
+		return new TestUtil().getProjectItem(projectExplorerTree, project);
 	}
 

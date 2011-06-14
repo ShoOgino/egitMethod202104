@@ -1,0 +1,7 @@
+	public boolean getInsertChangeId() {
+		SWTBotToolbarToggleButton button = commitDialog.bot()
+				.toolbarToggleButtonWithTooltip(
+						UIText.CommitDialog_AddChangeIdLabel);
+		return button.isChecked();
+	}
+

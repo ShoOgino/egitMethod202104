@@ -11,6 +11,9 @@
 		PersonIdent authorIdent = headCommit.getAuthorIdent();
 		String author = authorIdent.getName()
 				+ " <" + authorIdent.getEmailAddress() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
-		return new CommitInfo(headCommit, author, commitMessage);
+		PersonIdent committerIdent = headCommit.getCommitterIdent();
+		String committer = committerIdent.getName()
+				+ " <" + committerIdent.getEmailAddress() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		return new CommitInfo(headCommit, author, committer, commitMessage);
 	}
 

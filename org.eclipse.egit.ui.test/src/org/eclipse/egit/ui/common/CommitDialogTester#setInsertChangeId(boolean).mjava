@@ -1,0 +1,7 @@
+	public void setInsertChangeId(boolean insertChangeId) {
+		SWTBotToolbarToggleButton button = commitDialog.bot()
+				.toolbarToggleButtonWithTooltip(
+						UIText.CommitDialog_AddChangeIdLabel);
+		selectToolbarToggle(button, insertChangeId);
+	}
+

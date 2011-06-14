@@ -1,0 +1,26 @@
+	@Test
+	public void testAmend() throws Exception {
+		RevCommit oldHeadCommit = TestUtil.getHeadCommit(repository);
+		commitOneFileChange("Yet another Change");
+		RevCommit headCommit = TestUtil.getHeadCommit(repository);
+		ObjectId headCommitId = headCommit.getId();
+		String changeId = CommitMessageUtil.extractChangeId(headCommit
+				.getFullMessage());
+		setTestFileContent("Changes over changes");
+		new Git(repository).add().addFilepattern(".").call();
+		StagingViewTester stagingViewTester = StagingViewTester
+				.openStagingView();
+		stagingViewTester.setAmend(true);
+		assertTrue(stagingViewTester.getCommitMessage().indexOf("Change-Id") > 0);
+		assertTrue(stagingViewTester.getCommitMessage()
+				.indexOf("Signed-off-by") > 0);
+		assertTrue(stagingViewTester.getSignedOff());
+		assertTrue(stagingViewTester.getInsertChangeId());
+		stagingViewTester.commit();
+		headCommit = TestUtil.getHeadCommit(repository);
+		if(headCommitId.equals(headCommit.getId()))
+			fail("There is no new commit");
+		assertEquals(oldHeadCommit, headCommit.getParent(0));
+		assertTrue(headCommit.getFullMessage().indexOf(changeId) > 0);
+	}
+

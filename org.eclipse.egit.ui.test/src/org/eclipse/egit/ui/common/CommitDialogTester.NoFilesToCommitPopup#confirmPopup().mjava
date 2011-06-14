@@ -1,0 +1,8 @@
+		public CommitDialogTester confirmPopup() {
+			shell.bot().button(IDialogConstants.YES_LABEL).click();
+			SWTWorkbenchBot workbenchBot = new SWTWorkbenchBot();
+			SWTBotShell commitDialogShell = workbenchBot
+					.shell(UIText.CommitDialog_CommitChanges);
+			return new CommitDialogTester(commitDialogShell);
+		}
+

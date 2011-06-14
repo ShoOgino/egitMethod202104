@@ -1,6 +1,7 @@
 	@Test
 	public void testOpenCommitWithoutChanged() throws Exception {
-		clickOnCommit();
-		bot.shell(UIText.CommitAction_noFilesToCommit).close();
+		NoFilesToCommitPopup popup = CommitDialogTester
+				.openCommitDialogExpectNoFilesToCommit(PROJ1);
+		popup.cancelPopup();
 	}
 

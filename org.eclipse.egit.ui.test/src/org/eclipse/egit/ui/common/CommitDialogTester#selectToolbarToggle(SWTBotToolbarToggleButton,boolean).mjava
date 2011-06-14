@@ -1,0 +1,11 @@
+	private void selectToolbarToggle(SWTBotToolbarToggleButton button,
+			boolean select) {
+		if (select) {
+			if (!button.isChecked())
+				button.select();
+		} else {
+			if (button.isChecked())
+				button.deselect();
+		}
+	}
+

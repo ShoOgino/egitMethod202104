@@ -1,0 +1,19 @@
+	private void commitOneFileChange(String fileContent) throws Exception {
+		setTestFileContent(fileContent);
+		CommitDialogTester commitDialogTester = CommitDialogTester
+				.openCommitDialog(PROJ1);
+		assertEquals("Wrong row count", 1, commitDialogTester.getRowCount());
+		assertTrue("Wrong file",
+				commitDialogTester.getEntryText(0).endsWith("test.txt"));
+		commitDialogTester.setAuthor(TestUtil.TESTAUTHOR);
+		commitDialogTester.setCommitter(TestUtil.TESTCOMMITTER);
+		commitDialogTester.setCommitMessage("Commit message");
+		commitDialogTester.setInsertChangeId(true);
+		commitDialogTester.setSignedOff(true);
+
+		String commitMessage = commitDialogTester.getCommitMessage();
+		assertTrue(commitMessage.indexOf("Change-Id") > 0);
+		assertTrue(commitMessage.indexOf("Signed-off-by") > 0);
+		commitDialogTester.commit();
+	}
+

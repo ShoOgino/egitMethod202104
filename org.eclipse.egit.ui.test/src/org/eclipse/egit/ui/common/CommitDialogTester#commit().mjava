@@ -1,0 +1,6 @@
+	public void commit() throws Exception {
+		commitDialog.bot().button(UIText.CommitDialog_Commit).click();
+		// wait until commit is completed
+		Job.getJobManager().join(JobFamilies.COMMIT, null);
+	}
+

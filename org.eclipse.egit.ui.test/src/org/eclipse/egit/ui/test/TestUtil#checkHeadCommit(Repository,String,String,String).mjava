@@ -1,0 +1,8 @@
+	public static void checkHeadCommit(Repository repository, String author,
+			String committer, String message) throws Exception {
+		CommitInfo commitInfo = CommitHelper.getHeadCommitInfo(repository);
+		assertEquals(author, commitInfo.getAuthor());
+		assertEquals(committer, commitInfo.getCommitter());
+		assertEquals(message, commitInfo.getCommitMessage());
+	}
+
