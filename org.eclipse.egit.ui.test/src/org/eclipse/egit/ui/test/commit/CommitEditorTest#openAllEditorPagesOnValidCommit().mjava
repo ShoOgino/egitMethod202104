@@ -1,0 +1,31 @@
+	@Test
+	public void openAllEditorPagesOnValidCommit() throws Exception {
+		final AtomicReference<IEditorPart> editorRef = new AtomicReference<IEditorPart>();
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+
+			public void run() {
+				RepositoryCommit repoCommit = new RepositoryCommit(repository,
+						commit);
+				editorRef.set(CommitEditor.openQuiet(repoCommit));
+			}
+		});
+		assertNotNull(editorRef.get());
+		IEditorPart editor = editorRef.get();
+		assertTrue(editor instanceof CommitEditor);
+		RepositoryCommit adaptedCommit = (RepositoryCommit) editor
+				.getAdapter(RepositoryCommit.class);
+		assertNotNull(adaptedCommit);
+		assertEquals(commit, adaptedCommit.getRevCommit());
+		assertEquals(repository.getDirectory(), adaptedCommit.getRepository()
+				.getDirectory());
+		IEditorInput input = editor.getEditorInput();
+		assertNotNull(input);
+		SWTBotMultiPageEditor botEditor = bot.multipageEditorByTitle(input
+				.getName());
+		assertNotNull(botEditor);
+		assertTrue(botEditor.getPageCount() > 1);
+		for (String name : botEditor.getPagesTitles())
+			botEditor.activatePage(name);
+		botEditor.close();
+	}
+
