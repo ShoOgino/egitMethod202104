@@ -5,8 +5,9 @@
 				markStartAllRefs(Constants.R_HEADS);
 				markStartAllRefs(Constants.R_REMOTES);
 				markStartAllRefs(Constants.R_TAGS);
-			} else
-				currentWalk.markStart(currentWalk.parseCommit(headId));
+				markStartAdditionalRefs();
+			}
+			currentWalk.markStart(currentWalk.parseCommit(headId));
 		} catch (IOException e) {
 			throw new IllegalStateException(NLS.bind(
 					UIText.GitHistoryPage_errorSettingStartPoints, Activator
