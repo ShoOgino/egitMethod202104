@@ -1,0 +1,8 @@
+	@Test
+	public void testGitBranch() throws CoreException {
+		assertVariable("master", "git_branch", null);
+		assertVariable("master", "git_branch", TEST_PROJECT + "/" + TEST_FILE);
+		assertVariable("main", "git_branch", TEST_PROJECT2 + "/" + TEST_FILE2);
+		assertVariable("main", "git_branch", TEST_PROJECT2);
+	}
+

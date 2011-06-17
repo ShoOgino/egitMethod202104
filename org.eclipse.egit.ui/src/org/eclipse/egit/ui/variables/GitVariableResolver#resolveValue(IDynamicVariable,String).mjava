@@ -1,0 +1,14 @@
+	public String resolveValue(IDynamicVariable variable, String argument)
+			throws CoreException {
+		if (variable.getName().equals(GIT_DIR))
+			return getGitDir(argument);
+		if (variable.getName().equals(GIT_REPO_RELATIVE_PATH))
+			return getGitRepoRelativePath(argument);
+		if (variable.getName().equals(GIT_WORK_TREE))
+			return getGitWorkTree(argument);
+		if (variable.getName().equals(GIT_BRANCH))
+			return getGitBranch(argument);
+		throw new CoreException(new Status(IStatus.ERROR, Activator
+				.getPluginId(), UIText.GitVariableResolver_InternalError));
+	}
+

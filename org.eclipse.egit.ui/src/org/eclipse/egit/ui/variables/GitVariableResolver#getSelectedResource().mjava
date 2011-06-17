@@ -1,0 +1,38 @@
+	private IResource getSelectedResource() {
+		IResource resource = null;
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		IWorkbenchWindow window = null;
+		if (workbench != null)
+			window = workbench.getActiveWorkbenchWindow();
+		if(window != null) {
+			IWorkbenchPage page  = window.getActivePage();
+			if(page != null) {
+				IWorkbenchPart part = page.getActivePart();
+				if(part instanceof IEditorPart) {
+					IEditorPart epart = (IEditorPart) part;
+					resource = (IResource) epart.getEditorInput().getAdapter(IResource.class);
+				}
+				else if(part != null) {
+					IWorkbenchPartSite site = part.getSite();
+					if(site != null) {
+						ISelectionProvider provider = site.getSelectionProvider();
+						if(provider != null) {
+							ISelection selection = provider.getSelection();
+							if(selection instanceof IStructuredSelection) {
+								IStructuredSelection ss = (IStructuredSelection) selection;
+								if(!ss.isEmpty()) {
+									Iterator iterator = ss.iterator();
+									while (iterator.hasNext() && resource == null) {
+										Object next = iterator.next();
+										resource = (IResource) Platform.getAdapterManager().getAdapter(next, IResource.class);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return resource;
+	}
+

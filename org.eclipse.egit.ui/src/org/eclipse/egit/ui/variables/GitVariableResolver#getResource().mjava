@@ -1,0 +1,15 @@
+	private IResource getResource() {
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		if(display.getThread().equals(Thread.currentThread()))
+			return getSelectedResource();
+		else {
+			final IResource[] resource = new IResource[1];
+			display.syncExec(new Runnable() {
+				public void run() {
+					resource[0] = getSelectedResource();
+				}
+			});
+			return resource[0];
+		}
+	}
+

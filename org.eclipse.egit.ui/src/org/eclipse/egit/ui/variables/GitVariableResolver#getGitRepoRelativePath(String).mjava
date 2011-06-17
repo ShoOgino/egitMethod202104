@@ -1,0 +1,15 @@
+	private String getGitRepoRelativePath(String argument) throws CoreException {
+		IResource res = getResource(argument);
+		if (res == null)
+			return ""; //$NON-NLS-1$
+		RepositoryMapping mapping = RepositoryMapping.getMapping(res);
+		if (mapping != null) {
+			String repoRelativePath = mapping.getRepoRelativePath(res);
+			if (repoRelativePath.equals("")) //$NON-NLS-1$
+				return "."; //$NON-NLS-1$
+			else
+				return repoRelativePath;
+		}
+		return ""; //$NON-NLS-1$
+	}
+

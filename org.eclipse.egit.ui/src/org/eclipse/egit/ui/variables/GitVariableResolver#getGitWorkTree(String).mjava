@@ -1,0 +1,11 @@
+	private String getGitWorkTree(String argument) throws CoreException {
+		IResource res = getResource(argument);
+		if (res == null)
+			return ""; //$NON-NLS-1$
+		RepositoryMapping mapping = RepositoryMapping.getMapping(res);
+		if (mapping != null)
+			return mapping.getWorkTree().getAbsolutePath();
+		else
+			return ""; //$NON-NLS-1$
+	}
+

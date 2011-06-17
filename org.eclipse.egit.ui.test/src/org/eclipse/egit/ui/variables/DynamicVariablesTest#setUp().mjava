@@ -1,0 +1,58 @@
+	@Before
+	public void setUp() throws Exception {
+
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
+		new File(root.getLocation().toFile(),"Sub").mkdir();
+		gitDir = new File(new File(root.getLocation().toFile(), "Sub"), Constants.DOT_GIT);
+
+		repository = new FileRepository(gitDir);
+		repository.create();
+
+		project = root.getProject(TEST_PROJECT);
+		project.create(null);
+		project.open(null);
+		IProjectDescription description = project.getDescription();
+		description.setLocation(root.getLocation().append(TEST_PROJECT_LOC));
+		project.move(description, IResource.FORCE, null);
+
+		project2 = root.getProject(TEST_PROJECT2);
+		project2.create(null);
+		project2.open(null);
+		gitDir2 = new File(project2.getLocation().toFile().getAbsoluteFile(), Constants.DOT_GIT);
+		repository2 = new FileRepository(gitDir2);
+		repository2.create();
+
+		RepositoryMapping mapping = new RepositoryMapping(project, gitDir);
+		RepositoryMapping mapping2 = new RepositoryMapping(project2, gitDir2);
+
+		GitProjectData projectData = new GitProjectData(project);
+		GitProjectData projectData2 = new GitProjectData(project2);
+		projectData.setRepositoryMappings(Collections.singletonList(mapping));
+		projectData.store();
+		projectData2.setRepositoryMappings(Collections.singletonList(mapping2));
+		projectData2.store();
+		GitProjectData.add(project, projectData);
+		GitProjectData.add(project2, projectData2);
+
+		RepositoryProvider.map(project, GitProvider.class.getName());
+		RepositoryProvider.map(project2, GitProvider.class.getName());
+
+		FileWriter fileWriter = new FileWriter(new File(repository.getWorkTree(), TEST_PROJECT+"/"+TEST_FILE));
+		fileWriter.write("Some data");
+		fileWriter.close();
+		FileWriter fileWriter2 = new FileWriter(new File(repository2.getWorkTree(), TEST_FILE2));
+		fileWriter2.write("Some other data");
+		fileWriter2.close();
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		project2.refreshLocal(IResource.DEPTH_INFINITE, null);
+		git = new Git(repository);
+		git.add().addFilepattern(".").call();
+		git.commit().setMessage("Initial commit").call();
+
+		git = new Git(repository2);
+		git.add().addFilepattern(".").call();
+		git.commit().setMessage("Initial commit").call();
+		git.branchRename().setNewName("main").call();
+	}
+

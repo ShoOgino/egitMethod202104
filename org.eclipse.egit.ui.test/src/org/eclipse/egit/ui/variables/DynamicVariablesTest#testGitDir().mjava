@@ -1,0 +1,8 @@
+	@Test
+	public void testGitDir() throws CoreException {
+		assertVariable(gitDir.getPath(), "git_dir", null);
+		assertVariable(gitDir.getPath(), "git_dir", TEST_PROJECT);
+		assertVariable(gitDir2.getPath(), "git_dir", TEST_PROJECT2);
+		assertVariable(gitDir2.getPath(), "git_dir", TEST_PROJECT2 + "/" + TEST_FILE2);
+	}
+

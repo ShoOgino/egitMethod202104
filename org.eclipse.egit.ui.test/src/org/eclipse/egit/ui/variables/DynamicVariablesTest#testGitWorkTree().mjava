@@ -1,0 +1,7 @@
+	@Test
+	public void testGitWorkTree() throws CoreException {
+		assertVariable(gitDir.getParentFile().getPath(), "git_work_tree", null);
+		assertVariable(gitDir.getParentFile().getPath(), "git_work_tree", TEST_PROJECT);
+		assertVariable(gitDir2.getParentFile().getPath(), "git_work_tree", TEST_PROJECT2);
+	}
+

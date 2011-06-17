@@ -1,0 +1,15 @@
+	private String getGitBranch(String argument) throws CoreException {
+		IResource res = getResource(argument);
+		if (res == null)
+			return ""; //$NON-NLS-1$
+		RepositoryMapping mapping = RepositoryMapping.getMapping(res);
+		if (mapping != null)
+			try {
+				return mapping.getRepository().getBranch();
+			} catch (IOException e) {
+				throw new CoreException(new Status(IStatus.ERROR, Activator.getPluginId(), e.getMessage()));
+			}
+		else
+			return ""; //$NON-NLS-1$
+	}
+
