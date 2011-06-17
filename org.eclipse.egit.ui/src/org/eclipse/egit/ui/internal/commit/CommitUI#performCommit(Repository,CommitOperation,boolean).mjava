@@ -2,14 +2,18 @@
 	 * Uses a Job to perform the given CommitOperation
 	 * @param repository
 	 * @param commitOperation
+	 * @param openNewCommit
 	 */
-	public static void performCommit(final Repository repository, final CommitOperation commitOperation) {
+	public static void performCommit(final Repository repository,
+			final CommitOperation commitOperation, final boolean openNewCommit) {
 		String jobname = UIText.CommitAction_CommittingChanges;
 		Job job = new Job(jobname) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				RevCommit commit = null;
 				try {
 					commitOperation.execute(monitor);
+					commit = commitOperation.getCommit();
 					CommitMessageComponentStateManager.deleteState(
 							repository);
 					RepositoryMapping mapping = RepositoryMapping
@@ -22,6 +26,8 @@
 				} finally {
 					GitLightweightDecorator.refresh();
 				}
+				if (openNewCommit && commit != null)
+					openCommit(repository, commit);
 				return Status.OK_STATUS;
 			}
 

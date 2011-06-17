@@ -1,21 +1,11 @@
-	/**
-	 * Commit all changes
-	 *
-	 * @param commitDate
-	 * @param timeZone
-	 * @param authorIdent
-	 * @param committerIdent
-	 * @return created commit
-	 * @throws TeamException
-	 */
 	// TODO: can the commit message be change by the user in case of a merge commit?
-	protected RevCommit commitAll(final Date commitDate, final TimeZone timeZone,
+	private void commitAll(final Date commitDate, final TimeZone timeZone,
 			final PersonIdent authorIdent, final PersonIdent committerIdent)
 			throws TeamException {
 
 		Git git = new Git(repo);
 		try {
-			return git.commit()
+			commit = git.commit()
 					.setAll(true)
 					.setAuthor(
 							new PersonIdent(authorIdent, commitDate, timeZone))
