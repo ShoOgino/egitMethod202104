@@ -1,0 +1,14 @@
+	public Object[] getElements(Object inputElement) {
+		if(inputElement instanceof Repository) {
+			Repository repository = (Repository) inputElement;
+			Git git = new Git(repository);
+			try {
+				Collection<ReflogEntry> entries = git.reflog().call();
+				return entries.toArray(new ReflogEntry[entries.size()]);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+

@@ -1,0 +1,8 @@
+	@Override
+	public void dispose() {
+		super.dispose();
+		ISelectionService service = (ISelectionService) getSite().getService(
+				ISelectionService.class);
+		service.removePostSelectionListener(selectionChangedListener);
+	}
+

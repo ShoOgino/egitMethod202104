@@ -1,0 +1,32 @@
+	private void reactOnSelection(ISelection selection) {
+		if (selection instanceof StructuredSelection) {
+			StructuredSelection ssel = (StructuredSelection) selection;
+			if (ssel.size() != 1)
+				return;
+			Repository repository = null;
+			if (ssel.getFirstElement() instanceof IResource) {
+				IResource resource = (IResource) ssel.getFirstElement();
+				RepositoryMapping mapping = RepositoryMapping
+						.getMapping(resource.getProject());
+				repository = mapping.getRepository();
+			}
+			if (ssel.getFirstElement() instanceof IAdaptable) {
+				IResource adapted = (IResource) ((IAdaptable) ssel
+						.getFirstElement()).getAdapter(IResource.class);
+				if (adapted != null) {
+					RepositoryMapping mapping = RepositoryMapping
+							.getMapping(adapted);
+					repository = mapping.getRepository();
+				}
+			} else if (ssel.getFirstElement() instanceof RepositoryTreeNode) {
+				RepositoryTreeNode repoNode = (RepositoryTreeNode) ssel
+						.getFirstElement();
+				repository = repoNode.getRepository();
+			}
+			if (repository != null) {
+				reflogTableViewer.setInput(repository);
+				form.setText(getRepositoryName(repository));
+			}
+		}
+	}
+

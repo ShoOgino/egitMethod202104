@@ -1,0 +1,161 @@
+	@Override
+	public void createPartControl(Composite parent) {
+		GridLayoutFactory.fillDefaults().applyTo(parent);
+
+		final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+		parent.addDisposeListener(new DisposeListener() {
+
+			public void widgetDisposed(DisposeEvent e) {
+				toolkit.dispose();
+			}
+		});
+
+		form = toolkit.createForm(parent);
+
+		Image repoImage = UIIcons.REPOSITORY.createImage();
+		UIUtils.hookDisposal(form, repoImage);
+		final Image branchImage = UIIcons.BRANCH.createImage();
+		UIUtils.hookDisposal(form, branchImage);
+		form.setImage(repoImage);
+		form.setText(UIText.StagingView_NoSelectionTitle);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(form);
+		toolkit.decorateFormHeading(form);
+		GridLayoutFactory.fillDefaults().applyTo(form.getBody());
+
+		Composite tableComposite = toolkit.createComposite(form.getBody());
+		final TableColumnLayout layout = new TableColumnLayout();
+		tableComposite.setLayout(layout);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
+
+		reflogTableViewer = new TableViewer(toolkit.createTable(tableComposite,
+				SWT.FULL_SELECTION | SWT.MULTI));
+		reflogTableViewer.getTable().setLinesVisible(true);
+		reflogTableViewer.getTable().setHeaderVisible(true);
+		reflogTableViewer.setContentProvider(new ReflogViewContentProvider());
+		ColumnViewerToolTipSupport.enableFor(reflogTableViewer);
+
+		TableViewerColumn fromColum = createColumn(layout, "From", 10, SWT.LEFT); //$NON-NLS-1$
+		fromColum.setLabelProvider(new ColumnLabelProvider() {
+
+			@Override
+			public String getText(Object element) {
+				final ReflogEntry entry = (ReflogEntry) element;
+				return entry.getOldId().abbreviate(6).name();
+			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				final ReflogEntry entry = (ReflogEntry) element;
+				return entry.getOldId().name();
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				return branchImage;
+			}
+		});
+
+		TableViewerColumn toColumn = createColumn(layout, "To", 10, SWT.LEFT); //$NON-NLS-1$
+		toColumn.setLabelProvider(new ColumnLabelProvider() {
+
+			@Override
+			public String getText(Object element) {
+				final ReflogEntry entry = (ReflogEntry) element;
+				return entry.getNewId().abbreviate(6).name();
+			}
+
+			@Override
+			public String getToolTipText(Object element) {
+				final ReflogEntry entry = (ReflogEntry) element;
+				return entry.getNewId().name();
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				return branchImage;
+			}
+
+		});
+		TableViewerColumn messageColumn = createColumn(layout,
+				"Message", 50, SWT.LEFT); //$NON-NLS-1$
+		messageColumn.setLabelProvider(new ColumnLabelProvider() {
+
+			private ResourceManager resourceManager = new LocalResourceManager(
+					JFaceResources.getResources());
+
+			@Override
+			public String getText(Object element) {
+				final ReflogEntry entry = (ReflogEntry) element;
+				return entry.getComment();
+			}
+
+			public Image getImage(Object element) {
+				String comment = ((ReflogEntry) element).getComment();
+				if (comment.startsWith("commit:")) //$NON-NLS-1$
+					return (Image) resourceManager.get(UIIcons.CHANGESET);
+				if (comment.startsWith("commit (amend):")) //$NON-NLS-1$
+					return (Image) resourceManager.get(UIIcons.AMEND_COMMIT);
+				if (comment.startsWith("pull :")) //$NON-NLS-1$
+					return (Image) resourceManager.get(UIIcons.PULL);
+				if (comment.startsWith("clone:")) //$NON-NLS-1$
+					return (Image) resourceManager.get(UIIcons.CLONEGIT);
+				if (comment.startsWith("rebase finished:")) //$NON-NLS-1$
+					return (Image) resourceManager.get(UIIcons.REBASE);
+				return null;
+			}
+
+			public void dispose() {
+				resourceManager.dispose();
+				super.dispose();
+			}
+		});
+		reflogTableViewer.addOpenListener(new IOpenListener() {
+
+			public void open(OpenEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event
+						.getSelection();
+				if (selection.isEmpty())
+					return;
+				Repository repo = (Repository) reflogTableViewer.getInput();
+				if (repo == null)
+					return;
+				RevWalk walk = new RevWalk(repo);
+				try {
+					for (Object element : selection.toArray()) {
+						ReflogEntry entry = (ReflogEntry) element;
+						ObjectId id = entry.getNewId();
+						if (id == null || id.equals(ObjectId.zeroId()))
+							id = entry.getOldId();
+						if (id != null && !id.equals(ObjectId.zeroId()))
+							CommitEditor.openQuiet(new RepositoryCommit(repo,
+									walk.parseCommit(id)));
+					}
+				} catch (IOException e) {
+					Activator.logError("Error opening commit", e); //$NON-NLS-1$
+				} finally {
+					walk.release();
+				}
+
+			}
+		});
+
+		selectionChangedListener = new ISelectionListener() {
+			public void selectionChanged(IWorkbenchPart part,
+					ISelection selection) {
+				if (part instanceof IEditorPart) {
+					IEditorInput input = ((IEditorPart) part).getEditorInput();
+					if (input instanceof IFileEditorInput)
+						reactOnSelection(new StructuredSelection(
+								((IFileEditorInput) input).getFile()));
+				} else
+					reactOnSelection(selection);
+			}
+		};
+
+		ISelectionService service = (ISelectionService) getSite().getService(
+				ISelectionService.class);
+		service.addPostSelectionListener(selectionChangedListener);
+
+		getSite().setSelectionProvider(reflogTableViewer);
+	}
+
