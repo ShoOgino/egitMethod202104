@@ -1,0 +1,11 @@
+	private TreeViewerColumn createColumn(
+			final TreeColumnLayout columnLayout, final String text,
+			final int weight, final int style) {
+		final TreeViewerColumn viewerColumn = new TreeViewerColumn(
+				refLogTableTreeViewer, style);
+		final TreeColumn column = viewerColumn.getColumn();
+		column.setText(text);
+		columnLayout.setColumnData(column, new ColumnWeightData(weight, 10));
+		return viewerColumn;
+	}
+

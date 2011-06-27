@@ -4,7 +4,6 @@
 
 		final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 		parent.addDisposeListener(new DisposeListener() {
-
 			public void widgetDisposed(DisposeEvent e) {
 				toolkit.dispose();
 			}
@@ -23,18 +22,29 @@
 		GridLayoutFactory.fillDefaults().applyTo(form.getBody());
 
 		Composite tableComposite = toolkit.createComposite(form.getBody());
-		final TableColumnLayout layout = new TableColumnLayout();
-		tableComposite.setLayout(layout);
+		tableComposite.setLayout(new GridLayout());
+
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
 
-		reflogTableViewer = new TableViewer(toolkit.createTable(tableComposite,
-				SWT.FULL_SELECTION | SWT.MULTI));
-		reflogTableViewer.getTable().setLinesVisible(true);
-		reflogTableViewer.getTable().setHeaderVisible(true);
-		reflogTableViewer.setContentProvider(new ReflogViewContentProvider());
-		ColumnViewerToolTipSupport.enableFor(reflogTableViewer);
+		final TreeColumnLayout layout = new TreeColumnLayout();
 
-		TableViewerColumn fromColum = createColumn(layout, "From", 10, SWT.LEFT); //$NON-NLS-1$
+		FilteredTree filteredTree = new FilteredTree(tableComposite, SWT.NONE | SWT.BORDER, new PatternFilter(), true) {
+			@Override
+			protected void createControl(Composite composite, int treeStyle) {
+				super.createControl(composite, treeStyle);
+				treeComposite.setLayout(layout);
+			}
+		};
+
+		toolkit.adapt(filteredTree);
+		refLogTableTreeViewer = filteredTree.getViewer();
+		refLogTableTreeViewer.getTree().setLinesVisible(true);
+		refLogTableTreeViewer.getTree().setHeaderVisible(true);
+		refLogTableTreeViewer.setContentProvider(new ReflogViewContentProvider());
+
+		ColumnViewerToolTipSupport.enableFor(refLogTableTreeViewer);
+
+		TreeViewerColumn fromColum = createColumn(layout, "From", 10, SWT.LEFT); //$NON-NLS-1$
 		fromColum.setLabelProvider(new ColumnLabelProvider() {
 
 			@Override
@@ -55,7 +65,7 @@
 			}
 		});
 
-		TableViewerColumn toColumn = createColumn(layout, "To", 10, SWT.LEFT); //$NON-NLS-1$
+		TreeViewerColumn toColumn = createColumn(layout, "To", 10, SWT.LEFT); //$NON-NLS-1$
 		toColumn.setLabelProvider(new ColumnLabelProvider() {
 
 			@Override
@@ -76,7 +86,7 @@
 			}
 
 		});
-		TableViewerColumn messageColumn = createColumn(layout,
+		TreeViewerColumn messageColumn = createColumn(layout,
 				"Message", 50, SWT.LEFT); //$NON-NLS-1$
 		messageColumn.setLabelProvider(new ColumnLabelProvider() {
 
@@ -109,14 +119,14 @@
 				super.dispose();
 			}
 		});
-		reflogTableViewer.addOpenListener(new IOpenListener() {
+		refLogTableTreeViewer.addOpenListener(new IOpenListener() {
 
 			public void open(OpenEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event
 						.getSelection();
 				if (selection.isEmpty())
 					return;
-				Repository repo = (Repository) reflogTableViewer.getInput();
+				Repository repo = (Repository) refLogTableTreeViewer.getInput();
 				if (repo == null)
 					return;
 				RevWalk walk = new RevWalk(repo);
@@ -156,6 +166,6 @@
 				ISelectionService.class);
 		service.addPostSelectionListener(selectionChangedListener);
 
-		getSite().setSelectionProvider(reflogTableViewer);
+		getSite().setSelectionProvider(refLogTableTreeViewer);
 	}
 
