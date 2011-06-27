@@ -8,7 +8,8 @@
 				IResource resource = (IResource) ssel.getFirstElement();
 				RepositoryMapping mapping = RepositoryMapping
 						.getMapping(resource.getProject());
-				repository = mapping.getRepository();
+				if ( mapping != null )
+					repository = mapping.getRepository();
 			}
 			if (ssel.getFirstElement() instanceof IAdaptable) {
 				IResource adapted = (IResource) ((IAdaptable) ssel
@@ -16,9 +17,8 @@
 				if (adapted != null) {
 					RepositoryMapping mapping = RepositoryMapping
 							.getMapping(adapted);
-					if (mapping != null) {
+					if (mapping != null)
 						repository = mapping.getRepository();
-					}
 				}
 			} else if (ssel.getFirstElement() instanceof RepositoryTreeNode) {
 				RepositoryTreeNode repoNode = (RepositoryTreeNode) ssel

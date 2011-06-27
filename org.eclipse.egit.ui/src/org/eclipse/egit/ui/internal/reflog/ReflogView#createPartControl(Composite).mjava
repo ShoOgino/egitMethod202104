@@ -167,5 +167,6 @@
 		service.addPostSelectionListener(selectionChangedListener);
 
 		getSite().setSelectionProvider(refLogTableTreeViewer);
+		addRefsChangedListener = Repository.getGlobalListenerList().addRefsChangedListener(this);
 	}
 
