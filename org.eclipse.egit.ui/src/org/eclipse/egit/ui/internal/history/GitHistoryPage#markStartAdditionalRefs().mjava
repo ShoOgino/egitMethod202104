@@ -1,0 +1,7 @@
+	private void markStartAdditionalRefs() throws IOException {
+		List<Ref> additionalRefs = input.getRepository().getRefDatabase()
+				.getAdditionalRefs();
+		for (Ref ref : additionalRefs)
+			markStartRef(ref);
+	}
+
