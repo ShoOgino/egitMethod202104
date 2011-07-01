@@ -12,7 +12,7 @@
 		SWTBotTree tree = getOrOpenView().bot().tree();
 		tree.getAllItems()[0].select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("RemoveRepositoryCommand"));
+				.getPluginLocalizedValue(REMOVE_REPOSITORY_CONTEXT_MENU_LABEL));
 		SWTBotShell shell = bot
 				.shell(UIText.RepositoriesView_ConfirmProjectDeletion_WindowTitle);
 		shell.activate();
