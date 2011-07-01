@@ -1,0 +1,24 @@
+	/**
+	 * An invalid URI should yield an operation result with an error message
+	 * and the exception should be logged
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testInvalidUriDuringPush() throws Exception {
+		ILog log = Activator.getDefault().getLog();
+		LogListener listener = new LogListener();
+		log.addLogListener(listener);
+
+		PushOperation pop = createInvalidPushOperation();
+		pop.run(new NullProgressMonitor());
+		PushOperationResult result = pop.getOperationResult();
+		String errorMessage = result.getErrorMessage(new URIish(INVALID_URI));
+		assertNotNull(errorMessage);
+		assertTrue(errorMessage.contains(INVALID_URI));
+
+		assertTrue(listener.loggedSomething());
+		assertTrue(listener.loggedException());
+
+	}
+
