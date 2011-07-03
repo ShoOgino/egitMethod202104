@@ -1,0 +1,49 @@
+	private void createPopupMenu(final TableViewer tableViewer) {
+		final MenuManager menuMgr = new MenuManager();
+		Control control = tableViewer.getControl();
+		control.setMenu(menuMgr.createContextMenu(control));
+		control.addMenuDetectListener(new MenuDetectListener() {
+			public void menuDetected(MenuDetectEvent e) {
+				menuMgr.removeAll();
+
+				IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
+				if (selection.isEmpty())
+					return;
+
+				menuMgr.add(new Action(
+						UIText.CommitFileDiffViewer_OpenWorkingTreeVersionInEditorMenuLabel) {
+							@Override
+							public void run() {
+								openSelectionInEditor(tableViewer.getSelection());
+							}
+						});
+
+				StagingEntry stagingEntry = (StagingEntry) selection.getFirstElement();
+				switch (stagingEntry.getState()) {
+				case ADDED:
+				case CHANGED:
+				case REMOVED:
+					menuMgr.add(new Action(UIText.StagingView_UnstageItemMenuLabel) {
+						@Override
+						public void run() {
+							unstage((IStructuredSelection) tableViewer.getSelection());
+						}
+					});
+					break;
+
+				case CONFLICTING:
+					menuMgr.add(createItem(ActionCommands.MERGE_TOOL_ACTION, tableViewer));
+					//$FALL-THROUGH$
+				case MISSING:
+				case MODIFIED:
+				case PARTIALLY_MODIFIED:
+				case UNTRACKED:
+				default:
+					menuMgr.add(createItem(ActionCommands.DISCARD_CHANGES_ACTION, tableViewer));	// replace with index
+					menuMgr.add(createItem(ActionCommands.ADD_TO_INDEX, tableViewer));
+				}
+			}
+		});
+
+	}
+

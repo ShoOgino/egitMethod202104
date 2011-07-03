@@ -1,0 +1,14 @@
+	@SuppressWarnings("unchecked")
+	private void openSelectionInEditor(ISelection s) {
+		if (s.isEmpty() || !(s instanceof IStructuredSelection))
+			return;
+		final IStructuredSelection iss = (IStructuredSelection) s;
+		for (Iterator<StagingEntry> it = iss.iterator(); it.hasNext();) {
+			String relativePath = it.next().getPath();
+			String path = new Path(currentRepository.getWorkTree()
+					.getAbsolutePath()).append(relativePath)
+					.toOSString();
+			openFileInEditor(path);
+		}
+	}
+
