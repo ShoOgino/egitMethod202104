@@ -1,0 +1,19 @@
+	/**
+	 * Returns <code>true</code> if there's anything to edit for the user
+	 * @return <code>true</code> if the user needs to supply some data
+	 */
+	private boolean hasEditingItems() {
+		for (CredentialItem item : credentialItems) {
+			if (item instanceof StringType) {
+				return true;
+			}
+			if (item instanceof CharArrayType) {
+				return true;
+			}
+			if (item instanceof YesNoType) {
+				return true;
+			}
+		}
+		return false;
+	}
+

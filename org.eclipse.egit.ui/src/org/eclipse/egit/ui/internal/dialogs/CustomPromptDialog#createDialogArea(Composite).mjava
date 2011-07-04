@@ -1,0 +1,39 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		editingControls = new ArrayList<Control>(credentialItems.length);
+
+		Composite main = (Composite) super.createDialogArea(parent);
+		GridLayout mainLayout = (GridLayout) main.getLayout();
+		mainLayout.numColumns = 2;
+
+		Label infoLabel = new Label(main, SWT.NONE);
+		GridDataFactory.defaultsFor(infoLabel).span(2, 1).applyTo(infoLabel);
+		String tempInfoText = hasEditingItems()
+				? UIText.CustomPromptDialog_provide_information_for
+				: UIText.CustomPromptDialog_information_about;
+		infoLabel.setText(NLS.bind(tempInfoText, uri.toString()));
+
+		for (CredentialItem item : credentialItems) {
+			Label label = new Label(main, SWT.NONE);
+			label.setText(item.getPromptText());
+			GridDataFactory.defaultsFor(label).applyTo(label);
+
+			if (item instanceof CharArrayType || item instanceof StringType) {
+				Text text = new Text(main, SWT.BORDER | (item.isValueSecure() ? SWT.PASSWORD : SWT.NONE));
+				GridDataFactory.defaultsFor(text).applyTo(text);
+				text.setData(KEY_ITEM, item);
+				editingControls.add(text);
+			} else if (item instanceof YesNoType) {
+				Button checkBox = new Button(main, SWT.CHECK);
+				GridDataFactory.defaultsFor(checkBox).applyTo(checkBox);
+				editingControls.add(checkBox);
+			} else {
+				// unknown type, not editable
+				Label dummy = new Label(main, SWT.NONE);
+				GridDataFactory.fillDefaults().applyTo(dummy);
+			}
+		}
+
+		return main;
+	}
+
