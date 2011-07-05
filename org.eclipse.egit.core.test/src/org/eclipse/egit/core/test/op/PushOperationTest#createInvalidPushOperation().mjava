@@ -1,0 +1,15 @@
+	private PushOperation createInvalidPushOperation() throws Exception {
+		// set up push with invalid URI to provoke an exception
+		PushOperationSpecification spec = new PushOperationSpecification();
+		// the remote is invalid
+		URIish remote = new URIish(INVALID_URI);
+		// update master upon master
+		Repository local = repository1.getRepository();
+		RemoteRefUpdate update = new RemoteRefUpdate(local, "HEAD", "refs/heads/test",
+				false, null, null);
+		spec.addURIRefUpdates(remote, Collections.singletonList(update));
+		// now we can construct the push operation
+		PushOperation pop = new PushOperation(local, spec, false, 0);
+		return pop;
+	}
+

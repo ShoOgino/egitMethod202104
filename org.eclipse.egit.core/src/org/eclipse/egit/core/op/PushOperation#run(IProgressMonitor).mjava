@@ -81,13 +81,12 @@
 					} catch (JGitInternalException e) {
 						String errorMessage = e.getCause() != null ? e
 								.getCause().getMessage() : e.getMessage();
-						String userMessage = NLS
-								.bind(
+						String userMessage = NLS.bind(
 										CoreText.PushOperation_InternalExceptionOccurredMessage,
 										errorMessage);
-						operationResult.addOperationResult(uri, userMessage);
+						handleException(uri, e, userMessage);
 					} catch (InvalidRemoteException e) {
-						operationResult.addOperationResult(uri, e.getMessage());
+						handleException(uri, e, e.getMessage());
 					}
 
 					monitor.worked(WORK_UNITS_PER_TRANSPORT);
@@ -117,11 +116,11 @@
 						errorMessage);
 				URIish uri = rc.getPushURIs().isEmpty() ? rc.getURIs().get(0)
 						: rc.getPushURIs().get(0);
-				operationResult.addOperationResult(uri, userMessage);
+				handleException(uri, e, userMessage);
 			} catch (InvalidRemoteException e) {
 				URIish uri = rc.getPushURIs().isEmpty() ? rc.getURIs().get(0)
 						: rc.getPushURIs().get(0);
-				operationResult.addOperationResult(uri, e.getMessage());
+				handleException(uri, e, e.getMessage());
 			}
 		}
 		monitor.done();
