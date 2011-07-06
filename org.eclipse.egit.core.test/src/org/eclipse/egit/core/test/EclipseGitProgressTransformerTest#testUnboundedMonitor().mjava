@@ -1,0 +1,15 @@
+	@Test
+	public void testUnboundedMonitor() {
+		final String title = "Title";
+
+		classUnderTest.beginTask(title, ProgressMonitor.UNKNOWN);
+		Mockito.verify(eclipseMonitor).subTask("Title");
+
+		classUnderTest.update(10);
+		classUnderTest.update(0);
+		Mockito.verify(eclipseMonitor, Mockito.times(1)).subTask("Title, 10");
+		classUnderTest.update(20);
+		Mockito.verify(eclipseMonitor).subTask("Title, 30");
+
+	}
+
