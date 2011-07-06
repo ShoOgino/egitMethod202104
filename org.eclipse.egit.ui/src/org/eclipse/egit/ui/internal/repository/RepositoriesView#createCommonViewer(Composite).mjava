@@ -14,15 +14,9 @@
 						|| element instanceof TagNode) {
 					IHandlerService srv = (IHandlerService) getViewSite()
 							.getService(IHandlerService.class);
-					ICommandService csrv = (ICommandService) getViewSite()
-							.getService(ICommandService.class);
-					Command openCommand = csrv
-							.getCommand("org.eclipse.egit.ui.RepositoriesViewOpen"); //$NON-NLS-1$
-					ExecutionEvent evt = srv.createExecutionEvent(openCommand,
-							null);
 
 					try {
-						openCommand.executeWithChecks(evt);
+						srv.executeCommand("org.eclipse.egit.ui.RepositoriesViewOpen", null); //$NON-NLS-1$
 					} catch (Exception e) {
 						Activator.handleError(e.getMessage(), e, false);
 					}
