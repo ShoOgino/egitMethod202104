@@ -1,10 +1,10 @@
-	private boolean moveIndexContent(String dPath,
+	private MoveResult moveIndexContent(String dPath,
 			final RepositoryMapping srcm, final String sPath) throws IOException {
 		final DirCache sCache = srcm.getRepository().lockDirCache();
 		final DirCacheEntry[] sEnt = sCache.getEntriesWithin(sPath);
 		if (sEnt.length == 0) {
 			sCache.unlock();
-			return false;
+			return MoveResult.UNTRACKED;
 		}
 
 		final DirCacheEditor sEdit = sCache.editor();
@@ -19,6 +19,10 @@
 				}
 			});
 		}
-		return sEdit.commit();
+		if (sEdit.commit())
+			return MoveResult.SUCCESS;
+		else
+			return MoveResult.FAILED;
+
 	}
 
