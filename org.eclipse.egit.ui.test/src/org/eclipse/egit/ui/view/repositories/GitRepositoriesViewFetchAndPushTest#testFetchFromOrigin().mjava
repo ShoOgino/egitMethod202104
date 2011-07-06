@@ -37,8 +37,7 @@
 		objid = objid.substring(0, 7);
 		touchAndSubmit(null);
 		// push from other repository
-		RemoteConfig config = new RemoteConfig(repository.getConfig(), "origin");
-		PushOperationUI op =new PushOperationUI(repository, config, 0, false);
+		PushOperationUI op =new PushOperationUI(repository, "origin", 0, false);
 		op.start();
 
 		String pushdialogTitle = NLS.bind(UIText.ResultDialog_title,

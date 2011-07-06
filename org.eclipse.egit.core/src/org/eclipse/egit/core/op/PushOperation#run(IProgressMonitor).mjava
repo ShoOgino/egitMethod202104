@@ -102,7 +102,7 @@
 					monitor);
 			try {
 				Iterable<PushResult> results = git.push().setRemote(
-						rc.getName()).setDryRun(dryRun).setTimeout(timeout)
+						remoteName).setDryRun(dryRun).setTimeout(timeout)
 						.setProgressMonitor(gitMonitor).setCredentialsProvider(
 								credentialsProvider).call();
 				for (PushResult result : results) {
@@ -114,12 +114,10 @@
 				String userMessage = NLS.bind(
 						CoreText.PushOperation_InternalExceptionOccurredMessage,
 						errorMessage);
-				URIish uri = rc.getPushURIs().isEmpty() ? rc.getURIs().get(0)
-						: rc.getPushURIs().get(0);
+				URIish uri = getPushURIForErrorHandling();
 				handleException(uri, e, userMessage);
 			} catch (InvalidRemoteException e) {
-				URIish uri = rc.getPushURIs().isEmpty() ? rc.getURIs().get(0)
-						: rc.getPushURIs().get(0);
+				URIish uri = getPushURIForErrorHandling();
 				handleException(uri, e, e.getMessage());
 			}
 		}

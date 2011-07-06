@@ -2,16 +2,16 @@
 	 * Creates a push operation for a remote configuration.
 	 *
 	 * @param localDb
-	 * @param rc
+	 * @param remoteName
 	 * @param dryRun
 	 * @param timeout
 	 */
-	public PushOperation(final Repository localDb, final RemoteConfig rc,
+	public PushOperation(final Repository localDb, final String remoteName,
 			final boolean dryRun, int timeout) {
 		this.localDb = localDb;
 		this.specification = null;
 		this.dryRun = dryRun;
-		this.rc = rc;
+		this.remoteName = remoteName;
 		this.timeout = timeout;
 	}
 
