@@ -2,8 +2,7 @@
 		IToolBarManager toolbar = getViewSite().getActionBars()
 				.getToolBarManager();
 
-		// refresh
-		Action refreshAction = new Action(UIText.StagingView_Refresh, IAction.AS_PUSH_BUTTON) {
+		refreshAction = new Action(UIText.StagingView_Refresh, IAction.AS_PUSH_BUTTON) {
 			public void run() {
 				reload(currentRepository);
 			}
