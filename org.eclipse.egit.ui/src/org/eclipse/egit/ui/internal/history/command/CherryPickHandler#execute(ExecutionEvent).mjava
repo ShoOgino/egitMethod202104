@@ -16,14 +16,23 @@
 		} catch (Exception e) {
 			throw new ExecutionException(UIText.CherryPickOperation_InternalError, e);
 		}
-		if (newHead == null)
-			if (cherryPickResult.getStatus() == CherryPickStatus.CONFLICTING)
+		if (newHead == null) {
+			CherryPickStatus status = cherryPickResult.getStatus();
+			switch (status) {
+			case CONFLICTING:
 				MessageDialog.openWarning(parent,
 						UIText.CherryPickHandler_CherryPickConflictsTitle,
 						UIText.CherryPickHandler_CherryPickConflictsMessage);
-			else
-				throw new ExecutionException(UIText.CherryPickOperation_Failed);
-
+				break;
+			case FAILED:
+				IStatus details = getErrorList(cherryPickResult.getFailingPaths());
+				Activator.showErrorStatus(
+						UIText.CherryPickHandler_CherryPickFailedMessage, details);
+				break;
+			case OK:
+				break;
+			}
+		}
 		return null;
 	}
 
