@@ -2,8 +2,8 @@
 		IStructuredSelection selection = (IStructuredSelection) getContext()
 				.getSelection();
 		Object element = selection.getFirstElement();
-
-		if (element instanceof IResource) {
+		IResource resource = ResourceUtil.getResource(element);
+		if (resource != null) {
 			// add standard git action for 'workspace' models
 			menu.appendToGroup(GIT_ACTIONS, createItem(COMMIT_ACTION));
 			menu.appendToGroup(GIT_ACTIONS, createItem(ADD_TO_INDEX));
