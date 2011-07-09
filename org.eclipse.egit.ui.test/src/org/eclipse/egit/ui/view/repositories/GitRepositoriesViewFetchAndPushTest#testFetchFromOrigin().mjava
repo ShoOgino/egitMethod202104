@@ -26,7 +26,7 @@
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
 		SWTBotShell confirm = bot.shell(dialogTitle);
-		assertEquals("Wrong result table row count", 0, confirm.bot().table()
+		assertEquals("Wrong result tree row count", 0, confirm.bot().tree()
 				.rowCount());
 		confirm.close();
 
@@ -56,10 +56,10 @@
 
 		TestUtil.joinJobs(JobFamilies.FETCH);
 		confirm = bot.shell(dialogTitle);
-		SWTBotTable table = confirm.bot().table();
+		SWTBotTreeItem[] treeItems = confirm.bot().tree().getAllItems();
 		boolean found = false;
-		for (int i = 0; i < table.rowCount(); i++) {
-			found = table.getTableItem(i).getText(2).startsWith(objid);
+		for (SWTBotTreeItem item : treeItems) {
+			found = item.getText().contains(objid);
 			if (found)
 				break;
 		}
@@ -72,7 +72,7 @@
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
 		confirm = bot.shell(dialogTitle);
-		assertEquals("Wrong result table row count", 0, confirm.bot().table()
+		assertEquals("Wrong result tree row count", 0, confirm.bot().tree()
 				.rowCount());
 	}
 

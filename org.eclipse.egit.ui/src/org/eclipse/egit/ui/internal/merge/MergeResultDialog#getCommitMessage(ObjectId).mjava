@@ -1,7 +1,7 @@
 	private String getCommitMessage(ObjectId id) {
 		RevCommit commit;
 		try {
-			commit = new RevWalk(repository).parseCommit(id);
+			commit = new RevWalk(objectReader).parseCommit(id);
 		} catch (IOException e) {
 			Activator.logError(UIText.MergeResultDialog_couldNotFindCommit, e);
 			return UIText.MergeResultDialog_couldNotFindCommit;

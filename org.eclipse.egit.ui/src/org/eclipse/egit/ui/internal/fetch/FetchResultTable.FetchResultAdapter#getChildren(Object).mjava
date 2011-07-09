@@ -1,0 +1,31 @@
+		public Object[] getChildren(Object object) {
+			if (children != null)
+				return children;
+
+			switch (update.getResult()) {
+			case FORCED:
+			case FAST_FORWARD:
+				RevWalk walk = new RevWalk(reader);
+				try {
+					walk.setRetainBody(true);
+					walk.markStart(walk.parseCommit(update.getNewObjectId()));
+					walk.markUninteresting(walk.parseCommit(update
+							.getOldObjectId()));
+					List<RepositoryCommit> commits = new ArrayList<RepositoryCommit>();
+					for (RevCommit commit : walk)
+						commits.add(new RepositoryCommit(repo, commit));
+					children = commits.toArray();
+					break;
+				} catch (IOException e) {
+					Activator.logError(
+							"Error parsing commits from fetch result", e); //$NON-NLS-1$
+				} finally {
+					walk.release();
+				}
+				//$FALL-THROUGH$
+			default:
+				children = super.getChildren(object);
+			}
+			return children;
+		}
+

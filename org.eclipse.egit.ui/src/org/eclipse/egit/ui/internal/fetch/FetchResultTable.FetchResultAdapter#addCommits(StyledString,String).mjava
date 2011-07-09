@@ -1,0 +1,15 @@
+		private void addCommits(StyledString styled, String separator) {
+			styled.append('[', StyledString.DECORATIONS_STYLER);
+			styled.append(safeAbbreviate(update.getNewObjectId()),
+					StyledString.DECORATIONS_STYLER);
+			styled.append(separator, StyledString.DECORATIONS_STYLER);
+			styled.append(safeAbbreviate(update.getOldObjectId()),
+					StyledString.DECORATIONS_STYLER);
+			styled.append(']', StyledString.DECORATIONS_STYLER);
+
+			styled.append(MessageFormat.format(
+					UIText.FetchResultTable_counterCommits,
+					Integer.valueOf(getChildren(this).length)),
+					StyledString.COUNTER_STYLER);
+		}
+
