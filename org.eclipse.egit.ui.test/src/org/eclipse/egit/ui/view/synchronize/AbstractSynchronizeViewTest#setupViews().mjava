@@ -1,5 +1,7 @@
 	@Before public void setupViews() {
 		bot.perspectiveById("org.eclipse.jdt.ui.JavaPerspective").activate();
 		bot.viewByTitle("Package Explorer").show();
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH, false);
 	}
 
