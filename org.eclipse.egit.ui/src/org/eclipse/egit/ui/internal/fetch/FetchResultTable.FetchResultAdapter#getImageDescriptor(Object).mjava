@@ -1,0 +1,32 @@
+		public ImageDescriptor getImageDescriptor(Object object) {
+			switch (update.getResult()) {
+			case IO_FAILURE:
+			case LOCK_FAILURE:
+			case REJECTED_CURRENT_BRANCH:
+			case REJECTED:
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImageDescriptor(ISharedImages.IMG_OBJS_ERROR_TSK);
+			case FORCED:
+			case RENAMED:
+			case FAST_FORWARD:
+				if (update.getRemoteName().startsWith(Constants.R_HEADS))
+					return UIIcons.BRANCH;
+				if (update.getLocalName().startsWith(Constants.R_TAGS))
+					return UIIcons.TAG;
+				if (update.getLocalName().startsWith(Constants.R_NOTES))
+					return UIIcons.NOTE;
+				break;
+			case NEW:
+				if (update.getRemoteName().startsWith(Constants.R_HEADS))
+					return UIIcons.CREATE_BRANCH;
+				if (update.getLocalName().startsWith(Constants.R_TAGS))
+					return UIIcons.CREATE_TAG;
+				if (update.getLocalName().startsWith(Constants.R_NOTES))
+					return UIIcons.NOTE;
+				break;
+			default:
+				return super.getImageDescriptor(object);
+			}
+			return super.getImageDescriptor(object);
+		}
+

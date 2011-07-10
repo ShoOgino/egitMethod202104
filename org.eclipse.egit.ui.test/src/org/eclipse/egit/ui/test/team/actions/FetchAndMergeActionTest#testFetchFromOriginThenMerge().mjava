@@ -11,10 +11,10 @@
 						ConfigConstants.CONFIG_KEY_URL);
 		SWTBotShell confirm = bot.shell(NLS.bind(
 				UIText.FetchResultDialog_title, uri));
-		SWTBotTable table = confirm.bot().table();
-		String branch = table.getTableItem(0).getText(2);
-		assertTrue("Wrong result", previousCommit.startsWith(branch.substring(
-				0, 7)));
+		SWTBotTree tree = confirm.bot().tree();
+		String branch = tree.getAllItems()[0].getText();
+		assertTrue("Wrong result",
+				branch.contains(previousCommit.substring(0, 7)));
 
 		confirm.close();
 
@@ -25,7 +25,7 @@
 		fetchDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
 		fetchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
 		confirm = bot.shell(NLS.bind(UIText.FetchResultDialog_title, uri));
-		int count = confirm.bot().table().rowCount();
+		int count = confirm.bot().tree().rowCount();
 
 		confirm.close();
 

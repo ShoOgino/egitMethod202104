@@ -1,0 +1,49 @@
+		public StyledString getStyledText(Object object) {
+			StyledString styled = new StyledString();
+			final String remote = update.getRemoteName();
+			final String local = update.getLocalName();
+			styled.append(Repository.shortenRefName(remote));
+			styled.append(" : ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
+			styled.append(Repository.shortenRefName(local),
+					StyledString.QUALIFIER_STYLER);
+			styled.append(' ');
+			switch (update.getResult()) {
+			case LOCK_FAILURE:
+				styled.append(UIText.FetchResultTable_statusLockFailure,
+						StyledString.DECORATIONS_STYLER);
+				break;
+			case IO_FAILURE:
+				styled.append(UIText.FetchResultTable_statusIOError,
+						StyledString.DECORATIONS_STYLER);
+				break;
+			case NEW:
+				if (remote.startsWith(Constants.R_HEADS))
+					styled.append(UIText.FetchResultTable_statusNewBranch,
+							StyledString.DECORATIONS_STYLER);
+				else if (local.startsWith(Constants.R_TAGS))
+					styled.append(UIText.FetchResultTable_statusNewTag,
+							StyledString.DECORATIONS_STYLER);
+				else
+					styled.append(UIText.FetchResultTable_statusNew,
+							StyledString.DECORATIONS_STYLER);
+				break;
+			case FORCED:
+				addCommits(styled, "..."); //$NON-NLS-1$
+				break;
+			case FAST_FORWARD:
+				addCommits(styled, ".."); //$NON-NLS-1$
+				break;
+			case REJECTED:
+				styled.append(UIText.FetchResultTable_statusRejected,
+						StyledString.DECORATIONS_STYLER);
+				break;
+			case NO_CHANGE:
+				styled.append(UIText.FetchResultTable_statusUpToDate,
+						StyledString.DECORATIONS_STYLER);
+				break;
+			default:
+				break;
+			}
+			return styled;
+		}
+

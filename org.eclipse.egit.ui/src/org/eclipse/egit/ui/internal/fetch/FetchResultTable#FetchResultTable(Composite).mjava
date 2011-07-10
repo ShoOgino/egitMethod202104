@@ -1,34 +1,142 @@
 	FetchResultTable(final Composite parent) {
-		tablePanel = new Composite(parent, SWT.NONE);
-		tablePanel.setLayout(new GridLayout());
-		final GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		layoutData.heightHint = TABLE_PREFERRED_HEIGHT;
-		layoutData.widthHint = TABLE_PREFERRED_WIDTH;
-		tableViewer = new TableViewer(tablePanel);
-		ColumnViewerToolTipSupport.enableFor(tableViewer);
-		final Table table = tableViewer.getTable();
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
+		treePanel = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(treePanel);
+		treeViewer = new TreeViewer(treePanel);
+		treeViewer.setAutoExpandLevel(2);
 
-		rejectedColor = new Color(parent.getDisplay(), 255, 0, 0);
-		updatedColor = new Color(parent.getDisplay(), 0, 255, 0);
-		upToDateColor = new Color(parent.getDisplay(), 245, 245, 245);
+		addToolbar(treePanel);
 
-		tablePanel.addDisposeListener(new DisposeListener() {
+		final IStyledLabelProvider styleProvider = new IStyledLabelProvider() {
+
+			private final WorkbenchLabelProvider wrapped = new WorkbenchLabelProvider();
+
+			public void removeListener(ILabelProviderListener listener) {
+				// Empty
+			}
+
+			public boolean isLabelProperty(Object element, String property) {
+				return false;
+			}
+
+			public void dispose() {
+				wrapped.dispose();
+			}
+
+			public void addListener(ILabelProviderListener listener) {
+				// Empty
+			}
+
+			public StyledString getStyledText(Object element) {
+				// TODO Replace with use of IWorkbenchAdapter3 when is no longer
+				// supported
+				if (element instanceof FetchResultAdapter)
+					return ((FetchResultAdapter) element)
+							.getStyledText(element);
+				if (element instanceof RepositoryCommit)
+					return ((RepositoryCommit) element).getStyledText(element);
+
+				return new StyledString(wrapped.getText(element));
+			}
+
+			public Image getImage(Object element) {
+				return wrapped.getImage(element);
+			}
+		};
+		treeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+				styleProvider) {
+
+			@Override
+			public String getToolTipText(final Object element) {
+				if (element instanceof FetchResultAdapter) {
+					switch (((FetchResultAdapter) element).update.getResult()) {
+					case FAST_FORWARD:
+						return UIText.FetchResultTable_statusDetailFastForward;
+					case FORCED:
+					case REJECTED:
+						return UIText.FetchResultTable_statusDetailNonFastForward;
+					case IO_FAILURE:
+						return UIText.FetchResultTable_statusDetailIOError;
+					case LOCK_FAILURE:
+						return UIText.FetchResultTable_statusDetailCouldntLock;
+					default:
+						return super.getToolTipText(element);
+					}
+				}
+				return super.getToolTipText(element);
+			}
+
+		});
+		treeViewer.setSorter(new ViewerSorter() {
+
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				if (e1 instanceof FetchResultAdapter
+						&& e2 instanceof FetchResultAdapter) {
+					FetchResultAdapter f1 = (FetchResultAdapter) e1;
+					FetchResultAdapter f2 = (FetchResultAdapter) e2;
+					if (f1.getChildren(f1).length > 0
+							&& f2.getChildren(f2).length == 0)
+						return 1;
+					if (f1.getChildren(f1).length == 0
+							&& f2.getChildren(f2).length > 0)
+						return -1;
+
+					return f1.getLabel(f1).compareToIgnoreCase(f2.getLabel(f2));
+				}
+
+				// Leave commits order alone
+				if (e1 instanceof RepositoryCommit
+						&& e2 instanceof RepositoryCommit)
+					return 0;
+
+				return super.compare(viewer, e1, e2);
+			}
+
+		});
+		ColumnViewerToolTipSupport.enableFor(treeViewer);
+		final Tree tree = treeViewer.getTree();
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree);
+		tree.setLinesVisible(true);
+
+		treePanel.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				if (reader != null)
 					reader.release();
-
-				// dispose of our allocated Color instances
-				rejectedColor.dispose();
-				updatedColor.dispose();
-				upToDateColor.dispose();
 			}
 		});
 
-		tableViewer.setContentProvider(new TrackingRefUpdateContentProvider());
-		tableViewer.setInput(null);
+		treeViewer.setContentProvider(new WorkbenchContentProvider() {
 
-		createTableColumns();
+			public Object[] getElements(Object inputElement) {
+				if (inputElement == null)
+					return new FetchResultAdapter[0];
+
+				final FetchResult result = (FetchResult) inputElement;
+				TrackingRefUpdate[] updates = result.getTrackingRefUpdates()
+						.toArray(new TrackingRefUpdate[0]);
+				FetchResultAdapter[] elements = new FetchResultAdapter[updates.length];
+				for (int i = 0; i < elements.length; i++)
+					elements[i] = new FetchResultAdapter(updates[i]);
+				return elements;
+			}
+
+			public Object[] getChildren(Object element) {
+				if (element instanceof RepositoryCommit)
+					return ((RepositoryCommit) element).getDiffs();
+				return super.getChildren(element);
+			}
+
+		});
+
+		treeViewer.addOpenListener(new IOpenListener() {
+
+			public void open(OpenEvent event) {
+				ISelection selection = event.getSelection();
+				if (selection instanceof IStructuredSelection)
+					for (Object element : ((IStructuredSelection) selection)
+							.toArray())
+						if (element instanceof RepositoryCommit)
+							CommitEditor.openQuiet((RepositoryCommit) element);
+			}
+		});
 	}
 

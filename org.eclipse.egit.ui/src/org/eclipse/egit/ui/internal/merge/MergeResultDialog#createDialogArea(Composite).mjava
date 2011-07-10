@@ -42,22 +42,17 @@
 			}
 
 			public Object[] getElements(Object inputElement) {
-				return mergeResult.getMergedCommits();
+				return getCommits(mergeResult.getMergedCommits());
 			}
 		});
-		TableViewerColumn idColumn = new TableViewerColumn(viewer, SWT.LEFT);
-		idColumn.getColumn().setText(UIText.MergeResultDialog_id);
-		idColumn.getColumn().setWidth(100);
-		TableViewerColumn textColumn = new TableViewerColumn(viewer, SWT.LEFT);
-		textColumn.getColumn().setText(UIText.MergeResultDialog_description);
-		textColumn.getColumn().setWidth(300);
 		Table table = viewer.getTable();
-		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		viewer.setLabelProvider(new ITableLabelProvider() {
+		final IStyledLabelProvider styleProvider = new IStyledLabelProvider() {
+
+			private final WorkbenchLabelProvider wrapped = new WorkbenchLabelProvider();
 
 			public void removeListener(ILabelProviderListener listener) {
-				// empty
+				// Empty
 			}
 
 			public boolean isLabelProperty(Object element, String property) {
@@ -65,26 +60,28 @@
 			}
 
 			public void dispose() {
-				// empty
+				wrapped.dispose();
 			}
 
 			public void addListener(ILabelProviderListener listener) {
-				// empty
+				// Empty
 			}
 
-			public String getColumnText(Object element, int columnIndex) {
-				ObjectId commitId = (ObjectId) element;
-				if (columnIndex == 0)
-					return abbreviate(commitId, false);
-				else if (columnIndex == 1)
-					return getCommitMessage(commitId);
-				return EMPTY;
+			public StyledString getStyledText(Object element) {
+				// TODO Replace with use of IWorkbenchAdapter3 when is no longer
+				// supported
+				if (element instanceof RepositoryCommit)
+					return ((RepositoryCommit) element).getStyledText(element);
+
+				return new StyledString(wrapped.getText(element));
 			}
 
-			public Image getColumnImage(Object element, int columnIndex) {
-				return null;
+			public Image getImage(Object element) {
+				return wrapped.getImage(element);
 			}
-		});
+		};
+		viewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+				styleProvider));
 		applyDialogFont(composite);
 		GridDataFactory.fillDefaults().grab(true, true)
 				.align(SWT.FILL, SWT.FILL).span(2, 1)
@@ -94,12 +91,11 @@
 
 			public void open(OpenEvent event) {
 				ISelection selection = event.getSelection();
-				if (selection instanceof IStructuredSelection) {
+				if (selection instanceof IStructuredSelection)
 					for (Object element : ((IStructuredSelection) selection)
 							.toArray())
-						if (element instanceof ObjectId)
-							openCommit((ObjectId) element);
-				}
+						if (element instanceof RepositoryCommit)
+							CommitEditor.openQuiet((RepositoryCommit) element);
 			}
 		});
 		return composite;
