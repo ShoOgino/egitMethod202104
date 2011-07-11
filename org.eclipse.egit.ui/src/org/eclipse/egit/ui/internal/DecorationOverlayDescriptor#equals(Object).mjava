@@ -1,0 +1,8 @@
+	public boolean equals(Object o) {
+		if (!(o instanceof DecorationOverlayDescriptor))
+			return false;
+		DecorationOverlayDescriptor other = (DecorationOverlayDescriptor) o;
+		return base.equals(other.base)
+				&& Arrays.equals(overlays, other.overlays);
+	}
+

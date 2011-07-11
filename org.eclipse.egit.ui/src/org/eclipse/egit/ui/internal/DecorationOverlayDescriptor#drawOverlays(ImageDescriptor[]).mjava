@@ -1,0 +1,34 @@
+	/**
+	 * Draw the overlays for the receiver.
+	 *
+	 * @param overlaysArray
+	 */
+	private void drawOverlays(ImageDescriptor[] overlaysArray) {
+		for (int i = 0; i < overlays.length; i++) {
+			ImageDescriptor overlay = overlaysArray[i];
+			if (overlay == null)
+				continue;
+			ImageData overlayData = overlay.getImageData();
+			// Use the missing descriptor if it is not there.
+			if (overlayData == null)
+				overlayData = ImageDescriptor.getMissingImageDescriptor()
+						.getImageData();
+
+			switch (i) {
+			case IDecoration.TOP_LEFT:
+				drawImage(overlayData, 0, 0);
+				break;
+			case IDecoration.TOP_RIGHT:
+				drawImage(overlayData, size.x - overlayData.width, 0);
+				break;
+			case IDecoration.BOTTOM_LEFT:
+				drawImage(overlayData, 0, size.y - overlayData.height);
+				break;
+			case IDecoration.BOTTOM_RIGHT:
+				drawImage(overlayData, size.x - overlayData.width, size.y
+						- overlayData.height);
+				break;
+			}
+		}
+	}
+
