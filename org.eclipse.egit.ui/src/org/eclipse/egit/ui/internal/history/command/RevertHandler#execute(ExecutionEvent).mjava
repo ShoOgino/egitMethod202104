@@ -14,10 +14,11 @@
 						UIText.RevertHandler_NoRevertTitle,
 						UIText.RevertHandler_AlreadyRevertedMessae);
 		} catch (Exception e) {
-			throw new ExecutionException(UIText.RevertOperation_InternalError, e);
+			Activator.handleError(UIText.RevertOperation_InternalError, e, true);
+			return null;
 		}
 		if (newHead == null)
-			throw new ExecutionException(UIText.RevertOperation_Failed);
+			Activator.showError(UIText.RevertOperation_Failed, null);
 		return null;
 	}
 
