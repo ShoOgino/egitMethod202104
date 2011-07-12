@@ -1,0 +1,20 @@
+	/**
+	 * Create a decoration overlay icon that will place the given overlay icon
+	 * in the given quadrant of the base image descriptor.
+	 *
+	 * @param baseImage
+	 *            the base image
+	 * @param overlayImage
+	 *            the overlay image
+	 * @param quadrant
+	 *            the quadrant (one of {@link IDecoration} (
+	 *            {@link IDecoration#TOP_LEFT}, {@link IDecoration#TOP_RIGHT},
+	 *            {@link IDecoration#BOTTOM_LEFT},
+	 *            {@link IDecoration#BOTTOM_RIGHT} or
+	 *            {@link IDecoration#UNDERLAY})
+	 */
+	public DecorationOverlayDescriptor(ImageDescriptor baseImage,
+			ImageDescriptor overlayImage, int quadrant) {
+		this(baseImage, createArrayFrom(overlayImage, quadrant));
+	}
+

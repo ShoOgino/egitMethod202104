@@ -1,0 +1,22 @@
+	/**
+	 * Create the decoration overlay for the base image descriptor using the
+	 * array of provided overlays. The indices of the array correspond to the
+	 * values of the 5 overlay constants defined on {@link IDecoration} (
+	 * {@link IDecoration#TOP_LEFT}, {@link IDecoration#TOP_RIGHT},
+	 * {@link IDecoration#BOTTOM_LEFT}, {@link IDecoration#BOTTOM_RIGHT} and
+	 * {@link IDecoration#UNDERLAY}).
+	 *
+	 * @param baseImage
+	 *            the base image
+	 * @param overlaysArray
+	 *            the overlay images
+	 * @param sizeValue
+	 *            the size of the resulting image
+	 */
+	public DecorationOverlayDescriptor(ImageDescriptor baseImage,
+			ImageDescriptor[] overlaysArray, Point sizeValue) {
+		this.base = baseImage;
+		this.overlays = overlaysArray;
+		this.size = sizeValue;
+	}
+

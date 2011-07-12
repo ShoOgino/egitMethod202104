@@ -1,0 +1,17 @@
+	/**
+	 * Convert the given image and quadrant into the proper input array.
+	 *
+	 * @param overlayImage
+	 *            the overlay image
+	 * @param quadrant
+	 *            the quadrant
+	 * @return an array with the given image in the proper quadrant
+	 */
+	private static ImageDescriptor[] createArrayFrom(
+			ImageDescriptor overlayImage, int quadrant) {
+		ImageDescriptor[] descs = new ImageDescriptor[] { null, null, null,
+				null, null };
+		descs[quadrant] = overlayImage;
+		return descs;
+	}
+
