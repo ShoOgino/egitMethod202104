@@ -1,28 +1,28 @@
 	PushResultTable(final Composite parent) {
-		tablePanel = new Composite(parent, SWT.NONE);
-		tablePanel.setLayout(new GridLayout());
-		final GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		layoutData.heightHint = TABLE_PREFERRED_HEIGHT;
-		layoutData.widthHint = TABLE_PREFERRED_WIDTH;
-		tableViewer = new TableViewer(tablePanel);
-		ColumnViewerToolTipSupport.enableFor(tableViewer);
-		final Table table = tableViewer.getTable();
+		root = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(root);
+
+		treeViewer = new TreeViewer(root);
+		treeViewer.setAutoExpandLevel(2);
+
+		addToolbar(root);
+
+		ColumnViewerToolTipSupport.enableFor(treeViewer);
+		final Tree table = treeViewer.getTree();
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
 
-		imageRegistry = new ImageRegistry(table.getDisplay());
-		imageRegistry.put(IMAGE_ADD, UIIcons.ELCL16_ADD);
-		imageRegistry.put(IMAGE_DELETE, UIIcons.ELCL16_DELETE);
+		deleteImage = UIIcons.ELCL16_DELETE.createImage();
+		UIUtils.hookDisposal(root, deleteImage);
 
-		tablePanel.addDisposeListener(new DisposeListener() {
+		root.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				if (reader != null)
 					reader.release();
-				imageRegistry.dispose();
 			}
 		});
 
-		tableViewer.setComparer(new IElementComparer() {
+		treeViewer.setComparer(new IElementComparer() {
 			// we need this to keep refresh() working while having custom
 			// equals() in PushOperationResult
 			public boolean equals(Object a, Object b) {
@@ -33,31 +33,101 @@
 				return element.hashCode();
 			}
 		});
-		tableViewer.setContentProvider(new RefUpdateContentProvider());
-		tableViewer.setInput(null);
+		final IStyledLabelProvider styleProvider = new WorkbenchStyledLabelProvider() {
+
+			public StyledString getStyledText(Object element) {
+				// TODO Replace with use of IWorkbenchAdapter3 when 3.6 is no
+				// longer supported
+				if (element instanceof RefUpdateElement)
+					return ((RefUpdateElement) element).getStyledText(element);
+				if (element instanceof RepositoryCommit)
+					return ((RepositoryCommit) element).getStyledText(element);
+
+				return super.getStyledText(element);
+			}
+
+		};
+
+		treeViewer.setSorter(new ViewerSorter() {
+
+			public int compare(Viewer viewer, Object e1, Object e2) {
+
+				if (e1 instanceof RefUpdateElement
+						&& e2 instanceof RefUpdateElement) {
+					RefUpdateElement r1 = (RefUpdateElement) e1;
+					RefUpdateElement r2 = (RefUpdateElement) e2;
+
+					// Put rejected refs first
+					if (r1.isRejected() && !r2.isRejected())
+						return -1;
+					if (!r1.isRejected() && r2.isRejected())
+						return 1;
+
+					// Put new refs next
+					if (r1.isAdd() && !r2.isAdd())
+						return -1;
+					if (!r1.isAdd() && r2.isAdd())
+						return 1;
+
+					// Put branches before tags
+					if (!r1.isTag() && r2.isTag())
+						return -1;
+					if (r1.isTag() && !r2.isTag())
+						return 1;
+
+					Status s1 = r1.getStatus();
+					Status s2 = r2.getStatus();
+					// Put up to date refs last
+					if (s1 != Status.UP_TO_DATE && s2 == Status.UP_TO_DATE)
+						return -1;
+					if (s1 == Status.UP_TO_DATE && s2 != Status.UP_TO_DATE)
+						return 1;
+
+					String ref1 = r1.getDstRefName();
+					String ref2 = r2.getDstRefName();
+					if (ref1 != null && ref2 != null)
+						return ref1.compareToIgnoreCase(ref2);
+				}
+
+				// Don't alter commit ordering
+				if (e1 instanceof RepositoryCommit
+						&& e2 instanceof RepositoryCommit)
+					return 0;
+
+				return super.compare(viewer, e1, e2);
+			}
+
+		});
+		treeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+				styleProvider));
+		treeViewer.setContentProvider(new RefUpdateContentProvider());
 		// detail message
-		final Text text = new Text(parent, SWT.MULTI | SWT.READ_ONLY
+		Group messageGroup = new Group(root, SWT.NONE);
+		messageGroup.setText(UIText.PushResultTable_MesasgeText);
+		GridLayoutFactory.swtDefaults().applyTo(messageGroup);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
+				.applyTo(messageGroup);
+
+		final Text text = new Text(messageGroup, SWT.MULTI | SWT.READ_ONLY
 				| SWT.BORDER);
-		GridData textLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		textLayoutData.heightHint = TEXT_PREFERRED_HEIGHT;
-		text.setLayoutData(textLayoutData);
-		tableViewer
-				.addSelectionChangedListener(new ISelectionChangedListener() {
-					public void selectionChanged(SelectionChangedEvent event) {
-						ISelection selection = event.getSelection();
-						if (!(selection instanceof IStructuredSelection)) {
-							text.setText(EMPTY_STRING);
-							return;
-						}
-						IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-						if (structuredSelection.size() != 1) {
-							text.setText(EMPTY_STRING);
-							return;
-						}
-						RefUpdateElement element = (RefUpdateElement) structuredSelection
-								.getFirstElement();
-						text.setText(getResult(element));
-					}
-				});
+		GridDataFactory.fillDefaults().grab(true, true)
+				.hint(SWT.DEFAULT, TEXT_PREFERRED_HEIGHT).applyTo(text);
+		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				ISelection selection = event.getSelection();
+				if (!(selection instanceof IStructuredSelection)) {
+					text.setText(EMPTY_STRING);
+					return;
+				}
+				IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+				if (structuredSelection.size() != 1) {
+					text.setText(EMPTY_STRING);
+					return;
+				}
+				Object selected = structuredSelection.getFirstElement();
+				if (selected instanceof RefUpdateElement)
+					text.setText(getResult((RefUpdateElement) selected));
+			}
+		});
 	}
 

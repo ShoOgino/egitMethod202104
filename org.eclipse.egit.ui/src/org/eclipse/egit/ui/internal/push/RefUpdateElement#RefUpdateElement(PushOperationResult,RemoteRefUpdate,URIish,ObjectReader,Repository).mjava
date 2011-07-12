@@ -1,0 +1,11 @@
+	RefUpdateElement(final PushOperationResult result, RemoteRefUpdate update,
+			URIish uri, ObjectReader reader, Repository repo) {
+		this.result = result;
+		this.update = update;
+		this.uri = uri;
+		this.reader = reader;
+		this.repo = repo;
+		String remote = update.getRemoteName();
+		tag = remote != null && remote.startsWith(Constants.R_TAGS);
+	}
+

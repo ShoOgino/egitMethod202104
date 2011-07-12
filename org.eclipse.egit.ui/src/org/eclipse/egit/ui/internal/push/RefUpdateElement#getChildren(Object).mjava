@@ -1,0 +1,20 @@
+	public Object[] getChildren(Object object) {
+		if (children != null)
+			return children;
+
+		switch (update.getStatus()) {
+		case OK:
+			if (!isDelete()) {
+				final Ref ref = getAdvertisedRemoteRef();
+				if (ref != null) {
+					children = getCommits(ref);
+					break;
+				}
+			}
+			//$FALL-THROUGH$
+		default:
+			children = super.getChildren(object);
+		}
+		return children;
+	}
+

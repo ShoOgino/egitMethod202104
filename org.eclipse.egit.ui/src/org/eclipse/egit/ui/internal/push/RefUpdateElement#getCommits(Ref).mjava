@@ -1,0 +1,16 @@
+	private RepositoryCommit[] getCommits(Ref end) {
+		final RevWalk walk = new RevWalk(reader);
+		try {
+			walk.setRetainBody(true);
+			walk.markStart(walk.parseCommit(update.getNewObjectId()));
+			walk.markUninteresting(walk.parseCommit(end.getObjectId()));
+			List<RepositoryCommit> commits = new ArrayList<RepositoryCommit>();
+			for (RevCommit commit : walk)
+				commits.add(new RepositoryCommit(repo, commit));
+			return commits.toArray(new RepositoryCommit[commits.size()]);
+		} catch (IOException e) {
+			Activator.logError("Error parsing commits from push result", e); //$NON-NLS-1$
+			return new RepositoryCommit[0];
+		}
+	}
+

@@ -1,9 +1,11 @@
 	private static void trim(StringBuilder s) {
 		// remove leading line breaks
-		while (s.length()>0 && (s.charAt(0)=='\n' || s.charAt(0)=='\r'))
+		while (s.length() > 0 && (s.charAt(0) == '\n' || s.charAt(0) == '\r'))
 			s.deleteCharAt(0);
 		// remove trailing line breaks
-		while (s.length()>0 && (s.charAt(s.length()-1)=='\n' || s.charAt(s.length()-1)=='\r'))
-			s.deleteCharAt(s.length()-1);
+		while (s.length() > 0
+				&& (s.charAt(s.length() - 1) == '\n' || s
+						.charAt(s.length() - 1) == '\r'))
+			s.deleteCharAt(s.length() - 1);
 	}
 
