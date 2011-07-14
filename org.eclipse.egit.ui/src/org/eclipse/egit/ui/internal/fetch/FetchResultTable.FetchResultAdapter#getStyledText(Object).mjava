@@ -2,10 +2,9 @@
 			StyledString styled = new StyledString();
 			final String remote = update.getRemoteName();
 			final String local = update.getLocalName();
-			styled.append(Repository.shortenRefName(remote));
+			styled.append(shortenRef(remote));
 			styled.append(" : ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-			styled.append(Repository.shortenRefName(local),
-					StyledString.QUALIFIER_STYLER);
+			styled.append(shortenRef(local), StyledString.QUALIFIER_STYLER);
 			styled.append(' ');
 			switch (update.getResult()) {
 			case LOCK_FAILURE:
