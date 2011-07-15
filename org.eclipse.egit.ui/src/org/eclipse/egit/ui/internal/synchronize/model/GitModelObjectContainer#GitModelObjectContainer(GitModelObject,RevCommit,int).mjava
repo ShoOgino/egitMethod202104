@@ -14,7 +14,8 @@
 
 			RevCommit[] parents = baseCommit.getParents();
 			if (parents != null && parents.length > 0)
-				remoteCommit = baseCommit.getParent(0);
+				remoteCommit = new RevWalk(getRepository())
+						.parseCommit(getParentRevCommit());
 			else {
 				remoteCommit = null;
 			}
