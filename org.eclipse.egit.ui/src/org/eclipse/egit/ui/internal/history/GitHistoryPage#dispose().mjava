@@ -4,6 +4,9 @@
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation());
 
+		Activator.getDefault().getPreferenceStore()
+				.removePropertyChangeListener(listener);
+
 		if (myRefsChangedHandle != null) {
 			myRefsChangedHandle.remove();
 			myRefsChangedHandle = null;
