@@ -1,6 +1,8 @@
 	public void markAsMerged(IDiff node, boolean inSyncHint,
 			IProgressMonitor monitor) throws CoreException {
-		// TODO Auto-generated method stub
-
+		IResource resource = getDiffTree().getResource(node);
+		AddToIndexOperation operation = new AddToIndexOperation(
+				new IResource[] { resource });
+		operation.execute(monitor);
 	}
 
