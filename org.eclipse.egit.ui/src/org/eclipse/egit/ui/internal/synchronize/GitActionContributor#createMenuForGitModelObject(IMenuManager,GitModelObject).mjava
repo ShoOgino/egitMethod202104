@@ -3,6 +3,9 @@
 		if (SupportedContextActionsHelper.canCommit(object))
 			menu.appendToGroup(GIT_ACTIONS, createItem(COMMIT_ACTION));
 
+		if (SupportedContextActionsHelper.canUseMergeTool(object))
+			menu.appendToGroup(GIT_ACTIONS, createItem(MERGE_TOOL_ACTION));
+
 		if (SupportedContextActionsHelper.canStage(object)) {
 			menu.appendToGroup(GIT_ACTIONS, createItem(ADD_TO_INDEX));
 			menu.appendToGroup(GIT_ACTIONS, createItem(IGNORE_ACTION));
