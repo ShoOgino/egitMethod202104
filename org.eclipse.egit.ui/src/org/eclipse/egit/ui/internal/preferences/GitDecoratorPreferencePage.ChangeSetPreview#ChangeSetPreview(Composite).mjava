@@ -5,22 +5,22 @@
 
 				@Override
 				public Image getImage(Object element) {
-					if (element instanceof GitModelCommitMokeup)
+					if (element instanceof GitModelCommitMockup)
 						return fImageCache.createImage(UIIcons.CHANGESET);
 
 					return super.getImage(element);
 				}
 
 				public String getText(Object element) {
-					if (element instanceof GitModelCommitMokeup) {
+					if (element instanceof GitModelCommitMockup) {
 						String format = store.getString(UIPreferences.SYNC_VIEW_CHANGESET_LABEL_FORMAT);
 						String dateFormat = store.getString(UIPreferences.DATE_FORMAT);
-						return ((GitModelCommitMokeup)element).getMokeupText(format, dateFormat);
+						return ((GitModelCommitMockup)element).getMokeupText(format, dateFormat);
 					}
 					return super.getText(element);
 				}
 			});
 			fViewer.setContentProvider(this);
-			fViewer.setInput(new GitModelCommitMokeup());
+			fViewer.setInput(new GitModelCommitMockup());
 		}
 
