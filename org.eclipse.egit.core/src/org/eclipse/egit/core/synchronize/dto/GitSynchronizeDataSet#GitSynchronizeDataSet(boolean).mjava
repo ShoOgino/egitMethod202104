@@ -1,0 +1,12 @@
+	/**
+	 * Constructs GitSynchronizeDataSet.
+	 *
+	 * @param forceFetch
+	 *            {@code true} for forcing fetch action before synchronization
+	 */
+	public GitSynchronizeDataSet(boolean forceFetch) {
+		this.forceFetch = forceFetch;
+		gsd = new HashSet<GitSynchronizeData>();
+		projectMapping = new HashMap<String, GitSynchronizeData>();
+	}
+
