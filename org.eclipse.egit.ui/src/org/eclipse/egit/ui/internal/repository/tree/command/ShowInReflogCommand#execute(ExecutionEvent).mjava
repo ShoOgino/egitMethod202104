@@ -1,0 +1,27 @@
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+
+		List<RepositoryTreeNode> selectedNodes = getSelectedNodes(event);
+		Repository repo = null;
+		if (selectedNodes.size() == 1) {
+			RepositoryTreeNode selectedNode = selectedNodes.get(0);
+			if (selectedNode.getType() == RepositoryTreeNodeType.REPO) {
+				repo = selectedNode.getRepository();
+			}
+
+			final Repository repoToShow = repo;
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					try {
+						ReflogView part = (ReflogView) PlatformUI
+								.getWorkbench().getActiveWorkbenchWindow()
+								.getActivePage().showView(ReflogView.VIEW_ID);
+						part.showReflogFor(repoToShow);
+					} catch (PartInitException e1) {
+						Activator.handleError(e1.getMessage(), e1, true);
+					}
+				}
+			});
+		}
+		return null;
+	}
+
