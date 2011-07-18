@@ -1,0 +1,9 @@
+	@BeforeClass
+	public static void setupEnvironment() throws Exception {
+		File repoFile = createProjectAndCommitToRepository(REPO1);
+		repo1 = lookupRepository(repoFile);
+
+		repoFile = createProjectAndCommitToRepository(REPO2);
+		repo2 = lookupRepository(repoFile);
+	}
+
