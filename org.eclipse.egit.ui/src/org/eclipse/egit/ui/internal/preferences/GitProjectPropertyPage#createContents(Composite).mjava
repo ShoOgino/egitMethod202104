@@ -18,7 +18,6 @@
 		gitDir = createLabeledReadOnlyText(composite, UIText.GitProjectPropertyPage_LabelGitDir);
 		workDir = createLabeledReadOnlyText(composite, UIText.GitProjectPropertyPage_LabelWorkdir);
 		branch = createLabeledReadOnlyText(composite, UIText.GitProjectPropertyPage_LabelBranch);
-		id = createLabeledReadOnlyText(composite, UIText.GitProjectPropertyPage_LabelId);
 		state = createLabeledReadOnlyText(composite, UIText.GitProjectPropertyPage_LabelState);
 
 		// Get the project that is the source of this property page
@@ -38,6 +37,7 @@
 
 		if (repository != null) {
 			try {
+				createHeadLink(repository, composite);
 				fillValues(repository);
 			} catch (IOException e) {
 				if (GitTraceLocation.UI.isActive())

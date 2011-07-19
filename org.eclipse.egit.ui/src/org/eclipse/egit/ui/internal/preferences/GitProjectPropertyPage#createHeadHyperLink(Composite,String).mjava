@@ -1,0 +1,9 @@
+	private Hyperlink createHeadHyperLink(Composite composite,
+			String labelText) {
+		createLabel(composite, labelText);
+
+		Hyperlink hyperlink = new Hyperlink(composite, SWT.NONE);
+		hyperlink.setLayoutData(GridDataFactory.fillDefaults().create());
+		return hyperlink;
+	}
+

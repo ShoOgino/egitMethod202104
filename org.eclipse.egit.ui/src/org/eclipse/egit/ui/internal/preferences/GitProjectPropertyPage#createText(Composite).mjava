@@ -1,0 +1,11 @@
+	private Text createText(Composite parent) {
+		GridData data = new GridData();
+		Text text = new Text(parent, SWT.LEFT | SWT.READ_ONLY);
+		text.setBackground(Display.getDefault().getSystemColor(
+				SWT.COLOR_WIDGET_BACKGROUND));
+		data.horizontalSpan = 1;
+		data.horizontalAlignment = GridData.FILL;
+		text.setLayoutData(data);
+		return text;
+	}
+

@@ -7,22 +7,11 @@
 	 *            text for label
 	 * @return the new read only text field
 	 */
-	protected Text createLabeledReadOnlyText(Composite parent,
+	private Text createLabeledReadOnlyText(Composite parent,
 			final String labelText) {
-		Label label = new Label(parent, SWT.LEFT);
-		label.setText(labelText);
-		GridData data = new GridData();
-		data.horizontalSpan = 1;
-		data.horizontalAlignment = GridData.FILL;
-		label.setLayoutData(data);
+		createLabel(parent, labelText);
 
-		Text text = new Text(parent, SWT.LEFT | SWT.READ_ONLY);
-		text.setBackground(Display.getDefault().getSystemColor(
-				SWT.COLOR_WIDGET_BACKGROUND));
-		data = new GridData();
-		data.horizontalSpan = 1;
-		data.horizontalAlignment = GridData.FILL;
-		text.setLayoutData(data);
+		Text text = createText(parent);
 		return text;
 	}
 
