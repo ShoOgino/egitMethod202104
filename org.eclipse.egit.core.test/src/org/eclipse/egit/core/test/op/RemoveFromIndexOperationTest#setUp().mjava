@@ -1,0 +1,12 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		gitDir = new File(project.getProject()
+				.getLocationURI().getPath(), Constants.DOT_GIT);
+		testRepo = new TestRepository(gitDir);
+		testRepo.connect(project.getProject());
+		testRepo.commit("initial commit");
+
+		repo = testRepo.getRepository();
+	}
+

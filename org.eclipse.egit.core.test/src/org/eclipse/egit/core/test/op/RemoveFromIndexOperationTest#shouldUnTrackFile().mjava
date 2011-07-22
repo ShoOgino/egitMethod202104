@@ -1,0 +1,16 @@
+	@Test
+	public void shouldUnTrackFile() throws Exception {
+		// given
+		IFile file1 = createFileInRepo("a.txt");
+		List<String> resources = new ArrayList<String>();
+		resources.add(getMapping(file1).getRepoRelativePath(file1));
+		new AddToIndexOperation(asList(file1)).execute(null);
+
+		// when
+		new RemoveFromIndexOperation(repo, resources).execute(null);
+
+		// then
+		assertTrue(testRepo.removedFromIndex(file1.getLocation()
+				.toPortableString()));
+	}
+
