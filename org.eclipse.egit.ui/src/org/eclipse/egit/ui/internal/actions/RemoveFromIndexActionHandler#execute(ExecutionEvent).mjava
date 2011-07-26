@@ -1,0 +1,33 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final IResource[] sel = getSelectedResources(event);
+		if (sel.length == 0)
+			return null;
+
+		Repository repo = getRepository();
+		List<String> paths = new ArrayList<String>();
+		RepositoryMapping mapping = RepositoryMapping.findRepositoryMapping(repo);
+		for (IResource res : sel)
+			paths.add(mapping.getRepoRelativePath(res));
+
+		final RemoveFromIndexOperation removeOperation = new RemoveFromIndexOperation(
+				repo, paths);
+		Job job = new Job(UIText.RemoveFromIndexAction_removingFiles) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					removeOperation.execute(monitor);
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(e.getStatus()
+							.getMessage(), e);
+				}
+
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.setRule(removeOperation.getSchedulingRule());
+		job.schedule();
+
+		return null;
+	}
+

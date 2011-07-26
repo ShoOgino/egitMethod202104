@@ -1,0 +1,27 @@
+	public void execute(IProgressMonitor m) throws CoreException {
+		IProgressMonitor monitor;
+		if (m == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = m;
+
+		ResetCommand resetCommand = new Git(repo).reset();
+		resetCommand.setRef(HEAD);
+		monitor.worked(1);
+
+		for (String path : paths) {
+			resetCommand.addPath(path);
+			monitor.worked(1);
+		}
+
+		try {
+			resetCommand.call();
+			monitor.worked(1);
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		} finally {
+			monitor.done();
+			findRepositoryMapping(repo).fireRepositoryChanged();
+		}
+	}
+

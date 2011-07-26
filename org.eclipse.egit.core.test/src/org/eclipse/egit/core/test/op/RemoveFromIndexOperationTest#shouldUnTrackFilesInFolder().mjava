@@ -1,0 +1,19 @@
+	@Test
+	public void shouldUnTrackFilesInFolder() throws Exception {
+		// given
+		IFile file1 = createFileInRepo("sub/a.txt");
+		IFile file2 = createFileInRepo("sub/b.txt");
+		List<String> resources = new ArrayList<String>();
+		IFolder container = project.getProject().getFolder("sub");
+		String containerPath = getMapping(file1).getRepoRelativePath(container);
+		resources.add(containerPath);
+		new AddToIndexOperation(asList(file1, file2)).execute(null);
+
+		// when
+		new RemoveFromIndexOperation(repo, resources).execute(null);
+
+		// then
+		assertTrue(testRepo.removedFromIndex(file1.getLocation().toPortableString()));
+		assertTrue(testRepo.removedFromIndex(file2.getLocation().toPortableString()));
+	}
+
