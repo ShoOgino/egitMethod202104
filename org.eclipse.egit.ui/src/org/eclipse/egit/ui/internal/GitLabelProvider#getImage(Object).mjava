@@ -1,0 +1,29 @@
+	@Override
+	public Image getImage(Object element) {
+		if (element instanceof Repository)
+			return RepositoryTreeNodeType.REPO.getIcon();
+
+		if (element instanceof RefNode || element instanceof Ref)
+			return RepositoryTreeNodeType.REF.getIcon();
+
+		if (element instanceof GitModelBlob || element instanceof GitModelTree) {
+			Object adapter = ((IAdaptable) element).getAdapter(IResource.class);
+			return getWorkbenchLabelProvider().getImage(adapter);
+		}
+
+		if (element instanceof GitModelCommit
+				|| element instanceof GitModelCache
+				|| element instanceof GitModelWorkingTree
+				|| element instanceof RepositoryCommit)
+			return getChangesetIcon();
+
+		if (element instanceof GitModelRepository)
+			return getImage(((GitModelRepository) element).getRepository());
+
+		if (element instanceof ProjectRecord)
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImage(SharedImages.IMG_OBJ_PROJECT);
+
+		return super.getImage(element);
+	}
+

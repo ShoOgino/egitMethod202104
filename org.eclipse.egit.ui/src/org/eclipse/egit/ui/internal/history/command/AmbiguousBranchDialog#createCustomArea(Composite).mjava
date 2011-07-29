@@ -7,7 +7,7 @@
 		branchesList = new TableViewer(area, SWT.SINGLE | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
 		branchesList.setContentProvider(ArrayContentProvider.getInstance());
-		branchesList.setLabelProvider(new BranchLabelProvider());
+		branchesList.setLabelProvider(new GitLabelProvider());
 		branchesList.setInput(nodes);
 		branchesList
 				.addSelectionChangedListener(new ISelectionChangedListener() {

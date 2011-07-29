@@ -1,12 +1,8 @@
 	private String getSimpleText(RepositoryTreeNode node) {
 		switch (node.getType()) {
 		case REPO:
-			File directory = ((Repository) node.getObject()).getDirectory();
-			StringBuilder sb = new StringBuilder();
-			sb.append(directory.getParentFile().getName());
-			sb.append(" - "); //$NON-NLS-1$
-			sb.append(directory.getAbsolutePath());
-			return sb.toString();
+			Repository repository = (Repository) node.getObject();
+			return super.getText(repository);
 		case FILE:
 			// fall through
 		case FOLDER:

@@ -1,12 +1,12 @@
 		public ChangeSetPreview(Composite composite) {
 			super(composite);
 			fViewer.setContentProvider(this);
-			fViewer.setLabelProvider(new LabelProvider() {
+			fViewer.setLabelProvider(new GitLabelProvider() {
 
 				@Override
 				public Image getImage(Object element) {
 					if (element instanceof GitModelCommitMockup)
-						return fImageCache.createImage(UIIcons.CHANGESET);
+						return getChangesetIcon();
 
 					return super.getImage(element);
 				}

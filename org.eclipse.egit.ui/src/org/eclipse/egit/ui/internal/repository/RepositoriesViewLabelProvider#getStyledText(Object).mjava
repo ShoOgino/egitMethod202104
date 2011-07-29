@@ -8,22 +8,7 @@
 			switch (node.getType()) {
 			case REPO:
 				Repository repository = (Repository) node.getObject();
-				File directory = repository.getDirectory();
-				StyledString string = new StyledString();
-				if (!repository.isBare())
-					string.append(directory.getParentFile().getName());
-				else
-					string.append(directory.getName());
-				string
-						.append(
-								" - " + directory.getAbsolutePath(), StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-				String branch = repository.getBranch();
-				if (repository.getRepositoryState() != RepositoryState.SAFE)
-					branch += " - " + repository.getRepositoryState().getDescription(); //$NON-NLS-1$
-				string
-						.append(
-								" [" + branch + "]", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$//$NON-NLS-2$
-				return string;
+				return getStyledTextFor(repository);
 			case ADDITIONALREF:
 				Ref ref = (Ref) node.getObject();
 				// shorten the name

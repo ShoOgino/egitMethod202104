@@ -6,7 +6,7 @@
 
 			TableViewer branchesList = new TableViewer(area);
 			branchesList.setContentProvider(ArrayContentProvider.getInstance());
-			branchesList.setLabelProvider(new BranchLabelProvider());
+			branchesList.setLabelProvider(new GitLabelProvider());
 			branchesList.setInput(nodes);
 			return area;
 		}
