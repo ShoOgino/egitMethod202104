@@ -22,14 +22,16 @@
 		contextMenu.add(selectAllAction);
 		contextMenu.add(new Separator());
 
-		final SubMenuManager quickFixMenu = new SubMenuManager(contextMenu);
-		quickFixMenu.setVisible(true);
-		quickFixMenu.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				quickFixMenu.removeAll();
-				addProposals(quickFixMenu);
-			}
-		});
+		if(isEditable(sourceViewer)) {
+			final SubMenuManager quickFixMenu = new SubMenuManager(contextMenu);
+			quickFixMenu.setVisible(true);
+			quickFixMenu.addMenuListener(new IMenuListener() {
+				public void menuAboutToShow(IMenuManager manager) {
+					quickFixMenu.removeAll();
+					addProposals(quickFixMenu);
+				}
+			});
+		}
 		StyledText textWidget = getTextWidget();
 		getTextWidget().setMenu(contextMenu.createContextMenu(textWidget));
 
