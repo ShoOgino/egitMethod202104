@@ -1,0 +1,10 @@
+	/**
+	 * Get dialog bound settings for given class using standard section name
+	 *
+	 * @param clazz
+	 * @return dialog setting
+	 */
+	public static IDialogSettings getDialogBoundSettings(final Class<?> clazz) {
+		return getDialogSettings(clazz.getName() + ".dialogBounds"); //$NON-NLS-1$
+	}
+
