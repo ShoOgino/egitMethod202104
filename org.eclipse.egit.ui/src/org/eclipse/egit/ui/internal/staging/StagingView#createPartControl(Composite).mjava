@@ -25,13 +25,13 @@
 		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(horizontalSashForm);
 
-		SashForm verticalSashForm = new SashForm(horizontalSashForm,
-				SWT.VERTICAL);
-		toolkit.adapt(verticalSashForm, true, true);
+		stagingSashForm = new SashForm(horizontalSashForm,
+				getStagingFormOrientation());
+		toolkit.adapt(stagingSashForm, true, true);
 		GridDataFactory.fillDefaults().grab(true, true)
-				.applyTo(verticalSashForm);
+				.applyTo(stagingSashForm);
 
-		unstagedSection = toolkit.createSection(verticalSashForm,
+		unstagedSection = toolkit.createSection(stagingSashForm,
 				ExpandableComposite.TITLE_BAR);
 
 		Composite unstagedTableComposite = toolkit
@@ -120,7 +120,7 @@
 		committerText.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).create());
 
-		stagedSection = toolkit.createSection(verticalSashForm,
+		stagedSection = toolkit.createSection(stagingSashForm,
 				ExpandableComposite.TITLE_BAR);
 		Composite stagedTableComposite = toolkit.createComposite(stagedSection);
 		toolkit.paintBordersFor(stagedTableComposite);
