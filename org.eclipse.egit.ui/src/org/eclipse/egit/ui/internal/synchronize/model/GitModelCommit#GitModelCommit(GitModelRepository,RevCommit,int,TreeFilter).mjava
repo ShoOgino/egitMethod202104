@@ -1,0 +1,19 @@
+	/**
+	 * @param parent
+	 *            instance of repository model object that is parent for this
+	 *            commit
+	 * @param commit
+	 *            instance of commit that will be associated with this model
+	 *            object
+	 * @param direction
+	 * @param pathFilter
+	 * @throws IOException
+	 */
+	public GitModelCommit(GitModelRepository parent, RevCommit commit,
+			int direction, TreeFilter pathFilter) throws IOException {
+		super(parent, commit, direction);
+		this.pathFilter = pathFilter;
+
+		this.ancestorCommit = calculateAncestor(commit);
+	}
+

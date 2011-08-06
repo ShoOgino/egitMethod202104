@@ -1,13 +1,19 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Repository[] repos = getRepositories(event);
+		IResource[] resources = getSelectedResources(event);
+		Map<Repository, Set<IContainer>> containerMap = mapContainerResources(resources);
 
-		if (repos.length == 0)
+		if (containerMap.isEmpty())
 			return null;
 
 		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
-		for (Repository repo : repos)
+		for (Entry<Repository, Set<IContainer>> entry : containerMap.entrySet())
 			try {
-				gsdSet.add(new GitSynchronizeData(repo, HEAD, HEAD, true));
+				GitSynchronizeData data = new GitSynchronizeData(entry.getKey(), HEAD, HEAD, true);
+				Set<IContainer> containers = entry.getValue();
+				if (!containers.isEmpty())
+					data.setIncludedPaths(containers);
+
+				gsdSet.add(data);
 			} catch (IOException e) {
 				Activator.handleError(e.getMessage(), e, true);
 			}

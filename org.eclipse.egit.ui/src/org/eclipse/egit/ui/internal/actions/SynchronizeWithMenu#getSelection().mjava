@@ -1,4 +1,4 @@
-	private IProject getSelection() {
+	private IResource getSelection() {
 		ISelection sel = srv.getSelection();
 
 		if (!(sel instanceof IStructuredSelection))
@@ -6,10 +6,11 @@
 
 		Object selected = ((IStructuredSelection) sel).getFirstElement();
 		if (selected instanceof IAdaptable)
-			return (IProject) ((IAdaptable) selected)
-					.getAdapter(IProject.class);
-		if (selected instanceof IProject)
-			return (IProject) selected;
+			return (IResource) ((IAdaptable) selected)
+					.getAdapter(IResource.class);
+
+		if (selected instanceof IResource)
+			return (IResource) selected;
 
 		return null;
 	}

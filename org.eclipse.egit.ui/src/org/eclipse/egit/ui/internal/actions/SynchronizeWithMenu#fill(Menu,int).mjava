@@ -2,12 +2,12 @@
 	public void fill(final Menu menu, int index) {
 		if (srv == null)
 			return;
-		final IProject selectedProject = getSelection();
-		if (selectedProject == null)
+		final IResource selectedResource = getSelection();
+		if (selectedResource == null)
 			return;
 
 		RepositoryMapping mapping = RepositoryMapping
-				.getMapping(selectedProject);
+				.getMapping(selectedResource.getProject());
 		if (mapping == null)
 			return;
 
@@ -61,7 +61,13 @@
 					GitSynchronizeData data;
 					try {
 						data = new GitSynchronizeData(repo, HEAD, name, true);
-						GitModelSynchronize.launch(data, new IResource[] { selectedProject });
+						if (!(selectedResource instanceof IProject)) {
+							HashSet<IContainer> containers = new HashSet<IContainer>();
+							containers.add((IContainer) selectedResource);
+							data.setIncludedPaths(containers);
+						}
+
+						GitModelSynchronize.launch(data, new IResource[] { selectedResource });
 					} catch (IOException e) {
 						Activator.logError(e.getMessage(), e);
 					}

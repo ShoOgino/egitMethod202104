@@ -8,7 +8,11 @@
 				ResourcesPlugin.getWorkspace().getRoot()));
 		int dirCacheIteratorNth = tw.addTree(new DirCacheIterator(repo.readDirCache()));
 		IndexDiffFilter idf = new IndexDiffFilter(dirCacheIteratorNth, ftIndex, true);
-		tw.setFilter(idf);
+
+		if (pathFilter != null)
+			tw.setFilter(AndTreeFilter.create(pathFilter, idf));
+		else
+			tw.setFilter(idf);
 
 		return tw;
 	}

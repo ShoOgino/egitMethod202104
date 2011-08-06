@@ -2,6 +2,9 @@
 		RevWalk rw = new RevWalk(getRepository());
 		rw.setRevFilter(RevFilter.MERGE_BASE);
 
+		if (pathFilter != null)
+			rw.setTreeFilter(pathFilter);
+
 		for (RevCommit parent : actual.getParents()) {
 			RevCommit parentCommit = rw.parseCommit(parent.getId());
 			rw.markStart(parentCommit);

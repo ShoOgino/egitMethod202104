@@ -1,22 +1,11 @@
 	/**
+	 * Constructor used by JUnits
+	 *
 	 * @param parent
 	 *            parent of working tree instance
 	 * @throws IOException
 	 */
-	public GitModelWorkingTree(GitModelObject parent)
-			throws IOException {
-		super(parent, null, new FileModelFactory() {
-			public GitModelBlob createFileModel(
-					GitModelObjectContainer modelParent, RevCommit modelCommit,
-					ObjectId repoId, ObjectId cacheId, IPath location)
-					throws IOException {
-				return new GitModelWorkingFile(modelParent, modelCommit,
-						repoId, location);
-			}
-
-			public boolean isWorkingTree() {
-				return true;
-			}
-		});
+	GitModelWorkingTree(GitModelObject parent) throws IOException {
+		this(parent, null);
 	}
 

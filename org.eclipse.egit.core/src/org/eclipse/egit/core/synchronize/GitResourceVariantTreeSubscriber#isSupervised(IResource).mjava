@@ -1,6 +1,7 @@
 	@Override
 	public boolean isSupervised(IResource res) throws TeamException {
 		return IResource.FILE == res.getType()
-				&& gsds.contains(res.getProject()) && !isIgnoredHint(res);
+				&& gsds.contains(res.getProject()) && !isIgnoredHint(res)
+				&& shouldBeIncluded(res);
 	}
 

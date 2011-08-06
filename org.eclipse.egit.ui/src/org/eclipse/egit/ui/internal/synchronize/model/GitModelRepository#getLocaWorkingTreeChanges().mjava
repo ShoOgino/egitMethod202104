@@ -1,6 +1,7 @@
 	private GitModelWorkingTree getLocaWorkingTreeChanges() {
 		try {
-			GitModelWorkingTree gitModelWorkingTree = new GitModelWorkingTree(this);
+			GitModelWorkingTree gitModelWorkingTree = new GitModelWorkingTree(
+					this, pathFilter);
 
 			if (gitModelWorkingTree.getChildren().length > 0)
 				return gitModelWorkingTree;

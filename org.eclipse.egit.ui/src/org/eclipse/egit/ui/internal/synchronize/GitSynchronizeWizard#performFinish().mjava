@@ -6,8 +6,14 @@
 		boolean shouldIncludeLocal = page.shouldIncludeLocal();
 		for (Entry<Repository, String> branchesEntry : branches.entrySet())
 			try {
-				gsdSet.add(new GitSynchronizeData(branchesEntry.getKey(), HEAD,
-						branchesEntry.getValue(), shouldIncludeLocal));
+				Repository repo = branchesEntry.getKey();
+				GitSynchronizeData data = new GitSynchronizeData(
+						repo, HEAD, branchesEntry.getValue(),
+						shouldIncludeLocal);
+				Set<IContainer> containers = getSelectedContainers(repo);
+				if (containers != null)
+					data.setIncludedPaths(containers);
+				gsdSet.add(data);
 			} catch (IOException e) {
 				Activator.logError(e.getMessage(), e);
 			}

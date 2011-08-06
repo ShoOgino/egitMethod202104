@@ -1,13 +1,17 @@
 	/**
 	 * @param parent
 	 * @param baseCommit
+	 * @param pathFilter
+	 *            list of paths that needs to be included, {@code null} when all
+	 *            paths should be included
 	 * @param fileFactory
 	 * @throws IOException
 	 */
 	protected GitModelCache(GitModelObject parent, RevCommit baseCommit,
-			FileModelFactory fileFactory) throws IOException {
+			TreeFilter pathFilter, FileModelFactory fileFactory) throws IOException {
 		super(parent, baseCommit, RIGHT);
 		this.fileFactory = fileFactory;
+		this.pathFilter = pathFilter;
 		cacheTreeMap = new HashMap<String, GitModelCacheTree>();
 		location = new Path(getRepository().getWorkTree().toString());
 	}

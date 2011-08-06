@@ -3,6 +3,10 @@
 	 */
 	public void add(GitSynchronizeData data) {
 		gsd.add(data);
+		if (data.getIncludedPaths() != null
+				&& data.getIncludedPaths().size() > 0)
+			containsFolderLevelSynchronizationRequest = true;
+
 		for (IProject proj : data.getProjects()) {
 			projectMapping.put(proj.getName(), data);
 		}

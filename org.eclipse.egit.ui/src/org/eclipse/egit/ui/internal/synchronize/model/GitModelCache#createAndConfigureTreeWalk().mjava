@@ -17,6 +17,9 @@
 		tw.addTree(new RevWalk(repo).parseTree(headId));
 		tw.addTree(new DirCacheIterator(index));
 
+		if (pathFilter != null)
+			tw.setFilter(pathFilter);
+
 		return tw;
 	}
 

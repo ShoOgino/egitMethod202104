@@ -1,10 +1,11 @@
 	@Override
 	public IResource[] members(IResource res) throws TeamException {
-		if(res.getType() == IResource.FILE)
+		if(res.getType() == IResource.FILE || !shouldBeIncluded(res))
 			return new IResource[0];
 
 		GitSynchronizeData gsd = gsds.getData(res.getProject());
 		Repository repo = gsd.getRepository();
+
 		String path = stripWorkDir(repo.getWorkTree(), res.getLocation()
 				.toFile());
 
