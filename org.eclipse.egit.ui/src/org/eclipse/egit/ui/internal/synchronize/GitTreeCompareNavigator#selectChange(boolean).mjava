@@ -1,0 +1,15 @@
+	@Override
+	public boolean selectChange(boolean next) {
+		// wait for repositories actions
+		IJobManager manager = Job.getJobManager();
+		try {
+			manager.join(JobFamilies.ADD_TO_INDEX, null);
+			manager.join(JobFamilies.REMOVE_FROM_INDEX, null);
+			manager.join(org.eclipse.egit.core.JobFamilies.REPOSITORY_CHANGED, null);
+		} catch (InterruptedException e) {
+			// ignore
+		}
+
+		return mainNavigator.selectChange(next);
+	}
+

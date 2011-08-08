@@ -1,0 +1,15 @@
+	@Override
+	public IStatus handleDrop(CommonDropAdapter aDropAdapter,
+			DropTargetEvent aDropTargetEvent, Object aTarget) {
+		TreeSelection selection = (TreeSelection) LocalSelectionTransfer
+				.getTransfer().getSelection();
+		String operation = getOperationType(selection);
+
+		if (STAGE_OP.equals(operation))
+			runCommand(ADD_TO_INDEX, selection);
+		else if (UNSTAGE_OP.equals(operation))
+			runCommand(REMOVE_FROM_INDEX, selection);
+
+		return Status.OK_STATUS;
+	}
+

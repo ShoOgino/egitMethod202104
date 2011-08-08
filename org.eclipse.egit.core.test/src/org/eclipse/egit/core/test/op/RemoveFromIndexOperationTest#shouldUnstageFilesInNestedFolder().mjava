@@ -3,10 +3,8 @@
 		// given
 		IFile file1 = createFileInRepo("sub/next/a.txt");
 		IFile file2 = createFileInRepo("sub/next/b.txt");
-		List<String> resources = new ArrayList<String>();
 		IFolder container = project.getProject().getFolder("sub");
-		String containerPath = getMapping(file1).getRepoRelativePath(container);
-		resources.add(containerPath);
+		IResource[] resources = new IResource[] { container };
 		List<IFolder> addResources = asList(project.getProject().getFolder("sub"));
 		new AddToIndexOperation(addResources).execute(null);
 

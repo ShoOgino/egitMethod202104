@@ -1,0 +1,16 @@
+	@Override
+	protected INavigatable[] getNavigatables() {
+		try {
+			Method baseNavigables = COMPARE_NAVIGATOR_CLASS.getDeclaredMethod(
+					"getNavigatables", Void.class); //$NON-NLS-1$
+			baseNavigables.setAccessible(true);
+
+			return (INavigatable[]) baseNavigables.invoke(mainNavigator,
+					Void.class);
+		} catch (Exception e) {
+			// should never happen
+		}
+
+		return new INavigatable[0];
+	}
+

@@ -4,13 +4,8 @@
 			return null;
 
 		Repository repo = getRepository();
-		List<String> paths = new ArrayList<String>();
-		RepositoryMapping mapping = RepositoryMapping.findRepositoryMapping(repo);
-		for (IResource res : sel)
-			paths.add(mapping.getRepoRelativePath(res));
-
 		final RemoveFromIndexOperation removeOperation = new RemoveFromIndexOperation(
-				repo, paths);
+				repo, sel);
 		Job job = new Job(UIText.RemoveFromIndexAction_removingFiles) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -19,9 +14,19 @@
 				} catch (CoreException e) {
 					return Activator.createErrorStatus(e.getStatus()
 							.getMessage(), e);
+				} finally {
+					monitor.done();
 				}
 
 				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.REMOVE_FROM_INDEX.equals(family))
+					return true;
+
+				return super.belongsTo(family);
 			}
 		};
 		job.setUser(true);

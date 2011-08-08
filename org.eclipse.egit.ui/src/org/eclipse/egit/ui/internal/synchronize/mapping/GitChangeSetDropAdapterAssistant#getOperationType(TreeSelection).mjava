@@ -1,0 +1,31 @@
+	private String getOperationType(TreeSelection selection) {
+		String operation = null;
+
+		for (Iterator<?> i = selection.iterator(); i.hasNext();) {
+			String tmpOperation = null;
+			Object next = i.next();
+			if (next instanceof GitModelWorkingFile)
+				tmpOperation = STAGE_OP;
+			else if (next instanceof GitModelCacheFile)
+				tmpOperation = UNSTAGE_OP;
+			else if (next instanceof GitModelCacheTree) {
+				if (((GitModelCacheTree) next).isWorkingTree())
+					tmpOperation = STAGE_OP;
+				else
+					tmpOperation = UNSTAGE_OP;
+			} else {
+				operation = UNSUPPORTED_OP;
+				break;
+			}
+
+			if (operation == null)
+				operation = tmpOperation;
+			else if (!operation.equals(tmpOperation)) {
+				operation = UNSUPPORTED_OP;
+				break;
+			}
+		}
+
+		return operation;
+	}
+

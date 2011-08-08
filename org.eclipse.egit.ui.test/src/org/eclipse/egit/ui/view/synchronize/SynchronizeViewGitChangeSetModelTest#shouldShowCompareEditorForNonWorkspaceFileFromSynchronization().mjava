@@ -18,7 +18,7 @@
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
 		SWTBotTreeItem workingTree = syncViewTree
 				.expandNode(UIText.GitModelWorkingTree_workingTree);
-		assertEquals(1, syncViewTree.getAllItems().length);
+		assertEquals(2, syncViewTree.getAllItems().length);
 		workingTree.expand().getNode(name).doubleClick();
 
 		SWTBotEditor editor = bot.editorByTitle(name);

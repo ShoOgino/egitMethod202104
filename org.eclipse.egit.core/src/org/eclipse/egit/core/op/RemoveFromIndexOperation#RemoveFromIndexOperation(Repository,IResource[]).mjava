@@ -1,0 +1,16 @@
+	/**
+	 * @param repo
+	 *            repository in with given files should be removed from index
+	 * @param resources
+	 *            list of resources that should be removed from index
+	 */
+	public RemoveFromIndexOperation(Repository repo, IResource[] resources) {
+		this.repo = repo;
+		this.resources = resources;
+		paths = new ArrayList<String>();
+
+		RepositoryMapping mapping = RepositoryMapping.findRepositoryMapping(repo);
+		for (IResource res : resources)
+			paths.add(mapping.getRepoRelativePath(res));
+	}
+
