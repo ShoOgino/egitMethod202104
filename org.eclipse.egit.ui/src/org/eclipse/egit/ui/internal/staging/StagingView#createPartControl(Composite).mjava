@@ -48,7 +48,7 @@
 		unstagedTableViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
 				FormToolkit.TREE_BORDER);
 		unstagedTableViewer.getTable().setLinesVisible(true);
-		unstagedTableViewer.setLabelProvider(new StagingViewLabelProvider());
+		unstagedTableViewer.setLabelProvider(createLabelProvider());
 		unstagedTableViewer.setContentProvider(new StagingViewContentProvider(
 				true));
 		unstagedTableViewer.addDragSupport(DND.DROP_MOVE,
@@ -135,7 +135,7 @@
 		stagedTableViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
 				FormToolkit.TREE_BORDER);
 		stagedTableViewer.getTable().setLinesVisible(true);
-		stagedTableViewer.setLabelProvider(new StagingViewLabelProvider());
+		stagedTableViewer.setLabelProvider(createLabelProvider());
 		stagedTableViewer.setContentProvider(new StagingViewContentProvider(
 				false));
 		stagedTableViewer.addDragSupport(DND.DROP_MOVE,
@@ -183,7 +183,7 @@
 			}
 		};
 
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		IPreferenceStore preferenceStore = getPreferenceStore();
 		if (preferenceStore.contains(UIPreferences.STAGING_VIEW_SYNC_SELECTION))
 			reactOnSelection = preferenceStore.getBoolean(
 					UIPreferences.STAGING_VIEW_SYNC_SELECTION);

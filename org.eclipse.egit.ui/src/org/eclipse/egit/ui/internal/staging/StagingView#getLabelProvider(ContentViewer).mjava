@@ -1,0 +1,7 @@
+	private StagingViewLabelProvider getLabelProvider(ContentViewer viewer) {
+		IBaseLabelProvider base = viewer.getLabelProvider();
+		IStyledLabelProvider styled = ((DelegatingStyledCellLabelProvider) base)
+				.getStyledStringProvider();
+		return (StagingViewLabelProvider) styled;
+	}
+
