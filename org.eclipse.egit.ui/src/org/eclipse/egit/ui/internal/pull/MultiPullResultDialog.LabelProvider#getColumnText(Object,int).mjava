@@ -43,7 +43,11 @@
 					IStatus status = (IStatus) item.getValue();
 					return status.getMessage();
 				}
-				return UIText.MultiPullResultDialog_OkStatus;
+				PullResult res = (PullResult) item.getValue();
+				if (res.isSuccessful())
+					return UIText.MultiPullResultDialog_OkStatus;
+				else
+					return UIText.MultiPullResultDialog_FailedStatus;
 			default:
 				return null;
 			}

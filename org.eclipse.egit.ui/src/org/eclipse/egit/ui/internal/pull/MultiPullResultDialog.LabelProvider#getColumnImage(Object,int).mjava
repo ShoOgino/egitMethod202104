@@ -2,7 +2,6 @@
 		public Image getColumnImage(Object element, int columnIndex) {
 			if (columnIndex != 3)
 				return null;
-			boolean error = false;
 			Entry<Repository, Object> item = (Entry<Repository, Object>) element;
 			Object resultOrError = item.getValue();
 			if (resultOrError instanceof IStatus)
@@ -10,31 +9,8 @@
 						ISharedImages.IMG_ELCL_STOP);
 
 			PullResult res = (PullResult) item.getValue();
-			MergeResult mres = res.getMergeResult();
-			if (mres != null) {
-				switch (mres.getMergeStatus()) {
-				case ALREADY_UP_TO_DATE:
-				case FAST_FORWARD:
-				case MERGED:
-					break;
-				default:
-					error = true;
-					break;
-				}
-			}
-			RebaseResult rres = res.getRebaseResult();
-			if (rres != null) {
-				switch (rres.getStatus()) {
-				case ABORTED:
-				case FAILED:
-				case STOPPED:
-					break;
-				default:
-					error = true;
-					break;
-				}
-			}
-			if (error)
+			boolean success = res.isSuccessful();
+			if (!success)
 				return PlatformUI.getWorkbench().getSharedImages().getImage(
 						ISharedImages.IMG_ELCL_STOP);
 			return null;
