@@ -37,7 +37,7 @@
 		new ToolItem(toolBar, SWT.SEPARATOR);
 
 		final ToolItem prefsItem = new ToolItem(toolBar, SWT.DROP_DOWN);
-		final Menu prefsMenu = new Menu(this.getShell(), SWT.POP_UP);
+		prefsMenu = new Menu(getShell(), SWT.POP_UP);
 		final MenuItem caseItem = new MenuItem(prefsMenu, SWT.CHECK);
 		caseItem.setText(UIText.HistoryPage_findbar_ignorecase);
 		new MenuItem(prefsMenu, SWT.SEPARATOR);
@@ -262,5 +262,7 @@
 			prefsItem
 					.setToolTipText(UIText.HistoryPage_findbar_changeto_comments);
 		}
+
+		registerDisposal();
 	}
 
