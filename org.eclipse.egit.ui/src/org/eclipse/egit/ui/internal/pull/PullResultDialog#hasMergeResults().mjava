@@ -1,0 +1,6 @@
+	private boolean hasMergeResults() {
+		final MergeResult mergeResult = result.getMergeResult();
+		return mergeResult != null
+				&& mergeResult.getMergeStatus() != MergeStatus.ALREADY_UP_TO_DATE;
+	}
+

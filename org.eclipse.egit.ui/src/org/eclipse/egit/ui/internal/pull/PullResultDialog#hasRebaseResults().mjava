@@ -1,0 +1,6 @@
+	private boolean hasRebaseResults() {
+		final RebaseResult rebaseResult = result.getRebaseResult();
+		return rebaseResult != null
+				&& rebaseResult.getStatus() != Status.UP_TO_DATE;
+	}
+

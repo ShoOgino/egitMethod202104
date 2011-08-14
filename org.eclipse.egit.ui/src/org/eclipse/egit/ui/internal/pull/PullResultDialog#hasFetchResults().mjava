@@ -1,0 +1,6 @@
+	private boolean hasFetchResults() {
+		final FetchResult fetchResult = result.getFetchResult();
+		return fetchResult != null
+				&& !fetchResult.getTrackingRefUpdates().isEmpty();
+	}
+

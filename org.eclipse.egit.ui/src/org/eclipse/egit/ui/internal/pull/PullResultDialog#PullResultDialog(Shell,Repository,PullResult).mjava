@@ -8,5 +8,7 @@
 		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
 		this.repo = repo;
 		this.result = result;
+		hasUpdates = hasFetchResults() || hasMergeResults()
+				|| hasRebaseResults();
 	}
 

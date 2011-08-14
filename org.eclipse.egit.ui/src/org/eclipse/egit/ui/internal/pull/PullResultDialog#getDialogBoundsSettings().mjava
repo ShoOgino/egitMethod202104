@@ -1,4 +1,5 @@
+	@Override
 	protected IDialogSettings getDialogBoundsSettings() {
-		return UIUtils.getDialogBoundSettings(getClass());
+		return hasUpdates ? UIUtils.getDialogBoundSettings(getClass()) : null;
 	}
 
