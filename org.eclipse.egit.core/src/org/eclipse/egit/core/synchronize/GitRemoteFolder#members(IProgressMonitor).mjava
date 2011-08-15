@@ -1,0 +1,39 @@
+	GitRemoteResource[] members(IProgressMonitor monitor) throws IOException {
+		Repository repo = getRepo();
+		TreeWalk tw = new TreeWalk(repo);
+		int nth = tw.addTree(getObjectId());
+
+		IProgressMonitor m = SubMonitor.convert(monitor);
+		m.beginTask(NLS.bind(CoreText.GitFolderResourceVariant_fetchingMembers,
+				this), tw.getTreeCount());
+
+		int i = 0;
+		List<IResourceVariant> result = new ArrayList<IResourceVariant>();
+		try {
+			while (tw.next()) {
+				if (monitor.isCanceled())
+					throw new OperationCanceledException();
+
+				ObjectId newObjectId = tw.getObjectId(nth);
+				String path = getPath() + "/" + tw.getPathString(); //$NON-NLS-1$
+
+				if (!zeroId().equals(newObjectId))
+					if (tw.isSubtree())
+						result.add(new GitRemoteFolder(repo, getCommit(),
+								newObjectId, path));
+					else
+						result.add(new GitRemoteFile(repo, getCommit(),
+								newObjectId, path));
+
+				if (i % 10 == 0)
+					m.worked(10);
+
+				i++;
+			}
+		} finally {
+			m.done();
+		}
+
+		return result.toArray(new GitRemoteResource[result.size()]);
+	}
+

@@ -1,0 +1,14 @@
+	public boolean equals(Object object) {
+		if (object == this)
+			return true;
+
+		if (object instanceof GitRemoteFolder) {
+			GitRemoteFolder that = (GitRemoteFolder) object;
+
+			return getPath().equals(that.getPath())
+					&& getObjectId().equals(that.getObjectId());
+		}
+
+		return false;
+	}
+

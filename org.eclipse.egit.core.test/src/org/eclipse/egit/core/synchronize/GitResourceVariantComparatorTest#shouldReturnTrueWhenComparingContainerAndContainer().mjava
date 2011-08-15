@@ -24,7 +24,7 @@
 		when(local.exists()).thenReturn(true);
 		when(local.getLocation()).thenReturn(iPath);
 
-		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo, null,
+		GitRemoteFolder remote = new GitRemoteFolder(repo, null,
 				commit.getTree(), path);
 
 		// then

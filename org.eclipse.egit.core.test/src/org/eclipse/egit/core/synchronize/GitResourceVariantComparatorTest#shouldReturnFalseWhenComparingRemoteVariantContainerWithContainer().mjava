@@ -28,11 +28,11 @@
 		tw.next();
 		tw.enterSubtree(); // enter project node
 		tw.next();
-		GitFolderResourceVariant base = new GitFolderResourceVariant(repo, null,
+		GitRemoteFolder base = new GitRemoteFolder(repo, null,
 				tw.getObjectId(nth), tw.getNameString());
 
 		tw.next();
-		GitFolderResourceVariant remote = new GitFolderResourceVariant(repo, null,
+		GitRemoteFolder remote = new GitRemoteFolder(repo, null,
 				tw.getObjectId(nth), tw.getNameString());
 
 		// then

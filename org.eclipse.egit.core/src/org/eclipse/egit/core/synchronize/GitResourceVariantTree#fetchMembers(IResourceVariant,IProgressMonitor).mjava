@@ -1,17 +1,19 @@
 	@Override
 	protected IResourceVariant[] fetchMembers(IResourceVariant variant,
 			IProgressMonitor progress) throws TeamException {
-		if (variant == null || !(variant instanceof GitFolderResourceVariant))
+		if (variant == null || !(variant instanceof GitRemoteFolder))
 			return new IResourceVariant[0];
 
-		GitFolderResourceVariant gitVariant = (GitFolderResourceVariant) variant;
+		GitRemoteFolder gitVariant = (GitRemoteFolder) variant;
 
 		try {
-			return gitVariant.getMembers(progress);
+			return gitVariant.members(progress);
 		} catch (IOException e) {
 			throw new TeamException(NLS.bind(
 					CoreText.GitResourceVariantTree_couldNotFetchMembers,
 					gitVariant), e);
+		} finally {
+			progress.done();
 		}
 	}
 

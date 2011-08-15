@@ -27,7 +27,7 @@
 			if (resource.getType() == IResource.FILE) {
 				tw.setRecursive(true);
 				if (tw.next() && !tw.getObjectId(nth).equals(zeroId()))
-					variant = new GitBlobResourceVariant(repo, revCommit,
+					variant = new GitRemoteFile(repo, revCommit,
 							tw.getObjectId(nth), path);
 			} else {
 				while (tw.next() && !path.equals(tw.getPathString())) {
@@ -40,7 +40,7 @@
 
 				ObjectId objectId = tw.getObjectId(nth);
 				if (!objectId.equals(zeroId()))
-					variant = new GitFolderResourceVariant(repo, revCommit, objectId, path);
+					variant = new GitRemoteFolder(repo, revCommit, objectId, path);
 			}
 			if (variant != null)
 				cache.put(resource, variant);

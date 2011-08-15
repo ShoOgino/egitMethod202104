@@ -18,10 +18,10 @@
 				file, "bc", "second commit");
 
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
-		GitBlobResourceVariant base = new GitBlobResourceVariant(repo, null,
+		GitRemoteFile base = new GitRemoteFile(repo, null,
 				baseCommit.getTree(), path);
 
-		GitBlobResourceVariant remote = new GitBlobResourceVariant(repo, null,
+		GitRemoteFile remote = new GitRemoteFile(repo, null,
 				remoteCommit.getTree(), path);
 
 		// then

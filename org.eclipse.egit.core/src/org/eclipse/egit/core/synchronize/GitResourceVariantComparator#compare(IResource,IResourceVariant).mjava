@@ -45,11 +45,11 @@
 				closeStream(remoteStream);
 			}
 		} else if (local instanceof IContainer) {
-			GitResourceVariant gitVariant = (GitResourceVariant) remote;
+			GitRemoteFolder gitVariant = (GitRemoteFolder) remote;
 			if (!remote.isContainer() || (local.exists() ^ gitVariant.exists()))
 				return false;
 
-			return local.getLocation().equals(gitVariant.getLocation());
+			return local.getLocation().toString().equals(gitVariant.getCachePath());
 		}
 		return false;
 	}

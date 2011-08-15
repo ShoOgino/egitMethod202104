@@ -1,6 +1,6 @@
 	public boolean compare(IResourceVariant base, IResourceVariant remote) {
-		GitResourceVariant gitBase = (GitResourceVariant) base;
-		GitResourceVariant gitRemote = (GitResourceVariant) remote;
+		GitRemoteResource gitBase = (GitRemoteResource) base;
+		GitRemoteResource gitRemote = (GitRemoteResource) remote;
 
 		boolean exists = gitBase.exists() && gitRemote.exists();
 		boolean equalType = !(gitBase.isContainer() ^ gitRemote.isContainer());

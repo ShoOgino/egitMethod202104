@@ -1,0 +1,16 @@
+	@Test
+	public void shouldBeSymmetric1() throws Exception {
+		// given
+		GitModelBlob left = createGitModelBlob(zeroId(), getFile1Location());
+		GitModelCommit right = new GitModelCommit(createModelRepository(),
+				getCommit(leftRepoFile, HEAD), LEFT);
+
+		// when
+		boolean actual1 = left.equals(right);
+		boolean actual2 = right.equals(left);
+
+		// then
+		assertTrue(!actual1);
+		assertTrue(!actual2);
+	}
+
