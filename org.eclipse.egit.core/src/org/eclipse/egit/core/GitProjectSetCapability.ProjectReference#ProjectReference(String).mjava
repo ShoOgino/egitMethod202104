@@ -6,7 +6,6 @@
 						CoreText.GitProjectSetCapability_InvalidTokensCount, new Object[] {
 								4, tokens.length, tokens }));
 
-			this.version = tokens[0];
 			this.repository = new URIish(tokens[1]);
 			if (!"".equals(tokens[2])) //$NON-NLS-1$
 				this.branch = tokens[2];
