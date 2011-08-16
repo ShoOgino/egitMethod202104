@@ -1,0 +1,6 @@
+	private void connectProject(IProject project, File gitDir) throws CoreException {
+		ConnectProviderOperation operation = new ConnectProviderOperation(
+				project.getProject(), gitDir);
+		operation.execute(null);
+	}
+

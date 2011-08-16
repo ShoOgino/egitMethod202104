@@ -1,0 +1,60 @@
+	@Test
+	public void testImport() throws Exception {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IPath reposPath = root.getLocation().append("repos");
+		pathsToClean.add(reposPath.toFile());
+
+		IPath aPath = reposPath.append("a");
+		IProject aProject = createProject(reposPath, "a");
+		createRepository(aPath, "notused", "master");
+		aProject.delete(false, true, null);
+
+		IPath bPath = reposPath.append("b");
+		IProject baProject = createProject(bPath, "ba");
+		IProject bbProject = createProject(bPath, "bb");
+		createRepository(bPath, "notused", "master");
+		baProject.delete(false, true, null);
+		bbProject.delete(false, true, null);
+
+		IPath cPath = reposPath.append("c");
+		IProject cProject = createProject(reposPath, "c");
+		createRepository(cPath, "notused", "stable");
+		cProject.delete(false, true, null);
+
+		String aReference = "1.0," + aPath.toFile().toURI().toString() + ",master,.";
+		String baReference = "1.0," + bPath.toFile().toURI().toString() + ",master,ba";
+		String bbReference = "1.0," + bPath.toFile().toURI().toString() + ",master,bb";
+		String cReference = "1.0," + cPath.toFile().toURI().toString() + ",stable,.";
+		String[] references = new String[] { aReference, baReference, bbReference, cReference };
+
+		capability.addToWorkspace(references,
+						new ProjectSetSerializationContext(),
+						new NullProgressMonitor());
+
+		pathsToClean.add(root.getLocation().append("b").toFile());
+
+		IProject aImported = root.getProject("a");
+		createdProjects.add(aImported);
+		assertTrue(aImported.exists());
+		assertNotNull(RepositoryMapping.getMapping(aImported));
+
+		IProject baImported = root.getProject("ba");
+		createdProjects.add(baImported);
+		assertTrue(baImported.exists());
+		assertEquals(root.getLocation().append("b/ba"), baImported.getLocation());
+		assertNotNull(RepositoryMapping.getMapping(baImported));
+
+		IProject bbImported = root.getProject("bb");
+		createdProjects.add(bbImported);
+		assertTrue(bbImported.exists());
+		assertEquals(root.getLocation().append("b/bb"), bbImported.getLocation());
+		assertNotNull(RepositoryMapping.getMapping(bbImported));
+
+		IProject cImported = root.getProject("c");
+		createdProjects.add(cImported);
+		assertTrue(cImported.exists());
+		RepositoryMapping cMapping = RepositoryMapping.getMapping(cImported);
+		assertNotNull(cMapping);
+		assertEquals("stable", cMapping.getRepository().getBranch());
+	}
+

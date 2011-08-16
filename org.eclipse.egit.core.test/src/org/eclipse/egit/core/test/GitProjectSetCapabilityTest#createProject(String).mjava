@@ -1,0 +1,10 @@
+	private IProject createProject(String name) throws CoreException {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject p = root.getProject(name);
+		p.create(null);
+		p.open(null);
+
+		createdProjects.add(p);
+		return p;
+	}
+

@@ -1,0 +1,28 @@
+	@Test
+	public void testExport() throws Exception {
+		IProject aProject = createProject("a");
+		File aRepo = createRepository(aProject.getLocation(), "http://example.org/repo-a", "master");
+		connectProject(aProject, aRepo);
+
+		IPath bPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("b");
+		File bRepo = createRepository(bPath, "http://example.org/repo-b", "master");
+		IProject baProject = createProject(bPath, "ba");
+		IProject bbProject = createProject(bPath, "bb");
+		connectProject(baProject, bRepo);
+		connectProject(bbProject, bRepo);
+		pathsToClean.add(bPath.toFile());
+
+		IProject cProject = createProject("c");
+		File cRepo = createRepository(cProject.getLocation(), "http://example.org/repo-c", "stable");
+		connectProject(cProject, cRepo);
+
+		IProject[] projects = new IProject[] { aProject, baProject, bbProject, cProject };
+		String[] references = capability.asReference(
+				projects, new ProjectSetSerializationContext(), new NullProgressMonitor());
+		assertEquals(4, references.length);
+		assertEquals("1.0,http://example.org/repo-a,master,.", references[0]);
+		assertEquals("1.0,http://example.org/repo-b,master,ba", references[1]);
+		assertEquals("1.0,http://example.org/repo-b,master,bb", references[2]);
+		assertEquals("1.0,http://example.org/repo-c,stable,.", references[3]);
+	}
+

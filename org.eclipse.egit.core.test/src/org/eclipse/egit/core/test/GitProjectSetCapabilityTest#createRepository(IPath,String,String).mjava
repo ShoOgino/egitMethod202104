@@ -1,0 +1,18 @@
+	private File createRepository(IPath location, String url, String branch) throws Exception {
+		File gitDirectory = new File(location.toFile(), Constants.DOT_GIT);
+		Repository repo = new FileRepository(gitDirectory);
+		repo.getConfig().setString(ConfigConstants.CONFIG_REMOTE_SECTION, "origin", ConfigConstants.CONFIG_KEY_URL, url);
+		repo.getConfig().setString(ConfigConstants.CONFIG_BRANCH_SECTION, branch, ConfigConstants.CONFIG_KEY_REMOTE, "origin");
+		repo.create();
+		repo.close();
+
+		Git git = new Git(repo);
+		git.add().addFilepattern(".").call();
+		git.commit().setMessage("initial").call();
+		if (!branch.equals("master"))
+			git.checkout().setName(branch).setCreateBranch(true).call();
+
+		pathsToClean.add(gitDirectory);
+		return gitDirectory;
+	}
+

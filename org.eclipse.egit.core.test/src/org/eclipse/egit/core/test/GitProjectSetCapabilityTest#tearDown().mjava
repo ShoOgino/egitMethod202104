@@ -1,0 +1,11 @@
+	@After
+	public void tearDown() throws Exception {
+		Activator.getDefault().getRepositoryCache().clear();
+		for (IProject project : createdProjects)
+			if (project.exists())
+				project.delete(true, true, null);
+		for (File pathToClean : pathsToClean)
+			if (pathToClean.exists())
+				FileUtils.delete(pathToClean, FileUtils.RECURSIVE | FileUtils.RETRY);
+	}
+

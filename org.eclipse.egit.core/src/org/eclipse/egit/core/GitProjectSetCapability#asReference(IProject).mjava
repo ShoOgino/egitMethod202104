@@ -1,0 +1,37 @@
+	private String asReference(IProject project) throws TeamException {
+		RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+		String branch;
+		try {
+			branch = mapping.getRepository().getBranch();
+		} catch (IOException e) {
+			throw new TeamException(NLS.bind(
+					CoreText.GitProjectSetCapability_ExportCouldNotGetBranch,
+					project.getName()));
+		}
+		StoredConfig config = mapping.getRepository().getConfig();
+		String remote = config.getString(ConfigConstants.CONFIG_BRANCH_SECTION,
+				branch, ConfigConstants.CONFIG_KEY_REMOTE);
+		String url = config.getString(ConfigConstants.CONFIG_REMOTE_SECTION,
+				remote, ConfigConstants.CONFIG_KEY_URL);
+		if (url == null)
+			throw new TeamException(NLS.bind(
+					CoreText.GitProjectSetCapability_ExportNoRemote,
+					project.getName()));
+
+		String projectPath = mapping.getRepoRelativePath(project);
+		if (projectPath.equals("")) //$NON-NLS-1$
+			projectPath = "."; //$NON-NLS-1$
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(VERSION);
+		sb.append(SEPARATOR);
+		sb.append(url);
+		sb.append(SEPARATOR);
+		sb.append(branch);
+		sb.append(SEPARATOR);
+		sb.append(projectPath);
+
+		return sb.toString();
+	}
+

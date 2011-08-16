@@ -1,0 +1,9 @@
+		public int compare(ProjectReference o1, ProjectReference o2) {
+			final boolean reposEqual = o1.repository.equals(o2.repository);
+			final boolean branchesEqual = o1.branch
+					.equals(o2.branch);
+			final boolean projectDirsEqual = o1.projectDir
+					.equals(o2.projectDir);
+			return reposEqual && branchesEqual && projectDirsEqual ? 0 : 1;
+		}
+
