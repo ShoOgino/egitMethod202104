@@ -1,0 +1,6 @@
+		@Override
+		public void dragStart(DragSourceEvent event) {
+			RevCommit commit = getSelectedCommit();
+			event.doit = commit.getParentCount() == 1;
+		}
+

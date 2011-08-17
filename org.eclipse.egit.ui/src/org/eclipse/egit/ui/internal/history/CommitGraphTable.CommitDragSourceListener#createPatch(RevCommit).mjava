@@ -1,0 +1,17 @@
+		private String createPatch(RevCommit commit) {
+			Repository repository = input.getRepository();
+			CreatePatchOperation operation = new CreatePatchOperation(
+					repository, commit);
+			operation.useGitFormat(true);
+			operation.setContextLines(CreatePatchOperation.DEFAULT_CONTEXT_LINES);
+			try {
+				operation.execute(null);
+			} catch (CoreException e) {
+				Activator.logError(NLS.bind(
+						UIText.CommitGraphTable_UnableToCreatePatch, commit
+								.getId().name()), e);
+			}
+			String patchContent = operation.getPatchContent();
+			return patchContent;
+		}
+

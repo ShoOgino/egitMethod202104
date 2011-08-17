@@ -127,5 +127,9 @@
 					renderer.dispose();
 			}
 		});
+
+		Transfer[] transferTypes = new Transfer[] {TextTransfer.getInstance(), FileTransfer.getInstance()};
+		table.addDragSupport(DND.DROP_DEFAULT | DND.DROP_COPY, transferTypes,
+				new CommitDragSourceListener());
 	}
 

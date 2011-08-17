@@ -1,0 +1,7 @@
+		private RevCommit getSelectedCommit() {
+			IStructuredSelection selection = (IStructuredSelection) table
+					.getSelection();
+			RevCommit commit = (RevCommit) selection.getFirstElement();
+			return commit;
+		}
+

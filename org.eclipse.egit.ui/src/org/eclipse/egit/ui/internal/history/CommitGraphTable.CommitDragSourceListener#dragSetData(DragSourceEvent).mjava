@@ -1,0 +1,30 @@
+		public void dragSetData(DragSourceEvent event) {
+			boolean isFileTransfer = FileTransfer.getInstance()
+					.isSupportedType(event.dataType);
+			boolean isTextTransfer = TextTransfer.getInstance()
+					.isSupportedType(event.dataType);
+			if (isFileTransfer || isTextTransfer) {
+				RevCommit commit = getSelectedCommit();
+				String patchContent = createPatch(commit);
+				if (isTextTransfer) {
+					event.data = patchContent;
+					return;
+				} else {
+					File patchFile = null;
+					try {
+						patchFile = createTempFile(commit);
+						writeToFile(patchFile.getAbsolutePath(), patchContent);
+						event.data = new String[] { patchFile.getAbsolutePath() };
+					} catch (IOException e) {
+						Activator.logError(NLS.bind(
+								UIText.CommitGraphTable_UnableToWritePatch,
+								commit.getId().name()), e);
+					} finally {
+						if (patchFile != null) {
+							patchFile.deleteOnExit();
+						}
+					}
+				}
+			}
+		}
+

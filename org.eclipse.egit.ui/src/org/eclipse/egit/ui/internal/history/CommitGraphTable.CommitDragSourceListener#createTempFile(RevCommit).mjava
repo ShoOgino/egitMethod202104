@@ -1,0 +1,16 @@
+		private File createTempFile(RevCommit commit) {
+			String tmpDir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+			File patchDir = new File(tmpDir, "egit-patch" + commit.getId().name()); //$NON-NLS-1$
+			int counter = 1;
+			while(patchDir.exists()) {
+				patchDir = new File(tmpDir, commit.getId().name() + "_" + counter); //$NON-NLS-1$
+			}
+			patchDir.mkdir();
+			patchDir.deleteOnExit();
+			File patchFile;
+			String suggestedFileName = CreatePatchOperation
+					.suggestFileName(commit);
+			patchFile = new File(patchDir, suggestedFileName);
+			return patchFile;
+		}
+
