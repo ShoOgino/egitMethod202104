@@ -1,0 +1,10 @@
+		private void validatePage() {
+			boolean pageValid = true;
+			pageValid = validateContextLines();
+			if (pageValid) {
+				setMessage(null);
+				setErrorMessage(null);
+			}
+			setPageComplete(pageValid);
+		}
+

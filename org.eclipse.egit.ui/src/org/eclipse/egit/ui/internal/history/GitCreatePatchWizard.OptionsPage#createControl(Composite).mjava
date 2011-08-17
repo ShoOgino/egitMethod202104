@@ -1,16 +1,27 @@
 		public void createControl(Composite parent) {
 			final Composite composite = new Composite(parent, SWT.NULL);
-			GridLayout gridLayout = new GridLayout();
-			gridLayout.numColumns = 3;
+			GridLayout gridLayout = new GridLayout(2, false);
 			composite.setLayout(gridLayout);
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			// clipboard
 			GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-			gd.horizontalSpan = 3;
+			gd.horizontalSpan = 2;
 			gitFormat = new Button(composite, SWT.CHECK);
 			gitFormat.setText(UIText.GitCreatePatchWizard_GitFormat);
 			gitFormat.setLayoutData(gd);
+
+			contextLinesLabel = new Label(composite, SWT.NONE);
+			contextLinesLabel.setText(UIText.GitCreatePatchWizard_LinesOfContext);
+
+			contextLines = new Text(composite, SWT.BORDER | SWT.RIGHT);
+			contextLines.setText("3"); //$NON-NLS-1$
+			contextLines.addModifyListener(new ModifyListener() {
+
+				public void modifyText(ModifyEvent e) {
+					validatePage();
+				}
+			});
+			GridDataFactory.swtDefaults().hint(30, SWT.DEFAULT).applyTo(contextLines);
 
 			Dialog.applyDialogFont(composite);
 			setControl(composite);
