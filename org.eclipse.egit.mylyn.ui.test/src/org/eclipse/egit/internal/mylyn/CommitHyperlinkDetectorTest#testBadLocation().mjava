@@ -1,0 +1,7 @@
+	@Test
+	public void testBadLocation() {
+		textViewer.setDocument(null);
+		IHyperlink[] hyperlinks = detectHyperlinks(10,0);
+		assertNull(hyperlinks);
+	}
+

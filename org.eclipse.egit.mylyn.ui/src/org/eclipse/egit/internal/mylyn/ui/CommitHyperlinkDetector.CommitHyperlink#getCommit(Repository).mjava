@@ -1,0 +1,18 @@
+		private RevCommit getCommit(Repository repository) throws IOException {
+			RevWalk revWalk = null;
+			try {
+				revWalk = new RevWalk(repository);
+				return revWalk.parseCommit(ObjectId.fromString(objectId));
+			} catch (MissingObjectException e) {
+				// ignore
+				return null;
+			} catch (IncorrectObjectTypeException e) {
+				// ignore
+				return null;
+			} finally {
+				if (revWalk != null)
+					revWalk.release();
+			}
+
+		}
+

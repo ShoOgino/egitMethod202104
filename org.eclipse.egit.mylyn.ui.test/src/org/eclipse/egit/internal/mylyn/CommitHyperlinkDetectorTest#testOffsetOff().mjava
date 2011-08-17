@@ -1,0 +1,7 @@
+	@Test
+	public void testOffsetOff() {
+		setText("some bla " + EXAMPLE_ID);
+		IHyperlink[] hyperlinks = detectHyperlinks(3,0);
+		assertNull(hyperlinks);
+	}
+

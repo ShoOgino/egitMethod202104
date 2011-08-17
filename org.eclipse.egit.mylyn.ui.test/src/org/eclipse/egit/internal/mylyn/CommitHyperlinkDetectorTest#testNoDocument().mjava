@@ -1,0 +1,7 @@
+	@Test
+	public void testNoDocument() {
+		textViewer.setDocument(null);
+		IHyperlink[] hyperlinks = detectHyperlinks(0,0);
+		assertNull(hyperlinks);
+	}
+

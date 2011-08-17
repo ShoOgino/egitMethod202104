@@ -1,0 +1,18 @@
+		private RepositoryCommit searchCommit() throws IOException {
+			RepositoryUtil repositoryUtil = Activator.getDefault()
+					.getRepositoryUtil();
+			List<String> configuredRepositories = repositoryUtil
+					.getConfiguredRepositories();
+			RepositoryCache repositoryCache = Activator.getDefault()
+					.getRepositoryCache();
+			for (String repoDir : configuredRepositories) {
+				Repository repository = repositoryCache
+						.lookupRepository(new File(repoDir));
+				RevCommit commit = getCommit(repository);
+				if (commit != null)
+					return new RepositoryCommit(repository, commit);
+			}
+
+			return null;
+		}
+

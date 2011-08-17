@@ -1,0 +1,8 @@
+	@Before
+	public void setUp() throws Exception {
+		detector = new CommitHyperlinkDetector();
+		Shell shell = new Shell();
+		textViewer = new TextViewer(shell, SWT.NONE);
+		textViewer.setDocument(new Document());
+	}
+

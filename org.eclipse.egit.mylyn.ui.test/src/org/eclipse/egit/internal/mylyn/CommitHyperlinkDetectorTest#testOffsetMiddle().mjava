@@ -1,0 +1,8 @@
+	@Test
+	public void testOffsetMiddle() {
+		setText(EXAMPLE_ID);
+		IHyperlink[] hyperlinks = detectHyperlinks(3,0);
+		assertEquals(1, hyperlinks.length);
+		assertEquals(EXAMPLE_ID, hyperlinks[0].getHyperlinkText());
+	}
+

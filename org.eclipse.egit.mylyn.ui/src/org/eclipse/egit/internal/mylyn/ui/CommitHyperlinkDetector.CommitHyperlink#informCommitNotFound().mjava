@@ -1,0 +1,10 @@
+		private void informCommitNotFound() {
+			MessageDialog
+					.openWarning(
+							shell,
+							Messages.CommitHyperlinkDetector_CommitNotFound,
+							NLS.bind(
+									Messages.CommitHyperlinkDetector_CommitNotFoundInRepositories,
+									objectId));
+		}
+

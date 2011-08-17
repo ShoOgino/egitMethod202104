@@ -1,0 +1,13 @@
+		public void open() {
+			try {
+				RepositoryCommit commit;
+				commit = searchCommit();
+				if (commit != null)
+					CommitEditor.openQuiet(commit);
+				else
+					informCommitNotFound();
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+

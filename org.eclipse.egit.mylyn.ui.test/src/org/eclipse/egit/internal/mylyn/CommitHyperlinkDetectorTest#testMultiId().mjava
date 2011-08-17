@@ -1,0 +1,9 @@
+	@Test
+	public void testMultiId() {
+		setText(EXAMPLE_ID + " and " + OTHER_EXAMPLE_ID);
+		IHyperlink[] hyperlinks = detectHyperlinks();
+		assertEquals(2, hyperlinks.length);
+		assertEquals(EXAMPLE_ID, hyperlinks[0].getHyperlinkText());
+		assertEquals(OTHER_EXAMPLE_ID, hyperlinks[1].getHyperlinkText());
+	}
+

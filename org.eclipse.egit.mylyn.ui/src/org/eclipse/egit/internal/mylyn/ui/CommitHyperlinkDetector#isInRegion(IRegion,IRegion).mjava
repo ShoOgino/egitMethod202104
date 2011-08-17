@@ -1,0 +1,6 @@
+	private boolean isInRegion(IRegion detectInRegion, IRegion hyperlinkRegion) {
+		return detectInRegion.getOffset() >= hyperlinkRegion.getOffset()
+				&& detectInRegion.getOffset() <= hyperlinkRegion.getOffset()
+						+ hyperlinkRegion.getLength();
+	}
+
