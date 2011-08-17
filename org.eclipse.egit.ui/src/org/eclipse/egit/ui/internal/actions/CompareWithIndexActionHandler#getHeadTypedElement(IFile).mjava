@@ -16,7 +16,7 @@
 		}
 
 		IFileRevision nextFile = GitFileRevision.inIndex(repository, gitPath);
-		String encoding = CompareUtils.getResourceEncoding(baseFile);
+		String encoding = CompareCoreUtils.getResourceEncoding(baseFile);
 		final EditableRevision next = new EditableRevision(nextFile, encoding);
 
 		IContentChangeListener listener = new IContentChangeListener() {
