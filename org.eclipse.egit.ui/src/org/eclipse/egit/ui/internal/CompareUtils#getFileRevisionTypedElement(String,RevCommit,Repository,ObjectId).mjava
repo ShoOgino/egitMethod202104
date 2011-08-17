@@ -22,7 +22,7 @@
 			IFileRevision nextFile = getFileRevision(gitPath, commit, db,
 							blobId);
 				if (nextFile != null) {
-					String encoding = getResourceEncoding(db, gitPath);
+					String encoding = CompareCoreUtils.getResourceEncoding(db, gitPath);
 					right = new FileRevisionTypedElement(nextFile, encoding);
 				}
 		} catch (IOException e) {

@@ -1,0 +1,7 @@
+	@Test(expected = IllegalStateException.class)
+	public void testExecuteFirst() throws Exception {
+		CreatePatchOperation operation = new CreatePatchOperation(
+				testRepository.getRepository(), commit);
+		operation.getPatchContent();
+	}
+

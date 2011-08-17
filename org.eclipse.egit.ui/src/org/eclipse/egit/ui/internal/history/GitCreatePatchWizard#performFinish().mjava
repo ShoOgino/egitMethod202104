@@ -1,58 +1,29 @@
 	@Override
 	public boolean performFinish() {
-		final boolean isGit = optionsPage.gitFormat.getSelection();
+		final CreatePatchOperation operation = new CreatePatchOperation(db,
+				commit);
+		operation.useGitFormat(optionsPage.gitFormat.getSelection());
+
 		final boolean isFile = locationPage.fsRadio.getSelection();
 		final String fileName = locationPage.fsPathText.getText();
 
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor) {
-					final StringBuilder sb = new StringBuilder();
-					final DiffFormatter diffFmt = new DiffFormatter(
-							new BufferedOutputStream(new ByteArrayOutputStream() {
-
-						@Override
-						public synchronized void write(byte[] b, int off, int len) {
-							super.write(b, off, len);
-							if (currentEncoding == null)
-								sb.append(toString());
-							else try {
-								sb.append(toString(currentEncoding));
-							} catch (UnsupportedEncodingException e) {
-								sb.append(toString());
-							}
-							reset();
-						}
-
-					}));
-
-					if (isGit)
-						writeGitPatchHeader(sb);
+				public void run(IProgressMonitor monitor)
+						throws InvocationTargetException {
 					try {
-						FileDiff[] diffs = FileDiff.compute(walker, commit);
-						for (FileDiff diff : diffs) {
-							currentEncoding = CompareUtils.
-								getResourceEncoding(db, diff.getPath());
-							diff.outputDiff(sb, db, diffFmt, isGit);
-							diffFmt.flush();
-						}
+						operation.execute(monitor);
 
+						String content = operation.getPatchContent();
 						if (isFile) {
-							Writer output = new BufferedWriter(new FileWriter(
-									fileName));
-							try {
-								// FileWriter always assumes default encoding is
-								// OK!
-								output.write(sb.toString());
-							} finally {
-								output.close();
-							}
+							writeToFile(fileName, content);
 						} else {
-							copyToClipboard(sb.toString());
+							copyToClipboard(content);
 						}
 					} catch (IOException e) {
-						Activator
-							.logError("Patch file could not be written", e); //$NON-NLS-1$
+						throw new InvocationTargetException(e);
+					} catch (CoreException e) {
+						throw new InvocationTargetException(e);
 					}
 				}
 			});

@@ -1,0 +1,12 @@
+	/**
+	 * Retrieves the content of the requested patch
+	 *
+	 * @return the content of the patch
+	 */
+	public String getPatchContent() {
+		if (patchContent == null)
+			throw new IllegalStateException(
+					"#execute needs to be called before this method."); //$NON-NLS-1$
+		return patchContent;
+	}
+

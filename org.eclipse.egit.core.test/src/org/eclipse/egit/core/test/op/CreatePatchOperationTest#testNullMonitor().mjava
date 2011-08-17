@@ -1,0 +1,9 @@
+	@Test
+	public void testNullMonitor() throws Exception {
+		RevCommit secondCommit = testRepository.appendContentAndCommit(
+				project.getProject(), file, "another line", "2nd commit");
+		CreatePatchOperation operation = new CreatePatchOperation(
+				testRepository.getRepository(), secondCommit);
+		operation.execute(null);
+	}
+

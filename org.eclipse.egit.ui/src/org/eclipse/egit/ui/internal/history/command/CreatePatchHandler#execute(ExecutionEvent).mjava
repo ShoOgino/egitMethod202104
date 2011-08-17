@@ -3,10 +3,7 @@
 		if (selection.size() == 1) {
 			RevCommit commit = (RevCommit) selection.getFirstElement();
             Repository repo = getRepository(event);
-			TreeWalk fileWalker = new TreeWalk(repo);
-			fileWalker.setRecursive(true);
-			fileWalker.setFilter(TreeFilter.ANY_DIFF);
-			GitCreatePatchWizard.run(getPart(event), commit, fileWalker, repo);
+			GitCreatePatchWizard.run(getPart(event), commit, repo);
 		}
 		return null;
 	}
