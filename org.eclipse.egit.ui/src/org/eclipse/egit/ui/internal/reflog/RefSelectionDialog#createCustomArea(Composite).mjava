@@ -1,0 +1,15 @@
+	@Override
+	protected void createCustomArea(Composite parent) {
+		branchTree.addFilter(new ViewerFilter() {
+
+			public boolean select(Viewer viewer, Object parentElement,
+					Object element) {
+				if (element instanceof AdditionalRefNode) {
+					AdditionalRefNode ref = (AdditionalRefNode) element;
+					return Constants.HEAD.equals(ref.getObject().getName());
+				}
+				return true;
+			}
+		});
+	}
+

@@ -1,32 +1,40 @@
 	private void reactOnSelection(ISelection selection) {
-		if (selection instanceof StructuredSelection) {
-			StructuredSelection ssel = (StructuredSelection) selection;
-			if (ssel.size() != 1)
-				return;
-			Repository repository = null;
-			if (ssel.getFirstElement() instanceof IResource) {
-				IResource resource = (IResource) ssel.getFirstElement();
-				RepositoryMapping mapping = RepositoryMapping
-						.getMapping(resource.getProject());
-				if ( mapping != null )
-					repository = mapping.getRepository();
-			}
-			if (ssel.getFirstElement() instanceof IAdaptable) {
-				IResource adapted = (IResource) ((IAdaptable) ssel
-						.getFirstElement()).getAdapter(IResource.class);
-				if (adapted != null) {
-					RepositoryMapping mapping = RepositoryMapping
-							.getMapping(adapted);
-					if (mapping != null)
-						repository = mapping.getRepository();
-				}
-			} else if (ssel.getFirstElement() instanceof RepositoryTreeNode) {
-				RepositoryTreeNode repoNode = (RepositoryTreeNode) ssel
-						.getFirstElement();
-				repository = repoNode.getRepository();
-			}
-
-			showReflogFor(repository);
+		if (!(selection instanceof IStructuredSelection))
+			return;
+		IStructuredSelection ssel = (IStructuredSelection) selection;
+		if (ssel.size() != 1)
+			return;
+		Repository selectedRepo = null;
+		Object first = ssel.getFirstElement();
+		if (first instanceof IResource) {
+			IResource resource = (IResource) ssel.getFirstElement();
+			RepositoryMapping mapping = RepositoryMapping.getMapping(resource
+					.getProject());
+			if (mapping != null)
+				selectedRepo = mapping.getRepository();
 		}
+		if (first instanceof IAdaptable) {
+			IResource adapted = (IResource) ((IAdaptable) ssel
+					.getFirstElement()).getAdapter(IResource.class);
+			if (adapted != null) {
+				RepositoryMapping mapping = RepositoryMapping
+						.getMapping(adapted);
+				if (mapping != null)
+					selectedRepo = mapping.getRepository();
+			}
+		} else if (first instanceof RepositoryTreeNode) {
+			RepositoryTreeNode repoNode = (RepositoryTreeNode) ssel
+					.getFirstElement();
+			selectedRepo = repoNode.getRepository();
+		}
+		if (selectedRepo == null)
+			return;
+
+		// Only update when different repository is selected
+		Repository currentRepo = getRepository();
+		if (currentRepo == null
+				|| !selectedRepo.getDirectory().equals(
+						currentRepo.getDirectory()))
+			showReflogFor(selectedRepo);
 	}
 
