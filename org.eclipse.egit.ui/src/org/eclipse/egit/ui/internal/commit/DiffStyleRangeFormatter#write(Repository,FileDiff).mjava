@@ -8,7 +8,7 @@
 	 */
 	public DiffStyleRangeFormatter write(Repository repository, FileDiff diff)
 			throws IOException {
-		this.stream.charset = CompareUtils.getResourceEncoding(repository,
+		this.stream.charset = CompareCoreUtils.getResourceEncoding(repository,
 				diff.getPath());
 		diff.outputDiff(null, repository, this, true);
 		flush();

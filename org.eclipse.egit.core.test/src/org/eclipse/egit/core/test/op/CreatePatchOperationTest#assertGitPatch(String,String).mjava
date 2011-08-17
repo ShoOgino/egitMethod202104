@@ -1,0 +1,5 @@
+	private void assertGitPatch(String expected, String actual) {
+		assertEquals(expected.substring(0,45), actual.substring(0,45));
+		assertEquals(expected.substring(expected.indexOf("\n")), actual.substring(actual.indexOf("\n")));
+	}
+

@@ -47,7 +47,7 @@
 										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
 										res.getName(), getCompareVersion()));
 			} else {
-				String encoding = CompareUtils.getResourceEncoding(res);
+				String encoding = CompareCoreUtils.getResourceEncoding(res);
 				right = new FileRevisionTypedElement(rightRevision, encoding);
 			}
 			GitCompareFileRevisionEditorInput compareInput = new GitCompareFileRevisionEditorInput(

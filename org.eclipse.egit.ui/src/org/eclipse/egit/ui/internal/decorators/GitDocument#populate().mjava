@@ -81,7 +81,7 @@
 				ObjectLoader loader = repository.open(id, Constants.OBJ_BLOB);
 				byte[] bytes = loader.getBytes();
 				String charset;
-				charset = CompareUtils.getResourceEncoding(resource);
+				charset = CompareCoreUtils.getResourceEncoding(resource);
 				// Finally we could consider validating the content with respect
 				// to the content. We don't do that here.
 				String s = new String(bytes, charset);

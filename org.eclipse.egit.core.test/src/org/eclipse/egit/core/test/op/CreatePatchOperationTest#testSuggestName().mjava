@@ -1,0 +1,15 @@
+	@Test
+	public void testSuggestName() throws Exception {
+		RevCommit aCommit = testRepository.appendContentAndCommit(
+				project.getProject(), file, "another line", "2nd commit");
+		assertEquals("2nd-commit.patch", CreatePatchOperation.suggestFileName(aCommit));
+
+		aCommit = testRepository.appendContentAndCommit(
+				project.getProject(), file, "another line", "[findBugs] Change visibility of repositoryFile to package");
+		assertEquals("findBugs-Change-visibility-of-repositoryFile-to-pack.patch", CreatePatchOperation.suggestFileName(aCommit));
+
+		aCommit = testRepository.appendContentAndCommit(
+				project.getProject(), file, "another line", "Add collapse/expand all utility method for tree viewers.");
+		assertEquals("Add-collapse-expand-all-utility-method-for-tree-view.patch", CreatePatchOperation.suggestFileName(aCommit));
+	}
+
