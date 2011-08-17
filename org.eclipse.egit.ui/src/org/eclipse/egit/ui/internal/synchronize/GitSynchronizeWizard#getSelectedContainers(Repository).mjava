@@ -19,7 +19,7 @@
 					continue;
 
 				int type = res.getType();
-				if (type == IResource.FOLDER || type == IResource.PROJECT) {
+				if (type == IResource.FOLDER) {
 					Repository selRepo = RepositoryMapping.getMapping(res)
 							.getRepository();
 					if (workTree.equals(selRepo.getWorkTree()))
