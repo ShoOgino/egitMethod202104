@@ -1,7 +1,13 @@
 	private Menu getContextMenu() {
 		if (!allowToChangeSelection)
 			return null;
-		Menu menu = new Menu(filesViewer.getTable());
+		final Menu menu = new Menu(filesViewer.getTable());
+		filesViewer.getTable().addDisposeListener(new DisposeListener() {
+
+			public void widgetDisposed(DisposeEvent e) {
+				menu.dispose();
+			}
+		});
 		MenuItem item = new MenuItem(menu, SWT.PUSH);
 		item.setText(UIText.CommitDialog_AddFileOnDiskToIndex);
 		item.addListener(SWT.Selection, new Listener() {
