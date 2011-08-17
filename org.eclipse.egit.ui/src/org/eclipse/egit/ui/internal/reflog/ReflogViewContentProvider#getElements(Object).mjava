@@ -1,14 +1,14 @@
 	public Object[] getElements(Object inputElement) {
-		if(inputElement instanceof Repository) {
-			Repository repository = (Repository) inputElement;
-			Git git = new Git(repository);
+		if (inputElement instanceof ReflogInput) {
+			ReflogInput input = (ReflogInput) inputElement;
+			ReflogCommand command = new Git(input.repository).reflog();
+			command.setRef(input.ref);
 			try {
-				Collection<ReflogEntry> entries = git.reflog().call();
-				return entries.toArray(new ReflogEntry[entries.size()]);
+				return command.call().toArray();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Activator.logError("Error running reflog command", e); //$NON-NLS-1$
 			}
 		}
-		return null;
+		return new Object[0];
 	}
 

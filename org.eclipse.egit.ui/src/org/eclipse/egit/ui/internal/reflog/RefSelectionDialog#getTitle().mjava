@@ -1,0 +1,9 @@
+	protected String getTitle() {
+		String repoName;
+		if (!repo.isBare())
+			repoName = repo.getDirectory().getParentFile().getName();
+		else
+			repoName = repo.getDirectory().getName();
+		return MessageFormat.format(UIText.RefSelectionDialog_Title, repoName);
+	}
+

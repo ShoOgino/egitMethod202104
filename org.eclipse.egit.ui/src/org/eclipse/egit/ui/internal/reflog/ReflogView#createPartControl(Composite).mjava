@@ -2,7 +2,7 @@
 	public void createPartControl(Composite parent) {
 		GridLayoutFactory.fillDefaults().applyTo(parent);
 
-		final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+		toolkit = new FormToolkit(parent.getDisplay());
 		parent.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				toolkit.dispose();
@@ -13,7 +13,7 @@
 
 		Image repoImage = UIIcons.REPOSITORY.createImage();
 		UIUtils.hookDisposal(form, repoImage);
-		final Image branchImage = UIIcons.BRANCH.createImage();
+		final Image branchImage = UIIcons.CHANGESET.createImage();
 		UIUtils.hookDisposal(form, branchImage);
 		form.setImage(repoImage);
 		form.setText(UIText.StagingView_NoSelectionTitle);
@@ -28,7 +28,8 @@
 
 		final TreeColumnLayout layout = new TreeColumnLayout();
 
-		FilteredTree filteredTree = new FilteredTree(tableComposite, SWT.NONE | SWT.BORDER, new PatternFilter(), true) {
+		FilteredTree filteredTree = new FilteredTree(tableComposite, SWT.NONE
+				| SWT.BORDER, new PatternFilter(), true) {
 			@Override
 			protected void createControl(Composite composite, int treeStyle) {
 				super.createControl(composite, treeStyle);
@@ -40,7 +41,8 @@
 		refLogTableTreeViewer = filteredTree.getViewer();
 		refLogTableTreeViewer.getTree().setLinesVisible(true);
 		refLogTableTreeViewer.getTree().setHeaderVisible(true);
-		refLogTableTreeViewer.setContentProvider(new ReflogViewContentProvider());
+		refLogTableTreeViewer
+				.setContentProvider(new ReflogViewContentProvider());
 
 		ColumnViewerToolTipSupport.enableFor(refLogTableTreeViewer);
 
@@ -104,10 +106,10 @@
 			public Image getImage(Object element) {
 				String comment = ((ReflogEntry) element).getComment();
 				if (comment.startsWith("commit:")) //$NON-NLS-1$
-					return (Image) resourceManager.get(UIIcons.CHANGESET);
+					return (Image) resourceManager.get(UIIcons.COMMIT);
 				if (comment.startsWith("commit (amend):")) //$NON-NLS-1$
 					return (Image) resourceManager.get(UIIcons.AMEND_COMMIT);
-				if (comment.startsWith("pull :")) //$NON-NLS-1$
+				if (comment.startsWith("pull ")) //$NON-NLS-1$
 					return (Image) resourceManager.get(UIIcons.PULL);
 				if (comment.startsWith("clone:")) //$NON-NLS-1$
 					return (Image) resourceManager.get(UIIcons.CLONEGIT);
@@ -115,10 +117,12 @@
 					return (Image) resourceManager.get(UIIcons.REBASE);
 				if (comment.startsWith("merge ")) //$NON-NLS-1$
 					return (Image) resourceManager.get(UIIcons.MERGE);
-				if (comment.startsWith("fetch: ")) //$NON-NLS-1$
+				if (comment.startsWith("fetch:")) //$NON-NLS-1$
 					return (Image) resourceManager.get(UIIcons.FETCH);
-				if (comment.startsWith("branch: ")) //$NON-NLS-1$
+				if (comment.startsWith("branch:")) //$NON-NLS-1$
 					return (Image) resourceManager.get(UIIcons.CREATE_BRANCH);
+				if (comment.startsWith("checkout:")) //$NON-NLS-1$
+					return (Image) resourceManager.get(UIIcons.CHECKOUT);
 				return null;
 			}
 
@@ -134,7 +138,7 @@
 						.getSelection();
 				if (selection.isEmpty())
 					return;
-				Repository repo = (Repository) refLogTableTreeViewer.getInput();
+				Repository repo = getRepository();
 				if (repo == null)
 					return;
 				RevWalk walk = new RevWalk(repo);
@@ -185,6 +189,7 @@
 
 		site.setSelectionProvider(refLogTableTreeViewer);
 
-		addRefsChangedListener = Repository.getGlobalListenerList().addRefsChangedListener(this);
+		addRefsChangedListener = Repository.getGlobalListenerList()
+				.addRefsChangedListener(this);
 	}
 

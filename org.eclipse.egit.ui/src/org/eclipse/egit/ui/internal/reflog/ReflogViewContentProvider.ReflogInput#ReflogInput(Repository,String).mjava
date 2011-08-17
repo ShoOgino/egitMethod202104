@@ -1,0 +1,13 @@
+		/**
+		 * Create input with non-null repository and non-null ref
+		 *
+		 * @param repository
+		 * @param ref
+		 */
+		public ReflogInput(Repository repository, String ref) {
+			Assert.isNotNull(repository, "Repository cannot be null"); //$NON-NLS-1$
+			Assert.isNotNull(ref, "Ref cannot be null"); //$NON-NLS-1$
+			this.repository = repository;
+			this.ref = ref;
+		}
+
