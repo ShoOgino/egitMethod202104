@@ -33,8 +33,11 @@
 						results.put(repository,
 								Activator.error(e.getMessage(), e));
 					} catch (JGitInternalException e) {
+						Throwable cause = e.getCause();
+						if (cause == null || !(cause instanceof TransportException))
+							cause = e;
 						results.put(repository,
-								Activator.error(e.getMessage(), e));
+								Activator.error(cause.getMessage(), cause));
 					} finally {
 						mymonitor.worked(1);
 					}
