@@ -1,0 +1,11 @@
+	private void showRevertedDialog(final Shell shell) {
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+
+			public void run() {
+				MessageDialog.openWarning(shell,
+						UIText.RevertHandler_NoRevertTitle,
+						UIText.RevertHandler_AlreadyRevertedMessae);
+			}
+		});
+	}
+

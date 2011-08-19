@@ -1,24 +1,43 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repo = getRepository(event);
 		BasicConfigurationDialog.show(repo);
-		RevCommit commit = (RevCommit) getSelection(getPage()).getFirstElement();
-		RevCommit newHead;
+		RevCommit commit = (RevCommit) getSelection(getPage())
+				.getFirstElement();
 
-		RevertCommand revert;
-		Git git = new Git(repo);
-		try {
-			revert = git.revert().include(commit.getId());
-			newHead = revert.call();
-			if (newHead != null && revert.getRevertedRefs().isEmpty())
-				MessageDialog.openWarning(getPart(event).getSite().getShell(),
-						UIText.RevertHandler_NoRevertTitle,
-						UIText.RevertHandler_AlreadyRevertedMessae);
-		} catch (Exception e) {
-			Activator.handleError(UIText.RevertOperation_InternalError, e, true);
-			return null;
-		}
-		if (newHead == null)
-			Activator.showError(UIText.RevertOperation_Failed, null);
+		final Shell shell = getPart(event).getSite().getShell();
+		final RevertCommitOperation op = new RevertCommitOperation(repo, commit);
+
+		Job job = new Job(MessageFormat.format(UIText.RevertHandler_JobName,
+				commit.name())) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					op.execute(monitor);
+					RevCommit newHead = op.getNewHead();
+					List<Ref> revertedRefs = op.getRevertedRefs();
+					if (newHead != null && revertedRefs.isEmpty())
+						showRevertedDialog(shell);
+					if (newHead == null)
+						Activator
+								.showError(UIText.RevertOperation_Failed, null);
+
+				} catch (CoreException e) {
+					Activator.handleError(UIText.RevertOperation_InternalError,
+							e, true);
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.REVERT_COMMIT.equals(family))
+					return true;
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
 		return null;
 	}
 
