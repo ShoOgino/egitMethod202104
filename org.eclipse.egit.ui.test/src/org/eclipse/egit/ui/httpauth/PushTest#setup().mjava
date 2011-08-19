@@ -16,5 +16,6 @@
 		assertTrue(file.exists());
 		localRepository = Activator.getDefault().getRepositoryCache()
 				.lookupRepository(new File(localRepoPath, ".git"));
+		assertNotNull(localRepository);
 	}
 
