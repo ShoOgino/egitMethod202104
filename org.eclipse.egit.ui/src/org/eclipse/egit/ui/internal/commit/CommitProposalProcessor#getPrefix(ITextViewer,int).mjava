@@ -1,0 +1,15 @@
+	private String getPrefix(ITextViewer viewer, int offset)
+			throws BadLocationException {
+		IDocument doc = viewer.getDocument();
+		if (doc == null || offset > doc.getLength())
+			return null;
+
+		int length = 0;
+		int start = offset - 1;
+		while (start >= 0 && !Character.isWhitespace(doc.getChar(start))) {
+			start--;
+			length++;
+		}
+		return doc.get(start + 1, length);
+	}
+

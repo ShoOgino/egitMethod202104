@@ -1,0 +1,24 @@
+	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
+			int offset) {
+		String prefix;
+		try {
+			prefix = getPrefix(viewer, offset);
+		} catch (BadLocationException e) {
+			return NO_PROPOSALS;
+		}
+
+		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		if (prefix != null && prefix.length() > 0) {
+			int replacementLength = prefix.length();
+			int replacementOffset = offset - replacementLength;
+			prefix = prefix.toLowerCase(Locale.US);
+			for (CommitFile file : files)
+				if (file.matches(prefix))
+					proposals.add(file.createProposal(replacementOffset,
+							replacementLength));
+		} else
+			for (CommitFile file : files)
+				proposals.add(file.createProposal(offset, 0));
+		return proposals.toArray(new ICompletionProposal[proposals.size()]);
+	}
+

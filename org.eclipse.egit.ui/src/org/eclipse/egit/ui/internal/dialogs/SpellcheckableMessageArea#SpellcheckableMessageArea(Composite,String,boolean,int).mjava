@@ -54,6 +54,25 @@
 				return super.getReconciler(sourceViewer);
 			}
 
+			public IContentAssistant getContentAssistant(ISourceViewer viewer) {
+				if (!viewer.isEditable())
+					return null;
+				IContentAssistant assistant = createContentAssistant(viewer);
+				// Add content assist proposal handler if assistant exists
+				if (assistant != null) {
+					final IHandlerActivation activation = installContentAssistActionHandler();
+					viewer.getTextWidget().addDisposeListener(
+							new DisposeListener() {
+
+								public void widgetDisposed(DisposeEvent e) {
+									getHandlerService().deactivateHandler(
+											activation);
+								}
+							});
+				}
+				return assistant;
+			}
+
 		});
 		sourceViewer.setDocument(document, annotationModel);
 

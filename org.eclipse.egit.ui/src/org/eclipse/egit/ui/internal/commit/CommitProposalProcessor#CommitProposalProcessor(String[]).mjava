@@ -1,0 +1,17 @@
+	/**
+	 * Create process with path proposals
+	 *
+	 * @param paths
+	 */
+	public CommitProposalProcessor(String[] paths) {
+		for (String path : paths) {
+			String name = new Path(path).lastSegment();
+			if (name == null)
+				continue;
+			files.add(new CommitFile(name, name));
+			int lastDot = name.lastIndexOf('.');
+			if (lastDot > 0)
+				files.add(new CommitFile(name.substring(0, lastDot), name));
+		}
+	}
+
