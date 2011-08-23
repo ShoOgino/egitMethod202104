@@ -15,8 +15,17 @@
 
 			File file = new File(content);
 			if (!file.exists() || !file.isDirectory()) {
-				errorMessage = UIText.RepositoriesView_ClipboardContentNotDirectoryMessage;
-				return null;
+				// try if clipboard contains a git URI
+				URIish cloneURI = getCloneURI(content);
+				if (cloneURI == null) {
+					errorMessage = UIText.RepositoriesView_ClipboardContentNotDirectoryOrURIMessage;
+					return null;
+				} else {
+					// start clone wizard
+					CloneCommand cmd = new CloneCommand(cloneURI.toString());
+					cmd.execute(event);
+					return null;
+				}
 			}
 
 			if (!RepositoryCache.FileKey.isGitRepository(file, FS.DETECTED)) {

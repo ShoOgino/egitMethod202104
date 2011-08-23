@@ -1,6 +1,6 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		WizardDialog dlg = new WizardDialog(getShell(event),
-				new GitCloneWizard());
+				new GitCloneWizard(presetURI));
 		dlg.setHelpAvailable(true);
 		dlg.open();
 		return null;
