@@ -13,8 +13,13 @@
 		if (selection == null)
 			selection = HandlerUtil.getCurrentSelectionChecked(event);
 		if (selection instanceof TextSelection) {
-			IResource resource = ResourceUtil.getResource(HandlerUtil
-					.getVariable(event, ISources.ACTIVE_EDITOR_INPUT_NAME));
+			IEditorInput editorInput = (IEditorInput) HandlerUtil
+					.getVariable(event, ISources.ACTIVE_EDITOR_INPUT_NAME);
+			IResource resource = ResourceUtil.getResource(editorInput);
+			if (resource != null)
+				return new StructuredSelection(resource);
+
+			resource = ResourceUtil.getFile(editorInput);
 			if (resource != null)
 				return new StructuredSelection(resource);
 		}

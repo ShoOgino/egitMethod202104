@@ -3,10 +3,7 @@
 	 */
 	public Object getAdapter(Class adapter) {
 		if (adapter == IFile.class || adapter == IResource.class) {
-			if (getLocalElement() != null) {
-				return getLocalElement().getResource();
-			}
-			return null;
+			return getResource(getCompareInput());
 		}
 		return super.getAdapter(adapter);
 	}
