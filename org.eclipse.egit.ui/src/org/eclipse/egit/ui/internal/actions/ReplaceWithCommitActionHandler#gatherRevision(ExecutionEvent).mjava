@@ -1,0 +1,10 @@
+	@Override
+	protected String gatherRevision(ExecutionEvent event) throws ExecutionException {
+		CommitSelectionDialog dlg = new CommitSelectionDialog(getShell(event),
+				getRepository(true, event));
+		if (dlg.open() == Window.OK)
+			return dlg.getCommitId().name();
+		else
+			throw new OperationCanceledException();
+	}
+

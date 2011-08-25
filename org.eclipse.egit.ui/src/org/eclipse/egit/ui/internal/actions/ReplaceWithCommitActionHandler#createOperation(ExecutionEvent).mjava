@@ -1,9 +1,0 @@
-	@Override
-	protected DiscardChangesOperation createOperation(ExecutionEvent event)
-			throws ExecutionException {
-		CommitSelectionDialog dlg = new CommitSelectionDialog(getShell(event),
-				getRepository(true, event));
-		return dlg.open() == Window.OK ? new DiscardChangesOperation(
-				getSelectedResources(event), dlg.getCommitId().name()) : null;
-	}
-

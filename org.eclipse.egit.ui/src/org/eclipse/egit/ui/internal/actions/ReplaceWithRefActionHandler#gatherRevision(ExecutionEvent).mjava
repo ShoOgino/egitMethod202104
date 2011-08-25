@@ -1,5 +1,5 @@
 	@Override
-	protected DiscardChangesOperation createOperation(ExecutionEvent event)
+	protected String gatherRevision(ExecutionEvent event)
 			throws ExecutionException {
 		final IResource[] resources = getSelectedResources(event);
 		Shell shell = getShell(event);
@@ -8,7 +8,9 @@
 				.toString() : null;
 		ReplaceTargetSelectionDialog dlg = new ReplaceTargetSelectionDialog(
 				shell, repository, pathString);
-		return dlg.open() == Window.OK ? new DiscardChangesOperation(resources,
-				dlg.getRefName()) : null;
+		if (dlg.open() == Window.OK)
+			return dlg.getRefName();
+		else
+			throw new OperationCanceledException();
 	}
 

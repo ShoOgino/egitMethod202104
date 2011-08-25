@@ -1,11 +1,12 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
+		IWorkbenchPart part = getPart(event);
 		boolean performAction = MessageDialog.openConfirm(getShell(event),
 				UIText.DiscardChangesAction_confirmActionTitle,
 				UIText.DiscardChangesAction_confirmActionMessage);
 		if (!performAction)
 			return null;
-		final DiscardChangesOperation operation = createOperation(event);
+		final DiscardChangesOperation operation = createOperation(part, event);
 		if (operation == null)
 			return null;
 		String jobname = UIText.DiscardChangesAction_discardChanges;
