@@ -1,0 +1,8 @@
+	private void assertContainsResourceByName(IResource[] relatedChanges,
+			String fileName) {
+		for (IResource resource : relatedChanges)
+			if (resource.getName().equals(fileName))
+				return;
+		fail("Resource " + fileName + " not found.");
+	}
+

@@ -1,0 +1,13 @@
+	/**
+	 * Returns all resource mappings for the given resources
+	 *
+	 * @param resources
+	 * @return ResourceMappings
+	 */
+	private static ResourceMapping[] getResourceMappings(IResource[] resources) {
+		List<ResourceMapping> result = new ArrayList<ResourceMapping>();
+		for (IResource resource : resources)
+			result.add(getResourceMapping(resource));
+		return result.toArray(new ResourceMapping[result.size()]);
+	}
+

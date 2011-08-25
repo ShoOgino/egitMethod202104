@@ -1,0 +1,28 @@
+	private static IResource[] findRelatedChanges(final IWorkbenchPart part,
+			final IResource[] selectedResources)
+			throws InvocationTargetException, InterruptedException {
+
+		final List<IResource> relatedChanges = new ArrayList<IResource>();
+		IRunnableWithProgress runnable = new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException, InterruptedException {
+				try {
+					monitor.beginTask(
+							UIText.CommitActionHandler_lookingForChanges, 100);
+					List<IResource> collectedResources = collectRelatedChanges(
+							selectedResources, part, monitor);
+					relatedChanges.addAll(collectedResources);
+				} finally {
+					monitor.done();
+				}
+			}
+
+		};
+
+		IProgressService progressService = (IProgressService) part.getSite()
+				.getService(IProgressService.class);
+		progressService.run(true, true, runnable);
+
+		return relatedChanges.toArray(new IResource[relatedChanges.size()]);
+	}
+

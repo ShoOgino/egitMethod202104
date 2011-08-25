@@ -1,0 +1,15 @@
+	@Override
+	protected boolean promptForInputChange(String requestPreviewMessage,
+			IProgressMonitor monitor) {
+		List<IResource> relevantResources = getRelevantResources();
+		boolean showPrompt = false;
+
+		for (IResource resource : relevantResources)
+			showPrompt |= hasChanged(resource);
+
+		if(showPrompt)
+				return super.promptForInputChange(requestPreviewMessage, monitor);
+
+		return false;
+	}
+

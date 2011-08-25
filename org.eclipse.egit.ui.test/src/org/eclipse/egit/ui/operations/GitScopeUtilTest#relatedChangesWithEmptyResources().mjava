@@ -1,0 +1,8 @@
+	@Test
+	public void relatedChangesWithEmptyResources() throws Exception {
+		IResource[] res = new IResource[0];
+		IResource[] resources = getRelatedChangesInUIThread(res);
+		assertNotNull(resources);
+		assertEquals(0, resources.length);
+	}
+

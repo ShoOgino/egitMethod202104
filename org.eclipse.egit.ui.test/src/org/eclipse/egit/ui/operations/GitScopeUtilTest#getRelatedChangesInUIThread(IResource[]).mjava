@@ -1,0 +1,17 @@
+	private IResource[] getRelatedChangesInUIThread(
+			final IResource[] selectedResources) {
+		final IResource[][] relatedChanges = new IResource[1][];
+		UIThreadRunnable.syncExec(new VoidResult() {
+			public void run() {
+				try {
+					relatedChanges[0] = GitScopeUtil.getRelatedChanges(part,
+							selectedResources);
+				} catch (Exception e) {
+					e.printStackTrace();
+					fail(e.getMessage());
+				}
+			}
+		});
+		return relatedChanges[0];
+	}
+

@@ -1,0 +1,7 @@
+	@Test
+	public void relatedChangesWithNullResources() throws Exception {
+		IResource[] resources = GitScopeUtil.getRelatedChanges(part, null);
+		assertNotNull(resources);
+		assertEquals(0, resources.length);
+	}
+

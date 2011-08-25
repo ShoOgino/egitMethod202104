@@ -1,0 +1,16 @@
+		@Override
+		public ResourceMapping[] getMappings(IResource resource,
+				ResourceMappingContext context, IProgressMonitor monitor)
+				throws CoreException {
+			ResourceMapping[] mappings = new ResourceMapping[2];
+			mappings[0] = getMappingAdapter(resource);
+
+			IPath resourcePath = resource.getFullPath();
+			IPath extensionFilePath = resourcePath
+					.addFileExtension("extension");
+			IWorkspaceRoot workspace = resource.getWorkspace().getRoot();
+			IFile extensionFile = workspace.getFile(extensionFilePath);
+			mappings[1] = getMappingAdapter(extensionFile);
+			return mappings;
+		}
+

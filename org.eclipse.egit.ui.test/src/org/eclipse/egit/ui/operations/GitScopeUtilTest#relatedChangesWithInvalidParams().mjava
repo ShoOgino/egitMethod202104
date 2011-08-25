@@ -1,0 +1,6 @@
+	@Test(expected = IllegalArgumentException.class)
+	public void relatedChangesWithInvalidParams() throws Exception {
+		IResource[] res = new IResource[0];
+		GitScopeUtil.getRelatedChanges(null, res);
+	}
+

@@ -1,0 +1,10 @@
+	@AfterClass
+	public static void afterClassBase() throws Exception {
+		// close all editors/dialogs
+		new Eclipse().reset();
+		// cleanup
+		IProject modelProject = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+		modelProject.delete(false, false, null);
+	}
+

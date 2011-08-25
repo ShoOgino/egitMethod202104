@@ -1,0 +1,34 @@
+	/**
+	 * Returns the set of {@link IResource}s that need to be operated on to have
+	 * a consistent model. Model providers will be asked which resources are
+	 * relevant. The user will be informed which resources are not in the scope
+	 * of the current operation and will be added to the current.
+	 *
+	 * @param part
+	 *            the active workbench part
+	 * @param resources
+	 *            the resources to operate on
+	 * @return returns the set of resources to operate on
+	 * @throws ExecutionException
+	 * @throws InterruptedException
+	 */
+	public static IResource[] getRelatedChanges(IWorkbenchPart part,
+			IResource[] resources) throws ExecutionException,
+			InterruptedException {
+		if (part == null)
+			throw new IllegalArgumentException();
+		if (resources == null)
+			return new IResource[0];
+		IResource[] resourcesInScope;
+		try {
+			resourcesInScope = findRelatedChanges(part, resources);
+		} catch (InvocationTargetException e) {
+			Activator.handleError(
+					UIText.CommitActionHandler_errorBuildingScope,
+					e.getCause(), true);
+			// fallback to initial resource set
+			resourcesInScope = resources;
+		}
+		return resourcesInScope;
+	}
+

@@ -1,0 +1,21 @@
+	@Before
+	public void setup() {
+		part = bot.activeView().getViewReference().getPart(false);
+
+		GitScopeOperationFactory.setFactory(new GitScopeOperationFactory() {
+			@Override
+			public GitScopeOperation createGitScopeOperation(
+					IWorkbenchPart workbenchPart, SubscriberScopeManager manager) {
+				return new GitScopeOperation(workbenchPart, manager) {
+					@Override
+					protected boolean promptForInputChange(
+							String requestPreviewMessage,
+							IProgressMonitor monitor) {
+						// we will avoid the confirmation prompt in the tests
+						return false;
+					}
+				};
+			}
+		});
+	}
+

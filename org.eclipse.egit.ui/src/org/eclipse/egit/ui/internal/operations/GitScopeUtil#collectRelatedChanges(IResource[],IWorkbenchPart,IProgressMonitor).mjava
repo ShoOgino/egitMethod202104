@@ -1,0 +1,15 @@
+	private static List<IResource> collectRelatedChanges(
+			IResource[] selectedResources, IWorkbenchPart part,
+			IProgressMonitor monitor) throws InterruptedException,
+			InvocationTargetException {
+
+		SubscriberScopeManager manager = GitScopeUtil
+				.createScopeManager(selectedResources);
+		GitScopeOperation buildScopeOperation = GitScopeOperationFactory
+				.getFactory().createGitScopeOperation(part, manager);
+
+		buildScopeOperation.run(new SubProgressMonitor(monitor, 50));
+
+		return buildScopeOperation.getRelevantResources();
+	}
+
