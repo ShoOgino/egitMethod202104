@@ -1,5 +1,6 @@
 	@Override
 	protected void fireInputChange() {
-		// nothing
+		// have the diff node notify its listeners of a change
+		((NotifiableDiffNode) getCompareResult()).fireChange();
 	}
 
