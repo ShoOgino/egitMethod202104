@@ -15,7 +15,8 @@
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 
 		// given
-		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet);
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(null,
+				dataSet);
 
 		// then
 		assertNull(grvt.getResourceVariant(null));

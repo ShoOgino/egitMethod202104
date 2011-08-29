@@ -1,0 +1,40 @@
+	private IResourceVariant fetchVariant(IResource resource) {
+		if (gitCache == null)
+			return null;
+
+		if (cache.containsKey(resource))
+			return cache.get(resource);
+
+		GitSynchronizeData gsd = gsds.getData(resource.getProject());
+		if (gsd == null)
+			return null;
+
+		Repository repo = gsd.getRepository();
+		String path = getPath(resource, repo);
+
+		GitSyncObjectCache syncCache = gitCache.get(repo);
+		GitSyncObjectCache cachedData = syncCache.get(path);
+		if (cachedData == null)
+			return null;
+
+		ObjectId objectId;
+		if (cachedData.getDiffEntry() != null)
+			objectId = getObjectId(cachedData.getDiffEntry());
+		else
+			return null;
+
+		IResourceVariant variant = null;
+		if (!objectId.equals(zeroId())) {
+			if (resource.getType() == IResource.FILE)
+				variant = new GitRemoteFile(repo, getCommitId(gsd), objectId,
+						path);
+			else
+				variant = new GitRemoteFolder(repo, cachedData,
+						getCommitId(gsd), objectId, path);
+
+			cache.put(resource, variant);
+		}
+
+		return variant;
+	}
+

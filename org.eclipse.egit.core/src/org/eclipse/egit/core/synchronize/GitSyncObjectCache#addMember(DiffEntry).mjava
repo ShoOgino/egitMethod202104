@@ -1,0 +1,44 @@
+	/**
+	 * Store given {@code entry} in cache. It assumes that parent of
+	 * {@code entry} is already in cache, if not {@link RuntimeException} will
+	 * be thrown.
+	 *
+	 * @param entry
+	 *            that should be stored in cache
+	 * @throws RuntimeException
+	 *             when cannot find parent of given {@code entry} in cache
+	 */
+	public void addMember(DiffEntry entry) {
+		String memberPath = getMemberPath(entry);
+
+		if (members == null)
+			members = new HashMap<String, GitSyncObjectCache>();
+
+		int start = -1;
+		Map<String, GitSyncObjectCache> parent = members;
+		int separatorIdx = memberPath.indexOf("/"); //$NON-NLS-1$
+		while (separatorIdx > 0) {
+			String key = memberPath.substring(start + 1, separatorIdx);
+			GitSyncObjectCache cacheObject = parent.get(key);
+			if (cacheObject == null)
+				throw new RuntimeException(
+						NLS.bind(CoreText.GitSyncObjectCache_noData, key));
+
+			start = separatorIdx;
+			separatorIdx = memberPath.indexOf("/", separatorIdx + 1); //$NON-NLS-1$
+			if (cacheObject.members == null)
+				cacheObject.members = new HashMap<String, GitSyncObjectCache>();
+
+			parent = cacheObject.members;
+		}
+
+		String newName;
+		if (start > 0)
+			newName = memberPath.substring(start + 1);
+		else
+			newName = memberPath;
+
+		GitSyncObjectCache obj = new GitSyncObjectCache(newName, entry);
+		parent.put(newName, obj);
+	}
+

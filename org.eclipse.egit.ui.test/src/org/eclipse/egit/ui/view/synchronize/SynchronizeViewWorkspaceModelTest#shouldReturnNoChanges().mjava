@@ -7,8 +7,6 @@
 		// when
 		launchSynchronization(HEAD, R_HEADS + MASTER, false);
 
-		bot.shell("Synchronize Complete - Git").close();
-
 		// then
 		SWTBot viewBot = bot.viewByTitle("Synchronize").bot();
 		@SuppressWarnings("unchecked")

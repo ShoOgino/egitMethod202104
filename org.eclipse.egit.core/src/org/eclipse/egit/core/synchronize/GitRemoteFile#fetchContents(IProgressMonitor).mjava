@@ -1,6 +1,7 @@
 	@Override
 	protected void fetchContents(IProgressMonitor monitor) throws TeamException {
-		CommitBlobStorage content = new CommitBlobStorage(repo, path, objectId, revCommit);
+		CommitBlobStorage content = new CommitBlobStorage(repo, getPath(),
+				getObjectId(), getCommitId());
 		try {
 			setContents(content.getContents(), monitor);
 		} catch (CoreException e) {

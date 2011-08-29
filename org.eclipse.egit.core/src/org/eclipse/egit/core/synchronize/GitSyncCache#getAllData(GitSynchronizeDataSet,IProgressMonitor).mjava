@@ -1,0 +1,17 @@
+	public static GitSyncCache getAllData(GitSynchronizeDataSet gsds,
+			IProgressMonitor monitor) {
+		GitSyncCache cache = new GitSyncCache();
+
+		SubMonitor m = SubMonitor.convert(monitor, gsds.size());
+		for (GitSynchronizeData gsd : gsds) {
+			Repository repo = gsd.getRepository();
+			GitSyncObjectCache repoCache = cache.put(repo);
+
+			loadDataFromGit(gsd, repoCache);
+			m.worked(1);
+		}
+		m.done();
+
+		return cache;
+	}
+

@@ -20,7 +20,7 @@
 		// given
 		GitResourceVariantTreeSubscriber grvts = createGitResourceVariantTreeSubscriber(
 				Constants.HEAD, Constants.R_HEADS + Constants.MASTER);
-		grvts.getBaseTree();
+		grvts.init(new NullProgressMonitor());
 		IResourceVariantTree baseTree = grvts.getBaseTree();
 
 		// then

@@ -1,5 +1,6 @@
-	GitRemoteFile(Repository repo, RevCommit revCommit,
-			ObjectId objectId, String path) {
-		super(repo, revCommit, objectId, path);
+	GitRemoteFile(Repository repo, RevCommit commitId, ObjectId objectId,
+			String path) {
+		super(commitId, objectId, path);
+		this.repo = repo;
 	}
 

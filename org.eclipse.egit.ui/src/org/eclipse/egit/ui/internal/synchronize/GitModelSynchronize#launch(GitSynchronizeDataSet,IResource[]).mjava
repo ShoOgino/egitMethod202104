@@ -6,21 +6,8 @@
 	 */
 	public static final void launch(final GitSynchronizeDataSet gsdSet,
 			IResource[] resources) {
-		ResourceMapping[] mappings = getSelectedResourceMappings(resources);
+		final ResourceMapping[] mappings = getSelectedResourceMappings(resources);
 
-		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
-				gsdSet);
-		RemoteResourceMappingContext remoteContext = new GitSubscriberResourceMappingContext(
-				gsdSet);
-		SubscriberScopeManager manager = new SubscriberScopeManager(
-				subscriber.getName(), mappings, subscriber, remoteContext, true);
-		GitSubscriberMergeContext context = new GitSubscriberMergeContext(
-				subscriber, manager, gsdSet);
-		final GitModelSynchronizeParticipant participant = new GitModelSynchronizeParticipant(
-				context);
-
-		TeamUI.getSynchronizeManager().addSynchronizeParticipants(
-				new ISynchronizeParticipant[] { participant });
 		final IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 
@@ -29,17 +16,16 @@
 		if (launchFetch || gsdSet.forceFetch()) {
 			Job fetchJob = new SynchronizeFetchJob(gsdSet);
 			fetchJob.setUser(true);
-
 			fetchJob.addJobChangeListener(new JobChangeAdapter() {
 				@Override
 				public void done(IJobChangeEvent event) {
-					fireSynchronizeAction(participant, window);
+					fireSynchronizeAction(window, gsdSet, mappings);
 				}
 			});
 
 			fetchJob.schedule();
 		} else {
-			fireSynchronizeAction(participant, window);
+			fireSynchronizeAction(window, gsdSet, mappings);
 		}
 	}
 

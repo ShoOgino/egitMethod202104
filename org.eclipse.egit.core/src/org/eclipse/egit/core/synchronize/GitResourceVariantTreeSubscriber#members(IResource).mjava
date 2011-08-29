@@ -11,32 +11,28 @@
 
 		GitSynchronizeData gsd = gsds.getData(res.getProject());
 		Repository repo = gsd.getRepository();
-
-		String path = stripWorkDir(repo.getWorkTree(), res.getLocation()
-				.toFile());
-
-		TreeWalk tw = new TreeWalk(repo);
-		if (path.length() > 0)
-			tw.setFilter(PathFilter.create(path));
+		GitSyncObjectCache repoCache = cache.get(repo);
 
 		Set<IResource> gitMembers = new HashSet<IResource>();
 		Map<String, IResource> allMembers = new HashMap<String, IResource>();
+
+		Set<GitSyncObjectCache> gitCachedMembers = new HashSet<GitSyncObjectCache>();
+		String path = stripWorkDir(repo.getWorkTree(), res.getLocation().toFile());
+		GitSyncObjectCache cachedMembers = repoCache.get(path);
+		if (cachedMembers != null) {
+			Collection<GitSyncObjectCache> members = cachedMembers.members();
+			if (members != null)
+				gitCachedMembers.addAll(members);
+		}
 		try {
-			tw.addTree(new FileTreeIterator(repo));
-			enterFilteredPath(path, tw);
 			for (IResource member : ((IContainer) res).members())
 				allMembers.put(member.getName(), member);
 
-			while (tw.next()) {
-				if (tw.getTree(0, FileTreeIterator.class).isEntryIgnored())
-					continue;
-
-				IResource member = allMembers.get(tw.getNameString());
+			for (GitSyncObjectCache gitMember : gitCachedMembers) {
+				IResource member = allMembers.get(gitMember.getName());
 				if (member != null)
 					gitMembers.add(member);
 			}
-		} catch (IOException e) {
-			throw new TeamException(e.getMessage(), e);
 		} catch (CoreException e) {
 			throw TeamException.asTeamException(e);
 		}

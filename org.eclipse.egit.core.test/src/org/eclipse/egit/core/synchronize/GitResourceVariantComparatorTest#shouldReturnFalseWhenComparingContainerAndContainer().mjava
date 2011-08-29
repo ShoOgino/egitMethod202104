@@ -23,7 +23,7 @@
 				"initial commit");
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 
-		GitRemoteFolder remote = new GitRemoteFolder(repo, null,
+		GitRemoteFolder remote = new GitRemoteFolder(repo, null, commit,
 				commit.getTree(), path);
 
 		// then

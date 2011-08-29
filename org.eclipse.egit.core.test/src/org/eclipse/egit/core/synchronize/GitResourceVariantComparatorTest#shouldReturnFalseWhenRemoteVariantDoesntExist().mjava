@@ -20,9 +20,9 @@
 				"second commit");
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 
-		GitRemoteFile base = new GitRemoteFile(repo, null,
+		GitRemoteFile base = new GitRemoteFile(repo, baseCommit,
 				baseCommit.getTree(), path);
-		GitRemoteFile remote = new GitRemoteFile(repo, null,
+		GitRemoteFile remote = new GitRemoteFile(repo, remoteCommit,
 				remoteCommit.getTree(), path);
 
 		// then

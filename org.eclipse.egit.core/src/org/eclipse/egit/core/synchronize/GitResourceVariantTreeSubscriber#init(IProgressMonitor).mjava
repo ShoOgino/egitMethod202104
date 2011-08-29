@@ -1,0 +1,18 @@
+	/**
+	 * Initialize git subscriber. This method will pre-fetch data from git
+	 * repository. This approach will reduce number of {@link TreeWalk}'s
+	 * created during synchronization
+	 *
+	 * @param monitor
+	 */
+	public void init(IProgressMonitor monitor) {
+		monitor.beginTask(
+				CoreText.GitResourceVariantTreeSubscriber_fetchTaskName,
+				gsds.size());
+		try {
+			cache = GitSyncCache.getAllData(gsds, monitor);
+		} finally {
+			monitor.done();
+		}
+	}
+

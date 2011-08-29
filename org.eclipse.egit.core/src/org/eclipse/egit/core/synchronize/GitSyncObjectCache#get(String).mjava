@@ -1,0 +1,29 @@
+	/**
+	 * @param childPath
+	 *            repository relative path of entry that should be obtained
+	 * @return cached object, or {@code null} when cache doen't contain object
+	 *         for given path
+	 */
+	public GitSyncObjectCache get(String childPath) {
+		if (childPath.length() == 0 || members == null)
+			return this;
+
+		int start = -1;
+		Map<String, GitSyncObjectCache> parent = members;
+		int separatorIdx = childPath.indexOf("/"); //$NON-NLS-1$
+		while (separatorIdx > 0) {
+			String key = childPath.substring(start + 1, separatorIdx);
+
+			GitSyncObjectCache childObject = parent.get(key);
+			if (childObject == null)
+				return null;
+
+			start = separatorIdx;
+			separatorIdx = childPath.indexOf("/", separatorIdx + 1); //$NON-NLS-1$
+			parent = childObject.members;
+		}
+
+		return parent.get(childPath.subSequence(
+				childPath.lastIndexOf("/") + 1, childPath.length())); //$NON-NLS-1$
+	}
+

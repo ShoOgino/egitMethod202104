@@ -1,7 +1,0 @@
-	private IResourceVariant handleRepositoryRoot(final IResource resource,
-			Repository repo, RevCommit revCommit) {
-		String path = RepositoryMapping.findRepositoryMapping(repo)
-				.getRepoRelativePath(resource);
-		return new GitRemoteFolder(repo, revCommit, revCommit.getTree(), path);
-	}
-

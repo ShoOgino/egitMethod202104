@@ -1,0 +1,10 @@
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		for (Entry<File, GitSyncObjectCache> entry : cache.entrySet())
+			builder.append(entry.getKey().getPath())
+					.append(": ").append(entry.getValue()); //$NON-NLS-1$
+
+		return builder.toString();
+	}
+

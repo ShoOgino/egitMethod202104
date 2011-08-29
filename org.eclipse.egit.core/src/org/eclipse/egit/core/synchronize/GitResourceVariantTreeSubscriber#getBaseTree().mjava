@@ -1,8 +1,8 @@
 	@Override
 	protected IResourceVariantTree getBaseTree() {
-		if (baseTree == null) {
-			baseTree = new GitBaseResourceVariantTree(gsds);
-		}
+		if (baseTree == null)
+			baseTree = new GitBaseResourceVariantTree(cache, gsds);
+
 		return baseTree;
 	}
 

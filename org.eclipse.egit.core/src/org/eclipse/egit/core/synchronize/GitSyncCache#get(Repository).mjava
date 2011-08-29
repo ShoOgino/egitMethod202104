@@ -1,0 +1,11 @@
+	/**
+	 * @param repo
+	 *            instance of {@link Repository} for with mapping should be
+	 *            obtained
+	 * @return instance of {@link GitSyncObjectCache} connected associated with
+	 *         given repository or {@code null} when such mapping wasn't found
+	 */
+	public GitSyncObjectCache get(Repository repo) {
+		return cache.get(repo.getDirectory());
+	}
+

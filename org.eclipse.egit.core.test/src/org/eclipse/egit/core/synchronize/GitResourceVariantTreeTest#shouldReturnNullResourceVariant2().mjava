@@ -15,9 +15,12 @@
 		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, MASTER,
 				false);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+		GitSyncCache cache = GitSyncCache.getAllData(dataSet,
+				new NullProgressMonitor());
 
 		// given
-		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet);
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(cache,
+				dataSet);
 
 		// then
 		assertNull(grvt.getResourceVariant(mainJava.getResource()));

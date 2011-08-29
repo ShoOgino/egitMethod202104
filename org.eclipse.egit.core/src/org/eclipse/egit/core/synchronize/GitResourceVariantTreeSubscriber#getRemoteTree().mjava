@@ -1,8 +1,8 @@
 	@Override
 	protected IResourceVariantTree getRemoteTree() {
-		if (remoteTree == null) {
-			remoteTree = new GitRemoteResourceVariantTree(gsds);
-		}
+		if (remoteTree == null)
+			remoteTree = new GitRemoteResourceVariantTree(cache, gsds);
+
 		return remoteTree;
 	}
 

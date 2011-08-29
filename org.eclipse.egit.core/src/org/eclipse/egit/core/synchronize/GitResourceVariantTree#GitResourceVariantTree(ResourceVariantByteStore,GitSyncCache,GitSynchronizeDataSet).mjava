@@ -1,6 +1,7 @@
 	GitResourceVariantTree(ResourceVariantByteStore store,
-			GitSynchronizeDataSet gsds) {
+			GitSyncCache gitCache, GitSynchronizeDataSet gsds) {
 		super(store);
 		this.gsds = gsds;
+		this.gitCache = gitCache;
 	}
 

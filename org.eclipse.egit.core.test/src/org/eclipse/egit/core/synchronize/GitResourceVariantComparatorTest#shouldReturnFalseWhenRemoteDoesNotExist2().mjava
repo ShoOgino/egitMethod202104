@@ -8,7 +8,7 @@
 		// given
 		IResource local = mock(IResource.class);
 		when(local.exists()).thenReturn(false);
-		IResourceVariant remote = new GitRemoteFolder(repo, null, null, "./");
+		IResourceVariant remote = new GitRemoteFolder(repo, null, null, null, "./");
 
 		// then
 		assertFalse(grvc.compare(local, remote));

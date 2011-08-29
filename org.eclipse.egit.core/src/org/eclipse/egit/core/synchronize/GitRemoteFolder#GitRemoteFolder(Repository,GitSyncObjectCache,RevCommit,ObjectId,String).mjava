@@ -1,0 +1,17 @@
+	/**
+	 *
+	 * @param repo
+	 * @param cachedData
+	 * @param commitId
+	 * @param objectId
+	 *            given object sha-1 id or {@code null} if this object doesn't
+	 *            exist in remote
+	 * @param path
+	 */
+	GitRemoteFolder(Repository repo, GitSyncObjectCache cachedData,
+			RevCommit commitId, ObjectId objectId, String path) {
+		super(commitId, objectId, path);
+		this.repo = repo;
+		this.cachedData = cachedData;
+	}
+

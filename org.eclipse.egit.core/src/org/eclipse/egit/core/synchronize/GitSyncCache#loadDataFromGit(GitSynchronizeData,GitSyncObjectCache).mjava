@@ -1,0 +1,33 @@
+	private static void loadDataFromGit(GitSynchronizeData gsd,
+			GitSyncObjectCache repoCache) {
+		Repository repo = gsd.getRepository();
+		TreeWalk tw = new TreeWalk(repo);
+		if (gsd.getPathFilter() != null)
+			tw.setFilter(gsd.getPathFilter());
+
+		try {
+			// setup remote tree
+			if (gsd.getDstRevCommit() != null)
+				tw.addTree(gsd.getDstRevCommit().getTree());
+			else
+				tw.addTree(new EmptyTreeIterator());
+
+			// setup local tree
+			if (gsd.shouldIncludeLocal()) {
+				tw.addTree(new FileTreeIterator(repo));
+				tw.setFilter(new NotIgnoredFilter(1));
+			} else if (gsd.getSrcRevCommit() != null)
+				tw.addTree(gsd.getSrcRevCommit().getTree());
+			else
+				tw.addTree(new EmptyTreeIterator());
+
+			List<DiffEntry> diffEntrys = DiffEntry.scan(tw, true);
+			tw.release();
+
+			for (DiffEntry diffEntry : diffEntrys)
+				repoCache.addMember(diffEntry);
+		} catch (Exception e) {
+			Activator.logError(e.getMessage(), e);
+		}
+	}
+

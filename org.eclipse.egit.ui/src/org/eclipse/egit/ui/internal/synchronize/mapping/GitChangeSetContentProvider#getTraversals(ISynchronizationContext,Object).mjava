@@ -8,6 +8,7 @@
 			ResourceMapping rm = getResourceMapping(object);
 			GitSubscriberMergeContext ctx = (GitSubscriberMergeContext) getContext();
 			ResourceMappingContext rmCtx = new GitSubscriberResourceMappingContext(
+					(GitResourceVariantTreeSubscriber) ctx.getSubscriber(),
 					ctx.getSyncData());
 			try {
 				ResourceTraversal[] traversals = rm.getTraversals(rmCtx, new NullProgressMonitor());

@@ -16,20 +16,15 @@
 		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, MASTER,
 				false);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+		GitSyncCache cache = GitSyncCache.getAllData(dataSet,
+				new NullProgressMonitor());
 
 		// given
-		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(dataSet);
+		GitResourceVariantTree grvt = new GitRemoteResourceVariantTree(cache,
+				dataSet);
 
 		// then
-		IResourceVariant actual = grvt.getResourceVariant(mainJava);
-		assertNotNull(actual);
-		assertEquals(fileName, actual.getName());
-
-		InputStream actualIn = actual.getStorage(new NullProgressMonitor())
-				.getContents();
-		byte[] actualByte = getBytesAndCloseStream(actualIn);
-		InputStream expectedIn = mainJava.getContents();
-		byte[] expectedByte = getBytesAndCloseStream(expectedIn);
-		assertArrayEquals(expectedByte, actualByte);
+		// null variant indicates that resource wasn't changed
+		assertNull(grvt.getResourceVariant(mainJava));
 	}
 
