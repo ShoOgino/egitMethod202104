@@ -1,7 +1,8 @@
 	public GitSyncInfo(IResource local, IResourceVariant base,
 			IResourceVariant remote, IResourceVariantComparator comparator,
-			GitSynchronizeData gsd) {
+			GitSyncObjectCache cache, Repository repo) {
 		super(local, base, remote, comparator);
-		this.gsd = gsd;
+		this.repo = repo;
+		this.cache = cache;
 	}
 

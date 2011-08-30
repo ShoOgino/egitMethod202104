@@ -5,8 +5,13 @@
 	 *         for given path
 	 */
 	public GitSyncObjectCache get(String childPath) {
-		if (childPath.length() == 0 || members == null)
+		if (childPath.length() == 0)
 			return this;
+		if (childPath
+				.substring(childPath.lastIndexOf("/") + 1, childPath.length()).equals(name)) //$NON-NLS-1$
+			return this;
+		if (members == null)
+			return null;
 
 		int start = -1;
 		Map<String, GitSyncObjectCache> parent = members;
@@ -22,6 +27,9 @@
 			separatorIdx = childPath.indexOf("/", separatorIdx + 1); //$NON-NLS-1$
 			parent = childObject.members;
 		}
+
+		if (parent == null)
+			return null;
 
 		return parent.get(childPath.subSequence(
 				childPath.lastIndexOf("/") + 1, childPath.length())); //$NON-NLS-1$

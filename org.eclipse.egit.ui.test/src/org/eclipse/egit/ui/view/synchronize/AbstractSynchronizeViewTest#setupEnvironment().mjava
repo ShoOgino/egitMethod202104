@@ -2,8 +2,12 @@
 		// disable perspective synchronize selection
 		TeamUIPlugin.getPlugin().getPreferenceStore().setValue(
 				SYNCHRONIZING_COMPLETE_PERSPECTIVE, NEVER);
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH, false);
 
 		repositoryFile = createProjectAndCommitToRepository();
+		createAndCommitDotGitignore();
+
 		createChildRepository(repositoryFile);
 		Activator.getDefault().getRepositoryUtil()
 				.addConfiguredRepository(repositoryFile);

@@ -1,22 +1,21 @@
 	GitRemoteResource[] members(IProgressMonitor monitor) {
 		Collection<GitSyncObjectCache> members = cachedData.members();
-		if (members == null)
+		if (members == null || members.size() == 0)
 			return new GitRemoteResource[0];
 
 		List<IResourceVariant> result = new ArrayList<IResourceVariant>();
 
-		monitor.beginTask("Fetching members of " + getPath(), cachedData.membersCount()); //$NON-NLS-1$
+		monitor.beginTask(
+				NLS.bind(CoreText.GitRemoteFolder_fetchingMembers, getPath()),
+				cachedData.membersCount());
 		try {
 			for (GitSyncObjectCache member : members) {
-				DiffEntry diffEntry = member.getDiffEntry();
-				String memberPath = diffEntry.getOldPath();
-
-				if (DiffEntry.DEV_NULL.equals(memberPath))
-					continue;
+				ThreeWayDiffEntry diffEntry = member.getDiffEntry();
+				String memberPath = diffEntry.getPath();
 
 				GitRemoteResource obj;
-				ObjectId id = diffEntry.getOldId().toObjectId();
-				if (FileMode.TREE == diffEntry.getOldMode())
+				ObjectId id = diffEntry.getRemoteId().toObjectId();
+				if (diffEntry.isTree())
 					obj = new GitRemoteFolder(repo, member, getCommitId(), id,
 							memberPath);
 				else

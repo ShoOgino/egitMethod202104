@@ -1,38 +1,39 @@
 	@Override
 	protected int calculateKind() throws TeamException {
-		String localPath;
-		Repository repo = gsd.getRepository();
-		if (getLocal().exists()) {
-			File local = getLocal().getLocation().toFile();
-			localPath = Repository.stripWorkDir(repo.getWorkTree(), local);
-		} else if (getRemote() != null)
-			localPath = ((GitRemoteResource) getRemote()).getCachePath();
-		else if (getBase() != null)
-			localPath = ((GitRemoteResource) getBase()).getCachePath();
-		else
-			// we cannot determinate local path therefore we cannot set proper
-			// value for PathFilter, so we use standard calulateKind()
-			// implementation
-			return super.calculateKind();
-
-		if (localPath.length() == 0)
+		if (cache.membersCount() == 0)
 			return IN_SYNC;
 
-		TreeWalk tw = new TreeWalk(repo);
-		tw.setFilter(AndTreeFilter.create(TreeFilter.ANY_DIFF,
-				PathFilter.create(localPath)));
-		tw.setRecursive(true);
+		String path;
+		if (getLocal() != null && getLocal().getLocation() != null)
+			path = stripWorkDir(repo.getWorkTree(), getLocal().getLocation().toFile());
+		else if (getRemote() != null)
+			path = ((GitRemoteResource)getRemote()).getPath();
+		else if (getBase() != null)
+			path = ((GitRemoteResource)getBase()).getPath();
+		else
+			return IN_SYNC;
 
-		try {
-			int srcNth = tw.addTree(gsd.getSrcRevCommit().getTree());
-			int dstNth = tw.addTree(gsd.getDstRevCommit().getTree());
+		GitSyncObjectCache obj = cache.get(path);
+		if (obj == null)
+			return IN_SYNC;
 
-			if (tw.next()) {
-				return calculateKindImpl(repo, tw, srcNth, dstNth);
-			}
-		} catch (IOException e) {
-			Activator.logError(e.getMessage(), e);
-		}
+		int direction;
+		Direction gitDirection = obj.getDiffEntry().getDirection();
+		if (gitDirection == Direction.INCOMING)
+			direction = INCOMING;
+		else if (gitDirection == Direction.OUTGOING)
+			direction = OUTGOING;
+		else
+			direction = CONFLICTING;
+
+		ChangeType changeType = obj.getDiffEntry().getChangeType();
+
+		if (changeType == ChangeType.MODIFY)
+			return direction | CHANGE;
+		if (changeType == ChangeType.ADD)
+			return direction | ADDITION;
+		if (changeType == ChangeType.DELETE)
+			return direction | DELETION;
 
 		return IN_SYNC;
 	}

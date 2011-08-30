@@ -8,8 +8,8 @@
 	 * @throws RuntimeException
 	 *             when cannot find parent of given {@code entry} in cache
 	 */
-	public void addMember(DiffEntry entry) {
-		String memberPath = getMemberPath(entry);
+	public void addMember(ThreeWayDiffEntry entry) {
+		String memberPath = entry.getPath();
 
 		if (members == null)
 			members = new HashMap<String, GitSyncObjectCache>();
@@ -21,8 +21,8 @@
 			String key = memberPath.substring(start + 1, separatorIdx);
 			GitSyncObjectCache cacheObject = parent.get(key);
 			if (cacheObject == null)
-				throw new RuntimeException(
-						NLS.bind(CoreText.GitSyncObjectCache_noData, key));
+				throw new RuntimeException(NLS.bind(
+						CoreText.GitSyncObjectCache_noData, key));
 
 			start = separatorIdx;
 			separatorIdx = memberPath.indexOf("/", separatorIdx + 1); //$NON-NLS-1$

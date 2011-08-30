@@ -1,0 +1,20 @@
+	/**
+	 * Create mapping for given repository and returns object associated with
+	 * this repository. Any other mapping will be overwritten.
+	 *
+	 * @param repo
+	 * @param remoteTree
+	 * @param baseTree
+	 * @return new mapping object associated with given {@link Repository}
+	 */
+	private GitSyncObjectCache put(Repository repo, ObjectId baseTree,
+			ObjectId remoteTree) {
+		ThreeWayDiffEntry entry = new ThreeWayDiffEntry();
+		entry.baseId = AbbreviatedObjectId.fromObjectId(baseTree);
+		entry.remoteId = AbbreviatedObjectId.fromObjectId(remoteTree);
+		GitSyncObjectCache objectCache = new GitSyncObjectCache("", entry); //$NON-NLS-1$
+		cache.put(repo.getDirectory(), objectCache);
+
+		return objectCache;
+	}
+

@@ -1,6 +1,7 @@
 	@Override
 	public void dispose() {
 		GitProjectData.removeRepositoryChangeListener(repoChangeListener);
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 		super.dispose();
 	}
 
