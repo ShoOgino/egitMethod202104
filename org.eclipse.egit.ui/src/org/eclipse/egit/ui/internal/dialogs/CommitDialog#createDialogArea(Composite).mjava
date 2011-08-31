@@ -243,6 +243,7 @@
 				showUntracked = showUntrackedItem.getSelection();
 				filesViewer.refresh(true);
 				updateFileSectionText();
+				updateMessage();
 			}
 
 		});
@@ -257,6 +258,7 @@
 			public void widgetSelected(SelectionEvent e) {
 				filesViewer.setAllChecked(true);
 				updateFileSectionText();
+				updateMessage();
 			}
 
 		});
@@ -271,6 +273,7 @@
 			public void widgetSelected(SelectionEvent e) {
 				filesViewer.setAllChecked(false);
 				updateFileSectionText();
+				updateMessage();
 			}
 
 		});
@@ -307,8 +310,28 @@
 		resourceCol.pack();
 		container.pack();
 		commitText.setFocus();
+		Image titleImage = UIIcons.WIZBAN_CONNECT_REPO.createImage();
+		UIUtils.hookDisposal(parent, titleImage);
+		setTitleImage(titleImage);
 		setTitle(UIText.CommitDialog_Title);
 		setMessage(UIText.CommitDialog_Message, IMessageProvider.INFORMATION);
+
+		ModifyListener validator = new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				updateMessage();
+			}
+		};
+		commitText.getTextWidget().addModifyListener(validator);
+		authorText.addModifyListener(validator);
+		committerText.addModifyListener(validator);
+		filesViewer.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				updateMessage();
+			}
+		});
+
 		updateFileSectionText();
 		return container;
 	}
