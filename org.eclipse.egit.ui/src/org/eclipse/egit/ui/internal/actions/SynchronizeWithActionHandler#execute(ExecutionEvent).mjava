@@ -7,9 +7,9 @@
 		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
 		for (Repository repo : repos) {
 			try {
-				List<SyncRepoEntity> syncRepoEntitys = createSyncRepoEntitys(repo);
+				List<SyncRepoEntity> syncRepoEntities = createSyncRepoEntities(repo);
 				SelectSynchronizeResourceDialog dialog = new SelectSynchronizeResourceDialog(
-						getShell(event), repo.getDirectory(), syncRepoEntitys);
+						getShell(event), repo.getDirectory(), syncRepoEntities);
 
 				if (dialog.open() != IDialogConstants.OK_ID)
 					return null;
