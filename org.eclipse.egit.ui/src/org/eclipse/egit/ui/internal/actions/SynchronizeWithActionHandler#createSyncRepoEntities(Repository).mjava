@@ -1,0 +1,14 @@
+	private List<SyncRepoEntity> createSyncRepoEntities(Repository repo)
+			throws URISyntaxException, IOException {
+		RefDatabase refDatabase = repo.getRefDatabase();
+		List<RemoteConfig> remoteConfigs = getRemoteConfigs(repo);
+		List<SyncRepoEntity> syncRepoEntities = new ArrayList<SyncRepoEntity>();
+
+		syncRepoEntities.add(getLocalSyncRepo(repo));
+		syncRepoEntities.add(getTagsSyncRepo(repo));
+		for (RemoteConfig rc : remoteConfigs)
+			syncRepoEntities.add(getRemoteSyncRepo(refDatabase, rc));
+
+		return syncRepoEntities;
+	}
+
