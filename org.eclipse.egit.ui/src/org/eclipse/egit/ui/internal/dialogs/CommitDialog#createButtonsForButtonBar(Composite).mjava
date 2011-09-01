@@ -1,8 +1,10 @@
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		toolkit.adapt(parent, false, false);
-		createButton(parent, IDialogConstants.OK_ID, UIText.CommitDialog_Commit, true);
+		commitButton = createButton(parent, IDialogConstants.OK_ID,
+				UIText.CommitDialog_Commit, true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
+		updateMessage();
 	}
 
