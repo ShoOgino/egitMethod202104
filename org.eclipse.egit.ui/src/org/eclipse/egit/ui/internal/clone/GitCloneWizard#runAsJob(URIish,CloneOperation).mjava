@@ -16,7 +16,9 @@
 
 			@Override
 			public boolean belongsTo(Object family) {
-				return CLONE_JOB_FAMILY.equals(family);
+				if (family.equals(JobFamilies.CLONE))
+					return true;
+				return super.belongsTo(family);
 			}
 		};
 		job.setUser(true);
