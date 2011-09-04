@@ -9,10 +9,12 @@
 		displayArea.setBackgroundMode(SWT.INHERIT_FORCE);
 		GridLayoutFactory.swtDefaults().equalWidth(true).applyTo(displayArea);
 
-		commitLink = new Hyperlink(displayArea, SWT.NONE);
-		commitLink.addHyperlinkListener(new HyperlinkAdapter() {
+		commitLink = new StyledText(displayArea, SWT.READ_ONLY);
+		commitLink.addMouseListener(new MouseAdapter() {
 
-			public void linkActivated(HyperlinkEvent e) {
+			public void mouseUp(MouseEvent e) {
+				if (commitLink.getSelectionText().length() != 0)
+					return;
 				try {
 					getShell().dispose();
 					CommitEditor.open(new RepositoryCommit(revision
@@ -21,12 +23,13 @@
 					Activator.logError(pie.getLocalizedMessage(), pie);
 				}
 			}
-
 		});
-		commitLink.setUnderlined(true);
 		commitLink.setFont(JFaceResources.getBannerFont());
 		commitLink.setForeground(JFaceColors.getHyperlinkText(commitLink
 				.getDisplay()));
+		Cursor handCursor = new Cursor(commitLink.getDisplay(), SWT.CURSOR_HAND);
+		UIUtils.hookDisposal(commitLink, handCursor);
+		commitLink.setCursor(handCursor);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(commitLink);
 
 		authorLabel = new Label(displayArea, SWT.NONE);

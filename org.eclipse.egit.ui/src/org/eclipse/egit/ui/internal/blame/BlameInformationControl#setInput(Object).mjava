@@ -3,16 +3,19 @@
 
 		RevCommit commit = this.revision.getCommit();
 
-		commitLink.setText(MessageFormat.format(
-				UIText.BlameInformationControl_Commit, commit.name()));
+		String linkText = MessageFormat.format(
+				UIText.BlameInformationControl_Commit, commit.name());
+		commitLink.setText(linkText);
+		StyleRange styleRange = new StyleRange(0, linkText.length(), null, null);
+		styleRange.underline = true;
+		commitLink.setStyleRange(styleRange);
 
 		PersonIdent author = commit.getAuthorIdent();
 		if (author != null) {
 			setControlVisible(authorLabel, true);
 			authorLabel.setText(MessageFormat.format(
-					UIText.BlameInformationControl_Author,
-					author.getName(), author.getEmailAddress(),
-					author.getWhen()));
+					UIText.BlameInformationControl_Author, author.getName(),
+					author.getEmailAddress(), author.getWhen()));
 		} else
 			setControlVisible(authorLabel, false);
 
