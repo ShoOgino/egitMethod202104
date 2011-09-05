@@ -2,8 +2,9 @@
 		readConfiguration();
 
 		initializeDialogUnits(parent);
-		Composite result = new Composite(parent, SWT.NONE);
+		SearchComposite result = new SearchComposite(parent, SWT.NONE);
 		result.setFont(parent.getFont());
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(result);
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false)
 				.applyTo(result);
 		addTextPatternControls(result);
