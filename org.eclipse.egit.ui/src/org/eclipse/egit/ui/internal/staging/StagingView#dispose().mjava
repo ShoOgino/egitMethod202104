@@ -8,5 +8,9 @@
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 
 		removeListeners();
+		if (reloadJob != null) {
+			reloadJob.cancel();
+			reloadJob = null;
+		}
 	}
 
