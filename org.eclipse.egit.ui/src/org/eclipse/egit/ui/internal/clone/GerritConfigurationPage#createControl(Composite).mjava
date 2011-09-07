@@ -6,11 +6,12 @@
 
 		createGerritCheckbox(panel);
 		createURIGroup(panel);
-		createBranchGroup(panel);
+		createPushConfigurationGroup(panel);
+		createFetchConfigurationGroup(panel);
 
 		Dialog.applyDialogFont(panel);
 		setControl(panel);
-		UIUtils.setEnabledRecursively(branchGroup,
+		UIUtils.setEnabledRecursively(pushConfigurationGroup,
 				configureGerrit.getSelection());
 	}
 

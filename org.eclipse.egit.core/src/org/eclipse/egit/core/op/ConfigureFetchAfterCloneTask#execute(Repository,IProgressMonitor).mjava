@@ -1,0 +1,22 @@
+	/**
+	 * @param repository the cloned repository
+	 * @param monitor
+	 * @throws CoreException
+	 */
+	public void execute(Repository repository, IProgressMonitor monitor)
+			throws CoreException {
+		try {
+			RemoteConfig configToUse = new RemoteConfig(
+					repository.getConfig(), remoteName);
+			if (fetchRefSpec != null)
+				configToUse.addFetchRefSpec(new RefSpec(fetchRefSpec));
+			configToUse.update(repository.getConfig());
+			repository.getConfig().save();
+			Git git = new Git(repository);
+			git.fetch().call();
+		} catch (Exception e) {
+			throw new CoreException(Activator.error(e.getMessage(), e));
+		}
+
+	}
+

@@ -1,0 +1,14 @@
+	private void createPushConfigurationGroup(Composite panel) {
+		pushConfigurationGroup = SWTUtils.createHFillGroup(panel,
+				UIText.GerritConfigurationPage_groupPush,
+				SWTUtils.MARGINS_DEFAULT, 2);
+		new Label(pushConfigurationGroup, SWT.NULL)
+				.setText(UIText.GerritConfigurationPage_labelDestinationBranch);
+		branch = SWTUtils.createText(pushConfigurationGroup);
+		branch.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				checkPage();
+			}
+		});
+	}
+
