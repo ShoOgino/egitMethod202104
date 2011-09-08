@@ -1,0 +1,11 @@
+	/**
+	 * Is viewer in a usable state?
+	 *
+	 * @param viewer
+	 * @return true if usable, false if null or underlying control is null or
+	 *         disposed
+	 */
+	public static boolean isUsable(final Viewer viewer) {
+		return viewer != null && isUsable(viewer.getControl());
+	}
+

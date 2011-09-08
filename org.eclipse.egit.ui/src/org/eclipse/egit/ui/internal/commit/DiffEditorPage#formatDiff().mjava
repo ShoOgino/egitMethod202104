@@ -27,7 +27,7 @@
 				new UIJob(UIText.DiffEditorPage_TaskUpdatingViewer) {
 
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
-						if (!viewer.getControl().isDisposed()) {
+						if (UIUtils.isUsable(viewer)) {
 							viewer.setDocument(document);
 							viewer.refreshStyleRanges();
 						}
