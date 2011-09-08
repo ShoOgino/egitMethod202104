@@ -1,0 +1,20 @@
+	/**
+	 * @param reference
+	 * @throws URISyntaxException
+	 * @throws IllegalArgumentException
+	 */
+	@SuppressWarnings("boxing")
+	public ProjectReference(final String reference) throws URISyntaxException, IllegalArgumentException {
+		final String[] tokens = reference.split(Pattern.quote(ProjectReference.SEPARATOR));
+		if (tokens.length != 4)
+			throw new IllegalArgumentException(NLS.bind(
+					CoreText.ProjectReference_InvalidTokensCount, new Object[] {
+							4, tokens.length, tokens }));
+
+		this.version = tokens[0];
+		this.repository = new URIish(tokens[1]);
+		if (!"".equals(tokens[2])) //$NON-NLS-1$
+			this.branch = tokens[2];
+		this.projectDir = tokens[3];
+	}
+

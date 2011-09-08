@@ -15,16 +15,16 @@
 							final ProjectReference projectReference = new ProjectReference(
 									reference);
 							Map<String, Set<ProjectReference>> repositoryBranches = repositories
-									.get(projectReference.repository);
+									.get(projectReference.getRepository());
 							if (repositoryBranches == null) {
 								repositoryBranches = new HashMap<String, Set<ProjectReference>>();
-								repositories.put(projectReference.repository,
+								repositories.put(projectReference.getRepository(),
 										repositoryBranches);
 							}
-							Set<ProjectReference> projectReferences = repositoryBranches.get(projectReference.branch);
+							Set<ProjectReference> projectReferences = repositoryBranches.get(projectReference.getBranch());
 							if (projectReferences == null) {
-								projectReferences = new TreeSet<ProjectReference>(new ProjectReferenceComparator());
-								repositoryBranches.put(projectReference.branch, projectReferences);
+								projectReferences = new LinkedHashSet<ProjectReference>();
+								repositoryBranches.put(projectReference.getBranch(), projectReferences);
 							}
 
 							projectReferences.add(projectReference);
@@ -48,7 +48,7 @@
 								if (workDir.toFile().exists()) {
 									final Collection<String> projectNames = new LinkedList<String>();
 									for (final ProjectReference projectReference : projects)
-										projectNames.add(projectReference.projectDir);
+										projectNames.add(projectReference.getProjectDir());
 									throw new TeamException(NLS.bind(
 											CoreText.GitProjectSetCapability_CloneToExistingDirectory,
 											new Object[] { workDir, projectNames, gitUrl }));
@@ -70,7 +70,7 @@
 								final IWorkspaceRoot root = workspace.getRoot();
 								for (final ProjectReference projectToImport : projects) {
 									final IPath projectDir = workDir
-											.append(projectToImport.projectDir);
+											.append(projectToImport.getProjectDir());
 									final IProjectDescription projectDescription = workspace
 											.loadProjectDescription(projectDir
 													.append(IProjectDescription.DESCRIPTION_FILE_NAME));

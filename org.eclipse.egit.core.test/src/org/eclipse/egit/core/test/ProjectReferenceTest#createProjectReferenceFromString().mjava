@@ -1,0 +1,7 @@
+	@Before
+	public void createProjectReferenceFromString() throws IllegalArgumentException, URISyntaxException {
+		String reference = version + "," + url + "," + branch + "," + project;
+		projectReference = new ProjectReference(reference);
+		assertNotNull(projectReference);
+	}
+
