@@ -7,6 +7,13 @@
 				markStartAllRefs(Constants.R_TAGS);
 				markStartAdditionalRefs();
 			}
+			if (store
+					.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES))
+				markStartAllRefs(Constants.R_NOTES);
+			else {
+				markUninteresting(Constants.R_NOTES);
+			}
+
 			currentWalk.markStart(currentWalk.parseCommit(headId));
 		} catch (IOException e) {
 			throw new IllegalStateException(NLS.bind(

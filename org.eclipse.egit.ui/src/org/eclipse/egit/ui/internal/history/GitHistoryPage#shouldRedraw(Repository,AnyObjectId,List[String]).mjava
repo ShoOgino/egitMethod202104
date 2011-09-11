@@ -8,12 +8,18 @@
 		currentShowAllBranches = store
 			.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
 
+		boolean showNotesChanged = currentShowNotes != store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES);
+		currentShowNotes = store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES);
+
 		if (!db.equals(currentRepo)) {
 			repoChanged = true;
 			currentRepo = db;
 		}
 
 		return pathChanged
-			|| currentWalk == null || headChanged || repoChanged || allBranchesChanged;
+			|| currentWalk == null || headChanged || repoChanged || allBranchesChanged
+			|| showNotesChanged;
 	}
 
