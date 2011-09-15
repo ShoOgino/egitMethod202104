@@ -11,8 +11,9 @@
 			listRemoteOp = new ListRemoteOperation(db, uri, timeout);
 			if (credentials != null)
 				listRemoteOp
-						.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
-								credentials.getUser(), credentials.getPassword()));
+						.setCredentialsProvider(new EGitCredentialsProvider(
+								credentials.getUser(), credentials
+										.getPassword()));
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
