@@ -1,0 +1,13 @@
+	/**
+	 * Adds a listener for IndexDiff changes. Note that only caches are
+	 * available for those repositories for which getIndexDiffCacheEntry was
+	 * called.
+	 *
+	 * @param listener
+	 */
+	public void addIndexDiffChangedListener(IndexDiffChangedListener listener) {
+		synchronized (listeners) {
+			listeners.add(listener);
+		}
+	}
+

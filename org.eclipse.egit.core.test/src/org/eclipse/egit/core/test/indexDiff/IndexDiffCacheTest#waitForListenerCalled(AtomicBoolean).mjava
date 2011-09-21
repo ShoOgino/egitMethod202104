@@ -1,0 +1,11 @@
+	private void waitForListenerCalled(final AtomicBoolean listenerCalled)
+			throws InterruptedException {
+		long time = 0;
+		while (!listenerCalled.get() && time < 10000) {
+			Thread.sleep(1);
+			time++;
+		}
+		assertTrue("indexDiffChanged was not called", listenerCalled.get());
+		listenerCalled.set(false);
+	}
+

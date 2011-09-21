@@ -1,0 +1,58 @@
+	private void createResourceChangeListener() {
+		resourceChangeListener = new IResourceChangeListener() {
+			public void resourceChanged(IResourceChangeEvent event) {
+				final Collection<String> filesToUpdate = new HashSet<String>();
+				final Collection<IFile> fileResourcesToUpdate = new HashSet<IFile>();
+
+				try {
+					event.getDelta().accept(new IResourceDeltaVisitor() {
+						public boolean visit(IResourceDelta delta)
+								throws CoreException {
+							// If the file has changed but not in a way that we
+							// care about (e.g. marker changes to files) then
+							// ignore
+							if (delta.getKind() == IResourceDelta.CHANGED
+									&& (delta.getFlags() & INTERESTING_CHANGES) == 0)
+								return true;
+
+							final IResource resource = delta.getResource();
+
+							// skip any non-FILE resources
+							if (resource.getType() != IResource.FILE)
+								return true;
+
+							// If the resource is not part of a project under
+							// Git revision control
+							final RepositoryMapping mapping = RepositoryMapping
+									.getMapping(resource);
+							if (mapping == null
+									|| mapping.getRepository() != repository)
+								// Ignore the change
+								return true;
+
+							// Don't include ignored resources
+							if (Team.isIgnoredHint(resource))
+								return false;
+
+							String repoRelativePath = mapping
+									.getRepoRelativePath(resource);
+							filesToUpdate.add(repoRelativePath);
+							fileResourcesToUpdate.add((IFile) resource);
+
+							return true;
+						}
+					});
+				} catch (CoreException e) {
+					Activator.logError(e.getMessage(), e);
+					return;
+				}
+
+				if (!filesToUpdate.isEmpty())
+					scheduleUpdateJob(filesToUpdate, fileResourcesToUpdate);
+			}
+
+		};
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(
+				resourceChangeListener, IResourceChangeEvent.POST_CHANGE);
+	}
+

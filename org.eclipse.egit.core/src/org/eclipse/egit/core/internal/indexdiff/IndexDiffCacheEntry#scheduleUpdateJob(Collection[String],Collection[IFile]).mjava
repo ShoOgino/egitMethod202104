@@ -1,0 +1,28 @@
+	private void scheduleUpdateJob(final Collection<String> filesToUpdate,
+			final Collection<IFile> fileResourcesToUpdate) {
+		Job job = new Job(getReloadJobName()) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				lock.lock();
+				try {
+					IndexDiffData result = calcIndexDiffData(monitor,
+							getName(), filesToUpdate, fileResourcesToUpdate);
+					if (monitor.isCanceled())
+						return Status.CANCEL_STATUS;
+					indexDiffData = result;
+					if (GitTraceLocation.INDEXDIFFCACHE.isActive())
+						GitTraceLocation
+								.getTrace()
+								.trace(GitTraceLocation.INDEXDIFFCACHE
+										.getLocation(),
+										"Updated IndexDiffData based on resource list \n" + indexDiffData.toString()); //$NON-NLS-1$
+					notifyListeners();
+					return Status.OK_STATUS;
+				} finally {
+					lock.unlock();
+				}
+			}
+		};
+		job.schedule();
+	}
+

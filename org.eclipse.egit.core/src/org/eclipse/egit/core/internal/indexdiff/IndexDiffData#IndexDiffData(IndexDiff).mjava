@@ -1,0 +1,21 @@
+	/**
+	 * @param indexDiff
+	 */
+	public IndexDiffData(IndexDiff indexDiff) {
+		added = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				.getAdded()));
+		changed = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				.getChanged()));
+		removed = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				.getRemoved()));
+		missing = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				.getMissing()));
+		modified = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				.getModified()));
+		untracked = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				.getUntracked()));
+		conflicts = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				.getConflicting()));
+		changedFileResources = null;
+	}
+
