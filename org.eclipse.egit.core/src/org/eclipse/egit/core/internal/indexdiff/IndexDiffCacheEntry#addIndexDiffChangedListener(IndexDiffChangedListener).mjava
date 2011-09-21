@@ -1,0 +1,12 @@
+	/**
+	 * Use this method to register an {@link IndexDiffChangedListener}. The
+	 * listener is notified when a new index diff is available.
+	 *
+	 * @param listener
+	 */
+	public void addIndexDiffChangedListener(IndexDiffChangedListener listener) {
+		synchronized (listeners) {
+			listeners.add(listener);
+		}
+	}
+

@@ -1,0 +1,9 @@
+	/**
+	 * @param listener
+	 */
+	public void removeIndexDiffChangedListener(IndexDiffChangedListener listener) {
+		synchronized (listeners) {
+			listeners.remove(listener);
+		}
+	}
+
