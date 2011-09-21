@@ -1,0 +1,8 @@
+	@Override
+	public void format(final EditList edits, final RawText a, final RawText b)
+			throws IOException {
+		// Flush header before formatting of edits begin
+		stream.flushLine();
+		super.format(edits, a, b);
+	}
+

@@ -6,6 +6,7 @@
 			int bStartLine, int bEndLine) throws IOException {
 		DiffStyleRange range = addRange(Type.HUNK);
 		super.writeHunkHeader(aStartLine, aEndLine, bStartLine, bEndLine);
+		stream.flushLine();
 		range.length = stream.offset - range.start;
 	}
 

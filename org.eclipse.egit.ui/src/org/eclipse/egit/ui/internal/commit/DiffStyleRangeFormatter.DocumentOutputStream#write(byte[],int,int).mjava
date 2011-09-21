@@ -1,7 +1,7 @@
 		public void write(byte[] b, int off, int len) throws IOException {
 			if (charset == null)
-				write(new String(b, off, len));
+				lineBuffer.append(new String(b, off, len));
 			else
-				write(new String(b, off, len, charset));
+				lineBuffer.append(new String(b, off, len, charset));
 		}
 

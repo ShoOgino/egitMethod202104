@@ -4,12 +4,14 @@
 	 */
 	protected void writeLine(char prefix, RawText text, int cur)
 			throws IOException {
-		if (prefix == ' ')
+		if (prefix == ' ') {
 			super.writeLine(prefix, text, cur);
-		else {
+			stream.flushLine();
+		} else {
 			DiffStyleRange range = addRange(prefix == '+' ? Type.ADD
 					: Type.REMOVE);
 			super.writeLine(prefix, text, cur);
+			stream.flushLine();
 			range.length = stream.offset - range.start;
 		}
 	}
