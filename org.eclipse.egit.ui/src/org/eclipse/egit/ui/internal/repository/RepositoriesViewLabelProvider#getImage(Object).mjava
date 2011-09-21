@@ -1,7 +1,8 @@
 	@Override
 	public Image getImage(Object element) {
 		RepositoryTreeNode node = (RepositoryTreeNode) element;
-		if (node.getType() == RepositoryTreeNodeType.TAG) {
+		RepositoryTreeNodeType type = node.getType();
+		if (type == RepositoryTreeNodeType.TAG) {
 			// determine if we have a lightweight tag and
 			// use the corresponding icon
 			RevObject any;
@@ -21,10 +22,16 @@
 			if (any instanceof RevCommit)
 				// lightweight tag
 				return decorateImage(lightweightTagImage, element);
-			else
-				// annotated or signed tag
-				return decorateImage(node.getType().getIcon(), element);
-		} else
-			return decorateImage(node.getType().getIcon(), element);
+		} else if (type == RepositoryTreeNodeType.FILE) {
+			Object object = node.getObject();
+			if (object instanceof File) {
+				ImageDescriptor descriptor = PlatformUI.getWorkbench()
+						.getEditorRegistry()
+						.getImageDescriptor(((File) object).getName());
+				return decorateImage((Image) resourceManager.get(descriptor),
+						element);
+			}
+		}
+		return decorateImage(node.getType().getIcon(), element);
 	}
 
