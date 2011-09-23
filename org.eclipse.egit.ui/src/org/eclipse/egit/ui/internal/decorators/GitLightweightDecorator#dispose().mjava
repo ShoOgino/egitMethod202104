@@ -10,9 +10,6 @@
 				.removePropertyChangeListener(this);
 		TeamUI.removePropertyChangeListener(this);
 		Activator.removePropertyChangeListener(this);
-		myIndexChangedHandle.remove();
-		myRefsChangedHandle.remove();
-		GitProjectData.removeRepositoryChangeListener(this);
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache().removeIndexDiffChangedListener(this);
 	}
 

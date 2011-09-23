@@ -12,28 +12,30 @@
 		}
 		try {
 			mapping = RepositoryMapping.getMapping(resource);
+			if (mapping == null) {
+				repository = null;
+				return;
+			}
 			repository = mapping.getRepository();
-			headId = repository.resolve(Constants.HEAD);
-			store = Activator.getDefault().getPreferenceStore();
+			if (repository == null)
+				return;
+			indexDiffData = Activator.getDefault().getIndexDiffCache()
+					.getIndexDiffCacheEntry(repository).getIndexDiff();
+			if (indexDiffData == null)
+				return;
 
 			repositoryName = DecoratableResourceHelper
 					.getRepositoryName(repository);
 			branch = DecoratableResourceHelper.getShortBranch(repository);
 
-			TreeWalk treeWalk = createThreeWayTreeWalk();
-			if (treeWalk == null)
-				return;
-
 			switch (resource.getType()) {
 			case IResource.FILE:
-				if (!treeWalk.next())
-					return;
-				extractResourceProperties(treeWalk);
+				extractResourceProperties();
 				break;
 			case IResource.PROJECT:
 				tracked = true;
 			case IResource.FOLDER:
-				extractContainerProperties(treeWalk);
+				extractContainerProperties();
 				break;
 			}
 		} finally {

@@ -8,6 +8,8 @@
 
 		repository = new FileRepository(gitDir);
 		repository.create();
+		repository.close();
+		repository = Activator.getDefault().getRepositoryCache().lookupRepository(gitDir);
 
 		project = root.getProject(TEST_PROJECT);
 		project.create(null);
@@ -25,5 +27,8 @@
 		git = new Git(repository);
 		git.add().addFilepattern(".").call();
 		git.commit().setMessage("Initial commit").call();
+
+		indexDiffCacheEntry = Activator.getDefault().getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		waitForIndexDiffUpdate(false);
 	}
 

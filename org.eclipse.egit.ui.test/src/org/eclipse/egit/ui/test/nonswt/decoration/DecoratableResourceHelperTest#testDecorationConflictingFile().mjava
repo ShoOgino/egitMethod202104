@@ -33,11 +33,12 @@
 				.getMergeStatus() == MergeStatus.CONFLICTING);
 
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
-				new TestDecoratableResource(project, true, false, true, true,
-						Staged.MODIFIED),
-				new TestDecoratableResource(file, true, false, true, true,
-						Staged.MODIFIED) };
+				new TestDecoratableResource(project, true, false, false, true,
+						Staged.NOT_STAGED),
+				new TestDecoratableResource(file, true, false, false, true,
+						Staged.NOT_STAGED) };
 
+		waitForIndexDiffUpdate(true);
 		IDecoratableResource[] actualDRs = DecoratableResourceHelper
 				.createDecoratableResources(new IResource[] { project, file });
 

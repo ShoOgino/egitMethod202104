@@ -14,6 +14,7 @@
 				new TestDecoratableResource(file, true, false, false, false,
 						Staged.NOT_STAGED) };
 
+		waitForIndexDiffUpdate(true);
 		IDecoratableResource[] actualDRs = DecoratableResourceHelper
 				.createDecoratableResources(new IResource[] { project, file });
 

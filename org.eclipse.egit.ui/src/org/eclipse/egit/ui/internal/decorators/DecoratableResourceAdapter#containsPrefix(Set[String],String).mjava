@@ -1,0 +1,12 @@
+	private boolean containsPrefix(Set<String> collection, String prefix) {
+		// when prefix is empty we are handling repository root, therefore we
+		// should return true whenever collection isn't empty
+		if (prefix.length() == 1 && !collection.isEmpty())
+			return true;
+
+		for (String path : collection)
+			if (path.startsWith(prefix))
+				return true;
+		return false;
+	}
+

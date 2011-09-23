@@ -1,8 +1,0 @@
-	private void extractContainerProperties(TreeWalk treeWalk) throws IOException {
-		treeWalk.setFilter(AndTreeFilter.create(treeWalk.getFilter(),
-				new RecursiveStateFilter()));
-		treeWalk.setRecursive(true);
-
-		treeWalk.next();
-	}
-
