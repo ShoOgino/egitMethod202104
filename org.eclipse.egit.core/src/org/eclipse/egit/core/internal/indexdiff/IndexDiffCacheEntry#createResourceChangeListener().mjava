@@ -48,7 +48,12 @@
 				}
 
 				if (!filesToUpdate.isEmpty())
-					scheduleUpdateJob(filesToUpdate, fileResourcesToUpdate);
+					if (filesToUpdate.size() < RESOURCE_LIST_UPDATE_LIMIT)
+						scheduleUpdateJob(filesToUpdate, fileResourcesToUpdate);
+					else
+						// Calculate new IndexDiff if too many resources changed
+						// This happens e.g. when a project is opened
+						scheduleReloadJob();
 			}
 
 		};
