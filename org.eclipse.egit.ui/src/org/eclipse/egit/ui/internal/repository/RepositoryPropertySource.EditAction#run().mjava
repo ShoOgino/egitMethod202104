@@ -1,0 +1,26 @@
+		@Override
+		public void run() {
+			final StoredConfig config;
+
+			DisplayMode mode = source.getCurrentMode();
+			switch (mode) {
+			case EFFECTIVE:
+				return;
+			case SYSTEM:
+				config = source.systemConfig;
+				break;
+			case USER:
+				config = source.userHomeConfig;
+				break;
+			case REPO:
+				config = source.repositoryConfig;
+				break;
+			default:
+				return;
+			}
+
+			new EditDialog(source.myPage.getSite().getShell(),
+					(FileBasedConfig) config, mode.getText()).open();
+			source.myPage.refresh();
+		}
+
