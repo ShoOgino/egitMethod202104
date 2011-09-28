@@ -6,16 +6,21 @@
 			protected IStatus run(IProgressMonitor monitor) {
 				lock.lock();
 				try {
+					long startTime = System.currentTimeMillis();
 					IndexDiff result = calcIndexDiff(monitor, getName());
 					if (monitor.isCanceled())
 						return Status.CANCEL_STATUS;
 					indexDiffData = new IndexDiffData(result);
-					if (GitTraceLocation.INDEXDIFFCACHE.isActive())
-						GitTraceLocation
-								.getTrace()
-								.trace(GitTraceLocation.INDEXDIFFCACHE
-										.getLocation(),
-										"Updated IndexDiffData\n" + indexDiffData.toString()); //$NON-NLS-1$
+					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {
+						long time = System.currentTimeMillis() - startTime;
+						StringBuilder message = new StringBuilder(NLS.bind(
+								"Updated IndexDiffData in {0} ms\n", //$NON-NLS-1$
+								new Long(time)));
+						GitTraceLocation.getTrace().trace(
+								GitTraceLocation.INDEXDIFFCACHE.getLocation(),
+								message.append(indexDiffData.toString())
+										.toString());
+					}
 					notifyListeners();
 					return Status.OK_STATUS;
 				} finally {
