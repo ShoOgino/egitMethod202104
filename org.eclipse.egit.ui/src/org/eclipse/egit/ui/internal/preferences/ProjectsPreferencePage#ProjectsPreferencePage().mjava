@@ -1,0 +1,10 @@
+	/**
+	 * The default constructor
+	 */
+	public ProjectsPreferencePage() {
+		super(GRID);
+		ScopedPreferenceStore store = new ScopedPreferenceStore(
+				new InstanceScope(), Activator.getPluginId());
+		setPreferenceStore(store);
+	}
+

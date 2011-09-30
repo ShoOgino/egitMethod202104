@@ -1,0 +1,6 @@
+	private void registerAutoShareProjects() {
+		shareGitProjectsJob = new AutoShareProjects();
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(
+				shareGitProjectsJob, IResourceChangeEvent.POST_CHANGE);
+	}
+
