@@ -85,7 +85,7 @@
 									connectProviderOperation.execute(wsOpMonitor);
 								}
 							} catch (final InvocationTargetException e) {
-								throw TeamException.asTeamException(e);
+								throwTeamException(e);
 							} catch (final CoreException e) {
 								throw TeamException.asTeamException(e);
 							} catch (final InterruptedException e) {
