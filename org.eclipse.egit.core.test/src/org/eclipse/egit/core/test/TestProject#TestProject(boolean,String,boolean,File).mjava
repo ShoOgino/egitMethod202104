@@ -1,0 +1,30 @@
+	/**
+	 * @param remove
+	 *            should project be removed if already exists
+	 * @param path
+	 * @param insidews set false to create in temp
+	 * @param workspaceSupplement
+	 * @throws CoreException
+	 */
+	public TestProject(final boolean remove, String path, boolean insidews, File workspaceSupplement) throws CoreException {
+		this.workspaceSupplement = workspaceSupplement;
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProjectDescription description = createDescription(remove, path,
+				insidews, root, workspaceSupplement);
+		project = root.getProject(description.getName());
+		if (remove)
+			project.delete(true, null);
+		IPath locationBefore = description.getLocation();
+		if (locationBefore == null)
+			locationBefore = root.getRawLocation().append(path);
+		location = locationBefore.toOSString();
+		project.create(description, null);
+		project.open(null);
+		javaProject = JavaCore.create(project);
+		IFolder binFolder = createBinFolder();
+		setJavaNature();
+		javaProject.setRawClasspath(new IClasspathEntry[0], null);
+		createOutputFolder(binFolder);
+		addSystemLibraries();
+	}
+

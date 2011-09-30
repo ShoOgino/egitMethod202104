@@ -4,36 +4,43 @@
 		final RepositoryMapping srcm = RepositoryMapping.getMapping(source);
 		if (srcm == null)
 			return false;
-		File newLocation = new File(description.getLocationURI().getPath());
-		// check if new location is below the same repository
-		if(newLocation.getAbsolutePath().contains(srcm.getRepository().getWorkTree().getAbsolutePath())) {
-			final String sPath = srcm.getRepoRelativePath(source);
-			final String dPath = new Path(newLocation.getAbsolutePath().substring(
-					srcm.getRepository().getWorkTree().getAbsolutePath().length() + 1) + "/").toPortableString(); //$NON-NLS-1$
-			try {
-				MoveResult result = moveIndexContent(dPath, srcm, sPath);
-				switch (result) {
-				case SUCCESS:
-					break;
-				case FAILED:
-					tree.failed(new Status(IStatus.ERROR, Activator
-							.getPluginId(), 0,
-							CoreText.MoveDeleteHook_operationError, null));
-					break;
-				case UNTRACKED:
-					// we are not responsible for moving untracked files
-					return FINISH_FOR_ME;
-				}
-
-				tree.standardMoveProject(source, description, updateFlags,
-						monitor);
-			} catch (IOException e) {
-				tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
-						CoreText.MoveDeleteHook_operationError, e));
-			}
+		IPath newLocation = null;
+		if (description.getLocationURI() != null)
+			newLocation = URIUtil.toPath(description.getLocationURI());
+		else
+			newLocation = source.getWorkspace().getRoot().getLocation()
+					.append(description.getName());
+		IPath sourceLocation = source.getLocation();
+		// Prevent a serious error.
+		if (sourceLocation.isPrefixOf(newLocation)
+				&& sourceLocation.segmentCount() != newLocation.segmentCount()
+				&& !"true".equals(System.getProperty("egit.assume_307140_fixed"))) { //$NON-NLS-1$//$NON-NLS-2$
+			// Graceful handling of bug, i.e. refuse to destroy your code
+			tree.failed(new Status(
+					IStatus.ERROR,
+					Activator.getPluginId(),
+					0,
+					"Cannot move project. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=307140 (not resolved in 3.7)", //$NON-NLS-1$
+					null));
 			return true;
 		}
-
-		return FINISH_FOR_ME;
+		File newLocationFile = newLocation.toFile();
+		// check if new location is below the same repository
+		Path workTree = new Path(srcm.getRepository().getWorkTree().getAbsolutePath());
+		int matchingFirstSegments = workTree.matchingFirstSegments(newLocation);
+		if (matchingFirstSegments == workTree.segmentCount()) {
+			return moveProjectHelperMoveOnlyProject(tree, source, description, updateFlags,
+					monitor, srcm, newLocationFile);
+		} else {
+			int dstAboveSrcRepo = newLocation.matchingFirstSegments(RepositoryMapping
+					.getMapping(source).getGitDirAbsolutePath());
+			int srcAboveSrcRepo = sourceLocation.matchingFirstSegments(RepositoryMapping.getMapping(source).getGitDirAbsolutePath());
+			if (dstAboveSrcRepo > 0 && srcAboveSrcRepo > 0) {
+				return moveProjectHelperMoveRepo(tree, source, description, updateFlags, monitor,
+					srcm, newLocation, sourceLocation);
+			} else {
+				return FINISH_FOR_ME;
+			}
+		}
 	}
 

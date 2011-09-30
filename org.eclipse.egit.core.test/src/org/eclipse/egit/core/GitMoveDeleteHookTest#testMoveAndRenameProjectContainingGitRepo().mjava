@@ -1,0 +1,39 @@
+	/**
+	 * Rename and move a project in the workspace containing a Git repository.
+	 * <p>
+	 * The repository will be moved with the project.
+	 * Note that there is no way to rename a project in the workspace without
+	 * moving it. See https://bugs.eclipse.org/358828 for a discussion.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testMoveAndRenameProjectContainingGitRepo() throws Exception {
+		ResourcesPlugin.getWorkspace().getRoot().getProject("Project-1").delete(true, null);
+		ResourcesPlugin.getWorkspace().getRoot().getProject("P2").delete(true, null);
+
+		TestProject project = initRepoInsideProjectInsideWorkspace();
+		testUtils.addFileToProject(project.getProject(), "file.txt",
+				"some text");
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(
+				new IResource[] { project.getProject().getFile("file.txt") });
+		addToIndexOperation.execute(null);
+		IProjectDescription description = project.getProject().getDescription();
+		description.setName("P2");
+		project.getProject().move(description,
+				IResource.FORCE | IResource.SHALLOW, null);
+		IProject project2 = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject("P2");
+		assertNotNull(RepositoryMapping.getMapping(project2.getProject()));
+		Repository movedRepo = RepositoryMapping.getMapping(project2)
+				.getRepository();
+		assertEquals("P2",
+				movedRepo.getDirectory().getParentFile()
+						.getName());
+		DirCache dc = movedRepo.readDirCache();
+		assertEquals(1, dc.getEntryCount());
+		assertEquals("file.txt", dc.getEntry(0).getPathString());
+
+		assertFalse(ResourcesPlugin.getWorkspace().getRoot().getProject("Project-1").exists());
+	}
+

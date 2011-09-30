@@ -1,0 +1,53 @@
+	private boolean moveProjectHelperMoveOnlyProject(final IResourceTree tree,
+			final IProject source, final IProjectDescription description,
+			final int updateFlags, final IProgressMonitor monitor,
+			final RepositoryMapping srcm, File newLocationFile) {
+		final String sPath = srcm.getRepoRelativePath(source);
+		final String absoluteWorkTreePath = srcm.getRepository().getWorkTree().getAbsolutePath();
+		final String newLocationAbsolutePath = newLocationFile.getAbsolutePath();
+		final String dPath;
+		if (newLocationAbsolutePath.equals(absoluteWorkTreePath))
+			dPath = ""; //$NON-NLS-1$
+		else
+			dPath = new Path(
+					newLocationAbsolutePath.substring(absoluteWorkTreePath
+							.length() + 1) + "/").toPortableString(); //$NON-NLS-1$
+		try {
+			IPath gitDir = srcm.getGitDirAbsolutePath();
+			if (unmapProject(tree, source))
+				return true;
+
+			monitor.worked(100);
+
+			MoveResult result = moveIndexContent(dPath, srcm, sPath);
+			switch (result) {
+			case SUCCESS:
+				break;
+			case FAILED:
+				tree.failed(new Status(IStatus.ERROR, Activator
+						.getPluginId(), 0,
+						CoreText.MoveDeleteHook_operationError, null));
+				break;
+			case UNTRACKED:
+				// we are not responsible for moving untracked files
+				return FINISH_FOR_ME;
+			}
+
+			tree.standardMoveProject(source, description, updateFlags,
+					monitor);
+
+			// Reconnect
+			mapProject(
+					source.getWorkspace().getRoot()
+							.getProject(description.getName()),
+					description, monitor, gitDir);
+		} catch (IOException e) {
+			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(),
+					0, CoreText.MoveDeleteHook_operationError, e));
+		} catch (CoreException e) {
+			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(),
+					0, CoreText.MoveDeleteHook_operationError, e));
+		}
+		return true;
+	}
+

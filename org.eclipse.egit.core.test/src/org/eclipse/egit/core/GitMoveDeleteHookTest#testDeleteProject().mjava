@@ -1,0 +1,31 @@
+	@Test
+	public void testDeleteProject() throws Exception {
+		TestProject project = initRepoAboveProjectInsideWs("P/", "");
+		testUtils.addFileToProject(project.getProject(), "file.txt",
+				"some text");
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(
+				new IResource[] { project.getProject().getFile("file.txt") });
+		addToIndexOperation.execute(null);
+
+		RepositoryMapping mapping = RepositoryMapping.getMapping(project
+				.getProject());
+		IPath gitDirAbsolutePath = mapping.getGitDirAbsolutePath();
+		Repository db = new FileRepository(gitDirAbsolutePath.toFile());
+		DirCache index = DirCache.read(db.getIndexFile(), db.getFS());
+		assertNotNull(index.getEntry("P/Project-1/file.txt"));
+		db.close();
+		db = null;
+		project.getProject().delete(true, null);
+		assertNull(RepositoryMapping.getMapping(project.getProject()));
+		// Check that the repo is still there. Being a bit paranoid we look for
+		// a file
+		assertTrue(gitDirAbsolutePath.toString(),
+				gitDirAbsolutePath.append("HEAD").toFile().exists());
+
+		db = new FileRepository(gitDirAbsolutePath.toFile());
+		index = DirCache.read(db.getIndexFile(), db.getFS());
+		// FIXME: Shouldn't we unstage deleted projects?
+		assertNotNull(index.getEntry("P/Project-1/file.txt"));
+		db.close();
+	}
+

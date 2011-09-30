@@ -1,0 +1,64 @@
+	private void dotestMoveProjectWithinRepo(String srcParent,
+			String srcProjectName, String dstParent, String dstProjecName,
+			String gitDir, boolean sourceInsideWs) throws IOException, CoreException {
+		String gdRelativeSrcParent = srcParent + srcProjectName + "/";
+		if (gdRelativeSrcParent.startsWith(gitDir))
+			gdRelativeSrcParent = gdRelativeSrcParent
+					.substring(gitDir.length());
+		String gdRelativeDstParent = dstParent + dstProjecName + "/";
+		if (gdRelativeDstParent.startsWith(gitDir))
+			gdRelativeDstParent = gdRelativeDstParent
+					.substring(gitDir.length());
+
+		// Old cruft may be laying around
+		TestProject project = initRepoAboveProject(srcParent, gitDir, sourceInsideWs);
+		IProject project0 = project.getProject().getWorkspace().getRoot()
+				.getProject(dstProjecName);
+		project0.delete(true, null);
+
+		testUtils.addFileToProject(project.getProject(), "file.txt",
+				"some text");
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(
+				new IResource[] { project.getProject().getFile("file.txt") });
+		addToIndexOperation.execute(null);
+
+		// Check condition before move
+		DirCache dirCache = DirCache.read(repository.getIndexFile(),
+				FS.DETECTED);
+		assertNotNull(dirCache.getEntry(gdRelativeSrcParent + "file.txt"));
+		ObjectId oldContentId = dirCache.getEntry(
+				gdRelativeSrcParent + "file.txt").getObjectId();
+
+		// Modify the content before the move, we want to see the staged content
+		// as it was before the move in the index
+		testUtils.changeContentOfFile(project.getProject(), project
+				.getProject().getFile("file.txt"), "other text");
+		IProjectDescription description = project.getProject().getDescription();
+		description.setName(dstProjecName);
+		if (sourceInsideWs)
+			if (dstParent.length() > 0)
+				description.setLocationURI(URIUtil.toURI(project.getProject()
+						.getWorkspace().getRoot().getLocation()
+						.append(dstParent + dstProjecName)));
+			else
+				description.setLocationURI(null);
+		else
+			description.setLocationURI(URIUtil.toURI(new Path(workspaceSupplement + "/" + dstParent + "/" + dstProjecName)));
+		project.getProject().move(description,
+				IResource.FORCE | IResource.SHALLOW, null);
+		IProject project2 = project.getProject().getWorkspace().getRoot()
+				.getProject(dstProjecName);
+		assertTrue(project2.exists());
+		assertNotNull(RepositoryMapping.getMapping(project2));
+
+		// Check that our file exists on disk has a new location in the index
+		dirCache.read();
+		assertTrue(project2.getFile("file.txt").exists());
+		assertNotNull(dirCache.getEntry(gdRelativeDstParent + "file.txt"));
+
+		// Same content in index as before the move, i.e. not same as on disk
+		assertEquals(oldContentId,
+				dirCache.getEntry(gdRelativeDstParent + "file.txt")
+						.getObjectId());
+	}
+

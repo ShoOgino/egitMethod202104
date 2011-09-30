@@ -1,0 +1,34 @@
+	@Test
+	public void testDeleteFile() throws Exception {
+		TestProject project = initRepoInsideProjectInsideWorkspace();
+		testUtils.addFileToProject(project.getProject(), "file.txt",
+				"some text");
+		testUtils.addFileToProject(project.getProject(), "file2.txt",
+				"some  more text");
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(
+				new IResource[] { project.getProject().getFile("file.txt"),
+						project.getProject().getFile("file2.txt") });
+		addToIndexOperation.execute(null);
+
+		// Validate pre-conditions
+		DirCache dirCache = DirCache.read(repository.getIndexFile(),
+				FS.DETECTED);
+		assertEquals(2, dirCache.getEntryCount());
+		assertNotNull(dirCache.getEntry("file.txt"));
+		assertNotNull(dirCache.getEntry("file2.txt"));
+		// Modify the content before the move
+		testUtils.changeContentOfFile(project.getProject(), project
+				.getProject().getFile("file.txt"), "other text");
+		project.getProject().getFile("file.txt").delete(true, null);
+
+		// Check index for the deleted file
+		dirCache.read();
+		assertEquals(1, dirCache.getEntryCount());
+		assertNull(dirCache.getEntry("file.txt"));
+		assertNotNull(dirCache.getEntry("file2.txt"));
+		// Actual file is deleted
+		assertFalse(project.getProject().getFile("file.txt").exists());
+		// But a non-affected file remains
+		assertTrue(project.getProject().getFile("file2.txt").exists());
+	}
+

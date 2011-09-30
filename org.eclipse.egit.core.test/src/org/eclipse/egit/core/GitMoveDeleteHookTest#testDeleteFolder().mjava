@@ -1,0 +1,30 @@
+	@Test
+	public void testDeleteFolder() throws Exception {
+		TestProject project = initRepoInsideProjectInsideWorkspace();
+		testUtils.addFileToProject(project.getProject(), "folder/file.txt",
+				"some text");
+		testUtils.addFileToProject(project.getProject(), "folder2/file.txt",
+				"some other text");
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(
+				new IResource[] {
+						project.getProject().getFile("folder/file.txt"),
+						project.getProject().getFile("folder2/file.txt") });
+		addToIndexOperation.execute(null);
+
+		DirCache dirCache = DirCache.read(repository.getIndexFile(),
+				FS.DETECTED);
+		assertNotNull(dirCache.getEntry("folder/file.txt"));
+		assertNotNull(dirCache.getEntry("folder2/file.txt"));
+		// Modify the content before the move
+		testUtils.changeContentOfFile(project.getProject(), project
+				.getProject().getFile("folder/file.txt"), "other text");
+		project.getProject().getFolder("folder").delete(true, null);
+
+		dirCache.read();
+		// Unlike delete file, dircache is untouched... pretty illogical
+		// TODO: Change the behavior of the hook.
+		assertNotNull(dirCache.getEntry("folder/file.txt"));
+		// Not moved file still there
+		assertNotNull(dirCache.getEntry("folder2/file.txt"));
+	}
+

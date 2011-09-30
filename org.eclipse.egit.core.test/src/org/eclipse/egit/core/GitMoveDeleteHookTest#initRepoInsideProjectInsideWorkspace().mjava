@@ -1,0 +1,12 @@
+	private TestProject initRepoInsideProjectInsideWorkspace() throws IOException,
+			CoreException {
+		TestProject project = new TestProject(true, "Project-1", true, workspaceSupplement);
+		File gitDir = new File(project.getProject().getLocationURI().getPath(),
+				Constants.DOT_GIT);
+		gitDirs.add(gitDir);
+		testRepository = new TestRepository(gitDir);
+		repository = testRepository.getRepository();
+		testRepository.connect(project.getProject());
+		return project;
+	}
+

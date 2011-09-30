@@ -1,0 +1,38 @@
+	@Test
+	public void testMoveFile() throws Exception {
+		TestProject project = initRepoInsideProjectInsideWorkspace();
+		testUtils.addFileToProject(project.getProject(), "file.txt",
+				"some text");
+		testUtils.addFileToProject(project.getProject(), "file2.txt",
+				"some  more text");
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(
+				new IResource[] { project.getProject().getFile("file.txt"),
+						project.getProject().getFile("file2.txt") });
+		addToIndexOperation.execute(null);
+
+		// Validate pre-conditions
+		DirCache dirCache = DirCache.read(repository.getIndexFile(),
+				FS.DETECTED);
+		assertNotNull(dirCache.getEntry("file.txt"));
+		assertNotNull(dirCache.getEntry("file2.txt"));
+		assertNull(dirCache.getEntry("data.txt"));
+		assertFalse(project.getProject().getFile("data.txt").exists());
+		ObjectId oldContentId = dirCache.getEntry("file.txt").getObjectId();
+		// Modify the content before the move
+		testUtils.changeContentOfFile(project.getProject(), project
+				.getProject().getFile("file.txt"), "other text");
+		project.getProject()
+				.getFile("file.txt")
+				.move(project.getProject().getFile("data.txt").getFullPath(),
+						false, null);
+
+		dirCache.read();
+		assertTrue(project.getProject().getFile("data.txt").exists());
+		assertNotNull(dirCache.getEntry("data.txt"));
+		// Same content in index as before the move
+		assertEquals(oldContentId, dirCache.getEntry("data.txt").getObjectId());
+
+		// Not moved file still in its old place
+		assertNotNull(dirCache.getEntry("file2.txt"));
+	}
+
