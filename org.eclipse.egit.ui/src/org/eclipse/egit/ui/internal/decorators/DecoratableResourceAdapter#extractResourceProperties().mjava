@@ -2,8 +2,10 @@
 		String repoRelativePath = makeRepoRelative(resource);
 
 		// ignored
+		Set<String> ignoredFiles = indexDiffData.getIgnoredNotInIndex();
+		ignored = containsPrefixPath(ignoredFiles, repoRelativePath);
 		Set<String> untracked = indexDiffData.getUntracked();
-		tracked = !untracked.contains(repoRelativePath);
+		tracked = !untracked.contains(repoRelativePath) && !ignored;
 
 		Set<String> added = indexDiffData.getAdded();
 		Set<String> removed = indexDiffData.getRemoved();
