@@ -1,18 +1,20 @@
 	/**
-	 * The method returns all valid projects contained in the given Git
+	 * The method returns all valid open projects contained in the given Git
 	 * repository. A project is considered as valid if the .project file exists.
 	 * @see ProjectUtil#refreshValidProjects(IProject[], IProgressMonitor)
 	 * @param repository
-	 * @return valid projects
+	 * @return valid open projects
 	 * @throws CoreException
 	 */
-	public static IProject[] getValidProjects(Repository repository)
+	public static IProject[] getValidOpenProjects(Repository repository)
 			throws CoreException {
 		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 		List<IProject> result = new ArrayList<IProject>();
 		final File parentFile = repository.getWorkTree();
 		for (IProject p : projects) {
+			if (!p.isOpen())
+				continue;
 			String projectFilePath = p.getLocation()
 					.append(".project").toOSString(); //$NON-NLS-1$
 			File projectFile = new File(projectFilePath);
