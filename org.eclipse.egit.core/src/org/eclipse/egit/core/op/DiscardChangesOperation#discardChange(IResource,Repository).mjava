@@ -1,9 +1,0 @@
-	private void discardChange(IResource res, Repository repository)
-			throws GitAPIException {
-		String resRelPath = RepositoryMapping.getMapping(res)
-				.getRepoRelativePath(res);
-		CheckoutCommand co = new Git(repository).checkout().addPath(resRelPath);
-		co.setStartPoint(this.revision);
-		co.call();
-	}
-

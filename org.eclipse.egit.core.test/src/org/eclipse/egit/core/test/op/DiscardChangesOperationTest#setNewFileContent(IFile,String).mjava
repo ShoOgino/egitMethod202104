@@ -1,0 +1,7 @@
+	private void setNewFileContent(IFile file, String content) throws Exception {
+		file.setContents(
+				new ByteArrayInputStream(content.getBytes(project
+						.getDefaultCharset())), 0, null);
+		assertEquals(content, testUtils.slurpAndClose(file.getContents()));
+	}
+

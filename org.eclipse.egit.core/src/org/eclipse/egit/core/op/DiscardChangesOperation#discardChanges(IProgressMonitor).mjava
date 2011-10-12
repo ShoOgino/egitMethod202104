@@ -1,27 +1,19 @@
 	private void discardChanges(IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(CoreText.DiscardChangesOperation_discardingChanges, 2);
 		boolean errorOccurred = false;
-		List<IResource> allFiles = new ArrayList<IResource>();
-		// find all files
 		for (IResource res : files) {
-			allFiles.addAll(getAllMembers(res));
-		}
-		for (IResource res : allFiles) {
 			Repository repo = getRepository(res);
 			if (repo == null) {
 				IStatus status = Activator.error(
 						CoreText.DiscardChangesOperation_repoNotFound, null);
 				throw new CoreException(status);
 			}
-			try {
-				discardChange(res, repo);
-			} catch (GitAPIException e) {
-				errorOccurred = true;
-				String message = NLS.bind(
-						CoreText.DiscardChangesOperation_discardFailed, res
-								.getFullPath());
-				Activator.logError(message, e);
-			}
+		}
+		try {
+			discardChanges();
+		} catch (GitAPIException e) {
+			errorOccurred = true;
+			Activator.logError(CoreText.DiscardChangesOperation_discardFailed, e);
 		}
 		monitor.worked(1);
 		try {
