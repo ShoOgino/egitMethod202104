@@ -31,9 +31,12 @@
 					if (id == null)
 						return image;
 					RevWalk rw = new RevWalk(node.getRepository());
-					RevTag tag = rw.parseTag(id);
-					compareString = tag.getObject().name();
-
+					try {
+						compareString = rw.parseTag(id).getObject().name();
+					} catch (IncorrectObjectTypeException e) {
+						// Ref is a lightweight tag, not an annotated tag
+						compareString = id.name();
+					}
 				} else if (refName.startsWith(Constants.R_REMOTES)) {
 					// remote branch: HEAD would be on the commit id to which
 					// the branch is pointing

@@ -19,9 +19,8 @@
 				Activator.logError(e.getMessage(), e);
 				return null;
 			}
-			if (any instanceof RevCommit)
-				// lightweight tag
-				return decorateImage(lightweightTagImage, element);
+			if (any instanceof RevTag)
+				return decorateImage(annotatedTagImage, element);
 		} else if (type == RepositoryTreeNodeType.FILE) {
 			Object object = node.getObject();
 			if (object instanceof File) {
