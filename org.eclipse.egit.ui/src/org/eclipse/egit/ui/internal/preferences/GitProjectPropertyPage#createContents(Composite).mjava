@@ -23,12 +23,12 @@
 		// Get the project that is the source of this property page
 		IProject project = null;
 		final IAdaptable element = getElement();
-		if (element instanceof IProject) {
-			project = (IProject) element;
+		if (element instanceof IResource) {
+			project = ((IResource) element).getProject();
 		} else {
-			Object adapter = element.getAdapter(IProject.class);
-			if (adapter instanceof IProject) {
-				project = (IProject) adapter;
+			Object adapter = element.getAdapter(IResource.class);
+			if (adapter instanceof IResource) {
+				project = ((IResource) adapter).getProject();
 			}
 		}
 
