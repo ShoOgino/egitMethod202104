@@ -1,0 +1,8 @@
+	private boolean checkRepository() {
+		if (Activator.getDefault() == null)
+			return false;
+		if (!repository.getDirectory().exists())
+			return false;
+		return true;
+	}
+

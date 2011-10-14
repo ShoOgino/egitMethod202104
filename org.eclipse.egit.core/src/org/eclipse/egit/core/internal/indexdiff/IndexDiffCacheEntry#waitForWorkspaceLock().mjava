@@ -1,0 +1,18 @@
+	private void waitForWorkspaceLock() {
+		// Wait for the workspace lock to avoid starting the calculation
+		// of an IndexDiff while the workspace changes (e.g. due to a
+		// branch switch).
+		// The index diff calculation jobs do not lock the workspace
+		// during execution to avoid blocking the workspace.
+		try {
+			ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+
+				public void run(IProgressMonitor monitor) throws CoreException {
+					// empty
+				}
+			}, new NullProgressMonitor());
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+

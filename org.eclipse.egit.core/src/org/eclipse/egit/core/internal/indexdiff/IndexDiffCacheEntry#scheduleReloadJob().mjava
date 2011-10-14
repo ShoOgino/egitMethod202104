@@ -1,9 +1,14 @@
 	private void scheduleReloadJob() {
 		if (reloadJob != null)
 			reloadJob.cancel();
+		if (!checkRepository())
+			return;
 		reloadJob = new Job(getReloadJobName()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				waitForWorkspaceLock();
+				if (monitor.isCanceled())
+					return Status.CANCEL_STATUS;
 				lock.lock();
 				try {
 					long startTime = System.currentTimeMillis();

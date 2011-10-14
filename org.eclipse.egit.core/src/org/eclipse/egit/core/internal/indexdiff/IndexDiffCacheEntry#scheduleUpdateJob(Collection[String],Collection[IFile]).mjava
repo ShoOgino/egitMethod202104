@@ -1,8 +1,13 @@
 	private void scheduleUpdateJob(final Collection<String> filesToUpdate,
 			final Collection<IFile> fileResourcesToUpdate) {
+		if (!checkRepository())
+			return;
 		Job job = new Job(getReloadJobName()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				waitForWorkspaceLock();
+				if (monitor.isCanceled())
+					return Status.CANCEL_STATUS;
 				lock.lock();
 				try {
 					long startTime = System.currentTimeMillis();
