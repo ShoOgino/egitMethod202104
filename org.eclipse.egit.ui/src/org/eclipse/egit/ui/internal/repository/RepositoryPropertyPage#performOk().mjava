@@ -1,0 +1,10 @@
+	public boolean performOk() {
+		if (editor != null)
+			try {
+				editor.save();
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+		return super.performOk();
+	}
+

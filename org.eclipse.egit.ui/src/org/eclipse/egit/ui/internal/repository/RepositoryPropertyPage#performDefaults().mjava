@@ -1,0 +1,10 @@
+	protected void performDefaults() {
+		if (editor != null)
+			try {
+				editor.restore();
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+		super.performDefaults();
+	}
+

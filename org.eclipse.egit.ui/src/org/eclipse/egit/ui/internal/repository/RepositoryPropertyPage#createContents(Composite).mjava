@@ -1,0 +1,25 @@
+	protected Control createContents(Composite parent) {
+		Composite displayArea = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().applyTo(displayArea);
+		GridDataFactory.fillDefaults().applyTo(displayArea);
+
+		Repository repo = (Repository) getElement()
+				.getAdapter(Repository.class);
+		if (repo == null)
+			return displayArea;
+
+		StoredConfig config = repo.getConfig();
+		if (config instanceof FileBasedConfig) {
+			File configFile = ((FileBasedConfig) config).getFile();
+			config = new FileBasedConfig(configFile, repo.getFS());
+		}
+		editor = new ConfigurationEditorComponent(displayArea, config, true) {
+			@Override
+			protected void setErrorMessage(String message) {
+				RepositoryPropertyPage.this.setErrorMessage(message);
+			}
+		};
+		editor.createContents();
+		return displayArea;
+	}
+
