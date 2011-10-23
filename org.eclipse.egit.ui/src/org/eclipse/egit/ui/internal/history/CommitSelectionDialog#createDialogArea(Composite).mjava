@@ -18,7 +18,9 @@
 				});
 		table.getTableView().addOpenListener(new IOpenListener() {
 			public void open(OpenEvent event) {
-				buttonPressed(OK);
+				if (getButton(OK).isEnabled()) {
+					buttonPressed(OK);
+				}
 			}
 		});
 		// allow for some room here
