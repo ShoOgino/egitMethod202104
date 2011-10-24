@@ -18,7 +18,7 @@
 			if (headId == null)
 				return;
 
-			List<String> paths = buildFilterPaths(input.getItems(), input
+			List<FilterPath> paths = buildFilterPaths(input.getItems(), input
 					.getFileList(), db);
 
 			if (forceNewWalk || shouldRedraw(db, headId, paths)) {

@@ -1,4 +1,4 @@
-	private TreeWalk setupFileViewer(Repository db, List<String> paths) {
+	private TreeWalk setupFileViewer(Repository db, List<FilterPath> paths) {
 		final TreeWalk fileWalker = createFileWalker(db, paths);
 		fileViewer.setTreeWalk(db, fileWalker);
 		fileViewer.refresh();
