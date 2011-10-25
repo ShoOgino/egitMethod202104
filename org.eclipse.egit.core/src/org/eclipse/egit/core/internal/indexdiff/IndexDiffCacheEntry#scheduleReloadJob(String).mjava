@@ -1,4 +1,4 @@
-	private void scheduleReloadJob() {
+	private void scheduleReloadJob(final String trigger) {
 		if (reloadJob != null)
 			reloadJob.cancel();
 		if (!checkRepository())
@@ -18,9 +18,8 @@
 					indexDiffData = new IndexDiffData(result);
 					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {
 						long time = System.currentTimeMillis() - startTime;
-						StringBuilder message = new StringBuilder(NLS.bind(
-								"Updated IndexDiffData in {0} ms\n", //$NON-NLS-1$
-								new Long(time)));
+						StringBuilder message = new StringBuilder(
+								getTraceMessage(time));
 						GitTraceLocation.getTrace().trace(
 								GitTraceLocation.INDEXDIFFCACHE.getLocation(),
 								message.append(indexDiffData.toString())
@@ -34,11 +33,18 @@
 								GitTraceLocation.INDEXDIFFCACHE.getLocation(),
 								"Calculating IndexDiff failed", e); //$NON-NLS-1$
 					}
-					scheduleReloadJob();
+					scheduleReloadJob("Recalculation due to Exception in reload job"); //$NON-NLS-1$
 					return Status.OK_STATUS;
 				} finally {
 					lock.unlock();
 				}
+			}
+
+			private String getTraceMessage(long time) {
+				return NLS
+						.bind("\nUpdated IndexDiffData in {0} ms\nReason: {1}\nRepository: {2}\n", //$NON-NLS-1$
+						new Object[] { new Long(time), trigger,
+								repository.getWorkTree().getName() });
 			}
 
 			@Override
