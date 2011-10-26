@@ -12,6 +12,8 @@
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES);
 		currentShowNotes = store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES);
+		boolean followRenamesChanged = currentFollowRenames != getFollowRenames();
+		currentFollowRenames = getFollowRenames();
 
 		if (!db.equals(currentRepo)) {
 			repoChanged = true;
@@ -20,6 +22,6 @@
 
 		return pathChanged
 			|| currentWalk == null || headChanged || repoChanged || allBranchesChanged
-			|| showNotesChanged;
+			|| showNotesChanged || followRenamesChanged;
 	}
 

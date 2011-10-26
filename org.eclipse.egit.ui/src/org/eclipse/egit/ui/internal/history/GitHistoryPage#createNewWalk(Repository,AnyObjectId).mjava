@@ -2,7 +2,10 @@
 		currentHeadId = headId;
 		if (currentWalk != null)
 			currentWalk.release();
-		currentWalk = new SWTWalk(db);
+		if (getFollowRenames())
+			currentWalk = new FollowingSWTWalk(db);
+		else
+			currentWalk = new SWTWalk(db);
 		try {
 			currentWalk.addAdditionalRefs(db.getRefDatabase().getAdditionalRefs());
 			currentWalk.addAdditionalRefs(db.getRefDatabase().

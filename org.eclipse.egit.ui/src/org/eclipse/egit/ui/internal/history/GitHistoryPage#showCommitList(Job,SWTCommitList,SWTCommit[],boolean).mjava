@@ -10,6 +10,8 @@
 		graph.getControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (!graph.getControl().isDisposed() && job == j) {
+					if (getFollowRenames())
+						updateFollowFilter();
 					graph.setInput(highlightFlag, list, asArray, input);
 					if (trace)
 						GitTraceLocation.getTrace().trace(
