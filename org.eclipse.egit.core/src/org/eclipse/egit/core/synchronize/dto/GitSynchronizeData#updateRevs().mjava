@@ -5,8 +5,12 @@
 	 */
 	public void updateRevs() throws IOException {
 		ObjectWalk ow = new ObjectWalk(repo);
-		srcRevCommit = getCommit(srcRev, ow);
-		dstRevCommit = getCommit(dstRev, ow);
+		try {
+			srcRevCommit = getCommit(srcRev, ow);
+			dstRevCommit = getCommit(dstRev, ow);
+		} finally {
+			ow.release();
+		}
 
 		if (this.dstRevCommit != null || this.srcRevCommit != null)
 			this.ancestorRevCommit = getCommonAncestor(repo, this.srcRevCommit,
