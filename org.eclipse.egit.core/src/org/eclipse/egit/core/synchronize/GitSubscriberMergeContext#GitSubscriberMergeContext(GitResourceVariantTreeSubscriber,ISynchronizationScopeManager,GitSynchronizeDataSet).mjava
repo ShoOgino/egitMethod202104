@@ -11,7 +11,7 @@
 
 		repoChangeListener = new RepositoryChangeListener() {
 			public void repositoryChanged(RepositoryMapping which) {
-				update(subscriber, which);
+				handleRepositoryChange(subscriber, which);
 			}
 		};
 		resourceChangeListener = new IResourceChangeListener() {
@@ -20,10 +20,15 @@
 				if (event.getDelta() == null)
 					return;
 
-				for (IResourceDelta delta : event.getDelta().getAffectedChildren()) {
-					RepositoryMapping repo = RepositoryMapping.getMapping(delta.getResource());
+				IResourceDelta[] affectedChildren = event.getDelta()
+						.getAffectedChildren();
+				for (IResourceDelta delta : affectedChildren) {
+					if (delta.getFlags() == 0)
+						continue;
+					IResource resource = delta.getResource();
+					RepositoryMapping repo = getMapping(resource);
 					if (repo != null)
-						update(subscriber, repo);
+						handleResourceChange(subscriber, repo);
 				}
 			}
 		};
