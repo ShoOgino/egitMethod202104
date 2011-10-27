@@ -1,0 +1,27 @@
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof ProjectReference))
+			return false;
+		ProjectReference other = (ProjectReference) obj;
+		if (branch == null) {
+			if (other.branch != null)
+				return false;
+		} else if (!branch.equals(other.branch))
+			return false;
+		if (projectDir == null) {
+			if (other.projectDir != null)
+				return false;
+		} else if (!projectDir.equals(other.projectDir))
+			return false;
+		if (repository == null) {
+			if (other.repository != null)
+				return false;
+		} else if (!repository.equals(other.repository))
+			return false;
+		return true;
+	}
+
