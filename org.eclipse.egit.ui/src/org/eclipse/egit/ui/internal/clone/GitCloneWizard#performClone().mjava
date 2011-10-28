@@ -34,12 +34,19 @@
 		final CloneOperation op = new CloneOperation(uri, allSelected,
 				selectedBranches, workdir, ref != null ? ref.getName() : null,
 				remoteName, timeout);
-		if (gerritConfiguration.configureGerrit())
-			doGerritConfiguration(remoteName, op);
 		UserPasswordCredentials credentials = cloneSource.getCredentials();
 		if (credentials != null)
 			op.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
 					credentials.getUser(), credentials.getPassword()));
+
+		if (gerritConfiguration.configureGerrit()) {
+			boolean hasReviewNotes = hasReviewNotes(uri, timeout, credentials);
+			if (!hasReviewNotes)
+				MessageDialog.openInformation(getShell(),
+						UIText.GitCloneWizard_MissingNotesTitle,
+						UIText.GitCloneWizard_MissingNotesMessage);
+			doGerritConfiguration(remoteName, op, hasReviewNotes);
+		}
 
 		alreadyClonedInto = workdir.getPath();
 
