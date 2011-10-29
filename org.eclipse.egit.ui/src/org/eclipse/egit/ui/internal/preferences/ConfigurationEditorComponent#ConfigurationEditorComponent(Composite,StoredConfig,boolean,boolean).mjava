@@ -5,12 +5,15 @@
 	 *            to be used instead of the user configuration
 	 * @param useDialogFont
 	 *            if <code>true</code>, the current dialog font is used
+	 * @param changeablePath
+	 *            The user can change the path of the configuration file
 	 */
 	public ConfigurationEditorComponent(Composite parent, StoredConfig config,
-			boolean useDialogFont) {
+			boolean useDialogFont, boolean changeablePath) {
 		editableConfig = config;
 		this.shellProvider = new SameShellProvider(parent);
 		this.parent = parent;
 		this.useDialogFont = useDialogFont;
+		this.changeablePath = changeablePath;
 	}
 
