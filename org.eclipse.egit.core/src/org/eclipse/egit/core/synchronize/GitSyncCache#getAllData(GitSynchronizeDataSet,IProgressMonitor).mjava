@@ -1,20 +1,8 @@
 	public static GitSyncCache getAllData(GitSynchronizeDataSet gsds,
 			IProgressMonitor monitor) {
-		GitSyncCache cache = new GitSyncCache();
-
-		SubMonitor m = SubMonitor.convert(monitor, gsds.size());
-		for (GitSynchronizeData gsd : gsds) {
-			Repository repo = gsd.getRepository();
-			ObjectId baseTree = getTree(gsd.getSrcRevCommit());
-			ObjectId remoteTree = getTree(gsd.getDstRevCommit());
-			GitSyncObjectCache repoCache = cache
-					.put(repo, baseTree, remoteTree);
-
-			loadDataFromGit(gsd, repoCache);
-			m.worked(1);
-		}
-		m.done();
-
-		return cache;
+		Map<GitSynchronizeData, Collection<String>> updateRequests = new HashMap<GitSynchronizeData, Collection<String>>();
+		for (GitSynchronizeData data : gsds)
+			updateRequests.put(data, Collections.<String> emptyList());
+		return getAllData(updateRequests, monitor);
 	}
 

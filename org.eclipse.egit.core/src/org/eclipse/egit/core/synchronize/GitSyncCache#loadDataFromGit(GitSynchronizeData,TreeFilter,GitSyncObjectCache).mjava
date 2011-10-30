@@ -1,15 +1,19 @@
 	private static void loadDataFromGit(GitSynchronizeData gsd,
-			GitSyncObjectCache repoCache) {
+			TreeFilter filter, GitSyncObjectCache repoCache) {
 		Repository repo = gsd.getRepository();
 		TreeWalk tw = new TreeWalk(repo);
-		if (gsd.getPathFilter() != null)
-			tw.setFilter(gsd.getPathFilter());
+		if (filter != null)
+			tw.setFilter(filter);
 
 		try {
 			// setup local tree
 			if (gsd.shouldIncludeLocal()) {
 				tw.addTree(new FileTreeIterator(repo));
-				tw.setFilter(new NotIgnoredFilter(0));
+				if (filter != null)
+					tw.setFilter(AndTreeFilter.create(filter,
+							new NotIgnoredFilter(0)));
+				else
+					tw.setFilter(new NotIgnoredFilter(0));
 			} else if (gsd.getSrcRevCommit() != null)
 				tw.addTree(gsd.getSrcRevCommit().getTree());
 			else
