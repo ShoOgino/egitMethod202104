@@ -1,65 +1,22 @@
 	private void createResourceChangeListener() {
 		resourceChangeListener = new IResourceChangeListener() {
 			public void resourceChanged(IResourceChangeEvent event) {
-				final Collection<String> filesToUpdate = new HashSet<String>();
-				final Collection<IFile> fileResourcesToUpdate = new HashSet<IFile>();
-				final boolean[] gitIgnoreChanged = new boolean[1];
-				gitIgnoreChanged[0] = false;
-
+				GitResourceDeltaVisitor visitor = new GitResourceDeltaVisitor(repository);
 				try {
-					event.getDelta().accept(new IResourceDeltaVisitor() {
-						public boolean visit(IResourceDelta delta)
-								throws CoreException {
-							final IResource resource = delta.getResource();
-							// Don't include ignored resources
-							if (Team.isIgnoredHint(resource))
-								return false;
-
-							// If the file has changed but not in a way that we
-							// care about (e.g. marker changes to files) then
-							// ignore
-							if (delta.getKind() == IResourceDelta.CHANGED
-									&& (delta.getFlags() & INTERESTING_CHANGES) == 0)
-								return true;
-
-							// skip any non-FILE resources
-							if (resource.getType() != IResource.FILE)
-								return true;
-
-							// If the resource is not part of a project under
-							// Git revision control
-							final RepositoryMapping mapping = RepositoryMapping
-									.getMapping(resource);
-							if (mapping == null
-									|| mapping.getRepository() != repository)
-								// Ignore the change
-								return true;
-
-							if (resource.getName().equals(GITIGNORE_NAME)) {
-								gitIgnoreChanged[0] = true;
-								return false;
-							}
-
-							String repoRelativePath = mapping
-									.getRepoRelativePath(resource);
-							filesToUpdate.add(repoRelativePath);
-							fileResourcesToUpdate.add((IFile) resource);
-
-							return true;
-						}
-					});
+					event.getDelta().accept(visitor);
 				} catch (CoreException e) {
 					Activator.logError(e.getMessage(), e);
 					return;
 				}
 
-				if (gitIgnoreChanged[0])
+				Collection<String> filesToUpdate = visitor.getFilesToUpdate();
+				if (visitor.getGitIgnoreChanged())
 					scheduleReloadJob("A .gitignore changed"); //$NON-NLS-1$
 				else if (indexDiffData == null)
 					scheduleReloadJob("Resource changed, no diff available"); //$NON-NLS-1$
 				else if (!filesToUpdate.isEmpty())
 					if (filesToUpdate.size() < RESOURCE_LIST_UPDATE_LIMIT)
-						scheduleUpdateJob(filesToUpdate, fileResourcesToUpdate);
+						scheduleUpdateJob(filesToUpdate, visitor.getFileResourcesToUpdate());
 					else
 						// Calculate new IndexDiff if too many resources changed
 						// This happens e.g. when a project is opened
