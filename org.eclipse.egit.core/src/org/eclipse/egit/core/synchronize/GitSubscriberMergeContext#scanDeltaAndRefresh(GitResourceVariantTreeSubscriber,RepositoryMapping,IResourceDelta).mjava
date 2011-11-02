@@ -1,0 +1,20 @@
+	private void scanDeltaAndRefresh(
+			GitResourceVariantTreeSubscriber subscriber,
+			RepositoryMapping mapping, IResourceDelta delta) {
+		Repository repo = mapping.getRepository();
+		GitResourceDeltaVisitor visitor = new GitResourceDeltaVisitor(repo);
+		try {
+			delta.accept(visitor);
+			Collection<IFile> files = visitor.getFileResourcesToUpdate();
+			if (files != null && files.isEmpty())
+				return;
+
+			for (GitSynchronizeData gsd : gsds) {
+				if (repo.equals(gsd.getRepository()))
+					refreshResources(subscriber, files);
+			}
+		} catch (CoreException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+	}
+

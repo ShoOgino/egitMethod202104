@@ -1,0 +1,14 @@
+	/**
+	 * Constructs {@link GitResourceDeltaVisitor}
+	 *
+	 * @param repository
+	 *            which should be considered during visiting
+	 *            {@link IResourceDelta}s
+	 */
+	public GitResourceDeltaVisitor(Repository repository) {
+		this.repository = repository;
+
+		filesToUpdate = new HashSet<String>();
+		fileResourcesToUpdate = new HashSet<IFile>();
+	}
+
