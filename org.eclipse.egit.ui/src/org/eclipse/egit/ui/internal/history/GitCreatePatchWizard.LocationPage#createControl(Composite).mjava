@@ -63,7 +63,10 @@
 			fsPathText.addModifyListener(new ModifyListener() {
 
 				public void modifyText(ModifyEvent e) {
-					validatePage();
+					if (validatePage()) {
+						IPath filePath= Path.fromOSString(fsPathText.getText()).removeLastSegments(1);
+						getDialogSettings().put(PATH_KEY, filePath.toPortableString());
+					}
 				}
 			});
 

@@ -8,5 +8,7 @@
 	public GitCreatePatchWizard(RevCommit commit, Repository db) {
 		this.commit = commit;
 		this.db = db;
+
+		setDialogSettings(DialogSettings.getOrCreateSection(Activator.getDefault().getDialogSettings(), "GitCreatePatchWizard")); //$NON-NLS-1$
 	}
 

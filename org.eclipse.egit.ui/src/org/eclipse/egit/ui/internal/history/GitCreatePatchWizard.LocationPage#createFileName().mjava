@@ -1,6 +1,9 @@
 		private String createFileName() {
 			String suggestedFileName = CreatePatchOperation.suggestFileName(commit);
-			String defaultPath = db.getWorkTree().getAbsolutePath();
-			return (new File(defaultPath, suggestedFileName)).getPath();
+			String path = getDialogSettings().get(PATH_KEY);
+			if (path != null)
+				return Path.fromPortableString(path).append(suggestedFileName).toOSString();
+
+			return (new File(System.getProperty("user.dir", ""), suggestedFileName)).getPath(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
