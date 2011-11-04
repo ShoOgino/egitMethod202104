@@ -3,7 +3,8 @@
 		clearView();
 		refreshAndWait();
 		final Exception[] exceptions = new Exception[1];
-		final SWTBotTree tree = getOrOpenView().bot().tree();
+		final SWTBotLabel label = getOrOpenView().bot().label(
+				UIText.RepositoriesView_messsageEmpty);
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
@@ -13,8 +14,8 @@
 					clip.setContents(new Object[] { repositoryFile.getPath() },
 							new Transfer[] { TextTransfer.getInstance() });
 
-					ContextMenuHelper.clickContextMenu(tree, myUtil
-							.getPluginLocalizedValue("PastePathCommand"));
+					ContextMenuHelper.clickContextMenu(label,
+							myUtil.getPluginLocalizedValue("PastePathCommand"));
 				} catch (Exception e) {
 					exceptions[0] = e;
 				} finally {

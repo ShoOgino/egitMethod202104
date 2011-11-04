@@ -1,7 +1,12 @@
 	@SuppressWarnings("boxing")
 	@Override
 	public void createPartControl(Composite aParent) {
-		super.createPartControl(aParent);
+		Composite displayArea = new Composite(aParent, SWT.NONE);
+		layout = new StackLayout();
+		displayArea.setLayout(layout);
+		createEmptyArea(displayArea);
+
+		super.createPartControl(displayArea);
 
 		IWorkbenchWindow w = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
