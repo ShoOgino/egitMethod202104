@@ -24,10 +24,14 @@
 					suffixFilters.add(PathFilter.create(filterPath));
 				TreeFilter otf = OrTreeFilter.create(suffixFilters);
 				tw.setFilter(AndTreeFilter.create(otf, notIgnoredFilter));
-			} else if (filterPaths.size() > 0)
-				tw.setFilter(AndTreeFilter.create(PathFilter.create(filterPaths
-						.get(0)), notIgnoredFilter));
-			else
+			} else if (filterPaths.size() > 0) {
+				String path = filterPaths.get(0);
+				if (path.length() == 0)
+					tw.setFilter(notIgnoredFilter);
+				else
+					tw.setFilter(AndTreeFilter.create(PathFilter.create(path),
+							notIgnoredFilter));
+			} else
 				tw.setFilter(notIgnoredFilter);
 
 			tw.setRecursive(true);
