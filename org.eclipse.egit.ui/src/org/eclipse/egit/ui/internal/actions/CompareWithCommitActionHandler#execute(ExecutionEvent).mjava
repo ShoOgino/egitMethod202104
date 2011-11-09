@@ -12,8 +12,8 @@
 		if (resources.length == 1 && resources[0] instanceof IFile) {
 			final IFile baseFile = (IFile) resources[0];
 
-			final ITypedElement base = new FileRevisionTypedElement(
-					new LocalFileRevision(baseFile));
+			final ITypedElement base = SaveableCompareEditorInput
+					.createFileElement(baseFile);
 
 			final ITypedElement next;
 			try {
