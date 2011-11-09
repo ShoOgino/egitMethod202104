@@ -1,11 +1,11 @@
 	private void createPopupMenu(final TableViewer tableViewer) {
 		final MenuManager menuMgr = new MenuManager();
+		menuMgr.setRemoveAllWhenShown(true);
 		Control control = tableViewer.getControl();
 		control.setMenu(menuMgr.createContextMenu(control));
-		control.addMenuDetectListener(new MenuDetectListener() {
-			public void menuDetected(MenuDetectEvent e) {
-				menuMgr.removeAll();
+		menuMgr.addMenuListener(new IMenuListener() {
 
+			public void menuAboutToShow(IMenuManager manager) {
 				IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
 				if (selection.isEmpty())
 					return;
