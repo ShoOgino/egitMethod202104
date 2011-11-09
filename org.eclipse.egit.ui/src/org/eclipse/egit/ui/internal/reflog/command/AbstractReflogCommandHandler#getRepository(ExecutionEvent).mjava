@@ -1,0 +1,8 @@
+	protected Repository getRepository(ExecutionEvent event) throws ExecutionException {
+		IWorkbenchPart part = getPart(event);
+		if (!(part instanceof ReflogView))
+			throw new ExecutionException(
+					UIText.AbstractReflogCommandHandler_NoInput);
+		return (((ReflogView) part).getRepository());
+	}
+

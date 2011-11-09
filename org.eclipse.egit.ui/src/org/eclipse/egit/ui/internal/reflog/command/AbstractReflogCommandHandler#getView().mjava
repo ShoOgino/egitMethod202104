@@ -1,0 +1,13 @@
+	protected ReflogView getView() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		if (window == null)
+			return null;
+		if (window.getActivePage() == null)
+			return null;
+		IWorkbenchPart part = window.getActivePage().getActivePart();
+		if (!(part instanceof ReflogView))
+			return null;
+		return (ReflogView) part;
+	}
+

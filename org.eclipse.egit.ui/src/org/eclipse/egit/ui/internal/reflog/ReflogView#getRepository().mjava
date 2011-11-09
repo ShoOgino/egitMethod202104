@@ -1,4 +1,7 @@
-	private Repository getRepository() {
+	/**
+	 * @return the repository the view is showing the reflog for
+	 */
+	public Repository getRepository() {
 		Object input = refLogTableTreeViewer.getInput();
 		if (input instanceof ReflogInput)
 			return ((ReflogInput) input).getRepository();
