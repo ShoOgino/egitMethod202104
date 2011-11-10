@@ -1,8 +1,6 @@
 	/**
 	 * @param filesToCommit
 	 *            a list of files which will be included in the commit
-	 * @param notIndexed
-	 *            a list of all files with changes not in the index
 	 * @param notTracked
 	 *            a list of all untracked files
 	 * @param author
@@ -13,9 +11,8 @@
 	 *            the commit message
 	 * @throws CoreException
 	 */
-	public CommitOperation(IFile[] filesToCommit, Collection<IFile> notIndexed,
-			Collection<IFile> notTracked, String author, String committer,
-			String message) throws CoreException {
+	public CommitOperation(IFile[] filesToCommit, Collection<IFile> notTracked,
+			String author, String committer, String message) throws CoreException {
 		this.author = author;
 		this.committer = committer;
 		this.message = message;
@@ -23,8 +20,6 @@
 			setRepository(filesToCommit[0]);
 		if (filesToCommit != null)
 			commitFileList = buildFileList(Arrays.asList(filesToCommit));
-		if (notIndexed != null)
-			this.notIndexed = buildFileList(notIndexed);
 		if (notTracked != null)
 			this.notTracked = buildFileList(notTracked);
 	}

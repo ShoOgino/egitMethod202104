@@ -6,8 +6,8 @@
 				"foo/b.txt", "some text");
 		IFile[] filesToCommit = { fileA, fileB };
 		CommitOperation commitOperation = new CommitOperation(filesToCommit,
-				EMPTY_FILE_LIST, Arrays.asList(filesToCommit),
-				TestUtils.AUTHOR, TestUtils.COMMITTER, "first commit");
+				Arrays.asList(filesToCommit), TestUtils.AUTHOR,
+				TestUtils.COMMITTER, "first commit");
 		commitOperation.execute(null);
 
 		testUtils.changeContentOfFile(project.getProject(), fileA,
@@ -17,8 +17,8 @@
 		resources.add(fileA);
 		resources.add(fileB);
 		commitOperation = new CommitOperation(filesToCommit,
-				Arrays.asList(filesToCommit), EMPTY_FILE_LIST,
-				TestUtils.AUTHOR, TestUtils.COMMITTER, "first commit");
+				EMPTY_FILE_LIST, TestUtils.AUTHOR,
+				TestUtils.COMMITTER, "first commit");
 		commitOperation.execute(null);
 
 		testUtils.assertRepositoryContainsFilesWithContent(repository,
