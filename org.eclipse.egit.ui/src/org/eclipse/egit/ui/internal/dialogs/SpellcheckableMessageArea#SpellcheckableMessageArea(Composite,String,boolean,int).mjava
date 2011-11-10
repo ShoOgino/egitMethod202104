@@ -31,8 +31,6 @@
 		final SourceViewerDecorationSupport support = configureAnnotationPreferences();
 		final IHandlerActivation handlerActivation = installQuickFixActionHandler();
 
-		configureContextMenu();
-
 		Document document = new Document(initialText);
 
 		sourceViewer.configure(new TextSourceViewerConfiguration(EditorsUI
@@ -70,6 +68,8 @@
 
 		});
 		sourceViewer.setDocument(document, annotationModel);
+
+		configureContextMenu();
 
 		getTextWidget().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent disposeEvent) {
