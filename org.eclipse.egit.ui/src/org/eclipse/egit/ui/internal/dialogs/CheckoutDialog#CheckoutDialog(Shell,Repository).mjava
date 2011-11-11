@@ -4,7 +4,8 @@
 	 */
 	public CheckoutDialog(Shell parentShell, Repository repo) {
 		super(parentShell, repo, SHOW_LOCAL_BRANCHES | SHOW_REMOTE_BRANCHES
-				| SHOW_TAGS | SHOW_REFERENCES | EXPAND_LOCAL_BRANCHES_NODE);
+				| SHOW_TAGS | SHOW_REFERENCES | EXPAND_LOCAL_BRANCHES_NODE
+				| ALLOW_MULTISELECTION);
 		try {
 			currentBranch = repo.getFullBranch();
 		} catch (IOException e) {

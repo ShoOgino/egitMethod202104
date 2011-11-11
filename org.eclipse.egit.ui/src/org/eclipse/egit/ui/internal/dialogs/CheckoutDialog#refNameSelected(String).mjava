@@ -7,11 +7,26 @@
 				&& (refName.startsWith(Constants.R_HEADS) || refName
 						.startsWith(Constants.R_REMOTES));
 
-		getButton(Window.OK).setEnabled(branchSelected || tagSelected);
+		// handle multiple selection
+		if (((TreeSelection) branchTree.getSelection()).size() > 1) {
+			TreeSelection selection = (TreeSelection) branchTree
+					.getSelection();
+			boolean onlyBranchesAreSelected = onlyBranchesAreSelected(selection);
 
-		// we don't support rename on tags
-		renameButton.setEnabled(branchSelected && !tagSelected);
-		deleteteButton.setEnabled(branchSelected && !tagSelected);
+			// enable/disable buttons
+			deleteteButton.setEnabled(onlyBranchesAreSelected);
+			renameButton.setEnabled(false);
+			newButton.setEnabled(false);
+		} else {
+			getButton(Window.OK).setEnabled(branchSelected || tagSelected);
+
+			// we don't support rename on tags
+			renameButton.setEnabled(branchSelected && !tagSelected);
+			deleteteButton.setEnabled(branchSelected && !tagSelected);
+
+			// new button should be always enabled
+			newButton.setEnabled(true);
+		}
 
 		getButton(Window.OK).setEnabled(
 				refName != null && !refName.equals(currentBranch));
