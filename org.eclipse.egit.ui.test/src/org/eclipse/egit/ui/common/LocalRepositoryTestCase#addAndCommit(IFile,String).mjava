@@ -7,8 +7,8 @@
 		ArrayList<IFile> untracked = new ArrayList<IFile>();
 		untracked.addAll(Arrays.asList(commitables));
 		CommitOperation op = new CommitOperation(commitables,
-				new ArrayList<IFile>(), untracked, TestUtil.TESTAUTHOR,
-				TestUtil.TESTCOMMITTER, commitMessage);
+				untracked, TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER,
+				commitMessage);
 		op.execute(null);
 	}
 

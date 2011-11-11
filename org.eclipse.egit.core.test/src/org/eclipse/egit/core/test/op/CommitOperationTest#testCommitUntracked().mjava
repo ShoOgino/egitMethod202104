@@ -8,8 +8,8 @@
 				"some text");
 		IFile[] filesToCommit = { fileA, fileB };
 		CommitOperation commitOperation = new CommitOperation(filesToCommit,
-				EMPTY_FILE_LIST, Arrays.asList(filesToCommit),
-				TestUtils.AUTHOR, TestUtils.COMMITTER, "first commit");
+				Arrays.asList(filesToCommit), TestUtils.AUTHOR,
+				TestUtils.COMMITTER, "first commit");
 		commitOperation.execute(null);
 		testUtils.assertRepositoryContainsFiles(repository, getRepoRelativePaths(filesToCommit));
 	}

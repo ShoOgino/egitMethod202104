@@ -2,8 +2,6 @@
 	 * @param repository
 	 * @param filesToCommit
 	 *            a list of files which will be included in the commit
-	 * @param notIndexed
-	 *            a list of all files with changes not in the index
 	 * @param notTracked
 	 *            a list of all untracked files
 	 * @param author
@@ -14,17 +12,14 @@
 	 *            the commit message
 	 * @throws CoreException
 	 */
-	public CommitOperation(Repository repository, Collection<String> filesToCommit, Collection<String> notIndexed,
-			Collection<String> notTracked, String author, String committer,
-			String message) throws CoreException {
+	public CommitOperation(Repository repository, Collection<String> filesToCommit, Collection<String> notTracked,
+			String author, String committer, String message) throws CoreException {
 		this.repo = repository;
 		this.author = author;
 		this.committer = committer;
 		this.message = message;
 		if (filesToCommit != null)
 			commitFileList = new HashSet<String>(filesToCommit);
-		if (notIndexed != null)
-			this.notIndexed = new HashSet<String>(notIndexed);
 		if (notTracked != null)
 			this.notTracked = new HashSet<String>(notTracked);
 	}
