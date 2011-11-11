@@ -1,4 +1,22 @@
 	private void reload(final Repository repository) {
+		if (repository == null) {
+			if (currentRepository == null)
+				return;
+			saveCommitMessageComponentState();
+			currentRepository = null;
+			StagingViewUpdate update = new StagingViewUpdate(null, null, null);
+			unstagedTableViewer.setInput(update);
+			stagedTableViewer.setInput(update);
+			enableCommitWidgets(false);
+			updateSectionText();
+			form.setText(UIText.StagingView_NoSelectionTitle);
+			return;
+		}
+
+		// Ignore bare repositories that are selected
+		if (repository.isBare())
+			return;
+
 		final boolean repositoryChanged = currentRepository != repository;
 
 		final AtomicReference<IndexDiff> results = new AtomicReference<IndexDiff>();

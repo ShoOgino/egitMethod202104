@@ -1,6 +1,7 @@
 	private void saveCommitMessageComponentState() {
-		CommitMessageComponentStateManager.persistState(
-				commitMessageComponent.getRepository(),
-				commitMessageComponent.getState());
+		final Repository repo = commitMessageComponent.getRepository();
+		if (repo != null)
+			CommitMessageComponentStateManager.persistState(repo,
+					commitMessageComponent.getState());
 	}
 

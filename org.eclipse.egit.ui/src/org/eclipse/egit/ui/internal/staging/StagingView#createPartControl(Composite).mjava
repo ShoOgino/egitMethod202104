@@ -190,6 +190,10 @@
 		else
 			preferenceStore.setDefault(UIPreferences.STAGING_VIEW_SYNC_SELECTION, true);
 
+		InstanceScope.INSTANCE.getNode(
+				org.eclipse.egit.core.Activator.getPluginId())
+				.addPreferenceChangeListener(prefListener);
+
 		resourceChangeListener = new IResourceChangeListener() {
 			public void resourceChanged(IResourceChangeEvent event) {
 				final Collection<String> resourcesToUpdate = new HashSet<String>();

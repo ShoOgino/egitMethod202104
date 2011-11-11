@@ -1,4 +1,10 @@
 	private void enableCommitWidgets(boolean enabled) {
+		if (!enabled) {
+			commitMessageText.setText(""); //$NON-NLS-1$
+			committerText.setText(""); //$NON-NLS-1$
+			authorText.setText(""); //$NON-NLS-1$
+		}
+
 		commitMessageText.setEnabled(enabled);
 		committerText.setEnabled(enabled);
 		authorText.setEnabled(enabled);

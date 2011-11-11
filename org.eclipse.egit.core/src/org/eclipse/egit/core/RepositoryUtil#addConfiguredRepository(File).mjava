@@ -13,12 +13,7 @@
 			if (!FileKey.isGitRepository(repositoryDir, FS.DETECTED))
 				throw new IllegalArgumentException();
 
-			String dirString;
-			try {
-				dirString = repositoryDir.getCanonicalPath();
-			} catch (IOException e) {
-				dirString = repositoryDir.getAbsolutePath();
-			}
+			String dirString = getPath(repositoryDir);
 
 			List<String> dirStrings = getConfiguredRepositories();
 			if (dirStrings.contains(dirString)) {

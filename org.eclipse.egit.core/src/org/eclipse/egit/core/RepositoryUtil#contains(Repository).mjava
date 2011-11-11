@@ -1,0 +1,11 @@
+	/**
+	 * Does the collection of repository returned by
+	 * {@link #getConfiguredRepositories()} contain the given repository?
+	 *
+	 * @param repository
+	 * @return true if contains repository, false otherwise
+	 */
+	public boolean contains(final Repository repository) {
+		return contains(getPath(repository.getDirectory()));
+	}
+

@@ -6,6 +6,9 @@
 				ISelectionService.class);
 		srv.removePostSelectionListener(selectionChangedListener);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+		InstanceScope.INSTANCE.getNode(
+				org.eclipse.egit.core.Activator.getPluginId())
+				.removePreferenceChangeListener(prefListener);
 
 		removeListeners();
 		if (reloadJob != null) {
