@@ -1,5 +1,7 @@
 	private GitDocument(IResource resource) {
 		this.resource = resource;
-		GitDocument.doc2repo.put(this, getRepository());
+		synchronized (doc2repo) {
+			doc2repo.put(this, getRepository());
+		}
 	}
 

@@ -2,6 +2,11 @@
 		if (GitTraceLocation.QUICKDIFF.isActive())
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.QUICKDIFF.getLocation(), resource);
+
+		// Do not populate if already disposed
+		if (myRefsChangedHandle == null)
+			return;
+
 		TreeWalk tw = null;
 		RevWalk rw = null;
 		try {

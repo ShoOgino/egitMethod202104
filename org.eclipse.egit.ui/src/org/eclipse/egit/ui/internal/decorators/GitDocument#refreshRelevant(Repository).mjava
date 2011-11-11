@@ -7,10 +7,12 @@
 	 * @throws IOException
 	 */
 	static void refreshRelevant(final Repository repository) throws IOException {
-		for (Map.Entry<GitDocument, Repository> i : doc2repo.entrySet()) {
-			if (i.getValue() == repository) {
-				i.getKey().populate();
-			}
+		final Entry[] docs;
+		synchronized (doc2repo) {
+			docs = doc2repo.entrySet().toArray(new Entry[doc2repo.size()]);
 		}
+		for (Entry doc : docs)
+			if (doc.getValue() == repository)
+				((GitDocument) doc.getKey()).populate();
 	}
 

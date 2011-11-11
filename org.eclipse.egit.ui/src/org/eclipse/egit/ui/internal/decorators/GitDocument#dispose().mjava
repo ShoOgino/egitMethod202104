@@ -3,8 +3,9 @@
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.QUICKDIFF.getLocation(),
 					"(GitDocument) dispose: " + resource); //$NON-NLS-1$
-		doc2repo.remove(this);
-
+		synchronized (doc2repo) {
+			doc2repo.remove(this);
+		}
 		if (myRefsChangedHandle != null) {
 			myRefsChangedHandle.remove();
 			myRefsChangedHandle = null;
