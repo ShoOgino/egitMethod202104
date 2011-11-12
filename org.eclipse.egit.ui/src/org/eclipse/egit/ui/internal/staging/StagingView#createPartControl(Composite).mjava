@@ -190,7 +190,7 @@
 		else
 			preferenceStore.setDefault(UIPreferences.STAGING_VIEW_SYNC_SELECTION, true);
 
-		InstanceScope.INSTANCE.getNode(
+		new InstanceScope().getNode(
 				org.eclipse.egit.core.Activator.getPluginId())
 				.addPreferenceChangeListener(prefListener);
 

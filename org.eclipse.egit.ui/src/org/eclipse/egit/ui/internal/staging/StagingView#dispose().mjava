@@ -6,7 +6,7 @@
 				ISelectionService.class);
 		srv.removePostSelectionListener(selectionChangedListener);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
-		InstanceScope.INSTANCE.getNode(
+		new InstanceScope().getNode(
 				org.eclipse.egit.core.Activator.getPluginId())
 				.removePreferenceChangeListener(prefListener);
 
