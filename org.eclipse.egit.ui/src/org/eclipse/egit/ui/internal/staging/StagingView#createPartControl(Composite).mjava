@@ -239,7 +239,8 @@
 				if (!resourcesToUpdate.isEmpty()) {
 					final IndexDiff indexDiff;
 					try {
-						WorkingTreeIterator iterator = IteratorService.createInitialIterator(currentRepository);
+						WorkingTreeIterator iterator = new FileTreeIterator(
+								currentRepository);
 						indexDiff = new IndexDiff(currentRepository, Constants.HEAD, iterator);
 						indexDiff.setFilter(PathFilterGroup.createFromStrings(resourcesToUpdate));
 						indexDiff.diff();
