@@ -8,7 +8,26 @@
 		label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		FilteredCheckboxTree fTree = new FilteredCheckboxTree(panel, null,
-				SWT.NONE, new PatternFilter());
+				SWT.NONE, new PatternFilter()) {
+			/*
+			 * Overridden to check page when refreshing is done.
+			 */
+			protected WorkbenchJob doCreateRefreshJob() {
+				WorkbenchJob refreshJob = super.doCreateRefreshJob();
+				refreshJob.addJobChangeListener(new JobChangeAdapter() {
+					public void done(IJobChangeEvent event) {
+						if (event.getResult().isOK()) {
+							getDisplay().asyncExec(new Runnable() {
+								public void run() {
+									checkPage();
+								}
+							});
+						}
+					}
+				});
+				return refreshJob;
+			}
+		};
 		refsViewer = fTree.getCheckboxTreeViewer();
 
 		ITreeContentProvider provider = new ITreeContentProvider() {
