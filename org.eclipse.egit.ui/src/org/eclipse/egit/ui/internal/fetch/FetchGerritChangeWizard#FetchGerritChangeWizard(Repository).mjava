@@ -3,6 +3,7 @@
 	 *            the repository
 	 */
 	public FetchGerritChangeWizard(Repository repository) {
+		Assert.isNotNull(repository);
 		this.repository = repository;
 		setNeedsProgressMonitor(true);
 		setHelpAvailable(false);

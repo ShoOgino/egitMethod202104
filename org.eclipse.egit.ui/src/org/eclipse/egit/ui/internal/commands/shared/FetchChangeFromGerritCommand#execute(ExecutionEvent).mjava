@@ -1,5 +1,16 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repository = getRepository(event);
+		if (repository == null) {
+			Shell shell = getShell(event);
+			MessageDialog
+					.openInformation(
+							shell,
+							UIText.FetchChangeFromGerritCommand_noRepositorySelectedTitle,
+							UIText.FetchChangeFromGerritCommand_noRepositorySelectedMessage);
+
+			return null;
+		}
+
 		FetchGerritChangeWizard wiz = new FetchGerritChangeWizard(repository);
 		WizardDialog dlg = new WizardDialog(HandlerUtil
 				.getActiveShellChecked(event), wiz);
