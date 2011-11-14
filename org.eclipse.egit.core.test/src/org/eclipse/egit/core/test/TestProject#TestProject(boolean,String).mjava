@@ -1,22 +1,10 @@
 	/**
 	 * @param remove
 	 *            should project be removed if already exists
-	 * @param projectName
+	 * @param path
 	 * @throws CoreException
 	 */
-	public TestProject(final boolean remove, String projectName) throws CoreException {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		project = root.getProject(projectName);
-		if (remove)
-			project.delete(true, null);
-		project.create(null);
-		project.open(null);
-		location = project.getLocation().toOSString();
-		javaProject = JavaCore.create(project);
-		IFolder binFolder = createBinFolder();
-		setJavaNature();
-		javaProject.setRawClasspath(new IClasspathEntry[0], null);
-		createOutputFolder(binFolder);
-		addSystemLibraries();
+	public TestProject(final boolean remove, String path) throws CoreException {
+		this(remove, path, true, null);
 	}
 

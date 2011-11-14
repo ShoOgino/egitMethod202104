@@ -8,11 +8,11 @@
 	 * @param content
 	 *            the contents
 	 * @return the file
-	 * @throws Exception
+	 * @throws CoreException
 	 *             if the file can not be created
+	 * @throws UnsupportedEncodingException
 	 */
-	public IFile addFileToProject(IProject project, String path, String content)
-			throws Exception {
+	public IFile addFileToProject(IProject project, String path, String content) throws CoreException, UnsupportedEncodingException {
 		IPath filePath = new Path(path);
 		IFolder folder = null;
 		for (int i = 0; i < filePath.segmentCount() - 1; i++) {

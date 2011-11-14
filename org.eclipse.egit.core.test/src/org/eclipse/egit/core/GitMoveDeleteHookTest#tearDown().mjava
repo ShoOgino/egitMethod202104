@@ -1,0 +1,10 @@
+	@After
+	public void tearDown() throws IOException {
+		if (testRepository != null)
+			testRepository.dispose();
+		repository = null;
+		for (File d : gitDirs)
+			if (d.exists())
+				FileUtils.delete(d, FileUtils.RECURSIVE | FileUtils.RETRY);
+	}
+

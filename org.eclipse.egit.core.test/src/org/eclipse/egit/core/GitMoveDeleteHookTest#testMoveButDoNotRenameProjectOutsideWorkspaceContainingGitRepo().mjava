@@ -1,0 +1,36 @@
+	/**
+	 * Move a project outside the workspace containing a Git repository, but do not rename it.
+	 * <p>
+	 * Note the similarity of the code with {@link #testMoveAndRenameProjectContainingGitRepo()}
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testMoveButDoNotRenameProjectOutsideWorkspaceContainingGitRepo() throws Exception {
+		ResourcesPlugin.getWorkspace().getRoot().getProject("Project-1").delete(true, null);
+		ResourcesPlugin.getWorkspace().getRoot().getProject("P2").delete(true, null);
+		TestProject project = initRepoInsideProjectOutsideWorkspace();
+		testUtils.addFileToProject(project.getProject(), "file.txt",
+				"some text");
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(
+				new IResource[] { project.getProject().getFile("file.txt") });
+		addToIndexOperation.execute(null);
+		IProjectDescription description = project.getProject().getDescription();
+		description.setLocationURI(URIUtil.toURI(new Path(new File(project.getWorkspaceSupplement(), "P2").getAbsolutePath())));
+		project.getProject().move(description,
+				IResource.FORCE | IResource.SHALLOW, null);
+		IProject project2 = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject("Project-1"); // same name
+		assertNotNull(RepositoryMapping.getMapping(project2.getProject()));
+		Repository movedRepo = RepositoryMapping.getMapping(project2)
+				.getRepository();
+		assertEquals("P2",
+				movedRepo.getDirectory().getParentFile()
+						.getName());
+		DirCache dc = movedRepo.readDirCache();
+		assertEquals(1, dc.getEntryCount());
+		assertEquals("file.txt", dc.getEntry(0).getPathString());
+
+		assertFalse(ResourcesPlugin.getWorkspace().getRoot().getProject("P2").exists());
+	}
+

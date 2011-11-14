@@ -1,0 +1,13 @@
+	private TestProject initRepoAboveProject(String srcParent, String d, boolean insidews)
+			throws IOException, CoreException {
+		TestProject project = new TestProject(true, srcParent + "Project-1", insidews, workspaceSupplement);
+		File gd = new File(insidews?workspace:workspaceSupplement, d);
+
+		File gitDir = new File(gd, Constants.DOT_GIT);
+		gitDirs.add(gitDir);
+		testRepository = new TestRepository(gitDir);
+		repository = testRepository.getRepository();
+		testRepository.connect(project.getProject());
+		return project;
+	}
+

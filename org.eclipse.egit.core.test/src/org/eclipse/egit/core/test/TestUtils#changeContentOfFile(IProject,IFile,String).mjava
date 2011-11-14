@@ -5,10 +5,10 @@
 	 * @param file
 	 * @param newContent
 	 * @return the file
-	 * @throws Exception
+	 * @throws CoreException
+	 * @throws UnsupportedEncodingException
 	 */
-	public IFile changeContentOfFile(IProject project, IFile file, String newContent)
-			throws Exception {
+	public IFile changeContentOfFile(IProject project, IFile file, String newContent) throws UnsupportedEncodingException, CoreException {
 		file.setContents(new ByteArrayInputStream(newContent.getBytes(project
 				.getDefaultCharset())), 0, null);
 		return file;
