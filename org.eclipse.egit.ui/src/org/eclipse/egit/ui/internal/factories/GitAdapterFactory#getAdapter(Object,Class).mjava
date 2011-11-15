@@ -5,6 +5,9 @@
 		}
 
 		if (IWorkbenchAdapter.class == adapterType) {
+			if (adaptableObject instanceof RepositoryNode)
+				return getRepsitoryNodeWorkbenchAdapter((RepositoryNode)adaptableObject);
+
 			if (gitModelWorkbenchAdapter == null)
 				gitModelWorkbenchAdapter = new GitModelWorkbenchAdapter();
 			return gitModelWorkbenchAdapter;
