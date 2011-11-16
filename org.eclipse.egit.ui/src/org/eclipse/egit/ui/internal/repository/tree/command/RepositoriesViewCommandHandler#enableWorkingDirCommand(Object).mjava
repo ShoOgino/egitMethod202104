@@ -7,11 +7,11 @@
 	 * @param evaluationContext
 	 */
 	protected void enableWorkingDirCommand(Object evaluationContext) {
-		if (!(evaluationContext instanceof EvaluationContext)) {
+		if (!(evaluationContext instanceof IEvaluationContext)) {
 			setBaseEnabled(false);
 			return;
 		}
-		EvaluationContext context = (EvaluationContext) evaluationContext;
+		IEvaluationContext context = (IEvaluationContext) evaluationContext;
 		Object selection = context
 				.getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
 		if (!(selection instanceof TreeSelection)) {
