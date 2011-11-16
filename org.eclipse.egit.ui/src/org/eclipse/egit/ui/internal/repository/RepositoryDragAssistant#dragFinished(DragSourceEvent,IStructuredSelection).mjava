@@ -1,0 +1,7 @@
+	public void dragFinished(final DragSourceEvent event,
+			final IStructuredSelection selection) {
+		if (LocalSelectionTransfer.getTransfer()
+				.isSupportedType(event.dataType))
+			LocalSelectionTransfer.getTransfer().setSelection(selection);
+	}
+
