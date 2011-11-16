@@ -21,7 +21,9 @@
 					message = revCommit.getFullMessage();
 					timestamp = (long)revCommit.getCommitTime() * 1000;
 				}
-			} catch (Exception e) {
+			} catch (IOException e) {
+				continue;
+			} catch (RuntimeException e) {
 				continue;
 			}
 
