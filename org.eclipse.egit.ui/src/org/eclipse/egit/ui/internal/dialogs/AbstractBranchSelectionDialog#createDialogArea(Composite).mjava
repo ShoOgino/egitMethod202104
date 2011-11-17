@@ -33,9 +33,8 @@
 		});
 
 		// double-click support
-		branchTree.addOpenListener(new IOpenListener() {
-
-			public void open(OpenEvent event) {
+		branchTree.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
 				RepositoryTreeNode node = (RepositoryTreeNode) ((IStructuredSelection) branchTree
 						.getSelection()).getFirstElement();
 				if (node == null)
@@ -48,7 +47,6 @@
 							!branchTree.getExpandedState(node));
 				else if (getButton(Window.OK).isEnabled())
 					buttonPressed(OK);
-
 			}
 		});
 
