@@ -29,6 +29,8 @@
 						actMonitor.setTaskName(projectRecord.getProjectLabel());
 						IProject project = createExistingProject(projectRecord,
 								new SubProgressMonitor(actMonitor, 1));
+						if (project == null)
+							continue;
 						if (repository != null) {
 							ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
 									project, repository.getDirectory());

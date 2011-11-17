@@ -3,6 +3,8 @@
 		String projectName = record.getProjectName();
 		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		final IProject project = workspace.getRoot().getProject(projectName);
+		if (project.exists())
+			return null;
 		if (record.getProjectDescription() == null) {
 			// error case
 			record.setProjectDescription(workspace
