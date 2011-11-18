@@ -1,0 +1,9 @@
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		try {
+			Git.wrap(repository).tagDelete().setTags(tag).call();
+		} catch (JGitInternalException e) {
+			throw new CoreException(Activator.error(
+					CoreText.DeleteTagOperation_exceptionMessage, e));
+		}
+	}
+
