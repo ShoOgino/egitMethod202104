@@ -1,0 +1,11 @@
+	@Test
+	public void testEnsureDefaultPortFtp() throws Exception {
+		URIish uri = new URIish("ftp://testRepo.example.com/testrepo");
+		UserPasswordCredentials credentials = new UserPasswordCredentials(
+				"agitter", "letmein");
+		store.putCredentials(uri, credentials);
+		URIish uri2 = new URIish("ftp://testRepo.example.com:21/testrepo");
+		assertEquals(credentials.getUser(), store.getCredentials(uri2).getUser());
+		assertEquals(credentials.getPassword(), store.getCredentials(uri2).getPassword());
+	}
+

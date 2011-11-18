@@ -1,0 +1,11 @@
+	@Test
+	public void testEnsureDefaultPortSsh() throws Exception {
+		URIish uri = new URIish("ssh://agitter@testRepo.example.com/testrepo");
+		UserPasswordCredentials credentials = new UserPasswordCredentials(
+				"agitter", "letmein");
+		store.putCredentials(uri, credentials);
+		URIish uri2 = new URIish("ssh://testRepo.example.com:22/testrepo");
+		assertEquals(credentials.getUser(), store.getCredentials(uri2).getUser());
+		assertEquals(credentials.getPassword(), store.getCredentials(uri2).getPassword());
+	}
+
