@@ -6,7 +6,10 @@
 	 *         or null for non GitProvider.
 	 */
 	public static RepositoryMapping getMapping(final IResource resource) {
-		final IProject project = resource.getProject();
+		if (isNonWorkspace(resource))
+			return getMappingForNonWorkspaceResource(resource);
+
+		IProject project = resource.getProject();
 		if (project == null)
 			return null;
 
