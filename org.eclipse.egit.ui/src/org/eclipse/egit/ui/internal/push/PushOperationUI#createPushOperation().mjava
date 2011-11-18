@@ -19,9 +19,6 @@
 
 			List<RefSpec> pushRefSpecs = new ArrayList<RefSpec>();
 			pushRefSpecs.addAll(config.getPushRefSpecs());
-			if (pushRefSpecs.isEmpty())
-				// default push to all branches
-				pushRefSpecs.add(DEFAULT_PUSH_REF_SPEC);
 
 			for (URIish uri : urisToPush) {
 				try {
