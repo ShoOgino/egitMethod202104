@@ -2,24 +2,25 @@
 	protected CommonViewer createCommonViewer(Composite aParent) {
 		ConfigurationChecker.checkConfiguration();
 		CommonViewer viewer = super.createCommonViewer(aParent);
-		// handle the double-click event
+		// handle the double-click event for tags and branches
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				TreeSelection sel = (TreeSelection) event.getSelection();
+				RepositoryTreeNode element = (RepositoryTreeNode) sel
+						.getFirstElement();
+				if (element instanceof RefNode || element instanceof TagNode) {
+					executeOpenCommand();
+				}
+			}
+		});
+		// handle open event for the working directory
 		viewer.addOpenListener(new IOpenListener() {
-
 			public void open(OpenEvent event) {
 				TreeSelection sel = (TreeSelection) event.getSelection();
 				RepositoryTreeNode element = (RepositoryTreeNode) sel
 						.getFirstElement();
-
-				if (element instanceof RefNode || element instanceof FileNode
-						|| element instanceof TagNode) {
-					IHandlerService srv = (IHandlerService) getViewSite()
-							.getService(IHandlerService.class);
-
-					try {
-						srv.executeCommand("org.eclipse.egit.ui.RepositoriesViewOpen", null); //$NON-NLS-1$
-					} catch (Exception e) {
-						Activator.handleError(e.getMessage(), e, false);
-					}
+				if (element instanceof FileNode) {
+					executeOpenCommand();
 				}
 			}
 		});
