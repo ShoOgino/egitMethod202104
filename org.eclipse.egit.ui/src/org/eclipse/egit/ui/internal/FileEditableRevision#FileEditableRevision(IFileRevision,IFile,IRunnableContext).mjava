@@ -1,0 +1,17 @@
+	/**
+	 * Create a new FileEditableRevision.
+	 *
+	 * @param fileRevision
+	 * @param file
+	 *            the file to write the changed contents to
+	 * @param runnableContext
+	 *            the context to use for the file write operation
+	 */
+	public FileEditableRevision(IFileRevision fileRevision, IFile file,
+			IRunnableContext runnableContext) {
+		super(fileRevision);
+		this.file = file;
+		Assert.isNotNull(runnableContext);
+		this.runnableContext = runnableContext;
+	}
+
