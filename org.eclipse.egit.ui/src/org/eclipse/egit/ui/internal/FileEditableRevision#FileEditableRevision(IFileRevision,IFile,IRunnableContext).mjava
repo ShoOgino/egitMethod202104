@@ -9,7 +9,7 @@
 	 */
 	public FileEditableRevision(IFileRevision fileRevision, IFile file,
 			IRunnableContext runnableContext) {
-		super(fileRevision);
+		super(fileRevision, CompareCoreUtils.getResourceEncoding(file));
 		this.file = file;
 		Assert.isNotNull(runnableContext);
 		this.runnableContext = runnableContext;
