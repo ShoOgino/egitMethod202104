@@ -20,6 +20,7 @@
 		addToIndexOperation.execute(null);
 		IProjectDescription description = project.getProject().getDescription();
 		description.setName("P2");
+		registerWorkspaceRelativeTestDir("P2");
 		project.getProject().move(description,
 				IResource.FORCE | IResource.SHALLOW, null);
 		IProject project2 = ResourcesPlugin.getWorkspace().getRoot()
