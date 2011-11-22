@@ -51,15 +51,11 @@
 		unstagedTableViewer.setLabelProvider(createLabelProvider());
 		unstagedTableViewer.setContentProvider(new StagingViewContentProvider(
 				true));
-		unstagedTableViewer.addDragSupport(DND.DROP_MOVE,
-				new Transfer[] { LocalSelectionTransfer.getTransfer() },
-				new DragSourceAdapter() {
-					public void dragStart(DragSourceEvent event) {
-						IStructuredSelection selection = (IStructuredSelection) unstagedTableViewer
-								.getSelection();
-						event.doit = !selection.isEmpty();
-					}
-				});
+		unstagedTableViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY
+				| DND.DROP_LINK,
+				new Transfer[] { LocalSelectionTransfer.getTransfer(),
+						FileTransfer.getInstance() }, new StagingDragListener(
+						unstagedTableViewer));
 		unstagedTableViewer.addDropSupport(DND.DROP_MOVE,
 				new Transfer[] { LocalSelectionTransfer.getTransfer() },
 				new DropTargetAdapter() {
@@ -138,15 +134,11 @@
 		stagedTableViewer.setLabelProvider(createLabelProvider());
 		stagedTableViewer.setContentProvider(new StagingViewContentProvider(
 				false));
-		stagedTableViewer.addDragSupport(DND.DROP_MOVE,
-				new Transfer[] { LocalSelectionTransfer.getTransfer() },
-				new DragSourceAdapter() {
-					public void dragStart(DragSourceEvent event) {
-						IStructuredSelection selection = (IStructuredSelection) stagedTableViewer
-								.getSelection();
-						event.doit = !selection.isEmpty();
-					}
-				});
+		stagedTableViewer.addDragSupport(
+				DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK,
+				new Transfer[] { LocalSelectionTransfer.getTransfer(),
+						FileTransfer.getInstance() }, new StagingDragListener(
+						stagedTableViewer));
 		stagedTableViewer.addDropSupport(DND.DROP_MOVE,
 				new Transfer[] { LocalSelectionTransfer.getTransfer() },
 				new DropTargetAdapter() {
