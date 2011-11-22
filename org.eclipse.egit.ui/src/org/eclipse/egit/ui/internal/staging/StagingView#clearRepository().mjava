@@ -1,0 +1,17 @@
+	/**
+	 * Clear the view's state.
+	 * <p>
+	 * This method must be called from the UI-thread
+	 */
+	private void clearRepository() {
+		saveCommitMessageComponentState();
+		currentRepository = null;
+		removeListeners();
+		StagingViewUpdate update = new StagingViewUpdate(null, null, null);
+		unstagedTableViewer.setInput(update);
+		stagedTableViewer.setInput(update);
+		enableCommitWidgets(false);
+		updateSectionText();
+		form.setText(UIText.StagingView_NoSelectionTitle);
+	}
+

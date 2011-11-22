@@ -1,20 +1,17 @@
 	private void reload(final Repository repository) {
+		if (form.isDisposed())
+			return;
 		if (repository == null) {
-			if (currentRepository == null)
-				return;
-			saveCommitMessageComponentState();
-			currentRepository = null;
-			StagingViewUpdate update = new StagingViewUpdate(null, null, null);
-			unstagedTableViewer.setInput(update);
-			stagedTableViewer.setInput(update);
-			enableCommitWidgets(false);
-			updateSectionText();
-			form.setText(UIText.StagingView_NoSelectionTitle);
+			asyncExec(new Runnable() {
+
+				public void run() {
+					clearRepository();
+				}
+			});
 			return;
 		}
 
-		// Ignore bare repositories that are selected
-		if (repository.isBare())
+		if (!isValidRepo(repository))
 			return;
 
 		final boolean repositoryChanged = currentRepository != repository;
