@@ -3,6 +3,20 @@
 		// Don't include ignored resources
 		if (Team.isIgnoredHint(resource))
 			return false;
+		// If the resource is not part of a project under
+		// Git revision control
+		final RepositoryMapping mapping = RepositoryMapping
+				.getMapping(resource);
+		if (mapping == null || mapping.getRepository() != repository)
+			// Ignore the change
+			return true;
+
+		if (resource instanceof IFolder
+				&& delta.getKind() == IResourceDelta.ADDED) {
+			filesToUpdate.add(mapping.getRepoRelativePath(resource) + "/"); //$NON-NLS-1$
+			resourcesToUpdate.add(resource);
+			return true;
+		}
 
 		// If the file has changed but not in a way that we
 		// care about (e.g. marker changes to files) then
@@ -15,14 +29,6 @@
 		if (resource.getType() != IResource.FILE)
 			return true;
 
-		// If the resource is not part of a project under
-		// Git revision control
-		final RepositoryMapping mapping = RepositoryMapping
-				.getMapping(resource);
-		if (mapping == null || mapping.getRepository() != repository)
-			// Ignore the change
-			return true;
-
 		if (resource.getName().equals(GITIGNORE_NAME)) {
 			gitIgnoreChanged = true;
 			return false;
@@ -30,7 +36,7 @@
 
 		String repoRelativePath = mapping.getRepoRelativePath(resource);
 		filesToUpdate.add(repoRelativePath);
-		fileResourcesToUpdate.add((IFile) resource);
+		resourcesToUpdate.add(resource);
 
 		return true;
 	}

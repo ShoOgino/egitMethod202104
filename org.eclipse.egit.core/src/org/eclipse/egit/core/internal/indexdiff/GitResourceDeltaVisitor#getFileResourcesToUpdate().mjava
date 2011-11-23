@@ -1,7 +1,11 @@
 	/**
-	 * @return collection of resources to update
+	 * @return collection of files to update
 	 */
 	public Collection<IFile> getFileResourcesToUpdate() {
-		return fileResourcesToUpdate;
+		Collection<IFile> result = new ArrayList<IFile>();
+		for (IResource resource : resourcesToUpdate)
+			if (resource instanceof IFile)
+				result.add((IFile) resource);
+		return result;
 	}
 

@@ -5,21 +5,23 @@
 	 *
 	 * @param baseDiff
 	 * @param changedFiles
-	 * @param changedFileResources
+	 *            collection of changed files / folders. folders must end with /
+	 * @param changedResources
 	 * @param diffForChangedFiles
 	 */
 	public IndexDiffData(IndexDiffData baseDiff,
 			Collection<String> changedFiles,
-			Collection<IFile> changedFileResources,
+			Collection<IResource> changedResources,
 			IndexDiff diffForChangedFiles) {
-		this.changedFileResources = Collections
-				.unmodifiableCollection(new HashSet<IFile>(changedFileResources));
+		this.changedResources = Collections
+				.unmodifiableCollection(new HashSet<IResource>(changedResources));
 		Set<String> added2 = new HashSet<String>(baseDiff.getAdded());
 		Set<String> changed2 = new HashSet<String>(baseDiff.getChanged());
 		Set<String> removed2 = new HashSet<String>(baseDiff.getRemoved());
 		Set<String> missing2 = new HashSet<String>(baseDiff.getMissing());
 		Set<String> modified2 = new HashSet<String>(baseDiff.getModified());
 		Set<String> untracked2 = new HashSet<String>(baseDiff.getUntracked());
+		Set<String> untrackedFolders2 = new HashSet<String>(baseDiff.getUntrackedFolders());
 		Set<String> conflicts2 = new HashSet<String>(baseDiff.getConflicting());
 		Set<String> ignored2 = new HashSet<String>(baseDiff.getIgnoredNotInIndex());
 
@@ -29,6 +31,7 @@
 		mergeList(missing2, changedFiles, diffForChangedFiles.getMissing());
 		mergeList(modified2, changedFiles, diffForChangedFiles.getModified());
 		mergeList(untracked2, changedFiles, diffForChangedFiles.getUntracked());
+		mergeList(untrackedFolders2, changedFiles, getUntrackedFolders(diffForChangedFiles));
 		mergeList(conflicts2, changedFiles,
 				diffForChangedFiles.getConflicting());
 		mergeList(ignored2, changedFiles,
@@ -40,6 +43,7 @@
 		missing = Collections.unmodifiableSet(missing2);
 		modified = Collections.unmodifiableSet(modified2);
 		untracked = Collections.unmodifiableSet(untracked2);
+		untrackedFolders = Collections.unmodifiableSet(untrackedFolders2);
 		conflicts = Collections.unmodifiableSet(conflicts2);
 		ignored = Collections.unmodifiableSet(ignored2);
 	}

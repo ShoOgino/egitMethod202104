@@ -1,6 +1,6 @@
 	private IndexDiffData calcIndexDiffData(IProgressMonitor monitor,
 			String jobName, Collection<String> filesToUpdate,
-			Collection<IFile> fileResourcesToUpdate) {
+			Collection<IResource> resourcesToUpdate) {
 		EclipseGitProgressTransformer jgitMonitor = new EclipseGitProgressTransformer(
 				monitor);
 		final IndexDiff diffForChangedResources;
@@ -16,6 +16,6 @@
 			throw new RuntimeException(e);
 		}
 		return new IndexDiffData(indexDiffData, filesToUpdate,
-				fileResourcesToUpdate, diffForChangedResources);
+				resourcesToUpdate, diffForChangedResources);
 	}
 

@@ -1,10 +1,10 @@
-	private void dumpFileResourceList(StringBuilder builder, String listName,
-			Collection<IFile> list) {
+	private void dumpResourceList(StringBuilder builder, String listName,
+			Collection<IResource> list) {
 		if (list == null)
 			return;
 		builder.append(listName);
 		builder.append(NEW_LINE);
-		for (IFile file : list) {
+		for (IResource file : list) {
 			builder.append(file.getFullPath().toOSString());
 			builder.append(NEW_LINE);
 		}

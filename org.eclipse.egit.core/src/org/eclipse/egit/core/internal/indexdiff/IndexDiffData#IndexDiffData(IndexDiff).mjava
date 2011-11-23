@@ -14,10 +14,11 @@
 				.getModified()));
 		untracked = Collections.unmodifiableSet(new HashSet<String>(indexDiff
 				.getUntracked()));
+		untrackedFolders = Collections.unmodifiableSet(getUntrackedFolders(indexDiff));
 		conflicts = Collections.unmodifiableSet(new HashSet<String>(indexDiff
 				.getConflicting()));
 		ignored = Collections.unmodifiableSet(new HashSet<String>(indexDiff
 				.getIgnoredNotInIndex()));
-		changedFileResources = null;
+		changedResources = null;
 	}
 
