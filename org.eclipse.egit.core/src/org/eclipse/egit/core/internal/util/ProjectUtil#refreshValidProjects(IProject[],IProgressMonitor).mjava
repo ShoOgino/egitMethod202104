@@ -21,7 +21,11 @@
 			for (IProject p : projects) {
 				if (monitor.isCanceled())
 					break;
-				String projectFilePath = p.getLocation().append(".project").toOSString();  //$NON-NLS-1$
+				IPath projectLocation = p.getLocation();
+				if (projectLocation == null)
+					continue;
+				String projectFilePath = projectLocation.append(
+						IProjectDescription.DESCRIPTION_FILE_NAME).toOSString();
 				File projectFile = new File(projectFilePath);
 				if (projectFile.exists())
 						p.refreshLocal(IResource.DEPTH_INFINITE,
