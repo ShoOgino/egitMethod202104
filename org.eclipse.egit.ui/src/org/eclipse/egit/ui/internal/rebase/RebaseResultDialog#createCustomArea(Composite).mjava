@@ -57,19 +57,52 @@
 				dc.unlock();
 		}
 
+		boolean mergeToolAvailable = true;
+		final CheckResult checkResult;
+		if (!conflictListFailure) {
+			checkResult = FileChecker.checkFiles(repo, conflictPaths);
+			mergeToolAvailable = checkResult.isOk();
+		}
+		else {
+			checkResult = null;
+			mergeToolAvailable = false;
+		}
+
 		if (conflictListFailure) {
 			Label failureLabel = new Label(main, SWT.NONE);
 			failureLabel
 					.setText(UIText.RebaseResultDialog_ConflictListFailureMessage);
 		} else {
+			if (checkResult != null && !checkResult.isOk()) {
+				Label failureLabel = new Label(main, SWT.NONE);
+				failureLabel
+					.setText(getProblemDescription(checkResult));
+			}
 			Label conflictListLabel = new Label(main, SWT.NONE);
 			conflictListLabel
-					.setText(UIText.RebaseResultDialog_DiffDetailsLabel);
+			.setText(UIText.RebaseResultDialog_DiffDetailsLabel);
 			TableViewer conflictList = new TableViewer(main, SWT.BORDER);
 			GridDataFactory.fillDefaults().span(2, 1).grab(true, true).applyTo(
 					conflictList.getTable());
 			conflictList.setContentProvider(ArrayContentProvider.getInstance());
 			conflictList.setInput(conflictPaths);
+			conflictList.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					String path = (String) element;
+					if (checkResult != null && !checkResult.isOk()) {
+						CheckResultEntry entry = checkResult.getEntry(path);
+						if (entry != null) {
+							if (!entry.inWorkspace)
+								return UIText.RebaseResultDialog_notInWorkspace + SPACE + path;
+							if (!entry.shared)
+								return UIText.RebaseResultDialog_notShared + SPACE + path;
+						}
+					}
+					return super.getText(element);
+				}
+
+			});
 		}
 
 		Group actionGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
@@ -90,6 +123,7 @@
 
 		startMergeButton = new Button(actionGroup, SWT.RADIO);
 		startMergeButton.setText(UIText.RebaseResultDialog_StartMergeRadioText);
+		startMergeButton.setEnabled(mergeToolAvailable);
 		startMergeButton.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
@@ -154,7 +188,10 @@
 
 		});
 
-		startMergeButton.setSelection(true);
+		if (mergeToolAvailable)
+			startMergeButton.setSelection(true);
+		else
+			doNothingButton.setSelection(true);
 
 		commitGroup.pack();
 		applyDialogFont(main);

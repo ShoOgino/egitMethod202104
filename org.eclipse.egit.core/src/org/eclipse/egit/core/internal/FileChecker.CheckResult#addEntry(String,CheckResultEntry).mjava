@@ -1,0 +1,9 @@
+		void addEntry(String path, CheckResultEntry entry) {
+			isOk = false;
+			if (!entry.inWorkspace)
+				containsNonWorkspaceFiles = true;
+			if (entry.inWorkspace && !entry.shared)
+				containsNotSharedResources = true;
+			problems.put(path, entry);
+		}
+

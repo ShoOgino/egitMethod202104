@@ -1,0 +1,34 @@
+	/**
+	 * The method checks a collection of files. Problems are reported for a
+	 * file if no resource exists for the file or if the related resource is
+	 * located in a project not shared with Git.
+	 *
+	 * @param repository
+	 * @param files
+	 * @return a {@link CheckResult} containing result of the check
+	 */
+	public static CheckResult checkFiles(Repository repository,
+			Collection<String> files) {
+		CheckResult result = new CheckResult();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		String workTreePath = repository.getWorkTree().getAbsolutePath();
+		for (String filePath : files) {
+			IFile[] filesForLocation = root.findFilesForLocationURI(new File(
+					workTreePath, filePath).toURI());
+			if (filesForLocation.length == 0) {
+				result.addEntry(filePath, new CheckResultEntry(false, false));
+				continue;
+			}
+			boolean mappedResourceFound = false;
+			for (IFile file : filesForLocation) {
+				if (RepositoryMapping.getMapping(file) != null) {
+					mappedResourceFound = true;
+					break;
+				}
+			}
+			if (!mappedResourceFound)
+				result.addEntry(filePath, new CheckResultEntry(true, false));
+		}
+		return result;
+	}
+
