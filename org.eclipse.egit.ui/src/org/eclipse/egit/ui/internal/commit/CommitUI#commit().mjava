@@ -41,6 +41,7 @@
 					commitHelper.getCannotCommitMessage());
 			return;
 		}
+		boolean amendAllowed = commitHelper.amendAllowed();
 		if (files.isEmpty()) {
 			if (amendAllowed && commitHelper.getPreviousCommit() != null) {
 				boolean result = MessageDialog.openQuestion(shell,
