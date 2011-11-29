@@ -1,13 +1,25 @@
 	/** @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent) */
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		IResource[] selected = getSelectedResources();
+		if (selected.length != 1 || !(selected[0] instanceof IStorage))
+			return null;
+
 		Repository repository = getRepository();
-		if (repository != null && selected.length == 1
-				&& selected[0] instanceof IFile)
-			JobUtil.scheduleUserJob(new BlameOperation(repository,
-					(IFile) selected[0], HandlerUtil.getActiveShell(event),
-					HandlerUtil.getActiveSite(event).getPage()),
-					UIText.ShowBlameHandler_JobName, null);
+		if (repository == null)
+			return null;
+
+		RepositoryMapping mapping = RepositoryMapping.getMapping(selected[0]
+				.getProject());
+		if (mapping == null)
+			return null;
+
+		String path = mapping.getRepoRelativePath(selected[0]);
+		IStorage storage = (IStorage) selected[0];
+		Shell shell = HandlerUtil.getActiveShell(event);
+		IWorkbenchPage page = HandlerUtil.getActiveSite(event).getPage();
+		JobUtil.scheduleUserJob(new BlameOperation(repository, storage, path,
+				null, shell, page), UIText.ShowBlameHandler_JobName,
+				JobFamilies.BLAME);
 		return null;
 	}
 

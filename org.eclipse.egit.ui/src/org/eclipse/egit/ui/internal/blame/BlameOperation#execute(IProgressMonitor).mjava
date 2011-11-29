@@ -3,14 +3,11 @@
 		info.setHoverControlCreator(new BlameInformationControlCreator(false));
 		info.setInformationPresenterControlCreator(new BlameInformationControlCreator(
 				true));
-		RepositoryMapping mapping = RepositoryMapping.getMapping(file
-				.getProject());
-		if (mapping == null)
-			return;
 
 		final BlameCommand command = new BlameCommand(repository)
-				.setFollowFileRenames(true).setFilePath(
-						mapping.getRepoRelativePath(file));
+				.setFollowFileRenames(true).setFilePath(path);
+		if (startCommit != null)
+			command.setStartCommit(startCommit);
 		if (Activator.getDefault().getPreferenceStore()
 				.getBoolean(UIPreferences.BLAME_IGNORE_WHITESPACE))
 			command.setTextComparator(RawTextComparator.WS_IGNORE_ALL);
@@ -58,8 +55,13 @@
 		shell.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				try {
-					AbstractDecoratedTextEditor editor = RevisionAnnotationController
-							.openEditor(page, file);
+					AbstractDecoratedTextEditor editor;
+					if (storage instanceof IFile)
+						editor = RevisionAnnotationController.openEditor(page,
+								(IFile) storage);
+					else
+						editor = RevisionAnnotationController.openEditor(page,
+								storage, storage);
 					if (editor != null)
 						editor.showRevisionInformation(info,
 								"org.eclipse.egit.ui.internal.decorators.GitQuickDiffProvider"); //$NON-NLS-1$
