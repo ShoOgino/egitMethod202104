@@ -2,8 +2,7 @@
 	public void tearDown() throws Exception {
 		project.close(null);
 		project.delete(false, false, null);
-		repository1.dispose();
-		repository1 = null;
-		testUtils.deleteTempDirs();
+		project = null;
+		// repositories and tempDirs are deleted in superclass
 	}
 
