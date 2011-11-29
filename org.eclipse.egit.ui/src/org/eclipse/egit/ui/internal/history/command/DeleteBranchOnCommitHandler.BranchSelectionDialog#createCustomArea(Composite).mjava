@@ -1,0 +1,68 @@
+		@Override
+		protected Control createCustomArea(Composite parent) {
+			Composite area = new Composite(parent, SWT.NONE);
+			GridDataFactory.fillDefaults().grab(true, true).span(2, 1)
+					.applyTo(area);
+			area.setLayout(new GridLayout(1, false));
+			fTree = new FilteredCheckboxTree(area, null, SWT.NONE,
+					new PatternFilter()) {
+				/*
+				 * Overridden to check page when refreshing is done.
+				 */
+				protected WorkbenchJob doCreateRefreshJob() {
+					WorkbenchJob refreshJob = super.doCreateRefreshJob();
+					refreshJob.addJobChangeListener(new JobChangeAdapter() {
+						public void done(IJobChangeEvent event) {
+							if (event.getResult().isOK()) {
+								getDisplay().asyncExec(new Runnable() {
+									public void run() {
+										checkPage();
+									}
+								});
+							}
+						}
+					});
+					return refreshJob;
+				}
+			};
+
+			CachedCheckboxTreeViewer viewer = fTree.getCheckboxTreeViewer();
+			GridDataFactory.fillDefaults().grab(true, true).applyTo(fTree);
+			viewer.setContentProvider(new ITreeContentProvider() {
+				public void inputChanged(Viewer actViewer, Object oldInput,
+						Object newInput) {
+					// nothing
+				}
+
+				public void dispose() {
+					// nothing
+				}
+
+				public boolean hasChildren(Object element) {
+					return false;
+				}
+
+				public Object getParent(Object element) {
+					return null;
+				}
+
+				public Object[] getElements(Object inputElement) {
+					return ((List) inputElement).toArray();
+				}
+
+				public Object[] getChildren(Object parentElement) {
+					return null;
+				}
+			});
+
+			viewer.addCheckStateListener(new ICheckStateListener() {
+				public void checkStateChanged(CheckStateChangedEvent event) {
+					checkPage();
+				}
+			});
+
+			viewer.setLabelProvider(new GitLabelProvider());
+			viewer.setInput(nodes);
+			return area;
+		}
+

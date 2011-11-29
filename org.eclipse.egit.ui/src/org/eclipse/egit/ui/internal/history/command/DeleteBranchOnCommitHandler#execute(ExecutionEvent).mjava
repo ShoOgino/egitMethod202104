@@ -1,0 +1,82 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		GitHistoryPage page = getPage();
+
+		final Repository repository = getRepository(page);
+		if (repository == null)
+			return null;
+
+		List<Ref> branchesOfCommit;
+		try {
+			branchesOfCommit = getBranchesOfCommit(page, repository);
+		} catch (IOException e) {
+			throw new ExecutionException("Could not obtain current Branch", e); //$NON-NLS-1$
+		}
+		// this should have been checked by isEnabled()
+		if (branchesOfCommit.isEmpty())
+			return null;
+
+		final List<Ref> unmergedBranches = new ArrayList<Ref>();
+		final Shell shell = getPart(event).getSite().getShell();
+
+		final List<Ref> branchesToDelete;
+		if (branchesOfCommit.size() > 1) {
+			BranchSelectionDialog dlg = new BranchSelectionDialog(shell,
+					branchesOfCommit);
+			if (dlg.open() != Window.OK)
+				return null;
+			branchesToDelete = dlg.getSelected();
+		} else
+			branchesToDelete = branchesOfCommit;
+
+		try {
+			new ProgressMonitorDialog(shell).run(false, false,
+					new IRunnableWithProgress() {
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							try {
+								monitor.beginTask(
+										UIText.DeleteBranchCommand_DeletingBranchesProgress,
+										branchesToDelete.size());
+								for (Ref refNode : branchesToDelete) {
+									int result = deleteBranch(repository,
+											refNode, false);
+									if (result == DeleteBranchOperation.REJECTED_CURRENT) {
+										throw new CoreException(
+												Activator
+														.createErrorStatus(
+																UIText.DeleteBranchCommand_CannotDeleteCheckedOutBranch,
+																null));
+									} else if (result == DeleteBranchOperation.REJECTED_UNMERGED) {
+										unmergedBranches.add(refNode);
+									} else
+										monitor.worked(1);
+								}
+								if (!unmergedBranches.isEmpty()) {
+									MessageDialog messageDialog = new BranchMessageDialog(
+											shell, unmergedBranches);
+									if (messageDialog.open() == Window.OK) {
+										for (Ref node : unmergedBranches) {
+											deleteBranch(repository, node, true);
+											monitor.worked(1);
+										}
+									}
+								}
+							} catch (CoreException ex) {
+								throw new InvocationTargetException(ex);
+							} finally {
+								monitor.done();
+							}
+						}
+					});
+		} catch (InvocationTargetException e1) {
+			Activator.handleError(
+					UIText.RepositoriesView_BranchDeletionFailureMessage,
+					e1.getCause(), true);
+		} catch (InterruptedException e1) {
+			// ignore
+		}
+
+		return null;
+	}
+

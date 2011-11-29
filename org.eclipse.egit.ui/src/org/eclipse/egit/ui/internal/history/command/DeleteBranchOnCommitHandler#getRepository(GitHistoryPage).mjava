@@ -1,0 +1,11 @@
+	private Repository getRepository(GitHistoryPage page) {
+		if (page == null)
+			return null;
+		HistoryPageInput input = page.getInputInternal();
+		if (input == null)
+			return null;
+
+		final Repository repository = input.getRepository();
+		return repository;
+	}
+

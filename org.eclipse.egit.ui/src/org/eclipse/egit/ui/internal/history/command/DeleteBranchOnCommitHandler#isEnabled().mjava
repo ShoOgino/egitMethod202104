@@ -1,0 +1,18 @@
+	@Override
+	public boolean isEnabled() {
+		GitHistoryPage page = getPage();
+
+		Repository repository = getRepository(page);
+		if (repository == null)
+			return false;
+
+		List<Ref> branchesOfCommit;
+		try {
+			branchesOfCommit = getBranchesOfCommit(page, repository);
+		} catch (IOException e) {
+			Activator.logError("Could not calculate Enablement", e); //$NON-NLS-1$
+			return false;
+		}
+		return !branchesOfCommit.isEmpty();
+	}
+

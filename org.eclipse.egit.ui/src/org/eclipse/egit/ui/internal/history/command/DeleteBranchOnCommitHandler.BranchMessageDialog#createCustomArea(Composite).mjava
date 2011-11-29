@@ -1,0 +1,16 @@
+		@Override
+		protected Control createCustomArea(Composite parent) {
+			Composite area = new Composite(parent, SWT.NONE);
+			GridDataFactory.fillDefaults().grab(true, true).span(2, 1)
+					.applyTo(area);
+			area.setLayout(new GridLayout(1, false));
+
+			TableViewer branchesList = new TableViewer(area);
+			GridDataFactory.fillDefaults().grab(true, true)
+					.applyTo(branchesList.getTable());
+			branchesList.setContentProvider(ArrayContentProvider.getInstance());
+			branchesList.setLabelProvider(new GitLabelProvider());
+			branchesList.setInput(nodes);
+			return area;
+		}
+

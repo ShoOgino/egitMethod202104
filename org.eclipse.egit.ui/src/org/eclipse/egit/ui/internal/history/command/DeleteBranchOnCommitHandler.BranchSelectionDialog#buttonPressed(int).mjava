@@ -1,0 +1,13 @@
+		@Override
+		protected void buttonPressed(int buttonId) {
+			if (buttonId == IDialogConstants.OK_ID) {
+				Object[] checked = fTree.getCheckboxTreeViewer()
+						.getCheckedElements();
+				for (Object o : checked) {
+					if (o instanceof Ref)
+						selected.add((Ref) o);
+				}
+			}
+			super.buttonPressed(buttonId);
+		}
+
