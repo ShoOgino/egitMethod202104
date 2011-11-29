@@ -1,0 +1,14 @@
+		public StyledString getStyledText(Object object) {
+			int lastSlash = path.lastIndexOf('/');
+			StyledString styled = new StyledString();
+			if (lastSlash != -1 && lastSlash + 1 < path.length()) {
+				String name = path.substring(lastSlash + 1);
+				styled.append(name).append(' ');
+				styled.append("- ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
+				styled.append(path.substring(0, lastSlash),
+						StyledString.QUALIFIER_STYLER);
+			} else
+				styled.append(path);
+			return styled;
+		}
+

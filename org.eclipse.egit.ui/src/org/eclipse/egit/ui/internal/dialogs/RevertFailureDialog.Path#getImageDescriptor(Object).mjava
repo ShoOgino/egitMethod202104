@@ -1,0 +1,10 @@
+		public ImageDescriptor getImageDescriptor(Object object) {
+			String name = new org.eclipse.core.runtime.Path(path).lastSegment();
+			if (name != null) {
+				return PlatformUI.getWorkbench().getEditorRegistry()
+						.getImageDescriptor(name);
+			} else
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImageDescriptor(ISharedImages.IMG_OBJ_FILE);
+		}
+

@@ -1,0 +1,13 @@
+		public String getLabel(Object object) {
+			switch (reason) {
+			case DIRTY_INDEX:
+				return UIText.RevertFailureDialog_ReasonChangesInIndex;
+			case DIRTY_WORKTREE:
+				return UIText.RevertFailureDialog_ReasonChangesInWorkingDirectory;
+			case COULD_NOT_DELETE:
+				return UIText.RevertFailureDialog_ReasonDeleteFailure;
+			default:
+				return super.getLabel(object);
+			}
+		}
+

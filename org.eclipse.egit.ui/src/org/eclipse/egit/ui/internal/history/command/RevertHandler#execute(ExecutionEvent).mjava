@@ -1,7 +1,7 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repo = getRepository(event);
 		BasicConfigurationDialog.show(repo);
-		RevCommit commit = (RevCommit) getSelection(getPage())
+		final RevCommit commit = (RevCommit) getSelection(getPage())
 				.getFirstElement();
 
 		final Shell shell = getPart(event).getSite().getShell();
@@ -18,9 +18,7 @@
 					if (newHead != null && revertedRefs.isEmpty())
 						showRevertedDialog(shell);
 					if (newHead == null)
-						Activator
-								.showError(UIText.RevertOperation_Failed, null);
-
+						showFailureDialog(shell, commit, op.getFailingResult());
 				} catch (CoreException e) {
 					Activator.handleError(UIText.RevertOperation_InternalError,
 							e, true);

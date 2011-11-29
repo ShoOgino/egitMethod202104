@@ -1,0 +1,17 @@
+	/**
+	 * Show dialog for failure result
+	 *
+	 * @param shell
+	 * @param commit
+	 * @param result
+	 */
+	public static void show(Shell shell, RevCommit commit, MergeResult result) {
+		String message = MessageFormat
+				.format(UIText.RevertFailureDialog_Message, commit
+						.abbreviate(7).name());
+		RevertFailureDialog dialog = new RevertFailureDialog(shell, message,
+				result);
+		dialog.setShellStyle(dialog.getShellStyle() | SWT.SHEET | SWT.RESIZE);
+		dialog.open();
+	}
+

@@ -11,6 +11,7 @@
 				try {
 					newHead = command.call();
 					reverted = command.getRevertedRefs();
+					result = command.getFailingResult();
 				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());

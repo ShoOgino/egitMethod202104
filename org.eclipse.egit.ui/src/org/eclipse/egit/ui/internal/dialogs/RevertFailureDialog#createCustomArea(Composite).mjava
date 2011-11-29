@@ -1,0 +1,52 @@
+	protected Control createCustomArea(Composite parent) {
+		Map<String, MergeFailureReason> reasons = result.getFailingPaths();
+		if (reasons == null || reasons.isEmpty())
+			return null;
+
+		Composite fileArea = new Composite(parent, SWT.NONE);
+
+		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 80)
+				.applyTo(fileArea);
+		GridLayoutFactory.fillDefaults().applyTo(fileArea);
+		TreeViewer viewer = new TreeViewer(fileArea);
+		viewer.setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
+		GridDataFactory.fillDefaults().grab(true, true)
+				.applyTo(viewer.getControl());
+		viewer.setContentProvider(new WorkbenchContentProvider() {
+
+			public Object[] getElements(Object element) {
+				return ((Collection) element).toArray();
+			}
+
+		});
+		final IStyledLabelProvider styleProvider = new WorkbenchStyledLabelProvider() {
+
+			public StyledString getStyledText(Object element) {
+				// TODO Replace with use of IWorkbenchAdapter3 when is no longer
+				// supported
+				if (element instanceof RevertFailure)
+					return ((RevertFailure) element).getStyledText(element);
+				if (element instanceof Path)
+					return ((Path) element).getStyledText(element);
+
+				return super.getStyledText(element);
+			}
+		};
+		viewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+				styleProvider));
+		viewer.setSorter(new ViewerSorter());
+
+		Map<MergeFailureReason, RevertFailure> failures = new HashMap<MergeFailureReason, RevertFailure>();
+		for (Entry<String, MergeFailureReason> reason : reasons.entrySet()) {
+			RevertFailure failure = failures.get(reason.getValue());
+			if (failure == null) {
+				failure = new RevertFailure(reason.getValue());
+				failures.put(reason.getValue(), failure);
+			}
+			failure.add(reason.getKey());
+		}
+		viewer.setInput(failures.values());
+
+		return fileArea;
+	}
+
