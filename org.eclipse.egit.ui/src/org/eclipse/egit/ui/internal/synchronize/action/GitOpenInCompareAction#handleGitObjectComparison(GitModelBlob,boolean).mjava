@@ -1,0 +1,22 @@
+	private void handleGitObjectComparison(GitModelBlob obj, boolean reuseEditor) {
+		ITypedElement left;
+		ITypedElement right;
+		if (obj instanceof GitModelWorkingFile) {
+			IFile file = (IFile) obj.getResource();
+			if (file.getLocation() == null)
+				left = new LocalNonWorkspaceTypedElement(file.getFullPath().toString());
+			else
+				left= SaveableCompareEditorInput.createFileElement(file);
+			right = getCachedFileElement(file);
+		} else {
+			oldAction.run();
+			return;
+		}
+
+		GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+				left, right, null);
+
+		IWorkbenchPage page = getWorkbenchPage(conf.getSite());
+		OpenInCompareAction.openCompareEditor(in, page, reuseEditor);
+	}
+

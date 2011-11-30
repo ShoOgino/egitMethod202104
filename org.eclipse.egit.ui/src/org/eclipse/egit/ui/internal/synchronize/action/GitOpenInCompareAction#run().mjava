@@ -1,0 +1,23 @@
+	public void run() {
+		ISelection selection = conf.getSite().getSelectionProvider()
+				.getSelection();
+		if (selection instanceof IStructuredSelection) {
+			IStructuredSelection sel = ((IStructuredSelection) selection);
+			boolean reuseEditor = sel.size() == 1;
+			for (Iterator iterator = sel.iterator(); iterator.hasNext();) {
+				Object obj = iterator.next();
+				if (obj instanceof GitModelBlob)
+					handleGitObjectComparison((GitModelBlob) obj, reuseEditor);
+				else {
+					oldAction.run();
+					// we assume here that oldAction is instance of
+					// org.eclipse.team.internal.ui.synchronize.actions.OpenInCompareAction
+					// with in it's run method will also iterate over selected
+					// resources therefore we need to brake this loop when we
+					// meet not know object
+					break;
+				}
+			}
+		}
+	}
+

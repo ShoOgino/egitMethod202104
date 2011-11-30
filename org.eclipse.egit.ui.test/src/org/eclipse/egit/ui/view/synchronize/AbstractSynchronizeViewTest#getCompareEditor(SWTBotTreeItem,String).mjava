@@ -1,9 +1,10 @@
 	private SWTBotEditor getCompareEditor(SWTBotTreeItem projectNode,
-			String fileName) {
+			final String fileName) {
 		SWTBotTreeItem folderNode = waitForNodeWithText(projectNode, FOLDER);
 		waitForNodeWithText(folderNode, fileName).doubleClick();
 
-		SWTBotEditor editor = bot.editorByTitle(fileName);
+		SWTBotEditor editor = bot
+				.editor(new CompareEditorTitleMatcher(fileName));
 		// Ensure that both StyledText widgets are enabled
 		SWTBotStyledText styledText = editor.toTextEditor().getStyledText();
 		bot.waitUntil(Conditions.widgetIsEnabled(styledText));

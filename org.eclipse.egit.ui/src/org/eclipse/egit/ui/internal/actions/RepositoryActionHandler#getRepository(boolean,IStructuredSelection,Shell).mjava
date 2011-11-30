@@ -13,9 +13,9 @@
 	private Repository getRepository(boolean warn,
 			IStructuredSelection selection, Shell shell) {
 		RepositoryMapping mapping = null;
-		for (IProject project : getProjectsForSelectedResources(selection)) {
+		for (IResource resource : getSelectedResources(selection)) {
 			RepositoryMapping repositoryMapping = RepositoryMapping
-					.getMapping(project);
+					.getMapping(resource);
 			if (mapping == null)
 				mapping = repositoryMapping;
 			if (repositoryMapping == null)

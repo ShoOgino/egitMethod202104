@@ -1,6 +1,9 @@
 	@Override
 	public void dispose() {
-		GitProjectData.removeRepositoryChangeListener(repoChangeListener);
+		IndexDiffCache indexDiffCache = Activator.getDefault().getIndexDiffCache();
+		if (indexDiffCache != null)
+			indexDiffCache.removeIndexDiffChangedListener(indexChangeListener);
+
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 		super.dispose();
 	}

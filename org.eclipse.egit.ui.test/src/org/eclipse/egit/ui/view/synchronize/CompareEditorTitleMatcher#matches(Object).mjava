@@ -1,0 +1,9 @@
+	public boolean matches(Object item) {
+		if (item instanceof IEditorReference) {
+			IEditorReference editor = (IEditorReference) item;
+			return editor.getTitle().contains(fileName);
+		}
+
+		return false;
+	}
+

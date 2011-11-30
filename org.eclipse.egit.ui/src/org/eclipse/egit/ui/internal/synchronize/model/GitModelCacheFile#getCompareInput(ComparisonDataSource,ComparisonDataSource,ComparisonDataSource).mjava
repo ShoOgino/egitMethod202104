@@ -1,7 +1,7 @@
 	@Override
 	protected GitCompareInput getCompareInput(ComparisonDataSource baseData,
 			ComparisonDataSource remoteData, ComparisonDataSource ancestorData) {
-		return new GitCacheCompareInput(getRepository(), ancestorData,
-				baseData, remoteData, gitPath);
+		return new GitCacheCompareInput(getRepository(), (IFile) getResource(),
+				ancestorData, baseData, remoteData, gitPath);
 	}
 

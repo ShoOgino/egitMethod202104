@@ -1,0 +1,38 @@
+	/** {@inheritDoc} */
+	@Override
+	public void commit(IProgressMonitor monitor) throws CoreException {
+		if (isDirty()) {
+			if (isConnected()) {
+				super.commit(monitor);
+			} else {
+				IResource resource = getResource();
+				if (resource instanceof IFile) {
+					FileOutputStream out = null;
+					File file = ((IFile) resource).getFullPath().toFile();
+					try {
+						if (!file.exists())
+							file.createNewFile();
+						out = new FileOutputStream(file);
+						out.write(getContent());
+						fDirty = false;
+					} catch (FileNotFoundException e) {
+						throw new CoreException(null);
+					} catch (IOException e) {
+						throw new CoreException(null);
+					} finally {
+						fireContentChanged();
+						RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
+						if (mapping != null) {
+							mapping.getRepository().fireEvent(new IndexChangedEvent());
+						}
+						if (out != null)
+							try {
+								out.close();
+							} catch (IOException ex) {
+							}
+					}
+				}
+			}
+		}
+	}
+

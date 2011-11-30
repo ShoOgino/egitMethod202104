@@ -1,0 +1,8 @@
+	private ITypedElement getCachedFileElement(IFile file) {
+		try {
+			return CompareUtils.getHeadTypedElement(file);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+

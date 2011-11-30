@@ -1,0 +1,13 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
+	public Object getAdapter(Class adapter) {
+		if (adapter == ISharedDocumentAdapter.class) {
+			if (isSharedDocumentsEnable())
+				return getSharedDocumentAdapter();
+			else
+				return null;
+		}
+		return Platform.getAdapterManager().getAdapter(this, adapter);
+	}
+

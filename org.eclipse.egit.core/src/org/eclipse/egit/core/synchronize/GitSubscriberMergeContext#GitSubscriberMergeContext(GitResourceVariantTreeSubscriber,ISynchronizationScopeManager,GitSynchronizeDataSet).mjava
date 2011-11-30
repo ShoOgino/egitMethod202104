@@ -9,9 +9,10 @@
 		this.gsds = gsds;
 
 
-		repoChangeListener = new RepositoryChangeListener() {
-			public void repositoryChanged(RepositoryMapping which) {
-				handleRepositoryChange(subscriber, which);
+		indexChangeListener = new IndexDiffChangedListener() {
+			public void indexDiffChanged(Repository repository,
+					IndexDiffData indexDiffData) {
+				handleRepositoryChange(subscriber, repository);
 			}
 		};
 		resourceChangeListener = new IResourceChangeListener() {
@@ -24,7 +25,10 @@
 				handleResourceChange(subscriber, delta);
 			}
 		};
-		GitProjectData.addRepositoryChangeListener(repoChangeListener);
+		IndexDiffCache indexDiffCache = Activator.getDefault().getIndexDiffCache();
+		if (indexDiffCache != null)
+			indexDiffCache.addIndexDiffChangedListener(indexChangeListener);
+
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 
 		initialize();
