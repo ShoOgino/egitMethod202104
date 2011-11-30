@@ -1,0 +1,15 @@
+	/**
+	 * Get structured selection for event
+	 *
+	 * @param event
+	 * @return selection, never null
+	 */
+	protected IStructuredSelection getSelection(final ExecutionEvent event) {
+		ISelection selection = HandlerUtil.getCurrentSelection(event);
+		if (selection == null || selection.isEmpty())
+			selection = HandlerUtil.getActiveMenuSelection(event);
+		if (selection instanceof IStructuredSelection)
+			return (IStructuredSelection) selection;
+		return StructuredSelection.EMPTY;
+	}
+

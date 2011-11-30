@@ -1,0 +1,13 @@
+	/**
+	 * Get current selection as target item class
+	 *
+	 * @param itemClass
+	 * @param event
+	 * @return non-null but possibly empty list
+	 */
+	protected <V> V getSelectedItem(final Class<V> itemClass,
+			final ExecutionEvent event) {
+		final Object selected = getSelection(event).getFirstElement();
+		return AdapterUtils.adapt(selected, itemClass);
+	}
+

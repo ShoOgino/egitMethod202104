@@ -1,0 +1,18 @@
+	/**
+	 * Get current selection as list of target item class objects
+	 *
+	 * @param itemClass
+	 * @param event
+	 * @return non-null but possibly empty list
+	 */
+	protected <V> List<V> getSelectedItems(Class<V> itemClass,
+			ExecutionEvent event) {
+		final List<V> items = new LinkedList<V>();
+		for (Object selected : getSelection(event).toArray()) {
+			V adapted = AdapterUtils.adapt(selected, itemClass);
+			if (adapted != null)
+				items.add(adapted);
+		}
+		return items;
+	}
+

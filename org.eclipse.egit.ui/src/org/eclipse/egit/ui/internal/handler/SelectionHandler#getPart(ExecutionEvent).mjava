@@ -1,0 +1,12 @@
+	/**
+	 * Get workbench part for event
+	 *
+	 * @param event
+	 * @return part
+	 * @throws ExecutionException
+	 */
+	protected IWorkbenchPart getPart(ExecutionEvent event)
+			throws ExecutionException {
+		return HandlerUtil.getActivePartChecked(event);
+	}
+

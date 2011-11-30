@@ -52,7 +52,28 @@
 		toolbar.add(createCommandContributionItem(CreateTagHandler.ID));
 		toolbar.add(createCommandContributionItem(CreateBranchHandler.ID));
 		toolbar.add(createCommandContributionItem(CheckoutHandler.ID));
+		toolbar.add(createCommandContributionItem(CherryPickHandler.ID));
 		addContributions(toolbar);
 		toolbar.update(true);
+		getSite().setSelectionProvider(new ISelectionProvider() {
+
+			public void setSelection(ISelection selection) {
+				// Ignored
+			}
+
+			public void removeSelectionChangedListener(
+					ISelectionChangedListener listener) {
+				// Ignored
+			}
+
+			public ISelection getSelection() {
+				return new StructuredSelection(getCommit());
+			}
+
+			public void addSelectionChangedListener(
+					ISelectionChangedListener listener) {
+				// Ignored
+			}
+		});
 	}
 
