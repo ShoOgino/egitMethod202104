@@ -14,8 +14,10 @@
 		else if (nodes.size() == 1)
 			refName = nodes.get(0).getObject().getName();
 		else {
-			BranchMessageDialog dlg = new BranchMessageDialog(HandlerUtil
-					.getActiveShellChecked(event), nodes);
+			BranchSelectionDialog<RefNode> dlg = new BranchSelectionDialog<RefNode>(
+					HandlerUtil.getActiveShellChecked(event), nodes,
+					UIText.MergeHandler_SelectBranchTitle,
+					UIText.MergeHandler_SelectBranchMessage, SWT.SINGLE);
 			if (dlg.open() == Window.OK) {
 				refName = dlg.getSelectedNode().getObject().getName();
 			} else

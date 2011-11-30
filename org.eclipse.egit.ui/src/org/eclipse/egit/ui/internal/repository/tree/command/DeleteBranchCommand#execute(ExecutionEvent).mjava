@@ -27,7 +27,7 @@
 										monitor.worked(1);
 								}
 								if (!unmergedNodes.isEmpty()) {
-									MessageDialog messageDialog = new BranchMessageDialog(
+									MessageDialog messageDialog = new UnmergedBranchDialog<RefNode>(
 											shell, unmergedNodes);
 									if (messageDialog.open() == Window.OK) {
 										for (RefNode node : unmergedNodes) {

@@ -20,11 +20,15 @@
 
 		final List<Ref> branchesToDelete;
 		if (branchesOfCommit.size() > 1) {
-			BranchSelectionDialog dlg = new BranchSelectionDialog(shell,
-					branchesOfCommit);
+			BranchSelectionDialog<Ref> dlg = new BranchSelectionDialog<Ref>(
+					shell,
+					branchesOfCommit,
+					UIText.DeleteBranchOnCommitHandler_SelectBranchDialogTitle,
+					UIText.DeleteBranchOnCommitHandler_SelectBranchDialogMessage,
+					SWT.MULTI);
 			if (dlg.open() != Window.OK)
 				return null;
-			branchesToDelete = dlg.getSelected();
+			branchesToDelete = dlg.getSelectedNodes();
 		} else
 			branchesToDelete = branchesOfCommit;
 
@@ -53,7 +57,7 @@
 										monitor.worked(1);
 								}
 								if (!unmergedBranches.isEmpty()) {
-									MessageDialog messageDialog = new BranchMessageDialog(
+									MessageDialog messageDialog = new UnmergedBranchDialog<Ref>(
 											shell, unmergedBranches);
 									if (messageDialog.open() == Window.OK) {
 										for (Ref node : unmergedBranches) {

@@ -1,0 +1,9 @@
+	private void checkPage() {
+		if (multiMode)
+			getButton(OK).setEnabled(
+					fTree.getCheckboxTreeViewer().getCheckedLeafCount() > 0);
+		else
+			getButton(OK).setEnabled(!branchesList.getSelection().isEmpty());
+
+	}
+

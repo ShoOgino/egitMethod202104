@@ -6,7 +6,7 @@
 				if (result == DeleteBranchOperation.REJECTED_UNMERGED) {
 					List<RefNode> nodes = extractSelectedRefNodes();
 
-					MessageDialog messageDialog = new BranchMessageDialog(
+					MessageDialog messageDialog = new UnmergedBranchDialog<RefNode>(
 							getShell(), nodes);
 
 					if (messageDialog.open() == Window.OK)

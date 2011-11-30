@@ -1,0 +1,19 @@
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == OK) {
+			if (multiMode) {
+				selected.clear();
+				Object[] checked = fTree.getCheckboxTreeViewer()
+						.getCheckedElements();
+				for (Object o : checked) {
+					selected.add((T) o);
+				}
+			} else {
+				selected = ((IStructuredSelection) branchesList.getSelection())
+						.toList();
+			}
+		}
+		super.buttonPressed(buttonId);
+	}
+
