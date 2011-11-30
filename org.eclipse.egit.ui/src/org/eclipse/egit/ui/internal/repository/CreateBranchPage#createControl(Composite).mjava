@@ -153,13 +153,9 @@
 		Dialog.applyDialogFont(main);
 		setControl(main);
 		nameText.setFocus();
-		if (myBaseRef != null
-				&& (myBaseRef.startsWith(Constants.R_REMOTES) || myBaseRef
-						.startsWith(Constants.R_TAGS))) {
-			// additional convenience: the last part of the name is suggested
-			// as name for the local branch
-			nameText.setText(myBaseRef
-					.substring(myBaseRef.lastIndexOf('/') + 1));
+		String targetName = getProposedTargetName(myBaseRef);
+		if (targetName != null) {
+			nameText.setText(targetName);
 			nameText.selectAll();
 		} else
 			// in any case, we will have to enter the name
