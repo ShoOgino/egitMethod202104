@@ -3,7 +3,7 @@
 		if (getLeftRevision() != null) {
 			String leftLabel = getFileRevisionLabel(getLeftRevision());
 			cc.setLeftLabel(leftLabel);
-		} else if (getResource(input) != null) {
+		} else if (getResource() != null) {
 			String label = NLS.bind(UIText.GitCompareFileRevisionEditorInput_LocalLabel, new Object[]{ input.getLeft().getName() });
 			cc.setLeftLabel(label);
 		} else {
