@@ -1,0 +1,9 @@
+		public void handleDocumentConnected() {
+			if (connected)
+				return;
+			connected = true;
+			registerSaveable(false);
+			if (lrte != null)
+				lrte.setSharedDocumentListener(null);
+		}
+

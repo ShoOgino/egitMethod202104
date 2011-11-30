@@ -1,0 +1,14 @@
+		public InternalResourceSaveableComparison(ICompareInput input,
+				CompareEditorInput editorInput) {
+			super(input, editorInput, left);
+			ITypedElement element = left;
+			if (element instanceof LocalResourceTypedElement) {
+				lrte = (LocalResourceTypedElement) element;
+				if (lrte.isConnected()) {
+					registerSaveable(true);
+				} else {
+					lrte.setSharedDocumentListener(this);
+				}
+			}
+		}
+
