@@ -1,0 +1,19 @@
+	@Test
+	public void testScmUriWithPathAndTag() throws Exception {
+		ScmUrlImportDescription description = new ScmUrlImportDescription(
+				"scm:git:git://git.eclipse.org/gitroot/platform/eclipse.platform.ui.git;path=\"bundles/org.eclipse.jface\";tag=v20111107-2125",
+				null);
+		URI uri = description.getUri();
+		GitURI gitUri = new GitURI(uri);
+		assertEquals("bundles/org.eclipse.jface", gitUri.getPath().toString());
+		URIish uriish = new URIish(
+				"git://git.eclipse.org/gitroot/platform/eclipse.platform.ui.git");
+		assertEquals(uriish, gitUri.getRepository());
+		assertEquals("v20111107-2125", gitUri.getTag());
+
+		String refString = capability.asReference(uri, "org.eclipse.jface");
+		assertEquals(
+				"1.0,git://git.eclipse.org/gitroot/platform/eclipse.platform.ui.git,v20111107-2125,bundles/org.eclipse.jface",
+				refString);
+	}
+

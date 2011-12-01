@@ -1,0 +1,6 @@
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidScmUriWithQuotationMarks() throws Exception {
+		URI.create("scm:git:git://git.eclipse.org/gitroot/platform/eclipse.platform.team.git;path=\"bundles/org.eclipse.team.core\"");
+		// expected IAE, " are not allowed in a URI reference
+	}
+

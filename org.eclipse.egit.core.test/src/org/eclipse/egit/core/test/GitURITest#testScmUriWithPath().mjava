@@ -1,0 +1,21 @@
+	// ScmUrlImportDescription can handle " in Strings expected to be URI refs
+	@Test
+	public void testScmUriWithPath() throws Exception {
+		ScmUrlImportDescription description = new ScmUrlImportDescription(
+				"scm:git:git://git.eclipse.org/gitroot/platform/eclipse.platform.team.git;path=\"bundles/org.eclipse.team.core\"",
+				null);
+		URI uri = description.getUri();
+		GitURI gitUri = new GitURI(uri);
+		assertEquals("bundles/org.eclipse.team.core", gitUri.getPath()
+				.toString());
+		URIish uriish = new URIish(
+				"git://git.eclipse.org/gitroot/platform/eclipse.platform.team.git");
+		assertEquals(uriish, gitUri.getRepository());
+		assertEquals(Constants.MASTER, gitUri.getTag());
+
+		String refString = capability.asReference(uri, "org.eclipse.team.core");
+		assertEquals(
+				"1.0,git://git.eclipse.org/gitroot/platform/eclipse.platform.team.git,master,bundles/org.eclipse.team.core",
+				refString);
+	}
+

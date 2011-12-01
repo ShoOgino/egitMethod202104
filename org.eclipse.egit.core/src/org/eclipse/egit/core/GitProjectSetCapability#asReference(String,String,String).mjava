@@ -1,0 +1,14 @@
+	private String asReference(String url, String branch, String projectPath) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(VERSION);
+		sb.append(ProjectReference.SEPARATOR);
+		sb.append(url);
+		sb.append(ProjectReference.SEPARATOR);
+		sb.append(branch);
+		sb.append(ProjectReference.SEPARATOR);
+		sb.append(projectPath);
+
+		return sb.toString();
+	}
+

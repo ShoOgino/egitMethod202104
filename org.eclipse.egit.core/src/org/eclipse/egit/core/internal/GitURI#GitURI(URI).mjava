@@ -1,0 +1,47 @@
+	/**
+	 * Construct the {@link GitURI} for the given URI.
+	 *
+	 * @param uri
+	 *            the URI in the SCM URL format
+	 */
+	public GitURI(URI uri) {
+		try {
+			if (ProjectSetCapability.SCHEME_SCM.equals(uri.getScheme())) {
+				final String ssp = uri.getSchemeSpecificPart();
+				if (ssp.startsWith(SCHEME_GIT)) {
+					int indexOfSemicolon = ssp.indexOf(';');
+					URIish r = new URIish(ssp.substring(
+							SCHEME_GIT.length() + 1, indexOfSemicolon));
+					IPath p = null;
+					String t = Constants.MASTER; // default
+					String pn = null;
+					String[] params = ssp.substring(indexOfSemicolon)
+							.split(";"); //$NON-NLS-1$
+					for (String param : params) {
+						if (param.startsWith(KEY_PATH + '=')) {
+							p = new Path(
+									param.substring(param.indexOf('=') + 1));
+						} else if (param.startsWith(KEY_TAG + '=')) {
+							t = param.substring(param.indexOf('=') + 1);
+						} else if (param.startsWith(KEY_PROJECT + '=')) {
+							pn = param.substring(param.indexOf('=') + 1);
+						}
+					}
+					this.repository = r;
+					this.path = p;
+					this.tag = t;
+					this.projectName = pn;
+					return;
+				}
+			}
+			throw new IllegalArgumentException(NLS.bind(
+					CoreText.GitURI_InvalidSCMURL,
+					new String[] { uri.toString() }));
+		} catch (URISyntaxException e) {
+			Activator.logError(e.getMessage(), e);
+			throw new IllegalArgumentException(NLS.bind(
+					CoreText.GitURI_InvalidURI, new String[] { uri.toString(),
+							e.getMessage() }));
+		}
+	}
+
