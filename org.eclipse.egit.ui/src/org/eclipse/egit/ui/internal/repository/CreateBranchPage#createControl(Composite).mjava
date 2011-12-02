@@ -44,8 +44,9 @@
 			this.branchCombo.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					upstreamConfig = getDefaultUpstreamConfig(myRepository,
-							branchCombo.getText());
+					String ref = branchCombo.getText();
+					suggestBranchName(ref);
+					upstreamConfig = getDefaultUpstreamConfig(myRepository, ref);
 					checkPage();
 				}
 			});
@@ -67,6 +68,11 @@
 		nameLabel.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(TraverseEvent e) {
 				nameText.setFocus();
+			}
+		});
+		nameText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				nameIsSuggestion = false;
 			}
 		});
 		// enable testing with SWTBot
@@ -153,13 +159,7 @@
 		Dialog.applyDialogFont(main);
 		setControl(main);
 		nameText.setFocus();
-		String targetName = getProposedTargetName(myBaseRef);
-		if (targetName != null) {
-			nameText.setText(targetName);
-			nameText.selectAll();
-		} else
-			// in any case, we will have to enter the name
-			setPageComplete(false);
+		suggestBranchName(myBaseRef);
 		checkPage();
 		// add the listener just now to avoid unneeded checkPage()
 		nameText.addModifyListener(new ModifyListener() {
