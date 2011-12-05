@@ -5,10 +5,14 @@
 		if (containerMap.isEmpty())
 			return null;
 
+		boolean launchFetch = Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH);
 		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
 		for (Entry<Repository, Set<IContainer>> entry : containerMap.entrySet())
 			try {
-				GitSynchronizeData data = new GitSynchronizeData(entry.getKey(), HEAD, HEAD, true);
+				Repository repo = entry.getKey();
+				String dstRef = getDstRef(repo, launchFetch);
+				GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, dstRef, true);
 				Set<IContainer> containers = entry.getValue();
 				if (!containers.isEmpty())
 					data.setIncludedPaths(containers);

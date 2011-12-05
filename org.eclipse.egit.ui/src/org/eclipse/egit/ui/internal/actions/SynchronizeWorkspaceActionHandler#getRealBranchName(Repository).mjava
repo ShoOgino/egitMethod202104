@@ -1,0 +1,15 @@
+	private String getRealBranchName(Repository repo) {
+		Ref ref;
+
+		try {
+			ref = repo.getRef(HEAD);
+		} catch (IOException e) {
+			ref = null;
+		}
+
+		if (ref != null && ref.isSymbolic())
+			return ref.getTarget().getName();
+		else
+			return HEAD;
+	}
+
