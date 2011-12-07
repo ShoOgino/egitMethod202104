@@ -3,11 +3,12 @@
 	 *
 	 * @param shell
 	 * @param message
-	 * @param result
+	 * @param reasons
 	 */
-	public RevertFailureDialog(Shell shell, String message, MergeResult result) {
+	public RevertFailureDialog(Shell shell, String message,
+			Map<String, MergeFailureReason> reasons) {
 		super(shell, UIText.RevertFailureDialog_Title, null, message, ERROR,
 				new String[] { IDialogConstants.OK_LABEL }, 0);
-		this.result = result;
+		this.reasons = reasons;
 	}
 
