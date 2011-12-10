@@ -27,7 +27,8 @@
 
 			try {
 				fetchOperationUI.execute(subMonitor);
-			} catch (CoreException e) {
+				gsd.updateRevs();
+			} catch (Exception e) {
 				showInformationDialog(remoteName);
 				Activator.logError(e.getMessage(), e);
 			}

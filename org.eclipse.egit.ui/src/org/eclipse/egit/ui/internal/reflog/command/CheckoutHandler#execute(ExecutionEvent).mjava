@@ -1,17 +1,6 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ReflogEntry entry = (ReflogEntry) ((IStructuredSelection) HandlerUtil
-				.getCurrentSelectionChecked(event)).getFirstElement();
-		if (entry == null)
-			return null;
-
 		Repository repo = getRepository(event);
-		RevCommit commit = null;
-		try {
-			RevWalk w = new RevWalk(repo);
-			commit = w.parseCommit(entry.getNewId());
-		} catch (IOException e) {
-			throw new ExecutionException(e.getMessage(), e);
-		}
+		RevCommit commit = getSelectedCommit(event, repo);
 		if (commit != null) {
 			final BranchOperationUI op = BranchOperationUI.checkout(repo,
 					commit.name());

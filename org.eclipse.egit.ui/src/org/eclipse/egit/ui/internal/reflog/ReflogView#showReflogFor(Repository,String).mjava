@@ -6,14 +6,9 @@
 	 */
 	private void showReflogFor(Repository repository, String ref) {
 		if (repository != null && ref != null) {
-			Config c = repository.getConfig();
-			if (c != null)
-				myEmail = c.getString(ConfigConstants.CONFIG_USER_SECTION,
-						null, ConfigConstants.CONFIG_KEY_EMAIL);
 			refLogTableTreeViewer.setInput(new ReflogInput(repository, ref));
 			updateRefLink(ref);
 			form.setText(getRepositoryName(repository));
-		} else
-			myEmail = null;
+		}
 	}
 

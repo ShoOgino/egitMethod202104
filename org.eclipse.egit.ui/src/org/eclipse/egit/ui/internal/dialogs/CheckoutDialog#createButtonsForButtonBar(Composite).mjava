@@ -81,10 +81,9 @@
 		deleteteButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent selectionEvent) {
 				try {
-					CommonUtils
-							.runCommand(
-									"org.eclipse.egit.ui.RepositoriesViewDeleteBranch", //$NON-NLS-1$
-									(IStructuredSelection) branchTree.getSelection());
+					CommonUtils.runCommand(
+							IWorkbenchCommandConstants.EDIT_DELETE,
+							(IStructuredSelection) branchTree.getSelection());
 					branchTree.refresh();
 				} catch (Throwable e) {
 					reportError(e,

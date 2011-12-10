@@ -1,0 +1,8 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(event);
+		RevCommit commit = getSelectedCommit(event, repository);
+		if (commit != null)
+			CommitEditor.openQuiet((new RepositoryCommit(repository, commit)));
+		return null;
+	}
+
