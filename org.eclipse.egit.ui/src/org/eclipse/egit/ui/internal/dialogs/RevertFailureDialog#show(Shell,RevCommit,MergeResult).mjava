@@ -6,11 +6,19 @@
 	 * @param result
 	 */
 	public static void show(Shell shell, RevCommit commit, MergeResult result) {
-		String message = MessageFormat
-				.format(UIText.RevertFailureDialog_Message, commit
-						.abbreviate(7).name());
+		String message;
+		Map<String, MergeFailureReason> reasons = result != null ? result
+				.getFailingPaths() : null;
+		if (reasons != null && !reasons.isEmpty())
+			message = MessageFormat.format(UIText.RevertFailureDialog_Message,
+					commit.abbreviate(7).name());
+		else
+			message = MessageFormat.format(
+					UIText.RevertFailureDialog_MessageNoFiles, commit
+							.abbreviate(7).name());
+
 		RevertFailureDialog dialog = new RevertFailureDialog(shell, message,
-				result);
+				reasons);
 		dialog.setShellStyle(dialog.getShellStyle() | SWT.SHEET | SWT.RESIZE);
 		dialog.open();
 	}
