@@ -1,4 +1,7 @@
 	public void dispose() {
 		commandState.removeListener(this);
+		for (ListenerHandle handle : refsChangedListeners.values())
+			handle.remove();
+		refsChangedListeners.clear();
 	}
 

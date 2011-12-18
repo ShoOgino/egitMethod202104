@@ -33,8 +33,7 @@
 			} else {
 				List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
 				try {
-					for (Entry<String, Ref> refEntry : repo.getRefDatabase()
-							.getRefs(Constants.R_HEADS).entrySet()) {
+					for (Entry<String, Ref> refEntry : getRefs(repo, Constants.R_HEADS).entrySet()) {
 						if (!refEntry.getValue().isSymbolic())
 							refs.add(new RefNode(node, repo, refEntry
 									.getValue()));
@@ -67,8 +66,7 @@
 			} else {
 				List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
 				try {
-					for (Entry<String, Ref> refEntry : repo.getRefDatabase()
-							.getRefs(Constants.R_REMOTES).entrySet()) {
+					for (Entry<String, Ref> refEntry : getRefs(repo, Constants.R_REMOTES).entrySet()) {
 						if (!refEntry.getValue().isSymbolic())
 							refs.add(new RefNode(node, repo, refEntry
 									.getValue()));
@@ -116,8 +114,7 @@
 		case ADDITIONALREFS: {
 			List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
 			try {
-				for (Entry<String, Ref> refEntry : repo.getRefDatabase()
-						.getRefs(RefDatabase.ALL).entrySet()) {
+				for (Entry<String, Ref> refEntry : getRefs(repo, RefDatabase.ALL).entrySet()) {
 					String name=refEntry.getKey();
 					if (!(name.startsWith(Constants.R_HEADS) || name.startsWith(Constants.R_TAGS)|| name.startsWith(Constants.R_REMOTES)))
 						refs.add(new AdditionalRefNode(node, repo, refEntry
