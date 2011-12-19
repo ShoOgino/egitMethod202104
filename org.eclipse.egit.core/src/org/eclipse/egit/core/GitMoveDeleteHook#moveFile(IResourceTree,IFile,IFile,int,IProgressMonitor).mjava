@@ -10,8 +10,9 @@
 			return false;
 		final RepositoryMapping dstm = RepositoryMapping.getMapping(dstf);
 
+		DirCache sCache = null;
 		try {
-			final DirCache sCache = srcm.getRepository().lockDirCache();
+			sCache = srcm.getRepository().lockDirCache();
 			final String sPath = srcm.getRepoRelativePath(srcf);
 			final DirCacheEntry sEnt = sCache.getEntry(sPath);
 			if (sEnt == null) {
@@ -38,6 +39,9 @@
 		} catch (IOException e) {
 			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
 					CoreText.MoveDeleteHook_operationError, e));
+		} finally {
+			if (sCache != null)
+				sCache.unlock();
 		}
 		return true;
 	}
