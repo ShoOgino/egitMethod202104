@@ -1,0 +1,16 @@
+	private static IProject[] getProjects(Repository repository) {
+		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
+		List<IProject> result = new ArrayList<IProject>();
+		final File parentFile = repository.getWorkTree();
+		for (IProject p : projects) {
+			IPath projectLocation = p.getLocation();
+			if (projectLocation == null)
+				continue;
+			if (projectLocation.toFile().getAbsolutePath()
+					.startsWith(parentFile.getAbsolutePath()))
+				result.add(p);
+		}
+		return result.toArray(new IProject[result.size()]);
+	}
+

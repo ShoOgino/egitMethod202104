@@ -1,0 +1,23 @@
+	/**
+	 * Calculates a {@link ISchedulingRule} for all repositories related to the
+	 * given resources.
+	 *
+	 * @see RuleUtil#getRule(Repository)
+	 * @param resources
+	 * @return scheduling rule
+	 */
+	public static ISchedulingRule getRuleForRepositories(IResource[] resources) {
+		ISchedulingRule result = null;
+		Set<Repository> repositories = new HashSet<Repository>();
+		for (IResource resource : resources) {
+			RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
+			if (mapping != null)
+				repositories.add(mapping.getRepository());
+		}
+		for (Repository repository : repositories) {
+			ISchedulingRule rule = getRule(repository);
+			result = MultiRule.combine(result, rule);
+		}
+		return result;
+	}
+

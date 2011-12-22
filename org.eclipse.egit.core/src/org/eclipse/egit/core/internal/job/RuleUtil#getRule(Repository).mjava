@@ -1,0 +1,20 @@
+	/**
+	 * Calculates an {@link ISchedulingRule} for Jobs working on the index of a
+	 * repository. The rule consists of all projects belonging to the
+	 * repository. If you schedule two jobs working on different resources of
+	 * the same repository you have to ensure that these jobs cannot run in
+	 * parallel because the Git index lock fails if another thread is already
+	 * owning the lock. Thus it is a good practice to lock all projects
+	 * belonging to a Git repository when executing a write operation on the
+	 * index of a repository in a Job.
+	 *
+	 * @param repository
+	 * @return scheduling rule
+	 */
+	public static ISchedulingRule getRule(Repository repository) {
+		IProject[] projects = getProjects(repository);
+		if (projects.length == 0)
+			return null;
+		return new MultiRule(projects);
+	}
+
