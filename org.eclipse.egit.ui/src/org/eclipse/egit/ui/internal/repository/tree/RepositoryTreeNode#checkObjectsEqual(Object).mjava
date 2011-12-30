@@ -12,6 +12,8 @@
 			// fall through
 		case ADDITIONALREFS:
 			// fall through
+		case SUBMODULES:
+			// fall through
 		case WORKINGDIR:
 			return ((Repository) myObject).getDirectory().equals(
 					((Repository) otherObject).getDirectory());

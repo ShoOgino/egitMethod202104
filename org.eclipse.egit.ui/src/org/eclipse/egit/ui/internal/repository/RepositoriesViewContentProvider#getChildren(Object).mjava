@@ -155,6 +155,8 @@
 			nodeList.add(new AdditionalRefsNode(node, repo));
 			nodeList.add(new WorkingDirNode(node, repo));
 			nodeList.add(new RemotesNode(node, repo));
+			if (!repo.isBare())
+				nodeList.add(new SubmodulesNode(node, repo));
 
 			return nodeList.toArray();
 		}
@@ -264,6 +266,20 @@
 
 		}
 
+		case SUBMODULES:
+			List<RepositoryNode> children = new ArrayList<RepositoryNode>();
+			try {
+				SubmoduleWalk walk = SubmoduleWalk.forIndex(node
+						.getRepository());
+				while (walk.next()) {
+					Repository subRepo = walk.getRepository();
+					if (subRepo != null)
+						children.add(new RepositoryNode(node, subRepo));
+				}
+			} catch (IOException e) {
+				handleException(e, node);
+			}
+			return children.toArray();
 		case FILE:
 			// fall through
 		case REF:
