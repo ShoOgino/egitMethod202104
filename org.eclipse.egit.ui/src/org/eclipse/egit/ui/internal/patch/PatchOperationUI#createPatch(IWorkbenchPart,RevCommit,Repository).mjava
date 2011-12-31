@@ -1,0 +1,16 @@
+	/**
+	 * Create an operation for creating a patch for a specific commit.
+	 *
+	 * @param part
+	 *            the part
+	 * @param commit
+	 *            a commit
+	 * @param repo
+	 *            the repository
+	 * @return the {@link PatchOperationUI}
+	 */
+	public static PatchOperationUI createPatch(IWorkbenchPart part,
+			RevCommit commit, Repository repo) {
+		return new PatchOperationUI(part, repo, commit);
+	}
+

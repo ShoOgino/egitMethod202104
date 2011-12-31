@@ -1,0 +1,15 @@
+	/**
+	 * Create an operation for creating a patch for change made relative to the
+	 * index.
+	 *
+	 * @param part
+	 *            the part
+	 * @param repo
+	 *            the repository
+	 * @return the {@link PatchOperationUI}
+	 */
+	public static PatchOperationUI createPatch(IWorkbenchPart part,
+			Repository repo) {
+		return new PatchOperationUI(null, repo);
+	}
+

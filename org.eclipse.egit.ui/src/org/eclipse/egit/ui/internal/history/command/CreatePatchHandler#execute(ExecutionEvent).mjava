@@ -2,8 +2,8 @@
 		IStructuredSelection selection = getSelection(getPage());
 		if (selection.size() == 1) {
 			RevCommit commit = (RevCommit) selection.getFirstElement();
-            Repository repo = getRepository(event);
-			GitCreatePatchWizard.run(getPart(event), commit, repo);
+			Repository repo = getRepository(event);
+			PatchOperationUI.createPatch(getPart(event), commit, repo).start();
 		}
 		return null;
 	}

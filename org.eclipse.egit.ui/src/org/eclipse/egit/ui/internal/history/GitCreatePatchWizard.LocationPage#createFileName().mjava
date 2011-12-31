@@ -1,5 +1,7 @@
 		private String createFileName() {
-			String suggestedFileName = CreatePatchOperation.suggestFileName(commit);
+			String suggestedFileName = commit != null ? CreatePatchOperation
+					.suggestFileName(commit) : db.getWorkTree().getName()
+					.concat(".patch"); //$NON-NLS-1$
 			String path = getDialogSettings().get(PATH_KEY);
 			if (path != null)
 				return Path.fromPortableString(path).append(suggestedFileName).toOSString();

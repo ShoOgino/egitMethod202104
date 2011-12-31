@@ -9,6 +9,7 @@
 			gitFormat = new Button(composite, SWT.CHECK);
 			gitFormat.setText(UIText.GitCreatePatchWizard_GitFormat);
 			gitFormat.setLayoutData(gd);
+			gitFormat.setEnabled(commit != null);
 
 			contextLinesLabel = new Label(composite, SWT.NONE);
 			contextLinesLabel.setText(UIText.GitCreatePatchWizard_LinesOfContext);
