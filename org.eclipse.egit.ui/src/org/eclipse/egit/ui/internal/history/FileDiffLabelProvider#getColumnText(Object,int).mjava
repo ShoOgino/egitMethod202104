@@ -1,8 +1,6 @@
 	public String getColumnText(final Object element, final int columnIndex) {
-		if (columnIndex == 0) {
-			final FileDiff c = (FileDiff) element;
-			return c.getPath();
-		}
+		if (columnIndex == 0)
+			return ((FileDiff) element).getLabel(element);
 		return null;
 	}
 

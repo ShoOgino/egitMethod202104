@@ -1,20 +1,7 @@
 	public Image getColumnImage(final Object element, final int columnIndex) {
 		if (columnIndex == 0) {
 			final FileDiff c = (FileDiff) element;
-			switch (c.getChange()) {
-			case ADD:
-				return getDecoratedImage(getEditorImage(c),
-						UIIcons.OVR_STAGED_ADD);
-			case DELETE:
-				return getDecoratedImage(getEditorImage(c),
-						UIIcons.OVR_STAGED_REMOVE);
-			case COPY:
-				// fall through
-			case RENAME:
-				// fall through
-			case MODIFY:
-				return getEditorImage(c);
-			}
+			return (Image) resourceManager.get(c.getImageDescriptor(c));
 		}
 		return null;
 	}
