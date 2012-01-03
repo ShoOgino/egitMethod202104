@@ -54,5 +54,10 @@
 					return ((Ref)element).getName().substring(Constants.R_HEADS.length());
 				return ((Ref)element).getName();
 			} });
+
+		cloneSubmodulesButton = new Button(g, SWT.CHECK);
+		cloneSubmodulesButton
+				.setText(UIText.CloneDestinationPage_cloneSubmodulesButton);
+		GridDataFactory.swtDefaults().span(2, 1).applyTo(cloneSubmodulesButton);
 	}
 
