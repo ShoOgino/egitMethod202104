@@ -30,5 +30,10 @@
 						UIText.CommitDialogPreferencePage_signedOffByTooltip);
 		addField(signedOffBy);
 		updateMargins(footersGroup);
+
+		IntegerFieldEditor historySize = new IntegerFieldEditor(
+				UIPreferences.COMMIT_DIALOG_HISTORY_SIZE,
+				UIText.CommitDialogPreferencePage_commitMessageHistory, main);
+		addField(historySize);
 	}
 

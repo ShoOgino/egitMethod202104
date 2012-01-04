@@ -1,9 +1,15 @@
 	/**
 	 * Create process with path proposals
 	 *
+	 * @param messages
 	 * @param paths
 	 */
-	public CommitProposalProcessor(String[] paths) {
+	public CommitProposalProcessor(String[] messages, String[] paths) {
+		if (messages != null && messages.length > 0)
+			this.messages = new TreeSet<String>(Arrays.asList(messages));
+		else
+			this.messages = Collections.emptySet();
+
 		for (String path : paths) {
 			String name = new Path(path).lastSegment();
 			if (name == null)

@@ -39,7 +39,9 @@
 				ContentAssistant assistant = new ContentAssistant();
 				assistant.enableAutoInsert(true);
 				Collection<String> paths = getFileList();
+				Collection<String> messages = getCommitHistory();
 				final CommitProposalProcessor processor = new CommitProposalProcessor(
+						messages.toArray(new String[messages.size()]),
 						paths.toArray(new String[paths.size()]));
 				viewer.getTextWidget().addDisposeListener(
 						new DisposeListener() {
@@ -322,7 +324,16 @@
 				updateMessage();
 			}
 		};
-		commitText.getTextWidget().addModifyListener(validator);
+		commitText.getDocument().addDocumentListener(new IDocumentListener() {
+
+			public void documentChanged(DocumentEvent event) {
+				updateMessage();
+			}
+
+			public void documentAboutToBeChanged(DocumentEvent event) {
+				// Intentionally empty
+			}
+		});
 		authorText.addModifyListener(validator);
 		committerText.addModifyListener(validator);
 		filesViewer.addCheckStateListener(new ICheckStateListener() {
