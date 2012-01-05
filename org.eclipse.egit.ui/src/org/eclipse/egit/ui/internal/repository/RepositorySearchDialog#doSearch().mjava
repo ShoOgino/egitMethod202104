@@ -1,87 +1,82 @@
 	private void doSearch() {
-
-		setMessage(null);
+		setMessage(UIText.RepositorySearchDialog_searchRepositoriesMessage);
 		setErrorMessage(null);
 		// perform the search...
 		final Set<String> directories = new HashSet<String>();
 		final File file = new File(dir.getText());
 		final boolean lookForNested = lookForNestedButton.getSelection();
-		if (file.exists()) {
+		if(!file.exists())
+			return;
+
+		try {
+			prefs.put(PREF_PATH, file.getCanonicalPath());
 			try {
-				prefs.put(PREF_PATH, file.getCanonicalPath());
-				try {
-					prefs.flush();
-				} catch (BackingStoreException e1) {
-					// ignore here
-				}
-			} catch (IOException e2) {
-				// ignore
+				prefs.flush();
+			} catch (BackingStoreException e1) {
+				// ignore here
 			}
-
-			IRunnableWithProgress action = new IRunnableWithProgress() {
-
-				public void run(IProgressMonitor monitor)
-						throws InvocationTargetException, InterruptedException {
-
-					try {
-						findGitDirsRecursive(file, directories, monitor,
-								lookForNested);
-					} catch (Exception ex) {
-						Activator.getDefault().getLog().log(
-								new Status(IStatus.ERROR, Activator
-										.getPluginId(), ex.getMessage(), ex));
-					}
-					if (monitor.isCanceled()) {
-						throw new InterruptedException();
-					}
-				}
-			};
-			try {
-				ProgressMonitorDialog pd = new ProgressMonitorDialog(getShell());
-				pd
-						.getProgressMonitor()
-						.setTaskName(
-								UIText.RepositorySearchDialog_ScanningForRepositories_message);
-				pd.run(true, true, action);
-
-			} catch (InvocationTargetException e1) {
-				org.eclipse.egit.ui.Activator.handleError(
-						UIText.RepositorySearchDialog_errorOccurred, e1, true);
-			} catch (InterruptedException e1) {
-				// ignore
-			}
-
-			int foundOld = 0;
-
-			final TreeSet<String> validDirs = new TreeSet<String>();
-
-			for (String foundDir : directories) {
-				if (!fExistingDirectories.contains(foundDir)) {
-					validDirs.add(foundDir);
-				} else {
-					foundOld++;
-				}
-			}
-
-			if (foundOld > 0) {
-				String message = NLS
-						.bind(
-								UIText.RepositorySearchDialog_SomeDirectoriesHiddenMessage,
-								Integer.valueOf(foundOld));
-				setMessage(message, IMessageProvider.INFORMATION);
-			} else if (directories.isEmpty())
-				setMessage(UIText.RepositorySearchDialog_NothingFoundMessage,
-						IMessageProvider.INFORMATION);
-
-			checkAllItem.setEnabled(!validDirs.isEmpty());
-			uncheckAllItem.setEnabled(!validDirs.isEmpty());
-			fTree.clearFilter();
-			fTreeViewer.setInput(validDirs);
-			// this sets all to selected
-			fTreeViewer.setAllChecked(true);
-			enableOk();
-
+		} catch (IOException e2) {
+			// ignore
 		}
 
+		IRunnableWithProgress action = new IRunnableWithProgress() {
+
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException, InterruptedException {
+				monitor.beginTask(
+						UIText.RepositorySearchDialog_ScanningForRepositories_message,
+						IProgressMonitor.UNKNOWN);
+				try {
+					findGitDirsRecursive(file, directories, monitor,
+							lookForNested);
+				} catch (Exception ex) {
+					Activator
+							.getDefault()
+							.getLog()
+							.log(new Status(IStatus.ERROR, Activator
+									.getPluginId(), ex.getMessage(), ex));
+				}
+				if (monitor.isCanceled()) {
+					throw new InterruptedException();
+				}
+			}
+		};
+		try {
+			getContainer().run(true, true, action);
+		} catch (InvocationTargetException e1) {
+			org.eclipse.egit.ui.Activator.handleError(
+					UIText.RepositorySearchDialog_errorOccurred, e1, true);
+		} catch (InterruptedException e1) {
+			// ignore
+		}
+
+		int foundOld = 0;
+
+		final TreeSet<String> validDirs = new TreeSet<String>();
+
+		for (String foundDir : directories) {
+			if (!fExistingDirectories.contains(foundDir)) {
+				validDirs.add(foundDir);
+			} else {
+				foundOld++;
+			}
+		}
+
+		if (foundOld > 0) {
+			String message = NLS.bind(
+					UIText.RepositorySearchDialog_SomeDirectoriesHiddenMessage,
+					Integer.valueOf(foundOld));
+			setMessage(message, IMessageProvider.INFORMATION);
+		} else if (directories.isEmpty())
+			setMessage(UIText.RepositorySearchDialog_NothingFoundMessage,
+					IMessageProvider.INFORMATION);
+
+		checkAllItem.setEnabled(!validDirs.isEmpty());
+		uncheckAllItem.setEnabled(!validDirs.isEmpty());
+		fTree.clearFilter();
+		fTreeViewer.setInput(validDirs);
+		// this sets all to selected
+		fTreeViewer.setAllChecked(true);
+		enableOk();
 	}
 

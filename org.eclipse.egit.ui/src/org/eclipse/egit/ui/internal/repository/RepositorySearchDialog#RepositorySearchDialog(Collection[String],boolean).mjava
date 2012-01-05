@@ -1,0 +1,12 @@
+	/**
+	 * @param existingDirs
+	 * @param fillSearch true to fill search results when initially displayed
+	 */
+	public RepositorySearchDialog(Collection<String> existingDirs,
+			boolean fillSearch) {
+		super(
+				"searchPage", UIText.RepositorySearchDialog_SearchTitle, UIIcons.WIZBAN_IMPORT_REPO); //$NON-NLS-1$
+		this.fExistingDirectories.addAll(existingDirs);
+		this.fillSearch = fillSearch;
+	}
+

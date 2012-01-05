@@ -1,7 +1,5 @@
 	private void enableOk() {
 		boolean enable = fTreeViewer.getCheckedElements().length > 0;
-		getButton(OK).setEnabled(enable);
-		if (enable)
-			getButton(OK).setFocus();
+		setPageComplete(enable);
 	}
 

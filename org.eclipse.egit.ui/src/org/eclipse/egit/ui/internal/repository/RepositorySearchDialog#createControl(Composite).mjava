@@ -1,18 +1,13 @@
-	@Override
-	protected Control createDialogArea(Composite parent) {
-
-		Composite titleParent = (Composite) super.createDialogArea(parent);
-
-		setTitle(UIText.RepositorySearchDialog_SearchTitle);
+	public void createControl(Composite parent) {
 		setMessage(UIText.RepositorySearchDialog_searchRepositoriesMessage);
 
-		Composite main = new Composite(titleParent, SWT.NONE);
+		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(1, false));
 		main.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Group searchGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		searchGroup.setText(UIText.RepositorySearchDialog_SearchCriteriaGroup);
-		searchGroup.setLayout(new GridLayout(3, false));
+		searchGroup.setLayout(new GridLayout(4, false));
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchGroup);
 
 		Label dirLabel = new Label(searchGroup, SWT.NONE);
@@ -41,7 +36,6 @@
 				dd.setFilterPath(dir.getText());
 				String directory = dd.open();
 				if (directory != null) {
-					setNeedsSearch();
 					dir.setText(directory);
 					prefs.put(PREF_PATH, directory);
 					try {
@@ -49,14 +43,27 @@
 					} catch (BackingStoreException e1) {
 						// ignore here
 					}
+					doSearch();
 				}
 			}
 
 		});
 
+		searchButton = new Button(searchGroup, SWT.PUSH);
+		searchButton.setText(UIText.RepositorySearchDialog_Search);
+		searchButton
+				.setToolTipText(UIText.RepositorySearchDialog_SearchTooltip);
+		searchButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				doSearch();
+			}
+		});
+
 		lookForNestedButton = new Button(searchGroup, SWT.CHECK);
 		lookForNestedButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER,
-				false, false, 3, 1));
+				false, false, 4, 1));
 		lookForNestedButton.setSelection(prefs.getBoolean(PREF_DEEP_SEARCH,
 				false));
 		lookForNestedButton
@@ -79,21 +86,6 @@
 			}
 
 		});
-
-		searchButton = new Button(searchGroup, SWT.PUSH);
-		GridDataFactory.fillDefaults().span(3, 1)
-				.align(SWT.BEGINNING, SWT.FILL).applyTo(searchButton);
-		searchButton.setText(UIText.RepositorySearchDialog_Search);
-		searchButton
-				.setToolTipText(UIText.RepositorySearchDialog_SearchTooltip);
-		searchButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				doSearch();
-			}
-		});
-
 
 		Group searchResultGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		searchResultGroup
@@ -178,8 +170,15 @@
 		fTreeViewer.setContentProvider(new ContentProvider());
 		fTreeViewer.setLabelProvider(new RepositoryLabelProvider());
 
-		applyDialogFont(main);
+		setControl(main);
 
-		return main;
+		if (fillSearch)
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+
+				public void run() {
+					if (!getControl().isDisposed())
+						doSearch();
+				}
+			});
 	}
 
