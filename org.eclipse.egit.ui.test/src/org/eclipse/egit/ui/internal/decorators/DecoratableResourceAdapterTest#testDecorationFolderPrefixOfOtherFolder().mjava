@@ -6,8 +6,9 @@
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] { new TestDecoratableResource(
 				testFolder2, true, false, false, false, Staged.NOT_STAGED) };
 		waitForIndexDiffUpdate(true);
-		IDecoratableResource[] actualDRs = DecoratableResourceHelper
-				.createDecoratableResources(new IResource[] { testFolder2 });
+		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
+		IDecoratableResource[] actualDRs = { new DecoratableResourceAdapter(
+				indexDiffData, testFolder2) };
 
 		for (int i = 0; i < expectedDRs.length; i++)
 			assertTrue(expectedDRs[i].equals(actualDRs[i]));

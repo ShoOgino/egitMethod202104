@@ -9,7 +9,8 @@
 		repository = new FileRepository(gitDir);
 		repository.create();
 		repository.close();
-		repository = Activator.getDefault().getRepositoryCache().lookupRepository(gitDir);
+		repository = Activator.getDefault().getRepositoryCache()
+				.lookupRepository(gitDir);
 
 		project = root.getProject(TEST_PROJECT);
 		project.create(null);
@@ -17,7 +18,8 @@
 
 		project.getFolder(TEST_FOLDER2).create(true, true, null);
 		IFile testFile2 = project.getFile(TEST_FILE2);
-		testFile2.create(new ByteArrayInputStream("content".getBytes()), true, null);
+		testFile2.create(new ByteArrayInputStream("content".getBytes()), true,
+				null);
 
 		RepositoryMapping mapping = new RepositoryMapping(project, gitDir);
 
@@ -32,7 +34,8 @@
 		git.add().addFilepattern(".").call();
 		git.commit().setMessage("Initial commit").call();
 
-		indexDiffCacheEntry = Activator.getDefault().getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		indexDiffCacheEntry = Activator.getDefault().getIndexDiffCache()
+				.getIndexDiffCacheEntry(repository);
 		waitForIndexDiffUpdate(false);
 	}
 

@@ -6,17 +6,6 @@
 	 * <code>postLabelEvent(null, true)</code>.
 	 */
 	private void postLabelEvent() {
-		final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-
-		// Invalidate all decorations
-		try {
-			// Set (new) 'refresh' timestamp
-			root.setSessionProperty(REFRESH_KEY,
-					Long.valueOf(System.currentTimeMillis()));
-		} catch (CoreException e) {
-			handleException(root, e);
-		}
-
 		// Post label event to LabelEventJob
 		LabelEventJob.getInstance().postLabelEvent(this);
 	}

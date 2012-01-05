@@ -3,8 +3,8 @@
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] { new TestDecoratableResource(
 				project, true, false, false, false, Staged.NOT_STAGED) };
 
-		IDecoratableResource[] actualDRs = DecoratableResourceHelper
-				.createDecoratableResources(new IResource[] { project });
+		IDecoratableResource[] actualDRs = { new DecoratableResourceAdapter(
+				indexDiffCacheEntry.getIndexDiff(), project) };
 
 		for (int i = 0; i < expectedDRs.length; i++)
 			assertTrue(expectedDRs[i].equals(actualDRs[i]));

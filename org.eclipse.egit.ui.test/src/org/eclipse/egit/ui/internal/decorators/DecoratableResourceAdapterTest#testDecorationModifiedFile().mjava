@@ -19,8 +19,10 @@
 						Staged.NOT_STAGED) };
 
 		waitForIndexDiffUpdate(true);
-		IDecoratableResource[] actualDRs = DecoratableResourceHelper
-				.createDecoratableResources(new IResource[] { project, file });
+		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
+		IDecoratableResource[] actualDRs = {
+				new DecoratableResourceAdapter(indexDiffData, project),
+				new DecoratableResourceAdapter(indexDiffData, file) };
 
 		for (int i = 0; i < expectedDRs.length; i++)
 			assertTrue(expectedDRs[i].equals(actualDRs[i]));

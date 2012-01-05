@@ -11,12 +11,15 @@
 						Staged.NOT_STAGED),
 				new TestDecoratableResource(folder, false, false, false, false,
 						Staged.NOT_STAGED),
-				new TestDecoratableResource(subFolder, false, false, false, false,
-						Staged.NOT_STAGED) };
+				new TestDecoratableResource(subFolder, false, false, false,
+						false, Staged.NOT_STAGED) };
 
 		waitForIndexDiffUpdate(true);
-		IDecoratableResource[] actualDRs = DecoratableResourceHelper
-				.createDecoratableResources(new IResource[] { project, folder, subFolder });
+		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
+		IDecoratableResource[] actualDRs = {
+				new DecoratableResourceAdapter(indexDiffData, project),
+				new DecoratableResourceAdapter(indexDiffData, folder),
+				new DecoratableResourceAdapter(indexDiffData, subFolder) };
 
 		for (int i = 0; i < expectedDRs.length; i++)
 			assertTrue(expectedDRs[i].equals(actualDRs[i]));
