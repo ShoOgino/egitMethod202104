@@ -5,10 +5,10 @@
 	 * @param paths
 	 */
 	public CommitProposalProcessor(String[] messages, String[] paths) {
-		if (messages != null && messages.length > 0)
-			this.messages = new TreeSet<String>(Arrays.asList(messages));
+		if (messages != null)
+			this.messages = messages;
 		else
-			this.messages = Collections.emptySet();
+			this.messages = new String[0];
 
 		for (String path : paths) {
 			String name = new Path(path).lastSegment();
