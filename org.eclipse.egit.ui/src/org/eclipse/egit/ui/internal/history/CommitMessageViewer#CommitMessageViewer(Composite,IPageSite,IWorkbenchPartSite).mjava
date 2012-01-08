@@ -10,16 +10,7 @@
 		// set the cursor when hovering over a link
 		t.addListener(SWT.MouseMove, new Listener() {
 			public void handleEvent(final Event e) {
-				final int o;
-				try {
-					o = t.getOffsetAtLocation(new Point(e.x, e.y));
-				} catch (IllegalArgumentException err) {
-					t.setCursor(sys_normalCursor);
-					return;
-				}
-
-				final StyleRange r = t.getStyleRangeAtOffset(o);
-				if (r instanceof ObjectLink)
+				if (getStyleRange(e.x, e.y) instanceof ObjectLink)
 					t.setCursor(SYS_LINK_CURSOR);
 				else
 					t.setCursor(sys_normalCursor);
@@ -34,14 +25,7 @@
 					return;
 				}
 
-				final int o;
-				try {
-					o = t.getOffsetAtLocation(new Point(e.x, e.y));
-				} catch (IllegalArgumentException err) {
-					return;
-				}
-
-				final StyleRange r = t.getStyleRangeAtOffset(o);
+				final StyleRange r = getStyleRange(e.x, e.y);
 				if (r instanceof ObjectLink) {
 					final RevCommit c = ((ObjectLink) r).targetCommit;
 					for (final Object l : navListeners.getListeners())
