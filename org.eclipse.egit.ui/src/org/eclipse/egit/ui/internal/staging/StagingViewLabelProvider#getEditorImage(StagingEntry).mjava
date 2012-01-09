@@ -1,4 +1,7 @@
 	private Image getEditorImage(StagingEntry diff) {
+		if (diff.isSubmodule())
+			return SUBMODULE;
+
 		Image image = DEFAULT;
 		String name = new Path(diff.getPath()).lastSegment();
 		if (name != null) {

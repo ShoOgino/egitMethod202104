@@ -12,6 +12,7 @@
 		for (String path : paths) {
 			CommitItem item = new CommitItem();
 			item.status = getFileStatus(path, indexDiff);
+			item.submodule = FileMode.GITLINK == indexDiff.getIndexMode(path);
 			item.path = path;
 			items.add(item);
 		}
