@@ -5,12 +5,23 @@
 		GridLayoutFactory.fillDefaults().spacing(1, 1).numColumns(4)
 				.applyTo(tagLabelArea);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tagLabelArea);
-		List<String> tags = getTags();
-		for (String tag : tags) {
+		RevCommit commit = getCommit().getRevCommit();
+		Repository repository = getCommit().getRepository();
+		for (Ref tag : getTags()) {
+			tag = repository.peel(tag);
+			ObjectId id = tag.getPeeledObjectId();
+			boolean annotated = id != null;
+			if (id == null)
+				id = tag.getObjectId();
+			if (!commit.equals(id))
+				continue;
 			CLabel tagLabel = new CLabel(tagLabelArea, SWT.NONE);
 			toolkit.adapt(tagLabel, false, false);
-			tagLabel.setImage(getImage(UIIcons.TAG));
-			tagLabel.setText(tag);
+			if (annotated)
+				tagLabel.setImage(getImage(UIIcons.TAG_ANNOTATED));
+			else
+				tagLabel.setImage(getImage(UIIcons.TAG));
+			tagLabel.setText(Repository.shortenRefName(tag.getName()));
 		}
 	}
 
