@@ -3,7 +3,7 @@
 	 * @return the resources in the selection
 	 */
 	private IResource[] getSelectedResources(IStructuredSelection selection) {
-		Set<IResource> result = new HashSet<IResource>();
+		Set<IResource> result = new LinkedHashSet<IResource>();
 		for (Object o : selection.toList()) {
 			IResource resource = (IResource) getAdapter(o, IResource.class);
 			if (resource != null)

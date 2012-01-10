@@ -8,7 +8,7 @@
 	 */
 	private IProject[] getProjectsInRepositoryOfSelectedResources(
 			IStructuredSelection selection) {
-		Set<IProject> ret = new HashSet<IProject>();
+		Set<IProject> ret = new LinkedHashSet<IProject>();
 		Repository[] repositories = getRepositoriesFor(getProjectsForSelectedResources(selection));
 		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
