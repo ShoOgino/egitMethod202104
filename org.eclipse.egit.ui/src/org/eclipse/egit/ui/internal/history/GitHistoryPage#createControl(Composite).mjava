@@ -36,8 +36,7 @@
 				graphDetailSplit);
 		graph = new CommitGraphTable(graphDetailSplit, getSite(), popupMgr);
 
-		graph.setRelativeDate(Activator.getDefault().getPreferenceStore()
-				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_RELATIVE_DATE));
+		graph.setRelativeDate(isShowingRelativeDates());
 		Activator.getDefault().getPreferenceStore()
 				.addPropertyChangeListener(listener);
 
