@@ -7,30 +7,17 @@
 	 */
 	public void run(IProgressMonitor pm) throws InvocationTargetException,
 			InterruptedException {
-		Transport transport = null;
-		Connection connection = null;
+		if (pm != null)
+			pm.beginTask(CoreText.ListRemoteOperation_title,
+					IProgressMonitor.UNKNOWN);
 		try {
-			transport = Transport.open(localDb, uri);
-			if (credentialsProvider != null)
-				transport.setCredentialsProvider(credentialsProvider);
-			transport.setTimeout(this.timeout);
-
-			if (pm != null)
-				pm.beginTask(CoreText.ListRemoteOperation_title,
-						IProgressMonitor.UNKNOWN);
-			connection = transport.openFetch();
-			remoteRefsMap = connection.getRefsMap();
-		} catch (NotSupportedException e) {
+			remoteRefs = rc.call();
+		} catch (JGitInternalException e) {
 			throw new InvocationTargetException(e);
-		} catch (TransportException e) {
+		} catch (GitAPIException e) {
 			throw new InvocationTargetException(e);
-		} finally {
-			if (connection != null)
-				connection.close();
-			if (transport != null)
-				transport.close();
-			if (pm != null)
-				pm.done();
 		}
+		if (pm != null)
+			pm.done();
 	}
 
