@@ -17,7 +17,7 @@
 		try {
 			monitor.beginTask(UIText.CommitMessageViewer_BuildDiffListTaskName,
 					currentDiffs.size());
-			BufferedOutputStream bos = new BufferedOutputStream(
+			BufferedOutputStream bos = new SafeBufferedOutputStream(
 					new ByteArrayOutputStream() {
 						@Override
 						public synchronized void write(byte[] b, int off,
