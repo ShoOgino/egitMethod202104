@@ -1,10 +1,11 @@
 		public PreviewResource(String name, int type, String repositoryName, String branch,
-				boolean tracked, boolean ignored, boolean dirty, Staged staged,
+				String branchStatus, boolean tracked, boolean ignored, boolean dirty, Staged staged,
 				boolean conflicts, boolean assumeValid) {
 
 			this.name = name;
 			this.repositoryName = repositoryName;
 			this.branch = branch;
+			this.branchStatus = branchStatus;
 			this.type = type;
 			this.children = Collections.EMPTY_LIST;
 			this.tracked = tracked;
