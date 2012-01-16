@@ -1,0 +1,7 @@
+	private TeamException getTeamException(final Throwable throwable) {
+		Throwable current = throwable;
+		while (current.getCause() != null)
+			current = current.getCause();
+		return new TeamException(current.getMessage(), current);
+	}
+
