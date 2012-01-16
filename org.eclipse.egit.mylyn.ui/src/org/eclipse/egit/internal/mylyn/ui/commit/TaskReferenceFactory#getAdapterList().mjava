@@ -1,5 +1,7 @@
 	@SuppressWarnings({ "rawtypes" })
 	public Class[] getAdapterList() {
-		return Arrays.copyOf(ADAPTER_TYPES, ADAPTER_TYPES.length);
+		final Class[] c = new Class[ADAPTER_TYPES.length];
+		System.arraycopy(ADAPTER_TYPES, 0, c, 0, c.length);
+		return c;
 	}
 
