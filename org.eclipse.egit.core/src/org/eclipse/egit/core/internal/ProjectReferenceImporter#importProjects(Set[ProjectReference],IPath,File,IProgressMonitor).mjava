@@ -1,0 +1,34 @@
+	private List<IProject> importProjects(final Set<ProjectReference> projects,
+			final IPath workDir, final File repositoryPath,
+			final IProgressMonitor monitor) throws TeamException {
+		try {
+
+			List<IProject> importedProjects = new ArrayList<IProject>();
+
+			// import projects from the current repository to workspace
+			final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			final IWorkspaceRoot root = workspace.getRoot();
+			for (final ProjectReference projectToImport : projects) {
+				final IPath projectDir = workDir.append(projectToImport
+						.getProjectDir());
+				final IProjectDescription projectDescription = workspace
+						.loadProjectDescription(projectDir
+								.append(IProjectDescription.DESCRIPTION_FILE_NAME));
+				final IProject project = root.getProject(projectDescription
+						.getName());
+				project.create(projectDescription, monitor);
+				importedProjects.add(project);
+
+				project.open(monitor);
+				final ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
+						project, repositoryPath);
+				connectProviderOperation.execute(monitor);
+			}
+
+			return importedProjects;
+
+		} catch (final CoreException e) {
+			throw TeamException.asTeamException(e);
+		}
+	}
+
