@@ -4,8 +4,10 @@
 		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
 				.nextToRemoteBranches("git://no.example.com/EGIT");
-		remoteBranches
-				.assertErrorMessage("git://no.example.com/EGIT: unknown host");
+		remoteBranches.assertErrorMessage(NLS.bind(
+				UIText.SourceBranchPage_CompositeTransportErrorMessage,
+				"Exception caught during execution of ls-remote command",
+				"git://no.example.com/EGIT: unknown host"));
 		remoteBranches.assertCannotProceed();
 		remoteBranches.cancel();
 	}
