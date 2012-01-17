@@ -1,0 +1,12 @@
+	/**
+	 * Restore projects associated with the currently checked out branch to the
+	 * workspace
+	 *
+	 * @param monitor
+	 */
+	public void restore(final IProgressMonitor monitor) {
+		String branch = getBranch();
+		if (branch != null)
+			restore(branch, monitor);
+	}
+

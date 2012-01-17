@@ -1,0 +1,25 @@
+	/**
+	 * Associate projects with branch. The specified memento must the one
+	 * previously returned from a call to {@link #snapshot()}.
+	 *
+	 * @see #snapshot()
+	 * @param memento
+	 * @return this tracker
+	 */
+	public BranchProjectTracker save(final IMemento memento) {
+		if (!(memento instanceof XMLMemento))
+			throw new IllegalArgumentException("Invalid memento"); //$NON-NLS-1$
+
+		String branch = memento.getString(KEY_BRANCH);
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		String pref = getPreference(branch);
+		StringWriter writer = new StringWriter();
+		try {
+			((XMLMemento) memento).save(writer);
+			store.setValue(pref, writer.toString());
+		} catch (IOException e) {
+			Activator.logError("Error writing branch-project associations", e); //$NON-NLS-1$
+		}
+		return this;
+	}
+

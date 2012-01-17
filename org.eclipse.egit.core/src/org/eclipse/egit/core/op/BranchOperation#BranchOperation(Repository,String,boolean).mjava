@@ -1,0 +1,16 @@
+	/**
+	 * Construct a {@link BranchOperation} object for a {@link Ref}.
+	 *
+	 * @param repository
+	 * @param target
+	 *            a {@link Ref} name or {@link RevCommit} id
+	 * @param delete
+	 *            true to delete missing projects on new branch, false to close
+	 *            them
+	 */
+	public BranchOperation(Repository repository, String target, boolean delete) {
+		super(repository);
+		this.target = target;
+		this.delete = delete;
+	}
+

@@ -1,0 +1,60 @@
+	/**
+	 * @param projectsToCreate
+	 *            the projects to create
+	 * @param open
+	 *            true to open existing projects, false to leave in current
+	 *            state
+	 * @param repository
+	 *            if not null, the projects will be automatically shared
+	 * @param selectedWorkingSets
+	 *            the workings sets to add the created projects to, may be null
+	 *            or empty
+	 * @param monitor
+	 * @throws InvocationTargetException
+	 * @throws InterruptedException
+	 */
+	public static void createProjects(
+			final Set<ProjectRecord> projectsToCreate, final boolean open,
+			final Repository repository,
+			final IWorkingSet[] selectedWorkingSets, IProgressMonitor monitor)
+			throws InvocationTargetException, InterruptedException {
+		IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor actMonitor) throws CoreException {
+				IWorkingSetManager workingSetManager = PlatformUI
+						.getWorkbench().getWorkingSetManager();
+				try {
+					actMonitor.beginTask("", projectsToCreate.size()); //$NON-NLS-1$
+					if (actMonitor.isCanceled())
+						throw new OperationCanceledException();
+					for (ProjectRecord projectRecord : projectsToCreate) {
+						if (actMonitor.isCanceled())
+							throw new OperationCanceledException();
+						actMonitor.setTaskName(projectRecord.getProjectLabel());
+						IProject project = createExistingProject(projectRecord,
+								open, new SubProgressMonitor(actMonitor, 1));
+						if (project == null)
+							continue;
+						if (repository != null) {
+							ConnectProviderOperation connectProviderOperation = new ConnectProviderOperation(
+									project, repository.getDirectory());
+							connectProviderOperation.execute(actMonitor);
+						}
+						if (selectedWorkingSets != null
+								&& selectedWorkingSets.length > 0)
+							workingSetManager.addToWorkingSets(project,
+									selectedWorkingSets);
+					}
+				} finally {
+					actMonitor.done();
+				}
+			}
+		};
+		try {
+			ResourcesPlugin.getWorkspace().run(wsr, monitor);
+		} catch (OperationCanceledException e) {
+			throw new InterruptedException();
+		} catch (CoreException e) {
+			throw new InvocationTargetException(e);
+		}
+	}
+

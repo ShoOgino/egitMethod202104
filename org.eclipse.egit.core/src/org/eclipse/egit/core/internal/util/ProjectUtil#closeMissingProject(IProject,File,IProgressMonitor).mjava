@@ -1,0 +1,52 @@
+	/**
+	 * Close a project that has already been deleted on disk. This will fall
+	 * back to deleting the project if it cannot be successfully closed.
+	 * <p>
+	 * Closing a missing project involves creating a temporary '.project' file
+	 * since only existing projects can be closed
+	 *
+	 * @param p
+	 * @param projectFile
+	 * @param monitor
+	 * @throws CoreException
+	 */
+	private static void closeMissingProject(IProject p, File projectFile,
+			IProgressMonitor monitor) throws CoreException {
+		// Create temporary .project file so it can be closed
+		boolean closeFailed = false;
+		File projectRoot = projectFile.getParentFile();
+		if (!projectRoot.isFile()) {
+			boolean hasRoot = projectRoot.exists();
+			try {
+				if (!hasRoot)
+					FileUtils.mkdirs(projectRoot, true);
+				if (projectFile.createNewFile())
+					p.close(new SubProgressMonitor(monitor, 1));
+				else
+					closeFailed = true;
+			} catch (IOException e) {
+				closeFailed = true;
+			} finally {
+				// Clean up created .project file
+				try {
+					FileUtils.delete(projectFile, FileUtils.RETRY
+							| FileUtils.SKIP_MISSING);
+				} catch (IOException e) {
+					closeFailed = true;
+				}
+				// Clean up created folder
+				if (hasRoot)
+					try {
+						FileUtils.delete(projectRoot, FileUtils.RETRY
+								| FileUtils.SKIP_MISSING | FileUtils.RECURSIVE);
+					} catch (IOException e) {
+						closeFailed = true;
+					}
+			}
+		} else
+			closeFailed = true;
+		// Delete projects that can't be closed
+		if (closeFailed)
+			p.delete(false, true, new SubProgressMonitor(monitor, 1));
+	}
+

@@ -1,0 +1,17 @@
+	/**
+	 * Get preference key for branch. This will be unique to the repository and
+	 * branch.
+	 *
+	 * @param branch
+	 * @return key
+	 */
+	public String getPreference(final String branch) {
+		if (branch == null)
+			throw new IllegalArgumentException("Branch cannot be null"); //$NON-NLS-1$
+		if (branch.length() == 0)
+			throw new IllegalArgumentException("Branch cannot be empty"); //$NON-NLS-1$
+
+		return PREFIX + '_' + repository.getDirectory().getAbsolutePath() + '_'
+				+ branch;
+	}
+

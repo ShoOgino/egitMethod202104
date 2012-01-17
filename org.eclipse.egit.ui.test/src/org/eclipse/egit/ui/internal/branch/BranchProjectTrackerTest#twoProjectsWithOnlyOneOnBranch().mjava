@@ -1,0 +1,53 @@
+	@Test
+	public void twoProjectsWithOnlyOneOnBranch() throws Exception {
+		BranchProjectTracker tracker = new BranchProjectTracker(repository);
+		String[] paths = tracker.getProjectPaths();
+		assertNotNull(paths);
+		assertEquals(0, paths.length);
+		assertNotNull(Git.wrap(repository).branchCreate().setName(BRANCH)
+				.call());
+		BranchOperationUI.checkout(repository, BRANCH).start();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+
+		paths = tracker.getProjectPaths(Constants.MASTER);
+		assertNotNull(paths);
+		assertEquals(2, paths.length);
+
+		IProject project1 = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+		IProject project2 = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ2);
+		assertTrue(project1.exists());
+		assertTrue(project2.exists());
+		project1.delete(true, true, new NullProgressMonitor());
+		assertNotNull(Git.wrap(repository).commit().setAll(true)
+				.setMessage("deleting project").call());
+		assertFalse(project1.exists());
+
+		BranchOperationUI.checkout(repository, Constants.MASTER).start();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+
+		paths = tracker.getProjectPaths(BRANCH);
+		assertNotNull(paths);
+		assertEquals(1, paths.length);
+
+		assertTrue(project1.exists());
+		assertTrue(project2.exists());
+
+		BranchOperationUI.checkout(repository, BRANCH).start();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+
+		assertTrue(project1.exists());
+		assertFalse(project1.isOpen());
+		assertTrue(project2.exists());
+		assertTrue(project2.isOpen());
+
+		BranchOperationUI.checkout(repository, Constants.MASTER).start();
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
+
+		assertTrue(project1.exists());
+		assertTrue(project1.isOpen());
+		assertTrue(project2.exists());
+		assertTrue(project2.isOpen());
+	}
+

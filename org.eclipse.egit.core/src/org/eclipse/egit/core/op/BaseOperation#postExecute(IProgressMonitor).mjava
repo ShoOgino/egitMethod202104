@@ -1,0 +1,14 @@
+	/**
+	 * Invoke all post-execute tasks
+	 *
+	 * @param monitor
+	 * @throws CoreException
+	 */
+	protected void postExecute(IProgressMonitor monitor) throws CoreException {
+		synchronized (this) {
+			if (postTasks != null)
+				for (PostExecuteTask task : postTasks)
+					task.postExecute(repository, monitor);
+		}
+	}
+

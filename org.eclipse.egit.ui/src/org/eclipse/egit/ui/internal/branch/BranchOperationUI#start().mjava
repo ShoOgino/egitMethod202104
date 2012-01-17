@@ -19,12 +19,44 @@
 		String jobname = NLS.bind(UIText.BranchAction_checkingOut, repoName,
 				target);
 
-		final BranchOperation bop = new BranchOperation(repository, target);
+		final boolean restore = Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.CHECKOUT_PROJECT_RESTORE);
+		final BranchOperation bop = new BranchOperation(repository, target,
+				!restore);
 
 		Job job = new Job(jobname) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
+					if (restore) {
+						final BranchProjectTracker tracker = new BranchProjectTracker(
+								repository);
+						final AtomicReference<IMemento> memento = new AtomicReference<IMemento>();
+						bop.addPreExecuteTask(new PreExecuteTask() {
+
+							public void preExecute(Repository pRepo,
+									IProgressMonitor pMonitor)
+									throws CoreException {
+								// Snapshot current projects before checkout
+								// begins
+								memento.set(tracker.snapshot());
+							}
+						});
+						bop.addPostExecuteTask(new PostExecuteTask() {
+
+							public void postExecute(Repository pRepo,
+									IProgressMonitor pMonitor)
+									throws CoreException {
+								IMemento snapshot = memento.get();
+								if (snapshot == null)
+									return;
+								// Save previous branch's projects and restore
+								// current branch's projects
+								tracker.save(snapshot).restore(pMonitor);
+							}
+						});
+					}
+
 					bop.execute(monitor);
 				} catch (CoreException e) {
 					switch (bop.getResult().getStatus()) {

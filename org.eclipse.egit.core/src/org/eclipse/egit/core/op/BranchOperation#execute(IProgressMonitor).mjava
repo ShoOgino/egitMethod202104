@@ -8,6 +8,8 @@
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			public void run(IProgressMonitor pm) throws CoreException {
+				preExecute(pm);
+
 				IProject[] validProjects = ProjectUtil
 						.getValidOpenProjects(repository);
 				pm.beginTask(NLS.bind(
@@ -28,9 +30,11 @@
 				if (result.getStatus() == Status.NONDELETED)
 					retryDelete(result.getUndeletedList());
 				pm.worked(1);
-				ProjectUtil.refreshValidProjects(validProjects,
+				ProjectUtil.refreshValidProjects(validProjects, delete,
 						new SubProgressMonitor(pm, 1));
 				pm.worked(1);
+
+				postExecute(pm);
 
 				pm.done();
 			}

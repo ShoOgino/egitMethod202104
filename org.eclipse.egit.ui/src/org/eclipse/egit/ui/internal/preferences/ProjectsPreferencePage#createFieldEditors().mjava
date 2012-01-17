@@ -3,5 +3,13 @@
 		addField(new BooleanFieldEditor(GitCorePreferences.core_autoShareProjects,
 				UIText.ProjectsPreferencePage_AutoShareProjects,
 				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(UIPreferences.CHECKOUT_PROJECT_RESTORE,
+				UIText.ProjectsPreferencePage_RestoreBranchProjects,
+				getFieldEditorParent()) {
+			public IPreferenceStore getPreferenceStore() {
+				return org.eclipse.egit.ui.Activator.getDefault()
+						.getPreferenceStore();
+			}
+		});
 	}
 

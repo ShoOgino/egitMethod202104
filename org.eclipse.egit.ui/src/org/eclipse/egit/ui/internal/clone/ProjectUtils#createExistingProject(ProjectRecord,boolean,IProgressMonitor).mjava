@@ -1,10 +1,18 @@
 	private static IProject createExistingProject(final ProjectRecord record,
-			IProgressMonitor monitor) throws CoreException {
+			final boolean open, IProgressMonitor monitor) throws CoreException {
 		String projectName = record.getProjectName();
 		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		final IProject project = workspace.getRoot().getProject(projectName);
-		if (project.exists())
+		if (project.exists()) {
+			if (open && !project.isOpen()) {
+				IPath location = project.getLocation();
+				if (location != null
+						&& location.toFile().equals(
+								record.getProjectSystemFile()))
+					project.open(monitor);
+			}
 			return null;
+		}
 		if (record.getProjectDescription() == null) {
 			// error case
 			record.setProjectDescription(workspace

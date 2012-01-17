@@ -1,0 +1,40 @@
+	/**
+	 * Restore projects associated with the given branch to the workspace
+	 *
+	 * @param branch
+	 * @param monitor
+	 */
+	public void restore(final String branch, final IProgressMonitor monitor) {
+		String[] paths = getProjectPaths(branch);
+		if (paths.length == 0)
+			return;
+
+		Set<ProjectRecord> records = new LinkedHashSet<ProjectRecord>();
+		File parent = repository.getWorkTree();
+		for (String path : paths) {
+			File root = new File(parent, path);
+			if (!root.isDirectory())
+				continue;
+			if (!new File(root, IProjectDescription.DESCRIPTION_FILE_NAME)
+					.exists())
+				continue;
+			records.add(new ProjectRecord(root));
+		}
+		if (records.isEmpty())
+			return;
+		IProgressMonitor importMonitor;
+		if (monitor != null)
+			importMonitor = monitor;
+		else
+			importMonitor = new NullProgressMonitor();
+		try {
+			ProjectUtils.createProjects(records, true, repository, null,
+					importMonitor);
+		} catch (InvocationTargetException e) {
+			Activator
+					.logError("Error restoring branch-project associations", e); //$NON-NLS-1$
+		} catch (InterruptedException ignored) {
+			// Ignored
+		}
+	}
+
