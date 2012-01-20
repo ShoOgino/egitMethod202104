@@ -9,6 +9,7 @@
 		assertEquals(3, dialog.bot().table().rowCount());
 		dialog.bot().table().select(0);
 		dialog.bot().button(IDialogConstants.OK_LABEL).click();
+		waitUntilCompareTreeViewShows();
 		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
 				.getAllItems().length);
 		// use the second (previous) -> should have a change
