@@ -1,0 +1,12 @@
+	@Override
+	protected void createFieldEditors() {
+		addField(new BooleanFieldEditor(
+				UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH,
+				UIText.GitPreferenceRoot_fetchBeforeSynchronization,
+				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(
+				UIPreferences.SYNC_VIEW_ALWAYS_SHOW_CHANGESET_MODEL,
+				UIText.GitPreferenceRoot_automaticallyEnableChangesetModel,
+				getFieldEditorParent()));
+	}
+
