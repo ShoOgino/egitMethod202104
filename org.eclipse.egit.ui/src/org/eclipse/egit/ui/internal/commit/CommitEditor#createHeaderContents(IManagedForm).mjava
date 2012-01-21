@@ -4,8 +4,7 @@
 	protected void createHeaderContents(IManagedForm headerForm) {
 		RepositoryCommit commit = getCommit();
 		ScrolledForm form = headerForm.getForm();
-		new HeaderText(form.getForm(), MessageFormat.format(
-				UIText.CommitEditor_TitleHeader, commit.getRevCommit().name()));
+		new HeaderText(form.getForm(), commit.getRevCommit().name());
 		form.setToolTipText(commit.getRevCommit().name());
 		getToolkit().decorateFormHeading(form.getForm());
 
