@@ -1,0 +1,27 @@
+	@Test
+	public void shouldUnStagePartialChangeInCompareEditor() throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		changeFilesInProject();
+		launchSynchronization(HEAD, HEAD, true);
+		setGitChangeSetPresentationModel();
+		getCompareEditorForFileInGitChangeSet(FILE1, true).bot();
+
+		// when
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				CommonUtils.runCommand("org.eclipse.compare.copyRightToLeft",
+						null);
+			}
+		});
+		bot.activeEditor().save();
+
+		// then file FILE1 should be unchanged in working tree
+		FileRepository repo = lookupRepository(repositoryFile);
+		Status status = new Git(repo).status().call();
+		assertThat(Long.valueOf(status.getModified().size()),
+				is(Long.valueOf(1)));
+		assertThat(status.getModified().iterator().next(), is(PROJ1 + "/"
+				+ FOLDER + "/" + FILE2));
+	}
+

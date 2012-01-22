@@ -1,0 +1,28 @@
+	@Test
+	public void shouldStagePartialChangeInCompareEditor() throws Exception {
+		// given
+		resetRepositoryToCreateInitialTag();
+		changeFilesInProject();
+		launchSynchronization(HEAD, HEAD, true);
+		setGitChangeSetPresentationModel();
+		getCompareEditorForFileInGitChangeSet(FILE1, true).bot();
+
+		// when
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				CommonUtils.runCommand("org.eclipse.compare.copyLeftToRight",
+						null);
+			}
+		});
+		bot.activeEditor().save();
+
+
+		// then file FILE1 should be in index
+		FileRepository repo = lookupRepository(repositoryFile);
+		Status status = new Git(repo).status().call();
+		assertThat(Long.valueOf(status.getChanged().size()),
+				is(Long.valueOf(1L)));
+		assertThat(status.getChanged().iterator().next(), is(PROJ1 + "/"
+				+ FOLDER + "/" + FILE1));
+	}
+
