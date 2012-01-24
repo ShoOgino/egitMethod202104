@@ -14,8 +14,8 @@
 		try {
 			repositoryServerInfos = repositoryServerProvider
 					.getRepositoryServerInfos();
-		} catch (RuntimeException e) {
-			Activator.error("Error on providing repository server infos", e); //$NON-NLS-1$
+		} catch (Exception e) {
+			Activator.error(UIText.RepositoryLocationContentProvider_errorProvidingRepoServer, e);
 		}
 		return repositoryServerInfos;
 	}
