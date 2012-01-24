@@ -1,5 +1,6 @@
 	public boolean isEnabled() {
-		return resource == null ? false : RepositoryProvider
-				.getProvider(resource.getProject()) != null;
+		return resource != null
+				&& RepositoryProvider.getProvider(resource.getProject(),
+						GitProvider.ID) != null;
 	}
 
