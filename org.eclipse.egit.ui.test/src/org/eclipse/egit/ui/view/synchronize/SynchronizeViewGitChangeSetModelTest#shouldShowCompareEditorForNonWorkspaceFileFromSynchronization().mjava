@@ -2,6 +2,7 @@
 	public void shouldShowCompareEditorForNonWorkspaceFileFromSynchronization()
 			throws Exception {
 		// given
+		resetRepositoryToCreateInitialTag();
 		String content = "file content";
 		String name = "non-workspace.txt";
 		File root = new File(getTestDirectory(), REPO1);

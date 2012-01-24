@@ -1,0 +1,29 @@
+	public void shouldRefreshSyncResultAfterWorkspaceChange() throws Exception {
+		// given
+		String newFileName = "new.txt";
+		resetRepositoryToCreateInitialTag();
+		launchSynchronization(INITIAL_TAG, HEAD, true);
+		setGitChangeSetPresentationModel();
+		IProject proj = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+
+		// when
+		IFile newFile = proj.getFile(newFileName);
+		newFile.create(
+				new ByteArrayInputStream("content of new file".getBytes(proj
+						.getDefaultCharset())), false, null);
+		// force refresh
+		proj.refreshLocal(IResource.DEPTH_INFINITE, null);
+		Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+
+		// then
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
+		assertEquals(GitModelWorkingTree_workingTree, syncItems[0].getText());
+		syncItems[0].doubleClick(); // expand all
+		// WidgetNotFoundException will be thrown when node named 'new.txt' not
+		// exists
+		assertNotNull(syncItems[0].getNode(PROJ1));
+		assertNotNull(syncItems[0].getNode(PROJ1).getNode(newFileName));
+	}
+
