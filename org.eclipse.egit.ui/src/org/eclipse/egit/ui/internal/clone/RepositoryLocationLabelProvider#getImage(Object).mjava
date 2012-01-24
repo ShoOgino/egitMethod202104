@@ -1,5 +1,12 @@
 	@Override
 	public Image getImage(Object element) {
-		return super.getImage(element);
+		if (element instanceof CloneSourceProvider) {
+			Image image = ((CloneSourceProvider) element).getImage().createImage();
+			images.add(image);
+			return image;
+		}
+		else if (element instanceof RepositoryServerInfo)
+			return repoImage;
+		return null;
 	}
 
