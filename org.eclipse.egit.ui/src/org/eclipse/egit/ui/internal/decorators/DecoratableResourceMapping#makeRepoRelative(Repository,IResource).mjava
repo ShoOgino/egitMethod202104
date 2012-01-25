@@ -1,0 +1,5 @@
+	private String makeRepoRelative(Repository repository, IResource res) {
+		return stripWorkDir(repository.getWorkTree(), res.getLocation()
+				.toFile());
+	}
+

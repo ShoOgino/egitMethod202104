@@ -1,0 +1,27 @@
+	/**
+	 * Decorates a resource mapping (i.e. a Working Set).
+	 *
+	 * @param element the element for which the decoration was initially called
+	 * @param decoration the decoration
+	 */
+	private void decorateResourceMapping(Object element, IDecoration decoration) {
+		@SuppressWarnings("restriction")
+		ResourceMapping mapping = Utils.getResourceMapping(element);
+
+		IDecoratableResource decoRes = new DecoratableResourceMapping(mapping);
+
+		/*
+		 *  don't render question marks on working sets. !isTracked() can have two reasons:
+		 *   1) nothing is tracked.
+		 *   2) no indexDiff for the contained projects ready yet.
+		 *  in both cases, don't do anything to not pollute the display of the sets.
+		 */
+		if(!decoRes.isTracked())
+			return;
+
+		final DecorationHelper helper = new DecorationHelper(
+				Activator.getDefault().getPreferenceStore());
+
+		helper.decorate(decoration, decoRes);
+	}
+

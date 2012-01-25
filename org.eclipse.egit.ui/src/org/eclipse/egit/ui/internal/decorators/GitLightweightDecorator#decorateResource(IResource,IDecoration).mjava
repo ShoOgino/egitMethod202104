@@ -1,0 +1,24 @@
+	/**
+	 * Decorates a single resource (i.e. a project).
+	 *
+	 * @param resource the resource to decorate
+	 * @param decoration the decoration
+	 * @throws CoreException
+	 */
+	private void decorateResource(IResource resource, IDecoration decoration) throws CoreException {
+		IndexDiffData indexDiffData = getIndexDiffDataOrNull(resource);
+
+		if(indexDiffData == null)
+			return;
+
+		IDecoratableResource decoratableResource = null;
+		final DecorationHelper helper = new DecorationHelper(
+				Activator.getDefault().getPreferenceStore());
+		try {
+			decoratableResource = new DecoratableResourceAdapter(indexDiffData, resource);
+		} catch (IOException e) {
+			throw new CoreException(Activator.createErrorStatus(UIText.Decorator_exceptionMessage, e));
+		}
+		helper.decorate(decoration, decoratableResource);
+	}
+

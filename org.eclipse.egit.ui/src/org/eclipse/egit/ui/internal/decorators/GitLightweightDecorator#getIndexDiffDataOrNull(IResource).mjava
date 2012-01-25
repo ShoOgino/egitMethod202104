@@ -1,0 +1,30 @@
+	static IndexDiffData getIndexDiffDataOrNull(IResource resource) {
+		if (resource.getType() == IResource.ROOT)
+			return null;
+
+		// Don't decorate non-existing resources
+		if (!resource.exists() && !resource.isPhantom())
+			return null;
+
+		// Make sure we're dealing with a project under Git revision control
+		final RepositoryMapping mapping = RepositoryMapping
+				.getMapping(resource);
+		if (mapping == null)
+			return null;
+
+		// Don't decorate ignored resources (e.g. bin folder content)
+		if (resource.getType() != IResource.PROJECT
+				&& Team.isIgnoredHint(resource))
+			return null;
+
+		// Cannot decorate linked resources
+		if (mapping.getRepoRelativePath(resource) == null)
+			return null;
+
+		IndexDiffData indexDiffData = org.eclipse.egit.core.Activator
+				.getDefault().getIndexDiffCache()
+				.getIndexDiffCacheEntry(mapping.getRepository()).getIndexDiff();
+
+		return indexDiffData;
+	}
+

@@ -5,61 +5,23 @@
 	 *      org.eclipse.jface.viewers.IDecoration)
 	 */
 	public void decorate(Object element, IDecoration decoration) {
-
-		final IResource resource = getResource(element);
-		if (resource == null)
+		// Don't decorate if UI plugin is not running
+		if (Activator.getDefault() == null)
 			return;
 
 		// Don't decorate if the workbench is not running
 		if (!PlatformUI.isWorkbenchRunning())
 			return;
 
-		// Don't decorate if UI plugin is not running
-		final Activator activator = Activator.getDefault();
-		if (activator == null)
-			return;
-
-		// Don't decorate the workspace root
-		if (resource.getType() == IResource.ROOT)
-			return;
-
-		// Don't decorate non-existing resources
-		if (!resource.exists() && !resource.isPhantom())
-			return;
-
-		// Make sure we're dealing with a project under Git revision control
-		final RepositoryMapping mapping = RepositoryMapping
-				.getMapping(resource);
-		if (mapping == null)
-			return;
-
-		// Don't decorate ignored resources (e.g. bin folder content)
-		if (resource.getType() != IResource.PROJECT
-				&& Team.isIgnoredHint(resource))
-			return;
-
-		// Cannot decorate linked resources
-		if (mapping.getRepoRelativePath(resource) == null)
-			return;
-
-		IndexDiffData indexDiffData = org.eclipse.egit.core.Activator
-				.getDefault().getIndexDiffCache()
-				.getIndexDiffCacheEntry(mapping.getRepository()).getIndexDiff();
-		if (indexDiffData == null)
-			return;
-
-		IDecoratableResource decoratableResource = null;
-		final DecorationHelper helper = new DecorationHelper(
-				activator.getPreferenceStore());
-		try {
-			decoratableResource = new DecoratableResourceAdapter(indexDiffData, resource);
-		} catch (IOException e) {
-			handleException(
-					resource,
-					new CoreException(Activator.createErrorStatus(
-							UIText.Decorator_exceptionMessage, e)));
-			return;
+		final IResource resource = getResource(element);
+		if (resource == null)
+			decorateResourceMapping(element, decoration);
+		else {
+			try {
+				decorateResource(resource, decoration);
+			} catch(CoreException e) {
+				handleException(resource, e);
+			}
 		}
-		helper.decorate(decoration, decoratableResource);
 	}
 

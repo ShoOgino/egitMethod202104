@@ -1,0 +1,42 @@
+	/**
+	 * Creates a decoratable resource mapping (used for e.g. working sets)
+	 *
+	 * @param mapping the resource mapping to decorate
+	 */
+	public DecoratableResourceMapping(ResourceMapping mapping) {
+		super(null); // no resource ...
+
+		this.mapping = mapping;
+		IProject[] projects = mapping.getProjects();
+
+		if(projects == null || projects.length == 0)
+			return;
+
+		// we could use DecoratableResourceAdapter for each project, but that would be too much overhead,
+		// as we need only very little information at all...
+		for(IProject prj : projects) {
+			RepositoryMapping repoMapping = RepositoryMapping.getMapping(prj);
+			if(repoMapping == null)
+				continue;
+
+			IndexDiffData diffData = GitLightweightDecorator.getIndexDiffDataOrNull(prj);
+			if(diffData == null)
+				continue;
+
+			// at least one contained resource is tracked for sure here.
+			tracked = true;
+
+			String repoRelative = makeRepoRelative(repoMapping.getRepository(), prj) + "/"; //$NON-NLS-1$
+
+			Set<String> modified = diffData.getModified();
+			Set<String> conflicting = diffData.getConflicting();
+
+			// attention - never reset these to false (so don't use the return value of the methods!)
+			if(containsPrefix(modified, repoRelative))
+				dirty = true;
+
+			if(containsPrefix(conflicting, repoRelative))
+				conflicts = true;
+		}
+	}
+
