@@ -1,0 +1,26 @@
+	@Test
+	public void shouldListAdditionOrDeletionInsideFolderInCommit() throws Exception {
+		// given
+		Git git = new Git(db);
+		writeTrashFile(db, "folder/a.txt", "content");
+		git.add().addFilepattern("folder/a.txt").call();
+		RevCommit c = commit(git, "first commit");
+
+		// when
+		List<Commit> leftResult = GitCommitsModelCache.build(db, initialTagId(), c);
+		List<Commit> rightResult = GitCommitsModelCache.build(db, c, initialTagId());
+
+		// then
+		// left assertions
+		assertThat(leftResult, notNullValue());
+		assertCommit(leftResult.get(0), c, 1);
+		assertThat(leftResult.get(0).getChildren().size(), is(1));
+		assertFileDeletion(c, leftResult.get(0).getChildren().get("folder/a.txt"), "a.txt", LEFT | DELETION);
+
+		// right assertions, after changing sides addition becomes deletion
+		assertThat(rightResult, notNullValue());
+		assertCommit(rightResult.get(0), c, 1);
+		assertThat(rightResult.get(0).getChildren().size(), is(1));
+		assertFileAddition(c, rightResult.get(0).getChildren().get("folder/a.txt"), "a.txt", RIGHT | ADDITION);
+	}
+

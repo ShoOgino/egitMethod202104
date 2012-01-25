@@ -1,0 +1,7 @@
+	private void assertCommit(Commit commit, RevCommit actualCommit, int childrenCount) {
+		commonCommitAsserts(commit, actualCommit);
+		assertThat(commit.getChildren(), notNullValue());
+		assertThat(commit.getChildren().size(), is(childrenCount));
+
+	}
+

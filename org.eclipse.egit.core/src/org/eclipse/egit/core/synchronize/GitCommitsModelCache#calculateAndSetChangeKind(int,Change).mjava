@@ -1,0 +1,12 @@
+	static void calculateAndSetChangeKind(final int direction,
+			Change change) {
+		if (ZERO_ID.equals(change.objectId)) {
+			change.objectId = null; // clear zero id;
+			change.kind = direction | Differencer.DELETION;
+		} else if (ZERO_ID.equals(change.remoteObjectId)) {
+			change.remoteObjectId = null; // clear zero id;
+			change.kind = direction | Differencer.ADDITION;
+		} else
+			change.kind = direction | Differencer.CHANGE;
+	}
+

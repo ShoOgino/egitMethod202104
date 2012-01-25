@@ -1,0 +1,14 @@
+	@Test
+	public void shouldReturnEmptyListForSameSrcAndDstCommit() throws Exception {
+		// given
+		Git git = new Git(db);
+		RevCommit c = commit(git, "second commit");
+
+		// when
+		List<Commit> result = GitCommitsModelCache.build(db, c, c);
+
+		// then
+		assertThat(result, notNullValue());
+		assertThat(result.size(), is(0));
+	}
+

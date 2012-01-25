@@ -1,0 +1,26 @@
+	@Test
+	public void shouldListChangeInCommit() throws Exception {
+		// given
+		Git git = new Git(db);
+		writeTrashFile(db, "a.txt", "content");
+		git.add().addFilepattern("a.txt").call();
+		RevCommit c1 = commit(git, "first commit");
+		writeTrashFile(db, "a.txt", "new content");
+		RevCommit c2 = commit(git, "second commit");
+
+		// when
+		List<Commit> leftResult = GitCommitsModelCache.build(db, c1, c2);
+		List<Commit> rightResult = GitCommitsModelCache.build(db, c2, c1);
+
+		// then
+		// left assertions
+		assertThat(leftResult, notNullValue());
+		assertCommit(leftResult.get(0), c2, 1);
+		assertFileChange(c2, c1, leftResult.get(0).getChildren().get("a.txt"), "a.txt", LEFT | CHANGE);
+
+		// right assertions
+		assertThat(rightResult, notNullValue());
+		assertCommit(rightResult.get(0), c2, 1);
+		assertFileChange(c2, c1, rightResult.get(0).getChildren().get("a.txt"), "a.txt", RIGHT | CHANGE);
+	}
+

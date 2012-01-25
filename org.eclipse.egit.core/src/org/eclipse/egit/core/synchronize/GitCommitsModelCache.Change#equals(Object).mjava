@@ -1,0 +1,22 @@
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Change other = (Change) obj;
+			if (objectId == null) {
+				if (other.objectId != null)
+					return false;
+			} else if (!objectId.equals(other.objectId))
+				return false;
+			if (remoteObjectId == null) {
+				if (other.remoteObjectId != null)
+					return false;
+			} else if (!remoteObjectId.equals(other.remoteObjectId))
+				return false;
+			return true;
+		}
+

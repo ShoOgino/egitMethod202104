@@ -1,0 +1,7 @@
+	private void assertFileChange(RevCommit actual, RevCommit parent,
+			Change change, String name, int direction) {
+		commonFileAssertions(actual, parent, change, name, direction);
+		assertThat(change.getObjectId(), not(ZERO_ID));
+		assertThat(change.getRemoteObjectId(), not(ZERO_ID));
+	}
+

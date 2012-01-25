@@ -1,0 +1,5 @@
+	private RevCommit commit(Git git, String msg) throws Exception {
+		tick();
+		return git.commit().setAll(true).setMessage(msg).setCommitter(committer).call();
+	}
+

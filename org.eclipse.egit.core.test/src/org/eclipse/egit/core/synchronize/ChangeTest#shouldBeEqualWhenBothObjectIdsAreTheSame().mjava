@@ -1,0 +1,15 @@
+	@Test
+	public void shouldBeEqualWhenBothObjectIdsAreTheSame() {
+		// given
+		Change c1 = new Change();
+		Change c2 = new Change();
+		c1.objectId = c2.objectId = MISC_ID;
+
+		// when
+		boolean result = c1.equals(c2);
+
+		// then
+		assertTrue(result);
+		assertTrue(c1.hashCode() == c2.hashCode());
+	}
+

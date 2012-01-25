@@ -1,0 +1,37 @@
+	private static Map<String, Change> getChangedObjects(Repository repo,
+			RevCommit parentCommit, RevCommit remoteCommit, final int direction)
+			throws IOException {
+		final TreeWalk tw = new TreeWalk(repo);
+		tw.addTree(parentCommit.getTree());
+		tw.addTree(remoteCommit.getTree());
+		tw.setFilter(TreeFilter.ANY_DIFF);
+		tw.setRecursive(true);
+
+		final int localTreeId = direction == LEFT ? 1 : 0;
+		final int remoteTreeId = direction == LEFT ? 0 : 1;
+		final Map<String, Change> result = new HashMap<String, GitCommitsModelCache.Change>();
+		final AbbreviatedObjectId actualCommit = AbbreviatedObjectId
+				.fromObjectId(parentCommit);
+		final AbbreviatedObjectId remoteCommitAbb = AbbreviatedObjectId
+				.fromObjectId(remoteCommit);
+
+		MutableObjectId idBuf = new MutableObjectId();
+		while (tw.next()) {
+			Change change = new Change();
+			change.commitId = actualCommit;
+			change.remoteCommitId = remoteCommitAbb;
+			change.name = tw.getNameString();
+			tw.getObjectId(idBuf, localTreeId);
+			change.objectId = AbbreviatedObjectId.fromObjectId(idBuf);
+			tw.getObjectId(idBuf, remoteTreeId);
+			change.remoteObjectId = AbbreviatedObjectId.fromObjectId(idBuf);
+
+			calculateAndSetChangeKind(direction, change);
+
+			result.put(tw.getPathString(), change);
+		}
+		tw.release();
+
+		return result.size() > 0 ? result : null;
+	}
+

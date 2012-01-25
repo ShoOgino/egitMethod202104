@@ -1,0 +1,38 @@
+	@Test
+	public void shouldListAdditionsOrDeletionsInsideSeparateFoldersInCommit() throws Exception {
+		// given
+		Git git = new Git(db);
+		writeTrashFile(db, "folder/a.txt", "content");
+		writeTrashFile(db, "folder2/b.txt", "b content");
+		git.add().addFilepattern("folder/a.txt").call();
+		git.add().addFilepattern("folder2/b.txt").call();
+		RevCommit c = commit(git, "first commit");
+
+		// when
+		List<Commit> leftResult = GitCommitsModelCache.build(db, initialTagId(), c);
+		List<Commit> rightResult = GitCommitsModelCache.build(db, c, initialTagId());
+
+		// then
+		// left assertions
+		assertThat(leftResult, notNullValue());
+		assertThat(Integer.valueOf(leftResult.size()), is(Integer.valueOf(1)));
+		assertThat(leftResult.get(0).getShortMessage(), is("first commit"));
+
+		assertThat(leftResult.get(0).getChildren(), notNullValue());
+		assertThat(leftResult.get(0).getChildren().size(), is(2));
+
+		assertFileDeletion(c, leftResult.get(0).getChildren().get("folder/a.txt"), "a.txt", LEFT | DELETION);
+		assertFileDeletion(c, leftResult.get(0).getChildren().get("folder2/b.txt"), "b.txt",LEFT | DELETION);
+
+		// right assertions, after changing sides addition becomes deletion
+		assertThat(rightResult, notNullValue());
+		assertThat(Integer.valueOf(rightResult.size()), is(Integer.valueOf(1)));
+		assertThat(rightResult.get(0).getShortMessage(), is("first commit"));
+
+		assertThat(rightResult.get(0).getChildren(), notNullValue());
+		assertThat(rightResult.get(0).getChildren().size(), is(2));
+
+		assertFileAddition(c, rightResult.get(0).getChildren().get("folder/a.txt"), "a.txt", RIGHT | ADDITION);
+		assertFileAddition(c, rightResult.get(0).getChildren().get("folder2/b.txt"), "b.txt",RIGHT | ADDITION);
+	}
+
