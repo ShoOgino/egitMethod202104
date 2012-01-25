@@ -5,6 +5,8 @@
 
 		bot.shell("Clone Git Repository").activate();
 
+		TestUtil.waitUntilViewWithGivenTitleShows(UIText.GitCloneWizard_title);
+
 		return new RepoPropertiesPage();
 	}
 
