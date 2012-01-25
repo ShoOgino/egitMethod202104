@@ -27,7 +27,7 @@
 		diffFmt.setProgressMonitor(gitMonitor);
 		diffFmt.setContext(contextLines);
 
-		if (useGitFormat)
+		if (headerFormat != null && headerFormat != DiffHeaderFormat.NONE)
 			writeGitPatchHeader(sb);
 
 		diffFmt.setRepository(repository);

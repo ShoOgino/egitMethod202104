@@ -2,7 +2,7 @@
 			Repository repository = input.getRepository();
 			CreatePatchOperation operation = new CreatePatchOperation(
 					repository, commit);
-			operation.useGitFormat(true);
+			operation.setHeaderFormat(DiffHeaderFormat.EMAIL);
 			operation.setContextLines(CreatePatchOperation.DEFAULT_CONTEXT_LINES);
 			try {
 				operation.execute(null);

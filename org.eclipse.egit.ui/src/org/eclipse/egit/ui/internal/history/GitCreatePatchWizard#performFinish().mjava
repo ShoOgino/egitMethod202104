@@ -2,8 +2,7 @@
 	public boolean performFinish() {
 		final CreatePatchOperation operation = new CreatePatchOperation(db,
 				commit);
-		boolean useGitFormat = optionsPage.gitFormat.getSelection();
-		operation.useGitFormat(useGitFormat);
+		operation.setHeaderFormat(optionsPage.getSelectedHeaderFormat());
 		operation.setContextLines(Integer.parseInt(optionsPage.contextLines.getText()));
 
 		final boolean isFile = locationPage.fsRadio.getSelection();

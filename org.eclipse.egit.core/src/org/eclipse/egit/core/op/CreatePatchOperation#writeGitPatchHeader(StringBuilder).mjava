@@ -1,24 +1,30 @@
 	private void writeGitPatchHeader(StringBuilder sb) {
-		final SimpleDateFormat dtfmt;
-		dtfmt = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US); //$NON-NLS-1$
-		dtfmt.setTimeZone(commit.getAuthorIdent().getTimeZone());
-		sb.append("From").append(" ") //$NON-NLS-1$ //$NON-NLS-2$
-				.append(commit.getId().getName()).append(" ") //$NON-NLS-1$
-				.append(dtfmt.format(Long.valueOf(System.currentTimeMillis())))
-				.append("\n"); //$NON-NLS-1$
-		sb.append("From") //$NON-NLS-1$
-				.append(": ") //$NON-NLS-1$
-				.append(commit.getAuthorIdent().getName())
-				.append(" <").append(commit.getAuthorIdent().getEmailAddress()) //$NON-NLS-1$
-				.append(">\n"); //$NON-NLS-1$
-		sb.append("Date").append(": ") //$NON-NLS-1$ //$NON-NLS-2$
-				.append(dtfmt.format(commit.getAuthorIdent().getWhen()))
-				.append("\n"); //$NON-NLS-1$
-		sb.append("Subject").append(": [PATCH] ") //$NON-NLS-1$ //$NON-NLS-2$
-				.append(commit.getShortMessage());
+		String template = headerFormat.getTemplate();
+		String[] segments = template.split("\\$\\{"); //$NON-NLS-1$
+		Stack<String> evaluated = new Stack<String>();
+		evaluated.add(segments[0]);
 
-		String message = commit.getFullMessage().substring(
-				commit.getShortMessage().length());
-		sb.append(message).append("\n\n"); //$NON-NLS-1$
+		for (int i = 1; i < segments.length; i++) {
+			String segment = segments[i];
+			String value = null;
+			int brace = segment.indexOf('}');
+			if (brace > 0) {
+				String keyword = segment.substring(0, brace);
+				keyword = keyword.toUpperCase().replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+				value = processKeyword(commit, DiffHeaderKeyword.valueOf(keyword));
+			}
+
+			String trailingCharacters = segment.substring(brace + 1);
+			if (value != null) {
+				evaluated.add(value);
+				evaluated.add(trailingCharacters);
+			} else if (!evaluated.isEmpty())
+				evaluated.add(trailingCharacters);
+		}
+		StringBuffer buffer = new StringBuffer();
+		for (String string : evaluated)
+			buffer.append(string);
+
+		sb.append(buffer);
 	}
 

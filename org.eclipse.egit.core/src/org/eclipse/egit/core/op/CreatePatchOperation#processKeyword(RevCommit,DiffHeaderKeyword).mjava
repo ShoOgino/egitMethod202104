@@ -1,0 +1,23 @@
+	private static String processKeyword(RevCommit commit, DiffHeaderKeyword keyword) {
+		final SimpleDateFormat dtfmt = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US); //$NON-NLS-1$
+		switch (keyword) {
+		case SHA1:
+			return commit.getId().getName();
+		case AUTHOR:
+			return commit.getAuthorIdent().getName()
+					+ " <" + commit.getAuthorIdent().getEmailAddress() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		case AUTHOR_DATE:
+			dtfmt.setTimeZone(commit.getAuthorIdent().getTimeZone());
+			return dtfmt.format(commit.getAuthorIdent().getWhen());
+		case DATE:
+			return dtfmt.format(Long.valueOf(System.currentTimeMillis()));
+		case TITLE_LINE:
+			return commit.getShortMessage();
+		case FULL_COMMIT_MESSAGE:
+			return commit.getFullMessage().substring(
+					commit.getShortMessage().length());
+		default:
+			return null;
+		}
+	}
+
