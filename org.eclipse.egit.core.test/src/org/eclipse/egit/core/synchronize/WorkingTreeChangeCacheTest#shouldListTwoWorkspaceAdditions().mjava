@@ -1,0 +1,15 @@
+	@Test
+	public void shouldListTwoWorkspaceAdditions() throws Exception {
+		// given
+		writeTrashFile(db, "a.txt", "trash");
+		writeTrashFile(db, "b.txt", "trash");
+
+		// when
+		Map<String, Change> result = WorkingTreeChangeCache.build(db);
+
+		// then
+		assertThat(result.size(), is(2));
+		assertFileAddition(result, "a.txt", "a.txt");
+		assertFileAddition(result, "b.txt", "b.txt");
+	}
+

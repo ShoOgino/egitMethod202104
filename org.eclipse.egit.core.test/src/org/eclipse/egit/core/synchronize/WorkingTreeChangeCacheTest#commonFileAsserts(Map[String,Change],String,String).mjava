@@ -1,0 +1,6 @@
+	private void commonFileAsserts(Map<String, Change> result, String path,
+			String fileName) {
+		assertTrue(result.containsKey(path));
+		assertThat(result.get(path).getName(), is(fileName));
+	}
+

@@ -1,0 +1,7 @@
+	private void assertFileAddition(Map<String, Change> result, String path, String fileName) {
+		commonFileAsserts(result, path, fileName);
+		assertThat(result.get(path).getKind(), is(RIGHT | ADDITION));
+		assertThat(result.get(path).getObjectId(), not(ZERO_ID));
+		assertNull(result.get(path).getRemoteObjectId());
+	}
+
