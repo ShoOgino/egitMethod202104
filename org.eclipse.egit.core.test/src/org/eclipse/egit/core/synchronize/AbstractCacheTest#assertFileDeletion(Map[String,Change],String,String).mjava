@@ -1,4 +1,4 @@
-	private void assertFileDeletion(Map<String, Change> result, String path, String fileName) {
+	protected void assertFileDeletion(Map<String, Change> result, String path, String fileName) {
 		commonFileAsserts(result, path, fileName);
 		assertThat(result.get(path).getKind(), is(RIGHT | DELETION));
 		assertThat(result.get(path).getRemoteObjectId(), not(ZERO_ID));

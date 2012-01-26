@@ -1,0 +1,56 @@
+	/**
+	 * @param repo
+	 *            repository which should be scanned
+	 * @return list of changes in git staging area
+	 */
+	public static Map<String, Change> build(Repository repo) {
+		TreeWalk tw = new TreeWalk(repo);
+		try {
+			tw.addTree(new DirCacheIterator(repo.readDirCache()));
+			ObjectId headId = repo.resolve(HEAD);
+			RevCommit headCommit;
+			if (headId != null)
+				headCommit = new RevWalk(repo).parseCommit(headId);
+			else
+				headCommit = null;
+
+			AbbreviatedObjectId commitId;
+			if (headCommit != null) {
+				tw.addTree(headCommit.getTree());
+				commitId = AbbreviatedObjectId.fromObjectId(headCommit);
+			} else {
+				tw.addTree(new EmptyTreeIterator());
+				commitId =AbbreviatedObjectId.fromObjectId(zeroId());
+			}
+
+			tw.setRecursive(true);
+			headCommit = null;
+
+			MutableObjectId idBuf = new MutableObjectId();
+			Map<String, Change> result = new HashMap<String, Change>();
+			while(tw.next()) {
+				if (!shouldIncludeEntry(tw))
+					continue;
+
+				Change change = new Change();
+				change.name = tw.getNameString();
+				change.remoteCommitId = commitId;
+
+				tw.getObjectId(idBuf, 0);
+				change.objectId = AbbreviatedObjectId.fromObjectId(idBuf);
+				tw.getObjectId(idBuf, 1);
+				change.remoteObjectId = AbbreviatedObjectId.fromObjectId(idBuf);
+
+				calculateAndSetChangeKind(RIGHT, change);
+
+				result.put(tw.getPathString(), change);
+			}
+			tw.release();
+
+			return result;
+		} catch (IOException e) {
+			Activator.error(e.getMessage(), e);
+			return new HashMap<String, Change>(0);
+		}
+	}
+

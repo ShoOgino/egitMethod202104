@@ -1,0 +1,16 @@
+	@Test
+	public void shouldListTwoWorkspaceAdditions() throws Exception {
+		// given
+		writeTrashFile(db, "a.txt", "trash");
+		writeTrashFile(db, "b.txt", "trash");
+		new Git(db).add().addFilepattern("a.txt").addFilepattern("b.txt").call();
+
+		// when
+		Map<String, Change> result = StagedChangeCache.build(db);
+
+		// then
+		assertThat(result.size(), is(2));
+		assertFileAddition(result, "a.txt", "a.txt");
+		assertFileAddition(result, "b.txt", "b.txt");
+	}
+

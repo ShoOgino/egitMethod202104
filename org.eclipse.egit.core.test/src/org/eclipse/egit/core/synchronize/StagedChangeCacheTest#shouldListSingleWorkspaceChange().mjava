@@ -1,0 +1,18 @@
+	@Test
+	public void shouldListSingleWorkspaceChange() throws Exception {
+		// given
+		Git git = new Git(db);
+		writeTrashFile(db, "a.txt", "trash");
+		git.add().addFilepattern("a.txt").call();
+		git.commit().setMessage("initial a.txt commit").call();
+		writeTrashFile(db, "a.txt", "modification");
+		git.add().addFilepattern("a.txt").call();
+
+		// when
+		Map<String, Change> result = StagedChangeCache.build(db);
+
+		// then
+		assertThat(result.size(), is(1));
+		assertFileChange(result, "a.txt", "a.txt");
+	}
+

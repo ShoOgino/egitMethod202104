@@ -1,0 +1,17 @@
+	@Test
+	public void shouldListSingleWorkspaceDeletionInFolder() throws Exception {
+		// given
+		Git git = new Git(db);
+		writeTrashFile(db, "folder/a.txt", "trash");
+		git.add().addFilepattern("folder/a.txt").call();
+		git.commit().setMessage("new commit").call();
+		git.rm().addFilepattern("folder/a.txt").call();
+
+		// when
+		Map<String, Change> result = StagedChangeCache.build(db);
+
+		// then
+		assertThat(result.size(), is(1));
+		assertFileDeletion(result, "folder/a.txt", "a.txt");
+	}
+
