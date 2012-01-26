@@ -24,6 +24,11 @@
 			}
 
 		}
+
+		Repository repo = AdapterUtils.adapt(input, Repository.class);
+		if (repo != null)
+			return repo;
+
 		throw new ExecutionException(
 				UIText.AbstractHistoryCommanndHandler_CouldNotGetRepositoryMessage);
 	}

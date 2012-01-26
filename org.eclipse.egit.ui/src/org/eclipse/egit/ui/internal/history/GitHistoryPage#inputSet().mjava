@@ -18,6 +18,7 @@
 			boolean showRef = false;
 			boolean showTag = false;
 			Repository repo = null;
+			RevCommit selection = null;
 			Ref ref = null;
 			if (o instanceof IResource) {
 				RepositoryMapping mapping = RepositoryMapping
@@ -75,6 +76,13 @@
 							new IResource[] { resource });
 				}
 			}
+			if (repo == null) {
+				repo = AdapterUtils.adapt(o, Repository.class);
+				if (repo != null)
+					input = new HistoryPageInput(repo);
+			}
+			selection = AdapterUtils.adapt(o, RevCommit.class);
+
 			if (input == null) {
 				this.name = ""; //$NON-NLS-1$
 				setErrorMessage(UIText.GitHistoryPage_NoInputMessage);
@@ -119,6 +127,8 @@
 				showRef(ref, repo);
 			if (showTag)
 				showTag(ref, repo);
+			if (selection != null)
+				graph.selectCommitStored(selection);
 
 			return true;
 		} finally {

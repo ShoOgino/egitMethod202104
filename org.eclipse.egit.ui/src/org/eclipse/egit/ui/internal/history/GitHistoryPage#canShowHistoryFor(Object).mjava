@@ -19,12 +19,10 @@
 		if (object instanceof RepositoryTreeNode)
 			return true;
 
-		if (object instanceof IAdaptable) {
-			IResource resource = (IResource) ((IAdaptable) object)
-					.getAdapter(IResource.class);
-			return resource == null ? false : typeOk(resource);
-		}
+		IResource resource = AdapterUtils.adapt(object, IResource.class);
+		if (resource != null && typeOk(resource))
+			return true;
 
-		return false;
+		return AdapterUtils.adapt(object, Repository.class) != null;
 	}
 
