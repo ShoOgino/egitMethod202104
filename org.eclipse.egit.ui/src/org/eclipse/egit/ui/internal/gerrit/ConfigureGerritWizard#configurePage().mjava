@@ -1,0 +1,12 @@
+	private void configurePage() {
+		try {
+			findRemoteConfig();
+			if (remoteConfig != null) {
+				gerritConfiguration.setSelection(getUri(), getProposedTargetBranch());
+			}
+		} catch (URISyntaxException e) {
+			gerritConfiguration.setErrorMessage("Error in configured URI"); //$NON-NLS-1$
+			Activator.logError("Configured URI could not be read", e); //$NON-NLS-1$
+		}
+	}
+

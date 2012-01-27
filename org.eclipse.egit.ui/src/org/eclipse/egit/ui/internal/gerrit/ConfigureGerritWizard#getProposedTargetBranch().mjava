@@ -1,0 +1,13 @@
+	private String getProposedTargetBranch() {
+		List<RefSpec> pushRefSpecs = remoteConfig.getPushRefSpecs();
+		String destination = null;
+		if (pushRefSpecs.size() > 0) {
+			destination = pushRefSpecs.get(0).getDestination();
+			if (destination.startsWith(Constants.R_HEADS))
+				destination = destination.substring(Constants.R_HEADS.length());
+			else if (destination.startsWith("refs/for/")) //$NON-NLS-1$
+				destination = destination.substring("refs/for/".length()); //$NON-NLS-1$
+		}
+		return destination;
+	}
+
