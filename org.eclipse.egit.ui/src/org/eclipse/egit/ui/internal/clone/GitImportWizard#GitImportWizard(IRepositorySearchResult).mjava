@@ -1,0 +1,13 @@
+	/**
+	 * Construct the import wizard based on given repository search result. The
+	 * wizard skips the repository location page in this case.
+	 *
+	 * @param searchResult
+	 *            the search result to initialize the import wizard with.
+	 */
+	public GitImportWizard(IRepositorySearchResult searchResult) {
+		super(searchResult);
+		setWindowTitle(UIText.GitImportWizard_WizardTitle);
+		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
+	}
+

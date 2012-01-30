@@ -1,16 +1,14 @@
 	/**
-	 * Construct Clone Wizard
+	 * Construct the clone wizard with a preset URI. The wizard skips the
+	 * repository location page in this case. Instead, it starts with the Custom
+	 * URI repository selection page.
 	 *
-	 * @param presetURI
+	 * @param presetUri
 	 *            the clone URI to prepopulate the URI field of the clone wizard
 	 *            with.
 	 */
-	public GitCloneWizard(String presetURI) {
-		super();
-		setWindowTitle(UIText.GitCloneWizard_title);
-		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
-		setNeedsProgressMonitor(true);
-		validSource.setHelpContext(HELP_CONTEXT);
-		cloneDestination.setHelpContext(HELP_CONTEXT);
+	public GitCloneWizard(String presetUri) {
+		super(new RepositorySelectionPage(true, presetUri));
+		initialize();
 	}
 

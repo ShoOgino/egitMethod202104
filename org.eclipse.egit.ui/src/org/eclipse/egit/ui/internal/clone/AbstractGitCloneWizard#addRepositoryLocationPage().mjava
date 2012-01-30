@@ -1,0 +1,12 @@
+	private void addRepositoryLocationPage() {
+		List<CloneSourceProvider> cloneSourceProviders = getCloneSourceProviders();
+		if (hasSingleCloneSourceProviderWithFixedLocation(cloneSourceProviders))
+			try {
+				addPage(cloneSourceProviders.get(0).getRepositorySearchPage());
+			} catch (CoreException e) {
+				Activator.logError(e.getLocalizedMessage(), e);
+			}
+		else
+			addPage(new RepositoryLocationPage(cloneSourceProviders));
+	}
+

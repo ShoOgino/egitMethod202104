@@ -1,6 +1,9 @@
 	@Override
 	final public void addPages() {
-		addPage(new RepositoryLocationPage(getCloneSourceProvider()));
+		if (hasSearchResult())
+			addRepositorySearchPage();
+		else
+			addRepositoryLocationPage();
 		addPreClonePages();
 		addPage(validSource);
 		addPage(cloneDestination);
