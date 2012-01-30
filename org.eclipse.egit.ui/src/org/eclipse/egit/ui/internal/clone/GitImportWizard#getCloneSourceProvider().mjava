@@ -1,0 +1,7 @@
+	@Override
+	protected List<CloneSourceProvider> getCloneSourceProvider() {
+		List<CloneSourceProvider> cloneSourceProvider = super.getCloneSourceProvider();
+		cloneSourceProvider.add(0, CloneSourceProvider.LOCAL);
+		return cloneSourceProvider;
+	}
+

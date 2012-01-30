@@ -1,0 +1,9 @@
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page instanceof IRepositorySearchResult) {
+			currentSearchResult = (IRepositorySearchResult)page;
+			return validSource;
+		}
+		return super.getNextPage(page);
+	}
+

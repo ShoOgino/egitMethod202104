@@ -12,14 +12,12 @@
 		setNeedsProgressMonitor(true);
 		validSource.setHelpContext(HELP_CONTEXT);
 		cloneDestination.setHelpContext(HELP_CONTEXT);
-		cloneSource = new RepositorySelectionPage(true, presetURI);
-		cloneSource.setHelpContext(HELP_CONTEXT);
 		gerritConfiguration = new GerritConfigurationPage() {
 
 			@Override
 			public void setVisible(boolean visible) {
 				if (visible)
-					setSelection(cloneSource.getSelection());
+					setSelection(getRepositorySelection());
 				super.setVisible(visible);
 			}
 		};
