@@ -3,7 +3,7 @@
 			throws Exception {
 
 		importWizard.openWizard();
-		RepoPropertiesPage propertiesPage = importWizard.openCloneWizard();
+		RepoPropertiesPage propertiesPage = importWizard.openRepoPropertiesPage();
 
 		propertiesPage.setURI("git://www.jgit.org/EGIT");
 		propertiesPage.assertSourceParams(null, "www.jgit.org", "/EGIT", "git",

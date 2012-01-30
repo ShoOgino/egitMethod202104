@@ -4,7 +4,7 @@
 				.getRoot().getLocation().toFile(), "test2");
 
 		importWizard.openWizard();
-		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
+		RepoPropertiesPage repoProperties = importWizard.openRepoPropertiesPage();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
 				.nextToRemoteBranches(r.getUri());
 		remoteBranches.deselectAllBranches();
@@ -36,5 +36,6 @@
 		assertNotNull(repository.resolve(Constants.R_TAGS + SampleTestRepository.v2_0_name).name());
 		// lots of refs
 		assertTrue(repository.getAllRefs().size() >= 4);
+		bot.button("Cancel").click();
 	}
 

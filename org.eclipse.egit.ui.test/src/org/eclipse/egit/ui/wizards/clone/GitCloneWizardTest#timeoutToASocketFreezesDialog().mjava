@@ -3,11 +3,11 @@
 	@Ignore
 	public void timeoutToASocketFreezesDialog() throws Exception {
 		importWizard.openWizard();
-		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
+		RepoPropertiesPage repoProperties = importWizard.openRepoPropertiesPage();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
 				.nextToRemoteBranches("git://www.example.com/EGIT");
 		remoteBranches
-				.assertErrorMessage("git://www.example.com/EGIT: Connection timed out");
+				.assertErrorMessage("git://www.example.com/EGIT: unknown host");
 		remoteBranches.assertCannotProceed();
 		remoteBranches.cancel();
 	}

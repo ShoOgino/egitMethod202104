@@ -2,6 +2,11 @@
 	 * Check internal state for page completion status.
 	 */
 	private void checkPage() {
+		if (!cloneSettingsChanged()) {
+			setErrorMessage(null);
+			setPageComplete(true);
+			return;
+		}
 		final String dstpath = directoryText.getText();
 		if (dstpath.length() == 0) {
 			setErrorMessage(UIText.CloneDestinationPage_errorDirectoryRequired);

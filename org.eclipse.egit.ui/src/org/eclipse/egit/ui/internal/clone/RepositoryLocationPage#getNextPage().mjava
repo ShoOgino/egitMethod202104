@@ -1,0 +1,21 @@
+	@Override
+	public IWizardPage getNextPage() {
+		IStructuredSelection selection = (IStructuredSelection) tv
+				.getSelection();
+
+		if (selection.size() == 1) {
+			Object element = selection.getFirstElement();
+			if (element instanceof CloneSourceProvider) {
+				return getNextPage((CloneSourceProvider) element);
+			} else if (element instanceof RepositoryServerInfo) {
+				Object parent = ((ITreeContentProvider) tv.getContentProvider())
+						.getParent(element);
+				if (parent instanceof CloneSourceProvider)
+					return getNextPage((CloneSourceProvider) parent);
+			}
+		}
+
+		return null;
+
+	}
+

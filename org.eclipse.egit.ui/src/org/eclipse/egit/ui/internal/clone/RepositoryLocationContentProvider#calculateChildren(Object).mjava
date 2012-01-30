@@ -1,0 +1,16 @@
+	private Object[] calculateChildren(Object parentElement) {
+		if (parentElement instanceof CloneSourceProvider) {
+			CloneSourceProvider repositoryImport = (CloneSourceProvider) parentElement;
+			if (repositoryImport.hasFixLocation())
+				return null;
+			Collection<RepositoryServerInfo> repositoryServerInfos = getRepositoryServerInfos(repositoryImport);
+			if (repositoryServerInfos == null)
+				return null;
+			cacheParents(repositoryImport, repositoryServerInfos);
+			return repositoryServerInfos
+					.toArray(new RepositoryServerInfo[repositoryServerInfos
+							.size()]);
+		}
+		return null;
+	}
+

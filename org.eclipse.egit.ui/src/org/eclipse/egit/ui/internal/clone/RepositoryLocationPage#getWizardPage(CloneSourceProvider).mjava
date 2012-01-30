@@ -1,0 +1,17 @@
+	private WizardPage getWizardPage(CloneSourceProvider repositoryImport) {
+		WizardPage nextPage;
+		nextPage = resolvedWizardPages.get(repositoryImport);
+		if (nextPage == null) {
+			try {
+				nextPage = repositoryImport.getRepositorySearchPage();
+			} catch (CoreException e) {
+				Activator.error(e.getLocalizedMessage(), e);
+			}
+			if (nextPage != null) {
+				nextPage.setWizard(getWizard());
+				resolvedWizardPages.put(repositoryImport, nextPage);
+			}
+		}
+		return nextPage;
+	}
+
