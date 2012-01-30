@@ -1,0 +1,19 @@
+		/**
+		 * @return A wizard page which can return information of a git
+		 *         repository. This class is newly created on each invocation of
+		 *         this method. Clients are responsible to cache this
+		 *         class.
+		 * @throws CoreException
+		 */
+		public WizardPage getRepositorySearchPage() throws CoreException {
+			if (repositorySearchPageELement == null)
+				return null;
+			Object object = repositorySearchPageELement
+					.createExecutableExtension("class"); //$NON-NLS-1$
+			WizardPage page = null;
+			if (object instanceof WizardPage
+					&& object instanceof IRepositorySearchResult)
+				page = (WizardPage) object;
+			return page;
+		}
+

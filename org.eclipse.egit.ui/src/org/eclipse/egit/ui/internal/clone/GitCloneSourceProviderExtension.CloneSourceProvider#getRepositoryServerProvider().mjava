@@ -1,0 +1,19 @@
+		/**
+		 * @return a class which provides a list of servers which host git
+		 *         repositories. This class is newly created on each invocation
+		 *         of this method. Clients are responsible to cache this
+		 *         class.
+		 * @throws CoreException
+		 */
+		public IRepositoryServerProvider getRepositoryServerProvider()
+				throws CoreException {
+			if (repositoryServerProviderElement == null)
+				return null;
+			Object object = repositoryServerProviderElement
+					.createExecutableExtension("class"); //$NON-NLS-1$
+			IRepositoryServerProvider provider = null;
+			if (object instanceof IRepositoryServerProvider)
+				provider = (IRepositoryServerProvider) object;
+			return provider;
+		}
+

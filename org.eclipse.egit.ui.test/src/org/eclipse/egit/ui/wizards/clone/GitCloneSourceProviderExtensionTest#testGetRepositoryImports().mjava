@@ -1,0 +1,23 @@
+	@SuppressWarnings("boxing")
+	@Test
+	public void testGetRepositoryImports() throws Exception {
+		List<CloneSourceProvider> repositoryImports = GitCloneSourceProviderExtension
+				.getCloneSourceProvider();
+		assertThat(repositoryImports, is(notNullValue()));
+		assertThat(repositoryImports.size(), is(4));
+		assertThat(repositoryImports.get(1).getLabel(),
+				is("ServerWithoutPage1"));
+		assertThat(repositoryImports.get(1).hasFixLocation(), is(true));
+		assertThat(repositoryImports.get(1).getRepositoryServerProvider(),
+				is(TestRepositoryServerProvider.class));
+		assertThat(repositoryImports.get(2).getLabel(), is("TestServer"));
+		assertThat(repositoryImports.get(2).hasFixLocation(), is(false));
+		assertThat(repositoryImports.get(2).getRepositoryServerProvider(),
+				is(TestRepositoryServerProvider.class));
+		assertThat(repositoryImports.get(2).getRepositorySearchPage(),
+				is(TestRepositorySearchPage.class));
+		assertThat(repositoryImports.get(3).getLabel(),
+				is("ServerWithoutPage2"));
+		assertThat(repositoryImports.get(3).hasFixLocation(), is(false));
+	}
+

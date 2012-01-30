@@ -1,0 +1,27 @@
+	private static void addCloneSourceProvider(
+			List<CloneSourceProvider> cloneSourceProvider,
+			IConfigurationElement[] config, int index) {
+		int myIndex = index;
+		String label = config[myIndex].getAttribute("label"); //$NON-NLS-1$
+		boolean hasFixLocation = Boolean.valueOf(
+				config[myIndex].getAttribute("hasFixLocation")).booleanValue(); //$NON-NLS-1$
+		myIndex++;
+		IConfigurationElement serverProviderElement = null;
+		if (myIndex < config.length
+				&& config[myIndex].getName().equals("repositoryServerProvider")) { //$NON-NLS-1$
+			serverProviderElement = config[myIndex];
+			myIndex++;
+		}
+		IConfigurationElement pageElement = null;
+		if (myIndex < config.length
+				&& config[myIndex].getName().equals("repositorySearchPage")) { //$NON-NLS-1$
+			pageElement = config[myIndex];
+			myIndex++;
+		}
+		cloneSourceProvider.add(new CloneSourceProvider(label,
+				serverProviderElement, pageElement, hasFixLocation));
+		if (myIndex == config.length)
+			return;
+		addCloneSourceProvider(cloneSourceProvider, config, myIndex);
+	}
+
