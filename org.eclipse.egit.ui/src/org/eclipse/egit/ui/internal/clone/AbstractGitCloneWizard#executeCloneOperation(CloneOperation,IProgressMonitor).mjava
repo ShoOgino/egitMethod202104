@@ -2,8 +2,7 @@
 			final IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
-		final RepositoryUtil util = Activator.getDefault()
-				.getRepositoryUtil();
+		final RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
 
 		op.run(monitor);
 		util.addConfiguredRepository(op.getGitDir());
