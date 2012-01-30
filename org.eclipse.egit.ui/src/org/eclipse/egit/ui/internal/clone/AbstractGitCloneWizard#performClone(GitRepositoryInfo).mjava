@@ -1,0 +1,80 @@
+	/**
+	 * @param gitRepositoryInfo
+	 * @return if clone was successful
+	 * @throws URISyntaxException
+	 */
+	protected boolean performClone(GitRepositoryInfo gitRepositoryInfo) throws URISyntaxException {
+		URIish uri = new URIish(gitRepositoryInfo.getCloneUri());
+		UserPasswordCredentials credentials = gitRepositoryInfo.getCredentials();
+		setWindowTitle(NLS.bind(UIText.GitCloneWizard_jobName, uri.toString()));
+		final boolean allSelected;
+		final Collection<Ref> selectedBranches;
+		if (validSource.isSourceRepoEmpty()) {
+			// fetch all branches of empty repo
+			allSelected = true;
+			selectedBranches = Collections.emptyList();
+		} else {
+			allSelected = validSource.isAllSelected();
+			selectedBranches = validSource.getSelectedBranches();
+		}
+		final File workdir = cloneDestination.getDestinationFile();
+		final Ref ref = cloneDestination.getInitialBranch();
+		final String remoteName = cloneDestination.getRemote();
+
+		boolean created = workdir.exists();
+		if (!created)
+			created = workdir.mkdirs();
+
+		if (!created || !workdir.isDirectory()) {
+			final String errorMessage = NLS.bind(
+					UIText.GitCloneWizard_errorCannotCreate, workdir.getPath());
+			ErrorDialog.openError(getShell(), getWindowTitle(),
+					UIText.GitCloneWizard_failed, new Status(IStatus.ERROR,
+							Activator.getPluginId(), 0, errorMessage, null));
+			// let's give user a chance to fix this minor problem
+			return false;
+		}
+
+		int timeout = Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+		final CloneOperation op = new CloneOperation(uri, allSelected,
+				selectedBranches, workdir, ref != null ? ref.getName() : null,
+				remoteName, timeout);
+		if (credentials != null)
+			op.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+					credentials.getUser(), credentials.getPassword()));
+		op.setCloneSubmodules(cloneDestination.isCloneSubmodules());
+
+		configureFetchSpec(op, gitRepositoryInfo, remoteName);
+		configurePush(op, gitRepositoryInfo, remoteName);
+		configureRepositoryConfig(op, gitRepositoryInfo);
+
+		if (gerritConfiguration != null
+				&& gerritConfiguration.configureGerrit()) {
+			boolean hasReviewNotes = hasReviewNotes(uri, timeout, credentials);
+			if (!hasReviewNotes)
+				MessageDialog.openInformation(getShell(),
+						UIText.GitCloneWizard_MissingNotesTitle,
+						UIText.GitCloneWizard_MissingNotesMessage);
+			doGerritConfiguration(remoteName, op, hasReviewNotes);
+		}
+
+		if (cloneDestination.isImportProjects()) {
+			final IWorkingSet[] sets = cloneDestination.getWorkingSets();
+			op.addPostCloneTask(new PostCloneTask() {
+				public void execute(Repository repository,
+						IProgressMonitor monitor) throws CoreException {
+					importProjects(repository, sets);
+				}
+			});
+		}
+
+		alreadyClonedInto = workdir.getPath();
+
+		if (!callerRunsCloneOperation)
+			runAsJob(uri, op);
+		else
+			cloneOperation = op;
+		return true;
+	}
+
