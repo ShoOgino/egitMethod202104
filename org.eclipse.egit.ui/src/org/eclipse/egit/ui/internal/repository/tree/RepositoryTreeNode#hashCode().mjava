@@ -17,6 +17,8 @@
 			// fall through
 		case SUBMODULES:
 			// fall through
+		case STASH:
+			// fall through
 		case WORKINGDIR:
 			result = prime
 					* result
@@ -50,6 +52,8 @@
 		case FETCH:
 			// fall through
 		case BRANCHHIERARCHY:
+			// fall through
+		case STASHED_COMMIT:
 			// fall through
 		case ERROR:
 			result = prime * result

@@ -1,0 +1,17 @@
+	/**
+	 * Does the repository have any stashed commits?
+	 * <p>
+	 * This method checks for a {@link Constants#R_STASH} ref in the given
+	 * repository
+	 *
+	 * @param repository
+	 * @return true if stashed commits, false otherwise
+	 */
+	private boolean hasStashedCommits(final Repository repository) {
+		try {
+			return repository.getRef(Constants.R_STASH) != null;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
