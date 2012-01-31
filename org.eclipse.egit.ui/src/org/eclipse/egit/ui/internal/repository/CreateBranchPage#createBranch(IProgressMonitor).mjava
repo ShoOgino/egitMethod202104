@@ -12,7 +12,7 @@
 
 		final CreateLocalBranchOperation cbop;
 
-		if (myBaseCommit != null)
+		if (myBaseCommit != null && this.branchCombo.getText().equals(myBaseCommit.name()))
 			cbop = new CreateLocalBranchOperation(myRepository, newRefName,
 					myBaseCommit);
 		else

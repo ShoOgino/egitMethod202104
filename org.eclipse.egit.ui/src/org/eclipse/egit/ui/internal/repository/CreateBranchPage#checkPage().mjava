@@ -5,8 +5,11 @@
 			gd.exclude = !branchCombo.getText().startsWith(Constants.R_HEADS);
 			warningComposite.setVisible(!gd.exclude);
 
+			warningComposite.getParent().getParent().layout(true);
+
+			boolean showRebase = !branchCombo.getText().startsWith(Constants.R_TAGS) && !ObjectId.isId(branchCombo.getText());
 			gd = (GridData) upstreamConfigGroup.getLayoutData();
-			gd.exclude = branchCombo.getText().startsWith(Constants.R_TAGS);
+			gd.exclude = !showRebase;
 			upstreamConfigGroup.setVisible(!gd.exclude);
 
 			upstreamConfigGroup.getParent().layout(true);
