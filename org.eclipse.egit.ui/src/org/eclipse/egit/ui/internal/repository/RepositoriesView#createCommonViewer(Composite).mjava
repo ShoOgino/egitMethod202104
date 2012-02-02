@@ -19,9 +19,9 @@
 				TreeSelection sel = (TreeSelection) event.getSelection();
 				RepositoryTreeNode element = (RepositoryTreeNode) sel
 						.getFirstElement();
-				if (element instanceof FileNode) {
+				if (element instanceof FileNode
+						|| element instanceof StashedCommitNode)
 					executeOpenCommand();
-				}
 			}
 		});
 		// react on selection changes

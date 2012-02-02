@@ -14,6 +14,8 @@
 			// fall through
 		case SUBMODULES:
 			// fall through
+		case STASH:
+			// fall through
 		case WORKINGDIR:
 			return ((Repository) myObject).getDirectory().equals(
 					((Repository) otherObject).getDirectory());
@@ -38,6 +40,8 @@
 		case PUSH:
 			// fall through
 		case BRANCHHIERARCHY:
+			// fall through
+		case STASHED_COMMIT:
 			// fall through
 		case TAGS:
 			return myObject.equals(otherObject);
