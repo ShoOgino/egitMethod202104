@@ -1,0 +1,7 @@
+	@Test
+	public void testGerritIdWithinText() {
+		setText("abc I" + EXAMPLE_ID);
+		IHyperlink[] hyperlinks = detectHyperlinks(5,textViewer.getDocument().getLength());
+		assertNull(hyperlinks);
+	}
+

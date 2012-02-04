@@ -1,0 +1,9 @@
+	@Test
+	public void testMultiLine() {
+		setText("Test multi-line text\n" + EXAMPLE_ID);
+		IHyperlink[] hyperlinks = detectHyperlinks(0,textViewer.getDocument().getLength());
+		assertEquals(1, hyperlinks.length);
+		assertEquals(EXAMPLE_ID, hyperlinks[0].getHyperlinkText());
+		assertEquals(new Region(21, EXAMPLE_ID.length()), hyperlinks[0].getHyperlinkRegion());
+	}
+
