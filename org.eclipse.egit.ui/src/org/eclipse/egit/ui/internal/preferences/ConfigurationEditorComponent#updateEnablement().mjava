@@ -12,8 +12,10 @@
 					.setText(UIText.ConfigurationEditorComponent_NoEntrySelectedMessage);
 		changeValue.setEnabled(false);
 		valueText.setEnabled(entrySelected);
-		deleteValue.setEnabled(entrySelected);
-		addValue.setEnabled(entrySelected);
-		remove.setEnabled(sectionOrSubSectionSelected);
+		valueText.setEditable(editable && entrySelected);
+		deleteValue.setEnabled(editable && entrySelected);
+		addValue.setEnabled(editable && entrySelected);
+		remove.setEnabled(editable && sectionOrSubSectionSelected);
+		newValue.setEnabled(editable);
 	}
 
