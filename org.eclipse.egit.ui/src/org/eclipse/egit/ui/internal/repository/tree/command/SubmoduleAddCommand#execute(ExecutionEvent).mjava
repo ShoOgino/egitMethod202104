@@ -1,0 +1,44 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		List<RepositoryTreeNode<?>> nodes = getSelectedNodes(event);
+		if (nodes.isEmpty())
+			return null;
+
+		final Repository repo = nodes.get(0).getRepository();
+		if (repo == null)
+			return null;
+
+		AddSubmoduleWizard wizard = new AddSubmoduleWizard(repo);
+		WizardDialog dialog = new WizardDialog(getShell(event), wizard);
+		if (dialog.open() == Window.OK) {
+			final String path = wizard.getPath();
+			final String uri = wizard.getUri().toPrivateASCIIString();
+			final SubmoduleAddOperation op = new SubmoduleAddOperation(repo,
+					path, uri);
+			Job job = new Job(MessageFormat.format(
+					UIText.SubmoduleAddCommand_JobTitle, path, uri)) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					monitor.beginTask("", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+					try {
+						op.execute(monitor);
+					} catch (CoreException e) {
+						Activator.logError(UIText.SubmoduleAddCommand_AddError,
+								e);
+					}
+					return Status.OK_STATUS;
+				}
+
+				@Override
+				public boolean belongsTo(Object family) {
+					if (JobFamilies.SUBMODULE_ADD.equals(family))
+						return true;
+					return super.belongsTo(family);
+				}
+			};
+			job.setUser(true);
+			job.setRule(op.getSchedulingRule());
+			job.schedule();
+		}
+		return null;
+	}
+

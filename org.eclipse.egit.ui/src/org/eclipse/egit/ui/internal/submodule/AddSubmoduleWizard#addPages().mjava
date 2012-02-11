@@ -1,0 +1,8 @@
+	public void addPages() {
+		pathPage = new SubmodulePathWizardPage(repo);
+		addPage(pathPage);
+		uriPage = new RepositorySelectionPage(true, null);
+		uriPage.setPageComplete(false);
+		addPage(uriPage);
+	}
+

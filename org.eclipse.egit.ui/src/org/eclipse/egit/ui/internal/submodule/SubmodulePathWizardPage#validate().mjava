@@ -1,0 +1,28 @@
+	private void validate() {
+		final String currentPath = pathText.getText();
+		if (currentPath.length() == 0) {
+			setPageComplete(false);
+			return;
+		}
+
+		File file = new File(repo.getWorkTree(), currentPath);
+		if (file.isFile()) {
+			setErrorMessage(UIText.SubmodulePathWizardPage_ErrorPathMustBeEmpty);
+			setPageComplete(false);
+			return;
+		}
+
+		if (file.isDirectory()) {
+			String[] children = file.list();
+			if (children != null && children.length > 0) {
+				setErrorMessage(UIText.SubmodulePathWizardPage_ErrorPathMustBeEmpty);
+				setPageComplete(false);
+				return;
+			}
+		}
+
+		this.path = currentPath;
+		setErrorMessage(null);
+		setPageComplete(true);
+	}
+
