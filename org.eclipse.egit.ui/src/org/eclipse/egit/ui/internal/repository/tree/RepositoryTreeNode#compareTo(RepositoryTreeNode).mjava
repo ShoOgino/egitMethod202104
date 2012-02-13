@@ -28,6 +28,8 @@
 			// fall through
 		case SUBMODULES:
 			// fall through
+		case STASH:
+			// fall through
 		case WORKINGDIR:
 			return 0;
 
@@ -43,6 +45,9 @@
 		case FOLDER:
 			return ((File) myObject).getName().compareTo(
 					((File) otherNode.getObject()).getName());
+		case STASHED_COMMIT:
+			return ((RevCommit) myObject).compareTo(((RevCommit) otherNode
+					.getObject()));
 		case TAG:
 			// fall through
 		case ADDITIONALREF:

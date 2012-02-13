@@ -4,11 +4,12 @@
 				.getRoot().getLocation().toFile(), "test1");
 
 		importWizard.openWizard();
-		RepoPropertiesPage propertiesPage = importWizard.openCloneWizard();
+		RepoPropertiesPage propertiesPage = importWizard.openRepoPropertiesPage();
 
 		RepoRemoteBranchesPage remoteBranches = propertiesPage
 				.nextToRemoteBranches(r.getUri());
 
 		cloneRepo(destRepo, remoteBranches);
+		bot.button("Cancel").click();
 	}
 

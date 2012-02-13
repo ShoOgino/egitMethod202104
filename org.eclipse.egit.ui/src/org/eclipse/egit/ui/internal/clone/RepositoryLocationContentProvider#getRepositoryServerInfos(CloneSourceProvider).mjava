@@ -1,0 +1,22 @@
+	private Collection<RepositoryServerInfo> getRepositoryServerInfos(
+			CloneSourceProvider repositoryImport) {
+		Collection<RepositoryServerInfo> repositoryServerInfos = null;
+		IRepositoryServerProvider repositoryServerProvider;
+		try {
+			repositoryServerProvider = repositoryImport
+					.getRepositoryServerProvider();
+		} catch (CoreException e) {
+			Activator.error(e.getLocalizedMessage(), e);
+			return null;
+		}
+		if (repositoryServerProvider == null)
+			return null;
+		try {
+			repositoryServerInfos = repositoryServerProvider
+					.getRepositoryServerInfos();
+		} catch (Exception e) {
+			Activator.error(UIText.RepositoryLocationContentProvider_errorProvidingRepoServer, e);
+		}
+		return repositoryServerInfos;
+	}
+

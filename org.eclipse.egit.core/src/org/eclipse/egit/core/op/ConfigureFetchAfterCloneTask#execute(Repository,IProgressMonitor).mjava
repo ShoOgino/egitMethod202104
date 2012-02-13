@@ -13,7 +13,11 @@
 			configToUse.update(repository.getConfig());
 			repository.getConfig().save();
 			Git git = new Git(repository);
-			git.fetch().setRemote(remoteName).call();
+			try {
+				git.fetch().setRemote(remoteName).call();
+			} catch (Exception e) {
+				Activator.logError(NLS.bind(CoreText.ConfigureFetchAfterCloneTask_couldNotFetch, fetchRefSpec), e);
+			}
 		} catch (Exception e) {
 			throw new CoreException(Activator.error(e.getMessage(), e));
 		}

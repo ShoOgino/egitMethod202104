@@ -1,0 +1,15 @@
+	private void configurePush(CloneOperation op,
+			GitRepositoryInfo gitRepositoryInfo, String remoteName) {
+		for (PushInfo pushInfo : gitRepositoryInfo.getPushInfos()) {
+			try {
+				URIish uri = pushInfo.getPushUri() != null ? new URIish(
+						pushInfo.getPushUri()) : null;
+				ConfigurePushAfterCloneTask task = new ConfigurePushAfterCloneTask(
+						remoteName, pushInfo.getPushRefSpec(), uri);
+				op.addPostCloneTask(task);
+			} catch (URISyntaxException e) {
+				Activator.handleError(UIText.GitCloneWizard_failed, e, true);
+			}
+		}
+	}
+

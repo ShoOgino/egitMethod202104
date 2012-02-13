@@ -1,0 +1,13 @@
+	@Override
+	public boolean performFinish() {
+		configureRemoteSection();
+		configureCreateChangeId();
+		try {
+			config.save();
+		} catch (IOException e) {
+			gerritConfiguration.setErrorMessage(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+

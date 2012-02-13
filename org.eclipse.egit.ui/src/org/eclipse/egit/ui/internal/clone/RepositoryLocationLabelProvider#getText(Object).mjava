@@ -1,0 +1,9 @@
+	@Override
+	public String getText(Object element) {
+		if (element instanceof CloneSourceProvider)
+			return ((CloneSourceProvider) element).getLabel();
+		else if (element instanceof RepositoryServerInfo)
+			return ((RepositoryServerInfo) element).getLabel();
+		return null;
+	}
+

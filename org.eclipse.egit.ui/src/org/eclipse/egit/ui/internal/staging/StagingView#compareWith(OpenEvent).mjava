@@ -4,6 +4,8 @@
 		if (selection.isEmpty())
 			return;
 		StagingEntry stagingEntry = (StagingEntry) selection.getFirstElement();
+		if (stagingEntry.isSubmodule())
+			return;
 		switch (stagingEntry.getState()) {
 		case ADDED:
 		case CHANGED:

@@ -1,0 +1,12 @@
+	public RepoPropertiesPage openRepoPropertiesPage() {
+		bot.shell("Import Projects from Git").activate();
+
+		bot.tree().select("URI");
+
+		bot.button("Next >").click();
+
+		TestUtil.waitUntilViewWithGivenTitleShows(UIText.GitCloneWizard_title);
+
+		return new RepoPropertiesPage();
+	}
+

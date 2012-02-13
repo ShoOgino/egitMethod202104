@@ -1,0 +1,24 @@
+	/**
+	 * @param config the repository configuration
+	 * @param remoteName the name of the remote in the configuration
+	 *
+	 */
+	public ConfigureGerritWizard(StoredConfig config, String remoteName) {
+		super();
+		setWindowTitle(UIText.ConfigureGerritWizard_title);
+		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
+		setNeedsProgressMonitor(true);
+		gerritConfiguration = new GerritConfigurationPage(false) {
+			@Override
+			public void setVisible(boolean visible) {
+				if (visible)
+					configurePage();
+				super.setVisible(visible);
+			}
+
+		};
+		this.config = config;
+		this.remoteName = remoteName;
+
+	}
+

@@ -1,0 +1,7 @@
+	private IWizardPage getNextPage(CloneSourceProvider repositoryImport) {
+		if (repositoryImport.equals(CloneSourceProvider.LOCAL))
+			return getWizard().getNextPage(this);
+		else
+			return getWizardPage(repositoryImport);
+	}
+

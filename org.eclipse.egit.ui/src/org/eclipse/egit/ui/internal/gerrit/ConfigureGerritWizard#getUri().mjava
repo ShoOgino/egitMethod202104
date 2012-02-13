@@ -1,0 +1,9 @@
+	private URIish getUri() {
+		URIish urIish = null;
+		if (remoteConfig.getPushURIs().size() > 0)
+			urIish = remoteConfig.getPushURIs().get(0);
+		else
+			urIish = remoteConfig.getURIs().get(0);
+		return urIish;
+	}
+

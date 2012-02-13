@@ -1,0 +1,6 @@
+	private void configureFetchSpec(CloneOperation op,
+			GitRepositoryInfo gitRepositoryInfo, String remoteName) {
+		for (String fetchRefSpec : gitRepositoryInfo.getFetchRefSpecs())
+			op.addPostCloneTask(new ConfigureFetchAfterCloneTask(remoteName, fetchRefSpec));
+	}
+

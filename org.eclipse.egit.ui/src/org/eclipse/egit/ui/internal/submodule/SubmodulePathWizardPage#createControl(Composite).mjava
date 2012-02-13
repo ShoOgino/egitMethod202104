@@ -1,0 +1,26 @@
+	public void createControl(Composite parent) {
+		Composite displayArea = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false)
+				.applyTo(displayArea);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(displayArea);
+
+		new Label(displayArea, SWT.NONE)
+				.setText(UIText.SubmodulePathWizardPage_PathLabel);
+
+		pathText = new Text(displayArea, SWT.SINGLE | SWT.BORDER);
+		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).applyTo(pathText);
+
+		pathText.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				validate();
+			}
+		});
+
+		setControl(displayArea);
+		setTitle(UIText.SubmodulePathWizardPage_Title);
+		setMessage(UIText.SubmodulePathWizardPage_Message);
+		setPageComplete(false);
+	}
+

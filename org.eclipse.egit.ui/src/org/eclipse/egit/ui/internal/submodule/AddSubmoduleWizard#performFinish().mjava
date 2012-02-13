@@ -1,0 +1,9 @@
+	public boolean performFinish() {
+		if (uriPage.getStoreInSecureStore()
+				&& !SecureStoreUtils.storeCredentials(uriPage.getCredentials(),
+						uriPage.getSelection().getURI()))
+			return false;
+
+		return true;
+	}
+

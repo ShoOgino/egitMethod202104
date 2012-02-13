@@ -12,13 +12,19 @@
 		Set<ProjectRecord> records = new LinkedHashSet<ProjectRecord>();
 		File parent = repository.getWorkTree();
 		for (String path : paths) {
-			File root = new File(parent, path);
+			File root;
+			if (!REPO_ROOT.equals(path))
+				root = new File(parent, path);
+			else
+				root = parent;
+
 			if (!root.isDirectory())
 				continue;
-			if (!new File(root, IProjectDescription.DESCRIPTION_FILE_NAME)
-					.exists())
+			File projectDescription = new File(root,
+					IProjectDescription.DESCRIPTION_FILE_NAME);
+			if (!projectDescription.isFile())
 				continue;
-			records.add(new ProjectRecord(root));
+			records.add(new ProjectRecord(projectDescription));
 		}
 		if (records.isEmpty())
 			return;

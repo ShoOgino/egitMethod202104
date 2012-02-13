@@ -1,0 +1,10 @@
+	private void configureFetchNotes() {
+		String notesRef = Constants.R_NOTES + "*"; //$NON-NLS-1$
+		List<RefSpec> fetchRefSpecs = remoteConfig.getFetchRefSpecs();
+		for (RefSpec refSpec : fetchRefSpecs) {
+			if(refSpec.matchSource(notesRef))
+				return;
+		}
+		remoteConfig.addFetchRefSpec(new RefSpec(notesRef + ":" + notesRef)); //$NON-NLS-1$
+	}
+

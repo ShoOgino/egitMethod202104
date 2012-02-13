@@ -1,4 +1,7 @@
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void assertErrorMessage(String errorMessage) {
-		bot.text(" " + errorMessage);
+		bot.waitUntil(
+				waitForWidget(allOf(widgetOfType(Text.class), withText(" "
+						+ errorMessage))), 20000);
 	}
 

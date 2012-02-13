@@ -31,6 +31,8 @@
 			String fullPath = path.toOSString();
 			if (fullPath.startsWith(workDir)) {
 				String relative = fullPath.substring(workDir.length());
+				if (relative.length() == 0)
+					relative = REPO_ROOT;
 				IMemento child = memento.createChild(KEY_PROJECT);
 				child.putTextData(relative);
 			}

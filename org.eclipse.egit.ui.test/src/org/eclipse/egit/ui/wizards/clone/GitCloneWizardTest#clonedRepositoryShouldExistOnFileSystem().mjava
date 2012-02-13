@@ -1,11 +1,12 @@
 	@Test
-	public void clonedRepositoryShouldExistOnFileSystem() {
+	public void clonedRepositoryShouldExistOnFileSystem() throws Exception {
 		importWizard.openWizard();
-		RepoPropertiesPage repoProperties = importWizard.openCloneWizard();
+		RepoPropertiesPage repoProperties = importWizard.openRepoPropertiesPage();
 		RepoRemoteBranchesPage remoteBranches = repoProperties
 				.nextToRemoteBranches(r.getUri());
 		remoteBranches.assertRemoteBranches(SampleTestRepository.FIX, Constants.MASTER);
 		WorkingCopyPage workingCopy = remoteBranches.nextToWorkingCopy();
 		workingCopy.assertWorkingCopyExists();
+		bot.button("Cancel").click();
 	}
 

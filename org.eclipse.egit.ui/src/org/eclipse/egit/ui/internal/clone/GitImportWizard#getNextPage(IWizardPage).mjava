@@ -1,11 +1,13 @@
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-		if (page == selectRepoPage) {
+		if (page == selectRepoPage ) {
 			importWithDirectoriesPage.setRepository(selectRepoPage
 					.getRepository());
 			return importWithDirectoriesPage;
+		} else if (page == cloneDestination) {
+			importWithDirectoriesPage.setRepository(getClonedRepository());
+			return importWithDirectoriesPage;
 		} else if (page == importWithDirectoriesPage) {
-
 			switch (importWithDirectoriesPage.getWizardSelection()) {
 			case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
 				projectsImportPage.setProjectsList(importWithDirectoriesPage
@@ -19,7 +21,6 @@
 				return createGeneralProjectPage;
 
 			}
-
 		} else if (page == createGeneralProjectPage
 				|| page == projectsImportPage) {
 			return null;

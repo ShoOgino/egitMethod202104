@@ -1,0 +1,10 @@
+	public void execute(Repository repository, IProgressMonitor monitor)
+			throws CoreException {
+		try {
+			repository.getConfig().setString(section, subsection, name, value);
+			repository.getConfig().save();
+		} catch (IOException e) {
+			throw new CoreException(Activator.error(e.getMessage(), e));
+		}
+	}
+

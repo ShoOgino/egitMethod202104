@@ -1,0 +1,18 @@
+	public void createControl(Composite parent) {
+		final Composite panel = new Composite(parent, SWT.NULL);
+		final GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		panel.setLayout(layout);
+
+		if (createGerritCheckbox)
+			createGerritCheckbox(panel);
+		createURIGroup(panel);
+		createPushConfigurationGroup(panel);
+		createFetchConfigurationGroup(panel);
+
+		Dialog.applyDialogFont(panel);
+		setControl(panel);
+		UIUtils.setEnabledRecursively(pushConfigurationGroup,
+				configureGerrit());
+	}
+

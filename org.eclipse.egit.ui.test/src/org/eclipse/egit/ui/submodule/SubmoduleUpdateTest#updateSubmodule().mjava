@@ -1,0 +1,48 @@
+	@Test
+	public void updateSubmodule() throws Exception {
+		deleteAllProjects();
+		assertProjectExistence(PROJ1, false);
+		clearView();
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(repositoryFile);
+		shareProjects(repositoryFile);
+		assertProjectExistence(PROJ1, true);
+		refreshAndWait();
+		assertHasRepo(repositoryFile);
+		FileRepository repo = lookupRepository(repositoryFile);
+		ObjectId repoHead = repo.resolve(Constants.HEAD);
+
+		SubmoduleAddCommand command = new SubmoduleAddCommand(repo);
+		String path = "sub";
+		command.setPath(path);
+		String uri = new URIish(repo.getDirectory().toURI().toString())
+				.toString();
+		command.setURI(uri);
+		Repository subRepo = command.call();
+		assertNotNull(subRepo);
+
+		Ref head = subRepo.getRef(Constants.HEAD);
+		assertNotNull(head);
+		assertTrue(head.isSymbolic());
+		assertEquals(Constants.R_HEADS + Constants.MASTER, head.getLeaf()
+				.getName());
+		assertEquals(repoHead, head.getObjectId());
+
+		refreshAndWait();
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		tree.getAllItems()[0]
+				.expand()
+				.expandNode(
+						UIText.RepositoriesViewLabelProvider_SubmodulesNodeText)
+				.select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue(UPDATE_SUBMODULE_CONTEXT_MENU_LABEL));
+		TestUtil.joinJobs(JobFamilies.SUBMODULE_UPDATE);
+		refreshAndWait();
+
+		head = subRepo.getRef(Constants.HEAD);
+		assertNotNull(head);
+		assertFalse(head.isSymbolic());
+		assertEquals(repoHead, head.getObjectId());
+	}
+

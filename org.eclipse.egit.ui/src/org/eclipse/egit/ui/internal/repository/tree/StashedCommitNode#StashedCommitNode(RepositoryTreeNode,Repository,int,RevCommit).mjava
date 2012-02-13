@@ -1,0 +1,14 @@
+	/**
+	 * Constructs the node
+	 *
+	 * @param parent
+	 * @param repository
+	 * @param index
+	 * @param commit
+	 */
+	public StashedCommitNode(RepositoryTreeNode parent, Repository repository,
+			int index, RevCommit commit) {
+		super(parent, RepositoryTreeNodeType.STASHED_COMMIT, repository, commit);
+		this.index = index;
+	}
+

@@ -1,0 +1,9 @@
+	private void configureRepositoryConfig(CloneOperation op, GitRepositoryInfo gitRepositoryInfo) {
+		for (RepositoryConfigProperty p : gitRepositoryInfo.getRepositoryConfigProperties()) {
+			SetRepositoryConfigPropertyTask task = new SetRepositoryConfigPropertyTask(
+					p.getSection(), p.getSubsection(), p.getName(),
+					p.getValue());
+			op.addPostCloneTask(task);
+		}
+	}
+

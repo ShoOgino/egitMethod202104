@@ -1,0 +1,12 @@
+	@Override
+	final public void addPages() {
+		if (hasSearchResult())
+			addRepositorySearchPage();
+		else
+			addRepositoryLocationPage();
+		addPreClonePages();
+		addPage(validSource);
+		addPage(cloneDestination);
+		addPostClonePages();
+	}
+

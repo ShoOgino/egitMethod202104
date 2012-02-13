@@ -1,0 +1,16 @@
+	/**
+	 * @return the list of {@code CloneSourceProvider} read from the extension
+	 *         point registry
+	 */
+	public static List<CloneSourceProvider> getCloneSourceProvider() {
+		List<CloneSourceProvider> cloneSourceProvider = new ArrayList<CloneSourceProvider>();
+
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IConfigurationElement[] config = registry
+				.getConfigurationElementsFor(CLONE_SOURCE_PROVIDER_ID);
+		if (config.length > 0)
+			addCloneSourceProvider(cloneSourceProvider, config, 0);
+
+		return cloneSourceProvider;
+	}
+

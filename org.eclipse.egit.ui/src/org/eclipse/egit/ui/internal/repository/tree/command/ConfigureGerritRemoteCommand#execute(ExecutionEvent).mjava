@@ -1,0 +1,16 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final RemoteNode node = getSelectedNodes(event).get(0);
+		Repository repository = node.getRepository();
+		final String remoteName = node.getObject();
+
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getShell();
+		ConfigureGerritWizard configureGerritWizard = new ConfigureGerritWizard(
+				repository.getConfig(), remoteName);
+		WizardDialog dlg = new WizardDialog(shell, configureGerritWizard);
+		dlg.setHelpAvailable(false);
+		dlg.open();
+
+		return null;
+	}
+
