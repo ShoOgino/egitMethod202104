@@ -65,7 +65,7 @@
 		alreadyClonedInto = workdir.getPath();
 
 		if (!callerRunsCloneOperation)
-			runAsJob(uri, op);
+			runAsJob(uri, op, gitRepositoryInfo);
 		else
 			cloneOperation = op;
 		return true;

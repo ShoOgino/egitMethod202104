@@ -1,4 +1,5 @@
 	private IStatus executeCloneOperation(final CloneOperation op,
+			final GitRepositoryInfo repositoryInfo,
 			final IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
@@ -7,10 +8,9 @@
 		op.run(monitor);
 		util.addConfiguredRepository(op.getGitDir());
 		try {
-			if (currentSearchResult.getGitRepositoryInfo().shouldSaveCredentialsInSecureStore()) {
-				SecureStoreUtils.storeCredentials(currentSearchResult.getGitRepositoryInfo().getCredentials(),
-						new URIish(currentSearchResult.getGitRepositoryInfo().getCloneUri()));
-			}
+			if (repositoryInfo.shouldSaveCredentialsInSecureStore())
+				SecureStoreUtils.storeCredentials(repositoryInfo.getCredentials(),
+						new URIish(repositoryInfo.getCloneUri()));
 		} catch (Exception e) {
 			Activator.error(e.getMessage(), e);
 		}

@@ -7,7 +7,7 @@
 		} else if (page == cloneDestination) {
 			importWithDirectoriesPage.setRepository(getClonedRepository());
 			return importWithDirectoriesPage;
-		} else if (page == importWithDirectoriesPage) {
+		} else if (page == importWithDirectoriesPage)
 			switch (importWithDirectoriesPage.getWizardSelection()) {
 			case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
 				projectsImportPage.setProjectsList(importWithDirectoriesPage
@@ -21,10 +21,9 @@
 				return createGeneralProjectPage;
 
 			}
-		} else if (page == createGeneralProjectPage
-				|| page == projectsImportPage) {
+		else if (page == createGeneralProjectPage
+				|| page == projectsImportPage)
 			return null;
-		}
 		return super.getNextPage(page);
 	}
 
