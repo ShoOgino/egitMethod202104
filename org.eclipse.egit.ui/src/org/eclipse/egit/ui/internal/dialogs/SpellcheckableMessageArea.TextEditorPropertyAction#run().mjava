@@ -1,0 +1,7 @@
+		@Override
+		public void run() {
+			toggleState(isChecked());
+			if (store != null)
+				store.setValue(getPreferenceKey(), isChecked());
+		}
+

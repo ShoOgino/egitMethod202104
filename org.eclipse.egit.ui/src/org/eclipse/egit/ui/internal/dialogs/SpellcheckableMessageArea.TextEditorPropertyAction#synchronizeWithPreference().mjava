@@ -1,0 +1,13 @@
+		protected void synchronizeWithPreference() {
+			boolean checked = false;
+			if (store != null)
+				checked = store.getBoolean(getPreferenceKey());
+			if (checked != isChecked()) {
+				setChecked(checked);
+				toggleState(checked);
+			} else if (checked) {
+				toggleState(false);
+				toggleState(true);
+			}
+		}
+

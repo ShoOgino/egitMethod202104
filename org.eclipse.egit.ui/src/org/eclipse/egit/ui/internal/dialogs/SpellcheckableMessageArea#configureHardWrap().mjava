@@ -8,28 +8,24 @@
 					private boolean active = true;
 
 					public void modifyText(ModifyEvent e) {
-						if (!active) {
+						if (!active)
 							return;
-						}
 						String lineDelimiter = textWidget.getLineDelimiter();
 						List<WrapEdit> wrapEdits = calculateWrapEdits(
 								textWidget.getText(), MAX_LINE_WIDTH,
 								lineDelimiter);
 						// Prevent infinite loop because replaceTextRange causes a ModifyEvent
 						active = false;
-						for (WrapEdit wrapEdit : wrapEdits) {
+						for (WrapEdit wrapEdit : wrapEdits)
 							textWidget.replaceTextRange(wrapEdit.getStart(), wrapEdit.getLength(), lineDelimiter);
-						}
 						active = true;
 					}
 				};
 				textWidget.addModifyListener(hardWrapModifyListener);
 			}
-		} else {
-			if (hardWrapModifyListener != null) {
-				getTextWidget().removeModifyListener(hardWrapModifyListener);
-				hardWrapModifyListener = null;
-			}
+		} else if (hardWrapModifyListener != null) {
+			getTextWidget().removeModifyListener(hardWrapModifyListener);
+			hardWrapModifyListener = null;
 		}
 	}
 
