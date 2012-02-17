@@ -1,0 +1,11 @@
+	public static void openWizard(final String project) {
+		SWTBotTree projectExplorerTree = bot
+				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		util.getProjectItem(projectExplorerTree, project).select();
+
+		String[] menuPath = new String[] {
+				util.getPluginLocalizedValue("TeamMenu.label"),
+				util.getPluginLocalizedValue("CreatePatchAction.label") };
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, menuPath);
+	}
+

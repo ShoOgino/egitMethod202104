@@ -30,19 +30,19 @@
 
 		new ConnectProviderOperation(firstProject, gitDir).execute(null);
 
-		IProject secondPoject = ResourcesPlugin.getWorkspace().getRoot()
+		IProject secondProject = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(PROJ2);
 
-		if (secondPoject.exists())
-			secondPoject.delete(true, null);
+		if (secondProject.exists())
+			secondProject.delete(true, null);
 
 		desc = ResourcesPlugin.getWorkspace().newProjectDescription(PROJ2);
 		desc.setLocation(new Path(new File(myRepository.getWorkTree(), PROJ2)
 				.getPath()));
-		secondPoject.create(desc, null);
-		secondPoject.open(null);
+		secondProject.create(desc, null);
+		secondProject.open(null);
 
-		IFolder secondfolder = secondPoject.getFolder(FOLDER);
+		IFolder secondfolder = secondProject.getFolder(FOLDER);
 		secondfolder.create(false, true, null);
 		IFile secondtextFile = secondfolder.getFile(FILE1);
 		secondtextFile.create(new ByteArrayInputStream("Hello, world"
@@ -55,7 +55,7 @@
 		// gitignore.create(new ByteArrayInputStream("/.project\n"
 		// .getBytes(firstProject.getDefaultCharset())), false, null);
 
-		new ConnectProviderOperation(secondPoject, gitDir).execute(null);
+		new ConnectProviderOperation(secondProject, gitDir).execute(null);
 
 		IFile[] commitables = new IFile[] { firstProject.getFile(".project"),
 				textFile, textFile2, secondtextFile, secondtextFile2 };

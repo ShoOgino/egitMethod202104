@@ -1,0 +1,19 @@
+	private IFile[] getAllFiles() {
+		IProject firstProject = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+		IProject secondProject = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ2);
+
+		IFolder folder = firstProject.getFolder(FOLDER);
+		IFile textFile = folder.getFile(FILE1);
+		IFile textFile2 = folder.getFile(FILE2);
+
+		IFolder secondfolder = secondProject.getFolder(FOLDER);
+		IFile secondtextFile = secondfolder.getFile(FILE1);
+		IFile secondtextFile2 = secondfolder.getFile(FILE2);
+
+		return new IFile[] { firstProject.getFile(".project"), textFile,
+				textFile2, secondProject.getFile(".project"), secondtextFile,
+				secondtextFile2 };
+	}
+

@@ -1,0 +1,27 @@
+	/**
+	 * Modify with the given content and commit.
+	 *
+	 * @param newContent
+	 *            new file content
+	 * @param commitMessage
+	 *            may be null
+	 * @throws Exception
+	 */
+	protected static void touchAndSubmit(String newContent, String commitMessage)
+			throws Exception {
+		IFile file = touch(newContent);
+
+		IFile[] commitables = new IFile[] { file };
+		ArrayList<IFile> untracked = new ArrayList<IFile>();
+		untracked.addAll(Arrays.asList(commitables));
+		String message = commitMessage;
+		if (message == null)
+			message = newContent;
+		// TODO: remove after replacing GitIndex in CommitOperation
+		waitInUI();
+		CommitOperation op = new CommitOperation(commitables,
+				untracked, TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER,
+				message);
+		op.execute(null);
+	}
+
