@@ -1,0 +1,25 @@
+	/**
+	 * Allow the user to finish if a valid file has been entered.
+	 *
+	 * @return page is valid
+	 */
+	protected boolean validatePage() {
+		if (wsRadio.getSelection()) {
+			pageValid = validateWorkspaceLocation();
+		}else if (fsRadio.getSelection()) {
+			pageValid = validateFilesystemLocation();
+		} else if (cpRadio.getSelection()) {
+			pageValid = true;
+		}
+
+		/**
+		 * Avoid draw flicker by clearing error message if all is valid.
+		 */
+		if (pageValid) {
+			setMessage(null);
+			setErrorMessage(null);
+		}
+		setPageComplete(pageValid);
+		return pageValid;
+	}
+

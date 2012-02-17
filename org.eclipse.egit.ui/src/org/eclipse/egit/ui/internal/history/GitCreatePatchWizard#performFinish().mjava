@@ -5,8 +5,11 @@
 		operation.setHeaderFormat(optionsPage.getSelectedHeaderFormat());
 		operation.setContextLines(Integer.parseInt(optionsPage.contextLines.getText()));
 
-		final boolean isFile = locationPage.fsRadio.getSelection();
-		final String fileName = locationPage.fsPathText.getText();
+		final File file = !locationPage.fsRadio.getSelection() ? locationPage
+				.getFile() : null;
+
+		if (!(file == null || validateFile(file)))
+			return false;
 
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
@@ -16,11 +19,10 @@
 						operation.execute(monitor);
 
 						String content = operation.getPatchContent();
-						if (isFile) {
-							writeToFile(fileName, content);
-						} else {
+						if (file != null)
+							writeToFile(file, content);
+						else
 							copyToClipboard(content);
-						}
 					} catch (IOException e) {
 						throw new InvocationTargetException(e);
 					} catch (CoreException e) {

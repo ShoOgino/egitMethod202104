@@ -1,0 +1,43 @@
+		private void validateDialog() {
+			String fileName = wsFilenameText.getText();
+
+			if (fileName.equals("")) { //$NON-NLS-1$
+				if (modified) {
+					setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchDialogEnterFileName);
+					getButton(IDialogConstants.OK_ID).setEnabled(false);
+					return;
+				} else {
+					setErrorMessage(null);
+					getButton(IDialogConstants.OK_ID).setEnabled(false);
+					return;
+				}
+			}
+
+			// make sure that the filename is valid
+			if (!(ResourcesPlugin.getWorkspace().validateName(fileName,
+					IResource.FILE)).isOK() && modified) {
+				setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchEnterValidFileName);
+				getButton(IDialogConstants.OK_ID).setEnabled(false);
+				return;
+			}
+
+			// Make sure that a container has been selected
+			if (getSelectedContainer() == null) {
+				setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchDialogEnterValidLocation);
+				getButton(IDialogConstants.OK_ID).setEnabled(false);
+				return;
+			} else {
+				IWorkspace workspace = ResourcesPlugin.getWorkspace();
+				IPath fullPath = wsSelectedContainer.getFullPath().append(
+						fileName);
+				if (workspace.getRoot().getFolder(fullPath).exists()) {
+					setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchFolderExists);
+					getButton(IDialogConstants.OK_ID).setEnabled(false);
+					return;
+				}
+			}
+
+			setErrorMessage(null);
+			getButton(IDialogConstants.OK_ID).setEnabled(true);
+		}
+

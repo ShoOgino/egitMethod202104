@@ -1,0 +1,10 @@
+		protected void okPressed() {
+			IFile file = wsSelectedContainer.getFile(new Path(
+					wsFilenameText.getText()));
+			if (file != null)
+				wsPathText.setText(file.getFullPath().toString());
+
+			validatePage();
+			super.okPressed();
+		}
+

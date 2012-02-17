@@ -1,0 +1,40 @@
+		void setupListeners(){
+			wsTreeViewer.addSelectionChangedListener(
+					new ISelectionChangedListener() {
+						public void selectionChanged(SelectionChangedEvent event) {
+							IStructuredSelection s = (IStructuredSelection)event.getSelection();
+							Object obj=s.getFirstElement();
+							if (obj instanceof IContainer)
+								wsSelectedContainer = (IContainer) obj;
+							else if (obj instanceof IFile){
+								IFile tempFile = (IFile) obj;
+								wsSelectedContainer = tempFile.getParent();
+								wsFilenameText.setText(tempFile.getName());
+							}
+							validateDialog();
+						}
+					});
+
+			wsTreeViewer.addDoubleClickListener(
+					new IDoubleClickListener() {
+						public void doubleClick(DoubleClickEvent event) {
+							ISelection s= event.getSelection();
+							if (s instanceof IStructuredSelection) {
+								Object item = ((IStructuredSelection)s).getFirstElement();
+								if (wsTreeViewer.getExpandedState(item))
+									wsTreeViewer.collapseToLevel(item, 1);
+								else
+									wsTreeViewer.expandToLevel(item, 1);
+							}
+							validateDialog();
+						}
+					});
+
+			wsFilenameText.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent e) {
+					modified = true;
+					validateDialog();
+				}
+			});
+		}
+

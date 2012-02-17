@@ -1,0 +1,11 @@
+		protected Control createContents(Composite parent) {
+			Control control = super.createContents(parent);
+			setTitle(UIText.GitCreatePatchWizard_WorkspacePatchDialogTitle);
+			setMessage(UIText.GitCreatePatchWizard_WorkspacePatchDialogDescription);
+			//create title image
+			dlgTitleImage = UIIcons.WIZBAN_CREATE_PATCH.createImage();
+			setTitleImage(dlgTitleImage);
+
+			return control;
+		}
+

@@ -1,0 +1,11 @@
+	private String createFileName() {
+		String suggestedFileName = getCommit() != null ? CreatePatchOperation
+				.suggestFileName(getCommit()) : getRepository().getWorkTree()
+				.getName().concat(".patch"); //$NON-NLS-1$
+		String path = getDialogSettings().get(PATH_KEY);
+		if (path != null)
+			return Path.fromPortableString(path).append(suggestedFileName).toOSString();
+
+		return (new File(System.getProperty("user.dir", ""), suggestedFileName)).getPath(); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+

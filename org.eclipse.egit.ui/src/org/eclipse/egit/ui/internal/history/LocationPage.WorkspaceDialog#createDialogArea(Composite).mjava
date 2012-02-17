@@ -1,0 +1,54 @@
+		protected Control createDialogArea(Composite parent){
+			Composite parentComposite = (Composite) super.createDialogArea(parent);
+
+			// create a composite with standard margins and spacing
+			Composite composite = new Composite(parentComposite, SWT.NONE);
+			GridLayout layout = new GridLayout();
+			layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
+			layout.marginWidth = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
+			layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
+			layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
+			composite.setLayout(layout);
+			composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+			composite.setFont(parentComposite.getFont());
+
+			getShell().setText(UIText.GitCreatePatchWizard_WorkspacePatchDialogSavePatch);
+
+			wsTreeViewer = new TreeViewer(composite, SWT.BORDER);
+			final GridData gd= new GridData(SWT.FILL, SWT.FILL, true, true);
+			gd.widthHint= 550;
+			gd.heightHint= 250;
+			wsTreeViewer.getTree().setLayoutData(gd);
+
+			wsTreeViewer.setContentProvider(new LocationPageContentProvider());
+			wsTreeViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
+			wsTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
+			wsTreeViewer.setInput(ResourcesPlugin.getWorkspace());
+
+			//Open to whatever is selected in the workspace field
+			IPath existingWorkspacePath = new Path(wsPathText.getText());
+			//Ensure that this workspace path is valid
+			IResource selectedResource = ResourcesPlugin.getWorkspace().getRoot().findMember(existingWorkspacePath);
+			if (selectedResource != null) {
+				wsTreeViewer.expandToLevel(selectedResource, 0);
+				wsTreeViewer.setSelection(new StructuredSelection(selectedResource));
+			}
+
+			final Composite group = new Composite(composite, SWT.NONE);
+			layout = new GridLayout(2, false);
+			layout.marginWidth = 0;
+			group.setLayout(layout);
+			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+			final Label label = new Label(group, SWT.NONE);
+			label.setLayoutData(new GridData());
+			label.setText(UIText.GitCreatePatchWizard_WorkspacePatchDialogFileName);
+
+			wsFilenameText = new Text(group,SWT.BORDER);
+			wsFilenameText.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+			setupListeners();
+
+			return parent;
+		}
+

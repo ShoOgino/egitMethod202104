@@ -8,12 +8,11 @@
 			text = text.trim();
 
 			char[] charArray = text.toCharArray();
-			for (char c : charArray) {
+			for (char c : charArray)
 				if(!Character.isDigit(c)) {
 					setErrorMessage(UIText.GitCreatePatchWizard_ContextMustBePositiveInt);
 					return false;
 				}
-			}
 			return true;
 		}
 

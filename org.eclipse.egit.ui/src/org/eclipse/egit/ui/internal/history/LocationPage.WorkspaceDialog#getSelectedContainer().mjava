@@ -1,0 +1,9 @@
+		private IContainer getSelectedContainer() {
+			Object obj = ((IStructuredSelection)wsTreeViewer.getSelection()).getFirstElement();
+			if (obj instanceof IContainer)
+				wsSelectedContainer = (IContainer) obj;
+			else if (obj instanceof IFile)
+				wsSelectedContainer = ((IFile) obj).getParent();
+			return wsSelectedContainer;
+		}
+
