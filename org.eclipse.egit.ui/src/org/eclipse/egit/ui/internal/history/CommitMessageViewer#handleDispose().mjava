@@ -6,6 +6,9 @@
 		}
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(listener);
+		if (refsChangedListener != null)
+			refsChangedListener.remove();
+		refsChangedListener = null;
 		super.handleDispose();
 	}
 

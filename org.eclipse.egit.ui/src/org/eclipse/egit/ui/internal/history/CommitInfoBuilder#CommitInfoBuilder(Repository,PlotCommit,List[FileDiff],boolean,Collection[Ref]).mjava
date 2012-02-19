@@ -3,11 +3,13 @@
 	 * @param commit the commit the info should be shown for
 	 * @param currentDiffs list of current diffs
 	 * @param fill whether to fill the available space
+	 * @param allRefs all Ref's to examine regarding marge bases
 	 */
-	public CommitInfoBuilder(Repository db, PlotCommit commit, List<FileDiff> currentDiffs, boolean fill) {
+	public CommitInfoBuilder(Repository db, PlotCommit commit, List<FileDiff> currentDiffs, boolean fill, Collection<Ref> allRefs) {
 		this.db = db;
 		this.commit = commit;
 		this.fill = fill;
+		this.allRefs = allRefs;
 		this.currentDiffs = new ArrayList<FileDiff>(currentDiffs);
 	}
 

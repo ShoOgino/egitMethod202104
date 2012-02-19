@@ -1,7 +1,7 @@
 		FormatRequest(Repository repository, PlotCommit<?> commit,
 				boolean fill, List<FileDiff> currentDiffs, Color linkColor,
 				Color darkGrey, Color hunkheaderColor, Color linesAddedColor,
-				Color linesRemovedColor) {
+				Color linesRemovedColor, Collection<Ref> allRefs) {
 			this.repository = repository;
 			this.commit = commit;
 			this.fill = fill;
@@ -11,5 +11,6 @@
 			this.hunkheaderColor = hunkheaderColor;
 			this.linesAddedColor = linesAddedColor;
 			this.linesRemovedColor = linesRemovedColor;
+			this.allRefs = allRefs;
 		}
 

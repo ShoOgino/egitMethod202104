@@ -4,9 +4,8 @@
 					UIText.CommitMessageViewer_SelectOneCommitMessage));
 			return;
 		}
-		if (formatJob != null && formatJob.getState() != Job.NONE) {
+		if (formatJob != null && formatJob.getState() != Job.NONE)
 			formatJob.cancel();
-		}
 		scheduleFormatJob();
 	}
 
