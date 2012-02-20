@@ -1,0 +1,8 @@
+		private RevisionSelectionHandler(Repository repository, String path,
+				IStorage storage) {
+			if (storage instanceof IFile)
+				resourceFile = (IFile) storage;
+			else if (!repository.isBare())
+				nonResourceFile = new File(repository.getWorkTree(), path);
+		}
+

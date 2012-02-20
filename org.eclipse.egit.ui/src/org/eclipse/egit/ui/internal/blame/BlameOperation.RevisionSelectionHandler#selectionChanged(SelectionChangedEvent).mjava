@@ -1,0 +1,29 @@
+		public void selectionChanged(SelectionChangedEvent event) {
+			ISelection selection = event.getSelection();
+			if (selection.isEmpty()
+					|| !(selection instanceof IStructuredSelection))
+				return;
+			Object first = ((IStructuredSelection) selection).getFirstElement();
+			if (!(first instanceof BlameRevision))
+				return;
+
+			IHistoryView part = (IHistoryView) PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage()
+					.findView(IHistoryView.VIEW_ID);
+			if (part == null)
+				return;
+
+			BlameRevision revision = (BlameRevision) first;
+			BlameHistoryPageInput input;
+			if (resourceFile != null)
+				input = new BlameHistoryPageInput(revision.getRepository(),
+						revision.getCommit(), resourceFile);
+			else if (nonResourceFile != null)
+				input = new BlameHistoryPageInput(revision.getRepository(),
+						revision.getCommit(), nonResourceFile);
+			else
+				input = new BlameHistoryPageInput(revision.getRepository(),
+						revision.getCommit());
+			part.showHistoryFor(input);
+		}
+

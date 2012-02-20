@@ -54,22 +54,7 @@
 
 		shell.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				try {
-					AbstractDecoratedTextEditor editor;
-					if (storage instanceof IFile)
-						editor = RevisionAnnotationController.openEditor(page,
-								(IFile) storage);
-					else
-						editor = RevisionAnnotationController.openEditor(page,
-								storage, storage);
-					if (editor != null)
-						editor.showRevisionInformation(info,
-								"org.eclipse.egit.ui.internal.decorators.GitQuickDiffProvider"); //$NON-NLS-1$
-				} catch (PartInitException e) {
-					Activator.handleError(
-							"Error displaying blame annotations", e, //$NON-NLS-1$
-							false);
-				}
+				openEditor(info);
 			}
 		});
 	}
