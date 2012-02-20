@@ -4,6 +4,7 @@
 				commit);
 		operation.setHeaderFormat(optionsPage.getSelectedHeaderFormat());
 		operation.setContextLines(Integer.parseInt(optionsPage.contextLines.getText()));
+		operation.setPathFilter(createPathFilter(resources));
 
 		final File file = !locationPage.fsRadio.getSelection() ? locationPage
 				.getFile() : null;

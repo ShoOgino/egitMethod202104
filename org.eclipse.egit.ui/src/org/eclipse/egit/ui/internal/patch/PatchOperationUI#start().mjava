@@ -3,7 +3,7 @@
 	 */
 	public void start() {
 		if (commit != null) {
-			GitCreatePatchWizard.run(getShell(), commit, repository);
+			GitCreatePatchWizard.run(getShell(), commit, repository, null);
 			return;
 		} else
 
@@ -13,6 +13,6 @@
 					UIText.GitCreatePatchAction_workingTreeClean);
 			return;
 		}
-		GitCreatePatchWizard.run(getShell(), null, repository);
+		GitCreatePatchWizard.run(getShell(), null, repository, resources);
 	}
 

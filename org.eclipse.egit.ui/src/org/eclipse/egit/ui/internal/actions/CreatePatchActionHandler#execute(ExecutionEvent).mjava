@@ -1,5 +1,11 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		PatchOperationUI.createPatch(getPart(event), getRepository()).start();
+		final Repository repository = getRepository(true, event);
+		// assert all resources map to the same repository
+		if (repository == null)
+			return null;
+		IResource[] resources = getSelectedResources();
+		PatchOperationUI.createPatch(getPart(event), getRepository(),
+				Arrays.asList(resources)).start();
 		return null;
 	}
 

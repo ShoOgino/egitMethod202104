@@ -6,10 +6,12 @@
 	 *            the part
 	 * @param repo
 	 *            the repository
+	 * @param resources
+	 *            collection of {@link IResource}s
 	 * @return the {@link PatchOperationUI}
 	 */
 	public static PatchOperationUI createPatch(IWorkbenchPart part,
-			Repository repo) {
-		return new PatchOperationUI(null, repo);
+			Repository repo, Collection<? extends IResource> resources) {
+		return new PatchOperationUI(null, repo, resources);
 	}
 
