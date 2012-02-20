@@ -31,6 +31,7 @@
 			writeGitPatchHeader(sb);
 
 		diffFmt.setRepository(repository);
+		diffFmt.setPathFilter(pathFilter);
 
 		try {
 			if (commit != null) {
@@ -52,11 +53,10 @@
 					currentEncoding = CompareCoreUtils.getResourceEncoding(repository, path);
 					diffFmt.format(ent);
 				}
-			} else {
+			} else
 				diffFmt.format(
 						new DirCacheIterator(repository.readDirCache()),
 						new FileTreeIterator(repository));
-			}
 		} catch (IOException e) {
 			Activator.logError(CoreText.CreatePatchOperation_patchFileCouldNotBeWritten, e);
 		}
