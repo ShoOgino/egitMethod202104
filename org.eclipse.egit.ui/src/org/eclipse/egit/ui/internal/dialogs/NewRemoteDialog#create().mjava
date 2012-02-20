@@ -3,6 +3,10 @@
 		super.create();
 		setTitle(UIText.NewRemoteDialog_DialogTitle);
 		setMessage(UIText.NewRemoteDialog_ConfigurationMessage);
-		getButton(OK).setEnabled(false);
+		if (existingRemotes.isEmpty()) {
+			nameText.setText(Constants.DEFAULT_REMOTE_NAME);
+			nameText.selectAll();
+		}
+		checkPage();
 	}
 
