@@ -1,11 +1,8 @@
 	@Override
 	public void create() {
 		super.create();
-		String repoName = Activator.getDefault().getRepositoryUtil()
-				.getRepositoryName(repository);
-
 		setTitle(NLS.bind(UIText.SimpleConfigurePushDialog_DialogTitle,
-				repoName, config.getName()));
+				config.getName()));
 		setMessage(UIText.SimpleConfigurePushDialog_DialogMessage);
 
 		updateControls();

@@ -6,11 +6,10 @@
 		if (!anyUri)
 			setErrorMessage(UIText.SimpleConfigurePushDialog_MissingUriMessage);
 
-		if (anyFetchUri) {
+		if (anyFetchUri)
 			commonUriText.setText(config.getURIs().get(0).toPrivateString());
-		} else {
+		else
 			commonUriText.setText(""); //$NON-NLS-1$
-		}
 		uriViewer.getTable().setEnabled(anyPushUri);
 		if (anyPushUri)
 			uriViewer.setInput(config.getPushURIs());

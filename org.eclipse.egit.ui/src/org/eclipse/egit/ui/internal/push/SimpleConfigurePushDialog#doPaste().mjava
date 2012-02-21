@@ -3,13 +3,12 @@
 		try {
 			String content = (String) clipboard.getContents(TextTransfer
 					.getInstance());
-			if (content == null) {
+			if (content == null)
 				MessageDialog
 						.openConfirm(
 								getShell(),
 								UIText.SimpleConfigurePushDialog_EmptyClipboardDialogTitle,
 								UIText.SimpleConfigurePushDialog_EmptyClipboardDialogMessage);
-			}
 			try {
 				RefSpec spec = new RefSpec(content);
 				Ref source;
