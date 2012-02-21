@@ -1,5 +1,4 @@
-	@Test
-	public void testFetchFromOrigin() throws Exception {
+	private void testFetchFromOrigin(boolean useRemote) throws Exception {
 
 		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
 				clonedRepositoryFile);
@@ -20,8 +19,7 @@
 		String dialogTitle = NLS.bind(UIText.FetchResultDialog_title,
 				destinationString);
 
-		myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand().getNode(
-				"origin").expand().getNode(0).select();
+		selectNode(tree, useRemote, true);
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
@@ -49,8 +47,7 @@
 
 		refreshAndWait();
 
-		myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand().getNode(
-				"origin").expand().getNode(0).select();
+		selectNode(tree, useRemote, true);
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
@@ -66,8 +63,7 @@
 		assertTrue(found);
 		confirm.close();
 
-		myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand().getNode(
-				"origin").expand().getNode(0).select();
+		selectNode(tree, useRemote, true);
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 
