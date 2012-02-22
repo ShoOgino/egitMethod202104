@@ -6,10 +6,9 @@
 					return allProjects;
 
 				ArrayList<IProject> accessibleProjects = new ArrayList<IProject>();
-				for (IProject project : allProjects) {
+				for (IProject project : allProjects)
 					if (project.isOpen())
 						accessibleProjects.add(project);
-				}
 				return accessibleProjects.toArray();
 			}
 			return super.getChildren(element);

@@ -38,12 +38,10 @@
 				if (wsRadio.getSelection())
 					setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchProjectClosed);
 				return false;
-			} else {
-				if (ResourcesPlugin.getWorkspace().getRoot().getFolder(
-						pathToWorkspaceFile).exists()) {
-					setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchFolderExists);
-					return false;
-				}
+			} else if (ResourcesPlugin.getWorkspace().getRoot().getFolder(
+					pathToWorkspaceFile).exists()) {
+				setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchFolderExists);
+				return false;
 			}
 		} else {
 			setErrorMessage(status.getMessage());

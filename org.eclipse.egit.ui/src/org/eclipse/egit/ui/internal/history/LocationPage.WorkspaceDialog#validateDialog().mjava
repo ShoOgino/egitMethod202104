@@ -1,7 +1,7 @@
 		private void validateDialog() {
 			String fileName = wsFilenameText.getText();
 
-			if (fileName.equals("")) { //$NON-NLS-1$
+			if (fileName.equals("")) //$NON-NLS-1$
 				if (modified) {
 					setErrorMessage(UIText.GitCreatePatchWizard_WorkspacePatchDialogEnterFileName);
 					getButton(IDialogConstants.OK_ID).setEnabled(false);
@@ -11,7 +11,6 @@
 					getButton(IDialogConstants.OK_ID).setEnabled(false);
 					return;
 				}
-			}
 
 			// make sure that the filename is valid
 			if (!(ResourcesPlugin.getWorkspace().validateName(fileName,

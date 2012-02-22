@@ -4,13 +4,12 @@
 	 * @return page is valid
 	 */
 	protected boolean validatePage() {
-		if (wsRadio.getSelection()) {
+		if (wsRadio.getSelection())
 			pageValid = validateWorkspaceLocation();
-		}else if (fsRadio.getSelection()) {
+		else if (fsRadio.getSelection())
 			pageValid = validateFilesystemLocation();
-		} else if (cpRadio.getSelection()) {
+		else if (cpRadio.getSelection())
 			pageValid = true;
-		}
 
 		/**
 		 * Avoid draw flicker by clearing error message if all is valid.
