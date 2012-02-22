@@ -1,5 +1,5 @@
 	private static void setReuseOpenEditor(boolean value) {
-		new InstanceScope().getNode(TEAM_UI_PLUGIN).putBoolean(
+		InstanceScope.INSTANCE.getNode(TEAM_UI_PLUGIN).putBoolean(
 				REUSE_COMPARE_EDITOR_PREFID, value);
 	}
 

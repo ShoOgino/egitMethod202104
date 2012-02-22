@@ -19,7 +19,7 @@
 		}
 		GitProjectData.attachToWorkspace(true);
 
-		IEclipsePreferences node = new InstanceScope().getNode(Activator.getPluginId());
+		IEclipsePreferences node = InstanceScope.INSTANCE.getNode(Activator.getPluginId());
 		String gitPrefix = node.get(GitCorePreferences.core_gitPrefix, null);
 		if (gitPrefix != null)
 			FS.DETECTED.setGitPrefix(new File(gitPrefix));

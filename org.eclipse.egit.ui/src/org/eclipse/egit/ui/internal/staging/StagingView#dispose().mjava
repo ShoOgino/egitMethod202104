@@ -12,7 +12,7 @@
 		if (undoRedoActionGroup != null)
 			undoRedoActionGroup.dispose();
 
-		new InstanceScope().getNode(
+		InstanceScope.INSTANCE.getNode(
 				org.eclipse.egit.core.Activator.getPluginId())
 				.removePreferenceChangeListener(prefListener);
 	}
