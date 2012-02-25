@@ -6,12 +6,10 @@
 		allCommits = list;
 		table.setInput(asArray);
 		if (asArray != null && asArray.length > 0) {
-			if (oldList != list) {
+			if (oldList != list)
 				initCommitsMap();
-			}
-		} else {
+		} else
 			table.getTable().deselectAll();
-		}
 		if (commitToShow != null)
 			selectCommit(commitToShow);
 	}

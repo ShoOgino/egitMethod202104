@@ -13,7 +13,7 @@
 
 		final TableColumn date = new TableColumn(rawTable, SWT.NONE);
 		date.setResizable(true);
-		date.setText(UIText.HistoryPage_dateColumn);
+		date.setText(UIText.HistoryPage_authorDateColumn);
 		date.setWidth(250);
 		layout.addColumnData(new ColumnWeightData(5, true));
 
@@ -27,6 +27,12 @@
 		committer.setResizable(true);
 		committer.setText(UIText.CommitGraphTable_Committer);
 		committer.setWidth(100);
+		layout.addColumnData(new ColumnWeightData(5, true));
+
+		final TableColumn committerDate = new TableColumn(rawTable, SWT.NONE);
+		committerDate.setResizable(true);
+		committerDate.setText(UIText.CommitGraphTable_committerDataColumn);
+		committerDate.setWidth(100);
 		layout.addColumnData(new ColumnWeightData(5, true));
 	}
 

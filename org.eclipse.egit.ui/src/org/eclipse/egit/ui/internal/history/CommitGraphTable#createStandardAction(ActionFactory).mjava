@@ -20,12 +20,10 @@
 
 			@Override
 			public void run() {
-				if (af == ActionFactory.SELECT_ALL) {
+				if (af == ActionFactory.SELECT_ALL)
 					table.getTable().selectAll();
-				}
-				if (af == ActionFactory.COPY) {
+				if (af == ActionFactory.COPY)
 					doCopy();
-				}
 			}
 		};
 		return action;

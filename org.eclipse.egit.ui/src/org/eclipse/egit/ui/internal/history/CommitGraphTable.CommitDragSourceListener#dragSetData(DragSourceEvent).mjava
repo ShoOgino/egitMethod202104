@@ -20,9 +20,8 @@
 								UIText.CommitGraphTable_UnableToWritePatch,
 								commit.getId().name()), e);
 					} finally {
-						if (patchFile != null) {
+						if (patchFile != null)
 							patchFile.deleteOnExit();
-						}
 					}
 				}
 			}

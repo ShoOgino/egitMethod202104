@@ -23,9 +23,8 @@
 
 		getTableView().addOpenListener(new IOpenListener() {
 			public void open(OpenEvent event) {
-				if (input == null || !input.isSingleFile()) {
+				if (input == null || !input.isSingleFile())
 					return;
-				}
 
 				ICommandService srv = (ICommandService) site
 						.getService(ICommandService.class);
@@ -34,7 +33,7 @@
 				Command cmd = srv.getCommand(HistoryViewCommands.SHOWVERSIONS);
 				Parameterization[] parms;
 				if (Activator.getDefault().getPreferenceStore().getBoolean(
-						UIPreferences.RESOURCEHISTORY_COMPARE_MODE)) {
+						UIPreferences.RESOURCEHISTORY_COMPARE_MODE))
 					try {
 						IParameter parm = cmd
 								.getParameter(HistoryViewCommands.COMPARE_MODE_PARAM);
@@ -44,7 +43,7 @@
 						Activator.handleError(e.getMessage(), e, true);
 						parms = null;
 					}
-				} else
+				else
 					parms = null;
 				ParameterizedCommand pcmd = new ParameterizedCommand(cmd, parms);
 				try {
