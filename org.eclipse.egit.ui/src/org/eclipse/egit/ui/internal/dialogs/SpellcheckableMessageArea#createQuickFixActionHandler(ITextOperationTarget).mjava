@@ -1,11 +1,7 @@
 	private ActionHandler createQuickFixActionHandler(
 			final ITextOperationTarget textOperationTarget) {
 		Action quickFixAction = new Action() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.action.Action#run()
-			 */
+
 			public void run() {
 				textOperationTarget.doOperation(ISourceViewer.QUICK_ASSIST);
 			}
