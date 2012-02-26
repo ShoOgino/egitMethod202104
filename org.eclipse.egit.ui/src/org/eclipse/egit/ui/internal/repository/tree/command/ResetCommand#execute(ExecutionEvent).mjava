@@ -28,15 +28,13 @@
 			public boolean performFinish() {
 				final ResetType resetType = ((SelectResetTypePage) getPages()[0])
 						.getResetType();
-				if (resetType == ResetType.HARD) {
+				if (resetType == ResetType.HARD)
 					if (!MessageDialog
 							.openQuestion(
 									getShell(),
 									UIText.ResetTargetSelectionDialog_ResetQuestion,
-									UIText.ResetTargetSelectionDialog_ResetConfirmQuestion)) {
+									UIText.ResetTargetSelectionDialog_ResetConfirmQuestion))
 						return true;
-					}
-				}
 
 				try {
 					getContainer().run(false, true,

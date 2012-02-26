@@ -20,12 +20,11 @@
 			// double-check if the files are still there
 			boolean show = false;
 			List<String> pathList = result.getUndeletedList();
-			for (String path : pathList) {
+			for (String path : pathList)
 				if (new File(repository.getWorkTree(), path).exists()) {
 					show = true;
 					break;
 				}
-			}
 			if (!show)
 				return;
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {

@@ -1,11 +1,10 @@
 	private static ImageDescriptor map(final String icon) {
-		if (base != null) {
+		if (base != null)
 			try {
 				return ImageDescriptor.createFromURL(new URL(base, icon));
 			} catch (MalformedURLException mux) {
 				Activator.logError(UIText.UIIcons_errorLoadingPluginImage, mux);
 			}
-		}
 		return ImageDescriptor.getMissingImageDescriptor();
 	}
 

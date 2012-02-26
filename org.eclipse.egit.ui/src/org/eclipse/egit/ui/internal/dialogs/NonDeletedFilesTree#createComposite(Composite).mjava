@@ -1,0 +1,9 @@
+	private static Composite createComposite(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true)
+				.applyTo(main);
+		GridLayoutFactory.fillDefaults().spacing(0, 0).numColumns(2)
+				.applyTo(main);
+		return main;
+	}
+
