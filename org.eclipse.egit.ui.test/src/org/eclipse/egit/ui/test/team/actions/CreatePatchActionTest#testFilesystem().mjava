@@ -1,0 +1,22 @@
+	@Test
+	public void testFilesystem() throws Exception {
+		touchAndSubmit("oldContent", null);
+		touch("newContent");
+		waitInUI();
+
+		CreatePatchWizard createPatchWizard = openCreatePatchWizard();
+		LocationPage locationPage = createPatchWizard.getLocationPage();
+		IProject project = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+		File patch = new File(project.getLocation().toFile(), PATCH_FILE);
+		locationPage.selectFilesystem(patch.toString());
+		createPatchWizard.finish();
+
+		bot.waitUntil(Conditions.shellCloses(createPatchWizard.getShell()));
+
+		byte[] bytes = IO.readFully(patch);
+		String patchContent = new String(bytes, "UTF-8");
+
+		assertEquals(EXPECTED_PATCH_CONTENT, patchContent);
+	}
+
