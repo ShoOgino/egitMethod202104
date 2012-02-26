@@ -8,9 +8,8 @@
 				TreeSelection sel = (TreeSelection) event.getSelection();
 				RepositoryTreeNode element = (RepositoryTreeNode) sel
 						.getFirstElement();
-				if (element instanceof RefNode || element instanceof TagNode) {
+				if (element instanceof RefNode || element instanceof TagNode)
 					executeOpenCommand();
-				}
 			}
 		});
 		// handle open event for the working directory

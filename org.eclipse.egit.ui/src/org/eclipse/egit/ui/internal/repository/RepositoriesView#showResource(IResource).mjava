@@ -18,17 +18,15 @@
 
 			boolean added = repositoryUtil.addConfiguredRepository(mapping
 					.getRepository().getDirectory());
-			if (added) {
+			if (added)
 				scheduleRefresh(0);
-			}
 
-			if (this.scheduledJob != null) {
+			if (this.scheduledJob != null)
 				try {
 					this.scheduledJob.join();
 				} catch (InterruptedException e) {
 					Activator.handleError(e.getMessage(), e, false);
 				}
-			}
 
 			RepositoryTreeNode currentNode = null;
 			ITreeContentProvider cp = (ITreeContentProvider) getCommonViewer()
@@ -51,7 +49,7 @@
 
 			IPath relPath = new Path(repoPath);
 
-			for (String segment : relPath.segments()) {
+			for (String segment : relPath.segments())
 				for (Object child : cp.getChildren(currentNode)) {
 					RepositoryTreeNode<File> childNode = (RepositoryTreeNode<File>) child;
 					if (childNode.getObject().getName().equals(segment)) {
@@ -59,7 +57,6 @@
 						break;
 					}
 				}
-			}
 
 			final RepositoryTreeNode selNode = currentNode;
 
