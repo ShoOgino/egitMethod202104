@@ -1,10 +1,5 @@
 	private void register(final IContainer c, final File gitdir) {
-		File f;
-		try {
-			f = gitdir.getCanonicalFile();
-		} catch (IOException ioe) {
-			f = gitdir.getAbsoluteFile();
-		}
+		File f = gitdir.getAbsoluteFile();
 		if (gitdirs.contains(f))
 			return;
 		gitdirs.add(f);
