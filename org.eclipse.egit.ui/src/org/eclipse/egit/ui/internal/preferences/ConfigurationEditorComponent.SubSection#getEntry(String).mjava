@@ -1,0 +1,7 @@
+		public Entry getEntry(String entryName) {
+			for (Object child : getChildren(this))
+				if (entryName.equals(((Entry) child).name))
+					return (Entry) child;
+			return null;
+		}
+

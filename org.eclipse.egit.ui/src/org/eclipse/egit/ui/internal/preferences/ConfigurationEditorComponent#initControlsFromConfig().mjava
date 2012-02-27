@@ -1,7 +1,7 @@
 	private void initControlsFromConfig() {
 		try {
 			editableConfig.load();
-			tv.setInput(editableConfig);
+			tv.setInput(new GitConfig(editableConfig));
 			editable = true;
 			if (editableConfig instanceof FileBasedConfig) {
 				FileBasedConfig fileConfig = (FileBasedConfig) editableConfig;
@@ -10,9 +10,10 @@
 					if (isWriteable(configFile))
 						location.setText(configFile.getPath());
 					else {
-						location.setText(NLS.bind(UIText.ConfigurationEditorComponent_ReadOnlyLocationFormat,
-								configFile.getPath()));
-						editable=false;
+						location.setText(NLS
+								.bind(UIText.ConfigurationEditorComponent_ReadOnlyLocationFormat,
+										configFile.getPath()));
+						editable = false;
 					}
 				else {
 					location.setText(UIText.ConfigurationEditorComponent_NoConfigLocationKnown);

@@ -1,0 +1,14 @@
+		public Entry getEntry(String subsectionName, String entryName) {
+			if (subsectionName != null) {
+				for (Object child : getChildren(this))
+					if (child instanceof SubSection
+							&& ((SubSection) child).name.equals(subsectionName))
+						return ((SubSection) child).getEntry(entryName);
+			} else
+				for (Object child : getChildren(this))
+					if (child instanceof Entry
+							&& ((Entry) child).name.equals(entryName))
+						return (Entry) child;
+			return null;
+		}
+

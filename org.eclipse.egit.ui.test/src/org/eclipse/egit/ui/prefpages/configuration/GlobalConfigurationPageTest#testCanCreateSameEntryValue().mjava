@@ -1,10 +1,10 @@
 	@Test
-	public void testCantCreateSameEntryValue() throws Exception {
+	public void testCanCreateSameEntryValue() throws Exception {
 		config.setString(TESTSECTION, null, TESTNAME, "already");
 		config.save();
 		getGitConfigurationPreferencePage();
 		preferencePage.bot().button(
-				UIText.ConfigurationEditorComponent_NewValueButton).click();
+				UIText.ConfigurationEditorComponent_AddButton).click();
 		SWTBotShell addDialog = bot
 				.shell(UIText.AddConfigEntryDialog_AddConfigTitle);
 		addDialog.activate();
@@ -12,7 +12,7 @@
 				.setText(TESTSECTION + "." + TESTNAME);
 		addDialog.bot().textWithLabel(UIText.AddConfigEntryDialog_ValueLabel)
 				.setText("true");
-		assertTrue(!addDialog.bot().button(IDialogConstants.OK_LABEL)
+		assertTrue(addDialog.bot().button(IDialogConstants.OK_LABEL)
 				.isEnabled());
 		addDialog.close();
 	}

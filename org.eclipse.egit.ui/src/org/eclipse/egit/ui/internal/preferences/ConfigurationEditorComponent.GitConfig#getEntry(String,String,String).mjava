@@ -1,0 +1,10 @@
+		public Entry getEntry(String sectionName, String subsectionName,
+				String entryName) {
+			for (Object child : getChildren(this)) {
+				Section section = (Section) child;
+				if (sectionName.equals(section.name))
+					return section.getEntry(subsectionName, entryName);
+			}
+			return null;
+		}
+

@@ -9,7 +9,7 @@
 		getGitConfigurationPreferencePage();
 		preferencePage.bot().tree(1).getTreeItem(TESTSECTION).select();
 
-		bot.button(UIText.ConfigurationEditorComponent_RemoveAllButton).click();
+		bot.button(UIText.ConfigurationEditorComponent_RemoveButton).click();
 		SWTBotShell confirm = bot
 				.shell(UIText.ConfigurationEditorComponent_RemoveSectionTitle);
 		confirm.activate();
