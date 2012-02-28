@@ -8,10 +8,9 @@
 				final RepositoryMapping map = RepositoryMapping.getMapping(r);
 				if (map == null)
 					continue;
-				if (db != map.getRepository()) {
+				if (db != map.getRepository())
 					throw new IllegalStateException(
 							UIText.AbstractHistoryCommanndHandler_NoUniqueRepository);
-				}
 
 				if (showAllFilter == ShowFilter.SHOWALLFOLDER) {
 					final String path;
@@ -48,31 +47,28 @@
 					filePath = new Path(file.getParentFile().getPath());
 					isRegularFile = false;
 				} else if (showAllFilter == ShowFilter.SHOWALLPROJECT
-						|| showAllFilter == ShowFilter.SHOWALLREPO) {
+						|| showAllFilter == ShowFilter.SHOWALLREPO)
 					// we don't know of projects here -> treat as SHOWALLREPO
 					continue;
-				} else /* if (showAllFilter == ShowFilter.SHOWALLRESOURCE) */{
+				else /* if (showAllFilter == ShowFilter.SHOWALLRESOURCE) */{
 					filePath = new Path(file.getPath());
 					isRegularFile = file.isFile();
 				}
 
-				if (gitDirPath.isPrefixOf(filePath)) {
+				if (gitDirPath.isPrefixOf(filePath))
 					throw new IllegalStateException(
 							NLS
 									.bind(
 											UIText.GitHistoryPage_FileOrFolderPartOfGitDirMessage,
 											filePath.toOSString()));
-				}
 
 				IPath pathToAdd = filePath.removeFirstSegments(segmentCount)
 						.setDevice(null);
-				if (!pathToAdd.isEmpty()) {
+				if (!pathToAdd.isEmpty())
 					paths.add(new FilterPath(pathToAdd.toString(), isRegularFile));
-				}
 			}
-		} else {
+		} else
 			paths = new ArrayList<FilterPath>(0);
-		}
 		return paths;
 	}
 

@@ -3,9 +3,9 @@
 		try {
 			RevCommit c = null;
 			RevObject any = rw.parseAny(ref.getLeaf().getObjectId());
-			if (any instanceof RevCommit) {
+			if (any instanceof RevCommit)
 				c = (RevCommit) any;
-			} else if (any instanceof RevTag) {
+			else if (any instanceof RevTag) {
 				RevTag t = rw.parseTag(any);
 				Object anyCommit = rw.parseAny(t.getObject());
 				if (anyCommit instanceof RevCommit)

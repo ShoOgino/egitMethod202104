@@ -2,13 +2,12 @@
 			public void run() {
 				String oldName = historyPage.getName();
 				String oldDescription = historyPage.getDescription();
-				if (!isChecked()) {
+				if (!isChecked())
 					if (historyPage.showAllFilter == filter) {
 						historyPage.showAllFilter = ShowFilter.SHOWALLRESOURCE;
 						showAllResourceVersionsAction.setChecked(true);
 						historyPage.initAndStartRevWalk(false);
 					}
-				}
 				if (isChecked() && historyPage.showAllFilter != filter) {
 					historyPage.showAllFilter = filter;
 					if (this != showAllRepoVersionsAction)

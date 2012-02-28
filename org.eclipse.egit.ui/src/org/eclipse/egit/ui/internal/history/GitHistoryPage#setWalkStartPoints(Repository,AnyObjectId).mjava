@@ -10,9 +10,8 @@
 			if (store
 					.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES))
 				markStartAllRefs(Constants.R_NOTES);
-			else {
+			else
 				markUninteresting(Constants.R_NOTES);
-			}
 
 			currentWalk.markStart(currentWalk.parseCommit(headId));
 		} catch (IOException e) {

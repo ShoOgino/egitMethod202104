@@ -17,12 +17,11 @@
 			// the parent of the control!
 			revInfoSplit.setMaximizedControl(fileViewer.getControl()
 					.getParent());
-		} else if (!showComment && !showFiles) {
+		} else if (!showComment && !showFiles)
 			graphDetailSplit.setMaximizedControl(graph.getControl());
-		}
-		if (showFindToolbar) {
+		if (showFindToolbar)
 			((GridData) findToolbar.getLayoutData()).heightHint = SWT.DEFAULT;
-		} else {
+		else {
 			((GridData) findToolbar.getLayoutData()).heightHint = 0;
 			findToolbar.clear();
 		}
