@@ -1,11 +1,13 @@
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-		if (page == selectRepoPage ) {
+		if (page == selectRepoPage) {
+			existingRepo = selectRepoPage.getRepository();
 			importWithDirectoriesPage.setRepository(selectRepoPage
 					.getRepository());
 			return importWithDirectoriesPage;
 		} else if (page == cloneDestination) {
-			importWithDirectoriesPage.setRepository(getClonedRepository());
+			existingRepo = null;
+			importWithDirectoriesPage.setRepository(getTargetRepository());
 			return importWithDirectoriesPage;
 		} else if (page == importWithDirectoriesPage)
 			switch (importWithDirectoriesPage.getWizardSelection()) {
