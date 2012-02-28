@@ -32,23 +32,13 @@
 		assertEquals("Wrong number of children", 2, localItem.getNodes().size());
 
 		localItem.getNode(0).select();
-		try {
-			ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
-					.getPluginLocalizedValue("CheckoutCommand"));
-		} catch (WidgetNotFoundException e1) {
-			// expected
-		}
+		assertCheckoutNotAvailable(view);
 		localItem.getNode(1).select();
 		ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("CheckoutCommand"));
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 
-		try {
-			ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
-					.getPluginLocalizedValue("CheckoutCommand"));
-		} catch (WidgetNotFoundException e) {
-			// expected
-		}
+		assertCheckoutNotAvailable(view);
 
 		localItem.getNode(0).select();
 		ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
