@@ -13,34 +13,30 @@
 	 */
 	public static void clickContextMenu(final AbstractSWTBot<?> bot,
 			final String... texts) {
-
-		// show
-		final MenuItem menuItem = UIThreadRunnable
-				.syncExec(new WidgetResult<MenuItem>() {
-					public MenuItem run() {
-						MenuItem theItem = getMenuItem(bot, texts);
-						if (theItem != null && !theItem.isEnabled())
-							throw new IllegalStateException(
-									"Menu item is diabled");
-
-						return theItem;
-					}
-				});
-		if (menuItem == null) {
-			throw new WidgetNotFoundException("Could not find menu: "
-					+ Arrays.asList(texts));
-		}
-
-		// click
-		click(menuItem);
-
-		// hide
-		UIThreadRunnable.syncExec(new VoidResult() {
-			public void run() {
-				if (menuItem.isDisposed())
-					return; // menu already gone
-				hide(menuItem.getParent());
+		int failCount = 0;
+		int maxFailCount = 4;
+		long sleepTime = 250;
+		while (failCount <= maxFailCount)
+			try {
+				clickContextMenuInternal(bot, texts);
+				if (failCount > 0)
+					System.out.println("Retrying clickContextMenu succeeded");
+				break;
+			} catch (WidgetNotFoundException e) {
+				failCount++;
+				if (failCount > maxFailCount) {
+					System.out.println("clickContextMenu failed " + failCount
+							+ " times");
+					throw e;
+				}
+				System.out.println("clickContextMenu failed. Retrying in "
+						+ sleepTime + " ms");
+				try {
+					Thread.sleep(sleepTime);
+					sleepTime *= 2;
+				} catch (InterruptedException e1) {
+					// empty
+				}
 			}
-		});
 	}
 

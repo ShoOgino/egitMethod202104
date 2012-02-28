@@ -2,11 +2,9 @@
 		if (menu != null) {
 			menu.notifyListeners(SWT.Show, new Event());
 			MenuItem[] items = menu.getItems();
-			for (final MenuItem menuItem : items) {
-				if (matcher.matches(menuItem)) {
+			for (final MenuItem menuItem : items)
+				if (matcher.matches(menuItem))
 					return menuItem;
-				}
-			}
 			menu.notifyListeners(SWT.Hide, new Event());
 		}
 		return null;

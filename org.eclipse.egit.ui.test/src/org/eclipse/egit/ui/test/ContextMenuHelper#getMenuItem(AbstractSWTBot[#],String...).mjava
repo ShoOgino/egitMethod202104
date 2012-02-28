@@ -12,9 +12,9 @@
 				Matcher<Object> matcher = allOf(instanceOf(MenuItem.class),
 						withMnemonic(text));
 				theItem = show(menu, matcher);
-				if (theItem != null) {
+				if (theItem != null)
 					menu = theItem.getMenu();
-				} else {
+				else {
 					hide(menu);
 					break;
 				}
