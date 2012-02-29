@@ -1,0 +1,29 @@
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+
+			public void run(IProgressMonitor pm) throws CoreException {
+				pm.beginTask("", 3); //$NON-NLS-1$
+				try {
+					IProject[] validProjects = ProjectUtil
+							.getValidOpenProjects(repository);
+					pm.worked(1);
+					Git.wrap(repository).stashApply()
+							.setStashRef(commit.name()).call();
+					pm.worked(1);
+					ProjectUtil.refreshValidProjects(validProjects,
+							new SubProgressMonitor(pm, 1));
+				} catch (JGitInternalException e) {
+					throw new TeamException(e.getLocalizedMessage(),
+							e.getCause());
+				} catch (GitAPIException e) {
+					throw new TeamException(e.getLocalizedMessage(),
+							e.getCause());
+				} finally {
+					pm.done();
+				}
+			}
+		};
+		ResourcesPlugin.getWorkspace().run(action,
+				monitor != null ? monitor : new NullProgressMonitor());
+	}
+

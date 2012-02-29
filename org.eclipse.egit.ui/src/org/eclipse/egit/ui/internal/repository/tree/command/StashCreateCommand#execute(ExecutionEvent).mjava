@@ -1,0 +1,40 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		List<RepositoryNode> nodes = getSelectedNodes(event);
+		if (nodes.isEmpty())
+			return null;
+		Repository repo = nodes.get(0).getRepository();
+		if (repo == null)
+			return null;
+
+		final StashCreateOperation op = new StashCreateOperation(repo);
+		final Shell shell = HandlerUtil.getActiveShell(event);
+		Job job = new Job(UIText.StashCreateCommand_jobTitle) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				monitor.beginTask("", 1); //$NON-NLS-1$
+				try {
+					op.execute(monitor);
+					RevCommit commit = op.getCommit();
+					if (commit == null)
+						showNoChangesToStash(shell);
+
+				} catch (CoreException e) {
+					Activator
+							.logError(UIText.StashCreateCommand_stashFailed, e);
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.STASH.equals(family))
+					return true;
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
+		return null;
+	}
+
