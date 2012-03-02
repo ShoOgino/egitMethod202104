@@ -1,6 +1,6 @@
 		@Override
 		public InputStream openInputStream() throws IOException {
-			if (rsrc.getType() == IResource.FILE) {
+			if (rsrc.getType() == IResource.FILE)
 				try {
 					return ((IFile) rsrc).getContents(true);
 				} catch (CoreException err) {
@@ -8,7 +8,6 @@
 					ioe.initCause(err);
 					throw ioe;
 				}
-			}
 			throw new IOException("Not a regular file: " + rsrc);  //$NON-NLS-1$
 		}
 
