@@ -1,10 +1,8 @@
 	private void setupViewMenu() {
 		IMenuManager viewMenuMgr = getSite().getActionBars().getMenuManager();
-		if (getSite().getActionBars().getGlobalActionHandler(
-				ActionFactory.REFRESH.getId()) == null) {
-			viewMenuMgr.add(actions.refreshAction);
-			viewMenuMgr.add(new Separator());
-		}
+		viewMenuMgr.add(actions.refreshAction);
+
+		viewMenuMgr.add(new Separator());
 		IMenuManager showSubMenuMgr = new MenuManager(
 				UIText.GitHistoryPage_ShowSubMenuLabel);
 		viewMenuMgr.add(showSubMenuMgr);
