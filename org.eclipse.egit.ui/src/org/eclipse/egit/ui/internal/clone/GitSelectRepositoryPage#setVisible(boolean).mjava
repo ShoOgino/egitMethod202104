@@ -6,15 +6,13 @@
 			// check in the dialog settings if a repository was selected before
 			// and select it if nothing else is selected
 			String repoDir = settings.get(LAST_SELECTED_REPO_PREF);
-			if (repoDir != null) {
+			if (repoDir != null)
 				for (TreeItem item : tv.getTree().getItems()) {
 					RepositoryNode node = (RepositoryNode) item.getData();
 					if (node.getRepository().getDirectory().getPath().equals(
-							repoDir)) {
+							repoDir))
 						tv.setSelection(new StructuredSelection(node));
-					}
 				}
-			}
 		} else {
 			// save selection in dialog settings
 			Object element = ((IStructuredSelection) tv.getSelection())

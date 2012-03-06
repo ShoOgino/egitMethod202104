@@ -4,8 +4,8 @@
 		List<String> dirsAfter = util.getConfiguredRepositories();
 		if (!dirsBefore.containsAll(dirsAfter)) {
 			tv.setInput(dirsAfter);
-			for (String dir : dirsAfter) {
-				if (!dirsBefore.contains(dir)) {
+			for (String dir : dirsAfter)
+				if (!dirsBefore.contains(dir))
 					try {
 						RepositoryNode node = new RepositoryNode(
 								null, new FileRepository(new File(dir)));
@@ -15,8 +15,6 @@
 						Activator.handleError(e1.getMessage(), e1,
 								false);
 					}
-				}
-			}
 		}
 	}
 
