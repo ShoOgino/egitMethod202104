@@ -19,9 +19,9 @@
 		String dialogTitle = NLS.bind(UIText.FetchResultDialog_title,
 				destinationString);
 
-		selectNode(tree, useRemote, true);
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimpleFetchCommand"));
+		SWTBotTreeItem node = selectNode(tree, useRemote, true);
+		node.contextMenu(myUtil
+				.getPluginLocalizedValue("SimpleFetchCommand")).click();
 
 		SWTBotShell confirm = bot.shell(dialogTitle);
 		assertEquals("Wrong result tree row count", 0, confirm.bot().tree()
@@ -47,9 +47,9 @@
 
 		refreshAndWait();
 
-		selectNode(tree, useRemote, true);
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimpleFetchCommand"));
+		node = selectNode(tree, useRemote, true);
+		node.contextMenu(myUtil
+				.getPluginLocalizedValue("SimpleFetchCommand")).click();
 
 		TestUtil.joinJobs(JobFamilies.FETCH);
 		confirm = bot.shell(dialogTitle);
@@ -63,9 +63,9 @@
 		assertTrue(found);
 		confirm.close();
 
-		selectNode(tree, useRemote, true);
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimpleFetchCommand"));
+		node = selectNode(tree, useRemote, true);
+		node.contextMenu(myUtil
+				.getPluginLocalizedValue("SimpleFetchCommand")).click();
 
 		confirm = bot.shell(dialogTitle);
 		assertEquals("Wrong result tree row count", 0, confirm.bot().tree()

@@ -17,10 +17,9 @@
 		new Git(repository).branchRename().setOldName(currentBranch)
 				.setNewName("" + System.currentTimeMillis()).call();
 
-		selectNode(tree, useRemote, false);
-
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimplePushCommand"));
+		SWTBotTreeItem node = selectNode(tree, useRemote, false);
+		node.contextMenu(myUtil
+				.getPluginLocalizedValue("SimplePushCommand")).click();
 
 		String destinationString = clonedRepositoryFile.getParentFile()
 				.getName()
@@ -42,10 +41,9 @@
 		confirmed.close();
 		assertTrue("New branch expected", newBranch);
 		// second time: expect up to date
-		selectNode(tree, useRemote, false);
-
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimplePushCommand"));
+		node = selectNode(tree, useRemote, false);
+		node.contextMenu(myUtil
+				.getPluginLocalizedValue("SimplePushCommand")).click();
 
 		confirmed = bot.shell(dialogTitle);
 		treeItems = confirmed.bot().tree().getAllItems();
@@ -64,10 +62,9 @@
 		objectIdBefore = objectIdBefore.substring(0, 7);
 		touchAndSubmit(null);
 
-		selectNode(tree, useRemote, false);
-
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimplePushCommand"));
+		node = selectNode(tree, useRemote, false);
+		node.contextMenu(myUtil
+				.getPluginLocalizedValue("SimplePushCommand")).click();
 
 		confirmed = bot.shell(dialogTitle);
 		treeItems = confirmed.bot().tree().getAllItems();
