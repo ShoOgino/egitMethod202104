@@ -36,16 +36,14 @@
 			}
 			if (!(object instanceof WorkingDirNode)) {
 				String path;
-				if (object instanceof FolderNode) {
+				if (object instanceof FolderNode)
 					path = ((FolderNode) object).getObject().getAbsolutePath();
-				} else {
-					if (object instanceof FileNode) {
-						path = ((FileNode) object).getObject()
-								.getAbsolutePath();
-					} else {
-						setBaseEnabled(false);
-						return;
-					}
+				else if (object instanceof FileNode)
+					path = ((FileNode) object).getObject()
+							.getAbsolutePath();
+				else {
+					setBaseEnabled(false);
+					return;
 				}
 				if (path.startsWith(repository.getDirectory().getAbsolutePath())) {
 					setBaseEnabled(false);

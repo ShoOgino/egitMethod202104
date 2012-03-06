@@ -19,7 +19,7 @@
 			@Override
 			public void done(IJobChangeEvent cevent) {
 				IStatus result = cevent.getJob().getResult();
-				if (result.getSeverity() == IStatus.CANCEL) {
+				if (result.getSeverity() == IStatus.CANCEL)
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							// don't use getShell(event) here since
@@ -32,9 +32,8 @@
 									dialogMessage);
 						}
 					});
-				} else if (result.isOK()) {
+				else if (result.isOK())
 					RebaseResultDialog.show(rebase.getResult(), repository);
-				}
 			}
 		});
 		job.schedule();
