@@ -1,10 +1,10 @@
-	private SWTBotTreeItem selectNode(SWTBotTree tree, boolean useRemote, boolean fetchMode)
+	private void selectNode(SWTBotTree tree, boolean useRemote, boolean fetchMode)
 			throws Exception {
 		if (useRemote)
-			return myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand()
+			myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand()
 					.getNode("origin").select();
 		else
-			return myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand()
+			myRepoViewUtil.getRemotesItem(tree, clonedRepositoryFile).expand()
 					.getNode("origin").expand().getNode(fetchMode ? 0 : 1)
 					.select();
 	}
