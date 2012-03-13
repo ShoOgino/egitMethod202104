@@ -1,0 +1,10 @@
+	/**
+	 * Get the target merge ref name for the currently checkout branch
+	 *
+	 * @param repo
+	 * @return ref node
+	 */
+	private static int getSelectSetting(Repository repo) {
+		return getMergeTarget(repo) != null ? SELECT_CURRENT_REF : 0;
+	}
+
