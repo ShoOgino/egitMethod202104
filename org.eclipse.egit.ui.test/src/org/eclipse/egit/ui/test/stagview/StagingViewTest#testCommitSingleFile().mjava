@@ -5,7 +5,7 @@
 		StagingViewTester stagingViewTester = StagingViewTester
 				.openStagingView();
 		selectRepositoryNode();
-		TestUtil.joinJobs(JobFamilies.STAGING_VIEW_REFRESH);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		stagingViewTester.setAuthor(TestUtil.TESTAUTHOR);
 		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER);
 		stagingViewTester.setCommitMessage("The new commit");

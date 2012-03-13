@@ -6,7 +6,6 @@
 	private void clearRepository() {
 		saveCommitMessageComponentState();
 		currentRepository = null;
-		removeListeners();
 		StagingViewUpdate update = new StagingViewUpdate(null, null, null);
 		unstagedTableViewer.setInput(update);
 		stagedTableViewer.setInput(update);

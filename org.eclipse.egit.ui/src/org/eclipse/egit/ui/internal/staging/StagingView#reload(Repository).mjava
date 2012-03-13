@@ -3,7 +3,6 @@
 			return;
 		if (repository == null) {
 			asyncExec(new Runnable() {
-
 				public void run() {
 					clearRepository();
 				}
@@ -16,59 +15,26 @@
 
 		final boolean repositoryChanged = currentRepository != repository;
 
-		final AtomicReference<IndexDiff> results = new AtomicReference<IndexDiff>();
-
-		final String jobTitle = MessageFormat.format(UIText.StagingView_IndexDiffReload,
-				StagingView.getRepositoryName(repository));
-
-		if (reloadJob != null)
-			reloadJob.cancel();
-		reloadJob = new Job(jobTitle) {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				IndexDiff indexDiff = doReload(repository, monitor, jobTitle);
-				results.set(indexDiff);
-				if (monitor.isCanceled())
-					return Status.CANCEL_STATUS;
-				return Status.OK_STATUS;
-			}
-
-			@Override
-			public boolean belongsTo(Object family) {
-				if (family.equals(JobFamilies.STAGING_VIEW_REFRESH))
-					return true;
-				return super.belongsTo(family);
-			}
-
-		};
-
-		reloadJob.setUser(false);
-		reloadJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
-
-		reloadJob.addJobChangeListener(new JobChangeAdapter() {
-			public void done(final IJobChangeEvent event) {
-				if (!event.getResult().isOK())
+		asyncExec(new Runnable() {
+			public void run() {
+				if (form.isDisposed())
 					return;
-				asyncExec(new Runnable() {
-					public void run() {
-						if (form.isDisposed())
-							return;
-						final IndexDiff indexDiff = results.get();
-						final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, null);
-						unstagedTableViewer.setInput(update);
-						stagedTableViewer.setInput(update);
-						enableCommitWidgets(true);
-						commitAction.setEnabled(repository.getRepositoryState()
-								.canCommit());
-						form.setText(StagingView.getRepositoryName(repository));
-						updateCommitMessageComponent(repositoryChanged);
-						updateSectionText();
-					}
 
-				});
+				final IndexDiffData indexDiff = doReload(repository);
+
+				if(indexDiff ==  null)
+					return;
+
+				final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, null);
+				unstagedTableViewer.setInput(update);
+				stagedTableViewer.setInput(update);
+				enableCommitWidgets(true);
+				commitAction.setEnabled(repository.getRepositoryState()
+						.canCommit());
+				form.setText(StagingView.getRepositoryName(repository));
+				updateCommitMessageComponent(repositoryChanged);
+				updateSectionText();
 			}
 		});
-
-		schedule(reloadJob);
 	}
 

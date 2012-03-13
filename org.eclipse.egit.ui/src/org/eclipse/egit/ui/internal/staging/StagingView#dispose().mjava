@@ -5,15 +5,12 @@
 		ISelectionService srv = (ISelectionService) getSite().getService(
 				ISelectionService.class);
 		srv.removePostSelectionListener(selectionChangedListener);
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+
+		if(cacheEntry != null)
+			cacheEntry.removeIndexDiffChangedListener(myIndexDiffListener);
+
 		new InstanceScope().getNode(
 				org.eclipse.egit.core.Activator.getPluginId())
 				.removePreferenceChangeListener(prefListener);
-
-		removeListeners();
-		if (reloadJob != null) {
-			reloadJob.cancel();
-			reloadJob = null;
-		}
 	}
 

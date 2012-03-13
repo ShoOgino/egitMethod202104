@@ -8,13 +8,11 @@
 				deleteCommitMessageComponentState();
 			oldState = loadCommitMessageComponentState();
 			commitMessageComponent.setRepository(currentRepository);
-			if (oldState == null) {
+			if (oldState == null)
 				loadInitialState(helper);
-			} else {
+			else
 				loadExistingState(helper, oldState);
-			}
-		} else {
-			// repository did not change
+		} else // repository did not change
 			if (userEnteredCommmitMessage()) {
 				if (!commitMessageComponent.getHeadCommit().equals(
 						helper.getPreviousCommit()))
@@ -22,7 +20,6 @@
 							.getCommitMessage());
 			} else
 				loadInitialState(helper);
-		}
 		amendPreviousCommitAction.setChecked(commitMessageComponent
 				.isAmending());
 		amendPreviousCommitAction.setEnabled(helper.amendAllowed());

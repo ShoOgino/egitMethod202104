@@ -14,14 +14,12 @@
 				.getPreviousCommit()));
 		boolean amendAllowed = helper.amendAllowed();
 		commitMessageComponent.setAmendAllowed(amendAllowed);
-		if (!amendAllowed) {
+		if (!amendAllowed)
 			commitMessageComponent.setAmending(false);
-		} else {
-			if (!headCommitChanged && oldState.getAmend())
-				commitMessageComponent.setAmending(true);
-			else
-				commitMessageComponent.setAmending(false);
-		}
+		else if (!headCommitChanged && oldState.getAmend())
+			commitMessageComponent.setAmending(true);
+		else
+			commitMessageComponent.setAmending(false);
 		commitMessageComponent.updateUIFromState();
 		commitMessageComponent.updateSignedOffAndChangeIdButton();
 		commitMessageComponent.enableListers(true);

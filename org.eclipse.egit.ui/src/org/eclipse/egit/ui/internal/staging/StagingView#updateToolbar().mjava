@@ -4,7 +4,8 @@
 
 		refreshAction = new Action(UIText.StagingView_Refresh, IAction.AS_PUSH_BUTTON) {
 			public void run() {
-				reload(currentRepository);
+				if(cacheEntry != null)
+					cacheEntry.refresh();
 			}
 		};
 		refreshAction.setImageDescriptor(UIIcons.ELCL16_REFRESH);
