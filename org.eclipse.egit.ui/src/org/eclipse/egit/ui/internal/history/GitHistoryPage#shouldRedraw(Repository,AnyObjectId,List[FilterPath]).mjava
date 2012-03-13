@@ -1,6 +1,6 @@
 	private boolean shouldRedraw(Repository db, AnyObjectId headId, List<FilterPath> paths) {
 		boolean pathChanged = pathChanged(pathFilters, paths);
-		boolean headChanged = !headId.equals(currentHeadId);
+		boolean headChanged = headId == null || !headId.equals(currentHeadId);
 		boolean repoChanged = false;
 
 		boolean allBranchesChanged = currentShowAllBranches != store

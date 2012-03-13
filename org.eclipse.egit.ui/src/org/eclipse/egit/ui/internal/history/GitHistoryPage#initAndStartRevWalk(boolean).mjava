@@ -15,8 +15,11 @@
 			}
 
 			AnyObjectId headId = resolveHead(db, true);
-			if (headId == null)
+			if (headId == null) {
+				graph.getTableView().setInput(new SWTCommit[0]);
+				currentHeadId = null;
 				return;
+			}
 
 			List<FilterPath> paths = buildFilterPaths(input.getItems(), input
 					.getFileList(), db);
