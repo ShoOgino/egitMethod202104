@@ -64,10 +64,9 @@
 				continue;
 			try {
 				String canonicalPath = contents[i].getCanonicalPath();
-				if (!directoriesVisited.add(canonicalPath)) {
+				if (!directoriesVisited.add(canonicalPath))
 					// already been here --> do not recurse
 					continue;
-				}
 			} catch (IOException exception) {
 				Activator.logError(exception.getLocalizedMessage(), exception);
 
