@@ -1,0 +1,32 @@
+	@Override
+	public boolean performFinish() {
+		try {
+			int timeout = Activator.getDefault().getPreferenceStore()
+					.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+
+			PushOperationSpecification specification = new PushOperationSpecification();
+			RepositorySelection remote = repoPage.getSelection();
+
+			RemoteRefUpdate update = new RemoteRefUpdate(repo, null, pushObj,
+					targetPage.getTargetRef(), targetPage.isForceUpdate(),
+					null, null);
+
+			specification.addURIRefUpdates(remote.getURI(true),
+					Collections.singleton(update));
+
+			PushOperation pop = new PushOperation(repo, specification, false,
+					timeout);
+
+			PushJob job = new PushWizard.PushJob(repo, pop, null,
+					PushWizard.getDestinationString(remote));
+			job.setUser(true);
+			job.schedule();
+
+			repoPage.saveUriInPrefs();
+		} catch (Exception e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+
+		return true;
+	}
+

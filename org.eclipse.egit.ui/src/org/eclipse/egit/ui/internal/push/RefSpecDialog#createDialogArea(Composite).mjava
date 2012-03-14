@@ -3,6 +3,19 @@
 		Composite main = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 		main.setLayout(new GridLayout(2, false));
+
+		URIish uriToCheck;
+		if (pushMode) {
+			if (config.getPushURIs().isEmpty())
+				uriToCheck = config.getURIs().get(0);
+			else
+				uriToCheck = config.getPushURIs().get(0);
+		} else
+			uriToCheck = config.getURIs().get(0);
+
+		final RefContentAssistProvider assistProvider = new RefContentAssistProvider(
+				repo, uriToCheck, getShell());
+
 		// source
 		Label sourceLabel = new Label(main, SWT.NONE);
 		if (pushMode)
@@ -36,7 +49,7 @@
 		UIUtils.addRefContentProposalToText(sourceText, repo,
 				new IRefListProvider() {
 					public List<Ref> getRefList() {
-						return getRefsForContentAssist(true);
+						return assistProvider.getRefsForContentAssist(true, pushMode);
 					}
 				});
 
@@ -76,7 +89,7 @@
 		UIUtils.addRefContentProposalToText(destinationText, repo,
 				new IRefListProvider() {
 					public List<Ref> getRefList() {
-						return getRefsForContentAssist(false);
+						return assistProvider.getRefsForContentAssist(false, pushMode);
 					}
 				});
 

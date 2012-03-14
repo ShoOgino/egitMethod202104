@@ -1,0 +1,9 @@
+	@Override
+	public boolean isEnabled() {
+		GitHistoryPage page = getPage();
+		if (page == null)
+			return false;
+		IStructuredSelection sel = getSelection(page);
+		return sel.size() == 1 && sel.getFirstElement() instanceof RevCommit;
+	}
+

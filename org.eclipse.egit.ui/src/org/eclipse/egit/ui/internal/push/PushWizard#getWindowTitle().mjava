@@ -3,7 +3,7 @@
 		final IWizardPage currentPage = getContainer().getCurrentPage();
 		if (currentPage == repoPage || currentPage == null)
 			return UIText.PushWizard_windowTitleDefault;
-		final String destination = getDestinationString();
+		final String destination = getDestinationString(repoPage.getSelection());
 		return NLS.bind(UIText.PushWizard_windowTitleWithDestination,
 				destination);
 	}

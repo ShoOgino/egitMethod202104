@@ -1,0 +1,14 @@
+	/**
+	 * Creates a new simple push wizard for a ref
+	 *
+	 * @param repo
+	 *            the repository the ref belongs to
+	 * @param refToPush
+	 *            the ref to push
+	 * @throws URISyntaxException
+	 */
+	public SimplePushRefWizard(Repository repo, Ref refToPush)
+			throws URISyntaxException {
+		this(repo, refToPush.getObjectId(), refToPush.getName());
+	}
+

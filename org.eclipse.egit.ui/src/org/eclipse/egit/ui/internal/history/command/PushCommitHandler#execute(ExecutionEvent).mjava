@@ -1,0 +1,16 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		PlotCommit commit = (PlotCommit) getSelection(getPage()).getFirstElement();
+		final Repository repo = getRepository(event);
+
+		try {
+			WizardDialog dlg = new WizardDialog(HandlerUtil
+					.getActiveShellChecked(event), new SimplePushRefWizard(repo, commit.getId()));
+			dlg.setHelpAvailable(true);
+			dlg.open();
+		} catch (Exception e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+
+		return null;
+	}
+

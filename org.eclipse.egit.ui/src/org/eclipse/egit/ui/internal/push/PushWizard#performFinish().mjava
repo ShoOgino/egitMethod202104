@@ -26,8 +26,8 @@
 			resultToCompare = confirmPage.getConfirmedResult();
 		else
 			resultToCompare = null;
-		final Job job = new PushJob(operation, resultToCompare,
-				getDestinationString());
+		final Job job = new PushJob(localDb, operation, resultToCompare,
+				getDestinationString(repoPage.getSelection()));
 
 		job.setUser(true);
 		job.schedule();

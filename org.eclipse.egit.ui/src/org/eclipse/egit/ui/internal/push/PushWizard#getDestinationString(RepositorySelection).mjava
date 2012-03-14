@@ -1,5 +1,4 @@
-	private String getDestinationString() {
-		final RepositorySelection repoSelection = repoPage.getSelection();
+	static String getDestinationString(RepositorySelection repoSelection) {
 		final String destination;
 		if (repoSelection.isConfigSelected())
 			destination = repoSelection.getConfigName();

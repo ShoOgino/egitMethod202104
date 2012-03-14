@@ -1,0 +1,47 @@
+	/**
+	 * pre-fills the destination box with a remote ref name if one exists that
+	 * matches the local branch name.
+	 */
+	protected void updateDestinationField() {
+		setMessage(NLS.bind(UIText.SimplePushSpecPage_message, sourceName));
+		String checkRemote = sourceName;
+
+		if (sourceName.startsWith(Constants.R_HEADS)) {
+			try {
+				BranchTrackingStatus status = BranchTrackingStatus.of(
+						repository,
+						sourceName.substring(Constants.R_HEADS.length()));
+
+				if (status != null) {
+					// calculate the name of the branch on the other side.
+					checkRemote = status.getRemoteTrackingBranch();
+					checkRemote = Constants.R_HEADS
+							+ checkRemote.substring(checkRemote.indexOf('/',
+									Constants.R_REMOTES.length() + 1) + 1);
+
+					setMessage(NLS.bind(
+							UIText.SimplePushSpecPage_pushAheadInfo,
+							new Object[] { sourceName,
+									Integer.valueOf(status.getAheadCount()),
+									status.getRemoteTrackingBranch() }),
+							IStatus.INFO);
+				}
+			} catch (Exception e) {
+				// ignore and continue...
+			}
+
+			if (assist == null) {
+				if (checkRemote != null)
+					remoteRefName.setText(checkRemote);
+				return;
+			}
+
+			if (checkRemote == null)
+				checkRemote = sourceName;
+
+			for (Ref ref : assist.getRefsForContentAssist(false, true))
+				if (ref.getName().equals(checkRemote))
+					remoteRefName.setText(checkRemote);
+		}
+	}
+

@@ -1,4 +1,4 @@
-		public PushJob(final PushOperation operation,
+		public PushJob(final Repository localDb, final PushOperation operation,
 				final PushOperationResult resultToCompare,
 				final String destinationString) {
 			super(NLS.bind(UIText.PushWizard_jobName, getURIsString(operation
@@ -6,5 +6,6 @@
 			this.operation = operation;
 			this.resultToCompare = resultToCompare;
 			this.destinationString = destinationString;
+			this.localDb = localDb;
 		}
 
