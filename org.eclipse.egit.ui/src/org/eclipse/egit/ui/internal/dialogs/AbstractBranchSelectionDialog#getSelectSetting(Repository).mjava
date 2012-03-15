@@ -4,7 +4,7 @@
 	 * @param repo
 	 * @return ref node
 	 */
-	private static int getSelectSetting(Repository repo) {
+	protected static int getSelectSetting(Repository repo) {
 		return getMergeTarget(repo) != null ? SELECT_CURRENT_REF : 0;
 	}
 
