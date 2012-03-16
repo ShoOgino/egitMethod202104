@@ -4,8 +4,7 @@
 		if (file.exists()) {
 			byte[] bytes = IO.readFully(file.getLocation().toFile());
 			return new String(bytes, file.getCharset());
-		} else {
+		} else
 			return "";
-		}
 	}
 

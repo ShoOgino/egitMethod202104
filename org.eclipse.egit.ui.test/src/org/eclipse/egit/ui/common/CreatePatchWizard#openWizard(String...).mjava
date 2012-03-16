@@ -1,7 +1,8 @@
-	public static void openWizard(final String project) {
+	public static void openWizard(final String... projects) {
 		SWTBotTree projectExplorerTree = bot
 				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
-		util.getProjectItem(projectExplorerTree, project).select();
+		SWTBotTreeItem[] items = util.getProjectItems(projectExplorerTree, projects);
+		projectExplorerTree.select(items);
 
 		String[] menuPath = new String[] {
 				util.getPluginLocalizedValue("TeamMenu.label"),

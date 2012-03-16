@@ -1,11 +1,12 @@
 	/**
 	 * @param projectExplorerTree
-	 * @param project
+	 * @param projects
 	 *            name of a project
 	 * @return the project item pertaining to the project
 	 */
-	public SWTBotTreeItem getProjectItem(SWTBotTree projectExplorerTree,
-			String project) {
+	public SWTBotTreeItem[] getProjectItems(SWTBotTree projectExplorerTree,
+			String... projects) {
+		List<SWTBotTreeItem> items = new ArrayList<SWTBotTreeItem>();
 		for (SWTBotTreeItem item : projectExplorerTree.getAllItems()) {
 			String itemText = item.getText();
 			StringTokenizer tok = new StringTokenizer(itemText, " ");
@@ -13,9 +14,10 @@
 			// may be a dirty marker
 			if (name.equals(">"))
 				name = tok.nextToken();
-			if (project.equals(name))
-				return item;
+			for (String project : projects)
+				if (project.equals(name))
+					items.add(item);
 		}
-		return null;
+		return items.isEmpty() ? null : items.toArray(new SWTBotTreeItem[items.size()]);
 	}
 

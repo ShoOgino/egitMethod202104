@@ -1,0 +1,20 @@
+	/**
+	 * Returns a workspace path
+	 *
+	 * @param path
+	 * @param project
+	 * @return path
+	 */
+	public static IPath computeWorkspacePath(final IPath path, final IProject project) {
+		RepositoryMapping rm = RepositoryMapping.getMapping(project);
+		String repoRelativePath = rm.getRepoRelativePath(project);
+		// the relative path cannot be determined, return unchanged
+		if (repoRelativePath == null)
+			return path;
+		// repository and project at the same level
+		if (repoRelativePath.equals("")) //$NON-NLS-1$
+			return path;
+		return path.removeFirstSegments(path.matchingFirstSegments(new Path(
+				repoRelativePath)));
+	}
+

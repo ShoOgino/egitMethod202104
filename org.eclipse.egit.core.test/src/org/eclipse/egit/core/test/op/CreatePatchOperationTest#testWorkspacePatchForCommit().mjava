@@ -1,0 +1,25 @@
+	@Test
+	public void testWorkspacePatchForCommit() throws Exception {
+		// setup workspace
+		File deletedFile = testRepository.createFile(project.getProject(), "deleted-file");
+		commit = testRepository.addAndCommit(project.getProject(), deletedFile,
+				"whatever");
+		FileUtils.delete(deletedFile);
+		testRepository.appendFileContent(file, "another line");
+		File newFile = testRepository.createFile(project.getProject(), "new-file");
+		testRepository.appendFileContent(newFile, "new content");
+		testRepository.untrack(deletedFile);
+		testRepository.track(file);
+		testRepository.track(newFile);
+		commit = testRepository.commit("2nd commit");
+
+		// create patch
+		CreatePatchOperation operation = new CreatePatchOperation(
+				testRepository.getRepository(), commit);
+
+		operation.setHeaderFormat(DiffHeaderFormat.WORKSPACE);
+		operation.execute(new NullProgressMonitor());
+
+		assertPatch(SIMPLE_WORKSPACE_PATCH_CONTENT, operation.getPatchContent());
+	}
+

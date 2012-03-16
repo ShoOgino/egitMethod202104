@@ -1,0 +1,39 @@
+	@Test
+	public void testUpdateWorkspacePatchPrefixes() throws Exception {
+		// setup workspace
+		File newFile = testRepository.createFile(project.getProject(), "new-file");
+		testRepository.appendFileContent(newFile, "new content");
+		File deletedFile = testRepository.createFile(project.getProject(), "deleted-file");
+		commit = testRepository.addAndCommit(project.getProject(), deletedFile,
+				"whatever");
+		FileUtils.delete(deletedFile);
+
+		// unprocessed patch
+		DiffFormatter diffFmt = new DiffFormatter(null);
+		diffFmt.setRepository(testRepository.getRepository());
+		StringBuilder sb = new StringBuilder();
+		sb.append("diff --git a/deleted-file b/deleted-file").append("\n");
+		sb.append("deleted file mode 100644").append("\n");
+		sb.append("index e69de29..0000000").append("\n");
+		sb.append("--- a/deleted-file").append("\n");
+		sb.append("+++ /dev/null").append("\n");
+		sb.append("diff --git a/new-file b/new-file").append("\n");
+		sb.append("new file mode 100644").append("\n");
+		sb.append("index 0000000..47d2739").append("\n");
+		sb.append("--- /dev/null").append("\n");
+		sb.append("+++ b/new-file").append("\n");
+		sb.append("@@ -0,0 +1 @@").append("\n");
+		sb.append("+new content").append("\n");
+		sb.append("\\ No newline at end of file").append("\n");
+		sb.append(SIMPLE_PATCH_CONTENT);
+
+		// update patch
+		CreatePatchOperation op = new CreatePatchOperation(testRepository.getRepository(), null);
+		op.updateWorkspacePatchPrefixes(sb, diffFmt);
+		// add workspace header
+		StringBuilder sb1 = new StringBuilder("### Eclipse Workspace Patch 1.0\n#P ")
+				.append(project.getProject().getName()).append("\n").append(sb);
+
+		assertPatch(SIMPLE_WORKSPACE_PATCH_CONTENT, sb1.toString());
+	}
+

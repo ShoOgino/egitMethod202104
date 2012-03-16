@@ -23,12 +23,11 @@
 			byte[] expectedContent = expectedfiles.get(path).getBytes();
 			byte[] repoContent = treeWalk.getObjectReader().open(objectId)
 					.getBytes();
-			if (!Arrays.equals(repoContent, expectedContent)) {
+			if (!Arrays.equals(repoContent, expectedContent))
 				fail("File " + path + " has repository content "
 						+ new String(repoContent)
 						+ " instead of expected content "
 						+ new String(expectedContent));
-			}
 			expectedfiles.remove(path);
 		}
 		if (expectedfiles.size() > 0) {
