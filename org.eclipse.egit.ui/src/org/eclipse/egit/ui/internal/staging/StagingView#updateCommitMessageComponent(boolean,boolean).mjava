@@ -1,4 +1,4 @@
-	void updateCommitMessageComponent(boolean repositoryChanged) {
+	void updateCommitMessageComponent(boolean repositoryChanged, boolean indexDiffAvailable) {
 		CommitHelper helper = new CommitHelper(currentRepository);
 		CommitMessageComponentState oldState = null;
 		if (repositoryChanged) {
@@ -22,6 +22,6 @@
 				loadInitialState(helper);
 		amendPreviousCommitAction.setChecked(commitMessageComponent
 				.isAmending());
-		amendPreviousCommitAction.setEnabled(helper.amendAllowed());
+		amendPreviousCommitAction.setEnabled(indexDiffAvailable && helper.amendAllowed());
 	}
 

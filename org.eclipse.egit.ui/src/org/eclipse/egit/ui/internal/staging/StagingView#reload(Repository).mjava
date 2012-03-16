@@ -22,17 +22,16 @@
 
 				final IndexDiffData indexDiff = doReload(repository);
 
-				if(indexDiff ==  null)
-					return;
+				boolean indexDiffAvailable = indexDiff !=  null;
 
 				final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, null);
 				unstagedTableViewer.setInput(update);
 				stagedTableViewer.setInput(update);
-				enableCommitWidgets(true);
-				commitAction.setEnabled(repository.getRepositoryState()
+				enableCommitWidgets(indexDiffAvailable);
+				commitAction.setEnabled(indexDiffAvailable && repository.getRepositoryState()
 						.canCommit());
 				form.setText(StagingView.getRepositoryName(repository));
-				updateCommitMessageComponent(repositoryChanged);
+				updateCommitMessageComponent(repositoryChanged, indexDiffAvailable);
 				updateSectionText();
 			}
 		});
