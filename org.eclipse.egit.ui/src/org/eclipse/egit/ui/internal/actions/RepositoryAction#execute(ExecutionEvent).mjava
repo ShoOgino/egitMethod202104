@@ -1,4 +1,7 @@
 	public final Object execute(ExecutionEvent event) throws ExecutionException {
+		if (!shouldRunAction())
+			return null;
+
 		ICommandService srv = (ICommandService) getServiceLocator()
 				.getService(ICommandService.class);
 		Command command = srv.getCommand(commandId);

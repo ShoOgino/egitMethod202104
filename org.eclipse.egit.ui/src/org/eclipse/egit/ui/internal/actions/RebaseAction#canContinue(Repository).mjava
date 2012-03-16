@@ -1,0 +1,11 @@
+	private boolean canContinue(Repository repo) {
+		IndexDiffCache diffCache = org.eclipse.egit.core.Activator.getDefault()
+				.getIndexDiffCache();
+		if (diffCache != null) {
+			IndexDiffCacheEntry entry = diffCache.getIndexDiffCacheEntry(repo);
+			return entry != null
+					&& entry.getIndexDiff().getConflicting().isEmpty();
+		}
+		return false;
+	}
+

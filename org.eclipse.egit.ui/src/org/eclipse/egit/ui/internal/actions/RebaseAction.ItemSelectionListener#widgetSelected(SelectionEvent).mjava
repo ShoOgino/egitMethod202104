@@ -1,0 +1,8 @@
+		public void widgetSelected(SelectionEvent selectionEvent) {
+			try {
+				action.execute(event);
+			} catch (ExecutionException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+

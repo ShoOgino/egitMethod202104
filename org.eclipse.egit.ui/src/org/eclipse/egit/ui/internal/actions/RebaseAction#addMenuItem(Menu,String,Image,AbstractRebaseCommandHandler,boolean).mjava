@@ -1,0 +1,12 @@
+	private void addMenuItem(Menu parent, String itemName, Image image,
+			AbstractRebaseCommandHandler action, boolean isEnabled) {
+		MenuItem item = new MenuItem(parent, SWT.PUSH);
+		item.setImage(image);
+		item.setText(itemName);
+		item.setEnabled(isEnabled);
+		ExecutionEvent event = createExecutionEvent();
+		ItemSelectionListener selectionListener = new ItemSelectionListener(
+				action, event);
+		item.addSelectionListener(selectionListener);
+	}
+

@@ -5,7 +5,7 @@
 	 * @return a {@link Repository} if all elements in the current selection map
 	 *         to the same {@link Repository}, otherwise null
 	 */
-	protected Repository getRepository(ISelection selection) {
+	protected static Repository getRepository(ISelection selection) {
 		if (selection == null || selection.isEmpty())
 			return null;
 		if (selection instanceof IStructuredSelection) {
@@ -13,10 +13,10 @@
 			Repository result = null;
 			for (Object element : ssel.toList()) {
 				Repository elementRepository = null;
-				if (element instanceof RepositoryTreeNode) {
+				if (element instanceof RepositoryTreeNode)
 					elementRepository = ((RepositoryTreeNode) element)
 							.getRepository();
-				} else if (element instanceof IResource) {
+				else if (element instanceof IResource) {
 					IResource resource = (IResource) element;
 					RepositoryMapping mapping = RepositoryMapping
 							.getMapping(resource.getProject());
