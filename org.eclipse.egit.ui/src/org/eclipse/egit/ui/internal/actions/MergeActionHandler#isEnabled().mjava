@@ -3,6 +3,6 @@
 		Repository repo = getRepository();
 		return repo != null
 				&& repo.getRepositoryState() == RepositoryState.SAFE
-				&& containsHead();
+				&& isLocalBranchCheckedout(repo);
 	}
 

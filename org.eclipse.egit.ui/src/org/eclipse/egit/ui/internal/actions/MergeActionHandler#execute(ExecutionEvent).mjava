@@ -31,7 +31,7 @@
 				@Override
 				public void done(IJobChangeEvent cevent) {
 					IStatus result = cevent.getJob().getResult();
-					if (result.getSeverity() == IStatus.CANCEL) {
+					if (result.getSeverity() == IStatus.CANCEL)
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								// don't use getShell(event) here since
@@ -46,10 +46,10 @@
 												UIText.MergeAction_MergeCanceledMessage);
 							}
 						});
-					} else if (!result.isOK()) {
+					else if (!result.isOK())
 						Activator.handleError(result.getMessage(), result
 								.getException(), true);
-					} else {
+					else
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								Shell shell = PlatformUI.getWorkbench()
@@ -58,7 +58,6 @@
 										.getResult()).open();
 							}
 						});
-					}
 				}
 			});
 			job.schedule();

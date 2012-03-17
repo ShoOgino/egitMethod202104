@@ -1,0 +1,10 @@
+	protected boolean isLocalBranchCheckedout(Repository repository) {
+		try {
+			return repository.getFullBranch().startsWith(Constants.R_HEADS);
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		return false;
+	}
+

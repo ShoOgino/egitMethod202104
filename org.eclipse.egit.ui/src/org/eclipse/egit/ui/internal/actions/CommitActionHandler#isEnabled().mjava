@@ -1,6 +1,5 @@
 	@Override
 	public boolean isEnabled() {
-		IProject[] projects = getProjectsForSelectedResources();
-		return getRepositoriesFor(projects).length == 1;
+		return getRepositories().length > 0;
 	}
 

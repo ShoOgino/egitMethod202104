@@ -1,4 +1,5 @@
-	private Set<IProject> extractProjectsFromMappings(IStructuredSelection selection) {
+	private Set<IProject> extractProjectsFromMappings(
+			IStructuredSelection selection) {
 		Set<IProject> ret = new LinkedHashSet<IProject>();
 		for (ResourceMapping mapping : (ResourceMapping[]) getSelectedAdaptables(
 				selection, ResourceMapping.class)) {

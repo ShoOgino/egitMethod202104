@@ -14,12 +14,11 @@
 				.getProjects();
 		for (IProject project : projects) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
-			for (Repository repository : repositories) {
+			for (Repository repository : repositories)
 				if (mapping != null && mapping.getRepository() == repository) {
 					ret.add(project);
 					break;
 				}
-			}
 		}
 		return ret.toArray(new IProject[ret.size()]);
 	}

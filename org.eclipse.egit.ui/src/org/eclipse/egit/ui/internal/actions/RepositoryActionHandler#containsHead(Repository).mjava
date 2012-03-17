@@ -1,0 +1,18 @@
+	/**
+	 *
+	 * @param repository
+	 *            the repository to check
+	 * @return {@code true} when {@link Constants#HEAD} can be resolved,
+	 *         {@code false} otherwise
+	 */
+	protected boolean containsHead(Repository repository) {
+		try {
+			return repository != null ? repository.resolve(Constants.HEAD) != null
+					: false;
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		return false;
+	}
+
