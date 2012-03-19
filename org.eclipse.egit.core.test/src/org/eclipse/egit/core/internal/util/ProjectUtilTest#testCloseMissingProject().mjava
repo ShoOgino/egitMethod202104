@@ -1,0 +1,11 @@
+	@Test
+	public void testCloseMissingProject() throws Exception {
+		IProject p = mock(IProject.class);
+		File projectFile = project.getProject().getLocation()
+				.append(".project").toFile();
+		FileUtils.delete(projectFile);
+		ProjectUtil.closeMissingProject(p, projectFile,
+				new NullProgressMonitor());
+		verify(p).close(any(IProgressMonitor.class));
+	}
+

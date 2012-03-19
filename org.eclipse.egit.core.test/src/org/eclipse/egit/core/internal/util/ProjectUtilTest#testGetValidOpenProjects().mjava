@@ -1,0 +1,9 @@
+	@Test
+	public void testGetValidOpenProjects() throws Exception {
+		IProject[] projects = ProjectUtil.getValidOpenProjects(repository
+				.getRepository());
+		assertEquals(1, projects.length);
+		IProject p = projects[0];
+		assertEquals("Project-1", p.getDescription().getName());
+	}
+

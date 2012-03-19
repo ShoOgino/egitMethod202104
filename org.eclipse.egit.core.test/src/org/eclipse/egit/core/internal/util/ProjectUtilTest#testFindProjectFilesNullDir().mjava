@@ -1,0 +1,7 @@
+	@Test
+	public void testFindProjectFilesNullDir() {
+		Collection<File> files = new ArrayList<File>();
+		assertFalse(ProjectUtil.findProjectFiles(files, null, null,
+				new NullProgressMonitor()));
+	}
+

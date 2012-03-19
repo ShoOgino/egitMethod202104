@@ -1,0 +1,10 @@
+	@Test
+	public void testFindProjectFilesEmptyDir() throws Exception {
+		Collection<File> files = new ArrayList<File>();
+		File dir = new File(gitDir.getParentFile().getPath() + File.separator
+				+ "xxx");
+		FileUtils.mkdir(dir);
+		assertFalse(ProjectUtil.findProjectFiles(files, dir, null,
+				new NullProgressMonitor()));
+	}
+

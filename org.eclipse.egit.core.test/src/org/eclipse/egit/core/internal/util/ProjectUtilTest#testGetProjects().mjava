@@ -1,0 +1,12 @@
+	@Test
+	public void testGetProjects() throws Exception {
+		ConnectProviderOperation operation = new ConnectProviderOperation(
+				project.getProject(), gitDir);
+		operation.execute(null);
+		IProject[] projects = ProjectUtil.getProjects(repository
+				.getRepository());
+		assertEquals(1, projects.length);
+		IProject p = projects[0];
+		assertEquals("Project-1", p.getDescription().getName());
+	}
+

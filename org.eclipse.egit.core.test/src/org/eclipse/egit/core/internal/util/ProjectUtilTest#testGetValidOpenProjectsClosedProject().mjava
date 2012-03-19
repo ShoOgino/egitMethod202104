@@ -1,0 +1,8 @@
+	@Test
+	public void testGetValidOpenProjectsClosedProject() throws Exception {
+		project.getProject().close(new NullProgressMonitor());
+		IProject[] projects = ProjectUtil.getValidOpenProjects(repository
+				.getRepository());
+		assertEquals(0, projects.length);
+	}
+

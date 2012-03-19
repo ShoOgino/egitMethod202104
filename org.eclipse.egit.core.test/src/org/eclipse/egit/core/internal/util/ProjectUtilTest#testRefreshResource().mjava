@@ -1,0 +1,10 @@
+	@Test
+	public void testRefreshResource() throws Exception {
+		IResource r = mock(IResource.class);
+		IResource[] resources = new IResource[1];
+		resources[0] = r;
+		ProjectUtil.refreshResources(resources, new NullProgressMonitor());
+		verify(r).refreshLocal(eq(IResource.DEPTH_INFINITE),
+				any(IProgressMonitor.class));
+	}
+

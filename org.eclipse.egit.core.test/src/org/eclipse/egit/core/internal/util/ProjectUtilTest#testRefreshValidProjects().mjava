@@ -1,0 +1,11 @@
+	@Test
+	public void testRefreshValidProjects() throws Exception {
+		IProject p = mock(IProject.class);
+		when(p.getLocation()).thenReturn(project.getProject().getLocation());
+		IProject[] projects = new IProject[1];
+		projects[0] = p;
+		ProjectUtil.refreshValidProjects(projects, new NullProgressMonitor());
+		verify(p).refreshLocal(eq(IResource.DEPTH_INFINITE),
+				any(IProgressMonitor.class));
+	}
+

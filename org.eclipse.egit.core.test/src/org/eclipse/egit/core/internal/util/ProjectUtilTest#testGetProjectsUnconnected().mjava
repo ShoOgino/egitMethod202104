@@ -1,0 +1,7 @@
+	@Test
+	public void testGetProjectsUnconnected() throws Exception {
+		IProject[] projects = ProjectUtil.getProjects(repository
+				.getRepository());
+		assertEquals(0, projects.length);
+	}
+

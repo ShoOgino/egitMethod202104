@@ -1,0 +1,7 @@
+	@Test
+	public void testFindProjectFiles() {
+		Collection<File> files = new ArrayList<File>();
+		assertTrue(ProjectUtil.findProjectFiles(files, gitDir.getParentFile(),
+				null, new NullProgressMonitor()));
+	}
+
