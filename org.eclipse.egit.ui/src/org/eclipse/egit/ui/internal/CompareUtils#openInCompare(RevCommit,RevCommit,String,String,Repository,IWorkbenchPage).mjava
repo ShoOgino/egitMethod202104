@@ -1,0 +1,29 @@
+	/**
+	 * Compares two files between the given commits, taking possible renames
+	 * into account.
+	 *
+	 * @param commit1
+	 *            the "left" commit for the comparison editor
+	 * @param commit2
+	 *            the "right" commit for the comparison editor
+	 * @param commit1Path
+	 *            path to the file within commit1's tree
+	 * @param commit2Path
+	 *            path to the file within commit2's tree
+	 * @param repository
+	 *            the repository this commit was loaded out of
+	 * @param workBenchPage
+	 *            the page to open the compare editor in
+	 */
+	public static void openInCompare(RevCommit commit1, RevCommit commit2,
+			String commit1Path, String commit2Path, Repository repository,
+			IWorkbenchPage workBenchPage) {
+		final ITypedElement base = CompareUtils.getFileRevisionTypedElement(
+				commit1Path, commit1, repository);
+		final ITypedElement next = CompareUtils.getFileRevisionTypedElement(
+				commit2Path, commit2, repository);
+		CompareEditorInput in = new GitCompareFileRevisionEditorInput(base,
+				next, null);
+		CompareUtils.openInCompare(workBenchPage, in);
+	}
+

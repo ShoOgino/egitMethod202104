@@ -11,26 +11,21 @@
 			IWorkbenchPage workBenchPage = HandlerUtil
 					.getActiveWorkbenchWindowChecked(event).getActivePage();
 			if (input instanceof IFile) {
-				IResource[] resources = new IResource[] { (IFile) input, };
-				try {
-					CompareUtils.compare(resources, repo, commit1.getName(),
-							commit2.getName(), false, workBenchPage);
-				} catch (IOException e) {
-					Activator.handleError(
-							UIText.CompareWithRefAction_errorOnSynchronize, e,
-							true);
-				}
+				IFile resource = (IFile) input;
+				final RepositoryMapping map = RepositoryMapping
+						.getMapping(resource);
+				final String gitPath = map.getRepoRelativePath(resource);
+				final String commit1Path = getRenamedPath(gitPath, commit1);
+				final String commit2Path = getRenamedPath(gitPath, commit2);
+				CompareUtils.openInCompare(commit1, commit2, commit1Path,
+						commit2Path, map.getRepository(), workBenchPage);
 			} else if (input instanceof File) {
 				File fileInput = (File) input;
-				IPath location = new Path(fileInput.getAbsolutePath());
-				try {
-					CompareUtils.compare(location, repo, commit1.getName(),
-							commit2.getName(), false, workBenchPage);
-				} catch (IOException e) {
-					Activator.handleError(
-							UIText.CompareWithRefAction_errorOnSynchronize, e,
-							true);
-				}
+				final String gitPath = getRepoRelativePath(repo, fileInput);
+				final String commit1Path = getRenamedPath(gitPath, commit1);
+				final String commit2Path = getRenamedPath(gitPath, commit2);
+				CompareUtils.openInCompare(commit1, commit2, commit1Path,
+						commit2Path, repo, workBenchPage);
 			} else if (input instanceof IResource) {
 				GitCompareEditorInput compareInput = new GitCompareEditorInput(
 						commit1.name(), commit2.name(), (IResource) input);

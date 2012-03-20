@@ -1,0 +1,13 @@
+	/**
+	 * Reset the tracker
+	 *
+	 * @param path
+	 * @return this tracker
+	 */
+	public RenameTracker reset(final String path) {
+		renames.clear();
+		initialPath = path;
+		currentPath = path;
+		return this;
+	}
+

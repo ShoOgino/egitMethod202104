@@ -1,27 +1,6 @@
 	private static void compareBetween(Repository repository, String gitPath,
 			String leftRev, String rightRev, IWorkbenchPage page)
 			throws IOException {
-		final ITypedElement left = getTypedElementFor(repository, gitPath,
-				leftRev);
-		final ITypedElement right = getTypedElementFor(repository, gitPath,
-				rightRev);
-
-		final ITypedElement commonAncestor;
-		if (left != null && right != null && !GitFileRevision.INDEX.equals(leftRev)
-				&& !GitFileRevision.INDEX.equals(rightRev))
-			commonAncestor = getTypedElementForCommonAncestor(repository,
-					gitPath, leftRev, rightRev);
-		else
-			commonAncestor = null;
-
-		final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
-				left, right, commonAncestor, null);
-		in.getCompareConfiguration().setLeftLabel(leftRev);
-		in.getCompareConfiguration().setRightLabel(rightRev);
-
-		if (page != null)
-			openInCompare(page, in);
-		else
-			CompareUI.openCompareEditor(in);
+		compareBetween(repository, gitPath, gitPath, leftRev, rightRev, page);
 	}
 
