@@ -7,8 +7,8 @@
 				menuString);
 		Repository repo = lookupRepository(childRepositoryFile);
 		SWTBotShell dialog = bot.shell(NLS.bind(
-				UIText.MergeTargetSelectionDialog_TitleMerge, repo
-						.getDirectory().toString()));
+				UIText.MergeTargetSelectionDialog_TitleMergeWithBranch,
+				repo.getBranch()));
 		return dialog;
 	}
 

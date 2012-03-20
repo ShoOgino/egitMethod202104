@@ -1,6 +1,11 @@
 	@Override
 	protected String getTitle() {
-		return NLS.bind(UIText.MergeTargetSelectionDialog_TitleMerge, repo
-				.getDirectory().toString());
+		String branch = getCurrentBranch();
+		if (branch != null)
+			return MessageFormat.format(
+					UIText.MergeTargetSelectionDialog_TitleMergeWithBranch,
+					branch);
+		else
+			return UIText.MergeTargetSelectionDialog_TitleMerge;
 	}
 

@@ -1,6 +1,11 @@
 	@Override
 	protected String getWindowTitle() {
-		return NLS.bind(UIText.RebaseTargetSelectionDialog_RebaseTitle, repo
-				.getDirectory().toString());
+		String branch = getCurrentBranch();
+		if (branch != null)
+			return MessageFormat.format(
+					UIText.RebaseTargetSelectionDialog_RebaseTitleWithBranch,
+					branch);
+		else
+			return UIText.RebaseTargetSelectionDialog_RebaseTitle;
 	}
 

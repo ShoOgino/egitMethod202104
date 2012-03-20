@@ -10,8 +10,9 @@
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("RepoViewMerge.label"));
 
-		String title = NLS.bind(UIText.MergeTargetSelectionDialog_TitleMerge,
-				clonedRepositoryFile.getPath().toString());
+		String title = NLS.bind(
+				UIText.MergeTargetSelectionDialog_TitleMergeWithBranch,
+				new FileRepository(clonedRepositoryFile).getBranch());
 
 		SWTBotShell mergeDialog = bot.shell(title);
 		// TODO do some merge here

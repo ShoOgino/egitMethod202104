@@ -5,7 +5,7 @@
 		SWTBotShell fetchDialog = openFetchDialog();
 		fetchDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
 		fetchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
-		
+
 		String uri = lookupRepository(childRepositoryFile).getConfig()
 				.getString(ConfigConstants.CONFIG_REMOTE_SECTION, "origin",
 						ConfigConstants.CONFIG_KEY_URL);
