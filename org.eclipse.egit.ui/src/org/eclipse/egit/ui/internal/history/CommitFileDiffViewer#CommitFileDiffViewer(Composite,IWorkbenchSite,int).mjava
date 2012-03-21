@@ -9,23 +9,9 @@
 	 */
 	public CommitFileDiffViewer(final Composite parent,
 			final IWorkbenchSite site, final int style) {
-		// since out parent is a SashForm, we can't add the alternate
-		// text to be displayed in case of no input directly to that
-		// parent; we create our own parent instead and set the
-		// StackLayout on it instead
-		super(new Composite(parent, SWT.NONE), style);
+		super(parent, style);
 		this.site = site;
 		final Table rawTable = getTable();
-		Composite main = rawTable.getParent();
-		stackLayout = new StackLayout();
-		main.setLayout(stackLayout);
-
-		// this is the text to be displayed if there is no input
-		noInputText = new StyledText(main, SWT.NONE);
-		// use the same font as in message viewer
-		noInputText.setFont(UIUtils
-				.getFont(UIPreferences.THEME_CommitMessageFont));
-		noInputText.setText(UIText.CommitFileDiffViewer_SelectOneCommitMessage);
 
 		rawTable.setLinesVisible(true);
 
@@ -80,9 +66,8 @@
 				if (s.isEmpty() || !(s instanceof IStructuredSelection))
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
-				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();) {
+				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();)
 					openFileInEditor(it.next());
-				}
 			}
 		};
 

@@ -1,7 +1,6 @@
 	private void format() {
 		if (commit == null) {
-			setDocument(new Document(
-					UIText.CommitMessageViewer_SelectOneCommitMessage));
+			setDocument(new Document("")); //$NON-NLS-1$
 			return;
 		}
 		if (formatJob != null && formatJob.getState() != Job.NONE)
