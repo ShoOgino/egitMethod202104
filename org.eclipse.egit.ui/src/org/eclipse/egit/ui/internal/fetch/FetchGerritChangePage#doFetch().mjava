@@ -6,6 +6,8 @@
 			final boolean doCheckout = checkout.getSelection();
 			final boolean doCreateTag = createTag.getSelection();
 			final boolean doCreateBranch = createBranch.getSelection();
+			final boolean doActivateAdditionalRefs = (checkout.getSelection() || dontCheckout
+					.getSelection()) && activateAdditionalRefs.getSelection();
 			final String textForTag = tagText.getText();
 			final String textForBranch = branchText.getText();
 			getWizard().getContainer().run(true, true,
@@ -73,6 +75,22 @@
 											.run(monitor);
 
 									monitor.worked(1);
+								}
+								if (doActivateAdditionalRefs) {
+									// do this in the UI thread as it results in a
+									// refresh() on the history page
+									getContainer().getShell().getDisplay()
+											.asyncExec(new Runnable() {
+
+												public void run() {
+													Activator
+															.getDefault()
+															.getPreferenceStore()
+															.setValue(
+																	UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS,
+																	true);
+												}
+											});
 								}
 								storeLastUsedUri(uri);
 							} catch (RuntimeException e) {

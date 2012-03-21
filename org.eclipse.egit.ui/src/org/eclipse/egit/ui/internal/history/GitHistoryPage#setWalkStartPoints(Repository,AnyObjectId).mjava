@@ -5,6 +5,9 @@
 				markStartAllRefs(Constants.R_HEADS);
 				markStartAllRefs(Constants.R_REMOTES);
 				markStartAllRefs(Constants.R_TAGS);
+			}
+			if (store
+					.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS)) {
 				markStartAdditionalRefs();
 			}
 			if (store

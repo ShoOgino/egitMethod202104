@@ -8,6 +8,11 @@
 		currentShowAllBranches = store
 			.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
 
+		boolean additionalRefsChange = currentShowAdditionalRefs != store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS);
+		currentShowAdditionalRefs = store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS);
+
 		boolean showNotesChanged = currentShowNotes != store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES);
 		currentShowNotes = store
@@ -22,6 +27,6 @@
 
 		return pathChanged
 			|| currentWalk == null || headChanged || repoChanged || allBranchesChanged
-			|| showNotesChanged || followRenamesChanged;
+			|| additionalRefsChange || showNotesChanged || followRenamesChanged;
 	}
 
