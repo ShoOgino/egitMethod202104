@@ -9,7 +9,7 @@
 	 */
 	protected Repository[] getRepositories(ExecutionEvent event)
 			throws ExecutionException {
-		IProject[] selectedProjects = getSelectedProjects(event);
+		IProject[] selectedProjects = getProjectsForSelectedResources(event);
 		if (selectedProjects.length > 0)
 			return getRepositoriesFor(selectedProjects);
 		IStructuredSelection selection = getSelection(event);
