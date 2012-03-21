@@ -1,0 +1,13 @@
+	/**
+	 * Create an operation to drop the stashed commit with the given index
+	 *
+	 * @param repo
+	 * @param index
+	 */
+	public StashDropOperation(final Repository repo, final int index) {
+		if (index < 0)
+			throw new IllegalArgumentException();
+		this.index = index;
+		this.repo = repo;
+	}
+
