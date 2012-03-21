@@ -8,6 +8,11 @@
 			CommonUtils.runCommand(ResetCommand.ID, new StructuredSelection(
 					new RepositoryNode(null, repository)));
 			break;
+		case IDialogConstants.SKIP_ID:
+			CommonUtils.runCommand(StashCreateCommand.ID,
+					new StructuredSelection(
+							new RepositoryNode(null, repository)));
+			break;
 		}
 		super.buttonPressed(buttonId);
 	}
