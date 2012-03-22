@@ -2,7 +2,7 @@
 			SWTWorkbenchBot workbenchBot) {
 		SWTBotTree projectExplorerTree = workbenchBot
 				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
-		util.getProjectItem(projectExplorerTree, projectName).select();
+		util.getProjectItems(projectExplorerTree, projectName)[0].select();
 		String menuString = util.getPluginLocalizedValue("CommitAction_label");
 		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
 				menuString);

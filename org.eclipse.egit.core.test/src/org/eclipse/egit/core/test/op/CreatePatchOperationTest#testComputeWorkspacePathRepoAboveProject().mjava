@@ -1,0 +1,20 @@
+	@Test
+	public void testComputeWorkspacePathRepoAboveProject() throws Exception {
+		testRepository.disconnect(project.getProject());
+
+		// new setup
+		project = new TestProject(true, "repo/bundles/Project-1", true, null);
+		File repo = new File(project.getProject().getLocationURI().getPath())
+				.getParentFile().getParentFile();
+		gitDir = new File(repo, Constants.DOT_GIT);
+		testRepository = new TestRepository(gitDir);
+		testRepository.connect(project.getProject());
+
+		IPath oldPath = CreatePatchOperation.computeWorkspacePath(new Path(
+				"bundles/Project-1/test-file"), project.getProject());
+		IPath newPath = CreatePatchOperation.computeWorkspacePath(new Path(
+				"bundles/Project-1/test-file"), project.getProject());
+		assertPatch("test-file", oldPath.toString());
+		assertPatch("test-file", newPath.toString());
+	}
+

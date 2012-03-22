@@ -1,0 +1,24 @@
+	@Test
+	public void testWorkspacePatchForWorkingDir() throws Exception {
+		// setup workspace
+		testRepository.addToIndex((IFile) project.getProject().findMember(".classpath"));
+		testRepository.addToIndex((IFile) project.getProject().findMember(".project"));
+		testRepository.commit("commit all");
+		testRepository.appendFileContent(file, "another line");
+		File newFile = testRepository.createFile(project.getProject(), "new-file");
+		testRepository.appendFileContent(newFile, "new content");
+		File deletedFile = testRepository.createFile(project.getProject(), "deleted-file");
+		commit = testRepository.addAndCommit(project.getProject(), deletedFile,
+				"whatever");
+		FileUtils.delete(deletedFile);
+
+		// create patch
+		CreatePatchOperation operation = new CreatePatchOperation(
+				testRepository.getRepository(), null);
+
+		operation.setHeaderFormat(DiffHeaderFormat.WORKSPACE);
+		operation.execute(new NullProgressMonitor());
+
+		assertPatch(SIMPLE_WORKSPACE_PATCH_CONTENT, operation.getPatchContent());
+	}
+

@@ -1,0 +1,10 @@
+	@Test
+	public void testComputeWorkspacePath() throws Exception {
+		IPath oldPath = CreatePatchOperation.computeWorkspacePath(new Path(
+				"test-file"), project.getProject());
+		IPath newPath = CreatePatchOperation.computeWorkspacePath(new Path(
+				"test-file"), project.getProject());
+		assertPatch("test-file", oldPath.toString());
+		assertPatch("test-file", newPath.toString());
+	}
+

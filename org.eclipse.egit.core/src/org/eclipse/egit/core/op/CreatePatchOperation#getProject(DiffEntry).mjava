@@ -1,0 +1,6 @@
+	private IProject getProject(final DiffEntry ent) {
+		Side side = ent.getChangeType() == ChangeType.ADD ? Side.NEW : Side.OLD;
+		String path = ent.getPath(side);
+		return getProject(path);
+	}
+

@@ -5,8 +5,8 @@
 				return name.equals(".project");
 			}
 		};
-		for (File file : myRepository.getWorkTree().listFiles()) {
-			if (file.isDirectory()) {
+		for (File file : myRepository.getWorkTree().listFiles())
+			if (file.isDirectory())
 				if (file.list(projectFilter).length > 0) {
 					IProjectDescription desc = ResourcesPlugin.getWorkspace()
 							.newProjectDescription(file.getName());
@@ -19,7 +19,5 @@
 					new ConnectProviderOperation(prj, myRepository
 							.getDirectory()).execute(null);
 				}
-			}
-		}
 	}
 
