@@ -38,10 +38,9 @@
 			commitMessage.getTextWidget().setText(commit.getFullMessage());
 			commitId.setText(commit.name());
 			dc = repo.lockDirCache();
-			for (int i = 0; i < dc.getEntryCount(); i++) {
+			for (int i = 0; i < dc.getEntryCount(); i++)
 				if (dc.getEntry(i).getStage() > 0)
 					conflictPaths.add(dc.getEntry(i).getPathString());
-			}
 			if (conflictPaths.size() > 0) {
 				message = NLS.bind(UIText.RebaseResultDialog_Conflicting,
 						Integer.valueOf(conflictPaths.size()));
@@ -127,12 +126,11 @@
 		startMergeButton.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				if (startMergeButton.getSelection()) {
+				if (startMergeButton.getSelection())
 					nextSteps
 							.getTextWidget()
 							.setText(
 									UIText.RebaseResultDialog_NextStepsAfterResolveConflicts);
-				}
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {

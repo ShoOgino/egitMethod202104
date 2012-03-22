@@ -1,0 +1,15 @@
+	/**
+	 * @param shell
+	 * @param repository
+	 * @param conflicts
+	 */
+	public CheckoutConflictDialog(Shell shell, Repository repository, List<String> conflicts) {
+		super(shell, UIText.BranchResultDialog_CheckoutConflictsTitle, INFO,
+				UIText.CheckoutConflictDialog_conflictMessage,
+				MessageDialog.INFORMATION,
+				new String[] { IDialogConstants.OK_LABEL }, 0);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.repository = repository;
+		this.conflicts = conflicts;
+	}
+
