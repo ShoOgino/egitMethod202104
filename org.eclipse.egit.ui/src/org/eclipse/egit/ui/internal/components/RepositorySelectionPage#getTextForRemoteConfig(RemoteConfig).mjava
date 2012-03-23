@@ -3,14 +3,13 @@
 		sb.append(": "); //$NON-NLS-1$
 		boolean first = true;
 		List<URIish> uris;
-		if (sourceSelection) {
+		if (sourceSelection)
 			uris = rc.getURIs();
-		} else {
+		else {
 			uris = rc.getPushURIs();
 			// if no push URIs are defined, use fetch URIs instead
-			if (uris.isEmpty()) {
+			if (uris.isEmpty())
 				uris = rc.getURIs();
-			}
 		}
 
 		for (final URIish u : uris) {
