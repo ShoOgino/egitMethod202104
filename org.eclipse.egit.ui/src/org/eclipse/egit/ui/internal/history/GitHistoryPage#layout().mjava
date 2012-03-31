@@ -14,9 +14,7 @@
 			revInfoSplit.setMaximizedControl(commentViewer.getControl());
 		} else if (!showComment && showFiles) {
 			graphDetailSplit.setMaximizedControl(null);
-			// the parent of the control!
-			revInfoSplit.setMaximizedControl(fileViewer.getControl()
-					.getParent());
+			revInfoSplit.setMaximizedControl(fileViewer.getControl());
 		} else if (!showComment && !showFiles)
 			graphDetailSplit.setMaximizedControl(graph.getControl());
 		if (showFindToolbar)
