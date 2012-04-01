@@ -4,32 +4,37 @@
 		String name = ref.getName();
 		boolean tag = false;
 		boolean branch = false;
+		RGB labelOuter;
+		RGB labelInner;
 		if (name.startsWith(Constants.R_HEADS)) {
 			branch = true;
-			g.setBackground(sys_green);
+			labelOuter = OUTER_HEAD;
+			labelInner = INNER_HEAD;
 			txt = name.substring(Constants.R_HEADS.length());
-		} else if (name.startsWith(Constants.R_REMOTES)){
+		} else if (name.startsWith(Constants.R_REMOTES)) {
 			branch = true;
-			g.setBackground(sys_gray);
+			labelOuter = OUTER_REMOTE;
+			labelInner = INNER_REMOTE;
 			txt = name.substring(Constants.R_REMOTES.length());
-		} else if (name.startsWith(Constants.R_TAGS)){
+		} else if (name.startsWith(Constants.R_TAGS)) {
 			tag = true;
-			g.setBackground(sys_yellow);
+			if (ref.getPeeledObjectId() != null) {
+				labelOuter = OUTER_ANNOTATED;
+				labelInner = INNER_ANNOTATED;
+			} else {
+				labelOuter = OUTER_TAG;
+				labelInner = INNER_TAG;
+			}
+
 			txt = name.substring(Constants.R_TAGS.length());
 		} else {
-			// Whatever this would be
-			g.setBackground(sys_white);
+			labelOuter = OUTER_OTHER;
+			labelInner = INNER_OTHER;
+
 			if (name.startsWith(Constants.R_REFS))
 				txt = name.substring(Constants.R_REFS.length());
 			else
 				txt = name; // HEAD and such
-		}
-
-		// Make peeled objects, i.e. via annotated tags come out in a paler color
-		Color peeledColor = null;
-		if (ref.getPeeledObjectId() == null || !ref.getPeeledObjectId().equals(ref.getObjectId())) {
-			peeledColor = new Color(g.getDevice(), ColorUtil.blend(g.getBackground().getRGB(), sys_white.getRGB()));
-			g.setBackground(peeledColor);
 		}
 
 		int maxLength;
@@ -51,32 +56,33 @@
 			g.setFont(CommitGraphTable.highlightFont());
 
 		Point textsz = g.stringExtent(txt);
-		int arc = textsz.y/2;
+		int arc = textsz.y / 2;
 		final int texty = (y * 2 - textsz.y) / 2;
 
 		// Draw backgrounds
-		g.fillRoundRectangle(cellX + x + 1, cellY + texty -1, textsz.x + 3, textsz.y + 1, arc, arc);
+		g.setLineWidth(1);
+
+		g.setBackground(sys_white);
+		g.fillRoundRectangle(cellX + x + 1, cellY + texty, textsz.x + 6,
+				textsz.y + 1, arc, arc);
+
+		g.setBackground(resources.createColor(labelInner));
+		g.fillRoundRectangle(cellX + x + 2, cellY + texty + 1, textsz.x + 4,
+				textsz.y - 2, arc - 1, arc - 1);
+
+		g.setForeground(resources.createColor(labelOuter));
+		g.drawRoundRectangle(cellX + x, cellY + texty - 1, textsz.x + 7,
+				textsz.y + 1, arc, arc);
+
 		g.setForeground(sys_black);
 
 		// Draw text
-		g.drawString(txt,cellX + x + 2, cellY + texty, true);
+		g.drawString(txt, cellX + x + 4, cellY + texty, true);
 
 		if (isHead)
 			g.setFont(oldFont);
-		g.setLineWidth(2);
 
-		// Add a two color shaded border, blend with whatever background there already is
-		g.setAlpha(128);
-		g.setForeground(sys_gray);
-		g.drawRoundRectangle(cellX + x, cellY + texty -2, textsz.x + 5, textsz.y + 3, arc, arc);
-		g.setLineWidth(2);
-		g.setForeground(sys_black);
-		g.drawRoundRectangle(cellX + x + 1, cellY + texty -1, textsz.x + 3, textsz.y + 1, arc, arc);
-		g.setAlpha(255);
-
-		if (peeledColor != null)
-			peeledColor.dispose();
 		labelCoordinates.put(name, new Point(x, x + textsz.x));
-		return 8 + textsz.x;
+		return 10 + textsz.x;
 	}
 
