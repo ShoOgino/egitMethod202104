@@ -1,6 +1,12 @@
 	private GitModelCacheFile createCacheFile(ObjectId repoId,
 			ObjectId cacheId, IPath location) throws Exception {
+		Change change = mock(Change.class);
+		when(change.getObjectId()).thenReturn(
+				AbbreviatedObjectId.fromObjectId(cacheId));
+		when(change.getRemoteObjectId()).thenReturn(
+				AbbreviatedObjectId.fromObjectId(repoId));
+
 		return new GitModelCacheFile(createModelCommit(),
-				getCommit(leftRepoFile, HEAD), repoId, cacheId, location);
+				lookupRepository(leftRepoFile), change, location);
 	}
 

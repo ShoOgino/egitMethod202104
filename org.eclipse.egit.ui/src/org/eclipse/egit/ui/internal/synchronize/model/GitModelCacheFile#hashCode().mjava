@@ -1,6 +1,5 @@
 	@Override
 	public int hashCode() {
-		return baseId.hashCode() ^ remoteId.hashCode()
-				^ getLocation().hashCode();
+		return super.hashCode() + 31;
 	}
 

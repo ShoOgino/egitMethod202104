@@ -1,3 +1,8 @@
+	@Ignore
+	// this test case relies on
+	// org.eclipse.egit.core.synchronize.GitCommitsModelCache.Change#equals()
+	// implementation. Unfortunately in mockito we can't execute real
+	// implementation of equals() method, therefore this test will fail
 	@Test public void shouldReturnEqualForSameData() throws Exception {
 		// given
 		GitModelBlob left = createGitModelBlob(zeroId(), zeroId(),

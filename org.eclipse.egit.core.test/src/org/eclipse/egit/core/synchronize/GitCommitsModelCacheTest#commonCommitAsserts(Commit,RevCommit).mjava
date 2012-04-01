@@ -1,8 +1,11 @@
 	private void commonCommitAsserts(Commit commit, RevCommit actualCommit) {
 		assertThat(commit.getShortMessage(), is(actualCommit.getShortMessage()));
 		assertThat(commit.getId().toObjectId(), is(actualCommit.getId()));
-		assertThat(commit.getAuthorName(), is(actualCommit.getAuthorIdent().getName()));
-		assertThat(commit.getCommitterName(), is(actualCommit.getCommitterIdent().getName()));
-		assertThat(commit.getCommitDate(), is(actualCommit.getAuthorIdent().getWhen()));
+		assertThat(commit.getAuthorName(), is(actualCommit.getAuthorIdent()
+				.getName()));
+		assertThat(commit.getCommitterName(), is(actualCommit
+				.getCommitterIdent().getName()));
+		assertThat(commit.getCommitDate(), is(actualCommit.getAuthorIdent()
+				.getWhen()));
 	}
 

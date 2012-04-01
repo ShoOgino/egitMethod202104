@@ -9,7 +9,9 @@
 	 */
 	protected GitCompareInput getCompareInput(ComparisonDataSource baseData,
 			ComparisonDataSource remoteData, ComparisonDataSource ancestorData) {
-		return new GitCompareInput(getRepository(), ancestorData, remoteData,
-				baseData, gitPath);
+		String gitPath = Repository.stripWorkDir(repo.getWorkTree(), path.toFile());
+
+		return new GitCompareInput(repo, ancestorData, baseData, remoteData,
+				gitPath);
 	}
 

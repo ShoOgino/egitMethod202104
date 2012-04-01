@@ -2,9 +2,9 @@
 			throws Exception {
 		// given
 		GitModelCommit left = new GitModelCommit(createModelRepository(),
-				getCommit(leftRepoFile, HEAD), LEFT);
-		GitModelTree right = new GitModelTree(left,
-				getCommit(leftRepoFile, HEAD), null, null, null, null, null);
+				lookupRepository(leftRepoFile), getCommit(leftRepoFile, HEAD),
+				null);
+		GitModelTree right = mock(GitModelTree.class);
 
 		// when
 		boolean actual = left.equals(right);

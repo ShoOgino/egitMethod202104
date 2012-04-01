@@ -8,9 +8,8 @@
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		SWTBotTreeItem commitTree = waitForNodeWithText(syncViewTree,
-				GitModelWorkingTree_workingTree);
-		assertEquals(1, syncViewTree.getAllItems().length);
+		SWTBotTreeItem commitTree = expandWorkingTreeNode(syncViewTree);
+		assertEquals(2, syncViewTree.getAllItems().length);
 		SWTBotTreeItem projectTree = waitForNodeWithText(commitTree,
 				EMPTY_PROJECT);
 		assertEquals(2, projectTree.getItems().length);

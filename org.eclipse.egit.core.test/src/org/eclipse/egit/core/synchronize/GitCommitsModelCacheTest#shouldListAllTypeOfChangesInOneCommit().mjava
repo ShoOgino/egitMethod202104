@@ -12,25 +12,27 @@
 		writeTrashFile(db, "c.txt", "new c content");
 		git.add().addFilepattern("b.txt").call();
 		RevCommit c2 = commit(git, "second commit");
-
 		// when
-		List<Commit> leftResult = GitCommitsModelCache.build(db, c1, c2);
-		List<Commit> rightResult = GitCommitsModelCache.build(db, c2, c1);
-
+		List<Commit> leftResult = GitCommitsModelCache.build(db, c1, c2, null);
+		List<Commit> rightResult = GitCommitsModelCache.build(db, c2, c1, null);
 		// then
-
-		// left assertions
+		// left asserts
 		assertThat(leftResult, notNullValue());
 		assertCommit(leftResult.get(0), c2, 3);
-		assertFileAddition(c2, c1, leftResult.get(0).getChildren().get("a.txt"), "a.txt", LEFT | ADDITION);
-		assertFileDeletion(c2, c1, leftResult.get(0).getChildren().get("b.txt"), "b.txt", LEFT | DELETION);
-		assertFileChange(c2, c1, leftResult.get(0).getChildren().get("c.txt"), "c.txt", LEFT | CHANGE);
-
-		// right assertions
+		assertFileAddition(c1, c2,
+				leftResult.get(0).getChildren().get("a.txt"), "a.txt", LEFT);
+		assertFileDeletion(c1, c2,
+				leftResult.get(0).getChildren().get("b.txt"), "b.txt", LEFT);
+		assertFileChange(c1, c2, leftResult.get(0).getChildren().get("c.txt"),
+				"c.txt", LEFT);
+		// right asserts
 		assertThat(rightResult, notNullValue());
 		assertCommit(rightResult.get(0), c2, 3);
-		assertFileDeletion(c2, c1, rightResult.get(0).getChildren().get("a.txt"), "a.txt", RIGHT | DELETION);
-		assertFileAddition(c2, c1, rightResult.get(0).getChildren().get("b.txt"), "b.txt", RIGHT | ADDITION);
-		assertFileChange(c2, c1, rightResult.get(0).getChildren().get("c.txt"), "c.txt", RIGHT | CHANGE);
+		assertFileDeletion(c2, c1, rightResult.get(0).getChildren()
+				.get("a.txt"), "a.txt", RIGHT);
+		assertFileAddition(c2, c1, rightResult.get(0).getChildren()
+				.get("b.txt"), "b.txt", RIGHT);
+		assertFileChange(c2, c1, rightResult.get(0).getChildren().get("c.txt"),
+				"c.txt", RIGHT);
 	}
 

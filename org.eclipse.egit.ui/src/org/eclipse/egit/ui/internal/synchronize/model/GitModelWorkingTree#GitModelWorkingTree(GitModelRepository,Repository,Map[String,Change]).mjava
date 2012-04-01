@@ -1,0 +1,24 @@
+	/**
+	 * @param parent
+	 *            parent object
+	 * @param repo
+	 *            repository associated with this object
+	 * @param cache
+	 *            list of cached changes
+	 */
+	public GitModelWorkingTree(GitModelRepository parent, Repository repo,
+			Map<String, Change> cache) {
+		super(parent, repo, cache, new FileModelFactory() {
+			public GitModelBlob createFileModel(
+					GitModelObjectContainer objParent, Repository nestedRepo,
+					Change change, IPath path) {
+				return new GitModelWorkingFile(objParent, nestedRepo, change,
+						path);
+			}
+
+			public boolean isWorkingTree() {
+				return true;
+			}
+		});
+	}
+

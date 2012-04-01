@@ -1,0 +1,20 @@
+	/**
+	 * @param parent
+	 *            parent object
+	 * @param repo
+	 *            repository associated with this object
+	 * @param cache
+	 *            list of changes associated with this object
+	 * @param fileFactory
+	 *            leaf instance factory
+	 */
+	protected GitModelCache(GitModelRepository parent, Repository repo, Map<String, Change> cache,
+			FileModelFactory fileFactory) {
+		super(parent);
+		this.repo = repo;
+		this.cache = cache;
+		this.fileFactory = fileFactory;
+		cacheTreeMap = new HashMap<String, GitModelCacheTree>();
+		location = new Path(repo.getWorkTree().toString());
+	}
+

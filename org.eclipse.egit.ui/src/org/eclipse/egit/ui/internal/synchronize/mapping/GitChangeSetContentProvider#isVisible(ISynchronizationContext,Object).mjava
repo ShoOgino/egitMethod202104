@@ -1,6 +1,8 @@
 	protected boolean isVisible(ISynchronizationContext context, Object object) {
-		if (object instanceof GitModelCommit) {
-			int kind = ((GitModelCommit) object).getKind();
+		if (object instanceof GitModelRepository
+				|| object instanceof GitModelCommit
+				|| object instanceof GitModelCache) {
+			int kind = ((GitModelObjectContainer) object).getKind();
 			switch (getConfiguration().getMode()) {
 			case ISynchronizePageConfiguration.OUTGOING_MODE:
 				return (kind & Differencer.RIGHT) != 0;

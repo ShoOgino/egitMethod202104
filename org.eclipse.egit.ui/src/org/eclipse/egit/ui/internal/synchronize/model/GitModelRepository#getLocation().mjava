@@ -1,7 +1,7 @@
 	@Override
 	public IPath getLocation() {
 		if (location == null)
-			location = new Path(repo.getWorkTree().toString());
+			location = new Path(gsd.getRepository().getWorkTree().toString());
 
 		return location;
 	}

@@ -1,9 +1,8 @@
 	@Test public void shouldReturnNotEqualWhenComparingCacheTreeAndTree()
 			throws Exception {
 		// given
-		GitModelCacheTree left = crateCacheTree(zeroId(), getTreeLocation());
-		GitModelTree right = new GitModelTree(createModelCommit(), getCommit(
-				leftRepoFile, HEAD), null, null, null, null, getTreeLocation());
+		GitModelCacheTree left = crateCacheTree(getTreeLocation());
+		GitModelTree right = mock(GitModelTree.class);
 
 		// when
 		boolean actual = left.equals(right);

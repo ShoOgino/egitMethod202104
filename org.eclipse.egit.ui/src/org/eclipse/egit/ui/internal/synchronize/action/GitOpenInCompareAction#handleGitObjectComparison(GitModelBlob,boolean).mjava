@@ -1,7 +1,7 @@
 	private void handleGitObjectComparison(GitModelBlob obj, boolean reuseEditor) {
 		ITypedElement left;
 		ITypedElement right;
-		IFile file = (IFile) obj.getResource();
+		IFile file = getFileForBlob(obj);
 		if (obj instanceof GitModelWorkingFile) {
 			if (file.getLocation() == null)
 				left = new LocalNonWorkspaceTypedElement(file.getFullPath().toString());
@@ -11,6 +11,8 @@
 		} else if (obj instanceof GitModelCacheFile) {
 			left = getCachedFileElement(file);
 			right = getHeadFileElement(obj);
+			if (right == null)
+				return;
 		} else {
 			oldAction.run();
 			return;

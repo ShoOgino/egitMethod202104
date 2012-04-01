@@ -1,60 +1,11 @@
 	private List<GitModelObjectContainer> getListOfCommit() {
+		Repository repo = gsd.getRepository();
+		Set<IProject> projectsSet = gsd.getProjects();
+		IProject[] projects = projectsSet.toArray(new IProject[projectsSet.size()]);
 		List<GitModelObjectContainer> result = new ArrayList<GitModelObjectContainer>();
 
-		RevWalk rw = new RevWalk(repo);
-		rw.setRetainBody(true);
-		if (pathFilter != null)
-			rw.setTreeFilter(pathFilter);
-
-		try {
-			RevCommit srcCommit = rw.parseCommit(srcRev);
-
-			if (includeLocal) {
-				GitModelCache gitCache = new GitModelCache(this, srcCommit,
-						pathFilter);
-				int gitCacheLen = gitCache.getChildren().length;
-
-				GitModelWorkingTree gitWorkingTree = getLocaWorkingTreeChanges();
-				int gitWorkingTreeLen = gitWorkingTree != null ? gitWorkingTree
-						.getChildren().length : 0;
-
-				if (gitCacheLen > 0 || gitWorkingTreeLen > 0) {
-					result.add(gitCache);
-					result.add(gitWorkingTree);
-				}
-			}
-
-			if (srcRev.equals(dstRev))
-				return result;
-
-			RevFlag localFlag = rw.newFlag("local"); //$NON-NLS-1$
-			RevFlag remoteFlag = rw.newFlag("remote"); //$NON-NLS-1$
-			RevFlagSet allFlags = new RevFlagSet();
-			allFlags.add(localFlag);
-			allFlags.add(remoteFlag);
-			rw.carry(allFlags);
-
-			srcCommit.add(localFlag);
-			rw.markStart(srcCommit);
-
-			RevCommit dstCommit = rw.parseCommit(dstRev);
-			dstCommit.add(remoteFlag);
-			rw.markStart(dstCommit);
-
-			for (RevCommit nextCommit : rw) {
-				if (nextCommit.hasAll(allFlags))
-					break;
-
-				if (nextCommit.has(localFlag))
-					result.add(new GitModelCommit(this, nextCommit, RIGHT,
-							pathFilter));
-				else if (nextCommit.has(remoteFlag))
-					result.add(new GitModelCommit(this, nextCommit, LEFT,
-							pathFilter));
-			}
-		} catch (IOException e) {
-			Activator.logError(e.getMessage(), e);
-		}
+		for (Commit commit : commitCache)
+			result.add(new GitModelCommit(this, repo, commit, projects));
 
 		return result;
 	}

@@ -17,8 +17,7 @@
 
 		// then
 		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		SWTBotTreeItem workingTree = syncViewTree
-				.expandNode(UIText.GitModelWorkingTree_workingTree);
+		SWTBotTreeItem workingTree = expandWorkingTreeNode(syncViewTree);
 		assertEquals(2, syncViewTree.getAllItems().length);
 		workingTree.expand().getNode(name).doubleClick();
 

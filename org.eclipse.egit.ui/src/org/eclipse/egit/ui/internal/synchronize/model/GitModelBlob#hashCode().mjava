@@ -1,9 +1,14 @@
 	@Override
 	public int hashCode() {
-		int result = baseId.hashCode() ^ location.hashCode();
-		if (remoteId != null)
-			result ^= remoteId.hashCode();
+		int baseHash = 1;
+		if (change != null)
+			baseHash = change.getObjectId() != null ? change.getObjectId()
+				.hashCode() : 31;
+		int remoteHash = 11;
+		if (change != null)
+			remoteHash = change.getRemoteObjectId() != null ? change
+				.getRemoteObjectId().hashCode() : 41;
 
-		return result;
+		return baseHash ^ remoteHash ^ path.hashCode();
 	}
 

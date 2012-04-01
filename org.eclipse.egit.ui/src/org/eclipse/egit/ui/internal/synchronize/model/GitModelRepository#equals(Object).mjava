@@ -4,8 +4,9 @@
 			return true;
 
 		if (obj instanceof GitModelRepository) {
-			File objWorkTree = ((GitModelRepository) obj).repo.getWorkTree();
-			return objWorkTree.equals(repo.getWorkTree());
+			File objWorkTree = ((GitModelRepository) obj).gsd.getRepository()
+					.getWorkTree();
+			return objWorkTree.equals(gsd.getRepository().getWorkTree());
 		}
 
 		return false;

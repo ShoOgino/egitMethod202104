@@ -1,5 +1,5 @@
 	public GitTreeTraversal(GitModelTree modelTree) {
-		this(modelTree.getRepository(), modelTree.getBaseId(), modelTree
-				.getRemoteId(), modelTree.getLocation());
+		super(getResourcesImpl(modelTree.getChildren()), IResource.DEPTH_INFINITE,
+				IResource.NONE);
 	}
 

@@ -1,0 +1,8 @@
+	private GitModelObject extractFromCache(Change change, String path) {
+		if (path.contains("/")) //$NON-NLS-1$
+			return handleCacheTree(change, path);
+
+		return fileFactory.createFileModel(this, repo, change,
+				location.append(path));
+	}
+

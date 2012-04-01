@@ -1,18 +1,23 @@
 	/**
-	 * @param data
+	 * @param gsd
 	 *            synchronization data
 	 * @throws IOException
-	 * @throws MissingObjectException
 	 */
-	public GitModelRepository(GitSynchronizeData data)
-			throws MissingObjectException, IOException {
+	public GitModelRepository(GitSynchronizeData gsd) throws IOException {
 		super(null);
-		repo = data.getRepository();
-		includeLocal = data.shouldIncludeLocal();
-		projects = data.getProjects();
-		pathFilter = data.getPathFilter();
+		this.gsd = gsd;
 
-		srcRev = data.getSrcRevCommit();
-		dstRev = data.getDstRevCommit();
+		Repository repo = gsd.getRepository();
+		stagedChanges = StagedChangeCache.build(repo);
+		workingChanges = WorkingTreeChangeCache.build(repo);
+
+		RevCommit srcRevCommit = gsd.getSrcRevCommit();
+		RevCommit dstRevCommit = gsd.getDstRevCommit();
+		TreeFilter pathFilter = gsd.getPathFilter();
+		if (srcRevCommit != null && dstRevCommit != null)
+			commitCache = GitCommitsModelCache.build(repo, srcRevCommit,
+					dstRevCommit, pathFilter);
+		else
+			commitCache = null;
 	}
 

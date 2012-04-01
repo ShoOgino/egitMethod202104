@@ -1,5 +1,5 @@
 	@Override
 	public IPath getLocation() {
-		return new Path(getRepository().getWorkTree().toString());
+		return new Path(repo.getWorkTree().getAbsolutePath());
 	}
 

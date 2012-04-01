@@ -10,7 +10,7 @@
 			return false;
 
 		GitModelCacheTree objTree = (GitModelCacheTree) obj;
-		return objTree.getLocation().equals(getLocation())
-					&& objTree.getBaseId().equals(getBaseId());
+		return path.equals(objTree.path)
+				&& factory.isWorkingTree() == objTree.factory.isWorkingTree();
 	}
 

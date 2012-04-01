@@ -6,8 +6,7 @@
 		if (obj instanceof GitModelCache
 				&& !(obj instanceof GitModelWorkingTree)) {
 			GitModelCache left = (GitModelCache) obj;
-			return left.baseCommit.equals(baseCommit)
-					&& left.getParent().equals(getParent());
+			return left.getParent().equals(getParent());
 		}
 
 		return false;

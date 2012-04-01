@@ -1,7 +1,11 @@
-	protected RevCommit getCommit(File repoDir, String revStr)
-			throws Exception {
-		FileRepository repo = lookupRepository(repoDir);
-		return new RevWalk(repo).parseCommit(repo
-				.resolve(revStr));
+	protected Commit getCommit(File repoFile, String rev) throws Exception {
+		Repository repo = lookupRepository(repoFile);
+		ObjectId revId = repo.resolve(rev);
+
+		Commit commit = mock(Commit.class);
+		Mockito.when(commit.getId()).thenReturn(
+				AbbreviatedObjectId.fromObjectId(revId));
+
+		return commit;
 	}
 

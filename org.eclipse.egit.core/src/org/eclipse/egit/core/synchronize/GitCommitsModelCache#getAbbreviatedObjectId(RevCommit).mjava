@@ -1,0 +1,7 @@
+	private static AbbreviatedObjectId getAbbreviatedObjectId(RevCommit commit) {
+		if (commit != null)
+			return AbbreviatedObjectId.fromObjectId(commit);
+		else
+			return ZERO_ID;
+	}
+

@@ -5,9 +5,9 @@
 		GitModelRepository rightGsd = new GitModelRepository(
 				getGSD(lookupRepository(localRightRepoFile)));
 		GitModelCache left = new GitModelCache(createModelRepository(),
-				getCommit(leftRepoFile, HEAD));
+				lookupRepository(leftRepoFile), null);
 		GitModelCache right = new GitModelCache(rightGsd,
-				getCommit(localRightRepoFile, HEAD));
+				lookupRepository(leftRepoFile), null);
 
 		// when
 		boolean actual = left.equals(right);

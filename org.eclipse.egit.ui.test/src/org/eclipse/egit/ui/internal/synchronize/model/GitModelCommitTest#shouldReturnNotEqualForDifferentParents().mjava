@@ -6,9 +6,11 @@
 		GitModelRepository rightGsd = new GitModelRepository(
 				getGSD(lookupRepository(localRightRepoFile)));
 		GitModelCommit left = new GitModelCommit(createModelRepository(),
-				getCommit(leftRepoFile, HEAD), LEFT);
+				lookupRepository(leftRepoFile), getCommit(leftRepoFile, HEAD),
+				null);
 		GitModelCommit right = new GitModelCommit(rightGsd,
-				getCommit(localRightRepoFile, HEAD), LEFT);
+				lookupRepository(leftRepoFile), getCommit(localRightRepoFile,
+						HEAD), null);
 
 		// when
 		boolean actual = left.equals(right);

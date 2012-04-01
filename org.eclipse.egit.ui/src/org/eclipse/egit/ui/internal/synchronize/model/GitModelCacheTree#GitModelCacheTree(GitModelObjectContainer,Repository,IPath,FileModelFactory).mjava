@@ -1,0 +1,17 @@
+	/**
+	 * @param parent
+	 *            parent object
+	 * @param repo
+	 *            repository associated with this object parent object
+	 * @param fullPath
+	 *            absolute path of object
+	 * @param factory
+	 */
+	public GitModelCacheTree(GitModelObjectContainer parent, Repository repo,
+			IPath fullPath, FileModelFactory factory) {
+		super(parent, fullPath, RIGHT | CHANGE);
+		this.repo = repo;
+		this.factory = factory;
+		cacheTreeMap = new HashMap<String, GitModelObject>();
+	}
+

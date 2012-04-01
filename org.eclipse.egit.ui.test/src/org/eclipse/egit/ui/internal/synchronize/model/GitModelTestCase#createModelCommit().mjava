@@ -1,6 +1,6 @@
 	protected GitModelCommit createModelCommit() throws Exception {
-		return new GitModelCommit(createModelRepository(), getCommit(
-				leftRepoFile,
-				HEAD), LEFT);
+		return new GitModelCommit(createModelRepository(),
+				lookupRepository(leftRepoFile), getCommit(leftRepoFile, HEAD),
+				null);
 	}
 

@@ -1,5 +1,6 @@
 	@Test
-	public void shouldListChangesInsideSeparateFoldersInCommit() throws Exception {
+	public void shouldListChangesInsideSeparateFoldersInCommit()
+			throws Exception {
 		// given
 		Git git = new Git(db);
 		writeTrashFile(db, "folder/a.txt", "content");
@@ -10,32 +11,32 @@
 		writeTrashFile(db, "folder/a.txt", "new content");
 		writeTrashFile(db, "folder2/b.txt", "new b content");
 		RevCommit c2 = commit(git, "second commit");
-
-
 		// when
-		List<Commit> leftResult = GitCommitsModelCache.build(db, c1, c2);
-		List<Commit> rightResult = GitCommitsModelCache.build(db, c2, c1);
-
+		List<Commit> leftResult = GitCommitsModelCache.build(db, c1, c2, null);
+		List<Commit> rightResult = GitCommitsModelCache.build(db, c2, c1, null);
 		// then
 		// left assertions
 		assertThat(leftResult, notNullValue());
 		assertThat(Integer.valueOf(leftResult.size()), is(Integer.valueOf(1)));
 		assertThat(leftResult.get(0).getShortMessage(), is("second commit"));
-
 		assertThat(leftResult.get(0).getChildren(), notNullValue());
 		assertThat(leftResult.get(0).getChildren().size(), is(2));
-
-		assertFileChange(c2, c1, leftResult.get(0).getChildren().get("folder/a.txt"), "a.txt", LEFT | CHANGE);
-		assertFileChange(c2, c1, leftResult.get(0).getChildren().get("folder2/b.txt"), "b.txt",LEFT | CHANGE);
-
-		// right assertions
+		assertFileChange(c1, c2,
+				leftResult.get(0).getChildren().get("folder/a.txt"), "a.txt",
+				LEFT);
+		assertFileChange(c1, c2,
+				leftResult.get(0).getChildren().get("folder2/b.txt"), "b.txt",
+				LEFT);
+		// right asserts
 		assertThat(rightResult, notNullValue());
 		assertThat(Integer.valueOf(rightResult.size()), is(Integer.valueOf(1)));
 		assertThat(rightResult.get(0).getShortMessage(), is("second commit"));
-
 		assertThat(rightResult.get(0).getChildren().size(), is(2));
-
-		assertFileChange(c2, c1, rightResult.get(0).getChildren().get("folder/a.txt"), "a.txt", RIGHT | CHANGE);
-		assertFileChange(c2, c1, rightResult.get(0).getChildren().get("folder2/b.txt"), "b.txt",RIGHT | CHANGE);
+		assertFileChange(c2, c1,
+				rightResult.get(0).getChildren().get("folder/a.txt"), "a.txt",
+				RIGHT);
+		assertFileChange(c2, c1,
+				rightResult.get(0).getChildren().get("folder2/b.txt"), "b.txt",
+				RIGHT);
 	}
 

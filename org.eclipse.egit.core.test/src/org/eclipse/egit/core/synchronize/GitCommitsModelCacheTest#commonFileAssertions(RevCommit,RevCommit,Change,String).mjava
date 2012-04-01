@@ -1,0 +1,11 @@
+	private void commonFileAssertions(RevCommit actual, RevCommit parent,
+			Change change, String name) {
+		assertThat(change, notNullValue());
+		if (parent != null)
+			assertThat(change.getRemoteCommitId().toObjectId(),
+					is(parent.getId()));
+		if (actual != null && !ObjectId.zeroId().equals(actual))
+			assertThat(change.getCommitId().toObjectId(), is(actual.getId()));
+		assertThat(change.getName(), is(name));
+	}
+

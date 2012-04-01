@@ -1,5 +1,5 @@
 	@Override
 	public int hashCode() {
-		return getBaseId().hashCode() ^ getLocation().hashCode();
+		return path.hashCode() + (factory.isWorkingTree() ? 31 : 41);
 	}
 

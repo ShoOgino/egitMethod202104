@@ -1,0 +1,7 @@
+		private String getObjectId(AbbreviatedObjectId object) {
+			if (object != null)
+				return object.toObjectId().getName();
+			else
+				return ObjectId.zeroId().getName();
+		}
+

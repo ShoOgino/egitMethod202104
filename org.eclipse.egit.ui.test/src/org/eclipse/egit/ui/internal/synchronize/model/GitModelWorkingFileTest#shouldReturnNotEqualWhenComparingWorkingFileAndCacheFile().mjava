@@ -2,8 +2,7 @@
 			throws Exception {
 		// given
 		GitModelWorkingFile left = createWorkingFile(getFile1Location());
-		GitModelCacheFile right = new GitModelCacheFile(createModelCommit(),
-				getCommit(leftRepoFile, HEAD), null, null, getFile1Location());
+		GitModelCacheFile right = mock(GitModelCacheFile.class);
 
 		// when
 		boolean actual = left.equals(right);

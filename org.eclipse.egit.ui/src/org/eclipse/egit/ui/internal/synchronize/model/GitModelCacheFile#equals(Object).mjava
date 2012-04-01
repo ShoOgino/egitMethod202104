@@ -11,8 +11,6 @@
 
 		GitModelCacheFile objBlob = (GitModelCacheFile) obj;
 
-		return objBlob.baseId.equals(baseId)
-				&& objBlob.remoteId.equals(remoteId)
-				&& objBlob.getLocation().equals(getLocation());
+		return hashCode() == objBlob.hashCode();
 	}
 

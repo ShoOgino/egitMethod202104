@@ -1,14 +1,10 @@
 	@Override
 	public GitModelObject[] getChildren() {
 		List<GitModelObjectContainer> result = new ArrayList<GitModelObjectContainer>();
-		if (srcRev != null && dstRev != null)
+		if (commitCache != null && !commitCache.isEmpty())
 			result.addAll(getListOfCommit());
-		else {
-			GitModelWorkingTree changes = getLocaWorkingTreeChanges();
-			if (changes != null)
-				result.add(changes);
-		}
 
+		result.addAll(getWorkingChanges());
 
 		return result.toArray(new GitModelObjectContainer[result.size()]);
 	}

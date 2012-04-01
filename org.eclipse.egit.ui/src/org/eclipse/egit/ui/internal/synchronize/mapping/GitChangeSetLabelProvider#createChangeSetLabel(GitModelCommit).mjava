@@ -1,12 +1,12 @@
-	private String createChangeSetLabel(GitModelCommit commit) {
+	private String createChangeSetLabel(GitModelCommit commitModel) {
 		String format = store.getString(UIPreferences.SYNC_VIEW_CHANGESET_LABEL_FORMAT);
 
-		RevCommit baseCommit = commit.getBaseCommit();
+		Commit commit = commitModel.getCachedCommitObj();
 		Map<String, String> bindings = new HashMap<String, String>();
-		bindings.put(BINDING_CHANGESET_DATE, DATE_FORMAT.format(baseCommit.getAuthorIdent().getWhen()));
-		bindings.put(BINDING_CHANGESET_AUTHOR, baseCommit.getAuthorIdent().getName());
-		bindings.put(BINDING_CHANGESET_COMMITTER, baseCommit.getCommitterIdent().getName());
-		bindings.put(BINDING_CHANGESET_SHORT_MESSAGE, baseCommit.getShortMessage());
+		bindings.put(BINDING_CHANGESET_DATE, DATE_FORMAT.format(commit.getCommitDate()));
+		bindings.put(BINDING_CHANGESET_AUTHOR, commit.getAuthorName());
+		bindings.put(BINDING_CHANGESET_COMMITTER, commit.getCommitterName());
+		bindings.put(BINDING_CHANGESET_SHORT_MESSAGE, commit.getShortMessage());
 
 		return formatName(format, bindings);
 	}

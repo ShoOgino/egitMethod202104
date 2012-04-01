@@ -1,0 +1,27 @@
+	/**
+	 * Constructs model node that represents current status of Git cache.
+	 *
+	 * @param parent
+	 *            parent object
+	 *
+	 * @param repo
+	 *            repository associated with this object
+	 * @param cache
+	 *            cache containing all changed objects
+	 */
+	public GitModelCache(GitModelRepository parent, Repository repo,
+			Map<String, Change> cache) {
+		this(parent, repo, cache, new FileModelFactory() {
+			public GitModelBlob createFileModel(
+					GitModelObjectContainer objParent, Repository nestedRepo,
+					Change change, IPath path) {
+				return new GitModelCacheFile(objParent, nestedRepo, change,
+						path);
+			}
+
+			public boolean isWorkingTree() {
+				return false;
+			}
+		});
+	}
+

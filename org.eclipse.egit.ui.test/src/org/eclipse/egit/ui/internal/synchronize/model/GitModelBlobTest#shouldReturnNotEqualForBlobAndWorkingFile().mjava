@@ -2,9 +2,7 @@
 			throws Exception {
 		// given
 		GitModelBlob left = createGitModelBlob();
-		GitModelWorkingFile right = new GitModelWorkingFile(
-				createModelCommit(), getCommit(leftRepoFile, HEAD), null,
-				getFile1Location());
+		GitModelWorkingFile right = mock(GitModelWorkingFile.class);
 
 		// when
 		boolean actual = left.equals(right);

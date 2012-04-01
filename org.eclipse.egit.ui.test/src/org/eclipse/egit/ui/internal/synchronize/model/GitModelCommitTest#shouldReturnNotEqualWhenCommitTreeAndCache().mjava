@@ -2,9 +2,9 @@
 			throws Exception {
 		// given
 		GitModelCommit left = new GitModelCommit(createModelRepository(),
-				getCommit(leftRepoFile, HEAD), LEFT);
-		GitModelCache right = new GitModelCache(createModelRepository(),
-				getCommit(leftRepoFile, HEAD));
+				lookupRepository(leftRepoFile), getCommit(leftRepoFile, HEAD),
+				null);
+		GitModelCache right = mock(GitModelCache.class);
 
 		// when
 		boolean actual = left.equals(right);

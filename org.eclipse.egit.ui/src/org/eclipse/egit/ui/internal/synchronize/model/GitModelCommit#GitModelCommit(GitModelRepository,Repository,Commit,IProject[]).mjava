@@ -1,0 +1,19 @@
+	/**
+	 * @param parent
+	 *            parent object
+	 * @param repo
+	 *            repository associated with this object
+	 * @param commit
+	 *            instance of commit that will be associated with this model
+	 *            object
+	 * @param projects
+	 *            list of changed projects
+	 */
+	public GitModelCommit(GitModelRepository parent, Repository repo,
+			Commit commit, IProject[] projects) {
+		super(parent);
+		this.repo = repo;
+		this.commit = commit;
+		this.projects = projects;
+	}
+

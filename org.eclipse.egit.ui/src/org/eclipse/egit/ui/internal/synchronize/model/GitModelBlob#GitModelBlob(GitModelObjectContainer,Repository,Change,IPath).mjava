@@ -1,0 +1,18 @@
+	/**
+	 * @param parent
+	 *            parent object
+	 * @param repo
+	 *            repository associated with this object
+	 * @param change
+	 *            change associated with this object
+	 * @param path
+	 *            absolute path of change
+	 */
+	public GitModelBlob(GitModelObjectContainer parent, Repository repo,
+			Change change, IPath path) {
+		super(parent);
+		this.repo = repo;
+		this.path = path;
+		this.change = change;
+	}
+

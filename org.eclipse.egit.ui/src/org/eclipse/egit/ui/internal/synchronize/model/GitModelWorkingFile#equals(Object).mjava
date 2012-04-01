@@ -9,6 +9,8 @@
 		if (obj.getClass() != getClass())
 			return false;
 
-		return ((GitModelWorkingFile) obj).getLocation().equals(getLocation());
+		GitModelWorkingFile objBlob = (GitModelWorkingFile) obj;
+
+		return hashCode() == objBlob.hashCode();
 	}
 

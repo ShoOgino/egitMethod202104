@@ -7,20 +7,19 @@
 		RevCommit c1 = commit(git, "first commit");
 		writeTrashFile(db, "a.txt", "new content");
 		RevCommit c2 = commit(git, "second commit");
-
 		// when
-		List<Commit> leftResult = GitCommitsModelCache.build(db, c1, c2);
-		List<Commit> rightResult = GitCommitsModelCache.build(db, c2, c1);
-
+		List<Commit> leftResult = GitCommitsModelCache.build(db, c1, c2, null);
+		List<Commit> rightResult = GitCommitsModelCache.build(db, c2, c1, null);
 		// then
 		// left assertions
 		assertThat(leftResult, notNullValue());
 		assertCommit(leftResult.get(0), c2, 1);
-		assertFileChange(c2, c1, leftResult.get(0).getChildren().get("a.txt"), "a.txt", LEFT | CHANGE);
-
-		// right assertions
+		assertFileChange(c1, c2, leftResult.get(0).getChildren().get("a.txt"),
+				"a.txt", LEFT);
+		// right asserts
 		assertThat(rightResult, notNullValue());
 		assertCommit(rightResult.get(0), c2, 1);
-		assertFileChange(c2, c1, rightResult.get(0).getChildren().get("a.txt"), "a.txt", RIGHT | CHANGE);
+		assertFileChange(c2, c1, rightResult.get(0).getChildren().get("a.txt"),
+				"a.txt", RIGHT);
 	}
 

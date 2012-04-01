@@ -1,7 +1,14 @@
 	private GitModelBlob createGitModelBlob(ObjectId baseId, ObjectId remoteId,
 			IPath location) throws Exception {
+		Change change = mock(Change.class);
+		if (baseId != null)
+			when(change.getObjectId()).thenReturn(
+					AbbreviatedObjectId.fromObjectId(baseId));
+		if (remoteId != null)
+			when(change.getRemoteObjectId()).thenReturn(
+					AbbreviatedObjectId.fromObjectId(remoteId));
+
 		return new GitModelBlob(createModelCommit(),
-				getCommit(leftRepoFile, HEAD), null, null, baseId,
-				remoteId, location);
+				lookupRepository(leftRepoFile), change, location);
 	}
 
