@@ -24,45 +24,70 @@
 						openSelectionInEditor(tableViewer.getSelection());
 					}
 				};
+				boolean addReplaceWithFileInGitIndex = false;
+				boolean addReplaceWithHeadRevision = false;
+				boolean addStage = false;
+				boolean addUnstage = false;
+				boolean addLaunchMergeTool = false;
 				openWorkingTreeVersion.setEnabled(!submoduleSelected);
 				menuMgr.add(openWorkingTreeVersion);
 
 				StagingEntry stagingEntry = (StagingEntry) selection.getFirstElement();
 				switch (stagingEntry.getState()) {
 				case ADDED:
-				case CHANGED:
-				case REMOVED:
-					menuMgr.add(new Action(UIText.StagingView_UnstageItemMenuLabel) {
-						@Override
-						public void run() {
-							unstage((IStructuredSelection) tableViewer.getSelection());
-						}
-					});
+					addUnstage = true;
 					break;
-
+				case CHANGED:
+					addReplaceWithHeadRevision = true;
+					addUnstage = true;
+					break;
+				case REMOVED:
+					addReplaceWithHeadRevision = true;
+					addUnstage = true;
+					break;
 				case CONFLICTING:
-					menuMgr.add(createItem(ActionCommands.MERGE_TOOL_ACTION, tableViewer));
-					//$FALL-THROUGH$
+					addReplaceWithFileInGitIndex = true;
+					addReplaceWithHeadRevision = true;
+					addStage = true;
+					addLaunchMergeTool = true;
+					break;
 				case MISSING:
 				case MODIFIED:
 				case PARTIALLY_MODIFIED:
 				case UNTRACKED:
-				default:
-					boolean isNonResourceSelection = isNonResourceSelection(tableViewer.getSelection());
-					if (!isNonResourceSelection)
-						menuMgr.add(createItem(ActionCommands.DISCARD_CHANGES_ACTION, tableViewer));	// replace with index
+					addReplaceWithFileInGitIndex = true;
+					addReplaceWithHeadRevision = true;
+					addStage = true;
+					break;
+				}
+				if (addStage)
 					menuMgr.add(new Action(UIText.StagingView_StageItemMenuLabel) {
 						@Override
 						public void run() {
 							stage((IStructuredSelection) tableViewer.getSelection());
 						}
 					});
-					if (!submoduleSelected && isNonResourceSelection)
-						addNonResourceActions(menuMgr, (IStructuredSelection) tableViewer.getSelection());
-				}
+				if (addUnstage)
+					menuMgr.add(new Action(UIText.StagingView_UnstageItemMenuLabel) {
+						@Override
+						public void run() {
+							unstage((IStructuredSelection) tableViewer.getSelection());
+						}
+					});
+				boolean isNonResourceSelection = isNonResourceSelection(tableViewer.getSelection());
+				if (addReplaceWithFileInGitIndex)
+					if (isNonResourceSelection)
+						menuMgr.add(new ReplaceAction(UIText.StagingView_replaceWithFileInGitIndex, selection, false));
+					else
+						menuMgr.add(createItem(ActionCommands.DISCARD_CHANGES_ACTION, tableViewer));	// replace with index
+				if (addReplaceWithHeadRevision)
+					if (isNonResourceSelection)
+						menuMgr.add(new ReplaceAction(UIText.StagingView_replaceWithHeadRevision, selection, true));
+					else
+						menuMgr.add(createItem(ActionCommands.REPLACE_WITH_HEAD_ACTION, tableViewer));
+				if (addLaunchMergeTool)
+					menuMgr.add(createItem(ActionCommands.MERGE_TOOL_ACTION, tableViewer));
 			}
-
-
 		});
 
 	}
