@@ -48,15 +48,21 @@
 				case PARTIALLY_MODIFIED:
 				case UNTRACKED:
 				default:
-					menuMgr.add(createItem(ActionCommands.DISCARD_CHANGES_ACTION, tableViewer));	// replace with index
+					boolean isNonResourceSelection = isNonResourceSelection(tableViewer.getSelection());
+					if (!isNonResourceSelection)
+						menuMgr.add(createItem(ActionCommands.DISCARD_CHANGES_ACTION, tableViewer));	// replace with index
 					menuMgr.add(new Action(UIText.StagingView_StageItemMenuLabel) {
 						@Override
 						public void run() {
 							stage((IStructuredSelection) tableViewer.getSelection());
 						}
 					});
+					if (!submoduleSelected && isNonResourceSelection)
+						addNonResourceActions(menuMgr, (IStructuredSelection) tableViewer.getSelection());
 				}
 			}
+
+
 		});
 
 	}

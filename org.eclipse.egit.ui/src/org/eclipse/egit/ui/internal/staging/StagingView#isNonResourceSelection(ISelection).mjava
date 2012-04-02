@@ -1,0 +1,17 @@
+	private boolean isNonResourceSelection(ISelection selection) {
+		if (!(selection instanceof IStructuredSelection))
+			return false;
+		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+		Iterator iterator = structuredSelection.iterator();
+		while (iterator.hasNext()) {
+			Object selectedObject = iterator.next();
+			if (!(selectedObject instanceof StagingEntry))
+				return false;
+			StagingEntry stagingEntry = (StagingEntry) selectedObject;
+			String path = currentRepository.getWorkTree() + "/" + stagingEntry.getPath(); //$NON-NLS-1$
+			if (getResource(path) != null)
+				return false;
+		}
+		return true;
+	}
+
