@@ -2,7 +2,7 @@
 	 * @param data
 	 */
 	public void add(GitSynchronizeData data) {
-		gsd.add(data);
+		gsdSet.add(data);
 		if (data.getIncludedPaths() != null
 				&& data.getIncludedPaths().size() > 0)
 			containsFolderLevelSynchronizationRequest = true;

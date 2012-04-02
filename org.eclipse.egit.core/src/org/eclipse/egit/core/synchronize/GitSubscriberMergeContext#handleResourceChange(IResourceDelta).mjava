@@ -1,5 +1,4 @@
-	private void handleResourceChange(
-			GitResourceVariantTreeSubscriber subscriber, IResourceDelta delta) {
+	private void handleResourceChange(IResourceDelta delta) {
 		IResourceDelta[] children = delta.getAffectedChildren();
 		for (IResourceDelta resourceDelta : children) {
 			IResource resource = resourceDelta.getResource();
@@ -7,7 +6,7 @@
 			if (mapping == null)
 				continue;
 
-			scanDeltaAndRefresh(subscriber, mapping, resourceDelta);
+			scanDeltaAndRefresh(mapping, resourceDelta);
 		}
 	}
 

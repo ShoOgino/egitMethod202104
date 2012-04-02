@@ -1,0 +1,23 @@
+	/**
+	 * Creates {@link GitRepositoryProviderType}
+	 */
+	public GitRepositoryProviderType() {
+		GitSynchronizeDataSet set = new GitSynchronizeDataSet();
+		try {
+			Repository[] repositories = Activator.getDefault()
+					.getRepositoryCache().getAllRepositories();
+			for (int i = 0; i < repositories.length; i++) {
+				GitSynchronizeData data = new GitSynchronizeData(
+						repositories[i], Constants.HEAD, Constants.HEAD, true);
+				set.add(data);
+			}
+		} catch (IOException e) {
+			// do nothing
+		}
+
+		GitResourceVariantTreeSubscriber gitSubscriber = new GitResourceVariantTreeSubscriber(set);
+		gitSubscriber.init(new NullProgressMonitor());
+
+		subscriber = gitSubscriber;
+	}
+

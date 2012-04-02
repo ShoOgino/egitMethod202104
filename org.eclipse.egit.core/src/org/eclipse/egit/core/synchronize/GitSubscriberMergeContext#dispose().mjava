@@ -9,6 +9,7 @@
 			indexDiffCache.removeIndexDiffChangedListener(indexChangeListener);
 
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+		subscriber.dispose();
 		super.dispose();
 	}
 

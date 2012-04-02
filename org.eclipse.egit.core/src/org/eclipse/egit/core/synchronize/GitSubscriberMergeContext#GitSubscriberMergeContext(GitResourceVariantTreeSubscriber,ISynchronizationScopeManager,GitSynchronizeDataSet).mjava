@@ -6,13 +6,14 @@
 	public GitSubscriberMergeContext(final GitResourceVariantTreeSubscriber subscriber,
 			ISynchronizationScopeManager manager, GitSynchronizeDataSet gsds) {
 		super(subscriber, manager);
+		this.subscriber = subscriber;
 		this.gsds = gsds;
 
 
 		indexChangeListener = new IndexDiffChangedListener() {
 			public void indexDiffChanged(Repository repository,
 					IndexDiffData indexDiffData) {
-				handleRepositoryChange(subscriber, repository);
+				handleRepositoryChange(repository);
 			}
 		};
 		resourceChangeListener = new IResourceChangeListener() {
@@ -22,7 +23,7 @@
 				if (delta == null)
 					return;
 
-				handleResourceChange(subscriber, delta);
+				handleResourceChange(delta);
 			}
 		};
 		IndexDiffCache indexDiffCache = Activator.getDefault().getIndexDiffCache();

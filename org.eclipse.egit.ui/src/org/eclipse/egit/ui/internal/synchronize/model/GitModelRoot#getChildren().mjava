@@ -2,23 +2,9 @@
 	 * @return children
 	 */
 	public GitModelObject[] getChildren() {
-		List<GitModelObject> restult = new ArrayList<GitModelObject>();
-		try {
-			if (gsds.size() == 1) {
-				GitSynchronizeData gsd = gsds.iterator().next();
-				GitModelRepository repoModel = new GitModelRepository(gsd);
+		if (children == null)
+			children = getChildrenImpl();
 
-				return repoModel.getChildren();
-			} else
-				for (GitSynchronizeData data : gsds) {
-					GitModelRepository repoModel = new GitModelRepository(data);
-					if (repoModel.getChildren().length > 0)
-						restult.add(repoModel);
-				}
-		} catch (IOException e) {
-				Activator.logError(e.getMessage(), e);
-		}
-
-		return restult.toArray(new GitModelObject[restult.size()]);
+		return children;
 	}
 

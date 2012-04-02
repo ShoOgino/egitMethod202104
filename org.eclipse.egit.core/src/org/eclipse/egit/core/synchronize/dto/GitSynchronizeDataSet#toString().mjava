@@ -2,7 +2,7 @@
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		for (GitSynchronizeData data : gsd) {
+		for (GitSynchronizeData data : gsdSet) {
 			builder.append(data.getRepository().getWorkTree());
 			builder.append(" "); //$NON-NLS-1$
 		}
