@@ -1,7 +1,7 @@
 	protected SWTBot setPresentationModel(String modelName,
 			String toolbarDropDownTooltip) throws Exception {
 		SWTBotView syncView = bot.viewByTitle("Synchronize");
-		for (SWTBotToolbarButton button : syncView.getToolbarButtons()) {
+		for (SWTBotToolbarButton button : syncView.getToolbarButtons())
 			if (button.getToolTipText().equals(toolbarDropDownTooltip)) {
 				SWTBotToolbarDropDownButton dropDown = (SWTBotToolbarDropDownButton) button;
 				dropDown.menuItem(modelName).click();
@@ -9,7 +9,6 @@
 				dropDown.pressShortcut(KeyStroke.getInstance("ESC"));
 
 			}
-		}
 
 		return syncView.bot();
 	}
