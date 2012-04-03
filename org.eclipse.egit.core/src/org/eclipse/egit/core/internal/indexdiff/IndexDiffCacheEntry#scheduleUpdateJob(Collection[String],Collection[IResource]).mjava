@@ -5,7 +5,7 @@
 		Job job = new Job(getReloadJobName()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				waitForWorkspaceLock();
+				waitForWorkspaceLock(monitor);
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 				lock.lock();
