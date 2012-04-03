@@ -15,12 +15,16 @@
 		final String repoName = Activator.getDefault().getRepositoryUtil()
 				.getRepositoryName(node.getRepository());
 
+		RevCommit latestCommit = getLatestCommit(node);
+		final String targetCommit = latestCommit.abbreviate(7).name() + ' '
+				+ latestCommit.getShortMessage();
+
 		Wizard wiz = new Wizard() {
 
 			@Override
 			public void addPages() {
 				addPage(new SelectResetTypePage(repoName, currentBranch,
-						targetBranch));
+						targetBranch, targetCommit));
 				setWindowTitle(UIText.ResetCommand_WizardTitle);
 			}
 
