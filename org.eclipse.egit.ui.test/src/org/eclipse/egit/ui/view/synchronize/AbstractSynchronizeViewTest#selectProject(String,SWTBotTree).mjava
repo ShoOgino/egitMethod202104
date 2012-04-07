@@ -1,11 +1,10 @@
 	private static SWTBotTreeItem selectProject(String projectName,
 			SWTBotTree tree) {
-		for (SWTBotTreeItem item : tree.getAllItems()) {
+		for (SWTBotTreeItem item : tree.getAllItems())
 			if (item.getText().contains(projectName)) {
 				item.select();
 				return item;
 			}
-		}
 
 		throw new RuntimeException("Poject with name " + projectName +
 				" was not found in given tree");
