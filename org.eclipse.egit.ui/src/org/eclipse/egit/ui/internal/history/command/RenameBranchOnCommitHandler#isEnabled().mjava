@@ -1,0 +1,7 @@
+	@Override
+	public boolean isEnabled() {
+		GitHistoryPage page = getPage();
+		return getRepository(page) != null
+				&& !(getBranchesOfCommit(page).isEmpty());
+	}
+

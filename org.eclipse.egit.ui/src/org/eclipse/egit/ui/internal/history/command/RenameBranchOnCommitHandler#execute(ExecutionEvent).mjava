@@ -1,0 +1,32 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		GitHistoryPage page = getPage();
+
+		final Repository repository = getRepository(page);
+		if (repository == null)
+			return null;
+
+		List<Ref> branchesOfCommit = getBranchesOfCommit(page);
+		// this should have been checked by isEnabled()
+		if (branchesOfCommit.isEmpty())
+			return null;
+
+		final Shell shell = getPart(event).getSite().getShell();
+
+		final Ref branchToRename;
+		if (branchesOfCommit.size() > 1) {
+			BranchSelectionDialog<Ref> dlg = new BranchSelectionDialog<Ref>(
+					shell,
+					branchesOfCommit,
+					UIText.RenameBranchOnCommitHandler_SelectBranchDialogTitle,
+					UIText.RenameBranchOnCommitHandler_SelectBranchDialogMessage,
+					SWT.SINGLE);
+			if (dlg.open() != Window.OK)
+				return null;
+			branchToRename = dlg.getSelectedNode();
+		} else
+			branchToRename = branchesOfCommit.get(0);
+
+		new BranchRenameDialog(shell, repository, branchToRename).open();
+		return null;
+	}
+

@@ -1,0 +1,16 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == OK)
+			try {
+				String newName = name.getText();
+				new RenameBranchOperation(repository, branchToRename, newName)
+						.execute(null);
+			} catch (CoreException e) {
+				Activator.handleError(
+						UIText.BranchRenameDialog_RenameExceptionMessage, e,
+						true);
+				return;
+			}
+		super.buttonPressed(buttonId);
+	}
+

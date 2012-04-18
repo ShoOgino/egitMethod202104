@@ -1,0 +1,38 @@
+	@Override
+	public void create() {
+		super.create();
+		setTitle(UIText.BranchRenameDialog_Title);
+		String oldName = branchToRename.getName();
+		String prefix;
+		if (oldName.startsWith(Constants.R_HEADS))
+			prefix = Constants.R_HEADS;
+		else if (oldName.startsWith(Constants.R_REMOTES))
+			prefix = Constants.R_REMOTES;
+		else
+			prefix = null;
+		String shortName = null;
+		if (prefix != null) {
+			shortName = Repository.shortenRefName(branchToRename
+					.getName());
+			setMessage(NLS.bind(UIText.BranchRenameDialog_Message, shortName));
+			final IInputValidator inputValidator = ValidationUtils
+					.getRefNameInputValidator(repository, prefix, true);
+			name.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent e) {
+					String error = inputValidator.isValid(name.getText());
+					setErrorMessage(error);
+					getButton(OK).setEnabled(error == null);
+				}
+			});
+		} else
+			setErrorMessage(NLS.bind(
+					UIText.BranchRenameDialog_WrongPrefixErrorMessage, oldName));
+
+		if (shortName != null) {
+			name.setText(shortName);
+			name.setSelection(0, shortName.length());
+		}
+
+		getButton(OK).setEnabled(false);
+	}
+

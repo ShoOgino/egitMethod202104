@@ -1,0 +1,15 @@
+	/**
+	 * @param parentShell
+	 * @param repository
+	 * @param branchToRename
+	 *            the branch; name must start with {@link Constants#R_HEADS} or
+	 *            {@link Constants#R_REMOTES}
+	 */
+	public BranchRenameDialog(Shell parentShell, Repository repository,
+			Ref branchToRename) {
+		super(parentShell);
+		this.repository = repository;
+		this.branchToRename = branchToRename;
+		setHelpAvailable(false);
+	}
+
