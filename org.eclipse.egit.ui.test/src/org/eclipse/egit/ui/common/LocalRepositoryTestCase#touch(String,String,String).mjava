@@ -1,0 +1,25 @@
+	/**
+	 * Modify the specified file with the given content.
+	 *
+	 * @param projectName
+	 *            project name
+	 * @param filePath
+	 *            file path under the given project
+	 * @param newContent
+	 *            new file content
+	 * @return the modified file
+	 * @throws Exception
+	 */
+	protected static IFile touch(String projectName, String filePath,
+			String newContent) throws Exception {
+		IProject prj = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(projectName);
+		if (!prj.isAccessible())
+			throw new IllegalStateException("No project to touch");
+		IFile file = prj.getFile(new Path(filePath));
+		file.setContents(
+				new ByteArrayInputStream(newContent.getBytes(prj
+						.getDefaultCharset())), 0, null);
+		return file;
+	}
+
