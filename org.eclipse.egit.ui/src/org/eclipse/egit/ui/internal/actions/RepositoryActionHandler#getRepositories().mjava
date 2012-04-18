@@ -10,7 +10,7 @@
 			return getRepositoriesFor(selectedProjects);
 		IStructuredSelection selection = getSelection();
 		if (!selection.isEmpty()) {
-			Set<Repository> repos = new HashSet<Repository>();
+			Set<Repository> repos = new LinkedHashSet<Repository>();
 			for (Object o : selection.toArray())
 				if (o instanceof Repository)
 					repos.add((Repository) o);
