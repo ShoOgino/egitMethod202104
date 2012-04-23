@@ -46,6 +46,10 @@
 			Activator.logError("Patch file was not written", e); //$NON-NLS-1$
 			return false;
 		}
+
+		getDialogSettings().put(FORMAT_KEY, optionsPage.getSelectedHeaderFormat().name());
+		getDialogSettings().put(CONTEXT_LINES_KEY, optionsPage.contextLines.getText());
+
 		return true;
 	}
 

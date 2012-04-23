@@ -28,13 +28,27 @@
 							|| !((DiffHeaderFormat) element).isCommitRequired();
 				}
 			}});
-			formatCombo.setSelection(new StructuredSelection(DiffHeaderFormat.NONE));
+
+			String formatName = getDialogSettings().get(FORMAT_KEY);
+			DiffHeaderFormat selection = DiffHeaderFormat.NONE;
+			if (formatName != null)
+				try {
+					selection = DiffHeaderFormat.valueOf(formatName);
+				} catch (IllegalArgumentException ex) {
+					// Use default
+				}
+			formatCombo.setSelection(new StructuredSelection(selection));
+
 
 			contextLinesLabel = new Label(composite, SWT.NONE);
 			contextLinesLabel.setText(UIText.GitCreatePatchWizard_LinesOfContext);
 
+			String contextLineSetting = getDialogSettings().get(CONTEXT_LINES_KEY);
+			if (contextLineSetting == null)
+				contextLineSetting = String.valueOf(CreatePatchOperation.DEFAULT_CONTEXT_LINES);
 			contextLines = new Text(composite, SWT.BORDER | SWT.RIGHT);
-			contextLines.setText(String.valueOf(CreatePatchOperation.DEFAULT_CONTEXT_LINES));
+			contextLines.setText(contextLineSetting);
+			validatePage();
 			contextLines.addModifyListener(new ModifyListener() {
 
 				public void modifyText(ModifyEvent e) {
