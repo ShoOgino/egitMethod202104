@@ -1,0 +1,10 @@
+	public Object getPropertyValue(Object id) {
+		String actId = ((String) id);
+		String value = myRepository.getConfig().getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, myBranchName, actId);
+		if (value == null || value.length() == 0)
+			return UIText.BranchPropertySource_ValueNotSet;
+
+		return value;
+	}
+

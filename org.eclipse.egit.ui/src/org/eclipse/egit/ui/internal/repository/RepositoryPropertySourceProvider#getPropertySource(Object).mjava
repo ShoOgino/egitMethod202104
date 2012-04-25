@@ -7,23 +7,47 @@
 			return null;
 
 		RepositoryTreeNode node = (RepositoryTreeNode) object;
+		node.getRepository().getConfig()
+				.addChangeListener(new ConfigChangedListener() {
+					public void onConfigChanged(ConfigChangedEvent event) {
+						// force a refresh of the page
+						lastObject = null;
+						myPage.getSite().getShell().getDisplay().syncExec(new Runnable() {
+
+							public void run() {
+								myPage.setPropertySourceProvider(RepositoryPropertySourceProvider.this);
+							}
+						});
+					}
+				});
 
 		if (node.getType() == RepositoryTreeNodeType.REPO) {
 			lastObject = object;
+			checkChangeType(SourceType.REPOSITORY);
 			lastRepositorySource = new RepositoryPropertySource(
 					(Repository) node.getObject(), myPage);
 			return lastRepositorySource;
 		} else if (node.getType() == RepositoryTreeNodeType.REMOTE) {
 			lastObject = object;
+			checkChangeType(SourceType.REMOTE);
 			lastRepositorySource = new RepositoryRemotePropertySource(node
 					.getRepository().getConfig(), (String) node.getObject(),
 					myPage);
 			return lastRepositorySource;
 		} else if (node.getType() == RepositoryTreeNodeType.FETCH
-				|| node.getType() == RepositoryTreeNodeType.PUSH) {
+				|| node.getType() == RepositoryTreeNodeType.PUSH)
 			return getPropertySource(node.getParent());
-		} else {
+		else if (node.getType() == RepositoryTreeNodeType.REF) {
+			lastObject = object;
+			Ref ref = (Ref) node.getObject();
+			if (ref.getName().startsWith(Constants.R_HEADS) || ref.getName().startsWith(Constants.R_REMOTES)){
+				checkChangeType(SourceType.BRANCH);
+				Repository repository = (Repository) node.getAdapter(Repository.class);
+				lastRepositorySource =  new BranchPropertySource(repository, ref.getName(), myPage);
+				return lastRepositorySource;
+			}
 			return null;
-		}
+		} else
+			return null;
 	}
 

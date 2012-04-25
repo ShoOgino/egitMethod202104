@@ -1,0 +1,61 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(main);
+		GridDataFactory.fillDefaults().grab(true, false).indent(5, 5)
+				.applyTo(main);
+		Label branchLabel = new Label(main, SWT.NONE);
+		branchLabel.setText(UIText.BranchConfigurationDialog_UpstreamBranchLabel);
+		branchText = new Combo(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(branchText);
+
+		try {
+			for (Ref ref : myRepository.getRefDatabase()
+					.getRefs(Constants.R_HEADS).values())
+				branchText.add(ref.getName());
+			for (Ref ref : myRepository.getRefDatabase()
+					.getRefs(Constants.R_REMOTES).values())
+				branchText.add(ref.getName());
+		} catch (IOException e) {
+			Activator.logError(UIText.BranchConfigurationDialog_ExceptionGettingRefs, e);
+		}
+
+		Label remoteLabel = new Label(main, SWT.NONE);
+		remoteLabel.setText(UIText.BranchConfigurationDialog_RemoteLabel);
+		remoteText = new Combo(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(remoteText);
+
+		// TODO do we have a constant somewhere?
+		remoteText.add("."); //$NON-NLS-1$
+		for (String remote : myConfig
+				.getSubsections(ConfigConstants.CONFIG_REMOTE_SECTION))
+			remoteText.add(remote);
+
+		rebase = new Button(main, SWT.CHECK);
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(rebase);
+		rebase.setText(UIText.BranchConfigurationDialog_RebaseLabel);
+
+		String branch = myConfig.getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, myBranchName,
+				ConfigConstants.CONFIG_KEY_MERGE);
+		if (branch == null)
+			branch = ""; //$NON-NLS-1$
+		branchText.setText(branch);
+
+		String remote = myConfig.getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, myBranchName,
+				ConfigConstants.CONFIG_KEY_REMOTE);
+		if (remote == null)
+			remote = ""; //$NON-NLS-1$
+		remoteText.setText(remote);
+
+		boolean rebaseFlag = myConfig.getBoolean(
+				ConfigConstants.CONFIG_BRANCH_SECTION, myBranchName,
+				ConfigConstants.CONFIG_KEY_REBASE, false);
+		rebase.setSelection(rebaseFlag);
+
+		applyDialogFont(main);
+		// return result;
+		return main;
+	}
+

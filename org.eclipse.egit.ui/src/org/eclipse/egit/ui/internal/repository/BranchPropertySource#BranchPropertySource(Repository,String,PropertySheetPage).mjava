@@ -1,0 +1,35 @@
+	/**
+	 * @param repository
+	 *            the repository
+	 * @param fullBranchName
+	 *            the full name of the branch to show
+	 * @param page
+	 *            the page showing the properties
+	 */
+	public BranchPropertySource(Repository repository, String fullBranchName,
+			PropertySheetPage page) {
+		myPage = page;
+		myBranchName = Repository.shortenRefName(fullBranchName);
+		myRepository = repository;
+
+		synchronized (myPage) {
+			// check if the actions are already there, if not, create them
+			IActionBars bars = myPage.getSite().getActionBars();
+			IToolBarManager mgr = bars.getToolBarManager();
+
+			editAction = ((ActionContributionItem) mgr.find(EDITACTIONID));
+			if (editAction != null)
+				((EditAction) editAction.getAction()).setSource(this);
+			else {
+				editAction = new ActionContributionItem(new EditAction(
+						UIText.RepositoryPropertySource_EditConfigButton,
+						UIIcons.EDITCONFIG, this));
+
+				mgr.add(new Separator());
+				mgr.add(editAction);
+			}
+
+			mgr.update(false);
+		}
+	}
+

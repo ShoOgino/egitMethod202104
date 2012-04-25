@@ -1,0 +1,19 @@
+	public IPropertyDescriptor[] getPropertyDescriptors() {
+		List<IPropertyDescriptor> resultList = new ArrayList<IPropertyDescriptor>();
+
+		PropertyDescriptor desc = new PropertyDescriptor(
+				ConfigConstants.CONFIG_KEY_MERGE, UIText.BranchPropertySource_UpstreamBranchDescriptor);
+		desc.setCategory(UIText.BranchPropertySource_UpstreamConfigurationCategory);
+		resultList.add(desc);
+		desc = new PropertyDescriptor(ConfigConstants.CONFIG_KEY_REMOTE,
+				UIText.BranchPropertySource_RemoteDescriptor);
+		desc.setCategory(UIText.BranchPropertySource_UpstreamConfigurationCategory);
+		resultList.add(desc);
+		desc = new PropertyDescriptor(ConfigConstants.CONFIG_KEY_REBASE,
+				UIText.BranchPropertySource_RebaseDescriptor);
+		desc.setCategory(UIText.BranchPropertySource_UpstreamConfigurationCategory);
+		resultList.add(desc);
+
+		return resultList.toArray(new IPropertyDescriptor[0]);
+	}
+

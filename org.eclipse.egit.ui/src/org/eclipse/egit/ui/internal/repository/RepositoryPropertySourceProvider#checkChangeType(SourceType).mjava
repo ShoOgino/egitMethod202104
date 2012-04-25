@@ -1,0 +1,21 @@
+	private void checkChangeType(SourceType type) {
+		// the different pages contribute different actions, so if we
+		// change to a different page type, we need to clear them
+		if (lastSourceType != type) {
+			IToolBarManager mgr = myPage.getSite().getActionBars()
+					.getToolBarManager();
+			boolean update = false;
+			update = update
+					| mgr.remove(RepositoryPropertySource.CHANGEMODEACTIONID) != null;
+			update = update
+					| mgr.remove(RepositoryPropertySource.SINGLEVALUEACTIONID) != null;
+			update = update
+					| mgr.remove(RepositoryPropertySource.EDITACTIONID) != null;
+			update = update
+					| mgr.remove(BranchPropertySource.EDITACTIONID) != null;
+			if (update)
+				mgr.update(false);
+		}
+		lastSourceType = type;
+	}
+
