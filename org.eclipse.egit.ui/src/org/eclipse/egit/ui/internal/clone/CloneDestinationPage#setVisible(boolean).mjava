@@ -1,10 +1,8 @@
 	@Override
 	public void setVisible(final boolean visible) {
-		if (visible) {
-			if (this.availableRefs.isEmpty()) {
+		if (visible)
+			if (this.availableRefs.isEmpty())
 				initialBranch.getCombo().setEnabled(false);
-			}
-		}
 		super.setVisible(visible);
 		if (visible)
 			directoryText.setFocus();
