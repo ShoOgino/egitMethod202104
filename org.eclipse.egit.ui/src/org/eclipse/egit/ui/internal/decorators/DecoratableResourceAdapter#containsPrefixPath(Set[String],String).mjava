@@ -1,6 +1,6 @@
 	private boolean containsPrefixPath(Set<String> collection, String path) {
 		for (String entry : collection)
-			if (path.startsWith(entry))
+			if (path.startsWith(entry + "/")) //$NON-NLS-1$
 				return true;
 		return false;
 	}
