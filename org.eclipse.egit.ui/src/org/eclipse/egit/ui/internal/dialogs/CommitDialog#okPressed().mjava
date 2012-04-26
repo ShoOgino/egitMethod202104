@@ -22,7 +22,7 @@
 		IDialogSettings settings = org.eclipse.egit.ui.Activator
 			.getDefault().getDialogSettings();
 		settings.put(SHOW_UNTRACKED_PREF, showUntracked);
-		saveCommitHistory(getCommitMessage());
+		CommitMessageHistory.saveCommitHistory(getCommitMessage());
 		super.okPressed();
 	}
 

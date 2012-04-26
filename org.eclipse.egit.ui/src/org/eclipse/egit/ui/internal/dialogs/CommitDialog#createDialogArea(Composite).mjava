@@ -39,7 +39,7 @@
 				ContentAssistant assistant = new ContentAssistant();
 				assistant.enableAutoInsert(true);
 				Collection<String> paths = getFileList();
-				Collection<String> messages = getCommitHistory();
+				Collection<String> messages = CommitMessageHistory.getCommitHistory();
 				final CommitProposalProcessor processor = new CommitProposalProcessor(
 						messages.toArray(new String[messages.size()]),
 						paths.toArray(new String[paths.size()]));
