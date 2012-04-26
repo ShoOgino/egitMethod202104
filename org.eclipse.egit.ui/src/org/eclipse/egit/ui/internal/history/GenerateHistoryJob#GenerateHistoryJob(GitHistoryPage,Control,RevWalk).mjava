@@ -1,9 +1,11 @@
-	GenerateHistoryJob(final GitHistoryPage ghp, final SWTCommitList list) {
+	GenerateHistoryJob(final GitHistoryPage ghp, Control control, RevWalk walk) {
 		super(NLS.bind(UIText.HistoryPage_refreshJob, Activator.getDefault()
 				.getRepositoryUtil().getRepositoryName(
 						ghp.getInputInternal().getRepository())));
 		page = ghp;
-		allCommits = list;
+		this.walk = walk;
+		allCommits = new SWTCommitList(control);
+		allCommits.source(walk);
 		trace = GitTraceLocation.HISTORYVIEW.isActive();
 	}
 

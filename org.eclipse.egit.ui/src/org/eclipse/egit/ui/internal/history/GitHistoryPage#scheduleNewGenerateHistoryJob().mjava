@@ -1,11 +1,11 @@
 	private void scheduleNewGenerateHistoryJob() {
-		final SWTCommitList list = new SWTCommitList(graph.getControl());
-		list.source(currentWalk);
-		final GenerateHistoryJob rj = new GenerateHistoryJob(this, list);
+		final GenerateHistoryJob rj = new GenerateHistoryJob(this,
+				graph.getControl(), currentWalk);
 		rj.setRule(this);
 		rj.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(final IJobChangeEvent event) {
+				rj.getWalk().release();
 				final Control graphctl = graph.getControl();
 				if (job != rj || graphctl.isDisposed())
 					return;
