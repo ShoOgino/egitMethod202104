@@ -7,6 +7,9 @@
 			return NO_PROPOSALS;
 		}
 
+		Collection<String> messages = computeMessageProposals();
+		Set<CommitFile> files = computeFileProposals();
+
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		if (prefix != null && prefix.length() > 0) {
 			int replacementLength = prefix.length();

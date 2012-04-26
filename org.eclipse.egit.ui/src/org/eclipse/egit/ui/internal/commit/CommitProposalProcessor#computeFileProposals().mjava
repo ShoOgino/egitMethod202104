@@ -1,15 +1,6 @@
-	/**
-	 * Create process with path proposals
-	 *
-	 * @param messages
-	 * @param paths
-	 */
-	public CommitProposalProcessor(String[] messages, String[] paths) {
-		if (messages != null)
-			this.messages = messages;
-		else
-			this.messages = new String[0];
-
+	private Set<CommitFile> computeFileProposals() {
+		Collection<String> paths = computeFileNameProposals();
+		Set<CommitFile> files = new TreeSet<CommitFile>();
 		for (String path : paths) {
 			String name = new Path(path).lastSegment();
 			if (name == null)
@@ -19,5 +10,6 @@
 			if (lastDot > 0)
 				files.add(new CommitFile(name.substring(0, lastDot), name));
 		}
+		return files;
 	}
 

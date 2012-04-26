@@ -88,12 +88,30 @@
 		GridLayoutFactory.fillDefaults().numColumns(1)
 				.extendedMargins(2, 2, 2, 2).applyTo(commitMessageComposite);
 
-		commitMessageText = new SpellcheckableMessageArea(
-				commitMessageComposite, EMPTY_STRING, toolkit.getBorderStyle());
+		final CommitProposalProcessor commitProposalProcessor = new CommitProposalProcessor() {
+			@Override
+			protected Collection<String> computeFileNameProposals() {
+				return getStagedFileNames();
+			}
+
+			@Override
+			protected Collection<String> computeMessageProposals() {
+				return CommitMessageHistory.getCommitHistory();
+			}
+		};
+		commitMessageText = new CommitMessageArea(
+				commitMessageComposite, EMPTY_STRING, toolkit.getBorderStyle()) {
+			@Override
+			protected CommitProposalProcessor getCommitProposalProcessor() {
+				return commitProposalProcessor;
+			}
+		};
 		commitMessageText.setData(FormToolkit.KEY_DRAW_BORDER,
 				FormToolkit.TEXT_BORDER);
 		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(commitMessageText);
+		UIUtils.addBulbDecorator(commitMessageText.getTextWidget(),
+				UIText.CommitDialog_ContentAssist);
 
 		Composite composite = toolkit.createComposite(commitMessageComposite);
 		toolkit.paintBordersFor(composite);
