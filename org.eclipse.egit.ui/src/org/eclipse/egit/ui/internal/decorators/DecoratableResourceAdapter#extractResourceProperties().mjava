@@ -3,7 +3,8 @@
 
 		// ignored
 		Set<String> ignoredFiles = indexDiffData.getIgnoredNotInIndex();
-		ignored = containsPrefixPath(ignoredFiles, repoRelativePath);
+		ignored = ignoredFiles.contains(repoRelativePath)
+				|| containsPrefixPath(ignoredFiles, repoRelativePath);
 		Set<String> untracked = indexDiffData.getUntracked();
 		tracked = !untracked.contains(repoRelativePath) && !ignored;
 
