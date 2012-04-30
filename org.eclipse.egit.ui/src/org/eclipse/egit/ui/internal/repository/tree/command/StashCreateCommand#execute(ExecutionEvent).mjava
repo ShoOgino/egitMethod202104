@@ -6,8 +6,18 @@
 		if (repo == null)
 			return null;
 
-		final StashCreateOperation op = new StashCreateOperation(repo);
 		final Shell shell = HandlerUtil.getActiveShell(event);
+		InputDialog commitMessageDialog = new InputDialog(shell,
+				UIText.StashCreateCommand_titleEnterCommitMessage,
+				UIText.StashCreateCommand_messageEnterCommitMessage,
+				null, null);
+		if (commitMessageDialog.open() != Window.OK)
+			return null;
+		String message = commitMessageDialog.getValue();
+		if (message.length() == 0)
+			message = null;
+
+		final StashCreateOperation op = new StashCreateOperation(repo, message);
 		Job job = new Job(UIText.StashCreateCommand_jobTitle) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {

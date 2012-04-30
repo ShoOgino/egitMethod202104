@@ -1,0 +1,11 @@
+	@Test
+	public void testDefaultMessage() throws Exception {
+		testUtils.addFileToProject(project.getProject(), "foo/a.txt", "some text");
+		StashCreateOperation stashCreateOperation = new StashCreateOperation(repository);
+		stashCreateOperation.execute(null);
+
+		RevWalk revWalk = new RevWalk(repository);
+		RevCommit commit = revWalk.parseCommit(repository.resolve("stash@{0}"));
+		assertTrue(commit.getFullMessage().length() > 0);
+	}
+
