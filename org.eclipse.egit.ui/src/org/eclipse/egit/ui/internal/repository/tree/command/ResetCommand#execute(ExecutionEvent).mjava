@@ -15,7 +15,8 @@
 		final String repoName = Activator.getDefault().getRepositoryUtil()
 				.getRepositoryName(node.getRepository());
 
-		RevCommit latestCommit = getLatestCommit(node);
+		RevCommit latestCommit = getLatestCommit(targetBranch,
+				node.getRepository());
 		final String targetCommit = latestCommit.abbreviate(7).name() + ' '
 				+ latestCommit.getShortMessage();
 
