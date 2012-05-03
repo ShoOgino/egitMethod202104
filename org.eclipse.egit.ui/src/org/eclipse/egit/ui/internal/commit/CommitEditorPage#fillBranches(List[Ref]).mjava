@@ -1,0 +1,7 @@
+	private void fillBranches(List<Ref> result) {
+		branchViewer.setInput(result);
+		branchSection.setText(MessageFormat.format(
+				UIText.CommitEditorPage_SectionBranches,
+				Integer.valueOf(result.size())));
+	}
+

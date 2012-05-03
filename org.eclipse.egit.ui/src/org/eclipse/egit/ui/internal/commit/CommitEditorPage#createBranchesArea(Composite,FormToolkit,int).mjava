@@ -1,6 +1,7 @@
 	private void createBranchesArea(Composite parent, FormToolkit toolkit,
 			int span) {
 		branchSection = createSection(parent, toolkit, span);
+		branchSection.setText(UIText.CommitEditorPage_SectionBranchesEmpty);
 		Composite branchesArea = createSectionClient(branchSection, toolkit);
 
 		branchViewer = new TableViewer(toolkit.createTable(branchesArea,
@@ -18,8 +19,6 @@
 		branchViewer.setContentProvider(ArrayContentProvider.getInstance());
 		branchViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
 				FormToolkit.TREE_BORDER);
-
-		fillBranches();
 
 		updateSectionClient(branchSection, branchesArea, toolkit);
 	}

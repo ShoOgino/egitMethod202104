@@ -1,4 +1,4 @@
-	private void fillBranches() {
+	private List<Ref> loadBranches() {
 		Repository repository = getCommit().getRepository();
 		RevCommit commit = getCommit().getRevCommit();
 		RevWalk revWalk = new RevWalk(repository);
@@ -20,10 +20,6 @@
 		} catch (IOException ignored) {
 			// Ignored
 		}
-
-		branchViewer.setInput(result);
-		branchSection.setText(MessageFormat.format(
-				UIText.CommitEditorPage_SectionBranches,
-				Integer.valueOf(result.size())));
+		return result;
 	}
 

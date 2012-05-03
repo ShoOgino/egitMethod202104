@@ -1,0 +1,22 @@
+	private void fillTags(FormToolkit toolkit, List<Ref> tags) {
+		for (Control child : tagLabelArea.getChildren())
+			child.dispose();
+
+		GridLayoutFactory.fillDefaults().spacing(1, 1).numColumns(tags.size())
+				.applyTo(tagLabelArea);
+
+		for (Ref tag : tags) {
+			ObjectId id = tag.getPeeledObjectId();
+			boolean annotated = id != null;
+			if (id == null)
+				id = tag.getObjectId();
+			CLabel tagLabel = new CLabel(tagLabelArea, SWT.NONE);
+			toolkit.adapt(tagLabel, false, false);
+			if (annotated)
+				tagLabel.setImage(getImage(UIIcons.TAG_ANNOTATED));
+			else
+				tagLabel.setImage(getImage(UIIcons.TAG));
+			tagLabel.setText(Repository.shortenRefName(tag.getName()));
+		}
+	}
+

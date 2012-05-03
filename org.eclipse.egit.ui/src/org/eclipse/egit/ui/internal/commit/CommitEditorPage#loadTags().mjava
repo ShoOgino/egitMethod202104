@@ -1,0 +1,17 @@
+	private List<Ref> loadTags() {
+		RepositoryCommit repoCommit = getCommit();
+		RevCommit commit = repoCommit.getRevCommit();
+		Repository repository = repoCommit.getRepository();
+		List<Ref> tags = new ArrayList<Ref>();
+		for (Ref tag : getTags()) {
+			tag = repository.peel(tag);
+			ObjectId id = tag.getPeeledObjectId();
+			if (id == null)
+				id = tag.getObjectId();
+			if (!commit.equals(id))
+				continue;
+			tags.add(tag);
+		}
+		return tags;
+	}
+
