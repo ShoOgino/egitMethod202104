@@ -1,16 +1,13 @@
-	private IndexDiff calcIndexDiff(IProgressMonitor monitor, String jobName) {
+	private IndexDiff calcIndexDiff(IProgressMonitor monitor, String jobName)
+			throws IOException {
 		EclipseGitProgressTransformer jgitMonitor = new EclipseGitProgressTransformer(
 				monitor);
 
 		IndexDiff newIndexDiff;
-		try {
-			WorkingTreeIterator iterator = IteratorService
-					.createInitialIterator(repository);
-			newIndexDiff = new IndexDiff(repository, Constants.HEAD, iterator);
-			newIndexDiff.diff(jgitMonitor, 0, 0, jobName);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		WorkingTreeIterator iterator = IteratorService
+				.createInitialIterator(repository);
+		newIndexDiff = new IndexDiff(repository, Constants.HEAD, iterator);
+		newIndexDiff.diff(jgitMonitor, 0, 0, jobName);
 		return newIndexDiff;
 	}
 
