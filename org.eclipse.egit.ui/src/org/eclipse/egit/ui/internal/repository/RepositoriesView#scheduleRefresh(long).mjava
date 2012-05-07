@@ -37,7 +37,10 @@
 				if (needsNewInput)
 					initRepositoriesAndListeners();
 
-				tv.getCommonNavigator().getSite().getShell().getDisplay().asyncExec(new Runnable() {
+				if (!UIUtils.isUsable(tv))
+					return Status.CANCEL_STATUS;
+				PlatformUI.getWorkbench().getDisplay()
+						.asyncExec(new Runnable() {
 					public void run() {
 						if (!UIUtils.isUsable(tv))
 							return;
