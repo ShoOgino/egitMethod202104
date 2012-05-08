@@ -6,8 +6,11 @@
 		if (!(object instanceof RepositoryTreeNode))
 			return null;
 
+		registerDisposal();
+		removeListener();
+
 		RepositoryTreeNode node = (RepositoryTreeNode) object;
-		node.getRepository().getConfig()
+		listenerHandle = node.getRepository().getConfig()
 				.addChangeListener(new ConfigChangedListener() {
 					public void onConfigChanged(ConfigChangedEvent event) {
 						// force a refresh of the page
