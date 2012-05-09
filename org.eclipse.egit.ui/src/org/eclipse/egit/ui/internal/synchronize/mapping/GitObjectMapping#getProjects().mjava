@@ -1,16 +1,19 @@
 	@Override
 	public IProject[] getProjects() {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject[] projects = null;
 		if (!object.isContainer()) {
-			IFile file = root.getFileForLocation(object.getLocation());
-			return (file == null) ? null : new IProject[] {file.getProject()};
+			IProject project = getProject(ResourcesPlugin.getWorkspace()
+					.getRoot().getFileForLocation(object.getLocation()));
+			if (project != null)
+				projects = new IProject[] { project };
 		} else if (object instanceof GitModelTree) {
-			IContainer container = root.getContainerForLocation(object.getLocation());
-
-			return new IProject[] {container.getProject()};
+			IProject project = getProject(ResourcesPlugin.getWorkspace()
+					.getRoot().getContainerForLocation(object.getLocation()));
+			if (project != null)
+				projects = new IProject[] { project };
 		} else if (object instanceof HasProjects)
-			return ((HasProjects) object).getProjects();
-		else
-			return null;
+			projects = ((HasProjects) object).getProjects();
+
+		return projects != null ? projects : new IProject[0];
 	}
 
