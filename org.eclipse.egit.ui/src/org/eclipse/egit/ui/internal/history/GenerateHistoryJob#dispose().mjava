@@ -1,0 +1,10 @@
+	private void dispose() {
+		walk.release();
+		Display.getDefault().asyncExec(new Runnable() {
+
+			public void run() {
+				allCommits.dispose();
+			}
+		});
+	}
+

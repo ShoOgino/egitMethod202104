@@ -4,8 +4,6 @@
 				GitTraceLocation.getTrace().traceEntry(
 						GitTraceLocation.HISTORYVIEW.getLocation());
 
-			cancelRefreshJob();
-
 			if (input == null)
 				return;
 			Repository db = input.getRepository();
@@ -25,6 +23,8 @@
 					.getFileList(), db);
 
 			if (forceNewWalk || shouldRedraw(db, headId, paths)) {
+				releaseGenerateHistoryJob();
+
 				SWTWalk walk = createNewWalk(db, headId);
 				setWalkStartPoints(walk, db, headId);
 

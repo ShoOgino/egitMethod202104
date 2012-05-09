@@ -1,0 +1,9 @@
+	private void releaseGenerateHistoryJob() {
+		if (job != null) {
+			if (job.getState() != Job.NONE)
+				job.cancel();
+			job.release();
+			job = null;
+		}
+	}
+
