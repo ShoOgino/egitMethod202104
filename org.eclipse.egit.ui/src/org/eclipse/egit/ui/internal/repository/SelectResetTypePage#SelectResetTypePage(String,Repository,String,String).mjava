@@ -1,0 +1,21 @@
+	/**
+	 * @param repoName
+	 *            the repository name
+	 * @param repository
+	 *            the repository being reset
+	 * @param currentRef
+	 *            current ref (which will be overwritten)
+	 * @param targetRef
+	 *            target ref (which contains the new content)
+	 */
+	public SelectResetTypePage(String repoName, Repository repository,
+			String currentRef, String targetRef) {
+		super(SelectResetTypePage.class.getName());
+		setTitle(NLS.bind(UIText.SelectResetTypePage_PageTitle, repoName));
+		setMessage(UIText.SelectResetTypePage_PageMessage);
+
+		repo = repository;
+		current = currentRef;
+		target = targetRef;
+	}
+
