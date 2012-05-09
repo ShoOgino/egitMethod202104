@@ -1,4 +1,5 @@
-	private RevObject getTagTarget(ObjectId objectId) throws IOException {
+	private RevObject getTagTarget(Repository repo, ObjectId objectId)
+			throws IOException {
 		RevWalk rw = new RevWalk(repo);
 		try {
 			if (objectId == null)
