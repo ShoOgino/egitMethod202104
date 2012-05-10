@@ -3,6 +3,8 @@
 			table.setSelection(new StructuredSelection(c), true);
 		else if (commitsMap != null) {
 			PlotCommit swtCommit = commitsMap.get(c.getId().name());
+			if (swtCommit == null && tableLoader != null)
+				tableLoader.loadCommit(c);
 			if (swtCommit != null)
 				table.setSelection(new StructuredSelection(swtCommit), true);
 		}

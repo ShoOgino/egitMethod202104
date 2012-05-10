@@ -1,6 +1,6 @@
 	CommitGraphTable(final Composite parent, final IPageSite site,
-			final MenuManager menuMgr) {
-		this(parent);
+			final MenuManager menuMgr, final TableLoader loader) {
+		this(parent, loader);
 
 		final IAction selectAll = createStandardAction(ActionFactory.SELECT_ALL);
 		getControl().addFocusListener(new FocusListener() {

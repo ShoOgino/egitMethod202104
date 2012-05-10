@@ -1,16 +1,16 @@
-	void updateUI(boolean incomplete) {
+	private void updateUI(boolean incomplete) {
 		if (trace)
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation());
 		try {
-			if (!incomplete && allCommits.size() == lastUpdateCnt)
+			if (!incomplete && loadedCommits.size() == lastUpdateCnt)
 				return;
 
-			final SWTCommit[] asArray = new SWTCommit[allCommits.size()];
-			allCommits.toArray(asArray);
-			RevFlag highlightFlag = walk.newFlag("highlight"); //$NON-NLS-1$
-			page.showCommitList(this, allCommits, asArray, incomplete, highlightFlag);
-			lastUpdateCnt = allCommits.size();
+			final SWTCommit[] asArray = new SWTCommit[loadedCommits.size()];
+			loadedCommits.toArray(asArray);
+			page.showCommitList(this, loadedCommits, asArray, commitToShow, incomplete, highlightFlag);
+			commitToShow = null;
+			lastUpdateCnt = loadedCommits.size();
 		} finally {
 			if (trace)
 				GitTraceLocation.getTrace().traceExit(

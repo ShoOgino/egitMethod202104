@@ -1,12 +1,26 @@
-	CommitGraphTable(Composite parent) {
+	CommitGraphTable(Composite parent, final TableLoader loader) {
 		nFont = UIUtils.getFont(UIPreferences.THEME_CommitGraphNormalFont);
 		hFont = highlightFont();
+		tableLoader = loader;
 
-		Table rawTable = new Table(parent, SWT.MULTI | SWT.H_SCROLL
+		final Table rawTable = new Table(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		rawTable.setHeaderVisible(true);
 		rawTable.setLinesVisible(false);
 		rawTable.setFont(nFont);
+		rawTable.addListener(SWT.SetData, new Listener() {
+			public void handleEvent(Event event) {
+				if (tableLoader != null) {
+					TableItem item = (TableItem) event.item;
+					int index = rawTable.indexOf(item);
+					if (trace)
+						GitTraceLocation.getTrace().trace(
+								GitTraceLocation.HISTORYVIEW.getLocation(),
+								"Item " + index); //$NON-NLS-1$
+					tableLoader.loadItem(index);
+				}
+			}
+		});
 
 		final TableLayout layout = new TableLayout();
 		rawTable.setLayout(layout);
