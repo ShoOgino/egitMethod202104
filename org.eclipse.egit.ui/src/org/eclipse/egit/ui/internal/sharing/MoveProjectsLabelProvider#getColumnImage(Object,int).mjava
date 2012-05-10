@@ -1,4 +1,8 @@
 	public Image getColumnImage(Object element, int columnIndex) {
-		return null;
+		if (columnIndex == 0)
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImage(SharedImages.IMG_OBJ_PROJECT);
+		else
+			return null;
 	}
 
