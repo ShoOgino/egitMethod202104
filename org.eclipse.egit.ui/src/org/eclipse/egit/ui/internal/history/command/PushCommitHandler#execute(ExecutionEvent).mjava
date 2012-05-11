@@ -3,8 +3,10 @@
 		final Repository repo = getRepository(event);
 
 		try {
-			WizardDialog dlg = new WizardDialog(HandlerUtil
-					.getActiveShellChecked(event), new SimplePushRefWizard(repo, commit.getId()));
+			WizardDialog dlg = new WizardDialog(
+					HandlerUtil.getActiveShellChecked(event),
+					new SimplePushRefWizard(repo, commit.getId(),
+							UIText.PushCommitHandler_pushCommitTitle));
 			dlg.setHelpAvailable(true);
 			dlg.open();
 		} catch (Exception e) {

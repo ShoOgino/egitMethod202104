@@ -5,10 +5,12 @@
 	 *            the repository the ref belongs to
 	 * @param refToPush
 	 *            the ref to push
+	 * @param title
+	 *            the wizard title
 	 * @throws URISyntaxException
 	 */
-	public SimplePushRefWizard(Repository repo, Ref refToPush)
+	public SimplePushRefWizard(Repository repo, Ref refToPush, String title)
 			throws URISyntaxException {
-		this(repo, refToPush.getObjectId(), refToPush.getName());
+		this(repo, refToPush.getObjectId(), refToPush.getName(), title);
 	}
 
