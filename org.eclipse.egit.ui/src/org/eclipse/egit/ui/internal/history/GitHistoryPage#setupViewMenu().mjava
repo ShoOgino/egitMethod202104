@@ -14,6 +14,9 @@
 		showSubMenuMgr.add(actions.findAction);
 		showSubMenuMgr.add(actions.showFilesAction);
 		showSubMenuMgr.add(actions.showCommentAction);
+		showSubMenuMgr.add(new Separator());
+		showSubMenuMgr.add(actions.showRelativeDateAction);
+		showSubMenuMgr.add(actions.showEmailAddressesAction);
 
 		IMenuManager filterSubMenuMgr = new MenuManager(
 				UIText.GitHistoryPage_FilterSubMenuLabel);
@@ -30,8 +33,5 @@
 		viewMenuMgr.add(new Separator());
 		viewMenuMgr.add(actions.wrapCommentAction);
 		viewMenuMgr.add(actions.fillCommentAction);
-
-		viewMenuMgr.add(new Separator());
-		viewMenuMgr.add(actions.showRelativeDateAction);
 	}
 

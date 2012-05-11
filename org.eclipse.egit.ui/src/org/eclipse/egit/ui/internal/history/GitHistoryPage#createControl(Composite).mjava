@@ -37,6 +37,7 @@
 		graph = new CommitGraphTable(graphDetailSplit, getSite(), popupMgr);
 
 		graph.setRelativeDate(isShowingRelativeDates());
+		graph.setShowEmailAddresses(isShowingEmailAddresses());
 		Activator.getDefault().getPreferenceStore()
 				.addPropertyChangeListener(listener);
 
