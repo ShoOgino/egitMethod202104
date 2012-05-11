@@ -25,7 +25,7 @@
 						Repository.shortenRefName(head.getLeaf().getName()),
 						StyledString.DECORATIONS_STYLER);
 			else if (head.getObjectId() != null)
-				string.append(head.getObjectId().abbreviate(7).name(),
+				string.append(abbreviate(head.getObjectId()),
 						StyledString.DECORATIONS_STYLER);
 			string.append(']', StyledString.DECORATIONS_STYLER);
 			if (verboseBranchMode && head.getObjectId() != null) {

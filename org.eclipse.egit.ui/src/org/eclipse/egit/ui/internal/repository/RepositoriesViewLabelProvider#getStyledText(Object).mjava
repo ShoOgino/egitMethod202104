@@ -16,19 +16,29 @@
 				// shorten the name
 				StyledString refName = new StyledString(
 						Repository.shortenRefName(ref.getName()));
-				if (ref.isSymbolic()) {
-					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-					refName.append(ref.getLeaf().getName(),
-							StyledString.QUALIFIER_STYLER);
-					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-					refName.append(ObjectId.toString(ref.getLeaf()
-							.getObjectId()), StyledString.QUALIFIER_STYLER);
-				} else {
-					refName.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-					refName.append(ObjectId.toString(ref.getObjectId()),
-							StyledString.QUALIFIER_STYLER);
 
-				}
+				ObjectId refId;
+				if (ref.isSymbolic()) {
+					refName.append(' ');
+					refName.append('[', StyledString.DECORATIONS_STYLER);
+					refName.append(ref.getLeaf().getName(),
+							StyledString.DECORATIONS_STYLER);
+					refName.append(']', StyledString.DECORATIONS_STYLER);
+					refId = ref.getLeaf().getObjectId();
+				} else
+					refId = ref.getObjectId();
+
+				refName.append(' ');
+				RevCommit commit = getLatestCommit(node);
+				if (commit != null)
+					refName.append(abbreviate(commit),
+							StyledString.QUALIFIER_STYLER)
+							.append(' ')
+							.append(commit.getShortMessage(),
+									StyledString.QUALIFIER_STYLER);
+				else
+					refName.append(abbreviate(refId),
+							StyledString.QUALIFIER_STYLER);
 				return refName;
 			case WORKINGDIR:
 				StyledString dirString = new StyledString(
@@ -48,9 +58,12 @@
 					if (verboseBranchMode) {
 						RevCommit latest = getLatestCommit(node);
 						if (latest != null)
-							styled.append(' ' + latest.abbreviate(7).name()
-									+ ' ' + latest.getShortMessage(),
-									StyledString.QUALIFIER_STYLER);
+							styled.append(' ')
+									.append(abbreviate(latest),
+											StyledString.QUALIFIER_STYLER)
+									.append(' ')
+									.append(latest.getShortMessage(),
+											StyledString.QUALIFIER_STYLER);
 					}
 				}
 				return styled;
