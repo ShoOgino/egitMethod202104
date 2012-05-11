@@ -1,4 +1,4 @@
-	private TreeWalk createFileWalker(Repository db, List<FilterPath> paths) {
+	private TreeWalk createFileWalker(RevWalk walk, Repository db, List<FilterPath> paths) {
 		final TreeWalk fileWalker = new TreeWalk(db);
 		fileWalker.setRecursive(true);
 		fileWalker.setFilter(TreeFilter.ANY_DIFF);
@@ -12,18 +12,18 @@
 				selectedPaths.add(filterPath.getPath());
 
 			TreeFilter followFilter = createFollowFilterFor(selectedPaths);
-			currentWalk.setTreeFilter(followFilter);
+			walk.setTreeFilter(followFilter);
 		} else if (paths.size() > 0) {
 			pathFilters = paths;
 			List<String> stringPaths = new ArrayList<String>(paths.size());
 			for (FilterPath p : paths)
 				stringPaths.add(p.getPath());
 
-			currentWalk.setTreeFilter(AndTreeFilter.create(PathFilterGroup
+			walk.setTreeFilter(AndTreeFilter.create(PathFilterGroup
 					.createFromStrings(stringPaths), TreeFilter.ANY_DIFF));
 		} else {
 			pathFilters = null;
-			currentWalk.setTreeFilter(TreeFilter.ALL);
+			walk.setTreeFilter(TreeFilter.ALL);
 		}
 		return fileWalker;
 	}

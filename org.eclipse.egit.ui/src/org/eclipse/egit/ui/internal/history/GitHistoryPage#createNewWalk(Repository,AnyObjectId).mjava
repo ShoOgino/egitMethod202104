@@ -1,12 +1,12 @@
-	private void createNewWalk(Repository db, AnyObjectId headId) {
+	private SWTWalk createNewWalk(Repository db, AnyObjectId headId) {
 		currentHeadId = headId;
-		currentWalk = new SWTWalk(db);
+		SWTWalk walk = new SWTWalk(db);
 		try {
 			if (store
 					.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS))
-				currentWalk.addAdditionalRefs(db.getRefDatabase()
+				walk.addAdditionalRefs(db.getRefDatabase()
 						.getAdditionalRefs());
-			currentWalk.addAdditionalRefs(db.getRefDatabase()
+			walk.addAdditionalRefs(db.getRefDatabase()
 					.getRefs(Constants.R_NOTES).values());
 		} catch (IOException e) {
 			throw new IllegalStateException(NLS.bind(
@@ -14,8 +14,8 @@
 							.getDefault().getRepositoryUtil()
 							.getRepositoryName(db)), e);
 		}
-		currentWalk.sort(RevSort.COMMIT_TIME_DESC, true);
-		currentWalk.sort(RevSort.BOUNDARY, true);
-		highlightFlag = currentWalk.newFlag("highlight"); //$NON-NLS-1$
+		walk.sort(RevSort.COMMIT_TIME_DESC, true);
+		walk.sort(RevSort.BOUNDARY, true);
+		return walk;
 	}
 

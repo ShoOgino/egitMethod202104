@@ -1,7 +1,7 @@
-	private void markStartAdditionalRefs() throws IOException {
+	private void markStartAdditionalRefs(RevWalk walk) throws IOException {
 		List<Ref> additionalRefs = input.getRepository().getRefDatabase()
 				.getAdditionalRefs();
 		for (Ref ref : additionalRefs)
-			markStartRef(ref);
+			markStartRef(walk, ref);
 	}
 

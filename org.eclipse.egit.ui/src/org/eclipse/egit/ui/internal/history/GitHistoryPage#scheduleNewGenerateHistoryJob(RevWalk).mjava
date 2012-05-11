@@ -1,6 +1,6 @@
-	private void scheduleNewGenerateHistoryJob() {
+	private void scheduleNewGenerateHistoryJob(RevWalk walk) {
 		final GenerateHistoryJob rj = new GenerateHistoryJob(this,
-				graph.getControl(), currentWalk);
+				graph.getControl(), walk);
 		rj.setRule(this);
 		rj.addJobChangeListener(new JobChangeAdapter() {
 			@Override

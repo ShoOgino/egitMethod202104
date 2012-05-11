@@ -1,0 +1,7 @@
+	private void markStartRef(RevWalk walk, Ref ref) throws MissingObjectException,
+			IOException, IncorrectObjectTypeException {
+		Object refTarget = walk.parseAny(ref.getLeaf().getObjectId());
+		if (refTarget instanceof RevCommit)
+			walk.markStart((RevCommit) refTarget);
+	}
+

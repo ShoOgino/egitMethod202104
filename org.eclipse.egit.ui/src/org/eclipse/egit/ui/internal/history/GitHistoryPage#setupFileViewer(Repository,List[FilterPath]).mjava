@@ -1,8 +1,0 @@
-	private TreeWalk setupFileViewer(Repository db, List<FilterPath> paths) {
-		final TreeWalk fileWalker = createFileWalker(db, paths);
-		fileViewer.setTreeWalk(db, fileWalker);
-		fileViewer.refresh();
-		fileViewer.addSelectionChangedListener(commentViewer);
-		return fileWalker;
-	}
-

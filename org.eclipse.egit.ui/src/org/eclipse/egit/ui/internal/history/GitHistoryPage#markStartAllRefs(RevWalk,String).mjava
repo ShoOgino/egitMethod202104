@@ -1,6 +1,7 @@
 	/**
 	 * {@link RevWalk#markStart(RevCommit)} all refs with given prefix to mark
 	 * start of graph traversal using currentWalker
+	 * @param walk the walk to be configured
 	 *
 	 * @param prefix
 	 *            prefix of refs to be marked
@@ -8,14 +9,14 @@
 	 * @throws MissingObjectException
 	 * @throws IncorrectObjectTypeException
 	 */
-	private void markStartAllRefs(String prefix) throws IOException,
+	private void markStartAllRefs(RevWalk walk, String prefix) throws IOException,
 			MissingObjectException, IncorrectObjectTypeException {
 		for (Entry<String, Ref> refEntry : input.getRepository()
 				.getRefDatabase().getRefs(prefix).entrySet()) {
 			Ref ref = refEntry.getValue();
 			if (ref.isSymbolic())
 				continue;
-			markStartRef(ref);
+			markStartRef(walk, ref);
 		}
 	}
 
