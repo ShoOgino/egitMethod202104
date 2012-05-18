@@ -1,0 +1,12 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (toggleButton != null)
+			Activator
+					.getDefault()
+					.getPreferenceStore()
+					.setValue(UIPreferences.CLONE_WIZARD_SHOW_DETAILED_FAILURE_DIALOG,
+							!toggleButton.getSelection());
+
+		super.buttonPressed(buttonId);
+	}
+

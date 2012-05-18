@@ -1,0 +1,23 @@
+	@Override
+	protected Control createMessageArea(Composite composite) {
+		Composite main = new Composite(composite, SWT.NONE);
+		main.setLayout(new GridLayout(2, false));
+		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(
+				main);
+		// add error image
+		super.createMessageArea(main);
+
+		StyledText text = new StyledText(main, SWT.FULL_SELECTION | SWT.WRAP);
+		text.setEnabled(false);
+		text.setBackground(main.getBackground());
+
+		String messageText = NLS.bind(UIText.CloneFailureDialog_checkList, cause);
+		int newLinesCount = messageText.split("\n").length; //$NON-NLS-1$
+		Bullet bullet = createBullet(main);
+
+		text.setText(messageText);
+		text.setLineBullet(newLinesCount - 4, 2, bullet);
+
+		return main;
+	}
+

@@ -23,11 +23,8 @@
 		} catch (InvocationTargetException e) {
 			Throwable why = e.getCause();
 			transportError(why);
-			ErrorDialog.openError(getShell(),
-					UIText.SourceBranchPage_transportError,
-					UIText.SourceBranchPage_cannotListBranches, new Status(
-							IStatus.ERROR, Activator.getPluginId(), 0, why
-									.getMessage(), why));
+			if (showDetailedFailureDialog())
+				SourceBranchFailureDialog.show(getShell(), transportError);
 			return;
 		} catch (IOException e) {
 			transportError(UIText.SourceBranchPage_cannotCreateTemp);
