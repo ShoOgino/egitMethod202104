@@ -6,9 +6,6 @@
 	 * @return information message or null if none
 	 */
 	public String getMessage() {
-		if (commitText.getText().trim().length() == 0)
-			return UIText.CommitDialog_Message;
-
 		String authorValue = authorText.getText();
 		if (authorValue.length() == 0
 				|| RawParseUtils.parsePersonIdent(authorValue) == null)
@@ -18,6 +15,9 @@
 		if (committerValue.length() == 0
 				|| RawParseUtils.parsePersonIdent(committerValue) == null)
 			return UIText.CommitMessageComponent_MessageInvalidCommitter;
+
+		if (amending && amendingCommitInRemoteBranch)
+			return UIText.CommitMessageComponent_AmendingCommitInRemoteBranch;
 
 		return null;
 	}

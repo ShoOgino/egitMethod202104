@@ -1,0 +1,23 @@
+	/**
+	 * Constructs the composite. Note that for the toggling to work, its parent
+	 * composite must use a grid layout.
+	 *
+	 * @param parent
+	 * @param style
+	 */
+	public ToggleableWarningLabel(Composite parent, int style) {
+		super(parent, style);
+
+		setVisible(false);
+		setLayout(new GridLayout(2, false));
+
+		Label image = new Label(this, SWT.NONE);
+		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
+				.applyTo(image);
+		image.setImage(PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_OBJS_WARN_TSK));
+
+		warningText = new Label(this, SWT.WRAP);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(warningText);
+	}
+

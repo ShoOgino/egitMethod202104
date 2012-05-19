@@ -1,0 +1,21 @@
+	@Test
+	public void isContainedInAnyRef() throws Exception {
+		RevCommit first = testRepository.createInitialCommit("First commit");
+		testRepository.createBranch("refs/heads/master", "refs/heads/other");
+		assertFalse(isContainedInAnyRemoteRef(first));
+
+		testRepository.createBranch("refs/heads/master", "refs/remotes/origin/a");
+		assertTrue(isContainedInAnyRemoteRef(first));
+
+		RevCommit second = testRepository.commit("Second commit");
+		assertFalse(isContainedInAnyRemoteRef(second));
+
+		testRepository.createBranch("refs/heads/master", "refs/remotes/origin/b");
+		assertTrue(isContainedInAnyRemoteRef(second));
+
+		RevCommit third = testRepository.commit("Third commit");
+		testRepository.commit("Fourth commit");
+		testRepository.createBranch("refs/heads/master", "refs/remotes/origin/c");
+		assertTrue(isContainedInAnyRemoteRef(third));
+	}
+

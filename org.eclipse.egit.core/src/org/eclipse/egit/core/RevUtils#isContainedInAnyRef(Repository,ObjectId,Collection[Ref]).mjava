@@ -1,0 +1,35 @@
+	/**
+	 * Check if commit is contained in any of the passed refs.
+	 *
+	 * @param repo
+	 *            the repo the commit is in
+	 * @param commitId
+	 *            the commit ID to search for
+	 * @param refs
+	 *            the refs to check
+	 * @return true if the commit is contained, false otherwise
+	 * @throws IOException
+	 */
+	public static boolean isContainedInAnyRef(Repository repo,
+			ObjectId commitId, Collection<Ref> refs) throws IOException {
+		// It's likely that we don't have to walk commits at all, so
+		// check refs directly first.
+		for (Ref ref : refs)
+			if (commitId.equals(ref.getObjectId()))
+				return true;
+
+		RevWalk walk = new RevWalk(repo);
+		try {
+			RevCommit commit = walk.parseCommit(commitId);
+			for (Ref ref : refs) {
+				RevCommit refCommit = walk.parseCommit(ref.getObjectId());
+				boolean contained = walk.isMergedInto(commit, refCommit);
+				if (contained)
+					return true;
+			}
+		} finally {
+			walk.dispose();
+		}
+		return false;
+	}
+

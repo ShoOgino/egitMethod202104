@@ -1,0 +1,7 @@
+	private void changeVisibility(boolean visible) {
+		setVisible(visible);
+		GridData data = (GridData) getLayoutData();
+		data.exclude = !visible;
+		getParent().layout();
+	}
+

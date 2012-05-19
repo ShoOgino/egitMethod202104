@@ -77,16 +77,29 @@
 			}
 		});
 
-		Section commitMessageSection = toolkit.createSection(
+		commitMessageSection = toolkit.createSection(
 				horizontalSashForm, ExpandableComposite.TITLE_BAR);
 		commitMessageSection.setText(UIText.StagingView_CommitMessage);
 
 		Composite commitMessageComposite = toolkit
 				.createComposite(commitMessageSection);
-		toolkit.paintBordersFor(commitMessageComposite);
 		commitMessageSection.setClient(commitMessageComposite);
 		GridLayoutFactory.fillDefaults().numColumns(1)
-				.extendedMargins(2, 2, 2, 2).applyTo(commitMessageComposite);
+				.applyTo(commitMessageComposite);
+
+		warningLabel = new ToggleableWarningLabel(commitMessageComposite,
+				SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).exclude(true)
+				.applyTo(warningLabel);
+
+		Composite commitMessageTextComposite = toolkit
+				.createComposite(commitMessageComposite);
+		toolkit.paintBordersFor(commitMessageTextComposite);
+		GridDataFactory.fillDefaults().grab(true, true)
+				.applyTo(commitMessageTextComposite);
+		GridLayoutFactory.fillDefaults().numColumns(1)
+				.extendedMargins(2, 2, 2, 2)
+				.applyTo(commitMessageTextComposite);
 
 		final CommitProposalProcessor commitProposalProcessor = new CommitProposalProcessor() {
 			@Override
@@ -99,8 +112,8 @@
 				return CommitMessageHistory.getCommitHistory();
 			}
 		};
-		commitMessageText = new CommitMessageArea(
-				commitMessageComposite, EMPTY_STRING, toolkit.getBorderStyle()) {
+		commitMessageText = new CommitMessageArea(commitMessageTextComposite,
+				EMPTY_STRING, toolkit.getBorderStyle()) {
 			@Override
 			protected CommitProposalProcessor getCommitProposalProcessor() {
 				return commitProposalProcessor;
@@ -228,6 +241,14 @@
 		commitMessageComponent = new CommitMessageComponent(listener);
 		commitMessageComponent.attachControls(commitMessageText, authorText,
 				committerText);
+
+		ModifyListener modifyListener = new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateMessage();
+			}
+		};
+		authorText.addModifyListener(modifyListener);
+		committerText.addModifyListener(modifyListener);
 
 		// react on selection changes
 		IWorkbenchPartSite site = getSite();

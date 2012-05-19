@@ -1,0 +1,5 @@
+	private boolean isContainedInAnyRemoteRef(RevCommit commit) throws IOException {
+		Collection<Ref> remoteRefs = repository.getRefDatabase().getRefs(Constants.R_REMOTES).values();
+		return RevUtils.isContainedInAnyRef(repository, commit, remoteRefs);
+	}
+
