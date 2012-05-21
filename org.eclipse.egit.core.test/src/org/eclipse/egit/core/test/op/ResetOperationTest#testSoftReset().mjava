@@ -2,8 +2,8 @@
 	public void testSoftReset() throws Exception {
 		setupRepository();
 		String fileInIndexPath = fileInIndex.getLocation().toPortableString();
-		new ResetOperation(repository, initialCommit.getName(),
-				ResetOperation.ResetType.SOFT).execute(null);
+		new ResetOperation(repository, initialCommit.getName(), ResetType.SOFT)
+				.execute(null);
 		// .project must remain
 		assertTrue(projectFile.exists());
 		assertTrue(project.getProject().exists());

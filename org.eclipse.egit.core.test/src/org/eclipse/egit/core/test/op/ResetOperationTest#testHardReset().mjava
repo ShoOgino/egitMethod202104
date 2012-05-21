@@ -2,8 +2,8 @@
 	public void testHardReset() throws Exception {
 		setupRepository();
 		String fileInIndexPath = fileInIndex.getLocation().toPortableString();
-		new ResetOperation(repository, initialCommit.getName(),
-				ResetOperation.ResetType.HARD).execute(null);
+		new ResetOperation(repository, initialCommit.getName(), ResetType.HARD)
+				.execute(null);
 		// .project must disappear, related Eclipse project must be deleted
 		assertFalse(projectFile.exists());
 		assertFalse(project.getProject().exists());
