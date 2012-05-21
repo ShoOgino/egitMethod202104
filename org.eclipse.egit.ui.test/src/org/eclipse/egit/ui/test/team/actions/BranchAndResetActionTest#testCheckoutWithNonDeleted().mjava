@@ -54,8 +54,10 @@
 				}
 			});
 
-			showUndeleted.bot().radio(
-					UIText.NonDeletedFilesTree_FileSystemPathsButton).click();
+			SWTBotToolbarDropDownButton pathButton = showUndeleted.bot().toolbarDropDownButton();
+			pathButton.menuItem(UIText.NonDeletedFilesTree_FileSystemPathsButton).click();
+			// see http://www.eclipse.org/forums/index.php/t/159133/ why we need this
+			pathButton.pressShortcut(KeyStroke.getInstance("ESC"));
 			// fs path
 			IPath path = new Path(lookupRepository(repositoryFile)
 					.getWorkTree().getPath()).append(PROJ1).append(FOLDER)
@@ -64,18 +66,17 @@
 			for (int i = 0; i < path.segmentCount(); i++) {
 				boolean found = false;
 				String segment = path.segment(i);
-				for (SWTBotTreeItem item : items) {
+				for (SWTBotTreeItem item : items)
 					if (item.getText().equals(segment)) {
 						found = true;
 						items = item.getItems();
 					}
-				}
 				assertTrue(found);
 			}
-
+			pathButton.menuItem(UIText.NonDeletedFilesTree_ResourcePathsButton).click();
+			// see http://www.eclipse.org/forums/index.php/t/159133/ why we need this
+			pathButton.pressShortcut(KeyStroke.getInstance("ESC"));
 			// resource path
-			showUndeleted.bot().radio(
-					UIText.NonDeletedFilesTree_ResourcePathsButton).click();
 			assertEquals("ToBeDeleted", showUndeleted.bot().tree()
 					.getAllItems()[0].getItems()[0].getItems()[0].getText());
 			Display.getDefault().syncExec(new Runnable() {
