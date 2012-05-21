@@ -3,12 +3,13 @@
 		IFile file1 = testUtils.addFileToProject(project.getProject(), "a.txt",
 				"some text");
 
+		assertFalse(testRepository.inIndex(file1.getLocation()
+				.toPortableString()));
+
 		resources.add(file1);
 		new AddToIndexOperation(resources).execute(null);
 
 		assertTrue(testRepository.inIndex(file1.getLocation()
 				.toPortableString()));
-		assertTrue(testRepository.getDirCacheEntryLength(file1.getLocation()
-				.toPortableString()) == 9);
 	}
 
