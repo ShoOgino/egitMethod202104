@@ -1,0 +1,25 @@
+	public boolean finish() {
+		boolean head = false;
+		if (getControl() != null) {
+			head = useMaster.getSelection();
+			// store settings
+			IDialogSettings settings = getWizard().getDialogSettings();
+			if (settings != null)
+				settings.put(GIT_PAGE_USE_MASTER, head);
+		} else {
+			// use whatever was used last time
+			IDialogSettings settings = getWizard().getDialogSettings();
+			if (settings != null)
+				head = settings.getBoolean(GIT_PAGE_USE_MASTER);
+		}
+
+		if (head && descriptions != null)
+			// modify tags on bundle import descriptions
+			for (int i = 0; i < descriptions.length; i++) {
+				URI scmUri = descriptions[i].getUri();
+				descriptions[i].setUrl(removeTag(scmUri));
+			}
+
+		return true;
+	}
+

@@ -1,0 +1,9 @@
+	public void setSelection(ScmUrlImportDescription[] descriptions) {
+		this.descriptions = descriptions;
+		// fill viewer
+		if (bundlesViewer != null) {
+			bundlesViewer.setInput(descriptions);
+			updateCount();
+		}
+	}
+
