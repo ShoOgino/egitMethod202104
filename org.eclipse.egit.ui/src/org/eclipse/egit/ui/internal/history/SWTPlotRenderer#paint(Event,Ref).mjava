@@ -18,6 +18,13 @@
 			textHeight = g.stringExtent("/").y; //$NON-NLS-1$
 
 		final TableItem ti = (TableItem) event.item;
-		paintCommit((PlotCommit<SWTLane>) ti.getData(), event.height);
+		SWTCommit commit = (SWTCommit) ti.getData();
+		try {
+			commit.parseBody();
+		} catch (IOException e) {
+			Activator.error("Error parsing body", e); //$NON-NLS-1$
+			return;
+		}
+		paintCommit(commit , event.height);
 	}
 
