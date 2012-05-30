@@ -85,7 +85,7 @@
 										CoreText.PushOperation_InternalExceptionOccurredMessage,
 										errorMessage);
 						handleException(uri, e, userMessage);
-					} catch (InvalidRemoteException e) {
+					} catch (Exception e) {
 						handleException(uri, e, e.getMessage());
 					}
 
@@ -116,7 +116,7 @@
 						errorMessage);
 				URIish uri = getPushURIForErrorHandling();
 				handleException(uri, e, userMessage);
-			} catch (InvalidRemoteException e) {
+			} catch (Exception e) {
 				URIish uri = getPushURIForErrorHandling();
 				handleException(uri, e, e.getMessage());
 			}

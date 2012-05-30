@@ -9,7 +9,7 @@
 				try {
 					if (add.call() != null)
 						repo.notifyIndexChanged();
-				} catch (JGitInternalException e) {
+				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());
 				}

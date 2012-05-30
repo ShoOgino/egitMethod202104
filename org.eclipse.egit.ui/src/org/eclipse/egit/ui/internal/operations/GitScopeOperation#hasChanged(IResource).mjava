@@ -11,10 +11,7 @@
 			hasChanged |= repoStatus.getModified().contains(path);
 			hasChanged |= repoStatus.getRemoved().contains(path);
 			hasChanged |= repoStatus.getUntracked().contains(path);
-		} catch (NoWorkTreeException e) {
-			Activator.logError(UIText.GitScopeOperation_couldNotDetermineState,
-					e);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Activator.logError(UIText.GitScopeOperation_couldNotDetermineState,
 					e);
 		}

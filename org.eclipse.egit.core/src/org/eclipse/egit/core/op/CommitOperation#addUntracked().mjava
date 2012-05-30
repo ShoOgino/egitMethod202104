@@ -8,12 +8,11 @@
 				addCommand.addFilepattern(path);
 				fileAdded = true;
 			}
-		if (fileAdded) {
+		if (fileAdded)
 			try {
 				addCommand.call();
-			} catch (NoFilepatternException e) {
+			} catch (Exception e) {
 				throw new CoreException(Activator.error(e.getMessage(), e));
 			}
-		}
 	}
 

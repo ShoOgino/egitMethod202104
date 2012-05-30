@@ -10,7 +10,7 @@
 					for (String path : paths)
 						sync.addPath(path);
 					updates = sync.call();
-				} catch (JGitInternalException e) {
+				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());
 				} finally {

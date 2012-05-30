@@ -26,7 +26,7 @@
 		} catch (JGitInternalException e) {
 			throw new InvocationTargetException(e.getCause() != null ? e
 					.getCause() : e);
-		} catch (InvalidRemoteException e) {
+		} catch (Exception e) {
 			throw new InvocationTargetException(e);
 		}
 	}
