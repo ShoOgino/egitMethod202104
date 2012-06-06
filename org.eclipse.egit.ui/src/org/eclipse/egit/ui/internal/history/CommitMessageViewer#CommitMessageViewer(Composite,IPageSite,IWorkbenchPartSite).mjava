@@ -51,8 +51,13 @@
 				}
 			}
 		};
-		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(
-				listener);
+
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		store.addPropertyChangeListener(listener);
+		fill = store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL);
+		setWrap(store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP));
 
 		// global action handlers for select all and copy
 		final IAction selectAll = new Action() {
