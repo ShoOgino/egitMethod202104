@@ -9,8 +9,8 @@
 	public TestProject(final boolean remove, String path, boolean insidews, File workspaceSupplement) throws CoreException {
 		this.workspaceSupplement = workspaceSupplement;
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProjectDescription description = createDescription(remove, path,
-				insidews, root, workspaceSupplement);
+		IProjectDescription description = createDescription(path, insidews,
+				root, workspaceSupplement);
 		project = root.getProject(description.getName());
 		if (remove)
 			project.delete(true, null);
