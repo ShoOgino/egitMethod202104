@@ -1,5 +1,10 @@
 	void doPaint(final Event event) {
 		final RevCommit c = (RevCommit) ((TableItem) event.item).getData();
+		if (c instanceof SWTCommit) {
+			final SWTLane lane = ((SWTCommit) c).getLane();
+			if (lane != null && lane.color.isDisposed())
+				return;
+		}
 		if (highlight != null && c.has(highlight))
 			event.gc.setFont(hFont);
 		else
