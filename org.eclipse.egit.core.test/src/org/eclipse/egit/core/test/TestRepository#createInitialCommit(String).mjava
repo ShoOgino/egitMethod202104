@@ -5,15 +5,12 @@
 	 *            commit message
 	 * @return commit object
 	 * @throws IOException
-	 * @throws NoHeadException
-	 * @throws NoMessageException
-	 * @throws ConcurrentRefUpdateException
 	 * @throws JGitInternalException
-	 * @throws WrongRepositoryStateException
+	 * @throws GitAPIException
+	 * @throws NoFilepatternException
 	 */
 	public RevCommit createInitialCommit(String message) throws IOException,
-			NoHeadException, NoMessageException, ConcurrentRefUpdateException,
-			JGitInternalException, WrongRepositoryStateException {
+			JGitInternalException, NoFilepatternException, GitAPIException {
 		String repoPath = repository.getWorkTree().getAbsolutePath();
 		File file = new File(repoPath, "dummy");
 		if (!file.exists())

@@ -20,7 +20,7 @@
 			}
 		} catch (RuntimeException e) {
 			throw new CoreException(Activator.error(CoreText.AddToIndexOperation_failed, e));
-		} catch (NoFilepatternException e) {
+		} catch (GitAPIException e) {
 			throw new CoreException(Activator.error(CoreText.AddToIndexOperation_failed, e));
 		} finally {
 			for (final RepositoryMapping rm : addCommands.keySet())

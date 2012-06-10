@@ -5,9 +5,11 @@
 		if (repository == null)
 			return null;
 
+		int totalBranchCount;
 		List<Ref> branchesOfCommit;
 		try {
-			branchesOfCommit = getBranchesOfCommit(page, repository);
+			totalBranchCount = getBranchesOfCommit(page, repository, false).size();
+			branchesOfCommit = getBranchesOfCommit(page, repository, true);
 		} catch (IOException e) {
 			throw new ExecutionException("Could not obtain current Branch", e); //$NON-NLS-1$
 		}
@@ -19,7 +21,12 @@
 		final Shell shell = getPart(event).getSite().getShell();
 
 		final List<Ref> branchesToDelete;
-		if (branchesOfCommit.size() > 1) {
+		// we will show the dialog if there are either multiple branches that might be
+		// deleted or if one of the branches is the current head (which we can't delete);
+		// in the latter case, we may show the dialog even if there is only one branch to
+		// delete instead of quietly deleting an unexpected one, for example a remote
+		// tracking branch
+		if (totalBranchCount > 1) {
 			BranchSelectionDialog<Ref> dlg = new BranchSelectionDialog<Ref>(
 					shell,
 					branchesOfCommit,

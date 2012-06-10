@@ -1,0 +1,11 @@
+	public void loadCommit(RevCommit c) {
+		if (job == null)
+			return;
+		job.setLoadHint(c);
+		if (trace)
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.HISTORYVIEW.getLocation(),
+					"Scheduling GenerateHistoryJob"); //$NON-NLS-1$
+		schedule(job);
+	}
+

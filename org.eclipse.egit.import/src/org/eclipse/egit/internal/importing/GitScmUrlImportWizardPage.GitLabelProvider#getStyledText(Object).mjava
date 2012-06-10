@@ -1,0 +1,23 @@
+		private StyledString getStyledText(Object element) {
+			StyledString styledString = new StyledString();
+			if (element instanceof ScmUrlImportDescription) {
+				ScmUrlImportDescription description = (ScmUrlImportDescription) element;
+				String project = description.getProject();
+				URI scmUrl = description.getUri();
+				String version = getTag(scmUrl);
+				String host = getServer(scmUrl);
+				styledString.append(project);
+				if (version != null) {
+					styledString.append(' ');
+					styledString.append(version, StyledString.DECORATIONS_STYLER);
+				}
+				styledString.append(' ');
+				styledString.append('[', StyledString.DECORATIONS_STYLER);
+				styledString.append(host, StyledString.DECORATIONS_STYLER);
+				styledString.append(']', StyledString.DECORATIONS_STYLER);
+				return styledString;
+			}
+			styledString.append(element.toString());
+			return styledString;
+		}
+

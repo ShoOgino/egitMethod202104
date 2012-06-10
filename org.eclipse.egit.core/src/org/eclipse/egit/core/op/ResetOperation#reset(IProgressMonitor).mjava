@@ -11,7 +11,7 @@
 		reset.setRef(refName);
 		try {
 			reset.call();
-		} catch (IOException e) {
+		} catch (GitAPIException e) {
 			throw new TeamException(e.getLocalizedMessage(), e.getCause());
 		}
 		monitor.worked(1);

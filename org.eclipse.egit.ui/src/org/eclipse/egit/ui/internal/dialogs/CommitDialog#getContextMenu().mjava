@@ -24,7 +24,7 @@
 				}
 				try {
 					addCommand.call();
-				} catch (NoFilepatternException e) {
+				} catch (Exception e) {
 					Activator.logError(UIText.CommitDialog_ErrorAddingFiles, e);
 				}
 				for (Iterator<?> it = sel.iterator(); it.hasNext();) {

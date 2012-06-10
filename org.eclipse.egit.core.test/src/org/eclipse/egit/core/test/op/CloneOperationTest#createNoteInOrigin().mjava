@@ -1,6 +1,4 @@
-	protected void createNoteInOrigin() throws NoFilepatternException, NoHeadException,
-			NoMessageException, UnmergedPathException,
-			ConcurrentRefUpdateException, WrongRepositoryStateException {
+	protected void createNoteInOrigin() throws GitAPIException {
 		Git git = new Git(repository1.getRepository());
 		git.add().addFilepattern("file.txt").call();
 		RevCommit commit = git.commit().setMessage("Initial commit").call();

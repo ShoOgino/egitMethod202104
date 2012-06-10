@@ -38,6 +38,8 @@
 							StyledString.QUALIFIER_STYLER);
 				} catch (IOException ignored) {
 					// Ignored
+				} finally {
+					walk.release();
 				}
 			}
 		}

@@ -34,7 +34,7 @@
 							refreshMonitor.worked(1);
 					}
 					refreshMonitor.done();
-				} catch (JGitInternalException e) {
+				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());
 				} catch (IOException e) {

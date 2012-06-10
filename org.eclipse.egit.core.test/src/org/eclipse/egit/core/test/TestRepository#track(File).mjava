@@ -3,14 +3,12 @@
 	 *
 	 * @param file
 	 * @throws IOException
+	 * @throws GitAPIException
+	 * @throws NoFilepatternException
 	 */
-	public void track(File file) throws IOException {
+	public void track(File file) throws IOException, NoFilepatternException, GitAPIException {
 		String repoPath = getRepoRelativePath(new Path(file.getPath())
 				.toString());
-		try {
-			new Git(repository).add().addFilepattern(repoPath).call();
-		} catch (NoFilepatternException e) {
-			throw new IOException(e.getMessage());
-		}
+		new Git(repository).add().addFilepattern(repoPath).call();
 	}
 

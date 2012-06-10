@@ -10,12 +10,13 @@
 	 * @throws UnmergedPathException
 	 * @throws ConcurrentRefUpdateException
 	 * @throws JGitInternalException
+	 * @throws GitAPIException
 	 * @throws WrongRepositoryStateException
 	 */
 	public RevCommit commit(String message) throws NoHeadException,
 			NoMessageException, UnmergedPathException,
 			ConcurrentRefUpdateException, JGitInternalException,
-			WrongRepositoryStateException {
+			WrongRepositoryStateException, GitAPIException {
 		Git git = new Git(repository);
 		CommitCommand commitCommand = git.commit();
 		commitCommand.setAuthor("J. Git", "j.git@egit.org");

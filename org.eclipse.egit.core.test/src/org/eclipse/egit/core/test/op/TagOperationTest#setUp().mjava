@@ -19,7 +19,7 @@
 						repository1
 								.track(EFS.getStore(resource.getLocationURI())
 										.toLocalFile(0, null));
-					} catch (IOException e) {
+					} catch (Exception e) {
 						throw new CoreException(Activator.error(e.getMessage(),
 								e));
 					}

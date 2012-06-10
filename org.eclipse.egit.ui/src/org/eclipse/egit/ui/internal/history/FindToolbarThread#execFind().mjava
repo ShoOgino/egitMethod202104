@@ -43,6 +43,12 @@
 				// Finds for the pattern in the revision history.
 				notFound = true;
 				SWTCommit revision = fileRevisions[i];
+				try {
+					revision.parseBody();
+				} catch (IOException e) {
+					Activator.error("Error parsing body", e); //$NON-NLS-1$
+					continue;
+				}
 
 				if (findInCommitId) {
 					String contentId = revision.getId().name();

@@ -9,7 +9,7 @@
 				.toString());
 		try {
 			new Git(repository).rm().addFilepattern(repoPath).call();
-		} catch (NoFilepatternException e) {
+		} catch (GitAPIException e) {
 			throw new IOException(e.getMessage());
 		}
 	}

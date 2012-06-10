@@ -1,0 +1,36 @@
+	/**
+	 * Get the status of whether the commit operation should be enabled or
+	 * disabled.
+	 * <p>
+	 * This method checks the current state of the widgets and must always be
+	 * called from the UI-thread.
+	 * <p>
+	 * The returned status includes a message and type denoting why committing
+	 * cannot be completed.
+	 *
+	 * @return non-null commit status
+	 */
+	public CommitStatus getStatus() {
+		String authorValue = authorText.getText();
+		if (authorValue.length() == 0
+				|| RawParseUtils.parsePersonIdent(authorValue) == null)
+			return new CommitStatus(
+					UIText.CommitMessageComponent_MessageInvalidAuthor,
+					IMessageProvider.ERROR);
+
+		String committerValue = committerText.getText();
+		if (committerValue.length() == 0
+				|| RawParseUtils.parsePersonIdent(committerValue) == null) {
+			return new CommitStatus(
+					UIText.CommitMessageComponent_MessageInvalidCommitter,
+					IMessageProvider.ERROR);
+		}
+
+		if (amending && amendingCommitInRemoteBranch)
+			return new CommitStatus(
+					UIText.CommitMessageComponent_AmendingCommitInRemoteBranch,
+					IMessageProvider.WARNING);
+
+		return CommitStatus.OK;
+	}
+

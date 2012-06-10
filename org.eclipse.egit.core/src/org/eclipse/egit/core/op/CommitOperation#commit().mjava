@@ -21,20 +21,9 @@
 				for(String path:commitFileList)
 					commitCommand.setOnly(path);
 			commit = commitCommand.call();
-		} catch (NoHeadException e) {
-			throw new TeamException(e.getLocalizedMessage(), e);
-		} catch (NoMessageException e) {
-			throw new TeamException(e.getLocalizedMessage(), e);
-		} catch (UnmergedPathException e) {
-			throw new TeamException(e.getLocalizedMessage(), e);
-		} catch (ConcurrentRefUpdateException e) {
+		} catch (Exception e) {
 			throw new TeamException(
 					CoreText.MergeOperation_InternalError, e);
-		} catch (JGitInternalException e) {
-			throw new TeamException(
-					CoreText.MergeOperation_InternalError, e);
-		} catch (WrongRepositoryStateException e) {
-			throw new TeamException(e.getLocalizedMessage(), e);
 		}
 	}
 

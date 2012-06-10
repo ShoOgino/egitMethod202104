@@ -1,9 +1,7 @@
 	@Override
 	protected SWTLane createLane() {
-		final SWTLane lane = new SWTLane();
 		if (availableColors.isEmpty())
 			repackColors();
-		lane.color = availableColors.removeFirst();
-		return lane;
+		return new SWTLane(availableColors.removeFirst());
 	}
 

@@ -28,7 +28,7 @@
 		if (addCommand != null)
 			try {
 				addCommand.call();
-			} catch (NoFilepatternException e) {
+			} catch (GitAPIException e) {
 				Activator.logError(UIText.AddToIndexCommand_addingFilesFailed,
 						e);
 			}

@@ -1,14 +1,26 @@
-	CommitGraphTable(Composite parent) {
+	CommitGraphTable(Composite parent, final TableLoader loader) {
 		nFont = UIUtils.getFont(UIPreferences.THEME_CommitGraphNormalFont);
 		hFont = highlightFont();
-		infoBackgroundColor = parent.getDisplay().getSystemColor(
-				SWT.COLOR_INFO_BACKGROUND);
+		tableLoader = loader;
 
-		Table rawTable = new Table(parent, SWT.MULTI | SWT.H_SCROLL
+		final Table rawTable = new Table(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		rawTable.setHeaderVisible(true);
 		rawTable.setLinesVisible(false);
 		rawTable.setFont(nFont);
+		rawTable.addListener(SWT.SetData, new Listener() {
+			public void handleEvent(Event event) {
+				if (tableLoader != null) {
+					TableItem item = (TableItem) event.item;
+					int index = rawTable.indexOf(item);
+					if (trace)
+						GitTraceLocation.getTrace().trace(
+								GitTraceLocation.HISTORYVIEW.getLocation(),
+								"Item " + index); //$NON-NLS-1$
+					tableLoader.loadItem(index);
+				}
+			}
+		});
 
 		final TableLayout layout = new TableLayout();
 		rawTable.setLayout(layout);
@@ -55,61 +67,8 @@
 			}
 		});
 
-		table.getTable().addMouseTrackListener(new MouseTrackAdapter() {
-			@Override
-			public void mouseHover(MouseEvent e) {
-				synchronized (this) {
-					disposeHover();
-
-					TableItem item = table.getTable().getItem(
-							new Point(e.x, e.y));
-					if (item == null)
-						return;
-					SWTCommit commit = (SWTCommit) item.getData();
-					if (commit == null || commit.getRefCount() == 0)
-						return;
-
-					int relativeX = e.x - item.getBounds().x;
-					for (int i = 0; i < commit.getRefCount(); i++) {
-						Point textSpan = renderer.getRefHSpan(commit.getRef(i));
-						if ((textSpan != null)
-								&& (relativeX >= textSpan.x && relativeX <= textSpan.y)) {
-							hoverShell = new Shell(getTableView().getTable()
-									.getShell(), SWT.ON_TOP | SWT.NO_FOCUS
-									| SWT.TOOL);
-							hoverShell.setLayout(new FillLayout());
-							Point tableLocation = getTableView().getTable()
-									.toControl(0, 0);
-							hoverShell.setLocation(
-									-tableLocation.x + e.x,
-									-tableLocation.y + e.y
-											- renderer.getTextHeight());
-							Label label = new Label(hoverShell, SWT.NONE);
-							label.setText(getHooverText(commit.getRef(i)));
-							label.setBackground(infoBackgroundColor);
-							hoverShell.pack();
-							hoverShell.setVisible(true);
-						}
-					}
-				}
-			}
-
-			private String getHooverText(Ref r) {
-				String name = r.getName();
-				if (r.isSymbolic())
-					name += ": " + r.getLeaf().getName(); //$NON-NLS-1$
-				return name;
-			}
-
-		});
-
-		table.getTable().addMouseMoveListener(new MouseMoveListener() {
-			public void mouseMove(MouseEvent e) {
-				synchronized (this) {
-					disposeHover();
-				}
-			}
-		});
+		final RefHoverInformationControlManager hoverManager = new RefHoverInformationControlManager();
+		hoverManager.install(table.getTable());
 
 		table.getTable().addDisposeListener(new DisposeListener() {
 
@@ -118,7 +77,7 @@
 					allCommits.dispose();
 				if (renderer != null)
 					renderer.dispose();
-				disposeHover();
+				hoverManager.dispose();
 			}
 		});
 

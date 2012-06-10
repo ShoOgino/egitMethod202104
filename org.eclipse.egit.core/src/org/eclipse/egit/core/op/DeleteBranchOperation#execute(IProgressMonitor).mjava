@@ -38,6 +38,8 @@
 						break;
 					} catch (JGitInternalException e) {
 						throw new CoreException(Activator.error(e.getMessage(), e));
+					} catch (GitAPIException e) {
+						throw new CoreException(Activator.error(e.getMessage(), e));
 					}
 					actMonitor.worked(1);
 				}

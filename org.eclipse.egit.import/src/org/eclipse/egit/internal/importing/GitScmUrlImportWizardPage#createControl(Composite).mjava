@@ -1,0 +1,49 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createControl(Composite parent) {
+		Composite comp = SWTUtils.createHVFillComposite(parent, SWTUtils.MARGINS_NONE, 1);
+		Composite group = SWTUtils.createHFillComposite(comp, SWTUtils.MARGINS_NONE, 1);
+
+		Button versions = SWTUtils.createRadioButton(group, Messages.GitScmUrlImportWizardPage_importVersion);
+		useMaster = SWTUtils.createRadioButton(group, Messages.GitScmUrlImportWizardPage_importMaster);
+		SelectionListener listener = new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				bundlesViewer.refresh(true);
+			}
+		};
+		versions.addSelectionListener(listener);
+		useMaster.addSelectionListener(listener);
+
+		Table table = new Table(comp, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.heightHint = 200;
+		gd.widthHint = 225;
+		table.setLayoutData(gd);
+
+		bundlesViewer = new TableViewer(table);
+		bundlesViewer.setLabelProvider(new GitLabelProvider());
+		bundlesViewer.setContentProvider(new ArrayContentProvider());
+		bundlesViewer.setComparator(new ViewerComparator());
+		counterLabel = new Label(comp, SWT.NONE);
+		counterLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		setControl(comp);
+		setPageComplete(true);
+
+		// Initialize versions versus master
+		// TODO: temporarily disabled, until bug 367712 is fixed
+		// IDialogSettings settings = getWizard().getDialogSettings();
+		// boolean useHEAD = settings != null
+		//		&& settings.getBoolean(GIT_PAGE_USE_MASTER);
+		// useHead.setSelection(useHEAD);
+		// versions.setSelection(!useHEAD);
+		useMaster.setSelection(true);
+		versions.setEnabled(false);
+
+		if (descriptions != null) {
+			bundlesViewer.setInput(descriptions);
+			updateCount();
+		}
+
+	}
+

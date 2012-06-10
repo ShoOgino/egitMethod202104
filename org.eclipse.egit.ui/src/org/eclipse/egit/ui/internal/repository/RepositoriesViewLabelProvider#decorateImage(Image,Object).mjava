@@ -36,6 +36,8 @@
 					} catch (IncorrectObjectTypeException e) {
 						// Ref is a lightweight tag, not an annotated tag
 						compareString = id.name();
+					} finally {
+						rw.release();
 					}
 				} else if (refName.startsWith(Constants.R_REMOTES)) {
 					// remote branch: HEAD would be on the commit id to which
@@ -44,8 +46,12 @@
 					if (id == null)
 						return image;
 					RevWalk rw = new RevWalk(node.getRepository());
-					RevCommit commit = rw.parseCommit(id);
-					compareString = commit.getId().name();
+					try {
+						RevCommit commit = rw.parseCommit(id);
+						compareString = commit.getId().name();
+					} finally {
+						rw.release();
+					}
 				} else if (refName.equals(Constants.HEAD))
 					return getDecoratedImage(image);
 				else {
