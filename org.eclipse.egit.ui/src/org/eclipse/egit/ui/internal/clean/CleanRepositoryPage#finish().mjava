@@ -1,0 +1,38 @@
+	/**
+	 * Do the cleaning with the selected values.
+	 */
+	public void finish() {
+		try {
+			final Set<String> itemsToClean = getItemsToClean();
+
+			getContainer().run(true, false, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor) throws InvocationTargetException,
+						InterruptedException {
+					monitor.beginTask(UIText.CleanRepositoryPage_cleaningItems, IProgressMonitor.UNKNOWN);
+
+					Git git = Git.wrap(repository);
+					CleanCommand command = git.clean().setDryRun(false);
+					command.setCleanDirectories(cleanDirectories);
+					command.setIgnore(!includeIgnored);
+					command.setPaths(itemsToClean);
+					try {
+						command.call();
+					} catch (GitAPIException ex) {
+						Activator.logError("cannot call clean command!", ex); //$NON-NLS-1$
+					}
+
+					try {
+						IProject[] projects = ProjectUtil.getProjectsContaining(repository, itemsToClean);
+						ProjectUtil.refreshResources(projects, new SubProgressMonitor(monitor, 1));
+					} catch (CoreException e) {
+						// could not refresh... not a "real" problem
+					}
+
+					monitor.done();
+				}
+			});
+		} catch (Exception e) {
+			Activator.logError("Unexpected exception while cleaning", e); //$NON-NLS-1$
+		}
+	}
+

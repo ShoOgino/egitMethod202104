@@ -1,0 +1,12 @@
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+
+		if(visible)
+			getShell().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					updateCleanItems();
+				}
+			});
+	}
+

@@ -1,0 +1,18 @@
+	/**
+	 * Retrieves the items that the user chose to clean.
+	 * @return the items to clean.
+	 */
+	public Set<String> getItemsToClean() {
+		Set<String> result = new TreeSet<String>();
+		for(Object ele : cleanTable.getCheckedElements()) {
+			String str = ele.toString();
+
+			if(str.endsWith("/")) //$NON-NLS-1$
+				result.add(str.substring(0, str.length() - 1));
+			else
+				result.add(str);
+		}
+
+		return result;
+	}
+

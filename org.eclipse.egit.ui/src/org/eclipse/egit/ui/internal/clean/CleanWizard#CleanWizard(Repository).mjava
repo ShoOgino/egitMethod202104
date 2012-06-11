@@ -1,0 +1,10 @@
+	/**
+	 * Creates a new Wizard and adds all required pages.
+	 * @param repository the repository to clean
+	 */
+	public CleanWizard(Repository repository) {
+		setNeedsProgressMonitor(true);
+		cleanPage = new CleanRepositoryPage(repository);
+		addPage(cleanPage);
+	}
+

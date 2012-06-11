@@ -1,0 +1,91 @@
+	public void createControl(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		main.setLayout(new GridLayout());
+
+		final Button radioCleanFiles = new Button(main, SWT.RADIO);
+		radioCleanFiles.setText(UIText.CleanRepositoryPage_cleanFiles);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(radioCleanFiles);
+
+		final Button radioCleanDirs = new Button(main, SWT.RADIO);
+		radioCleanDirs.setText(UIText.CleanRepositoryPage_cleanDirs);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(radioCleanDirs);
+
+		SelectionAdapter listener = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				cleanDirectories = radioCleanDirs.getSelection();
+				updateCleanItems();
+			}
+		};
+
+		radioCleanFiles.addSelectionListener(listener);
+		radioCleanDirs.addSelectionListener(listener);
+
+		radioCleanFiles.setSelection(true);
+
+		final Image fileImage = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_OBJ_FILE);
+		final Image dirImage = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_OBJ_FOLDER);
+
+		cleanTable = CheckboxTableViewer.newCheckList(main, SWT.BORDER);
+		cleanTable.setContentProvider(new ArrayContentProvider());
+		cleanTable.setLabelProvider(new LabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				if(!(element instanceof String))
+					return null;
+
+				if(((String)element).endsWith("/")) //$NON-NLS-1$
+					return dirImage;
+				else
+					return fileImage;
+			}
+		});
+
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(cleanTable.getControl());
+
+		Composite lowerComp = new Composite(main, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(lowerComp);
+		lowerComp.setLayout(new GridLayout(3, false));
+
+		final Button checkIncludeIgnored = new Button(lowerComp, SWT.CHECK);
+		checkIncludeIgnored.setText(UIText.CleanRepositoryPage_includeIgnored);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(checkIncludeIgnored);
+		checkIncludeIgnored.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				includeIgnored = checkIncludeIgnored.getSelection();
+				updateCleanItems();
+			}
+		});
+
+		Button selAll = new Button(lowerComp, SWT.PUSH);
+		selAll.setText(UIText.WizardProjectsImportPage_selectAll);
+		GridDataFactory.defaultsFor(selAll).applyTo(selAll);
+
+		Button selNone = new Button(lowerComp, SWT.PUSH);
+		selNone.setText(UIText.WizardProjectsImportPage_deselectAll);
+		GridDataFactory.defaultsFor(selNone).applyTo(selNone);
+
+		selAll.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (cleanTable.getInput() instanceof Set<?>) {
+					Set<?> input = (Set<?>) cleanTable.getInput();
+					cleanTable.setCheckedElements(input.toArray());
+				}
+			}
+		});
+
+		selNone.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				cleanTable.setCheckedElements(new Object[0]);
+			}
+		});
+
+		setControl(main);
+	}
+

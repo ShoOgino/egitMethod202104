@@ -1,0 +1,34 @@
+	private void updateCleanItems() {
+		try {
+			getContainer().run(true, false, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor) throws InvocationTargetException,
+						InterruptedException {
+					monitor.beginTask(UIText.CleanRepositoryPage_findingItems, IProgressMonitor.UNKNOWN);
+
+					Git git = Git.wrap(repository);
+					CleanCommand command = git.clean().setDryRun(true);
+					command.setCleanDirectories(cleanDirectories);
+					command.setIgnore(!includeIgnored);
+					try {
+						final Set<String> paths = command.call();
+
+						getShell().getDisplay().syncExec(new Runnable() {
+							public void run() {
+								cleanTable.setInput(paths);
+							}
+						});
+					} catch (GitAPIException ex) {
+						Activator.logError("cannot call clean command!", ex); //$NON-NLS-1$
+					}
+
+					monitor.done();
+				}
+			});
+		} catch (InvocationTargetException e) {
+			Activator.logError("Unexpected exception while finding items to clean", e); //$NON-NLS-1$
+			clearPage();
+		} catch (InterruptedException e) {
+			clearPage();
+		}
+	}
+
