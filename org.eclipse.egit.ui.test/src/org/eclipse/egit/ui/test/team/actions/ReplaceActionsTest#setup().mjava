@@ -15,13 +15,6 @@
 		TagOperation top = new TagOperation(repo, tag, false);
 		top.execute(null);
 		touchAndSubmit(null);
-
-		RepositoriesViewLabelProvider provider = GitRepositoriesViewTestUtils
-				.createLabelProvider();
-		// LOCAL_BRANCHES = provider.getText(new LocalNode(new RepositoryNode(
-		// null, repo), repo));
-		TAGS = provider.getText(new TagsNode(new RepositoryNode(null, repo),
-				repo));
 		waitInUI();
 	}
 

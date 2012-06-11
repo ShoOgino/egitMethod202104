@@ -1,0 +1,8 @@
+	@Test
+	public void testCompareWithPrevious() throws Exception {
+		String menuLabel = util
+				.getPluginLocalizedValue("CompareWithPreviousAction.label");
+		clickCompareWith(menuLabel);
+		waitUntilCompareTreeViewTreeHasNodeCount(1);
+	}
+
