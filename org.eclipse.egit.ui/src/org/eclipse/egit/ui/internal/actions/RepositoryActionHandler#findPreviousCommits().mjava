@@ -4,17 +4,10 @@
 		IResource resource = getSelectedResources()[0];
 		String path = RepositoryMapping.getMapping(resource.getProject())
 				.getRepoRelativePath(resource);
-		final AtomicReference<String> previousPath = new AtomicReference<String>();
 		RevWalk rw = new RevWalk(repository);
 		try {
 			if (path.length() > 0) {
 				FollowFilter filter = FollowFilter.create(path);
-				filter.setRenameCallback(new RenameCallback() {
-					public void renamed(DiffEntry entry) {
-						if (previousPath.get() == null)
-							previousPath.set(entry.getOldPath());
-					}
-				});
 				rw.setTreeFilter(filter);
 			}
 
@@ -27,14 +20,15 @@
 				return result;
 			List<RevCommit> directParents = Arrays.asList(headCommit
 					.getParents());
-			if (previousPath.get() == null)
-				previousPath.set(path);
 
 			RevCommit previousCommit = rw.next();
 			while (previousCommit != null && result.size() < directParents.size()) {
-				if (directParents.contains(previousCommit))
-					result.add(new PreviousCommit(previousCommit, previousPath
-							.get()));
+				if (directParents.contains(previousCommit)) {
+					String previousPath = getPreviousPath(repository,
+							rw.getObjectReader(), headCommit, previousCommit,
+							path);
+					result.add(new PreviousCommit(previousCommit, previousPath));
+				}
 				previousCommit = rw.next();
 			}
 		} finally {
