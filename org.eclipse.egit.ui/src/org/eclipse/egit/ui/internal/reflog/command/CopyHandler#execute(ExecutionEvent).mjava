@@ -1,0 +1,17 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repo = getRepository(event);
+		RevCommit commit = getSelectedCommit(event, repo);
+		if (commit != null) {
+			Clipboard clipboard = new Clipboard(null);
+			try {
+				TextTransfer textTransfer = TextTransfer.getInstance();
+				Transfer[] transfers = new Transfer[] { textTransfer };
+				Object[] data = new Object[] { ObjectId.toString(commit) };
+				clipboard.setContents(data, transfers);
+			} finally {
+				clipboard.dispose();
+			}
+		}
+		return null;
+	}
+

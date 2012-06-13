@@ -1,5 +1,5 @@
-	private DiscardChangesOperation createOperation(IWorkbenchPart part, ExecutionEvent event)
-			throws ExecutionException {
+	private DiscardChangesOperation createOperation(IWorkbenchPart part,
+			ExecutionEvent event) throws ExecutionException {
 
 		IResource[] selectedResources = gatherResourceToOperateOn(event);
 		String revision;
@@ -11,7 +11,8 @@
 
 		IResource[] resourcesInScope;
 		try {
-			resourcesInScope = GitScopeUtil.getRelatedChanges(part, selectedResources);
+			resourcesInScope = GitScopeUtil.getRelatedChanges(part,
+					selectedResources);
 		} catch (InterruptedException e) {
 			// ignore, we will not discard the files in case the user
 			// cancels the scope operation

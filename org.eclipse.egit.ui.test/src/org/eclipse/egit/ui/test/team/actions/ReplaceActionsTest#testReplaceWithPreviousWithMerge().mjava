@@ -1,0 +1,47 @@
+	@Test
+	public void testReplaceWithPreviousWithMerge() throws Exception {
+		Repository repo = lookupRepository(repositoryFile);
+		Git git = new Git(repo);
+		ObjectId masterId = repo.resolve("refs/heads/master");
+		Ref newBranch = git.checkout().setCreateBranch(true)
+				.setStartPoint(commitOfTag.name()).setName("toMerge").call();
+		ByteArrayInputStream bis = new ByteArrayInputStream(
+				"Modified".getBytes());
+		ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1)
+				.getFolder(FOLDER).getFile(FILE2)
+				.setContents(bis, false, false, null);
+		bis.close();
+		PersonIdent committer = new PersonIdent("COMMITTER", "a.c@d",
+				new Date(), TimeZone.getTimeZone("GMT-03:30"));
+		git.commit().setAll(true).setCommitter(committer)
+				.setMessage("To be merged").call();
+		git.merge().include(masterId).call();
+		String newContent = getTestFileContent();
+		String menuLabel = util
+				.getPluginLocalizedValue("replaceWithPreviousVersionAction.label");
+		clickReplaceWith(menuLabel);
+		bot.shell(UIText.DiscardChangesAction_confirmActionTitle).bot()
+				.button(IDialogConstants.OK_LABEL).click();
+		SWTBotShell selectDialog = bot
+				.shell(UIText.CommitSelectDialog_WindowTitle);
+		assertEquals(2, selectDialog.bot().table().rowCount());
+		selectDialog.close();
+		// we have closed, so nothing should have changed
+		String oldContent = getTestFileContent();
+		assertTrue(newContent.equals(oldContent));
+
+		clickReplaceWith(menuLabel);
+		bot.shell(UIText.DiscardChangesAction_confirmActionTitle).bot()
+				.button(IDialogConstants.OK_LABEL).click();
+		selectDialog = bot.shell(UIText.CommitSelectDialog_WindowTitle);
+		selectDialog.bot().table().select(1);
+		selectDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		TestUtil.joinJobs(org.eclipse.egit.ui.JobFamilies.DISCARD_CHANGES);
+		oldContent = getTestFileContent();
+		assertFalse(newContent.equals(oldContent));
+		// cleanup: checkout again master and delete merged branch
+		git.checkout().setName("refs/heads/master").call();
+		git.branchDelete().setBranchNames(newBranch.getName()).setForce(true)
+				.call();
+	}
+

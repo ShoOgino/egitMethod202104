@@ -1,0 +1,38 @@
+	public String getColumnText(final Object element, final int columnIndex) {
+		final RevCommit c = (RevCommit) element;
+		if (columnIndex == 0)
+			return c.getId().abbreviate(7).name();
+		if (columnIndex == 1)
+			return c.getShortMessage();
+		if (columnIndex == 2 || columnIndex == 3) {
+			final PersonIdent author = authorOf(c);
+			if (author != null)
+				switch (columnIndex) {
+				case 2:
+					if (showEmail)
+						return author.getName()
+								+ " <" + author.getEmailAddress() + '>'; //$NON-NLS-1$
+					else
+						return author.getName();
+				case 3:
+					return getDateFormatter().formatDate(author);
+				}
+		}
+		if (columnIndex == 4 || columnIndex == 5) {
+			final PersonIdent committer = committerOf(c);
+			if (committer != null)
+				switch (columnIndex) {
+				case 4:
+					if (showEmail)
+						return committer.getName()
+								+ " <" + committer.getEmailAddress() + '>'; //$NON-NLS-1$
+					else
+						return committer.getName();
+				case 5:
+					return getDateFormatter().formatDate(committer);
+				}
+		}
+
+		return ""; //$NON-NLS-1$
+	}
+

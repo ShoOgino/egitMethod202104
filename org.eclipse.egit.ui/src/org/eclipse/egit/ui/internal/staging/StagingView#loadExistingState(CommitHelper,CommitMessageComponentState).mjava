@@ -12,6 +12,8 @@
 		commitMessageComponent.setCommitter(oldState.getCommitter());
 		commitMessageComponent.setHeadCommit(getCommitId(helper
 				.getPreviousCommit()));
+		commitMessageComponent.setCommitAllowed(helper.canCommit());
+		commitMessageComponent.setCannotCommitMessage(helper.getCannotCommitMessage());
 		boolean amendAllowed = helper.amendAllowed();
 		commitMessageComponent.setAmendAllowed(amendAllowed);
 		if (!amendAllowed)

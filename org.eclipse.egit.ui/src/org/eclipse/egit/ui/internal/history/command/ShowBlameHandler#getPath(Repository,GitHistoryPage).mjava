@@ -1,0 +1,14 @@
+	private String getPath(Repository repo, GitHistoryPage page) {
+		Object input = page.getInputInternal().getSingleItem();
+		if (input == null)
+			return null;
+		if (input instanceof IFile) {
+			IFile file = (IFile) input;
+			RepositoryMapping mapping = RepositoryMapping.getMapping(file);
+			if (mapping != null)
+				return mapping.getRepoRelativePath(file);
+		} else if (input instanceof File)
+			return getRepoRelativePath(repo, (File) input);
+		return null;
+	}
+
