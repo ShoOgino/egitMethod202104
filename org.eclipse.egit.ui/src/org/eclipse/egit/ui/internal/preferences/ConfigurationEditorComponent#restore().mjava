@@ -4,6 +4,27 @@
 	 * @throws IOException
 	 */
 	public void restore() throws IOException {
+		if (changeablePath) {
+			try {
+				IEclipsePreferences node = new InstanceScope()
+						.getNode(org.eclipse.egit.core.Activator
+								.getPluginId());
+				node.remove(GitCorePreferences.core_gitPrefix);
+				node.flush();
+				// Create a temporary FS instance to compute the Git prefix
+				File gitPrefix = FS.detect().gitPrefix();
+				// Update THE FS instance.
+				// TODO: This works today when there is only one FS
+				// instance, but much of the JGit code is actually
+				// written to work if there are multiple instances.
+				FS.DETECTED.setGitPrefix(gitPrefix);
+			} catch (Exception e1) {
+				Activator
+						.logError(
+								UIText.ConfigurationEditorComponent_CannotChangeGitPrefixError,
+								e1);
+			}
+		}
 		try {
 			editableConfig.clear();
 			editableConfig.load();
