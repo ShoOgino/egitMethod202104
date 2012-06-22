@@ -1,22 +1,5 @@
 	private static void check() {
-		String home = System.getenv("HOME"); //$NON-NLS-1$
-		if (home != null)
-			return; // home is set => ok
-		home = calcHomeDir();
-
-		String title = NLS.bind(UIText.ConfigurationChecker_checkHomeDirectory,
-				home);
-		String message = NLS.bind(UIText.ConfigurationChecker_homeNotSet, home);
-		String toggleMessage = UIText.ConfigurationChecker_doNotShowAgain;
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean hidden = !store.getBoolean(UIPreferences.SHOW_HOME_DIR_WARNING);
-		if (!hidden) {
-			MessageDialogWithToggle dialog = MessageDialogWithToggle
-					.openInformation(PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getShell(), title,
-							message, toggleMessage, false, null, null);
-			store.setValue(UIPreferences.SHOW_HOME_DIR_WARNING, !dialog
-					.getToggleState());
-		}
+		checkGitPrefix();
+		checkHome();
 	}
 
