@@ -1,0 +1,14 @@
+	/**
+	 * @param repository
+	 */
+	PushToGerritPage(Repository repository) {
+		super(PushToGerritPage.class.getName());
+		this.repository = repository;
+		setTitle(NLS.bind(UIText.PushToGerritPage_Title, Activator.getDefault()
+				.getRepositoryUtil().getRepositoryName(repository)));
+		setMessage(UIText.PushToGerritPage_Message);
+		settings = getDialogSettings();
+		lastUriKey = repository + LAST_URI_POSTFIX;
+		lastBranchKey = repository + LAST_BRANCH_POSTFIX;
+	}
+

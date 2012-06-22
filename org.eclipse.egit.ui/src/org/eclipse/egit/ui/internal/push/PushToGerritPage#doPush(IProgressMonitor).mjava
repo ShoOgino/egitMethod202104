@@ -1,0 +1,31 @@
+	void doPush(IProgressMonitor monitor) {
+		try {
+			int timeout = Activator.getDefault().getPreferenceStore()
+					.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+			URIish uri = new URIish(uriCombo.getText());
+			Ref currentHead = repository.getRef(Constants.HEAD);
+			RemoteRefUpdate update = new RemoteRefUpdate(repository,
+					currentHead,
+					"refs/for/" + branchText.getText(), false, null, null); //$NON-NLS-1$
+			PushOperationSpecification spec = new PushOperationSpecification();
+
+			spec.addURIRefUpdates(uri, Arrays.asList(update));
+			PushOperationUI op = new PushOperationUI(repository, spec, timeout,
+					false);
+			op.setCredentialsProvider(new EGitCredentialsProvider());
+			PushOperationResult result = op.execute(monitor);
+			PushResultDialog dlg = new PushResultDialog(getShell(), repository,
+					result, op.getDestinationString());
+			dlg.showConfigureButton(false);
+			dlg.open();
+			storeLastUsedUri(uriCombo.getText());
+			storeLastUsedBranch(branchText.getText());
+		} catch (CoreException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		} catch (URISyntaxException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+	}
+

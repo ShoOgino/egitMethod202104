@@ -1,0 +1,16 @@
+	private void checkPage() {
+		setErrorMessage(null);
+		try {
+			if (uriCombo.getText().length() == 0) {
+				setErrorMessage(UIText.PushToGerritPage_MissingUriMessage);
+				return;
+			}
+			if (branchText.getText().length() == 0) {
+				setErrorMessage(UIText.PushToGerritPage_MissingBranchMessage);
+				return;
+			}
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+

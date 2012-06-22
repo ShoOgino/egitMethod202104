@@ -1,0 +1,12 @@
+	/**
+	 * @param repository
+	 *            the repository
+	 */
+	public PushToGerritWizard(Repository repository) {
+		Assert.isNotNull(repository);
+		this.repository = repository;
+		setNeedsProgressMonitor(true);
+		setHelpAvailable(false);
+		setWindowTitle(UIText.PushToGerritWizard_Title);
+	}
+

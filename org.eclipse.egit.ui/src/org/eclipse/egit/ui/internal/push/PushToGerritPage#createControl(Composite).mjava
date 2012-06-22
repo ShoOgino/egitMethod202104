@@ -1,0 +1,63 @@
+	public void createControl(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(3, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		new Label(main, SWT.NONE).setText(UIText.PushToGerritPage_UriLabel);
+		uriCombo = new Combo(main, SWT.DROP_DOWN);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
+				.applyTo(uriCombo);
+		uriCombo.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+
+		branchTextlabel = new Label(main, SWT.NONE);
+
+		// we visualize the prefix here
+		Text prefix = new Text(main, SWT.NONE);
+		prefix.setText("refs/for/"); //$NON-NLS-1$
+		prefix.setEnabled(false);
+
+		branchTextlabel.setText(UIText.PushToGerritPage_BranchLabel);
+		branchText = new Text(main, SWT.SINGLE | SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(branchText);
+		branchText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+
+		// give focus to the nameText if label is activated using the mnemonic
+		branchTextlabel.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(TraverseEvent e) {
+				branchText.setFocus();
+				branchText.selectAll();
+			}
+		});
+		addRefContentProposalToText(branchText);
+
+		// get all available URIs from the repository
+		SortedSet<String> uris = new TreeSet<String>();
+		try {
+			for (RemoteConfig rc : RemoteConfig.getAllRemoteConfigs(repository
+					.getConfig())) {
+				if (rc.getURIs().size() > 0)
+					uris.add(rc.getURIs().get(0).toPrivateString());
+				for (URIish u : rc.getPushURIs())
+					uris.add(u.toPrivateString());
+
+			}
+		} catch (URISyntaxException e) {
+			Activator.handleError(e.getMessage(), e, false);
+			setErrorMessage(e.getMessage());
+		}
+		for (String aUri : uris)
+			uriCombo.add(aUri);
+		selectLastUsedUri();
+		setLastUsedBranch();
+		branchText.setFocus();
+		Dialog.applyDialogFont(main);
+		setControl(main);
+	}
+

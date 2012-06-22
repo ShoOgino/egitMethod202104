@@ -1,0 +1,8 @@
+	protected IDialogSettings getDialogSettings() {
+		IDialogSettings s = Activator.getDefault().getDialogSettings();
+		IDialogSettings section = s.getSection(PUSH_TO_GERRIT_PAGE_SECTION);
+		if (section == null)
+			section = s.addNewSection(PUSH_TO_GERRIT_PAGE_SECTION);
+		return section;
+	}
+
