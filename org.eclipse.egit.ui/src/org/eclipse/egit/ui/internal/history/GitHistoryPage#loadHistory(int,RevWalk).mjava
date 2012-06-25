@@ -5,7 +5,8 @@
 	 */
 	private void loadHistory(final int itemToLoad, RevWalk walk) {
 		if (itemToLoad == INITIAL_ITEM) {
-			job = new GenerateHistoryJob(this, graph.getControl(), walk);
+			job = new GenerateHistoryJob(this, graph.getControl(), walk,
+					resources);
 			job.setRule(this);
 		}
 		job.setLoadHint(itemToLoad);

@@ -3,7 +3,10 @@
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(1, false));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
-		table = new CommitGraphTable(main, null);
+		final ResourceManager resources = new LocalResourceManager(
+				JFaceResources.getResources());
+		UIUtils.hookDisposal(main, resources);
+		table = new CommitGraphTable(main, null, resources);
 		table.getTableView().addSelectionChangedListener(
 				new ISelectionChangedListener() {
 					public void selectionChanged(SelectionChangedEvent event) {
@@ -25,7 +28,7 @@
 		// allow for some room here
 		GridDataFactory.fillDefaults().grab(true, true).minSize(SWT.DEFAULT,
 				400).applyTo(table.getControl());
-		allCommits = new SWTCommitList(table.getControl());
+		allCommits = new SWTCommitList(table.getControl(), resources);
 		return main;
 	}
 

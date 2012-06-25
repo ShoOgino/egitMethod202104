@@ -1,9 +1,8 @@
-	SWTCommitList(final Control control) {
+	SWTCommitList(final Control control, final ResourceManager resources) {
 		this.control = control;
-		Display d = control.getDisplay();
 		allColors = new ArrayList<Color>(COMMIT_RGB.length);
 		for (RGB rgb : COMMIT_RGB)
-			allColors.add(new Color(d, rgb));
+			allColors.add(resources.createColor(rgb));
 		availableColors = new LinkedList<Color>();
 		repackColors();
 		control.addDisposeListener(this);

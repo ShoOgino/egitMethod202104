@@ -1,0 +1,19 @@
+	/**
+	 * Dispose of the resource manager when the widget is disposed
+	 *
+	 * @param widget
+	 * @param resources
+	 */
+	public static void hookDisposal(Widget widget,
+			final ResourceManager resources) {
+		if (widget == null || resources == null)
+			return;
+
+		widget.addDisposeListener(new DisposeListener() {
+
+			public void widgetDisposed(DisposeEvent e) {
+				resources.dispose();
+			}
+		});
+	}
+

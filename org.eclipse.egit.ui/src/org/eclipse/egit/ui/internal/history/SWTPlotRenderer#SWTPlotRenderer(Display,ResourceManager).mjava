@@ -1,0 +1,10 @@
+	SWTPlotRenderer(final Display d, final ResourceManager resources) {
+		this.resources = resources;
+		sys_black = d.getSystemColor(SWT.COLOR_BLACK);
+		sys_gray = d.getSystemColor(SWT.COLOR_GRAY);
+		sys_white = d.getSystemColor(SWT.COLOR_WHITE);
+
+		commitDotFill = resources.createColor(new RGB(220, 220, 220));
+		commitDotOutline = resources.createColor(new RGB(110, 110, 110));
+	}
+

@@ -12,6 +12,8 @@
 			myRefsChangedHandle = null;
 		}
 
+		resources.dispose();
+
 		// dispose of the actions (the history framework doesn't do this for us)
 		for (IWorkbenchAction action : actions.actionsToDispose)
 			action.dispose();

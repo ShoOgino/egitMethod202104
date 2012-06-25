@@ -34,7 +34,8 @@
 		graphDetailSplit = new SashForm(historyControl, SWT.VERTICAL);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(
 				graphDetailSplit);
-		graph = new CommitGraphTable(graphDetailSplit, getSite(), popupMgr, this);
+		graph = new CommitGraphTable(graphDetailSplit, getSite(), popupMgr,
+				this, resources);
 
 		graph.setRelativeDate(isShowingRelativeDates());
 		graph.setShowEmailAddresses(isShowingEmailAddresses());
