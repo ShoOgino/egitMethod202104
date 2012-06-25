@@ -11,6 +11,7 @@
 			for (FilterPath filterPath : paths)
 				selectedPaths.add(filterPath.getPath());
 
+			fileViewerInterestingPaths = new HashSet<String>(selectedPaths);
 			TreeFilter followFilter = createFollowFilterFor(selectedPaths);
 			walk.setTreeFilter(followFilter);
 		} else if (paths.size() > 0) {
@@ -21,9 +22,11 @@
 
 			walk.setTreeFilter(AndTreeFilter.create(PathFilterGroup
 					.createFromStrings(stringPaths), TreeFilter.ANY_DIFF));
+			fileViewerInterestingPaths = new HashSet<String>(stringPaths);
 		} else {
 			pathFilters = null;
 			walk.setTreeFilter(TreeFilter.ALL);
+			fileViewerInterestingPaths = null;
 		}
 		return fileWalker;
 	}

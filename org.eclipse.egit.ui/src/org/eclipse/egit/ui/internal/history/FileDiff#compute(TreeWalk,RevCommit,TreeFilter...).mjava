@@ -3,13 +3,15 @@
 	 *
 	 * @param walk
 	 * @param commit
+	 * @param markTreeFilters optional filters for marking entries, see {@link #isMarked(int)}
 	 * @return non-null but possibly empty array of file diffs
 	 * @throws MissingObjectException
 	 * @throws IncorrectObjectTypeException
 	 * @throws CorruptObjectException
 	 * @throws IOException
 	 */
-	public static FileDiff[] compute(final TreeWalk walk, final RevCommit commit)
+	public static FileDiff[] compute(final TreeWalk walk,
+			final RevCommit commit, final TreeFilter... markTreeFilters)
 			throws MissingObjectException, IncorrectObjectTypeException,
 			CorruptObjectException, IOException {
 		final ArrayList<FileDiff> r = new ArrayList<FileDiff>();
@@ -23,7 +25,7 @@
 		}
 
 		if (walk.getTreeCount() <= 2) {
-			List<DiffEntry> entries = DiffEntry.scan(walk);
+			List<DiffEntry> entries = DiffEntry.scan(walk, false, markTreeFilters);
 			for (DiffEntry entry : entries) {
 				final FileDiff d = new FileDiff(commit, entry);
 				r.add(d);
@@ -32,11 +34,18 @@
 		else { // DiffEntry does not support walks with more than two trees
 			final int nTree = walk.getTreeCount();
 			final int myTree = nTree - 1;
+
+			TreeFilterMarker treeFilterMarker = new TreeFilterMarker(
+					markTreeFilters);
+
 			while (walk.next()) {
 				if (matchAnyParent(walk, myTree))
 					continue;
 
-				final FileDiffForMerges d = new FileDiffForMerges(commit);
+				int treeFilterMarks = treeFilterMarker.getMarks(walk);
+
+				final FileDiffForMerges d = new FileDiffForMerges(commit,
+						treeFilterMarks);
 				d.path = walk.getPathString();
 				int m0 = 0;
 				for (int i = 0; i < myTree; i++)
@@ -55,6 +64,8 @@
 					d.blobs[i] = walk.getObjectId(i);
 					d.modes[i] = walk.getFileMode(i);
 				}
+
+
 				r.add(d);
 			}
 
