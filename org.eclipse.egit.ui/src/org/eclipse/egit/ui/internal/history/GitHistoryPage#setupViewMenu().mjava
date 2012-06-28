@@ -12,11 +12,18 @@
 		showSubMenuMgr.add(actions.followRenamesAction);
 		showSubMenuMgr.add(new Separator());
 		showSubMenuMgr.add(actions.findAction);
-		showSubMenuMgr.add(actions.showFilesAction);
 		showSubMenuMgr.add(actions.showCommentAction);
+		showSubMenuMgr.add(actions.showFilesAction);
 		showSubMenuMgr.add(new Separator());
 		showSubMenuMgr.add(actions.showRelativeDateAction);
 		showSubMenuMgr.add(actions.showEmailAddressesAction);
+
+		IMenuManager showInMessageManager = new MenuManager(
+				UIText.GitHistoryPage_InRevisionCommentSubMenuLabel);
+		showSubMenuMgr.add(showInMessageManager);
+		showInMessageManager.add(actions.showTagSequenceAction);
+		showInMessageManager.add(actions.wrapCommentAction);
+		showInMessageManager.add(actions.fillCommentAction);
 
 		IMenuManager filterSubMenuMgr = new MenuManager(
 				UIText.GitHistoryPage_FilterSubMenuLabel);
@@ -29,9 +36,5 @@
 		viewMenuMgr.add(new Separator());
 		viewMenuMgr.add(actions.compareModeAction);
 		viewMenuMgr.add(actions.reuseCompareEditorAction);
-
-		viewMenuMgr.add(new Separator());
-		viewMenuMgr.add(actions.wrapCommentAction);
-		viewMenuMgr.add(actions.fillCommentAction);
 	}
 
