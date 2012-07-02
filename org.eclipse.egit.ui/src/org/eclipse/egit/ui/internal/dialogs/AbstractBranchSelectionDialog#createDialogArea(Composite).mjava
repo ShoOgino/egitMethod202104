@@ -9,7 +9,7 @@
 		layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
 		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
 		composite.setLayout(layout);
-		composite.setLayoutData(GridDataFactory.fillDefaults().create());
+		composite.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 
 		int selectionModel = -1;
 		if ((settings & ALLOW_MULTISELECTION) != 0)
