@@ -1,9 +1,4 @@
 	private void checkPage() {
-		if (!configureGerrit()) {
-			setPageComplete(true);
-			return;
-		}
-
 		try {
 			pushURI = new URIish(uriText.getText());
 			scheme.select(scheme.indexOf(pushURI.getScheme()));

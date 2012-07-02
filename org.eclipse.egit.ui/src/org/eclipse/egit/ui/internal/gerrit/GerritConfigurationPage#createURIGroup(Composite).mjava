@@ -6,7 +6,7 @@
 		scheme = new Combo(uriGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 		uriText = SWTUtils.createText(uriGroup);
 
-		new Label(uriGroup, SWT.NULL).setText((UIText.RepositorySelectionPage_promptUser + ":")); //$NON-NLS-1$
+		new Label(uriGroup, SWT.NULL).setText(UIText.GerritConfigurationPage_UserLabel);
 		user = SWTUtils.createText(uriGroup);
 		user.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {

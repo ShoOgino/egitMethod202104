@@ -1,14 +1,29 @@
 	private void createPushConfigurationGroup(Composite panel) {
 		pushConfigurationGroup = SWTUtils.createHFillGroup(panel,
 				UIText.GerritConfigurationPage_groupPush,
-				SWTUtils.MARGINS_DEFAULT, 2);
-		new Label(pushConfigurationGroup, SWT.NULL)
+				SWTUtils.MARGINS_DEFAULT, 3);
+		Label branchLabel = new Label(pushConfigurationGroup, SWT.NULL);
+		branchLabel
 				.setText(UIText.GerritConfigurationPage_labelDestinationBranch);
+		// we visualize the prefix here
+		Text prefix = new Text(pushConfigurationGroup, SWT.READ_ONLY);
+		prefix.setText("refs/for/"); //$NON-NLS-1$
+		prefix.setEnabled(false);
+
 		branch = SWTUtils.createText(pushConfigurationGroup);
 		branch.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				checkPage();
 			}
 		});
+
+		// give focus to the branch if label is activated using the mnemonic
+		branchLabel.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(TraverseEvent e) {
+				branch.setFocus();
+				branch.selectAll();
+			}
+		});
+		addRefContentProposalToText(branch);
 	}
 
