@@ -1,6 +1,9 @@
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText(UIText.PullResultDialog_DialogTitle);
+		newShell.setText(NLS.bind(
+				UIText.PullResultDialog_DialogTitle,
+				Activator.getDefault().getRepositoryUtil()
+						.getRepositoryName(repo)));
 	}
 
