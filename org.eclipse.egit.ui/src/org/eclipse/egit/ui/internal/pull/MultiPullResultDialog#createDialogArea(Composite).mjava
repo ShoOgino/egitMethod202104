@@ -3,18 +3,17 @@
 		Composite main = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.fillDefaults().applyTo(main);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
-		tv = new TableViewer(main, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+		tv = new TableViewer(main, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
 		tv.setContentProvider(ArrayContentProvider.getInstance());
 
 		tv.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection sel = (IStructuredSelection) event
 						.getSelection();
-				boolean enabled = !sel.isEmpty();
-				if (enabled) {
-					Entry<Repository, Object> entry = (Entry<Repository, Object>) sel
-							.getFirstElement();
-					enabled = entry.getValue() instanceof PullResult;
+				boolean enabled = false;
+				for (Entry<Repository, Object> entry : (List<Entry<Repository, Object>>) sel
+						.toList()) {
+					enabled |= entry.getValue() instanceof PullResult;
 				}
 				getButton(DETAIL_BUTTON).setEnabled(enabled);
 			}
