@@ -16,6 +16,8 @@
 				else {
 					int updated = pullRes.getFetchResult()
 							.getTrackingRefUpdates().size();
+					if ( updated == 1)
+						return UIText.MultiPullResultDialog_UpdatedOneMessage;
 					return NLS.bind(
 							UIText.MultiPullResultDialog_UpdatedMessage,
 							Integer.valueOf(updated));
