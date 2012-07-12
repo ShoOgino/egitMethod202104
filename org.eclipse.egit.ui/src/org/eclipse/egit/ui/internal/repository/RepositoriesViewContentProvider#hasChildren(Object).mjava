@@ -13,8 +13,7 @@
 			return true;
 		case TAGS:
 			try {
-				return !repo.getRefDatabase().getRefs(Constants.R_TAGS)
-						.isEmpty();
+				return !getRefs(repo, Constants.R_TAGS).isEmpty();
 			} catch (IOException e) {
 				return true;
 			}
