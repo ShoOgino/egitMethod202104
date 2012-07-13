@@ -1,0 +1,11 @@
+	@Test
+	public void testFindContainer() throws Exception {
+		File tmp = new File("/tmp/file");
+		File test1 = new File(project.getProject().getLocation().toFile(), "xxx");
+		File test2 = new File(repository.getRepository().getWorkTree(), "xxx");
+
+		assertNull(ProjectUtil.findContainer(tmp));
+		assertEquals(project.getProject(), ProjectUtil.findContainer(test1));
+		assertEquals(ResourcesPlugin.getWorkspace().getRoot(), ProjectUtil.findContainer(test2));
+	}
+
