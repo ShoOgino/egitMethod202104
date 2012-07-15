@@ -24,42 +24,17 @@
 						openSelectionInEditor(tableViewer.getSelection());
 					}
 				};
-				boolean addReplaceWithFileInGitIndex = false;
-				boolean addReplaceWithHeadRevision = false;
-				boolean addStage = false;
-				boolean addUnstage = false;
-				boolean addLaunchMergeTool = false;
 				openWorkingTreeVersion.setEnabled(!submoduleSelected);
 				menuMgr.add(openWorkingTreeVersion);
 
-				StagingEntry stagingEntry = (StagingEntry) selection.getFirstElement();
-				switch (stagingEntry.getState()) {
-				case ADDED:
-					addUnstage = true;
-					break;
-				case CHANGED:
-					addReplaceWithHeadRevision = true;
-					addUnstage = true;
-					break;
-				case REMOVED:
-					addReplaceWithHeadRevision = true;
-					addUnstage = true;
-					break;
-				case CONFLICTING:
-					addReplaceWithFileInGitIndex = true;
-					addReplaceWithHeadRevision = true;
-					addStage = true;
-					addLaunchMergeTool = true;
-					break;
-				case MISSING:
-				case MODIFIED:
-				case PARTIALLY_MODIFIED:
-				case UNTRACKED:
-					addReplaceWithFileInGitIndex = true;
-					addReplaceWithHeadRevision = true;
-					addStage = true;
-					break;
-				}
+				Set<StagingEntry.Action> availableActions = getAvailableActions(selection);
+
+				boolean addReplaceWithFileInGitIndex = availableActions.contains(StagingEntry.Action.REPLACE_WITH_FILE_IN_GIT_INDEX);
+				boolean addReplaceWithHeadRevision = availableActions.contains(StagingEntry.Action.REPLACE_WITH_HEAD_REVISION);
+				boolean addStage = availableActions.contains(StagingEntry.Action.STAGE);
+				boolean addUnstage = availableActions.contains(StagingEntry.Action.UNSTAGE);
+				boolean addLaunchMergeTool = availableActions.contains(StagingEntry.Action.LAUNCH_MERGE_TOOL);
+
 				if (addStage)
 					menuMgr.add(new Action(UIText.StagingView_StageItemMenuLabel) {
 						@Override
