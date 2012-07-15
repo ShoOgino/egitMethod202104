@@ -1,0 +1,10 @@
+	/**
+	 * Trigger a new index diff calculation manually for the passed files.
+	 *
+	 * @param filesToRefresh (repository-relative paths)
+	 */
+	public void refreshFiles(final Collection<String> filesToRefresh) {
+		List<IResource> resources = Collections.emptyList();
+		scheduleUpdateJob(filesToRefresh, resources);
+	}
+

@@ -1,0 +1,16 @@
+	@Test
+	public void testDeleteResourceOutsideOfProject() throws Exception {
+		File outsideOfProject = new File(workdir, "outside-of-project.txt");
+		outsideOfProject.createNewFile();
+
+		Path path = new Path(outsideOfProject.getAbsolutePath());
+		IWorkspaceRoot root = project.getWorkspace().getRoot();
+		IResource resource = root.getFile(path);
+
+		deleteResources(Arrays.asList(resource));
+
+		assertFalse("File should have been deleted", outsideOfProject.exists());
+		Job[] indexDiffCacheJobs = Job.getJobManager().find(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		assertTrue("Should cause an index diff cache job", indexDiffCacheJobs.length > 0);
+	}
+

@@ -1,6 +1,6 @@
 	private void updateToolbar() {
-		IToolBarManager toolbar = getViewSite().getActionBars()
-				.getToolBarManager();
+		IActionBars actionBars = getViewSite().getActionBars();
+		IToolBarManager toolbar = actionBars.getToolBarManager();
 
 		refreshAction = new Action(UIText.StagingView_Refresh, IAction.AS_PUSH_BUTTON) {
 			public void run() {
@@ -108,10 +108,15 @@
 		fileNameModeAction.setChecked(getPreferenceStore().getBoolean(
 				UIPreferences.STAGING_VIEW_FILENAME_MODE));
 
-		IMenuManager dropdownMenu = getViewSite().getActionBars()
-				.getMenuManager();
+		IMenuManager dropdownMenu = actionBars.getMenuManager();
 		dropdownMenu.add(openNewCommitsAction);
 		dropdownMenu.add(columnLayoutAction);
 		dropdownMenu.add(fileNameModeAction);
+
+		// For the normal resource undo/redo actions to be active, so that files
+		// deleted via the "Delete" action in the staging view can be restored.
+		IUndoContext workspaceContext = (IUndoContext) ResourcesPlugin.getWorkspace().getAdapter(IUndoContext.class);
+		undoRedoActionGroup = new UndoRedoActionGroup(getViewSite(), workspaceContext, true);
+		undoRedoActionGroup.fillActionBars(actionBars);
 	}
 

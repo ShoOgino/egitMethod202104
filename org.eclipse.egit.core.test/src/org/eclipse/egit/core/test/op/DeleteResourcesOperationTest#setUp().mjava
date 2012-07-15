@@ -1,0 +1,10 @@
+	@Before
+	public void setUp() throws Exception {
+
+		workdir = testUtils.createTempDir("Repository1");
+
+		repository1 = new TestRepository(new File(workdir, Constants.DOT_GIT));
+		project = testUtils.createProjectInLocalFileSystem(workdir, projectName);
+		repository1.connect(project);
+	}
+

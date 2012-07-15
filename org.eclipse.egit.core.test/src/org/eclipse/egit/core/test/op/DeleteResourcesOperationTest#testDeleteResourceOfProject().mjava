@@ -1,0 +1,10 @@
+	@Test
+	public void testDeleteResourceOfProject() throws Exception {
+		IResource resource = testUtils.addFileToProject(project, "file.txt", "Hello world 1");
+
+		deleteResources(Arrays.asList(resource));
+
+		File file = resource.getFullPath().toFile();
+		assertFalse("File should have been deleted", file.exists());
+	}
+

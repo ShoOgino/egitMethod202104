@@ -1,4 +1,8 @@
-	private boolean isNonResourceSelection(ISelection selection) {
+	/**
+	 * @param selection
+	 * @return true if the selection includes a non-workspace resource, false otherwise
+	 */
+	private boolean selectionIncludesNonWorkspaceResources(ISelection selection) {
 		if (!(selection instanceof IStructuredSelection))
 			return false;
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
@@ -9,9 +13,9 @@
 				return false;
 			StagingEntry stagingEntry = (StagingEntry) selectedObject;
 			String path = currentRepository.getWorkTree() + "/" + stagingEntry.getPath(); //$NON-NLS-1$
-			if (getResource(path) != null)
-				return false;
+			if (getResource(path) == null)
+				return true;
 		}
-		return true;
+		return false;
 	}
 

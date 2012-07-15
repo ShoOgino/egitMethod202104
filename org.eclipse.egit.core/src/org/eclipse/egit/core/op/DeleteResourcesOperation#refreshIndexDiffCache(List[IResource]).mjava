@@ -1,0 +1,14 @@
+	private void refreshIndexDiffCache(List<IResource> refreshCacheResources) {
+		IResource[] r = refreshCacheResources.toArray(new IResource[refreshCacheResources.size()]);
+		Map<Repository, Collection<String>> resourcesByRepository = ResourceUtil.splitResourcesByRepository(r);
+		for (Map.Entry<Repository, Collection<String>> entry : resourcesByRepository.entrySet()) {
+			Repository repository = entry.getKey();
+			Collection<String> files = entry.getValue();
+
+			IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+			IndexDiffCacheEntry cacheEntry = cache.getIndexDiffCacheEntry(repository);
+			if (cacheEntry != null)
+				cacheEntry.refreshFiles(files);
+		}
+	}
+

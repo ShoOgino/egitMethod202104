@@ -33,6 +33,7 @@
 				boolean addReplaceWithHeadRevision = availableActions.contains(StagingEntry.Action.REPLACE_WITH_HEAD_REVISION);
 				boolean addStage = availableActions.contains(StagingEntry.Action.STAGE);
 				boolean addUnstage = availableActions.contains(StagingEntry.Action.UNSTAGE);
+				boolean addDelete = availableActions.contains(StagingEntry.Action.DELETE);
 				boolean addLaunchMergeTool = availableActions.contains(StagingEntry.Action.LAUNCH_MERGE_TOOL);
 
 				if (addStage)
@@ -49,17 +50,27 @@
 							unstage((IStructuredSelection) tableViewer.getSelection());
 						}
 					});
-				boolean isNonResourceSelection = isNonResourceSelection(tableViewer.getSelection());
+				boolean selectionIncludesNonWorkspaceResources = selectionIncludesNonWorkspaceResources(tableViewer.getSelection());
 				if (addReplaceWithFileInGitIndex)
-					if (isNonResourceSelection)
+					if (selectionIncludesNonWorkspaceResources)
 						menuMgr.add(new ReplaceAction(UIText.StagingView_replaceWithFileInGitIndex, selection, false));
 					else
 						menuMgr.add(createItem(ActionCommands.DISCARD_CHANGES_ACTION, tableViewer));	// replace with index
 				if (addReplaceWithHeadRevision)
-					if (isNonResourceSelection)
+					if (selectionIncludesNonWorkspaceResources)
 						menuMgr.add(new ReplaceAction(UIText.StagingView_replaceWithHeadRevision, selection, true));
 					else
 						menuMgr.add(createItem(ActionCommands.REPLACE_WITH_HEAD_ACTION, tableViewer));
+				if (addDelete) {
+					if (selectionIncludesNonWorkspaceResources) {
+						menuMgr.add(new DeleteAction(selection));
+					} else {
+						DeleteResourceAction deleteResourceAction = new DeleteResourceAction(getSite());
+						deleteResourceAction.selectionChanged(selection);
+						ActionContributionItem item = new ActionContributionItem(deleteResourceAction);
+						menuMgr.add(item);
+					}
+				}
 				if (addLaunchMergeTool)
 					menuMgr.add(createItem(ActionCommands.MERGE_TOOL_ACTION, tableViewer));
 			}

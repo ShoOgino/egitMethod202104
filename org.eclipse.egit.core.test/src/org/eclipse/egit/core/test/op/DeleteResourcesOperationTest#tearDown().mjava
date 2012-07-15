@@ -1,0 +1,10 @@
+	@After
+	public void tearDown() throws Exception {
+		Job.getJobManager().join(JobFamilies.INDEX_DIFF_CACHE_UPDATE, null);
+		project.close(null);
+		project.delete(false, false, null);
+		repository1.dispose();
+		repository1 = null;
+		testUtils.deleteTempDirs();
+	}
+
