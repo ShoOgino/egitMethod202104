@@ -11,7 +11,7 @@
 					File file = ((IFile) resource).getFullPath().toFile();
 					try {
 						if (!file.exists())
-							file.createNewFile();
+							FileUtils.createNewFile(file);
 						out = new FileOutputStream(file);
 						out.write(getContent());
 						fDirty = false;
