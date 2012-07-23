@@ -54,23 +54,18 @@
 											.getLocation(),
 									"Starting async update job"); //$NON-NLS-1$
 						}
-						// keep expansion state and selection so that we can
-						// restore the tree
-						// after update
-						Object[] expanded = tv.getExpandedElements();
-						IStructuredSelection sel = (IStructuredSelection) tv
-								.getSelection();
 
-						if (needsNewInput)
+
+						if (needsNewInput) {
+							// keep expansion state and selection so that we can
+							// restore the tree
+							// after update
+							Object[] expanded = tv.getExpandedElements();
 							tv.setInput(ResourcesPlugin.getWorkspace()
 									.getRoot());
-						else
+							tv.setExpandedElements(expanded);
+						} else
 							tv.refresh(true);
-						tv.setExpandedElements(expanded);
-
-						Object selected = sel.getFirstElement();
-						if (selected != null)
-							tv.reveal(selected);
 
 						IViewPart part = PlatformUI.getWorkbench()
 								.getActiveWorkbenchWindow().getActivePage()
