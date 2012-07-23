@@ -1,22 +1,16 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		AddCommand addCommand = null;
-		List selectedNodes = getSelectedNodes(event);
-		for (Object selectedNode : selectedNodes) {
-			RepositoryTreeNode node = (RepositoryTreeNode) selectedNode;
-			if (addCommand == null)
-				addCommand = new Git(node.getRepository()).add();
-			Repository repository = node.getRepository();
-			IPath path;
-			if (node.getType().equals(RepositoryTreeNodeType.FOLDER))
-				path = new Path(((FolderNode) node).getObject()
-						.getAbsolutePath());
-			else if (node.getType().equals(RepositoryTreeNodeType.FILE))
-				path = new Path(((FileNode) node).getObject().getAbsolutePath());
-			else
-				path = new Path(repository.getWorkTree().getAbsolutePath());
+		List<FileNode> selectedNodes = getSelectedNodes(event);
+		if (selectedNodes.isEmpty() || selectedNodes.get(0).getRepository() == null)
+			return null;
+
+		Repository repository = selectedNodes.get(0).getRepository();
+		IPath workTreePath = new Path(repository.getWorkTree().getAbsolutePath());
+
+		AddCommand addCommand = new Git(repository).add();
+
+		Collection<IPath> paths = getSelectedFileAndFolderPaths(event);
+		for (IPath path : paths) {
 			String repoRelativepath;
-			IPath workTreePath = new Path(repository.getWorkTree()
-					.getAbsolutePath());
 			if (path.equals(workTreePath))
 				repoRelativepath = "."; //$NON-NLS-1$
 			else
@@ -25,13 +19,12 @@
 						.setDevice(null).toString();
 			addCommand.addFilepattern(repoRelativepath);
 		}
-		if (addCommand != null)
-			try {
-				addCommand.call();
-			} catch (GitAPIException e) {
-				Activator.logError(UIText.AddToIndexCommand_addingFilesFailed,
-						e);
-			}
+		try {
+			addCommand.call();
+		} catch (GitAPIException e) {
+			Activator.logError(UIText.AddToIndexCommand_addingFilesFailed,
+					e);
+		}
 		return null;
 	}
 
