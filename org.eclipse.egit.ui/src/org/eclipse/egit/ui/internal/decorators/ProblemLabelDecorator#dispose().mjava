@@ -1,0 +1,7 @@
+	public void dispose() {
+		resourceManager.dispose();
+		if (this.viewer != null)
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		super.dispose();
+	}
+

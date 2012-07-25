@@ -1,0 +1,12 @@
+	public void resourceChanged(IResourceChangeEvent event) {
+		Set<IResource> resources = new HashSet<IResource>();
+
+		IMarkerDelta[] markerDeltas = event.findMarkerDeltas(IMarker.PROBLEM,
+				true);
+		for (IMarkerDelta delta : markerDeltas)
+			resources.add(delta.getResource());
+
+		if (!resources.isEmpty())
+		    updateLabels(resources);
+	}
+

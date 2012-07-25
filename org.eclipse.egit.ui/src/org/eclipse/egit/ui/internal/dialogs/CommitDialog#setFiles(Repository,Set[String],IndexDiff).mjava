@@ -14,6 +14,7 @@
 			item.status = getFileStatus(path, indexDiff);
 			item.submodule = FileMode.GITLINK == indexDiff.getIndexMode(path);
 			item.path = path;
+			item.problemSeverity = getProblemSeverity(repository, path);
 			items.add(item);
 		}
 

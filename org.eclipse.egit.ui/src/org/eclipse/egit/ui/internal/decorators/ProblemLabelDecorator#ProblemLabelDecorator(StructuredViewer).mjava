@@ -1,0 +1,11 @@
+	/**
+	 * @param viewer
+	 *            the viewer to use for label updates because of changed
+	 *            resources, or null for none
+	 */
+	public ProblemLabelDecorator(StructuredViewer viewer) {
+		this.viewer = viewer;
+		if (this.viewer != null)
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+	}
+
