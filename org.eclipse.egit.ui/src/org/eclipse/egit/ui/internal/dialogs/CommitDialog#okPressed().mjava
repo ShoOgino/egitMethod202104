@@ -1,5 +1,10 @@
 	@Override
 	protected void okPressed() {
+		if (!isCommitWithoutFilesAllowed()) {
+			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoItemsSelected, UIText.CommitDialog_ErrorNoItemsSelectedToBeCommitted);
+			return;
+		}
+
 		if (!commitMessageComponent.checkCommitInfo())
 			return;
 
@@ -13,11 +18,6 @@
 		author = commitMessageComponent.getAuthor();
 		committer = commitMessageComponent.getCommitter();
 		createChangeId = changeIdItem.getSelection();
-
-		if (selectedFiles.isEmpty() && !amending) {
-			MessageDialog.openWarning(getShell(), UIText.CommitDialog_ErrorNoItemsSelected, UIText.CommitDialog_ErrorNoItemsSelectedToBeCommitted);
-			return;
-		}
 
 		IDialogSettings settings = org.eclipse.egit.ui.Activator
 			.getDefault().getDialogSettings();

@@ -1,6 +1,5 @@
 	private void commit() {
-		if (stagedTableViewer.getTable().getItemCount() == 0
-				&& !amendPreviousCommitAction.isChecked()) {
+		if (!isCommitWithoutFilesAllowed()) {
 			MessageDialog.openError(getSite().getShell(),
 					UIText.StagingView_committingNotPossible,
 					UIText.StagingView_noStagedFiles);
@@ -8,11 +7,10 @@
 		}
 		if (!commitMessageComponent.checkCommitInfo())
 			return;
-		final Repository repository = currentRepository;
 		String commitMessage = commitMessageComponent.getCommitMessage();
 		CommitOperation commitOperation = null;
 		try {
-			commitOperation = new CommitOperation(repository,
+			commitOperation = new CommitOperation(currentRepository,
 					commitMessageComponent.getAuthor(),
 					commitMessageComponent.getCommitter(),
 					commitMessage);
