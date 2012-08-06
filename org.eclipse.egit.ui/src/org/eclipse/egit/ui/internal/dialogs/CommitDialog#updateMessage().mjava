@@ -6,8 +6,7 @@
 		if (commitMsg == null || commitMsg.trim().length() == 0) {
 			message = UIText.CommitDialog_Message;
 			type = IMessageProvider.INFORMATION;
-		} else if (filesViewer.getCheckedElements().length == 0
-				&& !amendingItem.getSelection()) {
+		} else if (!isCommitWithoutFilesAllowed()) {
 			message = UIText.CommitDialog_MessageNoFilesSelected;
 			type = IMessageProvider.INFORMATION;
 		} else {
