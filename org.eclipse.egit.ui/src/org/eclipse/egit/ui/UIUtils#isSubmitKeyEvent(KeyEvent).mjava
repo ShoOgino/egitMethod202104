@@ -1,0 +1,11 @@
+	/**
+	 * Determine if the key event represents a "submit" action (Ctrl+Enter or
+	 * Command+Enter).
+	 *
+	 * @param event
+	 * @return true, if it means submit, false otherwise
+	 */
+	public static boolean isSubmitKeyEvent(KeyEvent event) {
+		return event.stateMask == SUBMIT_KEY_STROKE.getModifierKeys() && event.keyCode == SUBMIT_KEY_STROKE.getNaturalKey();
+	}
+
