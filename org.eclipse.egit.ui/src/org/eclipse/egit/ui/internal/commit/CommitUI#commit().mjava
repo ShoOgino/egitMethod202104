@@ -4,9 +4,8 @@
 	public void commit() {
 		// let's see if there is any dirty editor around and
 		// ask the user if they want to save or abort
-		if (!PlatformUI.getWorkbench().saveAllEditors(true)) {
+		if (!UIUtils.saveAllEditors(repo))
 			return;
-		}
 
 		BasicConfigurationDialog.show(new Repository[]{repo});
 
@@ -50,7 +49,7 @@
 				if (!result)
 					return;
 				amending = true;
-			} else if (!CommitHelper.isCommitWithoutFilesAllowed(repo)) {
+			} else {
 				MessageDialog.openWarning(shell,
 						UIText.CommitAction_noFilesToCommit,
 						UIText.CommitAction_amendNotPossible);

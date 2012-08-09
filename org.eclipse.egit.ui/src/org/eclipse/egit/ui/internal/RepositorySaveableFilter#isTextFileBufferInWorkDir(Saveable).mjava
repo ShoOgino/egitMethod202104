@@ -1,0 +1,11 @@
+	private boolean isTextFileBufferInWorkDir(Saveable saveable) {
+		IDocument document = (IDocument) saveable.getAdapter(IDocument.class);
+		if (document == null)
+			return true; // be conservative and assume this needs to be saved
+		ITextFileBuffer textFileBuffer = FileBuffers.getTextFileBufferManager()
+				.getTextFileBuffer(document);
+		if (textFileBuffer != null)
+			return isInWorkDir(textFileBuffer.getLocation());
+		return false;
+	}
+

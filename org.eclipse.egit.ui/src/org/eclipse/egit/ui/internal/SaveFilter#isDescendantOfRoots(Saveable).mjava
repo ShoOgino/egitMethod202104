@@ -1,0 +1,41 @@
+	/**
+	 * Return whether the given saveable contains any resources that
+	 * are descendants of the root resources.
+	 * @param saveable the saveable
+	 * @return whether the given saveable contains any resources that
+	 * are descendants of the root resources
+	 */
+	private boolean isDescendantOfRoots(Saveable saveable) {
+		// First, try and adapt the saveable to a resource mapping.
+		ResourceMapping mapping = ResourceUtil.getResourceMapping(saveable);
+		if (mapping != null) {
+			try {
+				ResourceTraversal[] traversals = mapping.getTraversals(
+						ResourceMappingContext.LOCAL_CONTEXT, null);
+				for (int i = 0; i < traversals.length; i++) {
+					ResourceTraversal traversal = traversals[i];
+					IResource[] resources = traversal.getResources();
+					for (int j = 0; j < resources.length; j++) {
+						IResource resource = resources[j];
+						if (isDescendantOfRoots(resource)) {
+							return true;
+						}
+					}
+				}
+			} catch (CoreException e) {
+				Activator
+						.logError(
+								NLS
+										.bind(
+												"An internal error occurred while determining the resources for {0}", saveable.getName()), e); //$NON-NLS-1$
+			}
+		} else {
+			// If there is no mapping, try to adapt to a resource or file directly
+			IFile file = ResourceUtil.getFile(saveable);
+			if (file != null) {
+				return isDescendantOfRoots(file);
+			}
+		}
+		return false;
+	}
+

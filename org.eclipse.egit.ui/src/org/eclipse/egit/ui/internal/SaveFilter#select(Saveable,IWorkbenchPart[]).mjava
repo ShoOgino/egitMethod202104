@@ -1,0 +1,21 @@
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.ISaveableFilter#select(org.eclipse.ui.Saveable, org.eclipse.ui.IWorkbenchPart[])
+	 */
+	public boolean select(Saveable saveable,
+			IWorkbenchPart[] containingParts) {
+		if (isDescendantOfRoots(saveable)) {
+			return true;
+		}
+		// For backwards compatibility, we need to check the parts
+		for (int i = 0; i < containingParts.length; i++) {
+			IWorkbenchPart workbenchPart = containingParts[i];
+			if (workbenchPart instanceof IEditorPart) {
+				IEditorPart editorPart = (IEditorPart) workbenchPart;
+				if (isEditingDescendantOf(editorPart)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+

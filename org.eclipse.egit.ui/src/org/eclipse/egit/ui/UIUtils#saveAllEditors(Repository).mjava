@@ -1,0 +1,14 @@
+	/**
+	 * Prompt for saving all dirty editors for resources in the working
+	 * directory of the specified repository.
+	 *
+	 * @param repository
+	 * @return true, if the user opted to continue, false otherwise
+	 * @see IWorkbench#saveAllEditors(boolean)
+	 */
+	public static boolean saveAllEditors(Repository repository) {
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+		return workbench.saveAll(window, window, new RepositorySaveableFilter(repository), true);
+	}
+

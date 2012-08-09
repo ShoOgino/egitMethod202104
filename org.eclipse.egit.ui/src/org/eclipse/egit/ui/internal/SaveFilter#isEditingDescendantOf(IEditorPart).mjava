@@ -1,0 +1,16 @@
+	/**
+	 * Return whether the given dirty editor part is editing resources that are
+	 * descendants of the given roots.
+	 *
+	 * @param part the dirty editor part
+	 * @return whether the given dirty editor part is editing resources that are
+	 *         descendants of the given roots
+	 */
+	private boolean isEditingDescendantOf(IEditorPart part) {
+		IFile file = ResourceUtil.getFile(part.getEditorInput());
+		if (file != null) {
+			return isDescendantOfRoots(file);
+		}
+		return false;
+	}
+
