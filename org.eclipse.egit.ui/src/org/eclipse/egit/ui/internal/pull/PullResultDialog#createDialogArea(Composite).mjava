@@ -36,16 +36,18 @@
 		Group mergeResultGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		mergeResultGroup
 				.setText(UIText.PullResultDialog_MergeResultGroupHeader);
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(
-				mergeResultGroup);
 		if (hasMergeResults()) {
+			GridDataFactory.fillDefaults().grab(true, true).applyTo(
+					mergeResultGroup);
 			GridLayoutFactory.fillDefaults().applyTo(mergeResultGroup);
 			MergeResultDialog dlg = new MergeResultDialog(getParentShell(),
 					repo, result.getMergeResult());
 			dlg.createDialogArea(mergeResultGroup);
 		} else if (hasRebaseResults()) {
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(
+					mergeResultGroup);
+			GridLayoutFactory.swtDefaults().applyTo(mergeResultGroup);
 			Status status = result.getRebaseResult().getStatus();
-			GridLayoutFactory.fillDefaults().applyTo(mergeResultGroup);
 			switch (status) {
 			case OK:
 				// fall through
@@ -70,6 +72,8 @@
 			Text statusText = new Text(mergeResultGroup, SWT.READ_ONLY);
 			statusText.setText(status.name());
 		} else {
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(
+					mergeResultGroup);
 			GridLayoutFactory.swtDefaults().applyTo(mergeResultGroup);
 			Label noResult = new Label(mergeResultGroup, SWT.NONE);
 			noResult

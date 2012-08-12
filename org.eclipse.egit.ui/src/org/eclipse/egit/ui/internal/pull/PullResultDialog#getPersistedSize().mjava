@@ -1,0 +1,12 @@
+	private Point getPersistedSize() {
+		boolean oldPersistSize = persistSize;
+		// This affects getDialogBoundsStrategy
+		persistSize = true;
+		try {
+			Point persistedSize = super.getInitialSize();
+			return persistedSize;
+		} finally {
+			persistSize = oldPersistSize;
+		}
+	}
+

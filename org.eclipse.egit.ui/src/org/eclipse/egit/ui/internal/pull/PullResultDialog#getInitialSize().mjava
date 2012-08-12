@@ -1,0 +1,12 @@
+	@Override
+	protected Point getInitialSize() {
+		if (!persistSize) {
+			// For "small" dialogs with label-only results, use the default
+			// height and the persisted width
+			Point size = super.getInitialSize();
+			size.x = getPersistedSize().x;
+			return size;
+		}
+		return super.getInitialSize();
+	}
+

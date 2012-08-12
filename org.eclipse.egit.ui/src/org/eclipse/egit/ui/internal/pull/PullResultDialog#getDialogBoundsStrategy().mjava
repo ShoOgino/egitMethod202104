@@ -1,5 +1,8 @@
 	@Override
 	protected int getDialogBoundsStrategy() {
-		return hasUpdates ? DIALOG_PERSISTLOCATION | DIALOG_PERSISTSIZE : DIALOG_PERSISTLOCATION;
+		int strategy = DIALOG_PERSISTLOCATION;
+		if (persistSize)
+			strategy |= DIALOG_PERSISTSIZE;
+		return strategy;
 	}
 
