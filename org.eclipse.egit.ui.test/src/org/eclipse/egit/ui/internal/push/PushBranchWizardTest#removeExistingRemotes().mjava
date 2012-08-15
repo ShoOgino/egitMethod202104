@@ -1,0 +1,10 @@
+	private void removeExistingRemotes() throws IOException {
+		StoredConfig config = repository.getConfig();
+		Set<String> remotes = config
+				.getSubsections(ConfigConstants.CONFIG_REMOTE_SECTION);
+		for (String remoteName : remotes)
+			config.unsetSection(ConfigConstants.CONFIG_REMOTE_SECTION,
+					remoteName);
+		config.save();
+	}
+

@@ -1,0 +1,9 @@
+	private RemoteConfig getDefaultRemoteConfig() {
+		if (remoteConfigs == null || remoteConfigs.isEmpty())
+			return null;
+		for (final RemoteConfig rc : remoteConfigs)
+			if (Constants.DEFAULT_REMOTE_NAME.equals(rc.getName()))
+				return rc;
+		return remoteConfigs.get(0);
+	}
+

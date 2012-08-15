@@ -1,0 +1,9 @@
+	private RepositorySelection getRepositorySelection() {
+		AddRemotePage remotePage = getAddRemotePage();
+		if (remotePage != null)
+			return remotePage.getSelection();
+		else
+			return new RepositorySelection(null,
+					pushBranchPage.getRemoteConfig());
+	}
+

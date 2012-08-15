@@ -1,0 +1,14 @@
+	void setSelectedRemote(String remoteName, URIish urIish) {
+		try {
+			RemoteConfig config = new RemoteConfig(repository.getConfig(),
+					remoteName);
+			config.addURI(urIish);
+			remoteSelectionCombo.setItems(Arrays.asList(config));
+			this.remoteConfig = config;
+			remoteSelectionCombo.setEnabled(false);
+			checkPage();
+		} catch (URISyntaxException e) {
+			handleError(e);
+		}
+	}
+

@@ -1,0 +1,7 @@
+	private boolean branchAlreadyHasUpstreamConfiguration() {
+		StoredConfig config = repository.getConfig();
+		BranchConfig branchConfig = new BranchConfig(config, Repository.shortenRefName(ref.getName()));
+		String trackingBranch = branchConfig.getTrackingBranch();
+		return trackingBranch != null;
+	}
+

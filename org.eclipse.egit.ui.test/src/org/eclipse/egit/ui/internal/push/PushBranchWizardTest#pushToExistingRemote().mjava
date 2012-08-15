@@ -1,0 +1,15 @@
+	@Test
+	public void pushToExistingRemote() throws Exception {
+		checkoutNewLocalBranch("foo");
+
+		PushBranchWizardTester wizard = PushBranchWizardTester.startWizard(
+				selectProject(), "foo");
+		wizard.selectRemote("fetch");
+		wizard.selectMerge();
+		wizard.next();
+		wizard.finish();
+
+		assertBranchPushed("foo", remoteRepository);
+		assertBranchConfig("foo", "fetch", "refs/heads/foo", null);
+	}
+

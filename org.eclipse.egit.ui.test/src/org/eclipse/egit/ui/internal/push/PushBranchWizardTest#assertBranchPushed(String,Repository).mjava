@@ -1,0 +1,7 @@
+	private void assertBranchPushed(String branchName, Repository remoteRepo)
+			throws Exception {
+		ObjectId pushed = remoteRepo.resolve(branchName);
+		assertNotNull(pushed);
+		assertEquals(repository.resolve(branchName), pushed);
+	}
+

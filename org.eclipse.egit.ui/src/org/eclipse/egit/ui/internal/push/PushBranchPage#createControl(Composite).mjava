@@ -1,0 +1,83 @@
+	public void createControl(Composite parent) {
+		try {
+			this.remoteConfigs = RemoteConfig.getAllRemoteConfigs(repository.getConfig());
+		} catch (URISyntaxException e) {
+			this.remoteConfigs = new ArrayList<RemoteConfig>();
+			handleError(e);
+		}
+
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(GridLayoutFactory.swtDefaults().create());
+
+		Composite inputPanel = new Composite(main, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(inputPanel);
+		inputPanel.setLayout(GridLayoutFactory.fillDefaults().numColumns(3)
+				.create());
+
+		Label remoteLabel = new Label(inputPanel, SWT.NONE);
+		remoteLabel.setText(UIText.PushBranchPage_RemoteLabel);
+
+		// Use full width in case "New Remote..." button is not shown
+		int remoteSelectionSpan = showNewRemoteButton ? 1 : 2;
+
+		remoteSelectionCombo = new RemoteSelectionCombo(
+				inputPanel, SWT.NONE, SelectionType.PUSH);
+		GridDataFactory.fillDefaults().grab(true, false).span(remoteSelectionSpan, 1)
+				.applyTo(remoteSelectionCombo);
+		remoteConfig = remoteSelectionCombo.setItems(remoteConfigs);
+		remoteSelectionCombo
+				.addRemoteSelectionListener(new IRemoteSelectionListener() {
+					public void remoteSelected(RemoteConfig rc) {
+						remoteConfig = rc;
+						checkPage();
+					}
+				});
+
+		if (showNewRemoteButton) {
+			Button newRemoteButton = new Button(inputPanel, SWT.PUSH);
+			newRemoteButton.setText(UIText.PushBranchPage_NewRemoteButton);
+			GridDataFactory.fillDefaults().applyTo(newRemoteButton);
+			newRemoteButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					showNewRemoteDialog();
+				}
+			});
+		}
+
+		Label branchNameLabel = new Label(inputPanel, SWT.NONE);
+		branchNameLabel.setText(UIText.PushBranchPage_BranchNameLabel);
+
+		branchNameText = new Text(inputPanel, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
+				.applyTo(branchNameText);
+		branchNameText.setText(getSuggestedBranchName());
+
+		upstreamConfigComponent = new UpstreamConfigComponent(inputPanel,
+				SWT.NONE);
+		upstreamConfigComponent.getContainer().setLayoutData(
+				GridDataFactory.fillDefaults().grab(true, false).span(3, 1)
+						.create());
+		upstreamConfigComponent
+				.addUpstreamConfigSelectionListener(new UpstreamConfigSelectionListener() {
+					public void upstreamConfigSelected(
+							UpstreamConfig newUpstreamConfig) {
+						upstreamConfig = newUpstreamConfig;
+						checkPage();
+					}
+				});
+
+		setDefaultUpstreamConfig();
+
+		setControl(main);
+
+		checkPage();
+
+		// Add listener now to avoid setText above to already trigger it.
+		branchNameText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+	}
+

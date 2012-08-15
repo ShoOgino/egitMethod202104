@@ -1,0 +1,16 @@
+	@Test
+	public void pushToExistingRemoteWithoutConfiguringUpstream()
+			throws Exception {
+		checkoutNewLocalBranch("baz");
+
+		PushBranchWizardTester wizard = PushBranchWizardTester.startWizard(
+				selectProject(), "baz");
+		wizard.selectRemote("fetch");
+		wizard.deselectConfigureUpstream();
+		wizard.next();
+		wizard.finish();
+
+		assertBranchPushed("baz", remoteRepository);
+		assertBranchConfig("baz", null, null, null);
+	}
+

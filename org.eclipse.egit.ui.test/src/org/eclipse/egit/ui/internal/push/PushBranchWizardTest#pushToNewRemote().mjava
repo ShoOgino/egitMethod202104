@@ -1,0 +1,18 @@
+	@Test
+	public void pushToNewRemote() throws Exception {
+		checkoutNewLocalBranch("qux");
+		Repository newRemoteRepository = createRemoteRepository();
+
+		URIish remoteUri = getUri(newRemoteRepository);
+		PushBranchWizardTester wizard = PushBranchWizardTester.startWizard(
+				selectProject(), "qux");
+		wizard.selectNewRemoteOnBranchPage("quxremote", remoteUri.toString());
+		wizard.selectMerge();
+		wizard.next();
+		wizard.finish();
+
+		assertRemoteConfig("quxremote", remoteUri);
+		assertBranchPushed("qux", newRemoteRepository);
+		assertBranchConfig("qux", "quxremote", "refs/heads/qux", null);
+	}
+

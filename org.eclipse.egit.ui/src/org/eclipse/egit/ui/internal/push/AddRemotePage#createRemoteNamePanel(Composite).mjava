@@ -1,0 +1,25 @@
+	@Override
+	protected void createRemoteNamePanel(Composite panel) {
+		Composite remoteNamePanel = new Composite(panel, SWT.NONE);
+		remoteNamePanel.setLayout(new GridLayout(2, false));
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(remoteNamePanel);
+
+		Label remoteNameLabel = new Label(remoteNamePanel, SWT.NONE);
+		remoteNameLabel.setText(UIText.AddRemotePage_RemoteNameLabel);
+
+		remoteNameText = new Text(remoteNamePanel, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.applyTo(remoteNameText);
+		if (!getExistingRemotes().contains(Constants.DEFAULT_REMOTE_NAME)) {
+			remoteNameText.setText(Constants.DEFAULT_REMOTE_NAME);
+			remoteNameText.setSelection(remoteNameText.getText().length());
+		} else
+			setMessage(UIText.AddRemotePage_EnterRemoteNameMessage);
+
+		remoteNameText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+	}
+

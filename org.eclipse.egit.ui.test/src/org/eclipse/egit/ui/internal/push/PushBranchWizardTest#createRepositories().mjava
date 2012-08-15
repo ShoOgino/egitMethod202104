@@ -1,0 +1,10 @@
+	@Before
+	public void createRepositories() throws Exception {
+		File repositoryFile = createProjectAndCommitToRepository();
+		File remoteRepositoryFile = createRemoteRepository(repositoryFile);
+		repository = lookupRepository(repositoryFile);
+		remoteRepository = lookupRepository(remoteRepositoryFile);
+		reposToDelete.add(repository);
+		reposToDelete.add(remoteRepository);
+	}
+

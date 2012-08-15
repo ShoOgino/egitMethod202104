@@ -1,0 +1,23 @@
+	private void configureUpstream() throws IOException {
+		String remoteName = getRemoteName();
+		String remoteBranchName = pushBranchPage.getBranchName();
+		String branchName = Repository.shortenRefName(refToPush.getName());
+
+		StoredConfig config = repository.getConfig();
+		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
+				ConfigConstants.CONFIG_KEY_REMOTE, remoteName);
+		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
+				ConfigConstants.CONFIG_KEY_MERGE, Constants.R_HEADS
+						+ remoteBranchName);
+		if (pushBranchPage.isRebaseSelected()) {
+			config.setBoolean(ConfigConstants.CONFIG_BRANCH_SECTION,
+					branchName, ConfigConstants.CONFIG_KEY_REBASE, true);
+		} else {
+			// Make sure we overwrite any previous configuration
+			config.unset(ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
+					ConfigConstants.CONFIG_KEY_REBASE);
+		}
+
+		config.save();
+	}
+

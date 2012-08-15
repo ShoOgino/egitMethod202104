@@ -1,0 +1,29 @@
+	private void checkPage() {
+		try {
+			if (remoteConfig == null) {
+				setErrorMessage(UIText.PushBranchPage_ChooseRemoteError);
+				return;
+			}
+			String branchName = branchNameText.getText();
+			if (branchName.length() == 0) {
+				setErrorMessage(UIText.PushBranchPage_ChooseBranchNameError);
+				return;
+			}
+			if (!Repository.isValidRefName(Constants.R_HEADS + branchName)) {
+				setErrorMessage(UIText.PushBranchPage_InvalidBranchNameError);
+				return;
+			}
+			if (branchAlreadyHasUpstreamConfiguration()
+					&& isConfigureUpstreamSelected()) {
+				setMessage(
+						UIText.PushBranchPage_UpstreamConfigOverwriteWarning,
+						IMessageProvider.WARNING);
+			} else {
+				setMessage(UIText.PushBranchPage_PageMessage);
+			}
+			setErrorMessage(null);
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+

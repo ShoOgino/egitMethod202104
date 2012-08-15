@@ -1,0 +1,19 @@
+	@Test
+	public void pushWithDifferentBranchName() throws Exception {
+		checkoutNewLocalBranch("localname");
+
+		PushBranchWizardTester wizard = PushBranchWizardTester.startWizard(
+				selectProject(), "localname");
+		wizard.selectRemote("fetch");
+		wizard.selectMerge();
+		wizard.enterBranchName("remotename");
+		wizard.next();
+		wizard.finish();
+
+		ObjectId pushed = remoteRepository.resolve("remotename");
+		assertNotNull(pushed);
+		assertEquals(repository.resolve("localname"), pushed);
+
+		assertBranchConfig("localname", "fetch", "refs/heads/remotename", null);
+	}
+

@@ -1,0 +1,10 @@
+	private void assertRemoteConfig(String remoteName, URIish remoteUri) {
+		StoredConfig config = repository.getConfig();
+		assertEquals(remoteUri.toString(), config.getString(
+				ConfigConstants.CONFIG_REMOTE_SECTION, remoteName,
+				ConfigConstants.CONFIG_KEY_URL));
+		assertEquals("+refs/heads/*:refs/remotes/" + remoteName + "/*",
+				config.getString(ConfigConstants.CONFIG_REMOTE_SECTION,
+						remoteName, "fetch"));
+	}
+

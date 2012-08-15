@@ -1,0 +1,5 @@
+	private static boolean isValidRemoteName(String remoteName) {
+		String testRef = Constants.R_REMOTES + remoteName + "/test"; //$NON-NLS-1$
+		return Repository.isValidRefName(testRef);
+	}
+

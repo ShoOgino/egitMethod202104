@@ -1,0 +1,17 @@
+	@Override
+	protected void checkPage() {
+		String remoteName = getRemoteName();
+		if (remoteName.length() == 0) {
+			setErrorMessage(UIText.AddRemotePage_RemoteNameEmptyError);
+			setPageComplete(false);
+		} else if (!isValidRemoteName(remoteName)) {
+			setErrorMessage(UIText.AddRemotePage_RemoteNameInvalidError);
+			setPageComplete(false);
+		} else if (getExistingRemotes().contains(remoteName)) {
+			setErrorMessage(UIText.AddRemotePage_RemoteNameAlreadyExistsError);
+			setPageComplete(false);
+		} else {
+			super.checkPage();
+		}
+	}
+

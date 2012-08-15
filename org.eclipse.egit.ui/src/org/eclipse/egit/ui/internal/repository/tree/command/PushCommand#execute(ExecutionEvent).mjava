@@ -6,9 +6,8 @@
 		try {
 			switch (node.getType()) {
 			case REF:
-				pushWiz = new SimplePushRefWizard(node.getRepository(),
-						(Ref) node.getObject(),
-						UIText.PushCommand_pushBranchTitle);
+				pushWiz = new PushBranchWizard(node.getRepository(),
+						(Ref) node.getObject());
 				break;
 			case TAG:
 				pushWiz = new SimplePushRefWizard(node.getRepository(),

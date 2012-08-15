@@ -1,0 +1,14 @@
+	private void startPush() throws IOException {
+		PushOperationResult result = confirmationPage.getConfirmedResult();
+		PushOperationSpecification pushSpec = result
+				.deriveSpecification(confirmationPage
+						.isRequireUnchangedSelected());
+
+		int timeout = Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+		PushOperationUI pushOperationUI = new PushOperationUI(repository,
+				pushSpec, timeout, false);
+		pushOperationUI.setCredentialsProvider(new EGitCredentialsProvider());
+		pushOperationUI.start();
+	}
+

@@ -1,0 +1,6 @@
+	@Override
+	public boolean isEnabled() {
+		Repository repository = getRepository();
+		return getBranchRef(repository) != null;
+	}
+

@@ -1,0 +1,20 @@
+	@Test
+	public void pushWhenNoRemoteExistsYet() throws Exception {
+		removeExistingRemotes();
+		checkoutNewLocalBranch("foo");
+		Repository other = createRemoteRepository();
+		URIish uri = getUri(other);
+
+		PushBranchWizardTester wizard = PushBranchWizardTester.startWizard(
+				selectProject(), "foo");
+		wizard.enterRemoteOnInitialPage("origin", uri.toString());
+		wizard.next();
+		wizard.selectMerge();
+		wizard.next();
+		wizard.finish();
+
+		assertRemoteConfig("origin", uri);
+		assertBranchPushed("foo", other);
+		assertBranchConfig("foo", "origin", "refs/heads/foo", null);
+	}
+

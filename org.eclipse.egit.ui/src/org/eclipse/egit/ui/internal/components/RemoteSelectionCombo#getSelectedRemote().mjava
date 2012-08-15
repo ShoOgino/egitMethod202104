@@ -1,0 +1,11 @@
+	/**
+	 * @return the currently selected remote config, or null
+	 */
+	public RemoteConfig getSelectedRemote() {
+		final int idx = remoteCombo.getSelectionIndex();
+		if (remoteConfigs != null) {
+			return remoteConfigs.get(idx);
+		}
+		return null;
+	}
+

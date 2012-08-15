@@ -1,0 +1,14 @@
+	public void selectRemote(String remoteName) {
+		SWTBotCombo remoteCombo = wizard
+				.comboBoxWithLabel(UIText.PushBranchPage_RemoteLabel);
+		String[] items = remoteCombo.items();
+		for (String item : items) {
+			if (item.startsWith(remoteName + ":")) {
+				remoteCombo.setSelection(item);
+				return;
+			}
+		}
+		throw new IllegalStateException("Could not select remote '"
+				+ remoteName + "', items were: " + Arrays.toString(items));
+	}
+

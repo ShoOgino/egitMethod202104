@@ -1,0 +1,15 @@
+	@Test
+	public void pushToExistingRemoteAndSetRebase() throws Exception {
+		checkoutNewLocalBranch("bar");
+
+		PushBranchWizardTester wizard = PushBranchWizardTester.startWizard(
+				selectProject(), "bar");
+		wizard.selectRemote("fetch");
+		wizard.selectRebase();
+		wizard.next();
+		wizard.finish();
+
+		assertBranchPushed("bar", remoteRepository);
+		assertBranchConfig("bar", "fetch", "refs/heads/bar", "true");
+	}
+

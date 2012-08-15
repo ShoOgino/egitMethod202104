@@ -3,7 +3,7 @@
 		sb.append(": "); //$NON-NLS-1$
 		boolean first = true;
 		List<URIish> uris;
-		if (sourceSelection)
+		if (selectionType == SelectionType.FETCH)
 			uris = rc.getURIs();
 		else {
 			uris = rc.getPushURIs();

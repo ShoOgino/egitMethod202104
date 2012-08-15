@@ -1,0 +1,6 @@
+	@Override
+	public String getWindowTitle() {
+		return MessageFormat.format(UIText.PushBranchWizard_WindowTitle,
+				Repository.shortenRefName(refToPush.getName()));
+	}
+

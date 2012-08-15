@@ -96,7 +96,7 @@
 			public void widgetSelected(SelectionEvent e) {
 				String ref = branchCombo.getText();
 				suggestBranchName(ref);
-				upstreamConfig = getDefaultUpstreamConfig(myRepository, ref);
+				upstreamConfig = UpstreamConfig.getDefault(myRepository, ref);
 				checkPage();
 			}
 		});

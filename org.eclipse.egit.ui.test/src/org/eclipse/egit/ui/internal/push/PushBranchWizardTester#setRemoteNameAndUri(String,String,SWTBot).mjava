@@ -1,0 +1,11 @@
+	private void setRemoteNameAndUri(String remoteName, String uri,
+			SWTBot remotePage) {
+		SWTBotText remoteNameText = remotePage
+				.textWithLabel(UIText.AddRemotePage_RemoteNameLabel);
+		remoteNameText.setText(remoteName);
+		SWTBotText uriText = remotePage
+				.textWithLabel(UIText.RepositorySelectionPage_promptURI
+				+ ":");
+		uriText.setText(uri);
+	}
+

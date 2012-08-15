@@ -1,0 +1,23 @@
+	@Override
+	public boolean performFinish() {
+		try {
+			AddRemotePage remotePage = getAddRemotePage();
+			if (remotePage != null) {
+				storeCredentials(remotePage);
+				URIish uri = remotePage.getSelection().getURI();
+				configureNewRemote(uri);
+			}
+			if (pushBranchPage.isConfigureUpstreamSelected())
+				configureUpstream();
+			startPush();
+		} catch (IOException e) {
+			confirmationPage.setErrorMessage(e.getMessage());
+			return false;
+		} catch (URISyntaxException e) {
+			confirmationPage.setErrorMessage(e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+

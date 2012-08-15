@@ -19,7 +19,7 @@
 		this.myValidator = ValidationUtils.getRefNameInputValidator(
 				myRepository, Constants.R_HEADS, true);
 		if (baseRef != null)
-			this.upstreamConfig = getDefaultUpstreamConfig(repo, baseRef.getName());
+			this.upstreamConfig = UpstreamConfig.getDefault(repo, baseRef.getName());
 		else
 			this.upstreamConfig = UpstreamConfig.NONE;
 		setTitle(UIText.CreateBranchPage_Title);

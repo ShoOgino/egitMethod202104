@@ -1,0 +1,14 @@
+	private void assertBranchConfig(String branchName, String remoteName,
+			String mergeRef, String rebase) {
+		StoredConfig config = repository.getConfig();
+		assertEquals(remoteName, config.getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
+				ConfigConstants.CONFIG_KEY_REMOTE));
+		assertEquals(mergeRef, config.getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
+				ConfigConstants.CONFIG_KEY_MERGE));
+		assertEquals(rebase, config.getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
+				ConfigConstants.CONFIG_KEY_REBASE));
+	}
+

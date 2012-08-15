@@ -1,0 +1,9 @@
+	public static PushBranchWizardTester startWizard(SWTBotTree projectTree,
+			String branchName) {
+		TestUtil util = new TestUtil();
+		String pushBranchMenu = util
+				.getPluginLocalizedValue("PushBranchAction.label");
+		ContextMenuHelper.clickContextMenu(projectTree, "Team", pushBranchMenu);
+		return forBranchName(branchName);
+	}
+
