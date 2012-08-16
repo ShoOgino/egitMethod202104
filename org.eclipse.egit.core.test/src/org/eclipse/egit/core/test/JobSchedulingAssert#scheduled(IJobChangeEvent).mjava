@@ -1,0 +1,6 @@
+	@Override
+	public void scheduled(IJobChangeEvent event) {
+		if (event.getJob().belongsTo(jobFamily))
+			scheduled = true;
+	}
+

@@ -1,0 +1,11 @@
+	/**
+	 * Assert that the job has indeed been scheduled.
+	 *
+	 * @param messageForFailure
+	 *            message for when the assertion should fail
+	 */
+	public void assertScheduled(String messageForFailure) {
+		Job.getJobManager().removeJobChangeListener(this);
+		assertTrue(messageForFailure, scheduled);
+	}
+

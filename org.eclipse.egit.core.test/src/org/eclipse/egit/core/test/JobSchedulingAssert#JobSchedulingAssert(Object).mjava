@@ -1,0 +1,5 @@
+	private JobSchedulingAssert(Object jobFamily) {
+		this.jobFamily = jobFamily;
+		Job.getJobManager().addJobChangeListener(this);
+	}
+
