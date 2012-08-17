@@ -7,8 +7,10 @@
 
 		try {
 			// setup local tree
+			FileTreeIterator fti = null;
 			if (gsd.shouldIncludeLocal()) {
-				tw.addTree(new FileTreeIterator(repo));
+				fti = new FileTreeIterator(repo);
+				tw.addTree(fti);
 				if (filter != null)
 					tw.setFilter(AndTreeFilter.create(filter,
 							new NotIgnoredFilter(0)));
@@ -31,6 +33,12 @@
 			else
 				tw.addTree(new EmptyTreeIterator());
 
+			DirCacheIterator dci = null;
+			if (fti != null) {
+				dci = new DirCacheIterator(DirCache.read(repo));
+				tw.addTree(dci);
+				fti.setDirCacheIterator(tw, 3);
+			}
 			List<ThreeWayDiffEntry> diffEntrys = ThreeWayDiffEntry.scan(tw);
 			tw.release();
 
