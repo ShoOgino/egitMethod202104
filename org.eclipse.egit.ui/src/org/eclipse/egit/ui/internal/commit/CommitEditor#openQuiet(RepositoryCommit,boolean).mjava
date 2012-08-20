@@ -1,0 +1,17 @@
+	/**
+	 * Open commit in editor
+	 *
+	 * @param commit
+	 * @param activateOnOpen <code>true</code> if the newly opened editor should be activated
+	 * @return opened editor part or null if opening fails
+	 * @since 2.1
+	 */
+	public static final IEditorPart openQuiet(RepositoryCommit commit, boolean activateOnOpen) {
+		try {
+			return open(commit, activateOnOpen);
+		} catch (PartInitException e) {
+			Activator.logError(e.getMessage(), e);
+			return null;
+		}
+	}
+

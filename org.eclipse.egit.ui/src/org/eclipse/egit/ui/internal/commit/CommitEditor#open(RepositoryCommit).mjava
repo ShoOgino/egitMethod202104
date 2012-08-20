@@ -7,8 +7,6 @@
 	 */
 	public static final IEditorPart open(RepositoryCommit commit)
 			throws PartInitException {
-		CommitEditorInput input = new CommitEditorInput(commit);
-		return IDE.openEditor(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage(), input, ID);
+		return open(commit, true);
 	}
 
