@@ -1,0 +1,21 @@
+	/**
+	 * @param commit
+	 * @param allRefs
+	 * @param db
+	 * @return List of heads from those current commit is reachable
+	 * @throws MissingObjectException
+	 * @throws IncorrectObjectTypeException
+	 * @throws IOException
+	 */
+	private static List<Ref> getBranches(RevCommit commit,
+			Collection<Ref> allRefs, Repository db)
+			throws MissingObjectException, IncorrectObjectTypeException,
+			IOException {
+		RevWalk revWalk = new RevWalk(db);
+		try {
+			return findBranchesReachableFrom(commit, revWalk, allRefs);
+		} finally {
+			revWalk.dispose();
+		}
+	}
+
