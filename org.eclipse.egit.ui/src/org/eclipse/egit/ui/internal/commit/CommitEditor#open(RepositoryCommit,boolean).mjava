@@ -1,0 +1,16 @@
+	/**
+	 * Open commit in editor
+	 *
+	 * @param commit
+	 * @param activateOnOpen <code>true</code> if the newly opened editor should be activated
+	 * @return opened editor part
+	 * @throws PartInitException
+	 * @since 2.1
+	 */
+	public static final IEditorPart open(RepositoryCommit commit, boolean activateOnOpen)
+			throws PartInitException {
+		CommitEditorInput input = new CommitEditorInput(commit);
+		return IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), input, ID, activateOnOpen);
+	}
+
