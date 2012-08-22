@@ -13,7 +13,7 @@
 			IOException {
 		RevWalk revWalk = new RevWalk(db);
 		try {
-			return findBranchesReachableFrom(commit, revWalk, allRefs);
+			return RevWalkUtils.findBranchesReachableFrom(commit, revWalk, allRefs);
 		} finally {
 			revWalk.dispose();
 		}
