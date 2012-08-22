@@ -1,0 +1,46 @@
+	/**
+	 * @return true if a stash create operation was triggered
+	 */
+	public boolean createStash() {
+		InputDialog commitMessageDialog = new InputDialog(shell,
+				UIText.StashCreateCommand_titleEnterCommitMessage,
+				UIText.StashCreateCommand_messageEnterCommitMessage,
+				null, null);
+		if (commitMessageDialog.open() != Window.OK)
+			return false;
+		String message = commitMessageDialog.getValue();
+		if (message.length() == 0)
+			message = null;
+
+		final StashCreateOperation op = new StashCreateOperation(repo, message);
+		Job job = new Job(UIText.StashCreateCommand_jobTitle) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				monitor.beginTask("", 1); //$NON-NLS-1$
+				try {
+					op.execute(monitor);
+					RevCommit commit = op.getCommit();
+					if (commit == null)
+						showNoChangesToStash();
+
+				} catch (CoreException e) {
+					Activator
+							.logError(UIText.StashCreateCommand_stashFailed, e);
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.STASH.equals(family))
+					return true;
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
+		return true;
+
+	}
+

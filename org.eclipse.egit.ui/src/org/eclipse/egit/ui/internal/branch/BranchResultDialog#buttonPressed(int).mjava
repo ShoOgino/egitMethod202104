@@ -1,19 +1,28 @@
 	protected void buttonPressed(int buttonId) {
+		boolean shouldCheckout = false;
 		switch (buttonId) {
 		case IDialogConstants.PROCEED_ID:
-			CommonUtils.runCommand(CommitCommand.ID, new StructuredSelection(
-					new RepositoryNode(null, repository)));
+			CommitUI commitUI = new CommitUI(getShell(), repository, new IResource[0], true);
+			shouldCheckout = commitUI.commit();
 			break;
 		case IDialogConstants.ABORT_ID:
-			CommonUtils.runCommand(ResetCommand.ID, new StructuredSelection(
-					new RepositoryNode(null, repository)));
+			final ResetOperation operation = new ResetOperation(repository,
+					Constants.HEAD, ResetType.HARD);
+			String jobname = NLS.bind(UIText.ResetAction_reset, Constants.HEAD);
+			JobUtil.scheduleUserJob(operation, jobname, JobFamilies.RESET);
+			shouldCheckout = true;
 			break;
 		case IDialogConstants.SKIP_ID:
-			CommonUtils.runCommand(StashCreateCommand.ID,
-					new StructuredSelection(
-							new RepositoryNode(null, repository)));
+			StashCreateUI stashCreateUI = new StashCreateUI(getShell(), repository);
+			shouldCheckout = stashCreateUI.createStash();
 			break;
+		case IDialogConstants.OK_ID:
+			super.buttonPressed(buttonId);
 		}
-		super.buttonPressed(buttonId);
+		if (shouldCheckout) {
+			super.buttonPressed(buttonId);
+			BranchOperationUI op = BranchOperationUI.checkout(repository, target);
+			op.start();
+		}
 	}
 
