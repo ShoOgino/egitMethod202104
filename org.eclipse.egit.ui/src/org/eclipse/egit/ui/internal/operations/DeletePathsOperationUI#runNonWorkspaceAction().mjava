@@ -1,0 +1,17 @@
+	private void runNonWorkspaceAction() {
+		boolean performAction = MessageDialog.openConfirm(
+				shellProvider.getShell(),
+				UIText.DeleteResourcesOperationUI_confirmActionTitle,
+				UIText.DeleteResourcesOperationUI_confirmActionMessage);
+		if (!performAction)
+			return;
+
+		DeletePathsOperation operation = new DeletePathsOperation(paths);
+
+		try {
+			operation.execute(null);
+		} catch (CoreException e) {
+			Activator.handleError(UIText.DeleteResourcesOperationUI_deleteFailed, e, true);
+		}
+	}
+

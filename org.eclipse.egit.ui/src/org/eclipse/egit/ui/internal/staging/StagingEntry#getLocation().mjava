@@ -1,0 +1,8 @@
+	/**
+	 * @return the location (path) of the entry
+	 */
+	public IPath getLocation() {
+		IPath absolutePath = new Path(repository.getWorkTree().getAbsolutePath()).append(path);
+		return absolutePath;
+	}
+

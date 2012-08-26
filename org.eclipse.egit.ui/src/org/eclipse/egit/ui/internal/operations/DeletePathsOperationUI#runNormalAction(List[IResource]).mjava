@@ -1,0 +1,7 @@
+	private void runNormalAction(List<IResource> resources) {
+		DeleteResourceAction action = new DeleteResourceAction(shellProvider);
+		IStructuredSelection selection = new StructuredSelection(resources);
+		action.selectionChanged(selection);
+		action.run();
+	}
+

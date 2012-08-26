@@ -3,9 +3,7 @@
 		File outsideOfProject = new File(workdir, "outside-of-project.txt");
 		outsideOfProject.createNewFile();
 
-		Path path = new Path(outsideOfProject.getAbsolutePath());
-		IWorkspaceRoot root = project.getWorkspace().getRoot();
-		IResource resource = root.getFile(path);
+		IPath path = new Path(outsideOfProject.getAbsolutePath());
 
 		// Make sure the cache has at least be refreshed once, otherwise the
 		// assertion at the end is not effective
@@ -13,7 +11,7 @@
 
 		JobSchedulingAssert jobSchedulingAssertion = JobSchedulingAssert
 				.forFamily(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
-		deleteResources(Arrays.asList(resource));
+		deletePaths(Arrays.asList(path));
 
 		assertFalse("File should have been deleted", outsideOfProject.exists());
 		jobSchedulingAssertion

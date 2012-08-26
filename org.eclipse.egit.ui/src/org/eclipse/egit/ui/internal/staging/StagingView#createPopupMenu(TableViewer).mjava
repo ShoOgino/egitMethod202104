@@ -62,14 +62,7 @@
 					else
 						menuMgr.add(createItem(ActionCommands.REPLACE_WITH_HEAD_ACTION, tableViewer));
 				if (addDelete) {
-					if (selectionIncludesNonWorkspaceResources) {
-						menuMgr.add(new DeleteAction(selection));
-					} else {
-						DeleteResourceAction deleteResourceAction = new DeleteResourceAction(getSite());
-						deleteResourceAction.selectionChanged(selection);
-						ActionContributionItem item = new ActionContributionItem(deleteResourceAction);
-						menuMgr.add(item);
-					}
+					menuMgr.add(new DeleteAction(selection));
 				}
 				if (addLaunchMergeTool)
 					menuMgr.add(createItem(ActionCommands.MERGE_TOOL_ACTION, tableViewer));

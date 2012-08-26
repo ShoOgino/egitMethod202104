@@ -4,14 +4,18 @@
 	 * {@link #getWorkTree()}. Testing that here is rather expensive so we don't
 	 * bother.
 	 *
-	 * @param rsrc
+	 * @param location
 	 * @return the path relative to the Git repository, including base name.
 	 *         <code>null</code> if the path cannot be determined.
 	 */
-	public String getRepoRelativePath(final IResource rsrc) {
-		IPath location = rsrc.getLocation();
-		if (location == null)
-			location = rsrc.getFullPath();
-		return getRepoRelativePath(location);
+	public String getRepoRelativePath(IPath location) {
+		final int pfxLen = workdirPrefix.length();
+		final String p = location.toString();
+		final int pLen = p.length();
+		if (pLen > pfxLen)
+			return p.substring(pfxLen);
+		if (pLen == pfxLen - 1)
+			return ""; //$NON-NLS-1$
+		return null;
 	}
 

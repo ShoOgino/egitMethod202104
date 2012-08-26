@@ -1,0 +1,7 @@
+	private SWTBotTreeItem findWorkdirNode(SWTBotTree tree, String... nodes) throws Exception {
+		SWTBotTreeItem item = myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand();
+		for (String node : nodes)
+			item = item.getNode(node).expand();
+		return item;
+	}
+

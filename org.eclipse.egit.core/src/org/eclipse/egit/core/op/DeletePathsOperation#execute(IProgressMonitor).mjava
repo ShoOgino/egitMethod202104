@@ -2,7 +2,7 @@
 		IProgressMonitor monitor = (m != null) ? m : new NullProgressMonitor();
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor actMonitor) throws CoreException {
-				deleteResources(actMonitor);
+				deletePaths(actMonitor);
 			}
 		};
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),

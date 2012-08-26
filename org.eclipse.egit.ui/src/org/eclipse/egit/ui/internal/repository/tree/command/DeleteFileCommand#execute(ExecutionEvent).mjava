@@ -1,0 +1,11 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Collection<IPath> paths = getSelectedFileAndFolderPaths(event);
+
+		RepositoriesView view = getView(event);
+		DeletePathsOperationUI operation = new DeletePathsOperationUI(paths, view.getSite());
+		operation.run();
+
+		view.refresh();
+		return null;
+	}
+

@@ -1,0 +1,9 @@
+	/**
+	 * @param paths
+	 *            the files to delete
+	 */
+	public DeletePathsOperation(final Collection<IPath> paths) {
+		this.paths = paths;
+		schedulingRule = calculateSchedulingRule();
+	}
+
