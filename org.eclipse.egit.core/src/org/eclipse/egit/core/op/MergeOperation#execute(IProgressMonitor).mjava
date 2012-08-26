@@ -24,6 +24,7 @@
 				} catch (IOException e) {
 					throw new TeamException(CoreText.MergeOperation_InternalError, e);
 				}
+				merge.setSquash(squash);
 				if (mergeStrategy != null) {
 					merge.setStrategy(mergeStrategy);
 				}

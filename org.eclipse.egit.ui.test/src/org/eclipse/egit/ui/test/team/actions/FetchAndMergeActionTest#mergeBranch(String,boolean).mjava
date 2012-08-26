@@ -1,0 +1,9 @@
+	private void mergeBranch(String branchToMerge, boolean squash) throws Exception {
+		SWTBotShell mergeDialog = openMergeDialog();
+		mergeDialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand().getNode(branchToMerge).select();
+		if (squash)
+			mergeDialog.bot().radio(UIText.MergeTargetSelectionDialog_MergeTypeSquashButton).click();
+		mergeDialog.bot().button(UIText.MergeTargetSelectionDialog_ButtonMerge).click();
+		bot.shell(UIText.MergeAction_MergeResultTitle).close();
+	}
+
