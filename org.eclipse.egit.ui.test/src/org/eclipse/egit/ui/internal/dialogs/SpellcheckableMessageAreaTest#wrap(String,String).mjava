@@ -5,7 +5,7 @@
 						SpellcheckableMessageArea.MAX_LINE_WIDTH, lineDelimiter);
 		for (WrapEdit wrapEdit : wrapEdits) {
 			sb.replace(wrapEdit.getStart(),
-					wrapEdit.getStart() + wrapEdit.getLength(), lineDelimiter);
+					wrapEdit.getStart() + wrapEdit.getLength(), wrapEdit.getReplacement());
 		}
 		return sb.toString();
 	}

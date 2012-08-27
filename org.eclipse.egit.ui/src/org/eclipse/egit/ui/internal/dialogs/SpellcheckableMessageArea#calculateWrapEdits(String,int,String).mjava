@@ -18,8 +18,12 @@
 	public static List<WrapEdit> calculateWrapEdits(final String text, final int maxLineLength, final String lineDelimiter) {
 		List<WrapEdit> wrapEdits = new LinkedList<WrapEdit>();
 
+		final int lineDelimiterLength = lineDelimiter.length();
+		final int spaceLength = 1;
+
 		int offset = 0;
-		int lineDelimiterLength = lineDelimiter.length();
+		boolean lastChunkWasWrapped = false;
+		int lastChunkWrappedOffset = 0;
 
 		String[] chunks = text.split(lineDelimiter, -1);
 		for (int chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
@@ -30,27 +34,44 @@
 
 			for (int wordIndex = 0; wordIndex < words.length; wordIndex++) {
 				String word = words[wordIndex];
-
 				int wordLength = word.length();
-				int newLineLength = lineLength + wordLength + 1 /* the space */;
+				boolean adjustForSpace = wordIndex != 0;
+
+				if (wordIndex == 0 && lastChunkWasWrapped) {
+					if (wordLength != 0 && !STARTS_WITH_SYMBOL.matcher(word).matches()) {
+						wrapEdits.add(new WrapEdit(offset - lineDelimiterLength, lineDelimiterLength, " ")); //$NON-NLS-1$
+						/* adjust for join edit above */
+						offset -= lineDelimiterLength;
+						adjustForSpace = true;
+						lineLength = offset - lastChunkWrappedOffset;
+					}
+					lastChunkWasWrapped = false;
+				}
+
+				int newLineLength = lineLength + spaceLength + wordLength;
 				if (newLineLength > maxLineLength) {
 					/* don't break before a single long word */
 					if (lineLength != 0) {
-						wrapEdits.add(new WrapEdit(offset, 1));
+						wrapEdits.add(new WrapEdit(offset, spaceLength, lineDelimiter));
 						/* adjust for the shifting of text after the edit is applied */
 						offset += lineDelimiterLength;
+						adjustForSpace = false;
+						lastChunkWasWrapped = true;
+						lastChunkWrappedOffset = offset;
 					}
 					lineLength = 0;
-				} else if (wordIndex != 0) {
-					lineLength += 1;
-					offset += 1;
 				}
+
+				if (adjustForSpace) {
+					offset += spaceLength;
+					lineLength += spaceLength;
+				}
+
 				offset += wordLength;
 				lineLength += wordLength;
 			}
 
-			if (chunkIndex != chunks.length - 1)
-				offset += lineDelimiterLength;
+			offset += lineDelimiterLength;
 		}
 
 		return wrapEdits;
