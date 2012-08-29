@@ -4,7 +4,7 @@
 		GridLayoutFactory.fillDefaults().spacing(0, 0).applyTo(main);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 
-		tree = new TreeViewer(main, SWT.BORDER);
+		tree = new TreeViewer(main, SWT.NONE);
 		tree.setContentProvider(new PathNodeContentProvider());
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree.getTree());
 
