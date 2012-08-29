@@ -1,0 +1,8 @@
+	@Test
+	public void shouldNotContainDeletedRepository() throws IOException {
+		cache.lookupRepository(repository.getDirectory());
+		assertThat(repository, isIn(cache.getAllRepositories()));
+		FileUtils.delete(repository.getDirectory(), FileUtils.RECURSIVE);
+		assertThat(repository, not(isIn(cache.getAllRepositories())));
+	}
+

@@ -1,0 +1,8 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		this.testRepository = new TestRepository(gitDir);
+		this.repository = testRepository.getRepository();
+		this.cache = Activator.getDefault().getRepositoryCache();
+	}
+
