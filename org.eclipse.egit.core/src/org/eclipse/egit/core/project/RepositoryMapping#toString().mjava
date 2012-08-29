@@ -1,6 +1,10 @@
 	public String toString() {
+		IPath absolutePath = getGitDirAbsolutePath();
 		return "RepositoryMapping[" //$NON-NLS-1$
-				+ containerPathString + " -> " //$NON-NLS-1$
-				+ gitDirPathString + "]"; //$NON-NLS-1$
+				+ format(containerPathString)
+				+ " -> '" //$NON-NLS-1$
+				+ format(gitDirPathString)
+				+ "', absolute path: '"  //$NON-NLS-1$
+				+ format(absolutePath) + "' ]"; //$NON-NLS-1$
 	}
 

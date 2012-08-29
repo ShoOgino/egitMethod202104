@@ -2,9 +2,13 @@
 	 * @return The GIT DIR absolute path
 	 */
 	public synchronized IPath getGitDirAbsolutePath() {
-		if (gitDirAbsolutePath == null)
-			gitDirAbsolutePath = container.getLocation()
-					.append(getGitDirPath());
+		if (gitDirAbsolutePath == null) {
+			if (container != null) {
+				IPath cloc = container.getLocation();
+				if (cloc != null)
+					gitDirAbsolutePath = cloc.append(getGitDirPath());
+			}
+		}
 		return gitDirAbsolutePath;
 	}
 

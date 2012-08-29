@@ -13,18 +13,15 @@
 		}
 
 		if (c == null) {
-			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
-					new FileNotFoundException(m.getContainerPath().toString()));
+			logGoneMappedResource(m);
 			m.clear();
 			return;
 		}
 		m.setContainer(c);
 
 		git = c.getLocation().append(m.getGitDirPath()).toFile();
-		if (!git.isDirectory()
-				|| !new File(git, "config").isFile()) {  //$NON-NLS-1$
-			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
-					new FileNotFoundException(m.getContainerPath().toString()));
+		if (!git.isDirectory() || !new File(git, "config").isFile()) { //$NON-NLS-1$
+			logGoneMappedResource(m);
 			m.clear();
 			return;
 		}
@@ -33,8 +30,7 @@
 			m.setRepository(Activator.getDefault().getRepositoryCache()
 					.lookupRepository(git));
 		} catch (IOException ioe) {
-			Activator.logError(CoreText.GitProjectData_mappedResourceGone,
-					new FileNotFoundException(m.getContainerPath().toString()));
+			logGoneMappedResource(m);
 			m.clear();
 			return;
 		}
