@@ -7,7 +7,6 @@
 						public void run(IProgressMonitor monitor)
 								throws InvocationTargetException,
 								InterruptedException {
-							changeRefs = new ArrayList<Change>();
 							ListRemoteOperation listOp;
 							try {
 								listOp = new ListRemoteOperation(
@@ -22,6 +21,7 @@
 							}
 
 							listOp.run(monitor);
+							changeRefs = new ArrayList<Change>();
 							for (Ref ref : listOp.getRemoteRefs()) {
 								Change change = Change.fromRef(ref.getName());
 								if (change != null)
