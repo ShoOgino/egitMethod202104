@@ -1,0 +1,12 @@
+	public Image decorateImage(Image image, Object element) {
+		IProblemDecoratable decoratable = getProblemDecoratable(element);
+		if (decoratable != null) {
+			int problemSeverity = decoratable.getProblemSeverity();
+			if (problemSeverity == IMarker.SEVERITY_ERROR)
+				return getDecoratedImage(image, ISharedImages.IMG_ERROR_OVR);
+			else if (problemSeverity == IMarker.SEVERITY_WARNING)
+				return getDecoratedImage(image, ISharedImages.IMG_WARNING_OVR);
+		}
+		return null;
+	}
+

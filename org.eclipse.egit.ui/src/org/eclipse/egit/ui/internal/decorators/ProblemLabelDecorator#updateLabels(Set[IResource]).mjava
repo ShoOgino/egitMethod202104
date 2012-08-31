@@ -1,0 +1,13 @@
+	private void updateLabels(Set<IResource> changedResources) {
+		List<Object> elements = getAffectedElements(changedResources);
+		if (!elements.isEmpty()) {
+			final Object[] updateElements = elements.toArray(new Object[elements.size()]);
+			Display display = viewer.getControl().getDisplay();
+			display.asyncExec(new Runnable() {
+				public void run() {
+					viewer.update(updateElements, null);
+				}
+			});
+		}
+	}
+

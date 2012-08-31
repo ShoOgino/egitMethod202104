@@ -1,0 +1,7 @@
+	private Image getDecoratedImage(Image base, String teamImageId) {
+		ImageDescriptor overlay = TeamImages.getImageDescriptor(teamImageId);
+		DecorationOverlayIcon decorated = new DecorationOverlayIcon(base,
+				overlay, IDecoration.BOTTOM_LEFT);
+		return (Image) this.resourceManager.get(decorated);
+	}
+

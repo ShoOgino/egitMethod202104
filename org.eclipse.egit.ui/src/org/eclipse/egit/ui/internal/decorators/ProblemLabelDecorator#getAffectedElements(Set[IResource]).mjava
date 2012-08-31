@@ -1,0 +1,14 @@
+	private List<Object> getAffectedElements(Set<IResource> resources) {
+		List<Object> result = new ArrayList<Object>();
+		if (viewer.getContentProvider() instanceof IStructuredContentProvider) {
+			IStructuredContentProvider contentProvider = (IStructuredContentProvider) viewer.getContentProvider();
+			Object[] elements = contentProvider.getElements(null);
+			for (Object element : elements) {
+				IResource resource = AdapterUtils.adapt(element, IResource.class);
+				if (resource != null && resources.contains(resource))
+					result.add(element);
+			}
+		}
+		return result;
+	}
+

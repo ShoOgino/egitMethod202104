@@ -201,7 +201,7 @@
 
 		filesViewer = new CheckboxTableViewer(resourcesTable);
 		new TableViewerColumn(filesViewer, statCol)
-				.setLabelProvider(new CommitStatusLabelProvider());
+				.setLabelProvider(createStatusLabelProvider());
 		new TableViewerColumn(filesViewer, resourceCol)
 				.setLabelProvider(new CommitPathLabelProvider());
 		ColumnViewerToolTipSupport.enableFor(filesViewer);
