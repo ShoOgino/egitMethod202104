@@ -1,0 +1,44 @@
+	/**
+	 * Opens the tree and marks the working directory files or folders that points
+	 * to a resources if possible
+	 *
+	 * @param resources
+	 *            the resources to show
+	 */
+	private void showResources(final List<IResource> resources) {
+		final List<RepositoryTreeNode> nodesToShow = new ArrayList<RepositoryTreeNode>();
+
+		IResource[] r = resources.toArray(new IResource[resources.size()]);
+		Map<Repository, Collection<String>> resourcesByRepo = ResourceUtil.splitResourcesByRepository(r);
+		for (Map.Entry<Repository, Collection<String>> entry : resourcesByRepo.entrySet()) {
+			Repository repository = entry.getKey();
+			try {
+				boolean added = repositoryUtil.addConfiguredRepository(repository.getDirectory());
+				if (added)
+					scheduleRefresh(0);
+			} catch (IllegalArgumentException iae) {
+				Activator.handleError(iae.getMessage(), iae, false);
+				continue;
+			}
+
+			if (this.scheduledJob != null)
+				try {
+					this.scheduledJob.join();
+				} catch (InterruptedException e) {
+					Activator.handleError(e.getMessage(), e, false);
+				}
+
+			for (String repoPath : entry.getValue()) {
+				final RepositoryTreeNode node = getNodeForPath(repository, repoPath);
+				if (node != null)
+					nodesToShow.add(node);
+			}
+		}
+
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				selectReveal(new StructuredSelection(nodesToShow));
+			}
+		});
+	}
+
