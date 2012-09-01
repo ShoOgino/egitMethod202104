@@ -1,0 +1,13 @@
+	private String describeSize(long nrOfBytes) {
+		if (nrOfBytes < 1000L)
+			return bigIntFmt.format(nrOfBytes) + " Bytes"; //$NON-NLS-1$
+		if (nrOfBytes < 1000000L)
+			return bigFpFmt.format(nrOfBytes / 1000.0)
+					+ " kB (" + bigIntFmt.format(nrOfBytes) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		if (nrOfBytes < 1000000000L)
+			return bigFpFmt.format(nrOfBytes / 1000000.0)
+					+ " MB (" + bigIntFmt.format(nrOfBytes) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		return bigFpFmt.format(nrOfBytes / 1000000000.0)
+				+ " GB (" + bigIntFmt.format(nrOfBytes) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
