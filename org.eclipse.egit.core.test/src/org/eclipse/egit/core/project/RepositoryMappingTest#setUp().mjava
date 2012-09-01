@@ -1,0 +1,10 @@
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+
+		TestRepository testRepo = new TestRepository(gitDir);
+		testRepo.connect(project.project);
+		repository = testRepo.getRepository();
+	}
+

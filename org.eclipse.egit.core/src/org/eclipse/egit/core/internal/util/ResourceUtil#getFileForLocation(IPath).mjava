@@ -1,0 +1,11 @@
+	/**
+	 * Return the corresponding file if it exists.
+	 *
+	 * @param location
+	 * @return the file, or null
+	 */
+	public static IFile getFileForLocation(IPath location) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		return root.getFileForLocation(location);
+	}
+

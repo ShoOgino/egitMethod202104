@@ -1,0 +1,15 @@
+	/**
+	 * Get a typed element for the repository and repository-relative path in the index.
+	 *
+	 * @param repository
+	 * @param repoRelativePath
+	 * @return typed element
+	 * @throws IOException
+	 */
+	public static ITypedElement getIndexTypedElement(
+			final Repository repository, final String repoRelativePath)
+			throws IOException {
+		String encoding = CompareCoreUtils.getResourceEncoding(repository, repoRelativePath);
+		return getIndexTypedElement(repository, repoRelativePath, encoding);
+	}
+

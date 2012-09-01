@@ -1,0 +1,8 @@
+	@Test
+	public void shouldFindRepositoryMappingForRepository() {
+		RepositoryMapping mapping = RepositoryMapping.findRepositoryMapping(repository);
+
+		assertNotNull(mapping);
+		assertEquals(repository, mapping.getRepository());
+	}
+

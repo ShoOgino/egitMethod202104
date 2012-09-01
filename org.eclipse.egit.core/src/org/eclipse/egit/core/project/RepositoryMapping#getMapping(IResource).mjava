@@ -7,7 +7,7 @@
 	 */
 	public static RepositoryMapping getMapping(final IResource resource) {
 		if (isNonWorkspace(resource))
-			return getMappingForNonWorkspaceResource(resource);
+			return null;
 
 		IProject project = resource.getProject();
 		if (project == null)

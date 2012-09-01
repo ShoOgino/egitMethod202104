@@ -4,16 +4,22 @@
 		if (selection.size() != 1)
 			return false;
 
-		IResource resource = (IResource) getAdapter(selection.getFirstElement(), IResource.class);
-		// action is only working on files. Avoid calculation
-		// of unnecessary expensive IndexDiff on a folder
-		if (resource == null || !(resource instanceof IFile))
-			return false;
-
 		Repository repository = getRepository();
 		if (repository == null)
 			return false;
 
-		return isStaged(repository, resource);
+		IResource resource = AdapterUtils.adapt(selection.getFirstElement(), IResource.class);
+		if (resource != null) {
+			// action is only working on files. Avoid calculation
+			// of unnecessary expensive IndexDiff on a folder
+			if (resource instanceof IFile)
+				return isStaged(repository, resource.getLocation());
+		} else {
+			IPath location = AdapterUtils.adapt(selection.getFirstElement(), IPath.class);
+			if (location != null && location.toFile().isFile())
+				return isStaged(repository, location);
+		}
+
+		return false;
 	}
 

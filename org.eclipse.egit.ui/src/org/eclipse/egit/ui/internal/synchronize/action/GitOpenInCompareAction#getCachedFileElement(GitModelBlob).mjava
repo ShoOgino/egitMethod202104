@@ -1,0 +1,12 @@
+	private ITypedElement getCachedFileElement(GitModelBlob blob) {
+		try {
+			IPath location = blob.getLocation();
+			RepositoryMapping mapping = RepositoryMapping.getMapping(location);
+			Repository repo = mapping.getRepository();
+			String repoRelativePath = mapping.getRepoRelativePath(location);
+			return CompareUtils.getIndexTypedElement(repo, repoRelativePath);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+

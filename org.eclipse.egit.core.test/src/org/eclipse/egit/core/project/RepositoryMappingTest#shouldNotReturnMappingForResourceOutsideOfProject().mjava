@@ -1,0 +1,12 @@
+	@Test
+	public void shouldNotReturnMappingForResourceOutsideOfProject() {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IPath filePath = getWorkTreePath().append("outside.txt");
+		IFile file = root.getFile(filePath);
+		assertFalse(file.exists());
+
+		RepositoryMapping mapping = RepositoryMapping.getMapping(file);
+
+		assertNull(mapping);
+	}
+

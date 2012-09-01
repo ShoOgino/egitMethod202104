@@ -1,0 +1,11 @@
+	@Test
+	public void shouldReturnMappingForPathOutsideOfProject() {
+		IPath filePath = getWorkTreePath().append("outside.txt");
+
+		RepositoryMapping mapping = RepositoryMapping.getMapping(filePath);
+
+		assertNotNull(mapping);
+		assertEquals(repository, mapping.getRepository());
+		assertEquals("outside.txt", mapping.getRepoRelativePath(filePath));
+	}
+

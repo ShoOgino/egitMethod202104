@@ -1,0 +1,12 @@
+	@Test
+	public void shouldReturnMappingForResourceInProject() throws Exception {
+		IFile file = project.createFile("inproject.txt", new byte[] {});
+
+		RepositoryMapping mapping = RepositoryMapping.getMapping(file);
+
+		assertNotNull(mapping);
+		assertEquals(repository, mapping.getRepository());
+		assertEquals(project.getProject(), mapping.getContainer());
+		assertEquals(project.getProject().getName() + "/inproject.txt", mapping.getRepoRelativePath(file));
+	}
+

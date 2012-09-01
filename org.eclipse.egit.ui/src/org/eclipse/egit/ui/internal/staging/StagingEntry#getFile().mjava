@@ -5,8 +5,6 @@
 		IPath absolutePath = getLocation();
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IFile resource = root.getFileForLocation(absolutePath);
-		if (resource == null)
-			resource = root.getFile(absolutePath);
 		return resource;
 	}
 

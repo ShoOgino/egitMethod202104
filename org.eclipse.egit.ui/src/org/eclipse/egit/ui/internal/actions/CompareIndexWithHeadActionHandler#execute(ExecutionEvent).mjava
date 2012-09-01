@@ -3,13 +3,13 @@
 		// assert all resources map to the same repository
 		if (repository == null)
 			return null;
-		final IResource[] resources = getSelectedResources(event);
-		final IFile baseFile = (IFile) resources[0];
-		final String gitPath = RepositoryMapping.getMapping(baseFile)
-				.getRepoRelativePath(baseFile);
+		final IPath[] locations = getSelectedLocations(event);
+		final IPath baseLocation = locations[0];
+		final String gitPath = RepositoryMapping.getMapping(baseLocation)
+				.getRepoRelativePath(baseLocation);
 		ITypedElement base;
 		try {
-			base = CompareUtils.getIndexTypedElement(baseFile);
+			base = CompareUtils.getIndexTypedElement(repository, gitPath);
 		} catch (IOException e) {
 			Activator.handleError(e.getMessage(), e, true);
 			return null;
