@@ -1,0 +1,8 @@
+	private String getCurrentBranch(Repository repository) throws ExecutionException {
+		try {
+			return repository.getBranch();
+		} catch (IOException e) {
+			throw new ExecutionException(UIText.RebaseCurrentRefCommand_ErrorGettingCurrentBranchMessage, e);
+		}
+	}
+
