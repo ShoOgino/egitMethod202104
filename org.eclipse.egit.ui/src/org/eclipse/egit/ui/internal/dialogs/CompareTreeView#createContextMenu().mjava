@@ -1,0 +1,10 @@
+	private void createContextMenu() {
+		MenuManager manager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		manager.setRemoveAllWhenShown(true);
+		manager.addMenuListener(this);
+
+		Menu contextMenu = manager.createContextMenu(tree.getControl());
+		tree.getControl().setMenu(contextMenu);
+		getSite().registerContextMenu(manager, tree);
+	}
+

@@ -1,0 +1,19 @@
+	/*
+	 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+	 * @since 2.1
+	 */
+	public void menuAboutToShow(IMenuManager manager) {
+		manager.add(new Separator(ICommonMenuConstants.GROUP_OPEN));
+		manager.add(new Separator(ICommonMenuConstants.GROUP_ADDITIONS));
+
+		IAction openAction = createOpenAction();
+		if (openAction != null)
+			manager.appendToGroup(ICommonMenuConstants.GROUP_OPEN, openAction);
+
+		MenuManager showInSubMenu = new MenuManager(
+				UIText.CompareTreeView_ShowIn_label);
+		showInSubMenu.add(ContributionItemFactory.VIEWS_SHOW_IN
+				.create(getSite().getWorkbenchWindow()));
+		manager.appendToGroup(ICommonMenuConstants.GROUP_OPEN, showInSubMenu);
+	}
+

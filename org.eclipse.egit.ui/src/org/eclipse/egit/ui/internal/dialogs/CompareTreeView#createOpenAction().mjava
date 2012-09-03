@@ -1,0 +1,16 @@
+	private IAction createOpenAction() {
+		ITreeSelection selection = (ITreeSelection) tree.getSelection();
+		final List<String> pathsToOpen = getSelectedPaths(selection);
+		if (pathsToOpen == null)
+			return null;
+
+		return new Action(
+				UIText.CommitFileDiffViewer_OpenWorkingTreeVersionInEditorMenuLabel) {
+			@Override
+			public void run() {
+				for (String filePath : pathsToOpen)
+					openFileInEditor(filePath);
+			}
+		};
+	}
+

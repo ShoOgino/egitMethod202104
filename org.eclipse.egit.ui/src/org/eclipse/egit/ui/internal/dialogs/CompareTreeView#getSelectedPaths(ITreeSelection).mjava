@@ -1,0 +1,20 @@
+	private List<String> getSelectedPaths(ITreeSelection selection) {
+		IPath repoPath = getRepositoryPath();
+		List<String> pathsToOpen = new ArrayList<String>();
+		for (Iterator it = selection.iterator(); it.hasNext();) {
+			Object obj = it.next();
+			if (obj instanceof IFile) {
+				pathsToOpen.add(((IFile) obj).getLocation().toOSString());
+			} else if (obj instanceof PathNode && repoPath != null) {
+				PathNode pathNode = (PathNode) obj;
+				if (pathNode.type == PathNode.Type.FOLDER
+						|| pathNode.type == PathNode.Type.FILE_DELETED)
+					return null;
+				pathsToOpen.add(repoPath.append(pathNode.path).toOSString());
+			} else {
+				return null; // fail if one of the selected elements does not fit
+			}
+		}
+		return pathsToOpen;
+	}
+

@@ -4,7 +4,7 @@
 		GridLayoutFactory.fillDefaults().spacing(0, 0).applyTo(main);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 
-		tree = new TreeViewer(main, SWT.NONE);
+		tree = new TreeViewer(main, SWT.MULTI);
 		tree.setContentProvider(new PathNodeContentProvider());
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree.getTree());
 
@@ -15,5 +15,8 @@
 		});
 		tree.getTree().setEnabled(false);
 		createActions();
+
+		getViewSite().setSelectionProvider(tree);
+		createContextMenu();
 	}
 
