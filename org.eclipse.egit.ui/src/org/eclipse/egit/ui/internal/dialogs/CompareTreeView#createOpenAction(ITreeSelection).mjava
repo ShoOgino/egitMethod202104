@@ -1,7 +1,6 @@
-	private IAction createOpenAction() {
-		ITreeSelection selection = (ITreeSelection) tree.getSelection();
+	private IAction createOpenAction(ITreeSelection selection) {
 		final List<String> pathsToOpen = getSelectedPaths(selection);
-		if (pathsToOpen == null)
+		if (pathsToOpen == null || pathsToOpen.isEmpty())
 			return null;
 
 		return new Action(
