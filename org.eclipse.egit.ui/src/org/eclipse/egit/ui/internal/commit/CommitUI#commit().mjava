@@ -1,4 +1,4 @@
-	/**
+	/**1
 	 * Performs a commit
 	 * @return true if a commit operation was triggered
 	 */
@@ -88,7 +88,12 @@
 		commitOperation.setCommitAll(commitHelper.isMergedResolved);
 		if (commitHelper.isMergedResolved)
 			commitOperation.setRepository(repo);
-		performCommit(repo, commitOperation, false);
+		Job commitJob = createCommitJob(repo, commitOperation, false);
+		if (commitDialog.isPushEnabled())
+			pushWhenFinished(commitJob);
+
+		commitJob.schedule();
+
 		return true;
 	}
 

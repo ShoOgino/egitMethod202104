@@ -1,0 +1,42 @@
+	private static Job createCommitJob(final Repository repository,
+			final CommitOperation commitOperation, final boolean openNewCommit) {
+		String jobname = UIText.CommitAction_CommittingChanges;
+		Job job = new Job(jobname) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				RevCommit commit = null;
+				try {
+					commitOperation.execute(monitor);
+					commit = commitOperation.getCommit();
+					CommitMessageComponentStateManager.deleteState(
+							repository);
+					RepositoryMapping mapping = RepositoryMapping
+							.findRepositoryMapping(repository);
+					if (mapping != null)
+						mapping.fireRepositoryChanged();
+				} catch (CoreException e) {
+					if (e.getCause() instanceof JGitInternalException)
+						return Activator.createErrorStatus(
+								e.getLocalizedMessage(), e.getCause());
+					return Activator.createErrorStatus(
+							UIText.CommitAction_CommittingFailed, e);
+				} finally {
+					GitLightweightDecorator.refresh();
+				}
+				if (openNewCommit && commit != null)
+					openCommit(repository, commit);
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (family.equals(JobFamilies.COMMIT))
+					return true;
+				return super.belongsTo(family);
+			}
+
+		};
+		job.setUser(true);
+		return job;
+	}
+
