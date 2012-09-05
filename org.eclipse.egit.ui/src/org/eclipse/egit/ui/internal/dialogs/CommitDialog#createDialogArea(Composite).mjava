@@ -60,19 +60,6 @@
 		UIUtils.addBulbDecorator(commitText.getTextWidget(),
 				UIText.CommitDialog_ContentAssist);
 
-		// allow to commit with ctrl-enter
-		commitText.getTextWidget().addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent event) {
-				if (UIUtils.isSubmitKeyEvent(event)) {
-					okPressed();
-				} else if (event.keyCode == SWT.TAB
-						&& (event.stateMask & SWT.SHIFT) == 0) {
-					event.doit = false;
-					commitText.traverse(SWT.TRAVERSE_TAB_NEXT);
-				}
-			}
-		});
-
 		Composite personArea = toolkit.createComposite(container);
 		toolkit.paintBordersFor(personArea);
 		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(personArea);
