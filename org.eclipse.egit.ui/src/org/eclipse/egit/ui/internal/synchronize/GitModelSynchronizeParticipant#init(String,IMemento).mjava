@@ -1,0 +1,16 @@
+	@Override
+	public void init(String secondaryId, IMemento memento)
+			throws PartInitException {
+		try {
+			boolean forceFetchPref = Activator.getDefault().getPreferenceStore()
+					.getBoolean(UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH);
+			boolean forceFetch = getBoolean(memento.getBoolean(FORCE_FETCH_KEY), forceFetchPref);
+			gsds = new GitSynchronizeDataSet(forceFetch);
+			IMemento[] children = memento.getChildren(DATA_NODE_KEY);
+			if (children != null)
+				restoreSynchronizationData(children);
+		} finally {
+			super.init(secondaryId, memento);
+		}
+	}
+

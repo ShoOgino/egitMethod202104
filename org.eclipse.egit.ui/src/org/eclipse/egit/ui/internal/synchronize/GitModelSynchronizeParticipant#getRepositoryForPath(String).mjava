@@ -1,0 +1,11 @@
+	private Repository getRepositoryForPath(String containerPath) {
+		IPath path = Path.fromPortableString(containerPath);
+		IContainer mappedContainer = ResourcesPlugin.getWorkspace().getRoot()
+				.getContainerForLocation(path);
+		GitProjectData projectData = GitProjectData.get((IProject) mappedContainer);
+		RepositoryMapping mapping = projectData.getRepositoryMapping(mappedContainer);
+		if (mapping != null)
+			return mapping.getRepository();
+		return null;
+	}
+

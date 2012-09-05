@@ -1,0 +1,24 @@
+	private void restoreSynchronizationData(IMemento[] children) {
+		for (IMemento child : children) {
+			String containerPath = child.getString(CONTAINER_PATH_KEY);
+			Repository repo = getRepositoryForPath(containerPath);
+			if (repo == null)
+				continue;
+			String srcRev = child.getString(SRC_REV_KEY);
+			String dstRev = child.getString(DST_REV_KEY);
+			boolean includeLocal = getBoolean(
+					child.getBoolean(INCLUDE_LOCAL_KEY), true);
+			Set<IContainer> includedPaths = getIncludedPaths(child);
+			try {
+				GitSynchronizeData data = new GitSynchronizeData(repo, srcRev,
+						dstRev, includeLocal);
+				if (includedPaths != null)
+					data.setIncludedPaths(includedPaths);
+				gsds.add(data);
+			} catch (IOException e) {
+				Activator.logError(e.getMessage(), e);
+				continue;
+			}
+		}
+	}
+

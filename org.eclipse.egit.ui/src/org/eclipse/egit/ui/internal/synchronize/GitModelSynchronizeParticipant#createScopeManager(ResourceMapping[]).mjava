@@ -1,0 +1,12 @@
+	@Override
+	protected ISynchronizationScopeManager createScopeManager(
+			ResourceMapping[] mappings) {
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				gsds);
+		GitSubscriberResourceMappingContext context = new GitSubscriberResourceMappingContext(
+				subscriber, gsds);
+		return new SynchronizationScopeManager(
+				UIText.GitModelSynchronizeParticipant_initialScopeName,
+				mappings, context, true);
+	}
+

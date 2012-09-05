@@ -1,0 +1,9 @@
+	@Override
+	protected MergeContext restoreContext(ISynchronizationScopeManager manager)
+			throws CoreException {
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				gsds);
+		subscriber.init(new NullProgressMonitor());
+		return new GitSubscriberMergeContext(subscriber, manager, gsds);
+	}
+
