@@ -33,7 +33,7 @@
 		} else if (selected instanceof PathNode) {
 			PathNode node = (PathNode) selected;
 			String encoding = CompareCoreUtils.getResourceEncoding(
-					repositoryMapping.getRepository(), node.getRepoRelativePath());
+					getRepository(), node.getRepoRelativePath());
 			switch (node.type) {
 			case FILE_BOTH_SIDES_DIFFER:
 				// fall through
@@ -86,7 +86,7 @@
 			GitFileRevision rightRevision = compareVersionMap
 					.get(node.pathNode.path);
 			String encoding = CompareCoreUtils.getResourceEncoding(
-					repositoryMapping.getRepository(), node.pathNode.getRepoRelativePath());
+					getRepository(), node.pathNode.getRepoRelativePath());
 			right = new FileRevisionTypedElement(rightRevision, encoding);
 			left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS
 					.bind(UIText.CompareTreeView_ItemNotFoundInVersionMessage,
