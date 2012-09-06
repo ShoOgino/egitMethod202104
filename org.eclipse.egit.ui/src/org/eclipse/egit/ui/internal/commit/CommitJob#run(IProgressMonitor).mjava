@@ -1,0 +1,30 @@
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		RevCommit commit = null;
+		try {
+			commitOperation.execute(monitor);
+			commit = commitOperation.getCommit();
+			CommitMessageComponentStateManager.deleteState(repository);
+			RepositoryMapping mapping = RepositoryMapping
+					.findRepositoryMapping(repository);
+			if (mapping != null)
+				mapping.fireRepositoryChanged();
+		} catch (CoreException e) {
+			if (e.getCause() instanceof JGitInternalException)
+				return Activator.createErrorStatus(e.getLocalizedMessage(),
+						e.getCause());
+			return Activator.createErrorStatus(
+					UIText.CommitAction_CommittingFailed, e);
+		} finally {
+			GitLightweightDecorator.refresh();
+		}
+
+		if (commit != null) {
+			if (openCommitEditor)
+				openCommitEditor(commit);
+			if (pushUpstream)
+				pushUpstream();
+		}
+		return Status.OK_STATUS;
+	}
+

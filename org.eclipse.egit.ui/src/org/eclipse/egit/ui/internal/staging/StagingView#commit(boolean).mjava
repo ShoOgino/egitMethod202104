@@ -1,4 +1,4 @@
-	private void commit() {
+	private void commit(boolean pushUpstream) {
 		if (!isCommitWithoutFilesAllowed()) {
 			MessageDialog.openError(getSite().getShell(),
 					UIText.StagingView_committingNotPossible,
@@ -25,8 +25,10 @@
 		if (amendPreviousCommitAction.isChecked())
 			commitOperation.setAmending(true);
 		commitOperation.setComputeChangeId(addChangeIdAction.isChecked());
-		CommitUI.performCommit(currentRepository, commitOperation,
-				openNewCommitsAction.isChecked());
+		Job commitJob = new CommitJob(currentRepository, commitOperation)
+			.setOpenCommitEditor(openNewCommitsAction.isChecked())
+			.setPushUpstream(pushUpstream);
+		commitJob.schedule();
 		CommitMessageHistory.saveCommitHistory(commitMessage);
 		clearCommitMessageToggles();
 		commitMessageText.setText(EMPTY_STRING);

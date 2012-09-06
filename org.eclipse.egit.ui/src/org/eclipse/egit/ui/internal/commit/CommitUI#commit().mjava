@@ -88,10 +88,8 @@
 		commitOperation.setCommitAll(commitHelper.isMergedResolved);
 		if (commitHelper.isMergedResolved)
 			commitOperation.setRepository(repo);
-		Job commitJob = createCommitJob(repo, commitOperation, false);
-		if (commitDialog.isPushRequested())
-			pushWhenFinished(commitJob);
-
+		Job commitJob = new CommitJob(repo, commitOperation).
+				setPushUpstream(commitDialog.isPushRequested());
 		commitJob.schedule();
 
 		return true;

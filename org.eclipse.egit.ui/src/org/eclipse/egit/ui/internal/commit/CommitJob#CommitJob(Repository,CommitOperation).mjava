@@ -1,0 +1,14 @@
+	/**
+	 * @param repository
+	 *            the repository to commit to
+	 * @param commitOperation
+	 *            the commit operation to use
+	 *
+	 */
+	public CommitJob(final Repository repository,
+			final CommitOperation commitOperation) {
+		super(UIText.CommitAction_CommittingChanges);
+		this.repository = repository;
+		this.commitOperation = commitOperation;
+	}
+

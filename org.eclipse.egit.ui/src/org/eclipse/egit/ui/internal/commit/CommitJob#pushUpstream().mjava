@@ -1,0 +1,30 @@
+	private void pushUpstream() {
+		RemoteConfig config = SimpleConfigurePushDialog
+				.getConfiguredRemote(repository);
+		if (config == null) {
+			final Display display = Display.getDefault();
+			display.asyncExec(new Runnable() {
+
+				public void run() {
+					try {
+						WizardDialog wizardDialog = new WizardDialog(display
+								.getActiveShell(), new PushWizard(repository));
+						wizardDialog.setHelpAvailable(true);
+						wizardDialog.open();
+					} catch (URISyntaxException e) {
+						Activator.handleError(
+								NLS.bind(UIText.CommitUI_pushFailedMessage, e),
+								e, true);
+					}
+				}
+			});
+		} else {
+			int timeout = Activator.getDefault().getPreferenceStore()
+					.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+			PushOperationUI op = new PushOperationUI(repository,
+					config.getName(), timeout, false);
+			op.start();
+		}
+
+	}
+
