@@ -7,13 +7,12 @@
 	 */
 	public static void compareHeadWithWorkspace(Repository repository,
 			IFile file) {
-		RevCommit headCommit = getHeadCommit(repository);
-		if (headCommit == null)
-			return;
 		String path = RepositoryMapping.getMapping(file).getRepoRelativePath(
 				file);
-		ITypedElement base = CompareUtils.getFileRevisionTypedElement(path,
-				headCommit, repository);
+		ITypedElement base = getHeadTypedElement(repository, path);
+		if (base == null)
+			return;
+
 		IFileRevision nextFile = new WorkspaceFileRevision(file);
 		String encoding = null;
 		try {

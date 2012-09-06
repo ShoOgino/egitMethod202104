@@ -1,0 +1,27 @@
+	/**
+	 * Get a typed element for the file as contained in HEAD. Returns an empty
+	 * typed element if there is not yet a head (initial import case).
+	 * <p>
+	 * If there is an error getting the HEAD commit, it is handled and null
+	 * returned.
+	 *
+	 * @param repository
+	 * @param repoRelativePath
+	 * @return typed element, or null if there was an error getting the HEAD
+	 *         commit
+	 */
+	public static ITypedElement getHeadTypedElement(Repository repository, String repoRelativePath) {
+		try {
+			Ref head = repository.getRef(Constants.HEAD);
+			if (head == null || head.getObjectId() == null)
+				// Initial import, not yet a HEAD commit
+				return new EmptyTypedElement(""); //$NON-NLS-1$
+			RevCommit headCommit = new RevWalk(repository).parseCommit(head.getObjectId());
+			return CompareUtils.getFileRevisionTypedElement(repoRelativePath, headCommit, repository);
+		} catch (IOException e) {
+			Activator.handleError(UIText.CompareUtils_errorGettingHeadCommit,
+					e, true);
+			return null;
+		}
+	}
+

@@ -8,11 +8,9 @@
 	 */
 	public static void compareHeadWithWorkingTree(Repository repository,
 			String path) {
-		RevCommit headCommit = getHeadCommit(repository);
-		if (headCommit == null)
+		ITypedElement base = getHeadTypedElement(repository, path);
+		if (base == null)
 			return;
-		ITypedElement base = CompareUtils.getFileRevisionTypedElement(path,
-				headCommit, repository);
 		IFileRevision nextFile;
 		nextFile = new WorkingTreeFileRevision(new File(
 				repository.getWorkTree(), path));
