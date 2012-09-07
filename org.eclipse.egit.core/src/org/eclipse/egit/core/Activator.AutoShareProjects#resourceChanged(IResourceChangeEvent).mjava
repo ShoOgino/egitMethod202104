@@ -14,9 +14,6 @@
 							return false;
 						if (resource.getType() != IResource.PROJECT)
 							return true;
-						// shouldn't happen for projects
-						if (Team.isIgnoredHint(resource))
-							return false;
 						if (RepositoryMapping.getMapping(resource) != null)
 							return false;
 						final IProject project = (IProject) resource;

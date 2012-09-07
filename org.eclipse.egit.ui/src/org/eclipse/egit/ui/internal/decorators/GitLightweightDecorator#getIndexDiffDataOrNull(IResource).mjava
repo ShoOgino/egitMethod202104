@@ -12,11 +12,6 @@
 		if (mapping == null)
 			return null;
 
-		// Don't decorate ignored resources (e.g. bin folder content)
-		if (resource.getType() != IResource.PROJECT
-				&& Team.isIgnoredHint(resource))
-			return null;
-
 		// Cannot decorate linked resources
 		if (mapping.getRepoRelativePath(resource) == null)
 			return null;
