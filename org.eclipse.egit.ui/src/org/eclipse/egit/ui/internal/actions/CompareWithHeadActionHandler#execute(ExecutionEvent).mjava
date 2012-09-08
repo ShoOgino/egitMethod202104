@@ -12,25 +12,9 @@
 			final ITypedElement base = SaveableCompareEditorInput
 					.createFileElement(baseFile);
 
-			ITypedElement next;
-			try {
-				Ref head = repository.getRef(Constants.HEAD);
-				RevWalk rw = new RevWalk(repository);
-				RevCommit commit = rw.parseCommit(head.getObjectId());
-				rw.markStart(commit);
-				rw.setTreeFilter(AndTreeFilter.create(
-						PathFilter.create(gitPath), TreeFilter.ANY_DIFF));
-				RevCommit latestFileCommit = rw.next();
-				// Fall back to HEAD
-				if (latestFileCommit == null)
-					latestFileCommit = commit;
-
-				next = CompareUtils.getFileRevisionTypedElement(gitPath,
-						latestFileCommit, repository);
-			} catch (IOException e) {
-				Activator.handleError(e.getMessage(), e, true);
+			final ITypedElement next = CompareUtils.getHeadTypedElement(repository, gitPath);
+			if (next == null)
 				return null;
-			}
 
 			final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
 					base, next, null);
