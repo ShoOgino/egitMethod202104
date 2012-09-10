@@ -6,6 +6,7 @@
 	 */
 	public static Repository getRepository(ExecutionEvent event) {
 		ISelection selection = HandlerUtil.getCurrentSelection(event);
-		return getRepository(selection);
+		IEditorInput editorInput = getActiveEditorInput(event);
+		return getRepository(selection, editorInput);
 	}
 

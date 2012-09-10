@@ -1,0 +1,15 @@
+	/**
+	 * Extracts the editor input from the given context.
+	 *
+	 * @param ctx the context
+	 * @return the editor input for the given context or <code>null</code> if not available
+	 * @since 2.1
+	 */
+	protected IEditorInput getActiveEditorInput(IEvaluationContext ctx) {
+		Object editorInput = ctx.getVariable(ISources.ACTIVE_EDITOR_INPUT_NAME);
+		if (editorInput instanceof IEditorInput)
+			return (IEditorInput) editorInput;
+
+		return null;
+	}
+
