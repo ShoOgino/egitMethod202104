@@ -21,7 +21,7 @@
 		assertEquals(PROJ2, wizardNode);
 		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
 		shell.bot().text(" " + UIText.GitProjectsImportPage_NoProjectsMessage);
-		assertTrue(shell.bot().tree().getAllItems().length == 0);
+		assertEquals(0, shell.bot().tree().getAllItems().length);
 		shell.bot().button(IDialogConstants.BACK_LABEL).click();
 		// import as general
 		shell.bot().radio(UIText.GitSelectWizardPage_ImportAsGeneralButton).click();
