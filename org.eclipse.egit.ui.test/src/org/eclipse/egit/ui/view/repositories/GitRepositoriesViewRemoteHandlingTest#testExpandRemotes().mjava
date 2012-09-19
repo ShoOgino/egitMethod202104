@@ -39,10 +39,10 @@
 		assertEquals(2, testnodes.size());
 		List<String> test2nodes = remotesItem.getNode("test2").expand()
 				.getNodes();
-		assertTrue(test2nodes.size() == 2);
+		assertEquals(2, test2nodes.size());
 		// error node should be shown
 		remotesItem.getNode("test3").expand().getNodes();
-		assertTrue(remotesItem.getNode("test3").expand().getNodes().size() == 1);
+		assertEquals(1, remotesItem.getNode("test3").expand().getNodes().size());
 
 		// test the properties view on remote
 		remotesItem.getNode("test").select();
