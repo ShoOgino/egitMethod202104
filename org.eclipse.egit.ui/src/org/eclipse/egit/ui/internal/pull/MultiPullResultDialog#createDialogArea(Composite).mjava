@@ -12,9 +12,8 @@
 						.getSelection();
 				boolean enabled = false;
 				for (Entry<Repository, Object> entry : (List<Entry<Repository, Object>>) sel
-						.toList()) {
+						.toList())
 					enabled |= entry.getValue() instanceof PullResult;
-				}
 				getButton(DETAIL_BUTTON).setEnabled(enabled);
 			}
 		});
