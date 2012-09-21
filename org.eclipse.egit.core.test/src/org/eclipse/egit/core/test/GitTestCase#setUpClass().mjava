@@ -1,0 +1,8 @@
+	@BeforeClass
+	public static void setUpClass() {
+		// suppress auto-ignoring to avoid interference
+		IEclipsePreferences p = InstanceScope.INSTANCE.getNode(Activator
+				.getPluginId());
+		p.putBoolean(GitCorePreferences.core_autoIgnoreDerivedResources, false);
+	}
+

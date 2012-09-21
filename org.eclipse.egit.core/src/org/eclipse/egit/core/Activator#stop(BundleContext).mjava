@@ -12,5 +12,10 @@
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(preDeleteProjectListener);
 			preDeleteProjectListener = null;
 		}
+		if (ignoreDerivedResourcesListener != null) {
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
+					ignoreDerivedResourcesListener);
+			ignoreDerivedResourcesListener = null;
+		}
 	}
 

@@ -1,0 +1,7 @@
+	private void registerAutoIgnoreDerivedResources() {
+		ignoreDerivedResourcesListener = new IgnoreDerivedResources();
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(
+				ignoreDerivedResourcesListener,
+				IResourceChangeEvent.POST_CHANGE);
+	}
+
