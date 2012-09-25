@@ -16,7 +16,9 @@
 		}
 
 		setMessage(message, type);
-		commitButton.setEnabled(type == IMessageProvider.WARNING
-				|| type == IMessageProvider.NONE);
+		boolean commitEnabled = type == IMessageProvider.WARNING
+				|| type == IMessageProvider.NONE;
+		commitButton.setEnabled(commitEnabled);
+		commitAndPushButton.setEnabled(commitEnabled);
 	}
 
