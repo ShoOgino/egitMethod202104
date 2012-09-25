@@ -1,10 +1,8 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = getSelection(getPage());
-		if (selection.size() == 1) {
-			RevCommit commit = (RevCommit) selection.getFirstElement();
-			Repository repo = getRepository(event);
-			PatchOperationUI.createPatch(getPart(event), commit, repo).start();
-		}
+		List<RevCommit> selectedCommits = getSelectedCommits();
+		RevCommit commit = selectedCommits.get(0);
+		Repository repo = getRepository(event);
+		PatchOperationUI.createPatch(getPart(event), commit, repo).start();
 		return null;
 	}
 
