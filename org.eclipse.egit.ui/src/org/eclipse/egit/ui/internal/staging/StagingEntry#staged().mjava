@@ -1,0 +1,15 @@
+	public Staged staged() {
+		switch (state) {
+		case ADDED:
+			return Staged.ADDED;
+		case CHANGED:
+			return Staged.MODIFIED;
+		case REMOVED:
+			return Staged.REMOVED;
+		case MISSING:
+			return Staged.REMOVED;
+		default:
+			return Staged.NOT_STAGED;
+		}
+	}
+
