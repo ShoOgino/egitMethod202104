@@ -1,9 +1,7 @@
 	@Test
 	public void testIgnoreFolder() throws Exception {
 		IFolder binFolder = project.getProject().getFolder("bin");
-		IgnoreOperation operation = new IgnoreOperation(
-				new IResource[] { binFolder });
-		operation.execute(new NullProgressMonitor());
+		IgnoreOperation operation = executeIgnore(binFolder.getLocation());
 
 		String content = project.getFileContent(Constants.GITIGNORE_FILENAME);
 		assertEquals("/bin\n", content);

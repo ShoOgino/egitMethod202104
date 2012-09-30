@@ -1,0 +1,11 @@
+	/**
+	 * construct an IgnoreOperation
+	 *
+	 * @param paths
+	 */
+	public IgnoreOperation(Collection<IPath> paths) {
+		this.paths = paths;
+		gitignoreOutsideWSChanged = false;
+		schedulingRule = calcSchedulingRule();
+	}
+

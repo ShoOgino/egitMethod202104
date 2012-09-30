@@ -1,21 +1,22 @@
-	private void addIgnore(IProgressMonitor monitor, IResource resource)
+	private void addIgnore(IProgressMonitor monitor, IPath path)
 			throws UnsupportedEncodingException, CoreException, IOException {
-		IContainer container = resource.getParent();
-		String entry = "/" + resource.getName() + "\n"; //$NON-NLS-1$  //$NON-NLS-2$
+		IPath parent = path.removeLastSegments(1);
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IContainer container = root.getContainerForLocation(parent);
 
-		if (container instanceof IWorkspaceRoot) {
+		String entry = "/" + path.lastSegment() + "\n"; //$NON-NLS-1$  //$NON-NLS-2$
+
+		if (container == null || container instanceof IWorkspaceRoot) {
 			Repository repository = RepositoryMapping.getMapping(
-					resource.getProject()).getRepository();
+					path).getRepository();
 			// .gitignore is not accessible as resource
-			IPath gitIgnorePath = resource.getLocation().removeLastSegments(1)
-					.append(Constants.GITIGNORE_FILENAME);
+			IPath gitIgnorePath = parent.append(Constants.GITIGNORE_FILENAME);
 			IPath repoPath = new Path(repository.getWorkTree()
 					.getAbsolutePath());
 			if (!repoPath.isPrefixOf(gitIgnorePath)) {
 				String message = NLS.bind(
-						CoreText.IgnoreOperation_parentOutsideRepo, resource
-								.getLocation().toOSString(), repoPath
-								.toOSString());
+						CoreText.IgnoreOperation_parentOutsideRepo,
+						path.toOSString(), repoPath.toOSString());
 				IStatus status = Activator.error(message, null);
 				throw new CoreException(status);
 			}

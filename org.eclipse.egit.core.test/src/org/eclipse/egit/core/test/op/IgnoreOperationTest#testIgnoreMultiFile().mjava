@@ -3,16 +3,12 @@
 		project.createSourceFolder();
 		IFolder binFolder = project.getProject().getFolder("bin");
 		IFolder srcFolder = project.getProject().getFolder("src");
-		IgnoreOperation operation = new IgnoreOperation(
-				new IResource[] { binFolder });
-		operation.execute(new NullProgressMonitor());
+		executeIgnore(binFolder.getLocation());
 
 		String content = project.getFileContent(Constants.GITIGNORE_FILENAME);
 		assertEquals("/bin\n", content);
 
-		operation = new IgnoreOperation(
-				new IResource[] { srcFolder });
-		operation.execute(new NullProgressMonitor());
+		executeIgnore(srcFolder.getLocation());
 
 		content = project.getFileContent(Constants.GITIGNORE_FILENAME);
 		assertEquals("/bin\n/src\n", content);

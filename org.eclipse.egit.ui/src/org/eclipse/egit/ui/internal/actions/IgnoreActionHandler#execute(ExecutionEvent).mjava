@@ -2,7 +2,10 @@
 		final IResource[] resources = getSelectedResources(event);
 		if (resources.length == 0)
 			return null;
-		final IgnoreOperation operation = new IgnoreOperation(resources);
+		List<IPath> paths = new ArrayList<IPath>();
+		for (IResource resource : resources)
+			paths.add(resource.getLocation());
+		final IgnoreOperation operation = new IgnoreOperation(paths);
 		String jobname = UIText.IgnoreActionHandler_addToGitignore;
 		Job job = new Job(jobname) {
 			@Override

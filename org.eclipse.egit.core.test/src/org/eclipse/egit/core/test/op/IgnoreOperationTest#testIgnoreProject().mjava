@@ -1,8 +1,7 @@
 	@Test
 	public void testIgnoreProject() throws Exception {
-		IgnoreOperation operation = new IgnoreOperation(
-				new IResource[] { project.getProject() });
-		operation.execute(new NullProgressMonitor());
+		IgnoreOperation operation = executeIgnore(
+				project.getProject().getLocation());
 
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		File rootFile = root.getRawLocation().toFile();
