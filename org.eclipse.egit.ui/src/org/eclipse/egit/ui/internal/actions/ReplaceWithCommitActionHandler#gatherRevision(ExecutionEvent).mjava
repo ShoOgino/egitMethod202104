@@ -1,7 +1,8 @@
 	@Override
 	protected String gatherRevision(ExecutionEvent event) throws ExecutionException {
+		IResource[] resources = gatherResourceToOperateOn(event);
 		CommitSelectionDialog dlg = new CommitSelectionDialog(getShell(event),
-				getRepository(true, event));
+				getRepository(true, event), resources);
 		if (dlg.open() == Window.OK)
 			return dlg.getCommitId().name();
 		else
