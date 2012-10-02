@@ -1,0 +1,17 @@
+	/**
+	 * Create a commit selection dialog which shows only commits which changed
+	 * the given resources.
+	 *
+	 * @param parentShell
+	 * @param repository
+	 * @param filterResources
+	 *            the resources to use to filter commits, null for no filter
+	 */
+	public CommitSelectionDialog(Shell parentShell, Repository repository,
+			IResource[] filterResources) {
+		super(parentShell);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.repository = repository;
+		this.filterResources = filterResources;
+	}
+

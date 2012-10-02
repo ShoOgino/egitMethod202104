@@ -14,6 +14,7 @@
 												UIText.CommitSelectionDialog_BuildingCommitListMessage,
 												IProgressMonitor.UNKNOWN);
 								SWTWalk currentWalk = new SWTWalk(repository);
+								currentWalk.setTreeFilter(createTreeFilter());
 								currentWalk
 										.sort(RevSort.COMMIT_TIME_DESC, true);
 								currentWalk.sort(RevSort.BOUNDARY, true);
