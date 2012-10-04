@@ -16,16 +16,12 @@
 		String xbReference = createProjectReference(xPath, "master", "xb");
 
 		// This should work because there is not yet a repo at the destination
-		capability.addToWorkspace(new String[] { xaReference },
-				new ProjectSetSerializationContext(),
-				new NullProgressMonitor());
+		addToWorkspace(new String[] { xaReference });
 
 		// This should work because the repo that is already there is for the
 		// same remote URL. It's assumed to be ok and will skip cloning and
 		// directly import the project.
-		capability.addToWorkspace(new String[] { xbReference },
-				new ProjectSetSerializationContext(),
-				new NullProgressMonitor());
+		addToWorkspace(new String[] { xbReference });
 
 		pathsToClean.add(root.getLocation().append("x").toFile());
 

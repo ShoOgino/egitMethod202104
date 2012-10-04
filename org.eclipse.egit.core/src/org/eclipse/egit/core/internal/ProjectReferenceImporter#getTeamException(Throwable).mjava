@@ -1,4 +1,4 @@
-	private TeamException getTeamException(final Throwable throwable) {
+	private static TeamException getTeamException(final Throwable throwable) {
 		Throwable current = throwable;
 		while (current.getCause() != null)
 			current = current.getCause();

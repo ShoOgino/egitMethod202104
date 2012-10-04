@@ -22,51 +22,29 @@
 				final String branch = branchEntry.getKey();
 				final Set<ProjectReference> projects = branchEntry.getValue();
 
-				final IPath workDir = getWorkingDir(gitUrl, branch,
-						branches.keySet());
-				final File repositoryPath = workDir.append(
-						Constants.DOT_GIT_EXT).toFile();
+				final Set<String> allBranches = branches.keySet();
 
-				boolean shouldClone = true;
+				File repositoryPath = null;
+				if (allBranches.size() == 1)
+					repositoryPath = findConfiguredRepository(gitUrl);
 
-				if (workDir.toFile().exists()) {
-					if (repositoryAlreadyExistsForUrl(repositoryPath, gitUrl))
-						shouldClone = false;
-					else {
-						final Collection<String> projectNames = new LinkedList<String>();
-						for (final ProjectReference projectReference : projects)
-							projectNames.add(projectReference.getProjectDir());
-						throw new TeamException(
-								NLS.bind(
-										CoreText.GitProjectSetCapability_CloneToExistingDirectory,
-										new Object[] { workDir, projectNames,
-												gitUrl }));
+				if (repositoryPath == null) {
+					try {
+						IPath workDir = getWorkingDir(gitUrl, branch, branches.keySet());
+						repositoryPath = cloneIfNecessary(gitUrl, branch, workDir, projects, monitor);
+					} catch (final InterruptedException e) {
+						// was canceled by user
+						return Collections.emptyList();
 					}
 				}
 
-				try {
-					if (shouldClone) {
-						int timeout = 60;
-						String refName = Constants.R_HEADS + branch;
-						final CloneOperation cloneOperation = new CloneOperation(
-								gitUrl, true, null, workDir.toFile(), refName,
-								Constants.DEFAULT_REMOTE_NAME, timeout);
-						cloneOperation.run(monitor);
-					}
+				getRepositoryUtil().addConfiguredRepository(repositoryPath);
 
-					Activator.getDefault().getRepositoryUtil()
-							.addConfiguredRepository(repositoryPath);
-
-					List<IProject> p = importProjects(projects, workDir,
-							repositoryPath, monitor);
-					importedProjects.addAll(p);
-				} catch (final InvocationTargetException e) {
-					throw getTeamException(e);
-
-				} catch (final InterruptedException e) {
-					// was canceled by user
-					return Collections.emptyList();
-				}
+				IPath newWorkDir = new Path(repositoryPath.getAbsolutePath())
+						.removeLastSegments(1);
+				List<IProject> p = importProjects(projects, newWorkDir,
+						repositoryPath, monitor);
+				importedProjects.addAll(p);
 			}
 		}
 		return importedProjects;
