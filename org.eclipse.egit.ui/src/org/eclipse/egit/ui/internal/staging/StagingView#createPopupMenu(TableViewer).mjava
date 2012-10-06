@@ -34,6 +34,7 @@
 				boolean addStage = availableActions.contains(StagingEntry.Action.STAGE);
 				boolean addUnstage = availableActions.contains(StagingEntry.Action.UNSTAGE);
 				boolean addDelete = availableActions.contains(StagingEntry.Action.DELETE);
+				boolean addIgnore = availableActions.contains(StagingEntry.Action.IGNORE);
 				boolean addLaunchMergeTool = availableActions.contains(StagingEntry.Action.LAUNCH_MERGE_TOOL);
 
 				if (addStage)
@@ -61,6 +62,8 @@
 						menuMgr.add(new ReplaceAction(UIText.StagingView_replaceWithHeadRevision, selection, true));
 					else
 						menuMgr.add(createItem(ActionCommands.REPLACE_WITH_HEAD_ACTION, tableViewer));
+				if (addIgnore)
+					menuMgr.add(new IgnoreAction(selection));
 				if (addDelete) {
 					menuMgr.add(new DeleteAction(selection));
 				}
