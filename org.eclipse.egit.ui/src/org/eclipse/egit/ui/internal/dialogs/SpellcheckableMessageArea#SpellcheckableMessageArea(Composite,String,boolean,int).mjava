@@ -27,6 +27,18 @@
 		createMarginPainter();
 
 		configureHardWrap();
+		final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				if (UIPreferences.COMMIT_DIALOG_HARD_WRAP_MESSAGE.equals(event.getProperty())) {
+					getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							configureHardWrap();
+						}
+					});
+				}
+			}
+		};
+		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 
 		final SourceViewerDecorationSupport support = configureAnnotationPreferences();
 		if (isEditable(sourceViewer)) {
@@ -82,6 +94,7 @@
 		getTextWidget().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent disposeEvent) {
 				support.uninstall();
+				Activator.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
 			}
 		});
 	}

@@ -1,12 +1,5 @@
 	private static String wrap(String text, String lineDelimiter) {
-		StringBuilder sb = new StringBuilder(text);
-		List<WrapEdit> wrapEdits = SpellcheckableMessageArea
-				.calculateWrapEdits(text,
-						SpellcheckableMessageArea.MAX_LINE_WIDTH, lineDelimiter);
-		for (WrapEdit wrapEdit : wrapEdits) {
-			sb.replace(wrapEdit.getStart(),
-					wrapEdit.getStart() + wrapEdit.getLength(), wrapEdit.getReplacement());
-		}
-		return sb.toString();
+		String wrapped = SpellcheckableMessageArea.hardWrap(Utils.normalizeLineEndings(text));
+		return wrapped.replaceAll("\n", lineDelimiter);
 	}
 

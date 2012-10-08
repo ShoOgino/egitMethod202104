@@ -1,0 +1,60 @@
+	/**
+	 * Calculates wrap offsets for the given line, so that resulting lines are
+	 * no longer than <code>maxLineLength</code> if possible.
+	 *
+	 * @param line
+	 *            the line to wrap (can contain '\n', but no other line delimiters)
+	 * @param maxLineLength
+	 *            the maximum line length
+	 * @return an array of offsets where hard-wraps should be inserted, or
+	 *         <code>null</code> if the line does not need to be wrapped
+	 */
+	public static int[] calculateWrapOffsets(final String line, final int maxLineLength) {
+		if (line.length() == 0)
+			return null;
+
+		IntList wrapOffsets = new IntList();
+		int wordStart = 0;
+		int lineStart = 0;
+		boolean lastWasSpace = true;
+		boolean onlySpaces = true;
+		for (int i = 0; i < line.length(); i++) {
+			char ch = line.charAt(i);
+			if (ch == ' ') {
+				lastWasSpace = true;
+			} else if (ch == '\n') {
+				lineStart = i + 1;
+				wordStart = i + 1;
+				lastWasSpace = true;
+				onlySpaces = true;
+			} else { // a word character
+				if (lastWasSpace) {
+					lastWasSpace = false;
+					if (!onlySpaces) { // don't break line with <spaces><veryLongWord>
+						wordStart = i;
+					}
+				} else {
+					onlySpaces = false;
+				}
+				if (i >= lineStart + maxLineLength) {
+					if (wordStart != lineStart) { // don't break before a single long word
+						wrapOffsets.add(wordStart);
+						lineStart = wordStart;
+						onlySpaces = true;
+					}
+				}
+			}
+		}
+
+		int size = wrapOffsets.size();
+		if (size == 0) {
+			return null;
+		} else {
+			int[] result = new int[size];
+			for (int i = 0; i < size; i++) {
+				result[i] = wrapOffsets.get(i);
+			}
+			return result;
+		}
+	}
+

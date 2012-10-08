@@ -1,10 +1,14 @@
 	/**
-	 * Return the commit message, converting platform-specific line endings.
+	 * Returns the commit message, converting platform-specific line endings to '\n'
+	 * and hard-wrapping lines if necessary.
 	 *
 	 * @return commit message
 	 */
 	public String getCommitMessage() {
 		String text = getText();
-		return Utils.normalizeLineEndings(text);
+		text = Utils.normalizeLineEndings(text);
+		if (shouldHardWrap())
+			text = hardWrap(text);
+		return text;
 	}
 
