@@ -1,20 +1,9 @@
 	private void commit() throws TeamException {
-		final Date commitDate = new Date();
-		final TimeZone timeZone = TimeZone.getDefault();
-		final PersonIdent authorIdent = RawParseUtils.parsePersonIdent(author);
-		final PersonIdent committerIdent = RawParseUtils.parsePersonIdent(committer);
-
 		Git git = new Git(repo);
 		try {
 			CommitCommand commitCommand = git.commit();
-			commitCommand
-					.setAuthor(
-							new PersonIdent(authorIdent,
-									commitDate, timeZone))
-					.setCommitter(
-							new PersonIdent(committerIdent,
-									commitDate, timeZone))
-					.setAmend(amending)
+			setAuthorAndCommitter(commitCommand);
+			commitCommand.setAmend(amending)
 					.setMessage(message)
 					.setInsertChangeId(createChangeId);
 			if (!commitIndex)

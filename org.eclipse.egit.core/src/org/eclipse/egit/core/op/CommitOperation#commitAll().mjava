@@ -1,0 +1,16 @@
+	// TODO: can the commit message be change by the user in case of a merge commit?
+	private void commitAll() throws TeamException {
+
+		Git git = new Git(repo);
+		try {
+			CommitCommand commitCommand = git.commit();
+			setAuthorAndCommitter(commitCommand);
+			commit = commitCommand.setAll(true).setMessage(message)
+					.setInsertChangeId(createChangeId).call();
+		} catch (JGitInternalException e) {
+			throw new TeamException(CoreText.MergeOperation_InternalError, e);
+		} catch (GitAPIException e) {
+			throw new TeamException(e.getLocalizedMessage(), e);
+		}
+	}
+
