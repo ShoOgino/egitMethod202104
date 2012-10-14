@@ -1,4 +1,7 @@
 	private String getCompareVersion() {
-		return compareVersion;
+		if (compareVersion.equals(INDEX_VERSION))
+			return UIText.CompareTreeView_IndexVersionText;
+		else
+			return compareVersion;
 	}
 

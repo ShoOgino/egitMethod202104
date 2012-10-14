@@ -7,10 +7,10 @@
 				pathsToOpen.add(((IFile) obj).getLocation().toOSString());
 			} else if (obj instanceof PathNode && repoPath != null) {
 				PathNode pathNode = (PathNode) obj;
-				if (pathNode.type == PathNode.Type.FOLDER
-						|| pathNode.type == PathNode.Type.FILE_DELETED)
+				if (pathNode.getType() == PathNode.Type.FOLDER
+						|| pathNode.getType() == PathNode.Type.FILE_DELETED)
 					return null;
-				pathsToOpen.add(repoPath.append(pathNode.path).toOSString());
+				pathsToOpen.add(repoPath.append(pathNode.getPath()).toOSString());
 			} else {
 				return null; // fail if one of the selected elements does not fit
 			}

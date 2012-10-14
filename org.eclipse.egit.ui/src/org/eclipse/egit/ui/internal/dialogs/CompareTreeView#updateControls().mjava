@@ -22,9 +22,7 @@
 				setContentDescription(NLS
 						.bind(
 								UIText.CompareTreeView_ComparingWorkspaceVersionDescription,
-								name,
-								compareVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
-										: compareVersion));
+								name, getCompareVersion()));
 			else
 				setContentDescription(NLS
 						.bind(
@@ -32,8 +30,7 @@
 								new String[] {
 										baseVersion,
 										name,
-										compareVersion.equals(INDEX_VERSION) ? UIText.CompareTreeView_IndexVersionText
-												: compareVersion }));
+										getCompareVersion() }));
 		}
 	}
 

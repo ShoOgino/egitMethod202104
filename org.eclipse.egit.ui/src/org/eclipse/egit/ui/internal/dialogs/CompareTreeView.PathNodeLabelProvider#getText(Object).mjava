@@ -1,10 +1,9 @@
 		public String getText(Object element) {
 			if (element instanceof String)
 				return (String) element;
-			IPath path = ((PathNode) element).path;
+			IPath path = ((PathNode) element).getPath();
 			if (path.segmentCount() == 0)
 				return UIText.CompareTreeView_RepositoryRootName;
 			return path.lastSegment();
-
 		}
 

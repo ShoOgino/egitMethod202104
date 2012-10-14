@@ -1,0 +1,8 @@
+	private void assertTreeCompareNoChange() {
+		SWTBotTree tree = waitUntilCompareTreeViewTreeHasNodeCount(1);
+		SWTBotTreeItem[] items = tree.getAllItems();
+		assertEquals(1, items.length);
+		assertEquals(UIText.CompareTreeView_NoDifferencesFoundMessage,
+				items[0].getText());
+	}
+

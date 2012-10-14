@@ -4,13 +4,8 @@
 		monitor.beginTask(UIText.CompareTreeView_AnalyzingRepositoryTaskText,
 				IProgressMonitor.UNKNOWN);
 		boolean useIndex = compareVersion.equals(INDEX_VERSION);
-		deletedPaths.clear();
-		equalContentPaths.clear();
-		baseVersionMap.clear();
-		compareVersionMap.clear();
-		compareVersionPathsWithChildren.clear();
-		addedPaths.clear();
-		baseVersionPathsWithChildren.clear();
+		fileNodes.clear();
+		containerNodes.clear();
 		boolean checkIgnored = false;
 		TreeWalk tw = new TreeWalk(repository);
 		try {
@@ -70,93 +65,77 @@
 						compareTreeIndex, AbstractTreeIterator.class);
 				AbstractTreeIterator baseVersionIterator = tw.getTree(
 						baseTreeIndex, AbstractTreeIterator.class);
-				if (compareVersionIterator != null
-						&& baseVersionIterator != null) {
-					monitor.setTaskName(baseVersionIterator
-							.getEntryPathString());
-					IPath currentPath = new Path(baseVersionIterator
-							.getEntryPathString());
-					if (!useIndex)
-						compareVersionMap
-								.put(currentPath, GitFileRevision.inCommit(
-										repository, compareCommit,
-										baseVersionIterator
-												.getEntryPathString(), tw
-												.getObjectId(compareTreeIndex)));
-					else
-						compareVersionMap.put(currentPath, GitFileRevision
-								.inIndex(repository, baseVersionIterator
-										.getEntryPathString()));
-					if (baseCommit != null)
-						baseVersionMap.put(currentPath, GitFileRevision
+
+				IFileRevision left = null;
+				IFileRevision right = null;
+				String repoRelativePath = baseVersionIterator != null
+						? baseVersionIterator.getEntryPathString()
+						: compareVersionIterator.getEntryPathString();
+				IPath currentPath = new Path(repoRelativePath);
+
+				monitor.setTaskName(currentPath.toString());
+
+				IFile file = ResourceUtil.getFileForLocation(repository,
+						repoRelativePath);
+				if (baseVersionIterator != null) {
+					if (baseCommit == null) {
+						if (file != null)
+							left = new LocalFileRevision(file);
+						else {
+							IPath path = getRepositoryPath().append(
+									repoRelativePath);
+							left = new WorkingTreeFileRevision(
+									path.toFile());
+						}
+					} else {
+						left = GitFileRevision
 								.inCommit(repository, baseCommit,
-										baseVersionIterator
-												.getEntryPathString(), tw
-												.getObjectId(baseTreeIndex)));
+										repoRelativePath,
+										tw.getObjectId(baseTreeIndex));
+					}
+				}
+
+				if (compareVersionIterator != null) {
+					if (!useIndex)
+						right = GitFileRevision.inCommit(repository,
+								compareCommit, repoRelativePath,
+								tw.getObjectId(compareTreeIndex));
+					else
+						right = GitFileRevision.inIndex(repository,
+								repoRelativePath);
+				}
+
+				Type type = null;
+				if (compareVersionIterator != null && baseVersionIterator != null) {
 					boolean equalContent = compareVersionIterator
 							.getEntryObjectId().equals(
 									baseVersionIterator.getEntryObjectId());
-					if (equalContent)
-						equalContentPaths.add(currentPath);
+					type = equalContent ? Type.FILE_BOTH_SIDES_SAME : Type.FILE_BOTH_SIDES_DIFFER;
+				} else if (compareVersionIterator != null && baseVersionIterator == null) {
+					type = Type.FILE_DELETED;
+				} else if (compareVersionIterator == null && baseVersionIterator != null) {
+					type = Type.FILE_ADDED;
+				}
 
-					if (equalContent && !showEquals)
-						continue;
+				IPath containerPath = currentPath.removeLastSegments(1);
+				ContainerNode containerNode = getOrCreateContainerNode(
+						containerPath, type);
 
-					while (currentPath.segmentCount() > 0) {
-						currentPath = currentPath.removeLastSegments(1);
-						if (!baseVersionPathsWithChildren.add(currentPath))
-							break;
+				FileNode fileNode = new FileNode(currentPath, file, type, left,
+						right);
+				containerNode.addChild(fileNode);
+				fileNodes.put(currentPath, fileNode);
+
+				// If a file is not "equal content", the container nodes up to
+				// the root must be shown in any case, so propagate the
+				// change of the "only equal content" flag.
+				if (type != Type.FILE_BOTH_SIDES_SAME) {
+					IPath path = currentPath;
+					while (path.segmentCount() > 0) {
+						path = path.removeLastSegments(1);
+						ContainerNode node = containerNodes.get(path);
+						node.setOnlyEqualContent(false);
 					}
-
-				} else if (baseVersionIterator != null
-						&& compareVersionIterator == null) {
-					monitor.setTaskName(baseVersionIterator
-							.getEntryPathString());
-					// only on base side
-					IPath currentPath = new Path(baseVersionIterator
-							.getEntryPathString());
-					addedPaths.add(currentPath);
-					if (baseCommit != null)
-						baseVersionMap.put(currentPath, GitFileRevision
-								.inCommit(repository, baseCommit,
-										baseVersionIterator
-												.getEntryPathString(), tw
-												.getObjectId(baseTreeIndex)));
-					while (currentPath.segmentCount() > 0) {
-						currentPath = currentPath.removeLastSegments(1);
-						if (!baseVersionPathsWithChildren.add(currentPath))
-							break;
-					}
-
-				} else if (compareVersionIterator != null
-						&& baseVersionIterator == null) {
-					monitor.setTaskName(compareVersionIterator
-							.getEntryPathString());
-					// only on compare side
-					IPath currentPath = new Path(compareVersionIterator
-							.getEntryPathString());
-					deletedPaths.add(currentPath);
-					List<PathNodeAdapter> children = compareVersionPathsWithChildren
-							.get(currentPath.removeLastSegments(1));
-					if (children == null) {
-						children = new ArrayList<PathNodeAdapter>(1);
-						compareVersionPathsWithChildren.put(currentPath
-								.removeLastSegments(1), children);
-					}
-					children.add(new PathNodeAdapter(new PathNode(currentPath,
-							Type.FILE_DELETED)));
-
-					if (!useIndex)
-						compareVersionMap
-								.put(currentPath, GitFileRevision.inCommit(
-										repository, compareCommit,
-										compareVersionIterator
-												.getEntryPathString(), tw
-												.getObjectId(compareTreeIndex)));
-					else
-						compareVersionMap.put(currentPath, GitFileRevision
-								.inIndex(repository, compareVersionIterator
-										.getEntryPathString()));
 				}
 			}
 		} finally {

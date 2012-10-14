@@ -1,7 +1,7 @@
 		@Override
 		public int category(Object element) {
 			if (element instanceof PathNode) {
-				return ((PathNode) element).type.ordinal();
+				return ((PathNode) element).getType().ordinal();
 			}
 			return UNKNOWNCATEGORY;
 		}

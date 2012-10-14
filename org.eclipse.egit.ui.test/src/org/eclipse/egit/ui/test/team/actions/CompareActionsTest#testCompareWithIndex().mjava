@@ -5,14 +5,13 @@
 		clickCompareWith(compareWithIndexActionLabel);
 
 		// compare with index should not have any changes
-		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		assertTreeCompareNoChange();
 		// change test file -> should have one change
 		setTestFileContent("Hello there");
 
 		clickCompareWith(compareWithIndexActionLabel);
 
-		waitUntilCompareTreeViewTreeHasNodeCount(1);
+		assertTreeCompareChanges(1);
 
 		// add to index -> no more changes
 		new Git(lookupRepository(repositoryFile)).add().addFilepattern(
@@ -20,8 +19,7 @@
 
 		clickCompareWith(compareWithIndexActionLabel);
 
-		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		assertTreeCompareNoChange();
 
 		// reset -> there should be no more changes
 		ResetOperation rop = new ResetOperation(
@@ -31,6 +29,6 @@
 
 		clickCompareWith(compareWithIndexActionLabel);
 
-		waitUntilCompareTreeViewTreeHasNodeCount(0);
+		assertTreeCompareNoChange();
 	}
 

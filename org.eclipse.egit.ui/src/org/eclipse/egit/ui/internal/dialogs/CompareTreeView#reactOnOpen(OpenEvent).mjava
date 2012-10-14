@@ -3,101 +3,20 @@
 				.getFirstElement();
 		ITypedElement left;
 		ITypedElement right;
-		if (selected instanceof IContainer) {
+		if (selected instanceof ContainerNode) {
 			// open/close folder
 			TreeViewer tv = (TreeViewer) event.getViewer();
 			tv.setExpandedState(selected, !tv.getExpandedState(selected));
-			return;
-		} else if (selected instanceof IFile) {
-			final IFile res = (IFile) selected;
-			LocalFileRevision revision = new LocalFileRevision(res);
-			left = new ResourceEditableRevision(revision, res, PlatformUI.getWorkbench().getProgressService());
-			GitFileRevision rightRevision = compareVersionMap.get(new Path(
-					repositoryMapping.getRepoRelativePath(res)));
-			if (rightRevision == null) {
-				right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
-						NLS
-								.bind(
-										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-										res.getName(), getCompareVersion()));
-			} else {
-				String encoding = CompareCoreUtils.getResourceEncoding(res);
-				right = new FileRevisionTypedElement(rightRevision, encoding);
-			}
-		} else if (selected instanceof GitFileRevision) {
-			GitFileRevision rightRevision = (GitFileRevision) selected;
-			left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS
-					.bind(UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-							rightRevision.getName(), getBaseVersion()));
-			right = new FileRevisionTypedElement(rightRevision, null);
-		} else if (selected instanceof PathNode) {
-			PathNode node = (PathNode) selected;
-			String encoding = CompareCoreUtils.getResourceEncoding(
-					getRepository(), node.getRepoRelativePath());
-			switch (node.type) {
-			case FILE_BOTH_SIDES_DIFFER:
-				// fall through
-			case FILE_BOTH_SIDES_SAME: {
-				// open a compare editor with both sides filled
-				GitFileRevision rightRevision = compareVersionMap
-						.get(node.path);
-				right = new FileRevisionTypedElement(rightRevision, encoding);
-				GitFileRevision leftRevision = baseVersionMap.get(node.path);
-				left = new FileRevisionTypedElement(leftRevision, encoding);
-				break;
-			}
-			case FILE_DELETED: {
-				// open compare editor with left side empty
-				GitFileRevision rightRevision = compareVersionMap
-						.get(node.path);
-				right = new FileRevisionTypedElement(rightRevision, encoding);
-				left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
-						NLS
-								.bind(
-										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-										rightRevision.getName(),
-										getBaseVersion()));
-				break;
-			}
-			case FILE_ADDED: {
-				// open compare editor with right side empty
-				GitFileRevision leftRevision = baseVersionMap.get(node.path);
-				left = new FileRevisionTypedElement(leftRevision, encoding);
-				right = new GitCompareFileRevisionEditorInput.EmptyTypedElement(
-						NLS
-								.bind(
-										UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-										leftRevision.getName(),
-										getCompareVersion()));
-				break;
-			}
-			case FOLDER:
-				// open/close folder
-				TreeViewer tv = (TreeViewer) event.getViewer();
-				tv.setExpandedState(selected, !tv.getExpandedState(selected));
-				return;
-			default:
-				return;
-			}
+		} else if (selected instanceof FileNode) {
+			FileNode fileNode = (FileNode) selected;
+			left = getTypedElement(fileNode, fileNode.leftRevision, getBaseVersion());
+			right = getTypedElement(fileNode, fileNode.rightRevision, getCompareVersion());
 
-		} else if (selected instanceof PathNodeAdapter) {
-			// deleted in workspace
-			PathNodeAdapter node = (PathNodeAdapter) selected;
-			GitFileRevision rightRevision = compareVersionMap
-					.get(node.pathNode.path);
-			String encoding = CompareCoreUtils.getResourceEncoding(
-					getRepository(), node.pathNode.getRepoRelativePath());
-			right = new FileRevisionTypedElement(rightRevision, encoding);
-			left = new GitCompareFileRevisionEditorInput.EmptyTypedElement(NLS
-					.bind(UIText.CompareTreeView_ItemNotFoundInVersionMessage,
-							node.pathNode.path.lastSegment(), getBaseVersion()));
-		} else
-			return;
-
-		GitCompareFileRevisionEditorInput compareInput = new GitCompareFileRevisionEditorInput(
-				left, right, PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage());
-		CompareUtils.openInCompare(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage(), compareInput);
+			GitCompareFileRevisionEditorInput compareInput = new GitCompareFileRevisionEditorInput(
+					left, right, PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage());
+			CompareUtils.openInCompare(PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage(), compareInput);
+		}
 	}
 

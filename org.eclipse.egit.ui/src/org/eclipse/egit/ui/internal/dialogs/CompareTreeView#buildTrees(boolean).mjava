@@ -4,15 +4,11 @@
 
 		tree.setInput(null);
 
-		if (baseVersion == null) {
-			tree.setContentProvider(new WorkbenchTreeContentProvider());
-			tree.setComparator(new WorkbenchTreeComparator());
-			tree.setLabelProvider(new WorkbenchTreeLabelProvider());
-		} else {
-			tree.setContentProvider(new PathNodeContentProvider());
-			tree.setComparator(new PathNodeTreeComparator());
-			tree.setLabelProvider(new PathNodeLabelProvider());
-		}
+		tree.setContentProvider(new PathNodeContentProvider());
+		tree.setComparator(new PathNodeTreeComparator());
+		tree.setLabelProvider(new PathNodeLabelProvider());
+		tree.setFilters(new PathNodeFilter[] { new PathNodeFilter() });
+
 		for (IWorkbenchAction action : actionsToDispose)
 			action.setEnabled(false);
 

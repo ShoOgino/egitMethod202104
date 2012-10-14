@@ -1,12 +1,24 @@
 		public Image getImage(Object element) {
 			if (element instanceof String)
 				return null;
-			Type type = ((PathNode) element).type;
+			if (element instanceof ContainerNode) {
+				ContainerNode containerNode = (ContainerNode) element;
+				IContainer resource = containerNode.getResource();
+				if (resource != null && resource.isAccessible())
+					return workbenchLabelProvider.getImage(resource);
+				else
+					return FOLDER_IMAGE;
+			}
+			FileNode fileNode = (FileNode) element;
+			Type type = fileNode.getType();
 			switch (type) {
 			case FILE_BOTH_SIDES_SAME:
 				return SAME_CONTENT;
 			case FILE_BOTH_SIDES_DIFFER:
-				return FILE_IMAGE;
+				if (fileNode.getFile() != null)
+					return workbenchLabelProvider.getImage(fileNode.getFile());
+				else
+					return FILE_IMAGE;
 			case FILE_ADDED:
 				return ADDED;
 			case FILE_DELETED:
