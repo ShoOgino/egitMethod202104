@@ -2,8 +2,12 @@
 	public void tearDown() throws Exception {
 		project.close(null);
 		project.delete(false, false, null);
+		project2.close(null);
+		project2.delete(false, false, null);
 		repository1.dispose();
 		repository1 = null;
+		repository2.dispose();
+		repository2 = null;
 		testUtils.deleteTempDirs();
 	}
 

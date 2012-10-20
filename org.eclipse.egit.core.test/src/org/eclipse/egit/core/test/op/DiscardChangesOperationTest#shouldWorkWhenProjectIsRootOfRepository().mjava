@@ -1,0 +1,14 @@
+	@Test
+	public void shouldWorkWhenProjectIsRootOfRepository() throws Exception {
+		IFile file = project2.getFile(new Path("file.txt"));
+		String contents = testUtils.slurpAndClose(file.getContents());
+		assertEquals("initial", contents);
+		setNewFileContent(file, "changed");
+
+		DiscardChangesOperation dcop = new DiscardChangesOperation(new IResource[] { project2 });
+		dcop.execute(new NullProgressMonitor());
+
+		String replacedContents = testUtils.slurpAndClose(file.getContents());
+		assertEquals("initial", replacedContents);
+	}
+
