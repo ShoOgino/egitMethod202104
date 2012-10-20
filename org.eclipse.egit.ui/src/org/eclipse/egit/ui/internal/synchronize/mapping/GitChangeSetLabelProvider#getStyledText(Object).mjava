@@ -9,6 +9,9 @@
 			return string;
 		}
 
+		if (element instanceof GitChangeSetModelProvider)
+			return new StyledString(UIText.GitChangeSetModelProviderLabel);
+
 		return getDelegateLabelProvider().getStyledText(element);
 	}
 
