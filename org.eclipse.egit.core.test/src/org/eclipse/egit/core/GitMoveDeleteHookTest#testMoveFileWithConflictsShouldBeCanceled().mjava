@@ -1,0 +1,28 @@
+	@Test
+	public void testMoveFileWithConflictsShouldBeCanceled() throws Exception {
+		TestProject project = initRepoInsideProjectInsideWorkspace();
+		String filePath = "file.txt";
+		IFile file = testUtils.addFileToProject(project.getProject(), filePath, "some text");
+
+		Repository repo = testRepository.getRepository();
+		DirCache index = repo.lockDirCache();
+		DirCacheBuilder builder = index.builder();
+		addUnmergedEntry(filePath, builder);
+		builder.commit();
+
+		try {
+			file.move(new Path("destination.txt"), false, null);
+			fail("Expected move of file with conflicts to fail.");
+		} catch (CoreException e) {
+			IStatus status = e.getStatus();
+			assertNotNull(status);
+			assertEquals(IStatus.WARNING, status.getSeverity());
+		}
+
+		assertTrue("File should still exist at old location", file.exists());
+		DirCache indexAfter = repo.readDirCache();
+		DirCacheEntry entry = indexAfter.getEntry(filePath);
+		assertEquals("Expected entry to still be in non-zero (conflict) stage",
+				DirCacheEntry.STAGE_1, entry.getStage());
+	}
+

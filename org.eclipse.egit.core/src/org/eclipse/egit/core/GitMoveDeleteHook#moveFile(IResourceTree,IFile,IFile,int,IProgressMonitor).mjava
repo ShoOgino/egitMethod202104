@@ -15,9 +15,13 @@
 			sCache = srcm.getRepository().lockDirCache();
 			final String sPath = srcm.getRepoRelativePath(srcf);
 			final DirCacheEntry sEnt = sCache.getEntry(sPath);
-			if (sEnt == null) {
-				sCache.unlock();
-				return false;
+			if (sEnt == null)
+				return FINISH_FOR_ME;
+
+			if (!sEnt.isMerged()) {
+				tree.failed(new Status(IStatus.WARNING, Activator.getPluginId(),
+						CoreText.MoveDeleteHook_unmergedFileError));
+				return I_AM_DONE;
 			}
 
 			final DirCacheEditor sEdit = sCache.editor();
@@ -43,6 +47,6 @@
 			if (sCache != null)
 				sCache.unlock();
 		}
-		return true;
+		return I_AM_DONE;
 	}
 

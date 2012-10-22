@@ -31,6 +31,10 @@
 			case UNTRACKED:
 				// we are not responsible for moving untracked files
 				return FINISH_FOR_ME;
+			case UNMERGED:
+				tree.failed(new Status(IStatus.WARNING, Activator.getPluginId(),
+						CoreText.MoveDeleteHook_unmergedFileInFolderError));
+				return I_AM_DONE;
 			}
 
 			tree.standardMoveProject(source, description, updateFlags,
