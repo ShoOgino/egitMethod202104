@@ -1,0 +1,18 @@
+	private void doJoin() throws AssertionError, InterruptedException {
+		long timeSlept = 0;
+		while (!done) {
+			if (timeSlept > timeoutMillis) {
+				if (scheduledJob == null)
+					throw new AssertionError(
+							"Job was not scheduled until timeout of "
+									+ timeoutMillis + " ms.");
+				else if (!done)
+					throw new AssertionError(
+							"Job was scheduled but not done until timeout of "
+									+ timeoutMillis + " ms.");
+			}
+			Thread.sleep(100);
+			timeSlept += 100;
+		}
+	}
+

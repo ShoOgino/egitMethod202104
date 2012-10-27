@@ -1,0 +1,15 @@
+	/**
+	 * Join the job. If the job is either not yet scheduled within the timeout
+	 * or not yet done, an {@link AssertionError} is thrown.
+	 */
+	public void join() {
+		try {
+			doJoin();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new RuntimeException("Thread was interrupted.", e);
+		} finally {
+			Job.getJobManager().removeJobChangeListener(listener);
+		}
+	}
+

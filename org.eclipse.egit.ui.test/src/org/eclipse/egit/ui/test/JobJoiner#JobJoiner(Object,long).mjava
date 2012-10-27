@@ -1,0 +1,6 @@
+	private JobJoiner(Object jobFamily, long timeoutMillis) {
+		this.jobFamily = jobFamily;
+		this.timeoutMillis = timeoutMillis;
+		Job.getJobManager().addJobChangeListener(listener);
+	}
+

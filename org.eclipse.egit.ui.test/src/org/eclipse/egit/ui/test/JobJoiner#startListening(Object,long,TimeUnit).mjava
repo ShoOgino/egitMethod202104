@@ -1,0 +1,13 @@
+	/**
+	 * Start listening for the given job family and with the given timeout.
+	 *
+	 * @param jobFamily
+	 * @param timeoutDuration
+	 * @param timeoutUnit
+	 * @return JobJoiner
+	 */
+	public static JobJoiner startListening(Object jobFamily, long timeoutDuration,
+			TimeUnit timeoutUnit) {
+		return new JobJoiner(jobFamily, timeoutUnit.toMillis(timeoutDuration));
+	}
+

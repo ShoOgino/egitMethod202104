@@ -19,8 +19,7 @@
 
 		selectNode(tree, useRemote, false);
 
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimplePushCommand"));
+		runPush(tree);
 
 		String destinationString = clonedRepositoryFile.getParentFile()
 				.getName()
@@ -29,7 +28,6 @@
 				destinationString);
 
 		// first time: expect new branch
-		TestUtil.joinJobs(JobFamilies.PUSH);
 		SWTBotShell confirmed = bot.shell(dialogTitle);
 		SWTBotTreeItem[] treeItems = confirmed.bot().tree().getAllItems();
 		boolean newBranch = false;
@@ -44,8 +42,7 @@
 		// second time: expect up to date
 		selectNode(tree, useRemote, false);
 
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimplePushCommand"));
+		runPush(tree);
 
 		confirmed = bot.shell(dialogTitle);
 		treeItems = confirmed.bot().tree().getAllItems();
@@ -66,8 +63,7 @@
 
 		selectNode(tree, useRemote, false);
 
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("SimplePushCommand"));
+		runPush(tree);
 
 		confirmed = bot.shell(dialogTitle);
 		treeItems = confirmed.bot().tree().getAllItems();
