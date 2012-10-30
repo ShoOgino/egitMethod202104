@@ -42,13 +42,7 @@
 
 		final SourceViewerDecorationSupport support = configureAnnotationPreferences();
 		if (isEditable(sourceViewer)) {
-			final IHandlerActivation handlerActivation = installQuickFixActionHandler();
-			getTextWidget().addDisposeListener(new DisposeListener() {
-
-				public void widgetDisposed(DisposeEvent e) {
-					getHandlerService().deactivateHandler(handlerActivation);
-				}
-			});
+			quickFixActionHandler = createQuickFixActionHandler(sourceViewer);
 		}
 
 		Document document = new Document(initialText);
@@ -72,17 +66,8 @@
 					return null;
 				IContentAssistant assistant = createContentAssistant(viewer);
 				// Add content assist proposal handler if assistant exists
-				if (assistant != null) {
-					final IHandlerActivation activation = installContentAssistActionHandler();
-					viewer.getTextWidget().addDisposeListener(
-							new DisposeListener() {
-
-								public void widgetDisposed(DisposeEvent e) {
-									getHandlerService().deactivateHandler(
-											activation);
-								}
-							});
-				}
+				if (assistant != null)
+					contentAssistActionHandler = createContentAssistActionHandler(sourceViewer);
 				return assistant;
 			}
 
