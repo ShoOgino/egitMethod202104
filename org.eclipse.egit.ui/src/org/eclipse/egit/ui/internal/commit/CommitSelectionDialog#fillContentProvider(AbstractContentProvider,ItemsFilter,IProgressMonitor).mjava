@@ -20,6 +20,8 @@
 							new RepositoryCommit(repository, commit),
 							itemsFilter);
 				}
+			} catch (RevisionSyntaxException ignored) {
+				// Ignore and advance
 			} catch (IOException ignored) {
 				// Ignore and advance
 			}
