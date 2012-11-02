@@ -1,23 +1,31 @@
-	private DiffNode compare(ITypedElement actLeft, ITypedElement actRight) {
+	private DiffNode compare(ITypedElement actLeft, ITypedElement actRight, ITypedElement actAncestor) {
 		if (actLeft.getType().equals(ITypedElement.FOLDER_TYPE)) {
 			//			return new MyDiffContainer(null, left,right);
-			DiffNode diffNode = new DiffNode(null,Differencer.CHANGE,null,actLeft,actRight);
+			DiffNode diffNode = new DiffNode(null, Differencer.CHANGE,
+					actAncestor, actLeft, actRight);
 			ITypedElement[] lc = (ITypedElement[])((IStructureComparator)actLeft).getChildren();
 			ITypedElement[] rc = (ITypedElement[])((IStructureComparator)actRight).getChildren();
+			ITypedElement[] ac = null;
+			if (actAncestor != null)
+				ac = (ITypedElement[]) ((IStructureComparator) actAncestor)
+						.getChildren();
 			int li=0;
 			int ri=0;
 			while (li<lc.length && ri<rc.length) {
 				ITypedElement ln = lc[li];
 				ITypedElement rn = rc[ri];
+				ITypedElement an = null;
+				if (ac != null)
+					an = ac[ri];
 				int compareTo = ln.getName().compareTo(rn.getName());
 				// TODO: Git ordering!
 				if (compareTo == 0) {
 					if (!ln.equals(rn))
-						diffNode.add(compare(ln,rn));
+						diffNode.add(compare(ln,rn, an));
 					++li;
 					++ri;
 				} else if (compareTo < 0) {
-					DiffNode childDiffNode = new DiffNode(Differencer.ADDITION, null, ln, null);
+					DiffNode childDiffNode = new DiffNode(Differencer.ADDITION, an, ln, null);
 					diffNode.add(childDiffNode);
 					if (ln.getType().equals(ITypedElement.FOLDER_TYPE)) {
 						ITypedElement[] children = (ITypedElement[])((IStructureComparator)ln).getChildren();
@@ -29,7 +37,7 @@
 					}
 					++li;
 				} else {
-					DiffNode childDiffNode = new DiffNode(Differencer.DELETION, null, null, rn);
+					DiffNode childDiffNode = new DiffNode(Differencer.DELETION, an, null, rn);
 					diffNode.add(childDiffNode);
 					if (rn.getType().equals(ITypedElement.FOLDER_TYPE)) {
 						ITypedElement[] children = (ITypedElement[])((IStructureComparator)rn).getChildren();
@@ -44,7 +52,10 @@
 			}
 			while (li<lc.length) {
 				ITypedElement ln = lc[li];
-				DiffNode childDiffNode = new DiffNode(Differencer.ADDITION, null, ln, null);
+				ITypedElement an = null;
+				if (ac != null)
+					an= ac[li];
+				DiffNode childDiffNode = new DiffNode(Differencer.ADDITION, an, ln, null);
 				diffNode.add(childDiffNode);
 				if (ln.getType().equals(ITypedElement.FOLDER_TYPE)) {
 					ITypedElement[] children = (ITypedElement[])((IStructureComparator)ln).getChildren();
@@ -58,7 +69,10 @@
 			}
 			while (ri<rc.length) {
 				ITypedElement rn = rc[ri];
-				DiffNode childDiffNode = new DiffNode(Differencer.DELETION, null, null, rn);
+				ITypedElement an = null;
+				if (ac != null)
+					an = ac[ri];
+				DiffNode childDiffNode = new DiffNode(Differencer.DELETION, an, null, rn);
 				diffNode.add(childDiffNode);
 				if (rn.getType().equals(ITypedElement.FOLDER_TYPE)) {
 					ITypedElement[] children = (ITypedElement[])((IStructureComparator)rn).getChildren();
@@ -72,7 +86,10 @@
 			}
 			return diffNode;
 		} else {
-			return new DiffNode(actLeft, actRight);
+			if (actAncestor != null)
+				return new DiffNode(Differencer.CONFLICTING, actAncestor, actLeft, actRight);
+			else
+				return new DiffNode(actLeft, actRight);
 		}
 	}
 

@@ -15,6 +15,10 @@
 		} else {
 			cc.setRightLabel(right.getName());
 		}
+		if (getAncestorRevision() != null) {
+			String ancestorLabel = getFileRevisionLabel(getAncestorRevision());
+			cc.setAncestorLabel(ancestorLabel);
+		}
 
 	}
 

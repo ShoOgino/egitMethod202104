@@ -1,4 +1,4 @@
-	private static void ensureContentsCached(FileRevisionTypedElement left, FileRevisionTypedElement right,
+	private static void ensureContentsCached(FileRevisionTypedElement left, FileRevisionTypedElement right, FileRevisionTypedElement ancestor,
 			IProgressMonitor monitor) {
 		if (left != null) {
 			try {
@@ -10,6 +10,13 @@
 		if (right != null) {
 			try {
 				right.cacheContents(monitor);
+			} catch (CoreException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+		if (ancestor != null) {
+			try {
+				ancestor.cacheContents(monitor);
 			} catch (CoreException e) {
 				Activator.logError(e.getMessage(), e);
 			}
