@@ -1,4 +1,6 @@
 	public int getType() {
+		if (mapping.getModelObject() instanceof IWorkingSet)
+			return WORKING_SET;
 		return RESOURCE_MAPPING;
 	}
 

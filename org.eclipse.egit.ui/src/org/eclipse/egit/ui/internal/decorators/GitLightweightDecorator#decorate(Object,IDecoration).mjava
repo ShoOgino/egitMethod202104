@@ -14,14 +14,13 @@
 			return;
 
 		final IResource resource = getResource(element);
-		if (resource == null)
-			decorateResourceMapping(element, decoration);
-		else {
-			try {
+		try {
+			if (resource == null)
+				decorateResourceMapping(element, decoration);
+			else
 				decorateResource(resource, decoration);
-			} catch(CoreException e) {
-				handleException(resource, e);
-			}
+		} catch (CoreException e) {
+			handleException(resource, e);
 		}
 	}
 
