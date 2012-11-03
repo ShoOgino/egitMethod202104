@@ -1,4 +1,6 @@
 	private ObjectId tryResolveLocalRef(final String ref) {
+		if (!isValidRefExpression(ref))
+			return null;
 		try {
 			return localDb.resolve(ref);
 		} catch (final IOException e) {

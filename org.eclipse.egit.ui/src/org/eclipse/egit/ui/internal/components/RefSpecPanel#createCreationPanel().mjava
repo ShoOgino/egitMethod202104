@@ -21,8 +21,8 @@
 		creationButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final String src = creationSrcCombo.getText();
-				final String dst = creationDstCombo.getText();
+				final String src = creationSrcComboSupport.getContent();
+				final String dst = creationDstComboSupport.getContent();
 				RefSpec spec = new RefSpec(src + ':' + dst);
 				addRefSpec(spec);
 				creationSrcCombo.setText(""); //$NON-NLS-1$

@@ -1,6 +1,6 @@
 	private void tryAutoCompleteDstToSrc() {
-		final String src = creationSrcCombo.getText();
-		final String dst = creationDstCombo.getText();
+		final String src = creationSrcComboSupport.getContent();
+		final String dst = creationDstComboSupport.getContent();
 
 		if (dst == null || dst.length() == 0)
 			return;
@@ -12,7 +12,8 @@
 				newSrc = wildcardSpecComponent(src);
 			else
 				newSrc = unwildcardSpecComponent(src, dst);
-			creationSrcCombo.setText(newSrc);
+			if (!src.equals(newSrc))
+				creationSrcCombo.setText(newSrc);
 			return;
 		}
 	}
