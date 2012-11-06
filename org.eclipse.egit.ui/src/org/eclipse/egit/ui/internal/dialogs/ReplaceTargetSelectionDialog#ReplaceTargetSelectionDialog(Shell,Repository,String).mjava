@@ -1,13 +1,13 @@
 	/**
 	 * @param parentShell
 	 * @param repo
-	 * @param pathString
+	 * @param resourceName
 	 */
 	public ReplaceTargetSelectionDialog(Shell parentShell, Repository repo,
-			String pathString) {
+			String resourceName) {
 		super(parentShell, repo, SHOW_LOCAL_BRANCHES | SHOW_REMOTE_BRANCHES
 				| SHOW_TAGS | SHOW_REFERENCES | EXPAND_LOCAL_BRANCHES_NODE
 				| SELECT_CURRENT_REF);
-		this.pathString = pathString;
+		this.resourceName = resourceName;
 	}
 

@@ -1,6 +1,9 @@
 	@Override
 	protected String getTitle() {
-		return NLS.bind(UIText.ReplaceTargetSelectionDialog_ReplaceTitle,
-				pathString);
+		if (resourceName != null && resourceName.length() > 0)
+			return NLS.bind(UIText.ReplaceTargetSelectionDialog_ReplaceTitle,
+					resourceName);
+		else
+			return UIText.ReplaceTargetSelectionDialog_ReplaceTitleEmptyPath;
 	}
 
