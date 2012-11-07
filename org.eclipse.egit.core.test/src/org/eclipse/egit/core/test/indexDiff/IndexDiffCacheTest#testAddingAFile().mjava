@@ -16,9 +16,8 @@
 				.toString().substring(1);
 		if (!indexDiffData.getUntracked().contains(path))
 			fail("IndexDiffData did not contain aFile as untracked");
-		new Git(repository).add().addFilepattern(path).call();
 		// This call should trigger an indexDiffChanged event
-		repository.fireEvent(new IndexChangedEvent());
+		new Git(repository).add().addFilepattern(path).call();
 		IndexDiffData indexDiffData2 = waitForListenerCalled();
 		if (indexDiffData2.getUntracked().contains(path))
 			fail("IndexDiffData contains aFile as untracked");

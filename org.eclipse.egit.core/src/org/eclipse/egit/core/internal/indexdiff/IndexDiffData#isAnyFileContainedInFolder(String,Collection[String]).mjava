@@ -1,0 +1,8 @@
+	private static boolean isAnyFileContainedInFolder(String folder,
+			Collection<String> files) {
+		for (String file : files)
+			if (file.startsWith(folder))
+				return true;
+		return false;
+	}
+

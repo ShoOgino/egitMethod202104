@@ -1,0 +1,17 @@
+	/*
+	 * In the case when a file to update was in a folder that was untracked
+	 * before, we need to visit more that just the file. E.g. when the file is
+	 * now tracked, the folder is no longer untracked but maybe some sub folders
+	 * have become newly untracked.
+	 */
+	private List<String> calcTreeFilterPaths(Collection<String> filesToUpdate) {
+		List<String> paths = new ArrayList<String>();
+		for (String fileToUpdate : filesToUpdate) {
+			for (String untrackedFolder : indexDiffData.getUntrackedFolders())
+				if (fileToUpdate.startsWith(untrackedFolder))
+					paths.add(untrackedFolder);
+			paths.add(fileToUpdate);
+		}
+		return paths;
+	}
+

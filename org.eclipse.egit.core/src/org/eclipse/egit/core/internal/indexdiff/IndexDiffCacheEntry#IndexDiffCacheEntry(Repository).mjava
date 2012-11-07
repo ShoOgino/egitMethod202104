@@ -6,7 +6,7 @@
 		repository.getListenerList().addIndexChangedListener(
 				new IndexChangedListener() {
 					public void onIndexChanged(IndexChangedEvent event) {
-						scheduleReloadJob("IndexChanged"); //$NON-NLS-1$
+						refreshIndexDelta();
 					}
 				});
 		repository.getListenerList().addRefsChangedListener(
@@ -17,5 +17,15 @@
 				});
 		scheduleReloadJob("IndexDiffCacheEntry construction"); //$NON-NLS-1$
 		createResourceChangeListener();
+		if (!repository.isBare()) {
+			try {
+				lastIndex = repository.readDirCache();
+			} catch (IOException ex) {
+				Activator
+						.error(MessageFormat
+								.format(CoreText.IndexDiffCacheEntry_errorCalculatingIndexDelta,
+										repository), ex);
+			}
+		}
 	}
 
