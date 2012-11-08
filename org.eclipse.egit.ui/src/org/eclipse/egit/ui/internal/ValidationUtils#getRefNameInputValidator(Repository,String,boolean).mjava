@@ -18,6 +18,10 @@
 						return null;
 				}
 				String testFor = refPrefix + newText;
+				if (!Repository.isValidRefName(testFor))
+					return NLS.bind(
+							UIText.ValidationUtils_InvalidRefNameMessage,
+							testFor);
 				try {
 					if (repo.resolve(testFor) != null)
 						return NLS.bind(
@@ -29,10 +33,6 @@
 							testFor), e1);
 					return e1.getMessage();
 				}
-				if (!Repository.isValidRefName(testFor))
-					return NLS.bind(
-							UIText.ValidationUtils_InvalidRefNameMessage,
-							testFor);
 				return null;
 			}
 		};
