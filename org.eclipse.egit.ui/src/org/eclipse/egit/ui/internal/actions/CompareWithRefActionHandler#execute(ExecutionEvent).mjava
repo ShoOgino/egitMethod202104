@@ -7,7 +7,7 @@
 
 		CompareTargetSelectionDialog dlg = new CompareTargetSelectionDialog(
 				getShell(event), repo, resources.length == 1 ? resources[0]
-						.getFullPath().toString() : null);
+						.getFullPath().lastSegment() : null);
 		if (dlg.open() == Window.OK) {
 
 			if (resources.length == 1 && resources[0] instanceof IFile) {
