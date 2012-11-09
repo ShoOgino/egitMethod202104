@@ -6,9 +6,12 @@
 		if (!selection) {
 			originalChangeId = null;
 			authorText.setText(author);
+			commitText.setText(commitMessageBeforeAmending);
+			commitMessageBeforeAmending = EMPTY_STRING;
 		} else {
 			getHeadCommitInfo();
 			saveOriginalChangeId();
+			commitMessageBeforeAmending = commitText.getText();
 			commitText.setText(previousCommitMessage);
 			if (previousAuthor != null)
 				authorText.setText(previousAuthor);
