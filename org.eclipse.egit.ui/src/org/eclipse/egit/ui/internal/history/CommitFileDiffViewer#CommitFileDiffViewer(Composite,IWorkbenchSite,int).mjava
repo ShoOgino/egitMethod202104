@@ -141,6 +141,14 @@
 		mgr.add(compareWorkingTreeVersion);
 		mgr.add(blame);
 
+		MenuManager showInSubMenu = new MenuManager(
+				UIText.CommitFileDiffViewer_ShowInMenuLabel);
+		showInSubMenu.add(ContributionItemFactory.VIEWS_SHOW_IN
+				.create(site.getWorkbenchWindow()));
+
+		mgr.add(new Separator());
+		mgr.add(showInSubMenu);
+
 		mgr.add(new Separator());
 		mgr.add(selectAll = createStandardAction(ActionFactory.SELECT_ALL));
 		mgr.add(copy = createStandardAction(ActionFactory.COPY));
