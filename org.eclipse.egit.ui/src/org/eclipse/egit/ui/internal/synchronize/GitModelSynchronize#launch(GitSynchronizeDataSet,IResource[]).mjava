@@ -6,11 +6,8 @@
 	 */
 	public static final void launch(final GitSynchronizeDataSet gsdSet,
 			IResource[] resources) {
-		ResourceMapping[] mappings = getSelectedResourceMappings(resources);
+		ResourceMapping[] mappings = getGitResourceMappings(resources);
 
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
-
-		fireSynchronizeAction(window, gsdSet, mappings);
+		launch(gsdSet, mappings);
 	}
 

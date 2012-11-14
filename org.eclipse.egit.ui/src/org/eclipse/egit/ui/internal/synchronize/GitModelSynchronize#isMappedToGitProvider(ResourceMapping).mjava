@@ -5,13 +5,13 @@
 	 * @return <code>true</code> if resource is mapped to Git provider,
 	 *         <code>false</code> otherwise
 	 */
-	private static boolean isMappedToProvider(ResourceMapping element) {
+	private static boolean isMappedToGitProvider(ResourceMapping element) {
 		IProject[] projects = element.getProjects();
 		for (IProject project: projects) {
 			RepositoryProvider provider = RepositoryProvider
 					.getProvider(project);
 
-			if (provider != null && provider.getID().equals(providerId))
+			if (provider != null && provider.getID().equals(GIT_PROVIDER_ID))
 				return true;
 		}
 		return false;

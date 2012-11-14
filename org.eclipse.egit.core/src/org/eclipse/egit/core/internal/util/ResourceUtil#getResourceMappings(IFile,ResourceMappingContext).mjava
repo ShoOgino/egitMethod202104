@@ -1,0 +1,35 @@
+	/**
+	 * This will query all model providers for those that are enabled on the
+	 * given file and list all mappings available for that file.
+	 *
+	 * @param file
+	 *            The file for which we need the associated resource mappings.
+	 * @param context
+	 *            Context from which remote content could be retrieved.
+	 * @return All mappings available for that file.
+	 */
+	public static ResourceMapping[] getResourceMappings(IFile file,
+			ResourceMappingContext context) {
+		final IModelProviderDescriptor[] modelDescriptors = ModelProvider
+				.getModelProviderDescriptors();
+
+		final Set<ResourceMapping> mappings = new LinkedHashSet<ResourceMapping>();
+		for (IModelProviderDescriptor candidate : modelDescriptors) {
+			try {
+				final IResource[] resources = candidate
+						.getMatchingResources(new IResource[] { file, });
+				if (resources.length > 0) {
+					// get mappings from model provider if there are matching resources
+					final ModelProvider model = candidate.getModelProvider();
+					final ResourceMapping[] modelMappings = model.getMappings(
+							file, context, null);
+					for (ResourceMapping mapping : modelMappings)
+						mappings.add(mapping);
+				}
+			} catch (CoreException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+		return mappings.toArray(new ResourceMapping[mappings.size()]);
+	}
+
