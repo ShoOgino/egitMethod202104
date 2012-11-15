@@ -68,6 +68,9 @@
 					menuMgr.add(new DeleteAction(selection));
 				if (addLaunchMergeTool)
 					menuMgr.add(createItem(ActionCommands.MERGE_TOOL_ACTION, tableViewer));
+
+				menuMgr.add(new Separator());
+				menuMgr.add(createShowInMenu());
 			}
 		});
 
