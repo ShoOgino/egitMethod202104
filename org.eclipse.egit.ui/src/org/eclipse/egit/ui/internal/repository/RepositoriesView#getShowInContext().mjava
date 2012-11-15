@@ -1,0 +1,13 @@
+	public ShowInContext getShowInContext() {
+		IStructuredSelection selection = (IStructuredSelection) getCommonViewer()
+				.getSelection();
+		List<Object> elements = getShowInElements(selection);
+		// GenericHistoryView only shows a selection of a single resource (see
+		// bug 392949), so prepare our own history page input which can contain
+		// multiple files to support showing more than one file in history.
+		// It's also necessary for a single file that is outside of the
+		// workspace (and as such is not an IResource).
+		HistoryPageInput historyPageInput = getHistoryPageInput(selection);
+		return new ShowInContext(historyPageInput, new StructuredSelection(elements));
+	}
+

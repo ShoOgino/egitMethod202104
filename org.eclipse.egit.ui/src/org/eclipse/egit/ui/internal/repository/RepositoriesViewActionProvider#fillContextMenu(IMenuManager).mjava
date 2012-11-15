@@ -1,0 +1,19 @@
+	@Override
+	public void fillContextMenu(IMenuManager menu) {
+		ISelection selection = getContext().getSelection();
+		if (selection.isEmpty())
+			return;
+
+		if (selection instanceof IStructuredSelection) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+			if (shouldAddShowInMenu(structuredSelection)) {
+				ICommonViewerWorkbenchSite site = (ICommonViewerWorkbenchSite) getActionSite()
+						.getViewSite();
+
+				MenuManager showInSubMenu = UIUtils.createShowInMenu(
+						site.getWorkbenchWindow());
+				menu.appendToGroup(ICommonMenuConstants.GROUP_SHOW, showInSubMenu);
+			}
+		}
+	}
+

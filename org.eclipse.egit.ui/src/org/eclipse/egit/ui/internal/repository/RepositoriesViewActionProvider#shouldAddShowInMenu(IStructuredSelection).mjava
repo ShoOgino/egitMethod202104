@@ -1,0 +1,15 @@
+	private static boolean shouldAddShowInMenu(IStructuredSelection selection) {
+		for (Object element : selection.toList()) {
+			if (element instanceof RepositoryNode
+					|| element instanceof WorkingDirNode
+					|| element instanceof FileNode
+					|| element instanceof FolderNode
+					|| element instanceof RemoteNode
+					|| element instanceof FetchNode
+					|| element instanceof PushNode
+					|| element instanceof RefNode)
+				return true;
+		}
+		return false;
+	}
+
