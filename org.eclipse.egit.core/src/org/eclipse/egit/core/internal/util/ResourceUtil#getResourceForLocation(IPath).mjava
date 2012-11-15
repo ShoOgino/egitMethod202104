@@ -7,8 +7,11 @@
 	public static IResource getResourceForLocation(IPath location) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IFile file = root.getFileForLocation(location);
-		if (file != null)
+		if (file != null && file.exists())
 			return file;
-		return root.getContainerForLocation(location);
+		IContainer container = root.getContainerForLocation(location);
+		if (container != null && container.exists())
+			return container;
+		return null;
 	}
 
