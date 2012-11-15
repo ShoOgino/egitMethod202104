@@ -2,15 +2,19 @@
 		ISelection selection = context.getSelection();
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection ss = (IStructuredSelection) selection;
-			List<IResource> resources = new ArrayList<IResource>();
+			List<IPath> paths = new ArrayList<IPath>();
 			for (Iterator it = ss.iterator(); it.hasNext();) {
 				Object element = it.next();
 				IResource resource = AdapterUtils.adapt(element, IResource.class);
-				if (resource != null)
-					resources.add(resource);
+				if (resource != null) {
+					IPath location = resource.getLocation();
+					if (location != null)
+						paths.add(location);
+				} else if (element instanceof IPath)
+					paths.add((IPath) element);
 			}
-			if (!resources.isEmpty()) {
-				showResources(resources);
+			if (!paths.isEmpty()) {
+				showPaths(paths);
 				return true;
 			}
 		}
