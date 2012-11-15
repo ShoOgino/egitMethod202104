@@ -38,7 +38,8 @@
 						workDir);
 		shell.bot().checkBox(checkboxLabel).select();
 		shell.bot().button(IDialogConstants.OK_LABEL).click();
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.REPOSITORY_DELETE);
+
 		refreshAndWait();
 		assertFalse(subRepo.getDirectory().exists());
 		assertFalse(subRepo.getWorkTree().exists());

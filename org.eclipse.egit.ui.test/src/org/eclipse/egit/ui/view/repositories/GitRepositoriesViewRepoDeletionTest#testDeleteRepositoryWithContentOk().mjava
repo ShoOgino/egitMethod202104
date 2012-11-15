@@ -22,7 +22,8 @@
 						workDir);
 		shell.bot().checkBox(checkboxLabel).select();
 		shell.bot().button(IDialogConstants.OK_LABEL).click();
-		waitInUI();
+		TestUtil.joinJobs(JobFamilies.REPOSITORY_DELETE);
+
 		refreshAndWait();
 		assertEmpty();
 		assertProjectExistence(PROJ1, false);
