@@ -2,9 +2,7 @@
 	public void testFetchFromOriginThenMerge() throws Exception {
 		String previousCommit = prepare();
 		String oldContent = getTestFileContent();
-		SWTBotShell fetchDialog = openFetchDialog();
-		fetchDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
-		fetchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		fetch();
 
 		String uri = lookupRepository(childRepositoryFile).getConfig()
 				.getString(ConfigConstants.CONFIG_REMOTE_SECTION, "origin",
@@ -21,9 +19,7 @@
 		String newContent = getTestFileContent();
 		assertEquals(oldContent, newContent);
 
-		fetchDialog = openFetchDialog();
-		fetchDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
-		fetchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		fetch();
 		confirm = bot.shell(NLS.bind(UIText.FetchResultDialog_title, uri));
 		int count = confirm.bot().tree().rowCount();
 
