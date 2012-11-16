@@ -1,0 +1,12 @@
+	/**
+	 * @return the content of the selected item, or just the text if it does not
+	 *         match a proposal
+	 */
+	public String getContent() {
+		String text = combo.getText();
+		for (final IContentProposal p : proposals)
+			if (text.equals(p.getLabel()))
+				return p.getContent();
+		return text;
+	}
+

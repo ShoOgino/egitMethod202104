@@ -29,7 +29,7 @@
 		deleteButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				RefSpec spec = new RefSpec(':' + deleteRefCombo.getText());
+				RefSpec spec = new RefSpec(':' + deleteRefComboSupport.getContent());
 				addRefSpec(spec);
 				deleteRefCombo.setText(""); //$NON-NLS-1$
 			}
