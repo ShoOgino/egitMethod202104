@@ -16,11 +16,12 @@
 				mymonitor.worked(1);
 				MergeCommand merge;
 				try {
+					FastForwardMode ffmode = getFFmode();
 					Ref ref = repository.getRef(refName);
 					if (ref != null)
-						merge = git.merge().include(ref);
+						merge = git.merge().include(ref).setFastForward(ffmode);
 					else
-						merge = git.merge().include(ObjectId.fromString(refName));
+						merge = git.merge().include(ObjectId.fromString(refName)).setFastForward(ffmode);
 				} catch (IOException e) {
 					throw new TeamException(CoreText.MergeOperation_InternalError, e);
 				}
