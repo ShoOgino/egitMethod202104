@@ -1,0 +1,10 @@
+	/**
+	 * @param path absolute path to non-workspace file
+	 */
+	public LocalNonWorkspaceTypedElement(IPath path) {
+		super(ROOT.getFile(path));
+		this.path = path;
+
+		exists = path.toFile().exists();
+	}
+

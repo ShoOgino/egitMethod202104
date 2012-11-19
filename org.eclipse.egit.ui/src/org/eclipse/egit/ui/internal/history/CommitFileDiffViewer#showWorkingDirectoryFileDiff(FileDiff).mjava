@@ -7,10 +7,10 @@
 		final ITypedElement base;
 		final ITypedElement next;
 
-		String path = new Path(getRepository().getWorkTree().getAbsolutePath())
-				.append(p).toOSString();
+		IPath path = new Path(getRepository().getWorkTree().getAbsolutePath())
+				.append(p);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IFile[] files = root.findFilesForLocationURI(new File(path).toURI());
+		IFile[] files = root.findFilesForLocationURI(path.toFile().toURI());
 		if (files.length > 0)
 			next = SaveableCompareEditorInput.createFileElement(files[0]);
 		else
