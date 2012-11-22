@@ -141,10 +141,8 @@
 		mgr.add(compareWorkingTreeVersion);
 		mgr.add(blame);
 
-		MenuManager showInSubMenu = new MenuManager(
-				UIText.CommitFileDiffViewer_ShowInMenuLabel);
-		showInSubMenu.add(ContributionItemFactory.VIEWS_SHOW_IN
-				.create(site.getWorkbenchWindow()));
+		MenuManager showInSubMenu = UIUtils.createShowInMenu(
+				site.getWorkbenchWindow());
 
 		mgr.add(new Separator());
 		mgr.add(showInSubMenu);
