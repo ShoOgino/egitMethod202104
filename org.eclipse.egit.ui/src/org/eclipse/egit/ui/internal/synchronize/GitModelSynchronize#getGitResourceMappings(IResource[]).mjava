@@ -7,19 +7,15 @@
 	 */
 	private static ResourceMapping[] getGitResourceMappings(
 			IResource[] elements) {
-		List<ResourceMapping> providerMappings = new ArrayList<ResourceMapping>();
+		List<ResourceMapping> gitMappings = new ArrayList<ResourceMapping>();
 
 		for (IResource element : elements) {
-			Object adapted = getResourceMapping(element);
-			if (adapted != null && adapted instanceof ResourceMapping) {
-				ResourceMapping mapping = (ResourceMapping) adapted;
-
-				if (isMappedToGitProvider(mapping))
-					providerMappings.add(mapping);
-			}
+			ResourceMapping mapping = AdapterUtils.adapt(element,
+					ResourceMapping.class);
+			if (mapping != null && isMappedToGitProvider(mapping))
+				gitMappings.add(mapping);
 		}
 
-		return providerMappings.toArray(new ResourceMapping[providerMappings
-				.size()]);
+		return gitMappings.toArray(new ResourceMapping[gitMappings.size()]);
 	}
 

@@ -1,0 +1,10 @@
+	private static void synchronizeModel(IFile file, final GitSynchronizeData data) {
+		final GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
+
+		// use all available local mappings for proper model support
+		final ResourceMapping[] mappings = ResourceUtil.getResourceMappings(
+				file, ResourceMappingContext.LOCAL_CONTEXT);
+
+		GitModelSynchronize.launch(dataSet, mappings);
+	}
+
