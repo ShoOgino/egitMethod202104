@@ -1,0 +1,8 @@
+	public void tearDown() {
+		if (resourceChangeListener != null) {
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
+					resourceChangeListener);
+			resourceChangeListener = null;
+		}
+	}
+

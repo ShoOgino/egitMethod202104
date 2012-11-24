@@ -1,0 +1,13 @@
+	/**
+	 * Create a project in the base directory of temp dirs
+	 *
+	 * @param projectName
+	 *            project name
+	 * @return the project with a location pointing to the local file system
+	 * @throws Exception
+	 */
+	public IProject createProjectInLocalFileSystem(
+			String projectName) throws Exception {
+		return createProjectInLocalFileSystem(getBaseTempDir(), projectName);
+	}
+

@@ -1,0 +1,18 @@
+	@Test
+	public void testLinkedResourcesIgnoredByIteratorService() throws Exception {
+		// Create linked folder in project1 that points to project2
+		IFolder folder = project1.getFolder("link2project2");
+		folder.createLink(project2.getLocation(),
+				IResource.ALLOW_MISSING_LOCAL, null);
+		// Linked resources are ignored when searching the container of a folder
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IContainer container = IteratorService.findContainer(root, folder
+				.getRawLocation().makeAbsolute().toFile());
+		assertTrue(project2.equals(container));
+		// Also test when the only project left is the one linking to the folder
+		repository2.disconnect(project2);
+		container = IteratorService.findContainer(root, folder.getRawLocation()
+				.makeAbsolute().toFile());
+		assertNull(container);
+	}
+

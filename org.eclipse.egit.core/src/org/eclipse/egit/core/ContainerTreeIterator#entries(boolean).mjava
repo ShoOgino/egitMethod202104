@@ -12,7 +12,8 @@
 				hasInheritedResourceFilters, resources, entries);
 
 		for (IResource resource : resources)
-			entries.add(new ResourceEntry(resource, inheritableResourceFilter));
+			if (!resource.isLinked())
+				entries.add(new ResourceEntry(resource, inheritableResourceFilter));
 
 		return entries.toArray(new Entry[entries.size()]);
 	}

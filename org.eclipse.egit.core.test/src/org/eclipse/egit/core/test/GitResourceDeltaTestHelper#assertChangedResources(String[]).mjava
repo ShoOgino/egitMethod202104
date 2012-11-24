@@ -1,0 +1,7 @@
+	public void assertChangedResources(String[] expected) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		for (String file : expected)
+			assertThat(changedResources, hasItem(root.findMember(file)));
+		assertEquals(expected.length, changedResources.size());
+	}
+

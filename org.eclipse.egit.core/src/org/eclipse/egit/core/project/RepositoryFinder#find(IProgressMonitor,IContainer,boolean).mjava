@@ -1,5 +1,7 @@
-	private void find(final IProgressMonitor m, final IContainer c)
-			throws CoreException {
+	private void find(final IProgressMonitor m, final IContainer c, boolean searchLinkedFolders)
+				throws CoreException {
+		if (!searchLinkedFolders && c.isLinked())
+			return; // Ignore linked folders
 		final IPath loc = c.getLocation();
 
 		m.beginTask("", 101);  //$NON-NLS-1$
@@ -14,7 +16,7 @@
 				if (ownCfg.isFile()) {
 					register(c, ownCfg.getParentFile());
 				}
-				if (c.isLinked() || c instanceof IProject) {
+				if (c instanceof IProject) {
 					File p = fsLoc.getParentFile();
 					while (p != null) {
 						// TODO is this the right location?
@@ -42,7 +44,7 @@
 						if (o instanceof IContainer
 								&& !o.getName().equals(Constants.DOT_GIT)) {
 							find(new SubProgressMonitor(m, scale),
-									(IContainer) o);
+									(IContainer) o, searchLinkedFolders);
 						} else {
 							m.worked(scale);
 						}

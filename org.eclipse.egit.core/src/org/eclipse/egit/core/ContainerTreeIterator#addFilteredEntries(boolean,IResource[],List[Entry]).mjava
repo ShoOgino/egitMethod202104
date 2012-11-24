@@ -35,11 +35,17 @@
 			}
 
 			Set<File> resourceEntries = new HashSet<File>();
-			for (IResource resource : memberResources) {
-				IPath location = resource.getLocation();
-				if (location != null)
-					resourceEntries.add(location.toFile());
-			}
+			for (IResource resource : memberResources)
+				// Make sure linked resources are ignored here.
+				// This is particularly important in the case of a linked
+				// resource which targets a normally filtered/hidden file
+				// within the same location. In such case, ignoring it here
+				// ensures the actual target gets included in the code below.
+				if (!resource.isLinked()) {
+					IPath location = resource.getLocation();
+					if (location != null)
+						resourceEntries.add(location.toFile());
+				}
 
 			IPath containerLocation = node.getLocation();
 			if (containerLocation != null) {
@@ -47,8 +53,7 @@
 				File[] children = folder.listFiles();
 				for (File child : children) {
 					if (resourceEntries.contains(child))
-						continue;
-
+						continue; // ok if linked resources are ignored earlier on
 					IPath childLocation = new Path(child.getAbsolutePath());
 					IWorkspaceRoot root = node.getWorkspace().getRoot();
 					IContainer container = root.getContainerForLocation(childLocation);

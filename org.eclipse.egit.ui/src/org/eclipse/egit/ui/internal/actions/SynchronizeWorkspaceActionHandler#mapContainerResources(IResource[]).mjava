@@ -4,6 +4,8 @@
 
 		for (IResource resource : resources) {
 			RepositoryMapping rm = RepositoryMapping.getMapping(resource);
+			if (rm == null)
+				continue; // Linked resources may not be in a repo
 			if (resource instanceof IProject)
 				result.put(rm.getRepository(), new HashSet<IContainer>());
 			else if (resource instanceof IContainer) {

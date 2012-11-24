@@ -1,0 +1,19 @@
+	@After
+	public void tearDown() throws Exception {
+		if (resourceDeltaTestHelper1 != null)
+			resourceDeltaTestHelper1.tearDown();
+		if (resourceDeltaTestHelper2 != null)
+			resourceDeltaTestHelper2.tearDown();
+		project1.delete(true, null);
+		project2.delete(true, null);
+		project1 = null;
+		project2 = null;
+		repository1.dispose();
+		repository2.dispose();
+		repository1 = null;
+		repository2 = null;
+		testUtils.deleteTempDirs();
+		testUtils = null;
+		Activator.getDefault().getRepositoryCache().clear();
+	}
+

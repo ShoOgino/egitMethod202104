@@ -8,9 +8,12 @@
 				children = super.getChildren(element);
 			List<Object> childList = new ArrayList<Object>(children.length);
 			for (Object child : children) {
-				IPath path = new Path(repositoryMapping
-						.getRepoRelativePath((IResource) child));
-				boolean isFile = ((IResource) child).getType() == IResource.FILE;
+				IResource childResource = (IResource) child;
+				if (childResource.isLinked())
+					continue;
+				IPath path = new Path(
+						repositoryMapping.getRepoRelativePath(childResource));
+				boolean isFile = childResource.getType() == IResource.FILE;
 
 				// each path that is not ignored creates an entry in either
 				// compareVersionMap or addedPaths, so we can check if a path

@@ -1,16 +1,25 @@
 	/**
-	 * Run the search algorithm, ignoring linked resources.
+	 * Run the search algorithm.
 	 *
 	 * @param m
 	 *            a progress monitor to report feedback to; may be null.
+	 * @param searchLinkedFolders
+	 *            specify if linked folders should be included in the search
 	 * @return all found {@link RepositoryMapping} instances associated with the
 	 *         project supplied to this instance's constructor.
 	 * @throws CoreException
 	 *             Eclipse was unable to access its workspace, and threw up on
 	 *             us. We're throwing it back at the caller.
+	 * @since 2.3
 	 */
-	public Collection<RepositoryMapping> find(IProgressMonitor m)
+	public Collection<RepositoryMapping> find(IProgressMonitor m, boolean searchLinkedFolders)
 			throws CoreException {
-		return find(m, false);
+		IProgressMonitor monitor;
+		if (m == null)
+			monitor = new NullProgressMonitor();
+		else
+			monitor = m;
+		find(monitor, proj, searchLinkedFolders);
+		return results;
 	}
 

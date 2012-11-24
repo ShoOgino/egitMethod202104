@@ -1,0 +1,7 @@
+	@Test
+	public void testGitProviderCanHandleLinkedResources() throws Exception {
+		GitProvider provider = (GitProvider) RepositoryProvider
+				.getProvider(project1);
+		assertTrue(provider.canHandleLinkedResourceURI());
+	}
+

@@ -1,7 +1,7 @@
 	@Override
 	public boolean isEnabled() {
 		IResource[] selectedResources = getSelectedResources();
-		return super.isEnabled() && selectedResources.length == 1 &&
+		return selectedResources.length == 1 &&
 				selectionMapsToSingleRepository();
 	}
 

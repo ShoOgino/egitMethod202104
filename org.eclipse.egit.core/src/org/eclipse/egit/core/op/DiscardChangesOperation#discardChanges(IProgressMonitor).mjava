@@ -1,14 +1,6 @@
 	private void discardChanges(IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(CoreText.DiscardChangesOperation_discardingChanges, 2);
 		boolean errorOccurred = false;
-		for (IResource res : files) {
-			Repository repo = getRepository(res);
-			if (repo == null) {
-				IStatus status = Activator.error(
-						CoreText.DiscardChangesOperation_repoNotFound, null);
-				throw new CoreException(status);
-			}
-		}
 		try {
 			discardChanges();
 		} catch (GitAPIException e) {

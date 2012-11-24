@@ -1,13 +1,18 @@
 	/**
-	 * Get the repository mapping for a resource
+	 * Get the repository mapping for a resource. If the given resource is a
+	 * linked resource, the raw location of the resource will be used to
+	 * determine a repository mapping.
 	 *
 	 * @param resource
-	 * @return the RepositoryMapping for this resource,
-	 *         or null for non GitProvider.
+	 * @return the RepositoryMapping for this resource, or null for non
+	 *         GitProvider.
 	 */
 	public static RepositoryMapping getMapping(final IResource resource) {
 		if (isNonWorkspace(resource))
 			return null;
+
+		if (resource.isLinked(IResource.CHECK_ANCESTORS))
+			return getMapping(resource.getLocation());
 
 		IProject project = resource.getProject();
 		if (project == null)

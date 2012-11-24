@@ -1,0 +1,32 @@
+	@Before
+	public void setUp() throws Exception {
+		testUtils = new TestUtils();
+		// Create first repo and project
+		project1 = testUtils.createProjectInLocalFileSystem(project1Name);
+		project1Dir = project1.getRawLocation().toFile();
+		repository1 = new TestRepository(new File(project1Dir,
+				Constants.DOT_GIT));
+		testUtils.addFileToProject(project1,
+				"project1folder1/project1folder1file1.txt", "Hello world");
+		repository1.connect(project1);
+		repository1.trackAllFiles(project1);
+		repository1.commit("Initial commit");
+		// Create 2nd repo and project
+		project2 = testUtils.createProjectInLocalFileSystem(project2Name);
+		project2Dir = project2.getRawLocation().toFile();
+		repository2 = new TestRepository(new File(project2Dir,
+				Constants.DOT_GIT));
+		testUtils.addFileToProject(project2,
+				"project2folder1/project2folder1file1.txt", "Hello world");
+		repository2.connect(project2);
+		repository2.trackAllFiles(project2);
+		repository2.commit("Initial commit");
+		// Set up git delta listener
+		resourceDeltaTestHelper1 = new GitResourceDeltaTestHelper(
+				repository1.getRepository());
+		resourceDeltaTestHelper1.setUp();
+		resourceDeltaTestHelper2 = new GitResourceDeltaTestHelper(
+				repository2.getRepository());
+		resourceDeltaTestHelper2.setUp();
+	}
+

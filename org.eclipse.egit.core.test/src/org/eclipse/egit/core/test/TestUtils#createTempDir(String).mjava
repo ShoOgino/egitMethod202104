@@ -8,9 +8,7 @@
 	 * @throws IOException
 	 */
 	public File createTempDir(String name) throws IOException {
-		File userHome = FS.DETECTED.userHome();
-		File rootDir = new File(userHome, "EGitCoreTestTempDir");
-		File result = new File(rootDir, name);
+		File result = new File(getBaseTempDir(), name);
 		if (result.exists())
 			FileUtils.delete(result, FileUtils.RECURSIVE | FileUtils.RETRY);
 		return result;
