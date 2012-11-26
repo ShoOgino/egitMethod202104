@@ -27,9 +27,7 @@
 		String cReference = "1.0," + cPath.toFile().toURI().toString() + ",stable,.";
 		String[] references = new String[] { aReference, baReference, bbReference, cReference };
 
-		capability.addToWorkspace(references,
-						new ProjectSetSerializationContext(),
-						new NullProgressMonitor());
+		addToWorkspace(references);
 
 		pathsToClean.add(root.getLocation().append("b").toFile());
 

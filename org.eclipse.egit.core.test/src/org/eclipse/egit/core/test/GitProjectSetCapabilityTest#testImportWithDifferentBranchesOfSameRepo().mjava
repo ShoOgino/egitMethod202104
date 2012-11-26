@@ -15,9 +15,7 @@
 		String xbStableReference = "1.0," + xPath.toFile().toURI().toString() + ",stable,xb";
 		String[] references = new String[] { xaMasterReference, xbStableReference };
 
-		capability.addToWorkspace(references,
-						new ProjectSetSerializationContext(),
-						new NullProgressMonitor());
+		addToWorkspace(references);
 
 		pathsToClean.add(root.getLocation().append("x").toFile());
 		pathsToClean.add(root.getLocation().append("x_stable").toFile());
