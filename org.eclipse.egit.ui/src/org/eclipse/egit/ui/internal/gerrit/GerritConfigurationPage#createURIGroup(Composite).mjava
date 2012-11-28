@@ -48,7 +48,6 @@
 		}
 		scheme.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				URIish oldPushURI = pushURI;
 				final int idx = scheme.getSelectionIndex();
 				pushURI = pushURI.setScheme(scheme.getItem(idx));
 
@@ -56,11 +55,6 @@
 					pushURI = pushURI.setPort(GERRIT_DEFAULT_SSH_PORT);
 				else
 					pushURI = pushURI.setPort(-1);
-
-				if (isHttpProtocol(pushURI))
-					pushURI = prependGerritHttpPathPrefix(pushURI);
-				else if (isHttpProtocol(oldPushURI))
-					pushURI = removeGerritHttpPathPrefix(pushURI);
 
 				uriText.setText(pushURI.toString());
 				scheme.setToolTipText(Protocol.values()[idx].getTooltip());
