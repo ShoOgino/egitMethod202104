@@ -1,4 +1,4 @@
-	private static void shutDownRepositories() {
+	protected static void shutDownRepositories() {
 		RepositoryCache cache = Activator.getDefault().getRepositoryCache();
 		for(Repository repository:cache.getAllRepositories())
 			repository.close();

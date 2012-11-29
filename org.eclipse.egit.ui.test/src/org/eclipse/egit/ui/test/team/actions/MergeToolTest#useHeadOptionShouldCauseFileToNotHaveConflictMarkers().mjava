@@ -1,0 +1,40 @@
+	@Test
+	public void useHeadOptionShouldCauseFileToNotHaveConflictMarkers()
+			throws Exception {
+		IPath path = new Path(PROJ1).append("folder/test.txt");
+		testRepository.branch("stable").commit().add(path.toString(), "stable")
+				.create();
+		touchAndSubmit("master", "master");
+		MergeOperation mergeOp = new MergeOperation(
+				testRepository.getRepository(), "stable");
+		mergeOp.execute(null);
+		MergeResult mergeResult = mergeOp.getResult();
+		assertThat(mergeResult.getMergeStatus(), is(MergeStatus.CONFLICTING));
+		assertThat(mergeResult.getConflicts().keySet(),
+				hasItem(path.toString()));
+
+		SWTBotTree packageExplorer = bot
+				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		SWTBotTreeItem project1 = getProjectItem(packageExplorer, PROJ1)
+				.select();
+
+		SWTBotTreeItem folderNode = project1.expand().getNode(FOLDER);
+		SWTBotTreeItem fileNode = folderNode.expand().getNode(FILE1);
+		fileNode.select();
+		ContextMenuHelper.clickContextMenu(packageExplorer,
+				util.getPluginLocalizedValue("TeamMenu.label"),
+				util.getPluginLocalizedValue("MergeToolAction.label"));
+
+		SWTBotShell shell = bot.shell(UIText.MergeModeDialog_DialogTitle)
+				.activate();
+		shell.bot().radio(UIText.MergeModeDialog_MergeMode_2_Label).click();
+		shell.bot().button(IDialogConstants.OK_LABEL).click();
+
+		SWTBotEditor editor = bot.editorById("org.eclipse.compare.CompareEditor");
+		SWTBotStyledText styledText = editor.bot().styledText(0);
+		bot.waitUntil(Conditions.widgetIsEnabled(styledText));
+
+		String text = styledText.getText();
+		assertThat(text, is("master"));
+	}
+
