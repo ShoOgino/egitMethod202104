@@ -1,0 +1,19 @@
+	@Before
+	public void prepare() throws Exception {
+		FileRepository childRepository = lookupRepository(childRepositoryFile);
+
+		FileRepository repository = lookupRepository(repositoryFile);
+		FileBasedConfig config = repository.getConfig();
+		RemoteConfig remoteConfig = new RemoteConfig(config, "origin");
+		remoteConfig.addURI(new URIish(childRepository.getDirectory().getParentFile().toURI().toURL()));
+		remoteConfig.addFetchRefSpec(new RefSpec("+refs/heads/*:refs/remotes/origin/*"));
+		remoteConfig.update(config);
+
+		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, "master", ConfigConstants.CONFIG_KEY_REMOTE, "origin");
+		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, "master", ConfigConstants.CONFIG_KEY_MERGE, "refs/heads/master");
+		config.save();
+
+		FetchOperation fetchOperation = new FetchOperation(repository, remoteConfig, 60, false);
+		fetchOperation.run(null);
+	}
+

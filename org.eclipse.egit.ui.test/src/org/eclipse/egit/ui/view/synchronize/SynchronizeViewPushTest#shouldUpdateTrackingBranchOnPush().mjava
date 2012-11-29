@@ -1,0 +1,28 @@
+	@Test
+	public void shouldUpdateTrackingBranchOnPush() throws Exception {
+		makeChangesAndCommit(PROJ1);
+		FileRepository repository = lookupRepository(repositoryFile);
+		ObjectId headId = repository.resolve(Constants.HEAD);
+
+		String trackingBranch = Constants.R_REMOTES + "origin/master";
+		launchSynchronization(Constants.HEAD, trackingBranch, false);
+		setGitChangeSetPresentationModel();
+
+		SWTBotView viewBot = bot.viewByTitle("Synchronize");
+		SWTBotToolbarButton pushButton = viewBot.toolbarButton(UIText.GitActionContributor_Push);
+		JobJoiner jobJoiner = JobJoiner.startListening(JobFamilies.PUSH, 30, TimeUnit.SECONDS);
+		pushButton.click();
+		jobJoiner.join();
+
+		String destinationString = repositoryFile.getParentFile().getName() + " - " + "origin";
+		SWTBotShell resultDialog = bot.shell(NLS.bind(UIText.ResultDialog_title, destinationString));
+		resultDialog.close();
+
+		FileRepository remoteRepository = lookupRepository(childRepositoryFile);
+		ObjectId masterOnRemote = remoteRepository.resolve("master");
+		assertThat("Expected push to update branch on remote repository", masterOnRemote, is(headId));
+
+		ObjectId trackingId = repository.resolve(trackingBranch);
+		assertThat("Expected tracking branch to be updated", trackingId, is(headId));
+	}
+

@@ -22,8 +22,13 @@
 
 			for (URIish uri : urisToPush) {
 				try {
-					spec.addURIRefUpdates(uri, Transport.open(repository, uri)
-							.findRemoteRefUpdatesFor(pushRefSpecs));
+					// Fetch ref specs are passed here to make sure that the
+					// returned remote ref updates include tracking branch
+					// updates.
+					Collection<RemoteRefUpdate> remoteRefUpdates = Transport
+							.findRemoteRefUpdatesFor(repository, pushRefSpecs,
+									config.getFetchRefSpecs());
+					spec.addURIRefUpdates(uri, remoteRefUpdates);
 				} catch (NotSupportedException e) {
 					throw new CoreException(Activator.createErrorStatus(
 							e.getMessage(), e));
