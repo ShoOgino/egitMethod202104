@@ -7,5 +7,9 @@
 		secureStore = null;
 		super.stop(context);
 		plugin = null;
+		if (preDeleteProjectListener != null) {
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(preDeleteProjectListener);
+			preDeleteProjectListener = null;
+		}
 	}
 
