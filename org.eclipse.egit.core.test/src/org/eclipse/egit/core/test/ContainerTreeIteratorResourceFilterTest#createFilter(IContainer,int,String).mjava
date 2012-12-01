@@ -1,0 +1,7 @@
+	private static void createFilter(IContainer container, int type, String regexFilterArguments) throws CoreException {
+		FileInfoMatcherDescription matcherDescription = new FileInfoMatcherDescription(
+				"org.eclipse.core.resources.regexFilterMatcher",
+				regexFilterArguments);
+		container.createFilter(type, matcherDescription, 0, null);
+	}
+

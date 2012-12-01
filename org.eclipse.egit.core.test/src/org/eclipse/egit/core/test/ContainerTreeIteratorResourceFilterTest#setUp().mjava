@@ -1,0 +1,10 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+
+		repository = new FileRepository(gitDir);
+		repository.create();
+
+		connectProject(project.getProject());
+	}
+

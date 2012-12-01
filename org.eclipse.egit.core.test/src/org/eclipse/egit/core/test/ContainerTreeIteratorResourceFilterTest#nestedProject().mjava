@@ -1,0 +1,25 @@
+	@Test
+	public void nestedProject() throws Exception {
+		IProject p = project.getProject();
+		testUtils.addFileToProject(p, "folder1/file.txt", "");
+		testUtils.addFileToProject(p, "folder1/subfolder/filtered.txt", "");
+
+		TestProject testProject2 = new TestProject(true, "Project-1/folder1/subfolder/Project-2");
+		connectProject(testProject2.getProject());
+		IFile project2File = testUtils.addFileToProject(testProject2.getProject(), "project2.txt", "");
+		assertThat(project2File.getProject(), is(testProject2.getProject()));
+
+		createFilter(p.getFolder("folder1"), EXCLUDE_ALL | FOLDERS, "subfolder");
+		assertFalse("IFolder should be filtered",
+				p.getFolder(new Path("folder1/subfolder")).exists());
+
+		List<Entry> entries = walkTree();
+
+		assertThat(entries, hasItem(containerTreeEntry("Project-1/folder1/file.txt")));
+		assertThat(entries, hasItem(adaptableFileTreeEntry("Project-1/folder1/subfolder/filtered.txt")));
+		// Should be handled by container tree iterator again, because the project exists.
+		assertThat(entries, hasItem(containerTreeEntry("Project-1/folder1/subfolder/Project-2/project2.txt")));
+
+		testProject2.dispose();
+	}
+

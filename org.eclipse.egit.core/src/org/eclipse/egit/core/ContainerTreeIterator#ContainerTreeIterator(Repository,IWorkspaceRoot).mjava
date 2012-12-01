@@ -14,7 +14,7 @@
 	public ContainerTreeIterator(final Repository repository, final IWorkspaceRoot root) {
 		super("", repository.getConfig().get(WorkingTreeOptions.KEY));  //$NON-NLS-1$
 		node = root;
-		init(entries());
+		init(entries(false));
 		initRootIterator(repository);
 	}
 

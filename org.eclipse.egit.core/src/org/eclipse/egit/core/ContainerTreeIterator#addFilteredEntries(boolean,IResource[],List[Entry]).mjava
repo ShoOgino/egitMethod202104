@@ -1,0 +1,70 @@
+	/**
+	 * Add entries for filtered resources.
+	 *
+	 * @param hasInheritedResourceFilters
+	 *            true if resource filters of parents could be active, false
+	 *            otherwise
+	 * @param memberResources
+	 *            the resources returned from members() that do not have to be
+	 *            added as entries again
+	 * @param entries
+	 *            where entries should be added to
+	 * @return true if we now have resource filters that are inherited, false if
+	 *         there are no resource filters which are inherited.
+	 */
+	private boolean addFilteredEntries(
+			final boolean hasInheritedResourceFilters,
+			final IResource[] memberResources, final List<Entry> entries) {
+		// Inheritable resource filters must be propagated.
+		boolean inheritableResourceFilter = hasInheritedResourceFilters;
+		IResourceFilterDescription[] filters;
+		try {
+			filters = node.getFilters();
+		} catch (CoreException e) {
+			// Should not happen, but assume we have no filters then.
+			filters = new IResourceFilterDescription[] {};
+		}
+
+		if (filters.length != 0 || hasInheritedResourceFilters) {
+			if (!inheritableResourceFilter) {
+				for (IResourceFilterDescription filter : filters) {
+					boolean inheritable = (filter.getType() & IResourceFilterDescription.INHERITABLE) != 0;
+					if (inheritable)
+						inheritableResourceFilter = true;
+				}
+			}
+
+			Set<File> resourceEntries = new HashSet<File>();
+			for (IResource resource : memberResources) {
+				IPath location = resource.getLocation();
+				if (location != null)
+					resourceEntries.add(location.toFile());
+			}
+
+			IPath containerLocation = node.getLocation();
+			if (containerLocation != null) {
+				File folder = containerLocation.toFile();
+				File[] children = folder.listFiles();
+				for (File child : children) {
+					if (resourceEntries.contains(child))
+						continue;
+
+					IPath childLocation = new Path(child.getAbsolutePath());
+					IWorkspaceRoot root = node.getWorkspace().getRoot();
+					IContainer container = root.getContainerForLocation(childLocation);
+					// Check if the container is accessible in the workspace.
+					// This may seem strange, as it was not returned from
+					// members() above, but it's the case for nested projects
+					// that are filtered directly.
+					if (container != null && container.isAccessible())
+						// Resource filters does not cross the non-member line
+						// -> stop inheriting resource filter here (false)
+						entries.add(new ResourceEntry(container, false));
+					else
+						entries.add(new FileEntry(child, FS.DETECTED));
+				}
+			}
+		}
+		return inheritableResourceFilter;
+	}
+

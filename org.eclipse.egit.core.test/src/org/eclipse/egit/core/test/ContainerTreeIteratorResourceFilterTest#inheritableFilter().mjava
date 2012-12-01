@@ -1,0 +1,19 @@
+	@Test
+	public void inheritableFilter() throws Exception {
+		IProject p = project.getProject();
+		IFile filtered1 = testUtils.addFileToProject(p, "folder1/filtered.txt", "");
+		IFile filtered2 = testUtils.addFileToProject(p, "folder1/folder2/filtered.txt", "");
+		IFile unfiltered = testUtils.addFileToProject(p, "folder1/folder2/unfiltered.txt", "");
+
+		createFilter(p, EXCLUDE_ALL | FILES | INHERITABLE, "filtered.txt");
+		assertFalse("IFile should no longer exist after filtering.", filtered1.exists());
+		assertFalse("IFile should no longer exist after filtering.", filtered2.exists());
+		assertTrue("IFile should exist after filtering.", unfiltered.exists());
+
+		List<Entry> entries = walkTree();
+
+		assertThat(entries, hasItem(containerTreeEntry("Project-1/folder1/filtered.txt")));
+		assertThat(entries, hasItem(containerTreeEntry("Project-1/folder1/folder2/filtered.txt")));
+		assertThat(entries, hasItem(containerTreeEntry("Project-1/folder1/folder2/unfiltered.txt")));
+	}
+

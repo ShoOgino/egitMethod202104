@@ -1,5 +1,6 @@
-		ResourceEntry(final IResource f) {
+		ResourceEntry(final IResource f, final boolean hasInheritedResourceFilters) {
 			rsrc = f;
+			this.hasInheritedResourceFilters = hasInheritedResourceFilters;
 
 			switch (f.getType()) {
 			case IResource.FILE:
