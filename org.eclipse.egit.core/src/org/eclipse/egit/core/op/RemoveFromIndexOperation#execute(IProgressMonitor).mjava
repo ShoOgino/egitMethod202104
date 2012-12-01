@@ -1,27 +1,32 @@
 	public void execute(IProgressMonitor m) throws CoreException {
-		IProgressMonitor monitor;
-		if (m == null)
-			monitor = new NullProgressMonitor();
-		else
-			monitor = m;
+		IProgressMonitor monitor = (m != null) ? m : new NullProgressMonitor();
 
-		ResetCommand resetCommand = new Git(repo).reset();
-		resetCommand.setRef(HEAD);
-		monitor.worked(1);
+		monitor.beginTask(
+				CoreText.RemoveFromIndexOperation_removingFilesFromIndex,
+				pathsByRepository.size());
 
-		for (String path : paths) {
-			resetCommand.addPath(path);
-			monitor.worked(1);
+		for (Map.Entry<Repository, Collection<String>> entry : pathsByRepository.entrySet()) {
+			Repository repository = entry.getKey();
+			Collection<String> paths = entry.getValue();
+
+			ResetCommand resetCommand = new Git(repository).reset();
+			resetCommand.setRef(HEAD);
+			for (String path : paths)
+				if (path == "") // Working directory //$NON-NLS-1$
+					resetCommand.addPath("."); //$NON-NLS-1$
+				else
+					resetCommand.addPath(path);
+
+			try {
+				resetCommand.call();
+				monitor.worked(1);
+			} catch (GitAPIException e) {
+				Activator.logError(e.getMessage(), e);
+			} finally {
+				findRepositoryMapping(repository).fireRepositoryChanged();
+			}
 		}
 
-		try {
-			resetCommand.call();
-			monitor.worked(1);
-		} catch (Exception e) {
-			Activator.logError(e.getMessage(), e);
-		} finally {
-			monitor.done();
-			findRepositoryMapping(repo).fireRepositoryChanged();
-		}
+		monitor.done();
 	}
 

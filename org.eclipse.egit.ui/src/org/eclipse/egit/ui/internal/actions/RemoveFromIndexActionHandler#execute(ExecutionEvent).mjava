@@ -1,11 +1,9 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final IResource[] sel = getSelectedResources(event);
+		final IPath[] sel = getSelectedLocations(event);
 		if (sel.length == 0)
 			return null;
 
-		Repository repo = getRepository();
-		final RemoveFromIndexOperation removeOperation = new RemoveFromIndexOperation(
-				repo, sel);
+		final RemoveFromIndexOperation removeOperation = new RemoveFromIndexOperation(Arrays.asList(sel));
 		Job job = new Job(UIText.RemoveFromIndexAction_removingFiles) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {

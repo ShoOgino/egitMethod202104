@@ -1,0 +1,9 @@
+	/**
+	 * @param paths
+	 *            list of paths that should be removed from index
+	 * @since 2.2
+	 */
+	public RemoveFromIndexOperation(Collection<IPath> paths) {
+		this.pathsByRepository = ResourceUtil.splitPathsByRepository(paths);
+	}
+

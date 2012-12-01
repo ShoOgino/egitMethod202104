@@ -2,11 +2,10 @@
 	public void shouldUnTrackFile() throws Exception {
 		// given
 		IFile file1 = createFileInRepo("a.txt");
-		IResource[] resources = new IResource[] { file1 };
 		new AddToIndexOperation(asList(file1)).execute(null);
 
 		// when
-		new RemoveFromIndexOperation(repo, resources).execute(null);
+		new RemoveFromIndexOperation(Arrays.asList(file1.getLocation())).execute(null);
 
 		// then
 		assertTrue(testRepo.removedFromIndex(file1.getLocation()

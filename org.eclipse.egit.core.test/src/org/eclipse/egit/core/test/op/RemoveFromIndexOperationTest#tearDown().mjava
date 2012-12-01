@@ -1,6 +1,10 @@
 	@After
 	public void tearDown() throws Exception {
 		testRepo.dispose();
+		testRepo2.dispose();
+		project2.dispose();
+		if (gitDir2.exists())
+			FileUtils.delete(gitDir2, FileUtils.RECURSIVE | FileUtils.RETRY);
 		super.tearDown();
 	}
 
