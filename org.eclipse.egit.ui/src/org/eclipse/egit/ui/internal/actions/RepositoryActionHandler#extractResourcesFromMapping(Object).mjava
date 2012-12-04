@@ -1,5 +1,5 @@
 	private List<IResource> extractResourcesFromMapping(Object o) {
-		ResourceMapping mapping = (ResourceMapping) getAdapter(o,
+		ResourceMapping mapping = AdapterUtils.adapt(o,
 				ResourceMapping.class);
 		if (mapping != null) {
 			ResourceTraversal[] traversals;

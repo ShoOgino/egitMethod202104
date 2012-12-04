@@ -5,7 +5,7 @@
 	private IResource[] getSelectedResources(IStructuredSelection selection) {
 		Set<IResource> result = new LinkedHashSet<IResource>();
 		for (Object o : selection.toList()) {
-			IResource resource = (IResource) getAdapter(o, IResource.class);
+			IResource resource = AdapterUtils.adapt(o, IResource.class);
 			if (resource != null)
 				result.add(resource);
 			else
