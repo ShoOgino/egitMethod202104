@@ -13,17 +13,16 @@
 	public synchronized String getPluginLocalizedValue(String key,
 			boolean keepAmpersands) throws MissingResourceException {
 		if (myBundle == null) {
-			ServiceTracker localizationTracker;
 
 			BundleContext context = Activator.getDefault().getBundle()
 					.getBundleContext();
 
-			localizationTracker = new ServiceTracker(context,
-					BundleLocalization.class.getName(), null);
+			ServiceTracker<BundleLocalization, BundleLocalization> localizationTracker =
+					new ServiceTracker<BundleLocalization, BundleLocalization>(
+					context, BundleLocalization.class, null);
 			localizationTracker.open();
 
-			BundleLocalization location = (BundleLocalization) localizationTracker
-					.getService();
+			BundleLocalization location = localizationTracker.getService();
 			if (location != null)
 				myBundle = location.getLocalization(Activator.getDefault()
 						.getBundle(), Locale.getDefault().toString());
