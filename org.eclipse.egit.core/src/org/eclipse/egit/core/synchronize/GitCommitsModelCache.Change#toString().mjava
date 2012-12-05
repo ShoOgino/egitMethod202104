@@ -22,7 +22,7 @@
 			change.append(";\n\tcurrent commit: "); //$NON-NLS-1$
 			change.append(getObjectId(commitId));
 			change.append(";\n\tparent commit: "); //$NON-NLS-1$
-			change.append(remoteCommitId.toObjectId().getName());
+			change.append(getObjectId(remoteCommitId));
 			change.append("\n)"); //$NON-NLS-1$
 
 			return change.toString();
