@@ -9,8 +9,6 @@
 			return new GitTreeMapping((GitModelTree) object);
 		if (object instanceof GitModelObjectContainer)
 			return new GitContainerMapping((GitModelObjectContainer) object);
-		if (object instanceof GitModelRepository)
-			return new GitRepositoryMapping((GitModelRepository) object);
 
 		return null;
 	}
