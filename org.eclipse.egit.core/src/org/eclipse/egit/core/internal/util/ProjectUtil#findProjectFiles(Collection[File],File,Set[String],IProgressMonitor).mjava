@@ -2,8 +2,8 @@
 	 * Find directories containing .project files recursively starting at given
 	 * directory
 	 *
-	 * @param files
-	 * @param directory
+	 * @param files the collection to add the found projects to
+	 * @param directory where to search for project files
 	 * @param visistedDirs
 	 * @param monitor
 	 * @return true if projects files found, false otherwise
@@ -49,12 +49,9 @@
 			File file = contents[i];
 			if (file.isFile() && file.getName().equals(dotProject)) {
 				files.add(file);
-				// don't search sub-directories since we can't have nested
-				// projects
-				return true;
 			}
 		}
-		// no project description found, so recurse into sub-directories
+		// recurse into sub-directories (even when project was found above, for nested projects)
 		for (int i = 0; i < contents.length; i++) {
 			// Skip non-directories
 			if (!contents[i].isDirectory())
