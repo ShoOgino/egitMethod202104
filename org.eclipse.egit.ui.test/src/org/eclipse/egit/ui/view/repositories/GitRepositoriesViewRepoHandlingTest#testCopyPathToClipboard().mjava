@@ -18,7 +18,7 @@
 						.getInstance());
 				assertEquals("Clipboard content should be x", "x", value);
 
-				ContextMenuHelper.clickContextMenu(tree, myUtil
+				ContextMenuHelper.clickContextMenuSync(tree, myUtil
 						.getPluginLocalizedValue("CopyPathCommand"));
 				value = (String) clp.getContents(TextTransfer.getInstance());
 				assertTrue("Clipboard content (" + value

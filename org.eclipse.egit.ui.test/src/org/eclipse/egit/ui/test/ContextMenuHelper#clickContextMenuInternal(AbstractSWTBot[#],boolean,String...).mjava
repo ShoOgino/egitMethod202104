@@ -1,5 +1,5 @@
 	private static void clickContextMenuInternal(final AbstractSWTBot<?> bot,
-			final String... texts) {
+			final boolean sync, final String... texts) {
 		// show
 		final MenuItem menuItem = UIThreadRunnable
 				.syncExec(new WidgetResult<MenuItem>() {
@@ -17,7 +17,7 @@
 					+ Arrays.asList(texts));
 
 		// click
-		click(menuItem);
+		click(menuItem, sync);
 
 		// hide
 		UIThreadRunnable.syncExec(new VoidResult() {

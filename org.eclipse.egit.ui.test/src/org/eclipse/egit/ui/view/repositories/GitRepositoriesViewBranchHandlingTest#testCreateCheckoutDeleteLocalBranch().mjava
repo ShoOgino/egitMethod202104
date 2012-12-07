@@ -34,19 +34,19 @@
 		localItem.getNode(0).select();
 		assertCheckoutNotAvailable(view);
 		localItem.getNode(1).select();
-		ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
+		ContextMenuHelper.clickContextMenuSync(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("CheckoutCommand"));
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 
 		assertCheckoutNotAvailable(view);
 
 		localItem.getNode(0).select();
-		ContextMenuHelper.clickContextMenu(view.bot().tree(), myUtil
+		ContextMenuHelper.clickContextMenuSync(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("CheckoutCommand"));
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		localItem.getNode(1).select();
 		refreshAndWait();
-		ContextMenuHelper.clickContextMenu(bot.tree(), myUtil
+		ContextMenuHelper.clickContextMenuSync(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("RepoViewDeleteBranch.label"));
 		refreshAndWait();
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),

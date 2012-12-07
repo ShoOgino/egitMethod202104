@@ -14,7 +14,7 @@
 					clip.setContents(new Object[] { repositoryFile.getPath() },
 							new Transfer[] { TextTransfer.getInstance() });
 
-					ContextMenuHelper.clickContextMenu(label,
+					ContextMenuHelper.clickContextMenuSync(label,
 							myUtil.getPluginLocalizedValue("PastePathCommand"));
 				} catch (Exception e) {
 					exceptions[0] = e;

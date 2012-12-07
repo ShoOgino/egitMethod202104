@@ -1,6 +1,6 @@
 	private void runPush(SWTBotTree tree) {
 		JobJoiner jobJoiner = JobJoiner.startListening(JobFamilies.PUSH, 10, TimeUnit.SECONDS);
-		ContextMenuHelper.clickContextMenu(tree, myUtil
+		ContextMenuHelper.clickContextMenuSync(tree, myUtil
 				.getPluginLocalizedValue("SimplePushCommand"));
 		jobJoiner.join();
 	}

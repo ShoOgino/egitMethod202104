@@ -12,7 +12,7 @@
 		getProjectItem(projectExplorerTree, PROJ1).select();
 		String menuString = util
 				.getPluginLocalizedValue("ShowResourceInHistoryAction_label");
-		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				menuString);
 		bot.viewById(IHistoryView.VIEW_ID).close();
 	}

@@ -48,7 +48,7 @@
 				.expandNode(
 						UIText.RepositoriesViewLabelProvider_SubmodulesNodeText)
 				.select();
-		ContextMenuHelper.clickContextMenu(tree, myUtil
+		ContextMenuHelper.clickContextMenuSync(tree, myUtil
 				.getPluginLocalizedValue(SYNC_SUBMODULE_CONTEXT_MENU_LABEL));
 		TestUtil.joinJobs(JobFamilies.SUBMODULE_SYNC);
 		refreshAndWait();

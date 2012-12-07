@@ -1,6 +1,6 @@
 	private void runFetch(SWTBotTree tree) {
 		JobJoiner jobJoiner = JobJoiner.startListening(JobFamilies.FETCH, 10, TimeUnit.SECONDS);
-		ContextMenuHelper.clickContextMenu(tree, myUtil
+		ContextMenuHelper.clickContextMenuSync(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
 		jobJoiner.join();
 	}

@@ -12,7 +12,7 @@
 		getProjectItem(projectExplorerTree, PROJ1).select();
 		String menuString = util
 				.getPluginLocalizedValue("ShowRepositoryAction_label");
-		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				menuString);
 		bot.viewById(RepositoriesView.VIEW_ID).close();
 	}

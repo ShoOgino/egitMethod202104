@@ -1,14 +1,18 @@
-	private static void click(final MenuItem menuItem) {
+	private static void click(final MenuItem menuItem, boolean sync) {
 		final Event event = new Event();
 		event.time = (int) System.currentTimeMillis();
 		event.widget = menuItem;
 		event.display = menuItem.getDisplay();
 		event.type = SWT.Selection;
 
-		UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
+		VoidResult toExecute = new VoidResult() {
 			public void run() {
 				menuItem.notifyListeners(SWT.Selection, event);
 			}
-		});
+		};
+		if (sync)
+			UIThreadRunnable.syncExec(menuItem.getDisplay(), toExecute);
+		else
+			UIThreadRunnable.asyncExec(menuItem.getDisplay(), toExecute);
 	}
 

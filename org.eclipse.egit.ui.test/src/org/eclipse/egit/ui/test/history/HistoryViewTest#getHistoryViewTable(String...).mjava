@@ -20,7 +20,7 @@
 			explorerItem = testUtil.getChildNode(childItem.expand(), path[2]);
 		}
 		explorerItem.select();
-		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Show In",
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Show In",
 				"History");
 		// join GenerateHistoryJob
 		Job.getJobManager().join(JobFamilies.GENERATE_HISTORY, null);

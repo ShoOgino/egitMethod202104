@@ -29,7 +29,7 @@
 			assertEquals("Wrong number of remote children", 2, children.size());
 
 			item.getNode("origin/stable").select();
-			ContextMenuHelper.clickContextMenu(tree, myUtil
+			ContextMenuHelper.clickContextMenuSync(tree, myUtil
 					.getPluginLocalizedValue("CheckoutCommand"));
 			TestUtil.joinJobs(JobFamilies.CHECKOUT);
 			refreshAndWait();

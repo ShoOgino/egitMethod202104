@@ -14,7 +14,7 @@
 		SWTBotTable table = commitEditor.bot().table(0);
 		assertTrue(table.rowCount() > 0);
 		table.select(0);
-		ContextMenuHelper.clickContextMenu(table,
+		ContextMenuHelper.clickContextMenuSync(table,
 				UIText.CommitFileDiffViewer_ShowAnnotationsMenuLabel);
 		TestUtil.joinJobs(JobFamilies.BLAME);
 		assertFalse(commitEditor.getReference().equals(

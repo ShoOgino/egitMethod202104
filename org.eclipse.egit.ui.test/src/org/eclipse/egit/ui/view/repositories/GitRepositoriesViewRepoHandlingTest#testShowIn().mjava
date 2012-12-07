@@ -18,7 +18,7 @@
 					"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
 			SWTBotTreeItem projectItem = getProjectItem(explorerTree, PROJ1)
 					.select();
-			ContextMenuHelper.clickContextMenu(explorerTree, "Show In",
+			ContextMenuHelper.clickContextMenuSync(explorerTree, "Show In",
 					viewName);
 			refreshAndWait();
 			assertHasRepo(repositoryFile);

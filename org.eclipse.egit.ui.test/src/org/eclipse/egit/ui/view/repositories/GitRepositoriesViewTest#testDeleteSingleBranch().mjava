@@ -8,7 +8,7 @@
 				tree, repositoryFile).expand();
 		SWTBotTreeItem masterNode = localBranchesItem.getNode("master");
 		masterNode.select();
-		ContextMenuHelper.clickContextMenu(tree, myUtil
+		ContextMenuHelper.clickContextMenuSync(tree, myUtil
 				.getPluginLocalizedValue("RepoViewCheckout.label"));
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		ContextMenuHelper.clickContextMenu(tree, myUtil

@@ -1,11 +1,8 @@
 	/**
 	 * Clicks the context menu matching the text, executing the action
-	 * asynchronously (non-blocking).
+	 * synchronously (blocking until the action completes).
 	 * <p>
-	 * This should only be used when further UI interaction is part of the
-	 * action, e.g. a dialog or wizard. Using
-	 * {@link #clickContextMenuSync(AbstractSWTBot, String...)} is preferred in
-	 * other cases.
+	 * This should be used if the action requires no more UI interaction.
 	 *
 	 * @param bot
 	 *
@@ -17,8 +14,8 @@
 	 *             if the menu item is disabled (the root cause being an
 	 *             {@link IllegalStateException})
 	 */
-	public static void clickContextMenu(final AbstractSWTBot<?> bot,
+	public static void clickContextMenuSync(final AbstractSWTBot<?> bot,
 			final String... texts) {
-		clickContextMenuWithRetry(bot, false, texts);
+		clickContextMenuWithRetry(bot, true, texts);
 	}
 
