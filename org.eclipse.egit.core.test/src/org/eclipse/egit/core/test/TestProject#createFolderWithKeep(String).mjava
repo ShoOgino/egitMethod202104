@@ -1,0 +1,9 @@
+	public IFolder createFolderWithKeep(String name) throws Exception {
+		IFolder folder = createFolder(name);
+
+		IFile keep = project.getFile(name + "/keep");
+		keep.create(new ByteArrayInputStream(new byte[] {0}), true, null);
+
+		return folder;
+	}
+
