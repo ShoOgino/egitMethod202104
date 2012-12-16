@@ -1,3 +1,4 @@
+	@Override
 	protected void buttonPressed(int buttonId) {
 		boolean shouldCheckout = false;
 		switch (buttonId) {
@@ -18,6 +19,7 @@
 			break;
 		case IDialogConstants.OK_ID:
 			super.buttonPressed(buttonId);
+			break;
 		}
 		if (shouldCheckout) {
 			super.buttonPressed(buttonId);

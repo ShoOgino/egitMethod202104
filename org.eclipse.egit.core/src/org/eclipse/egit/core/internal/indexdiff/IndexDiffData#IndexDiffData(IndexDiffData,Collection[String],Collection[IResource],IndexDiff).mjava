@@ -22,7 +22,6 @@
 		Set<String> modified2 = new HashSet<String>(baseDiff.getModified());
 		Set<String> untracked2 = new HashSet<String>(baseDiff.getUntracked());
 		Set<String> conflicts2 = new HashSet<String>(baseDiff.getConflicting());
-		Set<String> ignored2 = new HashSet<String>(baseDiff.getIgnoredNotInIndex());
 
 		mergeList(added2, changedFiles, diffForChangedFiles.getAdded());
 		mergeList(changed2, changedFiles, diffForChangedFiles.getChanged());
@@ -35,7 +34,7 @@
 				getUntrackedFolders(diffForChangedFiles));
 		mergeList(conflicts2, changedFiles,
 				diffForChangedFiles.getConflicting());
-		mergeList(ignored2, changedFiles,
+		Set<String> ignored2 = mergeIgnored(baseDiff.getIgnoredNotInIndex(), changedFiles,
 				diffForChangedFiles.getIgnoredNotInIndex());
 
 		added = Collections.unmodifiableSet(added2);

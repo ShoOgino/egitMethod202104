@@ -1,0 +1,7 @@
+	private static boolean isAnyPrefixOf(String pathToCheck, Collection<String> possiblePrefixes) {
+		for (String possiblePrefix : possiblePrefixes)
+			if (pathToCheck.startsWith(possiblePrefix) || possiblePrefix.equals(pathToCheck + '/'))
+				return true;
+		return false;
+	}
+
