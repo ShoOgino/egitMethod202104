@@ -17,9 +17,9 @@
 			StashCreateUI stashCreateUI = new StashCreateUI(getShell(), repository);
 			shouldCheckout = stashCreateUI.createStash();
 			break;
-		case IDialogConstants.OK_ID:
+		case IDialogConstants.CANCEL_ID:
 			super.buttonPressed(buttonId);
-			break;
+			return;
 		}
 		if (shouldCheckout) {
 			super.buttonPressed(buttonId);
