@@ -13,7 +13,7 @@
 					long startTime = System.currentTimeMillis();
 					IndexDiffData result = calcIndexDiffData(monitor,
 							getName(), filesToUpdate, resourcesToUpdate);
-					if (monitor.isCanceled())
+					if (monitor.isCanceled() || (result == null))
 						return Status.CANCEL_STATUS;
 					indexDiffData = result;
 					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {
