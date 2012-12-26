@@ -1,12 +1,16 @@
 		@Override
 		public long getLength() {
 			if (length < 0)
-				if (rsrc instanceof IFile) {
-					File file = asFile();
-					if (file != null)
-						length = file.length();
-					else
+				if (rsrc instanceof IFile || mode == FileMode.SYMLINK) {
+					try {
+						File file = asFile();
+						if (file != null)
+							length = FS.DETECTED.length(asFile());
+						else
+							length = 0;
+					} catch (IOException e) {
 						length = 0;
+					}
 				} else
 					length = 0;
 			return length;
