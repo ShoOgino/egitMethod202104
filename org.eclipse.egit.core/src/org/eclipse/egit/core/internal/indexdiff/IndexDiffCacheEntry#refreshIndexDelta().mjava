@@ -26,7 +26,7 @@
 			try {
 				walk.addTree(new DirCacheIterator(oldIndex));
 				walk.addTree(new DirCacheIterator(currentIndex));
-				walk.setFilter(TreeFilter.ANY_DIFF);
+				walk.setFilter(new InterIndexDiffFilter());
 
 				while (walk.next()) {
 					if (walk.isSubtree())
