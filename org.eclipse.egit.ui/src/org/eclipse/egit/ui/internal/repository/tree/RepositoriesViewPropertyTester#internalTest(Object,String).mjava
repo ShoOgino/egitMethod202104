@@ -10,8 +10,8 @@
 		if (property.equals("containsHead")) //$NON-NLS-1$
 			return containsHead(node);
 
-		if (property.equals("isSafe")) //$NON-NLS-1$
-			return node.getRepository().getRepositoryState() == RepositoryState.SAFE;
+		if (ResourcePropertyTester.testRepositoryState(node.getRepository(), property))
+			return true;
 
 		if (property.equals("isRefCheckedOut")) { //$NON-NLS-1$
 			if (!(node.getObject() instanceof Ref))
