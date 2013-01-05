@@ -13,6 +13,8 @@
 		assertThat(mergeResult.getConflicts().keySet(),
 				hasItem(path.toString()));
 
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+
 		SWTBotTree packageExplorer = bot
 				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
 		SWTBotTreeItem project1 = getProjectItem(packageExplorer, PROJ1)
