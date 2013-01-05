@@ -5,10 +5,9 @@
 				prj.delete(false, false, null);
 			else if (prj.getName().equals(PROJ2)) {
 				// delete the .project on disk
-				FileUtils.delete(EFS.getStore(
-						prj.getFile(".project").getLocationURI()).toLocalFile(
-						EFS.NONE, null), FileUtils.RETRY);
+				File dotProject = prj.getLocation().append(".project").toFile();
 				prj.delete(false, false, null);
+				FileUtils.delete(dotProject, FileUtils.RETRY);
 			}
 
 	}
