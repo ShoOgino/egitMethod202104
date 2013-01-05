@@ -1,5 +1,5 @@
-	private String getWorkingTreeNodeName(SWTBotTree syncViewTree) {
-		for (SWTBotTreeItem item : syncViewTree.getAllItems()) {
+	private String getWorkingTreeNodeName(SWTBotTreeItem changeSetTreeItem) {
+		for (SWTBotTreeItem item : changeSetTreeItem.getItems()) {
 			String nodeName = item.getText();
 			if (nodeName.contains(UIText.GitModelWorkingTree_workingTree))
 				return nodeName;

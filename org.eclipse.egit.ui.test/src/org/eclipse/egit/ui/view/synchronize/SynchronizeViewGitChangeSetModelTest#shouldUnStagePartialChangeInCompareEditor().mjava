@@ -1,10 +1,8 @@
 	@Test
 	public void shouldUnStagePartialChangeInCompareEditor() throws Exception {
 		// given
-		resetRepositoryToCreateInitialTag();
 		changeFilesInProject();
 		launchSynchronization(HEAD, HEAD, true);
-		setGitChangeSetPresentationModel();
 		getCompareEditorForFileInGitChangeSet(FILE1, true).bot();
 
 		// when

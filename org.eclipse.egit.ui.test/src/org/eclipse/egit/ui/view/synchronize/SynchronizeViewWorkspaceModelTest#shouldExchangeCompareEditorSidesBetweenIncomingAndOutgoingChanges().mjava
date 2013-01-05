@@ -1,12 +1,12 @@
-	@Test public void shouldExchangeCompareEditorSidesBetweenIncomingAndOutgoingChanges()
+	@Test
+	public void shouldExchangeCompareEditorSidesBetweenIncomingAndOutgoingChanges()
 			throws Exception {
 		// given
-		resetRepositoryToCreateInitialTag();
 		makeChangesAndCommit(PROJ1);
 
 		// compare HEAD against tag
 		launchSynchronization(HEAD, INITIAL_TAG, false);
-		SWTBotEditor compEditor = getCompareEditorForFileInWorspaceModel(
+		SWTBotEditor compEditor = getCompareEditorForFileInWorkspaceModel(
 				FILE1);
 		SWTBot outgoingCompare = compEditor.bot();
 		// save left value from compare editor
@@ -20,7 +20,7 @@
 		launchSynchronization(INITIAL_TAG, HEAD, false);
 
 		// then
-		SWTBot incomingComp = getCompareEditorForFileInWorspaceModel(
+		SWTBot incomingComp = getCompareEditorForFileInWorkspaceModel(
 				FILE1).bot();
 		String incomingLeft = incomingComp.styledText(0).getText();
 		String incomingRight = incomingComp.styledText(1).getText();

@@ -1,16 +1,14 @@
-	@Test public void shouldSynchronizeInEmptyRepository() throws Exception {
+	@Test
+	public void shouldSynchronizeInEmptyRepository() throws Exception {
 		// given
 		createEmptyRepository();
 
 		// when
 		launchSynchronization(EMPTY_PROJECT, "", "", true);
-		setGitChangeSetPresentationModel();
 
 		// then
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
-		SWTBotTreeItem commitTree = expandWorkingTreeNode(syncViewTree);
-		assertEquals(2, syncViewTree.getAllItems().length);
-		SWTBotTreeItem projectTree = waitForNodeWithText(commitTree,
+		SWTBotTreeItem workingTree = getExpandedWorkingTreeItem();
+		SWTBotTreeItem projectTree = waitForNodeWithText(workingTree,
 				EMPTY_PROJECT);
 		assertEquals(2, projectTree.getItems().length);
 

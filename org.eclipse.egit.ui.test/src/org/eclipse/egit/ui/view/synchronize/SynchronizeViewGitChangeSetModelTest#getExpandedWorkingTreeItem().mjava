@@ -1,0 +1,8 @@
+	private SWTBotTreeItem getExpandedWorkingTreeItem() {
+		SWTBotTreeItem changeSetTreeItem = getChangeSetTreeItem();
+		String workingTreeNodeNameString = getWorkingTreeNodeName(changeSetTreeItem);
+		SWTBotTreeItem node = changeSetTreeItem.getNode(workingTreeNodeNameString);
+		// Full expansion
+		return node.doubleClick();
+	}
+

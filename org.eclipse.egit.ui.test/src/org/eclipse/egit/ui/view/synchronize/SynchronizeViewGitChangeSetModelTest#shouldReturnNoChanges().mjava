@@ -1,12 +1,10 @@
 	@Test
 	public void shouldReturnNoChanges() throws Exception {
 		// given
-		resetRepositoryToCreateInitialTag();
 		changeFilesInProject();
 
 		// when
 		launchSynchronization(HEAD, R_HEADS + MASTER, false);
-		setGitChangeSetPresentationModel();
 
 		// then
 		SWTBot viewBot = bot.viewByTitle("Synchronize").bot();

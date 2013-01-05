@@ -1,8 +1,8 @@
 	protected SWTBotEditor getCompareEditorForNonWorkspaceFileInGitChangeSet(
 			final String fileName) {
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTreeItem changeSetTreeItem = getChangeSetTreeItem();
 
-		SWTBotTreeItem rootTree = waitForNodeWithText(syncViewTree,
+		SWTBotTreeItem rootTree = waitForNodeWithText(changeSetTreeItem,
 					GitModelWorkingTree_workingTree);
 		waitForNodeWithText(rootTree, fileName).doubleClick();
 

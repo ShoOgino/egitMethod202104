@@ -6,7 +6,6 @@
 
 		String trackingBranch = Constants.R_REMOTES + "origin/master";
 		launchSynchronization(Constants.HEAD, trackingBranch, false);
-		setGitChangeSetPresentationModel();
 
 		SWTBotView viewBot = bot.viewByTitle("Synchronize");
 		SWTBotToolbarButton pushButton = viewBot.toolbarButton(UIText.GitActionContributor_Push);

@@ -1,0 +1,7 @@
+	protected SWTBotTreeItem getChangeSetTreeItem() {
+		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTreeItem changeSetItem = waitForNodeWithText(syncViewTree,
+				UIText.GitChangeSetModelProviderLabel);
+		return changeSetItem;
+	}
+

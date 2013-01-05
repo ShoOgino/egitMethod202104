@@ -1,0 +1,13 @@
+	@Before
+	public void setupRepository() throws Exception {
+		repositoryFile = createProjectAndCommitToRepository();
+		createAndCommitDotGitignore();
+
+		childRepositoryFile = createChildRepository(repositoryFile);
+
+		createTag(INITIAL_TAG);
+
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(repositoryFile);
+	}
+

@@ -1,7 +1,0 @@
-	protected SWTBotEditor getCompareEditorForFileInWorkspaceModel()
-			throws Exception {
-		SWTBotTree syncViewTree = setPresentationModel("Workspace").tree();
-		SWTBotTreeItem projectTree = waitForNodeWithText(syncViewTree, PROJ1);
-		return getCompareEditor(projectTree, FILE1);
-	}
-
