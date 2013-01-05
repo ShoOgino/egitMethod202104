@@ -1,0 +1,21 @@
+	private boolean internalTest(Object receiver, String property, Object[] args,
+			Object expectedValue) {
+		if (!(receiver instanceof IResource))
+			return false;
+		IResource res = (IResource) receiver;
+		if ("isShared".equals(property)) { //$NON-NLS-1$
+			RepositoryMapping mapping = RepositoryMapping.getMapping(res
+					.getProject());
+			return mapping != null && mapping.getRepository() != null;
+		} else if ("isSafe".equals(property)) { //$NON-NLS-1$
+			RepositoryMapping mapping = RepositoryMapping.getMapping(res
+					.getProject());
+			return mapping != null
+					&& SAFE == mapping.getRepository().getRepositoryState();
+		} else if ("isContainer".equals(property)) { //$NON-NLS-1$
+			int type = res.getType();
+			return type == IResource.FOLDER || type == IResource.PROJECT;
+		}
+		return false;
+	}
+
