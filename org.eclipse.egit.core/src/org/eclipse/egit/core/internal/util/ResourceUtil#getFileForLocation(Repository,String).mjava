@@ -1,7 +1,5 @@
 	/**
-	 * Get the {@link IFile} corresponding to the arguments, using
-	 * {@link IWorkspaceRoot#getFileForLocation(org.eclipse.core.runtime.IPath)}
-	 * .
+	 * Get the {@link IFile} corresponding to the arguments if it exists.
 	 *
 	 * @param repository
 	 *            the repository of the file
@@ -11,8 +9,7 @@
 	 */
 	public static IFile getFileForLocation(Repository repository,
 			String repoRelativePath) {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IPath path = new Path(repository.getWorkTree().getAbsolutePath()).append(repoRelativePath);
-		return root.getFileForLocation(path);
+		return getFileForLocation(path);
 	}
 
