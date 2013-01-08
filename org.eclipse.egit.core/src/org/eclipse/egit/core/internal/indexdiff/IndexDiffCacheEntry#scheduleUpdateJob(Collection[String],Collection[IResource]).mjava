@@ -11,7 +11,7 @@
 				lock.lock();
 				try {
 					long startTime = System.currentTimeMillis();
-					IndexDiffData result = calcIndexDiffData(monitor,
+					IndexDiffData result = calcIndexDiffDataIncremental(monitor,
 							getName(), filesToUpdate, resourcesToUpdate);
 					if (monitor.isCanceled() || (result == null))
 						return Status.CANCEL_STATUS;

@@ -12,10 +12,10 @@
 				lock.lock();
 				try {
 					long startTime = System.currentTimeMillis();
-					IndexDiff result = calcIndexDiff(monitor, getName());
+					IndexDiffData result = calcIndexDiffDataFull(monitor, getName());
 					if (monitor.isCanceled() || (result == null))
 						return Status.CANCEL_STATUS;
-					indexDiffData = new IndexDiffData(result);
+					indexDiffData = result;
 					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {
 						long time = System.currentTimeMillis() - startTime;
 						StringBuilder message = new StringBuilder(
