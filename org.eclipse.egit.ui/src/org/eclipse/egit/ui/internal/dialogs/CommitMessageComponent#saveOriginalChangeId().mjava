@@ -5,7 +5,7 @@
 					previousCommitMessage);
 			if (endOfChangeId < 0)
 				endOfChangeId = previousCommitMessage.length();
-			int sha1Offset = changeIdOffset + Text.DELIMITER.length() + "Change-Id: I".length(); //$NON-NLS-1$
+			int sha1Offset = changeIdOffset + "Change-Id: I".length(); //$NON-NLS-1$
 			try {
 				originalChangeId = ObjectId.fromString(previousCommitMessage
 						.substring(sha1Offset, endOfChangeId));
