@@ -6,5 +6,7 @@
 		super(parentShell, repo, getMergeTarget(repo), SHOW_LOCAL_BRANCHES
 				| SHOW_REMOTE_BRANCHES | SHOW_TAGS | EXPAND_LOCAL_BRANCHES_NODE
 				| getSelectSetting(repo));
+		fastForwardMode = Activator.getDefault().getRepositoryUtil()
+				.getFastForwardMode(repo);
 	}
 

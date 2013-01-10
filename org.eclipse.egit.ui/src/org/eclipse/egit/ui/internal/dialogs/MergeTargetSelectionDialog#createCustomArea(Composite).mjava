@@ -3,12 +3,14 @@
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(1, false));
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(main);
-		Group g = new Group(main, SWT.NONE);
-		g.setText(UIText.MergeTargetSelectionDialog_MergeTypeGroup);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(g);
-		g.setLayout(new GridLayout(1, false));
+		Group mergeTypeGroup = new Group(main, SWT.NONE);
+		mergeTypeGroup
+				.setText(UIText.MergeTargetSelectionDialog_MergeTypeGroup);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.applyTo(mergeTypeGroup);
+		mergeTypeGroup.setLayout(new GridLayout(1, false));
 
-		Button commit = new Button(g, SWT.RADIO);
+		Button commit = new Button(mergeTypeGroup, SWT.RADIO);
 		commit.setSelection(true);
 		commit.setText(UIText.MergeTargetSelectionDialog_MergeTypeCommitButton);
 		commit.addListener(SWT.Selection, new Listener() {
@@ -18,7 +20,7 @@
 			}
 		});
 
-		Button squash = new Button(g, SWT.RADIO);
+		Button squash = new Button(mergeTypeGroup, SWT.RADIO);
 		squash.setText(UIText.MergeTargetSelectionDialog_MergeTypeSquashButton);
 		squash.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -26,5 +28,22 @@
 					mergeSquash = true;
 			}
 		});
+
+		Group fastForwardGroup = new Group(main, SWT.NONE);
+		fastForwardGroup
+				.setText(UIText.MergeTargetSelectionDialog_FastForwardGroup);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.applyTo(fastForwardGroup);
+		fastForwardGroup.setLayout(new GridLayout(1, false));
+
+		createFastForwardButton(fastForwardGroup,
+				UIText.MergeTargetSelectionDialog_FastForwardButton,
+				FastForwardMode.FF);
+		createFastForwardButton(fastForwardGroup,
+				UIText.MergeTargetSelectionDialog_NoFastForwardButton,
+				FastForwardMode.NO_FF);
+		createFastForwardButton(fastForwardGroup,
+				UIText.MergeTargetSelectionDialog_OnlyFastForwardButton,
+				FastForwardMode.FF_ONLY);
 	}
 

@@ -1,0 +1,8 @@
+	private String getCurrentBranch(Repository repository) {
+		try {
+			return repository.getBranch();
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
