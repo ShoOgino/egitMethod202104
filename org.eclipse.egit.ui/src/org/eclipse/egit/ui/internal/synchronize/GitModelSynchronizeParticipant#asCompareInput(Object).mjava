@@ -1,13 +1,33 @@
 	@Override
 	public ICompareInput asCompareInput(Object object) {
-		// handle file comparison in Workspace model
-		if (object instanceof IFile) {
-			IFile file = (IFile) object;
-			GitSynchronizeData gsd = gsds.getData(file.getProject());
-			if (gsd != null && !gsd.shouldIncludeLocal())
-				return getFileFromGit(gsd, file.getLocation());
+		ICompareInput compareInput = super.asCompareInput(object);
+
+		if (compareInput != null) {
+			// note, ResourceDiffCompareInput maybe returned from super;
+			// it always has the local resource on the left side!
+			// this is only ok if we are comparing with the working tree
+
+			// handle file comparison outside working tree
+			ITypedElement left = compareInput.getLeft();
+			if (left instanceof ResourceNode) {
+				// the left side can only be a resource node if
+				// we are comparing against the local working tree
+				IResource resource = ((ResourceNode) left).getResource();
+				if (resource.getType() == IResource.FILE) {
+					GitSynchronizeData gsd = gsds
+							.getData(resource.getProject());
+					if (gsd != null && !gsd.shouldIncludeLocal())
+						return getFileFromGit(gsd, resource.getLocation());
+				}
+			}
+		} else {
+			IResource resource = AdapterUtils.adapt(object, IResource.class);
+			if (resource.getType() == IResource.FILE) {
+				GitSynchronizeData gsd = gsds.getData(resource.getProject());
+				return getFileFromGit(gsd, resource.getLocation());
+			}
 		}
 
-		return super.asCompareInput(object);
+		return compareInput;
 	}
 
