@@ -1,8 +1,0 @@
-	private void setMerge(FastForwardMode ffMode) throws IOException {
-		StoredConfig config = testRepository.getRepository().getConfig();
-		config.setEnum(ConfigConstants.CONFIG_KEY_MERGE, null,
-				ConfigConstants.CONFIG_KEY_FF,
-				FastForwardMode.Merge.valueOf(ffMode));
-		config.save();
-	}
-
