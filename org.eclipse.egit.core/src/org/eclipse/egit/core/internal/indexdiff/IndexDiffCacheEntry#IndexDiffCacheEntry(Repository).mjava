@@ -3,13 +3,13 @@
 	 */
 	public IndexDiffCacheEntry(Repository repository) {
 		this.repository = repository;
-		repository.getListenerList().addIndexChangedListener(
+		indexChangedListenerHandle = repository.getListenerList().addIndexChangedListener(
 				new IndexChangedListener() {
 					public void onIndexChanged(IndexChangedEvent event) {
 						refreshIndexDelta();
 					}
 				});
-		repository.getListenerList().addRefsChangedListener(
+		refsChangedListenerHandle = repository.getListenerList().addRefsChangedListener(
 				new RefsChangedListener() {
 					public void onRefsChanged(RefsChangedEvent event) {
 						scheduleReloadJob("RefsChanged"); //$NON-NLS-1$
