@@ -15,10 +15,6 @@
 	public PushOperation(final Repository localDb,
 			final PushOperationSpecification specification,
 			final boolean dryRun, int timeout) {
-		this.localDb = localDb;
-		this.specification = specification;
-		this.dryRun = dryRun;
-		this.remoteName = null;
-		this.timeout = timeout;
+		this(localDb, null, specification, dryRun, timeout);
 	}
 
