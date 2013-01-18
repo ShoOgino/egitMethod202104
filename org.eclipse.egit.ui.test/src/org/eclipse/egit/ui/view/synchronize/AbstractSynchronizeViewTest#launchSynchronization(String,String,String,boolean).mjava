@@ -1,6 +1,5 @@
 	protected void launchSynchronization(String projectName, String srcRef,
-			String dstRef, boolean includeLocal) throws InterruptedException,
-			IOException {
+			String dstRef, boolean includeLocal) throws IOException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName);
 		Repository repo = RepositoryMapping.getMapping(project).getRepository();
@@ -8,10 +7,10 @@
 		GitSynchronizeData data = new GitSynchronizeData(repo, srcRef, dstRef,
 				includeLocal);
 
+		JobJoiner jobJoiner = JobJoiner.startListening(
+				ISynchronizeManager.FAMILY_SYNCHRONIZE_OPERATION, 60,
+				TimeUnit.SECONDS);
 		GitModelSynchronize.launch(data, new IResource[] { project });
-
-		Job.getJobManager().join(JobFamilies.SYNCHRONIZE_READ_DATA, null);
-		Job.getJobManager().join(
-				ISynchronizeManager.FAMILY_SYNCHRONIZE_OPERATION, null);
+		jobJoiner.join();
 	}
 
