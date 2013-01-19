@@ -2,6 +2,15 @@
 		Object fileObject = element.getFileRevision();
 		if (fileObject instanceof LocalFileRevision){
 			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_LocalHistoryLabel, new Object[]{element.getName(), element.getTimestamp()});
+		} else if (fileObject instanceof IndexFileRevision) {
+			if (isEditable(element))
+				return NLS.bind(
+						UIText.GitCompareFileRevisionEditorInput_IndexEditableLabel,
+						element.getName());
+			else
+				return NLS.bind(
+						UIText.GitCompareFileRevisionEditorInput_IndexLabel,
+						element.getName());
 		} else {
 			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_RevisionLabel, new Object[]{element.getName(),
 					CompareUtils.truncatedRevision(element.getContentIdentifier()), element.getAuthor()});
