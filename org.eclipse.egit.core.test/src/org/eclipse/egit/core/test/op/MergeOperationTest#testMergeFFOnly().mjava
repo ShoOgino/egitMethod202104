@@ -1,0 +1,15 @@
+	@Test
+	public void testMergeFFOnly() throws Exception {
+		setMerge(FastForwardMode.FF_ONLY);
+		File file2 = testRepository.createFile(project.getProject(), "file2");
+		testRepository.appendFileContent(file2, "file2-1");
+		RevCommit commit = testRepository.addAndCommit(project.getProject(), file2,
+				"side commit 1");
+
+		MergeOperation operation = new MergeOperation(
+				testRepository.getRepository(), MASTER);
+		operation.execute(new NullProgressMonitor());
+
+		assertTrue(testRepository.getRepository().resolve(SIDE).equals(commit));
+	}
+

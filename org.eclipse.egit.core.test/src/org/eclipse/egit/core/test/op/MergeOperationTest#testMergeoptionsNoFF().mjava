@@ -1,0 +1,11 @@
+	@Test
+	public void testMergeoptionsNoFF() throws Exception {
+		setMergeOptions("side", FastForwardMode.NO_FF);
+
+		MergeOperation operation = new MergeOperation(
+				testRepository.getRepository(), MASTER);
+		operation.execute(new NullProgressMonitor());
+
+		assertEquals(3, countCommitsInHead());
+	}
+

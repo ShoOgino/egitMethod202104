@@ -1,0 +1,10 @@
+	@Test
+	public void testMergeFF() throws Exception {
+		MergeOperation operation = new MergeOperation(
+				testRepository.getRepository(), MASTER);
+		operation.execute(new NullProgressMonitor());
+
+		assertTrue(testRepository.getRepository().resolve(SIDE).equals(secondCommit));
+		assertEquals(2, countCommitsInHead());
+	}
+

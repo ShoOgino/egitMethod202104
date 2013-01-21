@@ -1,0 +1,18 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		gitDir = new File(project.getProject()
+				.getLocationURI().getPath(), Constants.DOT_GIT);
+		testRepository = new TestRepository(gitDir);
+		testRepository.connect(project.getProject());
+
+		File file1 = testRepository.createFile(project.getProject(), "file1-1");
+		testRepository.addAndCommit(project.getProject(), file1,
+				"master commit 1");
+		testRepository.createBranch(MASTER, SIDE);
+		testRepository.appendFileContent(file1, "file1-2");
+		secondCommit = testRepository.addAndCommit(project.getProject(), file1,
+				"master commit 2");
+		testRepository.checkoutBranch(SIDE);
+	}
+
