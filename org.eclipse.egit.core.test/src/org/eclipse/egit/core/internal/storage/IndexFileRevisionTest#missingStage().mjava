@@ -1,0 +1,9 @@
+	@Test
+	public void missingStage() throws Exception {
+		buildIndex(entry("file", 1, "wrong"), entry("file", 2, "wrong"));
+
+		IndexFileRevision revision = new IndexFileRevision(repository, "file",
+				3);
+		assertEquals("", readContents(revision));
+	}
+

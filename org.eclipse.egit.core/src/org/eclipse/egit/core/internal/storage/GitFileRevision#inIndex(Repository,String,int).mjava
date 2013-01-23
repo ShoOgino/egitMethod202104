@@ -1,0 +1,16 @@
+	/**
+	 * @param db
+	 *            the repository which contains the index to use.
+	 * @param path
+	 *            path of the resource in the index
+	 * @param stage
+	 *            stage of the index entry to get, use one of the
+	 *            {@link DirCacheEntry} constants (e.g.
+	 *            {@link DirCacheEntry#STAGE_2})
+	 * @return revision implementation for the given path in the index
+	 */
+	public static GitFileRevision inIndex(final Repository db,
+			final String path, int stage) {
+		return new IndexFileRevision(db, path, stage);
+	}
+

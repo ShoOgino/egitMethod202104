@@ -1,0 +1,9 @@
+	@Test
+	// This is to maintain compatibility with the current behavior
+	public void shouldUseFirstWhenNotSpecified() throws Exception {
+		buildIndex(entry("file", 1, "right"));
+
+		IndexFileRevision revision = new IndexFileRevision(repository, "file");
+		assertEquals("right", readContents(revision));
+	}
+

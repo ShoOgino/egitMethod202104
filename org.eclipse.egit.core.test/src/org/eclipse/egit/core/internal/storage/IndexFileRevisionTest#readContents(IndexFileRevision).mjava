@@ -1,0 +1,8 @@
+	private static String readContents(IndexFileRevision revision)
+			throws Exception {
+		IStorage storage = revision.getStorage(null);
+		InputStream in = storage.getContents();
+		ByteBuffer buffer = IO.readWholeStream(in, 10);
+		return new String(buffer.array(), 0, buffer.limit(), "UTF-8");
+	}
+

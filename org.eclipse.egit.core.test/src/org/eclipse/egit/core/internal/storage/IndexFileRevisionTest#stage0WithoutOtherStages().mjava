@@ -1,0 +1,8 @@
+	@Test
+	public void stage0WithoutOtherStages() throws Exception {
+		buildIndex(entry("file", 0, "data"));
+
+		IndexFileRevision revision = new IndexFileRevision(repository, "file");
+		assertEquals("data", readContents(revision));
+	}
+
