@@ -1,4 +1,7 @@
+		/**
+		 * @return file of the resource or null
+		 */
 		private File asFile() {
-			return ((IFile) rsrc).getLocation().toFile();
+			return ContainerTreeIterator.asFile(rsrc);
 		}
 

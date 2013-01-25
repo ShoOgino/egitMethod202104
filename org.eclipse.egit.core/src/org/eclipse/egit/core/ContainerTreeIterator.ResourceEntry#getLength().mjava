@@ -1,9 +1,13 @@
 		@Override
 		public long getLength() {
 			if (length < 0)
-				if (rsrc instanceof IFile)
-					length = asFile().length();
-				else
+				if (rsrc instanceof IFile) {
+					File file = asFile();
+					if (file != null)
+						length = file.length();
+					else
+						length = 0;
+				} else
 					length = 0;
 			return length;
 		}

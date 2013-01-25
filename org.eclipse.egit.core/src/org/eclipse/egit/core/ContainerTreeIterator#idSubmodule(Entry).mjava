@@ -1,5 +1,5 @@
 	protected byte[] idSubmodule(Entry e) {
-		File nodeFile = asFile();
+		File nodeFile = asFile(node);
 		if (nodeFile != null)
 			return idSubmodule(nodeFile, e);
 		return super.idSubmodule(e);

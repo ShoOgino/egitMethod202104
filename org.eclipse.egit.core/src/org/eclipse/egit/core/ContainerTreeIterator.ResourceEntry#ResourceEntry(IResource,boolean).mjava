@@ -4,8 +4,9 @@
 
 			switch (f.getType()) {
 			case IResource.FILE:
-				if (FS.DETECTED.supportsExecute()
-						&& FS.DETECTED.canExecute(asFile()))
+				File file = asFile();
+				if (FS.DETECTED.supportsExecute() && file != null
+						&& FS.DETECTED.canExecute(file))
 					mode = FileMode.EXECUTABLE_FILE;
 				else
 					mode = FileMode.REGULAR_FILE;

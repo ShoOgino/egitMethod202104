@@ -1,0 +1,5 @@
+	private static File asFile(IResource resource) {
+		final IPath location = resource.getLocation();
+		return location != null ? location.toFile() : null;
+	}
+
