@@ -9,9 +9,7 @@
 		if (task == null)
 			return message;
 		boolean checkTaskRepository = true;
-		message = ContextChangeSet.getComment(checkTaskRepository, task,
-				resources);
-
+		message = TeamUiUtil.getComment(checkTaskRepository, task, resources);
 		return message;
 	}
 
