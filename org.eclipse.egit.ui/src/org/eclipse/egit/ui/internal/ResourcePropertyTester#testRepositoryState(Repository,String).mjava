@@ -1,0 +1,33 @@
+	/**
+	 * @param repository
+	 * @param property
+	 * @return true if the repository is in an appropriate state. See
+	 *         {@link ResourcePropertyTester}
+	 */
+	public static boolean testRepositoryState(Repository repository, String property) {
+		if ("isShared".equals(property)) //$NON-NLS-1$
+			return repository != null;
+		if (repository != null) {
+			// isSTATE checks repository state where STATE is the CamelCase version
+			// of the RepositoryState enum values.
+			RepositoryState state = repository.getRepositoryState();
+			if (property.length() > 3 && property.startsWith("is")) { //$NON-NLS-1$
+				// e.g. isCherryPickingResolved => CHERRY_PICKING_RESOLVED
+				String lookFor = property.substring(2,3) + property.substring(3).replaceAll("([A-Z])","_$1").toUpperCase();  //$NON-NLS-1$//$NON-NLS-2$
+				if (state.toString().equals(lookFor))
+					return true;
+			}
+			// invokes test methods of RepositoryState, canCommit etc
+			try {
+				Method method = RepositoryState.class.getMethod(property);
+				if (method.getReturnType() == boolean.class) {
+					Boolean ret = (Boolean) method.invoke(state);
+					return ret.booleanValue();
+				}
+			} catch (Exception e) {
+				// ignore
+			}
+		}
+		return false;
+	}
+
