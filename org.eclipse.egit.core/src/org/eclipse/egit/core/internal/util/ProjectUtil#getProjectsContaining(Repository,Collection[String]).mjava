@@ -17,7 +17,7 @@
 		for (String member : fileList) {
 			File file = new File(workTree, member);
 
-			IContainer container = findContainer(file);
+			IContainer container = findProjectOrWorkspaceRoot(file);
 			if (container instanceof IProject)
 				result.add((IProject) container);
 		}
