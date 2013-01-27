@@ -2,7 +2,9 @@
 			final Collection<IResource> resourcesToUpdate) {
 		if (!checkRepository())
 			return;
-		Job job = new Job(getReloadJobName()) {
+		if (reloadJob != null && reloadJobIsInitializing)
+			return;
+		Job job = new Job(getUpdateJobName()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				waitForWorkspaceLock(monitor);
@@ -48,6 +50,12 @@
 			}
 
 		};
+		updateJobs.add(job);
+		job.addJobChangeListener(new JobChangeAdapter() {
+			public void done(IJobChangeEvent event) {
+				updateJobs.remove(event.getJob());
+			}
+		});
 		job.schedule();
 	}
 
