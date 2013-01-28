@@ -5,8 +5,10 @@
 	 * bother.
 	 *
 	 * @param location
-	 * @return the path relative to the Git repository, including base name.
-	 *         <code>null</code> if the path cannot be determined.
+	 * @return the path relative to the Git repository, including base name. An
+	 *         empty string (<code>""</code>) if passed location corresponds to
+	 *         working directory (root). <code>null</code> if the path cannot be
+	 *         determined.
 	 */
 	public String getRepoRelativePath(IPath location) {
 		final int pfxLen = workdirPrefix.length();

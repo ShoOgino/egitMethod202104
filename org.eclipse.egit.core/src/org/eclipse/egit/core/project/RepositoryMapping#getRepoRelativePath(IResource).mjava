@@ -5,8 +5,10 @@
 	 * bother.
 	 *
 	 * @param rsrc
-	 * @return the path relative to the Git repository, including base name.
-	 *         <code>null</code> if the path cannot be determined.
+	 * @return the path relative to the Git repository, including base name. An
+	 *         empty string (<code>""</code>) if passed resource corresponds to
+	 *         working directory (root). <code>null</code> if the path cannot be
+	 *         determined.
 	 */
 	public String getRepoRelativePath(final IResource rsrc) {
 		IPath location = rsrc.getLocation();
