@@ -8,11 +8,11 @@
 			super.writeLine(prefix, text, cur);
 			stream.flushLine();
 		} else {
-			DiffStyleRange range = addRange(prefix == '+' ? Type.ADD
-					: Type.REMOVE);
+			Type type = prefix == '+' ? Type.ADD : Type.REMOVE;
+			int start = stream.offset;
 			super.writeLine(prefix, text, cur);
 			stream.flushLine();
-			range.length = stream.offset - range.start;
+			addRange(type, start, stream.offset);
 		}
 	}
 

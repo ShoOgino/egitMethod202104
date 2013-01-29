@@ -4,9 +4,9 @@
 	 */
 	protected void writeHunkHeader(int aStartLine, int aEndLine,
 			int bStartLine, int bEndLine) throws IOException {
-		DiffStyleRange range = addRange(Type.HUNK);
+		int start = stream.offset;
 		super.writeHunkHeader(aStartLine, aEndLine, bStartLine, bEndLine);
 		stream.flushLine();
-		range.length = stream.offset - range.start;
+		addRange(Type.HUNK, start, stream.offset);
 	}
 

@@ -1,0 +1,20 @@
+	/**
+	 * Create and add diff style range
+	 *
+	 * @param type
+	 *            the {@link Type}
+	 * @param start
+	 *            start offset
+	 * @param end
+	 *            end offset
+	 * @return added range
+	 */
+	protected DiffStyleRange addRange(Type type, int start, int end) {
+		DiffStyleRange range = new DiffStyleRange();
+		range.start = start;
+		range.diffType = type;
+		range.length = end - start;
+		ranges.add(range);
+		return range;
+	}
+
