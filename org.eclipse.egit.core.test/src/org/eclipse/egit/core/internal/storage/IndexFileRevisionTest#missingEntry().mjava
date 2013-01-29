@@ -1,0 +1,9 @@
+	@Test
+	public void missingEntry() throws Exception {
+		buildIndex(entry("other", 0, "wrong"));
+
+		IndexFileRevision revision = new IndexFileRevision(repository, "file",
+				0);
+		assertEquals("", readContents(revision));
+	}
+

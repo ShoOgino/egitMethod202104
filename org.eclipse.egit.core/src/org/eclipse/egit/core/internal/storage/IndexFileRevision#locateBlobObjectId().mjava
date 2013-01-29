@@ -1,10 +1,23 @@
 	private ObjectId locateBlobObjectId() throws CoreException {
 		try {
-			DirCacheEntry entry = db.readDirCache().getEntry(path);
-			if (entry == null)
+			DirCache dc = db.readDirCache();
+			int firstIndex = dc.findEntry(path);
+			if (firstIndex < 0)
 				return null;
 
-			return entry.getObjectId();
+			// Try to avoid call to nextEntry if first entry already matches
+			DirCacheEntry firstEntry = dc.getEntry(firstIndex);
+			if (stage == FIRST_AVAILABLE || firstEntry.getStage() == stage)
+				return firstEntry.getObjectId();
+
+			// Ok, we have to search
+			int nextIndex = dc.nextEntry(firstIndex);
+			for (int i = firstIndex; i < nextIndex; i++) {
+				DirCacheEntry entry = dc.getEntry(i);
+				if (entry.getStage() == stage)
+					return entry.getObjectId();
+			}
+			return null;
 		} catch (IOException e) {
 			throw new CoreException(Activator.error(NLS.bind(
 					CoreText.IndexFileRevision_errorLookingUpPath, path), e));

@@ -69,10 +69,13 @@
 					continue;
 
 				ITypedElement right;
-				if (conflicting)
-					right = CompareUtils.getFileRevisionTypedElement(gitPath,
-							rightCommit, repository);
-				else
+				if (conflicting) {
+					GitFileRevision revision = GitFileRevision.inIndex(
+							repository, gitPath, DirCacheEntry.STAGE_3);
+					String encoding = CompareCoreUtils.getResourceEncoding(
+							repository, gitPath);
+					right = new FileRevisionTypedElement(revision, encoding);
+				} else
 					right = CompareUtils.getFileRevisionTypedElement(gitPath,
 							headCommit, repository);
 
@@ -94,8 +97,8 @@
 				if (!conflicting || useWorkspace)
 					rev = new LocalFileRevision(file);
 				else
-					rev = GitFileRevision.inCommit(repository, headCommit,
-							gitPath, null);
+					rev = GitFileRevision.inIndex(repository, gitPath,
+							DirCacheEntry.STAGE_2);
 
 				IRunnableContext runnableContext = getContainer();
 				if (runnableContext == null)

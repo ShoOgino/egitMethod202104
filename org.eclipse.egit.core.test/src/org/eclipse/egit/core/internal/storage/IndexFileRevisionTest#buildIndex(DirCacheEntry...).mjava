@@ -1,0 +1,12 @@
+	private void buildIndex(DirCacheEntry... entries) throws IOException {
+		DirCache dirCache = repository.lockDirCache();
+		DirCacheBuilder builder = dirCache.builder();
+		try {
+			for (DirCacheEntry entry : entries)
+				builder.add(entry);
+			builder.commit();
+		} finally {
+			dirCache.unlock();
+		}
+	}
+
