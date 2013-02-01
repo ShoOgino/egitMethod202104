@@ -3,18 +3,26 @@
 	 *            parent object
 	 * @param repo
 	 *            repository associated with this object
-	 * @param cache
+	 * @param changes
 	 *            list of changes associated with this object
 	 * @param fileFactory
 	 *            leaf instance factory
 	 */
-	protected GitModelCache(GitModelRepository parent, Repository repo, Map<String, Change> cache,
-			FileModelFactory fileFactory) {
+	protected GitModelCache(GitModelRepository parent, final Repository repo,
+			Map<String, Change> changes, final FileModelFactory fileFactory) {
 		super(parent);
 		this.repo = repo;
-		this.cache = cache;
-		this.fileFactory = fileFactory;
-		cacheTreeMap = new HashMap<String, GitModelCacheTree>();
-		location = new Path(repo.getWorkTree().toString());
+		this.location = new Path(repo.getWorkTree().toString());
+
+		this.children = TreeBuilder.build(this, repo, changes, fileFactory,
+				new TreeModelFactory() {
+					public GitModelTree createTreeModel(
+							GitModelObjectContainer parentObject,
+							IPath fullPath,
+							int kind) {
+						return new GitModelCacheTree(parentObject, repo,
+								fullPath, fileFactory);
+					}
+				});
 	}
 

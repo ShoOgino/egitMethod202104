@@ -1,8 +1,7 @@
 		/**
-		 * Creates proper instance of {@link GitModelBlob} for cache and working
-		 * tree model representation
+		 * Creates proper instance of {@link GitModelBlob} for file nodes
 		 *
-		 * @param objParent
+		 * @param parent
 		 *            parent object
 		 * @param repo
 		 *            repository associated with file that will be created
@@ -12,6 +11,6 @@
 		 *            absolute path
 		 * @return instance of {@link GitModelBlob}
 		 */
-		GitModelBlob createFileModel(GitModelObjectContainer objParent,
+		GitModelBlob createFileModel(GitModelObjectContainer parent,
 				Repository repo, Change change, IPath fullPath);
 

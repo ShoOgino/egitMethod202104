@@ -10,8 +10,6 @@
 	public GitModelCacheTree(GitModelObjectContainer parent, Repository repo,
 			IPath fullPath, FileModelFactory factory) {
 		super(parent, fullPath, RIGHT | CHANGE);
-		this.repo = repo;
 		this.factory = factory;
-		cacheTreeMap = new HashMap<String, GitModelObject>();
 	}
 

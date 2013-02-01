@@ -1,9 +1,9 @@
 	@Override
 	public void dispose() {
-		for (GitModelTree modelTree : cacheTreeMap.values())
-			modelTree.dispose();
-
-		cache.clear();
-		cacheTreeMap.clear();
+		if (children != null) {
+			for (GitModelObject object : children)
+				object.dispose();
+			children = null;
+		}
 	}
 

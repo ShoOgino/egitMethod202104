@@ -1,0 +1,21 @@
+	private GitModelObject[] createChildren() {
+		FileModelFactory fileModelFactory = new FileModelFactory() {
+			public GitModelBlob createFileModel(GitModelObjectContainer parent,
+					Repository repository, Change change, IPath fullPath) {
+				return new GitModelBlob(parent, repository, change, fullPath);
+			}
+
+			public boolean isWorkingTree() {
+				return false;
+			}
+		};
+		TreeModelFactory treeModelFactory = new TreeModelFactory() {
+			public GitModelTree createTreeModel(GitModelObjectContainer parent,
+					IPath fullPath, int kind) {
+				return new GitModelTree(parent, fullPath, kind);
+			}
+		};
+		return TreeBuilder.build(this, repo, commit.getChildren(),
+				fileModelFactory, treeModelFactory);
+	}
+
