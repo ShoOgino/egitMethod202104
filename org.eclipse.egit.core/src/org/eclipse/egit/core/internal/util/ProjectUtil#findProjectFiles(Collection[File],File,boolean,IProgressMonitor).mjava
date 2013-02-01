@@ -1,0 +1,16 @@
+	/**
+	 * Find directories containing .project files recursively starting at given
+	 * directory
+	 *
+	 * @param files the collection to add the found projects to
+	 * @param directory where to search for project files
+	 * @param searchNested whether to search for nested projects or not
+	 * @param monitor
+	 * @return true if projects files found, false otherwise
+	 */
+	public static boolean findProjectFiles(final Collection<File> files,
+			final File directory, boolean searchNested,
+			final IProgressMonitor monitor) {
+		return findProjectFiles(files, directory, searchNested, null, monitor);
+	}
+
