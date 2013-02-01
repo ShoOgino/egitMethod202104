@@ -1,0 +1,14 @@
+	private static IProject[] getProjectsForContainerMatch(IWorkspaceRoot root) {
+		IProject[] allProjects = root.getProjects();
+
+		// Sorting makes us look into nested projects first
+		Arrays.sort(allProjects, new Comparator<IProject>() {
+			public int compare(IProject o1, IProject o2) {
+				return -o1.getLocation().toFile()
+						.compareTo(o2.getLocation().toFile());
+			}
+
+		});
+		return allProjects;
+	}
+

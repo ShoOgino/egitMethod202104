@@ -14,12 +14,18 @@
 		Set<IProject> result = new LinkedHashSet<IProject>();
 		File workTree = repository.getWorkTree();
 
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject[] projects = getProjectsForContainerMatch(root);
+
 		for (String member : fileList) {
 			File file = new File(workTree, member);
 
-			IContainer container = findProjectOrWorkspaceRoot(file);
-			if (container instanceof IProject)
-				result.add((IProject) container);
+			for (IProject prj : projects) {
+				if (checkContainerMatch(prj, file.getAbsolutePath())) {
+					result.add(prj);
+					break;
+				}
+			}
 		}
 
 		return result.toArray(new IProject[result.size()]);

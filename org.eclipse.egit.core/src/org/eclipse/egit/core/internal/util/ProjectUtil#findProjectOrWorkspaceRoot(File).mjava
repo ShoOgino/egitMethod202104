@@ -12,16 +12,7 @@
 	public static IContainer findProjectOrWorkspaceRoot(File file) {
 		String absFile = file.getAbsolutePath();
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject[] allProjects = root.getProjects();
-
-		// Sorting makes us look into nested projects first
-		Arrays.sort(allProjects, new Comparator<IProject>() {
-			public int compare(IProject o1, IProject o2) {
-				return -o1.getLocation().toFile()
-						.compareTo(o2.getLocation().toFile());
-			}
-
-		});
+		IProject[] allProjects = getProjectsForContainerMatch(root);
 
 		for (IProject prj : allProjects)
 			if (checkContainerMatch(prj, absFile))
