@@ -17,5 +17,10 @@
 					ignoreDerivedResourcesListener);
 			ignoreDerivedResourcesListener = null;
 		}
+		if (shareGitProjectsJob != null) {
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
+					shareGitProjectsJob);
+			shareGitProjectsJob = null;
+		}
 	}
 
