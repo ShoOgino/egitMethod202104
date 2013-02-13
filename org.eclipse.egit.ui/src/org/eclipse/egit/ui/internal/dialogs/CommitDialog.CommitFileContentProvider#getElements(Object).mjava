@@ -1,0 +1,9 @@
+		@Override
+		public Object[] getElements(Object element) {
+			if (element instanceof Object[])
+				return (Object[]) element;
+			if (element instanceof Collection)
+				return ((Collection) element).toArray();
+			return new Object[0];
+		}
+

@@ -1,0 +1,10 @@
+	private void autoIgnoreDerivedResources(IProject project,
+			IProgressMonitor monitor) throws CoreException {
+		List<IPath> paths = findDerivedResources(project);
+		if (paths.size() > 0) {
+			IgnoreOperation ignoreOp = new IgnoreOperation(paths);
+			IProgressMonitor subMonitor = new SubProgressMonitor(monitor, 1);
+			ignoreOp.execute(subMonitor);
+		}
+	}
+

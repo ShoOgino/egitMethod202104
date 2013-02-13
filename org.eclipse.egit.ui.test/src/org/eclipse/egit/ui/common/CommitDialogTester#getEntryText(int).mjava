@@ -1,4 +1,5 @@
 	public String getEntryText(int rowIndex) {
-		return commitDialog.bot().table().getTableItem(rowIndex).getText(1);
+		SWTBotTreeItem treeItem = commitDialog.bot().tree().getAllItems()[rowIndex];
+		return treeItem.cell(1);
 	}
 

@@ -10,7 +10,7 @@
 
 		List<TreeFilter> followFilters = new ArrayList<TreeFilter>(paths.size());
 		for (String path : paths)
-			followFilters.add(FollowFilter.create(path));
+			followFilters.add(createFollowFilter(path));
 
 		if (followFilters.size() == 1)
 			return followFilters.get(0);

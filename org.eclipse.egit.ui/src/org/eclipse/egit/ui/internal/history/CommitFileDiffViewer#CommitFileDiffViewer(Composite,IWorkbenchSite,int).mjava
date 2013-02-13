@@ -15,7 +15,11 @@
 
 		rawTable.setLinesVisible(true);
 
-		setLabelProvider(new FileDiffLabelProvider());
+		Color fg = rawTable.getForeground();
+		Color bg = rawTable.getBackground();
+		RGB dimmedForegroundRgb = ColorUtil.blend(fg.getRGB(), bg.getRGB(), 60);
+
+		setLabelProvider(new FileDiffLabelProvider(dimmedForegroundRgb));
 		setContentProvider(new FileDiffContentProvider());
 		addOpenListener(new IOpenListener() {
 			public void open(final OpenEvent event) {

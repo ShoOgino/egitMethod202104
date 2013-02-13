@@ -1,4 +1,5 @@
 	public boolean isEntryChecked(int rowIndex) {
-		return commitDialog.bot().table().getTableItem(rowIndex).isChecked();
+		SWTBotTreeItem treeItem = commitDialog.bot().tree().getAllItems()[rowIndex];
+		return treeItem.isChecked();
 	}
 

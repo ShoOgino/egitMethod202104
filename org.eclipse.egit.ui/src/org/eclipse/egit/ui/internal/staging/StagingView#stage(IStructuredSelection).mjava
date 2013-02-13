@@ -21,7 +21,7 @@
 					break;
 				case MISSING:
 					if (rm == null)
-						rm = git.rm();
+						rm = git.rm().setCached(true);
 					rm.addFilepattern(entry.getPath());
 					break;
 				}
@@ -49,16 +49,22 @@
 				add.call();
 			} catch (NoFilepatternException e1) {
 				// cannot happen
-			} catch (Exception e2) {
-				Activator.error(e2.getMessage(), e2);
+			} catch (JGitInternalException e1) {
+				Activator.handleError(e1.getCause().getMessage(),
+						e1.getCause(), true);
+			} catch (Exception e1) {
+				Activator.handleError(e1.getMessage(), e1, true);
 			}
 		if (rm != null)
 			try {
 				rm.call();
 			} catch (NoFilepatternException e) {
 				// cannot happen
-			} catch (Exception e2) {
-				Activator.error(e2.getMessage(), e2);
+			} catch (JGitInternalException e) {
+				Activator.handleError(e.getCause().getMessage(), e.getCause(),
+						true);
+			} catch (Exception e) {
+				Activator.handleError(e.getMessage(), e, true);
 			}
 	}
 

@@ -17,7 +17,8 @@
 
 		final File directory = new File(path);
 		long modified = directory.lastModified();
-		if (path.equals(lastPath) && lastModified == modified) {
+		if (path.equals(lastPath) && lastModified == modified
+				&& lastNestedProjects == nestedProjects) {
 			// since the file/folder was not modified and the path did not
 			// change, no refreshing is required
 			return;
@@ -27,6 +28,7 @@
 
 		lastPath = path;
 		lastModified = modified;
+		lastNestedProjects = nestedProjects;
 
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
@@ -40,11 +42,14 @@
 					Collection<File> files = new ArrayList<File>();
 					monitor.worked(10);
 					if (directory.isDirectory()) {
+						boolean searchNested = nestedProjects;
 
-						if (!collectProjectFilesFromDirectory(files, directory,
-								null, monitor)) {
+						boolean found = ProjectUtil.findProjectFiles(files,
+								directory, searchNested, monitor);
+
+						if (!found)
 							return;
-						}
+
 						Iterator<File> filesIterator = files.iterator();
 						selectedProjects = new ProjectRecord[files.size()];
 						int index = 0;
@@ -64,6 +69,7 @@
 									setErrorMessage(UIText.GitProjectsImportPage_NoProjectsMessage);
 								}
 							});
+
 					} else {
 						monitor.worked(60);
 					}

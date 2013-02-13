@@ -58,12 +58,18 @@
 
 				super.createControl(parent);
 
+				if (HAS_DEBUG_UI)
+					addVariablesButton(parent);
+			}
+
+			private void addVariablesButton(Composite parent) {
 				Button variableButton = new Button(parent, SWT.PUSH);
 				variableButton.setText(UIText.GitPreferenceRoot_DefaultRepoFolderVariableButton);
 
 				variableButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {
-						StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());
+						org.eclipse.debug.ui.StringVariableSelectionDialog dialog = new org.eclipse.debug.ui.StringVariableSelectionDialog(
+								getShell());
 						int returnCode = dialog.open();
 						if (returnCode == Window.OK)
 							setStringValue(dialog.getVariableExpression());

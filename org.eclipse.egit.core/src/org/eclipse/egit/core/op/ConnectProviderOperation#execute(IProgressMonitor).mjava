@@ -61,6 +61,7 @@
 					}
 					RepositoryProvider
 							.map(project, GitProvider.class.getName());
+					autoIgnoreDerivedResources(project, monitor);
 					project.refreshLocal(IResource.DEPTH_INFINITE,
 							new SubProgressMonitor(monitor, 50));
 					monitor.worked(10);

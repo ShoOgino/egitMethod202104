@@ -1,8 +1,8 @@
 	private Menu getContextMenu() {
 		if (!allowToChangeSelection)
 			return null;
-		final Menu menu = new Menu(filesViewer.getTable());
-		filesViewer.getTable().addDisposeListener(new DisposeListener() {
+		final Menu menu = new Menu(filesViewer.getTree());
+		filesViewer.getTree().addDisposeListener(new DisposeListener() {
 
 			public void widgetDisposed(DisposeEvent e) {
 				menu.dispose();

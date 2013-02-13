@@ -10,7 +10,7 @@
 				// NB This does the same thing in
 				// DecoratableResourceAdapter, but neither currently
 				// consult .gitignore
-				if (!isIgnored(path))
+				if (!RepositoryUtil.isIgnored(path))
 					addIgnore(monitor, path);
 				monitor.worked(1);
 			}

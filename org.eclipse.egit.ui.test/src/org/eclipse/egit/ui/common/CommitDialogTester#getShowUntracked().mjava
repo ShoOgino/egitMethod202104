@@ -1,0 +1,7 @@
+	public boolean getShowUntracked() {
+		SWTBotToolbarToggleButton button = commitDialog.bot()
+				.toolbarToggleButtonWithTooltip(
+						UIText.CommitDialog_ShowUntrackedFiles);
+		return button.isChecked();
+	}
+
