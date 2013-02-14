@@ -1,9 +1,12 @@
 	private void createOptionsArea(Composite workArea) {
 		Composite optionsGroup = new Composite(workArea, SWT.NONE);
-		optionsGroup.setLayout(new GridLayout());
+		GridLayout layout = new GridLayout();
+		layout.marginBottom = 2 * layout.marginHeight;
+		layout.marginHeight = 0;
+		optionsGroup.setLayout(layout);
 		optionsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		nestedProjectsCheckbox = new Button(workArea, SWT.CHECK);
+		nestedProjectsCheckbox = new Button(optionsGroup, SWT.CHECK);
 		nestedProjectsCheckbox
 				.setText(UIText.GitProjectsImportPage_SearchForNestedProjects);
 		nestedProjectsCheckbox.setLayoutData(new GridData(
