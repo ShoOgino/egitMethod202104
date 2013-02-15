@@ -22,6 +22,8 @@
 		Point size = getTextWidget().computeSize(textWidth, textHeight);
 		getTextWidget().setSize(size);
 
+		computeBrokenBidiPlatformTextWidth(size.x);
+
 		getTextWidget().setEditable(!readOnly);
 
 		createMarginPainter();
@@ -33,6 +35,9 @@
 					getDisplay().asyncExec(new Runnable() {
 						public void run() {
 							configureHardWrap();
+							if (brokenBidiPlatformTextWidth != -1) {
+								layout();
+							}
 						}
 					});
 				}
