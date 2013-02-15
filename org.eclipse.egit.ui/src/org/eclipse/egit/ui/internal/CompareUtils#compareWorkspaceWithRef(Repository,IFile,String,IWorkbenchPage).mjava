@@ -1,0 +1,36 @@
+	/**
+	 * Opens a compare editor comparing the working directory version of the
+	 * given IFile with the version of that file corresponding to
+	 * {@code refName}.
+	 *
+	 * @param repository
+	 *            The repository to load file revisions from.
+	 * @param file
+	 *            File to compare revisions for.
+	 * @param refName
+	 *            Reference to compare with the workspace version of
+	 *            {@code file}. Can be either a commit ID, a reference or a
+	 *            branch name.
+	 * @param page
+	 *            If not {@null} try to re-use a compare editor on this
+	 *            page if any is available. Otherwise open a new one.
+	 * @throws IOException
+	 *             If HEAD or {@code refName} can't be resolved in the given
+	 *             repository.
+	 */
+	public static void compareWorkspaceWithRef(Repository repository,
+			IFile file, String refName, IWorkbenchPage page) throws IOException {
+		final RepositoryMapping mapping = RepositoryMapping.getMapping(file);
+		final String gitPath = mapping.getRepoRelativePath(file);
+		final ITypedElement base = SaveableCompareEditorInput
+				.createFileElement(file);
+
+		CompareEditorInput in = prepareCompareInput(repository, gitPath, base,
+				refName);
+
+		if (page != null)
+			openInCompare(page, in);
+		else
+			CompareUI.openCompareEditor(in);
+	}
+

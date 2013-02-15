@@ -1,21 +1,10 @@
 	private void showSingleFileComparison(IFile file, String refName) {
-		final ITypedElement base = SaveableCompareEditorInput
-				.createFileElement(file);
-
-		final ITypedElement next;
 		try {
-			RepositoryMapping mapping = RepositoryMapping.getMapping(file);
-			next = getElementForRef(mapping.getRepository(),
-					mapping.getRepoRelativePath(file), refName);
+			CompareUtils.compareWorkspaceWithRef(getRepository(), file,
+					refName, null);
 		} catch (IOException e) {
 			Activator.handleError(
-					UIText.CompareWithIndexAction_errorOnAddToIndex, e, true);
-			return;
+					UIText.CompareWithRefAction_errorOnSynchronize, e, true);
 		}
-
-		final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
-				base, next, null);
-		in.getCompareConfiguration().setRightLabel(refName);
-		CompareUI.openCompareEditor(in);
 	}
 

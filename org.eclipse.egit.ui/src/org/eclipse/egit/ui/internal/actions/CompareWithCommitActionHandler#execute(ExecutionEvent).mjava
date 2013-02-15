@@ -12,32 +12,14 @@
 		if (resources.length == 1 && resources[0] instanceof IFile) {
 			final IFile baseFile = (IFile) resources[0];
 
-			final ITypedElement base = SaveableCompareEditorInput
-					.createFileElement(baseFile);
-
-			final ITypedElement next;
-			final ITypedElement ancestor;
 			try {
-				RepositoryMapping mapping = RepositoryMapping
-						.getMapping(resources[0]);
-				next = getElementForCommit(mapping.getRepository(), mapping
-						.getRepoRelativePath(baseFile), dlg.getCommitId());
-
-				ancestor =  CompareUtils.getFileRevisionTypedElementForCommonAncestor(mapping
-						.getRepoRelativePath(baseFile), repo.resolve(Constants.HEAD),
-						dlg.getCommitId(), repo);
+				CompareUtils.compareWorkspaceWithRef(repo, baseFile, dlg
+						.getCommitId().getName(), null);
 			} catch (IOException e) {
 				Activator.handleError(
-						UIText.CompareWithIndexAction_errorOnAddToIndex, e,
-						true);
-				return null;
+								UIText.CompareWithRefAction_errorOnSynchronize,
+								e, true);
 			}
-
-			final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
-					base, next, ancestor, null);
-			in.getCompareConfiguration()
-					.setRightLabel(dlg.getCommitId().name());
-			CompareUI.openCompareEditor(in);
 		} else {
 			CompareTreeView view;
 			try {
