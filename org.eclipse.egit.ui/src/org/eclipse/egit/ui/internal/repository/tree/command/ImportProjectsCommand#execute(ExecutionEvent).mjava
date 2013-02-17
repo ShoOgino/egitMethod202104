@@ -1,5 +1,19 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		RepositoryTreeNode node = getSelectedNodes(event).get(0);
+		List<RepositoryTreeNode> selectedNodes = getSelectedNodes(event);
+		if (selectedNodes == null || selectedNodes.isEmpty()) {
+			MessageDialog
+					.openError(Display.getDefault().getActiveShell(),
+					UIText.ImportProjectsWrongSelection,
+					UIText.ImportProjectsSelectionInRepositoryRequired);
+			return null;
+		}
+		if (!(((List) selectedNodes).get(0) instanceof RepositoryTreeNode)) {
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
+					UIText.ImportProjectsWrongSelection,
+					UIText.ImportProjectsSelectionInRepositoryRequired);
+			return null;
+		}
+		RepositoryTreeNode node = selectedNodes.get(0);
 		String path;
 
 		switch (node.getType()) {
@@ -12,6 +26,9 @@
 			path = ((FolderNode) node).getObject().getPath().toString();
 			break;
 		default:
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
+					UIText.ImportProjectsWrongSelection,
+					UIText.ImportProjectsSelectionInRepositoryRequired);
 			return null;
 		}
 
