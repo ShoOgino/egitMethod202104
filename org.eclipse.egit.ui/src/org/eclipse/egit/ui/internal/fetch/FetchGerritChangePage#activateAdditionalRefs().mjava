@@ -1,0 +1,15 @@
+	private void activateAdditionalRefs() {
+		// do this in the UI thread as it results in a
+		// refresh() on the history page
+		getContainer().getShell().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				Activator
+						.getDefault()
+						.getPreferenceStore()
+						.setValue(
+								UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS,
+								true);
+			}
+		});
+	}
+

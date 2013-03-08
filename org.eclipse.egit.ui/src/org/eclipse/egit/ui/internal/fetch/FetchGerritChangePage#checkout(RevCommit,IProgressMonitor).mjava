@@ -1,0 +1,8 @@
+	private void checkout(RevCommit commit, IProgressMonitor monitor)
+			throws CoreException {
+		monitor.setTaskName(UIText.FetchGerritChangePage_CheckingOutTaskName);
+		BranchOperationUI.checkout(repository, commit.name()).run(monitor);
+
+		monitor.worked(1);
+	}
+
