@@ -1,19 +1,8 @@
 	@After
 	public void tearDown() throws Exception {
-		super.tearDown();
-
-		// Reverse setup...
-
-		RepositoryProvider.unmap(project);
-
-		GitProjectData.delete(project);
-
-		project.delete(true, true, null);
-
-		repository.close();
-
-		Activator.getDefault().getRepositoryCache().clear();
-
-		recursiveDelete(gitDir);
+		deleteAllProjects();
+		shutDownRepositories();
+		FileUtils.delete(gitDir.getParentFile(), FileUtils.RECURSIVE
+				| FileUtils.RETRY);
 	}
 
