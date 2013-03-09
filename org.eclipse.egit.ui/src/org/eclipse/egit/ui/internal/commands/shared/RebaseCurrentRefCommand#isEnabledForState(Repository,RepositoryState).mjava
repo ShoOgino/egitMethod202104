@@ -1,0 +1,10 @@
+	/**
+	 * @param repo
+	 * @param state
+	 * @return whether this command is enabled for the repository state
+	 */
+	public static boolean isEnabledForState(Repository repo,
+			RepositoryState state) {
+		return state == RepositoryState.SAFE && hasHead(repo);
+	}
+

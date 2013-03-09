@@ -1,4 +1,13 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		return new RebaseCurrentRefCommand().execute(event);
+		RebaseCurrentRefCommand rebaseCurrent = new RebaseCurrentRefCommand();
+		rebaseCurrent.setEnabled(event.getApplicationContext());
+		// Because the enabled state is for both starting a new rebase as well
+		// as working with an existing rebase, it can be that this is executed
+		// even though starting a new rebase is not possible. So check enabled
+		// state again here. See also isEnabled.
+		if (rebaseCurrent.isEnabled())
+			return rebaseCurrent.execute(event);
+		else
+			return null;
 	}
 

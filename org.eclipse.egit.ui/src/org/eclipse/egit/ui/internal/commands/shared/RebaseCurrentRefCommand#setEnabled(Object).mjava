@@ -6,8 +6,9 @@
 			if (selection instanceof ISelection) {
 				Repository repo = getRepository((ISelection) selection, getActiveEditorInput(ctx));
 				if (repo != null) {
-					boolean isSafe = repo.getRepositoryState() == RepositoryState.SAFE;
-					setBaseEnabled(isSafe && hasHead(repo));
+					boolean enabled = isEnabledForState(repo,
+							repo.getRepositoryState());
+					setBaseEnabled(enabled);
 				} else
 					setBaseEnabled(false);
 				return;

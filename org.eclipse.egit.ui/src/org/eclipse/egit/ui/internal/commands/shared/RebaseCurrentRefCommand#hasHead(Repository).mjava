@@ -1,4 +1,4 @@
-	private boolean hasHead(Repository repo) {
+	private static boolean hasHead(Repository repo) {
 		try {
 			Ref headRef = repo.getRef(Constants.HEAD);
 			return headRef != null && headRef.getObjectId() != null;
