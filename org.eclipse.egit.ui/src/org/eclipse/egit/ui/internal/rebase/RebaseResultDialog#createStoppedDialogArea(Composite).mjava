@@ -1,0 +1,193 @@
+	private Control createStoppedDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(new GridLayout(1, false));
+		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).applyTo(
+				main);
+
+		Group commitGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(commitGroup);
+		commitGroup.setText(UIText.RebaseResultDialog_DetailsGroup);
+		commitGroup.setLayout(new GridLayout(1, false));
+
+		Label commitIdLabel = new Label(commitGroup, SWT.NONE);
+		commitIdLabel.setText(UIText.RebaseResultDialog_CommitIdLabel);
+		Text commitId = new Text(commitGroup, SWT.READ_ONLY | SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(commitId);
+
+		Label commitMessageLabel = new Label(commitGroup, SWT.NONE);
+		commitMessageLabel
+				.setText(UIText.RebaseResultDialog_CommitMessageLabel);
+		TextViewer commitMessage = new TextViewer(commitGroup, SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.READ_ONLY);
+		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 60)
+				.applyTo(commitMessage.getControl());
+
+		boolean conflictListFailure = false;
+		DirCache dc = null;
+		RevWalk rw = null;
+		try {
+			rw = new RevWalk(repo);
+			// the commits might not have been fully loaded
+			RevCommit commit = rw.parseCommit(result.getCurrentCommit());
+			commitMessage.getTextWidget().setText(commit.getFullMessage());
+			commitId.setText(commit.name());
+			dc = repo.lockDirCache();
+			for (int i = 0; i < dc.getEntryCount(); i++)
+				if (dc.getEntry(i).getStage() > 0)
+					conflictPaths.add(dc.getEntry(i).getPathString());
+			if (conflictPaths.size() > 0) {
+				message = NLS.bind(UIText.RebaseResultDialog_Conflicting,
+						Integer.valueOf(conflictPaths.size()));
+				messageLabel.setText(message);
+			}
+		} catch (IOException e) {
+			// the file list will be empty
+			conflictListFailure = true;
+		} finally {
+			if (rw != null)
+				rw.release();
+			if (dc != null)
+				dc.unlock();
+		}
+
+		boolean mergeToolAvailable = true;
+		final CheckResult checkResult;
+		if (!conflictListFailure) {
+			checkResult = FileChecker.checkFiles(repo, conflictPaths);
+			mergeToolAvailable = checkResult.isOk();
+		}
+		else {
+			checkResult = null;
+			mergeToolAvailable = false;
+		}
+
+		if (conflictListFailure) {
+			Label failureLabel = new Label(main, SWT.NONE);
+			failureLabel
+					.setText(UIText.RebaseResultDialog_ConflictListFailureMessage);
+		} else {
+			if (checkResult != null && !checkResult.isOk()) {
+				Label failureLabel = new Label(main, SWT.NONE);
+				failureLabel
+					.setText(getProblemDescription(checkResult));
+			}
+			Label conflictListLabel = new Label(main, SWT.NONE);
+			conflictListLabel
+			.setText(UIText.RebaseResultDialog_DiffDetailsLabel);
+			TableViewer conflictList = new TableViewer(main, SWT.BORDER);
+			GridDataFactory.fillDefaults().span(2, 1).grab(true, true).applyTo(
+					conflictList.getTable());
+			conflictList.setContentProvider(ArrayContentProvider.getInstance());
+			conflictList.setInput(conflictPaths);
+			conflictList.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					String path = (String) element;
+					if (checkResult != null && !checkResult.isOk()) {
+						CheckResultEntry entry = checkResult.getEntry(path);
+						if (entry != null) {
+							if (!entry.inWorkspace)
+								return UIText.RebaseResultDialog_notInWorkspace + SPACE + path;
+							if (!entry.shared)
+								return UIText.RebaseResultDialog_notShared + SPACE + path;
+						}
+					}
+					return super.getText(element);
+				}
+
+			});
+		}
+
+		Group actionGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(actionGroup);
+		actionGroup.setText(UIText.RebaseResultDialog_ActionGroupTitle);
+		actionGroup.setLayout(new GridLayout(1, false));
+
+		nextStepsGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(nextStepsGroup);
+		nextStepsGroup.setText(UIText.RebaseResultDialog_NextSteps);
+		nextStepsGroup.setLayout(new GridLayout(1, false));
+		final TextViewer nextSteps = new TextViewer(nextStepsGroup, SWT.MULTI
+				| SWT.BORDER | SWT.READ_ONLY);
+		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 60)
+				.applyTo(nextSteps.getControl());
+		nextSteps.getTextWidget().setText(
+				UIText.RebaseResultDialog_NextStepsAfterResolveConflicts);
+
+		startMergeButton = new Button(actionGroup, SWT.RADIO);
+		startMergeButton.setText(UIText.RebaseResultDialog_StartMergeRadioText);
+		startMergeButton.setEnabled(mergeToolAvailable);
+		startMergeButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				if (startMergeButton.getSelection())
+					nextSteps
+							.getTextWidget()
+							.setText(
+									UIText.RebaseResultDialog_NextStepsAfterResolveConflicts);
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// nothing
+			}
+
+		});
+
+		skipCommitButton = new Button(actionGroup, SWT.RADIO);
+		skipCommitButton.setText(UIText.RebaseResultDialog_SkipCommitButton);
+		skipCommitButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				if (skipCommitButton.getSelection())
+					nextSteps.getTextWidget().setText(""); //$NON-NLS-1$
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// nothing
+			}
+
+		});
+
+		abortRebaseButton = new Button(actionGroup, SWT.RADIO);
+		abortRebaseButton
+				.setText(UIText.RebaseResultDialog_AbortRebaseRadioText);
+		abortRebaseButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				if (abortRebaseButton.getSelection())
+					nextSteps.getTextWidget().setText(""); //$NON-NLS-1$
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// nothing
+			}
+
+		});
+
+		doNothingButton = new Button(actionGroup, SWT.RADIO);
+		doNothingButton.setText(UIText.RebaseResultDialog_DoNothingRadioText);
+		doNothingButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				if (doNothingButton.getSelection())
+					nextSteps.getTextWidget().setText(
+							UIText.RebaseResultDialog_NextStepsDoNothing);
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// nothing
+			}
+
+		});
+
+		if (mergeToolAvailable)
+			startMergeButton.setSelection(true);
+		else
+			doNothingButton.setSelection(true);
+
+		commitGroup.pack();
+		applyDialogFont(main);
+
+		return main;
+	}
+
