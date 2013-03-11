@@ -3,7 +3,7 @@
 		return UIThreadRunnable.syncExec(new BoolResult() {
 
 			public Boolean run() {
-				return new WorkbenchContentsFinder().activeWorkbenchWindow()
+				return PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 						.getShell() == shell.widget;
 			}
 		});
