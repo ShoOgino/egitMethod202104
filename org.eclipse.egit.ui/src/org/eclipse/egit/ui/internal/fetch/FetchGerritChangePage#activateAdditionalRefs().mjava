@@ -1,7 +1,7 @@
 	private void activateAdditionalRefs() {
 		// do this in the UI thread as it results in a
 		// refresh() on the history page
-		getContainer().getShell().getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				Activator
 						.getDefault()
