@@ -1,0 +1,6 @@
+	private void assertVariantMatchCommit(IResourceVariant variant,
+			RevCommit commit) {
+		assertTrue(variant instanceof GitRemoteResource);
+		assertEquals(commit, ((GitRemoteResource) variant).getCommitId());
+	}
+

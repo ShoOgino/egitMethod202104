@@ -1,0 +1,13 @@
+	@Test
+	public void testSyncMasterAndBranch() throws Exception {
+		GitResourceVariantTreeSubscriber grvts = createGitResourceVariantTreeSubscriber(
+				MASTER, BRANCH);
+		grvts.init(new NullProgressMonitor());
+
+		IResourceVariant actualBase = getBaseVariant(grvts, changedFile);
+		IResourceVariant actualRemote = getRemoteVariant(grvts, changedFile);
+
+		assertVariantMatchCommit(actualBase, initialCommit);
+		assertVariantMatchCommit(actualRemote, commitBranch);
+	}
+

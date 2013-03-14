@@ -1,0 +1,13 @@
+	private IResourceVariant getBaseVariant(
+			GitResourceVariantTreeSubscriber subscriber, IResource resource)
+			throws TeamException {
+		IResourceVariantTree tree = subscriber.getBaseTree();
+		assertNotNull(tree);
+		assertTrue(tree instanceof GitBaseResourceVariantTree);
+		IResourceVariant resourceVariant = tree
+				.getResourceVariant(resource);
+		assertNotNull(resourceVariant);
+		assertTrue(resourceVariant instanceof GitRemoteResource);
+		return resourceVariant;
+	}
+
