@@ -1,0 +1,12 @@
+		@Override
+		public long getTimestamp() {
+			if (variant instanceof GitRemoteResource) {
+				final PersonIdent author = ((GitRemoteResource) variant)
+						.getCommitId().getAuthorIdent();
+				if (author != null)
+					return author.getWhen().getTime();
+			}
+
+			return super.getTimestamp();
+		}
+

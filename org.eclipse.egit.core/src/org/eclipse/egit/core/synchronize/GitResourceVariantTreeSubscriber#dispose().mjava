@@ -2,6 +2,8 @@
 	 * Disposes nested resources
 	 */
 	public void dispose() {
+		if (sourceTree != null)
+			sourceTree.dispose();
 		if (baseTree != null)
 			baseTree.dispose();
 		if (remoteTree != null)

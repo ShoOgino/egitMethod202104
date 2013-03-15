@@ -1,33 +1,34 @@
 	@Override
 	public ICompareInput asCompareInput(Object object) {
-		ICompareInput compareInput = super.asCompareInput(object);
+		final ICompareInput input = super.asCompareInput(object);
+		final ISynchronizationContext ctx = getContext();
 
-		if (compareInput != null) {
-			// note, ResourceDiffCompareInput maybe returned from super;
-			// it always has the local resource on the left side!
-			// this is only ok if we are comparing with the working tree
+		if (input instanceof ResourceDiffCompareInput && ctx instanceof SubscriberMergeContext) {
+			// Team only considers local resources as "left"
+			// We'll use the cached data instead as left could be remote
+			final IResource resource = ((ResourceNode) input.getLeft())
+					.getResource();
+			final Subscriber subscriber = ((SubscriberMergeContext)ctx).getSubscriber();
 
-			// handle file comparison outside working tree
-			ITypedElement left = compareInput.getLeft();
-			if (left instanceof ResourceNode) {
-				// the left side can only be a resource node if
-				// we are comparing against the local working tree
-				IResource resource = ((ResourceNode) left).getResource();
-				if (resource.getType() == IResource.FILE) {
-					GitSynchronizeData gsd = gsds
-							.getData(resource.getProject());
-					if (gsd != null && !gsd.shouldIncludeLocal())
-						return getFileFromGit(gsd, resource.getLocation());
+			if (resource instanceof IFile
+					&& subscriber instanceof GitResourceVariantTreeSubscriber) {
+				try {
+					final IFileRevision revision = ((GitResourceVariantTreeSubscriber) subscriber)
+							.getSourceFileRevision((IFile) resource);
+					final ITypedElement newSource = new FileRevisionTypedElement(
+							revision,
+							getLocalEncoding(resource));
+					((ResourceDiffCompareInput) input).setLeft(newSource);
+				} catch (TeamException e) {
+					// Keep the input from super as-is
+					String error = NLS
+							.bind(UIText.GitModelSynchronizeParticipant_noCachedSourceVariant,
+									resource.getName());
+					Activator.logError(error, e);
 				}
-			}
-		} else {
-			IResource resource = AdapterUtils.adapt(object, IResource.class);
-			if (resource.getType() == IResource.FILE) {
-				GitSynchronizeData gsd = gsds.getData(resource.getProject());
-				return getFileFromGit(gsd, resource.getLocation());
 			}
 		}
 
-		return compareInput;
+		return input;
 	}
 

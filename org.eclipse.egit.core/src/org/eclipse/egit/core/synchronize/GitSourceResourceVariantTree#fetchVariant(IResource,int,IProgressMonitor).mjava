@@ -1,0 +1,12 @@
+	@Override
+	protected IResourceVariant fetchVariant(IResource resource, int depth,
+			IProgressMonitor monitor) throws TeamException {
+		if (resource != null) {
+			GitSynchronizeData data = gsds.getData(resource.getProject());
+			if (data != null && data.shouldIncludeLocal())
+				return new GitLocalResourceVariant(resource);
+		}
+
+		return super.fetchVariant(resource, depth, monitor);
+	}
+

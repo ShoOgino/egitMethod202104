@@ -1,0 +1,9 @@
+		@Override
+		public String getComment() {
+			if (variant instanceof GitRemoteResource)
+				return ((GitRemoteResource) variant).getCommitId()
+						.getFullMessage();
+
+			return super.getComment();
+		}
+

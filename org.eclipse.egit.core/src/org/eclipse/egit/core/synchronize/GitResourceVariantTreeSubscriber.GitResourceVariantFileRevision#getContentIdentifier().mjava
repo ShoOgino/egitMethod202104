@@ -1,0 +1,10 @@
+		@Override
+		public String getContentIdentifier() {
+			// Use the same ID as would CommitFileRevision
+			if (variant instanceof GitRemoteResource)
+				return ((GitRemoteResource) variant).getCommitId().getId()
+						.getName();
+
+			return super.getContentIdentifier();
+		}
+

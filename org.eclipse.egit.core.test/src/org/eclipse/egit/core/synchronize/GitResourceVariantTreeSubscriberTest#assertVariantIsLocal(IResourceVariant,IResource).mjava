@@ -1,0 +1,5 @@
+	private void assertVariantIsLocal(IResourceVariant variant, IResource local) {
+		assertTrue(variant instanceof GitLocalResourceVariant);
+		assertEquals(local, ((GitLocalResourceVariant) variant).getResource());
+	}
+

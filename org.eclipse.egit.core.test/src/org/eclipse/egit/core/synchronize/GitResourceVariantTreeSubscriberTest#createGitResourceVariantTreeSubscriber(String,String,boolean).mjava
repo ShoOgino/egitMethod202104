@@ -1,7 +1,7 @@
 	private GitResourceVariantTreeSubscriber createGitResourceVariantTreeSubscriber(
-			String src, String dst) throws IOException {
+			String src, String dst, boolean includeLocal) throws IOException {
 		GitSynchronizeData gsd = new GitSynchronizeData(
-				testRepo.getRepository(), src, dst, false);
+				testRepo.getRepository(), src, dst, includeLocal);
 		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
 		return new GitResourceVariantTreeSubscriber(gsds);
 	}

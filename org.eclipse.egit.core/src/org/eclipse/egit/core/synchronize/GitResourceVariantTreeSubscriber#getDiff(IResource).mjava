@@ -1,0 +1,12 @@
+	@Override
+	public IDiff getDiff(IResource resource) throws CoreException {
+		final GitSynchronizeData syncData = gsds.getData(resource.getProject());
+		if (syncData.shouldIncludeLocal())
+			return super.getDiff(resource);
+
+		SyncInfo info = getSyncInfo(resource);
+		if (info == null || info.getKind() == SyncInfo.IN_SYNC)
+			return null;
+		return syncInfoConverter.getDeltaFor(info);
+	}
+

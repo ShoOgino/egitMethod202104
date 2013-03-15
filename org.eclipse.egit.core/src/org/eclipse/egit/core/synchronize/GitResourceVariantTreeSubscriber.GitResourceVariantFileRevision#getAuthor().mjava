@@ -1,0 +1,12 @@
+		@Override
+		public String getAuthor() {
+			if (variant instanceof GitRemoteResource) {
+				final PersonIdent author = ((GitRemoteResource) variant)
+						.getCommitId().getAuthorIdent();
+				if (author != null)
+					return author.getName();
+			}
+
+			return super.getAuthor();
+		}
+
