@@ -3,8 +3,9 @@
 
 		if (result.getStatus() == Status.STOPPED)
 			return createStoppedDialogArea(parent);
-		if (result.getStatus() == Status.FAILED)
-			return createFailedDialog(parent);
+		if (result.getStatus() == Status.FAILED
+				|| result.getStatus() == Status.CONFLICTS)
+			return createFailedOrConflictDialog(parent);
 		createToggleButton(parent);
 		return null;
 	}
