@@ -1,0 +1,17 @@
+	@Test
+	public void querySingleRevisions() throws CoreException {
+		for (RevCommit commit : commits) {
+			for (IFile target : Arrays.asList(iFile1, iFile2)) {
+				testRepository.checkoutBranch(commit.getName());
+				final IFileHistory history = historyProvider.getFileHistoryFor(
+						target, IFileHistoryProvider.SINGLE_REVISION,
+						new NullProgressMonitor());
+				assertNotNull(history);
+
+				final IFileRevision[] revisions = history.getFileRevisions();
+				assertEquals(1, revisions.length);
+				assertRevisionMatchCommit(revisions[0], commit);
+			}
+		}
+	}
+

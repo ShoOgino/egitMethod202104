@@ -1,0 +1,49 @@
+	/*
+	 * This aims at exerting the behavior of the EGit history provider when used
+	 * through the Team APIs. This is the behavior extenders will see when
+	 * interfacing with EGit through the synchronize view.
+	 *
+	 * The exact comparison with which we've reached the synchronize perspective
+	 * should not be relevant. To keep this test as short as possible, we'll
+	 * only test a single comparison.
+	 */
+	@Test
+	public void queryHistoryThroughTeam() throws IOException, CoreException {
+		GitSynchronizeData gsd = new GitSynchronizeData(
+				testRepository.getRepository(), MASTER, BRANCH, false);
+		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				gsds);
+		subscriber.init(new NullProgressMonitor());
+
+		IDiff diff = subscriber.getDiff(iFile2);
+		assertTrue(diff instanceof IThreeWayDiff);
+
+		IFileRevision sourceRevision = getSource(diff);
+		IFileRevision destinationRevision = getDestination(diff);
+		IFileRevision baseRevision = getBase(diff);
+
+		assertRevisionMatchCommit(baseRevision, masterCommit2);
+		assertRevisionMatchCommit(destinationRevision, branchCommit2);
+		assertRevisionMatchCommit(sourceRevision, masterCommit3);
+
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile2,
+				IFileHistoryProvider.NONE,
+				new NullProgressMonitor());
+		assertNotNull(history);
+
+		// no parent of masterCommit2 in file2's history
+		IFileRevision[] parents = history.getContributors(baseRevision);
+		assertEquals(0, parents.length);
+
+		/*
+		 * branchCommit1 did not contain file2, so the "child" of masterCommit2
+		 * (branching point) in file2's history is branchCommit2.
+		 */
+		IFileRevision[] children = history.getTargets(baseRevision);
+		List<RevCommit> expectedChildren = new ArrayList<RevCommit>(
+				Arrays.asList(masterCommit3, branchCommit2));
+		assertEquals(expectedChildren.size(), children.length);
+		assertMatchingRevisions(Arrays.asList(children), expectedChildren);
+	}
+

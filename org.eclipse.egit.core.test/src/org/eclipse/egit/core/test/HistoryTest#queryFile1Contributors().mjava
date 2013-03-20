@@ -1,0 +1,45 @@
+	@Test
+	public void queryFile1Contributors() {
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile1,
+				IFileHistoryProvider.NONE, new NullProgressMonitor());
+		assertNotNull(history);
+
+		final IFileRevision[] revisions = history.getFileRevisions();
+		IFileRevision branchFileRevision1 = null;
+		IFileRevision masterFileRevision3 = null;
+		IFileRevision masterFileRevision1 = null;
+		for (IFileRevision revision : revisions) {
+			final String revisionId = revision.getContentIdentifier();
+			if (branchCommit1.getName().equals(revisionId))
+				branchFileRevision1 = revision;
+			else if (masterCommit3.getName().equals(revisionId))
+				masterFileRevision3 = revision;
+			else if (masterCommit1.getName().equals(revisionId))
+				masterFileRevision1 = revision;
+		}
+		assertNotNull(branchFileRevision1);
+		assertNotNull(masterFileRevision3);
+		assertNotNull(masterFileRevision1);
+
+		/*
+		 * The "direct" parent of branchCommit1 is masterCommit2. However, that
+		 * commit did not contain file1. We thus expect the returned contributor
+		 * to be masterCommit1.
+		 */
+		final IFileRevision[] branchCommit1Parents = history
+				.getContributors(branchFileRevision1);
+		assertEquals(1, branchCommit1Parents.length);
+		assertRevisionMatchCommit(branchCommit1Parents[0], masterCommit1);
+
+		// Likewise for masterCommit3
+		final IFileRevision[] masterCommit3Parents = history
+				.getContributors(masterFileRevision3);
+		assertEquals(1, masterCommit3Parents.length);
+		assertRevisionMatchCommit(masterCommit3Parents[0], masterCommit1);
+
+		// masterCommit1 is our initial commit
+		final IFileRevision[] masterCommit1Parents = history
+				.getContributors(masterFileRevision1);
+		assertEquals(0, masterCommit1Parents.length);
+	}
+

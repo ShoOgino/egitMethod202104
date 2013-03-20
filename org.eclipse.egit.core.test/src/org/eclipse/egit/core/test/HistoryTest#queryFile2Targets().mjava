@@ -1,0 +1,40 @@
+	@Test
+	public void queryFile2Targets() {
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile2,
+				IFileHistoryProvider.NONE, new NullProgressMonitor());
+		assertNotNull(history);
+
+		final IFileRevision[] revisions = history.getFileRevisions();
+		IFileRevision masterFileRevision3 = null;
+		IFileRevision masterFileRevision2 = null;
+		IFileRevision branchFileRevision2 = null;
+		for (IFileRevision revision : revisions) {
+			final String revisionId = revision.getContentIdentifier();
+			if (masterCommit3.getName().equals(revisionId))
+				masterFileRevision3 = revision;
+			else if (masterCommit2.getName().equals(revisionId))
+				masterFileRevision2 = revision;
+			else if (branchCommit2.getName().equals(revisionId))
+				branchFileRevision2 = revision;
+		}
+		assertNotNull(masterFileRevision3);
+		assertNotNull(masterFileRevision2);
+		assertNotNull(branchFileRevision2);
+
+		final IFileRevision[] masterCommit2Children = history
+				.getTargets(masterFileRevision2);
+		assertEquals(2, masterCommit2Children.length);
+		assertTrue(Arrays.asList(masterCommit2Children).contains(
+				masterFileRevision3));
+		assertTrue(Arrays.asList(masterCommit2Children).contains(
+				branchFileRevision2));
+
+		final IFileRevision[] masterCommit3Children = history
+				.getTargets(masterFileRevision3);
+		assertEquals(0, masterCommit3Children.length);
+
+		final IFileRevision[] branchCommit2Children = history
+				.getTargets(branchFileRevision2);
+		assertEquals(0, branchCommit2Children.length);
+	}
+

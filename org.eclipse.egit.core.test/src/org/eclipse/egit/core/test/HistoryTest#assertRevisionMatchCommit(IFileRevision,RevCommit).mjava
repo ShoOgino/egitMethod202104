@@ -1,0 +1,9 @@
+	private static void assertRevisionMatchCommit(IFileRevision revision,
+			RevCommit commit) {
+		assertEquals(commit.getAuthorIdent().getName(), revision.getAuthor());
+		assertEquals(commit.getFullMessage(), revision.getComment());
+		assertEquals(commit.getName(), revision.getContentIdentifier());
+		// Git is in seconds, Team in milliseconds
+		assertEquals(commit.getCommitTime(), revision.getTimestamp() / 1000);
+	}
+

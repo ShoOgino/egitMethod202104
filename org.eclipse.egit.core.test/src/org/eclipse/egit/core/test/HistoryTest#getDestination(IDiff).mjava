@@ -1,0 +1,18 @@
+	private static IFileRevision getDestination(IDiff diff) {
+		if (diff instanceof IResourceDiff)
+			return ((IResourceDiff) diff).getAfterState();
+
+		if (diff instanceof IThreeWayDiff) {
+			final IThreeWayDiff twd = (IThreeWayDiff) diff;
+			final IDiff remoteChange = twd.getRemoteChange();
+			if (remoteChange instanceof IResourceDiff)
+				return ((IResourceDiff) remoteChange).getAfterState();
+
+			final IDiff localChange = twd.getLocalChange();
+			if (localChange instanceof IResourceDiff)
+				return ((IResourceDiff) localChange).getBeforeState();
+		}
+
+		return null;
+	}
+

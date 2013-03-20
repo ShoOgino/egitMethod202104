@@ -1,0 +1,43 @@
+	@Test
+	public void queryFile2Contributors() {
+		final IFileHistory history = historyProvider.getFileHistoryFor(iFile2,
+				IFileHistoryProvider.NONE, new NullProgressMonitor());
+		assertNotNull(history);
+
+		final IFileRevision[] revisions = history.getFileRevisions();
+		IFileRevision masterFileRevision3 = null;
+		IFileRevision masterFileRevision2 = null;
+		IFileRevision branchFileRevision2 = null;
+		for (IFileRevision revision : revisions) {
+			final String revisionId = revision.getContentIdentifier();
+			if (masterCommit3.getName().equals(revisionId))
+				masterFileRevision3 = revision;
+			else if (masterCommit2.getName().equals(revisionId))
+				masterFileRevision2 = revision;
+			else if (branchCommit2.getName().equals(revisionId))
+				branchFileRevision2 = revision;
+		}
+		assertNotNull(masterFileRevision3);
+		assertNotNull(masterFileRevision2);
+		assertNotNull(branchFileRevision2);
+
+		final IFileRevision[] masterCommit3Parents = history
+				.getContributors(masterFileRevision3);
+		assertEquals(1, masterCommit3Parents.length);
+		assertRevisionMatchCommit(masterCommit3Parents[0], masterCommit2);
+
+		/*
+		 * The direct parent of masterCommit2 is the initial commit,
+		 * masterCommit1. However, file2 was not included in that commit. We
+		 * thus expect no parent.
+		 */
+		final IFileRevision[] masterCommit2Parents = history
+				.getContributors(masterFileRevision2);
+		assertEquals(0, masterCommit2Parents.length);
+
+		final IFileRevision[] branchCommit2Parents = history
+				.getContributors(branchFileRevision2);
+		assertEquals(1, branchCommit2Parents.length);
+		assertRevisionMatchCommit(branchCommit2Parents[0], masterCommit2);
+	}
+

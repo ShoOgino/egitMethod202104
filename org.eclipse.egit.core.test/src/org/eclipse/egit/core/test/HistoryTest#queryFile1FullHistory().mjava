@@ -1,0 +1,7 @@
+	@Test
+	public void queryFile1FullHistory() throws CoreException {
+		final List<RevCommit> expectedHistory = Arrays.asList(masterCommit1,
+				masterCommit3, branchCommit1);
+		assertFullHistoryMatches(iFile1, expectedHistory);
+	}
+

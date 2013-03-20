@@ -1,0 +1,18 @@
+	private void assertFullHistoryMatches(IFile target,
+			List<RevCommit> expectedHistory) throws CoreException {
+		// Whatever the position of HEAD, the history should be the same
+		for (RevCommit commit : commits) {
+			testRepository.checkoutBranch(commit.getName());
+			final IFileHistory history = historyProvider.getFileHistoryFor(
+					target, IFileHistoryProvider.NONE,
+					new NullProgressMonitor());
+			assertNotNull(history);
+
+			final IFileRevision[] revisions = history.getFileRevisions();
+			assertEquals(expectedHistory.size(), revisions.length);
+			final List<RevCommit> commitList = new ArrayList<RevCommit>(
+					expectedHistory);
+			assertMatchingRevisions(Arrays.asList(revisions), commitList);
+		}
+	}
+

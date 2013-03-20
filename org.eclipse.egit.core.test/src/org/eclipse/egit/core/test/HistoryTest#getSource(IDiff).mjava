@@ -1,0 +1,14 @@
+	private static IFileRevision getSource(IDiff diff) {
+		if (diff instanceof IResourceDiff)
+			return ((IResourceDiff) diff).getBeforeState();
+
+		if (diff instanceof IThreeWayDiff) {
+			final IThreeWayDiff twd = (IThreeWayDiff) diff;
+			final IDiff localChange = twd.getLocalChange();
+			if (localChange instanceof IResourceDiff)
+				return ((IResourceDiff) localChange).getAfterState();
+		}
+
+		return null;
+	}
+

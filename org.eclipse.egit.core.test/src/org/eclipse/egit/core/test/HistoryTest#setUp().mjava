@@ -1,0 +1,43 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		testRepository = new TestRepository(gitDir);
+		testRepository.connect(project.getProject());
+
+		File file1 = testRepository.createFile(project.getProject(), "file1");
+		File file2 = testRepository.createFile(project.getProject(), "file2");
+
+		iFile1 = testRepository.getIFile(project.getProject(), file1);
+		iFile2 = testRepository.getIFile(project.getProject(), file2);
+
+		masterCommit1 = testRepository.addAndCommit(project.getProject(),
+				file1, "master-commit-1");
+		masterCommit2 = testRepository.addAndCommit(project.getProject(),
+				file2, "master-commit-2");
+		testRepository.createBranch(MASTER, BRANCH);
+
+		testRepository.appendFileContent(file1, "master-commit-3");
+		testRepository.appendFileContent(file2, "master-commit-3");
+		testRepository.track(file1);
+		testRepository.track(file2);
+		testRepository.addToIndex(project.getProject(), file1);
+		testRepository.addToIndex(project.getProject(), file2);
+		masterCommit3 = testRepository.commit("master-commit-3");
+
+		testRepository.checkoutBranch(BRANCH);
+		branchCommit1 = testRepository.appendContentAndCommit(
+				project.getProject(), file1, "branch-commit-1",
+				"branch-commit-1");
+		branchCommit2 = testRepository.appendContentAndCommit(
+				project.getProject(), file2, "branch-commit-2",
+				"branch-commit-2");
+
+		commits.add(masterCommit1);
+		commits.add(masterCommit2);
+		commits.add(masterCommit3);
+		commits.add(branchCommit1);
+
+		historyProvider = RepositoryProvider.getProvider(project.getProject())
+				.getFileHistoryProvider();
+	}
+

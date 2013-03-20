@@ -1,0 +1,20 @@
+	private static void assertMatchingRevisions(List<IFileRevision> revisions,
+			List<RevCommit> commits) {
+		assertEquals(commits.size(), revisions.size());
+		// Copy list : we'll empty it as we go
+		for (IFileRevision revision : revisions) {
+			boolean foundMatch = false;
+			final Iterator<RevCommit> commitIterator = commits.iterator();
+			while (commitIterator.hasNext() && !foundMatch) {
+				final RevCommit commit = commitIterator.next();
+				if (revision.getContentIdentifier().equals(commit.getName())) {
+					assertRevisionMatchCommit(revision, commit);
+					foundMatch = true;
+					commitIterator.remove();
+				}
+			}
+			assertTrue(foundMatch);
+		}
+		assertTrue(commits.isEmpty());
+	}
+

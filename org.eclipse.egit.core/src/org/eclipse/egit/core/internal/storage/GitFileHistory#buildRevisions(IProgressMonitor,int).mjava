@@ -14,7 +14,7 @@
 			}
 
 			root = walk.parseCommit(headId);
-			if ((flags & SINGLE_REVISION) == SINGLE_REVISION) {
+			if ((flags & IFileHistoryProvider.SINGLE_REVISION) != 0) {
 				// If all Eclipse wants is one revision it probably is
 				// for the editor "quick diff" feature. We can pass off
 				// just the repository HEAD, even though it may not be
@@ -24,6 +24,10 @@
 				single = new CommitFileRevision(db, root, gitPath);
 				return new IFileRevision[] { single };
 			}
+
+			markStartAllRefs(walk, Constants.R_HEADS);
+			markStartAllRefs(walk, Constants.R_REMOTES);
+			markStartAllRefs(walk, Constants.R_TAGS);
 
 			walk.markStart(root);
 		} catch (IOException e) {
