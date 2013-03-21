@@ -63,7 +63,7 @@
 						transport.setTimeout(timeout);
 						if (credentialsProvider != null)
 							transport.setCredentialsProvider(credentialsProvider);
-						PushResult result = transport.push(gitSubMonitor, refUpdates);
+						PushResult result = transport.push(gitSubMonitor, refUpdates, out);
 
 						operationResult.addOperationResult(result.getURI(), result);
 						specification.addURIRefUpdates(result.getURI(), result.getRemoteUpdates());
@@ -93,7 +93,8 @@
 				Iterable<PushResult> results = git.push().setRemote(
 						remoteName).setDryRun(dryRun).setTimeout(timeout)
 						.setProgressMonitor(gitMonitor).setCredentialsProvider(
-								credentialsProvider).call();
+credentialsProvider)
+						.setOutputStream(out).call();
 				for (PushResult result : results) {
 					operationResult.addOperationResult(result.getURI(), result);
 				}
