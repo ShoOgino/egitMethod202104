@@ -18,6 +18,7 @@
 		command.setURI(uri);
 		Repository subRepo = command.call();
 		assertNotNull(subRepo);
+		subRepo.close();
 
 		refreshAndWait();
 

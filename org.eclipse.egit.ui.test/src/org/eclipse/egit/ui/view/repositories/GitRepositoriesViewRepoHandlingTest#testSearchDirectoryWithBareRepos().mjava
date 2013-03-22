@@ -1,6 +1,7 @@
 	@Test
 	public void testSearchDirectoryWithBareRepos() throws Exception {
 		deleteAllProjects();
+		shutDownRepositories();
 		clearView();
 		refreshAndWait();
 		assertEmpty();

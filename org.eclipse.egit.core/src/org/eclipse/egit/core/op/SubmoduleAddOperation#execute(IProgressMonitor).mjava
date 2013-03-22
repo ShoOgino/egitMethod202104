@@ -7,8 +7,11 @@
 				add.setPath(path);
 				add.setURI(uri);
 				try {
-					if (add.call() != null)
+					Repository subRepo = add.call();
+					if (subRepo != null) {
+						subRepo.close();
 						repo.notifyIndexChanged();
+					}
 				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());

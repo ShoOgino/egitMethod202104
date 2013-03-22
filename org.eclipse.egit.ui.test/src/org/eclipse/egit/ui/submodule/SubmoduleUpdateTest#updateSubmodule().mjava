@@ -20,6 +20,7 @@
 		command.setURI(uri);
 		Repository subRepo = command.call();
 		assertNotNull(subRepo);
+		subRepo.close();
 
 		Ref head = subRepo.getRef(Constants.HEAD);
 		assertNotNull(head);

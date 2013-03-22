@@ -19,6 +19,7 @@
 		command.setURI(uri);
 		Repository subRepo = command.call();
 		assertNotNull(subRepo);
+		subRepo.close();
 
 		String newUri = "git://server/repo.git";
 		File modulesFile = new File(repo.getWorkTree(),
