@@ -7,7 +7,8 @@
 		if (singleProjectGitDir.exists())
 			FileUtils.delete(singleProjectGitDir, FileUtils.RECURSIVE | FileUtils.RETRY);
 
-		Repository singleProjectRepo = new FileRepository(singleProjectGitDir);
+		Repository singleProjectRepo = FileRepositoryBuilder
+				.create(singleProjectGitDir);
 		singleProjectRepo.create();
 
 		// Repository must be mapped in order to test the GitFileHistory
