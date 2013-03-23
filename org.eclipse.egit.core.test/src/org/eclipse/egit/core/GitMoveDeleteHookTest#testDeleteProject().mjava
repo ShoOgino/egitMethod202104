@@ -10,7 +10,8 @@
 		RepositoryMapping mapping = RepositoryMapping.getMapping(project
 				.getProject());
 		IPath gitDirAbsolutePath = mapping.getGitDirAbsolutePath();
-		Repository db = new FileRepository(gitDirAbsolutePath.toFile());
+		Repository db = FileRepositoryBuilder.create(gitDirAbsolutePath
+				.toFile());
 		DirCache index = DirCache.read(db.getIndexFile(), db.getFS());
 		assertNotNull(index.getEntry("P/Project-1/file.txt"));
 		db.close();
@@ -22,7 +23,7 @@
 		assertTrue(gitDirAbsolutePath.toString(),
 				gitDirAbsolutePath.append("HEAD").toFile().exists());
 
-		db = new FileRepository(gitDirAbsolutePath.toFile());
+		db = FileRepositoryBuilder.create(gitDirAbsolutePath.toFile());
 		index = DirCache.read(db.getIndexFile(), db.getFS());
 		// FIXME: Shouldn't we unstage deleted projects?
 		assertNotNull(index.getEntry("P/Project-1/file.txt"));

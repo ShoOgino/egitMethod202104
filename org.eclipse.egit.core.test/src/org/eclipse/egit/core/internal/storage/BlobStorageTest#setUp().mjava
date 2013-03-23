@@ -1,7 +1,7 @@
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		repository = new FileRepository(gitDir);
+		repository = FileRepositoryBuilder.create(gitDir);
 		repository.create();
 	}
 
