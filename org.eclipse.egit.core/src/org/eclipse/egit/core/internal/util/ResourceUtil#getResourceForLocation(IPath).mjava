@@ -1,7 +1,10 @@
 	/**
 	 * Return the corresponding resource if it exists.
+	 * <p>
+	 * The returned file will be relative to the most nested non-closed project.
 	 *
-	 * @param location the path to check
+	 * @param location
+	 *            the path to check
 	 * @return the resources, or null
 	 */
 	public static IResource getResourceForLocation(IPath location) {
@@ -11,9 +14,6 @@
 		if (file != null)
 			return file;
 		IContainer[] containers = root.findContainersForLocationURI(uri);
-		for (IContainer container : containers)
-			if (container.exists())
-				return container;
-		return null;
+		return getExistingResourceWithShortestPath(containers);
 	}
 
