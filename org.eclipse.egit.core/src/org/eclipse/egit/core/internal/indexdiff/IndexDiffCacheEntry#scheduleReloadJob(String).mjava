@@ -1,16 +1,28 @@
 	private void scheduleReloadJob(final String trigger) {
-		if (reloadJob != null)
+		if (reloadJob != null) {
+			if (reloadJobIsInitializing)
+				return;
 			reloadJob.cancel();
+		}
+		for (Job updateJob : updateJobs.toArray(new Job[updateJobs.size()]))
+			updateJob.cancel();
+
 		if (!checkRepository())
 			return;
 		reloadJob = new Job(getReloadJobName()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				waitForWorkspaceLock(monitor);
-				if (monitor.isCanceled())
-					return Status.CANCEL_STATUS;
-				lock.lock();
 				try {
+					reloadJobIsInitializing = true;
+					waitForWorkspaceLock(monitor);
+					lock.lock();
+				} finally {
+					reloadJobIsInitializing = false;
+				}
+				try {
+					if (monitor.isCanceled())
+						return Status.CANCEL_STATUS;
+					parallelism.acquire();
 					long startTime = System.currentTimeMillis();
 					IndexDiffData result = calcIndexDiffDataFull(monitor, getName());
 					if (monitor.isCanceled() || (result == null))
@@ -33,8 +45,11 @@
 								GitTraceLocation.INDEXDIFFCACHE.getLocation(),
 								"Calculating IndexDiff failed", e); //$NON-NLS-1$
 					return Status.OK_STATUS;
+				} catch (InterruptedException e) {
+					return Status.CANCEL_STATUS;
 				} finally {
 					lock.unlock();
+					parallelism.release();
 				}
 			}
 
