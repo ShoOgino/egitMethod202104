@@ -1,7 +1,9 @@
-	private void showNoChangesToStash() {
-		shell.getDisplay().asyncExec(new Runnable() {
+	private static void showNoChangesToStash() {
+		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
+				Shell shell = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell();
 				MessageDialog.openInformation(shell,
 						UIText.StashCreateCommand_titleNoChanges,
 						UIText.StashCreateCommand_messageNoChanges);

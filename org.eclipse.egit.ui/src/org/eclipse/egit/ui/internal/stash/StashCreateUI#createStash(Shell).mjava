@@ -1,7 +1,9 @@
 	/**
+	 * @param shell
+	 *            the shell to use for showing the message input dialog
 	 * @return true if a stash create operation was triggered
 	 */
-	public boolean createStash() {
+	public boolean createStash(Shell shell) {
 		InputDialog commitMessageDialog = new InputDialog(shell,
 				UIText.StashCreateCommand_titleEnterCommitMessage,
 				UIText.StashCreateCommand_messageEnterCommitMessage,
