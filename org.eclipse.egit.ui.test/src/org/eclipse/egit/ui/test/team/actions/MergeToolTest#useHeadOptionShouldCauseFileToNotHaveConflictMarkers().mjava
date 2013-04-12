@@ -13,6 +13,8 @@
 		assertThat(mergeResult.getConflicts().keySet(),
 				hasItem(path.toString()));
 
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		cache.getIndexDiffCacheEntry(testRepository.getRepository());
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		SWTBotTree packageExplorer = bot
