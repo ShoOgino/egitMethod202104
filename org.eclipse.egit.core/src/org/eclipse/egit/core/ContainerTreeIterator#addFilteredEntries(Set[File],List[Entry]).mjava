@@ -1,0 +1,30 @@
+	private void addFilteredEntries(final Set<File> existingResourceEntries,
+			final List<Entry> addToEntries) {
+		IPath containerLocation = node.getLocation();
+		if (containerLocation == null)
+			return;
+
+		File folder = containerLocation.toFile();
+		File[] children = folder.listFiles();
+		if (children == null)
+			return;
+
+		for (File child : children) {
+			if (existingResourceEntries.contains(child))
+				continue; // ok if linked resources are ignored earlier on
+			IPath childLocation = new Path(child.getAbsolutePath());
+			IWorkspaceRoot root = node.getWorkspace().getRoot();
+			IContainer container = root.getContainerForLocation(childLocation);
+			// Check if the container is accessible in the workspace.
+			// This may seem strange, as it was not returned from
+			// members() above, but it's the case for nested projects
+			// that are filtered directly.
+			if (container != null && container.isAccessible())
+				// Resource filters does not cross the non-member line
+				// -> stop inheriting resource filter here (false)
+				addToEntries.add(new ResourceEntry(container, false));
+			else
+				addToEntries.add(new FileEntry(child, FS.DETECTED));
+		}
+	}
+

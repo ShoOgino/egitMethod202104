@@ -8,7 +8,7 @@
 
 		List<Entry> entries = new ArrayList<Entry>(resources.length);
 
-		boolean inheritableResourceFilter = addFilteredEntries(
+		boolean inheritableResourceFilter = addFilteredEntriesIfFiltersActive(
 				hasInheritedResourceFilters, resources, entries);
 
 		for (IResource resource : resources)
