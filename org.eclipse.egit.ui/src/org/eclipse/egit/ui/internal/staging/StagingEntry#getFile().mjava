@@ -1,10 +1,10 @@
 	/**
-	 * @return the file corresponding to the entry
+	 * @return the file corresponding to the entry, if it exists in the
+	 *         workspace, null otherwise.
 	 */
 	public IFile getFile() {
 		IPath absolutePath = getLocation();
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IFile resource = root.getFileForLocation(absolutePath);
+		IFile resource = ResourceUtil.getFileForLocation(absolutePath);
 		return resource;
 	}
 

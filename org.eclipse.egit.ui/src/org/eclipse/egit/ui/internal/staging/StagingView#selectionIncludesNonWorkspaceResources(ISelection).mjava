@@ -12,8 +12,8 @@
 			if (!(selectedObject instanceof StagingEntry))
 				return false;
 			StagingEntry stagingEntry = (StagingEntry) selectedObject;
-			String path = currentRepository.getWorkTree() + "/" + stagingEntry.getPath(); //$NON-NLS-1$
-			if (getResource(path) == null)
+			IFile file = stagingEntry.getFile();
+			if (file == null)
 				return true;
 		}
 		return false;
