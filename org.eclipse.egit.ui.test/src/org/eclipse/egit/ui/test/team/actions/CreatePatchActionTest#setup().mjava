@@ -3,7 +3,7 @@
 		perspective = bot.activePerspective();
 		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
 		File gitDir = createProjectAndCommitToRepository();
-		repo = new FileRepository(gitDir);
+		repo = FileRepositoryBuilder.create(gitDir);
 
 		IFile[] commitables = getAllFiles();
 		ArrayList<IFile> untracked = new ArrayList<IFile>();

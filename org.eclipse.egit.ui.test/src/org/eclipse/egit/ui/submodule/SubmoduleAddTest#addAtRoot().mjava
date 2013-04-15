@@ -9,7 +9,7 @@
 		assertProjectExistence(PROJ1, true);
 		refreshAndWait();
 		assertHasRepo(repositoryFile);
-		FileRepository repo = lookupRepository(repositoryFile);
+		Repository repo = lookupRepository(repositoryFile);
 
 		SWTBotTree tree = getOrOpenView().bot().tree();
 		tree.getAllItems()[0].select();

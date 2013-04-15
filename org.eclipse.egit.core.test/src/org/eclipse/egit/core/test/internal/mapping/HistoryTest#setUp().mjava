@@ -5,7 +5,7 @@
 		// ensure we are working on an empty repository
 		if (gitDir.exists())
 			FileUtils.delete(gitDir, FileUtils.RECURSIVE | FileUtils.RETRY);
-		thisGit = new FileRepository(gitDir);
+		thisGit = FileRepositoryBuilder.create(gitDir);
 		workDir = thisGit.getWorkTree();
 		thisGit.create();
 

@@ -3,7 +3,8 @@
 
 		File gitDir = new File(new File(testDirectory, repoName),
 				Constants.DOT_GIT);
-		Repository myRepository = new FileRepository(gitDir);
+		Repository myRepository = new RepositoryBuilder().setGitDir(gitDir)
+				.build();
 		myRepository.create();
 
 		// we need to commit into master first

@@ -1,9 +1,9 @@
 	@Before
 	public void prepare() throws Exception {
-		FileRepository childRepository = lookupRepository(childRepositoryFile);
+		Repository childRepository = lookupRepository(childRepositoryFile);
 
-		FileRepository repository = lookupRepository(repositoryFile);
-		FileBasedConfig config = repository.getConfig();
+		Repository repository = lookupRepository(repositoryFile);
+		StoredConfig config = repository.getConfig();
 		RemoteConfig remoteConfig = new RemoteConfig(config, "origin");
 		remoteConfig.addURI(new URIish(childRepository.getDirectory().getParentFile().toURI().toURL()));
 		remoteConfig.addFetchRefSpec(new RefSpec("+refs/heads/*:refs/remotes/origin/*"));

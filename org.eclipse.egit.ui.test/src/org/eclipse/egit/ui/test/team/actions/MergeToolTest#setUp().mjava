@@ -1,7 +1,7 @@
 	@Before
 	public void setUp() throws Exception {
 		File repositoryFile = createProjectAndCommitToRepository();
-		FileRepository repository = lookupRepository(repositoryFile);
-		testRepository = new TestRepository<FileRepository>(repository);
+		Repository repository = lookupRepository(repositoryFile);
+		testRepository = new TestRepository<Repository>(repository);
 	}
 

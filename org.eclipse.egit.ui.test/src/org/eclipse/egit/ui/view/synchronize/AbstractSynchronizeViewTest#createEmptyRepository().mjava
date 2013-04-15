@@ -2,7 +2,7 @@
 	protected void createEmptyRepository() throws Exception {
 		File gitDir = new File(new File(getTestDirectory(), EMPTY_REPOSITORY),
 				Constants.DOT_GIT);
-		Repository myRepository = new FileRepository(gitDir);
+		Repository myRepository = FileRepositoryBuilder.create(gitDir);
 		myRepository.create();
 
 		// we need to commit into master first

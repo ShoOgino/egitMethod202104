@@ -249,7 +249,8 @@
 				File gitDir = new File(repositoryToCreate.getText(),
 						Constants.DOT_GIT);
 				try {
-					Repository repository = new FileRepository(gitDir);
+					Repository repository = FileRepositoryBuilder
+							.create(gitDir);
 					repository.create();
 					for (IProject project : getProjects(false).keySet()) {
 						// If we don't refresh the project directories right

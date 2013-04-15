@@ -1,9 +1,10 @@
 	private static boolean repositoryAlreadyExistsForUrl(File repositoryPath,
 			URIish gitUrl) {
 		if (repositoryPath.exists()) {
-			FileRepository existingRepository;
+			Repository existingRepository;
 			try {
-				existingRepository = new FileRepository(repositoryPath);
+				existingRepository = FileRepositoryBuilder
+						.create(repositoryPath);
 			} catch (IOException e) {
 				return false;
 			}

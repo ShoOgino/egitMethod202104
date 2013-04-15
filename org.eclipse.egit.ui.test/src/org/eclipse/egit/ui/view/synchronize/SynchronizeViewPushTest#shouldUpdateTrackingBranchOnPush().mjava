@@ -1,7 +1,7 @@
 	@Test
 	public void shouldUpdateTrackingBranchOnPush() throws Exception {
 		makeChangesAndCommit(PROJ1);
-		FileRepository repository = lookupRepository(repositoryFile);
+		Repository repository = lookupRepository(repositoryFile);
 		ObjectId headId = repository.resolve(Constants.HEAD);
 
 		String trackingBranch = Constants.R_REMOTES + "origin/master";
@@ -17,7 +17,7 @@
 		SWTBotShell resultDialog = bot.shell(NLS.bind(UIText.ResultDialog_title, destinationString));
 		resultDialog.close();
 
-		FileRepository remoteRepository = lookupRepository(childRepositoryFile);
+		Repository remoteRepository = lookupRepository(childRepositoryFile);
 		ObjectId masterOnRemote = remoteRepository.resolve("master");
 		assertThat("Expected push to update branch on remote repository", masterOnRemote, is(headId));
 

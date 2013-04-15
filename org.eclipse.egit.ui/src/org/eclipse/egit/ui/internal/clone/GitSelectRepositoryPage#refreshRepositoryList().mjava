@@ -6,8 +6,8 @@
 			for (String dir : dirsAfter)
 				if (!dirsBefore.contains(dir))
 					try {
-						RepositoryNode node = new RepositoryNode(
-								null, new FileRepository(new File(dir)));
+						RepositoryNode node = new RepositoryNode(null,
+								FileRepositoryBuilder.create(new File(dir)));
 						tv.setSelection(new StructuredSelection(
 								node));
 					} catch (IOException e1) {

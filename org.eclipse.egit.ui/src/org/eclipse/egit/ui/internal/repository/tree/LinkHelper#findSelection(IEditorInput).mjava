@@ -23,7 +23,7 @@
 		for (String repo : repos) {
 			Repository repository;
 			try {
-				repository = new FileRepository(new File(repo));
+				repository = FileRepositoryBuilder.create(new File(repo));
 			} catch (IOException e) {
 				continue;
 			}

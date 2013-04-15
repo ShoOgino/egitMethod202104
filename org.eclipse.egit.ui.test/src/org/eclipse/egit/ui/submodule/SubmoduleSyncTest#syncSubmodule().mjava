@@ -9,7 +9,7 @@
 		assertProjectExistence(PROJ1, true);
 		refreshAndWait();
 		assertHasRepo(repositoryFile);
-		FileRepository repo = lookupRepository(repositoryFile);
+		Repository repo = lookupRepository(repositoryFile);
 
 		SubmoduleAddCommand command = new SubmoduleAddCommand(repo);
 		String path = "sub";

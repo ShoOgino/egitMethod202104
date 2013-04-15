@@ -6,7 +6,7 @@
 				"refs/heads/master", "origin", 0);
 		clop.run(null);
 
-		Repository clonedRepo = new FileRepository(new File(workdir2,
+		Repository clonedRepo = FileRepositoryBuilder.create(new File(workdir2,
 				Constants.DOT_GIT));
 		assertEquals(
 				"",

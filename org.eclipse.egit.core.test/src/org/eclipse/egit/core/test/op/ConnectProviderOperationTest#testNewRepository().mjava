@@ -1,7 +1,7 @@
 	@Test
 	public void testNewRepository() throws CoreException, IOException {
 
-		Repository repository = new FileRepository(gitDir);
+		Repository repository = FileRepositoryBuilder.create(gitDir);
 		repository.create();
 		repository.close();
 		ConnectProviderOperation operation = new ConnectProviderOperation(

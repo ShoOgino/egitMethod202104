@@ -10,7 +10,7 @@
 		clop.addPostCloneTask(new ConfigureFetchAfterCloneTask("origin",
 				"refs/notes/review:refs/notes/review"));
 		clop.run(null);
-		Repository clonedRepo = new FileRepository(new File(workdir2,
+		Repository clonedRepo = FileRepositoryBuilder.create(new File(workdir2,
 				Constants.DOT_GIT));
 		assertTrue(
 				clonedRepo.getConfig()

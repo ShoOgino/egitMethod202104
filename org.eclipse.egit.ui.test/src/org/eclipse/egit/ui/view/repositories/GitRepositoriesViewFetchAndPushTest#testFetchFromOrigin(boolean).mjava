@@ -5,7 +5,7 @@
 		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
 				clonedRepositoryFile2);
 
-		FileRepository repository = lookupRepository(clonedRepositoryFile2);
+		Repository repository = lookupRepository(clonedRepositoryFile2);
 		// add the configuration for push from cloned2
 		repository.getConfig().setString("remote", "origin", "push",
 				"refs/heads/*:refs/heads/*");

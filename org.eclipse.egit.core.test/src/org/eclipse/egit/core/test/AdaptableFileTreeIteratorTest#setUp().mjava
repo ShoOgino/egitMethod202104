@@ -2,7 +2,7 @@
 	public void setUp() throws Exception {
 		super.setUp();
 
-		repository = new FileRepository(gitDir);
+		repository = FileRepositoryBuilder.create(gitDir);
 		repository.create();
 
 		file = new File(project.getProject().getLocation().toFile(), "a.txt");

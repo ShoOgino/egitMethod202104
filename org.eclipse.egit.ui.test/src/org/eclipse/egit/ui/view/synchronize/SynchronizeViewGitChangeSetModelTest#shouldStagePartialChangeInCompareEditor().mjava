@@ -16,7 +16,7 @@
 
 
 		// then file FILE1 should be in index
-		FileRepository repo = lookupRepository(repositoryFile);
+		Repository repo = lookupRepository(repositoryFile);
 		Status status = new Git(repo).status().call();
 		assertThat(Long.valueOf(status.getChanged().size()),
 				is(Long.valueOf(1L)));

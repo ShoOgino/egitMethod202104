@@ -3,7 +3,7 @@
 		gitDir = createProjectAndCommitToRepository();
 		project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1);
 
-		FileRepository repo = lookupRepository(gitDir);
+		Repository repo = lookupRepository(gitDir);
 		git = new Git(repo);
 		indexDiffCacheEntry = Activator.getDefault().getIndexDiffCache()
 				.getIndexDiffCacheEntry(repo);

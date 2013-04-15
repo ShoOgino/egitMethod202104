@@ -1,6 +1,6 @@
 	@Test
 	public void shouldReturnChildren() throws Exception {
-		FileRepository repo = lookupRepository(leftRepoFile);
+		Repository repo = lookupRepository(leftRepoFile);
 		writeTrashFile(repo, "dir/a.txt", "trash");
 		writeTrashFile(repo, "dir/b.txt", "trash");
 		writeTrashFile(repo, "dir/c.txt", "trash");

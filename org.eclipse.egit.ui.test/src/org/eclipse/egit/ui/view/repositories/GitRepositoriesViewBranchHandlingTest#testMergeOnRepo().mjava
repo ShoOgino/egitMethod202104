@@ -12,7 +12,7 @@
 
 		String title = NLS.bind(
 				UIText.MergeTargetSelectionDialog_TitleMergeWithBranch,
-				new FileRepository(clonedRepositoryFile).getBranch());
+				FileRepositoryBuilder.create(clonedRepositoryFile).getBranch());
 
 		SWTBotShell mergeDialog = bot.shell(title);
 		// TODO do some merge here

@@ -9,7 +9,7 @@
 		assertProjectExistence(PROJ1, true);
 		refreshAndWait();
 		assertHasRepo(repositoryFile);
-		FileRepository repo = lookupRepository(repositoryFile);
+		Repository repo = lookupRepository(repositoryFile);
 		ObjectId repoHead = repo.resolve(Constants.HEAD);
 
 		SubmoduleAddCommand command = new SubmoduleAddCommand(repo);

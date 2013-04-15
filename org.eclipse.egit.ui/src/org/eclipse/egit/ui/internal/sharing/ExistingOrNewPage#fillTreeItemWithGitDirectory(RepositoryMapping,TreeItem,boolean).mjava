@@ -20,8 +20,8 @@
 			treeItem.setText(2, relativePath.toOSString());
 			try {
 				IProject project = m.getContainer().getProject();
-				FileRepository repo = new FileRepository(m
-						.getGitDirAbsolutePath().toFile());
+				Repository repo = new RepositoryBuilder().setGitDir(
+						m.getGitDirAbsolutePath().toFile()).build();
 				File workTree = repo.getWorkTree();
 				IPath workTreePath = Path.fromOSString(workTree
 						.getAbsolutePath());

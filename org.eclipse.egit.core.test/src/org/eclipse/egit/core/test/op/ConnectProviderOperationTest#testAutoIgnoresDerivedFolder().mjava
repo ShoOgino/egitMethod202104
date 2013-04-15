@@ -4,7 +4,7 @@
 		IEclipsePreferences p = InstanceScope.INSTANCE.getNode(Activator
 				.getPluginId());
 		p.putBoolean(GitCorePreferences.core_autoIgnoreDerivedResources, true);
-		Repository repository = new FileRepository(gitDir);
+		Repository repository = FileRepositoryBuilder.create(gitDir);
 		repository.create();
 		repository.close();
 		project.setBinFolderDerived();
