@@ -14,12 +14,9 @@
 
 		BasicConfigurationDialog.show(repository);
 
-		try {
-			if (ref != null && ref.getName().equals(repository.getFullBranch()))
-				ref = null;
-		} catch (IOException ignored) {
-			// Ignored
-		}
+		String currentFullBranch = getFullBranch(repository);
+		if (ref != null && ref.getName().equals(currentFullBranch))
+			ref = null;
 
 		if (ref == null) {
 			RebaseTargetSelectionDialog rebaseTargetSelectionDialog = new RebaseTargetSelectionDialog(
@@ -36,8 +33,8 @@
 		}
 
 		String jobname = NLS.bind(
-				UIText.RebaseCurrentRefCommand_RebasingCurrentJobName, ref
-						.getName());
+				UIText.RebaseCurrentRefCommand_RebasingCurrentJobName,
+				Repository.shortenRefName(currentFullBranch), ref.getName());
 		RebaseHelper.runRebaseJob(repository, jobname, ref);
 		return null;
 	}
