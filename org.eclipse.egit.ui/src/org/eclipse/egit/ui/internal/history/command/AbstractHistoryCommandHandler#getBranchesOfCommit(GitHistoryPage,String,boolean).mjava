@@ -1,4 +1,5 @@
-	private List<Ref> getBranchesOfCommit(GitHistoryPage page) {
+	private List<Ref> getBranchesOfCommit(GitHistoryPage page, String head,
+			boolean hideCurrentBranch) {
 		final List<Ref> branchesOfCommit = new ArrayList<Ref>();
 		IStructuredSelection selection = getSelection(page);
 		if (selection.isEmpty())
@@ -9,6 +10,8 @@
 		for (int i = 0; i < refCount; i++) {
 			Ref ref = commit.getRef(i);
 			String refName = ref.getName();
+			if (hideCurrentBranch && head != null && refName.equals(head))
+				continue;
 			if (refName.startsWith(Constants.R_HEADS)
 					|| refName.startsWith(Constants.R_REMOTES))
 				branchesOfCommit.add(ref);
