@@ -3,15 +3,22 @@
 			IProgressMonitor monitor) throws CoreException {
 		GitModelObject[] children = ((GitModelObjectContainer) getModelObject())
 				.getChildren();
-		List<ResourceTraversal> result = new ArrayList<ResourceTraversal>();
+		Set<ResourceTraversal> result = new LinkedHashSet<ResourceTraversal>();
+
+		final GitSynchronizeDataSet dataSet;
+		if (context instanceof GitSubscriberResourceMappingContext)
+			dataSet = ((GitSubscriberResourceMappingContext) context)
+					.getSyncData();
+		else
+			dataSet = null;
 
 		for (GitModelObject child : children) {
 			if (child.isContainer())
-				result.addAll(createTraversalForContainer(child));
+				result.addAll(createTraversalForContainer(child, dataSet));
 			else
-				result.add(createTraversalForFile(child));
+				result.add(createTraversalForFile(child, dataSet));
 		}
-		result.removeAll(Collections.singleton(null));
+
 		return result.toArray(new ResourceTraversal[result.size()]);
 	}
 

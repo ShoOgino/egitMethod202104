@@ -1,0 +1,19 @@
+	private ResourceTraversal createTraversalForFile(GitModelObject aChild, GitSynchronizeDataSet dataSet) {
+		IPath childLocation = aChild.getLocation();
+		IFile file = ROOT.getFileForLocation(childLocation);
+
+		if (file == null) {
+			file = ROOT.getFile(childLocation);
+		}
+
+		ResourceTraversal traversal = null;
+		if (dataSet == null)
+			traversal = new ResourceTraversal(new IResource[] { file },
+					DEPTH_ONE, ALLOW_MISSING_LOCAL);
+		else if (file != null && dataSet.shouldBeIncluded(file))
+			traversal = new ResourceTraversal(new IResource[] { file },
+					DEPTH_ONE, ALLOW_MISSING_LOCAL);
+
+		return traversal;
+	}
+

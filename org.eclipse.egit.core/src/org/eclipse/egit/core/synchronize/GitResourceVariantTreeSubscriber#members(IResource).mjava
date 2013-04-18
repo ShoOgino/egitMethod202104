@@ -6,7 +6,7 @@
 	 */
 	@Override
 	public IResource[] members(IResource res) throws TeamException {
-		if(res.getType() == IResource.FILE || !shouldBeIncluded(res))
+		if (res.getType() == IResource.FILE || !gsds.shouldBeIncluded(res))
 			return new IResource[0];
 
 		GitSynchronizeData gsd = gsds.getData(res.getProject());
