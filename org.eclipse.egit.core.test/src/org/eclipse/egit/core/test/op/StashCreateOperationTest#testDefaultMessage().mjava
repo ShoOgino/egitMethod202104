@@ -1,6 +1,8 @@
 	@Test
 	public void testDefaultMessage() throws Exception {
-		testUtils.addFileToProject(project.getProject(), "foo/a.txt", "some text");
+		IFile file = testUtils.addFileToProject(project.getProject(),
+				"foo/a.txt", "some text");
+		new AddToIndexOperation(Arrays.asList(file)).execute(null);
 		StashCreateOperation stashCreateOperation = new StashCreateOperation(repository);
 		stashCreateOperation.execute(null);
 

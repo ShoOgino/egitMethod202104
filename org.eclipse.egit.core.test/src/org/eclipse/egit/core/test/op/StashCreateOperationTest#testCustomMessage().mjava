@@ -1,6 +1,8 @@
 	@Test
 	public void testCustomMessage() throws Exception {
-		testUtils.addFileToProject(project.getProject(), "foo/a.txt", "some text");
+		IFile file = testUtils.addFileToProject(project.getProject(),
+				"foo/a.txt", "some text");
+		new AddToIndexOperation(Arrays.asList(file)).execute(null);
 		String message = "stash message";
 		StashCreateOperation stashCreateOperation = new StashCreateOperation(repository, message);
 		stashCreateOperation.execute(null);
