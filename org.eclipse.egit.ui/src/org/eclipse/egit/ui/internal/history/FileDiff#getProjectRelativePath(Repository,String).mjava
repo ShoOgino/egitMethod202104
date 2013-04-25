@@ -1,8 +1,5 @@
 	private String getProjectRelativePath(Repository db, String repoPath) {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot root = workspace.getRoot();
-		IPath absolutePath = new Path(db.getWorkTree().getAbsolutePath()).append(repoPath);
-		IResource resource = root.getFileForLocation(absolutePath);
+		IResource resource = ResourceUtil.getFileForLocation(db, repoPath);
 		if (resource == null)
 			return null;
 		return resource.getProjectRelativePath().toString();

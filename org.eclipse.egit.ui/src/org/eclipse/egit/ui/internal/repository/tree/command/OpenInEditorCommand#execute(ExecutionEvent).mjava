@@ -2,8 +2,7 @@
 		FileNode node = getSelectedNodes(event).get(0);
 		IPath path = new Path(node.getObject().getAbsolutePath());
 
-		IFile file = ResourcesPlugin.getWorkspace().getRoot()
-				.getFileForLocation(path);
+		IFile file = ResourceUtil.getFileForLocation(path);
 		if (file == null) {
 			IFileStore store = EFS.getLocalFileSystem().getStore(path);
 			try {

@@ -87,9 +87,8 @@
 				// if the file is not conflicting (as it was auto-merged)
 				// we will show the auto-merged (local) version
 
-				IPath locationPath = new Path(fit.getEntryFile().getPath());
-				final IFile file = ResourcesPlugin.getWorkspace().getRoot()
-						.getFileForLocation(locationPath);
+				IFile file = ResourceUtil.getFileForLocation(repository,
+						fit.getEntryPathString());
 				if (file == null)
 					// TODO in the future, we should be able to show a version
 					// for a non-workspace file as well
