@@ -1,0 +1,10 @@
+	private MenuItem createFindInMenuItem() {
+		final MenuItem menuItem = new MenuItem(prefsMenu, SWT.RADIO);
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				selectFindInItem(menuItem);
+			}
+		});
+		return menuItem;
+	}
+

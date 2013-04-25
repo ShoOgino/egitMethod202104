@@ -1,4 +1,4 @@
-	private void prefsItemChanged(int findin, MenuItem item) {
+	private void findInPreferenceChanged(int findin, MenuItem item) {
 		store.setValue(UIPreferences.FINDTOOLBAR_FIND_IN, findin);
 		if (store.needsSaving()){
 			try {
@@ -7,6 +7,7 @@
 				Activator.handleError(e.getMessage(), e, false);
 			}
 		}
+		allItem.setSelection(false);
 		commitIdItem.setSelection(false);
 		commentsItem.setSelection(false);
 		authorItem.setSelection(false);
