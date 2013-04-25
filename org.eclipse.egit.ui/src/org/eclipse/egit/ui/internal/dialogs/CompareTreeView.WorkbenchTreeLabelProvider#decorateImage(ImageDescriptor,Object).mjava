@@ -15,7 +15,10 @@
 				return UIIcons.ELCL16_DELETE;
 			}
 			if (equalContentPaths.contains(elementPath)) {
-				return UIIcons.ELCL16_SYNCED;
+				ImageDescriptor imageDesc = super.decorateImage(baseImage,
+						element);
+				return ImageDescriptor.createWithFlags(imageDesc,
+						SWT.IMAGE_DISABLE);
 			}
 			return super.decorateImage(baseImage, element);
 		}
