@@ -1,5 +1,6 @@
 	@After
 	public void tearDown() throws Exception {
+		ResourcesPlugin.getWorkspace().getRoot().delete(IResource.FORCE, null);
 		Activator.getDefault().getRepositoryCache().clear();
 		for (IProject project : createdProjects)
 			if (project.exists())
