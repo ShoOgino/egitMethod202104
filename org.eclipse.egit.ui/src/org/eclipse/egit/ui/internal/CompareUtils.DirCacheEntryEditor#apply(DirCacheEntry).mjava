@@ -1,26 +1,17 @@
 		@Override
 		public void apply(DirCacheEntry ent) {
 			ObjectInserter inserter = repo.newObjectInserter();
-			if (oldEntry != null)
-				ent.copyMetaData(oldEntry);
-			else
+			if (ent.getFileMode() != FileMode.REGULAR_FILE)
 				ent.setFileMode(FileMode.REGULAR_FILE);
 
-			ent.setLength(newContent.length);
+			ent.setLength(contentLength);
 			ent.setLastModified(System.currentTimeMillis());
-			InputStream in = new ByteArrayInputStream(newContent);
 			try {
-				ent.setObjectId(inserter.insert(Constants.OBJ_BLOB,
-						newContent.length, in));
+				ent.setObjectId(inserter.insert(Constants.OBJ_BLOB, content, 0,
+						contentLength));
 				inserter.flush();
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);
-			} finally {
-				try {
-					in.close();
-				} catch (IOException e) {
-					// ignore here
-				}
 			}
 		}
 
