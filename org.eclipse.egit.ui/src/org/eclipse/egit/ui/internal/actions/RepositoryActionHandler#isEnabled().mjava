@@ -1,0 +1,12 @@
+	/**
+	 * By default egit operates only on resources that map to a project shared
+	 * with egit. For linked resources the project that contains the link
+	 * target, if any, must be shared with egit.
+	 *
+	 * @return the projects hosting the selected resources
+	 */
+	@Override
+	public boolean isEnabled() {
+		return getProjectsForSelectedResources().length > 0;
+	}
+

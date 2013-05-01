@@ -1,0 +1,27 @@
+	@Test
+	public void testNoActionOnLinkedResources() throws Exception {
+		List<RepositoryActionHandler> handlers = getRepositoryActionHandlerList();
+		// Create a file outside any project or repository
+		File standaloneFile = new File(standaloneDirectory, LINKED_FILE);
+		write(standaloneFile, "Something");
+		// Create linked file in project that points the file above
+		IFile linkedFile = project.getFile(LINKED_FILE);
+		linkedFile.createLink(standaloneFile.toURI(),
+				IResource.ALLOW_MISSING_LOCAL, null);
+		// Prepare a mixed selection
+		Object[] mixedSelection = { linkedFile,
+				project.getFile(FILE1), project.getFile(FILE2) };
+		for (RepositoryActionHandler handler : handlers) {
+			handler.setSelection(new StructuredSelection(linkedFile));
+			assertFalse(
+					handler.getClass().getSimpleName()
+							+ " is enabled on a linked resource pointing outside any project and repository.",
+					handler.isEnabled());
+			handler.setSelection(new StructuredSelection(mixedSelection));
+			assertFalse(
+					handler.getClass().getSimpleName()
+							+ " is enabled when selection contains a linked resource pointing outside any project and repository.",
+					handler.isEnabled());
+		}
+	}
+

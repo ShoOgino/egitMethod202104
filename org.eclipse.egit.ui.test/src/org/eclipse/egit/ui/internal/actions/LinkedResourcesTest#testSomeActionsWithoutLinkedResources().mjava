@@ -1,0 +1,17 @@
+	@Test
+	public void testSomeActionsWithoutLinkedResources() throws Exception {
+		List<RepositoryActionHandler> handlers = getRepositoryActionHandlerList();
+		int count = 0;
+		IFile selection = project.getFile(FILE1);
+		for (RepositoryActionHandler handler: handlers) {
+			handler.setSelection(new StructuredSelection(selection));
+			if (handler.isEnabled())
+				count++;
+		}
+		// This sorts of test this test case: if no action is enabled,
+		// there's something wrong in our testing approach.
+		assertTrue(
+				"Some EGit action should be enabled, please review this test.",
+				count > 0);
+	}
+

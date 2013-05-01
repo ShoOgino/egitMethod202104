@@ -1,4 +1,10 @@
 	/**
+	 * Retrieve the list of projects that contains the selected resources. All
+	 * resources must actually map to a project shared with egit, otherwise an
+	 * empty array is returned. In case of a linked resource, the project
+	 * returned is the one that contains the link target and is shared with
+	 * egit, if any, otherwise an empty array is also returned.
+	 *
 	 * @param event
 	 * @return the projects hosting the selected resources
 	 * @throws ExecutionException

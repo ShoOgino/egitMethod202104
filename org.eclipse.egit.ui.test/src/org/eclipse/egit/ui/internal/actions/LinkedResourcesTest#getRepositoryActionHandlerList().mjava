@@ -1,0 +1,19 @@
+	private List<RepositoryActionHandler> getRepositoryActionHandlerList()
+			throws CoreException {
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.ui.commands");
+		IConfigurationElement[] elements = point.getConfigurationElements();
+		ArrayList<RepositoryActionHandler> result = new ArrayList<RepositoryActionHandler>();
+		for (IConfigurationElement e: elements) {
+			String categoryId = e.getAttribute("categoryId");
+			if ("org.eclipse.egit.ui.commandCategory".equals(categoryId)) {
+				if (e.getAttribute("defaultHandler") != null) {
+					Object o = e.createExecutableExtension("defaultHandler");
+					if (o instanceof RepositoryActionHandler)
+						result.add((RepositoryActionHandler) o);
+				}
+			}
+		}
+		return result;
+	}
+
