@@ -7,7 +7,9 @@
 		RevWalk rw = new RevWalk(repository);
 		try {
 			if (path.length() > 0) {
-				FollowFilter filter = FollowFilter.create(path);
+				DiffConfig diffConfig = repository.getConfig().get(
+						DiffConfig.KEY);
+				FollowFilter filter = FollowFilter.create(path, diffConfig);
 				rw.setTreeFilter(filter);
 			}
 

@@ -1,5 +1,5 @@
-	private FollowFilter createFollowFilter(String path) {
-		FollowFilter followFilter = FollowFilter.create(path);
+	private FollowFilter createFollowFilter(String path, DiffConfig diffConfig) {
+		FollowFilter followFilter = FollowFilter.create(path, diffConfig);
 		followFilter.setRenameCallback(new RenameCallback() {
 			@Override
 			public void renamed(DiffEntry entry) {
