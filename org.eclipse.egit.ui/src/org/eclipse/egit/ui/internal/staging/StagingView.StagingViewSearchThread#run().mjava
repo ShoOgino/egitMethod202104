@@ -1,0 +1,8 @@
+		public void run() {
+			synchronized (lock) {
+				if (currentThreadIx < globalThreadIndex)
+					return;
+				stagingView.refreshViewers();
+			}
+		}
+
