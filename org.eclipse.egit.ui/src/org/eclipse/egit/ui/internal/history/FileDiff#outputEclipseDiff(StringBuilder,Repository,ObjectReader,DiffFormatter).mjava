@@ -5,9 +5,10 @@
 			throw new UnsupportedOperationException(
 					"Not supported yet if the number of parents is different from one"); //$NON-NLS-1$
 
-		String projectRelativePath = getProjectRelativePath(db, getPath());
-		d.append("diff --git ").append(projectRelativePath).append(" ") //$NON-NLS-1$ //$NON-NLS-2$
-			.append(projectRelativePath).append("\n"); //$NON-NLS-1$
+		String projectRelativeNewPath = getProjectRelativePath(db, getNewPath());
+		String projectRelativeOldPath = getProjectRelativePath(db, getOldPath());
+		d.append("diff --git ").append(projectRelativeOldPath).append(" ") //$NON-NLS-1$ //$NON-NLS-2$
+				.append(projectRelativeNewPath).append("\n"); //$NON-NLS-1$
 		final ObjectId id1 = getBlobs()[0];
 		final ObjectId id2 = getBlobs()[1];
 		final FileMode mode1 = getModes()[0];
@@ -28,7 +29,7 @@
 			d.append("--- /dev/null\n"); //$NON-NLS-1$
 		else {
 			d.append("--- "); //$NON-NLS-1$
-			d.append(getProjectRelativePath(db, getPath()));
+			d.append(getProjectRelativePath(db, getOldPath()));
 			d.append("\n"); //$NON-NLS-1$
 		}
 
@@ -36,7 +37,7 @@
 			d.append("+++ /dev/null\n"); //$NON-NLS-1$
 		else {
 			d.append("+++ "); //$NON-NLS-1$
-			d.append(getProjectRelativePath(db, getPath()));
+			d.append(getProjectRelativePath(db, getNewPath()));
 			d.append("\n"); //$NON-NLS-1$
 		}
 
