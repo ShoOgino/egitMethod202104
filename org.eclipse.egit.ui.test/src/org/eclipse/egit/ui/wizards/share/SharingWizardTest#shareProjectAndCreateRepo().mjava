@@ -24,8 +24,8 @@
 
 		String repopath = workspace.getRoot().getProject(projectName0)
 				.getLocation().append(Constants.DOT_GIT).toOSString();
-		existingOrNewPage
-				.assertContents(true, projectName0, projectPath, repopath, "");
+		existingOrNewPage.assertContents(true, projectName0, projectPath,
+				".git", "");
 		existingOrNewPage.assertEnabling(false, false, true);
 
 		assertTrue((new File(repopath)).exists());
