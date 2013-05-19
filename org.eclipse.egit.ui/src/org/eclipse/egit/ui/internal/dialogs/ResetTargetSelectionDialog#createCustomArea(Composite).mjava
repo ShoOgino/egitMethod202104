@@ -92,8 +92,11 @@
 
 			public void selectionChanged(SelectionChangedEvent event) {
 				if (!event.getSelection().isEmpty()) {
-					anySha1.setText(refNameFromDialog());
-					anySha1.selectAll();
+					String refName = refNameFromDialog();
+					if (refName != null) {
+						anySha1.setText(refName);
+						anySha1.selectAll();
+					}
 				}
 			}
 		});
