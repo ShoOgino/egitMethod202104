@@ -4,32 +4,29 @@
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(main);
 		GridDataFactory.fillDefaults().grab(true, false).indent(5, 5)
 				.applyTo(main);
-		Label branchLabel = new Label(main, SWT.NONE);
-		branchLabel.setText(UIText.BranchConfigurationDialog_UpstreamBranchLabel);
-		branchText = new Combo(main, SWT.BORDER);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(branchText);
-
-		try {
-			for (Ref ref : myRepository.getRefDatabase()
-					.getRefs(Constants.R_HEADS).values())
-				branchText.add(ref.getName());
-			for (Ref ref : myRepository.getRefDatabase()
-					.getRefs(Constants.R_REMOTES).values())
-				branchText.add(ref.getName());
-		} catch (IOException e) {
-			Activator.logError(UIText.BranchConfigurationDialog_ExceptionGettingRefs, e);
-		}
 
 		Label remoteLabel = new Label(main, SWT.NONE);
 		remoteLabel.setText(UIText.BranchConfigurationDialog_RemoteLabel);
 		remoteText = new Combo(main, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(remoteText);
 
+		Label branchLabel = new Label(main, SWT.NONE);
+		branchLabel.setText(UIText.BranchConfigurationDialog_UpstreamBranchLabel);
+		branchText = new Combo(main, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(branchText);
+
 		// TODO do we have a constant somewhere?
 		remoteText.add("."); //$NON-NLS-1$
 		for (String remote : myConfig
 				.getSubsections(ConfigConstants.CONFIG_REMOTE_SECTION))
 			remoteText.add(remote);
+
+		remoteText.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateBranchItems();
+			}
+		});
 
 		rebase = new Button(main, SWT.CHECK);
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(rebase);
@@ -48,6 +45,7 @@
 		if (remote == null)
 			remote = ""; //$NON-NLS-1$
 		remoteText.setText(remote);
+		updateBranchItems();
 
 		boolean rebaseFlag = myConfig.getBoolean(
 				ConfigConstants.CONFIG_BRANCH_SECTION, myBranchName,

@@ -1,0 +1,19 @@
+	private void addBranchItems() {
+		String remote = remoteText.getText();
+		try {
+			if (remote.equals(".") || remote.length() == 0) //$NON-NLS-1$
+				// Add local branches only. Fetching from "." and then merging a
+				// remote ref does not make much sense, so don't offer it. If
+				// the user wants that, it can be entered manually.
+				addBranchItemsForLocal();
+			else
+				addBranchItemsForRemote(remote);
+		} catch (IOException e) {
+			Activator.logError(
+					UIText.BranchConfigurationDialog_ExceptionGettingRefs, e);
+		} catch (URISyntaxException e) {
+			Activator.logError(
+					UIText.BranchConfigurationDialog_ExceptionGettingRefs, e);
+		}
+	}
+
