@@ -4,8 +4,7 @@
 		Label directoryLabel = new Label(main, SWT.NONE);
 		directoryLabel.setText(UIText.CreateRepositoryPage_DirectoryLabel);
 		directoryText = new Text(main, SWT.BORDER);
-		directoryText.setText(Activator.getDefault().getPreferenceStore()
-				.getString(UIPreferences.DEFAULT_REPO_DIR));
+		directoryText.setText(UIUtils.getDefaultRepositoryDir());
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(directoryText);
 		Button browseButton = new Button(main, SWT.PUSH);
