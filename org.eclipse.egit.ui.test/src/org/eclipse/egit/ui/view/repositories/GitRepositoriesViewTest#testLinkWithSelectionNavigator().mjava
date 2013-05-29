@@ -1,5 +1,5 @@
 	@Test
-	public void testLinkWithSelection() throws Exception {
+	public void testLinkWithSelectionNavigator() throws Exception {
 		deleteAllProjects();
 		shareProjects(repositoryFile);
 		SWTBotPerspective perspective = null;
@@ -20,9 +20,7 @@
 			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
 
 			// activate the link with selection
-			getOrOpenView().toolbarButton(
-					myUtil.getPluginLocalizedValue("LinkWithSelectionCommand"))
-					.click();
+			toggleLinkWithSelection();
 
 			// the selection should be still be root
 			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
@@ -36,9 +34,7 @@
 			assertTrue(tree.selection().get(0, 0).equals(PROJ1));
 
 			// deactivate the link with selection
-			getOrOpenView().toolbarButton(
-					myUtil.getPluginLocalizedValue("LinkWithSelectionCommand"))
-					.click();
+			toggleLinkWithSelection();
 
 		} finally {
 			if (perspective != null)

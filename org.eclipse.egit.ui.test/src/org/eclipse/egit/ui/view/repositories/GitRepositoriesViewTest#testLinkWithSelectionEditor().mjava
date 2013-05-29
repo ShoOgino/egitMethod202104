@@ -4,7 +4,8 @@
 	 * @throws Exception
 	 */
 	@Test
-	public void testLinkWithEditor() throws Exception {
+	@Ignore("'Link with Selection' does not activate editor on selection change (bug 409722).")
+	public void testLinkWithSelectionEditor() throws Exception {
 		deleteAllProjects();
 		shareProjects(repositoryFile);
 		SWTBotPerspective perspective = null;
@@ -36,7 +37,8 @@
 			assertTrue(tree.selection().get(0, 0).startsWith(REPO1));
 
 			// activate the link with selection
-			getOrOpenView().toolbarButton("Link with Editor").click();
+			toggleLinkWithSelection();
+
 			bot.editorByTitle(FILE2).show();
 			// the selection should have changed to the latest editor
 			TestUtil.waitUntilTreeHasSelectedNodeWithText(bot, tree, FILE2, 10000);
@@ -46,7 +48,7 @@
 			TestUtil.waitUntilTreeHasSelectedNodeWithText(bot, tree, FILE1, 10000);
 
 			// deactivate the link with editor
-			getOrOpenView().toolbarButton("Link with Editor").click();
+			toggleLinkWithSelection();
 
 			bot.editorByTitle(FILE2).show();
 			// the selection should be still be test.txt
@@ -62,8 +64,8 @@
 			assertEquals(FILE1, bot.activeEditor().getTitle());
 
 			// activate again
-			SWTBotView repoView = getOrOpenView();
-			repoView.toolbarButton("Link with Editor").click();
+			toggleLinkWithSelection();
+
 			// make sure focus is here
 			// tried to remove this waitInUI but failed.
 			// tried setting focus, waiting for focus, joining RepositoriesView
@@ -80,7 +82,7 @@
 			TestUtil.waitUntilEditorIsActive(bot, bot.editorByTitle(FILE1), 10000);
 
 			// deactivate the link with editor
-			getOrOpenView().toolbarButton("Link with Editor").click();
+			toggleLinkWithSelection();
 
 			myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
 					.getNode(PROJ1).expand().getNode(FOLDER).expand().getNode(
