@@ -1,0 +1,24 @@
+	private void addBranchItemsForRemote(String remote) throws IOException,
+			URISyntaxException {
+		RemoteConfig remoteConfig = new RemoteConfig(myConfig, remote);
+		List<RefSpec> fetchSpecs = remoteConfig.getFetchRefSpecs();
+		if (fetchSpecs.isEmpty()) {
+			return;
+		}
+
+		Collection<Ref> allRefs = myRepository.getRefDatabase()
+				.getRefs(Constants.R_REFS).values();
+		for (Ref ref : allRefs) {
+			for (RefSpec fetchSpec : fetchSpecs) {
+				// Fetch specs map remote ref names (source) to local ref names
+				// (destination). We want to get remote ref names, so expand
+				// destination to source.
+				if (fetchSpec.matchDestination(ref)) {
+					RefSpec source = fetchSpec.expandFromDestination(ref);
+					String refNameOnRemote = source.getSource();
+					branchText.add(refNameOnRemote);
+				}
+			}
+		}
+	}
+

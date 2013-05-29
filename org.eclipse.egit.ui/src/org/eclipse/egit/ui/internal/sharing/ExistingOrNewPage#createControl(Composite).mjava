@@ -47,9 +47,9 @@
 			}
 		});
 
-		Button newRepo = new Button(externalComposite, SWT.PUSH);
-		newRepo.setText(UIText.ExistingOrNewPage_CreateRepositoryButton);
-		newRepo.addSelectionListener(new SelectionAdapter() {
+		Button createRepoWizard = new Button(externalComposite, SWT.PUSH);
+		createRepoWizard.setText(UIText.ExistingOrNewPage_CreateRepositoryButton);
+		createRepoWizard.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				NewRepositoryWizard wiz = new NewRepositoryWizard(true);
@@ -217,7 +217,7 @@
 					TreeItem treeItem = new TreeItem(tree, SWT.NONE);
 					updateProjectTreeItem(treeItem, project);
 					treeItem.setText(1, project.getLocation().toOSString());
-					treeItem.setData(new ProjectAndRepo(null, null));
+					treeItem.setData(new ProjectAndRepo(project, "")); //$NON-NLS-1$
 
 					TreeItem treeItem2 = new TreeItem(treeItem, SWT.NONE);
 					updateProjectTreeItem(treeItem2, project);
@@ -241,10 +241,10 @@
 			}
 		}
 
-		button = new Button(parentRepoComposite, SWT.PUSH);
-		button.setLayoutData(GridDataFactory.fillDefaults().create());
-		button.setText(UIText.ExistingOrNewPage_CreateButton);
-		button.addSelectionListener(new SelectionAdapter() {
+		createRepo = new Button(parentRepoComposite, SWT.PUSH);
+		createRepo.setLayoutData(GridDataFactory.fillDefaults().create());
+		createRepo.setText(UIText.ExistingOrNewPage_CreateButton);
+		createRepo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				File gitDir = new File(repositoryToCreate.getText(),
 						Constants.DOT_GIT);
@@ -279,7 +279,10 @@
 					org.eclipse.egit.ui.Activator.handleError(msg, e2, true);
 				}
 				for (TreeItem ti : tree.getSelection()) {
-					ti.setText(2, gitDir.toString());
+					IPath projectPath = new Path(ti.getText(1));
+					IPath gitPath = new Path(gitDir.toString());
+					IPath relative = gitPath.makeRelativeTo(projectPath);
+					ti.setText(2, relative.toOSString());
 					((ProjectAndRepo) ti.getData()).repo = gitDir.toString();
 					ti.setChecked(true);
 				}
@@ -293,12 +296,12 @@
 		repositoryToCreate.addListener(SWT.Modify, new Listener() {
 			public void handleEvent(Event e) {
 				if (repositoryToCreate.getText().equals("")) { //$NON-NLS-1$
-					button.setEnabled(false);
+					createRepo.setEnabled(false);
 					return;
 				}
 				IPath fromOSString = Path.fromOSString(repositoryToCreate
 						.getText());
-				button.setEnabled(minumumPath
+				createRepo.setEnabled(minumumPath
 						.matchingFirstSegments(fromOSString) == fromOSString
 						.segmentCount());
 			}

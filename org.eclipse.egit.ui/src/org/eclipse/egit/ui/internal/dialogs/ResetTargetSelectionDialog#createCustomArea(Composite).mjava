@@ -3,11 +3,104 @@
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(1, false));
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(main);
+
+		Group g2 = new Group(main, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(g2);
+		g2.setLayout(new GridLayout(2, false));
+		Label label = new Label(g2, SWT.NONE);
+		label.setText(UIText.ResetTargetSelectionDialog_ExpressionLabel);
+		anySha1 = new Text(g2, SWT.BORDER);
+		anySha1.setToolTipText(UIText.ResetTargetSelectionDialog_ExpressionTooltip);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(anySha1);
+
+		Group g3 = new Group(g2, SWT_NONE);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(g3);
+		g3.setLayout(new GridLayout(2, false));
+		new Label(g3, SWT.NONE).setText(UIText.ResetTargetSelectionDialog_CommitLabel);
+		sha1 = new Label(g3, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(sha1);
+		new Label(g3, SWT.NONE).setText(UIText.ResetTargetSelectionDialog_SubjectLabel);
+		subject = new Label(g3, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(subject);
+		new Label(g3, SWT.NONE).setText(UIText.ResetTargetSelectionDialog_AuthorLabel);
+		author = new Label(g3, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(author);
+		new Label(g3, SWT.NONE).setText(UIText.ResetTargetSelectionDialog_CommitterLabel);
+		committer = new Label(g3, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(committer);
+
 		Group g = new Group(main, SWT.NONE);
 		g.setText(UIText.ResetTargetSelectionDialog_ResetTypeGroup);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(g);
 		g.setLayout(new GridLayout(1, false));
 
+		anySha1.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				// Do nothing
+			}
+			public void focusGained(FocusEvent e) {
+				branchTree.setSelection(null);
+			}
+		});
+		anySha1.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				String text = anySha1.getText();
+				if (text.length() == 0) {
+					parsedCommitish = null;
+					setMessage(""); //$NON-NLS-1$
+					return;
+				}
+				try {
+					ObjectId resolved = repo.resolve(text+"^{commit}"); //$NON-NLS-1$
+					if (resolved == null) {
+						setMessage(
+								UIText.ResetTargetSelectionDialog_UnresolvableExpressionError,
+								IMessageProvider.ERROR);
+						getButton(OK).setEnabled(false);
+						parsedCommitish = null;
+						sha1.setText(""); //$NON-NLS-1$
+						subject.setText(""); //$NON-NLS-1$
+						author.setText(""); //$NON-NLS-1$
+						committer.setText(""); //$NON-NLS-1$
+						return;
+					} else {
+						setMessage(""); //$NON-NLS-1$
+						parsedCommitish = text;
+						getButton(OK).setEnabled(true);
+						RevWalk rw = new RevWalk(repo);
+						RevCommit commit = rw.parseCommit(resolved);
+						sha1.setText(AbbreviatedObjectId.fromObjectId(commit)
+								.name());
+						subject.setText(commit.getShortMessage());
+						author.setText(commit.getAuthorIdent().getName()
+								+ " <" //$NON-NLS-1$
+								+ commit.getAuthorIdent().getEmailAddress()
+								+ "> " + gitDateFormatter.formatDate(commit.getAuthorIdent())); //$NON-NLS-1$
+						committer.setText(commit.getCommitterIdent().getName()
+								+ " <" //$NON-NLS-1$
+								+ commit.getCommitterIdent().getEmailAddress()
+								+ "> " + gitDateFormatter.formatDate(commit.getCommitterIdent())); //$NON-NLS-1$
+						rw.dispose();
+					}
+				} catch (IOException e1) {
+					setMessage(e1.getMessage(), IMessageProvider.ERROR);
+					getButton(OK).setEnabled(false);
+					parsedCommitish = null;
+				}
+			}
+		});
+		branchTree.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (!event.getSelection().isEmpty()) {
+					String refName = refNameFromDialog();
+					if (refName != null) {
+						anySha1.setText(refName);
+						anySha1.selectAll();
+					}
+				}
+			}
+		});
 		Button soft = new Button(g, SWT.RADIO);
 		soft.setText(UIText.ResetTargetSelectionDialog_ResetTypeSoftButton);
 		soft.addListener(SWT.Selection, new Listener() {

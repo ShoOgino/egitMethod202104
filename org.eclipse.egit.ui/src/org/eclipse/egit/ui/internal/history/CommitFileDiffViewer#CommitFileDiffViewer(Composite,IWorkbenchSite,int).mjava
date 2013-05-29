@@ -19,6 +19,8 @@
 		Color bg = rawTable.getBackground();
 		RGB dimmedForegroundRgb = ColorUtil.blend(fg.getRGB(), bg.getRGB(), 60);
 
+		ColumnViewerToolTipSupport.enableFor(this);
+
 		setLabelProvider(new FileDiffLabelProvider(dimmedForegroundRgb));
 		setContentProvider(new FileDiffContentProvider());
 		addOpenListener(new IOpenListener() {
@@ -97,7 +99,7 @@
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();) {
-					String relativePath = it.next().getPath();
+					String relativePath = it.next().getNewPath();
 					String path = new Path(getRepository().getWorkTree()
 							.getAbsolutePath()).append(relativePath)
 							.toOSString();

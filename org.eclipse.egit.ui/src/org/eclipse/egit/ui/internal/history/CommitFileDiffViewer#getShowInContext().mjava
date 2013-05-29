@@ -10,7 +10,7 @@
 		List<Object> elements = new ArrayList<Object>();
 		for (Object selectedElement : selection.toList()) {
 			FileDiff fileDiff = (FileDiff) selectedElement;
-			IPath path = workTreePath.append(fileDiff.getPath());
+			IPath path = workTreePath.append(fileDiff.getNewPath());
 			IFile file = ResourceUtil.getFileForLocation(path);
 			if (file != null)
 				elements.add(file);

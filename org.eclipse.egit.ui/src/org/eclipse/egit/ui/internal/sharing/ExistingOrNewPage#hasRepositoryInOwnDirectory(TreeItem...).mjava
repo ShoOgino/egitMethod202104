@@ -1,0 +1,7 @@
+	private static boolean hasRepositoryInOwnDirectory(TreeItem... items) {
+		for (TreeItem item : items)
+			if (".git".equals(item.getText(2))) //$NON-NLS-1$
+				return true;
+		return false;
+	}
+

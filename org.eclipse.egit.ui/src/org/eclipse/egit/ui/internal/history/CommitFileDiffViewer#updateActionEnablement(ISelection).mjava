@@ -23,7 +23,8 @@
 			if (sel.size() == 1) {
 				FileDiff diff = (FileDiff) sel.getFirstElement();
 				String path = new Path(getRepository().getWorkTree()
-						.getAbsolutePath()).append(diff.getPath()).toOSString();
+						.getAbsolutePath()).append(diff.getNewPath())
+						.toOSString();
 				compareWorkingTreeVersion.setEnabled(new File(path).exists()
 						&& !submoduleSelected);
 			} else

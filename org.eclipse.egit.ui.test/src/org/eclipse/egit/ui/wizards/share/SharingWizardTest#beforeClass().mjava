@@ -7,8 +7,6 @@
 				ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile()
 						.getAbsoluteFile().toString());
 
-		if (bot.activeView().getTitle().equals("Welcome"))
-			bot.viewByTitle("Welcome").close();
 		bot.perspectiveById("org.eclipse.jdt.ui.JavaPerspective").activate();
 		bot.viewByTitle("Package Explorer").show();
 

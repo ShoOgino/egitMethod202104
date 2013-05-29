@@ -1,5 +1,6 @@
 	void showTwoWayFileDiff(final FileDiff d) {
-		final String p = d.getPath();
+		final String np = d.getNewPath();
+		final String op = d.getOldPath();
 		final RevCommit c = d.getCommit();
 
 		// extract commits
@@ -26,7 +27,7 @@
 
 
 		// determine (from a local available file) if a model compare is possible
-		IFile file = ResourceUtil.getFileForLocation(getRepository(), p);
+		IFile file = ResourceUtil.getFileForLocation(getRepository(), np);
 		if (file != null && leftCommit != null && rightCommit != null) {
 			if (!CompareUtils.canDirectlyOpenInCompare(file)) {
 				try {
@@ -41,8 +42,10 @@
 			}
 		}
 
-		final ITypedElement base = createTypedElement(p, leftCommit, baseObjectId);
-		final ITypedElement next = createTypedElement(p, rightCommit, rightObjectId);
+		final ITypedElement base = createTypedElement(op, leftCommit,
+				baseObjectId);
+		final ITypedElement next = createTypedElement(np, rightCommit,
+				rightObjectId);
 		CompareUtils.openInCompare(site.getWorkbenchWindow().getActivePage(),
 				new GitCompareFileRevisionEditorInput(next, base, null));
 	}

@@ -5,8 +5,10 @@
 		Composite comp = SWTUtils.createHVFillComposite(parent, SWTUtils.MARGINS_NONE, 1);
 		Composite group = SWTUtils.createHFillComposite(comp, SWTUtils.MARGINS_NONE, 1);
 
-		Button versions = SWTUtils.createRadioButton(group, Messages.GitScmUrlImportWizardPage_importVersion);
-		useMaster = SWTUtils.createRadioButton(group, Messages.GitScmUrlImportWizardPage_importMaster);
+		Button versions = SWTUtils.createRadioButton(group,
+				UIText.GitScmUrlImportWizardPage_importVersion);
+		useMaster = SWTUtils.createRadioButton(group,
+				UIText.GitScmUrlImportWizardPage_importMaster);
 		SelectionListener listener = new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				bundlesViewer.refresh(true);
