@@ -1,5 +1,8 @@
 	/**
-	 * Constructs {@link GitSynchronizeData} object
+	 * Constructs {@link GitSynchronizeData} object for all resources.
+	 * Equivalent to
+	 * <code>new GitSynchronizeData(repository, srcRev, dstRev, includeLocal, null)</code>
+	 * .
 	 *
 	 * @param repository
 	 * @param srcRev
@@ -11,32 +14,6 @@
 	 */
 	public GitSynchronizeData(Repository repository, String srcRev,
 			String dstRev, boolean includeLocal) throws IOException {
-		isNotNull(repository);
-		isNotNull(srcRev);
-		isNotNull(dstRev);
-		repo = repository;
-		this.srcRev = srcRev;
-		this.dstRev = dstRev;
-		this.includeLocal = includeLocal;
-
-		RemoteConfig srcRemoteConfig = extractRemoteName(srcRev);
-		RemoteConfig dstRemoteConfig = extractRemoteName(dstRev);
-
-		srcRemote = srcRemoteConfig.remote;
-		srcMerge = srcRemoteConfig.merge;
-
-		dstRemote = dstRemoteConfig.remote;
-		dstMerge = dstRemoteConfig.merge;
-
-		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();
-
-		projects = new HashSet<IProject>();
-		final IProject[] workspaceProjects = ROOT.getProjects();
-		for (IProject project : workspaceProjects) {
-			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
-			if (mapping != null && mapping.getRepository() == repo)
-				projects.add(project);
-		}
-		updateRevs();
+		this(repository, srcRev, dstRev, includeLocal, null);
 	}
 

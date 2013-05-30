@@ -1,21 +1,21 @@
-	private Map<Repository, Set<IContainer>> mapContainerResources(
+	private Map<Repository, Set<IResource>> mapContainerResources(
 			IResource[] resources) {
-		Map<Repository, Set<IContainer>> result = new HashMap<Repository, Set<IContainer>>();
+		Map<Repository, Set<IResource>> result = new HashMap<Repository, Set<IResource>>();
 
 		for (IResource resource : resources) {
 			RepositoryMapping rm = RepositoryMapping.getMapping(resource);
 			if (rm == null)
 				continue; // Linked resources may not be in a repo
 			if (resource instanceof IProject)
-				result.put(rm.getRepository(), new HashSet<IContainer>());
+				result.put(rm.getRepository(), new HashSet<IResource>());
 			else if (resource instanceof IContainer) {
-				Set<IContainer> containers = result.get(rm.getRepository());
+				Set<IResource> containers = result.get(rm.getRepository());
 				if (containers == null) {
-					containers = new HashSet<IContainer>();
+					containers = new HashSet<IResource>();
 					result.put(rm.getRepository(), containers);
-					containers.add((IContainer) resource);
+					containers.add(resource);
 				} else if (containers.size() > 0)
-					containers.add((IContainer) resource);
+					containers.add(resource);
 			}
 		}
 

@@ -10,9 +10,9 @@
 				GitSynchronizeData data = new GitSynchronizeData(
 						repo, HEAD, branchesEntry.getValue(),
 						shouldIncludeLocal);
-				Set<IContainer> containers = getSelectedContainers(repo);
-				if (containers != null && containers.size() > 0)
-					data.setIncludedPaths(containers);
+				Set<IResource> resources = getSelectedResources(repo);
+				if (resources != null && resources.size() > 0)
+					data.setIncludedResources(resources);
 				gsdSet.add(data);
 			} catch (IOException e) {
 				Activator.logError(e.getMessage(), e);

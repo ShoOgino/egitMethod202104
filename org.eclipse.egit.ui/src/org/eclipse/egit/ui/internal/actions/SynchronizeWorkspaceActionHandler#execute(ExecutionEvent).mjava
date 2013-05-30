@@ -1,6 +1,6 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IResource[] resources = getSelectedResources(event);
-		Map<Repository, Set<IContainer>> containerMap = mapContainerResources(resources);
+		Map<Repository, Set<IResource>> containerMap = mapContainerResources(resources);
 
 		if (containerMap.isEmpty())
 			return null;
@@ -8,14 +8,14 @@
 		boolean launchFetch = Activator.getDefault().getPreferenceStore()
 				.getBoolean(UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH);
 		GitSynchronizeDataSet gsdSet = new GitSynchronizeDataSet();
-		for (Entry<Repository, Set<IContainer>> entry : containerMap.entrySet())
+		for (Entry<Repository, Set<IResource>> entry : containerMap.entrySet())
 			try {
 				Repository repo = entry.getKey();
 				String dstRef = getDstRef(repo, launchFetch);
 				GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, dstRef, true);
-				Set<IContainer> containers = entry.getValue();
+				Set<IResource> containers = entry.getValue();
 				if (!containers.isEmpty())
-					data.setIncludedPaths(containers);
+					data.setIncludedResources(containers);
 
 				gsdSet.add(data);
 			} catch (IOException e) {

@@ -4,8 +4,8 @@
 			if (gsd.getPathFilter() == null)
 				roots.addAll(gsd.getProjects());
 			else
-				for (IContainer container : gsd.getIncludedPaths())
-					roots.add(container.getProject());
+				for (IResource resource : gsd.getIncludedResources())
+					roots.add(resource.getProject());
 
 		return roots.toArray(new IResource[roots.size()]);
 	}

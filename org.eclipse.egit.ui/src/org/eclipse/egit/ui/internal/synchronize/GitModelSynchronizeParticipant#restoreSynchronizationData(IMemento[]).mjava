@@ -8,12 +8,12 @@
 			String dstRev = child.getString(DST_REV_KEY);
 			boolean includeLocal = getBoolean(
 					child.getBoolean(INCLUDE_LOCAL_KEY), true);
-			Set<IContainer> includedPaths = getIncludedPaths(child);
+			Set<IResource> includedResources = getIncludedResources(child);
 			try {
 				GitSynchronizeData data = new GitSynchronizeData(repo, srcRev,
 						dstRev, includeLocal);
-				if (includedPaths != null)
-					data.setIncludedPaths(includedPaths);
+				if (includedResources != null)
+					data.setIncludedResources(includedResources);
 				gsds.add(data);
 			} catch (IOException e) {
 				Activator.logError(e.getMessage(), e);

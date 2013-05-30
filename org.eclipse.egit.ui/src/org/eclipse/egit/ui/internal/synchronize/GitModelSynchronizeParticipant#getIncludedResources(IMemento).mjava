@@ -1,14 +1,15 @@
-	private Set<IContainer> getIncludedPaths(IMemento memento) {
+	private Set<IResource> getIncludedResources(IMemento memento) {
 		IMemento child = memento.getChild(INCLUDED_PATHS_NODE_KEY);
-		Set<IContainer> result = new HashSet<IContainer>();
+		Set<IResource> result = new HashSet<IResource>();
 		if (child != null) {
 			IMemento[] pathNode = child.getChildren(INCLUDED_PATH_KEY);
 			if (pathNode != null) {
 				for (IMemento path : pathNode) {
 					String includedPath = path.getString(INCLUDED_PATH_KEY);
-					IContainer container = ResourcesPlugin.getWorkspace().getRoot()
-							.getContainerForLocation(new Path(includedPath));
-					result.add(container);
+					IResource resource = ResourceUtil
+							.getResourceForLocation(new Path(includedPath));
+					if (resource != null)
+						result.add(resource);
 				}
 				return result;
 			}

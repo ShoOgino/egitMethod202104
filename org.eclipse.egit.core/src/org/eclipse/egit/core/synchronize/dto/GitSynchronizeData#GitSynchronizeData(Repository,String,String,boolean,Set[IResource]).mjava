@@ -1,0 +1,58 @@
+	/**
+	 * Constructs a {@link GitSynchronizeData} object while restricting it to a
+	 * set of resources.
+	 *
+	 * @param repository
+	 * @param srcRev
+	 * @param dstRev
+	 * @param includeLocal
+	 * @param includedResources
+	 *            either the set of resources to include in synchronization or
+	 *            {@code null} to synchronize all resources.
+	 * @throws IOException
+	 */
+	public GitSynchronizeData(Repository repository, String srcRev,
+			String dstRev, boolean includeLocal,
+			Set<IResource> includedResources) throws IOException {
+		isNotNull(repository);
+		isNotNull(srcRev);
+		isNotNull(dstRev);
+		this.repo = repository;
+		this.srcRev = srcRev;
+		this.dstRev = dstRev;
+		this.includeLocal = includeLocal;
+
+		RemoteConfig srcRemoteConfig = extractRemoteName(srcRev);
+		RemoteConfig dstRemoteConfig = extractRemoteName(dstRev);
+
+		srcRemote = srcRemoteConfig.remote;
+		srcMerge = srcRemoteConfig.merge;
+
+		dstRemote = dstRemoteConfig.remote;
+		dstMerge = dstRemoteConfig.merge;
+
+		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();
+
+		projects = new HashSet<IProject>();
+		final Iterable<? extends IResource> includedResourceIterable;
+		if (includedResources == null)
+			// include all project in synchronization
+			includedResourceIterable = Arrays.asList(ROOT.getProjects());
+		else
+			includedResourceIterable = includedResources;
+		for (IResource res : includedResourceIterable) {
+			IProject project = res.getProject();
+			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+			if (mapping != null && mapping.getRepository() == repo)
+				projects.add(project);
+		}
+
+		// do not set field if includedResources is null, some methods expect
+		// #getIncludedResources() to return <null> to know it should
+		// synchronize all resources.
+		if (includedResources != null)
+			setIncludedResources(includedResources);
+
+		updateRevs();
+	}
+

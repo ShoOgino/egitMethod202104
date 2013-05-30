@@ -1,9 +1,9 @@
-	private Set<IContainer> getSelectedContainers(Repository repo) {
+	private Set<IResource> getSelectedResources(Repository repo) {
 		ISelectionService selectionService = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getSelectionService();
 		ISelection selection = selectionService.getSelection();
 		if (selection instanceof IStructuredSelection) {
-			Set<IContainer> result = new HashSet<IContainer>();
+			Set<IResource> result = new HashSet<IResource>();
 			IStructuredSelection sel = (IStructuredSelection) selection;
 			if (sel.size() == 0)
 				return null;
@@ -23,7 +23,7 @@
 					Repository selRepo = RepositoryMapping.getMapping(res)
 							.getRepository();
 					if (workTree.equals(selRepo.getWorkTree()))
-						result.add((IContainer) res);
+						result.add(res);
 				}
 			}
 
