@@ -1,0 +1,17 @@
+	private static ITypedElement getTypedElementFor(Repository repository, String gitPath, String rev) throws IOException {
+		final ITypedElement typedElement;
+		if (GitFileRevision.INDEX.equals(rev))
+			typedElement = getIndexTypedElement(repository, gitPath);
+		else if (Constants.HEAD.equals(rev))
+			typedElement = getHeadTypedElement(repository, gitPath);
+		else {
+			final ObjectId id = repository.resolve(rev);
+			final RevWalk rw = new RevWalk(repository);
+			final RevCommit revCommit = rw.parseCommit(id);
+			rw.release();
+			typedElement = getFileRevisionTypedElement(gitPath,
+					revCommit, repository);
+		}
+		return typedElement;
+	}
+

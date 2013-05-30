@@ -1,7 +1,0 @@
-	private static String getRepoRelativePath(Repository repository, File file) {
-		IPath workdirPath = new Path(repository.getWorkTree().getPath());
-		IPath filePath = new Path(file.getPath()).setDevice(null);
-		return filePath.removeFirstSegments(workdirPath.segmentCount())
-				.toString();
-	}
-

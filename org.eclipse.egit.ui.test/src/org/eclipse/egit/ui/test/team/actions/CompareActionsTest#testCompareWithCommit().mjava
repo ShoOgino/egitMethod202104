@@ -8,14 +8,27 @@
 		// use the default (the last commit) -> no changes
 		assertEquals(3, dialog.bot().table().rowCount());
 		dialog.bot().table().select(0);
+
+		JobJoiner jobJoiner = JobJoiner.startListening(
+				ISynchronizeManager.FAMILY_SYNCHRONIZE_OPERATION, 60,
+				TimeUnit.SECONDS);
 		dialog.bot().button(IDialogConstants.OK_LABEL).click();
-		TestUtil.waitUntilViewWithGivenIdShows(CompareTreeView.ID);
-		assertEquals(0, bot.viewById(CompareTreeView.ID).bot().tree()
-				.getAllItems().length);
+		jobJoiner.join();
+
+		closeFirstEmptySynchronizeDialog();
+
+		assertSynchronizeNoChange();
+
 		// use the second (previous) -> should have a change
 		dialog = openCompareWithDialog(compareWithCommitMenuText, dialogTitle);
 		dialog.bot().table().select(1);
+
+		jobJoiner = JobJoiner.startListening(
+				ISynchronizeManager.FAMILY_SYNCHRONIZE_OPERATION, 60,
+				TimeUnit.SECONDS);
 		dialog.bot().button(IDialogConstants.OK_LABEL).click();
-		waitUntilCompareTreeViewTreeHasNodeCount(1);
+		jobJoiner.join();
+
+		assertSynchronizeFile1Changed();
 	}
 

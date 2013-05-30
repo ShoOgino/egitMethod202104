@@ -9,28 +9,18 @@
 		if (dlg.open() != Window.OK)
 			return null;
 
-		if (resources.length == 1 && resources[0] instanceof IFile) {
-			final IFile baseFile = (IFile) resources[0];
+		final String commitId = dlg.getCommitId().getName();
 
-			try {
-				CompareUtils.compareWorkspaceWithRef(repo, baseFile, dlg
-						.getCommitId().getName(), null);
-			} catch (IOException e) {
-				Activator.handleError(
-								UIText.CompareWithRefAction_errorOnSynchronize,
-								e, true);
-			}
-		} else {
-			CompareTreeView view;
-			try {
-				view = (CompareTreeView) PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage().showView(
-								CompareTreeView.ID);
-				view.setInput(resources, dlg.getCommitId().name());
-			} catch (PartInitException e) {
-				Activator.handleError(e.getMessage(), e, true);
-			}
+		IWorkbenchPage workBenchPage = HandlerUtil
+				.getActiveWorkbenchWindowChecked(event).getActivePage();
+		try {
+			CompareUtils.compare(resources, repo, Constants.HEAD, commitId,
+					true, workBenchPage);
+		} catch (IOException e) {
+			Activator.handleError(
+					UIText.CompareWithRefAction_errorOnSynchronize, e, true);
 		}
+
 		return null;
 	}
 

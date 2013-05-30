@@ -42,18 +42,22 @@
 			if (revision == null)
 				ids.add(commit.getId());
 			else if (compareMode) {
+				final String dstRevCommit = commit.getId().getName();
+				IWorkbenchPage workBenchPage = HandlerUtil
+						.getActiveWorkbenchWindowChecked(event).getActivePage();
 				try {
-					IWorkbenchPage workBenchPage = HandlerUtil
-							.getActiveWorkbenchWindowChecked(event)
-							.getActivePage();
-					if (input instanceof IFile)
-						CompareUtils.compareWorkspaceWithRef(repository,
-								(IFile) input, commit.getId().getName(),
+					if (input instanceof IFile) {
+						final IResource[] resources = new IResource[] { (IFile) input, };
+						CompareUtils.compare(resources, repository,
+								Constants.HEAD, dstRevCommit, true,
 								workBenchPage);
-					else
-						CompareUtils.compareLocalWithRef(repository,
-								(File) input, commit.getId().getName(),
+					} else {
+						IPath location = new Path(
+								((File) input).getAbsolutePath());
+						CompareUtils.compare(location, repository,
+								Constants.HEAD, dstRevCommit, true,
 								workBenchPage);
+					}
 				} catch (IOException e) {
 					Activator.logError(UIText.GitHistoryPage_openFailed, e);
 					errorOccurred = true;

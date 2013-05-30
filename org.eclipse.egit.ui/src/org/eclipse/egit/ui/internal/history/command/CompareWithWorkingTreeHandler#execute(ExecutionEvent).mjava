@@ -9,19 +9,18 @@
 		Repository repository = getRepository(event);
 
 		try {
+			String dstRevCommit = commit.getId().getName();
 			IWorkbenchPage workBenchPage = HandlerUtil
 					.getActiveWorkbenchWindowChecked(event).getActivePage();
 			if (input instanceof IFile) {
-				IFile file = (IFile) input;
-				if (CompareUtils.canDirectlyOpenInCompare(file))
-					CompareUtils.compareWorkspaceWithRef(repository, file,
-							commit.getId().getName(), workBenchPage);
-				else
-					GitModelSynchronize.synchronizeModelWithWorkspace(file,
-							repository, commit.getName());
-			} else
-				CompareUtils.compareLocalWithRef(repository, (File) input,
-						commit.getId().getName(), workBenchPage);
+				IResource[] resources = new IResource[] { (IFile) input, };
+				CompareUtils.compare(resources, repository, Constants.HEAD,
+						dstRevCommit, true, workBenchPage);
+			} else {
+				IPath location = new Path(((File) input).getAbsolutePath());
+				CompareUtils.compare(location, repository, Constants.HEAD,
+						dstRevCommit, true, workBenchPage);
+			}
 		} catch (IOException e) {
 			Activator.handleError(
 					UIText.CompareWithRefAction_errorOnSynchronize, e, true);

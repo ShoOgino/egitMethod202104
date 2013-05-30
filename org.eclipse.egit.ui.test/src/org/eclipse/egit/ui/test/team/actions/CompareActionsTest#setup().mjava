@@ -5,6 +5,8 @@
 		perspective = bot.activePerspective();
 		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
 
+		disablePerspectiveSwitchPrompt();
+
 		TagBuilder tag = new TagBuilder();
 		tag.setTag("SomeTag");
 		tag.setTagger(RawParseUtils.parsePersonIdent(TestUtil.TESTAUTHOR));

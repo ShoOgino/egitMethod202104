@@ -1,12 +1,12 @@
 	/**
 	 * Opens a compare editor comparing the working directory version of the
-	 * given File with the version corresponding to {@code refName} of the same
-	 * file.
+	 * file at the given location with the version corresponding to
+	 * {@code refName} of the same file.
 	 *
 	 * @param repository
 	 *            The repository to load file revisions from.
-	 * @param file
-	 *            File to compare revisions for.
+	 * @param location
+	 *            Location of the file to compare revisions for.
 	 * @param refName
 	 *            Reference to compare with the workspace version of
 	 *            {@code file}. Can be either a commit ID, a reference or a
@@ -18,11 +18,11 @@
 	 *             If HEAD or {@code refName} can't be resolved in the given
 	 *             repository.
 	 */
-	public static void compareLocalWithRef(Repository repository, File file,
-			String refName, IWorkbenchPage page) throws IOException {
-		final String gitPath = getRepoRelativePath(repository, file);
-		final ITypedElement base = new LocalNonWorkspaceTypedElement(new Path(
-				file.getAbsolutePath()));
+	private static void compareLocalWithRef(Repository repository,
+			IPath location, String refName, IWorkbenchPage page)
+			throws IOException {
+		final String gitPath = RepositoryMapping.getMapping(location).getRepoRelativePath(location);
+		final ITypedElement base = new LocalNonWorkspaceTypedElement(location);
 
 		CompareEditorInput in = prepareCompareInput(repository, gitPath, base,
 				refName);

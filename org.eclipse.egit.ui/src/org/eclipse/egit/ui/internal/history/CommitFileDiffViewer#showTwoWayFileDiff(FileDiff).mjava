@@ -25,28 +25,35 @@
 			rightObjectId = d.getBlobs()[1];
 		}
 
-
-		// determine (from a local available file) if a model compare is possible
-		IFile file = ResourceUtil.getFileForLocation(getRepository(), np);
-		if (file != null && leftCommit != null && rightCommit != null) {
-			if (!CompareUtils.canDirectlyOpenInCompare(file)) {
-				try {
-					GitModelSynchronize.synchronizeModelBetweenRefs(file,
-							getRepository(), leftCommit.getName(),
-							rightCommit.getName());
-				} catch (Exception e) {
-					Activator.logError(UIText.GitHistoryPage_openFailed, e);
-					Activator.showError(UIText.GitHistoryPage_openFailed, null);
+		IWorkbenchPage page = site.getWorkbenchWindow().getActivePage();
+		if (leftCommit != null && rightCommit != null) {
+			IFile file = ResourceUtil.getFileForLocation(getRepository(), np);
+			try {
+				if (file != null) {
+					IResource[] resources = new IResource[] { file, };
+					CompareUtils.compare(resources, getRepository(),
+							leftCommit.getName(), rightCommit.getName(), false,
+							page);
+				} else {
+					IPath location = new Path(getRepository().getWorkTree()
+							.getAbsolutePath()).append(np);
+					CompareUtils.compare(location, getRepository(),
+							leftCommit.getName(), rightCommit.getName(), false,
+							page);
 				}
-				return;
+			} catch (Exception e) {
+				Activator.logError(UIText.GitHistoryPage_openFailed, e);
+				Activator.showError(UIText.GitHistoryPage_openFailed, null);
 			}
+			return;
 		}
 
+		// still happens on initial commits
 		final ITypedElement base = createTypedElement(op, leftCommit,
 				baseObjectId);
 		final ITypedElement next = createTypedElement(np, rightCommit,
 				rightObjectId);
-		CompareUtils.openInCompare(site.getWorkbenchWindow().getActivePage(),
-				new GitCompareFileRevisionEditorInput(next, base, null));
+		CompareUtils.openInCompare(page, new GitCompareFileRevisionEditorInput(
+				next, base, null));
 	}
 

@@ -3,20 +3,33 @@
 		String compareWithRefActionLabel = util
 				.getPluginLocalizedValue("CompareWithBranchOrTagAction.label");
 		String dialogTitle = UIText.CompareTargetSelectionDialog_WindowTitle;
-
 		SWTBotShell dialog = openCompareWithDialog(compareWithRefActionLabel,
 				dialogTitle);
+
 		// use the default (the last commit) -> no changes
+		JobJoiner jobJoiner = JobJoiner.startListening(
+				ISynchronizeManager.FAMILY_SYNCHRONIZE_OPERATION, 60,
+				TimeUnit.SECONDS);
 		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
 				.click();
-		waitUntilCompareTreeViewTreeHasNodeCount(0);
+		jobJoiner.join();
+
+		closeFirstEmptySynchronizeDialog();
+
+		assertSynchronizeNoChange();
 
 		// use the tag -> should have a change
 		dialog = openCompareWithDialog(compareWithRefActionLabel, dialogTitle);
 		dialog.bot().tree().getTreeItem(TAGS).expand().getNode("SomeTag")
 				.select();
+
+		jobJoiner = JobJoiner.startListening(
+				ISynchronizeManager.FAMILY_SYNCHRONIZE_OPERATION, 60,
+				TimeUnit.SECONDS);
 		dialog.bot().button(UIText.CompareTargetSelectionDialog_CompareButton)
 				.click();
-		waitUntilCompareTreeViewTreeHasNodeCount(1);
+		jobJoiner.join();
+
+		assertSynchronizeFile1Changed();
 	}
 

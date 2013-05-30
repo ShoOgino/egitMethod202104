@@ -1,0 +1,32 @@
+	/**
+	 * This can be used to compare a given file between two revisions.
+	 *
+	 * @param location
+	 *            Location of the file to compare.
+	 * @param repository
+	 *            The repository to load file revisions from.
+	 * @param srcRev
+	 *            Source revision of the comparison (or "left" side). Won't be
+	 *            used if <code>includeLocal</code> is <code>true</code>.
+	 * @param dstRev
+	 *            Destination revision of the comparison ("right" side).
+	 * @param includeLocal
+	 *            If <code>true</code>, this will use the local data as the
+	 *            "left" side of the comparison.
+	 * @param page
+	 *            If not {@null} try to re-use a compare editor on this
+	 *            page if any is available. Otherwise open a new one.
+	 * @throws IOException
+	 */
+	public static void compare(IPath location, Repository repository,
+			String srcRev, String dstRev, boolean includeLocal,
+			IWorkbenchPage page) throws IOException {
+		if (includeLocal)
+			compareLocalWithRef(repository, location, dstRev, page);
+		else {
+			final String gitPath = RepositoryMapping.getMapping(location)
+					.getRepoRelativePath(location);
+			compareBetween(repository, gitPath, srcRev, dstRev, page);
+		}
+	}
+
