@@ -1,7 +1,7 @@
-	private List<Ref> getBranchesExcludingCurrent(GitHistoryPage page,
+	private List<Ref> getBranches(GitHistoryPage page,
 			Repository repo) {
 		try {
-			return getBranchesOfCommit(page, repo, true);
+			return getBranchesOfCommit(page, repo, false);
 		} catch (IOException e) {
 			// ignore, use commit name
 			return Collections.<Ref> emptyList();
