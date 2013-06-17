@@ -28,6 +28,9 @@
 				} finally {
 					walk.dispose();
 				}
+
+				if (input.getSingleFile() != null)
+					fileViewer.selectFirstInterestingElement();
 			}
 		});
 		commentViewer
