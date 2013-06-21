@@ -223,12 +223,31 @@
 			sourceViewer.addTextListener(new ITextListener() {
 
 				public void textChanged(TextEvent event) {
+					textWidget.setStyleRanges(
+							new StyleRange[0]);
+					for (StyleRange styleRange : UIUtils
+							.getHyperlinkDetectorStyleRanges(
+									sourceViewer,
+									configuration
+											.getHyperlinkDetectors(sourceViewer)))
+						textWidget.setStyleRange(styleRange);
 					if (undoAction != null)
 						undoAction.update();
 					if (redoAction != null)
 						redoAction.update();
 				}
 			});
+
+		// set the cursor when hovering over a link
+		textWidget.addListener(SWT.MouseMove, new Listener() {
+			public void handleEvent(final Event e) {
+				StyleRange styleRange = getStyleRange(e.x, e.y);
+				if (styleRange != null && styleRange.underline)
+					textWidget.setCursor(SYS_LINK_CURSOR);
+				else
+					textWidget.setCursor(sys_normalCursor);
+			}
+		});
 
 		textWidget.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent disposeEvent) {

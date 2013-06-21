@@ -1,5 +1,5 @@
 	CommitMessageViewer(final Composite parent, final IPageSite site, IWorkbenchPartSite partSite) {
-		super(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
+		super(parent, null, SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
 		this.partSite = partSite;
 
 		final StyledText t = getTextWidget();
@@ -10,10 +10,13 @@
 		// set the cursor when hovering over a link
 		t.addListener(SWT.MouseMove, new Listener() {
 			public void handleEvent(final Event e) {
-				if (getStyleRange(e.x, e.y) instanceof ObjectLink)
+				StyleRange styleRange = getStyleRange(e.x, e.y);
+				if (styleRange != null && styleRange.underline)
 					t.setCursor(SYS_LINK_CURSOR);
 				else
 					t.setCursor(sys_normalCursor);
+				for (StyleRange sr : styleRanges)
+					getTextWidget().setStyleRange(sr);
 			}
 		});
 		// react on link click

@@ -16,6 +16,7 @@
 		getTextWidget().setFont(UIUtils
 				.getFont(UIPreferences.THEME_CommitMessageEditorFont));
 
+		sys_normalCursor = sourceViewer.getTextWidget().getCursor();
 		int endSpacing = 2;
 		int textWidth = getCharWidth() * MAX_LINE_WIDTH + endSpacing;
 		int textHeight = getLineHeight() * 7;
@@ -52,11 +53,35 @@
 
 		Document document = new Document(initialText);
 
-		sourceViewer.configure(new TextSourceViewerConfiguration(EditorsUI
+		configuration = new TextSourceViewerConfiguration(
+				EditorsUI
 				.getPreferenceStore()) {
+
+			public int getHyperlinkStateMask(ISourceViewer targetViewer) {
+				return SWT.NONE;
+			}
 
 			protected Map getHyperlinkDetectorTargets(ISourceViewer targetViewer) {
 				return getHyperlinkTargets();
+			}
+
+			@Override
+			public IHyperlinkPresenter getHyperlinkPresenter(
+					ISourceViewer targetViewer) {
+				return new MultipleHyperlinkPresenter(PlatformUI.getWorkbench()
+						.getDisplay().getSystemColor(SWT.COLOR_BLUE).getRGB()) {
+
+					@Override
+					public void hideHyperlinks() {
+						// We want links to always show.
+					}
+
+				};
+			}
+
+			public IHyperlinkDetector[] getHyperlinkDetectors(
+					ISourceViewer targetViewer) {
+				return getRegisteredHyperlinkDetectors(sourceViewer);
 			}
 
 			@Override
@@ -76,8 +101,15 @@
 				return assistant;
 			}
 
-		});
+		};
+
+		sourceViewer.configure(configuration);
 		sourceViewer.setDocument(document, annotationModel);
+
+		for (StyleRange styleRange : UIUtils
+				.getHyperlinkDetectorStyleRanges(sourceViewer,
+						configuration.getHyperlinkDetectors(sourceViewer)))
+			sourceViewer.getTextWidget().setStyleRange(styleRange);
 
 		configureContextMenu();
 

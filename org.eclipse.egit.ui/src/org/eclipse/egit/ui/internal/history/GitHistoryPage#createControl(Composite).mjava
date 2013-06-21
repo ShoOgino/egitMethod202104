@@ -44,6 +44,35 @@
 
 		revInfoSplit = new SashForm(graphDetailSplit, SWT.HORIZONTAL);
 		commentViewer = new CommitMessageViewer(revInfoSplit, getSite(), getPartSite());
+
+		TextSourceViewerConfiguration configuration = new TextSourceViewerConfiguration(
+				EditorsUI.getPreferenceStore()) {
+
+			public int getHyperlinkStateMask(ISourceViewer sourceViewer) {
+				return SWT.NONE;
+			}
+
+			@Override
+			public IHyperlinkPresenter getHyperlinkPresenter(
+					ISourceViewer sourceViewer) {
+				return new MultipleHyperlinkPresenter(PlatformUI.getWorkbench()
+						.getDisplay().getSystemColor(SWT.COLOR_BLUE).getRGB()) {
+
+					@Override
+					public void hideHyperlinks() {
+						// We want links to always show.
+					}
+
+				};
+			}
+
+			public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
+				return getRegisteredHyperlinkDetectors(sourceViewer);
+			}
+		};
+
+		commentViewer.configure(configuration);
+
 		fileViewer = new CommitFileDiffViewer(revInfoSplit, getSite());
 		findToolbar = new FindToolbar(historyControl);
 
