@@ -1,0 +1,10 @@
+	private IBaseLabelProvider createLabelProvider(TreeViewer treeViewer) {
+		StagingViewLabelProvider baseProvider = new StagingViewLabelProvider(
+				this);
+		baseProvider.setFileNameMode(getPreferenceStore().getBoolean(
+				UIPreferences.STAGING_VIEW_FILENAME_MODE));
+
+		ProblemLabelDecorator decorator = new ProblemLabelDecorator(treeViewer);
+		return new TreeDecoratingLabelProvider(baseProvider, decorator);
+	}
+

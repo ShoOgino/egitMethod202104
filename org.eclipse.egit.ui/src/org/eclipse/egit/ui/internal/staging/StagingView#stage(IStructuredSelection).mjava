@@ -1,29 +1,24 @@
 	private void stage(IStructuredSelection selection) {
+		StagingViewContentProvider contentProvider = getContentProvider(unstagedViewer);
 		Git git = new Git(currentRepository);
 		Iterator iterator = selection.iterator();
 		List<String> addPaths = new ArrayList<String>();
 		List<String> rmPaths = new ArrayList<String>();
+		resetPathsToExpand();
 		while (iterator.hasNext()) {
 			Object element = iterator.next();
 			if (element instanceof StagingEntry) {
 				StagingEntry entry = (StagingEntry) element;
-				switch (entry.getState()) {
-				case ADDED:
-				case CHANGED:
-				case REMOVED:
-					// already staged
-					break;
-				case CONFLICTING:
-				case MODIFIED:
-				case PARTIALLY_MODIFIED:
-				case UNTRACKED:
-					addPaths.add(entry.getPath());
-					break;
-				case MISSING:
-				case MISSING_AND_CHANGED:
-					rmPaths.add(entry.getPath());
-					break;
-				}
+				selectEntryForStaging(entry, addPaths, rmPaths);
+				addPathAndParentPaths(entry.getParentPath(), pathsToExpandInStaged);
+			} else if (element instanceof StagingFolderEntry) {
+				StagingFolderEntry folder = (StagingFolderEntry) element;
+				List<StagingEntry> entries = contentProvider
+						.getStagingEntriesFiltered(folder);
+				for (StagingEntry entry : entries)
+					selectEntryForStaging(entry, addPaths, rmPaths);
+				addExpandedPathsBelowFolder(folder, unstagedViewer,
+						pathsToExpandInStaged);
 			} else {
 				IResource resource = AdapterUtils.adapt(element, IResource.class);
 				if (resource != null) {

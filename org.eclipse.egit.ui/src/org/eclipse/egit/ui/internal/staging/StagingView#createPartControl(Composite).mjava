@@ -34,29 +34,30 @@
 		unstagedSection = toolkit.createSection(stagingSashForm,
 				ExpandableComposite.TITLE_BAR);
 
-		Composite unstagedTableComposite = toolkit
-				.createComposite(unstagedSection);
-		toolkit.paintBordersFor(unstagedTableComposite);
-		unstagedSection.setClient(unstagedTableComposite);
-		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
-				.applyTo(unstagedTableComposite);
+		createUnstagedToolBarComposite();
 
-		unstagedTableViewer = new TableViewer(toolkit.createTable(
-				unstagedTableComposite, SWT.FULL_SELECTION | SWT.MULTI));
+		Composite unstagedComposite = toolkit
+				.createComposite(unstagedSection);
+		toolkit.paintBordersFor(unstagedComposite);
+		unstagedSection.setClient(unstagedComposite);
+		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
+				.applyTo(unstagedComposite);
+
+		unstagedViewer = createTree(unstagedComposite);
 		GridDataFactory.fillDefaults().grab(true, true)
-				.applyTo(unstagedTableViewer.getControl());
-		unstagedTableViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
+				.applyTo(unstagedViewer.getControl());
+		unstagedViewer.getTree().setData(FormToolkit.KEY_DRAW_BORDER,
 				FormToolkit.TREE_BORDER);
-		unstagedTableViewer.getTable().setLinesVisible(true);
-		unstagedTableViewer.setLabelProvider(createLabelProvider(unstagedTableViewer));
-		unstagedTableViewer.setContentProvider(new StagingViewContentProvider(
+		unstagedViewer.getTree().setLinesVisible(true);
+		unstagedViewer.setLabelProvider(createLabelProvider(unstagedViewer));
+		unstagedViewer.setContentProvider(new StagingViewContentProvider(this,
 				true));
-		unstagedTableViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY
+		unstagedViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY
 				| DND.DROP_LINK,
 				new Transfer[] { LocalSelectionTransfer.getTransfer(),
 						FileTransfer.getInstance() }, new StagingDragListener(
-						unstagedTableViewer));
-		unstagedTableViewer.addDropSupport(DND.DROP_MOVE,
+						unstagedViewer));
+		unstagedViewer.addDropSupport(DND.DROP_MOVE,
 				new Transfer[] { LocalSelectionTransfer.getTransfer() },
 				new DropTargetAdapter() {
 					public void drop(DropTargetEvent event) {
@@ -67,8 +68,7 @@
 						event.detail = DND.DROP_COPY;
 						if (event.data instanceof IStructuredSelection) {
 							final IStructuredSelection selection = (IStructuredSelection) event.data;
-							if (selection.getFirstElement() instanceof StagingEntry)
-								unstage(selection);
+							unstage(selection);
 						}
 					}
 
@@ -76,7 +76,7 @@
 						event.detail = DND.DROP_MOVE;
 					}
 				});
-		unstagedTableViewer.addOpenListener(new IOpenListener() {
+		unstagedViewer.addOpenListener(new IOpenListener() {
 			public void open(OpenEvent event) {
 				compareWith(event);
 			}
@@ -89,14 +89,7 @@
 		Composite commitMessageToolbarComposite = toolkit
 				.createComposite(commitMessageSection);
 		commitMessageToolbarComposite.setBackground(null);
-		RowLayout commitMessageRowLayout = new RowLayout();
-		commitMessageRowLayout.marginHeight = 0;
-		commitMessageRowLayout.marginWidth = 0;
-		commitMessageRowLayout.marginTop = 0;
-		commitMessageRowLayout.marginBottom = 0;
-		commitMessageRowLayout.marginLeft = 0;
-		commitMessageRowLayout.marginRight = 0;
-		commitMessageToolbarComposite.setLayout(commitMessageRowLayout);
+		commitMessageToolbarComposite.setLayout(createRowLayoutWithoutMargin());
 		commitMessageSection.setTextClient(commitMessageToolbarComposite);
 		ToolBarManager commitMessageToolBarManager = new ToolBarManager(
 				SWT.FLAT | SWT.HORIZONTAL);
@@ -245,28 +238,30 @@
 
 		stagedSection = toolkit.createSection(stagingSashForm,
 				ExpandableComposite.TITLE_BAR);
-		Composite stagedTableComposite = toolkit.createComposite(stagedSection);
-		toolkit.paintBordersFor(stagedTableComposite);
-		stagedSection.setClient(stagedTableComposite);
-		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
-				.applyTo(stagedTableComposite);
 
-		stagedTableViewer = new TableViewer(toolkit.createTable(
-				stagedTableComposite, SWT.FULL_SELECTION | SWT.MULTI));
+		createStagedToolBarComposite();
+
+		Composite stagedComposite = toolkit.createComposite(stagedSection);
+		toolkit.paintBordersFor(stagedComposite);
+		stagedSection.setClient(stagedComposite);
+		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
+				.applyTo(stagedComposite);
+
+		stagedViewer = createTree(stagedComposite);
 		GridDataFactory.fillDefaults().grab(true, true)
-				.applyTo(stagedTableViewer.getControl());
-		stagedTableViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
+				.applyTo(stagedViewer.getControl());
+		stagedViewer.getTree().setData(FormToolkit.KEY_DRAW_BORDER,
 				FormToolkit.TREE_BORDER);
-		stagedTableViewer.getTable().setLinesVisible(true);
-		stagedTableViewer.setLabelProvider(createLabelProvider(stagedTableViewer));
-		stagedTableViewer.setContentProvider(new StagingViewContentProvider(
+		stagedViewer.getTree().setLinesVisible(true);
+		stagedViewer.setLabelProvider(createLabelProvider(stagedViewer));
+		stagedViewer.setContentProvider(new StagingViewContentProvider(this,
 				false));
-		stagedTableViewer.addDragSupport(
+		stagedViewer.addDragSupport(
 				DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK,
 				new Transfer[] { LocalSelectionTransfer.getTransfer(),
 						FileTransfer.getInstance() }, new StagingDragListener(
-						stagedTableViewer));
-		stagedTableViewer.addDropSupport(DND.DROP_MOVE,
+						stagedViewer));
+		stagedViewer.addDropSupport(DND.DROP_MOVE,
 				new Transfer[] { LocalSelectionTransfer.getTransfer() },
 				new DropTargetAdapter() {
 					public void drop(DropTargetEvent event) {
@@ -292,7 +287,7 @@
 						event.detail = DND.DROP_MOVE;
 					}
 				});
-		stagedTableViewer.addOpenListener(new IOpenListener() {
+		stagedViewer.addOpenListener(new IOpenListener() {
 			public void open(OpenEvent event) {
 				compareWith(event);
 			}
@@ -330,8 +325,8 @@
 		updateToolbar();
 		enableCommitWidgets(false);
 
-		createPopupMenu(unstagedTableViewer);
-		createPopupMenu(stagedTableViewer);
+		createPopupMenu(unstagedViewer);
+		createPopupMenu(stagedViewer);
 
 		final ICommitMessageComponentNotifications listener = new ICommitMessageComponentNotifications() {
 
@@ -393,27 +388,22 @@
 				selectionChangedListener.selectionChanged(part, selection);
 		}
 
-		site.setSelectionProvider(unstagedTableViewer);
+		site.setSelectionProvider(unstagedViewer);
 
 		ViewerFilter filter = new ViewerFilter() {
 			@Override
 			public boolean select(Viewer viewer, Object parentElement,
 					Object element) {
-				if (element instanceof StagingEntry) {
-					if (filterText != null && filterText.getText() != null
-							&& filterText.getText().trim().length() > 0) {
-						return ((StagingEntry) element)
-								.getPath()
-								.toUpperCase()
-								.contains(
-										filterText.getText().trim()
-												.toUpperCase());
-					}
-				}
+				StagingViewContentProvider contentProvider = getContentProvider((TreeViewer) viewer);
+				if (element instanceof StagingEntry)
+					return contentProvider.isInFilter((StagingEntry) element);
+				else if (element instanceof StagingFolderEntry)
+					return contentProvider
+							.hasVisibleChildren((StagingFolderEntry) element);
 				return true;
 			}
 		};
-		unstagedTableViewer.addFilter(filter);
-		stagedTableViewer.addFilter(filter);
+		unstagedViewer.addFilter(filter);
+		stagedViewer.addFilter(filter);
 	}
 

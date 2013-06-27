@@ -13,7 +13,6 @@
 		IFile file = getFileForLocationURI(root, uri);
 		if (file != null)
 			return file;
-		IContainer[] containers = root.findContainersForLocationURI(uri);
-		return getExistingResourceWithShortestPath(containers);
+		return getContainerForLocationURI(root, uri);
 	}
 

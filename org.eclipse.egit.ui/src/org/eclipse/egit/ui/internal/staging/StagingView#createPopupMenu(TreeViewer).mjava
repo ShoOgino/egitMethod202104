@@ -1,0 +1,108 @@
+	private void createPopupMenu(final TreeViewer treeViewer) {
+		final MenuManager menuMgr = new MenuManager();
+		menuMgr.setRemoveAllWhenShown(true);
+		Control control = treeViewer.getControl();
+		control.setMenu(menuMgr.createContextMenu(control));
+		menuMgr.addMenuListener(new IMenuListener() {
+
+			public void menuAboutToShow(IMenuManager manager) {
+				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				if (selection.isEmpty())
+					return;
+
+				List<StagingEntry> stagingEntryList = new ArrayList<StagingEntry>();
+
+				boolean submoduleSelected = false;
+				boolean folderSelected = false;
+				for (Object element : selection.toArray()) {
+					if (element instanceof StagingFolderEntry) {
+						StagingFolderEntry folder = (StagingFolderEntry) element;
+						folderSelected = true;
+						StagingViewContentProvider contentProvider = getContentProvider(treeViewer);
+						List<StagingEntry> stagingEntries = contentProvider
+								.getStagingEntriesFiltered(folder);
+						for (StagingEntry stagingEntry : stagingEntries) {
+							if (!stagingEntryList.contains(stagingEntry))
+								stagingEntryList.add(stagingEntry);
+						}
+					} else if (element instanceof StagingEntry) {
+						StagingEntry entry = (StagingEntry) element;
+						if (entry.isSubmodule())
+							submoduleSelected = true;
+						if (!stagingEntryList.contains(entry))
+							stagingEntryList.add(entry);
+					}
+				}
+
+				final IStructuredSelection fileSelection = new StructuredSelection(
+						stagingEntryList);
+
+				if (!folderSelected) {
+					Action openWorkingTreeVersion = new Action(
+							UIText.CommitFileDiffViewer_OpenWorkingTreeVersionInEditorMenuLabel) {
+						@Override
+						public void run() {
+							openSelectionInEditor(fileSelection);
+						}
+					};
+					openWorkingTreeVersion.setEnabled(!submoduleSelected);
+					menuMgr.add(openWorkingTreeVersion);
+				}
+
+				Set<StagingEntry.Action> availableActions = getAvailableActions(fileSelection);
+
+				boolean addReplaceWithFileInGitIndex = availableActions.contains(StagingEntry.Action.REPLACE_WITH_FILE_IN_GIT_INDEX);
+				boolean addReplaceWithHeadRevision = availableActions.contains(StagingEntry.Action.REPLACE_WITH_HEAD_REVISION);
+				boolean addStage = availableActions.contains(StagingEntry.Action.STAGE);
+				boolean addUnstage = availableActions.contains(StagingEntry.Action.UNSTAGE);
+				boolean addDelete = availableActions.contains(StagingEntry.Action.DELETE);
+				boolean addIgnore = availableActions.contains(StagingEntry.Action.IGNORE);
+				boolean addLaunchMergeTool = availableActions.contains(StagingEntry.Action.LAUNCH_MERGE_TOOL);
+
+				if (addStage)
+					menuMgr.add(new Action(UIText.StagingView_StageItemMenuLabel) {
+						@Override
+						public void run() {
+							stage(fileSelection);
+						}
+					});
+				if (addUnstage)
+					menuMgr.add(new Action(UIText.StagingView_UnstageItemMenuLabel) {
+						@Override
+						public void run() {
+							unstage(fileSelection);
+						}
+					});
+				boolean selectionIncludesNonWorkspaceResources = selectionIncludesNonWorkspaceResources(fileSelection);
+				if (addReplaceWithFileInGitIndex)
+					if (selectionIncludesNonWorkspaceResources)
+						menuMgr.add(new ReplaceAction(
+								UIText.StagingView_replaceWithFileInGitIndex,
+								fileSelection, false));
+					else
+						menuMgr.add(createItem(
+								ActionCommands.DISCARD_CHANGES_ACTION,
+								fileSelection)); // replace with index
+				if (addReplaceWithHeadRevision)
+					if (selectionIncludesNonWorkspaceResources)
+						menuMgr.add(new ReplaceAction(
+								UIText.StagingView_replaceWithHeadRevision,
+								fileSelection, true));
+					else
+						menuMgr.add(createItem(
+								ActionCommands.REPLACE_WITH_HEAD_ACTION,
+								fileSelection));
+				if (addIgnore)
+					menuMgr.add(new IgnoreAction(fileSelection));
+				if (addDelete)
+					menuMgr.add(new DeleteAction(fileSelection));
+				if (addLaunchMergeTool)
+					menuMgr.add(createItem(ActionCommands.MERGE_TOOL_ACTION,
+							fileSelection));
+				menuMgr.add(new Separator());
+				menuMgr.add(createShowInMenu());
+			}
+		});
+
+	}
+

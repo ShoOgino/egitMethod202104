@@ -1,0 +1,7 @@
+	boolean isInFilter(StagingEntry stagingEntry) {
+		String filterString = getFilterString();
+		return filterString.length() == 0
+				|| stagingEntry.getPath().toUpperCase()
+						.contains(filterString.toUpperCase());
+	}
+

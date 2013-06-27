@@ -1,0 +1,8 @@
+	public Object getAdapter(Class adapter) {
+		if (adapter == IResource.class || adapter == IContainer.class)
+			return getContainer();
+		else if (adapter == IPath.class)
+			return getLocation();
+		return null;
+	}
+

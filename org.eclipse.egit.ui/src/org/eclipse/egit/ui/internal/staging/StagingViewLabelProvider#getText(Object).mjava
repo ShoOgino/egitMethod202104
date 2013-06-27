@@ -1,0 +1,44 @@
+	@Override
+	public String getText(Object element) {
+
+		if (element instanceof StagingFolderEntry) {
+			StagingFolderEntry stagingFolderEntry = (StagingFolderEntry) element;
+			return stagingFolderEntry.getNodePath().toString();
+		}
+
+		StagingEntry stagingEntry = (StagingEntry) element;
+		final DecorationResult decoration = new DecorationResult();
+		decorationHelper.decorate(decoration, stagingEntry);
+		final StyledString styled = new StyledString();
+		final String prefix = decoration.getPrefix();
+		final String suffix = decoration.getSuffix();
+		if (prefix != null)
+			styled.append(prefix, StyledString.DECORATIONS_STYLER);
+		if (stagingView.getPresentation() == Presentation.LIST) {
+			if (fileNameMode) {
+				IPath parsed = Path.fromOSString(stagingEntry.getPath());
+				if (parsed.segmentCount() > 1) {
+					styled.append(parsed.lastSegment());
+					if (suffix != null)
+						styled.append(suffix, StyledString.DECORATIONS_STYLER);
+					styled.append(' ');
+					styled.append('-', StyledString.QUALIFIER_STYLER);
+					styled.append(' ');
+					styled.append(parsed.removeLastSegments(1).toString(),
+							StyledString.QUALIFIER_STYLER);
+				} else {
+					styled.append(stagingEntry.getPath());
+					if (suffix != null)
+						styled.append(suffix, StyledString.DECORATIONS_STYLER);
+				}
+			} else {
+				styled.append(stagingEntry.getPath());
+				if (suffix != null)
+					styled.append(suffix, StyledString.DECORATIONS_STYLER);
+			}
+		} else {
+			styled.append(stagingEntry.getName());
+		}
+		return styled.toString();
+	}
+

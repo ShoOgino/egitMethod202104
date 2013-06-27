@@ -1,0 +1,6 @@
+	private static void addPathAndParentPaths(IPath initialPath, Set<IPath> addToSet) {
+		for (IPath p = initialPath; p.segmentCount() >= 1; p = p
+				.removeLastSegments(1))
+			addToSet.add(p);
+	}
+

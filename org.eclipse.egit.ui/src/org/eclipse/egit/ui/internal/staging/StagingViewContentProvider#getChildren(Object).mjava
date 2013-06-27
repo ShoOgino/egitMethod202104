@@ -1,0 +1,24 @@
+	public Object[] getChildren(Object parentElement) {
+		if (repository == null)
+			return new Object[0];
+		if (parentElement instanceof StagingEntry)
+			return new Object[0];
+		if (parentElement instanceof StagingFolderEntry) {
+			return getFolderChildren((StagingFolderEntry) parentElement);
+		} else {
+			if (stagingView.getPresentation() == Presentation.LIST)
+				return content;
+			else {
+				StagingFolderEntry[] allFolders = getStagingFolderEntries();
+				List<Object> roots = new ArrayList<Object>();
+				for (StagingFolderEntry folder : allFolders)
+					if (folder.getParentPath().segmentCount() == 0)
+						roots.add(folder);
+				for (StagingEntry entry : content)
+					if (!entry.getPath().contains("/")) //$NON-NLS-1$
+						roots.add(entry);
+				return roots.toArray(new Object[roots.size()]);
+			}
+		}
+	}
+

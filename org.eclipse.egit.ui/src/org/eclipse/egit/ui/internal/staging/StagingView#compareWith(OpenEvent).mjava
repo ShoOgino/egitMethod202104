@@ -1,7 +1,8 @@
 	private void compareWith(OpenEvent event) {
 		IStructuredSelection selection = (IStructuredSelection) event
 				.getSelection();
-		if (selection.isEmpty())
+		if (selection.isEmpty()
+				|| !(selection.getFirstElement() instanceof StagingEntry))
 			return;
 		StagingEntry stagingEntry = (StagingEntry) selection.getFirstElement();
 		if (stagingEntry.isSubmodule())

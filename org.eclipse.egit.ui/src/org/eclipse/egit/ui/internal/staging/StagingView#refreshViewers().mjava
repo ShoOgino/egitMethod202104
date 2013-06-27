@@ -2,11 +2,16 @@
 	 * Refresh the unstaged and staged viewers
 	 */
 	public void refreshViewers() {
-		Display.getDefault().asyncExec(new Runnable() {
+		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
-				unstagedTableViewer.refresh();
-				stagedTableViewer.refresh();
+				Object[] unstagedExpanded = unstagedViewer
+						.getExpandedElements();
+				Object[] stagedExpanded = stagedViewer.getExpandedElements();
+				unstagedViewer.refresh();
+				stagedViewer.refresh();
 				updateSectionText();
+				unstagedViewer.setExpandedElements(unstagedExpanded);
+				stagedViewer.setExpandedElements(stagedExpanded);
 			}
 		});
 	}

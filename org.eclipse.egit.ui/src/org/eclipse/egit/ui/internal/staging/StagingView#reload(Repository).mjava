@@ -24,9 +24,21 @@
 
 				boolean indexDiffAvailable = indexDiff !=  null;
 
+				if (repositoryChanged)
+					// Reset paths, they're from the old repository
+					resetPathsToExpand();
+
 				final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, null);
-				unstagedTableViewer.setInput(update);
-				stagedTableViewer.setInput(update);
+				Object[] unstagedExpanded = unstagedViewer
+						.getExpandedElements();
+				Object[] stagedExpanded = stagedViewer
+						.getExpandedElements();
+				unstagedViewer.setInput(update);
+				stagedViewer.setInput(update);
+				expandPreviousExpandedAndPaths(unstagedExpanded, unstagedViewer,
+						pathsToExpandInUnstaged);
+				expandPreviousExpandedAndPaths(stagedExpanded, stagedViewer,
+						pathsToExpandInStaged);
 				enableCommitWidgets(indexDiffAvailable);
 				boolean commitEnabled =
 						indexDiffAvailable && repository.getRepositoryState().canCommit();

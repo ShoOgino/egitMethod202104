@@ -1,6 +1,6 @@
 		@Override
 		public boolean isEnabled() {
-			if (!unstagedTableViewer.getTable().isFocusControl())
+			if (!unstagedViewer.getTree().isFocusControl())
 				return false;
 
 			IStructuredSelection selection = getSelection();
@@ -8,6 +8,8 @@
 				return false;
 
 			for (Object element : selection.toList()) {
+				if (!(element instanceof StagingEntry))
+					return false;
 				StagingEntry entry = (StagingEntry) element;
 				if (!entry.getAvailableActions().contains(StagingEntry.Action.DELETE))
 					return false;

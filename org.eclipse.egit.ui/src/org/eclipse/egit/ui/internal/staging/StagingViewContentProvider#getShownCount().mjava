@@ -1,0 +1,14 @@
+	int getShownCount() {
+		String filterString = getFilterString();
+		if (filterString.length() == 0) {
+			return getCount();
+		} else {
+			int shownCount = 0;
+			for (StagingEntry entry : content) {
+				if (isInFilter(entry))
+					shownCount++;
+			}
+			return shownCount;
+		}
+	}
+

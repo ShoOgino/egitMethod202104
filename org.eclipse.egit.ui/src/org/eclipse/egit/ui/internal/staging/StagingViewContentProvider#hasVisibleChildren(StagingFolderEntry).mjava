@@ -1,0 +1,7 @@
+	boolean hasVisibleChildren(StagingFolderEntry folder) {
+		if (getFilterString().length() == 0)
+			return true;
+		else
+			return !getStagingEntriesFiltered(folder).isEmpty();
+	}
+

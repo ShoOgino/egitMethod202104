@@ -1,0 +1,12 @@
+	StagingFolderEntry[] getStagingFolderEntries() {
+		Presentation presentation = stagingView.getPresentation();
+		switch (presentation) {
+		case COMPACT_TREE:
+			return getCompactTreeFolders();
+		case TREE:
+			return getTreeFolders();
+		default:
+			return new StagingFolderEntry[0];
+		}
+	}
+

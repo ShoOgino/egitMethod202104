@@ -1,0 +1,60 @@
+	private StagingFolderEntry[] calculateTreeFolders(boolean compact) {
+		if (content == null || content.length == 0)
+			return new StagingFolderEntry[0];
+
+		Set<IPath> folderPaths = new HashSet<IPath>();
+		Map<IPath, String> childSegments = new HashMap<IPath, String>();
+
+		for (StagingEntry file : content) {
+			IPath folderPath = file.getParentPath();
+			if (folderPath.segmentCount() == 0)
+				// No folders need to be created
+				continue;
+			folderPaths.add(folderPath);
+			for (IPath p = folderPath; p.segmentCount() != 1; p = p
+					.removeLastSegments(1)) {
+				IPath parent = p.removeLastSegments(1);
+				if (!compact) {
+					folderPaths.add(parent);
+				} else {
+					String childSegment = p.lastSegment();
+					String knownChildSegment = childSegments.get(parent);
+					if (knownChildSegment == null) {
+						childSegments.put(parent, childSegment);
+					} else if (!childSegment.equals(knownChildSegment)) {
+						// The parent has more than 1 direct child folder -> we
+						// need to make a node for it.
+						folderPaths.add(parent);
+					}
+				}
+			}
+		}
+
+		IPath workingDirectory = new Path(repository.getWorkTree()
+				.getAbsolutePath());
+
+		List<StagingFolderEntry> folderEntries = new ArrayList<StagingFolderEntry>();
+		for (IPath folderPath : folderPaths) {
+			IPath parent = folderPath.removeLastSegments(1);
+			// Find first existing parent node, but stop at root
+			while (parent.segmentCount() != 0 && !folderPaths.contains(parent))
+				parent = parent.removeLastSegments(1);
+			if (parent.segmentCount() == 0) {
+				// Parent is root
+				StagingFolderEntry folderEntry = new StagingFolderEntry(
+						workingDirectory, folderPath, folderPath);
+				folderEntries.add(folderEntry);
+			} else {
+				// Parent is existing node
+				IPath nodePath = folderPath.makeRelativeTo(parent);
+				StagingFolderEntry folderEntry = new StagingFolderEntry(
+						workingDirectory, folderPath, nodePath);
+				folderEntries.add(folderEntry);
+			}
+		}
+
+		Collections.sort(folderEntries, FolderComparator.INSTANCE);
+		return folderEntries.toArray(new StagingFolderEntry[folderEntries
+				.size()]);
+	}
+

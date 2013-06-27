@@ -1,0 +1,13 @@
+	private void setExpandCollapseActionsVisible(boolean visible) {
+		for (IContributionItem item : unstagedToolBarManager.getItems())
+			item.setVisible(visible);
+		for (IContributionItem item : stagedToolBarManager.getItems())
+			item.setVisible(visible);
+		unstagedExpandAllAction.setEnabled(visible);
+		unstagedCollapseAllAction.setEnabled(visible);
+		stagedExpandAllAction.setEnabled(visible);
+		stagedCollapseAllAction.setEnabled(visible);
+		unstagedToolBarManager.update(true);
+		stagedToolBarManager.update(true);
+	}
+

@@ -2,8 +2,11 @@
 		List<String> result = new ArrayList<String>();
 		Iterator iterator = selection.iterator();
 		while (iterator.hasNext()) {
-			StagingEntry stagingEntry = (StagingEntry) iterator.next();
-			result.add(stagingEntry.getPath());
+			Object selectedItem = iterator.next();
+			if (selectedItem instanceof StagingEntry) {
+				StagingEntry stagingEntry = (StagingEntry) selectedItem;
+				result.add(stagingEntry.getPath());
+			}
 		}
 		return result.toArray(new String[result.size()]);
 	}

@@ -1,0 +1,23 @@
+	private ShowInContext getShowInContext(TreeViewer treeViewer) {
+		IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+		List<Object> elements = new ArrayList<Object>();
+		for (Object selectedElement : selection.toList()) {
+			if (selectedElement instanceof StagingEntry) {
+				StagingEntry entry = (StagingEntry) selectedElement;
+				IFile file = entry.getFile();
+				if (file != null)
+					elements.add(file);
+				else
+					elements.add(entry.getLocation());
+			} else if (selectedElement instanceof StagingFolderEntry) {
+				StagingFolderEntry entry = (StagingFolderEntry) selectedElement;
+				IContainer container = entry.getContainer();
+				if (container != null)
+					elements.add(container);
+				else
+					elements.add(entry.getLocation());
+			}
+		}
+		return new ShowInContext(null, new StructuredSelection(elements));
+	}
+

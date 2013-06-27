@@ -1,8 +1,9 @@
 	public ShowInContext getShowInContext() {
-		if (stagedTableViewer != null && stagedTableViewer.getTable().isFocusControl())
-			return getShowInContext(stagedTableViewer);
-		else if (unstagedTableViewer != null && unstagedTableViewer.getTable().isFocusControl())
-			return getShowInContext(unstagedTableViewer);
+		if (stagedViewer != null && stagedViewer.getTree().isFocusControl())
+			return getShowInContext(stagedViewer);
+		else if (unstagedViewer != null
+				&& unstagedViewer.getTree().isFocusControl())
+			return getShowInContext(unstagedViewer);
 		else
 			return null;
 	}

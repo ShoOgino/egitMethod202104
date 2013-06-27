@@ -1,5 +1,5 @@
 	private Collection<String> getStagedFileNames() {
-		StagingViewContentProvider stagedContentProvider = getContentProvider(stagedTableViewer);
+		StagingViewContentProvider stagedContentProvider = getContentProvider(stagedViewer);
 		StagingEntry[] entries = stagedContentProvider.getStagingEntries();
 		List<String> files = new ArrayList<String>();
 		for (StagingEntry entry : entries)

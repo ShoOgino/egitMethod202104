@@ -1,5 +1,4 @@
-	public void inputChanged(Viewer viewer, Object oldInput,
-			Object newInput) {
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (!(newInput instanceof StagingViewUpdate))
 			return;
 
@@ -7,8 +6,17 @@
 
 		if (update.repository == null || update.indexDiff == null) {
 			content = new StagingEntry[0];
+			treeFolders = new StagingFolderEntry[0];
+			compactTreeFolders = new StagingFolderEntry[0];
 			return;
 		}
+
+		if (update.repository != repository) {
+			treeFolders = null;
+			compactTreeFolders = null;
+		}
+
+		repository = update.repository;
 
 		Set<StagingEntry> nodes = new TreeSet<StagingEntry>(
 				new Comparator<StagingEntry>() {
@@ -27,8 +35,7 @@
 		}
 
 		final IndexDiffData indexDiff = update.indexDiff;
-		final Repository repository = update.repository;
-		if (isWorkspace) {
+		if (unstagedSection) {
 			for (String file : indexDiff.getMissing())
 				if (indexDiff.getChanged().contains(file))
 					nodes.add(new StagingEntry(repository, MISSING_AND_CHANGED,
@@ -64,5 +71,8 @@
 		}
 
 		content = nodes.toArray(new StagingEntry[nodes.size()]);
+
+		treeFolders = null;
+		compactTreeFolders = null;
 	}
 
