@@ -1,7 +1,7 @@
 	public RepoPropertiesPage openRepoPropertiesPage() {
 		bot.shell("Import Projects from Git").activate();
 
-		bot.tree().select("URI");
+		bot.tree().select(util.getPluginLocalizedValue("CloneUri.label"));
 
 		bot.button("Next >").click();
 
