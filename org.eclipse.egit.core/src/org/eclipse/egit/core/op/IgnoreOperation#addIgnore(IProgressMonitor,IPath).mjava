@@ -1,8 +1,10 @@
 	private void addIgnore(IProgressMonitor monitor, IPath path)
 			throws UnsupportedEncodingException, CoreException, IOException {
 		IPath parent = path.removeLastSegments(1);
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IContainer container = root.getContainerForLocation(parent);
+		IResource resource = ResourceUtil.getResourceForLocation(path);
+		IContainer container = null;
+		if (resource != null)
+			container = resource.getParent();
 
 		String entry = "/" + path.lastSegment() + "\n"; //$NON-NLS-1$  //$NON-NLS-2$
 
