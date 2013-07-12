@@ -36,12 +36,8 @@
 		final IStyledLabelProvider styleProvider = new WorkbenchStyledLabelProvider() {
 
 			public StyledString getStyledText(Object element) {
-				// TODO Replace with use of IWorkbenchAdapter3 when 3.6 is no
-				// longer supported
-				if (element instanceof RefUpdateElement)
-					return ((RefUpdateElement) element).getStyledText(element);
-				if (element instanceof RepositoryCommit)
-					return ((RepositoryCommit) element).getStyledText(element);
+				if (element instanceof IWorkbenchAdapter3)
+					return ((IWorkbenchAdapter3) element).getStyledText(element);
 
 				return super.getStyledText(element);
 			}
