@@ -1,13 +1,10 @@
 	@Override
 	protected SynchronizeModelOperation getSubscriberOperation(
 			ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
-		final int timeout = Activator.getDefault().getPreferenceStore()
-				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-
 		return new SynchronizeModelOperation(configuration, elements) {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException,
 					InterruptedException {
-				runPushOperation(timeout);
+				runPushOperation();
 			}
 		};
 	}

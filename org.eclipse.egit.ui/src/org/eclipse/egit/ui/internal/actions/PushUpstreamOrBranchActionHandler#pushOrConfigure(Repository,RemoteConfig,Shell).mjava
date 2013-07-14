@@ -6,10 +6,8 @@
 	public static void pushOrConfigure(final Repository repository,
 			RemoteConfig config, Shell shell) {
 		if (config != null) {
-			int timeout = Activator.getDefault().getPreferenceStore().getInt(
-					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-			PushOperationUI op = new PushOperationUI(repository, config.getName(), timeout,
-					false);
+			PushOperationUI op = new PushOperationUI(repository,
+					config.getName(), false);
 			op.start();
 		} else {
 			Ref head = getHeadIfSymbolic(repository);

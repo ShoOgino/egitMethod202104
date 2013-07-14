@@ -7,9 +7,7 @@
 					UIText.SimplePushActionHandler_NothingToPushDialogMessage);
 			return null;
 		}
-		int timeout = Activator.getDefault().getPreferenceStore()
-				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-		new PushOperationUI(node.getRepository(), config.getName(), timeout, false)
+		new PushOperationUI(node.getRepository(), config.getName(), false)
 				.start();
 		return null;
 	}

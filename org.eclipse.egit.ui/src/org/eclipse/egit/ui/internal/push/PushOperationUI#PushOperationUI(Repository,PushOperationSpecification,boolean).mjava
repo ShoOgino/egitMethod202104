@@ -1,16 +1,14 @@
 	/**
 	 * @param repository
 	 * @param spec
-	 * @param timeout
 	 * @param dryRun
 	 */
 	public PushOperationUI(Repository repository,
-			PushOperationSpecification spec, int timeout, boolean dryRun) {
+			PushOperationSpecification spec, boolean dryRun) {
 		this.repository = repository;
 		this.spec = spec;
 		this.config = null;
 		this.remoteName = null;
-		this.timeout = timeout;
 		this.dryRun = dryRun;
 		if (spec.getURIsNumber() == 1)
 			destinationString = spec.getURIs().iterator().next()

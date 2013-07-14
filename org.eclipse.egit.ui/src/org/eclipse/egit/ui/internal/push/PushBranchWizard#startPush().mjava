@@ -4,10 +4,8 @@
 				.deriveSpecification(confirmationPage
 						.isRequireUnchangedSelected());
 
-		int timeout = Activator.getDefault().getPreferenceStore()
-				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 		PushOperationUI pushOperationUI = new PushOperationUI(repository,
-				pushSpec, timeout, false);
+				pushSpec, false);
 		pushOperationUI.setCredentialsProvider(new EGitCredentialsProvider());
 		pushOperationUI.start();
 	}

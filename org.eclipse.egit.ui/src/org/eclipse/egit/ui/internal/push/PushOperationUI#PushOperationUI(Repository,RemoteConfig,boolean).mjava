@@ -1,17 +1,15 @@
 	/**
 	 * @param repository
 	 * @param config
-	 * @param timeout
 	 * @param dryRun
 	 *
 	 */
 	public PushOperationUI(Repository repository, RemoteConfig config,
-			int timeout, boolean dryRun) {
+			boolean dryRun) {
 		this.repository = repository;
 		this.spec = null;
 		this.config = config;
 		this.remoteName = null;
-		this.timeout = timeout;
 		this.dryRun = dryRun;
 		destinationString = NLS.bind("{0} - {1}", repository.getDirectory() //$NON-NLS-1$
 				.getParentFile().getName(), config.getName());

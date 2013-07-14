@@ -1,6 +1,6 @@
 	private void createPushOperation() throws CoreException {
 		if (remoteName != null) {
-			op = new PushOperation(repository, remoteName, dryRun, timeout);
+			op = new PushOperation(repository, remoteName, dryRun, getTimeout());
 			return;
 		}
 
@@ -38,6 +38,6 @@
 				}
 			}
 		}
-		op = new PushOperation(repository, spec, dryRun, timeout);
+		op = new PushOperation(repository, spec, dryRun, getTimeout());
 	}
 
