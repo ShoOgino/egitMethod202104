@@ -5,6 +5,7 @@
 		if (input == commit)
 			return;
 		currentDiffs.clear();
+		styleRanges = null;
 		commit = (PlotCommit<?>) input;
 		allRefs = getBranches();
 		if (refsChangedListener != null)
