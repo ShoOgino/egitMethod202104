@@ -10,7 +10,7 @@
 		resultLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				false));
 		Text resultText = new Text(composite, SWT.READ_ONLY);
-		resultText.setText(mergeResult.getMergeStatus().toString());
+		resultText.setText(getStatusText(mergeResult.getMergeStatus()));
 		resultText.setSelection(resultText.getCaretPosition());
 		resultText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		if (mergeResult.getMergeStatus() == MergeStatus.FAILED) {

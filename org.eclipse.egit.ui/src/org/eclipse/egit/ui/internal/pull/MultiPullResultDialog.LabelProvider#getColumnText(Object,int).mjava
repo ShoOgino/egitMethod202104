@@ -30,12 +30,13 @@
 				if (pullRes.getMergeResult() != null) {
 					return NLS.bind(
 							UIText.MultiPullResultDialog_MergeResultMessage,
-							pullRes.getMergeResult().getMergeStatus().name());
+							MergeResultDialog.getStatusText(pullRes
+									.getMergeResult().getMergeStatus()));
 				} else if (pullRes.getRebaseResult() != null) {
 					RebaseResult res = pullRes.getRebaseResult();
 					return NLS.bind(
 							UIText.MultiPullResultDialog_RebaseResultMessage,
-							res.getStatus().name());
+							RebaseResultDialog.getStatusText(res.getStatus()));
 				} else {
 					return UIText.MultiPullResultDialog_NothingUpdatedStatus;
 				}
