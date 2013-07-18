@@ -5,7 +5,7 @@
 			String oldCommitter = committerText.getText();
 
 			public void modifyText(ModifyEvent e) {
-				if (!listersEnabled)
+				if (!listenersEnabled)
 					return;
 				if (signedOff) {
 					// the commit message is signed
@@ -23,7 +23,7 @@
 				committerText, COMMITTER_VALUES_PREF);
 		commitText.getTextWidget().addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (!listersEnabled)
+				if (!listenersEnabled)
 					return;
 				updateSignedOffButton();
 				updateChangeIdButton();

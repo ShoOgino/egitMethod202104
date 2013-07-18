@@ -1,5 +1,5 @@
 	private void loadInitialState(CommitHelper helper) {
-		commitMessageComponent.enableListers(false);
+		commitMessageComponent.enableListeners(false);
 		commitMessageComponent.resetState();
 		commitMessageComponent.setAuthor(helper.getAuthor());
 		commitMessageComponent.setCommitMessage(helper.getCommitMessage());
@@ -13,6 +13,6 @@
 		// set the defaults for change id and signed off buttons.
 		commitMessageComponent.setDefaults();
 		commitMessageComponent.updateUI();
-		commitMessageComponent.enableListers(true);
+		commitMessageComponent.enableListeners(true);
 	}
 

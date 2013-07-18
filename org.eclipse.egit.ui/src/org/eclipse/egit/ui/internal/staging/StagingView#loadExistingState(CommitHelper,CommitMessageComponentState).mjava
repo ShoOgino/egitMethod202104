@@ -2,7 +2,7 @@
 			CommitMessageComponentState oldState) {
 		boolean headCommitChanged = !oldState.getHeadCommit().equals(
 				getCommitId(helper.getPreviousCommit()));
-		commitMessageComponent.enableListers(false);
+		commitMessageComponent.enableListeners(false);
 		commitMessageComponent.setAuthor(oldState.getAuthor());
 		if (headCommitChanged)
 			addHeadChangedWarning(oldState.getCommitMessage());
@@ -24,6 +24,6 @@
 			commitMessageComponent.setAmending(false);
 		commitMessageComponent.updateUIFromState();
 		commitMessageComponent.updateSignedOffAndChangeIdButton();
-		commitMessageComponent.enableListers(true);
+		commitMessageComponent.enableListeners(true);
 	}
 
