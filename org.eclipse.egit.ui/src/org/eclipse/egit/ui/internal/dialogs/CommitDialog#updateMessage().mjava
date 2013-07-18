@@ -1,4 +1,8 @@
 	private void updateMessage() {
+		if (commitButton == null)
+			// Not yet fully initialized.
+			return;
+
 		String message = null;
 		int type = IMessageProvider.NONE;
 

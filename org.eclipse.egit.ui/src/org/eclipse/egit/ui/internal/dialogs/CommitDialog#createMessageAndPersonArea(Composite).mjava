@@ -116,6 +116,10 @@
 			public void updateChangeIdToggleSelection(boolean selection) {
 				changeIdItem.setSelection(selection);
 			}
+
+			public void statusUpdated() {
+				updateMessage();
+			}
 		};
 
 		commitMessageComponent = new CommitMessageComponent(repository,
