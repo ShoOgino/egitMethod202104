@@ -27,6 +27,7 @@
 			assertEquals(path, commitDialogTester.getEntryText(0));
 			commitDialogTester.setCommitMessage("Add new file");
 			commitDialogTester.commit();
+			file.delete(false, null);
 		} finally {
 			Activator
 					.getDefault()

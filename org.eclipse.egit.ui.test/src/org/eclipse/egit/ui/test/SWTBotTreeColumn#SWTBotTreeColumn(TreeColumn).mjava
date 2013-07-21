@@ -1,0 +1,9 @@
+	public SWTBotTreeColumn(final TreeColumn w) throws WidgetNotFoundException {
+		super(w);
+		parent = UIThreadRunnable.syncExec(new WidgetResult<Tree>() {
+			public Tree run() {
+				return w.getParent();
+			}
+		});
+	}
+

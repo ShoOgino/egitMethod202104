@@ -1,0 +1,10 @@
+	public static SWTBotTreeColumn getColumn(final Tree tree, final int index) {
+		TreeColumn treeColumn = UIThreadRunnable.syncExec(tree.getDisplay(),
+				new WidgetResult<TreeColumn>() {
+					public TreeColumn run() {
+						return tree.getColumn(index);
+					}
+				});
+		return new SWTBotTreeColumn(treeColumn);
+	}
+
