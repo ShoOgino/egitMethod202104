@@ -1,26 +1,11 @@
 	/**
-	 * The method splits the given resources by their repository. For each
-	 * occurring repository a list is built containing the repository relative
-	 * paths of the related resources.
-	 * <p>
-	 * When one of the passed resources corresponds to the working directory,
-	 * <code>""</code> will be returned as part of the collection.
-	 *
+	 * @see #splitResourcesByRepository(Collection)
 	 * @param resources
 	 * @return a map containing a list of repository relative paths for each
 	 *         occurring repository
 	 */
 	public static Map<Repository, Collection<String>> splitResourcesByRepository(
 			IResource[] resources) {
-		Map<Repository, Collection<String>> result = new HashMap<Repository, Collection<String>>();
-		for (IResource resource : resources) {
-			RepositoryMapping repositoryMapping = RepositoryMapping
-					.getMapping(resource);
-			if (repositoryMapping == null)
-				continue;
-			String path = repositoryMapping.getRepoRelativePath(resource);
-			addPathToMap(repositoryMapping, path, result);
-		}
-		return result;
+		return splitResourcesByRepository(Arrays.asList(resources));
 	}
 

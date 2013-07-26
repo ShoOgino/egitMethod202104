@@ -6,5 +6,7 @@
 		IProject modelProject = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(PROJ1);
 		modelProject.delete(false, false, null);
+
+		GitScopeOperationFactory.setFactory(new GitScopeOperationFactory());
 	}
 

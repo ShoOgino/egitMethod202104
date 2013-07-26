@@ -1,0 +1,19 @@
+	private IFile createModelFiles() throws CoreException,
+			UnsupportedEncodingException {
+		IProject project = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+
+		IFile modelFile = project.getFile(MODEL_FILE);
+		modelFile.create(
+				new ByteArrayInputStream("This is the base model"
+						.getBytes(project.getDefaultCharset())), false,
+				null);
+		IFile modelExtensionFile = project.getFile(MODEL_EXTENSIONS_FILE);
+		modelExtensionFile.create(
+				new ByteArrayInputStream("Some more content"
+						.getBytes(project.getDefaultCharset())), false,
+				null);
+
+		return modelFile;
+	}
+
