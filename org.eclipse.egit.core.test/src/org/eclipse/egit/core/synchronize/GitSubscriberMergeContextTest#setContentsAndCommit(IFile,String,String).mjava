@@ -1,0 +1,9 @@
+	private RevCommit setContentsAndCommit(IFile targetFile,
+			String newContents, String commitMessage) throws Exception {
+		targetFile.setContents(
+				new ByteArrayInputStream(newContents.getBytes()),
+				IResource.FORCE, new NullProgressMonitor());
+		testRepo.addToIndex(targetFile);
+		return testRepo.commit(commitMessage);
+	}
+

@@ -1,0 +1,44 @@
+	private IMergeContext prepareModelContext(IFile workspaceFile,
+			String srcRev,
+			String dstRev) throws Exception {
+		Set<IResource> includedResources = new HashSet<IResource>(
+				Arrays.asList(workspaceFile));
+		Set<IResource> newResources = new HashSet<IResource>(includedResources);
+		Set<ResourceMapping> allMappings = new HashSet<ResourceMapping>();
+		ResourceMappingContext mappingContext = ResourceMappingContext.LOCAL_CONTEXT;
+		ModelProvider provider = new SampleProvider();
+		do {
+			Set<IResource> copy = newResources;
+			newResources = new HashSet<IResource>();
+			for (IResource resource : copy) {
+				ResourceMapping[] mappings = provider.getMappings(resource,
+						mappingContext, new NullProgressMonitor());
+				allMappings.addAll(Arrays.asList(mappings));
+
+				newResources.addAll(collectResources(mappings, mappingContext));
+			}
+		} while (includedResources.addAll(newResources));
+		ResourceMapping[] mappings = allMappings
+				.toArray(new ResourceMapping[allMappings.size()]);
+
+		GitSynchronizeData gsd = new GitSynchronizeData(repo, srcRev, dstRev,
+				true, includedResources);
+		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				gsds);
+		subscriber.init(new NullProgressMonitor());
+
+		GitSubscriberResourceMappingContext resourceMappingContext = new GitSubscriberResourceMappingContext(
+				subscriber, gsds);
+		SubscriberScopeManager manager = new SubscriberScopeManager(
+				subscriber.getName(), mappings, subscriber,
+				resourceMappingContext, true);
+		manager.initialize(new NullProgressMonitor());
+
+		GitSubscriberMergeContext mergeContext = new GitSubscriberMergeContext(
+				subscriber, manager, gsds);
+		// Wait for asynchronous update of the diff tree to end
+		Job.getJobManager().join(mergeContext, new NullProgressMonitor());
+		return mergeContext;
+	}
+

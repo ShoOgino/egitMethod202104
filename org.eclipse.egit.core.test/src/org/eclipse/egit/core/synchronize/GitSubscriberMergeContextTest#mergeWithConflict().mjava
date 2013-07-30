@@ -1,0 +1,43 @@
+	@Test
+	public void mergeWithConflict() throws Exception {
+		String fileName = "src/Main.java";
+		File file = testRepo.createFile(iProject, fileName);
+		final String initialContent = "class Main {}\n";
+		testRepo.appendContentAndCommit(iProject, file, initialContent,
+				"some file");
+		testRepo.addToIndex(iProject.getFile(".classpath"));
+		testRepo.addToIndex(iProject.getFile(".project"));
+		testRepo.commit("project files");
+
+		IFile workspaceFile = testRepo.getIFile(iProject, file);
+		String repoRelativePath = testRepo.getRepoRelativePath(workspaceFile
+				.getLocation().toPortableString());
+
+		testRepo.createAndCheckoutBranch(MASTER, BRANCH);
+
+		final String branchChanges = "branch changes\n";
+		setContentsAndCommit(workspaceFile, initialContent + branchChanges,
+				"branch commit");
+
+		testRepo.checkoutBranch(MASTER);
+
+		final String masterChanges = "some changes\n";
+		setContentsAndCommit(workspaceFile, initialContent + masterChanges,
+				"master commit");
+
+		IMergeContext mergeContext = prepareContext(workspaceFile, MASTER,
+				BRANCH);
+		IDiff node = mergeContext.getDiffTree().getDiff(workspaceFile);
+		assertNotNull(node);
+
+		IStatus mergeStatus = mergeContext.merge(node, false,
+				new NullProgressMonitor());
+		assertEquals(IStatus.ERROR, mergeStatus.getSeverity());
+		assertContentEquals(workspaceFile, initialContent + masterChanges);
+
+		Status status = new Git(repo).status().call();
+		assertEquals(0, status.getChanged().size());
+		assertEquals(0, status.getModified().size());
+		assertFalse(status.getChanged().contains(repoRelativePath));
+	}
+

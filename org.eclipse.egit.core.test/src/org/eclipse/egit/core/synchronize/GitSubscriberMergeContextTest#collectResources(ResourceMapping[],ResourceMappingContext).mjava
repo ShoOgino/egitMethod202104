@@ -1,0 +1,12 @@
+	private static Set<IResource> collectResources(ResourceMapping[] mappings,
+			ResourceMappingContext mappingContext) throws Exception {
+		final Set<IResource> resources = new HashSet<IResource>();
+		for (ResourceMapping mapping : mappings) {
+			ResourceTraversal[] traversals = mapping.getTraversals(
+					mappingContext, new NullProgressMonitor());
+			for (ResourceTraversal traversal : traversals)
+				resources.addAll(Arrays.asList(traversal.getResources()));
+		}
+		return resources;
+	}
+

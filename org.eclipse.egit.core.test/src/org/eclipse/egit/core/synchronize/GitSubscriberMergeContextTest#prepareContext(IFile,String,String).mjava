@@ -1,0 +1,23 @@
+	private IMergeContext prepareContext(IFile workspaceFile, String srcRev,
+			String dstRev) throws Exception {
+		GitSynchronizeData gsd = new GitSynchronizeData(repo, srcRev, dstRev,
+				true, Collections.<IResource> singleton(workspaceFile));
+		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				gsds);
+		subscriber.init(new NullProgressMonitor());
+
+		ResourceMapping mapping = AdapterUtils.adapt(workspaceFile,
+				ResourceMapping.class);
+		SubscriberScopeManager manager = new SubscriberScopeManager(
+				subscriber.getName(), new ResourceMapping[] { mapping, },
+				subscriber, true);
+		manager.initialize(new NullProgressMonitor());
+
+		GitSubscriberMergeContext mergeContext = new GitSubscriberMergeContext(
+				subscriber, manager, gsds);
+		// Wait for asynchronous update of the diff tree to end
+		Job.getJobManager().join(mergeContext, new NullProgressMonitor());
+		return mergeContext;
+	}
+
