@@ -7,13 +7,12 @@
 		// compare HEAD against tag
 		launchSynchronization(HEAD, INITIAL_TAG, false);
 
-		SWTBotEditor outgoingCompare = getCompareEditorForFileInGitChangeSet(
+		CompareEditorTester outgoingCompare = getCompareEditorForFileInGitChangeSet(
 				FILE1, false);
-		SWTBot outgoingCompareBot = outgoingCompare.bot();
 		// save left value from compare editor
-		String outgoingLeft = outgoingCompareBot.styledText(0).getText();
+		String outgoingLeft = outgoingCompare.getLeftEditor().getText();
 		// save right value from compare editor
-		String outgoingRight = outgoingCompareBot.styledText(1).getText();
+		String outgoingRight = outgoingCompare.getRightEditor().getText();
 		outgoingCompare.close();
 
 		assertNotSame("Text from SWTBot widgets was the same", outgoingLeft, outgoingRight);
@@ -23,11 +22,11 @@
 		launchSynchronization(INITIAL_TAG, HEAD, false);
 
 		// then
-		SWTBot incomingComp = getCompareEditorForFileInGitChangeSet(
-				FILE1, false).bot();
+		CompareEditorTester incomingComp = getCompareEditorForFileInGitChangeSet(
+				FILE1, false);
 		// right side from compare editor should be equal with left
-		assertThat(outgoingLeft, equalTo(incomingComp.styledText(1).getText()));
+		assertThat(outgoingLeft, equalTo(incomingComp.getRightEditor().getText()));
 		// left side from compare editor should be equal with right
-		assertThat(outgoingRight, equalTo(incomingComp.styledText(0).getText()));
+		assertThat(outgoingRight, equalTo(incomingComp.getLeftEditor().getText()));
 	}
 

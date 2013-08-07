@@ -7,8 +7,8 @@
 		launchSynchronization(HEAD, INITIAL_TAG, true);
 
 		// then
-		SWTBot compare = getCompareEditorForFileInGitChangeSet(FILE1, true)
-				.bot();
+		CompareEditorTester compare = getCompareEditorForFileInGitChangeSet(
+				FILE1, true);
 		assertNotNull(compare);
 	}
 

@@ -1,0 +1,16 @@
+	// Needed because sometimes the ancestor is also shown as a styled text. An
+	// alternative solution would be to click on "Hide Ancestor Pane", but that
+	// is slower because it waits if the toggle is named "Show Ancestor Pane".
+	private SWTBotStyledText getNonAncestorEditor(int index) {
+		List<StyledText> texts = editor.bot().getFinder()
+				.findControls(widgetOfType(StyledText.class));
+		if (texts.size() == 2)
+			return new SWTBotStyledText(texts.get(index));
+		else if (texts.size() == 3)
+			return new SWTBotStyledText(texts.get(index + 1));
+		else
+			throw new IllegalStateException(
+					"Expected compare editor to contain 2 or 3 styled text widgets, but was "
+							+ texts.size());
+	}
+
