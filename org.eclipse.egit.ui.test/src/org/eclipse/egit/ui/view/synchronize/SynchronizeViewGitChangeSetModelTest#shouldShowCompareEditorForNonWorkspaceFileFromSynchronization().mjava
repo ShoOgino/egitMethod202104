@@ -18,13 +18,11 @@
 		launchSynchronization(INITIAL_TAG, HEAD, true);
 
 		// then
-		SWTBotEditor editor = getCompareEditorForNonWorkspaceFileInGitChangeSet(name);
-		editor.setFocus();
+		CompareEditorTester editor = getCompareEditorForNonWorkspaceFileInGitChangeSet(name);
 
-		// the WidgetNotFoundException will be thrown when widget with given content cannot be not found
-		SWTBotStyledText left = editor.bot().styledText(content);
-		SWTBotStyledText right = editor.bot().styledText("");
-		// to be complete sure assert that both sides are not the same
-		assertNotSame(left, right);
+		String left = editor.getLeftEditor().getText();
+		String right = editor.getRightEditor().getText();
+		assertEquals(content, left);
+		assertEquals("", right);
 	}
 

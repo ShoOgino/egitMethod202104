@@ -34,11 +34,10 @@
 		shell.bot().radio(UIText.MergeModeDialog_MergeMode_2_Label).click();
 		shell.bot().button(IDialogConstants.OK_LABEL).click();
 
-		SWTBotEditor editor = bot.editorById("org.eclipse.compare.CompareEditor");
-		SWTBotStyledText styledText = editor.bot().styledText(0);
-		bot.waitUntil(Conditions.widgetIsEnabled(styledText));
+		CompareEditorTester compareEditor = CompareEditorTester
+				.forTitleContaining("Merging");
 
-		String text = styledText.getText();
+		String text = compareEditor.getLeftEditor().getText();
 		assertThat(text, is("master"));
 	}
 

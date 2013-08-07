@@ -1,4 +1,4 @@
-	protected SWTBotEditor getCompareEditorForNonWorkspaceFileInGitChangeSet(
+	protected CompareEditorTester getCompareEditorForNonWorkspaceFileInGitChangeSet(
 			final String fileName) {
 		SWTBotTreeItem changeSetTreeItem = getChangeSetTreeItem();
 
@@ -6,9 +6,6 @@
 					GitModelWorkingTree_workingTree);
 		waitForNodeWithText(rootTree, fileName).doubleClick();
 
-		SWTBotEditor editor = bot
-				.editor(new CompareEditorTitleMatcher(fileName));
-
-		return editor;
+		return CompareEditorTester.forTitleContaining(fileName);
 	}
 

@@ -9,8 +9,7 @@
 		launchSynchronization(HEAD, INITIAL_TAG, true);
 
 		// then
-		SWTBot compare = getCompareEditorForFileInWorkspaceModel(FILE1)
-				.bot();
+		CompareEditorTester compare = getCompareEditorForFileInWorkspaceModel(FILE1);
 		assertNotNull(compare);
 	}
 

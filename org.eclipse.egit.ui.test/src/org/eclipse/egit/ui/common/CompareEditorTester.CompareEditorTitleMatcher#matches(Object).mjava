@@ -1,0 +1,12 @@
+		public boolean matches(Object item) {
+			if (item instanceof IEditorReference) {
+				IEditorReference editor = (IEditorReference) item;
+				String id = editor.getId();
+				String title = editor.getTitle();
+				return id.equals("org.eclipse.compare.CompareEditor")
+						&& title.contains(titleSubstring);
+			}
+
+			return false;
+		}
+

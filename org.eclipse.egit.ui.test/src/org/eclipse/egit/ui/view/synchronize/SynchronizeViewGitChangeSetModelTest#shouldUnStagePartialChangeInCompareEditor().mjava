@@ -3,7 +3,8 @@
 		// given
 		changeFilesInProject();
 		launchSynchronization(HEAD, HEAD, true);
-		getCompareEditorForFileInGitChangeSet(FILE1, true).bot();
+		CompareEditorTester compareEditor = getCompareEditorForFileInGitChangeSet(
+				FILE1, true);
 
 		// when
 		Display.getDefault().syncExec(new Runnable() {
@@ -12,7 +13,7 @@
 						null);
 			}
 		});
-		bot.activeEditor().save();
+		compareEditor.save();
 
 		// then file FILE1 should be unchanged in working tree
 		Repository repo = lookupRepository(repositoryFile);
