@@ -1,0 +1,10 @@
+	private static Text createIndentedLabel(Composite main, String text) {
+		Text widget = UIUtils.createSelectableLabel(main, 0);
+		widget.setText(text);
+		// Eclipse 4.3: Use LayoutConstants.getIndent once we depend on 4.3
+		int indent = 20;
+		GridDataFactory.fillDefaults().grab(true, false).indent(indent, 0)
+				.applyTo(widget);
+		return widget;
+	}
+

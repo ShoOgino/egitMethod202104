@@ -33,11 +33,14 @@
 		SWTBotShell shell = bot
 				.shell(UIText.DeleteRepositoryConfirmDialog_DeleteRepositoryWindowTitle);
 		shell.activate();
-		String workDir = subRepo.getWorkTree().getPath();
-		String checkboxLabel = NLS
-				.bind(UIText.DeleteRepositoryConfirmDialog_DeleteWorkingDirectoryCheckbox,
-						workDir);
-		shell.bot().checkBox(checkboxLabel).select();
+		shell.bot()
+				.checkBox(
+						UIText.DeleteRepositoryConfirmDialog_DeleteGitDirCheckbox)
+				.select();
+		shell.bot()
+				.checkBox(
+						UIText.DeleteRepositoryConfirmDialog_DeleteWorkingDirectoryCheckbox)
+				.select();
 		shell.bot().button(IDialogConstants.OK_LABEL).click();
 		TestUtil.joinJobs(JobFamilies.REPOSITORY_DELETE);
 

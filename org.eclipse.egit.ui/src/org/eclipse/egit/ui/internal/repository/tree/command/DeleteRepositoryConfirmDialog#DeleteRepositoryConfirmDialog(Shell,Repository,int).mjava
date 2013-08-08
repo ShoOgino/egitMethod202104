@@ -1,12 +1,16 @@
 	/**
 	 * @param parentShell
 	 * @param repository
+	 *            non-bare repository
 	 * @param numberOfProjects
 	 */
 	public DeleteRepositoryConfirmDialog(Shell parentShell,
 			Repository repository, int numberOfProjects) {
 		super(parentShell);
 		setHelpAvailable(false);
+		if (repository.isBare())
+			throw new IllegalArgumentException(
+					"DeleteRepositoryConfirmDialog can only be used for non-bare repository."); //$NON-NLS-1$
 		this.repository = repository;
 		this.numberOfProjects = numberOfProjects;
 	}

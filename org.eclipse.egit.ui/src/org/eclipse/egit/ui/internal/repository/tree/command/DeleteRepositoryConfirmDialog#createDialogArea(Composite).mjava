@@ -3,30 +3,38 @@
 		Composite main = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 		main.setLayout(new GridLayout(1, false));
-		// if the repository is bare, we don't have a working directory to
-		// delete; we should not use this dialog in this case, though
-		// as it would be rendered ugly
-		if (repository.isBare())
-			return main;
-		final Button deleteWorkDir = new Button(main, SWT.CHECK);
-		final Button removeProjects = new Button(main, SWT.CHECK);
+
+		deleteGitDir = new Button(main, SWT.CHECK);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(deleteGitDir);
+		deleteGitDir
+				.setText(UIText.DeleteRepositoryConfirmDialog_DeleteGitDirCheckbox);
+		createIndentedLabel(main, repository.getDirectory().getPath());
+
+		deleteWorkDir = new Button(main, SWT.CHECK);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(deleteWorkDir);
+		deleteWorkDir
+				.setText(UIText.DeleteRepositoryConfirmDialog_DeleteWorkingDirectoryCheckbox);
+		deleteWorkDirLabel = createIndentedLabel(main, repository.getWorkTree()
+				.getPath());
+
+		removeProjects = new Button(main, SWT.CHECK);
+
+		deleteGitDir.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shouldDeleteGitDir = deleteGitDir.getSelection();
+				updateUI();
+			}
+		});
+
 		deleteWorkDir.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				shouldDelete = deleteWorkDir.getSelection();
-				removeProjects.setEnabled(!shouldDelete);
-				if (shouldDelete && numberOfProjects > 0) {
-					removeProjects.setSelection(true);
-					shouldRemoveProjects = true;
-				}
+				shouldDeleteWorkingDir = deleteWorkDir.getSelection();
+				updateUI();
 			}
 		});
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(deleteWorkDir);
-		deleteWorkDir
-				.setText(NLS
-						.bind(
-								UIText.DeleteRepositoryConfirmDialog_DeleteWorkingDirectoryCheckbox,
-								repository.getWorkTree().getPath()));
+
 		if (numberOfProjects > 0) {
 			removeProjects.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -36,8 +44,8 @@
 			});
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(removeProjects);
 			removeProjects
-				.setText(NLS
-						.bind(UIText.DeleteRepositoryConfirmDialog_DeleteProjectsCheckbox,
+					.setText(MessageFormat
+							.format(UIText.DeleteRepositoryConfirmDialog_DeleteProjectsCheckbox,
 								Integer.valueOf(numberOfProjects)));
 		} else
 			removeProjects.setVisible(false);
