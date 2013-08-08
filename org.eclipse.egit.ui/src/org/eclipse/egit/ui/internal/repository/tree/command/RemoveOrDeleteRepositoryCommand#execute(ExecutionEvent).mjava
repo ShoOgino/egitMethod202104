@@ -1,0 +1,30 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		List<RepositoryNode> selectedNodes = getSelectedNodes(event);
+		if (selectedNodes.size() != 1)
+			return null;
+
+		Repository repository = selectedNodes.get(0).getObject();
+		String repositoryName = Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repository);
+
+		String message = MessageFormat.format(
+				UIText.RemoveOrDeleteRepositoryCommand_DialogMessage, repositoryName);
+		String[] buttonLabels = {
+				UIText.RemoveOrDeleteRepositoryCommand_RemoveFromViewButton,
+				UIText.RemoveOrDeleteRepositoryCommand_DeleteRepositoryButton,
+				IDialogConstants.CANCEL_LABEL };
+		MessageDialog dialog = new MessageDialog(
+				getShell(event),
+				UIText.RemoveOrDeleteRepositoryCommand_DialogTitle,
+				null,
+				message,
+				MessageDialog.QUESTION, buttonLabels, 0);
+
+		int result = dialog.open();
+		if (result == 0) // Remove from View
+			super.removeRepository(event, false);
+		else if (result == 1) // Delete Repository...
+			super.removeRepository(event, true);
+		return null;
+	}
+
