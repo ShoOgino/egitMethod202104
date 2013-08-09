@@ -1,0 +1,41 @@
+	/**
+	 * Enable the command if all of the following conditions are fulfilled: <li>
+	 * All selected nodes belong to the same repository <li>All selected nodes
+	 * are of type FileNode or FolderNode or WorkingTreeNode <li>Each node does
+	 * not represent a file / folder in the git directory
+	 *
+	 * @return true if selection is a working directory selection
+	 */
+	protected boolean isWorkingDirSelection() {
+		List<T> selectedNodes = getSelectedNodes();
+		if (selectedNodes.isEmpty())
+			return false;
+		Repository repository = null;
+
+		for (T selectedNode : selectedNodes) {
+			Repository nodeRepository = selectedNode.getRepository();
+			if (repository == null)
+				repository = nodeRepository;
+			else if (repository != nodeRepository) {
+				return false;
+			}
+			if (!(selectedNode instanceof WorkingDirNode)) {
+				String path;
+				if (selectedNode instanceof FolderNode)
+					path = ((FolderNode) selectedNode).getObject()
+							.getAbsolutePath();
+				else if (selectedNode instanceof FileNode)
+					path = ((FileNode) selectedNode).getObject()
+							.getAbsolutePath();
+				else {
+					return false;
+				}
+				if (path.startsWith(repository.getDirectory().getAbsolutePath())) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
