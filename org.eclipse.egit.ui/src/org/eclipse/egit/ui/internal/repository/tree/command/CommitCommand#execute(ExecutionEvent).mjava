@@ -1,9 +1,0 @@
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		RepositoryNode node = getSelectedNodes(event).get(0);
-		Repository repository = node.getRepository();
-		CommitUI commitUI = new CommitUI(getShell(event), repository,
-				new IResource[0], true);
-		commitUI.commit();
-		return null;
-	}
-
