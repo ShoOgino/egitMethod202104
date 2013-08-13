@@ -2,48 +2,18 @@
 		if (selection.isEmpty())
 			return;
 
-		RevCommit headRev = null;
-		try {
-			final Ref head = currentRepository.getRef(Constants.HEAD);
-			// head.getObjectId() is null if the repository does not contain any
-			// commit
-			if (head.getObjectId() != null)
-				headRev = new RevWalk(currentRepository).parseCommit(head
-						.getObjectId());
-		} catch (IOException e1) {
-			// TODO fix text
-			MessageDialog.openError(getSite().getShell(),
-					UIText.CommitAction_MergeHeadErrorTitle,
-					UIText.CommitAction_ErrorReadingMergeMsg);
+		List<String> paths = processUnstageSelection(selection);
+		if (paths.isEmpty())
 			return;
-		}
-
-		final DirCache dirCache;
-		final DirCacheEditor edit;
-		try {
-			dirCache = currentRepository.lockDirCache();
-			edit = dirCache.editor();
-		} catch (IOException e) {
-			// TODO fix text
-			MessageDialog.openError(getSite().getShell(),
-					UIText.CommitAction_MergeHeadErrorTitle,
-					UIText.CommitAction_ErrorReadingMergeMsg);
-			return;
-		}
 
 		try {
-			processUnstageSelection(selection, headRev, edit);
-
-			try {
-				edit.commit();
-			} catch (IOException e) {
-				// TODO fix text
-				MessageDialog.openError(getSite().getShell(),
-						UIText.CommitAction_MergeHeadErrorTitle,
-						UIText.CommitAction_ErrorReadingMergeMsg);
-			}
-		} finally {
-			dirCache.unlock();
+			Git git = new Git(currentRepository);
+			ResetCommand reset = git.reset();
+			for (String path : paths)
+				reset.addPath(path);
+			reset.call();
+		} catch (GitAPIException e) {
+			Activator.handleError(e.getMessage(), e, true);
 		}
 	}
 

@@ -1,20 +1,21 @@
-	private void processUnstageSelection(IStructuredSelection selection,
-			final RevCommit headRev, final DirCacheEditor edit) {
+	private List<String> processUnstageSelection(IStructuredSelection selection) {
+		List<String> paths = new ArrayList<String>();
 		resetPathsToExpand();
 		for (Object element : selection.toList()) {
 			if (element instanceof StagingEntry) {
 				StagingEntry entry = (StagingEntry) element;
-				updateDirCache(headRev, edit, entry);
+				addUnstagePath(entry, paths);
 				addPathAndParentPaths(entry.getParentPath(), pathsToExpandInUnstaged);
 			} else if (element instanceof StagingFolderEntry) {
 				StagingFolderEntry folder = (StagingFolderEntry) element;
 				List<StagingEntry> entries = getContentProvider(stagedViewer)
 						.getStagingEntriesFiltered(folder);
 				for (StagingEntry entry : entries)
-					updateDirCache(headRev, edit, entry);
+					addUnstagePath(entry, paths);
 				addExpandedPathsBelowFolder(folder, stagedViewer,
 						pathsToExpandInUnstaged);
 			}
 		}
+		return paths;
 	}
 

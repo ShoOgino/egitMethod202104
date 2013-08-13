@@ -1,0 +1,12 @@
+	private void addUnstagePath(StagingEntry entry, List<String> paths) {
+		switch (entry.getState()) {
+		case ADDED:
+		case CHANGED:
+		case REMOVED:
+			paths.add(entry.getPath());
+			return;
+		default:
+			// unstaged
+		}
+	}
+
