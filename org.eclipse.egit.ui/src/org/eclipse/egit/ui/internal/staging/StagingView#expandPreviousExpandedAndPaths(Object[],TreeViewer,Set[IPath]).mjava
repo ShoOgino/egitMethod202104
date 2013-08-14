@@ -1,5 +1,9 @@
 	private void expandPreviousExpandedAndPaths(Object[] previous,
 			TreeViewer viewer, Set<IPath> additionalPaths) {
+		// Auto-expand is on, so don't change expanded items
+		if (viewer.getAutoExpandLevel() == AbstractTreeViewer.ALL_LEVELS)
+			return;
+
 		Set<IPath> paths = new HashSet<IPath>(additionalPaths);
 		// Instead of just expanding the previous elements directly, also expand
 		// all parent paths. This makes it work in case of "re-folding" of

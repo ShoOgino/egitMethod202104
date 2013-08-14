@@ -8,6 +8,7 @@
 				IAction.AS_PUSH_BUTTON) {
 			public void run() {
 				stagedViewer.expandAll();
+				enableAutoExpand(stagedViewer);
 			}
 		};
 		stagedExpandAllAction.setImageDescriptor(UIIcons.EXPAND_ALL);
@@ -16,6 +17,7 @@
 				IAction.AS_PUSH_BUTTON) {
 			public void run() {
 				stagedViewer.collapseAll();
+				disableAutoExpand(stagedViewer);
 			}
 		};
 		stagedCollapseAllAction.setImageDescriptor(UIIcons.COLLAPSEALL);

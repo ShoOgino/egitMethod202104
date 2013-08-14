@@ -6,7 +6,8 @@
 		menuMgr.addMenuListener(new IMenuListener() {
 
 			public void menuAboutToShow(IMenuManager manager) {
-				IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+				final IStructuredSelection selection = (IStructuredSelection) treeViewer
+						.getSelection();
 				if (selection.isEmpty())
 					return;
 
@@ -63,14 +64,14 @@
 					menuMgr.add(new Action(UIText.StagingView_StageItemMenuLabel) {
 						@Override
 						public void run() {
-							stage(fileSelection);
+							stage(selection);
 						}
 					});
 				if (addUnstage)
 					menuMgr.add(new Action(UIText.StagingView_UnstageItemMenuLabel) {
 						@Override
 						public void run() {
-							unstage(fileSelection);
+							unstage(selection);
 						}
 					});
 				boolean selectionIncludesNonWorkspaceResources = selectionIncludesNonWorkspaceResources(fileSelection);
