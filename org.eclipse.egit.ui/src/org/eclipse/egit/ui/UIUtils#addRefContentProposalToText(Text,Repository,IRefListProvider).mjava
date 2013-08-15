@@ -11,17 +11,16 @@
 	 */
 	public static final void addRefContentProposalToText(final Text textField,
 			final Repository repository, final IRefListProvider refListProvider) {
-		KeyStroke stroke;
-		try {
-			stroke = KeyStroke.getInstance("M1+SPACE"); //$NON-NLS-1$
-			UIUtils.addBulbDecorator(textField, NLS.bind(
-					UIText.UIUtils_PressShortcutMessage, stroke.format()));
-		} catch (ParseException e1) {
-			Activator.handleError(e1.getMessage(), e1, false);
-			stroke = null;
-			UIUtils.addBulbDecorator(textField,
+		KeyStroke stroke = UIUtils
+				.getKeystrokeOfBestActiveBindingFor(IWorkbenchCommandConstants.EDIT_CONTENT_ASSIST);
+		if (stroke == null)
+			addBulbDecorator(textField,
 					UIText.UIUtils_StartTypingForPreviousValuesMessage);
-		}
+		else
+			addBulbDecorator(
+					textField,
+					NLS.bind(UIText.UIUtils_PressShortcutMessage,
+							stroke.format()));
 
 		IContentProposalProvider cp = new IContentProposalProvider() {
 			public IContentProposal[] getProposals(String contents, int position) {
