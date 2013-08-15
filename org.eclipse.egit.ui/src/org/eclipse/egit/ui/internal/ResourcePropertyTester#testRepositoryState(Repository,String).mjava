@@ -8,6 +8,9 @@
 		if ("isShared".equals(property)) //$NON-NLS-1$
 			return repository != null;
 		if (repository != null) {
+			if ("hasGerritConfiguration".equals(property)) //$NON-NLS-1$
+				return hasGerritConfiguration(repository);
+
 			// isSTATE checks repository state where STATE is the CamelCase version
 			// of the RepositoryState enum values.
 			RepositoryState state = repository.getRepositoryState();
