@@ -3,9 +3,8 @@
 	 */
 	public void setDefaults() {
 		if (repository != null)
-			createChangeId = repository.getConfig().getBoolean(
-					ConfigConstants.CONFIG_GERRIT_SECTION,
-					ConfigConstants.CONFIG_KEY_CREATECHANGEID, false);
+			createChangeId = GerritUtil.getCreateChangeId(repository
+					.getConfig());
 		signedOff = org.eclipse.egit.ui.Activator.getDefault()
 				.getPreferenceStore()
 				.getBoolean(UIPreferences.COMMIT_DIALOG_SIGNED_OFF_BY);

@@ -4,6 +4,7 @@
 		for (RefSpec refSpec : pushRefSpecs) {
 			remoteConfig.removePushRefSpec(refSpec);
 		}
-		remoteConfig.addPushRefSpec(new RefSpec( "HEAD:refs/for/" + gerritBranch)); //$NON-NLS-1$
+		remoteConfig.addPushRefSpec(new RefSpec(
+				"HEAD:" + GerritUtil.REFS_FOR + gerritBranch)); //$NON-NLS-1$
 	}
 

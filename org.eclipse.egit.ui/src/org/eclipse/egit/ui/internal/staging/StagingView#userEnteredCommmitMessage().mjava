@@ -8,9 +8,7 @@
 
 		String chIdLine = "Change-Id: I" + ObjectId.zeroId().name(); //$NON-NLS-1$
 
-		if (currentRepository.getConfig().getBoolean(
-				ConfigConstants.CONFIG_GERRIT_SECTION,
-				ConfigConstants.CONFIG_KEY_CREATECHANGEID, false)
+		if (GerritUtil.getCreateChangeId(currentRepository.getConfig())
 				&& commitMessageComponent.getCreateChangeId()) {
 			if (message.trim().equals(chIdLine))
 				return false;

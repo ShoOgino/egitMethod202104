@@ -1,0 +1,9 @@
+	/**
+	 * @param config
+	 * @return true if there if "create change ID" is configured
+	 */
+	public static boolean getCreateChangeId(Config config) {
+		return config.getBoolean(ConfigConstants.CONFIG_GERRIT_SECTION,
+				ConfigConstants.CONFIG_KEY_CREATECHANGEID, false);
+	}
+

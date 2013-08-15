@@ -5,8 +5,9 @@
 			destination = pushRefSpecs.get(0).getDestination();
 			if (destination.startsWith(Constants.R_HEADS))
 				destination = destination.substring(Constants.R_HEADS.length());
-			else if (destination.startsWith("refs/for/")) //$NON-NLS-1$
-				destination = destination.substring("refs/for/".length()); //$NON-NLS-1$
+			else if (destination.startsWith(GerritUtil.REFS_FOR))
+				destination = destination.substring(GerritUtil.REFS_FOR
+						.length());
 		}
 		return destination;
 	}
