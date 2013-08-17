@@ -1,10 +1,10 @@
-	private TestRepository<FileRepository> createRepository() throws Exception {
+	private TestRepository<Repository> createRepository() throws Exception {
 		String gitdirName = "test" + System.currentTimeMillis()
 				+ Constants.DOT_GIT;
 		File gitdir = new File(trash, gitdirName).getCanonicalFile();
-		FileRepository db = new FileRepository(gitdir);
+		Repository db = new RepositoryBuilder().setGitDir(gitdir).build();
 		assertFalse(gitdir.exists());
 		db.create();
-		return new TestRepository<FileRepository>(db);
+		return new TestRepository<Repository>(db);
 	}
 

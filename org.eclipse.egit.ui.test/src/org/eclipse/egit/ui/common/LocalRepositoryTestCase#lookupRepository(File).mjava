@@ -1,6 +1,6 @@
-	protected static FileRepository lookupRepository(File directory)
+	protected static Repository lookupRepository(File directory)
 			throws Exception {
-		return (FileRepository) org.eclipse.egit.core.Activator.getDefault()
+		return org.eclipse.egit.core.Activator.getDefault()
 				.getRepositoryCache().lookupRepository(directory);
 	}
 
