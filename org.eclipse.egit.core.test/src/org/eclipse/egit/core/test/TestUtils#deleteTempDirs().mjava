@@ -4,7 +4,6 @@
 	 * @throws IOException
 	 */
 	public void deleteTempDirs() throws IOException {
-		File rootDir = getBaseTempDir();
 		if (rootDir.exists())
 			FileUtils.delete(rootDir, FileUtils.RECURSIVE | FileUtils.RETRY);
 	}
