@@ -32,12 +32,7 @@
 
 		fsBrowseButton = new Button(composite, SWT.PUSH);
 		fsBrowseButton.setText(UIText.GitCreatePatchWizard_Browse);
-		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		int widthHint = convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
-		Point minSize = fsBrowseButton.computeSize(SWT.DEFAULT,
-				SWT.DEFAULT, true);
-		data.widthHint = Math.max(widthHint, minSize.x);
-		fsBrowseButton.setLayoutData(data);
+		UIUtils.setButtonLayoutData(fsBrowseButton);
 		fsBrowseButton.setEnabled(isFileSystemSelected);
 
 		// workspace
@@ -52,7 +47,7 @@
 
 		wsBrowseButton = new Button(composite, SWT.PUSH);
 		wsBrowseButton.setText(UIText.GitCreatePatchWizard_Browse);
-		wsBrowseButton.setLayoutData(data);
+		UIUtils.setButtonLayoutData(wsBrowseButton);
 		wsBrowseButton.setEnabled(isWorkspaceSelected);
 
 		cpRadio.addListener(SWT.Selection, new Listener() {
