@@ -1,5 +1,5 @@
 	private void validateInput() {
-		// don't validate if dialog is disposed
+		// don't do anything if dialog is disposed
 		if (getShell() == null) {
 			return;
 		}
@@ -19,5 +19,15 @@
 
 			button.setEnabled(containsTagNameAndMessage || shouldOverwriteTag);
 		}
+
+		boolean existingTagSelected = existingTag != null;
+		if (existingTagSelected && !overwriteButton.getSelection())
+			tagMessageText.getTextWidget().setEditable(false);
+		else
+			tagMessageText.getTextWidget().setEditable(true);
+
+		overwriteButton.setEnabled(existingTagSelected);
+		if (!existingTagSelected)
+			overwriteButton.setSelection(false);
 	}
 

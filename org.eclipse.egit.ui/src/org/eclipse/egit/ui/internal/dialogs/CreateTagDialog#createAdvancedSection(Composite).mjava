@@ -50,10 +50,11 @@
 						commitCombo.add(revCommit);
 
 					// Set combo selection if a tag is selected
-					if (tag != null)
-						commitCombo.setSelectedElement(tag.getObject());
+					if (existingTag != null)
+						commitCombo.setSelectedElement(existingTag.getObject());
 				}
 				composite.layout(true);
+				composite.getShell().pack();
 			}
 		});
 	}
