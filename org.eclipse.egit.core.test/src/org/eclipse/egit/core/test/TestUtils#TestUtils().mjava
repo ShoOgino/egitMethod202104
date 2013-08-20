@@ -1,0 +1,6 @@
+	public TestUtils() {
+		// ensure that concurrent test runs don't use the same directory
+		baseTempDir = new File(rootDir, UUID.randomUUID().toString()
+				.replace("-", ""));
+	}
+
