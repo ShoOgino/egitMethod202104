@@ -33,5 +33,9 @@
 		String contentStable = getTestFileContent();
 		assertTrue("Content of master and stable should differ", !contentMaster
 				.equals(contentStable));
+
+		// checkout master again to restore original state before test
+		myRepoViewUtil.getLocalBranchesItem(tree, repositoryFile).expand()
+				.getNode("master").doubleClick();
 	}
 
