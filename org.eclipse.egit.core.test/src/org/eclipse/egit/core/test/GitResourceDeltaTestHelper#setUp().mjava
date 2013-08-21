@@ -20,8 +20,8 @@
 							try {
 								event.getDelta().accept(visitor);
 							} catch (CoreException e) {
-								Activator.logError(e.getMessage(), e);
-								return false;
+								String msg = "Exception during accept of GitResourceDeltaVisitor for resource delta";
+								throw new RuntimeException(msg, e);
 							}
 							IPath gitDirAbsolutePath = mapping
 									.getGitDirAbsolutePath();
@@ -38,8 +38,9 @@
 						}
 					});
 				} catch (CoreException e) {
-					Activator.logError(e.getMessage(), e);
-					return;
+					throw new RuntimeException(
+							"Exception during accept of test visitor for resource delta",
+							e);
 				}
 			}
 		};
