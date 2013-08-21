@@ -2,10 +2,11 @@
 	public void testClipboard() throws Exception {
 		touchAndSubmit("oldContent", null);
 		touch("newContent");
-		waitInUI();
 
 		CreatePatchWizard createPatchWizard = openCreatePatchWizard();
-		createPatchWizard.finish();
+		LocationPage locationPage = createPatchWizard.getLocationPage();
+		locationPage.selectClipboard();
+		createPatchWizard.finishWithNoneFormat();
 
 		bot.waitUntil(Conditions.shellCloses(createPatchWizard.getShell()));
 

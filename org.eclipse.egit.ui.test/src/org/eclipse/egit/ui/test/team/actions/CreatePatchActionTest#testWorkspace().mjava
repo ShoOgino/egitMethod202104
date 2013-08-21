@@ -7,7 +7,7 @@
 		CreatePatchWizard createPatchWizard = openCreatePatchWizard();
 		LocationPage locationPage = createPatchWizard.getLocationPage();
 		locationPage.selectWorkspace("/" + PROJ1 + "/" + PATCH_FILE);
-		createPatchWizard.finish();
+		createPatchWizard.finishWithNoneFormat();
 
 		bot.waitUntil(Conditions.shellCloses(createPatchWizard.getShell()));
 
