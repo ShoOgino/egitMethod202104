@@ -11,9 +11,6 @@
 				ConfigConstants.CONFIG_KEY_REBASE, false);
 		assertFalse(rebase);
 
-		Activator.getDefault().getRepositoryUtil()
-				.addConfiguredRepository(clonedRepositoryFile);
-
 		SWTBotView view = getOrOpenView();
 
 		SWTBotTreeItem localItem = myRepoViewUtil.getLocalBranchesItem(view

@@ -1,8 +1,5 @@
 	@Test
 	public void testMergeOnRepo() throws Exception {
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				clonedRepositoryFile);
-
 		SWTBotTree tree = getOrOpenView().bot().tree();
 
 		myRepoViewUtil.getRootItem(tree, clonedRepositoryFile).select();

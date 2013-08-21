@@ -1,9 +1,5 @@
 	@Test
 	public void testClonedRepository() throws Exception {
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				clonedRepositoryFile);
-		refreshAndWait();
-
 		SWTBotTree tree = getOrOpenView().bot().tree();
 
 		SWTBotTreeItem item = myRepoViewUtil.getLocalBranchesItem(tree,
