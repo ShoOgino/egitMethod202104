@@ -8,8 +8,7 @@
 				.toolbarButton(
 						myUtil.getPluginLocalizedValue("RepoViewCreateRepository.tooltip"))
 				.click();
-		SWTBotShell shell = bot.shell(UIText.NewRepositoryWizard_WizardTitle)
-				.activate();
+		SWTBotShell shell = bot.shell(UIText.NewRepositoryWizard_WizardTitle);
 		IPath newPath = new Path(getTestDirectory().getPath());
 		shell.bot().textWithLabel(UIText.CreateRepositoryPage_DirectoryLabel)
 				.setText(newPath.toOSString());
@@ -28,7 +27,7 @@
 				.toolbarButton(
 						myUtil.getPluginLocalizedValue("RepoViewCreateRepository.tooltip"))
 				.click();
-		shell = bot.shell(UIText.NewRepositoryWizard_WizardTitle).activate();
+		shell = bot.shell(UIText.NewRepositoryWizard_WizardTitle);
 		newPath = new Path(getTestDirectory().getPath()).append("bare");
 		shell.bot()
 				.textWithLabel(UIText.CreateRepositoryPage_RepositoryNameLabel)

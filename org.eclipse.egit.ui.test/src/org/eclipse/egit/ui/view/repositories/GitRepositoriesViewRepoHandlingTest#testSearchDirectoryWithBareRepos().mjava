@@ -5,13 +5,6 @@
 		clearView();
 		refreshAndWait();
 		assertEmpty();
-		getOrOpenView()
-				.toolbarButton(
-						myUtil.getPluginLocalizedValue("RepoViewAddRepository.tooltip"))
-				.click();
-
-		FileUtils.delete(getTestDirectory(), FileUtils.RECURSIVE
-				| FileUtils.RETRY | FileUtils.SKIP_MISSING);
 
 		Git.init().setBare(true)
 				.setDirectory(new File(getTestDirectory(), "BareRepository1"))
@@ -21,8 +14,13 @@
 				.setDirectory(new File(getTestDirectory(), "BareRepository2"))
 				.call();
 
-		SWTBotShell shell = bot.shell(
-				UIText.RepositorySearchDialog_AddGitRepositories).activate();
+		getOrOpenView()
+				.toolbarButton(
+						myUtil.getPluginLocalizedValue("RepoViewAddRepository.tooltip"))
+				.click();
+
+		SWTBotShell shell = bot
+				.shell(UIText.RepositorySearchDialog_AddGitRepositories);
 
 		shell.bot().checkBox(UIText.RepositorySearchDialog_DeepSearch_button)
 				.deselect();
@@ -39,6 +37,9 @@
 			slept += 100;
 		}
 
-		assertEquals(2, shell.bot().tree().rowCount());
+		TestUtil.waitUntilTreeHasNodeContainsText(shell.bot(), shell.bot()
+				.tree(), "BareRepository1", 10000);
+		TestUtil.waitUntilTreeHasNodeContainsText(shell.bot(), shell.bot()
+				.tree(), "BareRepository2", 10000);
 	}
 
