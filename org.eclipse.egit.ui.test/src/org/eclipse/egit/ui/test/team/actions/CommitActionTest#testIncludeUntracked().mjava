@@ -25,6 +25,8 @@
 			String path = RepositoryMapping.getMapping(file)
 					.getRepoRelativePath(file);
 			assertEquals(path, commitDialogTester.getEntryText(0));
+			commitDialogTester.setCommitMessage("Add new file");
+			commitDialogTester.commit();
 		} finally {
 			Activator
 					.getDefault()

@@ -9,8 +9,8 @@
 						myUtil
 								.getPluginLocalizedValue("RepoViewAddRepository.tooltip"))
 				.click();
-		SWTBotShell shell = bot.shell(
-				UIText.RepositorySearchDialog_AddGitRepositories).activate();
+		SWTBotShell shell = bot
+				.shell(UIText.RepositorySearchDialog_AddGitRepositories);
 		shell.bot().textWithLabel(UIText.RepositorySearchDialog_directory)
 				.setText(getTestDirectory().getPath());
 		shell.bot().button(UIText.RepositorySearchDialog_Search).click();

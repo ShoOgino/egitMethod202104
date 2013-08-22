@@ -15,9 +15,7 @@
 				.getPluginLocalizedValue(REMOVE_REPOSITORY_CONTEXT_MENU_LABEL));
 		SWTBotShell shell = bot
 				.shell(UIText.RepositoriesView_ConfirmProjectDeletion_WindowTitle);
-		shell.activate();
 		shell.bot().button(IDialogConstants.YES_LABEL).click();
-		waitInUI();
 		refreshAndWait();
 		assertEmpty();
 		assertProjectExistence(PROJ1, false);

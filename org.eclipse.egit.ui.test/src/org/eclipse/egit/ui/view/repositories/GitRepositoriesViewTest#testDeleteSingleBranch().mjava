@@ -8,9 +8,6 @@
 				tree, repositoryFile).expand();
 		SWTBotTreeItem masterNode = localBranchesItem.getNode("master");
 		masterNode.select();
-		ContextMenuHelper.clickContextMenuSync(tree, myUtil
-				.getPluginLocalizedValue("RepoViewCheckout.label"));
-		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("RepoViewCreateBranch.label"));
 		SWTBotShell createBranchShell = bot

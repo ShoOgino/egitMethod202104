@@ -1,9 +1,5 @@
 	@Test
 	public void testCreateDeleteLocalBranchWithUnmerged() throws Exception {
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				repositoryFile);
-		shareProjects(repositoryFile);
-		refreshAndWait();
 		final SWTBotView view = getOrOpenView();
 		SWTBotTreeItem localItem = myRepoViewUtil.getLocalBranchesItem(view
 				.bot().tree(), repositoryFile);
@@ -25,7 +21,6 @@
 				.select();
 		createPage.bot().button(IDialogConstants.FINISH_LABEL).click();
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
-		getOrOpenView().toolbarButton("Refresh").click();
 		refreshAndWait();
 
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),

@@ -11,6 +11,7 @@
 		File result = new File(getBaseTempDir(), name);
 		if (result.exists())
 			FileUtils.delete(result, FileUtils.RECURSIVE | FileUtils.RETRY);
+		FileUtils.mkdirs(result, true);
 		return result;
 	}
 

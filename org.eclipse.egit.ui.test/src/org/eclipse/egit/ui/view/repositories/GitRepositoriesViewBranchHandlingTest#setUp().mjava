@@ -1,5 +1,6 @@
-	@BeforeClass
-	public static void beforeClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
+		clearView();
 		setVerboseBranchMode(false);
 		repositoryFile = createProjectAndCommitToRepository();
 		remoteRepositoryFile = createRemoteRepository(repositoryFile);
@@ -12,5 +13,11 @@
 		op.run(null);
 
 		clonedRepositoryFile = new File(workdir, Constants.DOT_GIT);
+
+		RepositoryUtil repositoryUtil = Activator.getDefault()
+				.getRepositoryUtil();
+		repositoryUtil.addConfiguredRepository(repositoryFile);
+		repositoryUtil.addConfiguredRepository(remoteRepositoryFile);
+		repositoryUtil.addConfiguredRepository(clonedRepositoryFile);
 	}
 

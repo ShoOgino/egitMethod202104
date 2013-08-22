@@ -1,27 +1,12 @@
-	@BeforeClass
-	public static void setup() throws Exception {
-		perspective = bot.activePerspective();
-		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
-		File gitDir = createProjectAndCommitToRepository();
-		repo = FileRepositoryBuilder.create(gitDir);
+	@Before
+	public void setup() throws Exception {
+		gitDir = createProjectAndCommitToRepository();
 
 		IFile[] commitables = getAllFiles();
-		ArrayList<IFile> untracked = new ArrayList<IFile>();
-		untracked.addAll(Arrays.asList(commitables));
-		CommitOperation cop = new CommitOperation(commitables, untracked,
-				TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER, "Initial commit");
+		CommitOperation cop = new CommitOperation(commitables,
+				Arrays.asList(commitables), TestUtil.TESTAUTHOR,
+				TestUtil.TESTCOMMITTER, "Initial commit");
 		cop.setAmending(true);
 		cop.execute(null);
-
-		TagBuilder tag = new TagBuilder();
-		tag.setTag(TAG_NAME);
-		tag.setTagger(RawParseUtils.parsePersonIdent(TestUtil.TESTAUTHOR));
-		tag.setMessage("I'm a savepoint");
-		tag.setObjectId(repo.resolve(repo.getFullBranch()),
-				Constants.OBJ_COMMIT);
-		TagOperation top = new TagOperation(repo, tag, false);
-		top.execute(null);
-
-		waitInUI();
 	}
 

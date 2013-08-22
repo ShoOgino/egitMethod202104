@@ -1,8 +1,5 @@
 	@Test
 	public void testRenameBranch() throws Exception {
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				clonedRepositoryFile);
-
 		SWTBotTree tree = getOrOpenView().bot().tree();
 
 		SWTBotTreeItem item = myRepoViewUtil.getLocalBranchesItem(tree,
