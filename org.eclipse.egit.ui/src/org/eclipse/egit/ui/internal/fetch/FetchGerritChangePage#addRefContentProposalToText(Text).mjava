@@ -1,14 +1,10 @@
 	private void addRefContentProposalToText(final Text textField) {
-		KeyStroke stroke;
-		try {
-			stroke = KeyStroke.getInstance("CTRL+SPACE"); //$NON-NLS-1$
+		KeyStroke stroke = UIUtils
+				.getKeystrokeOfBestActiveBindingFor(IWorkbenchCommandConstants.EDIT_CONTENT_ASSIST);
+		if (stroke != null)
 			UIUtils.addBulbDecorator(textField, NLS.bind(
 					UIText.FetchGerritChangePage_ContentAssistTooltip,
 					stroke.format()));
-		} catch (ParseException e1) {
-			Activator.handleError(e1.getMessage(), e1, false);
-			stroke = null;
-		}
 
 		IContentProposalProvider cp = new IContentProposalProvider() {
 			public IContentProposal[] getProposals(String contents, int position) {
