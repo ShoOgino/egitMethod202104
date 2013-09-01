@@ -23,7 +23,8 @@
 		}
 		if (shouldCheckout) {
 			super.buttonPressed(buttonId);
-			BranchOperationUI op = BranchOperationUI.checkout(repository, target);
+			BranchOperationUI op = BranchOperationUI.checkoutWithoutQuestion(
+					repository, target);
 			op.start();
 		}
 	}

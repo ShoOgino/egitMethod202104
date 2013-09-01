@@ -1,0 +1,10 @@
+	/**
+	 * @param refName
+	 *            the full ref name which will be checked out
+	 * @return true if checkout will need additional input from the user before
+	 *         continuing
+	 */
+	public static boolean checkoutWillShowQuestionDialog(String refName) {
+		return shouldShowCheckoutRemoteTrackingDialog(refName);
+	}
+

@@ -1,0 +1,17 @@
+	private static boolean shouldShowCheckoutRemoteTrackingDialog(String refName) {
+		boolean isRemoteTrackingBranch = refName != null
+				&& refName.startsWith(Constants.R_REMOTES);
+		if (isRemoteTrackingBranch) {
+			boolean showDetachedHeadWarning = Activator.getDefault()
+					.getPreferenceStore()
+					.getBoolean(UIPreferences.SHOW_DETACHED_HEAD_WARNING);
+			// If the user has not yet chosen to ignore the warning about
+			// getting into a "detached HEAD" state, then we show them a dialog
+			// whether a remote-tracking branch should be checked out with a
+			// detached HEAD or checking it out as a new local branch.
+			return showDetachedHeadWarning;
+		} else {
+			return false;
+		}
+	}
+
