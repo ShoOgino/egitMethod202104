@@ -16,6 +16,12 @@
 		Job job = new Job(jobname) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				// safeguard against broken handlers which don't check that
+				// repository state is safe
+				if (!repository.getRepositoryState().equals(
+						RepositoryState.SAFE))
+					throw new IllegalStateException(
+							"Can't start rebase if repository state isn't SAFE"); //$NON-NLS-1$
 				try {
 					rebase.execute(monitor);
 				} catch (final CoreException e) {

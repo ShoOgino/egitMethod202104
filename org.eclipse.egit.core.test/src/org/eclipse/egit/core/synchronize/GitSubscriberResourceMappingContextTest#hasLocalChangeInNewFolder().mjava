@@ -1,0 +1,20 @@
+	@Test
+	public void hasLocalChangeInNewFolder() throws Exception {
+		iProject.getFolder("folder").create(false, true, null);
+		RemoteResourceMappingContext context = prepareContext(MASTER, MASTER);
+		// Folder is now known, but not yet file in it
+
+		File file = testRepo.createFile(iProject, "folder/b.txt");
+		IFile iFile = testRepo.getIFile(iProject, file);
+		refresh(context, iFile);
+		assertTrue(context.hasLocalChange(iFile, new NullProgressMonitor()));
+
+		testRepo.addToIndex(iProject, file);
+		refresh(context, iFile);
+		assertTrue(context.hasLocalChange(iFile, new NullProgressMonitor()));
+
+		JGitTestUtil.write(file, "changed content b");
+		refresh(context, iFile);
+		assertTrue(context.hasLocalChange(iFile, new NullProgressMonitor()));
+	}
+

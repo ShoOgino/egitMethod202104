@@ -1,6 +1,9 @@
 	@Before
-	public void setup() {
-		part = bot.activeView().getViewReference().getPart(false);
+	public void setup() throws Exception {
+		SWTBotView view = TestUtil.showExplorerView();
+		part = view.getViewReference().getPart(false);
+
+		repositoryFile = createProjectAndCommitToRepository();
 
 		GitScopeOperationFactory.setFactory(new GitScopeOperationFactory() {
 			@Override

@@ -2,15 +2,7 @@
 			Map<GitSynchronizeData, Collection<String>> updateRequests,
 			IProgressMonitor monitor) {
 		GitSyncCache cache = new GitSyncCache();
-		SubMonitor m = SubMonitor.convert(monitor, updateRequests.size());
-
-		for (Entry<GitSynchronizeData, Collection<String>> entry : updateRequests
-				.entrySet()) {
-			cache.merge(getAllData(entry.getKey(), entry.getValue()));
-			m.worked(1);
-		}
-
-		m.done();
+		mergeAllDataIntoCache(updateRequests, monitor, cache);
 		return cache;
 	}
 

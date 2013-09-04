@@ -1,0 +1,10 @@
+	public void merge(GitSyncCache other, Set<String> filterPaths) {
+		for (Entry<File, GitSyncObjectCache> entry : other.cache.entrySet()) {
+			File key = entry.getKey();
+			if (cache.containsKey(key))
+				cache.get(key).merge(entry.getValue(), filterPaths);
+			else
+				cache.put(key, entry.getValue());
+		}
+	}
+

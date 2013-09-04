@@ -1,0 +1,19 @@
+	private void setExistingTag(Object tagObject) {
+		if (tagObject instanceof RevTag)
+			existingTag = (RevTag) tagObject;
+		else {
+			setNoExistingTag();
+			setErrorMessage(UIText.CreateTagDialog_LightweightTagMessage);
+			return;
+		}
+
+		if (!tagNameText.getText().equals(existingTag.getTagName()))
+			tagNameText.setText(existingTag.getTagName());
+		if (commitCombo != null)
+			commitCombo.setSelectedElement(existingTag.getObject());
+
+		// handle un-annotated tags
+		String message = existingTag.getFullMessage();
+		tagMessageText.setText(null != message ? message : ""); //$NON-NLS-1$
+	}
+

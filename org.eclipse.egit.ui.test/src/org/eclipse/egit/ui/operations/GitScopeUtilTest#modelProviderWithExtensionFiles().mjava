@@ -1,7 +1,7 @@
 	@Test
 	// model provider already available via fragment.xml
 	public void modelProviderWithExtensionFiles() throws Exception {
-		IFile modelFile = createProjectAndModelFiles();
+		IFile modelFile = createModelFiles();
 
 		IResource[] selectedResources = new IResource[] { modelFile };
 		IResource[] relatedChanges = getRelatedChangesInUIThread(selectedResources);

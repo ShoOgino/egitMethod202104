@@ -1,0 +1,16 @@
+	public static void mergeAllDataIntoCache(
+			Map<GitSynchronizeData, Collection<String>> updateRequests,
+			IProgressMonitor monitor, GitSyncCache cache) {
+		SubMonitor m = SubMonitor.convert(monitor, updateRequests.size());
+
+		for (Entry<GitSynchronizeData, Collection<String>> entry : updateRequests
+				.entrySet()) {
+			Collection<String> paths = entry.getValue();
+			GitSyncCache partialCache = getAllData(entry.getKey(), paths);
+			cache.merge(partialCache, new HashSet<String>(paths));
+			m.worked(1);
+		}
+
+		m.done();
+	}
+

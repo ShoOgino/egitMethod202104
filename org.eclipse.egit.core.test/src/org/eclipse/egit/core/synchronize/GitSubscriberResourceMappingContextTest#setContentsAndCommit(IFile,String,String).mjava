@@ -1,0 +1,7 @@
+	private RevCommit setContentsAndCommit(IFile targetFile,
+			String newContents, String commitMessage)
+			throws Exception {
+		setContents(targetFile, newContents);
+		return addAndCommit(targetFile, commitMessage);
+	}
+

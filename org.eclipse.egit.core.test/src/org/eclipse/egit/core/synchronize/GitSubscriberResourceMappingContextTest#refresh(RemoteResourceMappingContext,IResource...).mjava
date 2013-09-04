@@ -1,0 +1,7 @@
+	private void refresh(RemoteResourceMappingContext context,
+			IResource... resources) throws Exception {
+		context.refresh(new ResourceTraversal[] { new ResourceTraversal(
+				resources, IResource.DEPTH_INFINITE, 0) }, 0,
+				new NullProgressMonitor());
+	}
+

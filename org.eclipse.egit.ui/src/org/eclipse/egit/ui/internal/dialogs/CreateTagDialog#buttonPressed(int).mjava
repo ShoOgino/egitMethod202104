@@ -6,10 +6,8 @@
 			tagMessageText.setText(""); //$NON-NLS-1$
 			if (commitCombo != null) {
 				commitCombo.clearSelection();
-				commitCombo.setEnabled(true);
 			}
-			tagNameText.setEnabled(true);
-			tagMessageText.setEnabled(true);
+			tagMessageText.getTextWidget().setEditable(true);
 			overwriteButton.setEnabled(false);
 			overwriteButton.setSelection(false);
 			break;
