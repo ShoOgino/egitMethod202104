@@ -1,0 +1,21 @@
+	@Test
+	public void hasLocalChangeWithFileRemoval() throws Exception {
+		File file1 = testRepo.createFile(iProject, "a.txt");
+		File file2 = testRepo.createFile(iProject, "b.txt");
+		File file3 = testRepo.createFile(iProject, "c.txt");
+
+		IFile iFile1 = testRepo.getIFile(iProject, file1);
+		IFile iFile2 = testRepo.getIFile(iProject, file2);
+		IFile iFile3 = testRepo.getIFile(iProject, file3);
+
+		RemoteResourceMappingContext context = prepareContext(MASTER, MASTER);
+		assertTrue(context.hasLocalChange(iFile1, new NullProgressMonitor()));
+		assertTrue(context.hasLocalChange(iFile2, new NullProgressMonitor()));
+		assertTrue(context.hasLocalChange(iFile3, new NullProgressMonitor()));
+
+		iFile1.delete(false, null);
+		refresh(context, iFile1, iFile2, iFile3);
+		assertTrue(context.hasLocalChange(iFile2, new NullProgressMonitor()));
+		assertTrue(context.hasLocalChange(iFile3, new NullProgressMonitor()));
+	}
+

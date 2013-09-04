@@ -1,0 +1,12 @@
+	private RemoteResourceMappingContext prepareContext(String srcRev,
+			String dstRev) throws Exception {
+		GitSynchronizeData gsd = new GitSynchronizeData(repo, srcRev, dstRev,
+				true);
+		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				gsds);
+		subscriber.init(new NullProgressMonitor());
+
+		return new GitSubscriberResourceMappingContext(subscriber, gsds);
+	}
+

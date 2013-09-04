@@ -1,0 +1,5 @@
+	private RevCommit addAndCommit(IFile targetFile, String commitMessage) throws Exception {
+		testRepo.addToIndex(targetFile);
+		return testRepo.commit(commitMessage);
+	}
+

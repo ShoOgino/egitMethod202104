@@ -1,0 +1,25 @@
+	@Test
+	public void hasRemoteChangeInNewFolder() throws Exception {
+		File file1 = testRepo.createFile(iProject, "file1.sample");
+		String initialContent1 = "some content for the first file";
+		testRepo.appendContentAndCommit(iProject, file1, initialContent1,
+				"first file - initial commit");
+		IFile iFile1 = testRepo.getIFile(iProject, file1);
+
+		testRepo.createAndCheckoutBranch(MASTER, BRANCH);
+
+		iProject.getFolder("folder").create(true, true,
+				new NullProgressMonitor());
+		File file2 = testRepo.createFile(iProject, "folder/file2.sample");
+		String initialContent2 = "some content for the second file";
+		testRepo.appendContentAndCommit(iProject, file2, initialContent2,
+				"second file - initial commit");
+		IFile iFile2 = testRepo.getIFile(iProject, file2);
+
+		testRepo.checkoutBranch(MASTER);
+
+		RemoteResourceMappingContext context = prepareContext(MASTER, BRANCH);
+		assertFalse(context.hasRemoteChange(iFile1, new NullProgressMonitor()));
+		assertTrue(context.hasRemoteChange(iFile2, new NullProgressMonitor()));
+	}
+

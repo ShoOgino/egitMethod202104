@@ -1,0 +1,47 @@
+	@Test
+	public void hasRemoteChanges() throws Exception {
+		File file1 = testRepo.createFile(iProject, "file1.sample");
+		File file2 = testRepo.createFile(iProject, "file2.sample");
+
+		testRepo.appendContentAndCommit(iProject, file1,
+				"initial content - file 1",
+				"first file - initial commit MASTER");
+		testRepo.appendContentAndCommit(iProject, file2,
+				"initial content - file 2",
+				"second file - initial commit MASTER");
+
+		IFile iFile1 = testRepo.getIFile(iProject, file1);
+		IFile iFile2 = testRepo.getIFile(iProject, file2);
+
+		testRepo.createAndCheckoutBranch(MASTER, BRANCH);
+
+		setContentsAndCommit(iFile1, "change in branch - file 1",
+				"branch commit - file1");
+		setContentsAndCommit(iFile2, "change in branch - file 2",
+				"branch commit - file2");
+
+		testRepo.checkoutBranch(MASTER);
+
+		RemoteResourceMappingContext context = prepareContext(MASTER, BRANCH);
+		assertFalse(context.hasLocalChange(iFile1, new NullProgressMonitor()));
+		assertTrue(context.hasRemoteChange(iFile1, new NullProgressMonitor()));
+		assertFalse(context.hasLocalChange(iFile2, new NullProgressMonitor()));
+		assertTrue(context.hasRemoteChange(iFile2, new NullProgressMonitor()));
+
+		setContents(iFile1, "change in master - file 1");
+		refresh(context, iFile1);
+		assertTrue(context.hasLocalChange(iFile1, new NullProgressMonitor()));
+		assertTrue(context.hasRemoteChange(iFile1, new NullProgressMonitor()));
+
+		setContents(iFile2, "change in branch - file 2");
+		refresh(context, iFile2);
+		assertTrue(context.hasLocalChange(iFile2, new NullProgressMonitor()));
+		assertTrue(context.hasRemoteChange(iFile2, new NullProgressMonitor()));
+
+		setContentsAndCommit(iFile1, "change in branch - file 1",
+				"change in master (same as in branch) - file 2");
+		refresh(context, iFile1);
+		assertTrue(context.hasLocalChange(iFile1, new NullProgressMonitor()));
+		assertTrue(context.hasRemoteChange(iFile1, new NullProgressMonitor()));
+	}
+
