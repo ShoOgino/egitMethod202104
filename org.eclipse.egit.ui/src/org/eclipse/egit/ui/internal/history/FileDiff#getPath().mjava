@@ -1,8 +1,8 @@
 	/**
-	 * Get path
-	 *
-	 * @return path
-	 * @deprecated Use {@link #getOldPath()} or {@link #getNewPath()}
+	 * @return the old path in case of a delete, the new path otherwise, but
+	 *         never null or <code>/dev/null</code>
+	 * @see #getNewPath()
+	 * @see #getOldPath()
 	 */
 	public String getPath() {
 		if (ChangeType.DELETE.equals(diffEntry.getChangeType()))
