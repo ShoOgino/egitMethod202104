@@ -19,11 +19,11 @@
 		// left asserts
 		assertThat(leftResult, notNullValue());
 		assertCommit(leftResult.get(0), c2, 3);
-		assertFileAddition(c1, c2,
+		assertFileDeletion(c2, c1,
 				leftResult.get(0).getChildren().get("a.txt"), "a.txt", LEFT);
-		assertFileDeletion(c1, c2,
+		assertFileAddition(c2, c1,
 				leftResult.get(0).getChildren().get("b.txt"), "b.txt", LEFT);
-		assertFileChange(c1, c2, leftResult.get(0).getChildren().get("c.txt"),
+		assertFileChange(c2, c1, leftResult.get(0).getChildren().get("c.txt"),
 				"c.txt", LEFT);
 		// right asserts
 		assertThat(rightResult, notNullValue());

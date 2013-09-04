@@ -1,16 +1,10 @@
 	static void calculateAndSetChangeKind(final int direction, Change change) {
-		if (ZERO_ID.equals(change.objectId)) { // missing locally
+		if (ZERO_ID.equals(change.objectId)) { // removed in commit
 			change.objectId = null; // clear zero id;
-			if (direction == LEFT)
-				change.kind = direction | ADDITION;
-			else // should be Differencer.RIGHT
-				change.kind = direction | DELETION;
-		} else if (ZERO_ID.equals(change.remoteObjectId)) { // missing remotely
+			change.kind = direction | DELETION;
+		} else if (ZERO_ID.equals(change.remoteObjectId)) { // added in commit
 			change.remoteObjectId = null; // clear zero id;
-			if (direction == LEFT)
-				change.kind = direction | DELETION;
-			else // should be Differencer.RIGHT
-				change.kind = direction | ADDITION;
+			change.kind = direction | ADDITION;
 		} else
 			change.kind = direction | CHANGE;
 	}

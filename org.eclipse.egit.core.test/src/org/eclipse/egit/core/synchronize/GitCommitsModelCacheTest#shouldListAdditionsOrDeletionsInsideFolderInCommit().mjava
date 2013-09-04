@@ -18,10 +18,10 @@
 		assertThat(Integer.valueOf(leftResult.size()), is(Integer.valueOf(1)));
 		assertCommit(leftResult.get(0), c, 2);
 		assertThat(leftResult.get(0).getChildren().size(), is(2));
-		assertFileDeletion(c,
+		assertFileAddition(c,
 				leftResult.get(0).getChildren().get("folder/a.txt"), "a.txt",
 				LEFT);
-		assertFileDeletion(c,
+		assertFileAddition(c,
 				leftResult.get(0).getChildren().get("folder/b.txt"), "b.txt",
 				LEFT);
 		// right asserts, after changing sides addition becomes deletion
