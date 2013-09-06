@@ -15,5 +15,7 @@
 		InstanceScope.INSTANCE.getNode(
 				org.eclipse.egit.core.Activator.getPluginId())
 				.removePreferenceChangeListener(prefListener);
+		if (refsChangedListener != null)
+			refsChangedListener.remove();
 	}
 

@@ -1,0 +1,21 @@
+	/**
+	 * Show rebase buttons only if a rebase operation is in progress
+	 *
+	 * @param isRebasing
+	 *            {@code}true if rebase is in progress
+	 */
+	protected void updateRebaseButtonVisibility(final boolean isRebasing) {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				showControl(rebaseSection, isRebasing);
+				rebaseSection.getParent().layout(true);
+			}
+
+			private void showControl(Control c, final boolean show) {
+				c.setVisible(show);
+				GridData g = (GridData) c.getLayoutData();
+				g.exclude = !show;
+			}
+		});
+	}
+

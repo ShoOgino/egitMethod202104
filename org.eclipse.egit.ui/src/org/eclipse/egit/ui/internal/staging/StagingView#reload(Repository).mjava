@@ -16,18 +16,29 @@
 		final boolean repositoryChanged = currentRepository != repository;
 
 		asyncExec(new Runnable() {
+
 			public void run() {
 				if (form.isDisposed())
 					return;
 
 				final IndexDiffData indexDiff = doReload(repository);
+				boolean indexDiffAvailable = (indexDiff != null);
 
-				boolean indexDiffAvailable = indexDiff !=  null;
-
-				if (repositoryChanged)
+				if (repositoryChanged) {
 					// Reset paths, they're from the old repository
 					resetPathsToExpand();
+					if (refsChangedListener != null)
+						refsChangedListener.remove();
+					refsChangedListener = repository.getListenerList()
+							.addRefsChangedListener(new RefsChangedListener() {
 
+								public void onRefsChanged(RefsChangedEvent event) {
+									updateRebaseButtonVisibility(repository
+											.getRepositoryState().isRebasing());
+								}
+
+							});
+				}
 				final StagingViewUpdate update = new StagingViewUpdate(currentRepository, indexDiff, null);
 				Object[] unstagedExpanded = unstagedViewer
 						.getExpandedElements();
@@ -39,11 +50,26 @@
 						pathsToExpandInUnstaged);
 				expandPreviousExpandedAndPaths(stagedExpanded, stagedViewer,
 						pathsToExpandInStaged);
-				enableCommitWidgets(indexDiffAvailable);
-				boolean commitEnabled =
-						indexDiffAvailable && repository.getRepositoryState().canCommit();
+				enableCommitWidgets(indexDiffAvailable
+						&& indexDiff.getConflicting().isEmpty());
+
+				updateRebaseButtonVisibility(repository.getRepositoryState()
+						.isRebasing());
+
+				boolean commitEnabled = indexDiffAvailable
+						&& repository.getRepositoryState().canCommit()
+						&& indexDiff.getConflicting().isEmpty();
 				commitButton.setEnabled(commitEnabled);
-				commitAndPushButton.setEnabled(commitEnabled);
+
+				boolean commitAndPushEnabled = commitEnabled
+						&& !repository.getRepositoryState().isRebasing();
+				commitAndPushButton.setEnabled(commitAndPushEnabled);
+
+				boolean rebaseContinueEnabled = indexDiffAvailable
+						&& repository.getRepositoryState().isRebasing()
+						&& indexDiff.getConflicting().isEmpty();
+				rebaseContinueButton.setEnabled(rebaseContinueEnabled);
+
 				form.setText(StagingView.getRepositoryName(repository));
 				updateCommitMessageComponent(repositoryChanged, indexDiffAvailable);
 				updateSectionText();
