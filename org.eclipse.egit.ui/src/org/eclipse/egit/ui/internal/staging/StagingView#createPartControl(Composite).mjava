@@ -6,15 +6,14 @@
 		parent.addDisposeListener(new DisposeListener() {
 
 			public void widgetDisposed(DisposeEvent e) {
+				resources.dispose();
 				toolkit.dispose();
 			}
 		});
 
 		form = toolkit.createForm(parent);
 
-		Image repoImage = UIIcons.REPOSITORY.createImage();
-		UIUtils.hookDisposal(form, repoImage);
-		form.setImage(repoImage);
+		form.setImage(getImage(UIIcons.REPOSITORY));
 		form.setText(UIText.StagingView_NoSelectionTitle);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(form);
 		toolkit.decorateFormHeading(form);
@@ -226,7 +225,8 @@
 
 		this.commitButton = toolkit.createButton(commitButtonsContainer,
 				UIText.StagingView_Commit, SWT.PUSH);
-
+		commitButton.setImage(getImage(UIIcons.COMMIT));
+		commitButton.setText(UIText.StagingView_Commit);
 		commitButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
