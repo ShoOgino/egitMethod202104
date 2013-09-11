@@ -5,9 +5,11 @@
 	 * @param repo
 	 *            repository that should be scanned
 	 * @param srcId
-	 *            RevCommit id that git history traverse will start from
+	 *            commit id that is considered the "local" version (e.g. from
+	 *            master)
 	 * @param dstId
-	 *            RevCommit id that git history traverse will end
+	 *            commit id that is considered the "remote" version (e.g. from
+	 *            origin/master)
 	 * @param pathFilter
 	 *            path filter definition or {@code null} when all paths should
 	 *            be included
@@ -54,19 +56,17 @@
 			commit.committerName = revCommit.getCommitterIdent().getName();
 			commit.commitDate = revCommit.getAuthorIdent().getWhen();
 
-			RevCommit actualCommit, parentCommit;
-			if (revCommit.has(localFlag)) {
-				actualCommit = revCommit;
-				parentCommit = getParentCommit(revCommit);
+			RevCommit parentCommit = getParentCommit(revCommit);
+			if (revCommit.has(localFlag))
+				// Outgoing
 				commit.direction = RIGHT;
-			} else if (revCommit.has(remoteFlag)) {
-				actualCommit = getParentCommit(revCommit);
-				parentCommit = revCommit;
+			else if (revCommit.has(remoteFlag))
+				// Incoming
 				commit.direction = LEFT;
-			} else
+			else
 				throw new GitCommitsModelDirectionException();
 
-			commit.children = getChangedObjects(repo, actualCommit,
+			commit.children = getChangedObjects(repo, revCommit,
 					parentCommit, pathFilter, commit.direction);
 
 			if (commit.children != null)

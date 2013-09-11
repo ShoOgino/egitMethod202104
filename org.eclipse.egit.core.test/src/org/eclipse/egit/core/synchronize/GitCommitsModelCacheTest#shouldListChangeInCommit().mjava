@@ -14,7 +14,7 @@
 		// left assertions
 		assertThat(leftResult, notNullValue());
 		assertCommit(leftResult.get(0), c2, 1);
-		assertFileChange(c1, c2, leftResult.get(0).getChildren().get("a.txt"),
+		assertFileChange(c2, c1, leftResult.get(0).getChildren().get("a.txt"),
 				"a.txt", LEFT);
 		// right asserts
 		assertThat(rightResult, notNullValue());

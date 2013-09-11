@@ -1,5 +1,6 @@
 	/**
-	 * @return the old path or null for a completely new file
+	 * @return the new path or <code>/dev/null</code> for a deleted file
+	 * @see #getPath() for getting the new or old path depending on change type
 	 */
 	public String getNewPath() {
 		return diffEntry.getNewPath();

@@ -1,0 +1,8 @@
+	private static int addTree(TreeWalk tw, RevCommit commit)
+			throws IOException {
+		if (commit != null)
+			return tw.addTree(commit.getTree());
+		else
+			return tw.addTree(new EmptyTreeIterator());
+	}
+
