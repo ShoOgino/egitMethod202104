@@ -1,0 +1,18 @@
+		@Test
+		public void indexOfTest() {
+			Integer lastInSecond = new Integer(10);
+			Integer firstInSecond = new Integer(5);
+			Integer lastInFirst = new Integer(4);
+			Integer firstInFirst = new Integer(1);
+
+			testData1.addAll(testData1);
+			testData2.addAll(testData2);
+			// 1-2-3-4-1-2-3-4-5-6-7-8-9-10-5-6-7-8-9-10 --list
+			// 0-1-2-3-4-5-6-7-8-9-0-1-2-.3-4-5-6-7-8-.9 --index
+
+			assertEquals(13, joined.indexOf(lastInSecond));
+			assertEquals(8, joined.indexOf(firstInSecond));
+			assertEquals(3, joined.indexOf(lastInFirst));
+			assertEquals(0, joined.indexOf(firstInFirst));
+		}
+

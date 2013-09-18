@@ -1,0 +1,7 @@
+	private void reparsePlan() {
+		doneList = parseDone();
+		todoList = parseTodo();
+		planList = JoinedList.wrap(doneList, todoList);
+		notifyPlanWasUpdatedFromRepository();
+	}
+

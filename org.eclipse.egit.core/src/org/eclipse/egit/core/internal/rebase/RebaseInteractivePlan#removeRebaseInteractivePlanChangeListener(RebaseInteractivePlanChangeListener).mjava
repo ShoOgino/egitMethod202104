@@ -1,0 +1,13 @@
+	/**
+	 * Removes a {@link RebaseInteractivePlanChangeListener} from this
+	 * {@link RebaseInteractivePlan} if it has been registered before
+	 *
+	 * @param listener
+	 *            the {@link RebaseInteractivePlanChangeListener} to be removed
+	 * @return true if the listener has been removed, otherwise false
+	 */
+	public boolean removeRebaseInteractivePlanChangeListener(
+			RebaseInteractivePlanChangeListener listener) {
+		return planChangeListeners.remove(listener);
+	}
+

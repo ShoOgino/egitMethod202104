@@ -1,0 +1,9 @@
+		/**
+		 * @return true if this element is marked for deletion, i.e. a valid
+		 *         action line has been commented out, otherwise false
+		 */
+		public boolean isSkip() {
+			return (Action.COMMENT.equals(line.getAction()) && null != line
+					.getCommit());
+		}
+

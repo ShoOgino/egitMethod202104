@@ -1,0 +1,21 @@
+		/**
+		 * Moves an {@link PlanElement} of Type {@link ElementType#TODO} down if
+		 * possible
+		 *
+		 * @param element
+		 *            the {@link PlanElement} to move down
+		 */
+		public void moveTodoEntryDown(PlanElement element) {
+			List<PlanElement> list = todoList;
+			int initialIndex = list.indexOf(element);
+			int oldIndex;
+			do {
+				oldIndex = list.indexOf(element);
+				moveDown(oldIndex, list);
+			} while (list.get(oldIndex).isComment());
+			int newIndex = list.indexOf(element);
+			if (initialIndex != newIndex)
+				plan.notifyPlanElementsOrderChange(element, initialIndex,
+						newIndex);
+		}
+

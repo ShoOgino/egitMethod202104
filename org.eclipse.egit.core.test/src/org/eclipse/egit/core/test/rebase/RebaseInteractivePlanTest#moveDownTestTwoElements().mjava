@@ -1,0 +1,17 @@
+	@Test
+	public void moveDownTestTwoElements() throws Exception {
+		PlanElement element1 = createPlanElement(false);
+		PlanElement element2 = createPlanElement(false);
+		toDoElements.add(element1);
+		toDoElements.add(element2);
+		moveHelper.moveTodoEntryDown(element1);
+		assertEquals(element2, toDoElements.get(0));
+		assertEquals(element1, toDoElements.get(1));
+		moveHelper.moveTodoEntryDown(element1);
+		assertEquals(element2, toDoElements.get(0));
+		assertEquals(element1, toDoElements.get(1));
+		moveHelper.moveTodoEntryDown(element2);
+		assertEquals(element1, toDoElements.get(0));
+		assertEquals(element2, toDoElements.get(1));
+	}
+

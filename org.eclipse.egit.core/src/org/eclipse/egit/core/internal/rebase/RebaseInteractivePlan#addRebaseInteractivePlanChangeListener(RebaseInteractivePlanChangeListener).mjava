@@ -1,0 +1,15 @@
+	/**
+	 * Adds a {@link RebaseInteractivePlanChangeListener} to this
+	 * {@link RebaseInteractivePlan} if it has not been registered yet
+	 *
+	 * @param listener
+	 *            the {@link RebaseInteractivePlanChangeListener} to be added
+	 * @return true if the listener has been added, otherwise false
+	 */
+	public boolean addRebaseInteractivePlanChangeListener(
+			RebaseInteractivePlanChangeListener listener) {
+		if (planChangeListeners.contains(listener))
+			return false;
+		return planChangeListeners.add(listener);
+	}
+

@@ -1,0 +1,7 @@
+	private void notifyPlanElementActionChange(PlanElement element,
+			ElementAction oldType, ElementAction newType) {
+		persist();
+		for (RebaseInteractivePlanChangeListener listener : planChangeListeners)
+			listener.planElementTypeChanged(this, element, oldType, newType);
+	}
+

@@ -1,0 +1,7 @@
+	private RebaseInteractivePlan(Repository repo) {
+		this.repository = repo;
+		reparsePlan();
+		registerIndexDiffChangeListener();
+		registerRefChangedListener();
+	}
+

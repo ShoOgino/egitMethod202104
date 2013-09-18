@@ -1,0 +1,17 @@
+		@Test
+		public void addTest() {
+			joined.add(new Integer(11));
+			assertEquals("[1, 2, 3, 4]", joined.getFirstList().toString());
+			assertEquals("[5, 6, 7, 8, 9, 10, 11]", joined.getSecondList()
+					.toString());
+			assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]",
+					joined.toString());
+
+			joined.add(new Integer(12));
+			assertEquals("[1, 2, 3, 4]", joined.getFirstList().toString());
+			assertEquals("[5, 6, 7, 8, 9, 10, 11, 12]", joined.getSecondList()
+					.toString());
+			assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]",
+					joined.toString());
+		}
+

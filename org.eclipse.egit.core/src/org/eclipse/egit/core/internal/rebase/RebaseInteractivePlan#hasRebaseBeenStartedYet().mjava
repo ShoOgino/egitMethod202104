@@ -1,0 +1,8 @@
+	/**
+	 * @return true if the rebase has already been started processing the plan,
+	 *         otherwise false
+	 */
+	public boolean hasRebaseBeenStartedYet() {
+		return isRebasingInteractive() && doneList.size() > 0;
+	}
+

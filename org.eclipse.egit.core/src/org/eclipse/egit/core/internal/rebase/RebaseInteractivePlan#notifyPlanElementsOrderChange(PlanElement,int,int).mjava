@@ -1,0 +1,7 @@
+	private void notifyPlanElementsOrderChange(PlanElement element, int oldIndex,
+			int newIndex) {
+		persist();
+		for (RebaseInteractivePlanChangeListener listener : planChangeListeners)
+			listener.planElementsOrderChanged(this, element, oldIndex, newIndex);
+	}
+

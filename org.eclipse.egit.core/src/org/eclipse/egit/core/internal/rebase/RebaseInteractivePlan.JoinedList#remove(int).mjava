@@ -1,0 +1,6 @@
+		public T remove(int index) {
+			RelativeIndex<T> rel = mapAbsolutIndex(index);
+			modCount++;
+			return rel.getList().remove(rel.getRelativeIndex());
+		}
+

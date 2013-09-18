@@ -1,0 +1,14 @@
+	@Test
+	public void moveDownTestThreeElementsWithOneComment() throws Exception {
+		PlanElement element1 = createPlanElement(false);
+		PlanElement element2 = createPlanElement(true);
+		PlanElement element3 = createPlanElement(false);
+		toDoElements.add(element1);
+		toDoElements.add(element2);
+		toDoElements.add(element3);
+		moveHelper.moveTodoEntryDown(element1);
+		assertEquals(element2, toDoElements.get(0));
+		assertEquals(element3, toDoElements.get(1));
+		assertEquals(element1, toDoElements.get(2));
+	}
+

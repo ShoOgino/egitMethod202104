@@ -1,0 +1,12 @@
+	/**
+	 * Parses the plan from the FS by reading the todo-File and the done-File if
+	 * in state RebaseInteractive
+	 *
+	 * @throws IOException
+	 */
+	public void parse() throws IOException {
+		if (!isRebasingInteractive())
+			return;
+		reparsePlan();
+	}
+

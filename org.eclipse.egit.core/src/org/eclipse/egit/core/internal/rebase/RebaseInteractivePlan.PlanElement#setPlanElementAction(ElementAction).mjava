@@ -1,0 +1,44 @@
+		/**
+		 * This method maps the given {@link ElementAction} to the wrapped
+		 * {@link RebaseTodoLine RebaseTodoLines} {@link Action}. If the
+		 * {@link ElementAction} changes the registered
+		 * {@link RebaseInteractivePlanChangeListener
+		 * RebaseInteractivePlanChangeListeners} are notified.
+		 *
+		 * @param newAction
+		 *            the {@link ElementAction} to be set
+		 */
+		public void setPlanElementAction(ElementAction newAction) {
+			if (isComment()) {
+				if (newAction == null)
+					return;
+				throw new IllegalArgumentException();
+			}
+			ElementAction oldAction = this.getPlanElementAction();
+			if (oldAction == newAction)
+				return;
+			switch (newAction) {
+			case SKIP:
+				line.setAction(Action.COMMENT);
+				break;
+			case EDIT:
+				line.setAction(Action.EDIT);
+				break;
+			case FIXUP:
+				line.setAction(Action.FIXUP);
+				break;
+			case PICK:
+				line.setAction(Action.PICK);
+				break;
+			case REWORD:
+				line.setAction(Action.REWORD);
+				break;
+			case SQUASH:
+				line.setAction(Action.SQUASH);
+				break;
+			default:
+				throw new IllegalArgumentException();
+			}
+			notifyPlanElementActionChange(this, oldAction, newAction);
+		}
+

@@ -1,0 +1,16 @@
+	/**
+	 * Dispose the plan.
+	 * <p>
+	 * The next invocation of {@link RebaseInteractivePlan#getPlan(Repository)}
+	 * will create a new {@link RebaseInteractivePlan} instance.
+	 */
+	public void dispose() {
+		reparsePlan();
+		notifyPlanWasUpdatedFromRepository();
+		planRegistry.remove(this.repository.getDirectory());
+		planList.clear();
+		planChangeListeners.clear();
+		unregisterIndexDiffChangeListener();
+		refsChangedListener.remove();
+	}
+

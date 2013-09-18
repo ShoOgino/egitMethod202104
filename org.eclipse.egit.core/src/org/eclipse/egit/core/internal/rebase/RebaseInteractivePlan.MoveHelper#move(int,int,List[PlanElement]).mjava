@@ -1,0 +1,13 @@
+		private static void move(int sourceIndex, int targetIndex,
+				final List<PlanElement> list) {
+			if (sourceIndex == targetIndex)
+				return;
+			if (sourceIndex < targetIndex) {
+				Collections.rotate(list.subList(sourceIndex, targetIndex + 1),
+						-1);
+			} else {
+				Collections.rotate(list.subList(targetIndex, sourceIndex + 1),
+						1);
+			}
+		}
+

@@ -1,0 +1,12 @@
+		/**
+		 * Creates a newly List that provides a view to two joined lists.
+		 *
+		 * @param first
+		 * @param second
+		 * @return a new view on a concatenation of both lists
+		 */
+		public static <L extends List<T>, T> JoinedList<L, T> wrap(L first,
+				L second) {
+			return new JoinedList<L, T>(first, second);
+		}
+

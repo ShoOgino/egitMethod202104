@@ -1,0 +1,12 @@
+		@Test
+		public void getTest() {
+			assertEquals(new Integer(1), joined.get(0));
+			assertEquals(new Integer(1), joined.getFirstList().get(0));
+			assertEquals(new Integer(10), joined.get(9));
+			assertEquals(new Integer(10), joined.getSecondList().get(5));
+
+			Integer toBeAdded = new Integer(-5);
+			joined.getSecondList().add(0, toBeAdded);
+			assertEquals(toBeAdded, joined.get(4));
+		}
+

@@ -1,0 +1,24 @@
+	/**
+	 * Writes the plan to the FS.
+	 * <p>
+	 * Only {@link PlanElement Elements} of {@link ElementType#TODO} are
+	 * persisted.
+	 *
+	 * @return true if the todo file has been written successfully, otherwise
+	 *         false
+	 */
+	public boolean persist() {
+		if (!isRebasingInteractive())
+			return false;
+		List<RebaseTodoLine> todoLines = new LinkedList<RebaseTodoLine>();
+		for (PlanElement element : planList.getSecondList())
+			todoLines.add(element.getRebaseTodoLine());
+		try {
+			repository.writeRebaseTodoFile(REBASE_TODO, todoLines, false);
+		} catch (IOException e) {
+			Activator.logError(CoreText.RebaseInteractivePlan_WriteRebaseTodoFailed, e);
+			throw new RuntimeException(e);
+		}
+		return true;
+	}
+

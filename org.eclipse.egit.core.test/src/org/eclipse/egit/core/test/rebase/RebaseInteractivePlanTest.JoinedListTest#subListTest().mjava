@@ -1,0 +1,11 @@
+		@Test
+		public void subListTest() {
+			List<Integer> subList1 = joined.subList(0, 4);
+			assertEquals("[1, 2, 3, 4]", subList1.toString());
+			List<Integer> subList2 = joined.subList(4, 10);
+			assertEquals("[5, 6, 7, 8, 9, 10]", subList2.toString());
+			List<Integer> subList3 = joined.subList(3, 7);
+			assertEquals("[4, 5, 6, 7]", subList3.toString());
+			checkOriginalDataHasNotBeenAltered();
+		}
+

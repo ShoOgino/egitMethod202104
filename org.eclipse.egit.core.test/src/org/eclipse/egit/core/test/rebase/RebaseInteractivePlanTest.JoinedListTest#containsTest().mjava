@@ -1,0 +1,12 @@
+		@Test
+		public void containsTest() {
+			Integer containedInFirst = new Integer(4);
+			Integer containedInSecond = new Integer(6);
+			Integer notContained = new Integer(-1);
+
+			assertTrue(joined.contains(containedInFirst));
+			assertTrue(joined.contains(containedInSecond));
+			assertFalse(joined.contains(notContained));
+			checkOriginalDataHasNotBeenAltered();
+		}
+

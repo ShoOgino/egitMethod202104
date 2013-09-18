@@ -1,0 +1,16 @@
+		/**
+		 * @return the {@link ElementType} for this {@link PlanElement}
+		 */
+		public ElementType getElementType() {
+			if (todoList.indexOf(this) != -1)
+				return ElementType.TODO;
+			int indexInDone = doneList.indexOf(this);
+			if (indexInDone != -1) {
+				if (indexInDone == doneList.size() - 1
+						&& isRebasingInteractive())
+					return ElementType.DONE_CURRENT;
+				return ElementType.DONE;
+			}
+			throw new IllegalStateException();
+		}
+

@@ -1,0 +1,12 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		gitDir = new File(project.getProject().getLocationURI().getPath(),
+				Constants.DOT_GIT);
+		testRepository = new TestRepository(gitDir);
+		testRepository.connect(project.getProject());
+		plan = RebaseInteractivePlan.getPlan(testRepository.getRepository());
+		toDoElements = new ArrayList<PlanElement>();
+		moveHelper = new RebaseInteractivePlan.MoveHelper(toDoElements, plan);
+	}
+

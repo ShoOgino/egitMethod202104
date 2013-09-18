@@ -1,0 +1,14 @@
+		@Test
+		public void listIteratorTest() {
+			ListIterator<Integer> litr = joined.listIterator(3);
+			assertEquals(2, litr.previousIndex());
+			assertEquals(3, litr.nextIndex());
+
+			Integer previous = litr.previous();
+			litr.next();
+			Integer next = litr.next();
+
+			assertEquals(next, litr.previous());
+			assertEquals(previous, litr.previous());
+		}
+

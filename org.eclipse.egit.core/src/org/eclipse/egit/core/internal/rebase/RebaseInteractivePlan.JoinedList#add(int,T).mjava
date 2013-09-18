@@ -1,0 +1,15 @@
+		/**
+		 * if the given index is smaller than the first lists size the element
+		 * is added to the first list. if the given index points to the seam of
+		 * the joined lists, the given element will be added to the second list.
+		 * More precisely a element is added to the second list if the given
+		 * index is greater or equals the first lists size, otherwise it's added
+		 * to the first list.
+		 */
+		@Override
+		public void add(int index, T element) {
+			RelativeIndex<T> rel = mapAbsolutIndex(index);
+			rel.getList().add(rel.getRelativeIndex(), element);
+			modCount++;
+		}
+

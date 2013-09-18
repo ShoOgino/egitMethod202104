@@ -1,0 +1,8 @@
+	@Test
+	public void moveUpTestOneElement() throws Exception {
+		PlanElement element1 = createPlanElement(false);
+		toDoElements.add(element1);
+		moveHelper.moveTodoEntryUp(element1);
+		assertEquals(element1, toDoElements.get(0));
+	}
+

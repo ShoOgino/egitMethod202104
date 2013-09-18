@@ -1,0 +1,6 @@
+		private RelativeIndex<T> mapAbsolutIndex(int index) {
+			if (index < firstList.size())
+				return new RelativeIndex<T>(index, firstList);
+			return new RelativeIndex<T>(index - firstList.size(), secondList);
+		}
+

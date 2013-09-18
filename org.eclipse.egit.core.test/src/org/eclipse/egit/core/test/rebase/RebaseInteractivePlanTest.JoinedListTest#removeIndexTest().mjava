@@ -1,0 +1,18 @@
+		@Test
+		public void removeIndexTest() {
+			joined.remove(9);
+			assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9]", joined.toString());
+			assertEquals("[1, 2, 3, 4]", joined.getFirstList().toString());
+			assertEquals("[5, 6, 7, 8, 9]", joined.getSecondList().toString());
+
+			joined.remove(3);
+			assertEquals("[1, 2, 3, 5, 6, 7, 8, 9]", joined.toString());
+			assertEquals("[1, 2, 3]", joined.getFirstList().toString());
+			assertEquals("[5, 6, 7, 8, 9]", joined.getSecondList().toString());
+
+			joined.remove(3);
+			assertEquals("[1, 2, 3, 6, 7, 8, 9]", joined.toString());
+			assertEquals("[1, 2, 3]", joined.getFirstList().toString());
+			assertEquals("[6, 7, 8, 9]", joined.getSecondList().toString());
+		}
+

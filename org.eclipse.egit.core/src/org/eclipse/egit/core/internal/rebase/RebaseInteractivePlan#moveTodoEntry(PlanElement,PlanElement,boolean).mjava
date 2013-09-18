@@ -1,0 +1,18 @@
+	/**
+	 * Moves a given {@link PlanElement sourceElement} of Type
+	 * {@link ElementType#TODO} to the current position of a {@link PlanElement
+	 * targetElement} in it's list representation (considering that this list
+	 * representation may be reversed). If <code>before</code> is true the
+	 * {@link PlanElement sourceElement} will be placed just before the
+	 * {@link PlanElement targetElement}
+	 *
+	 * @param sourceElement
+	 * @param targetElement
+	 * @param before
+	 */
+	public void moveTodoEntry(PlanElement sourceElement, PlanElement targetElement,
+			boolean before) {
+		new MoveHelper(todoList, this).moveTodoEntry(sourceElement,
+				targetElement, before);
+	}
+

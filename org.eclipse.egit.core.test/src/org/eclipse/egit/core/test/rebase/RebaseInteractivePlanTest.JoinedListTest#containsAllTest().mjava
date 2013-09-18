@@ -1,0 +1,15 @@
+		@SuppressWarnings("boxing")
+		@Test
+		public void containsAllTest() {
+			List<Integer> containedInFirst = Arrays.asList(1, 4);
+			List<Integer> containedInSecond = Arrays.asList(5, 10);
+			List<Integer> containedBoth = Arrays.asList(1, 4, 5, 10);
+			List<Integer> notContained = Arrays.asList(1, 4, 5, 10, -1);
+
+			assertTrue(joined.containsAll(containedInFirst));
+			assertTrue(joined.containsAll(containedInSecond));
+			assertTrue(joined.containsAll(containedBoth));
+			assertFalse(joined.containsAll(notContained));
+			checkOriginalDataHasNotBeenAltered();
+		}
+

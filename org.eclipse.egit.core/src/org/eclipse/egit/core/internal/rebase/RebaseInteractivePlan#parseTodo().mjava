@@ -1,0 +1,11 @@
+	private List<PlanElement> parseTodo() {
+		List<RebaseTodoLine> rebaseTodoLines;
+		try {
+			rebaseTodoLines = repository.readRebaseTodo(REBASE_TODO, true);
+		} catch (IOException e) {
+			rebaseTodoLines = new LinkedList<RebaseTodoLine>();
+		}
+		List<PlanElement> todoElements = createElementList(rebaseTodoLines);
+		return todoElements;
+	}
+

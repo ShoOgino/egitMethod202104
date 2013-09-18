@@ -1,0 +1,11 @@
+		@Test
+		public void removeElementTest() {
+			joined.remove(new Integer(1));
+			joined.remove(new Integer(6));
+			joined.remove(new Integer(10));
+
+			assertEquals("[2, 3, 4, 5, 7, 8, 9]", joined.toString());
+			assertEquals("[2, 3, 4]", joined.getFirstList().toString());
+			assertEquals("[5, 7, 8, 9]", joined.getSecondList().toString());
+		}
+

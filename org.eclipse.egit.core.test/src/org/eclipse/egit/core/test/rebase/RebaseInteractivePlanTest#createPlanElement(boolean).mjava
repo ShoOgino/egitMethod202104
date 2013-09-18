@@ -1,0 +1,7 @@
+	@SuppressWarnings("boxing")
+	private PlanElement createPlanElement(boolean isComment) {
+		PlanElement element1 = Mockito.mock(PlanElement.class);
+		Mockito.when(element1.isComment()).thenReturn(isComment);
+		return element1;
+	}
+

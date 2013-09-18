@@ -1,0 +1,11 @@
+	/**
+	 * Reparse plan when a {@code Ref} changed
+	 *
+	 * @param event
+	 */
+	public void onRefsChanged(RefsChangedEvent event) {
+		Repository repo = event.getRepository();
+		if (this.repository == repo)
+			reparsePlan();
+	}
+

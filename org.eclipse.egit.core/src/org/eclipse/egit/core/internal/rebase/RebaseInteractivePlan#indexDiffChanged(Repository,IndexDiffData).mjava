@@ -1,0 +1,8 @@
+	/**
+	 * Reparse plan when {@code IndexDiff} changed
+	 */
+	public void indexDiffChanged(Repository repo, IndexDiffData indexDiffData) {
+		if (RebaseInteractivePlan.this.repository == repo)
+			reparsePlan();
+	}
+

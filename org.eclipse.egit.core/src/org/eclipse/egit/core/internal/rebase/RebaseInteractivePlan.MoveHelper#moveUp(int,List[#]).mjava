@@ -1,0 +1,17 @@
+		/**
+		 * Move the element at the given index in the given list up if possible,
+		 * otherwise this method has no effect on the list. Moving an element up
+		 * is not possible if the list does not contain an element with the
+		 * given index or the element at the given index has no next element.
+		 *
+		 * @param index
+		 * @param list
+		 * @return true if an element has been moved up, otherwise false
+		 */
+		private static boolean moveUp(final int index, final List<?> list) {
+			if (index <= 0 || index > list.size())
+				return false;
+			Collections.swap(list, index, index - 1);
+			return true;
+		}
+

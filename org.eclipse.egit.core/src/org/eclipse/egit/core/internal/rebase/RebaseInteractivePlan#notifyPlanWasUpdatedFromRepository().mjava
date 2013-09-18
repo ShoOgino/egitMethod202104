@@ -1,0 +1,5 @@
+	private void notifyPlanWasUpdatedFromRepository() {
+		for (RebaseInteractivePlanChangeListener listener : planChangeListeners)
+			listener.planWasUpdatedFromRepository(this);
+	}
+

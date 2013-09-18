@@ -1,0 +1,21 @@
+	/**
+	 * Provides a singleton instance of {@link RebaseInteractivePlan} for a
+	 * given {@link Repository}
+	 * <p>
+	 * If a {@link RebaseInteractivePlan} for the given {@link Repository} has
+	 * already been created and has not been disposed yet, this instance is
+	 * returned, otherwise a newly created instance is returned.
+	 *
+	 * @param repo
+	 * @return the {@link RebaseInteractivePlan} for the given
+	 *         {@link Repository}
+	 */
+	public static RebaseInteractivePlan getPlan(Repository repo) {
+		RebaseInteractivePlan plan = planRegistry.get(repo.getDirectory());
+		if (plan == null) {
+			plan = new RebaseInteractivePlan(repo);
+			planRegistry.put(repo.getDirectory(), plan);
+		}
+		return plan;
+	}
+

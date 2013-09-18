@@ -1,0 +1,25 @@
+		/**
+		 * @return the {@link ElementAction} for this {@link PlanElement}
+		 */
+		public ElementAction getPlanElementAction() {
+			if (isSkip())
+				return ElementAction.SKIP;
+			if (isComment())
+				return null;
+			switch (line.getAction()) {
+			case EDIT:
+				return ElementAction.EDIT;
+			case FIXUP:
+				return ElementAction.FIXUP;
+			case PICK:
+				return ElementAction.PICK;
+			case SQUASH:
+				return ElementAction.SQUASH;
+			case REWORD:
+				return ElementAction.REWORD;
+			default:
+				throw new IllegalStateException();
+			}
+
+		}
+

@@ -1,0 +1,9 @@
+		/**
+		 * @return true, if the given line is a pure comment, i.e. a comment
+		 *         that doesn't hold a valid action line, otherwise false
+		 */
+		public boolean isComment() {
+			return (Action.COMMENT.equals(line.getAction()) && null == line
+					.getCommit());
+		}
+

@@ -1,0 +1,12 @@
+		@Test
+		public void setTest() {
+			joined.set(5, new Integer(-6));
+			joined.set(4, new Integer(-5));
+			joined.set(3, new Integer(-4));
+			assertEquals("[1, 2, 3, -4, -5, -6, 7, 8, 9, 10]",
+					joined.toString());
+			assertEquals("[1, 2, 3, -4]", joined.getFirstList().toString());
+			assertEquals("[-5, -6, 7, 8, 9, 10]", joined.getSecondList()
+					.toString());
+		}
+
