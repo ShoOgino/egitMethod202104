@@ -1,9 +1,10 @@
 	private void markStartRef(RevWalk walk, Ref ref) throws IOException,
 			IncorrectObjectTypeException {
 		try {
-			Object refTarget = walk.parseAny(ref.getLeaf().getObjectId());
-			if (refTarget instanceof RevCommit)
-				walk.markStart((RevCommit) refTarget);
+			RevObject refTarget = walk.parseAny(ref.getLeaf().getObjectId());
+			RevObject peeled = walk.peel(refTarget);
+			if (peeled instanceof RevCommit)
+				walk.markStart((RevCommit) peeled);
 		} catch (MissingObjectException e) {
 			// If there is a ref which points to Nirvana then we should simply
 			// ignore this ref. We should not let a corrupt ref cause that the
