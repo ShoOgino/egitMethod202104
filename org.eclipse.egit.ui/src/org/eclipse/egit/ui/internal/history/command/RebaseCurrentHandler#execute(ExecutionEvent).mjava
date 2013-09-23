@@ -6,12 +6,20 @@
 			return null;
 
 		String currentBranch = getCurrentBranch(repository);
-		Ref ref = getRef(commit, repository, currentBranch);
+		final Ref ref = getRef(commit, repository, currentBranch);
 
 		String jobname = NLS.bind(
 				UIText.RebaseCurrentRefCommand_RebasingCurrentJobName,
 				currentBranch, ref.getName());
-		RebaseHelper.runRebaseJob(repository, jobname, ref);
+		AbstractRebaseCommandHandler rebaseCurrentRef = new AbstractRebaseCommandHandler(
+				jobname, UIText.RebaseCurrentRefCommand_RebaseCanceledMessage) {
+			@Override
+			protected RebaseOperation createRebaseOperation(
+					Repository repository2) throws ExecutionException {
+				return new RebaseOperation(repository2, ref);
+			}
+		};
+		rebaseCurrentRef.execute(repository);
 		return null;
 	}
 
