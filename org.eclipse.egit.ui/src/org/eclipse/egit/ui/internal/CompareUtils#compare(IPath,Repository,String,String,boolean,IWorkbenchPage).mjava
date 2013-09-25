@@ -5,11 +5,12 @@
 	 *            Location of the file to compare.
 	 * @param repository
 	 *            The repository to load file revisions from.
-	 * @param srcRev
-	 *            Source revision of the comparison (or "left" side). Won't be
-	 *            used if <code>includeLocal</code> is <code>true</code>.
-	 * @param dstRev
-	 *            Destination revision of the comparison ("right" side).
+	 * @param leftRev
+	 *            Left revision of the comparison (usually the local or "new"
+	 *            revision). Won't be used if <code>includeLocal</code> is
+	 *            <code>true</code>.
+	 * @param rightRev
+	 *            Right revision of the comparison (usually the "old" revision).
 	 * @param includeLocal
 	 *            If <code>true</code>, this will use the local data as the
 	 *            "left" side of the comparison.
@@ -19,14 +20,14 @@
 	 * @throws IOException
 	 */
 	public static void compare(IPath location, Repository repository,
-			String srcRev, String dstRev, boolean includeLocal,
+			String leftRev, String rightRev, boolean includeLocal,
 			IWorkbenchPage page) throws IOException {
 		if (includeLocal)
-			compareLocalWithRef(repository, location, dstRev, page);
+			compareLocalWithRef(repository, location, rightRev, page);
 		else {
 			final String gitPath = RepositoryMapping.getMapping(location)
 					.getRepoRelativePath(location);
-			compareBetween(repository, gitPath, srcRev, dstRev, page);
+			compareBetween(repository, gitPath, leftRev, rightRev, page);
 		}
 	}
 
