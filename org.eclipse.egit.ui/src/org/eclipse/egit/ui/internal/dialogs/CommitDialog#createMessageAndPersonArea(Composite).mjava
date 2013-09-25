@@ -72,6 +72,10 @@
 				.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		authorText.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).create());
+		if (repository != null
+				&& repository.getRepositoryState().equals(
+						RepositoryState.CHERRY_PICKING_RESOLVED))
+			authorText.setEnabled(false);
 
 		toolkit.createLabel(personArea, UIText.CommitDialog_Committer)
 				.setForeground(
