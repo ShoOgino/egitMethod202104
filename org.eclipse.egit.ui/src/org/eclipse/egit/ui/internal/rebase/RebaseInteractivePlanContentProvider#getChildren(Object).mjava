@@ -1,0 +1,21 @@
+	public Object[] getChildren(Object parentElement) {
+		if (parentElement instanceof RebaseInteractivePlan) {
+			RebaseInteractivePlan plan = (RebaseInteractivePlan) parentElement;
+			List<RebaseInteractivePlan.PlanElement> linesToDisplay = new LinkedList<RebaseInteractivePlan.PlanElement>();
+			for (RebaseInteractivePlan.PlanElement line : plan.getList()) {
+				if (line.isComment())
+					continue;
+				linesToDisplay.add(line);
+			}
+			return linesToDisplay.toArray();
+		}
+
+		if (parentElement instanceof RebaseTodoLine) {
+			// TODO: return touched files
+			return new Object[0];
+		}
+		// TODO:return grandchildren - hunks in files
+
+		return new Object[0];
+	}
+

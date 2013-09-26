@@ -1,0 +1,16 @@
+	public void dragSetData(DragSourceEvent event) {
+		if (!this.rebaseInteractiveView.isDragAndDropEnabled())
+			return;
+		IStructuredSelection selection = (IStructuredSelection) this.rebaseInteractiveView.planTreeViewer
+				.getSelection();
+
+		if (selection.isEmpty())
+			return;
+
+		if (LocalSelectionTransfer.getTransfer()
+				.isSupportedType(event.dataType)) {
+			LocalSelectionTransfer.getTransfer().setSelection(selection);
+			return;
+		}
+	}
+

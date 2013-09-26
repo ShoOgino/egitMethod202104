@@ -1,0 +1,39 @@
+	private TreeViewer createPlanTreeViewer(Section rebasePlanSection,
+			FormToolkit toolkit) {
+
+		Composite rebasePlanTableComposite = toolkit
+				.createComposite(rebasePlanSection);
+		toolkit.paintBordersFor(rebasePlanTableComposite);
+		rebasePlanSection.setClient(rebasePlanTableComposite);
+		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
+				.applyTo(rebasePlanTableComposite);
+
+		Composite toolbarComposite = toolkit.createComposite(rebasePlanSection);
+		toolbarComposite.setBackground(null);
+		RowLayout toolbarRowLayout = new RowLayout();
+		toolbarRowLayout.marginHeight = 0;
+		toolbarRowLayout.marginWidth = 0;
+		toolbarRowLayout.marginTop = 0;
+		toolbarRowLayout.marginBottom = 0;
+		toolbarRowLayout.marginLeft = 0;
+		toolbarRowLayout.marginRight = 0;
+		toolbarComposite.setLayout(toolbarRowLayout);
+
+		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
+				.applyTo(rebasePlanTableComposite);
+
+		final Tree planTree = toolkit.createTree(rebasePlanTableComposite,
+				SWT.FULL_SELECTION | SWT.MULTI);
+		planTree.setHeaderVisible(true);
+		planTree.setLinesVisible(false);
+
+		TreeViewer viewer = new TreeViewer(planTree);
+		viewer.addSelectionChangedListener(new PlanViewerSelectionChangedListener());
+		GridDataFactory.fillDefaults().grab(true, true)
+				.applyTo(viewer.getControl());
+		viewer.getTree().setData(FormToolkit.KEY_DRAW_BORDER,
+				FormToolkit.TREE_BORDER);
+		viewer.setContentProvider(RebaseInteractivePlanContentProvider.INSTANCE);
+		return viewer;
+	}
+

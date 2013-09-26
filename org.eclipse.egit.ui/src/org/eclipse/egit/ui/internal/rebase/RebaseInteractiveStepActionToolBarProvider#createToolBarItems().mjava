@@ -1,0 +1,81 @@
+	private void createToolBarItems() {
+		itemPick = new ToolItem(theToolbar, SWT.RADIO);
+		itemPick.setImage(getImage(UIIcons.CHERRY_PICK));
+		itemPick.addSelectionListener(new ActionSelectionListener(
+				RebaseInteractivePlan.ElementAction.PICK));
+		itemPick.setText(UIText.RebaseInteractiveStepActionToolBarProvider_PickText);
+		rebaseActionItems[0] = itemPick;
+
+		itemSkip = new ToolItem(theToolbar, SWT.RADIO);
+		itemSkip.setImage(getImage(UIIcons.REBASE_SKIP));
+		itemSkip.addSelectionListener(new ActionSelectionListener(
+				RebaseInteractivePlan.ElementAction.SKIP));
+		itemSkip.setText(UIText.RebaseInteractiveStepActionToolBarProvider_SkipText);
+		rebaseActionItems[1] = itemSkip;
+
+		itemEdit = new ToolItem(theToolbar, SWT.RADIO);
+		itemEdit.setImage(getImage(UIIcons.EDITCONFIG));
+		itemEdit.addSelectionListener(new ActionSelectionListener(
+				RebaseInteractivePlan.ElementAction.EDIT));
+		itemEdit.setText(UIText.RebaseInteractiveStepActionToolBarProvider_EditText);
+		rebaseActionItems[2] = itemEdit;
+
+		itemSquash = new ToolItem(theToolbar, SWT.RADIO);
+		itemSquash.setImage(getImage(UIIcons.SQUASH));
+		itemSquash.addSelectionListener(new ActionSelectionListener(
+				RebaseInteractivePlan.ElementAction.SQUASH));
+		itemSquash
+				.setText(UIText.RebaseInteractiveStepActionToolBarProvider_SquashText);
+		rebaseActionItems[3] = itemSquash;
+
+		itemFixup = new ToolItem(theToolbar, SWT.RADIO);
+		itemFixup.setImage(getImage(UIIcons.FIXUP));
+		itemFixup.addSelectionListener(new ActionSelectionListener(
+				RebaseInteractivePlan.ElementAction.FIXUP));
+		itemFixup
+				.setText(UIText.RebaseInteractiveStepActionToolBarProvider_FixupText);
+		rebaseActionItems[4] = itemFixup;
+
+		itemReword = new ToolItem(theToolbar, SWT.RADIO);
+		itemReword.setImage(getImage(UIIcons.REWORD));
+		itemReword.addSelectionListener(new ActionSelectionListener(
+				RebaseInteractivePlan.ElementAction.REWORD));
+		itemReword
+				.setText(UIText.RebaseInteractiveStepActionToolBarProvider_RewordText);
+		rebaseActionItems[5] = itemReword;
+
+		new ToolItem(theToolbar, SWT.SEPARATOR);
+
+		itemMoveUp = new ToolItem(theToolbar, SWT.NONE);
+		itemMoveUp.setImage(getImage(UIIcons.ELCL16_PREVIOUS));
+		itemMoveUp
+				.setText(UIText.RebaseInteractiveStepActionToolBarProvider_MoveUpText);
+		itemMoveUp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RebaseInteractivePlan.PlanElement selectedEntry = getSingleSelectedTodoLine(false);
+				if (selectedEntry == null)
+					return;
+				if (selectedEntry.getElementType() != ElementType.TODO)
+					return;
+				view.getCurrentPlan().moveTodoEntryUp(selectedEntry);
+			}
+		});
+
+		itemMoveDown = new ToolItem(theToolbar, SWT.NONE);
+		itemMoveDown.setImage(getImage(UIIcons.ELCL16_NEXT));
+		itemMoveDown
+				.setText(UIText.RebaseInteractiveStepActionToolBarProvider_MoveDownText);
+		itemMoveDown.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RebaseInteractivePlan.PlanElement selectedEntry = getSingleSelectedTodoLine(false);
+				if (selectedEntry == null)
+					return;
+				if (selectedEntry.getElementType() != ElementType.TODO)
+					return;
+				view.getCurrentPlan().moveTodoEntryDown(selectedEntry);
+			}
+		});
+	}
+

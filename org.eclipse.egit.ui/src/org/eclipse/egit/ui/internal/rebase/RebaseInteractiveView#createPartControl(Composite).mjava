@@ -1,0 +1,26 @@
+	@Override
+	public void createPartControl(Composite parent) {
+		GridLayoutFactory.fillDefaults().applyTo(parent);
+		final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+		parent.addDisposeListener(new DisposeListener() {
+
+			public void widgetDisposed(DisposeEvent e) {
+				toolkit.dispose();
+			}
+		});
+		form = createForm(parent, toolkit);
+		createCommandToolBar(form, toolkit);
+		SashForm sashForm = createRebasePlanSashForm(form, toolkit);
+
+		Section rebasePlanSection = toolkit.createSection(sashForm,
+				ExpandableComposite.TITLE_BAR);
+		planTreeViewer = createPlanTreeViewer(rebasePlanSection, toolkit);
+
+		createColumns();
+		createStepActionToolBar(rebasePlanSection, toolkit);
+		createPopupMenu(planTreeViewer);
+
+		setupListeners();
+		createLocalDragandDrop();
+	}
+

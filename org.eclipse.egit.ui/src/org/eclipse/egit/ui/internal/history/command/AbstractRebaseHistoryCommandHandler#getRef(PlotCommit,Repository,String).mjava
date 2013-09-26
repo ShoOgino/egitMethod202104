@@ -1,4 +1,12 @@
-	private Ref getRef(PlotCommit commit, Repository repository, String currentBranch) {
+	/**
+	 * @param commit
+	 * @param repository
+	 * @param currentBranch
+	 * @return ref pointing to the given commit, prefers tracking branch if
+	 *         multiple refs are available
+	 */
+	protected Ref getRef(PlotCommit commit, Repository repository,
+			String currentBranch) {
 		int count = commit.getRefCount();
 		if (count == 0)
 			return new ObjectIdRef.Unpeeled(Storage.LOOSE, commit.getName(), commit);

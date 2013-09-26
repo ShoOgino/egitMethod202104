@@ -1,0 +1,10 @@
+	private void createLocalDragandDrop() {
+		planTreeViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY
+				| DND.DROP_LINK,
+				new Transfer[] { LocalSelectionTransfer.getTransfer() },
+				new RebaseInteractiveDragSourceListener(this));
+		planTreeViewer.addDropSupport(DND.DROP_MOVE,
+				new Transfer[] { LocalSelectionTransfer.getTransfer() },
+				new RebaseInteractiveDropTargetListener(this, planTreeViewer));
+	}
+

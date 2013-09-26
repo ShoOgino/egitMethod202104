@@ -1,0 +1,9 @@
+		public void widgetSelected(SelectionEvent e) {
+			List<RebaseInteractivePlan.PlanElement> selected = getSelectedRebaseTodoLines();
+			if (selected == null || selected.isEmpty())
+				return;
+			for (RebaseInteractivePlan.PlanElement element : selected)
+				element.setPlanElementAction(type);
+			mapActionItemsToSelection(view.planTreeViewer.getSelection());
+		}
+

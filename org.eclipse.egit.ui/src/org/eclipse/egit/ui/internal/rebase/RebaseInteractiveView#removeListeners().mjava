@@ -1,0 +1,7 @@
+	private void removeListeners() {
+		ISelectionService srv = (ISelectionService) getSite().getService(
+				ISelectionService.class);
+		srv.removePostSelectionListener(RepositoriesView.VIEW_ID,
+				selectionChangedListener);
+	}
+

@@ -1,0 +1,10 @@
+	@Override
+	public void dragStart(DragSourceEvent event) {
+		if (!this.rebaseInteractiveView.isDragAndDropEnabled()) {
+			event.doit = false;
+			return;
+		}
+		event.doit = !this.rebaseInteractiveView.planTreeViewer.getSelection()
+				.isEmpty();
+	}
+

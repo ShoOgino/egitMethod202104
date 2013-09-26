@@ -1,0 +1,7 @@
+	private boolean isReady() {
+		IWorkbenchPartSite site = this.getSite();
+		if (site == null)
+			return false;
+		return !site.getShell().isDisposed();
+	}
+

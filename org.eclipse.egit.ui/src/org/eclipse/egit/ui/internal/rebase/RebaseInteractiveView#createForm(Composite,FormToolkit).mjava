@@ -1,0 +1,14 @@
+	private Form createForm(Composite parent, final FormToolkit toolkit) {
+		Form newForm = toolkit.createForm(parent);
+
+		Image repoImage = UIIcons.REPOSITORY.createImage();
+		UIUtils.hookDisposal(newForm, repoImage);
+		newForm.setImage(repoImage);
+		newForm.setText(UIText.RebaseInteractiveView_NoSelection);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(newForm);
+		toolkit.decorateFormHeading(newForm);
+		GridLayoutFactory.swtDefaults().applyTo(newForm.getBody());
+
+		return newForm;
+	}
+

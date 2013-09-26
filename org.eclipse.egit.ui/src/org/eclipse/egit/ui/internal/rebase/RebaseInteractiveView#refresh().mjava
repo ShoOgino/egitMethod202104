@@ -1,0 +1,12 @@
+	void refresh() {
+		if (!isReady())
+			return;
+		asyncExec(new Runnable() {
+			public void run() {
+				planTreeViewer.setInput(currentPlan);
+				refreshUI();
+			}
+		});
+
+	}
+

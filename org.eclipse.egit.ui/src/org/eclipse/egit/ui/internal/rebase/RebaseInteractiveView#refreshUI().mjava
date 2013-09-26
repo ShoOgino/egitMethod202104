@@ -1,0 +1,34 @@
+	private void refreshUI() {
+		if (planTreeViewer != null)
+			planTreeViewer.refresh(true);
+
+		startItem.setEnabled(false);
+		continueItem.setEnabled(false);
+		skipItem.setEnabled(false);
+		abortItem.setEnabled(false);
+		dndEnabled = false;
+
+		actionToolBarProvider.getTheToolbar().setEnabled(false);
+
+		if (currentPlan == null || !currentPlan.isRebasingInteractive()) {
+			if (currentRepository == null)
+				form.setText(UIText.RebaseInteractiveView_NoSelection);
+			else
+				form.setText(getRepositoryName(currentRepository));
+			return;
+		}
+
+		actionToolBarProvider.mapActionItemsToSelection(planTreeViewer
+				.getSelection());
+		if (!currentPlan.hasRebaseBeenStartedYet()) {
+			actionToolBarProvider.getTheToolbar().setEnabled(true);
+			startItem.setEnabled(true);
+			abortItem.setEnabled(true);
+			dndEnabled = true;
+		} else {
+			continueItem.setEnabled(true);
+			skipItem.setEnabled(true);
+			abortItem.setEnabled(true);
+		}
+	}
+

@@ -1,0 +1,7 @@
+		public void selectionChanged(SelectionChangedEvent event) {
+			if (event == null)
+				return;
+			ISelection selection = event.getSelection();
+			actionToolBarProvider.mapActionItemsToSelection(selection);
+		}
+

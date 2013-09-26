@@ -1,0 +1,37 @@
+	/**
+	 * Set the view input if the passed object can be used to determine the
+	 * current repository
+	 *
+	 * @param o
+	 */
+	public void setInput(Object o) {
+		if (o == null)
+			return;
+
+		if (o instanceof StructuredSelection) {
+			StructuredSelection sel = (StructuredSelection) o;
+			if (sel.size() != 1)
+				return;
+			o = sel.getFirstElement();
+		}
+		Repository repo = null;
+		if (o instanceof RepositoryTreeNode<?>)
+			repo = ((RepositoryTreeNode) o).getRepository();
+		else if (o instanceof Repository)
+			repo = (Repository) o;
+		else if (o instanceof IAdaptable) {
+			IResource resource = (IResource) ((IAdaptable) o)
+					.getAdapter(IResource.class);
+			if (resource != null) {
+				RepositoryMapping mapping = RepositoryMapping
+						.getMapping(resource);
+				repo = mapping.getRepository();
+			}
+		}
+		if (repo == null)
+			repo = AdapterUtils.adapt(o, Repository.class);
+
+		currentRepository = repo;
+		showRepository(repo);
+	}
+

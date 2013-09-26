@@ -1,0 +1,14 @@
+	private void showRepository(final Repository repository) {
+		if (form.isDisposed())
+			return;
+		if (repository == null) {
+			form.setText(UIText.RebaseInteractiveView_NoSelection);
+			return;
+		}
+
+		currentPlan = RebaseInteractivePlan.getPlan(repository);
+		currentPlan.addRebaseInteractivePlanChangeListener(this);
+		form.setText(getRepositoryName(repository));
+		refresh();
+	}
+

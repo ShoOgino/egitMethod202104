@@ -1,0 +1,8 @@
+	private static RebaseInteractivePlan.ElementType getType(Object element) {
+		if (element instanceof PlanElement) {
+			PlanElement planLine = (PlanElement) element;
+			return planLine.getElementType();
+		} else
+			return null;
+	}
+

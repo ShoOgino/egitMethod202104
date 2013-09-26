@@ -1,0 +1,8 @@
+		@Override
+		public Font getFont(Object element) {
+			ElementType t = RebaseInteractiveView.getType(element);
+			if (t != null && t == ElementType.DONE_CURRENT)
+				return UIUtils.getBoldFont(JFaceResources.DIALOG_FONT);
+			return super.getFont(element);
+		}
+

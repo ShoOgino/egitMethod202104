@@ -1,0 +1,9 @@
+		@Override
+		public void widgetSelected(SelectionEvent sEvent) {
+			try {
+				command.execute(currentPlan.getRepository());
+			} catch (ExecutionException e) {
+				Activator.showError(e.getMessage(), e);
+			}
+		}
+

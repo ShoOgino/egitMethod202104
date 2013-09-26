@@ -1,0 +1,37 @@
+	void mapActionItemsToSelection(ISelection selection) {
+		setMoveItemsEnabled(false);
+		if (selection == null || selection.isEmpty())
+			return;
+		if (selection instanceof IStructuredSelection) {
+			IStructuredSelection structured = (IStructuredSelection) selection;
+
+			Object obj = structured.getFirstElement();
+			if (!(obj instanceof PlanElement))
+				return;
+			PlanElement firstSelectedEntry = (PlanElement) obj;
+
+			if (structured.size() > 1) {
+				// multi selection
+				setMoveItemsEnabled(false);
+				ElementAction type = firstSelectedEntry.getPlanElementAction();
+				for (Iterator iterator = structured.iterator(); iterator
+						.hasNext();) {
+					Object selectedObj = iterator.next();
+					if (!(selectedObj instanceof PlanElement))
+						continue;
+					PlanElement entry = (PlanElement) selectedObj;
+					if (type != entry.getPlanElementAction()) {
+						unselectAllActionItemsExecpt(null);
+						break;
+					}
+				}
+				return;
+			}
+
+			// single selection
+			setMoveItemsEnabled(true);
+			unselectAllActionItemsExecpt(getItemFor(firstSelectedEntry
+					.getPlanElementAction()));
+		}
+	}
+

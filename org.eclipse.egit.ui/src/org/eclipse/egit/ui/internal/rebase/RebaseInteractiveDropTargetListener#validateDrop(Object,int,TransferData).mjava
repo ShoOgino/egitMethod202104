@@ -1,0 +1,20 @@
+	@Override
+	public boolean validateDrop(Object target, int operation,
+			TransferData transferType) {
+		if (!this.rebaseInteractiveView.isDragAndDropEnabled())
+			return false;
+		if (getCurrentTarget() instanceof RebaseInteractivePlan.PlanElement) {
+			switch (getCurrentLocation()) {
+			case ViewerDropAdapter.LOCATION_AFTER:
+				return true;
+			case ViewerDropAdapter.LOCATION_ON:
+				return false;
+			case ViewerDropAdapter.LOCATION_BEFORE:
+				return true;
+			case ViewerDropAdapter.LOCATION_NONE:
+				return false;
+			}
+		}
+		return false;
+	}
+
