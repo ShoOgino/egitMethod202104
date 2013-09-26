@@ -1,0 +1,11 @@
+	/**
+	 * Factory method delegating creation of RebaseOperation to concrete
+	 * subclasses.
+	 *
+	 * @param repository
+	 * @param ref
+	 * @return the {@link RebaseOperation} to be executed
+	 */
+	protected abstract RebaseOperation createRebaseOperation(
+			Repository repository, Ref ref);
+

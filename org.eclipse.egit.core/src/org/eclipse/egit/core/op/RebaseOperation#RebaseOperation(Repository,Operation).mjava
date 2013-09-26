@@ -9,8 +9,6 @@
 	 *            {@link Operation#SKIP}
 	 */
 	public RebaseOperation(Repository repository, Operation operation) {
-		this.repository = repository;
-		this.operation = operation;
-		this.ref = null;
+		this(repository, null, operation, null);
 	}
 

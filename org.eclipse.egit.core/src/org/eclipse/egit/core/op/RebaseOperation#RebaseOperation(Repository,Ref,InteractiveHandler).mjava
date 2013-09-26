@@ -2,14 +2,16 @@
 	 * Construct a {@link RebaseOperation} object for a {@link Ref}.
 	 * <p>
 	 * Upon {@link #execute(IProgressMonitor)}, the current HEAD will be rebased
-	 * onto the provided {@link Ref}
+	 * interactively onto the provided {@link Ref}
 	 *
 	 * @param repository
 	 *            the {@link Repository}
 	 * @param ref
 	 *            the branch or tag
+	 * @param handler
 	 */
-	public RebaseOperation(Repository repository, Ref ref) {
-		this(repository, ref, Operation.BEGIN, null);
+	public RebaseOperation(Repository repository, Ref ref,
+			InteractiveHandler handler) {
+		this(repository, ref, Operation.BEGIN, handler);
 	}
 

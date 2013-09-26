@@ -1,5 +1,6 @@
 	@Override
 	public RebaseOperation createRebaseOperation(Repository repository) {
-		return new RebaseOperation(repository, Operation.SKIP);
+		return new RebaseOperation(repository, Operation.SKIP,
+				RebaseInteractiveHandler.INSTANCE);
 	}
 
