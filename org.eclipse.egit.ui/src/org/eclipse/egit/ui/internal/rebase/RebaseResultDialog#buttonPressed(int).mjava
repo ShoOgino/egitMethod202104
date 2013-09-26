@@ -63,28 +63,12 @@
 				return;
 			} else if (skipCommitButton.getSelection()) {
 				// skip the rebase
-				final RebaseOperation op = new RebaseOperation(repo,
-						Operation.SKIP);
-				JobUtil.scheduleUserJob(op,
-						UIText.RebaseResultDialog_JobNameSkipCommit,
-						JobFamilies.REBASE, new JobChangeAdapter() {
-							@Override
-							public void done(IJobChangeEvent event) {
-								show(op.getResult(), repo);
-							}
-						});
+				SkipRebaseCommand skipCommand = new SkipRebaseCommand();
+				execute(skipCommand);
 			} else if (abortRebaseButton.getSelection()) {
 				// abort the rebase
-				final RebaseOperation op = new RebaseOperation(repo,
-						Operation.ABORT);
-				JobUtil.scheduleUserJob(op,
-						UIText.RebaseResultDialog_JobNameAbortRebase,
-						JobFamilies.REBASE, new JobChangeAdapter() {
-							@Override
-							public void done(IJobChangeEvent event) {
-								show(op.getResult(), repo);
-							}
-						});
+				AbortRebaseCommand abortCommand = new AbortRebaseCommand();
+				execute(abortCommand);
 			} else if (doNothingButton.getSelection()) {
 				// nothing
 			}
