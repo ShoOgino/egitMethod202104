@@ -1,0 +1,15 @@
+	/**
+	 * @param upstreamConfig
+	 *            to set the controls to
+	 */
+	public void setUpstreamConfig(UpstreamConfig upstreamConfig) {
+		if (upstreamConfig == UpstreamConfig.NONE) {
+			configureUpstreamCheck.setSelection(false);
+		} else {
+			configureUpstreamCheck.setSelection(true);
+			mergeRadio.setSelection(upstreamConfig == UpstreamConfig.MERGE);
+			rebaseRadio.setSelection(upstreamConfig == UpstreamConfig.REBASE);
+		}
+		updateEnabled();
+	}
+

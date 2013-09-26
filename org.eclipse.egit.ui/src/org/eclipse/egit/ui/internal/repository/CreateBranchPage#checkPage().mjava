@@ -1,44 +1,26 @@
 	private void checkPage() {
 		try {
-			boolean layoutChanged = false;
+			upstreamConfigComponent.setUpstreamConfig(upstreamConfig);
 
-			GridData gd = (GridData) warningComposite.getLayoutData();
-			if (gd.exclude != !branchCombo.getText().startsWith(Constants.R_HEADS)) {
-				gd.exclude = !branchCombo.getText().startsWith(Constants.R_HEADS);
-				warningComposite.setVisible(!gd.exclude);
-				layoutChanged = true;
+			String source = branchCombo.getText();
+			boolean showUpstreamConfig = source.startsWith(Constants.R_HEADS)
+					|| source.startsWith(Constants.R_REMOTES);
+			Composite container = upstreamConfigComponent.getContainer();
+			GridData gd = (GridData) container.getLayoutData();
+			if (gd.exclude == showUpstreamConfig) {
+				gd.exclude = !showUpstreamConfig;
+				container.setVisible(showUpstreamConfig);
+				container.getParent().layout(true);
 			}
 
-			warningComposite.getParent().getParent().layout(true);
+			boolean basedOnLocalBranch = source.startsWith(Constants.R_HEADS);
+			if (basedOnLocalBranch && upstreamConfig != UpstreamConfig.NONE)
+				setMessage(UIText.CreateBranchPage_LocalBranchWarningMessage,
+						IMessageProvider.INFORMATION);
+			else
+				setMessage(null);
 
-			boolean showRebase = !branchCombo.getText().startsWith(Constants.R_TAGS) && !ObjectId.isId(branchCombo.getText());
-			gd = (GridData) upstreamConfigGroup.getLayoutData();
-			if (gd.exclude == showRebase) {
-				gd.exclude = !showRebase;
-				upstreamConfigGroup.setVisible(!gd.exclude);
-				layoutChanged = true;
-			}
-
-			if (layoutChanged)
-				upstreamConfigGroup.getParent().layout(true);
-
-			if (!gd.exclude)
-				buttonConfigMerge.setSelection(false);
-			buttonConfigRebase.setSelection(false);
-			buttonConfigNone.setSelection(false);
-			switch (upstreamConfig) {
-			case MERGE:
-				buttonConfigMerge.setSelection(true);
-				break;
-			case REBASE:
-				buttonConfigRebase.setSelection(true);
-				break;
-			case NONE:
-				buttonConfigNone.setSelection(true);
-				break;
-			}
-
-			if (branchCombo.getText().length() == 0) {
+			if (source.length() == 0) {
 				setErrorMessage(UIText.CreateBranchPage_MissingSourceMessage);
 				return;
 			}
