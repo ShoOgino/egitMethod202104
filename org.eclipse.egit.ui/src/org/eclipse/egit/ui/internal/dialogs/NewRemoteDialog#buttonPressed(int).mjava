@@ -1,7 +1,7 @@
 	@Override
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == OK) {
-			name = nameText.getText();
+			name = getTrimmedRemoteName();
 			pushMode = forPush.getSelection();
 		}
 		super.buttonPressed(buttonId);
