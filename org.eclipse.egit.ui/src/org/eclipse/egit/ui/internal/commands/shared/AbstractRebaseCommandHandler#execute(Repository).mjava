@@ -1,0 +1,13 @@
+	/**
+	 * Create a {@link RebaseOperation} by calling
+	 * {@link AbstractRebaseCommandHandler#createRebaseOperation(Repository)}
+	 * and execute it.
+	 *
+	 * @param repository
+	 * @throws ExecutionException
+	 */
+	public void execute(Repository repository) throws ExecutionException {
+		final RebaseOperation rebase = createRebaseOperation(repository);
+		execute(rebase);
+	}
+

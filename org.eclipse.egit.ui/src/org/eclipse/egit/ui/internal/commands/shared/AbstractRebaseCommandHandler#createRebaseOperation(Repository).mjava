@@ -1,0 +1,11 @@
+	/**
+	 * Factory method delegating creation of RebaseOperation to concrete
+	 * subclasses.
+	 *
+	 * @param repository
+	 * @return the {@link RebaseOperation} to be executed
+	 * @throws ExecutionException
+	 */
+	protected abstract RebaseOperation createRebaseOperation(
+			Repository repository) throws ExecutionException;
+
