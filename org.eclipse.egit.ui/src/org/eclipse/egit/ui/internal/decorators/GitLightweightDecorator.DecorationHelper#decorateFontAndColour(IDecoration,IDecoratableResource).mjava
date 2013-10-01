@@ -9,7 +9,7 @@
 				Font f = current.getFontRegistry().get(
 						UIPreferences.THEME_IgnoredResourceFont);
 
-				decoration.setBackgroundColor(bc);
+				setBackgroundColor(decoration, bc);
 				decoration.setForegroundColor(fc);
 				decoration.setFont(f);
 			} else if (!resource.isTracked()
@@ -19,7 +19,7 @@
 				Color fc = current.getColorRegistry().get(UIPreferences.THEME_UncommittedChangeForegroundColor);
 				Font f = current.getFontRegistry().get(UIPreferences.THEME_UncommittedChangeFont);
 
-				decoration.setBackgroundColor(bc);
+				setBackgroundColor(decoration, bc);
 				decoration.setForegroundColor(fc);
 				decoration.setFont(f);
 			}
