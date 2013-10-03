@@ -19,11 +19,12 @@
 	 *            we'll synchronize the whole repository).
 	 * @param repository
 	 *            The repository to load file revisions from.
-	 * @param srcRev
-	 *            Source revision of the comparison (or "left" side). Won't be
-	 *            used if <code>includeLocal</code> is <code>true</code>.
-	 * @param dstRev
-	 *            Destination revision of the comparison ("right" side).
+	 * @param leftRev
+	 *            Left revision of the comparison (usually the local or "new"
+	 *            revision). Won't be used if <code>includeLocal</code> is
+	 *            <code>true</code>.
+	 * @param rightRev
+	 *            Right revision of the comparison (usually the "old" revision).
 	 * @param includeLocal
 	 *            If <code>true</code>, this will use the local data as the
 	 *            "left" side of the comparison.
@@ -33,24 +34,23 @@
 	 * @throws IOException
 	 */
 	public static void compare(IResource[] resources, Repository repository,
-			String srcRev, String dstRev, boolean includeLocal,
+			String leftRev, String rightRev, boolean includeLocal,
 			IWorkbenchPage page) throws IOException {
 		if (resources.length == 1 && resources[0] instanceof IFile
 				&& canDirectlyOpenInCompare((IFile) resources[0])) {
 			if (includeLocal)
 				compareWorkspaceWithRef(repository, (IFile) resources[0],
-						dstRev, page);
+						rightRev, page);
 			else {
 				final IFile file = (IFile) resources[0];
 				final RepositoryMapping mapping = RepositoryMapping
 						.getMapping(file);
 				final String gitPath = mapping.getRepoRelativePath(file);
 
-				compareBetween(repository, gitPath, srcRev,
-						dstRev, page);
+				compareBetween(repository, gitPath, leftRev, rightRev, page);
 			}
 		} else
-			GitModelSynchronize.synchronize(resources, repository, srcRev,
-					dstRev, includeLocal);
+			GitModelSynchronize.synchronize(resources, repository, leftRev,
+					rightRev, includeLocal);
 	}
 
