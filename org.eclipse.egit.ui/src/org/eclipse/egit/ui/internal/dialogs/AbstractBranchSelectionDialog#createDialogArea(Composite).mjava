@@ -19,7 +19,8 @@
 		FilteredTree tree = new FilteredTree(composite, selectionModel | SWT.BORDER,
 				new PatternFilter(), true);
 		branchTree = tree.getViewer();
-		branchTree.setLabelProvider(new RepositoriesViewLabelProvider());
+		branchTree.setLabelProvider(new DelegatingStyledCellLabelProvider(
+				new RepositoriesViewLabelProvider()));
 		branchTree.setContentProvider(new RepositoriesViewContentProvider());
 
 		GridDataFactory.fillDefaults().grab(true, true).hint(500, 300).applyTo(
