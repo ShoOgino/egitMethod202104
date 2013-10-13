@@ -27,18 +27,8 @@
 				} else if (refName.startsWith(Constants.R_TAGS)) {
 					// tag: HEAD would be on the commit id to which the tag is
 					// pointing
-					ObjectId id = node.getRepository().resolve(refName);
-					if (id == null)
-						return image;
-					RevWalk rw = new RevWalk(node.getRepository());
-					try {
-						compareString = rw.parseTag(id).getObject().name();
-					} catch (IncorrectObjectTypeException e) {
-						// Ref is a lightweight tag, not an annotated tag
-						compareString = id.name();
-					} finally {
-						rw.release();
-					}
+					TagNode tagNode = (TagNode) node;
+					compareString = tagNode.getCommitId();
 				} else if (refName.startsWith(Constants.R_REMOTES)) {
 					// remote branch: HEAD would be on the commit id to which
 					// the branch is pointing
@@ -70,7 +60,7 @@
 				return image;
 			}
 
-			if (compareString.equals(branchName)) {
+			if (compareString != null && compareString.equals(branchName)) {
 				return getDecoratedImage(image);
 			}
 

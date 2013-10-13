@@ -1,0 +1,14 @@
+	private TagNode createTagNode(RepositoryTreeNode parentNode,
+			Repository repo, Ref ref, RevObject revObject,
+			RevObject peeledObject) {
+		boolean annotated = (revObject instanceof RevTag);
+		if (peeledObject instanceof RevCommit) {
+			RevCommit commit = (RevCommit) peeledObject;
+			String id = commit.getId().name();
+			String message = commit.getShortMessage();
+			return new TagNode(parentNode, repo, ref, annotated, id, message);
+		} else {
+			return new TagNode(parentNode, repo, ref, annotated, "", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+

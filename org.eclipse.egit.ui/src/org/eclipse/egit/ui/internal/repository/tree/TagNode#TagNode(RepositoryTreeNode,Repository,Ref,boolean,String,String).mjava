@@ -1,0 +1,24 @@
+	/**
+	 * Constructs the node including information for icon and labels.
+	 *
+	 * @param parent
+	 *            the parent node (may be null)
+	 * @param repository
+	 *            the {@link Repository}
+	 * @param ref
+	 *            the tag reference
+	 * @param annotated
+	 *            whether tag is annotated or not (lightweight), for icon
+	 * @param commitId
+	 *            ID of commit that the tag points to, for label
+	 * @param commitShortMessage
+	 *            short message of commit that the tag points to, for label
+	 */
+	public TagNode(RepositoryTreeNode parent, Repository repository, Ref ref,
+			boolean annotated, String commitId, String commitShortMessage) {
+		super(parent, RepositoryTreeNodeType.TAG, repository, ref);
+		this.annotated = annotated;
+		this.commitId = commitId;
+		this.shortMessage = commitShortMessage;
+	}
+
