@@ -2,8 +2,9 @@
 	public void testRenameBranch() throws Exception {
 		SWTBotShell dialog = openRenameBranchDialog();
 
-		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
-				.getNode("stable").select();
+		SWTBotTreeItem localBranches = dialog.bot().tree()
+				.getTreeItem(LOCAL_BRANCHES).expand();
+		TestUtil.getChildNode(localBranches, "stable").select();
 		dialog.bot().button(UIText.RenameBranchDialog_RenameButtonLabel)
 				.click();
 		// rename stable to renamed
@@ -17,14 +18,10 @@
 		newNameDialog.bot().button(IDialogConstants.OK_LABEL).click();
 
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
-		dialog = openRenameBranchDialog();
-		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
-				.getNode("renamed");
-		dialog.close();
 
 		dialog = openRenameBranchDialog();
-		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
-				.getNode("renamed").select();
+		SWTBotTreeItem localBranches2 = dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand();
+		TestUtil.getChildNode(localBranches2, "renamed").select();
 		dialog.bot().button(UIText.RenameBranchDialog_RenameButtonLabel)
 				.click();
 		// rename renamed to stable
@@ -36,8 +33,9 @@
 
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		dialog = openRenameBranchDialog();
-		dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand()
-				.getNode("stable");
+		SWTBotTreeItem localBranches3 = dialog.bot().tree()
+				.getTreeItem(LOCAL_BRANCHES).expand();
+		TestUtil.getChildNode(localBranches3, "stable").select();
 		dialog.close();
 	}
 

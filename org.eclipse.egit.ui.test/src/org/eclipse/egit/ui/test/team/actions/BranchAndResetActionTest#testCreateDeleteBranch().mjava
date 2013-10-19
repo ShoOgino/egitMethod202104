@@ -12,7 +12,9 @@
 		assertNotNull(lookupRepository(repositoryFile).resolve("newBranch"));
 
 		SWTBotShell deleteBranchDialog = openDeleteBranchDialog();
-		deleteBranchDialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand().getNode("newBranch").select();
+		SWTBotTreeItem localBranches = deleteBranchDialog.bot().tree()
+				.getTreeItem(LOCAL_BRANCHES).expand();
+		TestUtil.getChildNode(localBranches, "newBranch").select();
 		deleteBranchDialog.bot().button(IDialogConstants.OK_LABEL).click();
 
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
