@@ -1,7 +1,6 @@
 	@Test
 	public void testOpenHistoryMultiSelection() throws Exception {
-		SWTBotTree projectExplorerTree = bot.viewById(
-				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		projectExplorerTree.select(0, 1);
 		String menuString = util
 				.getPluginLocalizedValue("ShowResourceInHistoryAction_label");

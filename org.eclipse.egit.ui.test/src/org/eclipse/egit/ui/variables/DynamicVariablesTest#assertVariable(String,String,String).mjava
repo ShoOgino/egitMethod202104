@@ -2,7 +2,10 @@
 			String argument) throws CoreException {
 		IResource findMember = project.findMember(TEST_FILE);
 
-		final ISelectionProvider selectionProvider = bot.viewByTitle("Package Explorer").getViewReference().getView(true).getSite().getSelectionProvider();
+		SWTBotView explorerView = TestUtil.showExplorerView();
+		final ISelectionProvider selectionProvider = explorerView
+				.getViewReference().getView(true).getSite()
+				.getSelectionProvider();
 		final StructuredSelection structuredSelection = new StructuredSelection(
 				findMember);
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {

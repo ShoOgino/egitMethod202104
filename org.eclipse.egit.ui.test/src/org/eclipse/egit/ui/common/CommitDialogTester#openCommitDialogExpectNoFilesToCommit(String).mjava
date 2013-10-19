@@ -1,7 +1,7 @@
 	public static NoFilesToCommitPopup openCommitDialogExpectNoFilesToCommit(
 			String projectName) throws Exception {
+		clickCommitAction(projectName);
 		SWTWorkbenchBot workbenchBot = new SWTWorkbenchBot();
-		openCommitDialog(projectName, workbenchBot);
 		return new NoFilesToCommitPopup(
 				workbenchBot.shell(UIText.CommitAction_noFilesToCommit));
 	}

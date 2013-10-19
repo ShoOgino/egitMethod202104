@@ -1,7 +1,6 @@
 	@Test
 	public void testOpenRepoViewMultiSelection() throws Exception {
-		SWTBotTree projectExplorerTree = bot.viewById(
-				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		projectExplorerTree.select(0, 1);
 		String menuString = util
 				.getPluginLocalizedValue("ShowRepositoryAction_label");

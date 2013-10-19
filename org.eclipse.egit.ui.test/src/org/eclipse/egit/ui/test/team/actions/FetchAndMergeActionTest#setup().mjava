@@ -2,8 +2,6 @@
 	public static void setup() throws Exception {
 		repositoryFile = createProjectAndCommitToRepository();
 		childRepositoryFile = createChildRepository(repositoryFile);
-		perspective = bot.activePerspective();
-		bot.perspectiveById("org.eclipse.pde.ui.PDEPerspective").activate();
 		RepositoriesViewLabelProvider provider = GitRepositoriesViewTestUtils
 				.createLabelProvider();
 		Repository repo = lookupRepository(childRepositoryFile);

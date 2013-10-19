@@ -1,7 +1,6 @@
-	public static CommitDialogTester openCommitDialog(String projectName)
-			throws Exception {
+	public static CommitDialogTester openCommitDialog(String projectName) {
+		clickCommitAction(projectName);
 		SWTWorkbenchBot workbenchBot = new SWTWorkbenchBot();
-		openCommitDialog(projectName, workbenchBot);
 		SWTBotShell shell = workbenchBot
 				.shell(UIText.CommitDialog_CommitChanges);
 		return new CommitDialogTester(shell);

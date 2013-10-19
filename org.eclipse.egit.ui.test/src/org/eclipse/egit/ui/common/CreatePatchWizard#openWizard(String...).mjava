@@ -1,6 +1,5 @@
 	public static void openWizard(final String... projects) {
-		SWTBotTree projectExplorerTree = bot
-				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		SWTBotTreeItem[] items = util.getProjectItems(projectExplorerTree, projects);
 		projectExplorerTree.select(items);
 

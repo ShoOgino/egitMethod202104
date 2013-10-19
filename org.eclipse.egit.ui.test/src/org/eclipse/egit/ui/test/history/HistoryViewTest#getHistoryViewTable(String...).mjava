@@ -5,8 +5,7 @@
 	 * @throws Exception
 	 */
 	private SWTBotTable getHistoryViewTable(String... path) throws Exception {
-		SWTBotTree projectExplorerTree = bot
-				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		TestUtil testUtil = new TestUtil();
 		SWTBotTreeItem explorerItem;
 		SWTBotTreeItem projectItem = getProjectItem(projectExplorerTree, path[0]);

@@ -1,6 +1,5 @@
 	private SWTBotShell openConnectDialog() throws Exception {
-		SWTBotTree projectExplorerTree = bot.viewById(
-				"org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		getProjectItem(projectExplorerTree, PROJ1).select();
 		String menuString = "Share Project...";
 		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",

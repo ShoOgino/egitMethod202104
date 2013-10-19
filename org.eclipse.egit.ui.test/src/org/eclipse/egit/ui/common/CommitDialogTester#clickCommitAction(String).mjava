@@ -1,7 +1,5 @@
-	private static void openCommitDialog(String projectName,
-			SWTWorkbenchBot workbenchBot) {
-		SWTBotTree projectExplorerTree = workbenchBot
-				.viewById("org.eclipse.jdt.ui.PackageExplorer").bot().tree();
+	private static void clickCommitAction(String projectName) {
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		util.getProjectItems(projectExplorerTree, projectName)[0].select();
 		String menuString = util.getPluginLocalizedValue("CommitAction_label");
 		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
