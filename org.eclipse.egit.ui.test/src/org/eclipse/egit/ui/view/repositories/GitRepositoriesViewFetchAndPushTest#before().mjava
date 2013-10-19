@@ -1,5 +1,27 @@
 	@Before
 	public void before() throws Exception {
+		repositoryFile = createProjectAndCommitToRepository();
+		remoteRepositoryFile = createRemoteRepository(repositoryFile);
+		// now let's clone the remote repository
+		URIish uri = new URIish("file:///" + remoteRepositoryFile.getPath());
+		File workdir = new File(getTestDirectory(), "ClonedRepo");
+
+		CloneOperation op = new CloneOperation(uri, true, null, workdir,
+				"refs/heads/master", "origin", 0);
+		op.run(null);
+
+		clonedRepositoryFile = new File(workdir, Constants.DOT_GIT);
+
+		// now let's clone the remote repository
+		uri = new URIish(remoteRepositoryFile.getPath());
+		workdir = new File(getTestDirectory(), "ClonedRepo2");
+
+		op = new CloneOperation(uri, true, null, workdir, "refs/heads/master",
+				"origin", 0);
+		op.run(null);
+
+		clonedRepositoryFile2 = new File(workdir, Constants.DOT_GIT);
+
 		clearView();
 		deleteAllProjects();
 	}

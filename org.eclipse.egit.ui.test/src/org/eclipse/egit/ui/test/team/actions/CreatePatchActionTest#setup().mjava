@@ -1,6 +1,6 @@
 	@Before
 	public void setup() throws Exception {
-		gitDir = createProjectAndCommitToRepository();
+		createProjectAndCommitToRepository();
 
 		IFile[] commitables = getAllFiles();
 		CommitOperation cop = new CommitOperation(commitables,

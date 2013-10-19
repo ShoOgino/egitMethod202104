@@ -1,4 +1,5 @@
-	@BeforeClass public static void setupEnvironment() throws Exception {
+	@Before
+	public void setupEnvironment() throws Exception {
 		leftRepoFile = createProjectAndCommitToRepository();
 		rightRepoFile = createChildRepository(leftRepoFile);
 

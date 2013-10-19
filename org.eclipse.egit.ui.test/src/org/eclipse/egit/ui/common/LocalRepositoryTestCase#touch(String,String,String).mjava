@@ -20,6 +20,7 @@
 		file.setContents(
 				new ByteArrayInputStream(newContent.getBytes(prj
 						.getDefaultCharset())), 0, null);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		return file;
 	}
 

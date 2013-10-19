@@ -1,0 +1,11 @@
+	@After
+	public void resetWorkspace() throws Exception {
+		// close all editors/dialogs
+		new Eclipse().reset();
+		// cleanup
+		for (IProject project : ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects())
+			project.delete(false, false, null);
+		shutDownRepositories();
+	}
+

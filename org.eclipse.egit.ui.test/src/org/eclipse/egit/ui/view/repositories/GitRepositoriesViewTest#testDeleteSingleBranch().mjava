@@ -13,7 +13,8 @@
 		SWTBotShell createBranchShell = bot
 				.shell(UIText.CreateBranchWizard_NewBranchTitle);
 		createBranchShell.bot().textWithId("BranchName").setText("abc");
-		createBranchShell.bot().checkBox().deselect();
+		createBranchShell.bot()
+				.checkBox(UIText.CreateBranchPage_CheckoutButton).deselect();
 		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
 		refreshAndWait();
 		// delete branch

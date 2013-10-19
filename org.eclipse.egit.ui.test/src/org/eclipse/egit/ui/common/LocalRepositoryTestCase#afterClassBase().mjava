@@ -1,11 +1,5 @@
 	@AfterClass
 	public static void afterClassBase() throws Exception {
-		// close all editors/dialogs
-		new Eclipse().reset();
-		// cleanup
-		deleteAllProjects();
-		shutDownRepositories();
-		FileUtils.delete(testDirectory, FileUtils.RECURSIVE | FileUtils.RETRY);
-		Activator.getDefault().getRepositoryCache().clear();
+		testUtils.deleteTempDirs();
 	}
 

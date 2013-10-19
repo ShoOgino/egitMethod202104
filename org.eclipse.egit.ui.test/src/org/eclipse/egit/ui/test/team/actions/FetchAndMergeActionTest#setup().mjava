@@ -1,5 +1,5 @@
-	@BeforeClass
-	public static void setup() throws Exception {
+	@Before
+	public void setup() throws Exception {
 		repositoryFile = createProjectAndCommitToRepository();
 		childRepositoryFile = createChildRepository(repositoryFile);
 		RepositoriesViewLabelProvider provider = GitRepositoriesViewTestUtils
@@ -9,5 +9,7 @@
 				new RepositoryNode(null, repo), repo));
 		LOCAL_BRANCHES = provider.getText(new LocalNode(new RepositoryNode(
 				null, repo), repo));
+		ObjectId id = repo.resolve(repo.getFullBranch());
+		initialCommitId = id.name();
 	}
 

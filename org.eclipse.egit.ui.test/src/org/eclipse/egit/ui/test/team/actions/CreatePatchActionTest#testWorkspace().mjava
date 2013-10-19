@@ -2,7 +2,6 @@
 	public void testWorkspace() throws Exception {
 		touchAndSubmit("oldContent", null);
 		touch("newContent");
-		waitInUI();
 
 		CreatePatchWizard createPatchWizard = openCreatePatchWizard();
 		LocationPage locationPage = createPatchWizard.getLocationPage();

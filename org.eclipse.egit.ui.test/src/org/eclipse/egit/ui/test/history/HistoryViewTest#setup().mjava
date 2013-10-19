@@ -1,6 +1,5 @@
-	@BeforeClass
-	public static void setup() throws Exception {
-		// File repoFile =
+	@Before
+	public void setup() throws Exception {
 		repoFile = createProjectAndCommitToRepository();
 		IProject prj = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(PROJ1);

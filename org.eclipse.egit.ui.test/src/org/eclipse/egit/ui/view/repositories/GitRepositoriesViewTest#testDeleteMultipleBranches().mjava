@@ -13,13 +13,15 @@
 		SWTBotShell createBranchShell = bot
 				.shell(UIText.CreateBranchWizard_NewBranchTitle);
 		createBranchShell.bot().textWithId("BranchName").setText("abc");
-		createBranchShell.bot().checkBox().deselect();
+		createBranchShell.bot()
+				.checkBox(UIText.CreateBranchPage_CheckoutButton).deselect();
 		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
 		// create second branch (123)
 		ContextMenuHelper.clickContextMenu(tree, "Create Branch...");
 		createBranchShell = bot.shell(UIText.CreateBranchWizard_NewBranchTitle);
 		createBranchShell.bot().textWithId("BranchName").setText("123");
-		createBranchShell.bot().checkBox().deselect();
+		createBranchShell.bot()
+				.checkBox(UIText.CreateBranchPage_CheckoutButton).deselect();
 		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
 		refreshAndWait();
 		localBranchesItem = myRepoViewUtil.getLocalBranchesItem(tree,

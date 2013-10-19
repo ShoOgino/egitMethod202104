@@ -1,0 +1,20 @@
+	@Before
+	public void initNewTestDirectory() throws Exception {
+		testMethodNumber++;
+		// create standalone temporary directory
+		testDirectory = testUtils.createTempDir("LocalRepositoriesTests"
+				+ testMethodNumber);
+		if (testDirectory.exists())
+			FileUtils.delete(testDirectory, FileUtils.RECURSIVE
+					| FileUtils.RETRY);
+		if (!testDirectory.exists())
+			FileUtils.mkdir(testDirectory, true);
+		// we don't want to clone into <user_home> but into our test directory
+		File repoRoot = new File(testDirectory, "RepositoryRoot");
+		if (!repoRoot.exists())
+			FileUtils.mkdir(repoRoot, true);
+		// make sure the default directory for Repos is not the user home
+		org.eclipse.egit.ui.Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.DEFAULT_REPO_DIR, repoRoot.getPath());
+	}
+

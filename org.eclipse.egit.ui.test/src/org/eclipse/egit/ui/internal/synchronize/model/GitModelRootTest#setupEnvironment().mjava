@@ -1,5 +1,5 @@
-	@BeforeClass
-	public static void setupEnvironment() throws Exception {
+	@Before
+	public void setupEnvironment() throws Exception {
 		File repoFile = createProjectAndCommitToRepository(REPO1);
 		repo1 = lookupRepository(repoFile);
 

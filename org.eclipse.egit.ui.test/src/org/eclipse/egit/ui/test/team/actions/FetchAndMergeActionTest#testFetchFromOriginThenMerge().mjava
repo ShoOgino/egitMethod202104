@@ -1,6 +1,9 @@
 	@Test
 	public void testFetchFromOriginThenMerge() throws Exception {
-		String previousCommit = prepare();
+		touchAndSubmit(null);
+		deleteAllProjects();
+		shareProjects(childRepositoryFile);
+
 		String oldContent = getTestFileContent();
 		fetch();
 
@@ -12,7 +15,7 @@
 		SWTBotTree tree = confirm.bot().tree();
 		String branch = tree.getAllItems()[0].getText();
 		assertTrue("Wrong result",
-				branch.contains(previousCommit.substring(0, 7)));
+				branch.contains(initialCommitId.substring(0, 7)));
 
 		confirm.close();
 

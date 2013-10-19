@@ -1,8 +1,10 @@
-	@BeforeClass
-	public static void beforeClass() throws Exception {
+	@Before
+	public void beforeClass() throws Exception {
 		setVerboseBranchMode(false);
 		repositoryFile = createProjectAndCommitToRepository();
 		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
 				repositoryFile);
+		repository = lookupRepository(repositoryFile);
+		revWalk = new RevWalk(repository);
 	}
 
