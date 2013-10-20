@@ -13,5 +13,10 @@
 		setMessage(UIText.FetchGerritChangePage_PageMessage);
 		settings = getDialogSettings();
 		lastUriKey = repository + LAST_URI_POSTFIX;
+
+		branchValidator = ValidationUtils.getRefNameInputValidator(repository,
+				Constants.R_HEADS, true);
+		tagValidator = ValidationUtils.getRefNameInputValidator(repository,
+				Constants.R_TAGS, true);
 	}
 
