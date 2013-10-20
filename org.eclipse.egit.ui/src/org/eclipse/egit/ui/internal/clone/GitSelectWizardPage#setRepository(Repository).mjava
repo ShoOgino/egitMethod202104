@@ -6,6 +6,8 @@
 		if (repo != null)
 			input.add(new WorkingDirNode(null, repo));
 		tv.setInput(input);
+		// expand root node
+		tv.expandToLevel(2);
 		// select the working directory as default
 		tv.setSelection(new StructuredSelection(input.get(0)));
 	}
