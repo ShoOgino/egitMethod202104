@@ -1,0 +1,6 @@
+	private void assertTreeLineContent(SWTBotTree tree, int rowIndex,
+			String file) {
+		SWTBotTreeItem treeItem = tree.getAllItems()[rowIndex];
+		assertEquals(file, treeItem.cell(1));
+	}
+
