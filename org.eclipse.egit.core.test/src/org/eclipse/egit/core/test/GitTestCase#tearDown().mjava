@@ -4,5 +4,6 @@
 		Activator.getDefault().getRepositoryCache().clear();
 		if (gitDir.exists())
 			FileUtils.delete(gitDir, FileUtils.RECURSIVE | FileUtils.RETRY);
+		SystemReader.setInstance(null);
 	}
 
