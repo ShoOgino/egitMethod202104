@@ -1,6 +1,7 @@
 	public void setAmend(boolean amend) {
-		SWTBotToolbarToggleButton button = stagingView
-				.toolbarToggleButton(UIText.StagingView_Ammend_Previous_Commit);
+		SWTBotToolbarToggleButton button = stagingView.bot()
+				.toolbarToggleButtonWithTooltip(
+						UIText.StagingView_Ammend_Previous_Commit);
 		selectToolbarToggle(button, amend);
 	}
 

@@ -1,6 +1,7 @@
 	public boolean getSignedOff() {
-		SWTBotToolbarToggleButton button = stagingView
-				.toolbarToggleButton(UIText.StagingView_Add_Signed_Off_By);
+		SWTBotToolbarToggleButton button = stagingView.bot()
+				.toolbarToggleButtonWithTooltip(
+						UIText.StagingView_Add_Signed_Off_By);
 		return button.isChecked();
 	}
 

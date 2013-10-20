@@ -1,6 +1,7 @@
 	public boolean getInsertChangeId() {
-		SWTBotToolbarToggleButton button = stagingView
-				.toolbarToggleButton(UIText.StagingView_Add_Change_ID);
+		SWTBotToolbarToggleButton button = stagingView.bot()
+				.toolbarToggleButtonWithTooltip(
+						UIText.StagingView_Add_Change_ID);
 		return button.isChecked();
 	}
 
