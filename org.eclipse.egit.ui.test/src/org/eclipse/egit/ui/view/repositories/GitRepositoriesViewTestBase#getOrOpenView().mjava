@@ -1,9 +1,6 @@
 	protected SWTBotView getOrOpenView() throws Exception {
-		if (viewbot == null) {
-			viewbot = TestUtil.showView(RepositoriesView.VIEW_ID);
-		} else
-			viewbot.setFocus();
+		SWTBotView view = TestUtil.showView(RepositoriesView.VIEW_ID);
 		TestUtil.joinJobs(JobFamilies.REPO_VIEW_REFRESH);
-		return viewbot;
+		return view;
 	}
 
