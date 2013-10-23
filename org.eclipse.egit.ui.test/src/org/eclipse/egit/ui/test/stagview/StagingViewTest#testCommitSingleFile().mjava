@@ -1,8 +1,8 @@
 	@Test
 	public void testCommitSingleFile() throws Exception {
+		selectRepositoryNode();
 		StagingViewTester stagingViewTester = StagingViewTester
 				.openStagingView();
-		selectRepositoryNode();
 		setTestFileContent("I have changed this");
 		new Git(repository).add().addFilepattern(".").call();
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);

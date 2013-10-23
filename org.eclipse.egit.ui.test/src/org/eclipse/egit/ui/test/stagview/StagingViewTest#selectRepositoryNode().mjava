@@ -1,6 +1,10 @@
 	private void selectRepositoryNode() throws Exception {
-		SWTBotTreeItem repoNode = repoViewUtil.getRootItem(repoViewTree,
-				repositoryFile);
+		SWTBotView repositoriesView = TestUtil
+				.showView(RepositoriesView.VIEW_ID);
+		SWTBotTree tree = repositoriesView.bot().tree();
+
+		SWTBotTreeItem repoNode = repoViewUtil
+				.getRootItem(tree, repositoryFile);
 		repoNode.select();
 	}
 
