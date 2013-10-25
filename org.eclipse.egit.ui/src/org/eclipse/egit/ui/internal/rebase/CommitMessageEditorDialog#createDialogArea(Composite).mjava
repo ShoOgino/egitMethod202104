@@ -1,0 +1,22 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		final Composite composite = (Composite) super.createDialogArea(parent);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		composite.setLayout(gridLayout);
+
+		setTitle(UIText.RebaseInteractiveHandler_EditMessageDialogTitle);
+		setMessage(UIText.RebaseInteractiveHandler_EditMessageDialogText);
+
+		messageArea = new SpellcheckableMessageArea(composite, commitMessage);
+		messageArea.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		Point size = messageArea.getTextWidget().getSize();
+		int minHeight = messageArea.getTextWidget().getLineHeight() * 3;
+		messageArea.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
+				.hint(size).minSize(size.x, minHeight)
+				.align(SWT.FILL, SWT.FILL).create());
+		messageArea.setFocus();
+
+		return composite;
+	}
+
