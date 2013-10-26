@@ -3,7 +3,6 @@
 		Repository repo = FileRepositoryBuilder.create(gitDir);
 		repo.create();
 		assertTrue(repo.isBare());
-		reposToDelete.add(repo);
 		return repo;
 	}
 

@@ -1,4 +1,7 @@
 	public void finish() {
+		JobJoiner jobJoiner = JobJoiner.startListening(JobFamilies.PUSH, 60,
+				TimeUnit.SECONDS);
 		wizard.button(IDialogConstants.FINISH_LABEL).click();
+		jobJoiner.join();
 	}
 
