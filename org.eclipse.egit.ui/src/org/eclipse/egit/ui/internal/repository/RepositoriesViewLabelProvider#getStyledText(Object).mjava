@@ -10,7 +10,8 @@
 				if (node.getParent() != null
 						&& node.getParent().getType() == RepositoryTreeNodeType.SUBMODULES)
 					return getStyledTextForSubmodule(node);
-				return getStyledTextFor((Repository) node.getObject());
+				return GitLabelProvider.getStyledTextFor((Repository) node
+						.getObject());
 			case ADDITIONALREF:
 				Ref ref = (Ref) node.getObject();
 				// shorten the name

@@ -1,4 +1,8 @@
-	private String getSimpleTextFor(Repository repository) {
+	/**
+	 * @param repository
+	 * @return simple text for repository
+	 */
+	public static String getSimpleTextFor(Repository repository) {
 		File directory;
 		if (!repository.isBare())
 			directory = repository.getDirectory().getParentFile();
