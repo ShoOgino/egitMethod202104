@@ -5,14 +5,7 @@
 	public CommitSelectDialog(Shell parent, List<RevCommit> commits) {
 		super(parent);
 		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
-		// sort by date ascending
 		this.commits.addAll(commits);
-		Collections.sort(this.commits, new Comparator<RevCommit>() {
-			public int compare(RevCommit o1, RevCommit o2) {
-				return o1.getAuthorIdent().getWhen()
-						.compareTo(o2.getAuthorIdent().getWhen());
-			}
-		});
 		setHelpAvailable(false);
 	}
 
