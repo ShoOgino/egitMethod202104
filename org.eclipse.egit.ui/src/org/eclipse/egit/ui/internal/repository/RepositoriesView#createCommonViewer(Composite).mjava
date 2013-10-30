@@ -7,8 +7,12 @@
 				TreeSelection sel = (TreeSelection) event.getSelection();
 				RepositoryTreeNode element = (RepositoryTreeNode) sel
 						.getFirstElement();
-				if (element instanceof RefNode || element instanceof TagNode)
-					executeOpenCommand();
+				if (element instanceof RefNode)
+					executeOpenCommandWithConfirmation(((RefNode) element)
+							.getObject().getName());
+				if (element instanceof TagNode)
+					executeOpenCommandWithConfirmation(((TagNode) element)
+							.getObject().getName());
 			}
 		});
 		// handle open event for the working directory
