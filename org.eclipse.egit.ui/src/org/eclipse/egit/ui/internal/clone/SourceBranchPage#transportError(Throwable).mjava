@@ -1,4 +1,5 @@
 	private void transportError(final Throwable why) {
+		Activator.logError(why.getMessage(), why);
 		Throwable cause = why.getCause();
 		if (why instanceof TransportException && cause != null)
 			transportError(NLS.bind(getMessage(why), why.getMessage(),

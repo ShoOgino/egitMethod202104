@@ -1,0 +1,14 @@
+	/**
+	 * Creates and shows custom error dialog for failed ls-remotes operation
+	 *
+	 * @param parentShell
+	 * @param uri
+	 *            the uri of the remote repository
+	 */
+	public static void show(Shell parentShell, URIish uri) {
+		SourceBranchFailureDialog dialog = new SourceBranchFailureDialog(
+				parentShell, uri);
+		dialog.setShellStyle(dialog.getShellStyle() | SWT.SHEET | SWT.RESIZE);
+		dialog.open();
+	}
+

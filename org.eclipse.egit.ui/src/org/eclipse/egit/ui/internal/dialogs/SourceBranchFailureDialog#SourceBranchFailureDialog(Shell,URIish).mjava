@@ -1,6 +1,6 @@
-	private SourceBranchFailureDialog(Shell parentShell, String cause) {
+	private SourceBranchFailureDialog(Shell parentShell, URIish uri) {
 		super(parentShell, UIText.CloneFailureDialog_tile, null, null,
 				MessageDialog.ERROR, new String[] { IDialogConstants.OK_LABEL }, 0);
-		this.cause = cause;
+		this.uri = uri;
 	}
 
