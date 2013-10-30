@@ -1,0 +1,16 @@
+	/**
+	 * @param parentShell
+	 * @param repo
+	 * @param refToMark
+	 * @param settings
+	 */
+	public BranchSelectionAndEditDialog(Shell parentShell, Repository repo,
+			String refToMark, int settings) {
+		super(parentShell, repo, refToMark, settings);
+		try {
+			currentBranch = repo.getFullBranch();
+		} catch (IOException e) {
+			currentBranch = null;
+		}
+	}
+

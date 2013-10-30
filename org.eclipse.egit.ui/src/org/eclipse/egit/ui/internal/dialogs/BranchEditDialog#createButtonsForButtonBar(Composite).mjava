@@ -1,0 +1,17 @@
+	/**
+	 * @param parent
+	 */
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		Button renameButton = createRenameButton(parent);
+		Button deleteButton = createDeleteButton(parent);
+
+		if (branchTree.getSelection().isEmpty()) {
+			renameButton.setEnabled(false);
+			deleteButton.setEnabled(false);
+		}
+
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				UIText.BranchSelectionAndEditDialog_OkClose, true);
+	}
+

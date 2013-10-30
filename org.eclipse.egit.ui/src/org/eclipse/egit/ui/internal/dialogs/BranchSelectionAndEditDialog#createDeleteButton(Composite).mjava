@@ -1,0 +1,32 @@
+	/**
+	 * Creates button for deleting a branch.
+	 *
+	 * @param parent
+	 * @return button
+	 */
+	protected Button createDeleteButton(Composite parent) {
+		((GridLayout) parent.getLayout()).numColumns++;
+		deleteButton = new Button(parent, SWT.PUSH);
+		deleteButton.setFont(JFaceResources.getDialogFont());
+		deleteButton.setText(UIText.BranchSelectionAndEditDialog_Delete);
+		setButtonLayoutData(deleteButton);
+
+		deleteButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent selectionEvent) {
+				try {
+					CommonUtils.runCommand(
+							IWorkbenchCommandConstants.EDIT_DELETE,
+							(IStructuredSelection) branchTree.getSelection());
+					branchTree.refresh();
+				} catch (Throwable e) {
+					reportError(
+							e,
+							UIText.BranchSelectionAndEditDialog_ErrorCouldNotDeleteRef,
+							refNameFromDialog());
+				}
+			}
+		});
+		return deleteButton;
+	}
+

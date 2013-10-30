@@ -1,0 +1,43 @@
+	@Override
+	protected void refNameSelected(String refName) {
+		boolean tagSelected = refName != null
+				&& refName.startsWith(Constants.R_TAGS);
+
+		boolean branchSelected = refName != null
+				&& (refName.startsWith(Constants.R_HEADS) || refName
+						.startsWith(Constants.R_REMOTES));
+
+		// handle multiple selection
+		if (((TreeSelection) branchTree.getSelection()).size() > 1) {
+			TreeSelection selection = (TreeSelection) branchTree
+					.getSelection();
+			boolean onlyBranchesAreSelected = onlyBranchesAreSelected(selection);
+
+			// enable/disable buttons
+			deleteButton.setEnabled(onlyBranchesAreSelected);
+			renameButton.setEnabled(false);
+			if (newButton != null)
+				newButton.setEnabled(false);
+		} else {
+			setOkButtonEnabled(branchSelected || tagSelected);
+
+			// we don't support rename on tags
+			renameButton.setEnabled(branchSelected && !tagSelected);
+			deleteButton.setEnabled(branchSelected && !tagSelected);
+
+			// new button should be always enabled
+			if (newButton != null)
+				newButton.setEnabled(true);
+		}
+
+		Button okButton = getButton(Window.OK);
+		if (okButton != null) {
+			if (BranchOperationUI.checkoutWillShowQuestionDialog(refName))
+				okButton.setText(UIText.CheckoutDialog_OkCheckoutWithQuestion);
+			else
+				okButton.setText(UIText.CheckoutDialog_OkCheckout);
+		}
+
+		setOkButtonEnabled(refName != null && !refName.equals(currentBranch));
+	}
+

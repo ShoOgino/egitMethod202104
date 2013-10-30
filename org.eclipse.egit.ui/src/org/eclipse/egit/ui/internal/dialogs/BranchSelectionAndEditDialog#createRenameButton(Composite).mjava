@@ -1,0 +1,55 @@
+	/**
+	 * Creates button for renaming a branch.
+	 *
+	 * @param parent
+	 * @return button
+	 */
+	protected Button createRenameButton(Composite parent) {
+		((GridLayout) parent.getLayout()).numColumns++;
+		renameButton = new Button(parent, SWT.PUSH);
+		renameButton.setFont(JFaceResources.getDialogFont());
+		renameButton.setText(UIText.BranchSelectionAndEditDialog_Rename);
+		setButtonLayoutData(renameButton);
+		renameButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				String refName = refNameFromDialog();
+				String refPrefix;
+
+				if (refName.startsWith(Constants.R_HEADS))
+					refPrefix = Constants.R_HEADS;
+				else if (refName.startsWith(Constants.R_REMOTES))
+					refPrefix = Constants.R_REMOTES;
+				else if (refName.startsWith(Constants.R_TAGS))
+					refPrefix = Constants.R_TAGS;
+				else {
+					// the button should be disabled anyway, but we check again
+					return;
+				}
+
+				String branchName = refName.substring(refPrefix.length());
+
+				InputDialog labelDialog = getRefNameInputDialog(
+						NLS.bind(
+								UIText.BranchSelectionAndEditDialog_QuestionNewBranchNameMessage,
+								branchName, refPrefix), refPrefix, branchName);
+				if (labelDialog.open() == Window.OK) {
+					String newRefName = refPrefix + labelDialog.getValue();
+					try {
+						new Git(repo).branchRename().setOldName(refName)
+								.setNewName(labelDialog.getValue()).call();
+						branchTree.refresh();
+						markRef(newRefName);
+					} catch (Throwable e1) {
+						reportError(
+								e1,
+								UIText.BranchSelectionAndEditDialog_ErrorCouldNotRenameRef,
+								refName, newRefName, e1.getMessage());
+					}
+				}
+			}
+		});
+		return renameButton;
+	}
+
