@@ -1,0 +1,8 @@
+	@Override
+	protected boolean markRef(String refName) {
+		// preselect HEAD if in the detached HEAD state
+		return super
+				.markRef(RepositoryUtil.isDetachedHead(repo) ? Constants.HEAD
+						: refName);
+	}
+

@@ -23,6 +23,11 @@
 				if (ref == null)
 					return false;
 				node = new RefNode(remoteBranches, repo, ref);
+			} else if (Constants.HEAD.equals(refName)) {
+				Ref ref = repo.getRef(refName);
+				if (ref == null)
+					return false;
+				node = new AdditionalRefNode(references, repo, ref);
 			} else {
 				String mappedRef = Activator.getDefault().getRepositoryUtil()
 						.mapCommitToRef(repo, refName, false);

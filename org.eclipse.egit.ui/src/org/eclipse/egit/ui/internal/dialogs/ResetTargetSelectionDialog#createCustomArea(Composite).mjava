@@ -64,7 +64,13 @@
 						committer.setText(""); //$NON-NLS-1$
 						return;
 					} else {
-						setMessage(""); //$NON-NLS-1$
+						if (RepositoryUtil.isDetachedHead(repo)) {
+							setMessage(
+									UIText.ResetTargetSelectionDialog_DetachedHeadState,
+									IMessageProvider.INFORMATION);
+						} else {
+							setMessage(""); //$NON-NLS-1$
+						}
 						parsedCommitish = text;
 						getButton(OK).setEnabled(true);
 						RevWalk rw = new RevWalk(repo);
