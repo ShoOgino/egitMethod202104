@@ -1,4 +1,5 @@
-	private boolean onlyBranchesAreSelected(TreeSelection selection) {
+	private boolean onlyBranchesExcludingCurrentAreSelected(
+			TreeSelection selection) {
 		Iterator selIterator = selection.iterator();
 		while (selIterator.hasNext()) {
 			Object sel = selIterator.next();
@@ -7,6 +8,8 @@
 				String refName = node.getObject().getName();
 				if (!refName.startsWith(R_HEADS)
 						&& !refName.startsWith(R_REMOTES))
+					return false;
+				if (isCurrentBranch(refName))
 					return false;
 			} else
 				return false;
