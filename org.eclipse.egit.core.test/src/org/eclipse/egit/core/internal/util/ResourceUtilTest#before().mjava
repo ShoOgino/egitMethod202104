@@ -1,0 +1,7 @@
+	@Before
+	public void before() throws Exception {
+		repository = FileRepositoryBuilder.create(gitDir);
+		repository.create();
+		connect(project.getProject());
+	}
+

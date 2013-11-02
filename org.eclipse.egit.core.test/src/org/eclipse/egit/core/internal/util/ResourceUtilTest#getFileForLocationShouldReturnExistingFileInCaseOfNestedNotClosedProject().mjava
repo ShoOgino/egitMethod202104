@@ -2,8 +2,10 @@
 	public void getFileForLocationShouldReturnExistingFileInCaseOfNestedNotClosedProject()
 			throws Exception {
 		TestProject nested = new TestProject(true, "Project-1/Project-0");
+		connect(nested.getProject());
 		TestProject nested2 = new TestProject(true,
 				"Project-1/Project-0/Project");
+		connect(nested2.getProject());
 		IFile file = nested2.createFile("a.txt", new byte[] {});
 		IPath location = file.getLocation();
 		nested2.project.close(new NullProgressMonitor());

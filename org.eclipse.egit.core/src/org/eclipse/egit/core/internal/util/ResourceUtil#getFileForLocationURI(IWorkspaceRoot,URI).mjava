@@ -1,5 +1,5 @@
 	private static IFile getFileForLocationURI(IWorkspaceRoot root, URI uri) {
 		IFile[] files = root.findFilesForLocationURI(uri);
-		return getExistingResourceWithShortestPath(files);
+		return getExistingMappedResourceWithShortestPath(files);
 	}
 

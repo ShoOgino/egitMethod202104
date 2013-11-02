@@ -1,9 +1,13 @@
-	private static <T extends IResource> T getExistingResourceWithShortestPath(
+	private static <T extends IResource> T getExistingMappedResourceWithShortestPath(
 			T[] resources) {
 		int shortestPathSegmentCount = Integer.MAX_VALUE;
 		T shortestPath = null;
 		for (T resource : resources) {
 			if (!resource.exists())
+				continue;
+			RepositoryProvider provider = RepositoryProvider.getProvider(
+					resource.getProject(), GitProvider.ID);
+			if (provider == null)
 				continue;
 			IPath fullPath = resource.getFullPath();
 			int segmentCount = fullPath.segmentCount();
