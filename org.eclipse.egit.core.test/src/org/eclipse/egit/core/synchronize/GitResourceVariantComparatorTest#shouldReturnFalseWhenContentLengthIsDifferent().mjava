@@ -9,8 +9,8 @@
 	public void shouldReturnFalseWhenContentLengthIsDifferent()
 			throws Exception {
 		// when
-		byte[] shortContent = "short content".getBytes();
-		byte[] longContent = "very long long content".getBytes();
+		byte[] shortContent = "short content".getBytes("UTF-8");
+		byte[] longContent = "very long long content".getBytes("UTF-8");
 		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, HEAD, true);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(

@@ -1,8 +1,9 @@
 	private File createFile(String name, String content) throws IOException {
 		File f = new File(workDir, name);
-		FileWriter fileWriter = null;
+		Writer fileWriter = null;
 		try {
-			fileWriter = new FileWriter(f);
+			fileWriter = new OutputStreamWriter(new FileOutputStream(f),
+					"UTF-8");
 			fileWriter.write(content);
 		} finally {
 			if (fileWriter != null)

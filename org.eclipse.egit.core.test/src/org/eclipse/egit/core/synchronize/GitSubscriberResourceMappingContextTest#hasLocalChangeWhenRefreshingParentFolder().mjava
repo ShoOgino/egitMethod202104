@@ -4,7 +4,8 @@
 		folder.create(false, true, null);
 
 		IFile file = folder.getFile("a.txt");
-		file.create(new ByteArrayInputStream("a".getBytes()), false, null);
+		file.create(new ByteArrayInputStream("a".getBytes("UTF-8")), false,
+				null);
 
 		RemoteResourceMappingContext context = prepareContext(MASTER, MASTER);
 		refresh(context, file);

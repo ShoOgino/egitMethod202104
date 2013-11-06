@@ -10,6 +10,6 @@
 	 */
 	public void appendFileContent(File file, byte[] content, boolean append)
 			throws IOException {
-		appendFileContent(file, new String(content), append);
+		appendFileContent(file, new String(content, "UTF-8"), append);
 	}
 

@@ -11,7 +11,7 @@
 	 */
 	public RevCommit appendContentAndCommit(IProject project, File file,
 			byte[] content, String commitMessage) throws Exception {
-		return appendContentAndCommit(project, file, new String(content),
-				commitMessage);
+		return appendContentAndCommit(project, file, new String(content,
+				"UTF-8"), commitMessage);
 	}
 

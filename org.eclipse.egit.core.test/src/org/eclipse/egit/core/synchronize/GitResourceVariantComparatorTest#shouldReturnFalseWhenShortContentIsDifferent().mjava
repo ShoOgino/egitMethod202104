@@ -8,9 +8,9 @@
 	@SuppressWarnings("boxing")
 	public void shouldReturnFalseWhenShortContentIsDifferent() throws Exception {
 		// when
-		byte[] localContent = "very long long content".getBytes();
+		byte[] localContent = "very long long content".getBytes("UTF-8");
 		// this typo should be here
-		byte[] remoteContent = "very long lonk content".getBytes();
+		byte[] remoteContent = "very long lonk content".getBytes("UTF-8");
 		GitSynchronizeData data = new GitSynchronizeData(repo, HEAD, HEAD, true);
 		GitSynchronizeDataSet dataSet = new GitSynchronizeDataSet(data);
 		GitResourceVariantComparator grvc = new GitResourceVariantComparator(

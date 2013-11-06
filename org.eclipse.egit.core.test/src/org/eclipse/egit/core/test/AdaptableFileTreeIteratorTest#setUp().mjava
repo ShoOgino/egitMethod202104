@@ -6,7 +6,8 @@
 		repository.create();
 
 		file = new File(project.getProject().getLocation().toFile(), "a.txt");
-		final FileWriter fileWriter = new FileWriter(file);
+		final Writer fileWriter = new OutputStreamWriter(new FileOutputStream(
+				file), "UTF-8");
 		fileWriter.write("aaaaaaaaaaa");
 		fileWriter.close();
 

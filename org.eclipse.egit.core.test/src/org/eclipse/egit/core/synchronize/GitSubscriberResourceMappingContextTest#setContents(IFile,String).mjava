@@ -1,7 +1,7 @@
 	private void setContents(IFile targetFile, String newContents)
-			throws CoreException {
+			throws CoreException, UnsupportedEncodingException {
 		targetFile.setContents(
-				new ByteArrayInputStream(newContents.getBytes()),
+				new ByteArrayInputStream(newContents.getBytes("UTF-8")),
 				IResource.FORCE, new NullProgressMonitor());
 	}
 

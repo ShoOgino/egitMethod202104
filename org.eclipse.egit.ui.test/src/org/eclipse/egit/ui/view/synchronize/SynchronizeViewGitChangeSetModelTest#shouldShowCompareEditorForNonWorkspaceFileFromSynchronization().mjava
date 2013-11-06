@@ -6,7 +6,8 @@
 		String name = "non-workspace.txt";
 		File root = new File(getTestDirectory(), REPO1);
 		File nonWorkspace = new File(root, name);
-		BufferedWriter writer = new BufferedWriter(new FileWriter(nonWorkspace));
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(nonWorkspace), "UTF-8"));
 		writer.append(content);
 		writer.close();
 		// TODO Synchronize currently shows "No changes" when the only thing that has

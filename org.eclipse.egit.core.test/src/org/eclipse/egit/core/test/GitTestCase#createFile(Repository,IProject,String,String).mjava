@@ -1,6 +1,7 @@
 	protected ObjectId createFile(Repository repository, IProject actProject, String name, String content) throws IOException {
 		File file = new File(actProject.getProject().getLocation().toFile(), name);
-		FileWriter fileWriter = new FileWriter(file);
+		Writer fileWriter = new OutputStreamWriter(new FileOutputStream(
+				file), "UTF-8");
 		fileWriter.write(content);
 		fileWriter.close();
 		byte[] fileContents = IO.readFully(file);
