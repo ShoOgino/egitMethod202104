@@ -1,7 +1,7 @@
 	@Test
 	public void testDeleteResourceOutsideOfProject() throws Exception {
 		File outsideOfProject = new File(workdir, "outside-of-project.txt");
-		outsideOfProject.createNewFile();
+		FileUtils.createNewFile(outsideOfProject);
 
 		IPath path = new Path(outsideOfProject.getAbsolutePath());
 
