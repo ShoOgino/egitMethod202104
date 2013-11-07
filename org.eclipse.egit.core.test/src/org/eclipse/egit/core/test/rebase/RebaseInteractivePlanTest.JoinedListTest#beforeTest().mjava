@@ -2,11 +2,11 @@
 		public void beforeTest() {
 			testData1 = new LinkedList<Integer>();
 			for (int i = 1; i <= 4; i++) {
-				testData1.add(new Integer(i));
+				testData1.add(Integer.valueOf(i));
 			}
 			testData2 = new LinkedList<Integer>();
 			for (int i = 5; i <= 10; i++) {
-				testData2.add(new Integer(i));
+				testData2.add(Integer.valueOf(i));
 			}
 			joined = JoinedList.wrap(testData1, testData2);
 		}
