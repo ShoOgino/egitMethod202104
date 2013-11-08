@@ -81,6 +81,10 @@
 			}
 		};
 		job.setUser(true);
+		// Set scheduling rule to workspace because we may have to re-create
+		// projects using BranchProjectTracker.
+		if (restore)
+			job.setRule(ResourcesPlugin.getWorkspace().getRoot());
 		job.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent cevent) {

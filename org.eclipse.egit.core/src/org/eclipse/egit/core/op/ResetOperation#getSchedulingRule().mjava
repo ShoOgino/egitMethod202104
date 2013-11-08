@@ -1,6 +1,6 @@
 	public ISchedulingRule getSchedulingRule() {
 		if (type == ResetType.HARD)
-			return ResourcesPlugin.getWorkspace().getRoot();
+			return RuleUtil.getRule(repository);
 		else
 			return null;
 	}
