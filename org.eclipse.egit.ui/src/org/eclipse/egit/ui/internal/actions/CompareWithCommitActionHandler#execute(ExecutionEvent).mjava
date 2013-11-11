@@ -11,8 +11,8 @@
 
 		final String commitId = dlg.getCommitId().getName();
 
-		IWorkbenchPage workBenchPage = HandlerUtil
-				.getActiveWorkbenchWindowChecked(event).getActivePage();
+		IWorkbenchPage workBenchPage = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
 		try {
 			CompareUtils.compare(resources, repo, Constants.HEAD, commitId,
 					true, workBenchPage);
