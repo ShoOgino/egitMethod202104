@@ -1,0 +1,6 @@
+	private void addRepository(File repositoryDir) {
+		util.addConfiguredRepository(repositoryDir);
+		if (doAutoShare())
+			autoShareProjects(repositoryDir);
+	}
+
