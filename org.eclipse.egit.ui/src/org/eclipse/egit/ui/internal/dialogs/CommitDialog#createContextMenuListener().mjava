@@ -1,0 +1,23 @@
+	private IMenuListener createContextMenuListener() {
+		return new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				if (!allowToChangeSelection)
+					return;
+
+				final IStructuredSelection selection = (IStructuredSelection) filesViewer
+						.getSelection();
+				if (selection.isEmpty())
+					return;
+
+				if (selection.size() == 1
+						&& selection.getFirstElement() instanceof CommitItem) {
+					CommitItem commitItem = (CommitItem) selection
+							.getFirstElement();
+					manager.add(createCompareAction(commitItem));
+				}
+
+				manager.add(createAddAction(selection));
+			}
+		};
+	}
+

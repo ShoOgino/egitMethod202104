@@ -69,7 +69,11 @@
 
 		filesViewer.addFilter(new CommitItemFilter());
 		filesViewer.setInput(items.toArray());
-		filesViewer.getTree().setMenu(getContextMenu());
+		MenuManager menuManager = new MenuManager();
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(createContextMenuListener());
+		filesViewer.getTree().setMenu(
+				menuManager.createContextMenu(filesViewer.getTree()));
 		filesViewer.addCheckStateListener(new ICheckStateListener() {
 
 			public void checkStateChanged(CheckStateChangedEvent event) {
