@@ -1,0 +1,13 @@
+	/**
+	 * @return 0-based line number of hover
+	 */
+	private int getHoverLineNumber() {
+		// If this is the enriched control, we have to use the line number of
+		// the original hover control, otherwise the line number may have
+		// changed if the mouse moved over another area.
+		if (hoverInformationControl != null)
+			return hoverInformationControl.getHoverLineNumber();
+		else
+			return revisionRulerLineNumber;
+	}
+

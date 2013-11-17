@@ -10,11 +10,6 @@
 	 */
 	public BlameOperation(Repository repository, IStorage storage, String path,
 			AnyObjectId startCommit, Shell shell, IWorkbenchPage page) {
-		this.repository = repository;
-		this.storage = storage;
-		this.path = path;
-		this.startCommit = startCommit;
-		this.shell = shell;
-		this.page = page;
+		this(repository, storage, path, startCommit, shell, page, -1);
 	}
 

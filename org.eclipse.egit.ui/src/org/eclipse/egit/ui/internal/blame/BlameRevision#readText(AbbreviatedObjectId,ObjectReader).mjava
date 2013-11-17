@@ -1,0 +1,7 @@
+	private static RawText readText(AbbreviatedObjectId blobId,
+			ObjectReader reader) throws IOException {
+		ObjectLoader oldLoader = reader.open(blobId.toObjectId(),
+				Constants.OBJ_BLOB);
+		return new RawText(oldLoader.getCachedBytes());
+	}
+

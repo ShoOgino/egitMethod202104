@@ -1,0 +1,16 @@
+	private void createDiffs() {
+		if (diffComposite != null)
+			diffComposite.dispose();
+
+		RevCommit commit = revision.getCommit();
+		if (commit.getParentCount() == 0)
+			return;
+
+		createDiffComposite();
+
+		for (int i = 0; i < commit.getParentCount(); i++) {
+			RevCommit parent = commit.getParent(i);
+			createDiff(parent);
+		}
+	}
+

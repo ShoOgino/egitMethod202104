@@ -1,0 +1,24 @@
+	/**
+	 * Create annotate operation
+	 *
+	 * @param repository
+	 * @param storage
+	 * @param path
+	 * @param startCommit
+	 * @param shell
+	 * @param page
+	 * @param lineNumberToReveal
+	 *            0-based line number to reveal, -1 for no reveal
+	 */
+	public BlameOperation(Repository repository, IStorage storage, String path,
+			AnyObjectId startCommit, Shell shell, IWorkbenchPage page,
+			int lineNumberToReveal) {
+		this.repository = repository;
+		this.storage = storage;
+		this.path = path;
+		this.startCommit = startCommit;
+		this.shell = shell;
+		this.page = page;
+		this.lineNumberToReveal = lineNumberToReveal;
+	}
+

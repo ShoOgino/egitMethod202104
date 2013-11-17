@@ -1,6 +1,12 @@
 	public void setInput(Object input) {
 		this.revision = (BlameRevision) input;
 
+		// Remember line number that was hovered over when the input was set.
+		// Used for showing the diff hunk of this line instead of the full diff.
+		if (rulerInfo != null)
+			revisionRulerLineNumber = rulerInfo
+					.getLineOfLastMouseButtonActivity();
+
 		RevCommit commit = this.revision.getCommit();
 
 		String linkText = MessageFormat.format(
@@ -32,6 +38,9 @@
 
 		messageText.setText(commit.getFullMessage());
 
+		createDiffs();
+
+		displayArea.layout();
 		scrolls.setMinSize(displayArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
