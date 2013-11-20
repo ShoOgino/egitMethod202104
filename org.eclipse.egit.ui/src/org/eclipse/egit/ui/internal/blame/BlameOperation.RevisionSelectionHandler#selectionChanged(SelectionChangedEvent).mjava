@@ -1,4 +1,11 @@
 		public void selectionChanged(SelectionChangedEvent event) {
+			// Don't show the commit for the first selection change, as that was
+			// not initiated by the user directly. Instead, show the commit the
+			// first time the user clicks on a revision or line.
+			if (firstSelectionChange) {
+				firstSelectionChange = false;
+				return;
+			}
 			ISelection selection = event.getSelection();
 			if (selection.isEmpty()
 					|| !(selection instanceof IStructuredSelection))
