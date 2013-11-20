@@ -7,8 +7,7 @@
 				ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile()
 						.getAbsoluteFile().toString());
 
-		bot.perspectiveById("org.eclipse.jdt.ui.JavaPerspective").activate();
-		bot.viewByTitle("Package Explorer").show();
+		TestUtil.showExplorerView();
 
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
