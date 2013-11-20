@@ -1,4 +1,4 @@
-	private Ref setRef(ExecutionEvent event) throws ExecutionException {
+	private void setRef(ExecutionEvent event) throws ExecutionException {
 		ISelection currentSelection = getCurrentSelectionChecked(event);
 		if (currentSelection instanceof IStructuredSelection) {
 			IStructuredSelection selection = (IStructuredSelection) currentSelection;
@@ -9,7 +9,7 @@
 
 		final Repository repository = getRepository(event);
 		if (repository == null)
-			return null;
+			return;
 
 		BasicConfigurationDialog.show(repository);
 
@@ -28,12 +28,11 @@
 					throw new ExecutionException(e.getMessage(), e);
 				}
 			} else
-				return null;
+				return;
 		}
 
 		jobname = NLS.bind(
 				UIText.RebaseCurrentRefCommand_RebasingCurrentJobName,
 				Repository.shortenRefName(currentFullBranch), ref.getName());
-		return null;
 	}
 
