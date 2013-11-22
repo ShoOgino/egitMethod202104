@@ -1,0 +1,11 @@
+	public static PushTagsWizardTester startWizard(SWTBotTree projectTree) {
+		TestUtil util = new TestUtil();
+		String remoteMenu = util.getPluginLocalizedValue("RemoteSubMenu.label");
+		String pushBranchMenu = util
+				.getPluginLocalizedValue("PushTagsCommand.name");
+		ContextMenuHelper.clickContextMenu(projectTree, "Team", remoteMenu,
+				pushBranchMenu);
+
+		return forShell();
+	}
+

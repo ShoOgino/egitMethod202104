@@ -1,0 +1,15 @@
+	private void setSelectedTags(Object[] tags) {
+		selectedTags.clear();
+		for (Object tag : tags) {
+			if (tag instanceof TagNode)
+				selectedTags.add((TagNode) tag);
+		}
+		int number = selectedTags.size();
+		if (number == 0)
+			tagsLabel.setText(UIText.PushTagsPage_TagsLabelNoneSelected);
+		else
+			tagsLabel.setText(MessageFormat.format(UIText.PushTagsPage_TagsLabelSelected,
+					Integer.valueOf(selectedTags.size())));
+		setPageComplete(isPageComplete());
+	}
+

@@ -1,0 +1,11 @@
+	private SWTBotTreeItem findTag(String tagName) {
+		SWTBotTree tree = wizard.tree();
+		for (SWTBotTreeItem item : tree.getAllItems()) {
+			String text = item.getText();
+			if (text.equals(tagName) || text.startsWith(tagName + " "))
+				return item;
+		}
+		fail("Could not find item for tag name " + tagName);
+		return null;
+	}
+

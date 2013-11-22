@@ -1,5 +1,6 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		RepositoryTreeNode node = getSelectedNodes(event).get(0);
+		List<RepositoryTreeNode> nodes = getSelectedNodes(event);
+		RepositoryTreeNode node = nodes.get(0);
 
 		IWizard pushWiz = null;
 
@@ -10,8 +11,7 @@
 						(Ref) node.getObject());
 				break;
 			case TAG:
-				pushWiz = new SimplePushRefWizard(node.getRepository(),
-						(Ref) node.getObject(), UIText.PushCommand_pushTagTitle);
+				pushWiz = createPushTagsWizard(nodes);
 				break;
 			case REPO:
 				pushWiz = new PushWizard(node.getRepository());
@@ -21,10 +21,11 @@
 			}
 		} catch (URISyntaxException e1) {
 			Activator.handleError(e1.getMessage(), e1, true);
+			return null;
 		}
 
 		WizardDialog dlg = new WizardDialog(getShell(event), pushWiz);
-		dlg.setHelpAvailable(true);
+		dlg.setHelpAvailable(pushWiz.isHelpAvailable());
 		dlg.open();
 
 		return null;

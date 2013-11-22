@@ -1,0 +1,6 @@
+	public static PushTagsWizardTester forShell() {
+		SWTWorkbenchBot bot = new SWTWorkbenchBot();
+		SWTBot wizard = bot.shell(UIText.PushTagsWizard_WindowTitle).bot();
+		return new PushTagsWizardTester(wizard);
+	}
+

@@ -1,0 +1,8 @@
+	private List<RemoteConfig> getRemoteConfigs() {
+		try {
+			return RemoteConfig.getAllRemoteConfigs(repository.getConfig());
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
