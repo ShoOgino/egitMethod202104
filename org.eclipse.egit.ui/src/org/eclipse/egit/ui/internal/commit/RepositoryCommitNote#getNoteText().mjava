@@ -14,7 +14,7 @@
 						(int) loader.getSize()).array();
 			else
 				contents = loader.getCachedBytes();
-			return new String(contents);
+			return RawParseUtils.decode(contents);
 		} catch (IOException e) {
 			Activator.logError("Error loading note text", e); //$NON-NLS-1$
 		}

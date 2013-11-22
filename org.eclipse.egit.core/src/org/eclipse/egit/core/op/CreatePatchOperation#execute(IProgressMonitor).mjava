@@ -13,14 +13,14 @@
 					@Override
 					public synchronized void write(byte[] b, int off, int len) {
 						super.write(b, off, len);
-						if (currentEncoding == null)
-							sb.append(toString());
-						else
-							try {
+						try {
+							if (currentEncoding == null)
+								sb.append(toString("UTF-8")); //$NON-NLS-1$
+							else
 								sb.append(toString(currentEncoding));
-							} catch (UnsupportedEncodingException e) {
-								sb.append(toString());
-							}
+						} catch (UnsupportedEncodingException e) {
+							sb.append(toString());
+						}
 						reset();
 					}
 				}) {
