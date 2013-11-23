@@ -1,16 +1,22 @@
-	private StagingFolderEntry[] calculateTreeFolders(boolean compact) {
+	private Object[] calculateTreePresentationRoots(boolean compact) {
 		if (content == null || content.length == 0)
-			return new StagingFolderEntry[0];
+			return new Object[0];
+
+		List<Object> roots = new ArrayList<Object>();
+		Map<IPath, List<Object>> childrenForPath = new HashMap<IPath, List<Object>>();
 
 		Set<IPath> folderPaths = new HashSet<IPath>();
 		Map<IPath, String> childSegments = new HashMap<IPath, String>();
 
 		for (StagingEntry file : content) {
 			IPath folderPath = file.getParentPath();
-			if (folderPath.segmentCount() == 0)
-				// No folders need to be created
+			if (folderPath.segmentCount() == 0) {
+				// No folders need to be created, this is a root file
+				roots.add(file);
 				continue;
+			}
 			folderPaths.add(folderPath);
+			addChild(childrenForPath, folderPath, file);
 			for (IPath p = folderPath; p.segmentCount() != 1; p = p
 					.removeLastSegments(1)) {
 				IPath parent = p.removeLastSegments(1);
@@ -44,17 +50,32 @@
 				StagingFolderEntry folderEntry = new StagingFolderEntry(
 						workingDirectory, folderPath, folderPath);
 				folderEntries.add(folderEntry);
+				roots.add(folderEntry);
 			} else {
 				// Parent is existing node
 				IPath nodePath = folderPath.makeRelativeTo(parent);
 				StagingFolderEntry folderEntry = new StagingFolderEntry(
 						workingDirectory, folderPath, nodePath);
 				folderEntries.add(folderEntry);
+				addChild(childrenForPath, parent, folderEntry);
 			}
 		}
 
-		Collections.sort(folderEntries, FolderComparator.INSTANCE);
-		return folderEntries.toArray(new StagingFolderEntry[folderEntries
-				.size()]);
+		for (StagingFolderEntry folderEntry : folderEntries) {
+			List<Object> children = childrenForPath.get(folderEntry.getPath());
+			if (children != null) {
+				for (Object child : children) {
+					if (child instanceof StagingEntry)
+						((StagingEntry) child).setParent(folderEntry);
+					else if (child instanceof StagingFolderEntry)
+						((StagingFolderEntry) child).setParent(folderEntry);
+				}
+				Collections.sort(children, EntryComparator.INSTANCE);
+				folderEntry.setChildren(children.toArray());
+			}
+		}
+
+		Collections.sort(roots, EntryComparator.INSTANCE);
+		return roots.toArray();
 	}
 

@@ -1,0 +1,10 @@
+	private static void addChild(Map<IPath, List<Object>> childrenForPath,
+			IPath path, Object child) {
+		List<Object> children = childrenForPath.get(path);
+		if (children == null) {
+			children = new ArrayList<Object>();
+			childrenForPath.put(path, children);
+		}
+		children.add(child);
+	}
+

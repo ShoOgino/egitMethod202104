@@ -6,14 +6,14 @@
 
 		if (update.repository == null || update.indexDiff == null) {
 			content = new StagingEntry[0];
-			treeFolders = new StagingFolderEntry[0];
-			compactTreeFolders = new StagingFolderEntry[0];
+			treeRoots = new Object[0];
+			compactTreeRoots = new Object[0];
 			return;
 		}
 
 		if (update.repository != repository) {
-			treeFolders = null;
-			compactTreeFolders = null;
+			treeRoots = null;
+			compactTreeRoots = null;
 		}
 
 		repository = update.repository;
@@ -72,7 +72,7 @@
 
 		content = nodes.toArray(new StagingEntry[nodes.size()]);
 
-		treeFolders = null;
-		compactTreeFolders = null;
+		treeRoots = null;
+		compactTreeRoots = null;
 	}
 
