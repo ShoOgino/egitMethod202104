@@ -11,7 +11,7 @@
 		} else if (selected instanceof IFile) {
 			final IFile res = (IFile) selected;
 			LocalFileRevision revision = new LocalFileRevision(res);
-			left = new FileEditableRevision(revision, res, PlatformUI.getWorkbench().getProgressService());
+			left = new ResourceEditableRevision(revision, res, PlatformUI.getWorkbench().getProgressService());
 			GitFileRevision rightRevision = compareVersionMap.get(new Path(
 					repositoryMapping.getRepoRelativePath(res)));
 			if (rightRevision == null) {

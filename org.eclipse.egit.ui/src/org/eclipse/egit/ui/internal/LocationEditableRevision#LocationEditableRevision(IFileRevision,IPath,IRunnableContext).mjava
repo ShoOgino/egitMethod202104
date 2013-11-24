@@ -1,0 +1,13 @@
+	/**
+	 * @param fileRevision
+	 * @param location
+	 * @param runnableContext
+	 */
+	public LocationEditableRevision(IFileRevision fileRevision, IPath location,
+			IRunnableContext runnableContext) {
+		super(fileRevision, null);
+		this.location = location;
+		Assert.isNotNull(runnableContext);
+		this.runnableContext = runnableContext;
+	}
+

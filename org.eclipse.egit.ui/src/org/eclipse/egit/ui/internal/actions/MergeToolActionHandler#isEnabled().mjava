@@ -1,6 +1,7 @@
 	public boolean isEnabled() {
-		IResource[] resources = getSelectedResources();
-		Map<Repository, Collection<String>> pathsByRepository = ResourceUtil.splitResourcesByRepository(resources);
+		IPath[] paths = getSelectedLocations();
+		Map<Repository, Collection<String>> pathsByRepository = ResourceUtil
+				.splitPathsByRepository(Arrays.asList(paths));
 
 		Set<Repository> repos = pathsByRepository.keySet();
 
