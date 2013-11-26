@@ -4,7 +4,7 @@
 		main.setLayout(new GridLayout(1, false));
 		GridDataFactory.fillDefaults().indent(0, 0).grab(true, true)
 				.applyTo(main);
-		new NonDeletedFilesTree(main, repository, this.result.getConflictList());
+		new NonDeletedFilesTree(main, repository, fileList);
 		applyDialogFont(main);
 
 		return main;

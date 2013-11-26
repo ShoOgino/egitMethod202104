@@ -88,7 +88,7 @@
 		job.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent cevent) {
-				BranchResultDialog.show(bop.getResult(), repository, target);
+				show(bop.getResult());
 			}
 		});
 		job.schedule();

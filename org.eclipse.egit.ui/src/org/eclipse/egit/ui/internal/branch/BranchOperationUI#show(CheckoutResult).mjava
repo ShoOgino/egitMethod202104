@@ -1,23 +1,29 @@
 	/**
 	 * @param result
 	 *            the result to show
-	 * @param repository
-	 * @param target
-	 *            the target (branch name or commit id)
 	 */
-	public static void show(final CheckoutResult result,
-			final Repository repository, final String target) {
-		BranchResultDialog.target = target;
-		if (result.getStatus() == CheckoutResult.Status.CONFLICTS)
+	public void show(final CheckoutResult result) {
+		if (result.getStatus() == CheckoutResult.Status.CONFLICTS) {
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					Shell shell = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getShell();
-					new BranchResultDialog(shell, repository, result, target)
-							.open();
+					CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
+							shell,
+							UIText.BranchResultDialog_CheckoutConflictsTitle,
+							NLS.bind(
+									UIText.BranchResultDialog_CheckoutConflictsMessage,
+									Repository.shortenRefName(target)),
+							repository, result.getConflictList());
+					cleanupUncomittedChangesDialog.open();
+					if (cleanupUncomittedChangesDialog.shouldContinue()) {
+						BranchOperationUI op = BranchOperationUI
+								.checkoutWithoutQuestion(repository, target);
+						op.start();
+					}
 				}
 			});
-		else if (result.getStatus() == CheckoutResult.Status.NONDELETED) {
+		} else if (result.getStatus() == CheckoutResult.Status.NONDELETED) {
 			// double-check if the files are still there
 			boolean show = false;
 			List<String> pathList = result.getUndeletedList();
