@@ -1,0 +1,7 @@
+	@Test
+	public void findsRepositoryForOpenProject() throws Exception {
+		IFile a = testUtils.addFileToProject(project.getProject(),
+				"folder1/a.txt", "a");
+		assertEquals(repository, cache.getRepository(a));
+	}
+
