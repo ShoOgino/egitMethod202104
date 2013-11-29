@@ -3,7 +3,7 @@
 	 */
 	public RemoteConfig getSelectedRemote() {
 		final int idx = remoteCombo.getSelectionIndex();
-		if (remoteConfigs != null) {
+		if (remoteConfigs != null && idx != -1) {
 			return remoteConfigs.get(idx);
 		}
 		return null;
