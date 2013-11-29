@@ -2,9 +2,9 @@
 		try {
 			upstreamConfigComponent.setUpstreamConfig(upstreamConfig);
 
-			String source = branchCombo.getText();
-			boolean showUpstreamConfig = source.startsWith(Constants.R_HEADS)
-					|| source.startsWith(Constants.R_REMOTES);
+			boolean showUpstreamConfig = sourceRefName
+					.startsWith(Constants.R_HEADS)
+					|| sourceRefName.startsWith(Constants.R_REMOTES);
 			Composite container = upstreamConfigComponent.getContainer();
 			GridData gd = (GridData) container.getLayoutData();
 			if (gd.exclude == showUpstreamConfig) {
@@ -13,14 +13,15 @@
 				container.getParent().layout(true);
 			}
 
-			boolean basedOnLocalBranch = source.startsWith(Constants.R_HEADS);
+			boolean basedOnLocalBranch = sourceRefName
+					.startsWith(Constants.R_HEADS);
 			if (basedOnLocalBranch && upstreamConfig != UpstreamConfig.NONE)
 				setMessage(UIText.CreateBranchPage_LocalBranchWarningMessage,
 						IMessageProvider.INFORMATION);
 			else
 				setMessage(null);
 
-			if (source.length() == 0) {
+			if (sourceRefName.length() == 0) {
 				setErrorMessage(UIText.CreateBranchPage_MissingSourceMessage);
 				return;
 			}

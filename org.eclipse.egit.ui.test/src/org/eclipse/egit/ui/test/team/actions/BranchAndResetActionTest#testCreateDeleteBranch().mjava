@@ -3,7 +3,6 @@
 		assertNull(lookupRepository(repositoryFile).resolve("newBranch"));
 
 		SWTBotShell newBranchDialog = openCreateBranchDialog();
-		newBranchDialog.bot().comboBoxWithId("BaseBranch").setSelection(0);
 		newBranchDialog.bot().textWithId("BranchName").setText("newBranch");
 		newBranchDialog.bot().checkBox(UIText.CreateBranchPage_CheckoutButton).deselect();
 		newBranchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();

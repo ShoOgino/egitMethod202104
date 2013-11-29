@@ -1,0 +1,11 @@
+	private void setSourceCommit(RevCommit commit) {
+		sourceNameLabel.setText(commit.abbreviate(7).name());
+		sourceIcon.setImage(UIIcons
+				.getImage(resourceManager, UIIcons.CHANGESET));
+
+		sourceRefName = commit.name();
+
+		upstreamConfig = UpstreamConfig.NONE;
+		checkPage();
+	}
+
