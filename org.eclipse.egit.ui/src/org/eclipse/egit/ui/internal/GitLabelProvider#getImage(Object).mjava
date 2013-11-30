@@ -3,8 +3,11 @@
 		if (element instanceof Repository)
 			return RepositoryTreeNodeType.REPO.getIcon();
 
-		if (element instanceof RefNode || element instanceof Ref)
-			return RepositoryTreeNodeType.REF.getIcon();
+		if (element instanceof RefNode)
+			return getRefIcon(((RefNode) element).getObject());
+
+		if (element instanceof Ref)
+			return getRefIcon((Ref) element);
 
 		if (element instanceof GitModelBlob || element instanceof GitModelTree) {
 			Object adapter = ((IAdaptable) element).getAdapter(IResource.class);
