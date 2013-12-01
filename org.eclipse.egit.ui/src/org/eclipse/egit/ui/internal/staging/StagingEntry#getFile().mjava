@@ -3,8 +3,6 @@
 	 *         workspace, null otherwise.
 	 */
 	public IFile getFile() {
-		IPath absolutePath = getLocation();
-		IFile resource = ResourceUtil.getFileForLocation(absolutePath);
-		return resource;
+		return file;
 	}
 
