@@ -1,17 +1,11 @@
 	/**
-	 * Refresh the unstaged and staged viewers
+	 * Refresh the unstaged and staged viewers without preserving expanded
+	 * elements
 	 */
 	public void refreshViewers() {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
-				Object[] unstagedExpanded = unstagedViewer
-						.getExpandedElements();
-				Object[] stagedExpanded = stagedViewer.getExpandedElements();
-				unstagedViewer.refresh();
-				stagedViewer.refresh();
-				updateSectionText();
-				unstagedViewer.setExpandedElements(unstagedExpanded);
-				stagedViewer.setExpandedElements(stagedExpanded);
+				refreshViewersInternal();
 			}
 		});
 	}

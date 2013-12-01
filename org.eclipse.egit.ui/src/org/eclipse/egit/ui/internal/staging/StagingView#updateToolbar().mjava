@@ -99,7 +99,7 @@
 				final boolean enable = isChecked();
 				getLabelProvider(stagedViewer).setFileNameMode(enable);
 				getLabelProvider(unstagedViewer).setFileNameMode(enable);
-				refreshViewers();
+				refreshViewersPreservingExpandedElements();
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_FILENAME_MODE, enable);
 			}
@@ -113,6 +113,8 @@
 		listPresentationAction = new Action(UIText.StagingView_List,
 				IAction.AS_RADIO_BUTTON) {
 			public void run() {
+				if (!isChecked())
+					return;
 				presentation = Presentation.LIST;
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_PRESENTATION,
@@ -129,6 +131,8 @@
 		treePresentationAction = new Action(UIText.StagingView_Tree,
 				IAction.AS_RADIO_BUTTON) {
 			public void run() {
+				if (!isChecked())
+					return;
 				presentation = Presentation.TREE;
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_PRESENTATION,
@@ -145,6 +149,8 @@
 		compactTreePresentationAction = new Action(UIText.StagingView_CompactTree,
 				IAction.AS_RADIO_BUTTON) {
 			public void run() {
+				if (!isChecked())
+					return;
 				presentation = Presentation.COMPACT_TREE;
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_PRESENTATION,
