@@ -1,0 +1,66 @@
+	public void createControl(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		main.setLayout(GridLayoutFactory.swtDefaults()
+				.spacing(LayoutConstants.getSpacing()).numColumns(2).create());
+
+		Label remoteLabel = new Label(main, SWT.NONE);
+		remoteLabel.setText(UIText.PushTagsPage_RemoteLabel);
+
+		RemoteSelectionCombo remoteSelectionCombo = new RemoteSelectionCombo(
+				main, SWT.NONE, SelectionType.PUSH);
+		remoteSelectionCombo.setLayoutData(GridDataFactory.fillDefaults()
+				.grab(true, false).create());
+		selectedRemoteConfig = remoteSelectionCombo
+				.setItems(getRemoteConfigs());
+		remoteSelectionCombo
+				.addRemoteSelectionListener(new RemoteSelectionCombo.IRemoteSelectionListener() {
+					public void remoteSelected(RemoteConfig remoteConfig) {
+						selectedRemoteConfig = remoteConfig;
+					}
+				});
+
+		tagsLabel = new Label(main, SWT.NONE);
+		tagsLabel.setText(UIText.PushTagsPage_TagsLabelNoneSelected);
+		tagsLabel.setLayoutData(GridDataFactory.fillDefaults()
+				.grab(true, false).span(2, 1).create());
+
+		FilteredCheckboxTree tree = new FilteredCheckboxTree(main, null,
+				SWT.BORDER);
+		tree.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
+				.span(2, 1).hint(400, 300).create());
+
+		final Button forceUpdateButton = new Button(main, SWT.CHECK);
+		forceUpdateButton
+				.setText(UIText.PushTagsPage_ForceUpdateButton);
+		forceUpdateButton.setSelection(false);
+		forceUpdateButton.setLayoutData(GridDataFactory.fillDefaults()
+				.grab(true, false).span(2, 1).create());
+		forceUpdateButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				forceUpdateSelected = forceUpdateButton.getSelection();
+			}
+		});
+
+		final CachedCheckboxTreeViewer treeViewer = tree
+				.getCheckboxTreeViewer();
+		TagsNode tagsNode = new TagsNode(null, repository);
+		ContentProvider contentProvider = new ContentProvider(tagsNode);
+		treeViewer.setContentProvider(contentProvider);
+		treeViewer
+				.setLabelProvider(new RepositoriesViewStyledCellLabelProvider());
+		treeViewer.setComparator(new ViewerComparator(
+				CommonUtils.STRING_ASCENDING_COMPARATOR));
+		treeViewer.setInput(tagsNode);
+
+		final Object[] tagNodes = contentProvider.getElements(tagsNode);
+		initiallySelectTags(tagNodes, treeViewer);
+
+		treeViewer.addCheckStateListener(new ICheckStateListener() {
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				setSelectedTags(treeViewer.getCheckedElements());
+			}
+		});
+
+		setControl(main);
+	}
+

@@ -1,8 +1,5 @@
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		final RevisionInformation info = new RevisionInformation();
-		info.setHoverControlCreator(new BlameInformationControlCreator(false));
-		info.setInformationPresenterControlCreator(new BlameInformationControlCreator(
-				true));
 
 		final BlameCommand command = new BlameCommand(repository)
 				.setFollowFileRenames(true).setFilePath(path);
@@ -27,6 +24,7 @@
 		BlameRevision previous = null;
 		for (int i = 0; i < lineCount; i++) {
 			RevCommit commit = result.getSourceCommit(i);
+			String sourcePath = result.getSourcePath(i);
 			if (commit == null) {
 				// Unregister the current revision
 				if (previous != null) {
@@ -40,9 +38,11 @@
 				revision = new BlameRevision();
 				revision.setRepository(repository);
 				revision.setCommit(commit);
+				revision.setSourcePath(sourcePath);
 				revisions.put(commit, revision);
 				info.addRevision(revision);
 			}
+			revision.addSourceLine(i, result.getSourceLine(i));
 			if (previous != null)
 				if (previous == revision)
 					previous.addLine();

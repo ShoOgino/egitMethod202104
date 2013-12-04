@@ -1,14 +1,18 @@
 	public void setInput(Object input) {
 		this.revision = (BlameRevision) input;
 
+		// Remember line number that was hovered over when the input was set.
+		// Used for showing the diff hunk of this line instead of the full diff.
+		if (rulerInfo != null)
+			revisionRulerLineNumber = rulerInfo
+					.getLineOfLastMouseButtonActivity();
+
 		RevCommit commit = this.revision.getCommit();
 
 		String linkText = MessageFormat.format(
-				UIText.BlameInformationControl_Commit, commit.name());
-		commitLink.setText(linkText);
-		StyleRange styleRange = new StyleRange(0, linkText.length(), null, null);
-		styleRange.underline = true;
-		commitLink.setStyleRange(styleRange);
+				UIText.BlameInformationControl_Commit, commit.abbreviate(7)
+						.name());
+		commitLabel.setText(linkText);
 
 		PersonIdent author = commit.getAuthorIdent();
 		if (author != null) {
@@ -32,6 +36,9 @@
 
 		messageText.setText(commit.getFullMessage());
 
+		createDiffs();
+
+		displayArea.layout();
 		scrolls.setMinSize(displayArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 

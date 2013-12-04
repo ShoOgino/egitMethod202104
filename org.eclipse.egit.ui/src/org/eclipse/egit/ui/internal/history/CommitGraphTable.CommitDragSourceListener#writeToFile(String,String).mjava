@@ -1,6 +1,7 @@
 		private void writeToFile(final String fileName, String content)
 				throws IOException {
-			Writer output = new BufferedWriter(new FileWriter(fileName));
+			Writer output = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(fileName), RawParseUtils.UTF8_CHARSET));
 			try {
 				output.write(content);
 			} finally {

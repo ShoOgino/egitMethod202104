@@ -1,0 +1,9 @@
+	private Action createCompareAction(final CommitItem commitItem) {
+		return new Action(UIText.CommitDialog_CompareWithHeadRevision) {
+			@Override
+			public void run() {
+				compare(commitItem);
+			}
+		};
+	}
+

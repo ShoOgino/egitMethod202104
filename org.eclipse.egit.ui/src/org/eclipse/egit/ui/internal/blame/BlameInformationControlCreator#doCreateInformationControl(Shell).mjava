@@ -1,6 +1,9 @@
 	@Override
 	protected IInformationControl doCreateInformationControl(Shell parent) {
-		return new BlameInformationControl(parent, resizable,
-				new BlameInformationControlCreator(true));
+		EnrichedCreator enrichedCreator = new EnrichedCreator();
+		BlameInformationControl control = new BlameInformationControl(parent,
+				enrichedCreator, rulerInfo);
+		enrichedCreator.hoverInformationControl = control;
+		return control;
 	}
 

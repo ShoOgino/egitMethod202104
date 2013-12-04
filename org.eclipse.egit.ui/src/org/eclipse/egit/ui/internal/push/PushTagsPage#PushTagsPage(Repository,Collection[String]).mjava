@@ -1,0 +1,19 @@
+	/**
+	 * @param repository
+	 * @param tagNamesToSelect
+	 */
+	public PushTagsPage(Repository repository,
+			Collection<String> tagNamesToSelect) {
+		super(UIText.PushTagsPage_PageName);
+		setTitle(UIText.PushTagsPage_PageTitle);
+		setMessage(UIText.PushTagsPage_PageMessage);
+
+		this.repository = repository;
+		for (String tagName : tagNamesToSelect) {
+			if (tagName.startsWith(Constants.R_TAGS))
+				tagRefNamesToSelect.add(tagName);
+			else
+				tagRefNamesToSelect.add(Constants.R_TAGS + tagName);
+		}
+	}
+

@@ -28,12 +28,15 @@
 		job.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent event) {
-				if (event.getResult().isOK())
-					PushResultDialog.show(repository, op.getOperationResult(),
-							destinationString);
-				else
-					Activator.handleError(event.getResult().getMessage(), event
-							.getResult().getException(), true);
+				PushOperationResult result = op.getOperationResult();
+				if (expectedResult == null || !expectedResult.equals(result)) {
+					if (event.getResult().isOK())
+						PushResultDialog.show(repository, result,
+								destinationString, showConfigureButton);
+					else
+						Activator.handleError(event.getResult().getMessage(),
+								event.getResult().getException(), true);
+				}
 			}
 		});
 	}

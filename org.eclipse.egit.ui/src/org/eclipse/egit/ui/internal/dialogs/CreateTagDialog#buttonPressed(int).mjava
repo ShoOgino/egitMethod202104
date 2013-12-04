@@ -1,7 +1,6 @@
 	@Override
 	protected void buttonPressed(int buttonId) {
-		switch (buttonId) {
-		case CLEAR_ID:
+		if (buttonId == CLEAR_ID) {
 			tagNameText.setText(""); //$NON-NLS-1$
 			tagMessageText.setText(""); //$NON-NLS-1$
 			if (commitCombo != null) {
@@ -10,16 +9,17 @@
 			tagMessageText.getTextWidget().setEditable(true);
 			overwriteButton.setEnabled(false);
 			overwriteButton.setSelection(false);
-			break;
-		case IDialogConstants.OK_ID:
+		} else if (buttonId == IDialogConstants.OK_ID
+				|| buttonId == CREATE_AND_START_PUSH_ID) {
+			shouldStartPushWizard = (buttonId == CREATE_AND_START_PUSH_ID);
 			// read and store data from widgets
 			tagName = tagNameText.getText();
 			if (commitCombo != null)
 				tagCommit = commitCombo.getValue();
 			tagMessage = tagMessageText.getCommitMessage();
 			overwriteTag = overwriteButton.getSelection();
-			//$FALL-THROUGH$ continue propagating OK button action
-		default:
+			okPressed();
+		} else {
 			super.buttonPressed(buttonId);
 		}
 	}

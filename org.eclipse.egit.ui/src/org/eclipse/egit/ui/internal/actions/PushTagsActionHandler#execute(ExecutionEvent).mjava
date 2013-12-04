@@ -1,0 +1,8 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(true, event);
+
+		PushTagsWizard.openWizardDialog(repository);
+
+		return null;
+	}
+

@@ -1,0 +1,50 @@
+	/**
+	 * @param result
+	 *            the result to show
+	 */
+	public void show(final CheckoutResult result) {
+		if (result.getStatus() == CheckoutResult.Status.CONFLICTS) {
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getShell();
+					CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
+							shell,
+							UIText.BranchResultDialog_CheckoutConflictsTitle,
+							NLS.bind(
+									UIText.BranchResultDialog_CheckoutConflictsMessage,
+									Repository.shortenRefName(target)),
+							repository, result.getConflictList());
+					cleanupUncomittedChangesDialog.open();
+					if (cleanupUncomittedChangesDialog.shouldContinue()) {
+						BranchOperationUI op = BranchOperationUI
+								.checkoutWithoutQuestion(repository, target);
+						op.start();
+					}
+				}
+			});
+		} else if (result.getStatus() == CheckoutResult.Status.NONDELETED) {
+			// double-check if the files are still there
+			boolean show = false;
+			List<String> pathList = result.getUndeletedList();
+			for (String path : pathList)
+				if (new File(repository.getWorkTree(), path).exists()) {
+					show = true;
+					break;
+				}
+			if (!show)
+				return;
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getShell();
+					new NonDeletedFilesDialog(shell, repository, result
+							.getUndeletedList()).open();
+				}
+			});
+		} else if (result.getStatus() == CheckoutResult.Status.OK) {
+			if (RepositoryUtil.isDetachedHead(repository))
+				showDetachedHeadWarning();
+		}
+	}
+

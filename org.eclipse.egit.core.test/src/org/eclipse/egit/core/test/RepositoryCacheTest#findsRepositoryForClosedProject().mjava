@@ -1,0 +1,8 @@
+	@Test
+	public void findsRepositoryForClosedProject() throws Exception {
+		IFile a = testUtils.addFileToProject(project.getProject(),
+				"folder1/a.txt", "a");
+		project.getProject().close(null);
+		assertEquals(repository, cache.getRepository(a));
+	}
+

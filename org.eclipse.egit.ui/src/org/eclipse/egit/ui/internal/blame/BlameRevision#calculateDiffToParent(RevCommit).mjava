@@ -1,0 +1,28 @@
+	private Diff calculateDiffToParent(RevCommit parentCommit) {
+		ObjectReader reader = repository.newObjectReader();
+		try {
+			DiffEntry diffEntry = CompareCoreUtils.getChangeDiffEntry(
+					repository, sourcePath, commit, parentCommit, reader);
+			if (diffEntry == null)
+				return null;
+
+			RawText oldText = readText(diffEntry.getOldId(), reader);
+			RawText newText = readText(diffEntry.getNewId(), reader);
+
+			StoredConfig config = repository.getConfig();
+			DiffAlgorithm diffAlgorithm = DiffAlgorithm.getAlgorithm(config
+					.getEnum(ConfigConstants.CONFIG_DIFF_SECTION, null,
+							ConfigConstants.CONFIG_KEY_ALGORITHM,
+							SupportedAlgorithm.HISTOGRAM));
+
+			EditList editList = diffAlgorithm.diff(RawTextComparator.DEFAULT,
+					oldText, newText);
+
+			return new Diff(diffEntry.getOldPath(), oldText, newText, editList);
+		} catch (IOException e) {
+			return null;
+		} finally {
+			reader.release();
+		}
+	}
+

@@ -1,0 +1,22 @@
+	/**
+	 * Creates a wizard with the passed parameters and opens a dialog with it in
+	 * the active workbench window shell.
+	 *
+	 * @param repository
+	 * @param tagNames
+	 */
+	public static void openWizardDialog(final Repository repository,
+			final String... tagNames) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				Shell shell = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell();
+				PushTagsWizard wizard = new PushTagsWizard(repository, Arrays
+						.asList(tagNames));
+				WizardDialog dialog = new WizardDialog(shell, wizard);
+				dialog.setHelpAvailable(false);
+				dialog.open();
+			}
+		});
+	}
+

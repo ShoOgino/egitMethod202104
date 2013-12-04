@@ -1,0 +1,10 @@
+	private void openCommit() {
+		try {
+			getShell().dispose();
+			CommitEditor.open(new RepositoryCommit(revision.getRepository(),
+					revision.getCommit()));
+		} catch (PartInitException pie) {
+			Activator.logError(pie.getLocalizedMessage(), pie);
+		}
+	}
+

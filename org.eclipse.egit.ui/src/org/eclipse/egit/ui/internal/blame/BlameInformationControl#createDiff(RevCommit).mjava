@@ -1,0 +1,13 @@
+	private void createDiff(RevCommit parent) {
+		Diff diff = revision.getDiffToParent(parent);
+		if (diff != null) {
+			try {
+				createDiffLinkAndText(parent, diff);
+			} catch (IOException e) {
+				String msg = "Error creating diff in blame information control for commit " //$NON-NLS-1$
+						+ parent.toObjectId();
+				Activator.logError(msg, e);
+			}
+		}
+	}
+

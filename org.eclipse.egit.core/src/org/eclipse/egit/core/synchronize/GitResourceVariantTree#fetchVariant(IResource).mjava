@@ -2,8 +2,9 @@
 		if (gitCache == null)
 			return null;
 
-		if (cache.containsKey(resource))
-			return cache.get(resource);
+		IResourceVariant cachedVariant = cache.get(resource);
+		if (cachedVariant != null)
+			return cachedVariant;
 
 		GitSynchronizeData gsd = gsds.getData(resource.getProject());
 		if (gsd == null)

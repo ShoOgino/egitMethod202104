@@ -1,0 +1,18 @@
+	/**
+	 * @param repository
+	 * @param tagNamesToSelect
+	 */
+	public PushTagsWizard(Repository repository,
+			Collection<String> tagNamesToSelect) {
+		this.repository = repository;
+		pushTagsPage = new PushTagsPage(repository, tagNamesToSelect);
+		confirmationPage = new ConfirmationPage(repository) {
+			@Override
+			public void setVisible(boolean visible) {
+				if (visible)
+					setSelection(getRepositorySelection(), getRefSpecs());
+				super.setVisible(visible);
+			}
+		};
+	}
+

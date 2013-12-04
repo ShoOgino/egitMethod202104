@@ -1,0 +1,13 @@
+	/**
+	 * Set the selected remote
+	 *
+	 * @param remoteConfig
+	 *            config to set, must be one of those passed to
+	 *            {@link #setItems(List)}
+	 */
+	public void setSelectedRemote(RemoteConfig remoteConfig) {
+		int index = remoteConfigs.indexOf(remoteConfig);
+		if (index != -1)
+			remoteCombo.select(index);
+	}
+

@@ -5,7 +5,12 @@
 	 * @param diffFmt
 	 */
 	public void updateWorkspacePatchPrefixes(StringBuilder sb, DiffFormatter diffFmt) {
-		RawText rt = new RawText(sb.toString().getBytes());
+		RawText rt;
+		try {
+			rt = new RawText(sb.toString().getBytes("UTF-8")); //$NON-NLS-1$
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 
 		final String oldPrefix = diffFmt.getOldPrefix();
 		final String newPrefix = diffFmt.getNewPrefix();

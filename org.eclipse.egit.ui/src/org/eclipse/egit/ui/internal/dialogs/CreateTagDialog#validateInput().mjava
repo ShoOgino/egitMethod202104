@@ -17,7 +17,12 @@
 			boolean shouldOverwriteTag = (overwriteButton.getSelection() && Repository
 					.isValidRefName(Constants.R_TAGS + tagNameText.getText()));
 
-			button.setEnabled(containsTagNameAndMessage || shouldOverwriteTag);
+			boolean enabled = containsTagNameAndMessage || shouldOverwriteTag;
+			button.setEnabled(enabled);
+
+			Button createTagAndStartPush = getButton(CREATE_AND_START_PUSH_ID);
+			if (createTagAndStartPush != null)
+				createTagAndStartPush.setEnabled(enabled);
 		}
 
 		boolean existingTagSelected = existingTag != null;

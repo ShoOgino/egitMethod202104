@@ -19,7 +19,8 @@
 				}
 			}
 		};
-		ResourcesPlugin.getWorkspace().run(action,
+		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
+				IWorkspace.AVOID_UPDATE,
 				monitor != null ? monitor : new NullProgressMonitor());
 	}
 

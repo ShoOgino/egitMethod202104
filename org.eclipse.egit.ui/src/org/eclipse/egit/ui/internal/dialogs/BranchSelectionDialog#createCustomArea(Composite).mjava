@@ -63,6 +63,8 @@
 			});
 
 			viewer.setLabelProvider(new GitLabelProvider());
+			viewer.setComparator(new ViewerComparator(
+					CommonUtils.STRING_ASCENDING_COMPARATOR));
 			viewer.setInput(nodes);
 		} else {
 			branchesList = new TableViewer(area, this.style | SWT.H_SCROLL
@@ -71,6 +73,8 @@
 					.applyTo(branchesList.getControl());
 			branchesList.setContentProvider(ArrayContentProvider.getInstance());
 			branchesList.setLabelProvider(new GitLabelProvider());
+			branchesList.setComparator(new ViewerComparator(
+					CommonUtils.STRING_ASCENDING_COMPARATOR));
 			branchesList.setInput(nodes);
 			branchesList
 					.addSelectionChangedListener(new ISelectionChangedListener() {

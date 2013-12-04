@@ -24,7 +24,7 @@
 				inputPanel, SWT.NONE, SelectionType.PUSH);
 		GridDataFactory.fillDefaults().grab(true, false).span(remoteSelectionSpan, 1)
 				.applyTo(remoteSelectionCombo);
-		remoteConfig = remoteSelectionCombo.setItems(remoteConfigs);
+		setRemoteConfigs();
 		remoteSelectionCombo
 				.addRemoteSelectionListener(new IRemoteSelectionListener() {
 					public void remoteSelected(RemoteConfig rc) {

@@ -1,0 +1,17 @@
+	/**
+	 * Create the enriched information control that is shown when moving the
+	 * mouse over the control that was shown on hover (making it sticky).
+	 *
+	 * @param parentShell
+	 * @param hoverInformationControl
+	 *            the control that was used on hover (used for getting the
+	 *            correct line that was hovered)
+	 */
+	public BlameInformationControl(Shell parentShell,
+			BlameInformationControl hoverInformationControl) {
+		// Make resizable and have a bottom bar for moving around
+		super(parentShell, new ToolBarManager());
+		this.hoverInformationControl = hoverInformationControl;
+		create();
+	}
+

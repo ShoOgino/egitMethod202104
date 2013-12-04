@@ -28,7 +28,7 @@
 
 		final TagBuilder tag = new TagBuilder();
 		PersonIdent personIdent = new PersonIdent(repo);
-		String tagName = dialog.getTagName();
+		final String tagName = dialog.getTagName();
 
 		tag.setTag(tagName);
 		tag.setTagger(personIdent);
@@ -68,6 +68,16 @@
 				return super.belongsTo(family);
 			}
 		};
+
+		if (dialog.shouldStartPushWizard()) {
+			tagJob.addJobChangeListener(new JobChangeAdapter() {
+				@Override
+				public void done(IJobChangeEvent jobChangeEvent) {
+					if (jobChangeEvent.getResult().isOK())
+						PushTagsWizard.openWizardDialog(repo, tagName);
+				}
+			});
+		}
 
 		tagJob.setUser(true);
 		tagJob.schedule();

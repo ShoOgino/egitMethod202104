@@ -1,0 +1,11 @@
+	@Override
+	public boolean performFinish() {
+		try {
+			startPush();
+			return true;
+		} catch (IOException e) {
+			confirmationPage.setErrorMessage(e.getMessage());
+			return false;
+		}
+	}
+

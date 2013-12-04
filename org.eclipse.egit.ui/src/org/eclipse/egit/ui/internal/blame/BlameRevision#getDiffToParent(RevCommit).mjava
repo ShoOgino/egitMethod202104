@@ -1,0 +1,13 @@
+	/**
+	 * @param parentCommit
+	 * @return the diff or null if none could be calculated
+	 */
+	public Diff getDiffToParent(RevCommit parentCommit) {
+		if (diffToParentCommit.containsKey(parentCommit))
+			return diffToParentCommit.get(parentCommit);
+
+		Diff diff = calculateDiffToParent(parentCommit);
+		diffToParentCommit.put(parentCommit, diff);
+		return diff;
+	}
+

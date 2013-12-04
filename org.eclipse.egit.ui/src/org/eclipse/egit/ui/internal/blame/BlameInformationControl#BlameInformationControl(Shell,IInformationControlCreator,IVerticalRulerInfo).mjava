@@ -1,0 +1,15 @@
+	/**
+	 * Create the information control for showing details on hover.
+	 *
+	 * @param parentShell
+	 * @param creator
+	 * @param rulerInfo
+	 */
+	public BlameInformationControl(Shell parentShell,
+			IInformationControlCreator creator, IVerticalRulerInfo rulerInfo) {
+		super(parentShell, false);
+		this.creator = creator;
+		this.rulerInfo = rulerInfo;
+		create();
+	}
+

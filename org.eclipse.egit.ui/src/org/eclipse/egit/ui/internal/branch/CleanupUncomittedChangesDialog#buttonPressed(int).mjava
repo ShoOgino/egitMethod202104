@@ -1,0 +1,24 @@
+	@Override
+	protected void buttonPressed(int buttonId) {
+		switch (buttonId) {
+		case IDialogConstants.PROCEED_ID:
+			CommitUI commitUI = new CommitUI(getShell(), repository,
+					new IResource[0], true);
+			shouldContinue = commitUI.commit();
+			break;
+		case IDialogConstants.ABORT_ID:
+			final ResetOperation operation = new ResetOperation(repository,
+					Constants.HEAD, ResetType.HARD);
+			String jobname = NLS.bind(UIText.ResetAction_reset, Constants.HEAD);
+			JobUtil.scheduleUserJob(operation, jobname, JobFamilies.RESET);
+			shouldContinue = true;
+			break;
+		case IDialogConstants.SKIP_ID:
+			StashCreateUI stashCreateUI = new StashCreateUI(repository);
+			shouldContinue = stashCreateUI.createStash(getShell());
+			break;
+		case IDialogConstants.CANCEL_ID:
+		}
+		super.buttonPressed(buttonId);
+	}
+

@@ -13,10 +13,9 @@
 		for (final RemoteConfig rc : remoteConfigs)
 			items[i++] = getTextForRemoteConfig(rc);
 
-		RemoteConfig defaultRemoteConfig = getDefaultRemoteConfig();
-		final int defaultIndex = remoteConfigs.indexOf(defaultRemoteConfig);
 		remoteCombo.setItems(items);
-		remoteCombo.select(defaultIndex);
+		RemoteConfig defaultRemoteConfig = getDefaultRemoteConfig();
+		setSelectedRemote(defaultRemoteConfig);
 
 		return defaultRemoteConfig;
 	}

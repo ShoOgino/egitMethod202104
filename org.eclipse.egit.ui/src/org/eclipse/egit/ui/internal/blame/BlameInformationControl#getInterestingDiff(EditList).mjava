@@ -1,0 +1,17 @@
+	private EditList getInterestingDiff(EditList fullDiff) {
+		int hoverLineNumber = getHoverLineNumber();
+		Integer sourceLine = revision.getSourceLine(hoverLineNumber);
+
+		if (sourceLine == null)
+			// Fall back to whole diff
+			return fullDiff;
+
+		int line = sourceLine.intValue();
+		EditList interestingDiff = new EditList(1);
+		for (Edit edit : fullDiff) {
+			if (line >= edit.getBeginB() && line <= edit.getEndB())
+				interestingDiff.add(edit);
+		}
+		return interestingDiff;
+	}
+

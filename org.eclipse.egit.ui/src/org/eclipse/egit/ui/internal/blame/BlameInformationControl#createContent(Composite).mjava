@@ -9,28 +9,31 @@
 		displayArea.setBackgroundMode(SWT.INHERIT_FORCE);
 		GridLayoutFactory.swtDefaults().equalWidth(true).applyTo(displayArea);
 
-		commitLink = new StyledText(displayArea, SWT.READ_ONLY);
-		commitLink.addMouseListener(new MouseAdapter() {
+		Composite commitHeader = new Composite(displayArea, SWT.NONE);
+		commitHeader.setLayout(GridLayoutFactory.fillDefaults().numColumns(3)
+				.create());
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(commitHeader);
 
-			public void mouseUp(MouseEvent e) {
-				if (commitLink.getSelectionText().length() != 0)
-					return;
-				try {
-					getShell().dispose();
-					CommitEditor.open(new RepositoryCommit(revision
-							.getRepository(), revision.getCommit()));
-				} catch (PartInitException pie) {
-					Activator.logError(pie.getLocalizedMessage(), pie);
-				}
+		commitLabel = new Label(commitHeader, SWT.READ_ONLY);
+		commitLabel.setFont(JFaceResources.getBannerFont());
+
+		Link openCommitLink = new Link(commitHeader, SWT.NONE);
+		openCommitLink.setText(UIText.BlameInformationControl_OpenCommitLink);
+		openCommitLink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				openCommit();
 			}
 		});
-		commitLink.setFont(JFaceResources.getBannerFont());
-		commitLink.setForeground(JFaceColors.getHyperlinkText(commitLink
-				.getDisplay()));
-		Cursor handCursor = new Cursor(commitLink.getDisplay(), SWT.CURSOR_HAND);
-		UIUtils.hookDisposal(commitLink, handCursor);
-		commitLink.setCursor(handCursor);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(commitLink);
+
+		Link showInHistoryLink = new Link(commitHeader, SWT.NONE);
+		showInHistoryLink.setText(UIText.BlameInformationControl_ShowInHistoryLink);
+		showInHistoryLink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				showCommitInHistory();
+			}
+		});
 
 		authorLabel = new Label(displayArea, SWT.NONE);
 		authorLabel.setForeground(parent.getForeground());
