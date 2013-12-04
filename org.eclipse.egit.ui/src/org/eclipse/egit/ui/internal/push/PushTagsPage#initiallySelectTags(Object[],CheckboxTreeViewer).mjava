@@ -13,9 +13,12 @@
 		TagNode[] checkedTagsArray = checkedTags
 				.toArray(new TagNode[checkedTags.size()]);
 		viewer.setCheckedElements(checkedTagsArray);
-		viewer.setSelection(StructuredSelection.EMPTY);
-		if (checkedTagsArray.length > 0)
-			viewer.reveal(checkedTagsArray[0]);
+		if (checkedTagsArray.length > 0) {
+			// Reveal tags (just using reveal does not work on some platforms)
+			viewer.setSelection(new StructuredSelection(checkedTagsArray), true);
+			// Clear selection, we don't want to highlight the rows that much
+			viewer.setSelection(StructuredSelection.EMPTY);
+		}
 		setSelectedTags(checkedTagsArray);
 	}
 

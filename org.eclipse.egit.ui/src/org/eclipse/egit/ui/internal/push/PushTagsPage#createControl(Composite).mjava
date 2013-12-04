@@ -43,13 +43,8 @@
 
 		final CachedCheckboxTreeViewer treeViewer = tree
 				.getCheckboxTreeViewer();
-		final TagsNode tagsNode = new TagsNode(null, repository);
-		RepositoriesViewContentProvider contentProvider = new RepositoriesViewContentProvider() {
-			@Override
-			public Object[] getElements(Object inputElement) {
-				return getChildren(tagsNode);
-			}
-		};
+		TagsNode tagsNode = new TagsNode(null, repository);
+		ContentProvider contentProvider = new ContentProvider(tagsNode);
 		treeViewer.setContentProvider(contentProvider);
 		treeViewer
 				.setLabelProvider(new RepositoriesViewStyledCellLabelProvider());
