@@ -12,16 +12,11 @@
 		} else if (page == importWithDirectoriesPage)
 			switch (importWithDirectoriesPage.getWizardSelection()) {
 			case GitSelectWizardPage.EXISTING_PROJECTS_WIZARD:
-				projectsImportPage.setProjectsList(importWithDirectoriesPage
-						.getPath());
 				return projectsImportPage;
 			case GitSelectWizardPage.NEW_WIZARD:
 				return null;
 			case GitSelectWizardPage.GENERAL_WIZARD:
-				createGeneralProjectPage.setPath(importWithDirectoriesPage
-						.getPath());
 				return createGeneralProjectPage;
-
 			}
 		else if (page == createGeneralProjectPage
 				|| page == projectsImportPage)
