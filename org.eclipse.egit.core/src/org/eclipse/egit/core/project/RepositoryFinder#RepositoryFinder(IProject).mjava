@@ -10,8 +10,8 @@
 		String ceilingDirectoriesVar = SystemReader.getInstance().getenv(
 				Constants.GIT_CEILING_DIRECTORIES_KEY);
 		if (ceilingDirectoriesVar != null) {
-			ceilingDirectories.addAll(Arrays.asList(ceilingDirectoriesVar
-					.split(File.pathSeparator)));
+			for (String path : ceilingDirectoriesVar.split(File.pathSeparator))
+				ceilingDirectories.add(new File(path));
 		}
 	}
 
