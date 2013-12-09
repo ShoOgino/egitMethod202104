@@ -13,7 +13,8 @@
 	 *            the part of the workspace the iterator will walk over.
 	 */
 	public ContainerTreeIterator(final Repository repository, final IContainer base) {
-		super(computePrefix(base), repository.getConfig().get(WorkingTreeOptions.KEY));
+		super(computePrefix(repository, base), repository.getConfig().get(
+				WorkingTreeOptions.KEY));
 		node = base;
 		init(entries(false));
 		initRootIterator(repository);
