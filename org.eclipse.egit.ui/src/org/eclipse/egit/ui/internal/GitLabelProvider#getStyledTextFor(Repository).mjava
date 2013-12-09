@@ -6,13 +6,14 @@
 	public static StyledString getStyledTextFor(Repository repository)
 			throws IOException {
 		File directory = repository.getDirectory();
-		StyledString string = new StyledString();
-		if (!repository.isBare())
-			string.append(directory.getParentFile().getName());
-		else
-			string.append(directory.getName());
 
-		String branch = Activator.getDefault().getRepositoryUtil()
+		RepositoryUtil repositoryUtil = Activator.getDefault()
+				.getRepositoryUtil();
+
+		StyledString string = new StyledString();
+		string.append(repositoryUtil.getRepositoryName(repository));
+
+		String branch = repositoryUtil
 				.getShortBranch(repository);
 		if (branch != null) {
 			string.append(' ');

@@ -3,13 +3,11 @@
 	 * @return simple text for repository
 	 */
 	public static String getSimpleTextFor(Repository repository) {
-		File directory;
-		if (!repository.isBare())
-			directory = repository.getDirectory().getParentFile();
-		else
-			directory = repository.getDirectory();
+		String name = Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repository);
+		File directory = repository.getDirectory();
 		StringBuilder sb = new StringBuilder();
-		sb.append(directory.getName());
+		sb.append(name);
 		sb.append(" - "); //$NON-NLS-1$
 		sb.append(directory.getAbsolutePath());
 		return sb.toString();
