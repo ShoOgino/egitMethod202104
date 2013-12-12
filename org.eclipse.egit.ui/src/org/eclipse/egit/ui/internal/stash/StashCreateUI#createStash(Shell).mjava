@@ -4,6 +4,8 @@
 	 * @return true if a stash create operation was triggered
 	 */
 	public boolean createStash(Shell shell) {
+		if (!UIUtils.saveAllEditors(repo))
+			return false;
 		InputDialog commitMessageDialog = new InputDialog(shell,
 				UIText.StashCreateCommand_titleEnterCommitMessage,
 				UIText.StashCreateCommand_messageEnterCommitMessage,
