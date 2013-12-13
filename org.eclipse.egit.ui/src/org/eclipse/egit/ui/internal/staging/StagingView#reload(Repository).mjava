@@ -55,8 +55,6 @@
 						pathsToExpandInUnstaged);
 				expandPreviousExpandedAndPaths(stagedExpanded, stagedViewer,
 						pathsToExpandInStaged);
-				enableCommitWidgets(indexDiffAvailable
-						&& indexDiff.getConflicting().isEmpty());
 				refreshAction.setEnabled(true);
 
 				updateRebaseButtonVisibility(repository.getRepositoryState()
@@ -78,6 +76,8 @@
 
 				form.setText(StagingView.getRepositoryName(repository));
 				updateCommitMessageComponent(repositoryChanged, indexDiffAvailable);
+				enableCommitWidgets(indexDiffAvailable
+						&& indexDiff.getConflicting().isEmpty());
 				updateSectionText();
 			}
 		});

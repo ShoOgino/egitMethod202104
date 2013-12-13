@@ -1,7 +1,6 @@
-	private static void addPathToMap(RepositoryMapping repositoryMapping,
+	private static void addPathToMap(Repository repository,
 			String path, Map<Repository, Collection<String>> result) {
 		if (path != null) {
-			Repository repository = repositoryMapping.getRepository();
 			Collection<String> resourcesList = result.get(repository);
 			if (resourcesList == null) {
 				resourcesList = new ArrayList<String>();

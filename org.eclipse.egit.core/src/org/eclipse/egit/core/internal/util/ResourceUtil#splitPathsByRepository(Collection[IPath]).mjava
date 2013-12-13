@@ -12,13 +12,17 @@
 	 */
 	public static Map<Repository, Collection<String>> splitPathsByRepository(
 			Collection<IPath> paths) {
+		RepositoryCache repositoryCache = Activator.getDefault()
+				.getRepositoryCache();
 		Map<Repository, Collection<String>> result = new HashMap<Repository, Collection<String>>();
 		for (IPath path : paths) {
-			RepositoryMapping repositoryMapping = RepositoryMapping.getMapping(path);
-			if (repositoryMapping == null)
-				continue;
-			String p = repositoryMapping.getRepoRelativePath(path);
-			addPathToMap(repositoryMapping, p, result);
+			Repository repository = repositoryCache.getRepository(path);
+			if (repository != null) {
+				IPath repoPath = new Path(repository.getWorkTree()
+						.getAbsolutePath());
+				IPath repoRelativePath = path.makeRelativeTo(repoPath);
+				addPathToMap(repository, repoRelativePath.toString(), result);
+			}
 		}
 		return result;
 	}

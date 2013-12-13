@@ -1,0 +1,20 @@
+	private void setSourceRef(String refName) {
+		String shortName = Repository.shortenRefName(refName);
+		sourceNameLabel.setText(shortName);
+		if (refName.startsWith(Constants.R_HEADS)
+				|| refName.startsWith(Constants.R_REMOTES))
+			sourceIcon.setImage(UIIcons.getImage(resourceManager,
+					UIIcons.BRANCH));
+		else if (refName.startsWith(Constants.R_TAGS))
+			sourceIcon.setImage(UIIcons.getImage(resourceManager, UIIcons.TAG));
+		else
+			sourceIcon.setImage(UIIcons.getImage(resourceManager,
+					UIIcons.CHANGESET));
+
+		sourceRefName = refName;
+
+		suggestBranchName(refName);
+		upstreamConfig = UpstreamConfig.getDefault(myRepository, refName);
+		checkPage();
+	}
+

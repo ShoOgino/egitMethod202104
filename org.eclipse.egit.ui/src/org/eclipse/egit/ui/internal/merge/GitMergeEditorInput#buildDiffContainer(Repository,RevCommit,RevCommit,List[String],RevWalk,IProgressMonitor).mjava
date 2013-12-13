@@ -87,23 +87,32 @@
 				// if the file is not conflicting (as it was auto-merged)
 				// we will show the auto-merged (local) version
 
-				IFile file = ResourceUtil.getFileForLocation(repository,
-						fit.getEntryPathString());
-				if (file == null)
-					// TODO in the future, we should be able to show a version
-					// for a non-workspace file as well
-					continue;
-				if (!conflicting || useWorkspace)
-					rev = new LocalFileRevision(file);
-				else
+				Path repositoryPath = new Path(repository.getWorkTree()
+						.getAbsolutePath());
+				IPath location = repositoryPath
+						.append(fit.getEntryPathString());
+				IFile file = ResourceUtil.getFileForLocation(location);
+				if (!conflicting || useWorkspace) {
+					if (file != null)
+						rev = new LocalFileRevision(file);
+					else
+						rev = new WorkingTreeFileRevision(location.toFile());
+				} else {
 					rev = GitFileRevision.inIndex(repository, gitPath,
 							DirCacheEntry.STAGE_2);
+				}
 
 				IRunnableContext runnableContext = getContainer();
 				if (runnableContext == null)
 					runnableContext = PlatformUI.getWorkbench().getProgressService();
 
-				FileEditableRevision leftEditable = new FileEditableRevision(rev, file, runnableContext);
+				EditableRevision leftEditable;
+				if (file != null)
+					leftEditable = new ResourceEditableRevision(rev, file,
+							runnableContext);
+				else
+					leftEditable = new LocationEditableRevision(rev, location,
+							runnableContext);
 				// make sure we don't need a round trip later
 				try {
 					leftEditable.cacheContents(monitor);
@@ -117,7 +126,8 @@
 				else if (modified)
 					kind = Differencer.PSEUDO_CONFLICT;
 
-				DiffNode fileParent = getFileParent(result, file);
+				IDiffContainer fileParent = getFileParent(result,
+						repositoryPath, file, location);
 
 				ITypedElement anc;
 				if (ancestorCommit != null)

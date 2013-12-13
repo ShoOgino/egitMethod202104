@@ -1,0 +1,11 @@
+	private void selectSource() {
+		SourceSelectionDialog dialog = new SourceSelectionDialog(getShell(),
+				myRepository, sourceRefName);
+		int result = dialog.open();
+		if (result == Window.OK) {
+			String refName = dialog.getRefName();
+			setSourceRef(refName);
+			nameText.setFocus();
+		}
+	}
+

@@ -19,7 +19,7 @@
 			if (repositoryMapping == null)
 				continue;
 			String path = repositoryMapping.getRepoRelativePath(resource);
-			addPathToMap(repositoryMapping, path, result);
+			addPathToMap(repositoryMapping.getRepository(), path, result);
 		}
 		return result;
 	}
