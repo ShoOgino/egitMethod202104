@@ -11,7 +11,9 @@
 		synchronized (prefs) {
 
 			if (!FileKey.isGitRepository(repositoryDir, FS.DETECTED))
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException(MessageFormat.format(
+						CoreText.RepositoryUtil_DirectoryIsNotGitDirectory,
+						repositoryDir));
 
 			String dirString = getPath(repositoryDir);
 
