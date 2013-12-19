@@ -4,10 +4,7 @@
 			treeItem.setText(2,
 					UIText.ExistingOrNewPage_SymbolicValueEmptyMapping);
 		else {
-			IPath container = m.getContainerPath();
-			if (!container.isEmpty())
-				container = Path.fromOSString("."); //$NON-NLS-1$
-			IPath relativePath = container.append(m.getGitDir());
+			IPath relativePath = new Path(m.getGitDir());
 			if (isAlternative) {
 				IPath withoutLastSegment = relativePath.removeLastSegments(1);
 				IPath path;

@@ -9,6 +9,9 @@
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 
+		IPath bestWorkingTree = null;
+		RepositoryMapping bestMapping = null;
+
 		for (IProject project : projects) {
 			if (isNonWorkspace(project))
 				continue;
@@ -17,10 +20,16 @@
 				continue;
 
 			IPath workingTree = new Path(mapping.getWorkTree().toString());
-			if (workingTree.isPrefixOf(path))
-				return mapping;
+			if (workingTree.isPrefixOf(path)) {
+				if (bestWorkingTree == null
+						|| workingTree.segmentCount() > bestWorkingTree
+								.segmentCount()) {
+					bestWorkingTree = workingTree;
+					bestMapping = mapping;
+				}
+			}
 		}
 
-		return null;
+		return bestMapping;
 	}
 

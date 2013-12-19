@@ -24,19 +24,26 @@
 			targetRef = null;
 
 		final String refName;
-		if (targetRef != null)
+		final MergeOperation op;
+
+		if (targetRef != null) {
 			refName = targetRef;
-		else {
+			op = new MergeOperation(repository, refName);
+		} else {
 			MergeTargetSelectionDialog mergeTargetSelectionDialog = new MergeTargetSelectionDialog(
 					getShell(event), repository);
-			if (mergeTargetSelectionDialog.open() == IDialogConstants.OK_ID)
-				refName = mergeTargetSelectionDialog.getRefName();
-			else
+			if (mergeTargetSelectionDialog.open() != IDialogConstants.OK_ID)
 				return null;
+
+			refName = mergeTargetSelectionDialog.getRefName();
+			op = new MergeOperation(repository, refName);
+			op.setSquash(mergeTargetSelectionDialog.isMergeSquash());
+			op.setFastForwardMode(mergeTargetSelectionDialog
+					.getFastForwardMode());
+			op.setCommit(mergeTargetSelectionDialog.isCommit());
 		}
 
 		String jobname = NLS.bind(UIText.MergeAction_JobNameMerge, refName);
-		final MergeOperation op = new MergeOperation(repository, refName);
 		Job job = new Job(jobname) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {

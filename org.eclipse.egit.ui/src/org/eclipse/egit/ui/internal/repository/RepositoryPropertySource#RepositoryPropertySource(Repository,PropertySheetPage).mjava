@@ -10,7 +10,7 @@
 
 		effectiveConfig = repository.getConfig();
 		systemConfig = SystemReader.getInstance().openSystemConfig(null, FS.DETECTED);
-		userHomeConfig = SystemReader.getInstance().openUserConfig(systemConfig, FS.DETECTED);
+		userHomeConfig = SystemReader.getInstance().openUserConfig(null, FS.DETECTED);
 
 		if (effectiveConfig instanceof FileBasedConfig) {
 			File configFile = ((FileBasedConfig) effectiveConfig).getFile();

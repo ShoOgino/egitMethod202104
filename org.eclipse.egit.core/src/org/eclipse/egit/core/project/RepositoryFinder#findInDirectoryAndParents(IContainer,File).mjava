@@ -1,0 +1,8 @@
+	private void findInDirectoryAndParents(IContainer container, File startPath) {
+		File path = startPath;
+		while (path != null && !ceilingDirectories.contains(path)) {
+			findInDirectory(container, path);
+			path = path.getParentFile();
+		}
+	}
+
