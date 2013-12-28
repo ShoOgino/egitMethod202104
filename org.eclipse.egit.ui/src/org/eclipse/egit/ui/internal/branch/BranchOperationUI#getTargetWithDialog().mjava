@@ -7,7 +7,9 @@
 		case MODE_CREATE:
 			CreateBranchWizard wiz;
 			try {
-				wiz = new CreateBranchWizard(repository, repository.getFullBranch());
+				if (base == null)
+					base = repository.getFullBranch();
+				wiz = new CreateBranchWizard(repository, base);
 			} catch (IOException e) {
 				wiz = new CreateBranchWizard(repository);
 			}

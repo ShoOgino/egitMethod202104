@@ -1,0 +1,13 @@
+	/**
+	 * Create an operation for creating a local branch with a given base reference
+	 *
+	 * @param repository
+	 * @param baseRef
+	 * @return the {@link BranchOperationUI}
+	 */
+	public static BranchOperationUI createWithRef(Repository repository, String baseRef) {
+		BranchOperationUI op = new BranchOperationUI(repository, MODE_CREATE);
+		op.base = baseRef;
+		return op;
+	}
+
