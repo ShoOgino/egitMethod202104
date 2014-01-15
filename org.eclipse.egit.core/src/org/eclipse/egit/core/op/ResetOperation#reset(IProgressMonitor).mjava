@@ -3,8 +3,10 @@
 				type.toString().toLowerCase(), refName), 2);
 
 		IProject[] validProjects = null;
-		if (type == ResetType.HARD)
+		if (type == ResetType.HARD) {
 			validProjects = ProjectUtil.getValidOpenProjects(repository);
+			ResourceUtil.saveLocalHistory(repository);
+		}
 
 		ResetCommand reset = Git.wrap(repository).reset();
 		reset.setMode(type);

@@ -1,0 +1,10 @@
+	private static void saveLocalHistory(IResource resource)
+			throws CoreException {
+		if (!resource.isSynchronized(IResource.DEPTH_ZERO))
+			resource.refreshLocal(IResource.DEPTH_ZERO, null);
+		// Dummy update to force save for local history.
+		((IFile) resource).appendContents(
+				new ByteArrayInputStream(new byte[0]), IResource.KEEP_HISTORY,
+				null);
+	}
+
