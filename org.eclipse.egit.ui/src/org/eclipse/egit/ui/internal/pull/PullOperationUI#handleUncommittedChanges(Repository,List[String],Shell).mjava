@@ -1,0 +1,39 @@
+	/**
+	 * @param repository
+	 * @param files
+	 *            uncommitted files that were in the way for the rebase
+	 * @param shell
+	 */
+	private void handleUncommittedChanges(final Repository repository,
+			final List<String> files, Shell shell) {
+		String repoName = Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repository);
+		CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
+				shell,
+				MessageFormat
+						.format(UIText.AbstractRebaseCommandHandler_cleanupDialog_title,
+								repoName),
+				UIText.AbstractRebaseCommandHandler_cleanupDialog_text,
+				repository, files);
+		cleanupUncomittedChangesDialog.open();
+		if (cleanupUncomittedChangesDialog.shouldContinue()) {
+			final PullOperationUI parentOperation = this;
+			final PullOperationUI pullOperationUI = new PullOperationUI(
+					Collections.singleton(repository));
+			tasksToWaitFor.incrementAndGet();
+			pullOperationUI.start(new JobChangeAdapter() {
+
+				@Override
+				public void done(IJobChangeEvent event) {
+					// put the result from this subtask into the result map of
+					// the outer PullOperationUI and display the results if all
+					// subtasks have reported back
+					parentOperation.results.putAll(pullOperationUI.results);
+					int missing = parentOperation.tasksToWaitFor.decrementAndGet();
+					if (missing == 0)
+						parentOperation.showResults();
+				}
+			});
+		}
+	}
+

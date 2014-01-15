@@ -1,0 +1,27 @@
+	/**
+	 * Post-process the pull results, allowing the user to deal with uncommitted
+	 * changes and re-pull if the initial pull failed because of these changes
+	 *
+	 * @param resultsMap
+	 *            a copy of the initial pull results
+	 * @param shell
+	 */
+	private void handlePullResults(final Map<Repository, Object> resultsMap,
+			Shell shell) {
+		for (Entry<Repository, Object> entry : resultsMap.entrySet()) {
+			Object result = entry.getValue();
+			if (result instanceof PullResult) {
+				PullResult pullResult = (PullResult) result;
+				if (pullResult.getRebaseResult() != null
+						&& RebaseResult.Status.UNCOMMITTED_CHANGES == pullResult
+								.getRebaseResult().getStatus()) {
+					handleUncommittedChanges(entry.getKey(), pullResult
+							.getRebaseResult().getUncommittedChanges(), shell);
+				}
+			}
+		}
+
+		if (tasksToWaitFor.decrementAndGet() == 0 && !results.isEmpty())
+			showResults(shell);
+	}
+

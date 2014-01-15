@@ -2,41 +2,6 @@
 	 * Starts this operation asynchronously
 	 */
 	public void start() {
-		// figure out a job name
-		String jobName;
-		if (this.repositories.length == 1) {
-			String repoName = Activator.getDefault().getRepositoryUtil()
-					.getRepositoryName(repositories[0]);
-			String shortBranchName;
-			try {
-				shortBranchName = repositories[0].getBranch();
-			} catch (IOException e) {
-				// ignore here
-				shortBranchName = ""; //$NON-NLS-1$
-			}
-			jobName = NLS.bind(UIText.PullOperationUI_PullingTaskName,
-					shortBranchName, repoName);
-		} else
-			jobName = UIText.PullOperationUI_PullingMultipleTaskName;
-		Job job = new WorkspaceJob(jobName) {
-
-			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) {
-				execute(monitor);
-				// we always return OK and handle display of errors on our own
-				return Status.OK_STATUS;
-			}
-
-			@Override
-			public boolean belongsTo(Object family) {
-				if (JobFamilies.PULL.equals(family))
-					return true;
-				return super.belongsTo(family);
-			}
-		};
-		job.setRule(ResourcesPlugin.getWorkspace().getRoot());
-		job.setUser(true);
-		job.addJobChangeListener(this);
-		job.schedule();
+		start(this);
 	}
 
