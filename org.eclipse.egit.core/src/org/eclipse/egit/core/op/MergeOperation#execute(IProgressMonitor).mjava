@@ -14,24 +14,22 @@
 				mymonitor.beginTask(NLS.bind(CoreText.MergeOperation_ProgressMerge, refName), 3);
 				Git git = new Git(repository);
 				mymonitor.worked(1);
-				MergeCommand merge;
+				MergeCommand merge = git.merge();
 				try {
-					FastForwardMode ffmode = fastForwardMode;
-					if (ffmode == null)
-						ffmode = Activator.getDefault().getRepositoryUtil()
-								.getFastForwardMode(repository);
 					Ref ref = repository.getRef(refName);
 					if (ref != null)
-						merge = git.merge().include(ref).setFastForward(ffmode)
-								.setCommit(commit);
+						merge.include(ref);
 					else
-						merge = git.merge()
-								.include(ObjectId.fromString(refName))
-								.setFastForward(ffmode).setCommit(commit);
+						merge.include(ObjectId.fromString(refName));
 				} catch (IOException e) {
 					throw new TeamException(CoreText.MergeOperation_InternalError, e);
 				}
-				merge.setSquash(squash);
+				if (fastForwardMode != null)
+					merge.setFastForward(fastForwardMode);
+				if (commit != null)
+					merge.setCommit(commit.booleanValue());
+				if (squash != null)
+					merge.setSquash(squash.booleanValue());
 				if (mergeStrategy != null) {
 					merge.setStrategy(mergeStrategy);
 				}

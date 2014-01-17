@@ -6,7 +6,12 @@
 		super(parentShell, repo, getMergeTarget(repo), SHOW_LOCAL_BRANCHES
 				| SHOW_REMOTE_BRANCHES | SHOW_TAGS | EXPAND_LOCAL_BRANCHES_NODE
 				| getSelectSetting(repo));
-		fastForwardMode = Activator.getDefault().getRepositoryUtil()
-				.getFastForwardMode(repo);
+		MergeConfig config = MergeConfig.getConfigForCurrentBranch(repo);
+		fastForwardMode = config.getFastForwardMode();
+		mergeSquash = config.isSquash();
+		if (mergeSquash)
+			mergeCommit = false;
+		else
+			mergeCommit = config.isCommit();
 	}
 

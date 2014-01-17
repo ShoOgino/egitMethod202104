@@ -11,7 +11,8 @@
 		mergeTypeGroup.setLayout(new GridLayout(1, false));
 
 		Button commit = new Button(mergeTypeGroup, SWT.RADIO);
-		commit.setSelection(true);
+		if (mergeCommit)
+			commit.setSelection(true);
 		commit.setText(UIText.MergeTargetSelectionDialog_MergeTypeCommitButton);
 		commit.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -22,9 +23,11 @@
 			}
 		});
 
-		Button squash = new Button(mergeTypeGroup, SWT.RADIO);
-		squash.setText(UIText.MergeTargetSelectionDialog_MergeTypeNoCommitButton);
-		squash.addListener(SWT.Selection, new Listener() {
+		Button noCommit = new Button(mergeTypeGroup, SWT.RADIO);
+		if (!mergeCommit && !mergeSquash)
+			noCommit.setSelection(true);
+		noCommit.setText(UIText.MergeTargetSelectionDialog_MergeTypeNoCommitButton);
+		noCommit.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				if (((Button) event.widget).getSelection()) {
 					mergeSquash = false;
@@ -33,9 +36,11 @@
 			}
 		});
 
-		Button noCommit = new Button(mergeTypeGroup, SWT.RADIO);
-		noCommit.setText(UIText.MergeTargetSelectionDialog_MergeTypeSquashButton);
-		noCommit.addListener(SWT.Selection, new Listener() {
+		Button squash = new Button(mergeTypeGroup, SWT.RADIO);
+		if (mergeSquash)
+			squash.setSelection(true);
+		squash.setText(UIText.MergeTargetSelectionDialog_MergeTypeSquashButton);
+		squash.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				if (((Button) event.widget).getSelection()) {
 					mergeSquash = true;
