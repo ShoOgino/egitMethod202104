@@ -3,9 +3,11 @@
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation());
 		try {
-			if (!incomplete && loadedCommits.size() == lastUpdateCnt)
+			if (!(forcedRedrawsAfterListIsCompleted == 1) && !incomplete
+					&& loadedCommits.size() == lastUpdateCnt)
 				return;
-
+			if (forcedRedrawsAfterListIsCompleted == 1)
+				forcedRedrawsAfterListIsCompleted++;
 			final SWTCommit[] asArray = new SWTCommit[loadedCommits.size()];
 			loadedCommits.toArray(asArray);
 			page.showCommitList(this, loadedCommits, asArray, commitToShow, incomplete, highlightFlag);
