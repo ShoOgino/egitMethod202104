@@ -28,13 +28,5 @@
 		// ok: two dots
 		assertTrue(addDialog.bot().button(IDialogConstants.OK_LABEL)
 				.isEnabled());
-		addDialog.bot().textWithLabel(UIText.AddConfigEntryDialog_KeyLabel)
-				.setText(
-						TESTSECTION + "." + TESTSUBSECTION + "." + TESTNAME
-								+ "." + TESTNAME);
-		// too many dots
-		assertTrue(!addDialog.bot().button(IDialogConstants.OK_LABEL)
-				.isEnabled());
-		addDialog.close();
 	}
 
