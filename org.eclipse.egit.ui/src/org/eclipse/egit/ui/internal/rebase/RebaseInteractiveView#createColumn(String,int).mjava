@@ -1,0 +1,9 @@
+	private TreeViewerColumn createColumn(String text, int width) {
+		TreeViewerColumn column = new TreeViewerColumn(planTreeViewer, SWT.NONE);
+		column.getColumn().setText(text);
+		column.getColumn().setMoveable(false);
+		column.getColumn().setResizable(true);
+		column.getColumn().setWidth(width);
+		return column;
+	}
+

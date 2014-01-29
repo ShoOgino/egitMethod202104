@@ -1,0 +1,11 @@
+	private List<PlanElement> createElementList(
+			List<RebaseTodoLine> rebaseTodoLines, RevWalk walk) {
+		List<PlanElement> planElements = new ArrayList<PlanElement>(
+				rebaseTodoLines.size());
+		for (RebaseTodoLine todoLine : rebaseTodoLines) {
+			PlanElement element = createElement(todoLine, walk);
+			planElements.add(element);
+		}
+		return planElements;
+	}
+

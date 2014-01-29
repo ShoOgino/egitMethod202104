@@ -1,6 +1,11 @@
 	private void refreshUI() {
-		if (planTreeViewer != null)
+		dateFormatter = getNewDateFormatter();
+		if (planTreeViewer != null) {
 			planTreeViewer.refresh(true);
+			// make column widths match the contents
+			for (TreeViewerColumn col : dynamicColumns)
+				col.getColumn().pack();
+		}
 
 		startItem.setEnabled(false);
 		continueItem.setEnabled(false);

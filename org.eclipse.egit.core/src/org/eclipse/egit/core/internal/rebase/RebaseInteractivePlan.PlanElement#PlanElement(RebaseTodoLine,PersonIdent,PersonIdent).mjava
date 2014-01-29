@@ -1,0 +1,9 @@
+		private PlanElement(RebaseTodoLine line, PersonIdent author,
+				PersonIdent committer) {
+			if (line == null)
+				throw new IllegalArgumentException();
+			this.line = line;
+			this.author = author;
+			this.committer = committer;
+		}
+

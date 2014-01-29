@@ -1,0 +1,11 @@
+		/**
+		 * @param dateFormatter
+		 * @return the commit date of the underlying commit
+		 */
+		public String getCommittedDate(GitDateFormatter dateFormatter) {
+			if (committer == null)
+				return ""; //$NON-NLS-1$
+			else
+				return dateFormatter.formatDate(committer);
+		}
+
