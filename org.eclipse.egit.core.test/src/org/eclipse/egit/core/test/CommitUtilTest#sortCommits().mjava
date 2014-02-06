@@ -1,0 +1,9 @@
+	@Test
+	public void sortCommits() {
+		List<RevCommit> commits = Arrays.asList(commit2, commit1, commit3);
+		List<RevCommit> sortedCommits = CommitUtil.sortCommits(commits);
+		List<RevCommit> expectedCommits = Arrays.asList(commit1, commit2,
+				commit3);
+		assertEquals(expectedCommits, sortedCommits);
+	}
+

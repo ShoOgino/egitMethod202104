@@ -1,0 +1,49 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		List<RevCommit> commits = getSelectedItems(RevCommit.class, event);
+		if ((commits == null) || commits.isEmpty())
+			return null;
+		Repository repo = getSelectedItem(Repository.class, event);
+		if (repo == null)
+			return null;
+
+		commits = CommitUtil.sortCommits(commits);
+
+		final Shell shell = getPart(event).getSite().getShell();
+
+		InteractiveHandler messageHandler = new InteractiveHandler() {
+			public void prepareSteps(List<RebaseTodoLine> steps) {
+				// not used
+			}
+
+			public String modifyCommitMessage(String oldMessage) {
+				return promptCommitMessage(shell, oldMessage);
+			}
+		};
+
+		final SquashCommitsOperation op = new SquashCommitsOperation(repo,
+				commits, messageHandler);
+		Job job = new Job(MessageFormat.format(UIText.SquashHandler_JobName,
+				Integer.valueOf(commits.size()))) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					op.execute(monitor);
+				} catch (CoreException e) {
+					Activator.logError(UIText.SquashHandler_InternalError, e);
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.SQUASH.equals(family))
+					return true;
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
+		return null;
+	}
+

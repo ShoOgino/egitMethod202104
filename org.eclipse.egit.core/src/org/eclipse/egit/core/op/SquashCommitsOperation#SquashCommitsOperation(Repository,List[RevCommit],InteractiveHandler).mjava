@@ -1,0 +1,17 @@
+	/**
+	 * Constructs a new squash commits operation.
+	 *
+	 * @param repository
+	 *            the repository to work on
+	 * @param commits
+	 *            the commits
+	 * @param messageHandler
+	 *            handler that will be used to prompt for a commit message
+	 */
+	public SquashCommitsOperation(Repository repository,
+			List<RevCommit> commits, InteractiveHandler messageHandler) {
+		this.repository = repository;
+		this.commits = CommitUtil.sortCommits(commits);
+		this.messageHandler = messageHandler;
+	}
+

@@ -1,0 +1,29 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(event);
+		List<RevCommit> commits = getSelectedCommits();
+
+		try {
+			if (!areCommitsInCurrentBranch(commits, repository)) {
+				MessageDialog.openError(getPage().getSite().getShell(),
+						UIText.SquashHandler_Error_Title,
+						UIText.SquashHandler_CommitsNotOnCurrentBranch);
+				return null;
+			}
+		} catch (IOException e) {
+			throw new ExecutionException(
+					UIText.SquashHandler_ErrorCheckingIfCommitsAreOnCurrentBranch, e);
+		}
+
+		List<RepositoryCommit> repositoryCommits = new ArrayList<RepositoryCommit>();
+		for (RevCommit commit : commits)
+			repositoryCommits.add(new RepositoryCommit(repository, commit));
+
+		final IStructuredSelection selected = new StructuredSelection(
+				repositoryCommits);
+		CommonUtils.runCommand(
+				org.eclipse.egit.ui.internal.commit.command.SquashHandler.ID,
+				selected);
+
+		return null;
+	}
+

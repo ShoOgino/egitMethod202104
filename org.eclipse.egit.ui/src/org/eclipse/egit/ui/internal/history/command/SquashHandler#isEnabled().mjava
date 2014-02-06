@@ -1,0 +1,42 @@
+	@Override
+	public boolean isEnabled() {
+		GitHistoryPage page = getPage();
+		if (page == null)
+			return false;
+		IStructuredSelection selection = getSelection(page);
+		if (selection.isEmpty())
+			return false;
+
+		Repository repository = getRepository(page);
+		if (repository.getRepositoryState() != RepositoryState.SAFE)
+			return false;
+
+		List elements = selection.toList();
+		int parentsNotSelected = 0;
+		for (Object element : elements) {
+			RevCommit commit = (RevCommit) element;
+
+			// disable action if a selected commit does not have exactly
+			// one parent (this includes the root commit)
+			if (commit.getParentCount() != 1)
+				return false;
+
+			RevCommit parentCommit = commit.getParent(0);
+			if (!elements.contains(parentCommit))
+				parentsNotSelected++;
+
+			// disable action if there is more than one selected commit
+			// whose parent has not been selected, this ensures a
+			// contiguous selection of commits
+			if (parentsNotSelected > 1)
+				return false;
+		}
+
+		// disable action if there is not exactly one commit whose parent
+		// has not been selected
+		if (parentsNotSelected != 1)
+			return false;
+
+		return true;
+	}
+

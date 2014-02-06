@@ -1,0 +1,25 @@
+	@Test
+	public void squash() throws Exception {
+		InteractiveHandler messageHandler = new InteractiveHandler() {
+			public void prepareSteps(List<RebaseTodoLine> steps) {
+				// not used
+			}
+
+			public String modifyCommitMessage(String commit) {
+				return "squashed";
+			}
+		};
+
+		List<RevCommit> commits = Arrays.asList(commit1, commit2, commit3);
+		SquashCommitsOperation op = new SquashCommitsOperation(
+				testRepository.getRepository(), commits, messageHandler);
+		op.execute(new NullProgressMonitor());
+
+		assertEquals(2, countCommitsInHead());
+
+		LogCommand log = new Git(testRepository.getRepository()).log();
+		Iterable<RevCommit> logCommits = log.call();
+		RevCommit latestCommit = logCommits.iterator().next();
+		assertEquals("squashed", latestCommit.getFullMessage());
+	}
+

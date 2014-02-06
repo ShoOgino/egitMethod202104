@@ -1,0 +1,20 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		gitDir = new File(project.getProject().getLocationURI().getPath(),
+				Constants.DOT_GIT);
+		testRepository = new TestRepository(gitDir);
+		testRepository.connect(project.getProject());
+		testRepository.createInitialCommit("initial");
+
+		File file = testRepository.createFile(project.getProject(), "file-1");
+		commit1 = testRepository.addAndCommit(project.getProject(), file,
+				"commit 1");
+		testRepository.appendFileContent(file, "file-2");
+		commit2 = testRepository.addAndCommit(project.getProject(), file,
+				"commit 2");
+		testRepository.appendFileContent(file, "file-3");
+		commit3 = testRepository.addAndCommit(project.getProject(), file,
+				"commit 3");
+	}
+
