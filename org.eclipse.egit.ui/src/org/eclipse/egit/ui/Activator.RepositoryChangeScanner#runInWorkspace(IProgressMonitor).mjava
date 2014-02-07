@@ -1,5 +1,5 @@
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
+		public IStatus runInWorkspace(IProgressMonitor monitor) {
 			Repository[] repos = org.eclipse.egit.core.Activator.getDefault()
 					.getRepositoryCache().getAllRepositories();
 			if (repos.length == 0)

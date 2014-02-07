@@ -16,11 +16,11 @@
 		final boolean includeLocal = getSelectedNodes(event).size() == 1;
 
 		final Repository repo = node.getRepository();
-		Job job = new Job(NLS.bind(UIText.SynchronizeCommand_jobName,
+		Job job = new WorkspaceJob(NLS.bind(UIText.SynchronizeCommand_jobName,
 				repo.getDirectory())) {
 
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
 				GitSynchronizeData data;
 				try {
 					data = new GitSynchronizeData(repo, secondRefNameParam,

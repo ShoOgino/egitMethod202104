@@ -9,10 +9,11 @@
 			final RevertCommitOperation op = new RevertCommitOperation(repo,
 					commit);
 
-			Job job = new Job(MessageFormat.format(
+			Job job = new WorkspaceJob(MessageFormat.format(
 					UIText.RevertHandler_JobName, commit.name())) {
+
 				@Override
-				protected IStatus run(IProgressMonitor monitor) {
+				public IStatus runInWorkspace(IProgressMonitor monitor) {
 					try {
 						op.execute(monitor);
 						RevCommit newHead = op.getNewHead();

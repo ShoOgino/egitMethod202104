@@ -10,9 +10,9 @@
 		if (operation == null)
 			return null;
 		String jobname = UIText.DiscardChangesAction_discardChanges;
-		Job job = new Job(jobname) {
+		Job job = new WorkspaceJob(jobname) {
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
 				try {
 					operation.execute(monitor);
 				} catch (CoreException e) {
