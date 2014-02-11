@@ -27,7 +27,11 @@
 							StyledString.DECORATIONS_STYLER);
 				break;
 			case FORCED:
-				addCommits(styled, "..."); //$NON-NLS-1$
+				if (isPruned())
+					styled.append(UIText.FetchResultTable_statusPruned,
+							StyledString.DECORATIONS_STYLER);
+				else
+					addCommits(styled, "..."); //$NON-NLS-1$
 				break;
 			case FAST_FORWARD:
 				addCommits(styled, ".."); //$NON-NLS-1$

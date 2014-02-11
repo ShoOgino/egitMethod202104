@@ -4,6 +4,10 @@
 
 			switch (update.getResult()) {
 			case FORCED:
+				if (isPruned())
+					return NO_CHILDREN;
+				// else
+				//$FALL-THROUGH$
 			case FAST_FORWARD:
 				RevWalk walk = new RevWalk(reader);
 				try {
