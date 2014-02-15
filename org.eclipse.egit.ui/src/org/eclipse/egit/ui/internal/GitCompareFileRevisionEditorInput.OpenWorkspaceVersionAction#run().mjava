@@ -1,0 +1,17 @@
+		@Override
+		public void run() {
+			int selectedLine = 0;
+			if (selectionProvider.getSelection() instanceof ITextSelection) {
+				ITextSelection selection = (ITextSelection) selectionProvider
+						.getSelection();
+				selectedLine = selection.getStartLine();
+			}
+
+			IWorkbenchWindow window = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow();
+			IWorkbenchPage page = window.getActivePage();
+			IEditorPart editor = EgitUiEditorUtils.openEditor(workspaceFile,
+					page);
+			selectLine(editor, selectedLine);
+		}
+

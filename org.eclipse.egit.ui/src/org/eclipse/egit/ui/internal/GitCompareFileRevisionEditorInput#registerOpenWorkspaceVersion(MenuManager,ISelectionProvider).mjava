@@ -1,0 +1,23 @@
+	private void registerOpenWorkspaceVersion(MenuManager menu,
+			final ISelectionProvider selectionProvider) {
+		FileRevisionTypedElement leftRevision = getLeftRevision();
+		if (leftRevision != null) {
+			IFileRevision fileRevision = leftRevision.getFileRevision();
+			if (fileRevision instanceof OpenWorkspaceVersionEnabled) {
+				OpenWorkspaceVersionEnabled workspaceVersion = (OpenWorkspaceVersionEnabled) fileRevision;
+				final File workspaceFile = new File(workspaceVersion
+						.getRepository().getWorkTree(),
+						workspaceVersion.getGitPath());
+				if (workspaceFile.exists())
+					menu.addMenuListener(new IMenuListener() {
+						public void menuAboutToShow(IMenuManager manager) {
+							Action action = new OpenWorkspaceVersionAction(
+									UIText.CommitFileDiffViewer_OpenWorkingTreeVersionInEditorMenuLabel,
+									selectionProvider, workspaceFile);
+							manager.insertAfter("file", action); //$NON-NLS-1$
+						}
+					});
+			}
+		}
+	}
+
