@@ -11,10 +11,10 @@
 		String jobName = MessageFormat
 				.format(CoreText.IndexDiffCacheEntry_refreshingProjects,
 						repositoryName);
-		Job job = new Job(jobName) {
+		Job job = new WorkspaceJob(jobName) {
 
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
 				try {
 					IProject[] validOpenProjects = ProjectUtil
 							.getValidOpenProjects(repository);

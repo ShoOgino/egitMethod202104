@@ -2,10 +2,10 @@
 			final IWorkingSet[] sets) {
 		String repoName = Activator.getDefault().getRepositoryUtil()
 				.getRepositoryName(repository);
-		Job importJob = new Job(MessageFormat.format(
+		Job importJob = new WorkspaceJob(MessageFormat.format(
 				UIText.GitCloneWizard_jobImportProjects, repoName)) {
 
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
 				List<File> files = new ArrayList<File>();
 				ProjectUtil.findProjectFiles(files, repository.getWorkTree(),
 						true, monitor);

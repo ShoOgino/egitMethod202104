@@ -1,5 +1,5 @@
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
+	public IStatus runInWorkspace(IProgressMonitor monitor) {
 		monitor.beginTask(UIText.SynchronizeFetchJob_TaskName, gsdSet.size());
 
 		for (GitSynchronizeData gsd : gsdSet) {

@@ -13,8 +13,8 @@
 				setErrorMessage(UIText.PushBranchPage_InvalidBranchNameError);
 				return;
 			}
-			if (branchAlreadyHasUpstreamConfiguration()
-					&& isConfigureUpstreamSelected()) {
+			if (isConfigureUpstreamSelected()
+					&& hasDifferentUpstreamConfiguration()) {
 				setMessage(
 						UIText.PushBranchPage_UpstreamConfigOverwriteWarning,
 						IMessageProvider.WARNING);

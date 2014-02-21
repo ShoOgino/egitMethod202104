@@ -24,9 +24,10 @@
 		final BranchOperation bop = new BranchOperation(repository, target,
 				!restore);
 
-		Job job = new Job(jobname) {
+		Job job = new WorkspaceJob(jobname) {
+
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
 				try {
 					if (restore) {
 						final BranchProjectTracker tracker = new BranchProjectTracker(

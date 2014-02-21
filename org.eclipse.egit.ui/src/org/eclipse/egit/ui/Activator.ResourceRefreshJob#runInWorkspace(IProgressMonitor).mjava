@@ -1,5 +1,5 @@
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
+		public IStatus runInWorkspace(IProgressMonitor monitor) {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			monitor.beginTask(UIText.Activator_refreshingProjects, projects.length);
 

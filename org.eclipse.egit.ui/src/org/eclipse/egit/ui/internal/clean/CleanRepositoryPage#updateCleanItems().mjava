@@ -24,6 +24,7 @@
 					monitor.done();
 				}
 			});
+			updatePageComplete();
 		} catch (InvocationTargetException e) {
 			Activator.logError("Unexpected exception while finding items to clean", e); //$NON-NLS-1$
 			clearPage();

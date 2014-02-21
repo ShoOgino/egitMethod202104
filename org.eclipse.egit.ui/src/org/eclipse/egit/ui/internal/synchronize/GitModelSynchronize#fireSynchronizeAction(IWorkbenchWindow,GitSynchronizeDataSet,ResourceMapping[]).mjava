@@ -3,9 +3,11 @@
 		final GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
 				gsdSet);
 
-		Job syncJob = new Job(UIText.GitModelSynchonize_fetchGitDataJobName) {
+		Job syncJob = new WorkspaceJob(
+				UIText.GitModelSynchonize_fetchGitDataJobName) {
+
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
 				subscriber.init(monitor);
 
 				return Status.OK_STATUS;

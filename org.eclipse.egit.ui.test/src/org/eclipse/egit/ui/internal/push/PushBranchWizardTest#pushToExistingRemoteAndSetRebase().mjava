@@ -6,6 +6,7 @@
 				selectProject(), "bar");
 		wizard.selectRemote("fetch");
 		wizard.selectRebase();
+		assertFalse(wizard.isUpstreamConfigOverwriteWarningShown());
 		wizard.next();
 		wizard.finish();
 

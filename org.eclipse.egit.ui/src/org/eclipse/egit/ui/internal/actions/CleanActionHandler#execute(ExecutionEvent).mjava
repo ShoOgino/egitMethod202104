@@ -1,0 +1,11 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository();
+
+		CleanWizardDialog dlg = new CleanWizardDialog(getShell(event),
+				repository);
+		dlg.setBlockOnOpen(true);
+		dlg.open();
+
+		return null;
+	}
+

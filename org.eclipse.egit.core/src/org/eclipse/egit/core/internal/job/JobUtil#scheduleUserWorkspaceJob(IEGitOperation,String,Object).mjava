@@ -1,0 +1,14 @@
+	/**
+	 * Schedule a user workspace job that executes an EGit operation which
+	 * ensures that resource change events are batched until the job is finished
+	 *
+	 * @param op
+	 *            EGit operation to run
+	 * @param jobName
+	 * @param jobFamily
+	 */
+	public static void scheduleUserWorkspaceJob(final IEGitOperation op,
+			String jobName, final Object jobFamily) {
+		scheduleUserWorkspaceJob(op, jobName, jobFamily, null);
+	}
+

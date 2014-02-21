@@ -17,8 +17,7 @@
 				false).hint(300, SWT.DEFAULT).applyTo(dir);
 		dir.setToolTipText(UIText.RepositorySearchDialog_EnterDirectoryToolTip);
 
-		String defaultRepoPath = org.eclipse.egit.ui.Activator.getDefault()
-				.getPreferenceStore().getString(UIPreferences.DEFAULT_REPO_DIR);
+		String defaultRepoPath = UIUtils.getDefaultRepositoryDir();
 
 		String initialPath = prefs.get(PREF_PATH, defaultRepoPath);
 

@@ -14,9 +14,11 @@
 		storeRunInBackgroundSelection();
 
 		if (runInBackgroud.getSelection()) {
-			Job job = new Job(UIText.FetchGerritChangePage_GetChangeTaskName) {
+			Job job = new WorkspaceJob(
+					UIText.FetchGerritChangePage_GetChangeTaskName) {
+
 				@Override
-				protected IStatus run(IProgressMonitor monitor) {
+				public IStatus runInWorkspace(IProgressMonitor monitor) {
 					internalDoFetch(spec, uri, doCheckout, doCreateTag,
 							doCreateBranch, doActivateAdditionalRefs,
 							textForTag, textForBranch, monitor);

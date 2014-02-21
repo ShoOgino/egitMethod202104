@@ -1,5 +1,6 @@
 	/**
-	 * Schedule a user job that executes an EGit operation
+	 * Schedule a user workspace job that executes an EGit operation which
+	 * ensures that resource change events are batched until the job is finished
 	 *
 	 * @param op
 	 *            EGit operation to run
@@ -7,11 +8,12 @@
 	 * @param jobFamily
 	 * @param jobChangeListener
 	 */
-	public static void scheduleUserJob(final IEGitOperation op, String jobName,
-			final Object jobFamily, IJobChangeListener jobChangeListener) {
-		Job job = new Job(jobName) {
+	public static void scheduleUserWorkspaceJob(final IEGitOperation op,
+			String jobName, final Object jobFamily,
+			IJobChangeListener jobChangeListener) {
+		Job job = new WorkspaceJob(jobName) {
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
 				try {
 					op.execute(monitor);
 				} catch (CoreException e) {

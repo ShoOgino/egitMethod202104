@@ -43,6 +43,13 @@
 					return fileImage;
 			}
 		});
+		setPageComplete(false);
+		cleanTable.addCheckStateListener(new ICheckStateListener() {
+
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				updatePageComplete();
+			}
+		});
 
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(cleanTable.getControl());
 
@@ -75,6 +82,7 @@
 				if (cleanTable.getInput() instanceof Set<?>) {
 					Set<?> input = (Set<?>) cleanTable.getInput();
 					cleanTable.setCheckedElements(input.toArray());
+					updatePageComplete();
 				}
 			}
 		});
@@ -83,6 +91,7 @@
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				cleanTable.setCheckedElements(new Object[0]);
+				updatePageComplete();
 			}
 		});
 

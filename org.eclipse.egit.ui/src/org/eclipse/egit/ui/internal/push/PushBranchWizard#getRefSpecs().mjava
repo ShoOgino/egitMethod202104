@@ -1,7 +1,8 @@
 	private List<RefSpec> getRefSpecs() {
 		String src = refToPush.getName();
 		String dst = Constants.R_HEADS + pushBranchPage.getBranchName();
-		RefSpec refSpec = new RefSpec(src + ":" + dst); //$NON-NLS-1$
+		RefSpec refSpec = new RefSpec().setSourceDestination(src, dst)
+				.setForceUpdate(pushBranchPage.isForceUpdateSelected());
 		return Arrays.asList(refSpec);
 	}
 

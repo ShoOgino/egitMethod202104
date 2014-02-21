@@ -17,9 +17,9 @@
 			op.setSquash(mergeTargetSelectionDialog.isMergeSquash());
 			op.setFastForwardMode(mergeTargetSelectionDialog.getFastForwardMode());
 			op.setCommit(mergeTargetSelectionDialog.isCommit());
-			Job job = new Job(jobname) {
+			Job job = new WorkspaceJob(jobname) {
 				@Override
-				protected IStatus run(IProgressMonitor monitor) {
+				public IStatus runInWorkspace(IProgressMonitor monitor) {
 					try {
 						op.execute(monitor);
 					} catch (final CoreException e) {
