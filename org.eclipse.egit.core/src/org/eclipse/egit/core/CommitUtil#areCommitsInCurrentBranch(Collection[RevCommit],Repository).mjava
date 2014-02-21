@@ -10,9 +10,9 @@
 	 * @throws IOException
 	 *             if there is an I/O error
 	 */
-	private boolean areCommitsInCurrentBranch(Collection<RevCommit> commits,
-			Repository repository) throws IOException {
-
+	public static boolean areCommitsInCurrentBranch(
+			Collection<RevCommit> commits, Repository repository)
+			throws IOException {
 		RevWalk walk = new RevWalk(repository);
 		ObjectId headCommitId = repository.resolve(Constants.HEAD);
 		RevCommit headCommit = walk.parseCommit(headCommitId);

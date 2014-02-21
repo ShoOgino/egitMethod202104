@@ -1,0 +1,43 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		RevCommit commit = getSelectedItem(RevCommit.class, event);
+		if (commit == null)
+			return null;
+		Repository repo = getSelectedItem(Repository.class, event);
+		if (repo == null)
+			return null;
+
+		Shell shell = getPart(event).getSite().getShell();
+		String newMessage = promptCommitMessage(shell, commit);
+		if (newMessage == null)
+			return null;
+
+		final RewordCommitOperation op = new RewordCommitOperation(repo,
+				commit, newMessage);
+
+		Job job = new WorkspaceJob(MessageFormat.format(
+				UIText.RewordHandler_JobName,
+				commit.name())) {
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
+				try {
+					op.execute(monitor);
+				} catch (CoreException e) {
+					Activator.logError(UIText.RewordHandler_InternalError, e);
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.REWORD.equals(family))
+					return true;
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
+		return null;
+	}
+

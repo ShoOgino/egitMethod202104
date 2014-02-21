@@ -1,0 +1,18 @@
+	/**
+	 * Returns whether a commit is on the current branch, ie. if it is reachable
+	 * from the current HEAD.
+	 *
+	 * @param commit
+	 *            the commit to check
+	 * @param repository
+	 *            the repository
+	 * @return true if the commit is reachable from HEAD
+	 * @throws IOException
+	 *             if there is an I/O error
+	 */
+	public static boolean isCommitInCurrentBranch(RevCommit commit,
+			Repository repository) throws IOException {
+		return areCommitsInCurrentBranch(Collections.singleton(commit),
+				repository);
+	}
+

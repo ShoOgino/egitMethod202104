@@ -1,0 +1,11 @@
+	@Test
+	public void reword() throws Exception {
+		RewordCommitOperation op = new RewordCommitOperation(
+				testRepository.getRepository(), commit, "new message");
+		op.execute(new NullProgressMonitor());
+
+		LogCommand log = new Git(testRepository.getRepository()).log();
+		RevCommit newCommit = log.call().iterator().next();
+		assertEquals("new message", newCommit.getFullMessage());
+	}
+

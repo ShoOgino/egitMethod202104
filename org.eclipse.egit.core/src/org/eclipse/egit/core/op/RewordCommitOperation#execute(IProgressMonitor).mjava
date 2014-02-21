@@ -1,0 +1,50 @@
+	public void execute(IProgressMonitor m) throws CoreException {
+		IProgressMonitor monitor = m != null ? m : new NullProgressMonitor();
+
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+			public void run(IProgressMonitor pm) throws CoreException {
+				pm.beginTask("", 2); //$NON-NLS-1$
+
+				pm.subTask(MessageFormat.format(CoreText.RewordCommitOperation_rewording,
+						commit.name()));
+
+				InteractiveHandler handler = new InteractiveHandler() {
+					public void prepareSteps(List<RebaseTodoLine> steps) {
+						for (RebaseTodoLine step : steps) {
+							if (step.getCommit().prefixCompare(commit) == 0) {
+								try {
+									step.setAction(RebaseTodoLine.Action.REWORD);
+								} catch (IllegalTodoFileModification e) {
+									// shouldn't happen
+								}
+							}
+						}
+					}
+
+					public String modifyCommitMessage(String oldMessage) {
+						return newMessage;
+					}
+				};
+				try {
+					Git git = new Git(repository);
+					git.rebase().setUpstream(commit.getParent(0))
+							.runInteractively(handler)
+							.setOperation(RebaseCommand.Operation.BEGIN).call();
+				} catch (GitAPIException e) {
+					throw new TeamException(e.getLocalizedMessage(),
+							e.getCause());
+				}
+				pm.worked(1);
+
+				ProjectUtil.refreshValidProjects(
+						ProjectUtil.getValidOpenProjects(repository),
+						new SubProgressMonitor(pm, 1));
+
+				pm.done();
+			}
+		};
+
+		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
+				IWorkspace.AVOID_UPDATE, monitor);
+	}
+

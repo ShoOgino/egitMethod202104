@@ -3,7 +3,7 @@
 		List<RevCommit> commits = getSelectedCommits();
 
 		try {
-			if (!areCommitsInCurrentBranch(commits, repository)) {
+			if (!CommitUtil.areCommitsInCurrentBranch(commits, repository)) {
 				MessageDialog.openError(getPage().getSite().getShell(),
 						UIText.SquashHandler_Error_Title,
 						UIText.SquashHandler_CommitsNotOnCurrentBranch);
