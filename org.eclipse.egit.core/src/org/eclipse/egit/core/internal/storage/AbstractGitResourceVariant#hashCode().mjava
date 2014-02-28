@@ -1,0 +1,9 @@
+	@Override
+	public int hashCode() {
+		int hash = 37;
+		hash = 37 * hash + (path != null ? path.hashCode() : 0);
+		hash = 37 * hash + (repository != null ? repository.hashCode() : 0);
+		hash = 37 * hash + (objectId != null ? objectId.hashCode() : 0);
+		return hash;
+	}
+

@@ -1,0 +1,17 @@
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+
+		iProject = project.project;
+		testRepo = new TestRepository(gitDir);
+		testRepo.connect(iProject);
+		repo = RepositoryMapping.getMapping(iProject).getRepository();
+
+		// make initial commit
+		try (Git git = new Git(repo)) {
+			git.commit().setAuthor("JUnit", "junit@jgit.org")
+				.setMessage("Initial commit").call();
+		}
+	}
+

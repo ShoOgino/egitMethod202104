@@ -1,0 +1,11 @@
+	@Override
+	public SyncInfo getSyncInfo(IResource resource) throws TeamException {
+		// Overridden here to properly catch and re-throw the forwarded
+		// TeamException
+		try {
+			return super.getSyncInfo(resource);
+		} catch (ForwardedTeamException e) {
+			throw (TeamException) e.getCause();
+		}
+	}
+

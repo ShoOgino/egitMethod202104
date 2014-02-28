@@ -1,0 +1,28 @@
+	@Test
+	public void testSyncInfo() throws Exception {
+		GitResourceVariantTreeProvider provider = createTreeProvider();
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				provider);
+
+		final SyncInfo projectInfo = subscriber.getSyncInfo(iProject);
+		assertNotNull(projectInfo);
+		assertEquals(SyncInfo.CONFLICTING | SyncInfo.CHANGE,
+				projectInfo.getKind());
+
+		final SyncInfo syncInfo1 = subscriber.getSyncInfo(iFile1);
+		assertNotNull(syncInfo1);
+		assertEquals(SyncInfo.OUTGOING | SyncInfo.CHANGE, syncInfo1.getKind());
+		IResourceVariant baseVariant1 = syncInfo1.getBase();
+		IResourceVariant remoteVariant1 = syncInfo1.getRemote();
+		assertContentEquals(baseVariant1, INITIAL_CONTENT_1);
+		assertContentEquals(remoteVariant1, INITIAL_CONTENT_1);
+
+		final SyncInfo syncInfo2 = subscriber.getSyncInfo(iFile2);
+		assertNotNull(syncInfo2);
+		assertEquals(SyncInfo.INCOMING | SyncInfo.CHANGE, syncInfo2.getKind());
+		IResourceVariant baseVariant2 = syncInfo2.getBase();
+		IResourceVariant remoteVariant2 = syncInfo2.getRemote();
+		assertContentEquals(baseVariant2, INITIAL_CONTENT_2);
+		assertContentEquals(remoteVariant2, BRANCH_CHANGES + INITIAL_CONTENT_2);
+	}
+

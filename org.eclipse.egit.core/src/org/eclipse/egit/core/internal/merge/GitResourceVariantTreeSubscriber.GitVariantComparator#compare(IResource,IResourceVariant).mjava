@@ -1,0 +1,16 @@
+		public boolean compare(IResource local, IResourceVariant remote) {
+			try {
+				final IResourceVariant oursVariant = oursTree
+						.getResourceVariant(local);
+				if (oursVariant == null)
+					return remote == null;
+				return compare(oursVariant, remote);
+			} catch (TeamException e) {
+				// We can't throw the TeamException from here, but we can't let
+				// the comparison go through either.
+				// This is only called from "getSyncInfo", we'll forward this
+				// exception and rethrow it from there.
+				throw new ForwardedTeamException(e);
+			}
+		}
+

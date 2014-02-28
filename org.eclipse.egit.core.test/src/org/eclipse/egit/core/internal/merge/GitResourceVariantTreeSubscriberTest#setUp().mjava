@@ -1,0 +1,11 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+
+		file1 = testRepo.createFile(iProject, "file1");
+		file2 = testRepo.createFile(iProject, "file2");
+
+		iFile1 = testRepo.getIFile(iProject, file1);
+		iFile2 = testRepo.getIFile(iProject, file2);
+	}
+

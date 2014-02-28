@@ -1,0 +1,13 @@
+	/**
+	 * Returns all members of the given resource for which we hold variants.
+	 *
+	 * @param resource
+	 *            The resource which members we need.
+	 * @return All members of the given resource for which we hold variants; an
+	 *         empty array if none.
+	 */
+	public IResource[] members(IResource resource) {
+		final Set<IResource> children = members.get(resource);
+		return children.toArray(new IResource[children.size()]);
+	}
+

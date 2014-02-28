@@ -1,0 +1,21 @@
+	/**
+	 * Returns a resource handle for this path in the workspace. Note that
+	 * neither the resource nor the result need exist in the workspace : this
+	 * may return inexistant or otherwise non-accessible IResources.
+	 *
+	 * @param path
+	 *            Path for which we need a resource handle.
+	 * @return The resource handle for the given path in the workspace.
+	 */
+	public static IResource getResourceHandleForLocation(IPath path) {
+		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace()
+				.getRoot();
+
+		final IResource resource;
+		if (path.segmentCount() > 1)
+			resource = workspaceRoot.getFile(path);
+		else
+			resource = workspaceRoot.getProject(path.toString());
+		return resource;
+	}
+

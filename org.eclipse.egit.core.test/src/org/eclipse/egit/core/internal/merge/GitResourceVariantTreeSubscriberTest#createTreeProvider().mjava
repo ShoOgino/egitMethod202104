@@ -1,0 +1,34 @@
+	private GitResourceVariantTreeProvider createTreeProvider()
+			throws Exception {
+		testRepo.appendContentAndCommit(iProject, file1, INITIAL_CONTENT_1,
+				"first file - initial commit");
+		testRepo.appendContentAndCommit(iProject, file2,
+				INITIAL_CONTENT_2, "second file - initial commit");
+		testRepo.createBranch(MASTER, BASE);
+
+		testRepo.createAndCheckoutBranch(MASTER, BRANCH);
+
+		setContentsAndCommit(testRepo, iFile2, BRANCH_CHANGES
+				+ INITIAL_CONTENT_2, "branch commit");
+
+		testRepo.checkoutBranch(MASTER);
+
+		setContentsAndCommit(testRepo, iFile1, INITIAL_CONTENT_1
+				+ MASTER_CHANGES, "master commit");
+		iProject.refreshLocal(IResource.DEPTH_INFINITE,
+				new NullProgressMonitor());
+
+		// as if we tried to merge branch into master
+		try (RevWalk walk = new RevWalk(repo)) {
+			RevTree baseTree = walk.parseTree(repo.resolve(BASE));
+			RevTree sourceTree = walk.parseTree(repo.resolve(MASTER));
+			RevTree remoteTree = walk.parseTree(repo.resolve(BRANCH));
+			TreeWalk treeWalk = new NameConflictTreeWalk(repo);
+			treeWalk.addTree(baseTree);
+			treeWalk.addTree(sourceTree);
+			treeWalk.addTree(remoteTree);
+			return new TreeWalkResourceVariantTreeProvider(repo, treeWalk, 0,
+					1, 2);
+		}
+	}
+

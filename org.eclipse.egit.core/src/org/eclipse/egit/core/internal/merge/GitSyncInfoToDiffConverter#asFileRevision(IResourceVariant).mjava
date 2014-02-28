@@ -1,0 +1,9 @@
+	@Override
+	protected ResourceVariantFileRevision asFileRevision(
+			IResourceVariant variant) {
+		if (variant instanceof GitRemoteResource)
+			return new GitResourceVariantFileRevision(
+					(GitRemoteResource) variant);
+		return new ResourceVariantFileRevision(variant);
+	}
+

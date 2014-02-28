@@ -1,0 +1,29 @@
+	/*
+	 * copied from the private implementation in SyncInfoToDiffConverter
+	 */
+	private ITwoWayDiff getRemoteDelta(SyncInfo info) {
+		int direction = SyncInfo.getDirection(info.getKind());
+		if (direction == SyncInfo.INCOMING || direction == SyncInfo.CONFLICTING) {
+			IResourceVariant ancestor = info.getBase();
+			IResourceVariant remote = info.getRemote();
+
+			int kind;
+			if (ancestor == null)
+				kind = IDiff.ADD;
+			else if (remote == null)
+				kind = IDiff.REMOVE;
+			else
+				kind = IDiff.CHANGE;
+
+			// For folders, we don't need file states
+			if (info.getLocal().getType() == IResource.FILE) {
+				IFileRevision before = asFileState(ancestor);
+				IFileRevision after = asFileState(remote);
+				return new ResourceDiff(info.getLocal(), kind, 0, before, after);
+			}
+
+			return new ResourceDiff(info.getLocal(), kind);
+		}
+		return null;
+	}
+

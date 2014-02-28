@@ -1,0 +1,6 @@
+	protected void assertContentEquals(IResourceVariant variant,
+			String expectedContents) throws Exception {
+		assertContentEquals(variant.getStorage(new NullProgressMonitor()),
+				expectedContents);
+	}
+

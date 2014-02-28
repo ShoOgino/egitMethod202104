@@ -1,0 +1,26 @@
+	@Test
+	public void testDirCacheAddToIndex() throws Exception {
+		File file1 = testRepo.createFile(iProject, "file1");
+		IFile iFile1 = testRepo.getIFile(iProject, file1);
+
+		testRepo.appendFileContent(file1, INITIAL_CONTENT_1);
+
+		// untracked file : not part of the index
+		DirCacheResourceVariantTreeProvider treeProvider = new DirCacheResourceVariantTreeProvider(
+				repo);
+		assertTrue(treeProvider.getKnownResources().isEmpty());
+		assertFalse(treeProvider.getBaseTree().hasResourceVariant(iFile1));
+		assertFalse(treeProvider.getSourceTree().hasResourceVariant(iFile1));
+		assertFalse(treeProvider.getRemoteTree().hasResourceVariant(iFile1));
+
+		testRepo.addToIndex(iFile1);
+
+		// We now have a stage 0, but this isn't represented in the resource
+		// variant tree provider
+		treeProvider = new DirCacheResourceVariantTreeProvider(repo);
+		assertTrue(treeProvider.getKnownResources().isEmpty());
+		assertFalse(treeProvider.getBaseTree().hasResourceVariant(iFile1));
+		assertFalse(treeProvider.getSourceTree().hasResourceVariant(iFile1));
+		assertFalse(treeProvider.getRemoteTree().hasResourceVariant(iFile1));
+	}
+

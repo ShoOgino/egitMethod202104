@@ -1,0 +1,9 @@
+	@Override
+	public long getTimestamp() {
+		final PersonIdent author = getVariant().getCommitId().getAuthorIdent();
+		if (author != null) {
+			return author.getWhen().getTime();
+		}
+		return super.getTimestamp();
+	}
+

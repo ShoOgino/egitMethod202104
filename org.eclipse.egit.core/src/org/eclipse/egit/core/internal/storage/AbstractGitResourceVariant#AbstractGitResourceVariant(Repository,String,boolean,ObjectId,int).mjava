@@ -1,0 +1,22 @@
+	/**
+	 * @param repository
+	 *            Repository in which this variant's content will be accessed.
+	 * @param path
+	 *            Repository-relative path of this resource.
+	 * @param isContainer
+	 *            Whether this resource is a container or not in this particular
+	 *            variant.
+	 * @param objectId
+	 *            Object id of this variant in its repository.
+	 * @param rawMode
+	 *            Raw mode bits of this variant.
+	 */
+	protected AbstractGitResourceVariant(Repository repository, String path,
+			boolean isContainer, ObjectId objectId, int rawMode) {
+		this.repository = repository;
+		this.path = path;
+		this.isContainer = isContainer;
+		this.objectId = objectId;
+		this.rawMode = rawMode;
+	}
+
