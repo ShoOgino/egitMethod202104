@@ -1,0 +1,10 @@
+	@Before
+	public void setUp() throws Exception {
+		switchToMenu = new SwitchToMenu();
+		selectionService = mock(ISelectionService.class);
+		IServiceLocator serviceLocator = mock(IServiceLocator.class);
+		when(serviceLocator.getService(ISelectionService.class)).thenReturn(
+				selectionService);
+		switchToMenu.initialize(serviceLocator);
+	}
+

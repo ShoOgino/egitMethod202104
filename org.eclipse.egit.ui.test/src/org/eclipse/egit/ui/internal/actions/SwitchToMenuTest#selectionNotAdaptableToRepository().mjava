@@ -1,0 +1,10 @@
+	@Test
+	public void selectionNotAdaptableToRepository() {
+		when(selectionService.getSelection()).thenReturn(
+				new StructuredSelection(new Object()));
+
+		MenuItem[] items = fillMenu();
+
+		assertEquals(0, items.length);
+	}
+

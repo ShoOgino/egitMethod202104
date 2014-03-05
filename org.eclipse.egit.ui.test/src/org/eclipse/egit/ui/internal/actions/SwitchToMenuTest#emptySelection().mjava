@@ -1,0 +1,9 @@
+	@Test
+	public void emptySelection() {
+		when(selectionService.getSelection()).thenReturn(new EmptySelection());
+
+		MenuItem[] items = fillMenu();
+
+		assertEquals(0, items.length);
+	}
+
