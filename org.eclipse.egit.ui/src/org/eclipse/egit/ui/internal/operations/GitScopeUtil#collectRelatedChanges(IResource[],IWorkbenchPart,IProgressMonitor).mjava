@@ -3,8 +3,8 @@
 			IProgressMonitor monitor) throws InterruptedException,
 			InvocationTargetException {
 
-		SubscriberScopeManager manager = GitScopeUtil
-				.createScopeManager(selectedResources);
+		SubscriberScopeManager manager = GitScopeUtil.createScopeManager(
+				selectedResources, new SubProgressMonitor(monitor, 50));
 		GitScopeOperation buildScopeOperation = GitScopeOperationFactory
 				.getFactory().createGitScopeOperation(part, manager);
 

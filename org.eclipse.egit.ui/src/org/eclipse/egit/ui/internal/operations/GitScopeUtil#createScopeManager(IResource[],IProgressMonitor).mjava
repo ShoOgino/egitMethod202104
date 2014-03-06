@@ -3,14 +3,18 @@
 	 * {@link IResource}s
 	 *
 	 * @param resources
+	 * @param monitor
 	 * @return {@link SubscriberScopeManager}
 	 */
 	private static SubscriberScopeManager createScopeManager(
-			final IResource[] resources) {
+			final IResource[] resources, IProgressMonitor monitor) {
 		ResourceMapping[] mappings = GitScopeUtil
 				.getResourceMappings(resources);
 		GitSynchronizeDataSet set = new GitSynchronizeDataSet();
-		Subscriber subscriber = new GitResourceVariantTreeSubscriber(set);
+		final GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				set);
+		monitor.setTaskName(UIText.GitModelSynchronize_fetchGitDataJobName);
+		subscriber.init(monitor);
 		SubscriberScopeManager manager = new SubscriberScopeManager(
 				UIText.GitScopeOperation_GitScopeManager, mappings, subscriber,
 				true);
