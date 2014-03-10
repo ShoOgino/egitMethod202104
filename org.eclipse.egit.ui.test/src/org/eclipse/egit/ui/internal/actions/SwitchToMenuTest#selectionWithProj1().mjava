@@ -1,19 +1,6 @@
 	@Test
 	public void selectionWithProj1() throws Exception {
 		createProjectAndCommitToRepository();
-		IProject project = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(PROJ1);
-		when(selectionService.getSelection()).thenReturn(
-				new StructuredSelection(project));
-
-		MenuItem[] items = fillMenu();
-
-		assertEquals(6, items.length);
-		assertTextEquals(UIText.SwitchToMenu_NewBranchMenuLabel, items[0]);
-		assertStyleEquals(SWT.SEPARATOR, items[1]);
-		assertTextEquals("master", items[2]);
-		assertTextEquals("stable", items[3]);
-		assertStyleEquals(SWT.SEPARATOR, items[4]);
-		assertTextEquals(UIText.SwitchToMenu_OtherMenuLabel, items[5]);
+		selectionWithProj1Common();
 	}
 

@@ -2,5 +2,8 @@
 	public void sortingShouldIgnoreCase() {
 		assertSortedLike("a", "b", "z");
 		assertSortedLike("a", "B", "c", "D");
+
+		assertNotEquals(0,
+				CommonUtils.STRING_ASCENDING_COMPARATOR.compare("b1", "B1"));
 	}
 
