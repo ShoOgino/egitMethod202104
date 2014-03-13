@@ -1,0 +1,12 @@
+	/**
+	 * @return true if any of the Savables that successfully passed
+	 *         {@link #select(Saveable, IWorkbenchPart[])} have been actually
+	 *         saved (are not dirty anymore)
+	 */
+	public boolean isAnythingSaved() {
+		for (Saveable savable : saveCandidates)
+			if (!savable.isDirty())
+				return true;
+		return false;
+	}
+

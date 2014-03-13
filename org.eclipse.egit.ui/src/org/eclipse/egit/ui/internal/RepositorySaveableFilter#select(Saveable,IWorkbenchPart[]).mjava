@@ -1,7 +1,9 @@
 	public boolean select(Saveable saveable, IWorkbenchPart[] containingParts) {
 		boolean selected = super.select(saveable, containingParts);
 		if (!selected)
-			return isTextFileBufferInWorkDir(saveable);
+			selected = isTextFileBufferInWorkDir(saveable);
+		if (selected)
+			saveCandidates.add(saveable);
 		return selected;
 	}
 
