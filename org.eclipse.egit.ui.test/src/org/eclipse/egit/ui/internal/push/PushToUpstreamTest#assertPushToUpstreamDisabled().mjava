@@ -1,0 +1,7 @@
+	private void assertPushToUpstreamDisabled() {
+		SWTBotTree project = selectProject();
+		boolean enabled = ContextMenuHelper.isContextMenuItemEnabled(project,
+				getPushToUpstreamMenuPath());
+		assertFalse("Expected Push to Upstream to be disabled", enabled);
+	}
+

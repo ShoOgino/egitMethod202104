@@ -1,0 +1,12 @@
+	@Test
+	public void pushWithDefaultRemoteWithPushRefSpecs() throws Exception {
+		checkoutNewLocalBranch("baz");
+		repository.getConfig().setString("remote", "origin", "pushurl",
+				repository.getConfig().getString("remote", "push", "pushurl"));
+		repository.getConfig().setString("remote", "origin", "push",
+				"refs/heads/*:refs/heads/*");
+
+		pushToUpstream();
+		assertBranchPushed("baz", remoteRepository);
+	}
+

@@ -1,0 +1,13 @@
+	@Test
+	public void pushWithExistingUpstreamConfiguration() throws Exception {
+		checkoutNewLocalBranch("bar");
+		// Existing configuration
+		repository.getConfig().setString(ConfigConstants.CONFIG_BRANCH_SECTION,
+				"bar", ConfigConstants.CONFIG_KEY_REMOTE, "fetch");
+		repository.getConfig().setString(ConfigConstants.CONFIG_BRANCH_SECTION,
+				"bar", ConfigConstants.CONFIG_KEY_MERGE, "refs/heads/bar");
+
+		pushToUpstream();
+		assertBranchPushed("bar", remoteRepository);
+	}
+

@@ -1,0 +1,10 @@
+	private void pushToUpstream() {
+		SWTBotTree project = selectProject();
+		ContextMenuHelper
+				.clickContextMenu(project, getPushToUpstreamMenuPath());
+
+		SWTBotShell resultDialog = TestUtil
+				.botForShellStartingWith("Push Results");
+		resultDialog.close();
+	}
+

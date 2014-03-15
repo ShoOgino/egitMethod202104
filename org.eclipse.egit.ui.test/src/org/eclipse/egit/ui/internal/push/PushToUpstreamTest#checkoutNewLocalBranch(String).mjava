@@ -1,0 +1,10 @@
+	private void checkoutNewLocalBranch(String branchName)
+			throws Exception {
+		CreateLocalBranchOperation createBranch = new CreateLocalBranchOperation(
+				repository, branchName, repository.getRef("master"),
+				UpstreamConfig.NONE);
+		createBranch.execute(null);
+		BranchOperation checkout = new BranchOperation(repository, branchName);
+		checkout.execute(null);
+	}
+

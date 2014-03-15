@@ -13,10 +13,8 @@
 		if (branch == null)
 			return null;
 
-		String remoteName;
-		if (ObjectId.isId(branch))
-			remoteName = Constants.DEFAULT_REMOTE_NAME;
-		else
+		String remoteName = null;
+		if (!ObjectId.isId(branch))
 			remoteName = repository.getConfig().getString(
 					ConfigConstants.CONFIG_BRANCH_SECTION, branch,
 					ConfigConstants.CONFIG_REMOTE_SECTION);
@@ -31,11 +29,21 @@
 		}
 
 		RemoteConfig configuredConfig = null;
+		RemoteConfig defaultConfig = null;
 		for (RemoteConfig config : allRemotes) {
 			if (remoteName != null && config.getName().equals(remoteName))
 				configuredConfig = config;
+			if (config.getName().equals(Constants.DEFAULT_REMOTE_NAME))
+				defaultConfig = config;
 		}
 
-		return configuredConfig;
+		if (configuredConfig != null)
+			return configuredConfig;
+
+		if (defaultConfig != null)
+			if (!defaultConfig.getPushRefSpecs().isEmpty())
+				return defaultConfig;
+
+		return null;
 	}
 
