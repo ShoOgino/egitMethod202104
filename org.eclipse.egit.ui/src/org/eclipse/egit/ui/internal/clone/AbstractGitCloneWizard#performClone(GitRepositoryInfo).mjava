@@ -44,8 +44,10 @@
 				selectedBranches, workdir, ref != null ? ref.getName() : null,
 				remoteName, timeout);
 		if (credentials != null)
-			op.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+			op.setCredentialsProvider(new EGitCredentialsProvider(
 					credentials.getUser(), credentials.getPassword()));
+		else
+			op.setCredentialsProvider(new EGitCredentialsProvider());
 		op.setCloneSubmodules(cloneDestination.isCloneSubmodules());
 
 		configureFetchSpec(op, gitRepositoryInfo, remoteName);

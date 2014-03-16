@@ -11,6 +11,8 @@
 		createPushOperation();
 		if (credentialsProvider != null)
 			op.setCredentialsProvider(credentialsProvider);
+		else
+			op.setCredentialsProvider(new EGitCredentialsProvider());
 		try {
 			op.run(monitor);
 			return op.getOperationResult();

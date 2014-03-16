@@ -7,6 +7,8 @@
 	 */
 	public FetchResult execute(IProgressMonitor monitor) throws CoreException {
 		try {
+			if (op.getCredentialsProvider() == null)
+				op.setCredentialsProvider(new EGitCredentialsProvider());
 			op.run(monitor);
 			return op.getOperationResult();
 		} catch (InvocationTargetException e) {
