@@ -1,0 +1,10 @@
+	private boolean setSafeUser(String u) {
+		if ((user == null || user.length() == 0) && u != null
+				&& u.length() != 0) {
+			user = u;
+			userText.setText(u);
+			return true;
+		}
+		return false;
+	}
+
