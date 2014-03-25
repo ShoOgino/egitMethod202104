@@ -21,7 +21,7 @@
 	private static void compareLocalWithRef(Repository repository,
 			IPath location, String refName, IWorkbenchPage page)
 			throws IOException {
-		final String gitPath = RepositoryMapping.getMapping(location).getRepoRelativePath(location);
+		final String gitPath = getRepoRelativePath(location, repository);
 		final ITypedElement base = new LocalNonWorkspaceTypedElement(location);
 
 		CompareEditorInput in = prepareCompareInput(repository, gitPath, base,
