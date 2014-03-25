@@ -1,0 +1,25 @@
+	private void openStagingAndRebaseInteractiveViews(final Repository repository) {
+		Job job = new UIJob(UIText.EditHandler_OpenStagingAndRebaseInteractiveViews) {
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				try {
+					IWorkbenchPage workbenchPage = getPage().getSite()
+							.getPage();
+					final StagingView stagingView = (StagingView) workbenchPage
+							.showView(StagingView.VIEW_ID);
+					stagingView.setAmending(true);
+					stagingView.reload(repository);
+					RebaseInteractiveView rebaseView = (RebaseInteractiveView) workbenchPage
+							.showView(RebaseInteractiveView.VIEW_ID);
+					rebaseView.setInput(repository);
+				} catch (PartInitException e) {
+					Activator.logError(e.getMessage(), e);
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setRule(RuleUtil.getRule(repository));
+		job.setUser(true);
+		job.schedule();
+	}
+

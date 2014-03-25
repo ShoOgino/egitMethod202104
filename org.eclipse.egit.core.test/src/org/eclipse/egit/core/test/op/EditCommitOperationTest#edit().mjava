@@ -1,0 +1,20 @@
+	@Test
+	public void edit() throws Exception {
+		EditCommitOperation op = new EditCommitOperation(
+				testRepository.getRepository(), firstCommit);
+		op.execute(new NullProgressMonitor());
+
+		assertEquals(RepositoryState.REBASING_INTERACTIVE, testRepository
+				.getRepository().getRepositoryState());
+
+		List<RebaseTodoLine> todos = testRepository.getRepository()
+				.readRebaseTodo(GIT_REBASE_TODO, false);
+		assertEquals(1, todos.size());
+		assertEquals(RebaseTodoLine.Action.PICK, todos.get(0).getAction());
+		assertTrue(secondCommit.getId().startsWith(todos.get(0).getCommit()));
+
+		ObjectId headId = testRepository.getRepository()
+				.resolve(Constants.HEAD);
+		assertEquals(firstCommit.getId(), headId);
+	}
+

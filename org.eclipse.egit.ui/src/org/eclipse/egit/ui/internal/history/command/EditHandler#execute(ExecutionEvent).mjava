@@ -1,0 +1,28 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final Repository repository = getRepository(event);
+		final RevCommit commit = (RevCommit) getSelection(getPage())
+				.getFirstElement();
+
+		try {
+			if (!CommitUtil.isCommitInCurrentBranch(commit, repository)) {
+				MessageDialog.openError(getPage().getSite().getShell(),
+						UIText.EditHandler_Error_Title,
+						UIText.EditHandler_CommitNotOnCurrentBranch);
+				return null;
+			}
+		} catch (IOException e) {
+			throw new ExecutionException(
+					UIText.EditHandler_ErrorCheckingIfCommitIsOnCurrentBranch,
+					e);
+		}
+
+		final IStructuredSelection selected = new StructuredSelection(
+				new RepositoryCommit(repository, commit));
+		CommonUtils.runCommand(
+				org.eclipse.egit.ui.internal.commit.command.EditHandler.ID,
+				selected);
+		openStagingAndRebaseInteractiveViews(repository);
+
+		return null;
+	}
+

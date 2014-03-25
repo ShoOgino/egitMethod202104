@@ -1,0 +1,17 @@
+	/**
+	 * Constructs a new edit commit operation.
+	 *
+	 * @param repository
+	 *            the repository to work on
+	 * @param commit
+	 *            the commit
+	 */
+	public EditCommitOperation(Repository repository, RevCommit commit) {
+		if (commit.getParentCount() != 1)
+			throw new UnsupportedOperationException(
+					"commit is expected to have exactly one parent"); //$NON-NLS-1$
+
+		this.repository = repository;
+		this.commit = commit;
+	}
+
