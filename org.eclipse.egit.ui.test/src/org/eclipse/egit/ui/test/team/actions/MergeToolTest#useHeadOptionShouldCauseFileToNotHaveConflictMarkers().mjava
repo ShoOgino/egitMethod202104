@@ -28,11 +28,6 @@
 				util.getPluginLocalizedValue("TeamMenu.label"),
 				util.getPluginLocalizedValue("MergeToolAction.label"));
 
-		SWTBotShell shell = bot.shell(UIText.MergeModeDialog_DialogTitle)
-				.activate();
-		shell.bot().radio(UIText.MergeModeDialog_MergeMode_2_Label).click();
-		shell.bot().button(IDialogConstants.OK_LABEL).click();
-
 		CompareEditorTester compareEditor = CompareEditorTester
 				.forTitleContaining("Merging");
 
