@@ -10,6 +10,14 @@
 
 		final Shell shell = getPart(event).getSite().getShell();
 
+		try {
+			if (!UIRepositoryUtils.handleUncommittedFiles(repo, shell))
+				return null;
+		} catch (GitAPIException e) {
+			Activator.logError(e.getMessage(), e);
+			return null;
+		}
+
 		InteractiveHandler messageHandler = new InteractiveHandler() {
 			public void prepareSteps(List<RebaseTodoLine> steps) {
 				// not used
