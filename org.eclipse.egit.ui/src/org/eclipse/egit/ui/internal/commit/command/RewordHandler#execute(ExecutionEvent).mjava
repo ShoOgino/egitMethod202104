@@ -7,6 +7,15 @@
 			return null;
 
 		Shell shell = getPart(event).getSite().getShell();
+
+		try {
+			if (!UIRepositoryUtils.handleUncommittedFiles(repo, shell))
+				return null;
+		} catch (GitAPIException e) {
+			Activator.logError(e.getMessage(), e);
+			return null;
+		}
+
 		String newMessage = promptCommitMessage(shell, commit);
 		if (newMessage == null)
 			return null;
