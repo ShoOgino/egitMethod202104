@@ -1,0 +1,13 @@
+	private void enableMoveButtons(
+			PlanElement firstSelectedEntry, PlanElement lastSelectedEntry) {
+		List<PlanElement> list = view.getCurrentPlan().getList();
+		List<PlanElement> stepList = new ArrayList<PlanElement>();
+		for (PlanElement planElement : list) {
+			if (!planElement.isComment())
+				stepList.add(planElement);
+		}
+		itemMoveUp.setEnabled(stepList.indexOf(firstSelectedEntry) > 0);
+		itemMoveDown.setEnabled(stepList.indexOf(lastSelectedEntry) < stepList
+				.size() - 1);
+	}
+

@@ -53,12 +53,14 @@
 		itemMoveUp.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				RebaseInteractivePlan.PlanElement selectedEntry = getSingleSelectedTodoLine(false);
-				if (selectedEntry == null)
-					return;
-				if (selectedEntry.getElementType() != ElementType.TODO)
-					return;
-				view.getCurrentPlan().moveTodoEntryUp(selectedEntry);
+				List<PlanElement> selectedRebaseTodoLines = getSelectedRebaseTodoLines();
+				for (PlanElement planElement : selectedRebaseTodoLines) {
+					if (planElement.getElementType() != ElementType.TODO)
+						return;
+					view.getCurrentPlan().moveTodoEntryUp(planElement);
+					mapActionItemsToSelection(view.planTreeViewer
+							.getSelection());
+				}
 			}
 		});
 
@@ -69,12 +71,15 @@
 		itemMoveDown.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				RebaseInteractivePlan.PlanElement selectedEntry = getSingleSelectedTodoLine(false);
-				if (selectedEntry == null)
-					return;
-				if (selectedEntry.getElementType() != ElementType.TODO)
-					return;
-				view.getCurrentPlan().moveTodoEntryDown(selectedEntry);
+				List<PlanElement> selectedRebaseTodoLines = getSelectedRebaseTodoLines();
+				Collections.reverse(selectedRebaseTodoLines);
+				for (PlanElement planElement : selectedRebaseTodoLines) {
+					if (planElement.getElementType() != ElementType.TODO)
+						return;
+					view.getCurrentPlan().moveTodoEntryDown(planElement);
+					mapActionItemsToSelection(view.planTreeViewer
+							.getSelection());
+				}
 			}
 		});
 	}
