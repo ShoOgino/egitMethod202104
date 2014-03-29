@@ -80,7 +80,8 @@
 
 				if (Protocol.HTTP.handles(finalURI)
 						|| Protocol.HTTPS.handles(finalURI)) {
-					UserPasswordCredentials credentials = getSecureStoreCredentials(finalURI);
+					UserPasswordCredentials credentials = SecureStoreUtils
+							.getCredentials(finalURI);
 					if (credentials != null) {
 						String u = credentials.getUser();
 						String p = credentials.getPassword();
