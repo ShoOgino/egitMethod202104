@@ -1,12 +1,18 @@
-	public void onRefsChanged(final RefsChangedEvent e) {
-		Activator.getDefault().getWorkbench().getDisplay().asyncExec(new Runnable() {
-			public void run() {
+	public void onRefsChanged(final RefsChangedEvent event) {
+		cancelReloadJob();
+
+		reloadJob = new Job(UIText.GitDocument_ReloadJobName) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					populate();
-				} catch (Exception e1) {
-					Activator.logError(UIText.GitDocument_errorRefreshQuickdiff, e1);
+					return Status.OK_STATUS;
+				} catch (IOException e) {
+					return Activator.createErrorStatus(
+							UIText.GitDocument_ReloadJobError, e);
 				}
 			}
-		});
+		};
+		reloadJob.schedule();
 	}
 
