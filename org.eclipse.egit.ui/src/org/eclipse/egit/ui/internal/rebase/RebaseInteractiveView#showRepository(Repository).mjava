@@ -6,6 +6,8 @@
 			return;
 		}
 
+		if (currentPlan != null)
+			currentPlan.removeRebaseInteractivePlanChangeListener(this);
 		currentPlan = RebaseInteractivePlan.getPlan(repository);
 		currentPlan.addRebaseInteractivePlanChangeListener(this);
 		form.setText(getRepositoryName(repository));

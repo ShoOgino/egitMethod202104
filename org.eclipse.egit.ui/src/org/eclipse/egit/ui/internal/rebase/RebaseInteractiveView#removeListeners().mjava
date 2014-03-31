@@ -3,5 +3,7 @@
 				ISelectionService.class);
 		srv.removePostSelectionListener(RepositoriesView.VIEW_ID,
 				selectionChangedListener);
+		if (currentPlan != null)
+			currentPlan.removeRebaseInteractivePlanChangeListener(this);
 	}
 
