@@ -1,0 +1,9 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(event);
+		String resetMode = event.getParameter(ResetMenu.RESET_MODE);
+		RevCommit commit = getSelectedCommit(event, repository);
+		if (commit != null)
+			ResetMenu.performReset(event, repository, commit, resetMode);
+		return null;
+	}
+
