@@ -4,6 +4,22 @@
 		getViewSite().getActionBars().getMenuManager().add(
 				reuseCompareEditorAction);
 
+		compareModeAction = new BooleanPrefAction(
+				(IPersistentPreferenceStore) Activator.getDefault()
+						.getPreferenceStore(),
+				UIPreferences.TREE_COMPARE_COMPARE_MODE,
+				UIText.CompareTreeView_CompareModeTooltip) {
+			@Override
+			public void apply(boolean value) {
+				// nothing, just switch the preference
+			}
+		};
+		compareModeAction.setImageDescriptor(UIIcons.ELCL16_COMPARE_VIEW);
+		compareModeAction.setEnabled(true);
+		actionsToDispose.add(compareModeAction);
+		getViewSite().getActionBars().getToolBarManager()
+				.add(compareModeAction);
+
 		showEqualsAction = new BooleanPrefAction(
 				(IPersistentPreferenceStore) Activator.getDefault()
 						.getPreferenceStore(),
