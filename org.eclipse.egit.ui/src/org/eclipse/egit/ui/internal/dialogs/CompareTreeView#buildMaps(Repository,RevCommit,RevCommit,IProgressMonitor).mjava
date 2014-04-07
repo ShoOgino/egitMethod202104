@@ -73,10 +73,30 @@
 						: compareVersionIterator.getEntryPathString();
 				IPath currentPath = new Path(repoRelativePath);
 
-				monitor.setTaskName(currentPath.toString());
+				Type type = null;
+				if (compareVersionIterator != null
+						&& baseVersionIterator != null) {
+					boolean equalContent = compareVersionIterator
+							.getEntryObjectId().equals(
+									baseVersionIterator.getEntryObjectId());
+					type = equalContent ? Type.FILE_BOTH_SIDES_SAME
+							: Type.FILE_BOTH_SIDES_DIFFER;
+				} else if (compareVersionIterator != null
+						&& baseVersionIterator == null) {
+					type = Type.FILE_DELETED;
+				} else if (compareVersionIterator == null
+						&& baseVersionIterator != null) {
+					type = Type.FILE_ADDED;
+				}
 
-				IFile file = ResourceUtil.getFileForLocation(repository,
+				IFile file = null;
+				if (type != Type.FILE_BOTH_SIDES_SAME) {
+					monitor.setTaskName(currentPath.toString());
+
+					file = ResourceUtil.getFileForLocation(repository,
 						repoRelativePath);
+				}
+
 				if (baseVersionIterator != null) {
 					if (baseCommit == null) {
 						if (file != null)
@@ -103,18 +123,6 @@
 					else
 						right = GitFileRevision.inIndex(repository,
 								repoRelativePath);
-				}
-
-				Type type = null;
-				if (compareVersionIterator != null && baseVersionIterator != null) {
-					boolean equalContent = compareVersionIterator
-							.getEntryObjectId().equals(
-									baseVersionIterator.getEntryObjectId());
-					type = equalContent ? Type.FILE_BOTH_SIDES_SAME : Type.FILE_BOTH_SIDES_DIFFER;
-				} else if (compareVersionIterator != null && baseVersionIterator == null) {
-					type = Type.FILE_DELETED;
-				} else if (compareVersionIterator == null && baseVersionIterator != null) {
-					type = Type.FILE_ADDED;
 				}
 
 				IPath containerPath = currentPath.removeLastSegments(1);
