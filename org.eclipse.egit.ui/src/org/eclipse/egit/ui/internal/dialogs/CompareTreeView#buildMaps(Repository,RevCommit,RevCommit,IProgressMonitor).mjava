@@ -3,6 +3,7 @@
 			throws InterruptedException, IOException {
 		monitor.beginTask(UIText.CompareTreeView_AnalyzingRepositoryTaskText,
 				IProgressMonitor.UNKNOWN);
+		long previousTimeMilliseconds = System.currentTimeMillis();
 		boolean useIndex = compareVersion.equals(INDEX_VERSION);
 		fileNodes.clear();
 		containerNodes.clear();
@@ -73,6 +74,25 @@
 						: compareVersionIterator.getEntryPathString();
 				IPath currentPath = new Path(repoRelativePath);
 
+				// Updating the progress bar is slow, so just sample it. To
+				// make sure slow compares are reflected in the progress
+				// monitor also update before comparing large files.
+				long currentTimeMilliseconds = System.currentTimeMillis();
+				long size1 = -1;
+				long size2 = -1;
+				if (compareVersionIterator != null
+						&& baseVersionIterator != null) {
+					size1 = getEntrySize(tw, compareVersionIterator);
+					size2 = getEntrySize(tw, baseVersionIterator);
+				}
+				final long REPORTSIZE = 100000;
+				if (size1 > REPORTSIZE
+						|| size2 > REPORTSIZE
+						|| currentTimeMilliseconds - previousTimeMilliseconds > 500) {
+					monitor.setTaskName(currentPath.toString());
+					previousTimeMilliseconds = currentTimeMilliseconds;
+				}
+
 				Type type = null;
 				if (compareVersionIterator != null
 						&& baseVersionIterator != null) {
@@ -91,7 +111,6 @@
 
 				IFile file = null;
 				if (type != Type.FILE_BOTH_SIDES_SAME) {
-					monitor.setTaskName(currentPath.toString());
 
 					file = ResourceUtil.getFileForLocation(repository,
 						repoRelativePath);
