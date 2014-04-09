@@ -6,6 +6,7 @@
 		final boolean doCheckout = checkout.getSelection();
 		final boolean doCreateTag = createTag.getSelection();
 		final boolean doCreateBranch = createBranch.getSelection();
+		final boolean doCheckoutNewBranch = branchCheckoutButton.getSelection();
 		final boolean doActivateAdditionalRefs = (checkout.getSelection() || dontCheckout
 				.getSelection()) && activateAdditionalRefs.getSelection();
 		final String textForTag = tagText.getText();
@@ -20,7 +21,8 @@
 				@Override
 				public IStatus runInWorkspace(IProgressMonitor monitor) {
 					internalDoFetch(spec, uri, doCheckout, doCreateTag,
-							doCreateBranch, doActivateAdditionalRefs,
+							doCreateBranch, doCheckoutNewBranch,
+							doActivateAdditionalRefs,
 							textForTag, textForBranch, monitor);
 					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
@@ -44,7 +46,8 @@
 								InterruptedException {
 							try {
 								internalDoFetch(spec, uri, doCheckout,
-										doCreateTag, doCreateBranch,
+											doCreateTag, doCreateBranch,
+											doCheckoutNewBranch,
 										doActivateAdditionalRefs, textForTag,
 										textForBranch, monitor);
 							} catch (RuntimeException e) {

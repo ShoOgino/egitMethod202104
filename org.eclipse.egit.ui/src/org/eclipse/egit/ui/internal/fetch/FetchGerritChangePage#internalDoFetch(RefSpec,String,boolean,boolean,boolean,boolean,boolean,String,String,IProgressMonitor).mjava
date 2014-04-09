@@ -1,5 +1,6 @@
 	private void internalDoFetch(RefSpec spec, String uri, boolean doCheckout,
 			boolean doCreateTag, boolean doCreateBranch,
+			boolean doCheckoutNewBranch,
 			boolean doActivateAdditionalRefs, String textForTag,
 			String textForBranch, IProgressMonitor monitor) {
 
@@ -20,7 +21,7 @@
 				createTag(spec, textForTag, commit, monitor);
 
 			if (doCreateBranch)
-				createBranch(textForBranch, commit, monitor);
+				createBranch(textForBranch, doCheckoutNewBranch, commit, monitor);
 
 			if (doCheckout || doCreateTag)
 				checkout(commit, monitor);

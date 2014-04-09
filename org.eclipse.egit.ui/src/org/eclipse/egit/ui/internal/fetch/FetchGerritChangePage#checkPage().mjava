@@ -4,11 +4,14 @@
 		branchText.setVisible(createBranchSelected);
 		branchTextlabel.setVisible(createBranchSelected);
 		branchEditButton.setVisible(createBranchSelected);
+		branchCheckoutButton.setVisible(createBranchSelected);
 		GridData gd = (GridData) branchText.getLayoutData();
 		gd.exclude = !createBranchSelected;
 		gd = (GridData) branchTextlabel.getLayoutData();
 		gd.exclude = !createBranchSelected;
 		gd = (GridData) branchEditButton.getLayoutData();
+		gd.exclude = !createBranchSelected;
+		gd = (GridData) branchCheckoutButton.getLayoutData();
 		gd.exclude = !createBranchSelected;
 
 		boolean createTagSelected = createTag.getSelection();
