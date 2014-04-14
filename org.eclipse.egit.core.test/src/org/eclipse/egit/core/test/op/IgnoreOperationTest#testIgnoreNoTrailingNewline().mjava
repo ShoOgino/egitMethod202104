@@ -11,7 +11,7 @@
 		IgnoreOperation operation = executeIgnore(binFolder.getLocation());
 
 		String content = project.getFileContent(Constants.GITIGNORE_FILENAME);
-		assertEquals(existing + "\n/bin\n", content);
+		assertEquals(existing + "\n/bin/\n", content);
 		assertFalse(operation.isGitignoreOutsideWSChanged());
 	}
 

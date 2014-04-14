@@ -4,7 +4,7 @@
 				if (d == null || !autoIgnoreDerived())
 					return;
 
-				final List<IPath> toBeIgnored = new ArrayList<IPath>();
+				final Set<IPath> toBeIgnored = new LinkedHashSet<IPath>();
 
 				d.accept(new IResourceDeltaVisitor() {
 

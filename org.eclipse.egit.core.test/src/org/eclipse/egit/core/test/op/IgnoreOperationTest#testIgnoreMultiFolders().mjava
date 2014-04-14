@@ -1,16 +1,16 @@
 	@Test
-	public void testIgnoreMultiFile() throws Exception {
+	public void testIgnoreMultiFolders() throws Exception {
 		project.createSourceFolder();
 		IFolder binFolder = project.getProject().getFolder("bin");
 		IFolder srcFolder = project.getProject().getFolder("src");
 		executeIgnore(binFolder.getLocation());
 
 		String content = project.getFileContent(Constants.GITIGNORE_FILENAME);
-		assertEquals("/bin\n", content);
+		assertEquals("/bin/\n", content);
 
 		executeIgnore(srcFolder.getLocation());
 
 		content = project.getFileContent(Constants.GITIGNORE_FILENAME);
-		assertEquals("/bin\n/src\n", content);
+		assertEquals("/bin/\n/src/\n", content);
 	}
 
