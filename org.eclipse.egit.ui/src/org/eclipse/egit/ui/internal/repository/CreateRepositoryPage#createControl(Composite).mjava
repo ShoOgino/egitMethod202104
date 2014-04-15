@@ -25,17 +25,19 @@
 			}
 		});
 
-		Label nameLabel = new Label(main, SWT.NONE);
-		nameLabel.setText(UIText.CreateRepositoryPage_RepositoryNameLabel);
-		nameText = new Text(main, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.grab(true, false).applyTo(nameText);
-
 		if (!hideBare) {
 			bareButton = new Button(main, SWT.CHECK);
 			bareButton.setText(UIText.CreateRepositoryPage_BareCheckbox);
 			GridDataFactory.fillDefaults().indent(10, 0).span(3, 1)
 					.applyTo(bareButton);
+			bareButton.addSelectionListener(new SelectionListener() {
+				public void widgetSelected(SelectionEvent e) {
+					checkPage();
+				}
+				public void widgetDefaultSelected(SelectionEvent e) {
+					checkPage();
+				}
+			});
 		}
 
 		directoryText.addModifyListener(new ModifyListener() {
@@ -43,13 +45,9 @@
 				checkPage();
 			}
 		});
-		nameText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				checkPage();
-			}
-		});
 
 		setControl(main);
-		nameText.setFocus();
+		directoryText.setFocus();
+		directoryText.setSelection(directoryText.getText().length());
 	}
 

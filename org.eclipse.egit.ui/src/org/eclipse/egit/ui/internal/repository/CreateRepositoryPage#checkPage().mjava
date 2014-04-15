@@ -1,28 +1,17 @@
 	void checkPage() {
 		setErrorMessage(null);
 		try {
-			String parentDir = directoryText.getText();
-			if (parentDir.length() == 0) {
+			String dir = directoryText.getText().trim();
+
+			if (dir.length() == 0) {
 				setErrorMessage(UIText.CreateRepositoryPage_PleaseSelectDirectoryMessage);
 				return;
 			}
-			String name = nameText.getText();
-			if (name.length() == 0) {
-				setErrorMessage(UIText.CreateRepositoryPage_MissingNameMessage);
-				return;
-			}
 
-			IStatus status = ResourcesPlugin.getWorkspace().validateName(name, IResource.FOLDER);
-			if (!status.isOK()){
-				setErrorMessage(status.getMessage());
-				return;
-			}
-
-			String dir = getDirectory();
 			File testFile = new File(dir);
-			IPath path = new Path(dir);
+			IPath path = Path.fromOSString(dir);
 			if (!path.isAbsolute()) {
-				setErrorMessage(UIText.CreateRepositoryPage_PleaseUseAbsoluePathMessage);
+				setErrorMessage(UIText.CreateRepositoryPage_PleaseUseAbsolutePathMessage);
 				return;
 			}
 			if (testFile.exists() && !testFile.isDirectory()) {
@@ -30,11 +19,19 @@
 						UIText.CreateRepositoryPage_NotADirectoryMessage, dir));
 				return;
 			}
-			if (testFile.exists() && testFile.list().length > 0) {
+			boolean hasFiles = testFile.exists() && testFile.list().length > 0;
+			if (hasFiles && getBare()) {
 				setErrorMessage(NLS.bind(
 						UIText.CreateRepositoryPage_NotEmptyMessage, dir));
 				return;
 			}
+
+			if (hasFiles && !getBare())
+				setMessage(NLS.bind(
+						UIText.CreateRepositoryPage_NotEmptyMessage, dir),
+						IMessageProvider.INFORMATION);
+			else
+				setMessage(UIText.CreateRepositoryPage_PageMessage);
 		} finally {
 			setPageComplete(getErrorMessage() == null);
 		}

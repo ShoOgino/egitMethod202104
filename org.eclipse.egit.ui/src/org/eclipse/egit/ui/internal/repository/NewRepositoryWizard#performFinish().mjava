@@ -1,16 +1,27 @@
 	@Override
 	public boolean performFinish() {
-		RepositoryCache cache = Activator.getDefault().getRepositoryCache();
 		try {
-			File repoFile = new File(myCreatePage.getDirectory());
-			if (!myCreatePage.getBare())
-				repoFile = new File(repoFile, Constants.DOT_GIT);
-
-			Repository repoToCreate = cache.lookupRepository(repoFile);
-			repoToCreate.create(myCreatePage.getBare());
+			boolean isBare = myCreatePage.getBare();
+			File gitDir = Git.init()
+					.setDirectory(new File(myCreatePage.getDirectory()))
+					.setBare(isBare)
+					.call().getRepository().getDirectory();
+			this.repository = Activator.getDefault().getRepositoryCache()
+					.lookupRepository(gitDir);
 			Activator.getDefault().getRepositoryUtil()
-					.addConfiguredRepository(repoFile);
-			this.newRepo = repoToCreate;
+					.addConfiguredRepository(gitDir);
+
+			if (!isBare && doAutoShare()) {
+				IPath workTree = new Path(repository.getWorkTree()
+						.getAbsolutePath());
+				IProject[] projects = ProjectUtil
+						.getProjectsUnderPath(workTree);
+				if (projects.length == 0)
+					return true;
+				autoShareProjects(repository, projects);
+			}
+		} catch (GitAPIException e) {
+			org.eclipse.egit.ui.Activator.handleError(e.getMessage(), e, false);
 		} catch (IOException e) {
 			org.eclipse.egit.ui.Activator.handleError(e.getMessage(), e, false);
 		}
