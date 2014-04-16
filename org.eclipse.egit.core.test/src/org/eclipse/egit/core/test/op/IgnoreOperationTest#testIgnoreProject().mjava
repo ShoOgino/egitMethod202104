@@ -8,7 +8,7 @@
 		File ignoreFile = new File(rootFile, Constants.GITIGNORE_FILENAME);
 		String content = testUtils.slurpAndClose(ignoreFile.toURI().toURL()
 				.openStream());
-		assertEquals("/" + project.getProject().getName() + "\n", content);
+		assertEquals("/" + project.getProject().getName() + "/\n", content);
 		assertTrue(operation.isGitignoreOutsideWSChanged());
 	}
 
