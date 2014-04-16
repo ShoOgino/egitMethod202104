@@ -2,6 +2,6 @@
 	public boolean isEnabled() {
 		GitHistoryPage page = getPage();
 		return getRepository(page) != null
-				&& !(getBranchesOfCommit(page).isEmpty());
+				&& !(getBranchesOfCommit(getSelection(page)).isEmpty());
 	}
 

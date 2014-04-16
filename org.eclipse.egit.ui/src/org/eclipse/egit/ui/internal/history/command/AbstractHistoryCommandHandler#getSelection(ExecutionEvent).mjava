@@ -1,0 +1,6 @@
+	protected IStructuredSelection getSelection(ExecutionEvent event)
+			throws ExecutionException {
+		ISelection selection = HandlerUtil.getCurrentSelectionChecked(event);
+		return getStructuredSelection(selection);
+	}
+

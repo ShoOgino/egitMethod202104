@@ -8,7 +8,8 @@
 
 		List<Ref> branchesOfCommit;
 		try {
-			branchesOfCommit = getBranchesOfCommit(page, repository, true);
+			branchesOfCommit = getBranchesOfCommit(getSelection(page),
+					repository, true);
 		} catch (IOException e) {
 			Activator.logError("Could not calculate Enablement", e); //$NON-NLS-1$
 			return false;

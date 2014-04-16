@@ -2,19 +2,20 @@
 	 * Gets the selected commits, re-parsed to have correct parent information
 	 * regardless of how history was walked.
 	 *
+	 * @param event
 	 * @return the selected commits, or an empty list
 	 * @throws ExecutionException
 	 */
-	protected List<RevCommit> getSelectedCommits() throws ExecutionException {
+	protected List<RevCommit> getSelectedCommits(ExecutionEvent event)
+			throws ExecutionException {
+		Repository repository = getRepository(event);
+		if (repository == null)
+			return Collections.emptyList();
+		IStructuredSelection selection = getSelection(event);
+		if (selection.isEmpty())
+			return Collections.emptyList();
 		List<RevCommit> commits = new ArrayList<RevCommit>();
-		GitHistoryPage page = getPage();
-		if (page == null)
-			return Collections.emptyList();
-		IStructuredSelection selection = getSelection(page);
-		HistoryPageInput input = page.getInputInternal();
-		if (input == null)
-			return Collections.emptyList();
-		RevWalk walk = new RevWalk(input.getRepository());
+		RevWalk walk = new RevWalk(repository);
 		try {
 			for (Object element : selection.toList()) {
 				RevCommit commit = (RevCommit) element;

@@ -8,7 +8,7 @@
 	 *            e.g. "refs/heads/" or ""
 	 * @return a list of RefNodes
 	 */
-	protected List<RefNode> getRefNodes(RevCommit commit, Repository repo,
+	protected List<RefNode> getRefNodes(ObjectId commit, Repository repo,
 			String... refPrefixes) {
 		List<Ref> availableBranches = new ArrayList<Ref>();
 		List<RefNode> nodes = new ArrayList<RefNode>();
@@ -17,7 +17,7 @@
 			for (String refPrefix : refPrefixes)
 				branches.putAll(repo.getRefDatabase().getRefs(refPrefix));
 			for (Ref branch : branches.values()) {
-				if (branch.getLeaf().getObjectId().equals(commit.getId()))
+				if (branch.getLeaf().getObjectId().equals(commit))
 					availableBranches.add(branch);
 			}
 			RepositoryNode repoNode = new RepositoryNode(null, repo);

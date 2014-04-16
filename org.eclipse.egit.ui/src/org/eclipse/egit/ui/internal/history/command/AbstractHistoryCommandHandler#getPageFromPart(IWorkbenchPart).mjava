@@ -1,0 +1,10 @@
+	private GitHistoryPage getPageFromPart(IWorkbenchPart part) {
+		if (!(part instanceof IHistoryView))
+			return null;
+		IHistoryView view = (IHistoryView) part;
+		IHistoryPage page = view.getHistoryPage();
+		if (page instanceof GitHistoryPage)
+			return (GitHistoryPage) page;
+		return null;
+	}
+

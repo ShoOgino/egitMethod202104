@@ -1,15 +1,16 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		GitHistoryPage page = getPage();
-
-		final Repository repository = getRepository(page);
+		final Repository repository = getRepository(event);
 		if (repository == null)
 			return null;
+
+		IStructuredSelection selection = getSelection(event);
 
 		int totalBranchCount;
 		List<Ref> branchesOfCommit;
 		try {
-			totalBranchCount = getBranchesOfCommit(page, repository, false).size();
-			branchesOfCommit = getBranchesOfCommit(page, repository, true);
+			totalBranchCount = getBranchesOfCommit(selection, repository, false)
+					.size();
+			branchesOfCommit = getBranchesOfCommit(selection, repository, true);
 		} catch (IOException e) {
 			throw new ExecutionException("Could not obtain current Branch", e); //$NON-NLS-1$
 		}

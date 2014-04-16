@@ -1,11 +1,9 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		GitHistoryPage page = getPage();
-
-		final Repository repository = getRepository(page);
+		final Repository repository = getRepository(event);
 		if (repository == null)
 			return null;
 
-		List<Ref> branchesOfCommit = getBranchesOfCommit(page);
+		List<Ref> branchesOfCommit = getBranchesOfCommit(getSelection(event));
 		// this should have been checked by isEnabled()
 		if (branchesOfCommit.isEmpty())
 			return null;

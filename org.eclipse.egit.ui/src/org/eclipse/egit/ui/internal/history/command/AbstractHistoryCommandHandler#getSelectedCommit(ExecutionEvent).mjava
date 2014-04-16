@@ -1,0 +1,18 @@
+	/**
+	 * Gets the selected commit, re-parsed to have correct parent information
+	 * regardless of how history was walked.
+	 *
+	 * @param event
+	 * @return the selected commit, never null
+	 * @throws ExecutionException
+	 *             if no or multiple commits were found
+	 */
+	protected RevCommit getSelectedCommit(ExecutionEvent event)
+			throws ExecutionException {
+		List<RevCommit> commits = getSelectedCommits(event);
+		if (commits.size() != 1)
+			throw new ExecutionException(
+					UIText.AbstractHistoryCommandHandler_ActionRequiresOneSelectedCommitMessage);
+		return commits.get(0);
+	}
+

@@ -6,12 +6,6 @@
 		if (window.getActivePage() == null)
 			return null;
 		IWorkbenchPart part = window.getActivePage().getActivePart();
-		if (!(part instanceof IHistoryView))
-			return null;
-		IHistoryView view = (IHistoryView) part;
-		IHistoryPage page = view.getHistoryPage();
-		if (page instanceof GitHistoryPage)
-			return (GitHistoryPage) page;
-		return null;
+		return getPageFromPart(part);
 	}
 

@@ -1,0 +1,7 @@
+	protected List<Ref> getBranchesOfCommit(IStructuredSelection selection,
+			final Repository repo, boolean hideCurrentBranch)
+			throws IOException {
+		String head = repo.getFullBranch();
+		return getBranchesOfCommit(selection, head, hideCurrentBranch);
+	}
+

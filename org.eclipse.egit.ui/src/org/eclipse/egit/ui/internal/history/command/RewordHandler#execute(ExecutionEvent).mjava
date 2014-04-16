@@ -1,13 +1,13 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repository = getRepository(event);
-		RevCommit commit = (RevCommit) getSelection(getPage())
-				.getFirstElement();
+		RevCommit commit = getSelectedCommit(event);
 
 		try {
 			if (!CommitUtil.isCommitInCurrentBranch(commit, repository)) {
-				MessageDialog.openError(getPage().getSite().getShell(),
-								UIText.RewordHandler_Error_Title,
-								UIText.RewordHandler_CommitNotOnCurrentBranch);
+				MessageDialog.openError(
+						HandlerUtil.getActiveShellChecked(event),
+						UIText.RewordHandler_Error_Title,
+						UIText.RewordHandler_CommitNotOnCurrentBranch);
 				return null;
 			}
 		} catch (IOException e) {

@@ -1,5 +1,5 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		RevCommit commit = (RevCommit) getSelection(getPage()).getFirstElement();
+		ObjectId commitId = getSelectedCommitId(event);
 		final Repository repository = getRepository(event);
 		if (repository == null)
 			return null;
@@ -7,10 +7,11 @@
 		if (!canMerge(repository))
 			return null;
 
-		List<RefNode> nodes = getRefNodes(commit, repository, Constants.R_REFS);
+		List<RefNode> nodes = getRefNodes(commitId, repository,
+				Constants.R_REFS);
 		String refName;
 		if (nodes.isEmpty())
-			refName = commit.getName();
+			refName = commitId.getName();
 		else if (nodes.size() == 1)
 			refName = nodes.get(0).getObject().getName();
 		else {

@@ -1,8 +1,7 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repo = getRepository(event);
-		String baseline = ((RevCommit) getSelection(getPage()).getFirstElement())
-				.getId().name();
-		if (baseline == null)
+		String baseline = getSelectedCommitId(event).name();
+		if (repo == null)
 			throw new ExecutionException(
 					UIText.ResetQuickdiffBaselineHandler_NoTargetMessage);
 

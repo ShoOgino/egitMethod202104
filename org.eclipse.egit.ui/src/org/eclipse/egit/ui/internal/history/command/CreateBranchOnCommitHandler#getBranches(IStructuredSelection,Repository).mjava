@@ -1,7 +1,7 @@
-	private List<Ref> getBranches(GitHistoryPage page,
+	private List<Ref> getBranches(IStructuredSelection selection,
 			Repository repo) {
 		try {
-			return getBranchesOfCommit(page, repo, false);
+			return getBranchesOfCommit(selection, repo, false);
 		} catch (IOException e) {
 			// ignore, use commit name
 			return Collections.<Ref> emptyList();

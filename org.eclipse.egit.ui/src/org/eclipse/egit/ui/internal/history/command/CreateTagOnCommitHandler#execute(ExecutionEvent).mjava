@@ -1,9 +1,9 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		PlotCommit commit = (PlotCommit) getSelection(getPage()).getFirstElement();
+		ObjectId commitId = getSelectedCommitId(event);
 		final Repository repo = getRepository(event);
 
-		CreateTagDialog dialog = new CreateTagDialog(HandlerUtil
-				.getActiveShellChecked(event), commit.getId(), repo);
+		CreateTagDialog dialog = new CreateTagDialog(
+				HandlerUtil.getActiveShellChecked(event), commitId, repo);
 
 		if (dialog.open() != Window.OK)
 			return null;
@@ -15,7 +15,7 @@
 		tag.setTag(tagName);
 		tag.setTagger(personIdent);
 		tag.setMessage(dialog.getTagMessage());
-		tag.setObjectId(commit);
+		tag.setObjectId(commitId, Constants.OBJ_COMMIT);
 
 		try {
 			new TagOperation(repo, tag, dialog.shouldOverWriteTag())
