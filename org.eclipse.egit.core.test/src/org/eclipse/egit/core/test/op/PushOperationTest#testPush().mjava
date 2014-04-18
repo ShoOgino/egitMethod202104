@@ -32,7 +32,7 @@
 		assertEquals(Status.OK, getStatus(pop.getOperationResult()));
 
 		try {
-			// assert that we can not run this again
+			// assert that we cannot run this again
 			pop.run(null);
 			fail("Expected Exception not thrown");
 		} catch (IllegalStateException e) {
