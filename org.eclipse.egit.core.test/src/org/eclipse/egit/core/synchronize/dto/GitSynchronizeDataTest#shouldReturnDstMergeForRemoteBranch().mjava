@@ -1,0 +1,15 @@
+	@Test
+	public void shouldReturnDstMergeForRemoteBranch() throws Exception {
+		// given
+		StoredConfig config = repo.getConfig();
+		RemoteConfig remoteConfig = new RemoteConfig(config, "origin");
+		remoteConfig.setFetchRefSpecs(Arrays.asList(new RefSpec("+refs/heads/*:refs/remotes/origin/*")));
+		remoteConfig.update(config);
+
+		GitSynchronizeData gsd = new GitSynchronizeData(repo, HEAD,
+				"refs/remotes/origin/master", false);
+
+		assertThat(gsd.getDstRemoteName(), is("origin"));
+		assertThat(gsd.getDstMerge(), is("refs/heads/master"));
+	}
+

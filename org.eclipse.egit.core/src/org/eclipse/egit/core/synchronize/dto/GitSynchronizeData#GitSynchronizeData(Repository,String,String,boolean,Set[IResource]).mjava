@@ -22,14 +22,10 @@
 		this.dstRev = dstRev;
 		this.includeLocal = includeLocal;
 
-		RemoteConfig srcRemoteConfig = extractRemoteName(srcRev);
-		RemoteConfig dstRemoteConfig = extractRemoteName(dstRev);
+		RemoteAndMerge dstRemoteAndMerge = extractRemoteAndMergeForDst(dstRev);
 
-		srcRemote = srcRemoteConfig.remote;
-		srcMerge = srcRemoteConfig.merge;
-
-		dstRemote = dstRemoteConfig.remote;
-		dstMerge = dstRemoteConfig.merge;
+		dstRemote = dstRemoteAndMerge.remote;
+		dstMerge = dstRemoteAndMerge.merge;
 
 		repoParentPath = repo.getDirectory().getParentFile().getAbsolutePath();
 

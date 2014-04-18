@@ -1,0 +1,23 @@
+	private RemoteAndMerge extractRemoteAndMergeForDst(String rev) {
+		// destination remote name is used for fetch and push, so check if this
+		// is a remote-tracking branch
+		try {
+			List<RemoteConfig> remoteConfigs = RemoteConfig
+					.getAllRemoteConfigs(repo.getConfig());
+			for (RemoteConfig remoteConfig : remoteConfigs) {
+				List<RefSpec> fetchRefSpecs = remoteConfig.getFetchRefSpecs();
+				for (RefSpec fetchRefSpec : fetchRefSpecs) {
+					if (fetchRefSpec.matchDestination(rev)) {
+						RefSpec expanded = fetchRefSpec
+								.expandFromDestination(rev);
+						return new RemoteAndMerge(remoteConfig.getName(),
+								expanded.getSource());
+					}
+				}
+			}
+		} catch (URISyntaxException e) {
+			// Fall back to returning empty result below
+		}
+		return new RemoteAndMerge(null, null);
+	}
+

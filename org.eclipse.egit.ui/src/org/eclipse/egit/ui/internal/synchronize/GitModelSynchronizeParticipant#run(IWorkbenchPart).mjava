@@ -1,8 +1,13 @@
 	@Override
 	public void run(final IWorkbenchPart part) {
+		boolean fetchPossible = false;
+		for (GitSynchronizeData data : gsds)
+			if (data.getDstRemoteName() != null)
+				fetchPossible = true;
+
 		boolean launchFetch = Activator.getDefault().getPreferenceStore()
 				.getBoolean(UIPreferences.SYNC_VIEW_FETCH_BEFORE_LAUNCH);
-		if (launchFetch || gsds.forceFetch()) {
+		if (fetchPossible && (launchFetch || gsds.forceFetch())) {
 			Job fetchJob = new SynchronizeFetchJob(gsds);
 			fetchJob.setUser(true);
 			fetchJob.addJobChangeListener(new JobChangeAdapter() {
