@@ -1,8 +1,9 @@
 	/**
+	 * Create (import) a set of existing projects. The projects are
+	 * automatically connected to the repository they reside in.
+	 *
 	 * @param projectsToCreate
 	 *            the projects to create
-	 * @param repository
-	 *            if not null, the projects will be automatically shared
 	 * @param selectedWorkingSets
 	 *            the workings sets to add the created projects to, may be null
 	 *            or empty
@@ -12,10 +13,8 @@
 	 */
 	public static void createProjects(
 			final Set<ProjectRecord> projectsToCreate,
-			final Repository repository,
 			final IWorkingSet[] selectedWorkingSets, IProgressMonitor monitor)
 			throws InvocationTargetException, InterruptedException {
-		createProjects(projectsToCreate, false, repository,
-				selectedWorkingSets, monitor);
+		createProjects(projectsToCreate, false, selectedWorkingSets, monitor);
 	}
 
