@@ -99,7 +99,7 @@
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();) {
-					String relativePath = it.next().getNewPath();
+					String relativePath = it.next().getPath();
 					String path = new Path(getRepository().getWorkTree()
 							.getAbsolutePath()).append(relativePath)
 							.toOSString();
