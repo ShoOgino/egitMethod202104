@@ -17,6 +17,8 @@
 			labelInner = INNER_REMOTE;
 			txt = name.substring(Constants.R_REMOTES.length());
 		} else if (name.startsWith(Constants.R_TAGS)) {
+			tagCount++;
+
 			tag = true;
 			if (ref.getPeeledObjectId() != null) {
 				labelOuter = OUTER_ANNOTATED;
@@ -26,7 +28,17 @@
 				labelInner = INNER_TAG;
 			}
 
-			txt = name.substring(Constants.R_TAGS.length());
+			int maxNumberOfTags = 1;
+			if (tagCount == maxNumberOfTags) {
+				txt = name.substring(Constants.R_TAGS.length());
+			} else if (tagCount == maxNumberOfTags + 1) {
+				txt = ELLIPSIS;
+				ellipsisTags.add(name);
+			} else {
+				// Don't draw additional tags, they are shown when hovering the
+				// ellipsis
+				return 0;
+			}
 		} else {
 			labelOuter = OUTER_OTHER;
 			labelInner = INNER_OTHER;
