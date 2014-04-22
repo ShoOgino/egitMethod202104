@@ -1,0 +1,6 @@
+	private void openThisVersionInEditor(FileDiff d) {
+		ObjectId[] blobs = d.getBlobs();
+		ObjectId blob = blobs[blobs.length - 1];
+		openInEditor(d.getNewPath(), d.getCommit(), blob);
+	}
+

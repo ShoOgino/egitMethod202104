@@ -29,8 +29,6 @@
 				// empty
 			}
 		});
-		String genericHistoryViewId = "org.eclipse.team.ui.GenericHistoryView";
-		TestUtil.waitUntilViewWithGivenIdShows(genericHistoryViewId);
-		return bot.viewById(genericHistoryViewId).bot().table();
+		return getHistoryViewBot().table();
 	}
 

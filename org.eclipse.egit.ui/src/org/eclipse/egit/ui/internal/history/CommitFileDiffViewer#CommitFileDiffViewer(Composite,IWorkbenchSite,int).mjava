@@ -42,8 +42,12 @@
 												.getShell(),
 										UIText.CommitFileDiffViewer_CanNotOpenCompareEditorTitle,
 										UIText.CommitFileDiffViewer_MergeCommitMultiAncestorMessage);
-				} else
-					openFileInEditor(d);
+				} else {
+					if (d.getChange() == ChangeType.DELETE)
+						openPreviousVersionInEditor(d);
+					else
+						openThisVersionInEditor(d);
+				}
 			}
 		});
 
@@ -64,15 +68,28 @@
 		Control c = getControl();
 		c.setMenu(mgr.createContextMenu(c));
 
-		open = new Action(UIText.CommitFileDiffViewer_OpenInEditorMenuLabel) {
+		openThisVersion = new Action(UIText.CommitFileDiffViewer_OpenInEditorMenuLabel) {
 			@Override
 			public void run() {
 				final ISelection s = getSelection();
 				if (s.isEmpty() || !(s instanceof IStructuredSelection))
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
-				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();)
-					openFileInEditor(it.next());
+				for (Object element : iss.toList())
+					openThisVersionInEditor((FileDiff) element);
+			}
+		};
+
+		openPreviousVersion = new Action(
+				UIText.CommitFileDiffViewer_OpenPreviousInEditorMenuLabel) {
+			@Override
+			public void run() {
+				final ISelection s = getSelection();
+				if (s.isEmpty() || !(s instanceof IStructuredSelection))
+					return;
+				final IStructuredSelection iss = (IStructuredSelection) s;
+				for (Object element : iss.toList())
+					openPreviousVersionInEditor((FileDiff) element);
 			}
 		};
 
@@ -142,7 +159,8 @@
 		};
 
 		mgr.add(openWorkingTreeVersion);
-		mgr.add(open);
+		mgr.add(openThisVersion);
+		mgr.add(openPreviousVersion);
 		mgr.add(compare);
 		mgr.add(compareWorkingTreeVersion);
 		mgr.add(blame);

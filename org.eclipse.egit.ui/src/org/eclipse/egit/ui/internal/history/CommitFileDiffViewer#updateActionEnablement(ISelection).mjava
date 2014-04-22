@@ -5,18 +5,26 @@
 		boolean allSelected = !sel.isEmpty()
 				&& sel.size() == getTable().getItemCount();
 		boolean submoduleSelected = false;
-		for (Object item : sel.toArray())
-			if (((FileDiff) item).isSubmodule()) {
+		boolean addSelected = false;
+		boolean deleteSelected = false;
+		for (Object item : sel.toList()) {
+			FileDiff fileDiff = (FileDiff) item;
+			if (fileDiff.isSubmodule())
 				submoduleSelected = true;
-				break;
-			}
+
+			if (fileDiff.getChange() == ChangeType.ADD)
+				addSelected = true;
+			else if (fileDiff.getChange() == ChangeType.DELETE)
+				deleteSelected = true;
+		}
 
 		selectAll.setEnabled(!allSelected);
 		copy.setEnabled(!sel.isEmpty());
 
 		if (!submoduleSelected) {
 			boolean oneOrMoreSelected = !sel.isEmpty();
-			open.setEnabled(oneOrMoreSelected);
+			openThisVersion.setEnabled(oneOrMoreSelected && !deleteSelected);
+			openPreviousVersion.setEnabled(oneOrMoreSelected && !addSelected);
 			compare.setEnabled(sel.size() == 1);
 			blame.setEnabled(oneOrMoreSelected);
 			if (sel.size() == 1) {
@@ -32,7 +40,8 @@
 				openWorkingTreeVersion.setEnabled(oneOrMoreSelected);
 			}
 		} else {
-			open.setEnabled(false);
+			openThisVersion.setEnabled(false);
+			openPreviousVersion.setEnabled(false);
 			openWorkingTreeVersion.setEnabled(false);
 			compare.setEnabled(false);
 			blame.setEnabled(false);
