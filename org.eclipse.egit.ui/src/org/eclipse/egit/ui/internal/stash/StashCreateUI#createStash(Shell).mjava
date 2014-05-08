@@ -6,17 +6,17 @@
 	public boolean createStash(Shell shell) {
 		if (!UIUtils.saveAllEditors(repo))
 			return false;
-		InputDialog commitMessageDialog = new InputDialog(shell,
-				UIText.StashCreateCommand_titleEnterCommitMessage,
-				UIText.StashCreateCommand_messageEnterCommitMessage,
-				null, null);
+		StashCreateDialog commitMessageDialog = new StashCreateDialog(shell);
 		if (commitMessageDialog.open() != Window.OK)
 			return false;
 		String message = commitMessageDialog.getValue();
 		if (message.length() == 0)
 			message = null;
 
-		final StashCreateOperation op = new StashCreateOperation(repo, message);
+		boolean includeUntracked = commitMessageDialog.getIncludeUntracked();
+
+		final StashCreateOperation op = new StashCreateOperation(repo, message,
+				includeUntracked);
 		Job job = new WorkspaceJob(UIText.StashCreateCommand_jobTitle) {
 
 			@Override

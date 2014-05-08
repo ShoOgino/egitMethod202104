@@ -1,0 +1,11 @@
+		protected void buttonPressed(int buttonId) {
+			if (buttonId == IDialogConstants.OK_ID) {
+				commitMessage = text.getText();
+				includeUntracked = untrackedButton.getSelection();
+			} else {
+				commitMessage = null;
+				includeUntracked = false;
+			}
+			super.buttonPressed(buttonId);
+		}
+
