@@ -7,12 +7,9 @@
 		subFolder.create(true, true, null);
 
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
-				new TestDecoratableResource(project, true, false, false, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(folder, false, false, false, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(subFolder, false, false, false,
-						false, Staged.NOT_STAGED) };
+				new TestDecoratableResource(project).tracked(),
+				new TestDecoratableResource(folder),
+				new TestDecoratableResource(subFolder) };
 
 		waitForIndexDiffUpdate(true);
 		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();

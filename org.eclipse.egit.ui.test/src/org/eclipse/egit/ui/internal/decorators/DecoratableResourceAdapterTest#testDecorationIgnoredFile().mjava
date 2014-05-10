@@ -5,29 +5,24 @@
 		write(new File(project.getLocation().toFile(), "Test.dat"), "Something");
 		write(new File(project.getLocation().toFile(), TEST_FILE2), "Something");
 		write(new File(project.getLocation().toFile(), "Test"), "Something");
-		write(new File(project.getLocation().toFile(), ".gitignore"), "Test"); // Test is prefix of TestFile
+		// Test is prefix of TestFile
+		write(new File(project.getLocation().toFile(), ".gitignore"), "Test");
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		IResource file = project.findMember("Test.dat");
 		IResource gitignore = project.findMember(".gitignore");
 		IResource test = project.findMember("Test");
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
-				new TestDecoratableResource(project, true, false, true, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(gitignore, false, false, false, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(file, false, false, false, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(test, false, true, false, false,
-						Staged.NOT_STAGED)
-		};
+				new TestDecoratableResource(project).tracked().dirty(),
+				new TestDecoratableResource(gitignore),
+				new TestDecoratableResource(file),
+				new TestDecoratableResource(test).ignored() };
 		waitForIndexDiffUpdate(true);
 		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
 		IDecoratableResource[] actualDRs = {
 				new DecoratableResourceAdapter(indexDiffData, project),
 				new DecoratableResourceAdapter(indexDiffData, gitignore),
 				new DecoratableResourceAdapter(indexDiffData, file),
-				new DecoratableResourceAdapter(indexDiffData, test)
-		};
+				new DecoratableResourceAdapter(indexDiffData, test) };
 
 		assertArrayEquals(expectedDRs, actualDRs);
 	}

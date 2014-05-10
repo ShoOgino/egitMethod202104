@@ -6,19 +6,16 @@
 		IFolder subFolder = folder.getFolder(SUB_FOLDER);
 		subFolder.create(true, true, null);
 		// Create new file
-		write(new File(subFolder.getLocation().toFile().getAbsolutePath(), TEST_FILE), "Something");
+		write(new File(subFolder.getLocation().toFile().getAbsolutePath(),
+				TEST_FILE), "Something");
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		IResource file = subFolder.findMember(TEST_FILE);
 
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
-				new TestDecoratableResource(project, true, false, true, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(folder, false, false, true, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(subFolder, false, false, true,
-						false, Staged.NOT_STAGED),
-				new TestDecoratableResource(file, false, false, false, false,
-						Staged.NOT_STAGED) };
+				new TestDecoratableResource(project).tracked().dirty(),
+				new TestDecoratableResource(folder).dirty(),
+				new TestDecoratableResource(subFolder).dirty(),
+				new TestDecoratableResource(file) };
 		waitForIndexDiffUpdate(true);
 		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
 		IDecoratableResource[] actualDRs = {
@@ -28,6 +25,6 @@
 				new DecoratableResourceAdapter(indexDiffData, file) };
 
 		for (int i = 0; i < expectedDRs.length; i++)
-			assert(expectedDRs[i].equals(actualDRs[i]));
+			assert (expectedDRs[i].equals(actualDRs[i]));
 	}
 

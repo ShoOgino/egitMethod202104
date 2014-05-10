@@ -1,7 +1,7 @@
 	@Test
 	public void testDecorationEmptyProject() throws Exception {
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] { new TestDecoratableResource(
-				project, true, false, false, false, Staged.NOT_STAGED) };
+				project).tracked() };
 
 		IDecoratableResource[] actualDRs = { new DecoratableResourceAdapter(
 				indexDiffCacheEntry.getIndexDiff(), project) };

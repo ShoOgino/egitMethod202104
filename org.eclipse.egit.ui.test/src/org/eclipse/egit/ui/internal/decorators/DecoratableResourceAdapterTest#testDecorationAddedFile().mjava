@@ -8,10 +8,8 @@
 		git.add().addFilepattern(".").call();
 
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
-				new TestDecoratableResource(project, true, false, false, false,
-						Staged.MODIFIED),
-				new TestDecoratableResource(file, true, false, false, false,
-						Staged.ADDED) };
+				new TestDecoratableResource(project).tracked().modified(),
+				new TestDecoratableResource(file).tracked().added() };
 		waitForIndexDiffUpdate(true);
 		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
 		IDecoratableResource[] actualDRs = {

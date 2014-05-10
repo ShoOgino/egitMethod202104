@@ -4,7 +4,7 @@
 		IFolder testFolder2 = project.getFolder(TEST_FOLDER2);
 
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] { new TestDecoratableResource(
-				testFolder2, true, false, false, false, Staged.NOT_STAGED) };
+				testFolder2).tracked() };
 		waitForIndexDiffUpdate(true);
 		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
 		IDecoratableResource[] actualDRs = { new DecoratableResourceAdapter(

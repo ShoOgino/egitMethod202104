@@ -11,8 +11,8 @@
 		// Delete file
 		FileUtils.delete(f);
 
-		IDecoratableResource expectedDR = new TestDecoratableResource(project,
-				true, false, true, false, Staged.NOT_STAGED);
+		IDecoratableResource expectedDR = new TestDecoratableResource(project)
+				.tracked().dirty();
 
 		waitForIndexDiffUpdate(true);
 		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();

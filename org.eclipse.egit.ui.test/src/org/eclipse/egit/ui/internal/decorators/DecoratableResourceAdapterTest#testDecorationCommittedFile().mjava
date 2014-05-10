@@ -9,10 +9,8 @@
 		git.commit().setMessage("First commit").call();
 
 		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
-				new TestDecoratableResource(project, true, false, false, false,
-						Staged.NOT_STAGED),
-				new TestDecoratableResource(file, true, false, false, false,
-						Staged.NOT_STAGED) };
+				new TestDecoratableResource(project).tracked(),
+				new TestDecoratableResource(file).tracked() };
 
 		waitForIndexDiffUpdate(true);
 		IndexDiffData indexDiffData = indexDiffCacheEntry.getIndexDiff();
