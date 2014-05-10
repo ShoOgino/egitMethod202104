@@ -1,7 +1,6 @@
 	@Test
 	public void testDecorationFileInIgnoredFolder() throws Exception {
 		// Create new file
-
 		FileUtils.mkdir(new File(project.getLocation().toFile(), "dir"));
 		write(new File(project.getLocation().toFile(), "dir/file"), "Something");
 		write(new File(project.getLocation().toFile(), ".gitignore"), "dir");
