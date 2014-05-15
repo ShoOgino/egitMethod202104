@@ -1,0 +1,19 @@
+	private void updateGroups() {
+		Protocol p = getProtocol();
+		if (p != null) {
+			hostText.setEnabled(p.hasHost());
+			if (!p.hasHost())
+				hostText.setText(EMPTY_STRING);
+			portText.setEnabled(p.hasPort());
+			if (!p.hasPort())
+				portText.setText(EMPTY_STRING);
+
+			UIUtils.setEnabledRecursively(authGroup, p.canAuthenticate());
+			if (!p.canAuthenticate()) {
+				userText.setText(EMPTY_STRING);
+				passText.setText(EMPTY_STRING);
+				storeCheckbox.setSelection(false);
+			}
+		}
+	}
+

@@ -1,7 +1,7 @@
 	private void updateRemoteAndURIPanels() {
 		UIUtils.setEnabledRecursively(uriPanel, isURISelected());
 		if (uriPanel.getEnabled())
-			updateAuthGroup();
+			updateGroups();
 		if (configuredRemotes != null)
 			UIUtils.setEnabledRecursively(remotePanel, !isURISelected());
 	}

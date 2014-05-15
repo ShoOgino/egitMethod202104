@@ -1,9 +1,0 @@
-	private void updateAuthGroup() {
-		Protocol p = getProtocol();
-		if (p != null) {
-			hostText.setEnabled(p.hasHost());
-			portText.setEnabled(p.hasPort());
-			UIUtils.setEnabledRecursively(authGroup, p.canAuthenticate());
-		}
-	}
-
