@@ -27,6 +27,8 @@
 				} catch (IOException e) {
 					throw new ExecutionException(e.getMessage(), e);
 				}
+				interactive = rebaseTargetSelectionDialog.isInteractive();
+				preserveMerges = rebaseTargetSelectionDialog.isPreserveMerges();
 			} else
 				return;
 		}

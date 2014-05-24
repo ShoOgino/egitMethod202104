@@ -16,8 +16,10 @@
 				try {
 					if (handler != null)
 						cmd.runInteractively(handler, true);
-					if (operation == Operation.BEGIN)
+					if (operation == Operation.BEGIN) {
+						cmd.setPreserveMerges(preserveMerges);
 						result = cmd.setUpstream(ref.getName()).call();
+					}
 					else
 						result = cmd.setOperation(operation).call();
 
