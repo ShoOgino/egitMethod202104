@@ -19,11 +19,10 @@
 		} catch (InvocationTargetException e) {
 			final Throwable cause = e.getCause();
 			transportError(cause.getMessage());
-			ErrorDialog.openError(getShell(),
-					UIText.RefSpecPage_errorTransportDialogTitle,
-					UIText.RefSpecPage_errorTransportDialogMessage, new Status(
-							IStatus.ERROR, Activator.getPluginId(), 0, cause
-									.getMessage(), cause));
+			Activator
+					.handleError(
+							UIText.RefSpecPage_errorTransportDialogMessage,
+							cause, true);
 			return;
 		} catch (InterruptedException e) {
 			transportError(UIText.RefSpecPage_operationCancelled);
