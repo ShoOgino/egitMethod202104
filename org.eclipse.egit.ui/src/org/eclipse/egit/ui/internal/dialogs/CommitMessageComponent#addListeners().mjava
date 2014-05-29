@@ -29,13 +29,16 @@
 		});
 		committerHandler = UIUtils.addPreviousValuesContentProposalToText(
 				committerText, COMMITTER_VALUES_PREF);
-		commitText.getTextWidget().addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+		commitText.getDocument().addDocumentListener(new IDocumentListener() {
+			public void documentChanged(DocumentEvent event) {
 				if (!listenersEnabled || !commitText.isEnabled())
 					return;
 				updateSignedOffButton();
 				updateChangeIdButton();
 				listener.statusUpdated();
+			}
+			public void documentAboutToBeChanged(DocumentEvent event) {
+				// nothing to do
 			}
 		});
 	}
