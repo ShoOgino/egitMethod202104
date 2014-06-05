@@ -1,0 +1,99 @@
+	/**
+	 * Computer file diffs for specified tree walk and commit
+	 *
+	 * @param repository
+	 * @param walk
+	 * @param commit
+	 * @param parents
+	 * @param markTreeFilters
+	 *            optional filters for marking entries, see
+	 *            {@link #isMarked(int)}
+	 * @return non-null but possibly empty array of file diffs
+	 * @throws MissingObjectException
+	 * @throws IncorrectObjectTypeException
+	 * @throws CorruptObjectException
+	 * @throws IOException
+	 */
+	public static FileDiff[] compute(final Repository repository,
+			final TreeWalk walk, final RevCommit commit,
+			final RevCommit[] parents,
+			final TreeFilter... markTreeFilters) throws MissingObjectException,
+			IncorrectObjectTypeException, CorruptObjectException, IOException {
+		final ArrayList<FileDiff> r = new ArrayList<FileDiff>();
+
+		if (parents.length > 0) {
+			walk.reset(trees(commit, parents));
+		} else {
+			walk.reset();
+			walk.addTree(new EmptyTreeIterator());
+			walk.addTree(commit.getTree());
+		}
+
+		if (walk.getTreeCount() <= 2) {
+			List<DiffEntry> entries = DiffEntry.scan(walk, false, markTreeFilters);
+			List<DiffEntry> xentries = new LinkedList<DiffEntry>(entries);
+			RenameDetector detector = new RenameDetector(repository);
+			detector.addAll(entries);
+			List<DiffEntry> renames = detector.compute(walk.getObjectReader(),
+					org.eclipse.jgit.lib.NullProgressMonitor.INSTANCE);
+			for (DiffEntry m : renames) {
+				final FileDiff d = new FileDiff(commit, m);
+				r.add(d);
+				for (Iterator<DiffEntry> i = xentries.iterator(); i.hasNext();) {
+					DiffEntry n = i.next();
+					if (m.getOldPath().equals(n.getOldPath()))
+						i.remove();
+					else if (m.getNewPath().equals(n.getNewPath()))
+						i.remove();
+				}
+			}
+			for (DiffEntry m : xentries) {
+				final FileDiff d = new FileDiff(commit, m);
+				r.add(d);
+			}
+		}
+		else { // DiffEntry does not support walks with more than two trees
+			final int nTree = walk.getTreeCount();
+			final int myTree = nTree - 1;
+
+			TreeFilterMarker treeFilterMarker = new TreeFilterMarker(
+					markTreeFilters);
+
+			while (walk.next()) {
+				if (matchAnyParent(walk, myTree))
+					continue;
+
+				int treeFilterMarks = treeFilterMarker.getMarks(walk);
+
+				final FileDiffForMerges d = new FileDiffForMerges(commit,
+						treeFilterMarks);
+				d.path = walk.getPathString();
+				int m0 = 0;
+				for (int i = 0; i < myTree; i++)
+					m0 |= walk.getRawMode(i);
+				final int m1 = walk.getRawMode(myTree);
+				d.change = ChangeType.MODIFY;
+				if (m0 == 0 && m1 != 0)
+					d.change = ChangeType.ADD;
+				else if (m0 != 0 && m1 == 0)
+					d.change = ChangeType.DELETE;
+				else if (m0 != m1 && walk.idEqual(0, myTree))
+					d.change = ChangeType.MODIFY; // there is no ChangeType.TypeChanged
+				d.blobs = new ObjectId[nTree];
+				d.modes = new FileMode[nTree];
+				for (int i = 0; i < nTree; i++) {
+					d.blobs[i] = walk.getObjectId(i);
+					d.modes[i] = walk.getFileMode(i);
+				}
+
+
+				r.add(d);
+			}
+
+		}
+
+		final FileDiff[] tmp = new FileDiff[r.size()];
+		r.toArray(tmp);
+		return tmp;
+	}
+

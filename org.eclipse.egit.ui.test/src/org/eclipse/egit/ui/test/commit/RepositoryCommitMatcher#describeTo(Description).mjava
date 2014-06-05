@@ -1,0 +1,7 @@
+	public void describeTo(Description description) {
+		description.appendText("commit id=")
+				.appendValue(wanted.abbreviate())
+				.appendText(", isStash=")
+				.appendValue(Boolean.valueOf(wanted.isStash()));
+	}
+

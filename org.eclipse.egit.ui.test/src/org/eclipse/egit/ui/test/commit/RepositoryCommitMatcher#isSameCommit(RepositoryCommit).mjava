@@ -1,0 +1,5 @@
+	public static TypeSafeMatcher<? super RepositoryCommit> isSameCommit(
+			final RepositoryCommit wanted) {
+		return new RepositoryCommitMatcher(wanted);
+	}
+

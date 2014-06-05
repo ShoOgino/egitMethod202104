@@ -1,0 +1,9 @@
+	@Override
+	protected void describeMismatchSafely(RepositoryCommit actual,
+			Description mismatchDescription) {
+		mismatchDescription.appendText("was commit id=")
+				.appendValue(actual.abbreviate())
+				.appendText(", isStash=")
+				.appendValue(Boolean.valueOf(actual.isStash()));
+	}
+

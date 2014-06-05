@@ -6,10 +6,10 @@
 		if (repository == null)
 			return null;
 
-		RevCommit commit = getCommit(memento, repository);
+		RepositoryCommit commit = getCommit(memento, repository);
 		if (commit == null)
 			return null;
 
-		return new CommitEditorInput(new RepositoryCommit(repository, commit));
+		return new CommitEditorInput(commit);
 	}
 

@@ -1,0 +1,27 @@
+	/**
+	 * Gets the changes between this commit and specific parent commits
+	 *
+	 * @param parents
+	 *            parents to which the current commit is compared
+	 *
+	 * @return non-null but possibly empty array of {@link FileDiff} instances.
+	 */
+	public FileDiff[] getDiffs(RevCommit... parents) {
+		RevWalk revWalk = new RevWalk(repository);
+		TreeWalk treewalk = new TreeWalk(revWalk.getObjectReader());
+		treewalk.setRecursive(true);
+		treewalk.setFilter(TreeFilter.ANY_DIFF);
+		FileDiff[] diffsResult = null;
+		try {
+			loadParents();
+			diffsResult = FileDiff.compute(repository, treewalk, commit,
+					parents, TreeFilter.ALL);
+		} catch (IOException e) {
+			diffsResult = new FileDiff[0];
+		} finally {
+			revWalk.release();
+			treewalk.release();
+		}
+		return diffsResult;
+	}
+

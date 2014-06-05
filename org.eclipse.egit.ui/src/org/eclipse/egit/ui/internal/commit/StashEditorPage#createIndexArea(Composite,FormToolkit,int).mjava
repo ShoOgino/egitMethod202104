@@ -1,0 +1,23 @@
+	private void createIndexArea(Composite parent,
+			FormToolkit toolkit, int span) {
+		stagedDiffSection = createSection(parent, toolkit, span);
+		String sectionTitle = MessageFormat.format(
+				UIText.StashEditorPage_StagedChanges, Integer.valueOf(0));
+		stagedDiffSection.setText(sectionTitle);
+		Composite unstagedChangesArea = createSectionClient(
+				stagedDiffSection, toolkit);
+
+		stagedDiffViewer = new CommitFileDiffViewer(unstagedChangesArea,
+				getSite(), SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
+						| SWT.FULL_SELECTION | toolkit.getBorderStyle());
+		stagedDiffViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
+				FormToolkit.TREE_BORDER);
+		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 80)
+				.applyTo(stagedDiffViewer.getControl());
+		stagedDiffViewer.setContentProvider(ArrayContentProvider
+				.getInstance());
+		stagedDiffViewer.setTreeWalk(getCommit().getRepository(), null);
+
+		updateSectionClient(stagedDiffSection, unstagedChangesArea, toolkit);
+	}
+

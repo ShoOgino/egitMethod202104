@@ -4,8 +4,10 @@
 	protected void createHeaderContents(IManagedForm headerForm) {
 		RepositoryCommit commit = getCommit();
 		ScrolledForm form = headerForm.getForm();
-		new HeaderText(form.getForm(), commit.getRevCommit().name());
-		form.setToolTipText(commit.getRevCommit().name());
+		String commitName = commit.getRevCommit().name();
+		String title = getFormattedHeaderTitle(commitName);
+		new HeaderText(form.getForm(), title, commitName);
+		form.setToolTipText(commitName);
 		getToolkit().decorateFormHeading(form.getForm());
 
 		IToolBarManager toolbar = form.getToolBarManager();
@@ -48,12 +50,17 @@
 			}
 		};
 		toolbar.add(repositoryLabelControl);
-		toolbar.add(createCommandContributionItem(CreateTagHandler.ID));
-		toolbar.add(createCommandContributionItem(CreateBranchHandler.ID));
-		toolbar.add(createCommandContributionItem(CheckoutHandler.ID));
-		toolbar.add(createCommandContributionItem(CherryPickHandler.ID));
-		toolbar.add(createCommandContributionItem(RevertHandler.ID));
-		toolbar.add(createCommandContributionItem(ShowInHistoryHandler.ID));
+		if (commit.isStash()) {
+			toolbar.add(createCommandContributionItem(StashApplyHandler.ID));
+			toolbar.add(createCommandContributionItem(StashDropHandler.ID));
+		} else {
+			toolbar.add(createCommandContributionItem(CreateTagHandler.ID));
+			toolbar.add(createCommandContributionItem(CreateBranchHandler.ID));
+			toolbar.add(createCommandContributionItem(CheckoutHandler.ID));
+			toolbar.add(createCommandContributionItem(CherryPickHandler.ID));
+			toolbar.add(createCommandContributionItem(RevertHandler.ID));
+			toolbar.add(createCommandContributionItem(ShowInHistoryHandler.ID));
+		}
 		addContributions(toolbar);
 		toolbar.update(true);
 		getSite().setSelectionProvider(new ISelectionProvider() {

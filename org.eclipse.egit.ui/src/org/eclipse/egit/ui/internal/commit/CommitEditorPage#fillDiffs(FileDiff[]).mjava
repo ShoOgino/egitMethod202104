@@ -1,7 +1,5 @@
-	private void fillDiffs(FileDiff[] diffs) {
+	void fillDiffs(FileDiff[] diffs) {
 		diffViewer.setInput(diffs);
-		diffSection.setText(MessageFormat.format(
-				UIText.CommitEditorPage_SectionFiles,
-				Integer.valueOf(diffs.length)));
+		diffSection.setText(getDiffSectionTitle(Integer.valueOf(diffs.length)));
 	}
 

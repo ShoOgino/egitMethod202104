@@ -9,5 +9,6 @@
 		memento.putString(COMMIT, commit.getRevCommit().name());
 		memento.putString(PATH, commit.getRepository().getDirectory()
 				.getAbsolutePath());
+		memento.putBoolean(STASH, commit.isStash());
 	}
 

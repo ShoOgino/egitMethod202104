@@ -1,0 +1,19 @@
+	private int getStashIndex(Repository repo, ObjectId id)
+			throws ExecutionException {
+		int index = 0;
+		try {
+			for (RevCommit commit : Git.wrap(repo).stashList().call())
+				if (commit.getId().equals(id))
+					return index;
+				else
+					index++;
+			throw new IllegalStateException(MessageFormat.format(
+					UIText.StashDropCommand_stashCommitNotFound, id.name()));
+		} catch (Exception e) {
+			String message = MessageFormat.format(
+					UIText.StashDropCommand_dropFailed, id.name());
+			Activator.showError(message, e);
+			throw new ExecutionException(message, e);
+		}
+	}
+

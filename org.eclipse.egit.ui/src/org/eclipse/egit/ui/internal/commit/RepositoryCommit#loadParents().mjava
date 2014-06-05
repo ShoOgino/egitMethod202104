@@ -1,0 +1,10 @@
+	private void loadParents() throws IOException {
+		RevWalk revWalk = new RevWalk(repository);
+		try {
+			for (RevCommit parent : commit.getParents())
+				revWalk.parseBody(parent);
+		} finally {
+			revWalk.release();
+		}
+	}
+

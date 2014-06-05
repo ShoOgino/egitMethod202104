@@ -5,7 +5,7 @@
 	 * @param repository
 	 * @return rev commit
 	 */
-	protected RevCommit getCommit(IMemento memento, Repository repository) {
+	protected RepositoryCommit getCommit(IMemento memento, Repository repository) {
 		String id = memento.getString(COMMIT);
 		if (id == null)
 			return null;
@@ -15,7 +15,10 @@
 			RevCommit commit = walk.parseCommit(ObjectId.fromString(id));
 			for (RevCommit parent : commit.getParents())
 				walk.parseBody(parent);
-			return commit;
+			RepositoryCommit repositoryCommit = new RepositoryCommit(
+					repository, commit);
+			repositoryCommit.setStash(memento.getBoolean(STASH).booleanValue());
+			return repositoryCommit;
 		} catch (IOException e) {
 			return null;
 		} finally {

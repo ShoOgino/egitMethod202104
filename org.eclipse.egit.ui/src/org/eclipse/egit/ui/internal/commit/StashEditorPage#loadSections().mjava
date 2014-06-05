@@ -1,3 +1,4 @@
+	@Override
 	void loadSections() {
 		RepositoryCommit commit = getCommit();
 		Job refreshJob = new Job(MessageFormat.format(
@@ -5,21 +6,17 @@
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final List<Ref> tags = loadTags();
-				final List<Ref> branches = loadBranches();
-				final FileDiff[] diffs = getCommit().getDiffs();
+				final FileDiff[] unstagedDiffs = getUnstagedDiffs();
+				final FileDiff[] indexDiffs = getStagedDiffs();
 
 				final ScrolledForm form = getManagedForm().getForm();
 				if (UIUtils.isUsable(form))
 					form.getDisplay().syncExec(new Runnable() {
-
 						public void run() {
 							if (!UIUtils.isUsable(form))
 								return;
-
-							fillTags(getManagedForm().getToolkit(), tags);
-							fillDiffs(diffs);
-							fillBranches(branches);
+							fillDiffs(unstagedDiffs);
+							fillStagedDiffs(indexDiffs);
 							form.layout(true, true);
 						}
 					});

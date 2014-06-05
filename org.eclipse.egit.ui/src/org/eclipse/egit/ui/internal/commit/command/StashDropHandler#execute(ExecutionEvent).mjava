@@ -1,0 +1,44 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final RevCommit commit = getSelectedItem(RevCommit.class, event);
+		if (commit == null)
+			return null;
+		Repository repo = getSelectedItem(Repository.class, event);
+		if (repo == null)
+			return null;
+		final Shell parent = getPart(event).getSite().getShell();
+		final int stashIndex = getStashIndex(repo, commit.getId());
+
+		if (!confirmStashDrop(parent, stashIndex))
+			return null;
+
+		final StashDropOperation op = new StashDropOperation(repo, stashIndex);
+
+		Job job = new WorkspaceJob(MessageFormat.format(
+				UIText.StashApplyCommand_jobTitle, commit.name())) {
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
+				try {
+					op.execute(monitor);
+				} catch (CoreException e) {
+					Activator.logError(MessageFormat.format(
+							UIText.StashDropCommand_dropFailed, "stash@{" //$NON-NLS-1$
+									+ stashIndex + "}"), e); //$NON-NLS-1$
+				}
+
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.STASH.equals(family))
+					return true;
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
+		return null;
+	}
+

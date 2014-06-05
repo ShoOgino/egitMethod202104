@@ -1,9 +1,11 @@
 	/**
 	 * @param form
-	 * @param sha1String string form of the SHA-1, in lower case hexadecimal
+	 * @param text
+	 *            the displayed text
+	 * @param sha1String
+	 *            string form of the SHA-1, in lower case hexadecimal
 	 */
-	public HeaderText(Form form, String sha1String) {
-		String text= MessageFormat.format(UIText.CommitEditor_TitleHeader, sha1String);
+	public HeaderText(Form form, String text, String sha1String) {
 		try {
 			FormHeading heading = (FormHeading) form.getHead();
 			heading.setBusy(true);

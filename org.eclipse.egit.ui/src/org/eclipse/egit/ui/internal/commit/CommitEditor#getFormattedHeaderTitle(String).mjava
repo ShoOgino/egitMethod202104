@@ -1,0 +1,15 @@
+	private String getFormattedHeaderTitle(String commitName) {
+		if (getCommit().isStash()) {
+			int stashIndex = getStashIndex(getCommit().getRepository(),
+					getCommit().getRevCommit().getId());
+			String stashName = MessageFormat.format("stash@'{'{0}'}'", //$NON-NLS-1$
+					Integer.valueOf(stashIndex));
+			return MessageFormat.format(
+					UIText.CommitEditor_TitleHeaderStashedCommit,
+					stashName);
+		} else {
+			return MessageFormat.format(UIText.CommitEditor_TitleHeaderCommit,
+					commitName);
+		}
+	}
+

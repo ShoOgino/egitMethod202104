@@ -1,0 +1,15 @@
+	private boolean confirmStashDrop(final Shell shell, final int stashIndex) {
+		final AtomicBoolean confirmed = new AtomicBoolean(false);
+
+		shell.getDisplay().syncExec(new Runnable() {
+			public void run() {
+				String message = MessageFormat.format(
+						UIText.StashDropCommand_confirmSingle,
+						Integer.toString(stashIndex));
+				confirmed.set(MessageDialog.openConfirm(shell,
+						UIText.StashDropCommand_confirmTitle, message));
+			}
+		});
+		return confirmed.get();
+	}
+
