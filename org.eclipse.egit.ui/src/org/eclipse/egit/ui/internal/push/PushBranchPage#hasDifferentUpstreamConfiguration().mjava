@@ -12,7 +12,7 @@
 
 		String merge = config.getString(ConfigConstants.CONFIG_BRANCH_SECTION,
 				branchName, ConfigConstants.CONFIG_KEY_MERGE);
-		if (merge == null || !merge.equals(Constants.R_HEADS + getBranchName()))
+		if (merge == null || !merge.equals(Constants.R_HEADS + getRemoteBranchName()))
 			return true;
 
 		boolean rebase = config.getBoolean(

@@ -1,11 +1,19 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repository = getRepository(true, event);
 
-		Ref branchRef = getBranchRef(repository);
-		if (branchRef != null) {
-			PushBranchWizard wizard = new PushBranchWizard(repository, branchRef);
+		try {
+			PushBranchWizard wizard = null;
+			Ref ref = getBranchRef(repository);
+			if (ref != null) {
+				wizard = new PushBranchWizard(repository, ref);
+			} else {
+				ObjectId id = repository.resolve(repository.getFullBranch());
+				wizard = new PushBranchWizard(repository, id);
+			}
 			WizardDialog dlg = new WizardDialog(getShell(event), wizard);
 			dlg.open();
+		} catch (IOException ex) {
+			Activator.handleError(ex.getLocalizedMessage(), ex, false);
 		}
 
 		return null;

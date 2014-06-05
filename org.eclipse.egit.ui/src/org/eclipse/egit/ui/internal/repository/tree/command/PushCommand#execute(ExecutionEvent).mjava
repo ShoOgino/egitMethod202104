@@ -7,8 +7,8 @@
 		try {
 			switch (node.getType()) {
 			case REF:
-				pushWiz = new PushBranchWizard(node.getRepository(),
-						(Ref) node.getObject());
+				Ref ref = (Ref) node.getObject();
+				pushWiz = new PushBranchWizard(node.getRepository(), ref);
 				break;
 			case TAG:
 				pushWiz = createPushTagsWizard(nodes);

@@ -11,17 +11,82 @@
 
 		Composite inputPanel = new Composite(main, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(inputPanel);
-		inputPanel.setLayout(GridLayoutFactory.fillDefaults().numColumns(3)
+		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(inputPanel);
+
+		Label sourceLabel = new Label(inputPanel, SWT.NONE);
+		sourceLabel.setText(UIText.PushBranchPage_Source);
+
+		Composite sourceComposite = new Composite(inputPanel, SWT.NONE);
+		sourceComposite.setLayoutData(GridDataFactory.fillDefaults()
+				.indent(UIUtils.getControlIndent(), 0).create());
+		RowLayout rowLayout = RowLayoutFactory.fillDefaults().create();
+		rowLayout.center = true;
+		sourceComposite.setLayout(rowLayout);
+
+		if (this.ref != null) {
+			Image branchIcon = UIIcons.BRANCH.createImage();
+			this.disposables.add(branchIcon);
+
+			Label branchIconLabel = new Label(sourceComposite, SWT.NONE);
+			branchIconLabel
+					.setLayoutData(new RowData(branchIcon.getBounds().width,
+							branchIcon.getBounds().height));
+			branchIconLabel.setBackgroundImage(branchIcon);
+			Label localBranchLabel = new Label(sourceComposite, SWT.NONE);
+			localBranchLabel.setText(Repository.shortenRefName(this.ref
+					.getName()));
+
+			Label spacer = new Label(sourceComposite, SWT.NONE);
+			spacer.setLayoutData(new RowData(3, SWT.DEFAULT));
+		}
+
+		Image commitIcon = UIIcons.COMMIT.createImage();
+		this.disposables.add(commitIcon);
+		Label commitIconLabel = new Label(sourceComposite, SWT.NONE);
+		commitIconLabel.setBackgroundImage(commitIcon);
+		commitIconLabel.setLayoutData(new RowData(commitIcon.getBounds().width,
+				commitIcon.getBounds().height));
+
+		Label commit = new Label(sourceComposite, SWT.NONE);
+		RevWalk revWalk = new RevWalk(repository);
+		StringBuilder commitBuilder = new StringBuilder(this.commitToPush
+				.abbreviate(7).name());
+		StringBuilder commitTooltipBuilder = new StringBuilder(
+				this.commitToPush.getName());
+		try {
+			RevCommit revCommit = revWalk.parseCommit(this.commitToPush);
+			commitBuilder.append("  "); //$NON-NLS-1$
+			commitBuilder.append(Utils.shortenText(revCommit.getShortMessage(),
+					MAX_SHORTCOMMIT_MESSAGE_LENGTH));
+			commitTooltipBuilder.append("\n\n"); //$NON-NLS-1$
+			commitTooltipBuilder.append(revCommit.getFullMessage());
+		} catch (IOException ex) {
+			commitBuilder
+					.append(UIText.PushBranchPage_CannotAccessCommitDescription);
+			commitTooltipBuilder.append(ex.getMessage());
+			Activator.handleError(ex.getLocalizedMessage(), ex, false);
+		}
+		commit.setText(commitBuilder.toString());
+		commit.setToolTipText(commitTooltipBuilder.toString());
+
+		Label destinationLabel = new Label(inputPanel, SWT.NONE);
+		destinationLabel.setText(UIText.PushBranchPage_Destination);
+		GridDataFactory.fillDefaults().applyTo(destinationLabel);
+
+		Composite remoteGroup = new Composite(inputPanel, SWT.NONE);
+		remoteGroup.setLayoutData(GridDataFactory.fillDefaults()
+				.indent(UIUtils.getControlIndent(), 0).create());
+		remoteGroup.setLayout(GridLayoutFactory.fillDefaults().numColumns(3)
 				.create());
 
-		Label remoteLabel = new Label(inputPanel, SWT.NONE);
+		Label remoteLabel = new Label(remoteGroup, SWT.NONE);
 		remoteLabel.setText(UIText.PushBranchPage_RemoteLabel);
 
 		// Use full width in case "New Remote..." button is not shown
 		int remoteSelectionSpan = showNewRemoteButton ? 1 : 2;
 
-		remoteSelectionCombo = new RemoteSelectionCombo(
-				inputPanel, SWT.NONE, SelectionType.PUSH);
+		remoteSelectionCombo = new RemoteSelectionCombo(remoteGroup, SWT.NONE,
+				SelectionType.PUSH);
 		GridDataFactory.fillDefaults().grab(true, false).span(remoteSelectionSpan, 1)
 				.applyTo(remoteSelectionCombo);
 		setRemoteConfigs();
@@ -34,7 +99,7 @@
 				});
 
 		if (showNewRemoteButton) {
-			Button newRemoteButton = new Button(inputPanel, SWT.PUSH);
+			Button newRemoteButton = new Button(remoteGroup, SWT.PUSH);
 			newRemoteButton.setText(UIText.PushBranchPage_NewRemoteButton);
 			GridDataFactory.fillDefaults().applyTo(newRemoteButton);
 			newRemoteButton.addSelectionListener(new SelectionAdapter() {
@@ -45,27 +110,30 @@
 			});
 		}
 
-		Label branchNameLabel = new Label(inputPanel, SWT.NONE);
-		branchNameLabel.setText(UIText.PushBranchPage_BranchNameLabel);
+		Label branchNameLabel = new Label(remoteGroup, SWT.NONE);
+		branchNameLabel.setText(UIText.PushBranchPage_RemoteBranchNameLabel);
 
-		branchNameText = new Text(inputPanel, SWT.BORDER);
+		remoteBranchNameText = new Text(remoteGroup, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
-				.applyTo(branchNameText);
-		branchNameText.setText(getSuggestedBranchName());
+				.applyTo(remoteBranchNameText);
+		remoteBranchNameText.setText(getSuggestedBranchName());
 
-		upstreamConfigComponent = new UpstreamConfigComponent(inputPanel,
-				SWT.NONE);
-		upstreamConfigComponent.getContainer().setLayoutData(
-				GridDataFactory.fillDefaults().grab(true, false).span(3, 1)
-						.create());
-		upstreamConfigComponent
-				.addUpstreamConfigSelectionListener(new UpstreamConfigSelectionListener() {
-					public void upstreamConfigSelected(
-							UpstreamConfig newUpstreamConfig) {
-						upstreamConfig = newUpstreamConfig;
-						checkPage();
-					}
-				});
+		if (this.ref != null) {
+			upstreamConfigComponent = new UpstreamConfigComponent(inputPanel,
+					SWT.NONE);
+			upstreamConfigComponent.getContainer().setLayoutData(
+					GridDataFactory.fillDefaults().grab(true, false).span(3, 1)
+							.indent(SWT.DEFAULT, 20).create());
+			upstreamConfigComponent
+					.addUpstreamConfigSelectionListener(new UpstreamConfigSelectionListener() {
+						public void upstreamConfigSelected(
+								UpstreamConfig newUpstreamConfig) {
+							upstreamConfig = newUpstreamConfig;
+							checkPage();
+						}
+					});
+			setDefaultUpstreamConfig();
+		}
 
 		final Button forceUpdateButton = new Button(inputPanel, SWT.CHECK);
 		forceUpdateButton.setText(UIText.PushBranchPage_ForceUpdateButton);
@@ -78,14 +146,14 @@
 			}
 		});
 
-		setDefaultUpstreamConfig();
+
 
 		setControl(main);
 
 		checkPage();
 
 		// Add listener now to avoid setText above to already trigger it.
-		branchNameText.addModifyListener(new ModifyListener() {
+		remoteBranchNameText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				checkPage();
 			}

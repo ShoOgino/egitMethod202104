@@ -1,7 +1,11 @@
 	private void configureUpstream() throws IOException {
+		if (this.ref == null) {
+			// Don't configure upstream for detached HEAD
+			return;
+		}
 		String remoteName = getRemoteName();
-		String remoteBranchName = pushBranchPage.getBranchName();
-		String branchName = Repository.shortenRefName(refToPush.getName());
+		String remoteBranchName = pushBranchPage.getRemoteBranchName();
+		String branchName = Repository.shortenRefName(this.ref.getName());
 
 		StoredConfig config = repository.getConfig();
 		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
