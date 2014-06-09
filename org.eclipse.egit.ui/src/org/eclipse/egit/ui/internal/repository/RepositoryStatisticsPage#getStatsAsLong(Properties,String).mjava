@@ -1,0 +1,7 @@
+	private static long getStatsAsLong(Properties stats, String key) {
+		Object value = stats.get(key);
+		if (value instanceof Number)
+			return ((Number) value).longValue();
+		return 0L;
+	}
+

@@ -1,0 +1,4 @@
+	private String getStatsAsString(Properties stats, String key) {
+		return bigIntFmt.format(firstNonNull(stats.get(key), "")); //$NON-NLS-1$
+	}
+
