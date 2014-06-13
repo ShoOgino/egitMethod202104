@@ -1,7 +1,7 @@
 		@Override
 		public long getLength() {
 			if (length < 0)
-				if (rsrc instanceof IFile || mode == FileMode.SYMLINK) {
+				if (rsrc instanceof IFile || fileMode == FileMode.SYMLINK) {
 					try {
 						File file = asFile();
 						if (file != null)
