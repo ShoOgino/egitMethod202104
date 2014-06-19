@@ -1,18 +1,53 @@
 	public void execute(IProgressMonitor m) throws CoreException {
 		IProgressMonitor monitor = m != null ? m : new NullProgressMonitor();
-		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
+		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor pm) throws CoreException {
 				pm.beginTask("", 2); //$NON-NLS-1$
 
 				pm.subTask(MessageFormat.format(
 						CoreText.CherryPickOperation_cherryPicking,
-						commit.name()));
-				CherryPickCommand command = new Git(repo).cherryPick().include(
-						commit.getId());
+						Integer.valueOf(commits.size())));
+
+				InteractiveHandler handler = new InteractiveHandler() {
+					public void prepareSteps(List<RebaseTodoLine> steps) {
+						for (RebaseTodoLine step : steps) {
+							try {
+								step.setAction(RebaseTodoLine.Action.PICK);
+							} catch (IllegalTodoFileModification e) {
+								// shouldn't happen
+							}
+						}
+
+						// apply steps in the chronological order
+						List<RevCommit> stepCommits = new ArrayList<RevCommit>(
+								commits);
+						Collections.reverse(stepCommits);
+
+						for (RevCommit commit : stepCommits) {
+							RebaseTodoLine step = new RebaseTodoLine(
+									RebaseTodoLine.Action.PICK,
+									commit.abbreviate(7), ""); //$NON-NLS-1$
+							steps.add(step);
+						}
+					}
+
+					public String modifyCommitMessage(String oldMessage) {
+						return oldMessage;
+					}
+				};
 				try {
-					result = command.call();
+					Git git = new Git(repo);
+					ObjectId headCommitId = repo.resolve(Constants.HEAD);
+					RevCommit headCommit = new RevWalk(repo)
+							.parseCommit(headCommitId);
+					git.rebase().setUpstream(headCommit.getParent(0))
+							.runInteractively(handler)
+							.setOperation(RebaseCommand.Operation.BEGIN).call();
 				} catch (GitAPIException e) {
+					throw new TeamException(e.getLocalizedMessage(),
+							e.getCause());
+				} catch (IOException e) {
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());
 				}
