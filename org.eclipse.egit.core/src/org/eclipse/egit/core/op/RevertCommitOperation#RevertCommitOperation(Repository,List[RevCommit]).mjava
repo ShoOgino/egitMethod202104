@@ -1,0 +1,12 @@
+	/**
+	 * Create revert commit operation
+	 *
+	 * @param repository
+	 * @param commits
+	 *            the commits to revert (in newest-first order)
+	 */
+	public RevertCommitOperation(Repository repository, List<RevCommit> commits) {
+		this.repo = repository;
+		this.commits = commits;
+	}
+
