@@ -1,6 +1,6 @@
 		@Override
 		public InputStream openInputStream() throws IOException {
-			if (mode == FileMode.SYMLINK) {
+			if (fileMode == FileMode.SYMLINK) {
 				return new ByteArrayInputStream(FS.DETECTED.readSymLink(
 						asFile()).getBytes(Constants.CHARACTER_ENCODING));
 			} else {
