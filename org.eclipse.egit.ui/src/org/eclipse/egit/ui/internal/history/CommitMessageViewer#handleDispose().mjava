@@ -9,6 +9,10 @@
 		if (refsChangedListener != null)
 			refsChangedListener.remove();
 		refsChangedListener = null;
+		showTagSequencePrefAction.dispose();
+		wrapCommentsPrefAction.dispose();
+		fillParagraphsPrefAction.dispose();
+
 		super.handleDispose();
 	}
 

@@ -117,29 +117,35 @@
 
 		IPersistentPreferenceStore pstore = (IPersistentPreferenceStore) store;
 
-		Action showTagSequence = new BooleanPrefAction(pstore, UIPreferences.HISTORY_SHOW_TAG_SEQUENCE, UIText.ResourceHistory_ShowTagSequence) {
+		showTagSequencePrefAction = new BooleanPrefAction(pstore,
+				UIPreferences.HISTORY_SHOW_TAG_SEQUENCE,
+				UIText.ResourceHistory_ShowTagSequence) {
 			@Override
 			protected void apply(boolean value) {
 				// nothing, just toggle
 			}
 		};
-		mgr.add(showTagSequence);
+		mgr.add(showTagSequencePrefAction);
 
-		Action wrapComments = new BooleanPrefAction(pstore, UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP, UIText.ResourceHistory_toggleCommentWrap) {
+		wrapCommentsPrefAction = new BooleanPrefAction(pstore,
+				UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP,
+				UIText.ResourceHistory_toggleCommentWrap) {
 			@Override
 			protected void apply(boolean value) {
 				// nothing, just toggle
 			}
 		};
-		mgr.add(wrapComments);
+		mgr.add(wrapCommentsPrefAction);
 
-		Action fillParagraphs = new BooleanPrefAction(pstore, UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL, UIText.ResourceHistory_toggleCommentFill) {
+		fillParagraphsPrefAction = new BooleanPrefAction(pstore,
+				UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL,
+				UIText.ResourceHistory_toggleCommentFill) {
 			@Override
 			protected void apply(boolean value) {
 				// nothing, just toggle
 			}
 		};
-		mgr.add(fillParagraphs);
+		mgr.add(fillParagraphsPrefAction);
 
 	}
 
