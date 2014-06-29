@@ -1,0 +1,11 @@
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository();
+		if (repository == null)
+			return null;
+
+		StashCreateUI stashCreateUI = new StashCreateUI(repository);
+		stashCreateUI.createStash(getShell(event));
+
+		return null;
+	}
+

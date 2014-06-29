@@ -1,0 +1,9 @@
+	public Menu getMenu(Control parent) {
+		stashesMenu.initialize(getServiceLocator());
+		if (menu != null)
+			menu.dispose();
+		menu = new Menu(parent);
+		stashesMenu.fill(menu, 0);
+		return menu;
+	}
+

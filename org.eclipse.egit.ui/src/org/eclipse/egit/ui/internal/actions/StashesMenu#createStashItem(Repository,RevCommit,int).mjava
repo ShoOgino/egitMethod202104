@@ -1,0 +1,16 @@
+	private static ActionContributionItem createStashItem(
+			final Repository repo, final RevCommit stashCommit, int index) {
+		String text = MessageFormat.format(UIText.StashesMenu_StashItemText,
+				Integer.valueOf(index), stashCommit.getShortMessage());
+		Action action = new Action(text) {
+			@Override
+			public void run() {
+				RepositoryCommit repositoryCommit = new RepositoryCommit(repo,
+						stashCommit);
+				repositoryCommit.setStash(true);
+				CommitEditor.openQuiet(repositoryCommit);
+			}
+		};
+		return new ActionContributionItem(action);
+	}
+

@@ -1,0 +1,13 @@
+	private Repository getRepository() {
+		if (serviceLocator == null)
+			return null;
+
+		IHandlerService handlerService = (IHandlerService) serviceLocator
+				.getService(IHandlerService.class);
+		if (handlerService == null)
+			return null;
+
+		IEvaluationContext evaluationContext = handlerService.getCurrentState();
+		return RepositoryActionHandler.getRepository(evaluationContext);
+	}
+

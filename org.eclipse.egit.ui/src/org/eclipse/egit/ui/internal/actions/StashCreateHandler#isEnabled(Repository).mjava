@@ -1,0 +1,24 @@
+	static boolean isEnabled(Repository repository) {
+		if (repository == null)
+			return false;
+
+		if (!repository.getRepositoryState().canCommit())
+			return false;
+
+		IndexDiffCacheEntry entry = Activator.getDefault()
+				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		if (entry == null)
+			return false;
+
+		IndexDiffData diff = entry.getIndexDiff();
+		if (diff == null)
+			return false;
+
+		if (diff.getAdded().isEmpty() && diff.getChanged().isEmpty()
+				&& diff.getRemoved().isEmpty() && diff.getUntracked().isEmpty()
+				&& diff.getModified().isEmpty() && diff.getMissing().isEmpty())
+			return false;
+
+		return true;
+	}
+

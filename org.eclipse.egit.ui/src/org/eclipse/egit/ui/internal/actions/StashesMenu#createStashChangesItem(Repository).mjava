@@ -1,0 +1,19 @@
+	private static IContributionItem createStashChangesItem(
+			final Repository repository) {
+		Action action = new Action(UIText.StashesMenu_StashChangesActionText) {
+			@Override
+			public void run() {
+				StashCreateUI stashCreateUI = new StashCreateUI(repository);
+				Shell shell = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell();
+				stashCreateUI.createStash(shell);
+			}
+
+			@Override
+			public boolean isEnabled() {
+				return StashCreateHandler.isEnabled(repository);
+			}
+		};
+		return new ActionContributionItem(action);
+	}
+

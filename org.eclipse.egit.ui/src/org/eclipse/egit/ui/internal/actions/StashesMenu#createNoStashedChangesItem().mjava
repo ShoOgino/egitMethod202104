@@ -1,0 +1,10 @@
+	private static IContributionItem createNoStashedChangesItem() {
+		Action action = new Action(UIText.StashesMenu_NoStashedChangesText) {
+			@Override
+			public boolean isEnabled() {
+				return false;
+			}
+		};
+		return new ActionContributionItem(action);
+	}
+

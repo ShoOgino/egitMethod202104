@@ -10,7 +10,7 @@
 	 *            must be provided if warn = true
 	 * @return repository for current project, or null
 	 */
-	private Repository getRepository(boolean warn,
+	private static Repository getRepository(boolean warn,
 			IStructuredSelection selection, Shell shell) {
 		RepositoryMapping mapping = null;
 		for (IPath location : getSelectedLocations(selection)) {

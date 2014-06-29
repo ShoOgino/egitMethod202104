@@ -1,0 +1,17 @@
+	/**
+	 * Create the action
+	 */
+	public StashToolbarAction() {
+		super(ActionCommands.STASH_CREATE, new StashCreateHandler() {
+			/*
+			 * We need to override this because the toolbar action and its menu
+			 * have the same "enabled" state. The menu needs to be enabled even
+			 * when creating a new stash is not currently possible.
+			 */
+			@Override
+			public boolean isEnabled() {
+				return getRepository() != null;
+			}
+		});
+	}
+

@@ -1,0 +1,13 @@
+	@Override
+	protected IContributionItem[] getContributionItems() {
+		Repository repository = getRepository();
+
+		List<IContributionItem> items = new ArrayList<IContributionItem>();
+
+		items.add(createStashChangesItem(repository));
+		items.add(new Separator());
+		items.addAll(createStashItems(repository));
+
+		return items.toArray(new IContributionItem[0]);
+	}
+
