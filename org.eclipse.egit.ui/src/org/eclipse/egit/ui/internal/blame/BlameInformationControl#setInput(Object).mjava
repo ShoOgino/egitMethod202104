@@ -1,4 +1,21 @@
 	public void setInput(Object input) {
+		if (input == null) {
+			// Make sure we don't hold a reference to this when nothing is
+			// shown, it can be big
+			this.revision = null;
+			if (showAnnotationsLink != null) {
+				// This listener can also hold a reference because of a final
+				// parameter, see createDiffLinkAndText(final RevCommit
+				// parent...)
+				if (!showAnnotationsLink.isDisposed())
+					showAnnotationsLink
+							.removeSelectionListener(showAnnotationsLinkSelectionAdapter);
+				showAnnotationsLink = null;
+				showAnnotationsLinkSelectionAdapter = null;
+			}
+			return;
+		}
+
 		this.revision = (BlameRevision) input;
 
 		// Remember line number that was hovered over when the input was set.

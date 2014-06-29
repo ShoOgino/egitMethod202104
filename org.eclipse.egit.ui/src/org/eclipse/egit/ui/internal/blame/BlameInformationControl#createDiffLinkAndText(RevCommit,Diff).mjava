@@ -20,15 +20,17 @@
 				UIText.BlameInformationControl_DiffHeaderLabel, parentId,
 				parentMessage));
 
-		Link showAnnotationsLink = new Link(header, SWT.NONE);
+		showAnnotationsLink = new Link(header, SWT.NONE);
 		showAnnotationsLink
 				.setText(UIText.BlameInformationControl_ShowAnnotationsLink);
-		showAnnotationsLink.addSelectionListener(new SelectionAdapter() {
+		showAnnotationsLinkSelectionAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				blameParent(parent, diff, parentLine);
 			}
-		});
+		};
+		showAnnotationsLink
+				.addSelectionListener(showAnnotationsLinkSelectionAdapter);
 
 		DiffViewer diffText = new DiffViewer(diffComposite, null, SWT.NONE);
 		diffText.setEditable(false);
