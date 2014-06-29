@@ -2,6 +2,10 @@
 		for (Control child : tagLabelArea.getChildren())
 			child.dispose();
 
+		// Hide "Tags" area if no tags to show
+		((GridData) tagLabelArea.getParent().getLayoutData()).exclude = tags
+				.isEmpty();
+
 		GridLayoutFactory.fillDefaults().spacing(1, 1).numColumns(tags.size())
 				.applyTo(tagLabelArea);
 

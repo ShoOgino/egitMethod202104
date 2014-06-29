@@ -8,7 +8,7 @@
 				| toolkit.getBorderStyle());
 		diffViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
 				FormToolkit.TREE_BORDER);
-		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 80)
+		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(diffViewer.getControl());
 		diffViewer.setContentProvider(ArrayContentProvider.getInstance());
 		diffViewer.setTreeWalk(getCommit().getRepository(), null);

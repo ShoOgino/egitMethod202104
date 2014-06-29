@@ -1,5 +1,6 @@
 	void fillDiffs(FileDiff[] diffs) {
 		diffViewer.setInput(diffs);
 		diffSection.setText(getDiffSectionTitle(Integer.valueOf(diffs.length)));
+		setSectionExpanded(diffSection, diffs.length != 0);
 	}
 
