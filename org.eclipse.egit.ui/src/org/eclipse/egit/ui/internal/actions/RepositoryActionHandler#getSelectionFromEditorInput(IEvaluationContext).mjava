@@ -1,0 +1,16 @@
+	private static IStructuredSelection getSelectionFromEditorInput(
+			IEvaluationContext context) {
+		Object object = context.getVariable(ISources.ACTIVE_EDITOR_INPUT_NAME);
+		if (object instanceof IEditorInput) {
+			IEditorInput editorInput = (IEditorInput) object;
+			// Note that there is both a getResource(IEditorInput) as well as a
+			// getResource(Object), which don't do the same thing. We explicitly
+			// want the first here.
+			IResource resource = ResourceUtil.getResource(editorInput);
+			if (resource != null)
+				return new StructuredSelection(resource);
+		}
+
+		return StructuredSelection.EMPTY;
+	}
+

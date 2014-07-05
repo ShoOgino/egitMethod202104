@@ -1,0 +1,17 @@
+	private static IStructuredSelection getSelection(IEvaluationContext context) {
+		if (context == null)
+			return StructuredSelection.EMPTY;
+
+		Object selection = context
+				.getVariable(ISources.ACTIVE_MENU_SELECTION_NAME);
+		if (!(selection instanceof ISelection))
+			selection = context
+					.getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
+
+		if (selection instanceof IStructuredSelection)
+			return (IStructuredSelection) selection;
+		else if (selection instanceof ITextSelection)
+			return getSelectionFromEditorInput(context);
+		return StructuredSelection.EMPTY;
+	}
+

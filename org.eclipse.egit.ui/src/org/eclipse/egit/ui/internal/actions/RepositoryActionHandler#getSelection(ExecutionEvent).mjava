@@ -5,26 +5,13 @@
 	 * @throws ExecutionException
 	 *             if the selection can't be determined
 	 */
-	protected IStructuredSelection getSelection(ExecutionEvent event)
+	protected static IStructuredSelection getSelection(ExecutionEvent event)
 			throws ExecutionException {
 		if (event == null)
 			throw new IllegalArgumentException("event must not be NULL"); //$NON-NLS-1$
-		Object selection = HandlerUtil.getActiveMenuSelection(event);
-		if (selection == null)
-			selection = HandlerUtil.getCurrentSelectionChecked(event);
-		if (selection instanceof TextSelection) {
-			IEditorInput editorInput = (IEditorInput) HandlerUtil.getVariable(
-					event, ISources.ACTIVE_EDITOR_INPUT_NAME);
-			IResource resource = ResourceUtil.getResource(editorInput);
-			if (resource != null)
-				return new StructuredSelection(resource);
-
-			resource = ResourceUtil.getFile(editorInput);
-			if (resource != null)
-				return new StructuredSelection(resource);
-		}
-		if (selection instanceof IStructuredSelection)
-			return (IStructuredSelection) selection;
+		Object context = event.getApplicationContext();
+		if (context instanceof IEvaluationContext)
+			return getSelection((IEvaluationContext) context);
 		return StructuredSelection.EMPTY;
 	}
 
