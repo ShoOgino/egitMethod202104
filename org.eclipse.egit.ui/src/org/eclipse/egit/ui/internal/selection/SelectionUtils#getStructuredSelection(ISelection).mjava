@@ -1,0 +1,18 @@
+	/**
+	 * Tries to convert the passed selection to a structured selection.
+	 * <p>
+	 * E.g. in case of a text selection, it is converted to be a selection of
+	 * the resource that is in the editor.
+	 *
+	 * @param selection
+	 * @return the structured selection, or an empty selection
+	 */
+	public static IStructuredSelection getStructuredSelection(
+			ISelection selection) {
+		if (selection instanceof IStructuredSelection)
+			return (IStructuredSelection) selection;
+		else if (selection instanceof ITextSelection)
+			return getSelectionFromEditorInput(getEvaluationContext());
+		return StructuredSelection.EMPTY;
+	}
+

@@ -1,4 +1,8 @@
-	private static IPath[] getSelectedLocations(IStructuredSelection selection) {
+	/**
+	 * @param selection
+	 * @return the selected locations
+	 */
+	public static IPath[] getSelectedLocations(IStructuredSelection selection) {
 		Set<IPath> result = new LinkedHashSet<IPath>();
 		for (Object o : selection.toList()) {
 			IResource resource = AdapterUtils.adapt(o, IResource.class);

@@ -1,0 +1,14 @@
+	/**
+	 * Get the single selected repository or warn if no repository or multiple
+	 * different repositories could be found.
+	 *
+	 * @param selection
+	 * @param shell
+	 *            the shell for showing the warning
+	 * @return the single selected repository, or <code>null</code>
+	 */
+	public static Repository getRepositoryOrWarn(
+			IStructuredSelection selection, Shell shell) {
+		return getRepository(true, selection, shell);
+	}
+

@@ -1,6 +1,6 @@
 	@Test
 	public void selectionNotAdaptableToRepository() {
-		when(selectionService.getSelection()).thenReturn(
+		mockSelection(
 				new StructuredSelection(new Object()));
 
 		MenuItem[] items = fillMenu();

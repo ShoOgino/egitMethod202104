@@ -2,7 +2,8 @@
 	 * @param selection
 	 * @return the resources in the selection
 	 */
-	private IResource[] getSelectedResources(IStructuredSelection selection) {
+	public static IResource[] getSelectedResources(
+			IStructuredSelection selection) {
 		Set<IResource> result = new LinkedHashSet<IResource>();
 		for (Object o : selection.toList()) {
 			IResource resource = AdapterUtils.adapt(o, IResource.class);

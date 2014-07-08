@@ -1,0 +1,7 @@
+	private static Repository getRepositoryOfProject(Object object) {
+		IProject project = AdapterUtils.adapt(object, IProject.class);
+		if (project != null)
+			return getRepositoryOfMapping(project);
+		return null;
+	}
+

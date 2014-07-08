@@ -1,0 +1,25 @@
+	public boolean test(Object receiver, String property, Object[] args,
+			Object expectedValue) {
+		Collection<?> collection = (Collection<?>) receiver;
+		if ("projectSingleRepository".equals(property)) { //$NON-NLS-1$
+			if (collection.size() != 1)
+				return false;
+
+			Repository repository = getRepository(collection, true);
+			if (repository == null)
+				return false;
+
+			for (Object arg : args) {
+				String s = (String) arg;
+				if (!ResourcePropertyTester.testRepositoryState(repository, s))
+					return false;
+			}
+			return true;
+
+		} else if ("projectsWithRepositories".equals(property)) { //$NON-NLS-1$
+			Repository repository = getRepository(collection, false);
+			return repository != null;
+		}
+		return false;
+	}
+

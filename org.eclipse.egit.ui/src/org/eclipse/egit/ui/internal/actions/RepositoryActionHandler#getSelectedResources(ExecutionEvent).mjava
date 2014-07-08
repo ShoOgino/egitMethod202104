@@ -6,6 +6,6 @@
 	protected IResource[] getSelectedResources(ExecutionEvent event)
 			throws ExecutionException {
 		IStructuredSelection selection = getSelection(event);
-		return getSelectedResources(selection);
+		return SelectionUtils.getSelectedResources(selection);
 	}
 

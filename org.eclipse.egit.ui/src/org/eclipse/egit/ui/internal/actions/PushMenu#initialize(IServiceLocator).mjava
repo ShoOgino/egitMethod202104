@@ -1,6 +1,6 @@
-	public void initialize(IServiceLocator serviceLocator) {
-		this.serviceLocator = serviceLocator;
-		this.selectionService = (ISelectionService) serviceLocator
-				.getService(ISelectionService.class);
+	public void initialize(IServiceLocator locator) {
+		this.serviceLocator = locator;
+		this.handlerService = (IHandlerService) locator
+				.getService(IHandlerService.class);
 	}
 

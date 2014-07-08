@@ -6,6 +6,6 @@
 	 *            the new selection
 	 */
 	public void setSelection(ISelection selection) {
-		mySelection = convertSelection(selection);
+		mySelection = SelectionUtils.getStructuredSelection(selection);
 	}
 

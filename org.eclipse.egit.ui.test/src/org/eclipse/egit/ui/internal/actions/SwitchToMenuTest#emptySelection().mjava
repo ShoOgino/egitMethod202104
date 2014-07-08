@@ -1,6 +1,6 @@
 	@Test
 	public void emptySelection() {
-		when(selectionService.getSelection()).thenReturn(new EmptySelection());
+		mockSelection(new EmptySelection());
 
 		MenuItem[] items = fillMenu();
 

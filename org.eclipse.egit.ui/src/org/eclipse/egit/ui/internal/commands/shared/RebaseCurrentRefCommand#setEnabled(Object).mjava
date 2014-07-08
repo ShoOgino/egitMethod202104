@@ -2,17 +2,15 @@
 	public void setEnabled(Object evaluationContext) {
 		if (evaluationContext instanceof IEvaluationContext) {
 			IEvaluationContext ctx = (IEvaluationContext) evaluationContext;
-			Object selection = getSelection(ctx);
-			if (selection instanceof ISelection) {
-				Repository repo = getRepository((ISelection) selection, getActiveEditorInput(ctx));
-				if (repo != null) {
-					boolean enabled = isEnabledForState(repo,
-							repo.getRepositoryState());
-					setBaseEnabled(enabled);
-				} else
-					setBaseEnabled(false);
-				return;
+			Repository repo = SelectionUtils.getRepository(ctx);
+			if (repo != null) {
+				boolean enabled = isEnabledForState(repo,
+						repo.getRepositoryState());
+				setBaseEnabled(enabled);
+			} else {
+				setBaseEnabled(false);
 			}
+			return;
 		}
 		setBaseEnabled(true);
 	}

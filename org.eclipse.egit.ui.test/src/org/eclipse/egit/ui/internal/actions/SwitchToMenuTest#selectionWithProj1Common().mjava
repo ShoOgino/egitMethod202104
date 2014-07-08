@@ -1,8 +1,7 @@
 	private void selectionWithProj1Common() {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(PROJ1);
-		when(selectionService.getSelection()).thenReturn(
-				new StructuredSelection(project));
+		mockSelection(new StructuredSelection(project));
 
 		MenuItem[] items = fillMenu();
 

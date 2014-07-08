@@ -1,0 +1,35 @@
+	/**
+	 * @param collection
+	 *            the selected elements
+	 * @param single
+	 *            <code>true</code> if only a single repository is allowed
+	 * @return the repository if any was found, <code>null</code> otherwise
+	 */
+	private static Repository getRepository(Collection<?> collection,
+			boolean single) {
+		Repository repo = null;
+		for (Object element : collection) {
+			IProject project = AdapterUtils.adapt(element, IProject.class);
+			if (project != null) {
+				Repository r = getRepositoryOfMapping(project);
+				if (single && r != null && repo != null && r != repo)
+					return null;
+				else if (r != null)
+					repo = r;
+			} else {
+				IWorkingSet workingSet = AdapterUtils.adapt(element,
+						IWorkingSet.class);
+				if (workingSet != null) {
+					for (IAdaptable adaptable : workingSet.getElements()) {
+						Repository r = getRepositoryOfProject(adaptable);
+						if (single && r != null && repo != null && r != repo)
+							return null;
+						else if (r != null)
+							repo = r;
+					}
+				}
+			}
+		}
+		return repo;
+	}
+
