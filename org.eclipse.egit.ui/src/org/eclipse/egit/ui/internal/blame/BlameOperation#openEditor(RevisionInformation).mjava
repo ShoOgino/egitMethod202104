@@ -15,17 +15,6 @@
 		if (editor == null)
 			return;
 
-		// Show history view for path
-		try {
-			IHistoryView part = (IHistoryView) page.showView(
-					IHistoryView.VIEW_ID, null, IWorkbenchPage.VIEW_VISIBLE);
-			HistoryPageInput input = createHistoryPageInputWhenEditorOpened();
-			part.showHistoryFor(input);
-		} catch (PartInitException e) {
-			Activator.handleError("Error displaying blame annotations", e, //$NON-NLS-1$
-					false);
-		}
-
 		// IRevisionRulerColumn would also be possible but using
 		// IVerticalRulerInfo seems to work in more situations.
 		IVerticalRulerInfo rulerInfo = AdapterUtils.adapt(editor,
