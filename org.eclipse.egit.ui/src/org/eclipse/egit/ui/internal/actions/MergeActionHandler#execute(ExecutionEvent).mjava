@@ -3,7 +3,7 @@
 		if (repository == null)
 			return null;
 
-		if (!canMerge(repository, event))
+		if (!checkMergeIsPossible(repository, getShell(event)))
 			return null;
 		BasicConfigurationDialog.show(repository);
 		MergeTargetSelectionDialog mergeTargetSelectionDialog = new MergeTargetSelectionDialog(

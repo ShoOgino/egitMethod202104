@@ -4,14 +4,15 @@
 	 * <li>HEAD must point to a branch</li>
 	 * <li>Repository State must be SAFE</li>
 	 * </ul>
+	 * Shows an error dialog if a merge is not possible.
 	 *
 	 * @param repository
-	 * @param event
-	 * @return a boolean indicating if merge is possible
-	 * @throws ExecutionException
+	 *            the repository used for the merge
+	 * @param shell
+	 *            used to show a dialog in the error case
+	 * @return true if a merge is possible on the current HEAD
 	 */
-	protected boolean canMerge(final Repository repository, ExecutionEvent event)
-			throws ExecutionException {
+	public static boolean checkMergeIsPossible(Repository repository, Shell shell) {
 		String message = null;
 		try {
 			Ref head = repository.getRef(Constants.HEAD);
@@ -27,8 +28,7 @@
 		}
 
 		if (message != null)
-			MessageDialog.openError(getShell(event),
-					UIText.MergeAction_CannotMerge, message);
+			MessageDialog.openError(shell, UIText.MergeAction_CannotMerge, message);
 		return (message == null);
 	}
 

@@ -4,7 +4,7 @@
 		if (repository == null)
 			return null;
 
-		if (!canMerge(repository))
+		if (!MergeActionHandler.checkMergeIsPossible(repository, getShell(event)))
 			return null;
 
 		List<RefNode> nodes = getRefNodes(commitId, repository,
