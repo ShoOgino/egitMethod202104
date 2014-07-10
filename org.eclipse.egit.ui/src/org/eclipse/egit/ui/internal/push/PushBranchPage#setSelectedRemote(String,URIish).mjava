@@ -6,6 +6,7 @@
 			remoteSelectionCombo.setItems(Arrays.asList(config));
 			this.remoteConfig = config;
 			remoteSelectionCombo.setEnabled(false);
+			setRefAssist(this.remoteConfig);
 			checkPage();
 		} catch (URISyntaxException e) {
 			handleError(e);

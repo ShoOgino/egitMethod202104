@@ -94,6 +94,7 @@
 				.addRemoteSelectionListener(new IRemoteSelectionListener() {
 					public void remoteSelected(RemoteConfig rc) {
 						remoteConfig = rc;
+						setRefAssist(rc);
 						checkPage();
 					}
 				});
@@ -117,6 +118,17 @@
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
 				.applyTo(remoteBranchNameText);
 		remoteBranchNameText.setText(getSuggestedBranchName());
+		UIUtils.addRefContentProposalToText(remoteBranchNameText,
+				this.repository, new IRefListProvider() {
+
+					public List<Ref> getRefList() {
+						if (PushBranchPage.this.assist != null) {
+							return PushBranchPage.this.assist
+									.getRefsForContentAssist(false, true);
+						}
+						return Collections.emptyList();
+					}
+				});
 
 		if (this.ref != null) {
 			upstreamConfigComponent = new UpstreamConfigComponent(inputPanel,
