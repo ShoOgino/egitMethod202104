@@ -13,10 +13,14 @@
 		if (mapping == null)
 			return true; // Linked resources may not be mapped
 		Repository repository = mapping.getRepository();
+		WorkingTreeIterator treeIterator = IteratorService
+				.createInitialIterator(repository);
+		if (treeIterator == null)
+			return true;
 		String repoRelativePath = mapping.getRepoRelativePath(path);
 		TreeWalk walk = new TreeWalk(repository);
 		try {
-			walk.addTree(new FileTreeIterator(repository));
+			walk.addTree(treeIterator);
 			walk.setFilter(PathFilter.create(repoRelativePath));
 			while (walk.next()) {
 				WorkingTreeIterator workingTreeIterator = walk.getTree(0,
