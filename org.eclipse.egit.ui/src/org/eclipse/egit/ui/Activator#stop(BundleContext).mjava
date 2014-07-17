@@ -5,7 +5,8 @@
 		}
 
 		if (focusListener != null) {
-			PlatformUI.getWorkbench().removeWindowListener(focusListener);
+			if (PlatformUI.isWorkbenchRunning())
+				PlatformUI.getWorkbench().removeWindowListener(focusListener);
 			focusListener = null;
 		}
 
