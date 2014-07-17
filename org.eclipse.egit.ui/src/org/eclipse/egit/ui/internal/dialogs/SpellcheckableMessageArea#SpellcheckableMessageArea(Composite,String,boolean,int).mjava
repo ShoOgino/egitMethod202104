@@ -107,10 +107,10 @@
 		sourceViewer.configure(configuration);
 		sourceViewer.setDocument(document, annotationModel);
 
-		for (StyleRange styleRange : UIUtils
+		StyleRange[] styleRanges = UIUtils
 				.getHyperlinkDetectorStyleRanges(sourceViewer,
-						configuration.getHyperlinkDetectors(sourceViewer)))
-			sourceViewer.getTextWidget().setStyleRange(styleRange);
+						configuration.getHyperlinkDetectors(sourceViewer));
+		sourceViewer.getTextWidget().setStyleRanges(styleRanges);
 
 		configureContextMenu();
 
