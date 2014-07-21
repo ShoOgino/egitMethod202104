@@ -22,7 +22,7 @@
 		testRepo.createAndCheckoutBranch(MASTER, BRANCH);
 
 		final String branchChanges = "branch changes\n";
-		setContentsAndCommit(iFile1, branchChanges + initialContent1,
+		setContentsAndCommit(testRepo, iFile1, branchChanges + initialContent1,
 				"branch commit");
 		iFile2.delete(true, new NullProgressMonitor());
 		testRepo.addAndCommit(iProject, file2, "branch commit - deleted file2."
@@ -31,20 +31,20 @@
 		testRepo.checkoutBranch(MASTER);
 
 		final String masterChanges = "some changes\n";
-		setContentsAndCommit(iFile1, initialContent1 + masterChanges,
+		setContentsAndCommit(testRepo, iFile1, initialContent1 + masterChanges,
 				"master commit");
 		iProject.refreshLocal(IResource.DEPTH_INFINITE,
 				new NullProgressMonitor());
 		// end setup
 
-		IMergeContext mergeContext = prepareModelContext(iFile1, MASTER, BRANCH);
+		IMergeContext mergeContext = prepareModelContext(repo, iFile1, MASTER,
+				BRANCH);
 		IDiff node = mergeContext.getDiffTree().getDiff(iFile1);
 		assertNotNull(node);
 		node = mergeContext.getDiffTree().getDiff(iFile2);
 		assertNotNull(node);
 
-		IResourceMappingMerger merger = new SampleModelMerger(
-				SAMPLE_PROVIDER_ID);
+		IResourceMappingMerger merger = createMerger();
 		IStatus mergeStatus = merger.merge(mergeContext,
 				new NullProgressMonitor());
 		assertEquals(IStatus.OK, mergeStatus.getSeverity());
@@ -52,7 +52,7 @@
 				+ masterChanges);
 		assertFalse(iFile2.exists());
 
-		Status status = new Git(repo).status().call();
+		Status status = status(repo);
 		assertEquals(1, status.getChanged().size());
 		assertEquals(1, status.getRemoved().size());
 		assertEquals(0, status.getModified().size());

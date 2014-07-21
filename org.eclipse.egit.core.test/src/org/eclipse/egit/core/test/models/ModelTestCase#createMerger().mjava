@@ -1,0 +1,9 @@
+	protected IResourceMappingMerger createMerger() throws CoreException {
+		final ModelProvider provider = ModelProvider
+				.getModelProviderDescriptor(
+						SampleModelProvider.SAMPLE_PROVIDER_ID)
+				.getModelProvider();
+		return (ResourceMappingMerger) Platform.getAdapterManager().getAdapter(
+				provider, IResourceMappingMerger.class);
+	}
+

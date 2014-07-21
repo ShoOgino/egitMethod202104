@@ -1,0 +1,9 @@
+	public Object getAdapter(Object adaptableObject, Class adapterType) {
+		if (adaptableObject instanceof SampleModelProvider
+				&& IResourceMappingMerger.class.isAssignableFrom(adapterType)) {
+			return new SampleResourceMappingMerger(
+					(ModelProvider) adaptableObject);
+		}
+		return null;
+	}
+

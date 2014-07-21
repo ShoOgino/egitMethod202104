@@ -1,0 +1,10 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+
+		IContentType textType = Platform.getContentTypeManager()
+				.getContentType("org.eclipse.core.runtime.text");
+		textType.addFileSpec(SAMPLE_FILE_EXTENSION,
+				IContentType.FILE_EXTENSION_SPEC);
+	}
+

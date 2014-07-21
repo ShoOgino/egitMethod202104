@@ -1,12 +1,12 @@
-	private IMergeContext prepareModelContext(IFile workspaceFile,
-			String srcRev,
-			String dstRev) throws Exception {
+	protected IMergeContext prepareModelContext(Repository repository,
+			IFile workspaceFile, String srcRev, String dstRev) throws Exception {
 		Set<IResource> includedResources = new HashSet<IResource>(
 				Arrays.asList(workspaceFile));
 		Set<IResource> newResources = new HashSet<IResource>(includedResources);
 		Set<ResourceMapping> allMappings = new HashSet<ResourceMapping>();
 		ResourceMappingContext mappingContext = ResourceMappingContext.LOCAL_CONTEXT;
-		ModelProvider provider = new SampleProvider();
+		ModelProvider provider = ModelProvider.getModelProviderDescriptor(
+				SampleModelProvider.SAMPLE_PROVIDER_ID).getModelProvider();
 		do {
 			Set<IResource> copy = newResources;
 			newResources = new HashSet<IResource>();
@@ -21,8 +21,8 @@
 		ResourceMapping[] mappings = allMappings
 				.toArray(new ResourceMapping[allMappings.size()]);
 
-		GitSynchronizeData gsd = new GitSynchronizeData(repo, srcRev, dstRev,
-				true, includedResources);
+		GitSynchronizeData gsd = new GitSynchronizeData(repository, srcRev,
+				dstRev, true, includedResources);
 		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
 		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
 				gsds);

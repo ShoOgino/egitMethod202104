@@ -1,7 +1,7 @@
-	private IMergeContext prepareContext(IFile workspaceFile, String srcRev,
-			String dstRev) throws Exception {
-		GitSynchronizeData gsd = new GitSynchronizeData(repo, srcRev, dstRev,
-				true, Collections.<IResource> singleton(workspaceFile));
+	protected IMergeContext prepareContext(Repository repository,
+			IFile workspaceFile, String srcRev, String dstRev) throws Exception {
+		GitSynchronizeData gsd = new GitSynchronizeData(repository, srcRev,
+				dstRev, true, Collections.<IResource> singleton(workspaceFile));
 		GitSynchronizeDataSet gsds = new GitSynchronizeDataSet(gsd);
 		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
 				gsds);

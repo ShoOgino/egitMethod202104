@@ -11,7 +11,7 @@
 		IFile workspaceFile = testRepo.getIFile(iProject, file);
 
 		testRepo.appendFileContent(file, "some changes");
-		Status status = new Git(repo).status().call();
+		Status status = status(repo);
 		assertEquals(0, status.getAdded().size());
 		assertEquals(1, status.getModified().size());
 		String repoRelativePath = testRepo.getRepoRelativePath(workspaceFile
@@ -21,7 +21,8 @@
 		iProject.refreshLocal(IResource.DEPTH_INFINITE,
 				new NullProgressMonitor());
 
-		IMergeContext mergeContext = prepareContext(workspaceFile, HEAD, HEAD);
+		IMergeContext mergeContext = prepareContext(repo, workspaceFile, HEAD,
+				HEAD);
 		IDiff node = mergeContext.getDiffTree().getDiff(workspaceFile);
 		assertNotNull(node);
 		// First of all, "markAsMerged" is not supposed to have any effect on a
@@ -30,7 +31,7 @@
 		// not created for the occasion.
 		mergeContext.markAsMerged(node, true, null);
 
-		status = new Git(repo).status().call();
+		status = status(repo);
 		assertEquals(1, status.getChanged().size());
 		assertEquals(0, status.getModified().size());
 		assertTrue(status.getChanged().contains(repoRelativePath));
