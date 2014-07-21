@@ -1,4 +1,9 @@
 	private void enableCommitWidgets(boolean enabled) {
+		if (isDisposed())
+			return;
+
+		unstagedViewer.getControl().setEnabled(enabled);
+		stagedViewer.getControl().setEnabled(enabled);
 		commitMessageText.setEnabled(enabled);
 		committerText.setEnabled(enabled);
 		enableAuthorText(enabled);
