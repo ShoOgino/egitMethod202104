@@ -1,0 +1,13 @@
+	/**
+	 * @param name
+	 *            non null job name
+	 * @param delay
+	 *            default delay in milliseconds for job scheduling
+	 */
+	public IndexDiffUpdateJob(String name, long delay) {
+		super(name);
+		defaultDelay = delay;
+		files = new HashSet<String>();
+		resources = new HashSet<IResource>();
+	}
+

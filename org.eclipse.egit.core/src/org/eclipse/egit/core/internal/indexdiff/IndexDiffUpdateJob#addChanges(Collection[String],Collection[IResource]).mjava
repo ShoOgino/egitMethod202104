@@ -1,0 +1,18 @@
+	/**
+	 * Adds files to update and schedules the job to run after default delay
+	 *
+	 * @param filesToUpdate
+	 *            non null repo relative paths to update
+	 * @param resourcesToUpdate
+	 *            non null resources to update
+	 */
+	void addChanges(Collection<String> filesToUpdate,
+			Collection<IResource> resourcesToUpdate) {
+		synchronized (lock) {
+			files.addAll(filesToUpdate);
+			resources.addAll(resourcesToUpdate);
+		}
+		if (!filesToUpdate.isEmpty())
+			schedule(defaultDelay);
+	}
+

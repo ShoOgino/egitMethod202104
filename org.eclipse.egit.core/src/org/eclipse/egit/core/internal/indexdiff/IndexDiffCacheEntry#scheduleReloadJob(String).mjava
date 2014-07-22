@@ -4,7 +4,7 @@
 				return;
 			reloadJob.cancel();
 		}
-		for (Job updateJob : updateJobs.toArray(new Job[updateJobs.size()]))
+		if (updateJob != null)
 			updateJob.cancel();
 
 		if (!checkRepository())

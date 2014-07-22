@@ -1,0 +1,15 @@
+	@Override
+	protected final IStatus run(IProgressMonitor monitor) {
+		Collection<String> filesToUpdate;
+		Collection<IResource> resourcesToUpdate;
+		synchronized (lock) {
+			filesToUpdate = files;
+			resourcesToUpdate = resources;
+			files = new HashSet<String>();
+			resources = new HashSet<IResource>();
+			if (monitor.isCanceled() || filesToUpdate.isEmpty())
+				return Status.CANCEL_STATUS;
+		}
+		return updateIndexDiff(filesToUpdate, resourcesToUpdate, monitor);
+	}
+
