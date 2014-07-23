@@ -17,7 +17,7 @@
 			this.myBaseRef = null;
 		this.myBaseCommit = null;
 		this.myValidator = ValidationUtils.getRefNameInputValidator(
-				myRepository, Constants.R_HEADS, true);
+				myRepository, Constants.R_HEADS, false);
 		if (baseRef != null)
 			this.upstreamConfig = UpstreamConfig.getDefault(repo, baseRef.getName());
 		else

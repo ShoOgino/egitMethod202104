@@ -11,6 +11,7 @@
 				gd.exclude = !showUpstreamConfig;
 				container.setVisible(showUpstreamConfig);
 				container.getParent().layout(true);
+				ensurePreferredHeight(getShell());
 			}
 
 			boolean basedOnLocalBranch = sourceRefName
@@ -18,15 +19,9 @@
 			if (basedOnLocalBranch && upstreamConfig != UpstreamConfig.NONE)
 				setMessage(UIText.CreateBranchPage_LocalBranchWarningMessage,
 						IMessageProvider.INFORMATION);
-			else
-				setMessage(null);
 
 			if (sourceRefName.length() == 0) {
 				setErrorMessage(UIText.CreateBranchPage_MissingSourceMessage);
-				return;
-			}
-			if (nameText.getText().length() == 0) {
-				setErrorMessage(UIText.CreateBranchPage_ChooseNameMessage);
 				return;
 			}
 			String message = this.myValidator.isValid(nameText.getText());
@@ -37,7 +32,8 @@
 
 			setErrorMessage(null);
 		} finally {
-			setPageComplete(getErrorMessage() == null);
+			setPageComplete(getErrorMessage() == null
+					&& nameText.getText().length() > 0);
 		}
 	}
 
