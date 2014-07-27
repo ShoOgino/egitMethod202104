@@ -67,14 +67,16 @@
 			if (resources.length == 0) {
 				Object[] titleParameters = new Object[] {
 						Activator.getDefault().getRepositoryUtil()
-								.getRepositoryName(repository), compareVersion,
-						baseVersion };
+								.getRepositoryName(repository),
+						CompareUtils.truncatedRevision(compareVersion),
+						CompareUtils.truncatedRevision(baseVersion) };
 				setTitle(NLS.bind(UIText.GitCompareEditorInput_EditorTitle,
 						titleParameters));
 			} else if (resources.length == 1) {
 				Object[] titleParameters = new Object[] {
 						resources[0].getFullPath().makeRelative().toString(),
-						compareVersion, baseVersion };
+						CompareUtils.truncatedRevision(compareVersion),
+						CompareUtils.truncatedRevision(baseVersion) };
 				setTitle(NLS.bind(
 						UIText.GitCompareEditorInput_EditorTitleSingleResource,
 						titleParameters));
@@ -82,7 +84,8 @@
 				setTitle(NLS
 						.bind(
 								UIText.GitCompareEditorInput_EditorTitleMultipleResources,
-								compareVersion, baseVersion));
+								CompareUtils.truncatedRevision(compareVersion),
+								CompareUtils.truncatedRevision(baseVersion)));
 
 			// build the nodes
 			try {

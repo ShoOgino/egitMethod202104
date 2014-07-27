@@ -1,7 +1,7 @@
-	private String getBaseVersion() {
+	private String getBaseVersionText() {
 		// null in case of Workspace compare
 		if (baseVersion == null)
 			return UIText.CompareTreeView_WorkspaceVersionText;
-		return baseVersion;
+		return CompareUtils.truncatedRevision(baseVersion);
 	}
 

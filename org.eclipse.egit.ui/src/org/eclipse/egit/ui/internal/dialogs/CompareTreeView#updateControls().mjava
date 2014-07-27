@@ -20,17 +20,14 @@
 				throw new IllegalStateException();
 			if (baseVersion == null)
 				setContentDescription(NLS
-						.bind(
-								UIText.CompareTreeView_ComparingWorkspaceVersionDescription,
-								name, getCompareVersion()));
+						.bind(UIText.CompareTreeView_ComparingWorkspaceVersionDescription,
+								name, getCompareVersionText()));
 			else
-				setContentDescription(NLS
-						.bind(
-								UIText.CompareTreeView_ComparingTwoVersionDescription,
-								new String[] {
-										baseVersion,
-										name,
-										getCompareVersion() }));
+				setContentDescription(NLS.bind(
+						UIText.CompareTreeView_ComparingTwoVersionDescription,
+						new String[] { name,
+								CompareUtils.truncatedRevision(baseVersion),
+								getCompareVersionText() }));
 		}
 	}
 
