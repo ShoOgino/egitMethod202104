@@ -1,0 +1,12 @@
+	private static List<Ref> getBranches(Repository repo)  {
+		List<Ref> ref = new ArrayList<Ref>();
+		try {
+			RefDatabase refDb = repo.getRefDatabase();
+			ref.addAll(refDb.getRefs(Constants.R_HEADS).values());
+			ref.addAll(refDb.getRefs(Constants.R_REMOTES).values());
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+		return ref;
+	}
+
