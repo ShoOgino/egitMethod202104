@@ -1,0 +1,13 @@
+	/**
+	 * sort out closed, linked or not shared directories
+	 *
+	 * @param container
+	 * @return true if the container is shared with git, not a link and
+	 *         accessible in Eclipse
+	 */
+	private static boolean isValid(IContainer container) {
+		return container.isAccessible()
+				&& !container.isLinked(IResource.CHECK_ANCESTORS)
+				&& isProjectSharedWithGit(container);
+	}
+
