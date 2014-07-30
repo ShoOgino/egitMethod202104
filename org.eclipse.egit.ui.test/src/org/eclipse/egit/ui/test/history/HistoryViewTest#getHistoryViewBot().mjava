@@ -1,7 +1,4 @@
 	private SWTBot getHistoryViewBot() {
-		String genericHistoryViewId = "org.eclipse.team.ui.GenericHistoryView";
-		TestUtil.waitUntilViewWithGivenIdShows(genericHistoryViewId);
-		SWTBot historyView = bot.viewById(genericHistoryViewId).bot();
-		return historyView;
+		return TestUtil.showHistoryView().bot();
 	}
 
