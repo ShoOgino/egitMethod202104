@@ -1,0 +1,7 @@
+	private void enableStagingWidgets(boolean enabled) {
+		if (isDisposed())
+			return;
+		unstagedViewer.getControl().setEnabled(enabled);
+		stagedViewer.getControl().setEnabled(enabled);
+	}
+
