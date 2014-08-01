@@ -70,12 +70,12 @@
 					else if (child instanceof StagingFolderEntry)
 						((StagingFolderEntry) child).setParent(folderEntry);
 				}
-				Collections.sort(children, EntryComparator.INSTANCE);
+				Collections.sort(children, comparator);
 				folderEntry.setChildren(children.toArray());
 			}
 		}
 
-		Collections.sort(roots, EntryComparator.INSTANCE);
+		Collections.sort(roots, comparator);
 		return roots.toArray();
 	}
 

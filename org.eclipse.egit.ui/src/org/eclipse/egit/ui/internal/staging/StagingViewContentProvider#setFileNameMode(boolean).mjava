@@ -1,0 +1,14 @@
+	/**
+	 * Set file name mode to be enabled or disabled, to keep proper sorting
+	 * order. This mode displays the names of the file first followed by the
+	 * path to the folder that the file is in.
+	 *
+	 * @param enable
+	 */
+	void setFileNameMode(boolean enable) {
+		comparator.fileNameMode = enable;
+		if (content != null) {
+			Arrays.sort(content, comparator);
+		}
+	}
+
