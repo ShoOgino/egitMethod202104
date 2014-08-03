@@ -1,0 +1,22 @@
+	@Test
+	public void getSelectedResourcesShouldUseAllTraversals() throws Exception {
+		IResource resource1 = mock(IResource.class);
+		IResource resource2 = mock(IResource.class);
+
+		ResourceTraversal traversal1 = new ResourceTraversal(
+				new IResource[] { resource1 }, 1, 0);
+		ResourceTraversal traversal2 = new ResourceTraversal(
+				new IResource[] { resource2 }, 1, 0);
+
+		ResourceMapping mapping = mock(ResourceMapping.class);
+		when(mapping.getTraversals(null, null)).thenReturn(
+				new ResourceTraversal[] { traversal1, traversal2 });
+		StructuredSelection selection = new StructuredSelection(mapping);
+
+		IResource[] result = SelectionUtils.getSelectedResources(selection);
+
+		assertEquals(2, result.length);
+		assertEquals(resource1, result[0]);
+		assertEquals(resource2, result[1]);
+	}
+
