@@ -1,14 +1,12 @@
 	private void setDefaultUpstreamConfig() {
 		if (this.ref != null) {
 			String branchName = Repository.shortenRefName(ref.getName());
-			boolean alreadyConfigured = repository.getConfig()
-					.getSubsections(ConfigConstants.CONFIG_BRANCH_SECTION)
-					.contains(branchName);
+			BranchConfig branchConfig = new BranchConfig(
+					repository.getConfig(), branchName);
+			boolean alreadyConfigured = branchConfig.getMerge() != null;
 			UpstreamConfig config;
 			if (alreadyConfigured) {
-				boolean rebase = repository.getConfig().getBoolean(
-						ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
-						ConfigConstants.CONFIG_KEY_REBASE, false);
+				boolean rebase = branchConfig.isRebase();
 				config = rebase ? UpstreamConfig.REBASE : UpstreamConfig.MERGE;
 			} else {
 				config = UpstreamConfig.getDefault(repository, Constants.R_REMOTES

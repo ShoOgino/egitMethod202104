@@ -1,23 +1,20 @@
 	private boolean hasDifferentUpstreamConfiguration() {
-		StoredConfig config = repository.getConfig();
 		String branchName = Repository.shortenRefName(ref.getName());
+		BranchConfig branchConfig = new BranchConfig(repository.getConfig(),
+				branchName);
 
-		String remote = config.getString(ConfigConstants.CONFIG_BRANCH_SECTION,
-				branchName, ConfigConstants.CONFIG_KEY_REMOTE);
+		String remote = branchConfig.getRemote();
 		// No upstream config -> don't show warning
 		if (remote == null)
 			return false;
 		if (!remote.equals(remoteConfig.getName()))
 			return true;
 
-		String merge = config.getString(ConfigConstants.CONFIG_BRANCH_SECTION,
-				branchName, ConfigConstants.CONFIG_KEY_MERGE);
+		String merge = branchConfig.getMerge();
 		if (merge == null || !merge.equals(getFullRemoteReference()))
 			return true;
 
-		boolean rebase = config.getBoolean(
-				ConfigConstants.CONFIG_BRANCH_SECTION, branchName,
-				ConfigConstants.CONFIG_KEY_REBASE, false);
+		boolean rebase = branchConfig.isRebase();
 		if (rebase != isRebaseSelected())
 			return true;
 
