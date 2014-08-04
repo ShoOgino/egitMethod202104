@@ -1,0 +1,5 @@
+	private void setContent(String content) throws Exception {
+		setTestFileContent(content);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+	}
+

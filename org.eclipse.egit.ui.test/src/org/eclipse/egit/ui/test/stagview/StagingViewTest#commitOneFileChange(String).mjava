@@ -1,11 +1,9 @@
 	private void commitOneFileChange(String fileContent) throws Exception {
-		setTestFileContent(fileContent);
-		new Git(repository).add().addFilepattern(".").call();
-		selectRepositoryNode(); // update staging view after add
-		// TODO: adding should be done by using staging view.
-		// Can be done when add is available via context menu
+		setContent(fileContent);
+
 		StagingViewTester stagingViewTester = StagingViewTester
 				.openStagingView();
+		stagingViewTester.stageFile(FILE1_PATH);
 		stagingViewTester.setAuthor(TestUtil.TESTAUTHOR);
 		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER);
 		stagingViewTester.setCommitMessage("Commit message");

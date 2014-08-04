@@ -1,16 +1,11 @@
 	public static StagingViewTester openStagingView() throws Exception {
-		SWTWorkbenchBot workbenchBot = new SWTWorkbenchBot();
-		UIThreadRunnable.syncExec(new VoidResult() {
-			public void run() {
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage().showView(StagingView.VIEW_ID);
-				} catch (Exception e) {
-					throw new WidgetNotFoundException(e.getMessage(), e);
-				}
-			}
-		});
-		SWTBotView view = workbenchBot.viewById(StagingView.VIEW_ID);
+		// This is needed so that we can find staging entries by full path.
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.STAGING_VIEW_FILENAME_MODE, false);
+
+		SWTBotView view = TestUtil.showView(StagingView.VIEW_ID);
+		TestUtil.joinJobs(org.eclipse.egit.core.JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+
 		return new StagingViewTester(view);
 	}
 

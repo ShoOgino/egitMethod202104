@@ -1,11 +1,12 @@
 	@Test
 	public void testCommitSingleFile() throws Exception {
-		selectRepositoryNode();
+		setContent("I have changed this");
+
 		StagingViewTester stagingViewTester = StagingViewTester
 				.openStagingView();
-		setTestFileContent("I have changed this");
-		new Git(repository).add().addFilepattern(".").call();
-		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+
+		stagingViewTester.stageFile(FILE1_PATH);
+
 		stagingViewTester.setAuthor(TestUtil.TESTAUTHOR);
 		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER);
 		stagingViewTester.setCommitMessage("The new commit");
