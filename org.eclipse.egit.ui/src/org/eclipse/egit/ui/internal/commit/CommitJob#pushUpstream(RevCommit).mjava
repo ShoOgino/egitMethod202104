@@ -1,4 +1,4 @@
-	private void pushUpstream() {
+	private void pushUpstream(final RevCommit commit) {
 		RemoteConfig config = SimpleConfigurePushDialog
 				.getConfiguredRemote(repository);
 		if (config == null) {
@@ -7,11 +7,21 @@
 
 				public void run() {
 					try {
+						PushBranchWizard pushWizard = null;
+						String fullBranch = repository.getFullBranch();
+						if (fullBranch != null
+								&& fullBranch.startsWith(Constants.R_HEADS)) {
+							Ref ref = repository.getRef(fullBranch);
+							pushWizard = new PushBranchWizard(repository, ref);
+						} else {
+							pushWizard = new PushBranchWizard(repository,
+									commit.getId());
+						}
 						WizardDialog wizardDialog = new WizardDialog(display
-								.getActiveShell(), new PushWizard(repository));
+								.getActiveShell(), pushWizard);
 						wizardDialog.setHelpAvailable(true);
 						wizardDialog.open();
-					} catch (URISyntaxException e) {
+					} catch (IOException e) {
 						Activator.handleError(
 								NLS.bind(UIText.CommitUI_pushFailedMessage, e),
 								e, true);
