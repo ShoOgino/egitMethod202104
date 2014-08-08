@@ -14,9 +14,15 @@
 		for (String path : paths)
 			followFilters.add(createFollowFilter(path, diffConfig));
 
-		if (followFilters.size() == 1)
+		if (followFilters.size() == 1) {
+			FollowFilter followFilter = (FollowFilter) followFilters.get(0);
+			renameTracker.reset(followFilter.getPath());
 			return followFilters.get(0);
+		}
 
+		// TODO: this scenario is not supported by JGit: RewriteTreeFilter
+		// can not handle composite TreeFilters and expects a plain
+		// FollowFilter for rename detection.
 		return OrTreeFilter.create(followFilters);
 	}
 

@@ -1,0 +1,11 @@
+	/**
+	 * Get renamed path in given commit with initial starting path
+	 *
+	 * @param path
+	 * @param commit
+	 * @return actual path in commit
+	 */
+	public String getRenamedPath(String path, ObjectId commit) {
+		return renameTracker.getPath(commit, path);
+	}
+

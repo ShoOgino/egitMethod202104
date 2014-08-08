@@ -3,6 +3,7 @@
 		followFilter.setRenameCallback(new RenameCallback() {
 			@Override
 			public void renamed(DiffEntry entry) {
+				renameTracker.getCallback().renamed(entry);
 				if (fileViewerInterestingPaths != null) {
 					fileViewerInterestingPaths.add(entry.getOldPath());
 					fileViewerInterestingPaths.add(entry.getNewPath());

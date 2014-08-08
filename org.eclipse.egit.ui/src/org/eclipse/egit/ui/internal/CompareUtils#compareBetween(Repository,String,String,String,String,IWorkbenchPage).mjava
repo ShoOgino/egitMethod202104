@@ -1,0 +1,50 @@
+	/**
+	 * Compares two explicit files specified by leftGitPath and rightGitPath
+	 * between the two revisions leftRev and rightRev.
+	 *
+	 * @param repository
+	 *            The repository to load file revisions from.
+	 * @param leftGitPath
+	 *            The repository relative path to be used for the left revision.
+	 * @param rightGitPath
+	 *            The repository relative path to be used for the right
+	 *            revision.
+	 * @param leftRev
+	 *            Left revision of the comparison (usually the local or "new"
+	 *            revision). Won't be used if <code>includeLocal</code> is
+	 *            <code>true</code>.
+	 * @param rightRev
+	 *            Right revision of the comparison (usually the "old" revision).
+	 * @param page
+	 *            If not {@null} try to re-use a compare editor on this
+	 *            page if any is available. Otherwise open a new one.
+	 * @throws IOException
+	 */
+	private static void compareBetween(Repository repository,
+			String leftGitPath, String rightGitPath, String leftRev,
+			String rightRev, IWorkbenchPage page) throws IOException {
+		final ITypedElement left = getTypedElementFor(repository, leftGitPath,
+				leftRev);
+		final ITypedElement right = getTypedElementFor(repository,
+				rightGitPath,
+				rightRev);
+
+		final ITypedElement commonAncestor;
+		if (left != null && right != null && !GitFileRevision.INDEX.equals(leftRev)
+				&& !GitFileRevision.INDEX.equals(rightRev))
+			commonAncestor = getTypedElementForCommonAncestor(repository,
+					rightGitPath, leftRev, rightRev);
+		else
+			commonAncestor = null;
+
+		final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+				left, right, commonAncestor, null);
+		in.getCompareConfiguration().setLeftLabel(leftRev);
+		in.getCompareConfiguration().setRightLabel(rightRev);
+
+		if (page != null)
+			openInCompare(page, in);
+		else
+			CompareUI.openCompareEditor(in);
+	}
+
