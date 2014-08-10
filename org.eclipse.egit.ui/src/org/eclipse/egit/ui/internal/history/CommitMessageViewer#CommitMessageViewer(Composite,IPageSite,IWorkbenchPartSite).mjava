@@ -1,5 +1,5 @@
 	CommitMessageViewer(final Composite parent, final IPageSite site, IWorkbenchPartSite partSite) {
-		super(parent, null, SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
+		super(parent, null, SWT.READ_ONLY);
 		this.partSite = partSite;
 
 		final StyledText t = getTextWidget();
@@ -41,11 +41,6 @@
 		listener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
 				if (event.getProperty().equals(
-						UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP)) {
-					setWrap(((Boolean) event.getNewValue()).booleanValue());
-					return;
-				}
-				if (event.getProperty().equals(
 						UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL)) {
 					setFill(((Boolean) event.getNewValue()).booleanValue());
 					return;
@@ -61,8 +56,6 @@
 		store.addPropertyChangeListener(listener);
 		fill = store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL);
-		setWrap(store
-				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP));
 
 		// global action handlers for select all and copy
 		final IAction selectAll = new Action() {

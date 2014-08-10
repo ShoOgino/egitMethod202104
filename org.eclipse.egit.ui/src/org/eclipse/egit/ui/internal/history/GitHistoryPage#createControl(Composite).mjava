@@ -43,7 +43,31 @@
 				.addPropertyChangeListener(listener);
 
 		revInfoSplit = new SashForm(graphDetailSplit, SWT.HORIZONTAL);
-		commentViewer = new CommitMessageViewer(revInfoSplit, getSite(), getPartSite());
+
+		commentAndDiffScrolledComposite = new ScrolledComposite(revInfoSplit,
+				SWT.H_SCROLL | SWT.V_SCROLL);
+		commentAndDiffScrolledComposite.setExpandHorizontal(true);
+		commentAndDiffScrolledComposite.setExpandVertical(true);
+
+		commentAndDiffComposite = new Composite(commentAndDiffScrolledComposite, SWT.NONE);
+		commentAndDiffScrolledComposite.setContent(commentAndDiffComposite);
+		commentAndDiffComposite.setLayout(GridLayoutFactory.fillDefaults()
+				.create());
+
+		commentViewer = new CommitMessageViewer(commentAndDiffComposite,
+				getSite(), getPartSite());
+		commentViewer.getControl().setLayoutData(
+				GridDataFactory.fillDefaults().grab(true, false).create());
+
+		commentViewer.addTextListener(new ITextListener() {
+			public void textChanged(TextEvent event) {
+				resizeCommentAndDiffScrolledComposite();
+			}
+		});
+
+		commentAndDiffComposite.setBackground(commentViewer.getControl()
+				.getBackground());
+
 
 		TextSourceViewerConfiguration configuration = new TextSourceViewerConfiguration(
 				EditorsUI.getPreferenceStore()) {
@@ -73,7 +97,37 @@
 
 		commentViewer.configure(configuration);
 
+		diffViewer = new DiffViewer(commentAndDiffComposite, null, SWT.NONE, false);
+		diffViewer.getControl().setLayoutData(
+				GridDataFactory.fillDefaults().grab(true, false).create());
+		diffViewer.setEditable(false);
+
+		setWrap(store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP));
+
+		commentAndDiffScrolledComposite.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				if (commentViewer.getTextWidget().getWordWrap())
+					resizeCommentAndDiffScrolledComposite();
+			}
+		});
+
 		fileViewer = new CommitFileDiffViewer(revInfoSplit, getSite());
+		fileViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				ISelection selection = event.getSelection();
+				List<FileDiff> diffs = new ArrayList<FileDiff>();
+				if (selection instanceof IStructuredSelection) {
+					IStructuredSelection sel = (IStructuredSelection) selection;
+					for (Object obj : sel.toList())
+						if (obj instanceof FileDiff)
+							diffs.add((FileDiff) obj);
+				}
+				formatDiffs(diffs);
+			}
+		});
+
 		findToolbar = new FindToolbar(historyControl);
 
 		layoutSashForm(graphDetailSplit,

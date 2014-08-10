@@ -4,7 +4,6 @@
 		// so we only rebuild this when the commit did in fact change
 		if (input == commit)
 			return;
-		currentDiffs.clear();
 		commit = (PlotCommit<?>) input;
 		if (refsChangedListener != null) {
 			refsChangedListener.remove();
