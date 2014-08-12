@@ -1,6 +1,5 @@
 	private void executeOpenCommand() {
-		IHandlerService srv = (IHandlerService) getViewSite()
-				.getService(IHandlerService.class);
+		IHandlerService srv = CommonUtils.getService(getViewSite(), IHandlerService.class);
 
 		try {
 			srv.executeCommand("org.eclipse.egit.ui.RepositoriesViewOpen", null); //$NON-NLS-1$

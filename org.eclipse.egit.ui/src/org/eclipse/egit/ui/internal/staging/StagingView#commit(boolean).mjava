@@ -44,8 +44,7 @@
 			}
 		});
 
-		IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
-				.getService(IWorkbenchSiteProgressService.class);
+		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
 		if (service != null)
 			service.schedule(commitJob, 0, true);
 		else

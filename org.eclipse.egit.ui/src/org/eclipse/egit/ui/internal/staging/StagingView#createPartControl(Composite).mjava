@@ -225,7 +225,7 @@
 			}
 			@Override
 			protected IHandlerService getHandlerService() {
-				return (IHandlerService) getSite().getService(IHandlerService.class);
+				return CommonUtils.getService(getSite(), IHandlerService.class);
 			}
 		};
 		commitMessageText.setData(FormToolkit.KEY_DRAW_BORDER,
@@ -429,8 +429,7 @@
 
 		// react on selection changes
 		IWorkbenchPartSite site = getSite();
-		ISelectionService srv = (ISelectionService) site
-				.getService(ISelectionService.class);
+		ISelectionService srv = CommonUtils.getService(site, ISelectionService.class);
 		srv.addPostSelectionListener(selectionChangedListener);
 
 		// Use current selection to populate staging view

@@ -2,8 +2,7 @@
 		if (!shouldRunAction())
 			return null;
 
-		ICommandService srv = (ICommandService) getServiceLocator()
-				.getService(ICommandService.class);
+		ICommandService srv = CommonUtils.getService(getServiceLocator(), ICommandService.class);
 		Command command = srv.getCommand(commandId);
 		try {
 			return command.executeWithChecks(event);

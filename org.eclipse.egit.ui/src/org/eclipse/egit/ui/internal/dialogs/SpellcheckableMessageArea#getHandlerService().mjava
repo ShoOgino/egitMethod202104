@@ -8,7 +8,6 @@
 	 *         found.
 	 */
 	protected IHandlerService getHandlerService() {
-		return (IHandlerService) PlatformUI.getWorkbench().getService(
-				IHandlerService.class);
+		return CommonUtils.getService(PlatformUI.getWorkbench(), IHandlerService.class);
 	}
 

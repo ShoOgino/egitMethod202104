@@ -210,8 +210,7 @@
 		};
 
 		IWorkbenchPartSite site = getSite();
-		ISelectionService service = (ISelectionService) site
-				.getService(ISelectionService.class);
+		ISelectionService service = CommonUtils.getService(site, ISelectionService.class);
 		service.addPostSelectionListener(selectionChangedListener);
 
 		// Use current selection to populate reflog view

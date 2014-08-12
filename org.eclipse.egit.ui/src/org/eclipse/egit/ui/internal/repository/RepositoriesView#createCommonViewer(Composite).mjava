@@ -30,8 +30,7 @@
 			}
 		});
 		// react on selection changes
-		ISelectionService srv = (ISelectionService) getSite().getService(
-				ISelectionService.class);
+		ISelectionService srv = CommonUtils.getService(getSite(), ISelectionService.class);
 		srv.addPostSelectionListener(selectionChangedListener);
 		// react on changes in the configured repositories
 		repositoryUtil.getPreferences().addPreferenceChangeListener(

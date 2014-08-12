@@ -1,6 +1,5 @@
 	public void initialize(IServiceLocator locator) {
 		this.serviceLocator = locator;
-		this.handlerService = (IHandlerService) locator
-				.getService(IHandlerService.class);
+		this.handlerService = CommonUtils.getService(locator, IHandlerService.class);
 	}
 

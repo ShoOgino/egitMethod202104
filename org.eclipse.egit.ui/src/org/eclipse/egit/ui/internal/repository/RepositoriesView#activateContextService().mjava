@@ -1,6 +1,5 @@
 	private void activateContextService() {
-		IContextService contextService = (IContextService) getSite()
-				.getService(IContextService.class);
+		IContextService contextService = CommonUtils.getService(getSite(), IContextService.class);
 		if (contextService != null)
 			contextService.activateContext(VIEW_ID);
 

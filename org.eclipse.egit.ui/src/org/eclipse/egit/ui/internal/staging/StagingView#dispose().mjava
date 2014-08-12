@@ -2,8 +2,7 @@
 	public void dispose() {
 		super.dispose();
 
-		ISelectionService srv = (ISelectionService) getSite().getService(
-				ISelectionService.class);
+		ISelectionService srv = CommonUtils.getService(getSite(), ISelectionService.class);
 		srv.removePostSelectionListener(selectionChangedListener);
 
 		if(cacheEntry != null)

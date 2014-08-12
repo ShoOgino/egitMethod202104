@@ -114,8 +114,7 @@
 		};
 		job.setSystem(true);
 
-		IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
-				.getService(IWorkbenchSiteProgressService.class);
+		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
 
 		if (trace)
 			GitTraceLocation.getTrace().trace(

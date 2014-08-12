@@ -1,6 +1,5 @@
 	private void addContributions(IToolBarManager toolBarManager) {
-		IMenuService menuService = (IMenuService) getSite().getService(
-				IMenuService.class);
+		IMenuService menuService = CommonUtils.getService(getSite(), IMenuService.class);
 		if (menuService != null
 				&& toolBarManager instanceof ContributionManager) {
 			ContributionManager contributionManager = (ContributionManager) toolBarManager;

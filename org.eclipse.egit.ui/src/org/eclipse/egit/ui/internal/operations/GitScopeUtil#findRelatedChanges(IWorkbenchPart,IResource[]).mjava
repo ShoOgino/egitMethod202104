@@ -19,8 +19,7 @@
 
 		};
 
-		IProgressService progressService = (IProgressService) part.getSite()
-				.getService(IProgressService.class);
+		IProgressService progressService = CommonUtils.getService(part.getSite(), IProgressService.class);
 		progressService.run(true, true, runnable);
 
 		return relatedChanges.toArray(new IResource[relatedChanges.size()]);

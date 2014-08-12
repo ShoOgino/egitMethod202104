@@ -10,15 +10,13 @@
 
 		IWorkbenchWindow w = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
-		ICommandService csrv = (ICommandService) w
-				.getService(ICommandService.class);
+		ICommandService csrv = CommonUtils.getService(w, ICommandService.class);
 		Command command = csrv
 				.getCommand("org.eclipse.egit.ui.RepositoriesLinkWithSelection"); //$NON-NLS-1$
 		reactOnSelection = (Boolean) command.getState(
 				RegistryToggleState.STATE_ID).getValue();
 
-		IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) getSite()
-				.getService(IWorkbenchSiteProgressService.class);
+		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
 		if (service != null) {
 			service.showBusyForFamily(JobFamilies.REPO_VIEW_REFRESH);
 			service.showBusyForFamily(JobFamilies.CLONE);

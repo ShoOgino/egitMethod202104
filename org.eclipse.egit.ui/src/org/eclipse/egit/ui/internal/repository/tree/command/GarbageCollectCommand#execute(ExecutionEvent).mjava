@@ -38,8 +38,7 @@
 			}
 		};
 		IWorkbenchSite activeSite = HandlerUtil.getActiveSite(event);
-		IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) activeSite
-				.getService(IWorkbenchSiteProgressService.class);
+		IWorkbenchSiteProgressService service = CommonUtils.getService(activeSite, IWorkbenchSiteProgressService.class);
 		service.schedule(job);
 
 		return null;

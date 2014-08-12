@@ -1,8 +1,7 @@
 	@Override
 	public void dispose() {
 		super.dispose();
-		ISelectionService service = (ISelectionService) getSite().getService(
-				ISelectionService.class);
+		ISelectionService service = CommonUtils.getService(getSite(), ISelectionService.class);
 		service.removePostSelectionListener(selectionChangedListener);
 		if (addRefsChangedListener != null)
 			addRefsChangedListener.remove();

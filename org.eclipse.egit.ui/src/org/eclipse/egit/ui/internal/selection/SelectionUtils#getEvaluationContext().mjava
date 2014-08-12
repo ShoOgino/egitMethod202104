@@ -5,8 +5,7 @@
 		// no active window during Eclipse shutdown
 		if (activeWorkbenchWindow == null)
 			return null;
-		IHandlerService hsr = (IHandlerService) activeWorkbenchWindow
-				.getService(IHandlerService.class);
+		IHandlerService hsr = CommonUtils.getService(activeWorkbenchWindow, IHandlerService.class);
 		ctx = hsr.getCurrentState();
 		return ctx;
 	}
