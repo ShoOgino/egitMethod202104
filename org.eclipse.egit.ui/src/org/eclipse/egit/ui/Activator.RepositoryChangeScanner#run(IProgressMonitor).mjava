@@ -1,5 +1,5 @@
 		@Override
-		public IStatus runInWorkspace(IProgressMonitor monitor) {
+		protected IStatus run(IProgressMonitor monitor) {
 			// The core plugin might have been stopped before we could cancel
 			// this job.
 			RepositoryCache repositoryCache = org.eclipse.egit.core.Activator
