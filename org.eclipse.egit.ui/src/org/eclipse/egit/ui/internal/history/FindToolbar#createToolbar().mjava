@@ -7,6 +7,7 @@
 		commentsIcon = UIIcons.ELCL16_COMMENTS.createImage();
 		authorIcon = UIIcons.ELCL16_AUTHOR.createImage();
 		committerIcon = UIIcons.ELCL16_COMMITTER.createImage();
+		branchesIcon = UIIcons.BRANCHES.createImage();
 
 		GridLayout findLayout = new GridLayout();
 		findLayout.marginHeight = 2;
@@ -57,6 +58,9 @@
 		committerItem = createFindInMenuItem();
 		committerItem.setText(UIText.HistoryPage_findbar_committer);
 		committerItem.setImage(committerIcon);
+		referenceItem = createFindInMenuItem();
+		referenceItem.setText(UIText.HistoryPage_findbar_reference);
+		referenceItem.setImage(branchesIcon);
 
 		prefsDropDown.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -78,6 +82,8 @@
 					else if (commitIdItem.getSelection())
 						selectFindInItem(committerItem);
 					else if (committerItem.getSelection())
+						selectFindInItem(referenceItem);
+					else if (referenceItem.getSelection())
 						selectFindInItem(allItem);
 				}
 			}
@@ -197,6 +203,8 @@
 			selectFindInItem(commitIdItem);
 		else if (selectedPrefsItem == PREFS_FINDIN_COMMITTER)
 			selectFindInItem(committerItem);
+		else if (selectedPrefsItem == PREFS_FINDIN_REFERENCE)
+			selectFindInItem(referenceItem);
 
 		registerDisposal();
 	}
