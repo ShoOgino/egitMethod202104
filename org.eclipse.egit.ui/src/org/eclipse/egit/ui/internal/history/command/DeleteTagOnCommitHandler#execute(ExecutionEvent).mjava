@@ -1,0 +1,50 @@
+	public Object execute(ExecutionEvent event)
+			throws ExecutionException {
+		final Repository repository = getRepository(event);
+		if (repository == null)
+			return null;
+
+		final Shell shell = getPart(event).getSite().getShell();
+		IStructuredSelection selection = getSelection(event);
+		List<Ref> tags = getTagsOfCommit(selection);
+
+		// this should have been checked by isEnabled()
+		if (tags.isEmpty())
+			return null;
+
+		// show a dialog in case there are multiple tags on the selected commit
+		final List<Ref> tagsToDelete;
+		if (tags.size() > 1) {
+			BranchSelectionDialog<Ref> dialog = new BranchSelectionDialog<Ref>(
+					shell,
+					tags,
+					UIText.DeleteTagOnCommitHandler_SelectTagDialogTitle,
+					UIText.DeleteTagOnCommitHandler_SelectTagDialogMessage,
+					SWT.MULTI);
+			if (dialog.open() != Window.OK)
+				return null;
+			tagsToDelete = dialog.getSelectedNodes();
+		} else {
+			String tagName = Repository.shortenRefName(tags.get(0).getName());
+			String message = MessageFormat.format(
+					UIText.DeleteTagCommand_messageConfirmSingleTag, tagName);
+			boolean confirmed = MessageDialog.openConfirm(shell,
+					UIText.DeleteTagCommand_titleConfirm, message);
+			if (!confirmed)
+				return null;
+			tagsToDelete = tags;
+		}
+
+		try {
+			deleteTagsAsTask(shell, repository, tagsToDelete);
+		} catch (InvocationTargetException e1) {
+			Activator.handleError(
+					UIText.RepositoriesView_TagDeletionFailureMessage,
+					e1.getCause(), true);
+		} catch (InterruptedException e1) {
+			// ignore
+		}
+
+		return null;
+	}
+

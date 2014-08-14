@@ -1,0 +1,13 @@
+	private List<Ref> getTagsOfCommit(IStructuredSelection selection) {
+		final List<Ref> tagsOfCommit = new ArrayList<Ref>();
+		if (selection.isEmpty())
+			return tagsOfCommit;
+		PlotCommit commit = (PlotCommit) selection.getFirstElement();
+		for (int i = 0; i < commit.getRefCount(); i++) {
+			Ref ref = commit.getRef(i);
+			if (ref.getName().startsWith(Constants.R_TAGS))
+				tagsOfCommit.add(ref);
+		}
+		return tagsOfCommit;
+	}
+

@@ -1,0 +1,7 @@
+	private void deleteTag(Repository repository, String tagName)
+			throws CoreException {
+		DeleteTagOperation operation = new DeleteTagOperation(repository,
+				tagName);
+		operation.execute(null);
+	}
+
