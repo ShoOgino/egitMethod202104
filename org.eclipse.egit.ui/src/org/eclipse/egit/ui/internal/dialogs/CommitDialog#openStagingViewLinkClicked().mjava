@@ -1,0 +1,19 @@
+	private void openStagingViewLinkClicked() {
+		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
+		try {
+			StagingView view = (StagingView) workbenchPage
+					.showView(StagingView.VIEW_ID);
+			view.reload(repository);
+			String message = commitMessageComponent.getCommitMessage();
+			if (message != null && message.length() > 0)
+				view.setCommitMessage(message);
+			setReturnCode(CANCEL);
+			close();
+		} catch (PartInitException e) {
+			Activator.handleError(UIText.CommitDialog_OpenStagingViewError, e,
+					true);
+		}
+	}
+
