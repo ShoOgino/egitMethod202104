@@ -1,4 +1,23 @@
-	private void createPopupMenu(TreeViewer planViewer) {
-		// TODO create popup menu
+	private void createPopupMenu(final TreeViewer planViewer) {
+		createContextMenuItems(planViewer);
+
+		MenuManager manager = new MenuManager();
+		manager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager menuManager) {
+				boolean selectionNotEmpty = !planViewer.getSelection()
+						.isEmpty();
+				boolean rebaseNotStarted = !currentPlan
+						.hasRebaseBeenStartedYet();
+				boolean menuEnabled = selectionNotEmpty && rebaseNotStarted;
+				for (PlanContextMenuAction item : contextMenuItems)
+					item.setEnabled(menuEnabled);
+			}
+		});
+
+		for (PlanContextMenuAction item : contextMenuItems)
+			manager.add(item);
+
+		Menu menu = manager.createContextMenu(planViewer.getControl());
+		planViewer.getControl().setMenu(menu);
 	}
 
