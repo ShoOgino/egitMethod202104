@@ -1,0 +1,11 @@
+	private static IFile createOutOfSyncFile(TestProject project, String name)
+			throws IOException, CoreException {
+		IFile file = project.getProject().getFile(name);
+		file.create(new ByteArrayInputStream("test".getBytes("UTF-8")), false,
+				null);
+		assertTrue(file.isSynchronized(IResource.DEPTH_ZERO));
+		assertTrue(file.getLocation().toFile().delete());
+		assertFalse(file.isSynchronized(IResource.DEPTH_ZERO));
+		return file;
+	}
+
