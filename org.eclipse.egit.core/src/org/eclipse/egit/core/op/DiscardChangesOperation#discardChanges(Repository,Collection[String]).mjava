@@ -2,7 +2,10 @@
 			throws GitAPIException {
 		ResourceUtil.saveLocalHistory(repository);
 		CheckoutCommand checkoutCommand = new Git(repository).checkout();
-		checkoutCommand.setStartPoint(this.revision);
+		if (revision != null)
+			checkoutCommand.setStartPoint(revision);
+		if (stage != null)
+			checkoutCommand.setStage(stage.checkoutStage);
 		if (paths.isEmpty() || paths.contains("")) //$NON-NLS-1$
 			checkoutCommand.setAllPaths(true);
 		else {
