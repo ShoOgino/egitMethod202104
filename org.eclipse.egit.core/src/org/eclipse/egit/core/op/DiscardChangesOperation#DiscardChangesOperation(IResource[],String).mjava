@@ -5,10 +5,7 @@
 	 * @param revision
 	 */
 	public DiscardChangesOperation(IResource[] files, String revision) {
-		this.files = new IResource[files.length];
-		System.arraycopy(files, 0, this.files, 0, files.length);
+		this(ResourceUtil.splitResourcesByRepository(files));
 		this.revision = revision;
-		schedulingRule = MultiRule.combine(calcRefreshRule(files),
-				RuleUtil.getRuleForRepositories(files));
 	}
 
