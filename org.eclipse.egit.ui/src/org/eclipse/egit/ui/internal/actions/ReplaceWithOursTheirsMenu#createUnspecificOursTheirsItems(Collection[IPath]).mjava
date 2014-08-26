@@ -1,0 +1,11 @@
+	private static Collection<IContributionItem> createUnspecificOursTheirsItems(
+			Collection<IPath> paths) {
+		List<IContributionItem> result = new ArrayList<IContributionItem>();
+		result.add(createOursItem(
+				UIText.ReplaceWithOursTheirsMenu_OursWithoutCommitLabel, paths));
+		result.add(createTheirsItem(
+				UIText.ReplaceWithOursTheirsMenu_TheirsWithoutCommitLabel,
+				paths));
+		return result;
+	}
+

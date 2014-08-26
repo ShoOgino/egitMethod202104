@@ -1,0 +1,39 @@
+	private static Collection<IContributionItem> createSpecificOursTheirsItems(
+			Repository repository, String path) {
+
+		Collection<IPath> paths = Collections.<IPath> singleton(new Path(
+				new File(repository.getWorkTree(), path).getAbsolutePath()));
+		List<IContributionItem> result = new ArrayList<IContributionItem>();
+
+		try {
+			ConflictCommits conflictCommits = RevUtils.getConflictCommits(
+					repository, path);
+			RevCommit ourCommit = conflictCommits.getOurCommit();
+			RevCommit theirCommit = conflictCommits.getTheirCommit();
+
+			if (ourCommit != null)
+				result.add(createOursItem(
+						formatCommit(
+								UIText.ReplaceWithOursTheirsMenu_OursWithCommitLabel,
+								ourCommit), paths));
+			else
+				result.add(createOursItem(UIText.ReplaceWithOursTheirsMenu_OursWithoutCommitLabel, paths));
+
+			if (theirCommit != null)
+				result.add(createTheirsItem(
+						formatCommit(
+								UIText.ReplaceWithOursTheirsMenu_TheirsWithCommitLabel,
+								theirCommit), paths));
+			else
+				result.add(createTheirsItem(
+						UIText.ReplaceWithOursTheirsMenu_TheirsWithoutCommitLabel,
+						paths));
+
+			return result;
+		} catch (IOException e) {
+			Activator.logError(
+					UIText.ReplaceWithOursTheirsMenu_CalculatingOursTheirsCommitsError, e);
+			return createUnspecificOursTheirsItems(paths);
+		}
+	}
+
