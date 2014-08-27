@@ -1,0 +1,10 @@
+	private void createIndex() {
+		lastFoundElementPosition = 0;
+
+		filteredPlan.clear();
+		for (PlanElement element : plan.getList()) {
+			if (!element.isComment())
+				filteredPlan.add(element);
+		}
+	}
+

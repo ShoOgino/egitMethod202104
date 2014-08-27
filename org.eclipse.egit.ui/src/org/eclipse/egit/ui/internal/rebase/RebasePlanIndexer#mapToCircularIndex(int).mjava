@@ -1,0 +1,12 @@
+	private int mapToCircularIndex(int index) {
+		int size = filteredPlan.size();
+
+		if (index < 0)
+			return size + index;
+
+		if (index >= size)
+			return index - size;
+
+		return index;
+	}
+

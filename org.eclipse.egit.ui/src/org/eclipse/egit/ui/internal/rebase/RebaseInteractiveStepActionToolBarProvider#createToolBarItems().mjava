@@ -57,7 +57,12 @@
 				for (PlanElement planElement : selectedRebaseTodoLines) {
 					if (planElement.getElementType() != ElementType.TODO)
 						return;
-					view.getCurrentPlan().moveTodoEntryUp(planElement);
+
+					if (!RebaseInteractivePreferences.isOrderReversed())
+						view.getCurrentPlan().moveTodoEntryUp(planElement);
+					else
+						view.getCurrentPlan().moveTodoEntryDown(planElement);
+
 					mapActionItemsToSelection(view.planTreeViewer
 							.getSelection());
 				}
@@ -76,7 +81,12 @@
 				for (PlanElement planElement : selectedRebaseTodoLines) {
 					if (planElement.getElementType() != ElementType.TODO)
 						return;
-					view.getCurrentPlan().moveTodoEntryDown(planElement);
+
+					if (!RebaseInteractivePreferences.isOrderReversed())
+						view.getCurrentPlan().moveTodoEntryDown(planElement);
+					else
+						view.getCurrentPlan().moveTodoEntryUp(planElement);
+
 					mapActionItemsToSelection(view.planTreeViewer
 							.getSelection());
 				}

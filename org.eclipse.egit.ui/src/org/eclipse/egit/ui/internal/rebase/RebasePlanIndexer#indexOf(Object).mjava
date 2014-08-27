@@ -1,0 +1,40 @@
+	/**
+	 * Returns index of the element in the rebase plan.
+	 *
+	 * @param element
+	 *            rebase plan element
+	 * @return index of the element in the rebase plan or -1 if the element is
+	 *         not found
+	 */
+	public int indexOf(Object element) {
+		if (filteredPlan.isEmpty())
+			return -1;
+
+		if (filteredPlan.get(lastFoundElementPosition).equals(element))
+			return lastFoundElementPosition;
+
+		int upIndex = mapToCircularIndex(lastFoundElementPosition + 1);
+		if (filteredPlan.get(upIndex).equals(element)) {
+			lastFoundElementPosition = upIndex;
+			return lastFoundElementPosition;
+		}
+
+		int downIndex = mapToCircularIndex(lastFoundElementPosition - 1);
+		if (filteredPlan.get(downIndex).equals(element)) {
+			lastFoundElementPosition = downIndex;
+			return lastFoundElementPosition;
+		}
+
+		int index = mapToCircularIndex(upIndex + 1);
+		while (index != downIndex) {
+			if (filteredPlan.get(index).equals(element)) {
+				lastFoundElementPosition = index;
+				return lastFoundElementPosition;
+			}
+			index = mapToCircularIndex(index + 1);
+		}
+
+		lastFoundElementPosition = 0;
+		return -1;
+	}
+

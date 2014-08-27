@@ -7,6 +7,10 @@
 					continue;
 				linesToDisplay.add(line);
 			}
+
+			if (RebaseInteractivePreferences.isOrderReversed())
+				Collections.reverse(linesToDisplay);
+
 			return linesToDisplay.toArray();
 		}
 

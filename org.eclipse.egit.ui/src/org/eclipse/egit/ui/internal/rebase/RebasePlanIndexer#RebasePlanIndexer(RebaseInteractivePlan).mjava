@@ -1,0 +1,16 @@
+	/**
+	 * Constructs indexer for the rebase plan.
+	 *
+	 * @param plan
+	 *            rebase plan
+	 */
+	public RebasePlanIndexer(RebaseInteractivePlan plan) {
+		this.plan = plan;
+		this.filteredPlan = new ArrayList<PlanElement>();
+
+		listener = new RebasePlanChangeListener();
+		plan.addRebaseInteractivePlanChangeListener(listener);
+
+		createIndex();
+	}
+

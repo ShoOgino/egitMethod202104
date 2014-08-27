@@ -5,5 +5,8 @@
 				selectionChangedListener);
 		if (currentPlan != null)
 			currentPlan.removeRebaseInteractivePlanChangeListener(this);
+
+		if (planIndexer != null)
+			planIndexer.dispose();
 	}
 

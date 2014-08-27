@@ -3,8 +3,13 @@
 			return;
 		asyncExec(new Runnable() {
 			public void run() {
-				planTreeViewer.setInput(currentPlan);
-				refreshUI();
+				planTreeViewer.getTree().setRedraw(false);
+				try {
+					planTreeViewer.setInput(currentPlan);
+					refreshUI();
+				} finally {
+					planTreeViewer.getTree().setRedraw(true);
+				}
 			}
 		});
 

@@ -1,0 +1,12 @@
+	/**
+	 * Sets commit display order.
+	 *
+	 * @param reversed
+	 *            {@code false} - display commits in execution order,
+	 *            {@code true} - display commits in historical order.
+	 */
+	public static void setOrderReversed(boolean reversed) {
+		getPreferencesStore().setValue(
+				UIPreferences.REBASE_INTERACTIVE_ORDER_REVERSE, reversed);
+	}
+

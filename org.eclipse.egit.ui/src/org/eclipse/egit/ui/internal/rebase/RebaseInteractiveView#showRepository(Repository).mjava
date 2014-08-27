@@ -8,7 +8,12 @@
 
 		if (currentPlan != null)
 			currentPlan.removeRebaseInteractivePlanChangeListener(this);
+
+		if (planIndexer != null)
+			planIndexer.dispose();
+
 		currentPlan = RebaseInteractivePlan.getPlan(repository);
+		planIndexer = new RebasePlanIndexer(currentPlan);
 		currentPlan.addRebaseInteractivePlanChangeListener(this);
 		form.setText(getRepositoryName(repository));
 		refresh();
