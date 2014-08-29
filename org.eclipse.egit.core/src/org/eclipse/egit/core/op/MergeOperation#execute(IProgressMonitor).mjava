@@ -33,6 +33,8 @@
 				if (mergeStrategy != null) {
 					merge.setStrategy(mergeStrategy);
 				}
+				if (message != null)
+					merge.setMessage(message);
 				try {
 					mergeResult = merge.call();
 					mymonitor.worked(1);
