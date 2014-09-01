@@ -1,0 +1,16 @@
+		@Override
+		protected Control createCustomArea(Composite parent) {
+			Composite area = new Composite(parent, SWT.NONE);
+			area.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
+					.create());
+			area.setLayout(new FillLayout());
+
+			TreeViewer treeViewer = new TreeViewer(area);
+			treeViewer.setContentProvider(new ContentProvider());
+			treeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+					new WorkbenchLabelProvider()));
+			treeViewer.setInput(commits);
+
+			return area;
+		}
+

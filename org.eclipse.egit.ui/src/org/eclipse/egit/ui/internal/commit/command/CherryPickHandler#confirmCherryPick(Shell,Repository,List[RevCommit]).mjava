@@ -15,8 +15,10 @@
 		shell.getDisplay().syncExec(new Runnable() {
 
 			public void run() {
-				confirmed.set(MessageDialog.openConfirm(shell,
-						UIText.CherryPickHandler_ConfirmTitle, message));
+				ConfirmCherryPickDialog dialog = new ConfirmCherryPickDialog(
+						shell, message, repository, commits);
+				int result = dialog.open();
+				confirmed.set(result == Window.OK);
 			}
 		});
 		return confirmed.get();
