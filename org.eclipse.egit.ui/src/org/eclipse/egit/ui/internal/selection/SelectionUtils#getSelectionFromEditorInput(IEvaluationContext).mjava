@@ -15,6 +15,13 @@
 			IResource resource = ResourceUtil.getResource(editorInput);
 			if (resource != null)
 				return new StructuredSelection(resource);
+			if (editorInput instanceof FileRevisionEditorInput) {
+				FileRevisionEditorInput fileRevisionEditorInput = (FileRevisionEditorInput) editorInput;
+				IFileRevision fileRevision = fileRevisionEditorInput
+						.getFileRevision();
+				if (fileRevision != null)
+					return new StructuredSelection(fileRevision);
+			}
 		}
 
 		return StructuredSelection.EMPTY;

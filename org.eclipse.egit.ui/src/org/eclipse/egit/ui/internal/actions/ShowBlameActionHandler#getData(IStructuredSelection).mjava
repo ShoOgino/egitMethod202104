@@ -1,0 +1,34 @@
+	private static Data getData(IStructuredSelection selection) {
+		if (selection.size() != 1)
+			return null;
+
+		Object element = selection.getFirstElement();
+		if (element instanceof IResource) {
+			IResource resource = (IResource) element;
+
+			if (resource instanceof IStorage) {
+				IStorage storage = (IStorage) resource;
+				RepositoryMapping mapping = RepositoryMapping
+						.getMapping(resource);
+
+				if (mapping != null) {
+					String repoRelativePath = mapping
+							.getRepoRelativePath(resource);
+					return new Data(mapping.getRepository(), repoRelativePath,
+							storage, null);
+				}
+			}
+		} else if (element instanceof CommitFileRevision) {
+			CommitFileRevision revision = (CommitFileRevision) element;
+			try {
+				IStorage storage = revision.getStorage(new NullProgressMonitor());
+				return new Data(revision.getRepository(),
+						revision.getGitPath(), storage, revision.getRevCommit());
+			} catch (CoreException e) {
+				// Don't enable
+				return null;
+			}
+		}
+		return null;
+	}
+
