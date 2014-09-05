@@ -1,0 +1,19 @@
+	/**
+	 * Tries to return label produced by
+	 * {@linkplain #getStyledLabel(Repository)}. If
+	 * {@linkplain #getStyledLabel(Repository)} throws <code>Exception</code>
+	 * then logs it and falls back to {@linkplain #getPlainShortLabel(Object)}
+	 * result.
+	 *
+	 * @param repository
+	 * @return repository label
+	 */
+	public static StyledString getStyledLabelSafe(Repository repository) {
+		try {
+			return getStyledLabel(repository);
+		} catch (IOException e) {
+			logLabelRetrievalFailure(repository, e);
+		}
+		return new StyledString(getPlainShortLabel(repository));
+	}
+

@@ -1,0 +1,9 @@
+	private static Repository asRepository(Object element) {
+		if (element instanceof Repository)
+			return (Repository) element;
+		else if (element instanceof GitModelRepository)
+			return ((GitModelRepository) element).getRepository();
+		else
+			return null;
+	}
+

@@ -2,7 +2,7 @@
 		switch (node.getType()) {
 		case REPO:
 			Repository repository = (Repository) node.getObject();
-			return GitLabelProvider.getSimpleTextFor(repository);
+			return GitLabels.getPlainShortLabel(repository);
 		case FILE:
 			// fall through
 		case FOLDER:

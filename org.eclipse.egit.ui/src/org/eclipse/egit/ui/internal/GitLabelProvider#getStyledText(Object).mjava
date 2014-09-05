@@ -1,17 +1,4 @@
 	public StyledString getStyledText(Object element) {
-		try {
-			if (element instanceof Repository)
-				return getStyledTextFor((Repository) element);
-
-			if (element instanceof GitModelRepository)
-				return getStyledTextFor(((GitModelRepository) element)
-						.getRepository());
-
-		} catch (IOException e) {
-			Activator.logError(NLS.bind(
-					UIText.GitLabelProvider_UnableToRetrieveLabel,
-					element.toString()), e);
-		}
-		return new StyledString(getText(element));
+		return GitLabels.getStyledLabelExtendedSafe(element);
 	}
 

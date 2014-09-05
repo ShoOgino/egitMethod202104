@@ -1,24 +1,37 @@
 	/**
+	 * Computes detailed repository label that consists of repository name,
+	 * state, checked-out branch and it's status (returned by
+	 * {@linkplain #formatBranchTrackingStatus(BranchTrackingStatus)})
+	 *
 	 * @param repository
 	 * @return a styled string for the repository
 	 * @throws IOException
 	 */
-	public static StyledString getStyledTextFor(Repository repository)
+	public static StyledString getStyledLabel(Repository repository)
 			throws IOException {
-		File directory = repository.getDirectory();
-
 		RepositoryUtil repositoryUtil = Activator.getDefault()
 				.getRepositoryUtil();
 
 		StyledString string = new StyledString();
 		string.append(repositoryUtil.getRepositoryName(repository));
 
-		String branch = repositoryUtil
-				.getShortBranch(repository);
+		String branch = repositoryUtil.getShortBranch(repository);
 		if (branch != null) {
 			string.append(' ');
 			string.append('[', StyledString.DECORATIONS_STYLER);
 			string.append(branch, StyledString.DECORATIONS_STYLER);
+
+			BranchTrackingStatus trackingStatus = BranchTrackingStatus.of(
+					repository, branch);
+			if (trackingStatus != null
+					&& (trackingStatus.getAheadCount() != 0 || trackingStatus
+							.getBehindCount() != 0)) {
+				String formattedTrackingStatus = GitLabels
+						.formatBranchTrackingStatus(trackingStatus);
+				string.append(' ');
+				string.append(formattedTrackingStatus,
+						StyledString.DECORATIONS_STYLER);
+			}
 
 			RepositoryState repositoryState = repository.getRepositoryState();
 			if (repositoryState != RepositoryState.SAFE) {
@@ -26,20 +39,8 @@
 				string.append(repositoryState.getDescription(),
 						StyledString.DECORATIONS_STYLER);
 			}
-
-			BranchTrackingStatus trackingStatus = BranchTrackingStatus.of(repository, branch);
-			if (trackingStatus != null
-					&& (trackingStatus.getAheadCount() != 0 || trackingStatus
-							.getBehindCount() != 0)) {
-				String formattedTrackingStatus = formatBranchTrackingStatus(trackingStatus);
-				string.append(' ');
-				string.append(formattedTrackingStatus, StyledString.DECORATIONS_STYLER);
-			}
 			string.append(']', StyledString.DECORATIONS_STYLER);
 		}
-
-		string.append(" - ", StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-		string.append(directory.getAbsolutePath(), StyledString.QUALIFIER_STYLER);
 
 		return string;
 	}

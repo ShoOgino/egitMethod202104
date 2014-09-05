@@ -1,0 +1,10 @@
+	/**
+	 * @param element
+	 * @return label computed by {@linkplain #getPlainShortLabel(Object)} with
+	 *         appended path to the repository if element represents a
+	 *         repository
+	 */
+	public static String getPlainShortLabelExtended(Object element) {
+		return getPlainShortLabel(element) + getLabelExtension(element);
+	}
+

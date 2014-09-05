@@ -1,0 +1,9 @@
+	private static String getLabelExtension(Object element) {
+		Repository repo = asRepository(element);
+
+		if (repo != null)
+			return " - " + getRepositoryAbsolutePath(repo); //$NON-NLS-1$
+		else
+			return ""; //$NON-NLS-1$
+	}
+

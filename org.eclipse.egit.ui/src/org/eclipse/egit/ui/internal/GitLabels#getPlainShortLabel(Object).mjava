@@ -1,0 +1,24 @@
+	/**
+	 * @param element
+	 * @return simple short label of the Git element (repository, reference,
+	 *         changeset, etc.).
+	 */
+	public static String getPlainShortLabel(Object element) {
+		if (element instanceof Repository)
+			return getRepositorySimpleLabel((Repository) element);
+
+		if (element instanceof RefNode)
+			return getRefNodeSimpleLabel((RefNode) element);
+
+		if (element instanceof Ref)
+			return ((Ref) element).getName();
+
+		if (element instanceof ProjectRecord)
+			return ((ProjectRecord) element).getProjectLabel();
+
+		if (element instanceof GitModelObject)
+			return ((GitModelObject) element).getName();
+
+		return (element != null ? element.toString() : ""); //$NON-NLS-1$
+	}
+

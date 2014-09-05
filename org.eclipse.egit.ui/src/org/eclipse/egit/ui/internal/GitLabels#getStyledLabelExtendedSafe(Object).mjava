@@ -1,0 +1,33 @@
+	/**
+	 * <p>
+	 * If the <code>element</code> represents a repository then tries to return
+	 * it's styled label (created by {@link #getStyledLabel(Repository)}). If
+	 * the <code>element</code> is not a repository or if
+	 * {@link #getStyledLabel(Repository)} threw <code>IOException</code> then
+	 * this method returns element's simple label (
+	 * {@link #getPlainShortLabel(Object)}). If the element is a repository then
+	 * the returned label is appended with absolute path to this repository.
+	 * </p>
+	 * <p>
+	 * IOException thrown by {@link #getStyledLabel(Repository)} is logged.
+	 * </p>
+	 *
+	 * @param element
+	 * @return element's label
+	 */
+	public static StyledString getStyledLabelExtendedSafe(Object element) {
+		Repository repo = asRepository(element);
+
+		if (repo != null) {
+			try {
+				StyledString text = getStyledLabel(repo);
+				text.append(getLabelExtension(repo),
+						StyledString.QUALIFIER_STYLER);
+				return text;
+			} catch (IOException e) {
+				logLabelRetrievalFailure(element, e);
+			}
+		}
+		return new StyledString(getPlainShortLabelExtended(element));
+	}
+
