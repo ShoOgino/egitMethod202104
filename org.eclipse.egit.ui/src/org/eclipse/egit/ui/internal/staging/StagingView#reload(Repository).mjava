@@ -83,7 +83,7 @@
 						&& noConflicts;
 				rebaseContinueButton.setEnabled(rebaseContinueEnabled);
 
-				form.setText(StagingView.getRepositoryName(repository));
+				form.setText(GitLabels.getStyledLabelSafe(repository).toString());
 				updateCommitMessageComponent(repositoryChanged, indexDiffAvailable);
 				enableCommitWidgets(indexDiffAvailable && noConflicts);
 				updateSectionText();
