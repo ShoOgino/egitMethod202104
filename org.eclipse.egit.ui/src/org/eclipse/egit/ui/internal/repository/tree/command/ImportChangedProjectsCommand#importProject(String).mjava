@@ -1,0 +1,25 @@
+	private void importProject(String path) {
+		try {
+			@SuppressWarnings("restriction")
+			IProjectDescription description = IDEWorkbenchPlugin
+					.getPluginWorkspace().loadProjectDescription(
+							new org.eclipse.core.runtime.Path(path));
+			if (description != null) {
+				String projectName = description.getName();
+				IProject project = ResourcesPlugin.getWorkspace().getRoot()
+						.getProject(projectName);
+				if (project.exists() == true) {
+					if (project.isOpen() == false)
+						project.open(IResource.BACKGROUND_REFRESH,
+								new NullProgressMonitor());
+				} else {
+					project.create(description, new NullProgressMonitor());
+					project.open(IResource.BACKGROUND_REFRESH,
+							new NullProgressMonitor());
+				}
+			}
+		} catch (CoreException e) {
+			Activator.error(e.getMessage(), e);
+		}
+	}
+

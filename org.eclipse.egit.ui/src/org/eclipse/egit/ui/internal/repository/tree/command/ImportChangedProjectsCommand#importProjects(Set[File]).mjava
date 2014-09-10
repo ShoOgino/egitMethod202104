@@ -1,0 +1,19 @@
+	private void importProjects(final Set<File> dotProjectFiles) {
+		WorkspaceJob job = new WorkspaceJob(
+				UIText.ImportChangedProjectsCommand_ImportingChangedProjects) {
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor)
+					throws CoreException {
+				for (File f : dotProjectFiles) {
+					if (monitor.isCanceled())
+						return Status.CANCEL_STATUS;
+					String ap = f.getAbsolutePath();
+					importProject(ap);
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
+	}
+

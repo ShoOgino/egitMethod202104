@@ -1,0 +1,15 @@
+	private File searchEnclosingProjectInWorkDir(File subFolder, String rootPath) {
+		File projectFile = null;
+		File currentPath = subFolder;
+
+		while (currentPath.toString().startsWith(rootPath)) {
+			projectFile = new File(currentPath.toString() + File.separator
+					+ ".project"); //$NON-NLS-1$
+			if (projectFile.isFile())
+				break;
+			projectFile = null;
+			currentPath = currentPath.getParentFile();
+		}
+		return projectFile;
+	}
+
