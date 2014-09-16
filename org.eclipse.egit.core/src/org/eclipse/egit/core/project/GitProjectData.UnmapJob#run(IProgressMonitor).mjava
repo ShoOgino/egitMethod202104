@@ -1,0 +1,11 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			try {
+				RepositoryProvider.unmap(project);
+				return Status.OK_STATUS;
+			} catch (TeamException e) {
+				return new Status(IStatus.ERROR, Activator.getPluginId(),
+						CoreText.GitProjectData_UnmappingGoneResourceFailed, e);
+			}
+		}
+
