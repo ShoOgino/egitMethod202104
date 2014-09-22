@@ -7,5 +7,9 @@
 
 		if (planIndexer != null)
 			planIndexer.dispose();
+
+		InstanceScope.INSTANCE.getNode(
+				org.eclipse.egit.core.Activator.getPluginId())
+				.removePreferenceChangeListener(prefListener);
 	}
 

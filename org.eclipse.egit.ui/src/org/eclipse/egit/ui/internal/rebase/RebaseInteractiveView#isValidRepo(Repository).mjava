@@ -1,0 +1,5 @@
+	private boolean isValidRepo(final Repository repository) {
+		return repository != null && !repository.isBare()
+				&& repository.getWorkTree().exists();
+	}
+

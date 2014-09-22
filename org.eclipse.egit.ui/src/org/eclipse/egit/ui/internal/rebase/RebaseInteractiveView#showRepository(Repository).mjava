@@ -1,10 +1,6 @@
 	private void showRepository(final Repository repository) {
 		if (form.isDisposed())
 			return;
-		if (repository == null) {
-			form.setText(UIText.RebaseInteractiveView_NoSelection);
-			return;
-		}
 
 		if (currentPlan != null)
 			currentPlan.removeRebaseInteractivePlanChangeListener(this);
@@ -12,10 +8,16 @@
 		if (planIndexer != null)
 			planIndexer.dispose();
 
-		currentPlan = RebaseInteractivePlan.getPlan(repository);
-		planIndexer = new RebasePlanIndexer(currentPlan);
-		currentPlan.addRebaseInteractivePlanChangeListener(this);
-		form.setText(getRepositoryName(repository));
+		if (isValidRepo(repository)) {
+			currentPlan = RebaseInteractivePlan.getPlan(repository);
+			planIndexer = new RebasePlanIndexer(currentPlan);
+			currentPlan.addRebaseInteractivePlanChangeListener(this);
+			form.setText(getRepositoryName(repository));
+		} else {
+			currentPlan = null;
+			planIndexer = null;
+			form.setText(UIText.RebaseInteractiveView_NoSelection);
+		}
 		refresh();
 	}
 

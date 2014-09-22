@@ -25,6 +25,9 @@
 			if (resource != null) {
 				RepositoryMapping mapping = RepositoryMapping
 						.getMapping(resource);
+				if (mapping == null)
+					return;
+
 				repo = mapping.getRepository();
 			}
 		}
