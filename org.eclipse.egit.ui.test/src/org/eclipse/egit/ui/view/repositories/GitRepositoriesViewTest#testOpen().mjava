@@ -27,7 +27,7 @@
 		checkoutWithDoubleClick(tree, "stable");
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		String contentStable = getTestFileContent();
-		assertTrue("Content of master and stable should differ", !contentMaster
-				.equals(contentStable));
+		assertNotEquals("Content of master and stable should differ",
+				contentMaster, contentStable);
 	}
 
