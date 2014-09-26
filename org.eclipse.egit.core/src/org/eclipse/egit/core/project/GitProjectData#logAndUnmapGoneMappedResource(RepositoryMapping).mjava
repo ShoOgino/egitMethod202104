@@ -3,10 +3,7 @@
 				CoreText.GitProjectData_mappedResourceGone, m.toString()),
 				new FileNotFoundException(m.getContainerPath().toString()));
 		m.clear();
-		try {
-			RepositoryProvider.unmap(getProject());
-		} catch (TeamException e) {
-			Activator.logError(CoreText.GitProjectData_UnmappingGoneResourceFailed, e);
-		}
+		UnmapJob unmapJob = new UnmapJob(getProject());
+		unmapJob.schedule();
 	}
 

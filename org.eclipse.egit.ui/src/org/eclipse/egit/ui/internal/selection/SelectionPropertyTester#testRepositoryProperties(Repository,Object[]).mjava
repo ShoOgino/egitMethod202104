@@ -1,0 +1,13 @@
+	private static boolean testRepositoryProperties(Repository repository,
+			Object[] properties) {
+		if (repository == null)
+			return false;
+
+		for (Object arg : properties) {
+			String s = (String) arg;
+			if (!ResourcePropertyTester.testRepositoryState(repository, s))
+				return false;
+		}
+		return true;
+	}
+
