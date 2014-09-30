@@ -1,0 +1,36 @@
+	@Test
+	public void stashAndApplyChanges() throws Exception {
+		String originalContent = getTestFileContent();
+
+		String modifiedContent = "changes to stash";
+		touch(modifiedContent);
+		assertEquals(modifiedContent, getTestFileContent());
+
+		ContextMenuHelper.clickContextMenu(selectProject(), "Team", STASHES,
+				UIText.StashesMenu_StashChangesActionText);
+
+		SWTBotShell createDialog = bot
+				.shell(UIText.StashCreateCommand_titleEnterCommitMessage);
+		SWTBotText enterMessageText = createDialog.bot().text(0);
+		String stashMessage = "stash message";
+		enterMessageText.setText(stashMessage);
+		createDialog.bot().button(IDialogConstants.OK_LABEL).click();
+
+		assertEquals(originalContent, getTestFileContent());
+
+		ContextMenuHelper.clickContextMenu(selectProject(), "Team", STASHES,
+				MessageFormat.format(UIText.StashesMenu_StashItemText,
+						Integer.valueOf(0), stashMessage));
+
+		SWTBotEditor stashEditor = bot.activeEditor();
+		// Check if text with message is there
+		stashEditor.bot().styledText(stashMessage);
+
+		stashEditor.bot()
+				.toolbarButtonWithTooltip(
+						util.getPluginLocalizedValue("StashApplyCommand.label"))
+				.click();
+
+		assertEquals(modifiedContent, getTestFileContent());
+	}
+

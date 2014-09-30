@@ -1,0 +1,9 @@
+	@Test
+	public void menuWithoutStashes() {
+		SWTBotTree tree = selectProject();
+		assertTrue(ContextMenuHelper.isContextMenuItemEnabled(tree, "Team",
+				STASHES));
+		assertFalse(ContextMenuHelper.isContextMenuItemEnabled(tree, "Team",
+				STASHES, UIText.StashesMenu_NoStashedChangesText));
+	}
+
