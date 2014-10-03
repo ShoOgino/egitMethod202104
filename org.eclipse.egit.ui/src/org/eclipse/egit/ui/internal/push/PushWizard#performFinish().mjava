@@ -19,7 +19,7 @@
 			return false;
 		UserPasswordCredentials credentials = repoPage.getCredentials();
 		if (credentials != null)
-			operation.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+			operation.setCredentialsProvider(new EGitCredentialsProvider(
 					credentials.getUser(), credentials.getPassword()));
 		final PushOperationResult resultToCompare;
 		if (confirmPage.isShowOnlyIfChangedSelected())

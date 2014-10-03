@@ -30,7 +30,7 @@
 
 		UserPasswordCredentials credentials = repoPage.getCredentials();
 		if (credentials != null)
-			op.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+			op.setCredentialsProvider(new EGitCredentialsProvider(
 					credentials.getUser(), credentials.getPassword()));
 
 		// even if a RemoteConfig is selected, we need to make sure to
