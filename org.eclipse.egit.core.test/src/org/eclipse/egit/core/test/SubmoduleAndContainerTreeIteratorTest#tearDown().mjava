@@ -1,0 +1,10 @@
+	@After
+	public void tearDown() throws Exception {
+		childRepository.dispose();
+		parentRepository.dispose();
+		childProject.delete(true, true, null);
+		parentProject.delete(true, true, null);
+		Activator.getDefault().getRepositoryCache().clear();
+		testUtils.deleteTempDirs();
+	}
+

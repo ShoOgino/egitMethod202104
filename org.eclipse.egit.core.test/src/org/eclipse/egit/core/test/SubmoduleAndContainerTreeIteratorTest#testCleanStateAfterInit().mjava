@@ -1,0 +1,9 @@
+	@Test
+	public void testCleanStateAfterInit() throws NoWorkTreeException,
+			GitAPIException {
+		Git parentGit = Git.wrap(parentRepository.getRepository());
+
+		Status status = parentGit.status().setWorkingTreeIt(treeIt).call();
+		assertTrue(status.isClean());
+	}
+

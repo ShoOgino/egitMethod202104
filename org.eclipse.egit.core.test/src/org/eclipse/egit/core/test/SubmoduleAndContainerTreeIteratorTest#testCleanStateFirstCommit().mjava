@@ -1,0 +1,13 @@
+	@Test
+	public void testCleanStateFirstCommit() throws NoWorkTreeException,
+			GitAPIException, IOException, CoreException, InterruptedException {
+		testUtils.changeContentOfFile(parentProject, parentFile, "new content");
+		RepositoryTestCase.fsTick(null);
+		parentRepository.trackAllFiles(parentProject);
+		parentRepository.commit("modified parent.txt");
+		Git parentGit = Git.wrap(parentRepository.getRepository());
+
+		Status status = parentGit.status().setWorkingTreeIt(treeIt).call();
+		assertTrue(status.isClean());
+	}
+
