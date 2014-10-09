@@ -1,7 +1,7 @@
 	private void askForTargetIfNecessary() {
 		if (target == null)
 			target = getTargetWithDialog();
-		if (target != null && showQuestionAboutTarget) {
+		if (target != null && showQuestionsBeforeCheckout) {
 			if (shouldShowCheckoutRemoteTrackingDialog(target))
 				target = getTargetWithCheckoutRemoteTrackingDialog();
 		}
