@@ -8,7 +8,7 @@
 	 */
 	public static StyleRange[] getHyperlinkDetectorStyleRanges(
 			ITextViewer textViewer, IHyperlinkDetector[] hyperlinkDetectors) {
-		HashSet<StyleRange> styleRangeList = new HashSet<StyleRange>();
+		HashSet<StyleRange> styleRangeList = new LinkedHashSet<StyleRange>();
 		if (hyperlinkDetectors != null && hyperlinkDetectors.length > 0) {
 			IDocument doc = textViewer.getDocument();
 			for (int line = 0; line < doc.getNumberOfLines(); line++) {
