@@ -1,0 +1,66 @@
+	@Test
+	public void mergeModelWithConflict() throws Exception {
+		File file1 = testRepo.createFile(iProject, "file1."
+				+ SAMPLE_FILE_EXTENSION);
+		File file2 = testRepo.createFile(iProject, "file2."
+				+ SAMPLE_FILE_EXTENSION);
+
+		String initialContent1 = "some content for the first file";
+		String initialContent2 = "some content for the second file";
+		testRepo.appendContentAndCommit(iProject, file1, initialContent1,
+				"first file - initial commit");
+		testRepo.appendContentAndCommit(iProject, file2, initialContent2,
+				"second file - initial commit");
+
+		IFile iFile1 = testRepo.getIFile(iProject, file1);
+		IFile iFile2 = testRepo.getIFile(iProject, file2);
+
+		testRepo.createAndCheckoutBranch(MASTER, BRANCH);
+
+		final String branchChanges = "branch changes\n";
+		setContentsAndCommit(iFile1, initialContent1 + branchChanges,
+				"branch commit");
+		setContentsAndCommit(iFile2, initialContent2 + branchChanges,
+				"branch commit");
+
+		testRepo.checkoutBranch(MASTER);
+
+		final String masterChanges = "some changes\n";
+		setContentsAndCommit(iFile1, initialContent1 + masterChanges,
+				"master commit");
+		setContentsAndCommit(iFile2, initialContent2 + masterChanges,
+				"master commit");
+
+		IMergeContext mergeContext = prepareModelContext(iFile1, MASTER, BRANCH);
+		IDiff node = mergeContext.getDiffTree().getDiff(iFile1);
+		assertNotNull(node);
+		node = mergeContext.getDiffTree().getDiff(iFile2);
+		assertNotNull(node);
+
+		IResourceMappingMerger merger = new SampleModelMerger(
+				SAMPLE_PROVIDER_ID);
+		IStatus mergeStatus = merger.merge(mergeContext,
+				new NullProgressMonitor());
+		assertEquals(IStatus.ERROR, mergeStatus.getSeverity());
+
+		assertTrue(mergeStatus instanceof IMergeStatus);
+		assertEquals(2,
+				((IMergeStatus) mergeStatus).getConflictingMappings().length);
+		Set<IFile> conflictingFiles = new LinkedHashSet<IFile>();
+		for (ResourceMapping conflictingMapping : ((IMergeStatus) mergeStatus)
+				.getConflictingMappings()) {
+			assertTrue(conflictingMapping instanceof SampleResourceMapping
+					&& conflictingMapping.getModelObject() instanceof IFile);
+			conflictingFiles.add((IFile) conflictingMapping.getModelObject());
+		}
+		assertTrue(conflictingFiles.contains(iFile1));
+		assertTrue(conflictingFiles.contains(iFile2));
+
+		assertContentEquals(iFile1, initialContent1 + masterChanges);
+		assertContentEquals(iFile2, initialContent2 + masterChanges);
+
+		Status status = new Git(repo).status().call();
+		assertEquals(0, status.getChanged().size());
+		assertEquals(0, status.getModified().size());
+	}
+
