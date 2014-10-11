@@ -18,6 +18,9 @@
 				.getLocation().toPortableString());
 		assertTrue(status.getModified().contains(repoRelativePath));
 
+		iProject.refreshLocal(IResource.DEPTH_INFINITE,
+				new NullProgressMonitor());
+
 		IMergeContext mergeContext = prepareContext(workspaceFile, HEAD, HEAD);
 		IDiff node = mergeContext.getDiffTree().getDiff(workspaceFile);
 		assertNotNull(node);

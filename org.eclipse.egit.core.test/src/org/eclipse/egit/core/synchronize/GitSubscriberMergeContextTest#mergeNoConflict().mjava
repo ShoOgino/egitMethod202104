@@ -22,8 +22,11 @@
 		testRepo.checkoutBranch(MASTER);
 
 		final String masterChanges = "some changes\n";
-		setContentsAndCommit(workspaceFile, initialContent + masterChanges,
-				"master commit");
+		setContentsAndCommit(workspaceFile, initialContent
+				+ masterChanges, "master commit");
+		iProject.refreshLocal(IResource.DEPTH_INFINITE,
+				new NullProgressMonitor());
+		// end setup
 
 		IMergeContext mergeContext = prepareContext(workspaceFile, MASTER,
 				BRANCH);
