@@ -1,19 +1,23 @@
 	@Override
 	public void fillContextMenu(IMenuManager menu) {
-		ISelection selection = getContext().getSelection();
-		if (selection.isEmpty())
+		ISelection s = getContext().getSelection();
+		if (s.isEmpty() || !(s instanceof IStructuredSelection))
 			return;
 
-		if (selection instanceof IStructuredSelection) {
-			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-			if (shouldAddShowInMenu(structuredSelection)) {
-				ICommonViewerWorkbenchSite site = (ICommonViewerWorkbenchSite) getActionSite()
-						.getViewSite();
+		IStructuredSelection selection = (IStructuredSelection) s;
+		ICommonViewerWorkbenchSite site = (ICommonViewerWorkbenchSite) getActionSite()
+				.getViewSite();
+		if (shouldAddShowInMenu(selection)) {
+			MenuManager showInSubMenu = UIUtils.createShowInMenu(site
+					.getWorkbenchWindow());
+			menu.appendToGroup(ICommonMenuConstants.GROUP_SHOW, showInSubMenu);
+		}
 
-				MenuManager showInSubMenu = UIUtils.createShowInMenu(
-						site.getWorkbenchWindow());
-				menu.appendToGroup(ICommonMenuConstants.GROUP_SHOW, showInSubMenu);
-			}
+		IFile file = getSelectedFile(selection);
+		if (file != null) {
+			MenuManager openWithSubMenu = new MenuManager(UIText.RepositoriesViewActionProvider_OpenWithMenu);
+			openWithSubMenu.add(new OpenWithMenu(site.getPage(), file));
+			menu.appendToGroup(ICommonMenuConstants.GROUP_OPEN, openWithSubMenu);
 		}
 	}
 
