@@ -1,0 +1,43 @@
+	/**
+	 * @param res
+	 *            a resource
+	 * @return the submodule repository if the resource is contained in a git
+	 *         submodule otherwise return {@code null}. The returned repository
+	 *         instance will always be taken from the {@link RepositoryCache}
+	 *         and the caller should not call close() on it.
+	 *
+	 *         TODO add support for multiple nesting levels of submodules
+	 */
+	public synchronized Repository getSubmoduleRepository(IResource res) {
+		IPath projectRelativePath = res.getProjectRelativePath();
+		if (projectRelativePath == null)
+			return null;
+
+		String projectRelativePathStr = res.getProjectRelativePath().toString();
+		try {
+			if (SubmoduleWalk.containsGitModulesFile(db)) {
+				SubmoduleWalk sw = SubmoduleWalk.forIndex(db);
+				while (sw.next()) {
+					if (projectRelativePathStr.startsWith(sw.getPath())) {
+						Repository subRepo = sw.getRepository();
+						if (subRepo == null)
+							return null;
+
+						Repository cachedRepo = null;
+						try {
+							cachedRepo = repositoryCache
+									.lookupRepository(subRepo.getDirectory());
+						} finally {
+							subRepo.close();
+						}
+						return cachedRepo;
+					}
+				}
+			}
+		} catch (IOException e) {
+			Activator.logWarning(
+					CoreText.RepositoryMapping_ExceptionSubmoduleWalk, e);
+		}
+		return db;
+	}
+
