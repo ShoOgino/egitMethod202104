@@ -9,10 +9,10 @@
 	 */
 	public static IStructuredSelection getStructuredSelection(
 			ISelection selection) {
-		if (selection instanceof IStructuredSelection)
-			return (IStructuredSelection) selection;
-		else if (selection instanceof ITextSelection)
+		if (selection instanceof ITextSelection)
 			return getSelectionFromEditorInput(getEvaluationContext());
+		else if (selection instanceof IStructuredSelection)
+			return (IStructuredSelection) selection;
 		return StructuredSelection.EMPTY;
 	}
 
