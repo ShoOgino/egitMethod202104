@@ -1,6 +1,6 @@
 	@Test
 	public void testFailNotFound() throws Exception {
-		BlobStorage blobStorage = new BlobStorage(repository, "file", ObjectId.fromString("0123456789012345678901234567890123456789"));
+		GitBlobStorage blobStorage = new GitBlobStorage(repository, "file", ObjectId.fromString("0123456789012345678901234567890123456789"));
 		assertEquals("file", blobStorage.getName());
 		try {
 			blobStorage.getContents();

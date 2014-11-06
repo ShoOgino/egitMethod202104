@@ -5,20 +5,22 @@
 
 		try {
 			WorkingTreeOptions workingTreeOptions = db.getConfig().get(WorkingTreeOptions.KEY);
+			final InputStream objectInputStream = db.open(blobId,
+					Constants.OBJ_BLOB).openStream();
 			switch (workingTreeOptions.getAutoCRLF()) {
 			case INPUT:
 				// When autocrlf == input the working tree could be either CRLF or LF, i.e. the comparison
 				// itself should ignore line endings.
 			case FALSE:
-				return db.open(blobId, Constants.OBJ_BLOB).openStream();
+				return objectInputStream;
 			case TRUE:
 			default:
-				return new AutoCRLFInputStream(db.open(blobId, Constants.OBJ_BLOB).openStream(), true);
+				return new AutoCRLFInputStream(objectInputStream, true);
 			}
 		} catch (MissingObjectException notFound) {
 			throw new CoreException(Activator.error(NLS.bind(
 					CoreText.BlobStorage_blobNotFound, blobId.name(), path),
-					null));
+					notFound));
 		}
 	}
 

@@ -1,0 +1,17 @@
+	/**
+	 * Returns the absolute path on disk of the underlying object.
+	 * <p>
+	 * The returned path may not point to an existing file if the object does
+	 * not exist locally.
+	 * </p>
+	 *
+	 * @return The absolute path on disk of the underlying object.
+	 */
+	public IPath getAbsolutePath() {
+		if (db.isBare()) {
+			return null;
+		}
+		return new Path(db.getWorkTree().getAbsolutePath() + File.separatorChar
+				+ path);
+	}
+
