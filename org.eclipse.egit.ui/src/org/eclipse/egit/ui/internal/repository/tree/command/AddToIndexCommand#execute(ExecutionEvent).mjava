@@ -1,5 +1,5 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		List<FileNode> selectedNodes = getSelectedNodes(event);
+		List<? extends RepositoryTreeNode> selectedNodes = getSelectedNodes(event);
 		if (selectedNodes.isEmpty() || selectedNodes.get(0).getRepository() == null)
 			return null;
 
