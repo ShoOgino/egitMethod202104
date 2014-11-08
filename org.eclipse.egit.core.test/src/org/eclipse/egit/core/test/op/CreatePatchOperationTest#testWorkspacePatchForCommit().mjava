@@ -5,9 +5,9 @@
 		commit = testRepository.addAndCommit(project.getProject(), deletedFile,
 				"whatever");
 		FileUtils.delete(deletedFile);
-		testRepository.appendFileContent(file, "another line");
+		testRepository.appendFileContent(file, "another line\n");
 		File newFile = testRepository.createFile(project.getProject(), "new-file");
-		testRepository.appendFileContent(newFile, "new content");
+		testRepository.appendFileContent(newFile, "new content\n");
 		testRepository.untrack(deletedFile);
 		testRepository.track(file);
 		testRepository.track(newFile);

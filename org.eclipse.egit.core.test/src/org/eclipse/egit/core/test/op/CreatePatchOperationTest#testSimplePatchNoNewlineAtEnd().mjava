@@ -1,7 +1,7 @@
 	@Test
-	public void testSimplePatch() throws Exception {
+	public void testSimplePatchNoNewlineAtEnd() throws Exception {
 		RevCommit secondCommit = testRepository.appendContentAndCommit(
-				project.getProject(), file, "another line\n", "2nd commit");
+				project.getProject(), file, "another line", "2nd commit");
 
 		CreatePatchOperation operation = new CreatePatchOperation(
 				testRepository.getRepository(), secondCommit);
@@ -11,6 +11,8 @@
 
 		String patchContent = operation.getPatchContent();
 		assertNotNull(patchContent);
-		assertPatch(SIMPLE_PATCH_CONTENT, patchContent);
+		assertPatch(SIMPLE_PATCH_CONTENT.replace("af28d38", "eb5f2c9")
+				+ "\\ No newline at end of file\n",
+				patchContent);
 	}
 

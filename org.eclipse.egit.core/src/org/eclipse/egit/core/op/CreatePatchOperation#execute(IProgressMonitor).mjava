@@ -7,23 +7,8 @@
 			gitMonitor = new EclipseGitProgressTransformer(monitor);
 
 		final StringBuilder sb = new StringBuilder();
-		final DiffFormatter diffFmt = new DiffFormatter(
-				new ByteArrayOutputStream() {
-
-					@Override
-					public synchronized void write(byte[] b, int off, int len) {
-						super.write(b, off, len);
-						try {
-							if (currentEncoding == null)
-								sb.append(toString("UTF-8")); //$NON-NLS-1$
-							else
-								sb.append(toString(currentEncoding));
-						} catch (UnsupportedEncodingException e) {
-							sb.append(toString());
-						}
-						reset();
-					}
-				}) {
+		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		final DiffFormatter diffFmt = new DiffFormatter(outputStream) {
 			private IProject project;
 
 			@Override
@@ -73,20 +58,26 @@
 					currentEncoding = CompareCoreUtils.getResourceEncoding(repository, path);
 					diffFmt.format(ent);
 				}
-			} else
+			} else {
 				diffFmt.format(
 						new DirCacheIterator(repository.readDirCache()),
 						new FileTreeIterator(repository));
+			}
+			diffFmt.flush();
 		} catch (IOException e) {
 			Activator.logError(CoreText.CreatePatchOperation_patchFileCouldNotBeWritten, e);
 		}
 
+		try {
+			String encoding = currentEncoding != null ? currentEncoding
+					: RawParseUtils.UTF8_CHARSET.name();
+			sb.append(outputStream.toString(encoding));
+		} catch (UnsupportedEncodingException e) {
+			sb.append(outputStream.toString());
+		}
+
 		if (DiffHeaderFormat.WORKSPACE == headerFormat)
 			updateWorkspacePatchPrefixes(sb, diffFmt);
-
-		// trim newline
-		if (sb.charAt(sb.length() - 1) == '\n')
-			sb.setLength(sb.length() - 1);
 
 		patchContent = sb.toString();
 	}

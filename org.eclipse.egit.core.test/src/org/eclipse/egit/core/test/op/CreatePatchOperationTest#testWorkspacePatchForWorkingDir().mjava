@@ -4,9 +4,9 @@
 		testRepository.addToIndex(project.getProject().findMember(".classpath"));
 		testRepository.addToIndex(project.getProject().findMember(".project"));
 		testRepository.commit("commit all");
-		testRepository.appendFileContent(file, "another line");
+		testRepository.appendFileContent(file, "another line\n");
 		File newFile = testRepository.createFile(project.getProject(), "new-file");
-		testRepository.appendFileContent(newFile, "new content");
+		testRepository.appendFileContent(newFile, "new content\n");
 		File deletedFile = testRepository.createFile(project.getProject(), "deleted-file");
 		commit = testRepository.addAndCommit(project.getProject(), deletedFile,
 				"whatever");
