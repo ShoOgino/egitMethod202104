@@ -271,12 +271,8 @@
 				public void textChanged(TextEvent event) {
 					textWidget.setStyleRanges(
 							new StyleRange[0]);
-					StyleRange[] styleRanges = UIUtils
-							.getHyperlinkDetectorStyleRanges(
-									sourceViewer,
-									configuration
-											.getHyperlinkDetectors(sourceViewer));
-					textWidget.setStyleRanges(styleRanges);
+					UIUtils.applyHyperlinkDetectorStyleRanges(sourceViewer,
+							configuration.getHyperlinkDetectors(sourceViewer));
 					if (undoAction != null)
 						undoAction.update();
 					if (redoAction != null)
