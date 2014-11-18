@@ -2,33 +2,18 @@
 	protected void computeInformation() {
 		MouseEvent e = getHoverEvent();
 
-		TableItem item = tableViewer.getTable().getItem(new Point(e.x, e.y));
-		if (item != null) {
-			SWTCommit commit = (SWTCommit) item.getData();
-			if (commit != null && commit.getRefCount() > 0) {
-				Rectangle itemBounds = item.getBounds();
-				int firstColumnWidth = tableViewer.getTable().getColumn(0)
-						.getWidth();
-				int relativeX = e.x - firstColumnWidth - itemBounds.x;
-				for (int i = 0; i < commit.getRefCount(); i++) {
-					Ref ref = commit.getRef(i);
-					Point textSpan = renderer.getRefHSpan(ref);
-					if ((textSpan != null)
-							&& (relativeX >= textSpan.x && relativeX <= textSpan.y)) {
-
-						String hoverText = getHoverText(ref, i, commit);
-						int width = textSpan.y - textSpan.x;
-						Rectangle rectangle = new Rectangle(firstColumnWidth
-								+ itemBounds.x + textSpan.x, itemBounds.y,
-								width, itemBounds.height);
-						setInformation(hoverText, rectangle);
-						return;
-					}
-				}
-			}
+		Information information = null;
+		ViewerCell cell = tableViewer.getCell(new Point(e.x, e.y));
+		if (cell != null) {
+			SWTCommit commit = (SWTCommit) cell.getElement();
+			if (commit != null)
+				information = computeInformationForCommit(commit, cell, e);
 		}
 
 		// computeInformation must setInformation in all cases
-		setInformation(null, null);
+		if (information != null)
+			setInformation(information.information, information.subjectArea);
+		else
+			setInformation(null, null);
 	}
 

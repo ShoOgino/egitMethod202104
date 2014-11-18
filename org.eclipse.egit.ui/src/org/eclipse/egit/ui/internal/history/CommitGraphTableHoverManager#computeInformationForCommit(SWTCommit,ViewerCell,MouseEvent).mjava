@@ -1,0 +1,14 @@
+	private Information computeInformationForCommit(SWTCommit commit,
+			ViewerCell cell, MouseEvent e) {
+		final int columnIndex = cell.getColumnIndex();
+		switch (columnIndex) {
+		case 1:
+			return computeInformationForRef(commit, cell, e);
+		case 3:
+			return computeInformationForDate(commit.getAuthorIdent(), cell);
+		case 5:
+			return computeInformationForDate(commit.getCommitterIdent(), cell);
+		}
+		return null;
+	}
+
