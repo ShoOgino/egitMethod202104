@@ -68,7 +68,8 @@
 			}
 		});
 
-		final RefHoverInformationControlManager hoverManager = new RefHoverInformationControlManager();
+		final CommitGraphTableHoverManager hoverManager = new CommitGraphTableHoverManager(
+				table, renderer);
 		hoverManager.install(table.getTable());
 
 		table.getTable().addDisposeListener(new DisposeListener() {
