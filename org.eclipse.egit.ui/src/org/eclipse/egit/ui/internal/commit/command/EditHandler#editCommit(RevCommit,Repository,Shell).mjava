@@ -1,0 +1,25 @@
+	/**
+	 * @param commit
+	 * @param repo
+	 * @param shell
+	 * @return true, if edit was started, false if user aborted
+	 */
+	public static boolean editCommit(RevCommit commit, Repository repo,
+			Shell shell) {
+		try {
+			if (!UIRepositoryUtils.handleUncommittedFiles(repo, shell))
+				return false;
+		} catch (GitAPIException e) {
+			Activator.logError(e.getMessage(), e);
+			return false;
+		}
+
+		final EditCommitOperation op = new EditCommitOperation(repo, commit);
+
+		JobUtil.scheduleUserWorkspaceJob(
+				op,
+				MessageFormat.format(UIText.EditHandler_JobName, commit.name()),
+				JobFamilies.EDIT);
+		return true;
+	}
+

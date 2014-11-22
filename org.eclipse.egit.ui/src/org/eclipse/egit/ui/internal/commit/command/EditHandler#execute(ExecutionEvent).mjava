@@ -6,21 +6,9 @@
 		if (repo == null)
 			return null;
 
-		try {
-			Shell shell = getPart(event).getSite().getShell();
-			if (!UIRepositoryUtils.handleUncommittedFiles(repo, shell))
-				return null;
-		} catch (GitAPIException e) {
-			Activator.logError(e.getMessage(), e);
-			return null;
-		}
+		Shell shell = getPart(event).getSite().getShell();
 
-		final EditCommitOperation op = new EditCommitOperation(repo, commit);
-
-		JobUtil.scheduleUserWorkspaceJob(
-				op,
-				MessageFormat.format(UIText.EditHandler_JobName, commit.name()),
-				JobFamilies.EDIT);
+		editCommit(commit, repo, shell);
 		return null;
 	}
 
