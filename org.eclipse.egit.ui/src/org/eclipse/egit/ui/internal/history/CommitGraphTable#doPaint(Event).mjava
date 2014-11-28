@@ -1,4 +1,13 @@
 	void doPaint(final Event event) {
+		// enable antialiasing early to avoid different font extent in
+		// PlotRenderer
+		if (this.enableAntialias)
+			try {
+				event.gc.setAntialias(SWT.ON);
+			} catch (SWTException e) {
+				this.enableAntialias = false;
+			}
+
 		final RevCommit c = (RevCommit) ((TableItem) event.item).getData();
 		if (c instanceof SWTCommit) {
 			final SWTLane lane = ((SWTCommit) c).getLane();
