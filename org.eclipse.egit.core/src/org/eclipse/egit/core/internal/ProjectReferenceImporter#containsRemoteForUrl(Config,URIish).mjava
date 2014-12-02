@@ -10,11 +10,10 @@
 			if (existingUrl.equals(url))
 				return true;
 
-			// try URLs without user name, since often project sets contain
-			// anonymous URLs, and remote URL might be anonymous as well
-			URIish anonExistingUrl = existingUrl.setUser(null);
-			URIish anonUrl = url.setUser(null);
-			if (anonExistingUrl.equals(anonUrl))
+			// there may be slight differences in the URLs...
+			URIish canonExistingUrl = canonicalizeURL(existingUrl);
+			URIish canonUrl = canonicalizeURL(url);
+			if (canonExistingUrl.equals(canonUrl))
 				return true;
 		}
 		return false;
