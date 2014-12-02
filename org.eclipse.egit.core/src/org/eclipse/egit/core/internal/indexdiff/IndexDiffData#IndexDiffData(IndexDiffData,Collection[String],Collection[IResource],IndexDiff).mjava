@@ -23,6 +23,7 @@
 		Set<String> untracked2 = new HashSet<String>(baseDiff.getUntracked());
 		Set<String> conflicts2 = new HashSet<String>(baseDiff.getConflicting());
 		Set<String> symlinks2 = new HashSet<String>(baseDiff.getSymlinks());
+		Set<String> submodules2 = new HashSet<String>(baseDiff.getSubmodules());
 
 		mergeList(added2, changedFiles, diffForChangedFiles.getAdded());
 		mergeList(changed2, changedFiles, diffForChangedFiles.getChanged());
@@ -32,6 +33,8 @@
 		mergeList(untracked2, changedFiles, diffForChangedFiles.getUntracked());
 		mergeList(symlinks2, changedFiles,
 				diffForChangedFiles.getPathsWithIndexMode(FileMode.SYMLINK));
+		mergeList(submodules2, changedFiles,
+				diffForChangedFiles.getPathsWithIndexMode(FileMode.GITLINK));
 		Set<String> untrackedFolders2 = mergeUntrackedFolders(
 				baseDiff.getUntrackedFolders(), changedFiles,
 				getUntrackedFolders(diffForChangedFiles));
@@ -50,5 +53,6 @@
 		conflicts = Collections.unmodifiableSet(conflicts2);
 		ignored = Collections.unmodifiableSet(ignored2);
 		symlinks = Collections.unmodifiableSet(symlinks2);
+		submodules = Collections.unmodifiableSet(submodules2);
 	}
 
