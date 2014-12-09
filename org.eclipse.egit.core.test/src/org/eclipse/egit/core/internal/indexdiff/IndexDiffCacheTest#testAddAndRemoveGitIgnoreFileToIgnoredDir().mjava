@@ -1,0 +1,32 @@
+	@Test
+	public void testAddAndRemoveGitIgnoreFileToIgnoredDir() throws Exception {
+		testRepository.connect(project.project);
+		project.createFile(".gitignore", "ignore\n".getBytes("UTF-8"));
+		project.createFolder("sub");
+		project.createFile("sub/ignore", new byte[] {});
+		testRepository.addToIndex(project.project);
+		testRepository
+				.createInitialCommit("testRemoveIgnoredFile\n\nfirst commit\n");
+		prepareCacheEntry();
+
+		IndexDiffData data1 = waitForListenerCalled();
+		assertThat(data1.getIgnoredNotInIndex(),
+				hasItem("Project-1/sub/ignore"));
+
+		project.createFile("sub/ignored", "Ignored".getBytes());
+
+		// adding this file will trigger a refresh, so no manual refresh must be
+		// required.
+		project.createFile("sub/.gitignore", "ignored\n".getBytes());
+
+		IndexDiffData data2 = waitForListenerCalled();
+		assertThat(data2.getIgnoredNotInIndex(),
+				hasItem("Project-1/sub/ignored"));
+
+		// removing must also trigger the listener
+		project.getProject().getFile("sub/.gitignore").delete(true, null);
+
+		IndexDiffData data3 = waitForListenerCalled();
+		assertThat(data3.getUntracked(), hasItem("Project-1/sub/ignored"));
+	}
+
