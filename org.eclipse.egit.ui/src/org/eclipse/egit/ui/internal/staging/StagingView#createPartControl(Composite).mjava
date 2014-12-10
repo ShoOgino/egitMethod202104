@@ -6,8 +6,8 @@
 		parent.addDisposeListener(new DisposeListener() {
 
 			public void widgetDisposed(DisposeEvent e) {
-				if (!commitMessageComponent.isAmending()
-						&& userEnteredCommitMessage())
+				if (commitMessageComponent.isAmending()
+						|| userEnteredCommitMessage())
 					saveCommitMessageComponentState();
 				else
 					deleteCommitMessageComponentState();

@@ -20,14 +20,15 @@
 			else
 				loadExistingState(helper, oldState);
 		} else { // repository did not change
-			if (!commitMessageComponent.isAmending()
-					&& userEnteredCommitMessage()) {
-				if (!commitMessageComponent.getHeadCommit().equals(
-						helper.getPreviousCommit()))
+			if (!commitMessageComponent.getHeadCommit().equals(
+					helper.getPreviousCommit())) {
+				if (!commitMessageComponent.isAmending()
+						&& userEnteredCommitMessage())
 					addHeadChangedWarning(commitMessageComponent
 							.getCommitMessage());
-			} else
-				loadInitialState(helper);
+				else
+					loadInitialState(helper);
+			}
 		}
 		amendPreviousCommitAction.setChecked(commitMessageComponent
 				.isAmending());
