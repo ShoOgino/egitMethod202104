@@ -1,0 +1,22 @@
+	/**
+	 * Checks if the path relative to the given repository refers to a symbolic
+	 * link
+	 *
+	 * @param repository
+	 *            the repository of the file
+	 * @param repoRelativePath
+	 *            the repository-relative path of the file to search for
+	 * @return {@code true} if the path in the given repository refers to a
+	 *         symbolic link
+	 */
+	public static boolean isSymbolicLink(Repository repository,
+			String repoRelativePath) {
+		try {
+			File f = new Path(repository.getWorkTree().getAbsolutePath())
+					.append((repoRelativePath)).toFile();
+			return FS.DETECTED.isSymLink(f);
+		} catch (@SuppressWarnings("unused") IOException e) {
+			return false;
+		}
+	}
+
