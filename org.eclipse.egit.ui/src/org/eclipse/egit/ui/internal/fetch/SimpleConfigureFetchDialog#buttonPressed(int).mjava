@@ -2,7 +2,7 @@
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == DRY_RUN) {
 			try {
-				new ProgressMonitorDialog(getShell()).run(false, true,
+				new ProgressMonitorDialog(getShell()).run(true, true,
 						new IRunnableWithProgress() {
 							public void run(IProgressMonitor monitor)
 									throws InvocationTargetException,
@@ -10,17 +10,26 @@
 								int timeout = Activator
 										.getDefault()
 										.getPreferenceStore()
-										.getInt(
-												UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-								FetchOperationUI op = new FetchOperationUI(
+										.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+								final FetchOperationUI op = new FetchOperationUI(
 										repository, config, timeout, true);
 								try {
-									FetchResultDialog dlg;
-									dlg = new FetchResultDialog(getShell(),
-											repository, op.execute(monitor), op
-													.getSourceString());
-									dlg.showConfigureButton(false);
-									dlg.open();
+									final FetchResult result = op
+											.execute(monitor);
+									getShell().getDisplay().asyncExec(
+											new Runnable() {
+
+												public void run() {
+													FetchResultDialog dlg;
+													dlg = new FetchResultDialog(
+															getShell(),
+															repository,
+															result,
+															op.getSourceString());
+													dlg.showConfigureButton(false);
+													dlg.open();
+												}
+											});
 								} catch (CoreException e) {
 									Activator.handleError(e.getMessage(), e,
 											true);
@@ -54,7 +63,7 @@
 			}
 			if (buttonId == OK)
 				try {
-					new ProgressMonitorDialog(getShell()).run(false, true,
+					new ProgressMonitorDialog(getShell()).run(true, true,
 							new IRunnableWithProgress() {
 								public void run(IProgressMonitor monitor)
 										throws InvocationTargetException,
