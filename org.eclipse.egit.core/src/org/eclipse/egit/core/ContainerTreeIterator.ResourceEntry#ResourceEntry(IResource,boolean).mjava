@@ -5,7 +5,9 @@
 			FileMode mode = null;
 			try {
 				File file = asFile();
-				if (FS.DETECTED.supportsSymlinks() && file != null
+				if (file == null)
+					mode = FileMode.MISSING;
+				else if (FS.DETECTED.supportsSymlinks()
 						&& FS.DETECTED.isSymLink(file))
 					mode = FileMode.SYMLINK;
 				else {

@@ -1,8 +1,12 @@
 		@Override
 		public InputStream openInputStream() throws IOException {
 			if (fileMode == FileMode.SYMLINK) {
-				return new ByteArrayInputStream(FS.DETECTED.readSymLink(
-						asFile()).getBytes(Constants.CHARACTER_ENCODING));
+				File file = asFile();
+				if (file == null)
+					throw new IOException(MessageFormat.format(
+							CoreText.ContainerTreeIterator_DeletedFile, rsrc));
+				return new ByteArrayInputStream(FS.DETECTED.readSymLink(file)
+						.getBytes(Constants.CHARACTER_ENCODING));
 			} else {
 				if (rsrc.getType() == IResource.FILE)
 					try {

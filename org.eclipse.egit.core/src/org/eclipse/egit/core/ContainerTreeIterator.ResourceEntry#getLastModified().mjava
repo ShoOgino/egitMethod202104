@@ -2,7 +2,10 @@
 		public long getLastModified() {
 			if (fileMode == FileMode.SYMLINK) {
 				try {
-					return FS.DETECTED.lastModified(asFile());
+					File file = asFile();
+					if (file != null)
+						return FS.DETECTED.lastModified(file);
+					return 0;
 				} catch (IOException e) {
 					return 0;
 				}
