@@ -1,23 +1,33 @@
 	private void discardChanges(IProgressMonitor monitor) throws CoreException {
-		monitor.beginTask(CoreText.DiscardChangesOperation_discardingChanges, 2);
+		monitor.beginTask(CoreText.DiscardChangesOperation_discardingChanges,
+				pathsByRepository.size() * 2);
 		boolean errorOccurred = false;
-		try {
-			discardChanges();
-		} catch (GitAPIException e) {
-			errorOccurred = true;
-			Activator.logError(CoreText.DiscardChangesOperation_discardFailed, e);
+
+		for (Entry<Repository, Collection<String>> entry : pathsByRepository
+				.entrySet()) {
+			Repository repository = entry.getKey();
+			Collection<String> paths = entry.getValue();
+
+			try {
+				discardChanges(repository, paths);
+			} catch (GitAPIException e) {
+				errorOccurred = true;
+				Activator.logError(
+						CoreText.DiscardChangesOperation_discardFailed, e);
+			}
+			monitor.worked(1);
+
+			try {
+				ProjectUtil.refreshRepositoryResources(repository, paths,
+						new SubProgressMonitor(monitor, 1));
+			} catch (CoreException e) {
+				errorOccurred = true;
+				Activator.logError(
+						CoreText.DiscardChangesOperation_refreshFailed, e);
+			}
 		}
-		monitor.worked(1);
-		try {
-			ProjectUtil.refreshResources(files, new SubProgressMonitor(monitor,
-					1));
-		} catch (CoreException e) {
-			errorOccurred = true;
-			Activator.logError(CoreText.DiscardChangesOperation_refreshFailed,
-					e);
-		}
-		monitor.worked(1);
 		monitor.done();
+
 		if (errorOccurred) {
 			IStatus status = Activator.error(
 					CoreText.DiscardChangesOperation_discardFailedSeeLog, null);

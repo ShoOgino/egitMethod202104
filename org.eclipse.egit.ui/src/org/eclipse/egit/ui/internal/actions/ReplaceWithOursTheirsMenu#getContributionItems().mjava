@@ -1,0 +1,31 @@
+	@Override
+	protected IContributionItem[] getContributionItems() {
+		List<IContributionItem> items = new ArrayList<IContributionItem>();
+
+		IHandlerService handlerService = (IHandlerService) serviceLocator
+				.getService(IHandlerService.class);
+		IStructuredSelection selection = SelectionUtils
+				.getSelection(handlerService.getCurrentState());
+		IPath[] locations = SelectionUtils.getSelectedLocations(selection);
+		if (locations.length == 0)
+			return new IContributionItem[0];
+
+		Map<Repository, Collection<String>> pathsByRepository = ResourceUtil
+				.splitPathsByRepository(Arrays.asList(locations));
+		if (pathsByRepository.size() == 1) {
+
+			Repository repository = pathsByRepository.keySet().iterator()
+					.next();
+			Collection<String> paths = pathsByRepository.get(repository);
+			if (paths.size() == 1) {
+				String path = paths.iterator().next();
+				items.addAll(createSpecificOursTheirsItems(repository, path));
+			} else if (paths.size() > 1) {
+				items.addAll(createUnspecificOursTheirsItems(Arrays
+						.asList(locations)));
+			}
+		}
+
+		return items.toArray(new IContributionItem[0]);
+	}
+

@@ -59,6 +59,8 @@
 				boolean addDelete = availableActions.contains(StagingEntry.Action.DELETE);
 				boolean addIgnore = availableActions.contains(StagingEntry.Action.IGNORE);
 				boolean addLaunchMergeTool = availableActions.contains(StagingEntry.Action.LAUNCH_MERGE_TOOL);
+				boolean addReplaceWithOursTheirsMenu = availableActions
+						.contains(StagingEntry.Action.REPLACE_WITH_OURS_THEIRS_MENU);
 
 				if (addStage)
 					menuMgr.add(new Action(UIText.StagingView_StageItemMenuLabel) {
@@ -103,6 +105,14 @@
 					menuMgr.add(createItem(UIText.StagingView_MergeTool,
 							ActionCommands.MERGE_TOOL_ACTION,
 							fileSelection));
+				if (addReplaceWithOursTheirsMenu) {
+					MenuManager replaceWithMenu = new MenuManager(
+							UIText.StagingView_ReplaceWith);
+					ReplaceWithOursTheirsMenu oursTheirsMenu = new ReplaceWithOursTheirsMenu();
+					oursTheirsMenu.initialize(getSite());
+					replaceWithMenu.add(oursTheirsMenu);
+					menuMgr.add(replaceWithMenu);
+				}
 				menuMgr.add(new Separator());
 				menuMgr.add(createShowInMenu());
 			}

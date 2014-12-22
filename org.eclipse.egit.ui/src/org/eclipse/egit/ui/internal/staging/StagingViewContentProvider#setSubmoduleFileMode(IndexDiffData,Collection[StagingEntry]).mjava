@@ -1,0 +1,18 @@
+	/**
+	 * Set the submodule file mode (equivalent to FileMode.GITLINK) of the given
+	 * StagingEntries.
+	 *
+	 * @param indexDiff
+	 *            the index diff
+	 * @param entries
+	 *            the given StagingEntries
+	 */
+	private void setSubmoduleFileMode(IndexDiffData indexDiff,
+			Collection<StagingEntry> entries) {
+		final Set<String> submodules = indexDiff.getSubmodules();
+		for (StagingEntry stagingEntry : entries) {
+			if (submodules.contains(stagingEntry.getPath()))
+				stagingEntry.setSubmodule(true);
+		}
+	}
+

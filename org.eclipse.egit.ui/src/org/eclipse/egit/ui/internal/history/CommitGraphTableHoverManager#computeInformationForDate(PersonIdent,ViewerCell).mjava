@@ -1,0 +1,6 @@
+	private Information computeInformationForDate(PersonIdent ident,
+			ViewerCell cell) {
+		String formattedDate = dateFormatter.formatDate(ident);
+		return new Information(formattedDate, cell.getBounds());
+	}
+

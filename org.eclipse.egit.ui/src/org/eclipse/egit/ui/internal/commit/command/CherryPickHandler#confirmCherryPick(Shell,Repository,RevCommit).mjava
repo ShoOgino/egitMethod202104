@@ -1,12 +1,12 @@
 	private boolean confirmCherryPick(final Shell shell,
-			final Repository repository, final List<RevCommit> commits)
+			final Repository repository, final RevCommit commit)
 			throws ExecutionException {
 		final AtomicBoolean confirmed = new AtomicBoolean(false);
 		final String message;
 		try {
 			message = MessageFormat.format(
-					UIText.CherryPickHandler_ConfirmMessage,
-					Integer.valueOf(commits.size()), repository.getBranch());
+					UIText.CherryPickHandler_ConfirmMessage, 1,
+					repository.getBranch());
 		} catch (IOException e) {
 			throw new ExecutionException(
 					"Exception obtaining current repository branch", e); //$NON-NLS-1$
@@ -16,7 +16,7 @@
 
 			public void run() {
 				ConfirmCherryPickDialog dialog = new ConfirmCherryPickDialog(
-						shell, message, repository, commits);
+						shell, message, repository, Arrays.asList(commit));
 				int result = dialog.open();
 				confirmed.set(result == Window.OK);
 			}

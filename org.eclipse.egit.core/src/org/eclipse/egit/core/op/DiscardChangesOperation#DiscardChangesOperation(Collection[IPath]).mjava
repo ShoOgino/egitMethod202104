@@ -1,0 +1,9 @@
+	/**
+	 * {@link DiscardChangesOperation} for absolute paths.
+	 *
+	 * @param paths
+	 */
+	public DiscardChangesOperation(Collection<IPath> paths) {
+		this(ResourceUtil.splitPathsByRepository(paths));
+	}
+
