@@ -8,7 +8,7 @@
 			listRemotesOp = new ListRemoteOperation(local, uri, timeout);
 			if (credentials != null)
 				listRemotesOp
-						.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+						.setCredentialsProvider(new EGitCredentialsProvider(
 								credentials.getUser(), credentials.getPassword()));
 			getContainer().run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
