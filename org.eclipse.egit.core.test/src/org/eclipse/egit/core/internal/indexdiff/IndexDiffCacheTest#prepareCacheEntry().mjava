@@ -1,4 +1,4 @@
-	private void prepareCacheEntry() {
+	private IndexDiffCacheEntry prepareCacheEntry() {
 		IndexDiffCache indexDiffCache = Activator.getDefault()
 				.getIndexDiffCache();
 		// This call should trigger an indexDiffChanged event
@@ -14,5 +14,6 @@
 				indexDiffDataResult.set(indexDiffData);
 			}
 		});
+		return cacheEntry;
 	}
 

@@ -1,5 +1,8 @@
 	private void extractContainerProperties() {
-		String repoRelativePath = makeRepoRelative(resource) + "/"; //$NON-NLS-1$
+		String repoRelative = makeRepoRelative(resource);
+		if (repoRelative == null)
+			return;
+		String repoRelativePath = repoRelative + "/"; //$NON-NLS-1$
 
 		if (ResourceUtil.isSymbolicLink(repository, repoRelativePath)) {
 			extractResourceProperties();

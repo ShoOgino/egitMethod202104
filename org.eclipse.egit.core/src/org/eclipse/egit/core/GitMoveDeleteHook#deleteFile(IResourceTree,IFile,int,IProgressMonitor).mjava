@@ -48,6 +48,25 @@
 				tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(),
 						0, CoreText.MoveDeleteHook_operationError, null));
 			tree.standardDeleteFile(file, updateFlags, monitor);
+		} catch (LockFailedException e) {
+			// FIXME The index is currently locked. This notably happens during
+			// rebase operations. auto-staging deletions should be queued... and
+			// the queued job will have to double-check whether the file has
+			// truly been deleted or if it was only deleted to be replaced by
+			// another version.
+			// This hook only exists to automatically add changes to the index.
+			// If the index is currently locked, do not accept the
+			// responsibility of deleting the file, return false to tell the
+			// workspace it can continue with the standard deletion. The user
+			// will have to stage the deletion later on _if_ this was truly
+			// needed, which won't happen for calls triggered by merge
+			// operations from the merge strategies.
+			Activator.getDefault().getLog()
+					.log(new Status(IStatus.WARNING, Activator.getPluginId(),
+							MessageFormat
+									.format(CoreText.MoveDeleteHook_cannotAutoStageDeletion,
+											file.getLocation())));
+			return FINISH_FOR_ME;
 		} catch (IOException e) {
 			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
 					CoreText.MoveDeleteHook_operationError, e));

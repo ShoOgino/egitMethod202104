@@ -8,9 +8,20 @@
 			// Ignore the change
 			return true;
 
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		IndexDiffCacheEntry entry = null;
+
+		if (cache != null)
+			entry = cache.getIndexDiffCacheEntry(mapping.getRepository());
+
 		if (resource instanceof IFolder
 				&& delta.getKind() == IResourceDelta.ADDED) {
-			filesToUpdate.add(mapping.getRepoRelativePath(resource) + "/"); //$NON-NLS-1$
+			String path = mapping.getRepoRelativePath(resource) + "/"; //$NON-NLS-1$
+
+			if (isIgnoredInOldIndex(entry, path))
+				return true; // keep going to catch .gitignore files.
+
+			filesToUpdate.add(path);
 			resourcesToUpdate.add(resource);
 			return true;
 		}
@@ -32,8 +43,17 @@
 		}
 
 		String repoRelativePath = mapping.getRepoRelativePath(resource);
-		if (repoRelativePath!= null)
-			filesToUpdate.add(repoRelativePath);
+		if (repoRelativePath == null) {
+			resourcesToUpdate.add(resource);
+			return true;
+		}
+
+		if (isIgnoredInOldIndex(entry, repoRelativePath)) {
+			// This file is ignored in the old index, and ignore rules did not
+			// change: ignore the delta to avoid unnecessary index updates
+			return false;
+		}
+		filesToUpdate.add(repoRelativePath);
 		resourcesToUpdate.add(resource);
 
 		return true;

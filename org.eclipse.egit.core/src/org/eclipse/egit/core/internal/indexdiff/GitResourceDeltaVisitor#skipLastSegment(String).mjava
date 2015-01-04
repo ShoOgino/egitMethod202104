@@ -1,0 +1,5 @@
+	private String skipLastSegment(String path) {
+		int slashPos = path.lastIndexOf('/');
+		return slashPos == -1 ? null : path.substring(0, slashPos);
+	}
+

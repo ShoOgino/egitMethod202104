@@ -1,0 +1,17 @@
+	@Test
+	public void deleteTest() throws Exception {
+		DirCache dirCache = repo.lockDirCache();
+
+		IFile file1 = iProject.getFile(new Path("file1"));
+		file1.create(new ByteArrayInputStream(new byte[0]), false,
+				new NullProgressMonitor());
+
+		try {
+			file1.delete(false, new NullProgressMonitor());
+		} finally {
+			// Delete will fail in LockFailedException, unlock so that
+			// #clearGitResources() doesn't fail to cleanup
+			dirCache.unlock();
+		}
+	}
+
