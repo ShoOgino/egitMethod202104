@@ -2,8 +2,8 @@
 	protected IContributionItem[] getContributionItems() {
 		List<IContributionItem> items = new ArrayList<IContributionItem>();
 
-		IHandlerService handlerService = (IHandlerService) serviceLocator
-				.getService(IHandlerService.class);
+		IHandlerService handlerService = CommonUtils.getService(serviceLocator,
+				IHandlerService.class);
 		IStructuredSelection selection = SelectionUtils
 				.getSelection(handlerService.getCurrentState());
 		IPath[] locations = SelectionUtils.getSelectedLocations(selection);
