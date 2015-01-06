@@ -1,7 +1,19 @@
 	@Override
 	public void setContent(final byte[] newContent) {
 		try {
-			runnableContext.run(true, false, new IRunnableWithProgress() {
+			// Don't fork: if we are called from a thread which locked
+			// workspace our *forked* operation will never complete because it
+			// requires file lock which cannot be acquired from another thread
+			ISchedulingRule rule = Job.getJobManager().currentRule();
+			boolean fork = true;
+			if (rule instanceof IResource) {
+				IFile ourFile = ResourcesPlugin.getWorkspace().getRoot()
+						.getFile(location);
+				if (ourFile.exists()
+						&& ((IResource) rule).isConflicting(ourFile))
+					fork = false;
+			}
+			runnableContext.run(fork, false, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
 					IFileStore store = EFS.getLocalFileSystem().getStore(
