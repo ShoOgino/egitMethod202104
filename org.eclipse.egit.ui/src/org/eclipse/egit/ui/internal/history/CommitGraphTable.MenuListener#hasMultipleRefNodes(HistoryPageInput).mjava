@@ -1,6 +1,6 @@
-		private boolean hasMultipleRefNodes() {
+		private boolean hasMultipleRefNodes(HistoryPageInput lastInput) {
 			try {
-				Map<String, Ref> branches = input.getRepository()
+				Map<String, Ref> branches = lastInput.getRepository()
 						.getRefDatabase().getRefs(Constants.R_HEADS);
 				int count = 0;
 				for (Ref branch : branches.values()) {
