@@ -31,7 +31,7 @@
 				return super.belongsTo(family);
 			}
 		};
-		job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+		job.setRule(RuleUtil.getRuleForRepositories(Arrays.asList(repositories)));
 		job.setUser(true);
 		job.addJobChangeListener(jobChangeListener);
 		job.schedule();
