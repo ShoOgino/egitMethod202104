@@ -43,11 +43,7 @@
 			}
 		});
 
-		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
-		if (service != null)
-			service.schedule(commitJob, 0, true);
-		else
-			commitJob.schedule();
+		schedule(commitJob, true);
 
 		CommitMessageHistory.saveCommitHistory(commitMessage);
 		clearCommitMessageToggles();

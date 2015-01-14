@@ -1,9 +1,9 @@
 	private void stage(IStructuredSelection selection) {
 		StagingViewContentProvider contentProvider = getContentProvider(unstagedViewer);
-		Git git = new Git(currentRepository);
+		final Git git = new Git(currentRepository);
 		Iterator iterator = selection.iterator();
-		List<String> addPaths = new ArrayList<String>();
-		List<String> rmPaths = new ArrayList<String>();
+		final List<String> addPaths = new ArrayList<String>();
+		final List<String> rmPaths = new ArrayList<String>();
 		resetPathsToExpand();
 		while (iterator.hasNext()) {
 			Object element = iterator.next();
@@ -35,33 +35,63 @@
 			}
 		}
 
-		if (!addPaths.isEmpty())
-			try {
-				AddCommand add = git.add();
-				for (String addPath : addPaths)
-					add.addFilepattern(addPath);
-				add.call();
-			} catch (NoFilepatternException e1) {
-				// cannot happen
-			} catch (JGitInternalException e1) {
-				Activator.handleError(e1.getCause().getMessage(),
-						e1.getCause(), true);
-			} catch (Exception e1) {
-				Activator.handleError(e1.getMessage(), e1, true);
-			}
-		if (!rmPaths.isEmpty())
-			try {
-				RmCommand rm = git.rm().setCached(true);
-				for (String rmPath : rmPaths)
-					rm.addFilepattern(rmPath);
-				rm.call();
-			} catch (NoFilepatternException e) {
-				// cannot happen
-			} catch (JGitInternalException e) {
-				Activator.handleError(e.getCause().getMessage(), e.getCause(),
-						true);
-			} catch (Exception e) {
-				Activator.handleError(e.getMessage(), e, true);
-			}
+		// start long running operations
+		if (!addPaths.isEmpty()) {
+			Job addJob = new Job(UIText.StagingView_AddJob) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						AddCommand add = git.add();
+						for (String addPath : addPaths)
+							add.addFilepattern(addPath);
+						add.call();
+					} catch (NoFilepatternException e1) {
+						// cannot happen
+					} catch (JGitInternalException e1) {
+						Activator.handleError(e1.getCause().getMessage(),
+								e1.getCause(), true);
+					} catch (Exception e1) {
+						Activator.handleError(e1.getMessage(), e1, true);
+					}
+					return Status.OK_STATUS;
+				}
+
+				@Override
+				public boolean belongsTo(Object family) {
+					return family == JobFamilies.ADD_TO_INDEX;
+				}
+			};
+
+			schedule(addJob, true);
+		}
+
+		if (!rmPaths.isEmpty()) {
+			Job removeJob = new Job(UIText.StagingView_RemoveJob) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						RmCommand rm = git.rm().setCached(true);
+						for (String rmPath : rmPaths)
+							rm.addFilepattern(rmPath);
+						rm.call();
+					} catch (NoFilepatternException e) {
+						// cannot happen
+					} catch (JGitInternalException e) {
+						Activator.handleError(e.getCause().getMessage(),
+								e.getCause(), true);
+					} catch (Exception e) {
+						Activator.handleError(e.getMessage(), e, true);
+					}
+					return Status.OK_STATUS;
+				}
+
+				@Override
+				public boolean belongsTo(Object family) {
+					return family == JobFamilies.REMOVE_FROM_INDEX;
+				}
+			};
+
+			schedule(removeJob, true);
+		}
 	}
 

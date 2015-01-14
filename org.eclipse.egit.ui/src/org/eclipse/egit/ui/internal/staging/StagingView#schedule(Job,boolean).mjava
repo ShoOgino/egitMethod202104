@@ -1,0 +1,20 @@
+	/**
+	 * Schedule given job in context of the current view. The view will indicate
+	 * progress as long as job is running.
+	 *
+	 * @param job
+	 *            non null
+	 * @param useRepositoryRule
+	 *            true to use current repository rule for the given job, false
+	 *            to not enforce any rule on the job
+	 */
+	private void schedule(Job job, boolean useRepositoryRule) {
+		if (useRepositoryRule)
+			job.setRule(RuleUtil.getRule(currentRepository));
+		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
+		if (service != null)
+			service.schedule(job, 0, true);
+		else
+			job.schedule();
+	}
+
