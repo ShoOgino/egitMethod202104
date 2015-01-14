@@ -1,4 +1,8 @@
 	static String getBranchStatus(Repository repo) throws IOException {
+		String cachedStatus = branchState.get(repo);
+		if (cachedStatus != null)
+			return cachedStatus;
+
 		String branchName = repo.getBranch();
 		if (branchName == null)
 			return null;
@@ -11,6 +15,7 @@
 			return null;
 
 		String formattedStatus = GitLabels.formatBranchTrackingStatus(status);
+		branchState.put(repo, formattedStatus);
 		return formattedStatus;
 	}
 
