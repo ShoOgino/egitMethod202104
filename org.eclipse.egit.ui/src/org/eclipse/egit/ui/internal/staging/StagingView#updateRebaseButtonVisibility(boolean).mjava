@@ -5,8 +5,10 @@
 	 *            {@code}true if rebase is in progress
 	 */
 	protected void updateRebaseButtonVisibility(final boolean isRebasing) {
-		Display.getDefault().asyncExec(new Runnable() {
+		asyncExec(new Runnable() {
 			public void run() {
+				if (isDisposed())
+					return;
 				showControl(rebaseSection, isRebasing);
 				rebaseSection.getParent().layout(true);
 			}
