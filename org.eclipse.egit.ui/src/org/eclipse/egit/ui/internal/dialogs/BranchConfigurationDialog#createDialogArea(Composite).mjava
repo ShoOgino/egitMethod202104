@@ -1,9 +1,8 @@
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
-		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(main);
-		GridDataFactory.fillDefaults().grab(true, false).indent(5, 5)
-				.applyTo(main);
+		main.setLayout(new GridLayout(2, false));
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 
 		Label remoteLabel = new Label(main, SWT.NONE);
 		remoteLabel.setText(UIText.BranchConfigurationDialog_RemoteLabel);
