@@ -46,7 +46,8 @@
 							openSelectionInEditor(fileSelection);
 						}
 					};
-					openWorkingTreeVersion.setEnabled(!submoduleSelected);
+					openWorkingTreeVersion.setEnabled(!submoduleSelected
+							&& anyElementExistsInWorkspace(fileSelection));
 					menuMgr.add(openWorkingTreeVersion);
 				}
 
