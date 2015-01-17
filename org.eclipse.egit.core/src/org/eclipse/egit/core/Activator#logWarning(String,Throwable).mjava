@@ -1,0 +1,12 @@
+	/**
+	 * Utility method to log warnings for this plug-in.
+	 *
+	 * @param message
+	 *            User comprehensible message
+	 * @param thr
+	 *            The exception through which we noticed the warning
+	 */
+	public static void logWarning(final String message, final Throwable thr) {
+		getDefault().getLog().log(warning(message, thr));
+	}
+

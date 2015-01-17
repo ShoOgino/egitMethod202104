@@ -1,0 +1,13 @@
+	/**
+	 * Utility to create a warning status for this plug-in.
+	 *
+	 * @param message
+	 *            User comprehensible message
+	 * @param thr
+	 *            cause
+	 * @return an initialized warning status
+	 */
+	public static IStatus warning(final String message, final Throwable thr) {
+		return new Status(IStatus.WARNING, getPluginId(), 0, message, thr);
+	}
+
