@@ -1,0 +1,7 @@
+		@Override
+		protected void scheduleUpdateJob(Collection<String> filesToUpdate,
+				Collection<IResource> resourcesToUpdate) {
+			updateScheduled = true;
+			super.scheduleUpdateJob(filesToUpdate, resourcesToUpdate);
+		}
+

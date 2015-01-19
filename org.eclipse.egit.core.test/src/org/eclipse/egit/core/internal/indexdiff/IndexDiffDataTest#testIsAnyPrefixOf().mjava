@@ -1,0 +1,21 @@
+	@Test
+	public void testIsAnyPrefixOf() {
+		Collection<String> possiblePrefixes = asList("", "/");
+		assertTrue(isAnyPrefixOf("", possiblePrefixes));
+
+		possiblePrefixes = asList("", "/");
+		assertTrue(isAnyPrefixOf("/", possiblePrefixes));
+
+		possiblePrefixes = asList("a");
+		assertTrue(isAnyPrefixOf("a", possiblePrefixes));
+
+		possiblePrefixes = asList("a/");
+		assertTrue(isAnyPrefixOf("a", possiblePrefixes));
+
+		possiblePrefixes = asList("b");
+		assertFalse(isAnyPrefixOf("a", possiblePrefixes));
+
+		possiblePrefixes = asList("b", "ab", "b/", "aa");
+		assertFalse(isAnyPrefixOf("a", possiblePrefixes));
+	}
+

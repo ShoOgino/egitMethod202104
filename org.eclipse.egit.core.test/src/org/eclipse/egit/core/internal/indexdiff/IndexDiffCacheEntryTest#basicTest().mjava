@@ -1,0 +1,39 @@
+	@Test
+	public void basicTest() throws Exception {
+		prepareCacheEntry();
+
+		entry.refresh();
+		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+
+		// on refresh, full reload is triggered
+		assertTrue(entry.reloadScheduled);
+		assertFalse(entry.updateScheduled);
+		cleanEntryFlags();
+
+		entry.refreshFiles(Arrays.asList("a"));
+		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+
+		// one single file: no reload
+		assertFalse(entry.reloadScheduled);
+		assertTrue(entry.updateScheduled);
+		cleanEntryFlags();
+
+		entry.refreshFiles(Arrays.asList("a", "b"));
+		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+
+		// two files: update is triggered, but decides to run full reload
+		assertTrue(entry.reloadScheduled);
+		assertTrue(entry.updateScheduled);
+		cleanEntryFlags();
+
+		entry.getUpdateJob().addChanges(Arrays.asList("a", "b"),
+				Collections.<IResource> emptyList());
+		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+
+		// two files: update is not triggered (we call through the job directly)
+		// but this calls full reload
+		assertTrue(entry.reloadScheduled);
+		assertFalse(entry.updateScheduled);
+		cleanEntryFlags();
+	}
+
