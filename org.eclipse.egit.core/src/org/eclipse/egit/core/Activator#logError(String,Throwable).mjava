@@ -4,7 +4,6 @@
 	 * @param thr The exception through which we noticed the error
 	 */
 	public static void logError(final String message, final Throwable thr) {
-		getDefault().getLog().log(
-				new Status(IStatus.ERROR, getPluginId(), 0, message, thr));
+		getDefault().getLog().log(error(message, thr));
 	}
 
