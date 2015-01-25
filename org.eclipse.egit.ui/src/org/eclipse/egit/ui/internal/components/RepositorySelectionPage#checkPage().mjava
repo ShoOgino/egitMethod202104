@@ -13,7 +13,8 @@
 			}
 
 			try {
-				final URIish finalURI = new URIish(uriText.getText().trim());
+				final URIish finalURI = new URIish(
+						stripGitCloneCommand(uriText.getText()));
 				String proto = finalURI.getScheme();
 				if (proto == null && scheme.getSelectionIndex() >= 0)
 					proto = scheme.getItem(scheme.getSelectionIndex());

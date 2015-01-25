@@ -4,7 +4,11 @@
 			if (eventDepth != 1)
 				return;
 
-			final URIish u = new URIish(text);
+			String strippedText = stripGitCloneCommand(text);
+			final URIish u = new URIish(strippedText);
+			if (!text.equals(strippedText)) {
+				uriText.setText(strippedText);
+			}
 			safeSet(hostText, u.getHost());
 			safeSet(pathText, u.getPath());
 			safeSet(userText, u.getUser());
