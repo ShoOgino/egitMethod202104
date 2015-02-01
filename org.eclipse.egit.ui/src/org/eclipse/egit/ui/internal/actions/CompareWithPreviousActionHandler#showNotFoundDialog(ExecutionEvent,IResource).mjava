@@ -1,14 +1,14 @@
-	private void showNotFoundDialog(ExecutionEvent event, IResource resource) {
-		final Shell shell = HandlerUtil.getActiveShell(event);
+	private void showNotFoundDialog(final ExecutionEvent event,
+			IResource resource) {
 		final String message = MessageFormat
 				.format(UIText.CompareWithPreviousActionHandler_MessageRevisionNotFound,
 						resource.getName());
-		shell.getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 			public void run() {
 				MessageDialog
 						.openWarning(
-								shell,
+						HandlerUtil.getActiveShell(event),
 								UIText.CompareWithPreviousActionHandler_TitleRevisionNotFound,
 								message);
 			}
