@@ -18,33 +18,51 @@
 	 * @param page
 	 *            If not {@null} try to re-use a compare editor on this
 	 *            page if any is available. Otherwise open a new one.
-	 * @throws IOException
 	 */
-	private static void compareBetween(Repository repository,
-			String leftGitPath, String rightGitPath, String leftRev,
-			String rightRev, IWorkbenchPage page) throws IOException {
-		final ITypedElement left = getTypedElementFor(repository, leftGitPath,
-				leftRev);
-		final ITypedElement right = getTypedElementFor(repository,
-				rightGitPath,
-				rightRev);
+	private static void compareBetween(final Repository repository,
+			final String leftGitPath, final String rightGitPath,
+			final String leftRev, final String rightRev,
+			final IWorkbenchPage page) {
 
-		final ITypedElement commonAncestor;
-		if (left != null && right != null && !GitFileRevision.INDEX.equals(leftRev)
-				&& !GitFileRevision.INDEX.equals(rightRev))
-			commonAncestor = getTypedElementForCommonAncestor(repository,
-					rightGitPath, leftRev, rightRev);
-		else
-			commonAncestor = null;
+		Job job = new Job(UIText.CompareUtils_jobName) {
 
-		final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
-				left, right, commonAncestor, null);
-		in.getCompareConfiguration().setLeftLabel(leftRev);
-		in.getCompareConfiguration().setRightLabel(rightRev);
+			@Override
+			public IStatus run(IProgressMonitor monitor) {
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
+				final ITypedElement left;
+				final ITypedElement right;
+				try {
+					left = getTypedElementFor(repository, leftGitPath, leftRev);
+					right = getTypedElementFor(repository, rightGitPath,
+							rightRev);
+				} catch (IOException e) {
+					return Activator.createErrorStatus(
+							UIText.CompareWithRefAction_errorOnSynchronize, e);
+				}
+				final ITypedElement commonAncestor;
+				if (left != null && right != null
+						&& !GitFileRevision.INDEX.equals(leftRev)
+						&& !GitFileRevision.INDEX.equals(rightRev)) {
+					commonAncestor = getTypedElementForCommonAncestor(
+							repository, rightGitPath, leftRev, rightRev);
+				} else {
+					commonAncestor = null;
+				}
 
-		if (page != null)
-			openInCompare(page, in);
-		else
-			CompareUI.openCompareEditor(in);
+				final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+						left, right, commonAncestor, null);
+				in.getCompareConfiguration().setLeftLabel(leftRev);
+				in.getCompareConfiguration().setRightLabel(rightRev);
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
+				openCompareEditorRunnable(page, in);
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.schedule();
 	}
 
