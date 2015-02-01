@@ -1,23 +1,24 @@
 	@Override
 	public boolean isEnabled() {
 		IStructuredSelection selection = getSelection();
-		if (selection.size() != 1)
+		if (selection.size() != 1) {
 			return false;
+		}
 
 		Repository repository = getRepository();
-		if (repository == null)
+		if (repository == null) {
 			return false;
+		}
 
-		IResource resource = AdapterUtils.adapt(selection.getFirstElement(), IResource.class);
-		if (resource != null) {
+		Object selected = selection.getFirstElement();
+		IResource resource = AdapterUtils.adapt(selected, IResource.class);
+		if (resource instanceof IFile) {
 			// action is only working on files. Avoid calculation
 			// of unnecessary expensive IndexDiff on a folder
-			if (resource instanceof IFile)
-				return isStaged(repository, resource.getLocation());
-		} else {
-			IPath location = AdapterUtils.adapt(selection.getFirstElement(), IPath.class);
-			if (location != null && !location.toFile().isDirectory())
-				return isStaged(repository, location);
+			return isStaged(repository, resource.getLocation(), false);
+		} else if (resource == null) {
+			IPath location = AdapterUtils.adapt(selected, IPath.class);
+			return isStaged(repository, location, false);
 		}
 
 		return false;

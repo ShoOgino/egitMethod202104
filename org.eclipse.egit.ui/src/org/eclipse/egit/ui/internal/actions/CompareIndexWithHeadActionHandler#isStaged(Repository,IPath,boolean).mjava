@@ -1,5 +1,8 @@
-	private boolean isStaged(Repository repository,
-			IPath location) {
+	private boolean isStaged(Repository repository, IPath location,
+			boolean checkIndex) {
+		if (location == null || location.toFile().isDirectory()) {
+			return false;
+		}
 		String resRelPath = RepositoryMapping.getMapping(location).getRepoRelativePath(location);
 
 		// This action at the moment only works for files anyway
@@ -7,6 +10,11 @@
 			return false;
 		}
 
+		if (!checkIndex) {
+			// assume there *is* something: otherwise we can hang UI thread due
+			// the diff computation, see bug 457698
+			return true;
+		}
 		try {
 			FileTreeIterator fileTreeIterator = new FileTreeIterator(repository);
 			IndexDiff indexDiff = new IndexDiff(repository, Constants.HEAD,
