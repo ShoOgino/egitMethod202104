@@ -1,6 +1,7 @@
 	public Object[] getChildren(Object element) {
-		if (element instanceof RepositoryCommit)
+		if (element instanceof RepositoryCommit) {
 			return ((RepositoryCommit) element).getDiffs();
+		}
 		return super.getChildren(element);
 	}
 
