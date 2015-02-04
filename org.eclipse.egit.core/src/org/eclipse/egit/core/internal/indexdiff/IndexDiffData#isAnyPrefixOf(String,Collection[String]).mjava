@@ -1,7 +1,23 @@
-	private static boolean isAnyPrefixOf(String pathToCheck, Collection<String> possiblePrefixes) {
-		for (String possiblePrefix : possiblePrefixes)
-			if (pathToCheck.startsWith(possiblePrefix) || possiblePrefix.equals(pathToCheck + '/'))
+	/**
+	 * THIS METHOD IS PROTECTED FOR TESTS ONLY
+	 *
+	 * @param pathToCheck
+	 * @param possiblePrefixes
+	 * @return true if given path starts with any of given prefixes (possibly
+	 *         followed by slash)
+	 */
+	protected static boolean isAnyPrefixOf(String pathToCheck,
+			Collection<String> possiblePrefixes) {
+		for (String possiblePrefix : possiblePrefixes) {
+			if (pathToCheck.startsWith(possiblePrefix)) {
 				return true;
+			}
+			if (possiblePrefix.length() == pathToCheck.length() + 1
+					&& possiblePrefix.charAt(possiblePrefix.length() - 1) == '/'
+					&& possiblePrefix.startsWith(pathToCheck)) {
+				return true;
+			}
+		}
 		return false;
 	}
 

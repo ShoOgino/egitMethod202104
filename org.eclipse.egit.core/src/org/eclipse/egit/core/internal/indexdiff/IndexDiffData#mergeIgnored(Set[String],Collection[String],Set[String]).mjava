@@ -1,10 +1,19 @@
-	private static Set<String> mergeIgnored(Set<String> oldIgnoredPaths,
+	/**
+	 * THIS METHOD IS PROTECTED FOR TESTS ONLY
+	 *
+	 * @param oldIgnoredPaths
+	 * @param changedPaths
+	 * @param newIgnoredPaths
+	 * @return never null
+	 */
+	protected static Set<String> mergeIgnored(Set<String> oldIgnoredPaths,
 			Collection<String> changedPaths, Set<String> newIgnoredPaths) {
 		Set<String> merged = new HashSet<String>();
 		for (String oldIgnoredPath : oldIgnoredPaths) {
 			boolean changed = isAnyPrefixOf(oldIgnoredPath, changedPaths);
-			if (!changed)
+			if (!changed) {
 				merged.add(oldIgnoredPath);
+			}
 		}
 		merged.addAll(newIgnoredPaths);
 		return merged;

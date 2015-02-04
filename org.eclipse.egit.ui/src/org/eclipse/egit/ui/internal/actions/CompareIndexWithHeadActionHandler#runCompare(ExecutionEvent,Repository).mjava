@@ -1,0 +1,18 @@
+	private void runCompare(ExecutionEvent event, final Repository repository)
+			throws Exception {
+		IWorkbenchPage workBenchPage = HandlerUtil
+				.getActiveWorkbenchWindowChecked(event).getActivePage();
+		IResource[] resources = getSelectedResources();
+
+		if (resources.length > 0) {
+			CompareUtils.compare(resources, repository, GitFileRevision.INDEX,
+					Constants.HEAD, false, workBenchPage);
+		} else {
+			IPath[] locations = getSelectedLocations(event);
+			if (locations.length > 0)
+				CompareUtils.compare(locations[0], repository,
+						GitFileRevision.INDEX, Constants.HEAD, false,
+						workBenchPage);
+		}
+	}
+

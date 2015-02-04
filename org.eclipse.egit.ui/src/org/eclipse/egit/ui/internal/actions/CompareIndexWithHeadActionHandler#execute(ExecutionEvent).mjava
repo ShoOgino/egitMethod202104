@@ -1,28 +1,39 @@
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+
 		final Repository repository = getRepository(true, event);
 		// assert all resources map to the same repository
-		if (repository == null)
+		if (repository == null) {
 			return null;
-
-		IWorkbenchPage workBenchPage = HandlerUtil
-				.getActiveWorkbenchWindowChecked(event).getActivePage();
-		IResource[] resources = getSelectedResources();
-		try {
-			if (resources.length > 0)
-				CompareUtils.compare(resources, repository,
-						GitFileRevision.INDEX, Constants.HEAD, false,
-						workBenchPage);
-			else {
-				IPath[] locations = getSelectedLocations(event);
-				if (locations.length > 0)
-					CompareUtils.compare(locations[0], repository,
-							GitFileRevision.INDEX, Constants.HEAD, false,
-							workBenchPage);
-			}
-		} catch (IOException e) {
-			Activator.handleError(
-					UIText.CompareWithRefAction_errorOnSynchronize, e, true);
 		}
+		final Object fileOrPath = getSingleSelectedObject(event);
+		if (fileOrPath == null) {
+			return null;
+		}
+		Job job = new Job(UIText.CompareUtils_jobName) {
+
+			@Override
+			public IStatus run(IProgressMonitor monitor) {
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
+				IPath location = (IPath) (fileOrPath instanceof IPath ? fileOrPath
+						: ((IResource) fileOrPath).getLocation());
+				if (!isStaged(repository, location, true)) {
+					showNoStagedFileInfo(location);
+					return Status.CANCEL_STATUS;
+				}
+				try {
+					runCompare(event, repository);
+				} catch (Exception e) {
+					return Activator.createErrorStatus(
+							UIText.CompareWithRefAction_errorOnSynchronize, e);
+				}
+				return Status.OK_STATUS;
+			}
+
+		};
+		job.setUser(true);
+		job.schedule();
 
 		return null;
 	}

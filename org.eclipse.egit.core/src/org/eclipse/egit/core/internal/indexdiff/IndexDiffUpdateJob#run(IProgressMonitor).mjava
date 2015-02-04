@@ -5,10 +5,10 @@
 		synchronized (lock) {
 			filesToUpdate = files;
 			resourcesToUpdate = resources;
-			files = new HashSet<String>();
-			resources = new HashSet<IResource>();
-			if (monitor.isCanceled() || filesToUpdate.isEmpty())
+			cleanup();
+			if (monitor.isCanceled() || filesToUpdate.isEmpty()) {
 				return Status.CANCEL_STATUS;
+			}
 		}
 		return updateIndexDiff(filesToUpdate, resourcesToUpdate, monitor);
 	}

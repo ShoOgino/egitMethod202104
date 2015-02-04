@@ -1,9 +1,23 @@
-	private void scheduleUpdateJob(final Collection<String> filesToUpdate,
+	/**
+	 * THIS METHOD IS PROTECTED FOR TESTS ONLY!
+	 *
+	 * @param filesToUpdate
+	 * @param resourcesToUpdate
+	 */
+	protected void scheduleUpdateJob(final Collection<String> filesToUpdate,
 			final Collection<IResource> resourcesToUpdate) {
 		if (!checkRepository())
 			return;
 		if (reloadJob != null && reloadJobIsInitializing)
 			return;
+
+		if (shouldReload(filesToUpdate)) {
+			// Calculate new IndexDiff if too many resources changed
+			// This happens e.g. when a project is opened
+			scheduleReloadJob("Too many resources changed: " + filesToUpdate.size()); //$NON-NLS-1$
+			return;
+		}
+
 		if (updateJob != null) {
 			updateJob.addChanges(filesToUpdate, resourcesToUpdate);
 			return;
@@ -13,16 +27,31 @@
 			protected IStatus updateIndexDiff(Collection<String> files,
 					Collection<IResource> resources,
 					IProgressMonitor monitor) {
-				waitForWorkspaceLock(monitor);
-				if (monitor.isCanceled())
+				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
+				}
+
+				// second check here is required because we collect changes
+				if (shouldReload(files)) {
+					// Calculate new IndexDiff if too many resources changed
+					// This happens e.g. when a project is opened
+					scheduleReloadJob("Too many resources changed: " + files.size()); //$NON-NLS-1$
+					return Status.CANCEL_STATUS;
+				}
+
+				waitForWorkspaceLock(monitor);
+
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
 				lock.lock();
 				try {
 					long startTime = System.currentTimeMillis();
 					IndexDiffData result = calcIndexDiffDataIncremental(monitor,
 							getName(), files, resources);
-					if (monitor.isCanceled() || (result == null))
+					if (monitor.isCanceled() || (result == null)) {
 						return Status.CANCEL_STATUS;
+					}
 					indexDiffData = result;
 					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {
 						long time = System.currentTimeMillis() - startTime;
@@ -39,10 +68,11 @@
 					notifyListeners();
 					return Status.OK_STATUS;
 				} catch (IOException e) {
-					if (GitTraceLocation.INDEXDIFFCACHE.isActive())
+					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {
 						GitTraceLocation.getTrace().trace(
 								GitTraceLocation.INDEXDIFFCACHE.getLocation(),
 								"Calculating IndexDiff failed", e); //$NON-NLS-1$
+					}
 					return Status.OK_STATUS;
 				} finally {
 					lock.unlock();
@@ -50,8 +80,9 @@
 			}
 			@Override
 			public boolean belongsTo(Object family) {
-				if (JobFamilies.INDEX_DIFF_CACHE_UPDATE.equals(family))
+				if (JobFamilies.INDEX_DIFF_CACHE_UPDATE.equals(family)) {
 					return true;
+				}
 				return super.belongsTo(family);
 			}
 

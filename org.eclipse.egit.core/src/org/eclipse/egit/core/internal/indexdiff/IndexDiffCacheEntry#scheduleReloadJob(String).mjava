@@ -1,14 +1,22 @@
-	private void scheduleReloadJob(final String trigger) {
+	/**
+	 * THIS METHOD IS PROTECTED FOR TESTS ONLY!
+	 *
+	 * @param trigger
+	 */
+	protected void scheduleReloadJob(final String trigger) {
 		if (reloadJob != null) {
-			if (reloadJobIsInitializing)
+			if (reloadJobIsInitializing) {
 				return;
+			}
 			reloadJob.cancel();
 		}
-		if (updateJob != null)
-			updateJob.cancel();
+		if (updateJob != null) {
+			updateJob.cleanupAndCancel();
+		}
 
-		if (!checkRepository())
+		if (!checkRepository()) {
 			return;
+		}
 		reloadJob = new Job(getReloadJobName()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -20,13 +28,15 @@
 				}
 				lock.lock();
 				try {
-					if (monitor.isCanceled())
+					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
+					}
 					parallelism.acquire();
 					long startTime = System.currentTimeMillis();
 					IndexDiffData result = calcIndexDiffDataFull(monitor, getName());
-					if (monitor.isCanceled() || (result == null))
+					if (monitor.isCanceled() || (result == null)) {
 						return Status.CANCEL_STATUS;
+					}
 					indexDiffData = result;
 					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {
 						long time = System.currentTimeMillis() - startTime;
@@ -62,8 +72,9 @@
 
 			@Override
 			public boolean belongsTo(Object family) {
-				if (JobFamilies.INDEX_DIFF_CACHE_UPDATE.equals(family))
+				if (JobFamilies.INDEX_DIFF_CACHE_UPDATE.equals(family)) {
 					return true;
+				}
 				return super.belongsTo(family);
 			}
 

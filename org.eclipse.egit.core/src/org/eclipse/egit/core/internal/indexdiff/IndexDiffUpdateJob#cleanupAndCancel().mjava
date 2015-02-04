@@ -1,0 +1,7 @@
+	void cleanupAndCancel() {
+		// we must always run cleanup here because framework may not call
+		// canceling() if the job was not started yet
+		cleanup();
+		cancel();
+	}
+

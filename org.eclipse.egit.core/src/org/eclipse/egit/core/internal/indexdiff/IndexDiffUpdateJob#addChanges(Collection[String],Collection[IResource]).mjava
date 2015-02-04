@@ -6,13 +6,14 @@
 	 * @param resourcesToUpdate
 	 *            non null resources to update
 	 */
-	void addChanges(Collection<String> filesToUpdate,
+	protected void addChanges(Collection<String> filesToUpdate,
 			Collection<IResource> resourcesToUpdate) {
 		synchronized (lock) {
 			files.addAll(filesToUpdate);
 			resources.addAll(resourcesToUpdate);
 		}
-		if (!filesToUpdate.isEmpty())
+		if (!filesToUpdate.isEmpty()) {
 			schedule(defaultDelay);
+		}
 	}
 

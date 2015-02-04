@@ -1,0 +1,10 @@
+	/**
+	 * Check if the index update or reload is recommended for given files
+	 *
+	 * @param filesToUpdate
+	 * @return true if the reload operation is preferred
+	 */
+	protected boolean shouldReload(final Collection<String> filesToUpdate) {
+		return filesToUpdate.size() > RESOURCE_LIST_UPDATE_LIMIT;
+	}
+
