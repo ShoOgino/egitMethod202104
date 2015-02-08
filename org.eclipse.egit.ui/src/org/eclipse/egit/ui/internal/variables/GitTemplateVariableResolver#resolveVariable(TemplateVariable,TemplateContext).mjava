@@ -1,0 +1,16 @@
+	/**
+	 * Resolves the git_config variable
+	 *
+	 * @param variable
+	 *            the current template variable.
+	 * @param context
+	 *            the current template context.
+	 */
+	protected static void resolveVariable(TemplateVariable variable,
+			TemplateContext context) {
+		IProject project = getProject(context);
+		if (project != null) {
+			resolveVariable(variable, project);
+		}
+	}
+

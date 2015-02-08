@@ -1,0 +1,17 @@
+	/**
+	 * Retrieves the current project from a template context.
+	 *
+	 * @param context
+	 *            the current template context.
+	 * @return the current project
+	 */
+	protected static IProject getProject(TemplateContext context) {
+		IProject project = null;
+		if (Activator.hasJavaPlugin()
+				&& (context instanceof CodeTemplateContext)) {
+			project = ((CodeTemplateContext) context).getJavaProject()
+					.getProject();
+		}
+		return project;
+	}
+
