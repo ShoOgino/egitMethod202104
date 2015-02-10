@@ -1,0 +1,9 @@
+	@Test
+	public void findRepository_DifferentRepos() throws Exception {
+		addRemote(repository, "origin", uri("ssh://host.com:42/repo_1"));
+
+		File foundRepo = ProjectReferenceImporter
+				.findConfiguredRepository(uri("ssh://host.com:42/repo_2"));
+		assertNotEquals(repository.getDirectory(), foundRepo);
+	}
+

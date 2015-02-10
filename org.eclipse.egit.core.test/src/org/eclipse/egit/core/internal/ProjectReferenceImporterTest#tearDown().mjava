@@ -1,0 +1,9 @@
+	@After
+	public void tearDown() throws Exception {
+		RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
+		util.removeDir(repository.getDirectory());
+		testRepository.dispose();
+		repository = null;
+		super.tearDown();
+	}
+
