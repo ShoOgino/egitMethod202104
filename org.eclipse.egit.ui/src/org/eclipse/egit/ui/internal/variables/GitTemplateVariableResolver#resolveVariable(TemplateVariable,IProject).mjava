@@ -10,11 +10,13 @@
 			IProject project) {
 		final List<String> params = variable.getVariableType().getParams();
 		if (params.isEmpty()) {
+			variable.setValue(""); //$NON-NLS-1$
 			return;
 		}
 
 		final String gitKey = params.get(0);
 		if (gitKey == null || gitKey.length() == 0) {
+			variable.setValue(""); //$NON-NLS-1$
 			return;
 		}
 
@@ -26,11 +28,13 @@
 			repository = mapping.getRepository();
 		}
 		if (repository == null) {
+			variable.setValue(""); //$NON-NLS-1$
 			return;
 		}
 
 		StoredConfig config = repository.getConfig();
 		if (config == null) {
+			variable.setValue(""); //$NON-NLS-1$
 			return;
 		}
 
@@ -48,6 +52,7 @@
 			section = splits[0];
 			name = splits[1];
 		} else {
+			variable.setValue(""); //$NON-NLS-1$
 			return;
 		}
 
