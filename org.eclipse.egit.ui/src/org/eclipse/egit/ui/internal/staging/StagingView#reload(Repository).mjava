@@ -1,13 +1,14 @@
 	/**
-	 * Reload the staging view
+	 * Reload the staging view asynchronously
 	 *
 	 * @param repository
 	 */
 	public void reload(final Repository repository) {
-		if (form.isDisposed())
+		if (isDisposed()) {
 			return;
+		}
 		if (repository == null) {
-			syncExec(new Runnable() {
+			asyncExec(new Runnable() {
 				public void run() {
 					clearRepository();
 				}
@@ -15,16 +16,18 @@
 			return;
 		}
 
-		if (!isValidRepo(repository))
+		if (!isValidRepo(repository)) {
 			return;
+		}
 
 		final boolean repositoryChanged = currentRepository != repository;
 
-		syncExec(new Runnable() {
+		asyncExec(new Runnable() {
 
 			public void run() {
-				if (form.isDisposed())
+				if (isDisposed()) {
 					return;
+				}
 
 				final IndexDiffData indexDiff = doReload(repository);
 				boolean indexDiffAvailable;
