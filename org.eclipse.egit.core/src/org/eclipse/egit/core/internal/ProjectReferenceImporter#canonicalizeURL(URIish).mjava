@@ -6,7 +6,8 @@
 		// some URLs end with .git, some don't
 		String path = existingUrl.getPath();
 		if (path.endsWith(".git")) { //$NON-NLS-1$
-			newURL = existingUrl.setPath(path.substring(0,
+			newURL = newURL
+					.setPath(path.substring(0,
 					path.lastIndexOf(".git"))); //$NON-NLS-1$
 		}
 

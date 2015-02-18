@@ -1,0 +1,10 @@
+	@Test
+	public void findRepository_MultipleRemotes() throws Exception {
+		addRemote(repository, "remote_1", uri("ssh://user@host.com:42/repo"));
+		addRemote(repository, "remote_2", uri("http://host.com/other/repo"));
+
+		File foundRepo = ProjectReferenceImporter
+				.findConfiguredRepository(uri("ssh://user@host.com:42/repo"));
+		assertEquals(repository.getDirectory(), foundRepo);
+	}
+

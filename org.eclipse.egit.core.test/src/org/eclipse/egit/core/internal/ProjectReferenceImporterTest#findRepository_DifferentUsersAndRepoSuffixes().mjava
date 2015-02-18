@@ -1,0 +1,9 @@
+	@Test
+	public void findRepository_DifferentUsersAndRepoSuffixes() throws Exception {
+		addRemote(repository, "origin", uri("ssh://user_1@host.com:42/repo"));
+
+		File foundRepo = ProjectReferenceImporter
+				.findConfiguredRepository(uri("ssh://user_2@host.com:42/repo.git"));
+		assertEquals(repository.getDirectory(), foundRepo);
+	}
+

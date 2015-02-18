@@ -1,0 +1,9 @@
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		testRepository = new TestRepository(gitDir);
+		repository = testRepository.getRepository();
+		RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
+		util.addConfiguredRepository(repository.getDirectory());
+	}
+

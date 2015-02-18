@@ -1,0 +1,7 @@
+	private static void addRemote(Repository repository, String name, URIish url)
+			throws IOException {
+		StoredConfig config = repository.getConfig();
+		config.setString("remote", name, "url", url.toString());
+		config.save();
+	}
+
