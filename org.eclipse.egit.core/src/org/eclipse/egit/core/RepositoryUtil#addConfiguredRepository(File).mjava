@@ -15,7 +15,7 @@
 						CoreText.RepositoryUtil_DirectoryIsNotGitDirectory,
 						repositoryDir));
 
-			String dirString = getPath(repositoryDir);
+			String dirString = repositoryDir.getAbsolutePath();
 
 			List<String> dirStrings = getConfiguredRepositories();
 			if (dirStrings.contains(dirString)) {

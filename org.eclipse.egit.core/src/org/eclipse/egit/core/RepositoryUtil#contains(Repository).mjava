@@ -6,6 +6,6 @@
 	 * @return true if contains repository, false otherwise
 	 */
 	public boolean contains(final Repository repository) {
-		return contains(getPath(repository.getDirectory()));
+		return contains(repository.getDirectory().getAbsolutePath());
 	}
 

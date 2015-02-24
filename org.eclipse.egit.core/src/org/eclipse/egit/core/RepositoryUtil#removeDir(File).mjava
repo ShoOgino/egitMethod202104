@@ -4,12 +4,10 @@
 	 */
 	public boolean removeDir(File file) {
 		synchronized (prefs) {
-
-			String dir = getPath(file);
-
+			String dirString = file.getAbsolutePath();
 			Set<String> dirStrings = new HashSet<String>();
 			dirStrings.addAll(getConfiguredRepositories());
-			if (dirStrings.remove(dir)) {
+			if (dirStrings.remove(dirString)) {
 				saveDirs(dirStrings);
 				return true;
 			}

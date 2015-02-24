@@ -8,15 +8,11 @@
 		if(!file.exists())
 			return;
 
+		prefs.put(PREF_PATH, file.getAbsolutePath());
 		try {
-			prefs.put(PREF_PATH, file.getCanonicalPath());
-			try {
-				prefs.flush();
-			} catch (BackingStoreException e1) {
-				// ignore here
-			}
-		} catch (IOException e2) {
-			// ignore
+			prefs.flush();
+		} catch (BackingStoreException e1) {
+			// ignore here
 		}
 
 		final TreeSet<String> validDirs = new TreeSet<String>(getCheckedItems());
