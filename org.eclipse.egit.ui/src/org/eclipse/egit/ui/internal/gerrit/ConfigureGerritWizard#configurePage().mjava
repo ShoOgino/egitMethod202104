@@ -1,6 +1,6 @@
 	private void configurePage() {
 		try {
-			findRemoteConfig();
+			remoteConfig = GerritUtil.findRemoteConfig(config, remoteName);
 			if (remoteConfig != null) {
 				gerritConfiguration.setSelection(getUri(), getProposedTargetBranch());
 			}

@@ -1,9 +1,0 @@
-	private void configurePushURI() {
-		List<URIish> pushURIs = new ArrayList<URIish>(remoteConfig.getPushURIs());
-		for (URIish urIish : pushURIs) {
-			remoteConfig.removePushURI(urIish);
-		}
-		URIish pushURI = gerritConfiguration.getURI();
-		remoteConfig.addPushURI(pushURI);
-	}
-

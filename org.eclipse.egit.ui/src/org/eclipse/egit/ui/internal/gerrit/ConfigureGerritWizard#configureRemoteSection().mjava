@@ -1,7 +1,8 @@
-	private void configureRemoteSection() {
-		configurePushURI();
-		configurePushRefSpec();
-		configureFetchNotes();
+	private void configureRemoteSection() throws URISyntaxException {
+		GerritUtil.configurePushURI(remoteConfig, gerritConfiguration.getURI());
+		GerritUtil.configurePushRefSpec(remoteConfig,
+				gerritConfiguration.getBranch());
+		GerritUtil.configureFetchNotes(remoteConfig);
 		remoteConfig.update(config);
 	}
 

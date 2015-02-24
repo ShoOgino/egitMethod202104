@@ -1,0 +1,18 @@
+	/**
+	 * Configure the pushURI for Gerrit
+	 *
+	 * @param remoteConfig
+	 *            the remote configuration to add this to
+	 * @param pushURI
+	 *            the pushURI to configure
+	 */
+	public static void configurePushURI(RemoteConfig remoteConfig,
+			URIish pushURI) {
+		List<URIish> pushURIs = new ArrayList<URIish>(
+				remoteConfig.getPushURIs());
+		for (URIish urIish : pushURIs) {
+			remoteConfig.removePushURI(urIish);
+		}
+		remoteConfig.addPushURI(pushURI);
+	}
+
