@@ -9,7 +9,7 @@
 		if (adapterType.isInstance(element))
 			return element;
 		if (element instanceof IAdaptable) {
-			Object adapted = ((IAdaptable) element).getAdapter(adapterType);
+			Object adapted = CommonUtils.getAdapter(((IAdaptable) element), adapterType);
 			if (adapterType.isInstance(adapted))
 				return adapted;
 		}

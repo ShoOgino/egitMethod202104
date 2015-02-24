@@ -13,7 +13,7 @@
 		if (target.isInstance(object))
 			return (V) object;
 		if (object instanceof IAdaptable)
-			return (V) ((IAdaptable) object).getAdapter(target);
+			return Utils.getAdapter(((IAdaptable) object), target);
 		return null;
 	}
 

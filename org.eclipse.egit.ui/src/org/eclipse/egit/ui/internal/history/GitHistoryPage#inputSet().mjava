@@ -65,8 +65,7 @@
 			} else if (o instanceof HistoryPageInput)
 				input = (HistoryPageInput) o;
 			else if (o instanceof IAdaptable) {
-				IResource resource = (IResource) ((IAdaptable) o)
-						.getAdapter(IResource.class);
+				IResource resource = CommonUtils.getAdapter(((IAdaptable) o), IResource.class);
 				if (resource != null) {
 					RepositoryMapping mapping = RepositoryMapping
 							.getMapping(resource);

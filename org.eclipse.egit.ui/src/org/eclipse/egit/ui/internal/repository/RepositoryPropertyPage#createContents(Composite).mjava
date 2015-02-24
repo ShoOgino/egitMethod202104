@@ -3,8 +3,7 @@
 		GridLayoutFactory.fillDefaults().applyTo(displayArea);
 		GridDataFactory.fillDefaults().applyTo(displayArea);
 
-		final Repository repo = (Repository) getElement()
-				.getAdapter(Repository.class);
+		final Repository repo = CommonUtils.getAdapter(getElement(), Repository.class);
 		if (repo == null)
 			return displayArea;
 

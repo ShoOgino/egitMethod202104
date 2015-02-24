@@ -9,10 +9,9 @@
 			resource = (IResource) element;
 		} else if (element instanceof IAdaptable) {
 			final IAdaptable adaptable = (IAdaptable) element;
-			resource = (IResource) adaptable.getAdapter(IResource.class);
+			resource = CommonUtils.getAdapter(adaptable, IResource.class);
 			if (resource == null) {
-				final IContributorResourceAdapter adapter = (IContributorResourceAdapter) adaptable
-						.getAdapter(IContributorResourceAdapter.class);
+				final IContributorResourceAdapter adapter = CommonUtils.getAdapter(adaptable, IContributorResourceAdapter.class);
 				if (adapter != null)
 					resource = adapter.getAdaptedResource(adaptable);
 			}

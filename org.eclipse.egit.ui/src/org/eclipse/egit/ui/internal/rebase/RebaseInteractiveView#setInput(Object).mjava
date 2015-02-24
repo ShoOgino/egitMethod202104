@@ -20,8 +20,7 @@
 		else if (o instanceof Repository)
 			repo = (Repository) o;
 		else if (o instanceof IAdaptable) {
-			IResource resource = (IResource) ((IAdaptable) o)
-					.getAdapter(IResource.class);
+			IResource resource = CommonUtils.getAdapter(((IAdaptable) o), IResource.class);
 			if (resource != null) {
 				RepositoryMapping mapping = RepositoryMapping
 						.getMapping(resource);

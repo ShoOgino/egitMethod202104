@@ -10,7 +10,7 @@
 			return getRefIcon((Ref) element);
 
 		if (element instanceof GitModelBlob || element instanceof GitModelTree) {
-			Object adapter = ((IAdaptable) element).getAdapter(IResource.class);
+			Object adapter = CommonUtils.getAdapter(((IAdaptable) element), IResource.class);
 			return getWorkbenchLabelProvider().getImage(adapter);
 		}
 

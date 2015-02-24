@@ -3,7 +3,7 @@
 	 * @param adapterType
 	 * @return the adapted element, or null
 	 */
-	public static <T> T getAdapter(Object element, Class<T> adapterType) {
+	public static <T> T getAdapterForObject(Object element, Class<T> adapterType) {
 		if (adapterType.isInstance(element)) {
 			return adapterType.cast(element);
 		}

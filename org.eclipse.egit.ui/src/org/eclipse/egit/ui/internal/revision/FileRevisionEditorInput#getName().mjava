@@ -1,10 +1,10 @@
 	public String getName() {
-		IFileRevision rev = (IFileRevision) getAdapter(IFileRevision.class);
+		IFileRevision rev = CommonUtils.getAdapter(this, IFileRevision.class);
 		if (rev != null)
 			return NLS.bind(
 					UIText.FileRevisionEditorInput_NameAndRevisionTitle,
 					new String[] { rev.getName(), rev.getContentIdentifier() });
-		IFileState state = (IFileState) getAdapter(IFileState.class);
+		IFileState state = CommonUtils.getAdapter(this, IFileState.class);
 		if (state != null)
 			return state.getName()
 					+ " " + DateFormat.getInstance().format(new Date(state.getModificationTime())); //$NON-NLS-1$

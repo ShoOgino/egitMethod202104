@@ -1,5 +1,4 @@
 	private ResourceMapping getResourceMapping(Object object) {
-		return (ResourceMapping) ((IAdaptable) object)
-				.getAdapter(ResourceMapping.class);
+		return CommonUtils.getAdapter(((IAdaptable) object), ResourceMapping.class);
 	}
 

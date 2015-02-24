@@ -2,8 +2,7 @@
 		if (revision instanceof CommitFileRevision)
 			return ((CommitFileRevision) revision).getRevCommit();
 		else if (revision instanceof IAdaptable) {
-			final IResourceVariant variant = (IResourceVariant) ((IAdaptable) revision)
-					.getAdapter(IResourceVariant.class);
+			final IResourceVariant variant = Utils.getAdapter(((IAdaptable) revision), IResourceVariant.class);
 			if (variant instanceof GitRemoteResource) {
 				final RevCommit commit = ((GitRemoteResource) variant)
 						.getCommitId();

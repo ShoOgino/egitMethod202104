@@ -6,8 +6,7 @@
 
 		Object selected = ((IStructuredSelection) sel).getFirstElement();
 		if (selected instanceof IAdaptable)
-			return (IResource) ((IAdaptable) selected)
-					.getAdapter(IResource.class);
+			return CommonUtils.getAdapter(((IAdaptable) selected), IResource.class);
 
 		if (selected instanceof IResource)
 			return (IResource) selected;

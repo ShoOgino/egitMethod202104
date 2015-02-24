@@ -10,8 +10,8 @@
 	 *         than one {@code Trigger}.
 	 */
 	public static KeyStroke getKeystrokeOfBestActiveBindingFor(String commandId) {
-		IBindingService bindingService = (IBindingService) PlatformUI
-				.getWorkbench().getAdapter(IBindingService.class);
+		IBindingService bindingService = CommonUtils.getAdapter(
+				PlatformUI.getWorkbench(), IBindingService.class);
 		TriggerSequence ts = bindingService.getBestActiveBindingFor(commandId);
 		if (ts == null)
 			return null;

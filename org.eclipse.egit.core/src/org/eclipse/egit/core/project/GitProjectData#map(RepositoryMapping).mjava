@@ -9,7 +9,7 @@
 		if (r instanceof IContainer) {
 			c = (IContainer) r;
 		} else if (r != null) {
-			c = (IContainer) r.getAdapter(IContainer.class);
+			c = Utils.getAdapter(r, IContainer.class);
 		}
 
 		if (c == null) {

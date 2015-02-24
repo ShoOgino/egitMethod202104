@@ -16,8 +16,8 @@
 				}
 
 				if (object != null) {
-					ResourceMapping rm = (ResourceMapping) object
-							.getAdapter(ResourceMapping.class);
+					ResourceMapping rm = CommonUtils.getAdapter(object,
+							ResourceMapping.class);
 					return new ResourceMapping[] { rm };
 				}
 			}

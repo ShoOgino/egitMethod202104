@@ -15,8 +15,7 @@
 				if (o instanceof Repository)
 					repos.add((Repository) o);
 				else if (o instanceof PlatformObject) {
-					Repository repo = (Repository) ((PlatformObject) o)
-							.getAdapter(Repository.class);
+					Repository repo = CommonUtils.getAdapter(((PlatformObject) o), Repository.class);
 					if (repo != null)
 						repos.add(repo);
 				}

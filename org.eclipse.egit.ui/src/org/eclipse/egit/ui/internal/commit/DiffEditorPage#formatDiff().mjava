@@ -6,8 +6,7 @@
 		Job job = new Job(UIText.DiffEditorPage_TaskGeneratingDiff) {
 
 			protected IStatus run(IProgressMonitor monitor) {
-				RepositoryCommit commit = (RepositoryCommit) getEditor()
-						.getAdapter(RepositoryCommit.class);
+				RepositoryCommit commit = CommonUtils.getAdapter(getEditor(), RepositoryCommit.class);
 				FileDiff diffs[] = getDiffs(commit);
 				monitor.beginTask("", diffs.length); //$NON-NLS-1$
 				Repository repository = commit.getRepository();

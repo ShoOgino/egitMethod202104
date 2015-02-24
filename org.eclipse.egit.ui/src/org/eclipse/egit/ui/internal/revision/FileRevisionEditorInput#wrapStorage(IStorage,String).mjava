@@ -5,7 +5,7 @@
 		if (storage instanceof IFileState) {
 			return new IFileState() {
 				public Object getAdapter(Class adapter) {
-					return storage.getAdapter(adapter);
+					return CommonUtils.getAdapter(storage, adapter);
 				}
 
 				public boolean isReadOnly() {
@@ -40,7 +40,7 @@
 
 		return new IEncodedStorage() {
 			public Object getAdapter(Class adapter) {
-				return storage.getAdapter(adapter);
+				return CommonUtils.getAdapter(storage, adapter);
 			}
 
 			public boolean isReadOnly() {
