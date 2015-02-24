@@ -9,6 +9,6 @@
 	 */
 	private static void handleException(IResource resource, CoreException e) {
 		if (resource == null || resource.isAccessible())
-			exceptions.handleException(e);
+			EXCEPTION_COLLECTOR.handleException(e);
 	}
 

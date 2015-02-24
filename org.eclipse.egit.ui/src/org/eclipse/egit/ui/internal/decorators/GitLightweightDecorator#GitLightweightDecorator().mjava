@@ -2,14 +2,14 @@
 	 * Constructs a new Git resource decorator
 	 */
 	public GitLightweightDecorator() {
+		// This is an optimization to ensure that while decorating our fonts and
+		// colors are pre-created and decoration can occur without having to syncExec.
+		ensureFontAndColorsCreated(FONT_IDS, COLOR_IDS);
 		TeamUI.addPropertyChangeListener(this);
 		Activator.addPropertyChangeListener(this);
 		PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
 				.addPropertyChangeListener(this);
 
 		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache().addIndexDiffChangedListener(this);
-		// This is an optimization to ensure that while decorating our fonts and colors are
-		// pre-created and decoration can occur without having to syncExec.
-		ensureFontAndColorsCreated(fonts, colors);
 	}
 

@@ -4,18 +4,23 @@
 
 		ISelectionService srv = CommonUtils.getService(getSite(), ISelectionService.class);
 		srv.removePostSelectionListener(selectionChangedListener);
+		CommonUtils.getService(getSite(), IPartService.class)
+				.removePartListener(partListener);
 
-		if(cacheEntry != null)
+		if (cacheEntry != null) {
 			cacheEntry.removeIndexDiffChangedListener(myIndexDiffListener);
+		}
 
-		if (undoRedoActionGroup != null)
+		if (undoRedoActionGroup != null) {
 			undoRedoActionGroup.dispose();
+		}
 
 		InstanceScope.INSTANCE.getNode(
 				org.eclipse.egit.core.Activator.getPluginId())
 				.removePreferenceChangeListener(prefListener);
-		if (refsChangedListener != null)
+		if (refsChangedListener != null) {
 			refsChangedListener.remove();
+		}
 		disposed = true;
 	}
 

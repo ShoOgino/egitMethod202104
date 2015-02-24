@@ -352,19 +352,17 @@
 		selectionChangedListener = new ISelectionListener() {
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
-				if (!reactOnSelection || part == getSite().getPart())
+				if (part == getSite().getPart()) {
 					return;
-
-				// this may happen if we switch between editors
-				if (part instanceof IEditorPart) {
-					IEditorInput input = ((IEditorPart) part).getEditorInput();
-					if (input instanceof IFileEditorInput)
-						reactOnSelection(new StructuredSelection(
-								((IFileEditorInput) input).getFile()));
-				} else
-					reactOnSelection(selection);
+				}
+				// don't accept text selection, only structural one
+				if (selection instanceof StructuredSelection) {
+					reactOnSelection((StructuredSelection) selection);
+				}
 			}
 		};
+
+		partListener = new PartListener();
 
 		IPreferenceStore preferenceStore = getPreferenceStore();
 		if (preferenceStore.contains(UIPreferences.STAGING_VIEW_SYNC_SELECTION))
@@ -431,6 +429,8 @@
 		IWorkbenchPartSite site = getSite();
 		ISelectionService srv = CommonUtils.getService(site, ISelectionService.class);
 		srv.addPostSelectionListener(selectionChangedListener);
+		CommonUtils.getService(site, IPartService.class).addPartListener(
+				partListener);
 
 		// Use current selection to populate staging view
 		UIUtils.notifySelectionChangedWithCurrentSelection(

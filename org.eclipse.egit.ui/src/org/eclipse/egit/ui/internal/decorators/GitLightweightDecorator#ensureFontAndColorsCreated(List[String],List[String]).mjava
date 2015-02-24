@@ -6,17 +6,18 @@
 	 * @param actFonts fonts ids to cache
 	 * @param actColors color ids to cache
 	 */
-	private void ensureFontAndColorsCreated(final String[] actFonts, final String[] actColors) {
-		final Display display = Display.getDefault();
+	private void ensureFontAndColorsCreated(final List<String> actFonts,
+			final List<String> actColors) {
+		final Display display = PlatformUI.getWorkbench().getDisplay();
 		display.syncExec(new Runnable() {
 			public void run() {
 				ITheme theme  = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme();
-				for (int i = 0; i < actColors.length; i++) {
-					theme.getColorRegistry().get(actColors[i]);
+				for (int i = 0; i < actColors.size(); i++) {
+					theme.getColorRegistry().get(actColors.get(i));
 
 				}
-				for (int i = 0; i < actFonts.length; i++) {
-					theme.getFontRegistry().get(actFonts[i]);
+				for (int i = 0; i < actFonts.size(); i++) {
+					theme.getFontRegistry().get(actFonts.get(i));
 				}
 				defaultBackgroundRgb = display.getSystemColor(
 						SWT.COLOR_LIST_BACKGROUND).getRGB();
