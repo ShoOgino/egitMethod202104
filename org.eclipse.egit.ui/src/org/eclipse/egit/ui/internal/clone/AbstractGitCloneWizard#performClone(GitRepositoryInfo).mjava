@@ -53,6 +53,7 @@
 		configureFetchSpec(op, gitRepositoryInfo, remoteName);
 		configurePush(op, gitRepositoryInfo, remoteName);
 		configureRepositoryConfig(op, gitRepositoryInfo);
+		configureGerrit(op, gitRepositoryInfo, remoteName, timeout);
 
 		if (cloneDestination.isImportProjects()) {
 			final IWorkingSet[] sets = cloneDestination.getWorkingSets();

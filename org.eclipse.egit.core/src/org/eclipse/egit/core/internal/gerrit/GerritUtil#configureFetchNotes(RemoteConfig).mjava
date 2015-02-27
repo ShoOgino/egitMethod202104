@@ -1,9 +1,16 @@
-	private void configureFetchNotes() {
+	/**
+	 * Configure fetching review summary notes
+	 *
+	 * @param remoteConfig
+	 *            the remote configuration to configure this in
+	 */
+	public static void configureFetchNotes(RemoteConfig remoteConfig) {
 		String notesRef = Constants.R_NOTES + "*"; //$NON-NLS-1$
 		List<RefSpec> fetchRefSpecs = remoteConfig.getFetchRefSpecs();
 		for (RefSpec refSpec : fetchRefSpecs) {
-			if(refSpec.matchSource(notesRef))
+			if (refSpec.matchSource(notesRef)) {
 				return;
+			}
 		}
 		remoteConfig.addFetchRefSpec(new RefSpec(notesRef + ":" + notesRef)); //$NON-NLS-1$
 	}

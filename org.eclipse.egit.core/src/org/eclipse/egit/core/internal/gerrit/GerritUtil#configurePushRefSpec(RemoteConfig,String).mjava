@@ -1,0 +1,19 @@
+	/**
+	 * Configure the gerrit push refspec HEAD:refs/for/<gerritBranch>
+	 *
+	 * @param remoteConfig
+	 *            the remote configuration to configure this in
+	 * @param gerritBranch
+	 *            the branch to push to review for
+	 */
+	public static void configurePushRefSpec(RemoteConfig remoteConfig,
+			String gerritBranch) {
+		List<RefSpec> pushRefSpecs = new ArrayList<RefSpec>(
+				remoteConfig.getPushRefSpecs());
+		for (RefSpec refSpec : pushRefSpecs) {
+			remoteConfig.removePushRefSpec(refSpec);
+		}
+		remoteConfig.addPushRefSpec(new RefSpec(
+				"HEAD:" + GerritUtil.REFS_FOR + gerritBranch)); //$NON-NLS-1$
+	}
+

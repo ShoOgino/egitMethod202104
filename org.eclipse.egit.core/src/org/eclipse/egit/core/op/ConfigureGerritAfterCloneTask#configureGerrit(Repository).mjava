@@ -1,0 +1,16 @@
+	private void configureGerrit(Repository repository)
+			throws URISyntaxException, IOException {
+		StoredConfig config = repository.getConfig();
+		RemoteConfig remoteConfig;
+		remoteConfig = GerritUtil.findRemoteConfig(config, remoteName);
+		if (remoteConfig == null) {
+			return;
+		}
+		GerritUtil.configurePushURI(remoteConfig, new URIish(uri));
+		GerritUtil.configurePushRefSpec(remoteConfig, Constants.MASTER);
+		GerritUtil.configureFetchNotes(remoteConfig);
+		GerritUtil.setCreateChangeId(config);
+		remoteConfig.update(config);
+		config.save();
+	}
+

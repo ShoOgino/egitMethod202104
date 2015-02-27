@@ -1,0 +1,10 @@
+	private byte[] readFully(InputStream inputStream) throws IOException {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int length = 0;
+		while ((length = inputStream.read(buffer)) != -1) {
+			os.write(buffer, 0, length);
+		}
+		return os.toByteArray();
+	}
+
