@@ -13,7 +13,7 @@
 		assertThat(data1.getIgnoredNotInIndex(), hasItem("Project-1/sub"));
 
 		// creating a file in an ignored directory will not trigger the listener
-		project.createFile("sub/ignored", "Ignored".getBytes());
+		project.createFile("sub/ignored", "Ignored".getBytes("UTF-8"));
 		waitForListenerNotCalled();
 
 		// removing must also not trigger the listener

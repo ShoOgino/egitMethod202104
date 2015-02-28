@@ -13,7 +13,7 @@
 		assertThat(data1.getIgnoredNotInIndex(),
 				hasItem("Project-1/sub/ignore"));
 
-		project.createFile("sub/ignored", "Ignored".getBytes());
+		project.createFile("sub/ignored", "Ignored".getBytes("UTF-8"));
 
 		// adding this file will trigger a refresh, so no manual refresh must be
 		// required.

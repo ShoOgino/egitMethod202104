@@ -16,7 +16,7 @@
 		IFile file = project.getProject().getFile("sub/ignore");
 		FileOutputStream str = new FileOutputStream(file.getLocation().toFile());
 		try {
-			str.write("other contents".getBytes());
+			str.write("other contents".getBytes("UTF-8"));
 		} finally {
 			str.close();
 		}
