@@ -14,8 +14,7 @@
 		Assert.isNotNull(commit1);
 		Assert.isNotNull(commit2);
 
-		RevWalk rw = new RevWalk(repo);
-		try {
+		try (RevWalk rw = new RevWalk(repo)) {
 			rw.setRetainBody(false);
 			rw.setRevFilter(RevFilter.MERGE_BASE);
 
@@ -32,8 +31,6 @@
 			} else {
 				return null;
 			}
-		} finally {
-			rw.release();
 		}
 	}
 

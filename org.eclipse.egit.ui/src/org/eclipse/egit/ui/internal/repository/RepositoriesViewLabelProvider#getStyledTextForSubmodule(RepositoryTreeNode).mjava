@@ -29,17 +29,14 @@
 						StyledString.DECORATIONS_STYLER);
 			string.append(']', StyledString.DECORATIONS_STYLER);
 			if (verboseBranchMode && head.getObjectId() != null) {
-				RevWalk walk = new RevWalk(repository);
 				RevCommit commit;
-				try {
+				try (RevWalk walk = new RevWalk(repository)) {
 					commit = walk.parseCommit(head.getObjectId());
 					string.append(' ');
 					string.append(commit.getShortMessage(),
 							StyledString.QUALIFIER_STYLER);
 				} catch (IOException ignored) {
 					// Ignored
-				} finally {
-					walk.release();
 				}
 			}
 		}

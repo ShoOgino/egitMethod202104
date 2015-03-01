@@ -7,8 +7,7 @@
 	 */
 	public static ConflictCommits getConflictCommits(Repository repository,
 			String path) throws IOException {
-		RevWalk walk = new RevWalk(repository);
-		try {
+		try (RevWalk walk = new RevWalk(repository)) {
 			RevCommit ourCommit;
 			RevCommit theirCommit = null;
 			walk.setTreeFilter(AndTreeFilter.create(PathFilter.create(path),
@@ -40,8 +39,6 @@
 			}
 
 			return new ConflictCommits(ourCommit, theirCommit);
-		} finally {
-			walk.release();
 		}
 	}
 

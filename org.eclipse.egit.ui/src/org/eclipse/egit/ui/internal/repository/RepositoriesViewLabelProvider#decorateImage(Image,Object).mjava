@@ -35,12 +35,9 @@
 					ObjectId id = node.getRepository().resolve(refName);
 					if (id == null)
 						return image;
-					RevWalk rw = new RevWalk(node.getRepository());
-					try {
+					try (RevWalk rw = new RevWalk(node.getRepository())) {
 						RevCommit commit = rw.parseCommit(id);
 						compareString = commit.getId().name();
-					} finally {
-						rw.release();
 					}
 				} else if (refName.equals(Constants.HEAD))
 					return getDecoratedImage(image);

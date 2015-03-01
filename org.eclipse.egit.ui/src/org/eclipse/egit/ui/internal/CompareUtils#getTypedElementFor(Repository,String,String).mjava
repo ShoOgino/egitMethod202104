@@ -6,11 +6,11 @@
 			typedElement = getHeadTypedElement(repository, gitPath);
 		else {
 			final ObjectId id = repository.resolve(rev);
-			final RevWalk rw = new RevWalk(repository);
-			final RevCommit revCommit = rw.parseCommit(id);
-			rw.release();
-			typedElement = getFileRevisionTypedElement(gitPath,
-					revCommit, repository);
+			try (final RevWalk rw = new RevWalk(repository)) {
+				final RevCommit revCommit = rw.parseCommit(id);
+				typedElement = getFileRevisionTypedElement(gitPath, revCommit,
+						repository);
+			}
 		}
 		return typedElement;
 	}

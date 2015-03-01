@@ -7,14 +7,11 @@
 			id = ref.getObjectId();
 		if (id == null)
 			return null;
-		RevWalk walk = new RevWalk(node.getRepository());
-		walk.setRetainBody(true);
-		try {
+		try (RevWalk walk = new RevWalk(node.getRepository())) {
+			walk.setRetainBody(true);
 			return walk.parseCommit(id);
 		} catch (IOException ignored) {
 			return null;
-		} finally {
-			walk.release();
 		}
 	}
 

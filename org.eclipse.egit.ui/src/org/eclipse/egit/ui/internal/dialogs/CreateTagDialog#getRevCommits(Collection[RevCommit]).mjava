@@ -1,6 +1,5 @@
 	private void getRevCommits(Collection<RevCommit> commits) {
-		final RevWalk revWalk = new RevWalk(repo);
-		try {
+		try (final RevWalk revWalk = new RevWalk(repo)) {
 			revWalk.sort(RevSort.COMMIT_TIME_DESC, true);
 			revWalk.sort(RevSort.BOUNDARY, true);
 			AnyObjectId headId = repo.resolve(Constants.HEAD);
@@ -17,8 +16,6 @@
 		} catch (IOException e) {
 			Activator.logError(UIText.TagAction_errorWhileGettingRevCommits, e);
 			setErrorMessage(UIText.TagAction_errorWhileGettingRevCommits);
-		} finally {
-			revWalk.release();
 		}
 	}
 
