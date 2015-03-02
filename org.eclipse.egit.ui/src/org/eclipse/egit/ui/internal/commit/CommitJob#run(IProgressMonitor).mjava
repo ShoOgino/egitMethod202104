@@ -10,11 +10,17 @@
 			if (mapping != null)
 				mapping.fireRepositoryChanged();
 		} catch (CoreException e) {
-			if (e.getCause() instanceof JGitInternalException)
+			if (e.getCause() instanceof JGitInternalException) {
 				return Activator.createErrorStatus(e.getLocalizedMessage(),
 						e.getCause());
-			return Activator.createErrorStatus(
-					UIText.CommitAction_CommittingFailed, e);
+			}
+			if (e.getCause() instanceof AbortedByHookException) {
+				showAbortedByHook(e.getCause());
+				return Status.CANCEL_STATUS;
+			} else {
+				return Activator.createErrorStatus(
+						UIText.CommitAction_CommittingFailed, e);
+			}
 		} finally {
 			GitLightweightDecorator.refresh();
 		}
