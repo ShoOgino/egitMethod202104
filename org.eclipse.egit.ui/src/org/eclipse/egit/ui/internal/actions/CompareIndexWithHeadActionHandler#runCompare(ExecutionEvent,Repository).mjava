@@ -2,7 +2,7 @@
 			throws Exception {
 		IWorkbenchPage workBenchPage = HandlerUtil
 				.getActiveWorkbenchWindowChecked(event).getActivePage();
-		IResource[] resources = getSelectedResources();
+		IResource[] resources = getSelectedResources(event);
 
 		if (resources.length > 0) {
 			CompareUtils.compare(resources, repository, GitFileRevision.INDEX,
