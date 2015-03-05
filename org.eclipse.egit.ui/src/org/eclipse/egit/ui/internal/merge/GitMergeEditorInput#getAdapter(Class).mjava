@@ -1,6 +1,7 @@
 	@Override
 	public Object getAdapter(Class adapter) {
-		if (adapter == IFile.class || adapter == IResource.class) {
+		if ((adapter == IFile.class || adapter == IResource.class)
+				&& isUIThread()) {
 			Object selectedEdition = getSelectedEdition();
 			if (selectedEdition instanceof DiffNode) {
 				DiffNode diffNode = (DiffNode) selectedEdition;
