@@ -26,7 +26,7 @@
 		if (amendPreviousCommitAction.isChecked())
 			commitOperation.setAmending(true);
 		commitOperation.setComputeChangeId(addChangeIdAction.isChecked());
-		Job commitJob = new CommitJob(currentRepository, commitOperation)
+		final Job commitJob = new CommitJob(currentRepository, commitOperation)
 			.setOpenCommitEditor(openNewCommitsAction.isChecked())
 			.setPushUpstream(pushUpstream);
 
@@ -38,6 +38,9 @@
 				asyncExec(new Runnable() {
 					public void run() {
 						enableAllWidgets(true);
+						if (commitJob.getResult().isOK()) {
+							commitMessageText.setText(EMPTY_STRING);
+						}
 					}
 				});
 			}
@@ -47,6 +50,5 @@
 
 		CommitMessageHistory.saveCommitHistory(commitMessage);
 		clearCommitMessageToggles();
-		commitMessageText.setText(EMPTY_STRING);
 	}
 
