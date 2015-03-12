@@ -1,0 +1,9 @@
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page == selectRepoPage) {
+			this.existingRepo = this.selectRepoPage.getRepository();
+			return this.selectRootPage;
+		}
+		return super.getNextPage(page);
+	}
+

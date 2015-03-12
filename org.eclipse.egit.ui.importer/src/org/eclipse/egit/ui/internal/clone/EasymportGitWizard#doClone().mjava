@@ -1,0 +1,22 @@
+	private File doClone() {
+		setCallerRunsCloneOperation(true);
+		try {
+			final GitRepositoryInfo repositoryInfo = currentSearchResult.getGitRepositoryInfo();
+			performClone(repositoryInfo);
+			getContainer().getShell().getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					runCloneOperation(getContainer(), repositoryInfo);
+					cloneDestination.saveSettingsForClonedRepo();
+				}
+			});
+		} catch (URISyntaxException e) {
+			org.eclipse.egit.ui.Activator.error(UIText.GitImportWizard_errorParsingURI, e);
+		} catch (NoRepositoryInfoException e) {
+			org.eclipse.egit.ui.Activator.error(UIText.GitImportWizard_noRepositoryInfo, e);
+		} catch (Exception e) {
+			org.eclipse.egit.ui.Activator.error(e.getMessage(), e);
+		}
+		return getCloneDestinationPage().getDestinationFile();
+	}
+

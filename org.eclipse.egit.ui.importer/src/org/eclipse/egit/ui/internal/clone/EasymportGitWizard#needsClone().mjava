@@ -1,0 +1,8 @@
+	/**
+	 * @return whether according to current config, the selected repo needs to
+	 *         be cloned
+	 */
+	public boolean needsClone() {
+		return this.cloneDestination.cloneSettingsChanged();
+	}
+

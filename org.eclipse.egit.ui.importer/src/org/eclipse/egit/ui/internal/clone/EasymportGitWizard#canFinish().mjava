@@ -1,0 +1,7 @@
+	@Override
+	public boolean canFinish() {
+		return getContainer().getCurrentPage().equals(this.nestedProjectsPage)
+				|| (getContainer().getCurrentPage().equals(this.selectRootPage) && this.selectRootPage
+						.canFlipToNextPage());
+	}
+

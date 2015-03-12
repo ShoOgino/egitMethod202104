@@ -1,0 +1,13 @@
+	/**
+	 * Constructor
+	 */
+	public EasymportGitWizard() {
+		super();
+		IDialogSettings dialogSettings = super.getDialogSettings();
+		if (dialogSettings == null) {
+			dialogSettings = Activator.getDefault().getDialogSettings();
+			setDialogSettings(dialogSettings);
+		}
+		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
+	}
+
