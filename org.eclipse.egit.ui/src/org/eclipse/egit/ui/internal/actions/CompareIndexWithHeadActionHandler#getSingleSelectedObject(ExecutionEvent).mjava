@@ -1,6 +1,6 @@
 	private Object getSingleSelectedObject(ExecutionEvent event)
 			throws ExecutionException {
-		IResource[] resources = getSelectedResources();
+		IResource[] resources = getSelectedResources(event);
 		if (resources.length == 1) {
 			return resources[0];
 		} else {
