@@ -5,6 +5,7 @@
 				this.editorPrefListener);
 		getTextWidget().addLineBackgroundListener(new LineBackgroundListener() {
 
+			@Override
 			public void lineGetBackground(LineBackgroundEvent event) {
 				StyledText text = getTextWidget();
 				if (event.lineOffset < text.getCharCount()) {

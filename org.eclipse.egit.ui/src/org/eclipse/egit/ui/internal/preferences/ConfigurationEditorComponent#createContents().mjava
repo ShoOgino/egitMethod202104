@@ -100,6 +100,7 @@
 		final TextCellEditor editor = new TextCellEditor(tree);
 		editor.setValidator(new ICellEditorValidator() {
 
+			@Override
 			public String isValid(Object value) {
 				String editedValue = value.toString();
 				return editedValue.length() > 0 ? null
@@ -108,15 +109,18 @@
 		});
 		editor.addListener(new ICellEditorListener() {
 
+			@Override
 			public void editorValueChanged(boolean oldValidState,
 					boolean newValidState) {
 				setErrorMessage(editor.getErrorMessage());
 			}
 
+			@Override
 			public void cancelEditor() {
 				setErrorMessage(null);
 			}
 
+			@Override
 			public void applyEditorValue() {
 				setErrorMessage(null);
 			}
@@ -128,6 +132,7 @@
 		new TreeViewerColumn(tv, value)
 				.setEditingSupport(new EditingSupport(tv) {
 
+					@Override
 					protected void setValue(Object element, Object newValue) {
 						Entry entry = (Entry) element;
 						if (!entry.value.equals(newValue)) {
@@ -136,14 +141,17 @@
 						}
 					}
 
+					@Override
 					protected Object getValue(Object element) {
 						return ((Entry) element).value;
 					}
 
+					@Override
 					protected CellEditor getCellEditor(Object element) {
 						return editor;
 					}
 
+					@Override
 					protected boolean canEdit(Object element) {
 						return editable && element instanceof Entry;
 					}
@@ -281,6 +289,7 @@
 		});
 
 		tv.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				updateEnablement();
 			}

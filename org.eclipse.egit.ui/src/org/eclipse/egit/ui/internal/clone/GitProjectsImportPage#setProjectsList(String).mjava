@@ -33,6 +33,7 @@
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
 
+				@Override
 				public void run(IProgressMonitor monitor) {
 
 					monitor.beginTask(
@@ -65,6 +66,7 @@
 						if (files.isEmpty())
 							// run in UI thread
 							Display.getDefault().syncExec(new Runnable() {
+								@Override
 								public void run() {
 									setErrorMessage(UIText.GitProjectsImportPage_NoProjectsMessage);
 								}

@@ -15,6 +15,7 @@
 			refsChangedListener = db.getListenerList().addRefsChangedListener(
 					new RefsChangedListener() {
 
+						@Override
 						public void onRefsChanged(RefsChangedEvent event) {
 							allRefs = getBranches(db);
 						}

@@ -5,6 +5,7 @@
 	public void runCloneOperation(IWizardContainer container, final GitRepositoryInfo repositoryInfo) {
 		try {
 			container.run(true, true, new IRunnableWithProgress() {
+				@Override
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
 					executeCloneOperation(cloneOperation, repositoryInfo, monitor);

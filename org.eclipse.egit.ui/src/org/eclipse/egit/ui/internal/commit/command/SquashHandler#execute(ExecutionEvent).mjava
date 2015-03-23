@@ -1,3 +1,4 @@
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		List<RevCommit> commits = getSelectedItems(RevCommit.class, event);
 		if ((commits == null) || commits.isEmpty())
@@ -19,10 +20,12 @@
 		}
 
 		InteractiveHandler messageHandler = new InteractiveHandler() {
+			@Override
 			public void prepareSteps(List<RebaseTodoLine> steps) {
 				// not used
 			}
 
+			@Override
 			public String modifyCommitMessage(String oldMessage) {
 				return promptCommitMessage(shell, oldMessage);
 			}

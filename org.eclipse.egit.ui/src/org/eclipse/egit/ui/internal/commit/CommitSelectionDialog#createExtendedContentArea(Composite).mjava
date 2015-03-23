@@ -1,3 +1,4 @@
+	@Override
 	protected Control createExtendedContentArea(Composite parent) {
 		Composite displayArea = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.fillDefaults().applyTo(displayArea);
@@ -5,6 +6,7 @@
 		link.setText(UIText.CommitSelectionDialog_LinkSearch);
 		link.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				close();
 				NewSearchUI.openSearchDialog(PlatformUI.getWorkbench()

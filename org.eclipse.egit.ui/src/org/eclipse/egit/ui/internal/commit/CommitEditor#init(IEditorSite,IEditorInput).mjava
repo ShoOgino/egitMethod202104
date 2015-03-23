@@ -2,6 +2,7 @@
 	 * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite,
 	 *      org.eclipse.ui.IEditorInput)
 	 */
+	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		if (CommonUtils.getAdapter(input, RepositoryCommit.class) == null)

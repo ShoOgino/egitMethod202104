@@ -1,3 +1,4 @@
+	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		final RevisionInformation info = new RevisionInformation();
 
@@ -66,6 +67,7 @@
 			previous.register();
 
 		shell.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				openEditor(info);
 			}

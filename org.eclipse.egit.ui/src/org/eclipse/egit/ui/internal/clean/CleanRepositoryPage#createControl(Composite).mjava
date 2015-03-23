@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
@@ -46,6 +47,7 @@
 		setPageComplete(false);
 		cleanTable.addCheckStateListener(new ICheckStateListener() {
 
+			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				updatePageComplete();
 			}

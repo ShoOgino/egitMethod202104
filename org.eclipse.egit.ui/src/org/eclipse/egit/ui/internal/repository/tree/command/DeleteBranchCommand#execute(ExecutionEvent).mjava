@@ -1,3 +1,4 @@
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final List<RefNode> nodes = getSelectedNodes(event);
 		final AtomicReference<List<RefNode>> unmergedNodesRef = new AtomicReference<List<RefNode>>();
@@ -6,6 +7,7 @@
 		try {
 			new ProgressMonitorDialog(shell).run(true, false,
 					new IRunnableWithProgress() {
+						@Override
 						public void run(IProgressMonitor monitor)
 								throws InvocationTargetException,
 								InterruptedException {
@@ -29,6 +31,7 @@
 		try {
 			new ProgressMonitorDialog(shell).run(true, false,
 					new IRunnableWithProgress() {
+						@Override
 						public void run(IProgressMonitor monitor)
 								throws InvocationTargetException,
 								InterruptedException {

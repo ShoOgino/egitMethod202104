@@ -1,6 +1,7 @@
 	/* (non-Javadoc)
 	 * @see org.eclipse.compare.CompareEditorInput#getAdapter(java.lang.Class)
 	 */
+	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IFile.class || adapter == IResource.class) {
 			return getResource();

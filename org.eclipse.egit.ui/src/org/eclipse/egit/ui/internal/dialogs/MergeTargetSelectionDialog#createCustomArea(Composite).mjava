@@ -15,6 +15,7 @@
 			commit.setSelection(true);
 		commit.setText(UIText.MergeTargetSelectionDialog_MergeTypeCommitButton);
 		commit.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (((Button) event.widget).getSelection()) {
 					mergeSquash = false;
@@ -28,6 +29,7 @@
 			noCommit.setSelection(true);
 		noCommit.setText(UIText.MergeTargetSelectionDialog_MergeTypeNoCommitButton);
 		noCommit.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (((Button) event.widget).getSelection()) {
 					mergeSquash = false;
@@ -41,6 +43,7 @@
 			squash.setSelection(true);
 		squash.setText(UIText.MergeTargetSelectionDialog_MergeTypeSquashButton);
 		squash.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (((Button) event.widget).getSelection()) {
 					mergeSquash = true;

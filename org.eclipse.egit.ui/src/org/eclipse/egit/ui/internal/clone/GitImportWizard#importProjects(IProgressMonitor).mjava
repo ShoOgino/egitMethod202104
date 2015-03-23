@@ -6,6 +6,7 @@
 			final List<IWorkingSet> workingSets = new ArrayList<IWorkingSet>();
 			// get the data from the pages in the UI thread
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					projectsToCreate.addAll(projectsImportPage
 							.getCheckedProjects());
@@ -23,6 +24,7 @@
 		case GitSelectWizardPage.NEW_WIZARD: {
 			final File[] repoDir = new File[1];
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					repoDir[0] = getTargetRepository().getDirectory();
 				}
@@ -31,12 +33,14 @@
 					.asList(ResourcesPlugin.getWorkspace().getRoot()
 							.getProjects());
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					new NewProjectAction(PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow()).run();
 				}
 			});
 			IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+				@Override
 				public void run(IProgressMonitor actMonitor)
 						throws CoreException {
 					IProject[] currentProjects = ResourcesPlugin.getWorkspace()
@@ -63,6 +67,7 @@
 			final File[] repoDir = new File[1];
 			// get the data from the page in the UI thread
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					projectName[0] = createGeneralProjectPage.getProjectName();
 					defaultLocation[0] = createGeneralProjectPage
@@ -73,6 +78,7 @@
 			});
 			try {
 				IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
+					@Override
 					public void run(IProgressMonitor actMonitor)
 							throws CoreException {
 						final IProjectDescription desc = ResourcesPlugin

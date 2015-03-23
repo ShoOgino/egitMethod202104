@@ -2,6 +2,7 @@
 		final AtomicBoolean confirmed = new AtomicBoolean(false);
 
 		shell.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				String message = MessageFormat.format(
 						UIText.StashDropCommand_confirmSingle,

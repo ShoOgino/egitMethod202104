@@ -1,6 +1,7 @@
 	private String getTargetWithDialog() {
 		final String[] dialogResult = new String[1];
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				dialogResult[0] = getTargetWithDialogInUI();
 			}

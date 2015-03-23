@@ -41,6 +41,7 @@
 					return Status.CANCEL_STATUS;
 				PlatformUI.getWorkbench().getDisplay()
 						.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						if (!UIUtils.isUsable(tv))
 							return;

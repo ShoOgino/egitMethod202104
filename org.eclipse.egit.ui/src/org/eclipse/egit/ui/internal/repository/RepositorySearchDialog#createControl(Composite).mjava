@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 		setMessage(UIText.RepositorySearchDialog_searchRepositoriesMessage);
 
@@ -114,6 +115,7 @@
 		fTreeViewer = fTree.getCheckboxTreeViewer();
 		fTreeViewer.addCheckStateListener(new ICheckStateListener() {
 
+			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				isUserModifiedTreeSelection = true;
 				enableOk();
@@ -137,6 +139,7 @@
 		checkAllItem.setImage(checkImage);
 		checkAllItem.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fTreeViewer.setAllChecked(true);
 				enableOk();
@@ -153,6 +156,7 @@
 		uncheckAllItem.setImage(uncheckImage);
 		uncheckAllItem.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fTreeViewer.setAllChecked(false);
 				enableOk();
@@ -166,6 +170,7 @@
 		// here
 		dir.addModifyListener(new ModifyListener() {
 
+			@Override
 			public void modifyText(ModifyEvent e) {
 				setNeedsSearch();
 			}
@@ -180,6 +185,7 @@
 		if (fillSearch)
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
+				@Override
 				public void run() {
 					if (!getControl().isDisposed())
 						doSearch();

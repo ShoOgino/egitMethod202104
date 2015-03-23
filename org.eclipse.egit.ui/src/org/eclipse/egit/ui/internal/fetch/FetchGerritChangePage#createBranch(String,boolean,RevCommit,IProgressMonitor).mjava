@@ -17,6 +17,7 @@
 					final Shell shell = getWizard().getContainer().getShell();
 
 					shell.getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							new CheckoutConflictDialog(shell, repository,
 									result.getConflictList()).open();

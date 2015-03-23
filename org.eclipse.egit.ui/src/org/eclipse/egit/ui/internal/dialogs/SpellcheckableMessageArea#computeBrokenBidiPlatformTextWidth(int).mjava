@@ -2,6 +2,7 @@
 		class BidiSegmentListenerTester implements BidiSegmentListener {
 			boolean called;
 
+			@Override
 			public void lineGetSegments(BidiSegmentEvent event) {
 				called = true;
 			}

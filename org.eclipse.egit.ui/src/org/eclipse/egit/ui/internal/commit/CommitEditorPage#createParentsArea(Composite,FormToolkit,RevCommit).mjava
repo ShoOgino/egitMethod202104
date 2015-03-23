@@ -15,6 +15,7 @@
 							parentCommit.abbreviate(PARENT_LENGTH).name(),
 							SWT.NONE);
 			link.addHyperlinkListener(new HyperlinkAdapter() {
+				@Override
 				public void linkActivated(HyperlinkEvent e) {
 					try {
 						CommitEditor.open(new RepositoryCommit(getCommit()

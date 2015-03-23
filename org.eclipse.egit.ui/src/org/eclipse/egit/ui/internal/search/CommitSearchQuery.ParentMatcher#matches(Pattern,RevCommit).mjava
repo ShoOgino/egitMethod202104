@@ -1,3 +1,4 @@
+		@Override
 		public boolean matches(Pattern pattern, RevCommit commit) {
 			for (RevCommit parent : commit.getParents())
 				if (matches(pattern, parent.name()))

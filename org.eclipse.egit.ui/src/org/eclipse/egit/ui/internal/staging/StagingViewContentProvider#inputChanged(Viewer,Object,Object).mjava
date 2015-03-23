@@ -1,3 +1,4 @@
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (!(newInput instanceof StagingViewUpdate))
 			return;
@@ -20,6 +21,7 @@
 
 		Set<StagingEntry> nodes = new TreeSet<StagingEntry>(
 				new Comparator<StagingEntry>() {
+					@Override
 					public int compare(StagingEntry o1, StagingEntry o2) {
 						return o1.getPath().compareTo(o2.getPath());
 					}

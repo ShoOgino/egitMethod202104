@@ -18,6 +18,7 @@
 		tagViewer.setLabelProvider(new TagLabelProvider());
 		tagViewer.setContentProvider(ArrayContentProvider.getInstance());
 		tagViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				fillTagDialog(event.getSelection());
 			}

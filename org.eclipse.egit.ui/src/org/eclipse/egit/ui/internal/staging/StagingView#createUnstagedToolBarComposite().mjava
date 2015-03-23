@@ -6,6 +6,7 @@
 		unstagedSection.setTextClient(unstagedToolbarComposite);
 		unstagedExpandAllAction = new Action(UIText.UIUtils_ExpandAll,
 				IAction.AS_PUSH_BUTTON) {
+			@Override
 			public void run() {
 				unstagedViewer.expandAll();
 				enableAutoExpand(unstagedViewer);
@@ -15,6 +16,7 @@
 
 		unstagedCollapseAllAction = new Action(UIText.UIUtils_CollapseAll,
 				IAction.AS_PUSH_BUTTON) {
+			@Override
 			public void run() {
 				unstagedViewer.collapseAll();
 				disableAutoExpand(unstagedViewer);

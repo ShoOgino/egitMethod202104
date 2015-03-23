@@ -7,6 +7,7 @@
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation(), message);
 		getHistoryPageSite().getShell().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (topControl.isDisposed())
 					return;

@@ -58,6 +58,7 @@
 		if (cloneDestination.isImportProjects()) {
 			final IWorkingSet[] sets = cloneDestination.getWorkingSets();
 			op.addPostCloneTask(new PostCloneTask() {
+				@Override
 				public void execute(Repository repository,
 						IProgressMonitor monitor) throws CoreException {
 					importProjects(repository, sets);

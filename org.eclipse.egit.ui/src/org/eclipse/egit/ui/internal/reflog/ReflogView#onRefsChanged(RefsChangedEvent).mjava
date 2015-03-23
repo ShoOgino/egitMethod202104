@@ -1,5 +1,7 @@
+	@Override
 	public void onRefsChanged(RefsChangedEvent event) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				refLogTableTreeViewer.refresh();
 			}

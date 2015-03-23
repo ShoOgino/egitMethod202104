@@ -10,6 +10,7 @@
 		table.setRelativeDate(GitHistoryPage.isShowingRelativeDates());
 		table.getTableView().addSelectionChangedListener(
 				new ISelectionChangedListener() {
+					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
 						commitId = null;
 						IStructuredSelection sel = (IStructuredSelection) event
@@ -21,6 +22,7 @@
 					}
 				});
 		table.getTableView().addOpenListener(new IOpenListener() {
+			@Override
 			public void open(OpenEvent event) {
 				if (getButton(OK).isEnabled())
 					buttonPressed(OK);

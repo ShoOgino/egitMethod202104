@@ -1,5 +1,6 @@
 	void setWarningTextInUIThread(final Job j) {
 		graph.getControl().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!graph.getControl().isDisposed() && job == j) {
 					setWarningText(UIText.GitHistoryPage_ListIncompleteWarningMessage);

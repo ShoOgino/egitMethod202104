@@ -36,6 +36,7 @@
 			@Override
 			public void done(IJobChangeEvent event) {
 				asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						enableAllWidgets(true);
 						if (commitJob.getResult().isOK()) {

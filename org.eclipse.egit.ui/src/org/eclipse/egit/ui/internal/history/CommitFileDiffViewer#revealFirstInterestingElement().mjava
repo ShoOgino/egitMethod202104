@@ -11,6 +11,7 @@
 				if (marked) {
 					// Does not yet work reliably, see comment on bug 393610.
 					getTable().getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							reveal(element);
 						}

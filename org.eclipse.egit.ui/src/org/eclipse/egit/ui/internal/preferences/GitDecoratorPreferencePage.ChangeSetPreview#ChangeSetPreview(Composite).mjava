@@ -11,6 +11,7 @@
 					return super.getImage(element);
 				}
 
+				@Override
 				public String getText(Object element) {
 					if (element instanceof GitModelCommitMockup) {
 						String format = store.getString(UIPreferences.SYNC_VIEW_CHANGESET_LABEL_FORMAT);

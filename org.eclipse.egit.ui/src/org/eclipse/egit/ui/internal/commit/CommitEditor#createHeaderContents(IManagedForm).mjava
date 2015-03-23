@@ -1,6 +1,7 @@
 	/**
 	 * @see org.eclipse.ui.forms.editor.SharedHeaderFormEditor#createHeaderContents(org.eclipse.ui.forms.IManagedForm)
 	 */
+	@Override
 	protected void createHeaderContents(IManagedForm headerForm) {
 		RepositoryCommit commit = getCommit();
 		ScrolledForm form = headerForm.getForm();
@@ -65,19 +66,23 @@
 		toolbar.update(true);
 		getSite().setSelectionProvider(new ISelectionProvider() {
 
+			@Override
 			public void setSelection(ISelection selection) {
 				// Ignored
 			}
 
+			@Override
 			public void removeSelectionChangedListener(
 					ISelectionChangedListener listener) {
 				// Ignored
 			}
 
+			@Override
 			public ISelection getSelection() {
 				return new StructuredSelection(getCommit());
 			}
 
+			@Override
 			public void addSelectionChangedListener(
 					ISelectionChangedListener listener) {
 				// Ignored

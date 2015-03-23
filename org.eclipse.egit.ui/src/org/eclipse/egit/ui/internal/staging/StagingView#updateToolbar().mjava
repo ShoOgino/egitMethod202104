@@ -25,10 +25,12 @@
 				filterText.setLayoutData(data);
 				final Display display = Display.getCurrent();
 				filterText.addModifyListener(new ModifyListener() {
+					@Override
 					public void modifyText(ModifyEvent e) {
 						final StagingViewSearchThread searchThread = new StagingViewSearchThread(
 								StagingView.this);
 						display.timerExec(200, new Runnable() {
+							@Override
 							public void run() {
 								searchThread.start();
 							}
@@ -45,6 +47,7 @@
 		toolbar.add(controlContribution);
 
 		refreshAction = new Action(UIText.StagingView_Refresh, IAction.AS_PUSH_BUTTON) {
+			@Override
 			public void run() {
 				if (cacheEntry != null) {
 					schedule(
@@ -74,6 +77,7 @@
 		openNewCommitsAction = new Action(UIText.StagingView_OpenNewCommits,
 				IAction.AS_CHECK_BOX) {
 
+			@Override
 			public void run() {
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_SHOW_NEW_COMMITS, isChecked());
@@ -85,6 +89,7 @@
 		columnLayoutAction = new Action(UIText.StagingView_ColumnLayout,
 				IAction.AS_CHECK_BOX) {
 
+			@Override
 			public void run() {
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_COLUMN_LAYOUT, isChecked());
@@ -98,6 +103,7 @@
 		fileNameModeAction = new Action(UIText.StagingView_ShowFileNamesFirst,
 				IAction.AS_CHECK_BOX) {
 
+			@Override
 			public void run() {
 				final boolean enable = isChecked();
 				getLabelProvider(stagedViewer).setFileNameMode(enable);
@@ -117,6 +123,7 @@
 				UIText.StagingView_Presentation);
 		listPresentationAction = new Action(UIText.StagingView_List,
 				IAction.AS_RADIO_BUTTON) {
+			@Override
 			public void run() {
 				if (!isChecked())
 					return;
@@ -135,6 +142,7 @@
 
 		treePresentationAction = new Action(UIText.StagingView_Tree,
 				IAction.AS_RADIO_BUTTON) {
+			@Override
 			public void run() {
 				if (!isChecked())
 					return;
@@ -153,6 +161,7 @@
 
 		compactTreePresentationAction = new Action(UIText.StagingView_CompactTree,
 				IAction.AS_RADIO_BUTTON) {
+			@Override
 			public void run() {
 				if (!isChecked())
 					return;

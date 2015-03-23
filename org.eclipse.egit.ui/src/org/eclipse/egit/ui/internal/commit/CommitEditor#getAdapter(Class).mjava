@@ -1,6 +1,7 @@
 	/**
 	 * @see org.eclipse.ui.part.MultiPageEditorPart#getAdapter(java.lang.Class)
 	 */
+	@Override
 	public Object getAdapter(Class adapter) {
 		if (RepositoryCommit.class == adapter)
 			return CommonUtils.getAdapter(getEditorInput(), adapter);

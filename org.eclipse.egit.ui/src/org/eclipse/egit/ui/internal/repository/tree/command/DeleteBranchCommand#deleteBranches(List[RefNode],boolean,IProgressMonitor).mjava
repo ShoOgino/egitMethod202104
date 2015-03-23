@@ -5,6 +5,7 @@
 		try {
 			ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
 
+				@Override
 				public void run(IProgressMonitor monitor) throws CoreException {
 					monitor.beginTask(UIText.DeleteBranchCommand_DeletingBranchesProgress, nodes.size());
 					for (RefNode refNode : nodes) {

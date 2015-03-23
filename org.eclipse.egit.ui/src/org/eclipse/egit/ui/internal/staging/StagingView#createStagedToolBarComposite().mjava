@@ -6,6 +6,7 @@
 		stagedSection.setTextClient(stagedToolbarComposite);
 		stagedExpandAllAction = new Action(UIText.UIUtils_ExpandAll,
 				IAction.AS_PUSH_BUTTON) {
+			@Override
 			public void run() {
 				stagedViewer.expandAll();
 				enableAutoExpand(stagedViewer);
@@ -15,6 +16,7 @@
 
 		stagedCollapseAllAction = new Action(UIText.UIUtils_CollapseAll,
 				IAction.AS_PUSH_BUTTON) {
+			@Override
 			public void run() {
 				stagedViewer.collapseAll();
 				disableAutoExpand(stagedViewer);

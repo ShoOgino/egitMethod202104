@@ -3,6 +3,7 @@
 		super.configureShell(newShell);
 		newShell.setText(UIText.MergeAction_MergeResultTitle);
 		newShell.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				if (objectReader != null)
 					objectReader.close();

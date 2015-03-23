@@ -5,6 +5,7 @@
 
 		final IAction selectAll = createStandardAction(ActionFactory.SELECT_ALL);
 		getControl().addFocusListener(new FocusListener() {
+			@Override
 			public void focusLost(FocusEvent e) {
 				site.getActionBars().setGlobalActionHandler(
 						ActionFactory.SELECT_ALL.getId(), null);
@@ -13,6 +14,7 @@
 				site.getActionBars().updateActionBars();
 			}
 
+			@Override
 			public void focusGained(FocusEvent e) {
 				site.getActionBars().setGlobalActionHandler(
 						ActionFactory.SELECT_ALL.getId(), selectAll);
@@ -23,6 +25,7 @@
 		});
 
 		getTableView().addOpenListener(new IOpenListener() {
+			@Override
 			public void open(OpenEvent event) {
 				if (input == null || !input.isSingleFile())
 					return;

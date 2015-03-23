@@ -2,6 +2,7 @@
 			showNotesAction = new BooleanPrefAction(
 					UIPreferences.RESOURCEHISTORY_SHOW_NOTES,
 					UIText.ResourceHistory_toggleShowNotes) {
+				@Override
 				void apply(boolean value) {
 					historyPage.refresh();
 				}

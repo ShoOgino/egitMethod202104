@@ -1,5 +1,6 @@
 	private IMenuListener createContextMenuListener() {
 		return new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				if (!allowToChangeSelection)
 					return;

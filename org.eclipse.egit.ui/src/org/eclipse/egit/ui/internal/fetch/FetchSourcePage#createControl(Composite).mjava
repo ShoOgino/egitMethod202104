@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(2, false));
@@ -14,6 +15,7 @@
 		sourceLabel.setText(UIText.FetchSourcePage_SourceLabel);
 		sourceText = new Text(main, SWT.BORDER);
 		sourceText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				checkPage();
 			}
@@ -21,6 +23,7 @@
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(sourceText);
 		UIUtils.addRefContentProposalToText(sourceText, repository,
 				new IRefListProvider() {
+					@Override
 					public List<Ref> getRefList() {
 						return getRemoteRefs();
 					}

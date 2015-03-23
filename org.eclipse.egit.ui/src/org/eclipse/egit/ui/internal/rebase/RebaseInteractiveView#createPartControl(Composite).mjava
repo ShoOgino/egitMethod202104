@@ -4,6 +4,7 @@
 		final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 		parent.addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				toolkit.dispose();
 			}
@@ -24,6 +25,7 @@
 		createLocalDragandDrop();
 		planTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
 
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				PlanElement element = (PlanElement) ((IStructuredSelection) event
 						.getSelection()).getFirstElement();
@@ -59,6 +61,7 @@
 		});
 
 		prefListener = new IPreferenceChangeListener() {
+			@Override
 			public void preferenceChange(PreferenceChangeEvent event) {
 				if (!RepositoryUtil.PREFS_DIRECTORIES.equals(event.getKey()))
 					return;
@@ -72,6 +75,7 @@
 
 				// Unselect repository as it has been removed
 				Display.getDefault().asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						currentRepository = null;
 						showRepository(null);

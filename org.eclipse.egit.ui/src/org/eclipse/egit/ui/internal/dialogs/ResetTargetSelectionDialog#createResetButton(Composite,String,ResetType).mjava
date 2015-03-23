@@ -3,6 +3,7 @@
 		Button button = new Button(parent, SWT.RADIO);
 		button.setText(text);
 		button.addListener(SWT.Selection, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (((Button) event.widget).getSelection())
 					resetType = type;

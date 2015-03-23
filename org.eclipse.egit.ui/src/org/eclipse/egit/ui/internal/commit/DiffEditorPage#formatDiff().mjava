@@ -5,6 +5,7 @@
 
 		Job job = new Job(UIText.DiffEditorPage_TaskGeneratingDiff) {
 
+			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				RepositoryCommit commit = CommonUtils.getAdapter(getEditor(), RepositoryCommit.class);
 				FileDiff diffs[] = getDiffs(commit);
@@ -24,6 +25,7 @@
 				monitor.done();
 				new UIJob(UIText.DiffEditorPage_TaskUpdatingViewer) {
 
+					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
 						if (UIUtils.isUsable(viewer)) {
 							viewer.setDocument(document);

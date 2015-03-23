@@ -4,6 +4,7 @@
 				GitCorePreferences.core_packedGitWindowSize,
 				UIText.WindowCachePreferencePage_packedGitWindowSize,
 				getFieldEditorParent(), 512, 128 * MB) {
+			@Override
 			protected boolean checkValue(final int number) {
 				return super.checkValue(number)
 						&& Integer.bitCount(number) == 1;

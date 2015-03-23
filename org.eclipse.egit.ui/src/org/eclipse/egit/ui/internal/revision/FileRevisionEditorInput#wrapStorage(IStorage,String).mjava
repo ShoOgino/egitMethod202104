@@ -4,34 +4,42 @@
 			return storage;
 		if (storage instanceof IFileState) {
 			return new IFileState() {
+				@Override
 				public Object getAdapter(Class adapter) {
 					return CommonUtils.getAdapter(storage, adapter);
 				}
 
+				@Override
 				public boolean isReadOnly() {
 					return storage.isReadOnly();
 				}
 
+				@Override
 				public String getName() {
 					return storage.getName();
 				}
 
+				@Override
 				public IPath getFullPath() {
 					return storage.getFullPath();
 				}
 
+				@Override
 				public InputStream getContents() throws CoreException {
 					return storage.getContents();
 				}
 
+				@Override
 				public String getCharset() throws CoreException {
 					return charset;
 				}
 
+				@Override
 				public boolean exists() {
 					return ((IFileState) storage).exists();
 				}
 
+				@Override
 				public long getModificationTime() {
 					return ((IFileState) storage).getModificationTime();
 				}
@@ -39,26 +47,32 @@
 		}
 
 		return new IEncodedStorage() {
+			@Override
 			public Object getAdapter(Class adapter) {
 				return CommonUtils.getAdapter(storage, adapter);
 			}
 
+			@Override
 			public boolean isReadOnly() {
 				return storage.isReadOnly();
 			}
 
+			@Override
 			public String getName() {
 				return storage.getName();
 			}
 
+			@Override
 			public IPath getFullPath() {
 				return storage.getFullPath();
 			}
 
+			@Override
 			public InputStream getContents() throws CoreException {
 				return storage.getContents();
 			}
 
+			@Override
 			public String getCharset() throws CoreException {
 				return charset;
 			}

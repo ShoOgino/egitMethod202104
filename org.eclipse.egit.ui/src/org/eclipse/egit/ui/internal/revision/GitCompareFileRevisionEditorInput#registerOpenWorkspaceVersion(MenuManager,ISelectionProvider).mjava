@@ -10,6 +10,7 @@
 						workspaceVersion.getGitPath());
 				if (workspaceFile.exists())
 					menu.addMenuListener(new IMenuListener() {
+						@Override
 						public void menuAboutToShow(IMenuManager manager) {
 							Action action = new OpenWorkspaceVersionAction(
 									UIText.CommitFileDiffViewer_OpenWorkingTreeVersionInEditorMenuLabel,

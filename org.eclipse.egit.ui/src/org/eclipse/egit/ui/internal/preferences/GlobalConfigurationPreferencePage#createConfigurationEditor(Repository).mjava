@@ -6,6 +6,7 @@
 					.getFS());
 			repositoryConfig.addChangeListener(new ConfigChangedListener() {
 
+				@Override
 				public void onConfigChanged(ConfigChangedEvent event) {
 					repository.getListenerList().dispatch(
 							new ConfigChangedEvent());

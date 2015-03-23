@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(GridLayoutFactory.swtDefaults()
@@ -14,6 +15,7 @@
 				.setItems(getRemoteConfigs());
 		remoteSelectionCombo
 				.addRemoteSelectionListener(new RemoteSelectionCombo.IRemoteSelectionListener() {
+					@Override
 					public void remoteSelected(RemoteConfig remoteConfig) {
 						selectedRemoteConfig = remoteConfig;
 					}
@@ -36,6 +38,7 @@
 		forceUpdateButton.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).span(2, 1).create());
 		forceUpdateButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				forceUpdateSelected = forceUpdateButton.getSelection();
 			}
@@ -56,6 +59,7 @@
 		initiallySelectTags(tagNodes, treeViewer);
 
 		treeViewer.addCheckStateListener(new ICheckStateListener() {
+			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				setSelectedTags(treeViewer.getCheckedElements());
 			}

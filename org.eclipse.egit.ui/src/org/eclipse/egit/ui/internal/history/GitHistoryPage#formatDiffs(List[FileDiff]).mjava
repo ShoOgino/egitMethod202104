@@ -10,6 +10,7 @@
 
 		final Repository repository = fileViewer.getRepository();
 		Job formatJob = new Job(UIText.GitHistoryPage_FormatDiffJobName) {
+			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				final IDocument document = new Document();
 				final DiffStyleRangeFormatter formatter = new DiffStyleRangeFormatter(
@@ -31,6 +32,7 @@
 				}
 				monitor.done();
 				UIJob uiJob = new UIJob(UIText.GitHistoryPage_FormatDiffJobName) {
+					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
 						if (UIUtils.isUsable(diffViewer)) {
 							diffViewer.setDocument(document);

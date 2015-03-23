@@ -62,6 +62,7 @@
 
 		Combo repoCombo = new Combo(repositoryComposite, SWT.READ_ONLY);
 		repoCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Combo combo = (Combo) e.widget;
 				showRepositoryConfiguration(combo.getSelectionIndex());

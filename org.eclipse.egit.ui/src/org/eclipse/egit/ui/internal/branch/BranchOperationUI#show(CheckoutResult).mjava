@@ -5,6 +5,7 @@
 	public void show(final CheckoutResult result) {
 		if (result.getStatus() == CheckoutResult.Status.CONFLICTS) {
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					Shell shell = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getShell();
@@ -35,6 +36,7 @@
 			if (!show)
 				return;
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					Shell shell = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getShell();

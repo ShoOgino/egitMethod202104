@@ -5,6 +5,7 @@
 		else {
 			final IResource[] resource = new IResource[1];
 			display.syncExec(new Runnable() {
+				@Override
 				public void run() {
 					resource[0] = getSelectedResource();
 				}

@@ -28,6 +28,7 @@
 				tree);
 		branchTree.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				String refName = refNameFromDialog();
 				refNameSelected(refName);
@@ -36,6 +37,7 @@
 
 		// double-click support
 		branchTree.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				RepositoryTreeNode node = (RepositoryTreeNode) ((IStructuredSelection) branchTree
 						.getSelection()).getFirstElement();

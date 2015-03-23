@@ -10,6 +10,7 @@
 				.getBoolean(UIPreferences.SHOW_INITIAL_CONFIG_DIALOG)
 				&& isImplicitUserConfig(repositories))
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					new BasicConfigurationDialog(PlatformUI.getWorkbench()
 							.getDisplay().getActiveShell()).open();

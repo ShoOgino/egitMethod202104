@@ -9,6 +9,7 @@
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree.getTree());
 
 		tree.addOpenListener(new IOpenListener() {
+			@Override
 			public void open(OpenEvent event) {
 				reactOnOpen(event);
 			}

@@ -7,6 +7,7 @@
 		remoteText.setText(Constants.DEFAULT_REMOTE_NAME);
 		remoteText.setLayoutData(createFieldGridData());
 		remoteText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				checkPage();
 			}

@@ -3,6 +3,7 @@
 		CommonViewer viewer = super.createCommonViewer(aParent);
 		// handle the double-click event for tags and branches
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				TreeSelection sel = (TreeSelection) event.getSelection();
 				RepositoryTreeNode element = (RepositoryTreeNode) sel
@@ -20,6 +21,7 @@
 		});
 		// handle open event for the working directory
 		viewer.addOpenListener(new IOpenListener() {
+			@Override
 			public void open(OpenEvent event) {
 				TreeSelection sel = (TreeSelection) event.getSelection();
 				RepositoryTreeNode element = (RepositoryTreeNode) sel

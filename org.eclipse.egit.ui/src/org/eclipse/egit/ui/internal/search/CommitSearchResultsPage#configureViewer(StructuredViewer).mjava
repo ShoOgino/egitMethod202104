@@ -2,6 +2,7 @@
 		viewer.setSorter(new CommitSorter());
 		viewer.setContentProvider(new WorkbenchContentProvider() {
 
+			@Override
 			public Object[] getElements(Object element) {
 				if (getLayout() == FLAG_LAYOUT_TREE) {
 					Map<Repository, RepositoryMatch> repos = new HashMap<Repository, RepositoryMatch>();

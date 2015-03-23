@@ -54,6 +54,7 @@
 		projectsList.getControl().setLayoutData(listData);
 		projectsList.addCheckStateListener(new ICheckStateListener() {
 
+			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				ProjectRecord element = (ProjectRecord) event.getElement();
 				if (isProjectInWorkspace(element.getProjectName())) {
@@ -68,26 +69,32 @@
 
 		projectsList.setContentProvider(new ITreeContentProvider() {
 
+			@Override
 			public Object[] getChildren(Object parentElement) {
 				return children;
 			}
 
+			@Override
 			public Object[] getElements(Object inputElement) {
 				return selectedProjects;
 			}
 
+			@Override
 			public boolean hasChildren(Object element) {
 				return false;
 			}
 
+			@Override
 			public Object getParent(Object element) {
 				return null;
 			}
 
+			@Override
 			public void dispose() {
 				// ignore
 			}
 
+			@Override
 			public void inputChanged(Viewer viewer, Object oldInput,
 					Object newInput) {
 				// ignore
@@ -96,6 +103,7 @@
 		});
 
 		projectsList.getTree().addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				checkPageComplete();
 			}

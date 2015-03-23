@@ -2,10 +2,12 @@
 		DebugOptions options = getOptions();
 		fillOptionsMapFromCurrent(options);
 		tv.setCheckStateProvider(new ICheckStateProvider() {
+			@Override
 			public boolean isGrayed(Object element) {
 				return false;
 			}
 
+			@Override
 			public boolean isChecked(Object element) {
 				Object data = element;
 				Properties props;

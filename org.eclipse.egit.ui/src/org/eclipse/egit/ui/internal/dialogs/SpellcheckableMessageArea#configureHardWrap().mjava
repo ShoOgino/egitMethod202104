@@ -3,6 +3,7 @@
 			if (hardWrapSegmentListener == null) {
 				final StyledText textWidget = getTextWidget();
 				hardWrapSegmentListener = new BidiSegmentListener() {
+					@Override
 					public void lineGetSegments(BidiSegmentEvent e) {
 						int[] segments = calculateWrapOffsets(e.lineText, MAX_LINE_WIDTH);
 						if (segments != null) {

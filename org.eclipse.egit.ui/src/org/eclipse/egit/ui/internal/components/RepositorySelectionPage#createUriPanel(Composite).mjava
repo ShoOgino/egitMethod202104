@@ -3,6 +3,7 @@
 			uriButton = new Button(parent, SWT.RADIO);
 			uriButton.setText(UIText.RepositorySelectionPage_uriChoice + ":"); //$NON-NLS-1$
 			uriButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					// occurs either on selection or unselection event
 					updateRemoteAndURIPanels();

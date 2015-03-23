@@ -21,6 +21,7 @@
 			@Override
 			protected IAdaptable getDefaultTarget() {
 				return new PlatformObject() {
+					@Override
 					public Object getAdapter(Class adapter) {
 						return Platform.getAdapterManager().getAdapter(
 								getEditorInput(), adapter);
@@ -28,6 +29,7 @@
 				};
 			}
 
+			@Override
 			protected void createMarginPainter() {
 				// Disabled intentionally
 			}
