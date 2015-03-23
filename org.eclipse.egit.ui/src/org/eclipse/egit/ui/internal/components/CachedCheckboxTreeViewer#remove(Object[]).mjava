@@ -2,8 +2,8 @@
 	 * @see org.eclipse.jface.viewers.AbstractTreeViewer#remove(java.lang.Object[])
 	 */
 	public void remove(Object[] elementsOrTreePaths) {
-		for (int i = 0; i < elementsOrTreePaths.length; i++) {
-			updateCheckState(elementsOrTreePaths[i], false);
+		for (Object elementsOrTreePath : elementsOrTreePaths) {
+			updateCheckState(elementsOrTreePath, false);
 		}
 		super.remove(elementsOrTreePaths);
 	}

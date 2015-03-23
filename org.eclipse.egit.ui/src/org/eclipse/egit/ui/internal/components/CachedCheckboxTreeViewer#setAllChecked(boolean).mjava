@@ -15,13 +15,13 @@
 			}
 
 			if (contentProvider == null) {
-				for (int i = 0; i < visible.length; i++) {
-					checkState.add(visible[i]);
+				for (Object element : visible) {
+					checkState.add(element);
 				}
 			} else {
 				Set<Object> toCheck = new HashSet<Object>();
-				for (int i = 0; i < visible.length; i++) {
-					addFilteredChildren(visible[i], contentProvider, toCheck);
+				for (Object element : visible) {
+					addFilteredChildren(element, contentProvider, toCheck);
 				}
 				checkState.addAll(toCheck);
 			}
@@ -29,8 +29,8 @@
 			// Remove any item in the check state that is visible (passes the filters)
 			if (checkState != null) {
 				Object[] visible = filter(checkState.toArray());
-				for (int i = 0; i < visible.length; i++) {
-					checkState.remove(visible[i]);
+				for (Object element : visible) {
+					checkState.remove(element);
 				}
 			}
 		}
