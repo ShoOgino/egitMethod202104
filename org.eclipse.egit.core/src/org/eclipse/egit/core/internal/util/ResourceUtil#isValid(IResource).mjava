@@ -1,0 +1,13 @@
+	/**
+	 * sort out closed, linked or not shared resources
+	 *
+	 * @param resource
+	 * @return true if the resource is shared with git, not a link and
+	 *         accessible in Eclipse
+	 */
+	private static boolean isValid(IResource resource) {
+		return resource.isAccessible()
+				&& !resource.isLinked(IResource.CHECK_ANCESTORS)
+				&& isSharedWithGit(resource);
+	}
+

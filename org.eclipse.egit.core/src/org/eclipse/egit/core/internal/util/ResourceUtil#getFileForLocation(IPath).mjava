@@ -10,6 +10,13 @@
 	 */
 	public static IFile getFileForLocation(IPath location) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IFile file = root.getFileForLocation(location);
+		if (file == null) {
+			return null;
+		}
+		if (isValid(file)) {
+			return file;
+		}
 		URI uri = URIUtil.toURI(location);
 		return getFileForLocationURI(root, uri);
 	}

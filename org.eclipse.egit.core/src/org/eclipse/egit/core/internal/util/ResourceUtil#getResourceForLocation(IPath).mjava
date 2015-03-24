@@ -10,11 +10,10 @@
 	 * @return the resources, or null
 	 */
 	public static IResource getResourceForLocation(IPath location) {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		URI uri = URIUtil.toURI(location);
-		IFile file = getFileForLocationURI(root, uri);
-		if (file != null)
+		IFile file = getFileForLocation(location);
+		if (file != null) {
 			return file;
-		return getContainerForLocationURI(root, uri);
+		}
+		return getContainerForLocation(location);
 	}
 

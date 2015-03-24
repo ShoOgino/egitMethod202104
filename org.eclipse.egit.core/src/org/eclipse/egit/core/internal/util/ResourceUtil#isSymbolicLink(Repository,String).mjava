@@ -15,7 +15,7 @@
 			File f = new Path(repository.getWorkTree().getAbsolutePath())
 					.append((repoRelativePath)).toFile();
 			return FS.DETECTED.isSymLink(f);
-		} catch (@SuppressWarnings("unused") IOException e) {
+		} catch (IOException e) {
 			return false;
 		}
 	}
