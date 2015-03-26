@@ -7,12 +7,16 @@
 	 * /rest-api-config.html#get-version">Gerrit 2.11 Get Version REST
 	 * endpoint</a>
 	 *
+	 * @param repo
+	 *            the repository to be configured
+	 *
 	 * @return {@code true} if the repository is hosted on a Gerrit server
 	 * @throws IOException
 	 * @throws MalformedURLException
 	 * @throws URISyntaxException
 	 */
-	private boolean isGerrit() throws MalformedURLException, IOException,
+	private boolean isGerrit(Repository repo) throws MalformedURLException,
+			IOException,
 			URISyntaxException {
 		URIish u = new URIish(uri);
 		final String s = u.getScheme();
@@ -41,6 +45,7 @@
 						httpConnection = (HttpURLConnection) new URL(baseURL
 								+ tmpPath + GERRIT_CONFIG_SERVER_VERSION_API)
 								.openConnection();
+						NetUtil.setSslVerification(repo, httpConnection);
 						httpConnection.setRequestMethod("GET"); //$NON-NLS-1$
 						httpConnection.setReadTimeout(1000 * timeout);
 						int responseCode = httpConnection.getResponseCode();
