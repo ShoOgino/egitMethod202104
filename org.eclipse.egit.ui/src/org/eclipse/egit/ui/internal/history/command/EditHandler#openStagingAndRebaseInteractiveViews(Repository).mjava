@@ -3,8 +3,8 @@
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
-					IWorkbenchPage workbenchPage = getPage().getSite()
-							.getPage();
+					IWorkbenchPage workbenchPage = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage();
 					final StagingView stagingView = (StagingView) workbenchPage
 							.showView(StagingView.VIEW_ID);
 					stagingView.reload(repository);
