@@ -1,26 +1,34 @@
 	/**
-	 * @param entry
-	 *            the {@link IndexDiffCacheEntry} for the repository containing
-	 *            the path.
 	 * @param path
 	 *            the repository relative path of the resource to check
 	 * @return whether the given path is ignored by the given
 	 *         {@link IndexDiffCacheEntry}
 	 */
-	private boolean isIgnoredInOldIndex(IndexDiffCacheEntry entry, String path) {
-		// fall back to processing all changes as long as there is no old index.
-		if (entry == null || gitIgnoreChanged)
+	private boolean isIgnoredInOldIndex(String path) {
+		if (gitIgnoreChanged) {
 			return false;
+		}
+		IndexDiffCacheEntry entry = null;
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		if (cache != null) {
+			entry = cache.getIndexDiffCacheEntry(repository);
+		}
+		// fall back to processing all changes as long as there is no old index.
+		if (entry == null) {
+			return false;
+		}
 
 		IndexDiffData indexDiff = entry.getIndexDiff();
-		if (indexDiff == null)
+		if (indexDiff == null) {
 			return false;
+		}
 
 		String p = path;
 		Set<String> ignored = indexDiff.getIgnoredNotInIndex();
 		while (p != null) {
-			if (ignored.contains(p))
+			if (ignored.contains(p)) {
 				return true;
+			}
 
 			p = skipLastSegment(p);
 		}
