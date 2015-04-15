@@ -1,9 +1,14 @@
 	private void checkPage() {
-		if (multiMode)
-			getButton(OK).setEnabled(
-					fTree.getCheckboxTreeViewer().getCheckedLeafCount() > 0);
-		else
-			getButton(OK).setEnabled(!branchesList.getSelection().isEmpty());
+		Button ok = getButton(OK);
+		if (ok.isDisposed() || fTree.isDisposed()) {
+			return;
+		}
 
+		if (multiMode) {
+			ok.setEnabled(
+					fTree.getCheckboxTreeViewer().getCheckedLeafCount() > 0);
+		} else {
+			ok.setEnabled(!branchesList.getSelection().isEmpty());
+		}
 	}
 
