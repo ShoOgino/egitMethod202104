@@ -1,0 +1,168 @@
+	PushResultTable(final Composite parent,
+			final IDialogSettings dialogSettings) {
+		root = new SashForm(parent, SWT.VERTICAL);
+
+		Composite treeContainer = new Composite(root, SWT.NONE);
+		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(treeContainer);
+		treeViewer = new TreeViewer(treeContainer);
+		treeViewer.setAutoExpandLevel(2);
+
+		addToolbar(treeContainer);
+
+		ColumnViewerToolTipSupport.enableFor(treeViewer);
+		final Tree table = treeViewer.getTree();
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
+
+		deleteImage = UIIcons.ELCL16_DELETE.createImage();
+		UIUtils.hookDisposal(root, deleteImage);
+
+		root.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				saveDialogSettings(root, dialogSettings);
+				if (reader != null)
+					reader.close();
+			}
+		});
+
+		treeViewer.setComparer(new IElementComparer() {
+			// we need this to keep refresh() working while having custom
+			// equals() in PushOperationResult
+			@Override
+			public boolean equals(Object a, Object b) {
+				return a == b;
+			}
+
+			@Override
+			public int hashCode(Object element) {
+				return element.hashCode();
+			}
+		});
+		final IStyledLabelProvider styleProvider = new WorkbenchStyledLabelProvider() {
+
+			@Override
+			public StyledString getStyledText(Object element) {
+				if (element instanceof IWorkbenchAdapter3)
+					return ((IWorkbenchAdapter3) element).getStyledText(element);
+
+				return super.getStyledText(element);
+			}
+
+		};
+
+		treeViewer.setSorter(new ViewerSorter() {
+
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+
+				if (e1 instanceof RefUpdateElement
+						&& e2 instanceof RefUpdateElement) {
+					RefUpdateElement r1 = (RefUpdateElement) e1;
+					RefUpdateElement r2 = (RefUpdateElement) e2;
+
+					// Put rejected refs first
+					if (r1.isRejected() && !r2.isRejected())
+						return -1;
+					if (!r1.isRejected() && r2.isRejected())
+						return 1;
+
+					// Put new refs next
+					if (r1.isAdd() && !r2.isAdd())
+						return -1;
+					if (!r1.isAdd() && r2.isAdd())
+						return 1;
+
+					// Put branches before tags
+					if (!r1.isTag() && r2.isTag())
+						return -1;
+					if (r1.isTag() && !r2.isTag())
+						return 1;
+
+					Status s1 = r1.getStatus();
+					Status s2 = r2.getStatus();
+					// Put up to date refs last
+					if (s1 != Status.UP_TO_DATE && s2 == Status.UP_TO_DATE)
+						return -1;
+					if (s1 == Status.UP_TO_DATE && s2 != Status.UP_TO_DATE)
+						return 1;
+
+					String ref1 = r1.getDstRefName();
+					String ref2 = r2.getDstRefName();
+					if (ref1 != null && ref2 != null)
+						return ref1.compareToIgnoreCase(ref2);
+				}
+
+				// Don't alter commit ordering
+				if (e1 instanceof RepositoryCommit
+						&& e2 instanceof RepositoryCommit)
+					return 0;
+
+				return super.compare(viewer, e1, e2);
+			}
+
+		});
+		treeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+				styleProvider));
+		treeViewer.setContentProvider(new RefUpdateContentProvider());
+		// detail message
+		Group messageGroup = new Group(root, SWT.NONE);
+		messageGroup.setText(UIText.PushResultTable_MesasgeText);
+		GridLayoutFactory.swtDefaults().applyTo(messageGroup);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
+				.applyTo(messageGroup);
+
+		final SpellcheckableMessageArea text = new SpellcheckableMessageArea(
+				messageGroup, EMPTY_STRING, true, SWT.BORDER) {
+
+			@Override
+			protected void createMarginPainter() {
+				// Disabled intentionally
+			}
+
+		};
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(text);
+		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				ISelection selection = event.getSelection();
+				if (!(selection instanceof IStructuredSelection)) {
+					text.setText(EMPTY_STRING);
+					return;
+				}
+				IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+				if (structuredSelection.size() != 1) {
+					text.setText(EMPTY_STRING);
+					return;
+				}
+				Object selected = structuredSelection.getFirstElement();
+				if (selected instanceof RefUpdateElement)
+					text.setText(getResult((RefUpdateElement) selected));
+			}
+		});
+
+		initializeSashWeights(root, new int[] { 3, 2 }, dialogSettings);
+
+		new OpenAndLinkWithEditorHelper(treeViewer) {
+			@Override
+			protected void linkToEditor(ISelection selection) {
+				// Not supported
+			}
+			@Override
+			protected void open(ISelection selection, boolean activate) {
+				handleOpen(selection, OpenStrategy.activateOnOpen());
+			}
+			@Override
+			protected void activate(ISelection selection) {
+				handleOpen(selection, true);
+			}
+			private void handleOpen(ISelection selection, boolean activateOnOpen) {
+				if (selection instanceof IStructuredSelection)
+					for (Object element : ((IStructuredSelection) selection)
+							.toArray())
+						if (element instanceof RepositoryCommit)
+							CommitEditor.openQuiet((RepositoryCommit) element, activateOnOpen);
+			}
+		};
+
+	}
+

@@ -1,0 +1,12 @@
+	private static void saveDialogSettings(SashForm sashForm,
+			IDialogSettings dialogSettings) {
+		if (dialogSettings != null) {
+			int[] weights = sashForm.getWeights();
+			String[] weightStrings = new String[weights.length];
+			for (int i = 0; i < weights.length; i++) {
+				weightStrings[i] = String.valueOf(weights[i]);
+			}
+			dialogSettings.put(SASH_WEIGHTS_SETTING, weightStrings);
+		}
+	}
+
