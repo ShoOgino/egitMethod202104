@@ -3,7 +3,6 @@
 				.getModelProviderDescriptor(
 						SampleModelProvider.SAMPLE_PROVIDER_ID)
 				.getModelProvider();
-		return (ResourceMappingMerger) Platform.getAdapterManager().getAdapter(
-				provider, IResourceMappingMerger.class);
+		return Utils.getAdapter(provider, IResourceMappingMerger.class);
 	}
 
