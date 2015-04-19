@@ -1,0 +1,9 @@
+	@Test
+	public void commitFormat_trailingWhitespace_ok() {
+		IDocument document = new Document("Simple message\n\n\n");
+
+		String message = CommitMessageComponent
+				.formatIssuesInCommitMessage(document);
+		assertEquals(null, message);
+	}
+

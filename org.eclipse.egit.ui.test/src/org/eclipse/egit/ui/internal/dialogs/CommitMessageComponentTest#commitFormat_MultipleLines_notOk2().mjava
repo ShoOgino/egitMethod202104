@@ -1,0 +1,10 @@
+	@Test
+	public void commitFormat_MultipleLines_notOk2() {
+		IDocument document = new Document("Summary\n \nDetails");
+
+		String message = CommitMessageComponent
+				.formatIssuesInCommitMessage(document);
+		assertEquals(UIText.CommitMessageComponent_MessageSecondLineNotEmpty,
+				message);
+	}
+

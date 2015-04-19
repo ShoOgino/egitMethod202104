@@ -1,0 +1,9 @@
+	@Test
+	public void commitFormat_MultipleLines_ok() {
+		IDocument document = new Document("Summary\n\nDetails");
+
+		String message = CommitMessageComponent
+				.formatIssuesInCommitMessage(document);
+		assertEquals(null, message);
+	}
+

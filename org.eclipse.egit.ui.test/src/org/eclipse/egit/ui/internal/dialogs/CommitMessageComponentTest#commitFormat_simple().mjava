@@ -1,0 +1,9 @@
+	@Test
+	public void commitFormat_simple() {
+		IDocument document = new Document("Simple message");
+
+		String message = CommitMessageComponent
+				.formatIssuesInCommitMessage(document);
+		assertEquals(null, message);
+	}
+
