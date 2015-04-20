@@ -34,8 +34,11 @@
 					UIText.CommitMessageComponent_AmendingCommitInRemoteBranch,
 					IMessageProvider.WARNING);
 
-		String formatIssue = formatIssuesInCommitMessage(
-				commitText.getDocument());
+		// Check format of commit message. The soft-wrapped text in the SWT
+		// control must be converted to a hard-wrapped text, since this will be
+		// the resulting commit message.
+		String message = commitText.getCommitMessage();
+		String formatIssue = formatIssuesInCommitMessage(message);
 		if (formatIssue != null) {
 			return new CommitStatus(formatIssue, IMessageProvider.WARNING);
 		}

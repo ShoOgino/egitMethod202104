@@ -1,4 +1,5 @@
-	static String formatIssuesInCommitMessage(IDocument document) {
+	static String formatIssuesInCommitMessage(String message) {
+		IDocument document = new Document(message);
 		int numberOfLines = document.getNumberOfLines();
 		if (numberOfLines > 1) {
 			try {
