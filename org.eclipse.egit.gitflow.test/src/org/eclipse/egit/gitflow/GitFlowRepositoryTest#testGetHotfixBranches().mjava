@@ -1,0 +1,21 @@
+	@Test
+	public void testGetHotfixBranches() throws Exception {
+		repository1
+				.createInitialCommit("testGetHotfixBranches\n\nfirst commit\n");
+
+		Repository repository = repository1.getRepository();
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+
+		new InitOperation(repository).execute(null);
+
+		assertTrue(gfRepo.getHotfixBranches().isEmpty());
+
+		new ReleaseStartOperation(gfRepo, MY_RELEASE).execute(null);
+		new ReleaseFinishOperation(gfRepo, MY_RELEASE).execute(null);
+		new HotfixStartOperation(gfRepo, MY_HOTFIX).execute(null);
+
+		assertEquals(
+				R_HEADS + gfRepo.getConfig().getHotfixPrefix() + MY_HOTFIX,
+				gfRepo.getHotfixBranches().get(0).getName());
+	}
+

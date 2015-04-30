@@ -1,0 +1,12 @@
+	/**
+	 * @param prefixName
+	 * @param defaultPrefix
+	 * @return value for key prefixName from .git/config or default
+	 */
+	public String getPrefix(String prefixName, String defaultPrefix) {
+		StoredConfig config = repository.getConfig();
+		String result = config.getString(GITFLOW_SECTION, PREFIX_SECTION,
+				prefixName);
+		return (result == null) ? defaultPrefix : result;
+	}
+

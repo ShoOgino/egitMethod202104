@@ -1,0 +1,10 @@
+	/**
+	 * @param featureName
+	 * @return remote tracking branch
+	 */
+	public String getRemoteName(String featureName) {
+		StoredConfig config = repository.getConfig();
+		return config.getString(BRANCH_SECTION,
+				getFeatureBranchName(featureName), REMOTE_KEY);
+	}
+

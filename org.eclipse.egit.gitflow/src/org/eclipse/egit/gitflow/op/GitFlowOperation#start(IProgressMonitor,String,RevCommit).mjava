@@ -1,0 +1,18 @@
+	/**
+	 * git flow * start
+	 *
+	 * @param monitor
+	 * @param branchName
+	 * @param sourceCommit
+	 * @throws CoreException
+	 */
+	protected void start(IProgressMonitor monitor, String branchName,
+			RevCommit sourceCommit) throws CoreException {
+		CreateLocalBranchOperation branchOperation = createBranchFromHead(
+				branchName, sourceCommit);
+		branchOperation.execute(monitor);
+		BranchOperation checkoutOperation = new BranchOperation(
+				repository.getRepository(), branchName);
+		checkoutOperation.execute(monitor);
+	}
+

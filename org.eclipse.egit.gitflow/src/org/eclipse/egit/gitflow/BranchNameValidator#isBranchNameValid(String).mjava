@@ -1,0 +1,8 @@
+	/**
+	 * @param name
+	 * @return Whether or not name would be a valid name for a branch.
+	 */
+	public static boolean isBranchNameValid(String name) {
+		return Repository.isValidRefName(Constants.R_HEADS + name);
+	}
+

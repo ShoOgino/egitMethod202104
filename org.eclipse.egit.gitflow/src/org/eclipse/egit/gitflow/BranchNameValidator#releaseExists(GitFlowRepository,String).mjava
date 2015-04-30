@@ -1,0 +1,12 @@
+	/**
+	 * @param repository
+	 * @param releaseName
+	 * @return Whether releaseName corresponds to existing branch.
+	 * @throws CoreException
+	 */
+	public static boolean releaseExists(GitFlowRepository repository,
+			String releaseName) throws CoreException {
+		return branchExists(repository,
+				repository.getConfig().getFullReleaseBranchName(releaseName));
+	}
+

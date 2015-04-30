@@ -1,0 +1,7 @@
+	protected GitFlowRepository init(String initalCommit) throws Exception {
+		testRepository.createInitialCommit(initalCommit);
+		Repository repository = testRepository.getRepository();
+		new InitOperation(repository).execute(null);
+		return new GitFlowRepository(repository);
+	}
+

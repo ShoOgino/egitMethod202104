@@ -1,0 +1,25 @@
+	@Test
+	public void testReleaseTagWithWrongReferenceExists() throws Exception {
+		testRepository
+				.createInitialCommit("testReleaseTagExists\n\nfirst commit\n");
+		testRepository
+				.createInitialCommit("testReleaseTagExists\n\nsecond commit\n");
+
+		Repository repository = testRepository.getRepository();
+		new InitOperation(repository).execute(null);
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+
+		new ReleaseStartOperation(gfRepo, MY_RELEASE).execute(null);
+		RevCommit next = getPreviousCommit(repository, 1);
+		ReleaseFinishOperation releaseFinishOperation = new ReleaseFinishOperation(
+				gfRepo);
+		releaseFinishOperation.createTag(null, next, MY_RELEASE, "irrelevant");
+
+		try {
+			releaseFinishOperation.execute(null);
+			fail();
+		} catch (CoreException e) {
+			assertFalse(e.getStatus().isOK());
+		}
+	}
+

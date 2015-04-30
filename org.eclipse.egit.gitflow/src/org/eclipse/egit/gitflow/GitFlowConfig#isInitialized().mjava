@@ -1,0 +1,10 @@
+	/**
+	 * @return git init done?
+	 * @throws IOException
+	 */
+	public boolean isInitialized() throws IOException {
+		StoredConfig config = repository.getConfig();
+		Set<String> sections = config.getSections();
+		return sections.contains(GITFLOW_SECTION);
+	}
+

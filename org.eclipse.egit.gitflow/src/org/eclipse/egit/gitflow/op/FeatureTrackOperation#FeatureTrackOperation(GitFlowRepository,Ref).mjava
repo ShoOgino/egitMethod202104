@@ -1,0 +1,12 @@
+	/**
+	 * Track given ref, referencing a feature branch.
+	 *
+	 * @param repository
+	 * @param ref
+	 */
+	public FeatureTrackOperation(GitFlowRepository repository, Ref ref) {
+		this(repository, ref, ref.getName().substring(
+				(REMOTE_ORIGIN_FEATURE_PREFIX + repository.getConfig()
+						.getFeaturePrefix()).length()));
+	}
+

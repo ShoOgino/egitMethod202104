@@ -1,0 +1,7 @@
+	@Override
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		String branchName = repository.getConfig().getHotfixBranchName(versionName);
+
+		start(monitor, branchName, repository.findHead(repository.getConfig().getMaster()));
+	}
+

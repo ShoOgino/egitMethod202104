@@ -1,0 +1,5 @@
+	private String getPrefix(Repository repository, String prefixName) {
+		StoredConfig config = repository.getConfig();
+		return config.getString(GITFLOW_SECTION, PREFIX_SECTION, prefixName);
+	}
+

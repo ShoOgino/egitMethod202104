@@ -1,0 +1,14 @@
+	@Test
+	public void testFeatureCheckout() throws Exception {
+		Repository repository = testRepository.getRepository();
+		GitFlowRepository gfRepo = init("testFeatureCheckout\n\nfirst commit\n");
+
+		new FeatureStartOperation(gfRepo, MY_FEATURE).execute(null);
+		new BranchOperation(repository, gfRepo.getConfig().getDevelop()).execute(null);
+
+		new FeatureCheckoutOperation(gfRepo, MY_FEATURE).execute(null);
+
+		assertEquals(gfRepo.getConfig().getFullFeatureBranchName(MY_FEATURE),
+				repository.getFullBranch());
+	}
+

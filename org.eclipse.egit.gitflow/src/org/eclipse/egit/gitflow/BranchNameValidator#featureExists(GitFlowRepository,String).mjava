@@ -1,0 +1,12 @@
+	/**
+	 * @param repository
+	 * @param featureName
+	 * @return Whether featureName corresponds to existing branch.
+	 * @throws CoreException
+	 */
+	public static boolean featureExists(GitFlowRepository repository,
+			String featureName) throws CoreException {
+		return branchExists(repository,
+				repository.getConfig().getFullFeatureBranchName(featureName));
+	}
+

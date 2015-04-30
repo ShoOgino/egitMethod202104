@@ -1,0 +1,8 @@
+	protected RevCommit addFileAndCommit(String fileName, String commitMessage)
+			throws Exception, UnsupportedEncodingException {
+		IFile file = project.createFile(fileName,
+				"Hello, world".getBytes("UTF-8"));
+		return testRepository.addAndCommit(project.project,
+				new File(file.getLocationURI()), commitMessage);
+	}
+

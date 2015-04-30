@@ -1,0 +1,11 @@
+	private RevCommit getPreviousCommit(Repository repository, int count)
+			throws GitAPIException, NoHeadException {
+		Iterable<RevCommit> logs = Git.wrap(repository).log().call();
+		Iterator<RevCommit> i = logs.iterator();
+		for (int j = 0; j < count; j++) {
+			i.next();
+		}
+		RevCommit next = i.next();
+		return next;
+	}
+

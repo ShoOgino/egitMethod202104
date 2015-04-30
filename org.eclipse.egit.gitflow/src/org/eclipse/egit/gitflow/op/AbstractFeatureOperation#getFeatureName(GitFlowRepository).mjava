@@ -1,0 +1,18 @@
+	/**
+	 * @param repository
+	 * @return current feature branch name
+	 * @throws WrongGitFlowStateException
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	protected static String getFeatureName(GitFlowRepository repository)
+			throws WrongGitFlowStateException, CoreException, IOException {
+		if (!repository.isFeature()) {
+			throw new WrongGitFlowStateException(
+					CoreText.AbstractFeatureOperation_notOnAFeautreBranch);
+		}
+		String currentBranch = repository.getRepository().getBranch();
+		return currentBranch.substring(repository.getConfig()
+				.getFeaturePrefix().length());
+	}
+

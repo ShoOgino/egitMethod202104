@@ -1,0 +1,13 @@
+	@Test
+	public void testReleaseExists() throws Exception {
+		testRepository
+				.createInitialCommit("testInitOperation\n\nfirst commit\n");
+
+		Repository repository = testRepository.getRepository();
+		new InitOperation(repository).execute(null);
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+		new ReleaseStartOperation(gfRepo, MY_RELEASE).execute(null);
+
+		assertTrue(releaseExists(gfRepo, MY_RELEASE));
+	}
+

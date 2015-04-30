@@ -1,0 +1,9 @@
+	protected void createTag(RevCommit head, String name, String message,
+			Repository repository) throws CoreException {
+		TagBuilder tag = new TagBuilder();
+		tag.setTag(name);
+		tag.setMessage(message);
+		tag.setObjectId(head);
+		new TagOperation(repository, tag, false).execute(null);
+	}
+

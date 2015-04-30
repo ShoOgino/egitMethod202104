@@ -1,0 +1,8 @@
+	/**
+	 * @return branch name has name "master"?
+	 * @throws IOException
+	 */
+	public boolean isMaster() throws IOException {
+		return repository.getBranch().equals(getConfig().getMaster());
+	}
+

@@ -1,0 +1,10 @@
+	/**
+	 * @param featureName
+	 * @return Upstream branch name
+	 */
+	public String getUpstreamBranchName(String featureName) {
+		StoredConfig config = repository.getConfig();
+		return config.getString(BRANCH_SECTION,
+				getFeatureBranchName(featureName), MERGE_KEY);
+	}
+

@@ -1,0 +1,19 @@
+	/**
+	 * @param tagName
+	 * @return commit tag tagName points to
+	 * @throws MissingObjectException
+	 * @throws IncorrectObjectTypeException
+	 * @throws IOException
+	 */
+	public RevCommit findCommitForTag(String tagName)
+			throws MissingObjectException, IncorrectObjectTypeException,
+			IOException {
+		try (RevWalk revWalk = new RevWalk(repository)) {
+			Ref tagRef = repository.getRef(R_TAGS + tagName);
+			if (tagRef == null) {
+				return null;
+			}
+			return revWalk.parseCommit(tagRef.getObjectId());
+		}
+	}
+

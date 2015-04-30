@@ -1,0 +1,10 @@
+	protected void assertCommitArrivedAtRemote(RevCommit branchCommit,
+			Repository remote) throws CoreException {
+		GitFlowRepository gfRepo = new GitFlowRepository(remote);
+		BranchOperation checkoutOperation = new BranchOperation(remote,
+				gfRepo.getConfig().getFullFeatureBranchName(MY_FEATURE));
+		checkoutOperation.execute(null);
+		RevCommit developHead = findHead(remote);
+		assertEquals(branchCommit, developHead);
+	}
+

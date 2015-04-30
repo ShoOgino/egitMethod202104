@@ -1,0 +1,17 @@
+	/**
+	 * @param monitor
+	 * @param head
+	 * @param name
+	 * @param message
+	 * @throws CoreException
+	 */
+	protected void createTag(IProgressMonitor monitor, RevCommit head,
+			String name, String message) throws CoreException {
+		TagBuilder tag = new TagBuilder();
+		tag.setTag(name);
+		tag.setMessage(message);
+		tag.setObjectId(head);
+		new TagOperation(repository.getRepository(), tag, false)
+				.execute(monitor);
+	}
+

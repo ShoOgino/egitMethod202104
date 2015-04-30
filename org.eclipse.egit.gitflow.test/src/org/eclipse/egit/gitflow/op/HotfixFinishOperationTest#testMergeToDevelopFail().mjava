@@ -1,0 +1,56 @@
+	@Test
+	public void testMergeToDevelopFail() throws Exception {
+		testRepository
+				.createInitialCommit("testMergeToDevelopFail\n\nfirst commit\n");
+
+		Repository repository = testRepository.getRepository();
+		new InitOperation(repository).execute(null);
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+
+		// setup something we can modify later
+		File file = testRepository.createFile(project.getProject(),
+				"folder1/file1.txt");
+
+		new ReleaseStartOperation(gfRepo, MY_RELEASE).execute(null);
+
+		testRepository.appendContentAndCommit(project.getProject(), file,
+				"Hello Release", "Release Commit");
+
+		new ReleaseFinishOperation(gfRepo).execute(null);
+
+		new HotfixStartOperation(gfRepo, MY_HOTFIX).execute(null);
+		// modify on first branch
+		RevCommit hotfixCommit = testRepository.appendContentAndCommit(
+				project.getProject(), file, "Hello Hotfix", "Hotfix Commit");
+		new BranchOperation(repository, gfRepo.getConfig().getDevelop()).execute(null);
+		assertEquals(gfRepo.getConfig().getDevelopFull(), repository.getFullBranch());
+
+		// modify on second branch
+		RevCommit developCommit = testRepository.appendContentAndCommit(
+				project.getProject(), file, "Hello Develop", "Develop Commit");
+
+		String branchName = gfRepo.getConfig().getHotfixBranchName(MY_HOTFIX);
+		new BranchOperation(repository, branchName).execute(null);
+		HotfixFinishOperation hotfixFinishOperation = new HotfixFinishOperation(
+				gfRepo);
+		hotfixFinishOperation.execute(null);
+
+		// tag not created?
+		assertNotEquals(hotfixCommit, gfRepo.findCommitForTag(MY_HOTFIX));
+
+		// branch not removed?
+		assertNotEquals(findBranch(repository, branchName), null);
+
+		// not merged on develop => conflict
+		RevCommit developHead = gfRepo.findHead(DEVELOP);
+		assertEquals(developCommit, developHead);
+		assertEquals(MergeResult.MergeStatus.CONFLICTING, hotfixFinishOperation
+				.getOperationResult().getMergeStatus());
+
+		// merged on master
+		RevCommit masterHead = gfRepo.findHead(MY_MASTER);
+		assertEquals(hotfixCommit, masterHead);
+
+		assertEquals(gfRepo.getConfig().getDevelopFull(), repository.getFullBranch());
+	}
+

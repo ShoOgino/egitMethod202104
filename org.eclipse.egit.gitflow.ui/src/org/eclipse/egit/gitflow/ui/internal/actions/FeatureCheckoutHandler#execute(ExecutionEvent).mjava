@@ -1,0 +1,49 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+		Repository repository = gfRepo.getRepository();
+
+		final List<Ref> refs = gfRepo.getFeatureBranches();
+
+		AbstractGitFlowBranchSelectionDialog<Ref> dialog = new AbstractGitFlowBranchSelectionDialog<Ref>(
+				HandlerUtil.getActiveShell(event), refs,
+				UIText.FeatureCheckoutHandler_selectFeature,
+				UIText.FeatureCheckoutHandler_localFeatures) {
+			@Override
+			protected String getPrefix() {
+				return R_HEADS + gfRepo.getConfig().getFeaturePrefix();
+			}
+		};
+		if (dialog.open() != Window.OK) {
+			return null;
+		}
+		final Ref ref = dialog.getSelectedNode();
+
+		try {
+			String featureName = gfRepo.getFeatureBranchName(ref);
+			// TODO: consider using BranchOperationUI because checkout can take
+			// a long time on large repositories
+			FeatureCheckoutOperation checkoutOperation = new FeatureCheckoutOperation(
+					gfRepo, featureName);
+			JobUtil.scheduleUserWorkspaceJob(checkoutOperation,
+					UIText.FeatureCheckoutHandler_checkingOutFeature,
+					JobFamilies.GITFLOW_FAMILY);
+			CheckoutResult result = checkoutOperation.getResult();
+			if (!CheckoutResult.Status.OK.equals(result.getStatus())) {
+				Shell shell = HandlerUtil.getActiveShell(event);
+				if (!handleUncommittedFiles(gfRepo.getRepository(), shell,
+						repository.getWorkTree().getName())) {
+					return Status.CANCEL_STATUS;
+				} else {
+					JobUtil.scheduleUserWorkspaceJob(checkoutOperation,
+							UIText.FeatureCheckoutHandler_checkingOutFeature,
+							JobFamilies.GITFLOW_FAMILY);
+				}
+			}
+		} catch (GitAPIException e) {
+			throw new RuntimeException(e);
+		}
+
+		return null;
+	}
+

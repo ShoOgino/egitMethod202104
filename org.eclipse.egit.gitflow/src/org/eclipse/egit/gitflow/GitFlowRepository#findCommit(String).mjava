@@ -1,0 +1,16 @@
+	/**
+	 * @param sha1
+	 * @return Commit for SHA1
+	 */
+	public RevCommit findCommit(String sha1) {
+		try (RevWalk walk = new RevWalk(repository)) {
+			try {
+				ObjectId head = repository.resolve(sha1);
+				return walk.parseCommit(head);
+			} catch (RevisionSyntaxException | IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+	}
+

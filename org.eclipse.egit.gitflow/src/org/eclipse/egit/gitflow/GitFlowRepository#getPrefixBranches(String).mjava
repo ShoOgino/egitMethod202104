@@ -1,0 +1,16 @@
+	private List<Ref> getPrefixBranches(String prefix) {
+		try {
+			List<Ref> branches = Git.wrap(repository).branchList().call();
+			List<Ref> prefixBranches = new ArrayList<Ref>();
+			for (Ref ref : branches) {
+				if (ref.getName().startsWith(prefix)) {
+					prefixBranches.add(ref);
+				}
+			}
+
+			return prefixBranches;
+		} catch (GitAPIException e) {
+			throw new RuntimeException(e);
+		}
+	}
+

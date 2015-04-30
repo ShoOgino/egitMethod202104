@@ -1,0 +1,7 @@
+	/**
+	 * @return git flow feature branches
+	 */
+	public List<Ref> getFeatureBranches() {
+		return getPrefixBranches(R_HEADS + getConfig().getFeaturePrefix());
+	}
+

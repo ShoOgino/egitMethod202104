@@ -1,0 +1,19 @@
+	@SuppressWarnings("unchecked")
+	@Override
+	public Object getAdapter(Object adaptableObject, Class adapterType) {
+		Repository repository = null;
+		if (adaptableObject instanceof IResource) {
+			IResource resource = (IResource) adaptableObject;
+			RepositoryMapping repositoryMapping = RepositoryMapping
+					.getMapping(resource.getProject());
+			repository = repositoryMapping.getRepository();
+		} else if (adaptableObject instanceof PlatformObject) {
+			PlatformObject platformObject = (PlatformObject) adaptableObject;
+			repository = Utils.getAdapter(platformObject, Repository.class);
+		} else {
+			throw new IllegalStateException();
+		}
+
+		return repository;
+	}
+

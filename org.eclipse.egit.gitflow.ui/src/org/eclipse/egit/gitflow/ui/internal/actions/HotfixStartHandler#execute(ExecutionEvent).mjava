@@ -1,0 +1,25 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+
+		InputDialog inputDialog = new InputDialog(
+				HandlerUtil.getActiveShell(event),
+				UIText.HotfixStartHandler_provideHotfixName,
+				UIText.HotfixStartHandler_pleaseProvideANameForTheNewHotfix,
+				"", //$NON-NLS-1$
+				new HotfixNameValidator(gfRepo));
+
+		if (inputDialog.open() != Window.OK) {
+			return null;
+		}
+
+		final String hotfixName = inputDialog.getValue();
+		HotfixStartOperation hotfixStartOperation = new HotfixStartOperation(
+				gfRepo, hotfixName);
+		JobUtil.scheduleUserWorkspaceJob(hotfixStartOperation,
+				UIText.HotfixStartHandler_startingNewHotfix,
+				JobFamilies.GITFLOW_FAMILY);
+
+		return null;
+	}
+

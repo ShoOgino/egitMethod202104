@@ -1,0 +1,10 @@
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == OK) {
+			selected = ((IStructuredSelection) branchesList.getSelection())
+					.toList();
+		}
+		super.buttonPressed(buttonId);
+	}
+

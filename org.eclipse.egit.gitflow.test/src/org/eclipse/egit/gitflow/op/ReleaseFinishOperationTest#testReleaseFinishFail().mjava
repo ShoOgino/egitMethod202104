@@ -1,0 +1,20 @@
+	@Test
+	public void testReleaseFinishFail() throws Exception {
+		testRepository
+				.createInitialCommit("testReleaseFinishFail\n\nfirst commit\n");
+
+		Repository repository = testRepository.getRepository();
+		new InitOperation(repository).execute(null);
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+
+		new ReleaseStartOperation(gfRepo, MY_RELEASE).execute(null);
+		new BranchOperation(repository, gfRepo.getConfig().getDevelop()).execute(null);
+
+		try {
+			new ReleaseFinishOperation(gfRepo).execute(null);
+			fail();
+		} catch (WrongGitFlowStateException e) {
+			// success
+		}
+	}
+

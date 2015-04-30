@@ -1,0 +1,12 @@
+	/**
+	 * @param repository
+	 * @param hotfixName
+	 * @return Whether hotfixName corresponds to existing branch.
+	 * @throws CoreException
+	 */
+	public static boolean hotfixExists(GitFlowRepository repository,
+			String hotfixName) throws CoreException {
+		return branchExists(repository,
+				repository.getConfig().getFullHotfixBranchName(hotfixName));
+	}
+
