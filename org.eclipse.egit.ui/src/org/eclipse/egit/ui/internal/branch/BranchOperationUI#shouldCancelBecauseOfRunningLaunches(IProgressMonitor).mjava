@@ -13,6 +13,7 @@
 		if (launchConfiguration != null) {
 			final boolean[] dialogResult = new boolean[1];
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					dialogResult[0] = showContinueDialogInUI(store,
 							launchConfiguration);

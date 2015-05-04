@@ -1,0 +1,45 @@
+	@Test
+	public void testAddLocalAndRemote() throws Exception {
+		GitResourceVariantTreeProvider provider = createTreeProviderWithAdditions();
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				provider);
+
+		final IDiff diff1 = subscriber.getDiff(iFile1);
+		assertTrue(diff1 instanceof IThreeWayDiff);
+		assertEquals(IDiff.ADD, diff1.getKind());
+		assertEquals(IThreeWayDiff.OUTGOING,
+				((IThreeWayDiff) diff1).getDirection());
+		final IDiff localDiff1 = ((IThreeWayDiff) diff1).getLocalChange();
+		final IDiff remoteDiff1 = ((IThreeWayDiff) diff1).getRemoteChange();
+		assertTrue(localDiff1 instanceof ResourceDiff);
+		assertNull(remoteDiff1);
+		final IFileRevision ancestorState1 = ((ResourceDiff) localDiff1)
+				.getBeforeState();
+		final IFileRevision localState1 = ((ResourceDiff) localDiff1)
+				.getAfterState();
+		assertTrue(iFile1.getName().equals(localState1.getName()));
+		assertNull(ancestorState1);
+		final IStorage localStorage1 = localState1
+				.getStorage(new NullProgressMonitor());
+		assertContentEquals(localStorage1, INITIAL_CONTENT_1);
+
+		final IDiff diff2 = subscriber.getDiff(iFile2);
+		assertTrue(diff2 instanceof IThreeWayDiff);
+		assertEquals(IDiff.ADD, diff2.getKind());
+		assertEquals(IThreeWayDiff.INCOMING,
+				((IThreeWayDiff) diff2).getDirection());
+		final IDiff localDiff2 = ((IThreeWayDiff) diff2).getLocalChange();
+		final IDiff remoteDiff2 = ((IThreeWayDiff) diff2).getRemoteChange();
+		assertTrue(remoteDiff2 instanceof ResourceDiff);
+		assertNull(localDiff2);
+		final IFileRevision ancestorState2 = ((ResourceDiff) remoteDiff2)
+				.getBeforeState();
+		final IFileRevision remoteState2 = ((ResourceDiff) remoteDiff2)
+				.getAfterState();
+		assertNull(ancestorState2);
+		assertTrue(iFile2.getName().equals(remoteState2.getName()));
+		final IStorage remoteStorage2 = remoteState2
+				.getStorage(new NullProgressMonitor());
+		assertContentEquals(remoteStorage2, INITIAL_CONTENT_2);
+	}
+

@@ -16,6 +16,7 @@
 		selectAll = new Button(buttonsComposite, SWT.PUSH);
 		selectAll.setText(UIText.WizardProjectsImportPage_selectAll);
 		selectAll.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectAllNewProjects();
 				enableSelectAllButtons();
@@ -28,6 +29,7 @@
 		deselectAll = new Button(buttonsComposite, SWT.PUSH);
 		deselectAll.setText(UIText.WizardProjectsImportPage_deselectAll);
 		deselectAll.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				for (TreeItem item : projectsList.getTree().getItems())
 					projectsList.setChecked(item.getData(), false);

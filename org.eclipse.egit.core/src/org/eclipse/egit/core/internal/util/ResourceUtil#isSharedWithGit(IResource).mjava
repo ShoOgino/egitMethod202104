@@ -1,0 +1,5 @@
+	private static boolean isSharedWithGit(IResource resource) {
+		return RepositoryProvider.getProvider(resource.getProject(),
+				GitProvider.ID) != null;
+	}
+

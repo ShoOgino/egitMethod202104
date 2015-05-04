@@ -54,6 +54,7 @@
 					setRefSpec(oldSpec, newSpec);
 					tableViewer.getControl().getDisplay().asyncExec(
 							new Runnable() {
+								@Override
 								public void run() {
 									tableViewer.editElement(newSpec,
 											srcColumnIndex);

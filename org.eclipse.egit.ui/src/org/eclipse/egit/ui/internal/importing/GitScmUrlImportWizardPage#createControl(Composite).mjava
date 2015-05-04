@@ -1,6 +1,7 @@
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		Composite comp = SWTUtils.createHVFillComposite(parent, SWTUtils.MARGINS_NONE, 1);
 		Composite group = SWTUtils.createHFillComposite(comp, SWTUtils.MARGINS_NONE, 1);
@@ -10,6 +11,7 @@
 		useMaster = SWTUtils.createRadioButton(group,
 				UIText.GitScmUrlImportWizardPage_importMaster);
 		SelectionListener listener = new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				bundlesViewer.refresh(true);
 			}

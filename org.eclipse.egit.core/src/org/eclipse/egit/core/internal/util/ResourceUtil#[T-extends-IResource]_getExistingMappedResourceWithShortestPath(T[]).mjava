@@ -3,12 +3,12 @@
 		int shortestPathSegmentCount = Integer.MAX_VALUE;
 		T shortestPath = null;
 		for (T resource : resources) {
-			if (!resource.exists())
+			if (!resource.exists()) {
 				continue;
-			RepositoryProvider provider = RepositoryProvider.getProvider(
-					resource.getProject(), GitProvider.ID);
-			if (provider == null)
+			}
+			if (!isSharedWithGit(resource)) {
 				continue;
+			}
 			IPath fullPath = resource.getFullPath();
 			int segmentCount = fullPath.segmentCount();
 			if (segmentCount < shortestPathSegmentCount) {

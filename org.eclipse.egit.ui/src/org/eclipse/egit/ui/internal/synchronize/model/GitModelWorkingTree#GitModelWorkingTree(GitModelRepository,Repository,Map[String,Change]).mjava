@@ -9,6 +9,7 @@
 	public GitModelWorkingTree(GitModelRepository parent, Repository repo,
 			Map<String, Change> cache) {
 		super(parent, repo, cache, new FileModelFactory() {
+			@Override
 			public GitModelBlob createFileModel(
 					GitModelObjectContainer objParent, Repository nestedRepo,
 					Change change, IPath path) {
@@ -16,6 +17,7 @@
 						path);
 			}
 
+			@Override
 			public boolean isWorkingTree() {
 				return true;
 			}

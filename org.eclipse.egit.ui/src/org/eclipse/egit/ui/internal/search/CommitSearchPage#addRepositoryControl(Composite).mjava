@@ -17,6 +17,7 @@
 				.setInput(ResourcesPlugin.getWorkspace().getRoot());
 		this.repositoryViewer.addCheckStateListener(new ICheckStateListener() {
 
+			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				updateOKStatus();
 				repositoryGroup.setText(getRepositoryText());
@@ -35,6 +36,7 @@
 		checkItem.setImage(checkImage);
 		checkItem.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				repositoryViewer.setAllChecked(true);
 				repositoryGroup.setText(getRepositoryText());
@@ -49,6 +51,7 @@
 		uncheckItem.setImage(uncheckImage);
 		uncheckItem.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				repositoryViewer.setAllChecked(false);
 				repositoryGroup.setText(getRepositoryText());

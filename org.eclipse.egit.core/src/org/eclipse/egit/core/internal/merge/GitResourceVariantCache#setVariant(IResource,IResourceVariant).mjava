@@ -1,0 +1,25 @@
+	/**
+	 * Sets the variant associated with the given resource in this cache.
+	 *
+	 * @param resource
+	 *            The resource for which we need to cache a variant.
+	 * @param variant
+	 *            Variant for the resource.
+	 */
+	public void setVariant(IResource resource, IResourceVariant variant) {
+		cache.put(resource, variant);
+
+		IProject project = resource.getProject();
+		roots.add(project);
+
+		members.put(resource, new LinkedHashSet<IResource>());
+
+		final IResource parent = resource.getParent();
+		Set<IResource> parentMembers = members.get(parent);
+		if (parentMembers == null) {
+			parentMembers = new LinkedHashSet<IResource>();
+			members.put(parent, parentMembers);
+		}
+		parentMembers.add(resource);
+	}
+

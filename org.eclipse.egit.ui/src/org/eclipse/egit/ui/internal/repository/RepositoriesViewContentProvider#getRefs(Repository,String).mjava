@@ -5,6 +5,7 @@
 			branchRefs.put(repo, allRefs);
 			if (refsChangedListeners.get(repo) == null) {
 				RefsChangedListener listener = new RefsChangedListener() {
+					@Override
 					public void onRefsChanged(RefsChangedEvent event) {
 						synchronized (RepositoriesViewContentProvider.this) {
 							branchRefs.remove(repo);

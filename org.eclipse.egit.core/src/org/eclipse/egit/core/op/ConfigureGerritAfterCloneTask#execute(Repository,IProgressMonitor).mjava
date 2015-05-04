@@ -1,7 +1,7 @@
 	public void execute(Repository repository, IProgressMonitor monitor)
 			throws CoreException {
 		try {
-			if (isGerrit()) {
+			if (isGerrit(repository)) {
 				Activator.logInfo(uri
 						+ " was detected to be hosted by a Gerrit server"); //$NON-NLS-1$
 				configureGerrit(repository);

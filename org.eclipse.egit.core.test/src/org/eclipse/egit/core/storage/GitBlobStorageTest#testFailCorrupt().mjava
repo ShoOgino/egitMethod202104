@@ -1,0 +1,13 @@
+	@Test
+	public void testFailCorrupt() throws Exception {
+		try {
+			createFileCorruptShort(repository, project.getProject(), "file", "data");
+			GitBlobStorage blobStorage = new GitBlobStorage(repository, "file", ObjectId.fromString("6320cd248dd8aeaab759d5871f8781b5c0505172"));
+			assertEquals("file", blobStorage.getName());
+			blobStorage.getContents();
+			fail("We should not be able to read this blob");
+		} catch (CoreException e) {
+			assertEquals("IO error reading Git blob 6320cd248dd8aeaab759d5871f8781b5c0505172 with path file", e.getMessage());
+		}
+	}
+

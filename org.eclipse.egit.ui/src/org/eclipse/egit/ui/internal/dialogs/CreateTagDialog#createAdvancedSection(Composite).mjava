@@ -26,6 +26,7 @@
 
 		advanced.setClient(advancedComposite);
 		advanced.addExpansionListener(new ExpansionAdapter() {
+			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				// fill the Combo lazily to improve UI responsiveness
 				if (((Boolean) e.data).booleanValue()
@@ -35,6 +36,7 @@
 						PlatformUI.getWorkbench().getProgressService()
 								.busyCursorWhile(new IRunnableWithProgress() {
 
+									@Override
 									public void run(IProgressMonitor monitor)
 											throws InvocationTargetException,
 											InterruptedException {

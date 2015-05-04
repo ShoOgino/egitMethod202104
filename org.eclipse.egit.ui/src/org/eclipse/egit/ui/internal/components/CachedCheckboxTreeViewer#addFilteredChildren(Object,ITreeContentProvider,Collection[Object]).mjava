@@ -12,8 +12,8 @@
 			result.add(element);
 		} else {
 			Object[] visibleChildren = getFilteredChildren(element);
-			for (int i = 0; i < visibleChildren.length; i++) {
-				addFilteredChildren(visibleChildren[i], contentProvider, result);
+			for (Object visibleChild : visibleChildren) {
+				addFilteredChildren(visibleChild, contentProvider, result);
 			}
 		}
 	}

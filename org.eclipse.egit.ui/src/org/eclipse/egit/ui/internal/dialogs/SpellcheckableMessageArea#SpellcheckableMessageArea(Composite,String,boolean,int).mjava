@@ -32,9 +32,11 @@
 
 		configureHardWrap();
 		final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
+			@Override
 			public void propertyChange(PropertyChangeEvent event) {
 				if (UIPreferences.COMMIT_DIALOG_HARD_WRAP_MESSAGE.equals(event.getProperty())) {
 					getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							configureHardWrap();
 							if (brokenBidiPlatformTextWidth != -1) {
@@ -58,10 +60,12 @@
 				EditorsUI
 				.getPreferenceStore()) {
 
+			@Override
 			public int getHyperlinkStateMask(ISourceViewer targetViewer) {
 				return SWT.NONE;
 			}
 
+			@Override
 			protected Map getHyperlinkDetectorTargets(ISourceViewer targetViewer) {
 				return getHyperlinkTargets();
 			}
@@ -80,6 +84,7 @@
 				};
 			}
 
+			@Override
 			public IHyperlinkDetector[] getHyperlinkDetectors(
 					ISourceViewer targetViewer) {
 				return getRegisteredHyperlinkDetectors(sourceViewer);
@@ -92,6 +97,7 @@
 				return super.getReconciler(sourceViewer);
 			}
 
+			@Override
 			public IContentAssistant getContentAssistant(ISourceViewer viewer) {
 				if (!viewer.isEditable())
 					return null;
@@ -113,6 +119,7 @@
 		configureContextMenu();
 
 		getTextWidget().addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent disposeEvent) {
 				support.uninstall();
 				Activator.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);

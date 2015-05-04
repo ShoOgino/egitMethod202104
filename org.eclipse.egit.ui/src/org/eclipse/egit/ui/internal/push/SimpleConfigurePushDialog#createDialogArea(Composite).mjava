@@ -76,6 +76,7 @@
 		});
 
 		commonUriText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				deleteCommonUri
 						.setEnabled(commonUriText.getText().length() > 0);
@@ -89,6 +90,7 @@
 		pushUriArea.setExpanded(!config.getPushURIs().isEmpty());
 		pushUriArea.addExpansionListener(new ExpansionAdapter() {
 
+			@Override
 			public void expansionStateChanged(ExpansionEvent e) {
 				main.layout(true, true);
 				main.getShell().pack();
@@ -156,6 +158,7 @@
 		});
 
 		uriViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				deleteUri.setEnabled(!uriViewer.getSelection().isEmpty());
 				changeUri.setEnabled(((IStructuredSelection) uriViewer
@@ -277,6 +280,7 @@
 		});
 
 		specViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection sel = (IStructuredSelection) specViewer
 						.getSelection();

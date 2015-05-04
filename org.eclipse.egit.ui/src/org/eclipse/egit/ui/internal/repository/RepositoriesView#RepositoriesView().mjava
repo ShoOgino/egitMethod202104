@@ -7,6 +7,7 @@
 				.getRepositoryCache();
 
 		configurationListener = new IPreferenceChangeListener() {
+			@Override
 			public void preferenceChange(PreferenceChangeEvent event) {
 				lastInputChange = System.currentTimeMillis();
 				scheduleRefresh(DEFAULT_REFRESH_DELAY);
@@ -14,6 +15,7 @@
 		};
 
 		myRefsChangedListener = new RefsChangedListener() {
+			@Override
 			public void onRefsChanged(RefsChangedEvent e) {
 				lastRepositoryChange = System.currentTimeMillis();
 				scheduleRefresh(DEFAULT_REFRESH_DELAY);
@@ -21,6 +23,7 @@
 		};
 
 		myIndexChangedListener = new IndexChangedListener() {
+			@Override
 			public void onIndexChanged(IndexChangedEvent event) {
 				lastRepositoryChange = System.currentTimeMillis();
 				scheduleRefresh(DEFAULT_REFRESH_DELAY);
@@ -29,6 +32,7 @@
 		};
 
 		myConfigChangeListener = new ConfigChangedListener() {
+			@Override
 			public void onConfigChanged(ConfigChangedEvent event) {
 				lastRepositoryChange = System.currentTimeMillis();
 				scheduleRefresh(DEFAULT_REFRESH_DELAY);
@@ -36,6 +40,7 @@
 		};
 
 		selectionChangedListener = new ISelectionListener() {
+			@Override
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
 				if (!reactOnSelection)

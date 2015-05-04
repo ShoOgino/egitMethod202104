@@ -1,5 +1,6 @@
 	private void showDetachedHeadWarning() {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				IPreferenceStore store = Activator.getDefault()
 						.getPreferenceStore();

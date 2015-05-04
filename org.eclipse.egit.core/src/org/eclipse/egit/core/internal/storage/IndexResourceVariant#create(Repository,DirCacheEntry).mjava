@@ -1,0 +1,21 @@
+	/**
+	 * Constructs a resource variant corresponding to the given DirCache entry.
+	 *
+	 * @param repository
+	 *            Repository from which this DirCacheEntry was extracted.
+	 * @param entry
+	 *            The DirCacheEntry for which content we need an
+	 *            IResourceVariant.
+	 * @return The created variant.
+	 */
+	public static IndexResourceVariant create(Repository repository,
+			DirCacheEntry entry) {
+		final String path = entry.getPathString();
+		final boolean isContainer = FileMode.TREE.equals(entry.getFileMode());
+		final ObjectId objectId = entry.getObjectId();
+		final int rawMode = entry.getRawMode();
+
+		return new IndexResourceVariant(repository, path, isContainer,
+				objectId, rawMode);
+	}
+

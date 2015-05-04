@@ -14,6 +14,7 @@
 
 		uriText.setLayoutData(createFieldGridData());
 		uriText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				updateFields(uriText.getText());
 			}
@@ -68,6 +69,7 @@
 		hostText = new Text(g, SWT.BORDER);
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(hostText);
 		hostText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				setURI(uri.setHost(nullString(hostText.getText())));
 			}
@@ -77,6 +79,7 @@
 		pathText = new Text(g, SWT.BORDER);
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(pathText);
 		pathText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				setURI(uri.setPath(nullString(pathText.getText())));
 			}

@@ -9,6 +9,7 @@
 		new Label(uriGroup, SWT.NULL).setText(UIText.GerritConfigurationPage_UserLabel);
 		user = SWTUtils.createText(uriGroup);
 		user.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				eventDepth++;
 				try {
@@ -26,6 +27,7 @@
 		});
 
 		uriText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				eventDepth++;
 				try {
@@ -47,6 +49,7 @@
 			scheme.add(p.getDefaultScheme());
 		}
 		scheme.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				final int idx = scheme.getSelectionIndex();
 				pushURI = pushURI.setScheme(scheme.getItem(idx));

@@ -5,6 +5,7 @@
 		control.setMenu(menuMgr.createContextMenu(control));
 		menuMgr.addMenuListener(new IMenuListener() {
 
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				final IStructuredSelection selection = (IStructuredSelection) treeViewer
 						.getSelection();

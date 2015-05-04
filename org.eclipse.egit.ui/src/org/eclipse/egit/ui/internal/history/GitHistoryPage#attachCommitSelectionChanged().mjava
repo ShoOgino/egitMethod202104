@@ -1,5 +1,6 @@
 	private void attachCommitSelectionChanged() {
 		graph.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				final ISelection s = event.getSelection();
 				if (s.isEmpty() || !(s instanceof IStructuredSelection)) {
@@ -37,11 +38,13 @@
 		});
 		commentViewer
 				.addCommitNavigationListener(new CommitNavigationListener() {
+					@Override
 					public void showCommit(final RevCommit c) {
 						graph.selectCommit(c);
 					}
 				});
 		findToolbar.addSelectionListener(new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				graph.selectCommit((RevCommit) event.data);
 			}

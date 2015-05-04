@@ -1,0 +1,24 @@
+	@Test
+	public void testSubscriber() throws Exception {
+		GitResourceVariantTreeProvider provider = createTreeProvider();
+		GitResourceVariantTreeSubscriber subscriber = new GitResourceVariantTreeSubscriber(
+				provider);
+
+		assertTrue(subscriber.isSupervised(iProject));
+		assertTrue(subscriber.isSupervised(iFile1));
+		assertTrue(subscriber.isSupervised(iFile2));
+
+		assertSame(provider.getBaseTree(), subscriber.getBaseTree());
+		assertSame(provider.getRemoteTree(), subscriber.getRemoteTree());
+		assertSame(provider.getSourceTree(), subscriber.getSourceTree());
+
+		assertNotNull(subscriber.getDiff(iProject));
+		assertNotNull(subscriber.getDiff(iFile1));
+		assertNotNull(subscriber.getDiff(iFile2));
+
+		assertNotNull(subscriber.getSyncInfo(iProject));
+		assertNotNull(subscriber.getSyncInfo(iFile1));
+		assertNotNull(subscriber.getSyncInfo(iFile2));
+
+	}
+

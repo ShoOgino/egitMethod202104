@@ -2,6 +2,7 @@
 		// do this in the UI thread as it results in a
 		// refresh() on the history page
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				Activator
 						.getDefault()

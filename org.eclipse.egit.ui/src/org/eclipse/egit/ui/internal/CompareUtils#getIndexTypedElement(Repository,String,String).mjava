@@ -4,6 +4,7 @@
 		final EditableRevision next = new EditableRevision(nextFile, encoding);
 
 		IContentChangeListener listener = new IContentChangeListener() {
+			@Override
 			public void contentChanged(IContentChangeNotifier source) {
 				final byte[] newContent = next.getModifiedContent();
 				setIndexEntryContents(repository, gitPath, newContent);

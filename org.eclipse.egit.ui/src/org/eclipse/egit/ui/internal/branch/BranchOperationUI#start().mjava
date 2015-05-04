@@ -38,6 +38,7 @@
 						final AtomicReference<IMemento> memento = new AtomicReference<IMemento>();
 						bop.addPreExecuteTask(new PreExecuteTask() {
 
+							@Override
 							public void preExecute(Repository pRepo,
 									IProgressMonitor pMonitor)
 									throws CoreException {
@@ -48,6 +49,7 @@
 						});
 						bop.addPostExecuteTask(new PostExecuteTask() {
 
+							@Override
 							public void postExecute(Repository pRepo,
 									IProgressMonitor pMonitor)
 									throws CoreException {

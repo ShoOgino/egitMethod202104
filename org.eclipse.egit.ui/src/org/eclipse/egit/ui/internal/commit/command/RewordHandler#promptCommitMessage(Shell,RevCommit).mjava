@@ -1,6 +1,7 @@
 	private String promptCommitMessage(final Shell shell, RevCommit commit) {
 		final String[] message = { commit.getFullMessage() };
 		shell.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				CommitMessageEditorDialog dialog = new CommitMessageEditorDialog(
 						shell, message[0]);

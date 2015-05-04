@@ -9,6 +9,7 @@
 		}
 		if (repository == null) {
 			asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					clearRepository();
 				}
@@ -24,6 +25,7 @@
 
 		asyncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				if (isDisposed()) {
 					return;
@@ -48,6 +50,7 @@
 					refsChangedListener = repository.getListenerList()
 							.addRefsChangedListener(new RefsChangedListener() {
 
+								@Override
 								public void onRefsChanged(RefsChangedEvent event) {
 									updateRebaseButtonVisibility(repository
 											.getRepositoryState().isRebasing());

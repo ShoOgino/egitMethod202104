@@ -1,3 +1,4 @@
+	@Override
 	public void onRefsChanged(final RefsChangedEvent e) {
 		if (input == null || e.getRepository() != input.getRepository())
 			return;
@@ -8,6 +9,7 @@
 		synchronized (this) {
 			if (refschangedRunnable == null) {
 				refschangedRunnable = new Runnable() {
+					@Override
 					public void run() {
 						if (!getControl().isDisposed()) {
 							if (GitTraceLocation.HISTORYVIEW.isActive())

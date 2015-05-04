@@ -3,6 +3,7 @@
 	 *
 	 * @return whether it is okay to close the preference page
 	 */
+	@Override
 	public boolean performOk() {
 		IPreferenceStore store = getPreferenceStore();
 		final boolean okToClose = performOk(store);

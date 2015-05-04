@@ -1,0 +1,9 @@
+	@Test
+	public void commitFormat_simple() {
+		String commitMessage = "Simple message";
+
+		String formattedMessage = CommitMessageComponent
+				.formatIssuesInCommitMessage(commitMessage);
+		assertEquals(null, formattedMessage);
+	}
+

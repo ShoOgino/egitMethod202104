@@ -9,6 +9,7 @@
 			return;
 
 		graph.getControl().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!graph.getControl().isDisposed() && job == j) {
 					graph.setInput(highlightFlag, list, asArray, input, true);

@@ -1,0 +1,25 @@
+	private ITwoWayDiff getLocalDelta(SyncInfo info) {
+		int direction = SyncInfo.getDirection(info.getKind());
+		if (direction == SyncInfo.OUTGOING || direction == SyncInfo.CONFLICTING) {
+			IResourceVariant ancestor = info.getBase();
+			IResource local = info.getLocal();
+
+			int kind;
+			if (ancestor == null) {
+				kind = IDiff.ADD;
+			} else if (!local.exists()) {
+				kind = IDiff.REMOVE;
+			} else {
+				kind = IDiff.CHANGE;
+			}
+			if (local.getType() == IResource.FILE) {
+				IFileRevision before = asFileState(ancestor);
+				IFileRevision after = getLocalFileRevision((IFile) local);
+				return new ResourceDiff(info.getLocal(), kind, 0, before, after);
+			}
+			// For folders, we don't need file states
+			return new ResourceDiff(info.getLocal(), kind);
+		}
+		return null;
+	}
+

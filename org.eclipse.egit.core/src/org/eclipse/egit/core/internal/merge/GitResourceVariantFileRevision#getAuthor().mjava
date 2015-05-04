@@ -1,0 +1,9 @@
+	@Override
+	public String getAuthor() {
+		final PersonIdent author = getVariant().getCommitId().getAuthorIdent();
+		if (author != null) {
+			return author.getName();
+		}
+		return super.getAuthor();
+	}
+

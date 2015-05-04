@@ -1,10 +1,12 @@
 	private IAction createQuickFixAction(final ICompletionProposal proposal) {
 		return new Action(proposal.getDisplayString()) {
 
+			@Override
 			public void run() {
 				proposal.apply(sourceViewer.getDocument());
 			}
 
+			@Override
 			public ImageDescriptor getImageDescriptor() {
 				Image image = proposal.getImage();
 				if (image != null)

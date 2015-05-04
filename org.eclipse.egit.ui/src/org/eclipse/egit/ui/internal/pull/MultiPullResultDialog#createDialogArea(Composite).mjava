@@ -7,6 +7,7 @@
 		tv.setContentProvider(ArrayContentProvider.getInstance());
 
 		tv.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection sel = (IStructuredSelection) event
 						.getSelection();
@@ -19,6 +20,7 @@
 		});
 
 		tv.addOpenListener(new IOpenListener() {
+			@Override
 			public void open(OpenEvent event) {
 				buttonPressed(DETAIL_BUTTON);
 			}

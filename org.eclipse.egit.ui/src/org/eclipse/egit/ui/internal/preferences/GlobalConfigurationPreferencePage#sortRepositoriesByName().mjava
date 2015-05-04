@@ -1,6 +1,7 @@
 	private void sortRepositoriesByName() {
 		Collections.sort(repositories, new Comparator<Repository>() {
 
+			@Override
 			public int compare(Repository repo1, Repository repo2) {
 				return getName(repo1).compareTo(getName(repo2));
 			}

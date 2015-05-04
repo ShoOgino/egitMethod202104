@@ -1,10 +1,12 @@
 	private static void addListenerToDisableAutoExpandOnCollapse(
 			TreeViewer treeViewer) {
 		treeViewer.addTreeListener(new ITreeViewerListener() {
+			@Override
 			public void treeCollapsed(TreeExpansionEvent event) {
 				disableAutoExpand(event.getTreeViewer());
 			}
 
+			@Override
 			public void treeExpanded(TreeExpansionEvent event) {
 				// Nothing to do
 			}

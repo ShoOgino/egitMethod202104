@@ -1,0 +1,10 @@
+	@Test
+	public void testOk() throws Exception {
+		ObjectId id = createFile(repository, project.getProject(), "file", "data");
+		GitBlobStorage blobStorage = new GitBlobStorage(repository, "p/file", id);
+		assertEquals("file", blobStorage.getName());
+		assertEquals("data", testUtils.slurpAndClose(blobStorage.getContents()));
+		assertEquals(Path.fromPortableString("p/file").toOSString(), blobStorage.getFullPath().toOSString());
+
+	}
+

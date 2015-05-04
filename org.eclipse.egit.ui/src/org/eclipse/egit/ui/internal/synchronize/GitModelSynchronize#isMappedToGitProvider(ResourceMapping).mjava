@@ -9,10 +9,11 @@
 		IProject[] projects = element.getProjects();
 		for (IProject project: projects) {
 			RepositoryProvider provider = RepositoryProvider
-					.getProvider(project);
+					.getProvider(project, GitProvider.ID);
 
-			if (provider != null && provider.getID().equals(GIT_PROVIDER_ID))
+			if (provider != null) {
 				return true;
+			}
 		}
 		return false;
 	}

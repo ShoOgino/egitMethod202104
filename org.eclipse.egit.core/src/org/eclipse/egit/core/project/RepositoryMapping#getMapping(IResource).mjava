@@ -8,23 +8,12 @@
 	 *         GitProvider.
 	 */
 	public static RepositoryMapping getMapping(final IResource resource) {
-		if (isNonWorkspace(resource))
+		if (isNonWorkspace(resource)) {
 			return null;
-
-		if (resource.isLinked(IResource.CHECK_ANCESTORS))
+		}
+		if (resource.isLinked(IResource.CHECK_ANCESTORS)) {
 			return getMapping(resource.getLocation());
-
-		IProject project = resource.getProject();
-		if (project == null)
-			return null;
-
-		final RepositoryProvider rp = RepositoryProvider.getProvider(project);
-		if (!(rp instanceof GitProvider))
-			return null;
-
-		if (((GitProvider)rp).getData() == null)
-			return null;
-
-		return ((GitProvider)rp).getData().getRepositoryMapping(resource);
+		}
+		return getMapping(resource.getProject());
 	}
 

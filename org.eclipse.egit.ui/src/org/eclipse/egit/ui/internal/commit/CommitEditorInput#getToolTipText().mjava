@@ -1,6 +1,7 @@
 	/**
 	 * @see org.eclipse.ui.IEditorInput#getToolTipText()
 	 */
+	@Override
 	public String getToolTipText() {
 		return MessageFormat.format(UIText.CommitEditorInput_ToolTip, commit
 				.getRevCommit().getShortMessage(), commit.getRepositoryName());

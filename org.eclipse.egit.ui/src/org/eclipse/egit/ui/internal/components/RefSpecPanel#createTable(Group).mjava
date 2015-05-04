@@ -19,12 +19,14 @@
 		tableViewer.setInput(specs);
 
 		tableViewer.setComparer(new IElementComparer() {
+			@Override
 			public boolean equals(Object a, Object b) {
 				// need that as viewers are not designed to support 2 equals
 				// object, while we have RefSpec#equals implemented
 				return a == b;
 			}
 
+			@Override
 			public int hashCode(Object element) {
 				return element.hashCode();
 			}

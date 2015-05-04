@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 
 		initializeDialogUnits(parent);
@@ -18,6 +19,7 @@
 		else
 			projectText.addModifyListener(new ModifyListener() {
 
+				@Override
 			public void modifyText(ModifyEvent e) {
 				checkPage();
 			}

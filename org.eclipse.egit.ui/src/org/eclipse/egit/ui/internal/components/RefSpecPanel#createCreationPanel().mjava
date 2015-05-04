@@ -35,6 +35,7 @@
 		creationSrcDecoration = createAssistedDecoratedCombo(creationPanel,
 				getRefsProposalProvider(pushSpecs),
 				new IContentProposalListener() {
+					@Override
 					public void proposalAccepted(IContentProposal proposal) {
 						tryAutoCompleteSrcToDst();
 					}
@@ -43,6 +44,7 @@
 		creationSrcCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false));
 		creationSrcCombo.addTraverseListener(new TraverseListener() {
+			@Override
 			public void keyTraversed(TraverseEvent e) {
 				// SWT.TRAVERSE_RETURN may be also reasonable here, but
 				// it can be confused with RETURN for content proposal
@@ -67,6 +69,7 @@
 		creationDstDecoration = createAssistedDecoratedCombo(creationPanel,
 				getRefsProposalProvider(!pushSpecs),
 				new IContentProposalListener() {
+					@Override
 					public void proposalAccepted(IContentProposal proposal) {
 						tryAutoCompleteDstToSrc();
 					}
@@ -75,6 +78,7 @@
 		creationDstCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false));
 		creationDstCombo.addTraverseListener(new TraverseListener() {
+			@Override
 			public void keyTraversed(TraverseEvent e) {
 				// SWT.TRAVERSE_RETURN may be also reasonable here, but
 				// it can be confused with RETURN for content proposal
@@ -98,6 +102,7 @@
 
 		validateCreationPanel();
 		final ModifyListener validator = new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				validateCreationPanel();
 			}

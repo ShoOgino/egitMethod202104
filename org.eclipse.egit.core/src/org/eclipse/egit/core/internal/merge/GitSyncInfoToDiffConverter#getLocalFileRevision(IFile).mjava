@@ -1,0 +1,22 @@
+	/**
+	 * Returns a file revision from the source tree for this local file.
+	 *
+	 * @param local
+	 *            The local file.
+	 * @return The file revision that should be considered for the local (left)
+	 *         side of a delta
+	 */
+	public IFileRevision getLocalFileRevision(IFile local) {
+		try {
+			return asFileState(variantTreeProvider.getSourceTree()
+					.getResourceVariant(local));
+		} catch (TeamException e) {
+			String error = NLS
+					.bind(CoreText.GitResourceVariantTreeSubscriber_CouldNotFindSourceVariant,
+							local.getName());
+			Activator.logError(error, e);
+			// fall back to the working tree version
+			return new WorkspaceFileRevision(local);
+		}
+	}
+

@@ -51,6 +51,7 @@
 		updateAddPredefinedButton(addTagsButton, Transport.REFSPEC_TAGS);
 
 		addRefSpecTableListener(new SelectionChangeListener() {
+			@Override
 			public void selectionChanged() {
 				updateAddPredefinedButton(addConfiguredButton,
 						predefinedConfigured);

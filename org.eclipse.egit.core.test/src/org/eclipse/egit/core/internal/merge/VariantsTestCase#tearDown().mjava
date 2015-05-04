@@ -1,0 +1,10 @@
+	@After
+	@Override
+	public void tearDown() throws Exception {
+		testRepo.disconnect(iProject);
+		testRepo.dispose();
+		repo = null;
+
+		super.tearDown();
+	}
+

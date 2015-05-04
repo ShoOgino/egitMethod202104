@@ -1,5 +1,6 @@
 	private Action createAddAction(final IStructuredSelection selection) {
 		return new Action(UIText.CommitDialog_AddFileOnDiskToIndex) {
+			@Override
 			public void run() {
 				AddCommand addCommand = new Git(repository).add();
 				for (Iterator<?> it = selection.iterator(); it.hasNext();) {

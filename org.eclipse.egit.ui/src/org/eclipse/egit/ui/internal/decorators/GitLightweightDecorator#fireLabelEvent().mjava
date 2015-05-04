@@ -3,6 +3,7 @@
 				this);
 		// Re-trigger decoration process (in UI thread)
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				fireLabelProviderChanged(event);
 			}

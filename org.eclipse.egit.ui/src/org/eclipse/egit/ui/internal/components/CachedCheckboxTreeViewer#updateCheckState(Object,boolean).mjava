@@ -14,8 +14,8 @@
 			if (contentProvider != null) {
 				Object[] children = contentProvider.getChildren(element);
 				if (children != null && children.length > 0) {
-					for (int i = 0; i < children.length; i++) {
-						updateCheckState(children[i], state);
+					for (Object child : children) {
+						updateCheckState(child, state);
 					}
 				} else {
 					checkState.add(element);
@@ -33,8 +33,8 @@
 			if (contentProvider != null) {
 				Object[] children = contentProvider.getChildren(element);
 				if (children !=null && children.length > 0) {
-					for (int i = 0; i < children.length; i++) {
-						updateCheckState(children[i], state);
+					for (Object child : children) {
+						updateCheckState(child, state);
 					}
 
 				}

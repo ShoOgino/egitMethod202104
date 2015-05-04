@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(4, false));
@@ -35,12 +36,14 @@
 		nameText = new Text(main, SWT.BORDER);
 		// give focus to the nameText if label is activated using the mnemonic
 		nameLabel.addTraverseListener(new TraverseListener() {
+			@Override
 			public void keyTraversed(TraverseEvent e) {
 				nameText.setFocus();
 			}
 		});
 
 		nameText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				nameIsSuggestion = false;
 			}
@@ -57,6 +60,7 @@
 
 		upstreamConfigComponent
 				.addUpstreamConfigSelectionListener(new UpstreamConfigSelectionListener() {
+					@Override
 					public void upstreamConfigSelected(
 							UpstreamConfig newUpstreamConfig) {
 						upstreamConfig = newUpstreamConfig;
@@ -93,6 +97,7 @@
 		nameText.setFocus();
 		// add the listener just now to avoid unneeded checkPage()
 		nameText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				checkPage();
 			}

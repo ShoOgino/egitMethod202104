@@ -1,0 +1,24 @@
+	/**
+	 * Constructs a resource variant corresponding to the current entry of the
+	 * given CanonicalTreeParser.
+	 *
+	 * @param repository
+	 *            Repository from which this CanonicalTreeParser was created.
+	 * @param treeParser
+	 *            A CanonicalTreeParser to retrieve information from. This will
+	 *            only read information about the current entry on which this
+	 *            parser is positioned and will not change its state.
+	 * @return The created variant.
+	 */
+	public static TreeParserResourceVariant create(Repository repository,
+			CanonicalTreeParser treeParser) {
+		final String path = treeParser.getEntryPathString();
+		final boolean isContainer = FileMode.TREE.equals(treeParser
+				.getEntryFileMode());
+		final ObjectId objectId = treeParser.getEntryObjectId();
+		final int rawMode = treeParser.getEntryRawMode();
+
+		return new TreeParserResourceVariant(repository, path, isContainer,
+				objectId, rawMode);
+	}
+

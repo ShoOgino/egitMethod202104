@@ -6,6 +6,7 @@
 			final Set<String> itemsToClean = getItemsToClean();
 
 			getContainer().run(true, false, new IRunnableWithProgress() {
+				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException,
 						InterruptedException {
 					monitor.beginTask(UIText.CleanRepositoryPage_cleaningItems, IProgressMonitor.UNKNOWN);

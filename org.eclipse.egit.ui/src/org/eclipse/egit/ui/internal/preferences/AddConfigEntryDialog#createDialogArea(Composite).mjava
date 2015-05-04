@@ -17,6 +17,7 @@
 		}
 
 		keyText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				check();
 			}
@@ -26,6 +27,7 @@
 				.setText(UIText.AddConfigEntryDialog_ValueLabel);
 		valueText = new Text(main, SWT.BORDER);
 		valueText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				check();
 			}

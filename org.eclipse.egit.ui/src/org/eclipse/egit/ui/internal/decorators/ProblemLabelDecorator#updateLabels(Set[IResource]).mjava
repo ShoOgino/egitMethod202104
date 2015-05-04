@@ -4,6 +4,7 @@
 			final Object[] updateElements = elements.toArray(new Object[elements.size()]);
 			Display display = viewer.getControl().getDisplay();
 			display.asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					viewer.update(updateElements, null);
 				}

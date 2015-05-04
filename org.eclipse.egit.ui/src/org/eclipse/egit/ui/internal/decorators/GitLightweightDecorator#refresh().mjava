@@ -3,6 +3,7 @@
 	 */
 	public static void refresh() {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				Activator.getDefault().getWorkbench().getDecoratorManager()
 						.update(DECORATOR_ID);

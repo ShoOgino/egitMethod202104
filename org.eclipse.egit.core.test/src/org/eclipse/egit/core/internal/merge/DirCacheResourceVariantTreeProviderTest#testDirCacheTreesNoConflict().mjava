@@ -1,0 +1,46 @@
+	@Test
+	public void testDirCacheTreesNoConflict() throws Exception {
+		File file1 = testRepo.createFile(iProject, "file1");
+		File file2 = testRepo.createFile(iProject, "file2");
+
+		testRepo.appendContentAndCommit(iProject, file1, INITIAL_CONTENT_1,
+				"first file - initial commit");
+		testRepo.appendContentAndCommit(iProject, file2, INITIAL_CONTENT_2,
+				"second file - initial commit");
+
+		IFile iFile1 = testRepo.getIFile(iProject, file1);
+		IFile iFile2 = testRepo.getIFile(iProject, file2);
+
+		testRepo.createAndCheckoutBranch(MASTER, BRANCH);
+
+		final String branchChanges = "branch changes\n";
+		setContentsAndCommit(testRepo, iFile2, branchChanges
+				+ INITIAL_CONTENT_2, "branch commit");
+
+		testRepo.checkoutBranch(MASTER);
+
+		final String masterChanges = "\nsome changes";
+		setContentsAndCommit(testRepo, iFile1, INITIAL_CONTENT_1
+				+ masterChanges, "master commit");
+		iProject.refreshLocal(IResource.DEPTH_INFINITE,
+				new NullProgressMonitor());
+		// end setup
+
+		// try and merge the branch into master
+		new MergeOperation(repo, BRANCH).execute(null);
+
+		// no conflict on either file : nothing in the trees
+		DirCacheResourceVariantTreeProvider treeProvider = new DirCacheResourceVariantTreeProvider(
+				repo);
+		assertTrue(treeProvider.getKnownResources().isEmpty());
+
+		assertFalse(treeProvider.getBaseTree().hasResourceVariant(iFile1));
+		assertFalse(treeProvider.getBaseTree().hasResourceVariant(iFile2));
+
+		assertFalse(treeProvider.getSourceTree().hasResourceVariant(iFile1));
+		assertFalse(treeProvider.getSourceTree().hasResourceVariant(iFile2));
+
+		assertFalse(treeProvider.getRemoteTree().hasResourceVariant(iFile1));
+		assertFalse(treeProvider.getRemoteTree().hasResourceVariant(iFile2));
+	}
+

@@ -10,6 +10,7 @@
 			final List<String> actColors) {
 		final Display display = PlatformUI.getWorkbench().getDisplay();
 		display.syncExec(new Runnable() {
+			@Override
 			public void run() {
 				ITheme theme  = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme();
 				for (int i = 0; i < actColors.size(); i++) {

@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
 
@@ -56,6 +57,7 @@
 
 		tv.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				checkPage();
 			}
@@ -63,6 +65,7 @@
 
 		tv.addDoubleClickListener(new IDoubleClickListener() {
 
+			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				checkPage();
 				if (isPageComplete())
@@ -73,9 +76,11 @@
 		tv.setInput(util.getConfiguredRepositories());
 
 		configChangeListener = new IPreferenceChangeListener() {
+			@Override
 			public void preferenceChange(PreferenceChangeEvent event) {
 				Display display = tv.getControl().getDisplay();
 				display.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						refreshRepositoryList();
 						checkPage();

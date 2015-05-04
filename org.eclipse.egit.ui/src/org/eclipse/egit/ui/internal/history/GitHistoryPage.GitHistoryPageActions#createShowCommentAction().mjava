@@ -2,6 +2,7 @@
 			showCommentAction = new BooleanPrefAction(
 					UIPreferences.RESOURCEHISTORY_SHOW_REV_COMMENT,
 					UIText.ResourceHistory_toggleRevComment) {
+				@Override
 				void apply(final boolean value) {
 					historyPage.layout();
 					wrapCommentAction.setEnabled(isChecked());

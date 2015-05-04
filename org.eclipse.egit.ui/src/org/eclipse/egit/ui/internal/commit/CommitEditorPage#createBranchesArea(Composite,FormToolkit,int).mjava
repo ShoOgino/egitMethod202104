@@ -11,6 +11,7 @@
 		branchViewer.setSorter(new ViewerSorter());
 		branchViewer.setLabelProvider(new GitLabelProvider() {
 
+			@Override
 			public String getText(Object element) {
 				return Repository.shortenRefName(super.getText(element));
 			}

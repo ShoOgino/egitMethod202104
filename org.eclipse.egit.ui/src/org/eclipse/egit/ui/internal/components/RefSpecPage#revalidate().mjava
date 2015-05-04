@@ -17,6 +17,7 @@
 		validatedRepoSelection = null;
 		transportError = null;
 		getControl().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				revalidateImpl(currentRepoSelection);
 			}

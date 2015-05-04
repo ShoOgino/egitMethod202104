@@ -1,6 +1,7 @@
 	/**
 	 * @see org.eclipse.ui.IEditorInput#getName()
 	 */
+	@Override
 	public String getName() {
 		return MessageFormat.format(UIText.CommitEditorInput_Name,
 				commit.abbreviate(), commit.getRepositoryName());

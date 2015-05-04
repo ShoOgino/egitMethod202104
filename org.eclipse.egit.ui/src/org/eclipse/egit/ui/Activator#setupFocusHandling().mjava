@@ -3,6 +3,7 @@
 
 			private void updateUiState() {
 				Display.getCurrent().asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						boolean wasActive = uiIsActive;
 						uiIsActive = Display.getCurrent().getActiveShell() != null;
@@ -23,18 +24,22 @@
 				});
 			}
 
+			@Override
 			public void windowOpened(IWorkbenchWindow window) {
 				updateUiState();
 			}
 
+			@Override
 			public void windowDeactivated(IWorkbenchWindow window) {
 				updateUiState();
 			}
 
+			@Override
 			public void windowClosed(IWorkbenchWindow window) {
 				updateUiState();
 			}
 
+			@Override
 			public void windowActivated(IWorkbenchWindow window) {
 				updateUiState();
 				if (rcs.doReschedule)

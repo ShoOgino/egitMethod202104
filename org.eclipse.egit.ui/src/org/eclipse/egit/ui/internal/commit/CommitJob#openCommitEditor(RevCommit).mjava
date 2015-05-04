@@ -1,6 +1,7 @@
 	private void openCommitEditor(final RevCommit newCommit) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				CommitEditor.openQuiet(new RepositoryCommit(repository,
 						newCommit));

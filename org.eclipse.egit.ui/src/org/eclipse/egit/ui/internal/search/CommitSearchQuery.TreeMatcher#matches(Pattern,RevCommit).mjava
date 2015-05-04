@@ -1,3 +1,4 @@
+		@Override
 		public boolean matches(Pattern pattern, RevCommit commit) {
 			RevTree tree = commit.getTree();
 			return tree != null ? matches(pattern, tree.name()) : false;

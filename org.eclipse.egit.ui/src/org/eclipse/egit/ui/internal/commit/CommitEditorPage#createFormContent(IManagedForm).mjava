@@ -1,10 +1,12 @@
 	/**
 	 * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
 	 */
+	@Override
 	protected void createFormContent(IManagedForm managedForm) {
 		Composite body = managedForm.getForm().getBody();
 		body.addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				resources.dispose();
 			}

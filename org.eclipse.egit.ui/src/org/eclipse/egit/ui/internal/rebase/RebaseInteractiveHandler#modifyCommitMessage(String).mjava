@@ -1,8 +1,10 @@
+	@Override
 	public String modifyCommitMessage(final String commitMessage) {
 		final String[] result = new String[1];
 		result[0] = commitMessage;
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				CommitMessageEditorDialog dialog = new CommitMessageEditorDialog(
 						PlatformUI.getWorkbench()

@@ -23,6 +23,7 @@
 							stroke.format()));
 
 		IContentProposalProvider cp = new IContentProposalProvider() {
+			@Override
 			public IContentProposal[] getProposals(String contents, int position) {
 				List<IContentProposal> resultList = new ArrayList<IContentProposal>();
 

@@ -5,24 +5,29 @@
 	private synchronized ISharedDocumentAdapter getSharedDocumentAdapter() {
 		if (sharedDocumentAdapter == null)
 			sharedDocumentAdapter = new EditableSharedDocumentAdapter(new EditableSharedDocumentAdapter.ISharedDocumentAdapterListener() {
+				@Override
 				public void handleDocumentConnected() {
 					if (sharedDocumentListener != null)
 						sharedDocumentListener.handleDocumentConnected();
 				}
+				@Override
 				public void handleDocumentFlushed() {
 					fireContentChanged();
 					if (sharedDocumentListener != null)
 						sharedDocumentListener.handleDocumentFlushed();
 				}
+				@Override
 				public void handleDocumentDeleted() {
 					LocalNonWorkspaceTypedElement.this.update();
 					if (sharedDocumentListener != null)
 						sharedDocumentListener.handleDocumentDeleted();
 				}
+				@Override
 				public void handleDocumentSaved() {
 					if (sharedDocumentListener != null)
 						sharedDocumentListener.handleDocumentSaved();
 				}
+				@Override
 				public void handleDocumentDisconnected() {
 					if (sharedDocumentListener != null)
 						sharedDocumentListener.handleDocumentDisconnected();

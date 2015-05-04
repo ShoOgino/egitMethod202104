@@ -12,6 +12,7 @@
 
 		branch = SWTUtils.createText(pushConfigurationGroup);
 		branch.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				checkPage();
 			}
@@ -19,6 +20,7 @@
 
 		// give focus to the branch if label is activated using the mnemonic
 		branchLabel.addTraverseListener(new TraverseListener() {
+			@Override
 			public void keyTraversed(TraverseEvent e) {
 				branch.setFocus();
 				branch.selectAll();

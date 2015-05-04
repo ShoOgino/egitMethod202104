@@ -3,6 +3,7 @@
 
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager menuManager) {
 				boolean selectionNotEmpty = !planViewer.getSelection()
 						.isEmpty();

@@ -8,6 +8,7 @@
 		emptyArea.setBackgroundMode(SWT.INHERIT_FORCE);
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager m) {
 				getNavigatorActionService().fillContextMenu(m);
 			}
@@ -35,6 +36,7 @@
 		final FormToolkit toolkit = new FormToolkit(emptyArea.getDisplay());
 		emptyArea.addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				toolkit.dispose();
 			}
@@ -50,6 +52,7 @@
 				UIText.RepositoriesView_linkAdd, SWT.WRAP);
 		addLink.setForeground(linkColor);
 		addLink.addHyperlinkListener(new HyperlinkAdapter() {
+			@Override
 			public void linkActivated(HyperlinkEvent e) {
 				IHandlerService service = CommonUtils.getService(getViewSite(), IHandlerService.class);
 				UIUtils.executeCommand(service,
@@ -67,6 +70,7 @@
 				UIText.RepositoriesView_linkClone, SWT.WRAP);
 		cloneLink.setForeground(linkColor);
 		cloneLink.addHyperlinkListener(new HyperlinkAdapter() {
+			@Override
 			public void linkActivated(HyperlinkEvent e) {
 				IHandlerService service = CommonUtils.getService(getViewSite(), IHandlerService.class);
 				UIUtils.executeCommand(service,
@@ -85,6 +89,7 @@
 		createLink.setForeground(linkColor);
 		createLink.setText(UIText.RepositoriesView_linkCreate);
 		createLink.addHyperlinkListener(new HyperlinkAdapter() {
+			@Override
 			public void linkActivated(HyperlinkEvent e) {
 				IHandlerService service = CommonUtils.getService(getViewSite(), IHandlerService.class);
 				UIUtils.executeCommand(service,

@@ -2,22 +2,27 @@
 		if (sharedDocumentAdapter == null)
 			sharedDocumentAdapter = new EditableSharedDocumentAdapter(
 					new EditableSharedDocumentAdapter.ISharedDocumentAdapterListener() {
+						@Override
 						public void handleDocumentConnected() {
 							// nothing
 						}
 
+						@Override
 						public void handleDocumentFlushed() {
 							// nothing
 						}
 
+						@Override
 						public void handleDocumentDeleted() {
 							// nothing
 						}
 
+						@Override
 						public void handleDocumentSaved() {
 							// nothing
 						}
 
+						@Override
 						public void handleDocumentDisconnected() {
 							// nothing
 						}

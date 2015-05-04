@@ -2,6 +2,7 @@
 		if (!isReady())
 			return;
 		asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				Tree t = planTreeViewer.getTree();
 				if (t.isDisposed())

@@ -1,6 +1,7 @@
 	/**
 	 * @see PreferencePage#createContents(Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 
 		Composite composite = SWTUtils.createHVFillComposite(parent,
@@ -16,6 +17,7 @@
 
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (navigatorPreview != null && changeSetPreview != null) {
 					if (UIText.DecoratorPreferencesPage_otherDecorations.equals(e.item.getData())) {
@@ -54,6 +56,7 @@
 		// TODO: Add help text for this preference page
 
 		themeListener = new IPropertyChangeListener() {
+			@Override
 			public void propertyChange(PropertyChangeEvent event) {
 				navigatorPreview.refresh();
 				changeSetPreview.refresh();

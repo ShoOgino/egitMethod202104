@@ -4,6 +4,7 @@
 		if (buttonId == CONFIGURE) {
 			super.buttonPressed(IDialogConstants.OK_ID);
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					Dialog dlg = SimpleConfigureFetchDialog.getDialog(
 							PlatformUI.getWorkbench().getDisplay()

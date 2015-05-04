@@ -1,3 +1,4 @@
+	@Override
 	public void createControl(Composite parent) {
 
 		Composite main = new Composite(parent, SWT.NO_RADIO_GROUP);
@@ -67,6 +68,7 @@
 
 		tv.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				checkPage();
 			}

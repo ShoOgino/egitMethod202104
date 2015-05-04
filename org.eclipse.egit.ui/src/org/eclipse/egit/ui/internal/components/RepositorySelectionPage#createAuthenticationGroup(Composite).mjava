@@ -6,6 +6,7 @@
 		userText = new Text(g, SWT.BORDER);
 		userText.setLayoutData(createFieldGridData());
 		userText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				Protocol protocol = getProtocol();
 				if (protocol != Protocol.HTTP && protocol != Protocol.HTTPS)
@@ -18,6 +19,7 @@
 		passText = new Text(g, SWT.BORDER | SWT.PASSWORD);
 		passText.setLayoutData(createFieldGridData());
 		passText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				setURI(uri.setPass(null));
 				password = passText.getText();
@@ -29,10 +31,12 @@
 				.setText(UIText.RepositorySelectionPage_storeInSecureStore);
 		storeCheckbox.setSelection(storeInSecureStore);
 		storeCheckbox.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				storeInSecureStore = storeCheckbox.getSelection();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				storeInSecureStore = storeCheckbox.getSelection();
 			}

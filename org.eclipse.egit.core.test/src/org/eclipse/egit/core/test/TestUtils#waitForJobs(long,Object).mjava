@@ -1,0 +1,12 @@
+	/**
+	 * Waits at least 50 milliseconds until no jobs of given family are running
+	 *
+	 * @param maxWaitTime
+	 * @param family
+	 * @throws InterruptedException
+	 */
+	public void waitForJobs(long maxWaitTime, Object family)
+			throws InterruptedException {
+		waitForJobs(maxWaitTime, 50, family);
+	}
+

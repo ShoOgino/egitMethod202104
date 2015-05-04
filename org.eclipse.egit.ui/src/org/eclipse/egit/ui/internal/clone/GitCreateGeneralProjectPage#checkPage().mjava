@@ -19,6 +19,7 @@
 			// make sure there is not already a .project file
 			if (myDirectory.list(new FilenameFilter() {
 
+				@Override
 				public boolean accept(File dir, String name) {
 					if (name.equals(".project")) //$NON-NLS-1$
 						return true;

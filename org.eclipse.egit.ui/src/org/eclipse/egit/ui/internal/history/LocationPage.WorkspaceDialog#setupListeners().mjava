@@ -1,6 +1,7 @@
 		void setupListeners(){
 			wsTreeViewer.addSelectionChangedListener(
 					new ISelectionChangedListener() {
+						@Override
 						public void selectionChanged(SelectionChangedEvent event) {
 							IStructuredSelection s = (IStructuredSelection)event.getSelection();
 							Object obj=s.getFirstElement();
@@ -17,6 +18,7 @@
 
 			wsTreeViewer.addDoubleClickListener(
 					new IDoubleClickListener() {
+						@Override
 						public void doubleClick(DoubleClickEvent event) {
 							ISelection s= event.getSelection();
 							if (s instanceof IStructuredSelection) {
@@ -31,6 +33,7 @@
 					});
 
 			wsFilenameText.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(ModifyEvent e) {
 					modified = true;
 					validateDialog();
