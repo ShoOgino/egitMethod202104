@@ -111,15 +111,8 @@
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
 				.applyTo(messageGroup);
 
-		final SpellcheckableMessageArea text = new SpellcheckableMessageArea(
-				messageGroup, EMPTY_STRING, true, SWT.BORDER) {
-
-			@Override
-			protected void createMarginPainter() {
-				// Disabled intentionally
-			}
-
-		};
+		final SpellcheckableMessageArea text = new SpellcheckableMessageAreaExtension(messageGroup, EMPTY_STRING, true,
+				SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(text);
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
