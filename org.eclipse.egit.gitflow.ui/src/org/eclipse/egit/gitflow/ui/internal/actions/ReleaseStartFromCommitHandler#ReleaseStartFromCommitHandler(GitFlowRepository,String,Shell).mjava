@@ -1,0 +1,13 @@
+	/**
+	 * @param activeShell
+	 * @param startCommitSha1
+	 * @param gfRepo
+	 *
+	 */
+	public ReleaseStartFromCommitHandler(GitFlowRepository gfRepo, String startCommitSha1, Shell activeShell) {
+		this.gfRepo = gfRepo;
+		this.startCommitSha1 = startCommitSha1;
+		this.activeShell = activeShell;
+		releaseStartHandler = new ReleaseStartHandler();
+	}
+
