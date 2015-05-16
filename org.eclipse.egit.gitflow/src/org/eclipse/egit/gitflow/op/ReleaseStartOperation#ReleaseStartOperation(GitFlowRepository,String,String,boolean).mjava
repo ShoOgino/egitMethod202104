@@ -1,0 +1,7 @@
+	private ReleaseStartOperation(GitFlowRepository repository,
+			String startCommitSha1, String releaseName, boolean isHead) {
+		super(repository, releaseName);
+		this.startCommitSha1 = startCommitSha1;
+		this.isHead = isHead;
+	}
+

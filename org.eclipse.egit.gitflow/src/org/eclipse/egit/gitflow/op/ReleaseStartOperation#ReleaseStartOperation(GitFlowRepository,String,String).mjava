@@ -7,7 +7,6 @@
 	 */
 	public ReleaseStartOperation(GitFlowRepository repository,
 			String startCommitSha1, String releaseName) {
-		super(repository, releaseName);
-		this.startCommitSha1 = startCommitSha1;
+		this(repository, startCommitSha1, releaseName, isHead(repository, startCommitSha1));
 	}
 

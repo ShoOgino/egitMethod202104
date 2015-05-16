@@ -1,0 +1,9 @@
+	private static boolean isHead(final GitFlowRepository gfRepo, final String sha1) {
+		try {
+			RevCommit head = gfRepo.findHead();
+			return sha1.equals(head.getName());
+		} catch (WrongGitFlowStateException e) {
+			return false;
+		}
+	}
+
