@@ -6,16 +6,22 @@
 		JobUtil.scheduleUserWorkspaceJob(featureRebaseOperation,
 				UIText.FeatureRebaseHandler_rebasingFeature,
 				JobFamilies.GITFLOW_FAMILY);
+		try {
+			IJobManager jobMan = Job.getJobManager();
+			jobMan.join(JobFamilies.GITFLOW_FAMILY, null);
+		} catch (OperationCanceledException | InterruptedException e) {
+			return error(e.getMessage(), e);
+		}
 
 		RebaseResult.Status status = featureRebaseOperation
 				.getOperationResult().getStatus();
 		if (RebaseResult.Status.FAILED.equals(status)) {
 			return error(UIText.FeatureRebaseHandler_rebaseFailed);
 		}
-		if (!RebaseResult.Status.CONFLICTS.equals(status)) {
+		if (!RebaseResult.Status.STOPPED.equals(status)) {
 			return null;
 		}
-		MessageDialog.openInformation(HandlerUtil.getActiveShell(event),
+		MessageDialog.openWarning(null,
 				UIText.FeatureRebaseHandler_conflicts,
 				UIText.FeatureRebaseHandler_resolveConflictsManually);
 		try {

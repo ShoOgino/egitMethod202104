@@ -3,16 +3,15 @@
 	 *
 	 * @param monitor
 	 * @param branchName
-	 * @return result of merging back to develop branch
 	 * @throws CoreException
 	 */
-	protected MergeResult finish(IProgressMonitor monitor, String branchName)
+	protected void finish(IProgressMonitor monitor, String branchName)
 			throws CoreException {
 		try {
-			MergeResult mergeResult = mergeTo(monitor, branchName,
+			mergeResult = mergeTo(monitor, branchName,
 					repository.getConfig().getDevelop());
 			if (!mergeResult.getMergeStatus().isSuccessful()) {
-				return mergeResult;
+				return;
 			}
 
 			Ref branch = repository.findBranch(branchName);
@@ -22,8 +21,6 @@
 			}
 			new DeleteBranchOperation(repository.getRepository(), branch, false)
 					.execute(monitor);
-
-			return mergeResult;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

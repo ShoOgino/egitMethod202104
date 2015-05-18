@@ -1,18 +1,15 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		String hotfixBranchName = repository.getConfig().getHotfixBranchName(versionName);
-		mergeResult = mergeTo(monitor, hotfixBranchName,
-				repository.getConfig().getMaster());
+		String master = repository.getConfig().getMaster();
+		mergeResult = mergeTo(monitor, hotfixBranchName, master);
 		if (!mergeResult.getMergeStatus().isSuccessful()) {
-			throw new CoreException(
-					error(CoreText.HotfixFinishOperation_mergeFromHotfixToMasterFailed));
-		}
-
-		mergeResult = finish(monitor, hotfixBranchName);
-		if (!mergeResult.getMergeStatus().isSuccessful()) {
+			// problems during merge to master => this repository is not in a healthy state
 			return;
 		}
 
+		finish(monitor, hotfixBranchName);
+		// this may result in conflicts, but that's ok
 		safeCreateTag(monitor, versionName,
 				NLS.bind(CoreText.HotfixFinishOperation_hotfix, versionName));
 	}

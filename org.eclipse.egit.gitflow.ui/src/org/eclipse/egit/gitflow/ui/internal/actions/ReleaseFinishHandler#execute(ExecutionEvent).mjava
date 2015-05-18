@@ -1,14 +1,31 @@
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
 
-		ReleaseFinishOperation releaseFinishOperation;
+		final ReleaseFinishOperation releaseFinishOperation;
 		try {
 			releaseFinishOperation = new ReleaseFinishOperation(gfRepo);
+			String releaseBranch = gfRepo.getRepository().getBranch();
+			String develop = gfRepo.getConfig().getDevelop();
+
 			JobUtil.scheduleUserWorkspaceJob(releaseFinishOperation,
 					UIText.ReleaseFinishHandler_finishingRelease,
 					JobFamilies.GITFLOW_FAMILY);
-		} catch (WrongGitFlowStateException | CoreException | IOException e) {
+			IJobManager jobMan = Job.getJobManager();
+			jobMan.join(JobFamilies.GITFLOW_FAMILY, null);
+
+			MergeResult mergeResult = releaseFinishOperation.getMergeResult();
+			MergeStatus mergeStatus = mergeResult.getMergeStatus();
+			if (!MergeStatus.CONFLICTING.equals(mergeStatus)) {
+				return null;
+			}
+			if (handleConflictsOnMaster(gfRepo)) {
+				return null;
+			}
+			MultiStatus warning = createConflictWarning(develop, releaseBranch, mergeResult);
+			ErrorDialog.openError(null, UIText.ReleaseFinishHandler_Conflicts, null, warning);
+		} catch (WrongGitFlowStateException | CoreException | IOException
+				| OperationCanceledException | InterruptedException e) {
 			return error(e.getMessage(), e);
 		}
 

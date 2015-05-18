@@ -28,6 +28,9 @@
 			JobUtil.scheduleUserWorkspaceJob(checkoutOperation,
 					UIText.FeatureCheckoutHandler_checkingOutFeature,
 					JobFamilies.GITFLOW_FAMILY);
+			IJobManager jobMan = Job.getJobManager();
+			jobMan.join(JobFamilies.GITFLOW_FAMILY, null);
+
 			CheckoutResult result = checkoutOperation.getResult();
 			if (!CheckoutResult.Status.OK.equals(result.getStatus())) {
 				Shell shell = HandlerUtil.getActiveShell(event);
@@ -40,7 +43,8 @@
 							JobFamilies.GITFLOW_FAMILY);
 				}
 			}
-		} catch (GitAPIException e) {
+		} catch (GitAPIException | OperationCanceledException
+				| InterruptedException e) {
 			throw new RuntimeException(e);
 		}
 
