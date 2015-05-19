@@ -1,0 +1,11 @@
+	/**
+	 * Set prefix in .git/config
+	 *
+	 * @param prefixName
+	 * @param value
+	 */
+	public void setPrefix(String prefixName, String value) {
+		StoredConfig config = repository.getConfig();
+		config.setString(GITFLOW_SECTION, PREFIX_SECTION, prefixName, value);
+	}
+

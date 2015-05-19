@@ -1,7 +1,5 @@
 	@Override
 	public boolean canFinish() {
-		return getContainer().getCurrentPage().equals(this.nestedProjectsPage)
-				|| (getContainer().getCurrentPage().equals(this.selectRootPage) && this.selectRootPage
-						.canFlipToNextPage());
+		return getContainer().getCurrentPage() == this.selectRootPage && this.selectRootPage.isPageComplete();
 	}
 

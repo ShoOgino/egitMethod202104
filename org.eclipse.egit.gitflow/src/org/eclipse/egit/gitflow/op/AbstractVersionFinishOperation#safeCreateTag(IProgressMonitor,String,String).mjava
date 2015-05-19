@@ -1,0 +1,31 @@
+	/**
+	 * Check if tag exists before trying to create it.
+	 *
+	 * @param monitor
+	 * @param tagName
+	 * @param tagMessage
+	 * @throws CoreException
+	 */
+	protected void safeCreateTag(IProgressMonitor monitor, String tagName,
+			String tagMessage) throws CoreException {
+		RevCommit head;
+		try {
+			head = repository.findHead();
+		} catch (WrongGitFlowStateException e) {
+			throw new CoreException(error(e));
+		}
+		RevCommit commitForTag;
+		try {
+			commitForTag = repository.findCommitForTag(versionName);
+			if (commitForTag == null) {
+				createTag(monitor, head, tagName, tagMessage);
+			} else if (!head.equals(commitForTag)) {
+				throw new CoreException(error(format(
+						CoreText.AbstractVersionFinishOperation_tagNameExists,
+						versionName)));
+			}
+		} catch (IOException e) {
+			throw new CoreException(error(e));
+		}
+	}
+

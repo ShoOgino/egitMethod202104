@@ -1,0 +1,17 @@
+	private static boolean branchExists(GitFlowRepository repository,
+			String fullBranchName) throws CoreException {
+		List<Ref> branches;
+		try {
+			branches = Git.wrap(repository.getRepository()).branchList().call();
+		} catch (GitAPIException e) {
+			throw new CoreException(error(e.getMessage(), e));
+		}
+		for (Ref ref : branches) {
+			if (fullBranchName.equals(ref.getTarget().getName())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+

@@ -1,0 +1,7 @@
+	/**
+	 * @return git flow release branches
+	 */
+	public List<Ref> getReleaseBranches() {
+		return getPrefixBranches(R_HEADS + getConfig().getReleasePrefix());
+	}
+

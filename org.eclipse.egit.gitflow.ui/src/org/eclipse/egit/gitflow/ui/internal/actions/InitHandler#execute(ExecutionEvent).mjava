@@ -1,0 +1,14 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+		if (gfRepo == null) {
+			return null;
+		}
+
+		InitOperation initOperation = new InitOperation(gfRepo.getRepository());
+		JobUtil.scheduleUserWorkspaceJob(initOperation,
+				UIText.InitHandler_initializing, JobFamilies.GITFLOW_FAMILY);
+
+		return null;
+	}
+

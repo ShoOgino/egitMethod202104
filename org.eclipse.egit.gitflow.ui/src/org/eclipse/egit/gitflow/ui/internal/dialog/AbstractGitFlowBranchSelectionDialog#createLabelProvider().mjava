@@ -1,0 +1,10 @@
+	private IBaseLabelProvider createLabelProvider() {
+		final String prefix = getPrefix();
+		return new GitLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return super.getText(element).substring(prefix.length());
+			}
+		};
+	}
+

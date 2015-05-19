@@ -1,0 +1,8 @@
+	@Test
+	public void testBranchNameValid() throws Exception {
+		assertTrue(isBranchNameValid(MY_RELEASE));
+		assertTrue(isBranchNameValid(MY_FEATURE));
+		assertFalse(isBranchNameValid("/"));
+		assertFalse(isBranchNameValid(""));
+	}
+

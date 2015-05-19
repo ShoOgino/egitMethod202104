@@ -1,0 +1,11 @@
+	@Override
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		String branchName = repository.getConfig().getFeatureBranchName(featureName);
+
+		boolean dontCloseProjects = false;
+		BranchOperation branchOperation = new BranchOperation(
+				repository.getRepository(), branchName, dontCloseProjects);
+		branchOperation.execute(null);
+		result = branchOperation.getResult();
+	}
+

@@ -1,0 +1,10 @@
+	/**
+	 * @return Local user of this repository.
+	 */
+	public String getUser() {
+		StoredConfig config = repository.getConfig();
+		String userName = config.getString(USER_SECTION, null, "name"); //$NON-NLS-1$
+		String email = config.getString(USER_SECTION, null, "email"); //$NON-NLS-1$
+		return String.format("%s <%s>", userName, email); //$NON-NLS-1$
+	}
+

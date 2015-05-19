@@ -1,0 +1,37 @@
+	@Override
+	@Before
+	public void beforeTestCase() throws Exception {
+		workdir = testUtils.createTempDir("Repository1");
+		workdir2 = testUtils.createTempDir("Repository2");
+
+		repository1 = new TestRepository(new File(workdir, DOT_GIT));
+
+		repository1.createInitialCommit("setUp");
+
+		Repository repository = repository1.getRepository();
+		new InitOperation(repository).execute(null);
+
+		// now we create a project in repo1
+		IProject project = testUtils.createProjectInLocalFileSystem(workdir,
+				projectName);
+		testUtils.addFileToProject(project, "folder1/file1.txt", "Hello world");
+
+		repository1.connect(project);
+		repository1.trackAllFiles(project);
+		repository1.commit("Initial commit");
+
+		// let's get rid of the project
+		project.delete(false, false, null);
+
+		// let's clone repository1 to repository2
+		URIish uri = repository1.getUri();
+		CloneOperation clop = new CloneOperation(uri, true, null, workdir2,
+				R_HEADS + MY_MASTER, DEFAULT_REMOTE_NAME, 0);
+		clop.run(null);
+
+		Repository repo2 = Activator.getDefault().getRepositoryCache()
+				.lookupRepository(new File(workdir2, DOT_GIT));
+		repository2 = new TestRepository(repo2);
+		new InitOperation(repository).execute(null);
+	}
+

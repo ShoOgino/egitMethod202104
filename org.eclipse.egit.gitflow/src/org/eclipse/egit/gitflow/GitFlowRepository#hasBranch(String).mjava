@@ -1,0 +1,17 @@
+	/**
+	 * @param branch
+	 * @return Whether or not branch exists in this repository.
+	 * @throws GitAPIException
+	 */
+	public boolean hasBranch(String branch) throws GitAPIException {
+		String fullBranchName = R_HEADS + branch;
+		List<Ref> branchList = Git.wrap(repository).branchList().call();
+		for (Ref ref : branchList) {
+			if (fullBranchName.equals(ref.getTarget().getName())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+

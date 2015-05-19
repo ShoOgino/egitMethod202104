@@ -1,0 +1,17 @@
+	/**
+	 * @param repository
+	 * @return current hotfix branch name
+	 * @throws WrongGitFlowStateException
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	protected static String getHotfixName(GitFlowRepository repository)
+			throws WrongGitFlowStateException, CoreException, IOException {
+		if (!repository.isHotfix()) {
+			throw new WrongGitFlowStateException(
+					CoreText.AbstractHotfixOperation_notOnAHotfixBranch);
+		}
+		String currentBranch = repository.getRepository().getBranch();
+		return currentBranch.substring(repository.getConfig().getHotfixPrefix().length());
+	}
+

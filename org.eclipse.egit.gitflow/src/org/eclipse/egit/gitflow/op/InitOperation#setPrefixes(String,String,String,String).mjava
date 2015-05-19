@@ -1,0 +1,9 @@
+	private void setPrefixes(String feature, String release, String hotfix,
+			String versionTag) {
+		GitFlowConfig config = repository.getConfig();
+		config.setPrefix(FEATURE_KEY, feature);
+		config.setPrefix(RELEASE_KEY, release);
+		config.setPrefix(HOTFIX_KEY, hotfix);
+		config.setPrefix(VERSION_TAG_KEY, versionTag);
+	}
+

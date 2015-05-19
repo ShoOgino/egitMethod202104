@@ -1,0 +1,14 @@
+	@Test
+	public void testIsMaster() throws Exception {
+		repository1.createInitialCommit("testIsMaster\n\nfirst commit\n");
+
+		Repository repository = repository2.getRepository();
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+
+		assertTrue(gfRepo.isMaster());
+
+		new InitOperation(repository).execute(null);
+
+		assertFalse(gfRepo.isMaster());
+	}
+

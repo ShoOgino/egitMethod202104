@@ -1,0 +1,12 @@
+	/**
+	 * start release from given commit
+	 *
+	 * @param repository
+	 * @param startCommitSha1
+	 * @param releaseName
+	 */
+	public ReleaseStartOperation(GitFlowRepository repository,
+			String startCommitSha1, String releaseName) {
+		this(repository, startCommitSha1, releaseName, isHead(repository, startCommitSha1));
+	}
+

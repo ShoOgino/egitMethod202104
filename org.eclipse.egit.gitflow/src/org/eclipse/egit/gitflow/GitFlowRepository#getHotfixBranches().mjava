@@ -1,0 +1,7 @@
+	/**
+	 * @return git flow hotfix branches
+	 */
+	public List<Ref> getHotfixBranches() {
+		return getPrefixBranches(R_HEADS + getConfig().getHotfixPrefix());
+	}
+

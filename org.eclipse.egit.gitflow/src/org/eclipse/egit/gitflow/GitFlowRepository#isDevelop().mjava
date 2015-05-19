@@ -1,0 +1,8 @@
+	/**
+	 * @return branch name has name "develop"?
+	 * @throws IOException
+	 */
+	public boolean isDevelop() throws IOException {
+		return repository.getBranch().equals(getConfig().getDevelop());
+	}
+

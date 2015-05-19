@@ -1,0 +1,13 @@
+	/**
+	 * finish current hotfix branch
+	 *
+	 * @param repository
+	 * @throws WrongGitFlowStateException
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	public HotfixFinishOperation(GitFlowRepository repository)
+			throws WrongGitFlowStateException, CoreException, IOException {
+		this(repository, getHotfixName(repository));
+	}
+

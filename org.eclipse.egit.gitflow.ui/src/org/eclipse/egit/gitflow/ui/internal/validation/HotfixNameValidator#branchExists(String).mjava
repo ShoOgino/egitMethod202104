@@ -1,0 +1,5 @@
+	@Override
+	protected boolean branchExists(String newText) throws CoreException {
+		return BranchNameValidator.hotfixExists(repository, newText);
+	}
+

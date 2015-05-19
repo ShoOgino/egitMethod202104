@@ -1,0 +1,6 @@
+	private void setBranches(String develop, String master) {
+		GitFlowConfig config = repository.getConfig();
+		config.setBranch(DEVELOP_KEY, develop);
+		config.setBranch(MASTER_KEY, master);
+	}
+

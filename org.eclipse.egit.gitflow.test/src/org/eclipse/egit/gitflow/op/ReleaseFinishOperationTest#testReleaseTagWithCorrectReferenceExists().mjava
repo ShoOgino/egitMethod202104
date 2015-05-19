@@ -1,0 +1,17 @@
+	@Test
+	public void testReleaseTagWithCorrectReferenceExists() throws Exception {
+		testRepository
+				.createInitialCommit("testReleaseTagExists\n\nfirst commit\n");
+
+		Repository repository = testRepository.getRepository();
+		new InitOperation(repository).execute(null);
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+
+		new ReleaseStartOperation(gfRepo, MY_RELEASE).execute(null);
+		RevCommit next = getPreviousCommit(repository, 0);
+		ReleaseFinishOperation releaseFinishOperation = new ReleaseFinishOperation(
+				gfRepo);
+		releaseFinishOperation.createTag(null, next, MY_RELEASE, "irrelevant");
+		releaseFinishOperation.execute(null);
+	}
+

@@ -1,0 +1,13 @@
+	@Test
+	public void testFeatureStart() throws Exception {
+		Repository repository = testRepository.getRepository();
+		GitFlowRepository gfRepo = init("testFeatureStart\n\nfirst commit\n");
+
+		FeatureStartOperation featureStartOperation = new FeatureStartOperation(gfRepo, MY_FEATURE);
+		assertNull(featureStartOperation.getSchedulingRule());
+		featureStartOperation.execute(null);
+
+		assertEquals(gfRepo.getConfig().getFullFeatureBranchName(MY_FEATURE),
+				repository.getFullBranch());
+	}
+

@@ -1,0 +1,11 @@
+	protected RevCommit findHead(Repository repo) {
+		try (RevWalk walk = new RevWalk(repo)) {
+			try {
+				ObjectId head = repo.resolve(HEAD);
+				return walk.parseCommit(head);
+			} catch (RevisionSyntaxException | IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+

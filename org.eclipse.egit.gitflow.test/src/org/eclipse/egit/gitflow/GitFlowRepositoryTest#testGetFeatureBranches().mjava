@@ -1,0 +1,18 @@
+	@Test
+	public void testGetFeatureBranches() throws Exception {
+		repository1
+				.createInitialCommit("testGetFeatureBranches\n\nfirst commit\n");
+
+		Repository repository = repository1.getRepository();
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+
+		new InitOperation(repository).execute(null);
+
+		assertTrue(gfRepo.getFeatureBranches().isEmpty());
+
+		new FeatureStartOperation(gfRepo, MY_FEATURE).execute(null);
+
+		assertEquals(R_HEADS + gfRepo.getConfig().getFeaturePrefix()
+				+ MY_FEATURE, gfRepo.getFeatureBranches().get(0).getName());
+	}
+

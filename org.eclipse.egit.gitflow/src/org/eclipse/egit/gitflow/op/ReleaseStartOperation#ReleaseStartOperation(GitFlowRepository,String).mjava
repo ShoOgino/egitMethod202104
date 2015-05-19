@@ -1,0 +1,11 @@
+	/**
+	 * start release from HEAD
+	 *
+	 * @param repository
+	 * @param releaseName
+	 */
+	public ReleaseStartOperation(GitFlowRepository repository,
+			String releaseName) {
+		this(repository, findHead(repository), releaseName, true);
+	}
+

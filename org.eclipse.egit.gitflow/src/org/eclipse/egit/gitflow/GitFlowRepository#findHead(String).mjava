@@ -1,0 +1,15 @@
+	/**
+	 * @param branchName
+	 * @return HEAD commit on branch branchName
+	 */
+	public RevCommit findHead(String branchName) {
+		try (RevWalk walk = new RevWalk(repository)) {
+			try {
+				ObjectId head = repository.resolve(R_HEADS + branchName);
+				return walk.parseCommit(head);
+			} catch (RevisionSyntaxException | IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+

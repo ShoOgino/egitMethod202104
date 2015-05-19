@@ -1,0 +1,14 @@
+	/**
+	 * @return Configured origin.
+	 */
+	public RemoteConfig getDefaultRemoteConfig() {
+		StoredConfig rc = repository.getConfig();
+		RemoteConfig result;
+		try {
+			result = new RemoteConfig(rc, DEFAULT_REMOTE_NAME);
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException(e);
+		}
+		return result;
+	}
+

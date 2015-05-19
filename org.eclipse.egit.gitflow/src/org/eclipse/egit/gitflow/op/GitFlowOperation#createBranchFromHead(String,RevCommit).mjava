@@ -1,0 +1,11 @@
+	/**
+	 * @param branchName
+	 * @param sourceCommit
+	 * @return operation constructed from parameters
+	 */
+	protected CreateLocalBranchOperation createBranchFromHead(
+			String branchName, RevCommit sourceCommit) {
+		return new CreateLocalBranchOperation(repository.getRepository(),
+				branchName, sourceCommit);
+	}
+

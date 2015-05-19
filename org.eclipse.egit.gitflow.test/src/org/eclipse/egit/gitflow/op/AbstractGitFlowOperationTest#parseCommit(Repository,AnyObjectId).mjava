@@ -1,0 +1,8 @@
+	protected RevCommit parseCommit(Repository repo, AnyObjectId id)
+			throws MissingObjectException, IncorrectObjectTypeException,
+			IOException {
+		try (RevWalk revWalk = new RevWalk(repo)) {
+			return revWalk.parseCommit(id);
+		}
+	}
+

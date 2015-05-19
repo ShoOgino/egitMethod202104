@@ -1,0 +1,17 @@
+	/**
+	 * @param event
+	 * @return Selected GitFlowRepository
+	 */
+	public static GitFlowRepository getRepository(ExecutionEvent event) {
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
+				.getCurrentSelection(event);
+		PlatformObject firstElement = (PlatformObject) selection
+				.getFirstElement();
+		Repository repository = Utils.getAdapter(firstElement,
+				Repository.class);
+		if (repository == null) {
+			return null;
+		}
+		return new GitFlowRepository(repository);
+	}
+

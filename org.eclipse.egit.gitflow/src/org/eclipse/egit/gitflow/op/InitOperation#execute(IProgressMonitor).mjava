@@ -1,0 +1,33 @@
+	@Override
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		try {
+			setPrefixes(feature, release, hotfix, versionTag);
+			setBranches(develop, master);
+			repository.getRepository().getConfig().save();
+		} catch (IOException e) {
+			throw new CoreException(error(e.getMessage(), e));
+		}
+
+		if (!repository.hasBranches()) {
+			new CommitOperation(repository.getRepository(),
+					repository.getConfig().getUser(), repository.getConfig().getUser(),
+					CoreText.InitOperation_initialCommit).execute(monitor);
+		}
+
+		try {
+			RevCommit head = repository.findHead();
+			if (!repository.hasBranch(develop)) {
+				CreateLocalBranchOperation branchFromHead = createBranchFromHead(
+						develop, head);
+				branchFromHead.execute(monitor);
+				BranchOperation checkoutOperation = new BranchOperation(
+						repository.getRepository(), develop);
+				checkoutOperation.execute(monitor);
+			}
+		} catch (WrongGitFlowStateException e) {
+			throw new CoreException(error(e));
+		} catch (GitAPIException e) {
+			throw new CoreException(error(e.getMessage(), e));
+		}
+	}
+

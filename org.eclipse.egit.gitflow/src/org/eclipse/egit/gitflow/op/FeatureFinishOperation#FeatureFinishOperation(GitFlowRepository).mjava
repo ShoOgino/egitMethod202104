@@ -1,0 +1,13 @@
+	/**
+	 * Finish current feature.
+	 *
+	 * @param repository
+	 * @throws CoreException
+	 * @throws WrongGitFlowStateException
+	 * @throws IOException
+	 */
+	public FeatureFinishOperation(GitFlowRepository repository)
+			throws CoreException, WrongGitFlowStateException, IOException {
+		this(repository, getFeatureName(repository));
+	}
+

@@ -1,0 +1,7 @@
+	private void setBranchValue(String featureName, String value,
+			String mergeKey) throws IOException {
+		StoredConfig config = repository.getConfig();
+		config.setString(BRANCH_SECTION, featureName, mergeKey, value);
+		config.save();
+	}
+

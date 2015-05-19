@@ -1,0 +1,13 @@
+	/**
+	 * finish current release
+	 *
+	 * @param repository
+	 * @throws WrongGitFlowStateException
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	public ReleaseFinishOperation(GitFlowRepository repository)
+			throws WrongGitFlowStateException, CoreException, IOException {
+		this(repository, getReleaseName(repository));
+	}
+

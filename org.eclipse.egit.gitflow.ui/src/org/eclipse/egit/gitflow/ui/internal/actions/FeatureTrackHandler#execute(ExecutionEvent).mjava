@@ -1,0 +1,43 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+		final List<Ref> refs = new ArrayList<Ref>();
+		Shell activeShell = HandlerUtil.getActiveShell(event);
+
+		int timeout = Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+		FeatureListOperation featureListOperation = new FeatureListOperation(
+				gfRepo, timeout);
+		JobUtil.scheduleUserWorkspaceJob(featureListOperation,
+				UIText.FeatureTrackHandler_fetchingRemoteFeatures, JobFamilies.GITFLOW_FAMILY);
+		List<Ref> remoteFeatures = featureListOperation.getResult();
+		if (remoteFeatures.isEmpty()) {
+			MessageDialog.openInformation(activeShell, UIText.FeatureTrackHandler_noRemoteFeatures,
+					UIText.FeatureTrackHandler_noRemoteFeaturesFoundOnTheConfiguredRemote);
+		}
+		refs.addAll(remoteFeatures);
+
+		AbstractGitFlowBranchSelectionDialog<Ref> dialog = new AbstractGitFlowBranchSelectionDialog<Ref>(
+				activeShell, refs,
+				UIText.FeatureTrackHandler_selectFeature,
+				UIText.FeatureTrackHandler_remoteFeatures) {
+			@Override
+			protected String getPrefix() {
+				return R_REMOTES + DEFAULT_REMOTE_NAME + SEP
+						+ gfRepo.getConfig().getFeaturePrefix();
+			}
+		};
+		if (dialog.open() != Window.OK) {
+			return Status.CANCEL_STATUS;
+		}
+
+		Ref ref = dialog.getSelectedNode();
+		FeatureTrackOperation featureTrackOperation = new FeatureTrackOperation(
+				gfRepo, ref);
+		JobUtil.scheduleUserWorkspaceJob(featureTrackOperation,
+				UIText.FeatureTrackHandler_trackingFeature, JobFamilies.GITFLOW_FAMILY);
+
+
+		return null;
+	}
+

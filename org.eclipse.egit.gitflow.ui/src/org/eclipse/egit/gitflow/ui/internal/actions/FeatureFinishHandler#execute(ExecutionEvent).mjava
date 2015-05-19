@@ -1,0 +1,16 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+
+		try {
+			FeatureFinishOperation operation = new FeatureFinishOperation(gfRepo);
+			JobUtil.scheduleUserWorkspaceJob(operation,
+					UIText.FeatureFinishHandler_finishingFeature,
+					JobFamilies.GITFLOW_FAMILY);
+		} catch (WrongGitFlowStateException | CoreException | IOException e) {
+			return error(e.getMessage(), e);
+		}
+
+		return null;
+	}
+

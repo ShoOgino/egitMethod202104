@@ -1,0 +1,13 @@
+	/**
+	 * Track given feature branch locally as newLocalBranch.
+	 *
+	 * @param repository
+	 * @param ref
+	 * @param newLocalBranch
+	 */
+	public FeatureTrackOperation(GitFlowRepository repository, Ref ref,
+			String newLocalBranch) {
+		super(repository, newLocalBranch);
+		this.remoteFeature = ref;
+	}
+

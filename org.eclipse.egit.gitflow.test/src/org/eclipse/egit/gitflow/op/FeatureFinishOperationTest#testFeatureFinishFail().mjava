@@ -1,0 +1,10 @@
+	@Test(expected = WrongGitFlowStateException.class)
+	public void testFeatureFinishFail() throws Exception {
+		Repository repository = testRepository.getRepository();
+		GitFlowRepository gfRepo = init("testFeatureFinishFail\n\nfirst commit\n");
+
+		new FeatureStartOperation(gfRepo, MY_FEATURE).execute(null);
+		new BranchOperation(repository, gfRepo.getConfig().getDevelop()).execute(null);
+		new FeatureFinishOperation(gfRepo).execute(null);
+	}
+

@@ -1,0 +1,31 @@
+	@Override
+	public void execute(IProgressMonitor monitor) throws CoreException {
+		String uriString = FILE
+				+ repository.getRepository().getDirectory().getPath();
+		try {
+			operationResult = fetch(monitor);
+
+			URIish uri = new URIish(uriString);
+			ListRemoteOperation listRemoteOperation = new ListRemoteOperation(
+					repository.getRepository(), uri, timeout);
+			listRemoteOperation.run(monitor);
+			Collection<Ref> remoteRefs = listRemoteOperation.getRemoteRefs();
+			for (Ref ref : remoteRefs) {
+				if (ref.getName().startsWith(
+						REMOTE_ORIGIN_FEATURE_PREFIX
+								+ repository.getConfig().getFeaturePrefix())) {
+					result.add(ref);
+				}
+			}
+		} catch (URISyntaxException e) {
+			String message = NLS.bind(CoreText.FeatureListOperation_unableToParse, uriString);
+			throw new CoreException(error(message, e));
+		} catch (InvocationTargetException e) {
+			Throwable targetException = e.getTargetException();
+			throw new CoreException(error(targetException.getMessage(),
+					targetException));
+		} catch (InterruptedException e) {
+			throw new CoreException(error(e.getMessage(), e));
+		}
+	}
+

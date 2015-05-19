@@ -1,0 +1,12 @@
+	/**
+	 * @param branch
+	 * @param defaultBranch
+	 * @return value for key branch from .git/config or default
+	 */
+	public String getBranch(String branch, String defaultBranch) {
+		StoredConfig config = repository.getConfig();
+		String result = config.getString(GITFLOW_SECTION, BRANCH_SECTION,
+				branch);
+		return (result == null) ? defaultBranch : result;
+	}
+

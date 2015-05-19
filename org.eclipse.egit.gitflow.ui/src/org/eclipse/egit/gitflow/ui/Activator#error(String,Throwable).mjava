@@ -1,0 +1,9 @@
+	/**
+	 * @param message
+	 * @param throwable
+	 * @return Status constructed from parameters.
+	 */
+	public static IStatus error(String message, Throwable throwable) {
+		return new Status(IStatus.ERROR, getPluginId(), 0, message, throwable);
+	}
+

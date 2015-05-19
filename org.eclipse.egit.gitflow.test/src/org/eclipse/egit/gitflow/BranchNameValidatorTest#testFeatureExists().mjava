@@ -1,0 +1,13 @@
+	@Test
+	public void testFeatureExists() throws Exception {
+		testRepository
+				.createInitialCommit("testInitOperation\n\nfirst commit\n");
+
+		Repository repository = testRepository.getRepository();
+		new InitOperation(repository).execute(null);
+		GitFlowRepository gfRepo = new GitFlowRepository(repository);
+		new FeatureStartOperation(gfRepo, MY_FEATURE).execute(null);
+
+		assertTrue(featureExists(gfRepo, MY_FEATURE));
+	}
+

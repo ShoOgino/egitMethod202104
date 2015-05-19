@@ -1,0 +1,9 @@
+	/**
+	 * @return current branch has feature-prefix?
+	 * @throws IOException
+	 */
+	public boolean isFeature() throws IOException {
+		return repository.getBranch()
+				.startsWith(getConfig().getFeaturePrefix());
+	}
+
