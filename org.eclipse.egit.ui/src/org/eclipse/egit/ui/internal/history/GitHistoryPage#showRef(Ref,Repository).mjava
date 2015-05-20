@@ -1,6 +1,5 @@
 	private void showRef(Ref ref, Repository repo) {
-		RevWalk rw = new RevWalk(repo);
-		try {
+		try (RevWalk rw = new RevWalk(repo)) {
 			RevCommit c = rw.parseCommit(ref.getLeaf().getObjectId());
 			graph.selectCommit(c);
 		} catch (IOException e) {

@@ -1,6 +1,5 @@
 	private void showHead(Repository repo) {
-		RevWalk rw = new RevWalk(repo);
-		try {
+		try (RevWalk rw = new RevWalk(repo)) {
 			ObjectId head = repo.resolve(Constants.HEAD);
 			if (head == null)
 				return;

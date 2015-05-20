@@ -2,8 +2,11 @@
 			throws Exception {
 		RevCommit headCommit = null;
 		ObjectId parentId = repository.resolve(Constants.HEAD);
-		if (parentId != null)
-			headCommit = new RevWalk(repository).parseCommit(parentId);
+		if (parentId != null) {
+			try (RevWalk rw = new RevWalk(repository)) {
+				headCommit = rw.parseCommit(parentId);
+			}
+		}
 		return headCommit;
 	}
 

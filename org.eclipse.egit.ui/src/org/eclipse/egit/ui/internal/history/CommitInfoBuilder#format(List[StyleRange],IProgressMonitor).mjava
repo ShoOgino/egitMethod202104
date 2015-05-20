@@ -67,7 +67,7 @@
 			d.append(LF);
 		}
 
-		try {
+		try (RevWalk rw = new RevWalk(db)) {
 			List<Ref> branches = getBranches(commit, allRefs, db);
 			if (!branches.isEmpty()) {
 				d.append(UIText.CommitMessageViewer_branches);
@@ -76,7 +76,7 @@
 				for (Iterator<Ref> i = branches.iterator(); i.hasNext();) {
 					Ref head = i.next();
 					RevCommit p;
-					p = new RevWalk(db).parseCommit(head.getObjectId());
+					p = rw.parseCommit(head.getObjectId());
 					addLink(d, formatHeadRef(head), styles, p);
 					if (i.hasNext()) {
 						if (count++ <= MAXBRANCHES) {
@@ -103,13 +103,13 @@
 
 		if (Activator.getDefault().getPreferenceStore().getBoolean(
 				UIPreferences.HISTORY_SHOW_TAG_SEQUENCE)) {
-			try {
+			try (RevWalk rw = new RevWalk(db)) {
 				monitor.setTaskName(UIText.CommitMessageViewer_GettingPreviousTagTaskName);
 				Ref followingTag = getNextTag(false, monitor);
 				if (followingTag != null) {
 					d.append(UIText.CommitMessageViewer_follows);
 					d.append(": "); //$NON-NLS-1$
-					RevCommit p = new RevWalk(db).parseCommit(followingTag
+					RevCommit p = rw.parseCommit(followingTag
 							.getObjectId());
 					addLink(d, formatTagRef(followingTag), styles, p);
 					d.append(LF);
@@ -118,13 +118,13 @@
 				Activator.logError(e.getMessage(), e);
 			}
 
-			try {
+			try (RevWalk rw = new RevWalk(db)) {
 				monitor.setTaskName(UIText.CommitMessageViewer_GettingNextTagTaskName);
 				Ref precedingTag = getNextTag(true, monitor);
 				if (precedingTag != null) {
 					d.append(UIText.CommitMessageViewer_precedes);
 					d.append(": "); //$NON-NLS-1$
-					RevCommit p = new RevWalk(db).parseCommit(precedingTag
+					RevCommit p = rw.parseCommit(precedingTag
 							.getObjectId());
 					addLink(d, formatTagRef(precedingTag), styles, p);
 					d.append(LF);
