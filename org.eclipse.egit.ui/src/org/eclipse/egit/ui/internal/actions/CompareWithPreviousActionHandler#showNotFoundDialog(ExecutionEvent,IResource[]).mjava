@@ -1,8 +1,12 @@
 	private void showNotFoundDialog(final ExecutionEvent event,
-			IResource resource) {
+			IResource[] resources) {
+
+		final String resourceNames = CommonUtils
+				.getResourceNames(Arrays.asList(resources));
+
 		final String message = MessageFormat
 				.format(UIText.CompareWithPreviousActionHandler_MessageRevisionNotFound,
-						resource.getName());
+						resourceNames);
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 			@Override

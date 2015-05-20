@@ -1,0 +1,67 @@
+	/**
+	 * Returns the previous commit of the given resources.
+	 *
+	 * @param resources
+	 *            The {@link IResource} for which the previous commit shall be
+	 *            determined.
+	 * @return The second to last commit which touched any of the given
+	 *         resources.
+	 * @throws IOException
+	 *             When the commit can not be parsed.
+	 */
+	protected List<RevCommit> findPreviousCommits(
+			Collection<IResource> resources) throws IOException {
+		List<RevCommit> result = new ArrayList<>();
+		Repository repository = getRepository();
+		RepositoryMapping mapping = RepositoryMapping.getMapping(resources
+				.iterator().next()
+				.getProject());
+		if (mapping == null) {
+			return result;
+		}
+		try (RevWalk rw = new RevWalk(repository)) {
+			rw.sort(RevSort.COMMIT_TIME_DESC, true);
+			rw.sort(RevSort.BOUNDARY, true);
+
+			List<TreeFilter> filters = new ArrayList<>();
+			DiffConfig diffConfig = repository.getConfig().get(DiffConfig.KEY);
+			for (IResource resource : resources) {
+				String path = mapping.getRepoRelativePath(resource);
+
+				if (path != null && path.length() > 0) {
+					filters.add(FollowFilter.create(path, diffConfig));
+				}
+			}
+
+			if (filters.size() >= 2) {
+				TreeFilter filter = OrTreeFilter.create(filters);
+				rw.setTreeFilter(filter);
+			} else if (filters.size() == 1) {
+				rw.setTreeFilter(filters.get(0));
+			}
+
+			Ref head = repository.findRef(Constants.HEAD);
+			if (head == null) {
+				return result;
+			}
+			RevCommit headCommit = rw.parseCommit(head.getObjectId());
+			rw.markStart(headCommit);
+			headCommit = rw.next();
+
+			if (headCommit == null)
+				return result;
+			List<RevCommit> directParents = Arrays.asList(headCommit
+					.getParents());
+
+			RevCommit previousCommit = rw.next();
+			while (previousCommit != null && result.size() < directParents.size()) {
+				if (directParents.contains(previousCommit)) {
+					result.add(previousCommit);
+				}
+				previousCommit = rw.next();
+			}
+			rw.dispose();
+		}
+		return result;
+	}
+

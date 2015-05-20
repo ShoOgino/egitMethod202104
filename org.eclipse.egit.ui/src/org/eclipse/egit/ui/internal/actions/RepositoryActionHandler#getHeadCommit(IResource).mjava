@@ -1,0 +1,33 @@
+	protected RevCommit getHeadCommit(IResource resource) throws IOException {
+		Repository repository = getRepository();
+		if (resource == null) {
+			return null;
+		}
+		RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
+		if (mapping == null) {
+			return null;
+		}
+		String path = mapping.getRepoRelativePath(resource);
+		if (path == null) {
+			return null;
+		}
+		try (RevWalk rw = new RevWalk(repository)) {
+			rw.sort(RevSort.COMMIT_TIME_DESC, true);
+			rw.sort(RevSort.BOUNDARY, true);
+			if (path.length() > 0) {
+				DiffConfig diffConfig = repository.getConfig().get(
+						DiffConfig.KEY);
+				FollowFilter filter = FollowFilter.create(path, diffConfig);
+				rw.setTreeFilter(filter);
+			}
+
+			Ref head = repository.findRef(Constants.HEAD);
+			if (head == null) {
+				return null;
+			}
+			RevCommit headCommit = rw.parseCommit(head.getObjectId());
+			rw.close();
+			return headCommit;
+		}
+	}
+

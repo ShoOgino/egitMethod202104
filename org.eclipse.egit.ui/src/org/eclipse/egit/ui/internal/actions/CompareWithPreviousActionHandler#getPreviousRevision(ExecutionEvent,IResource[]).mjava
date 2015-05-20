@@ -1,0 +1,34 @@
+	private RevCommit getPreviousRevision(final ExecutionEvent event,
+			final IResource[] resources) throws IOException {
+		final List<RevCommit> previousList = findPreviousCommits(
+				Arrays.asList(resources));
+
+		final AtomicReference<RevCommit> previous = new AtomicReference<>();
+
+		if (previousList.size() == 0) {
+			return null;
+		} else if (previousList.size() == 1)
+			previous.set(previousList.get(0));
+		else {
+			final List<RevCommit> commits = new ArrayList<>();
+			for (RevCommit pc : previousList)
+				commits.add(pc);
+			HandlerUtil.getActiveShell(event).getDisplay()
+					.syncExec(new Runnable() {
+						@Override
+						public void run() {
+							CommitSelectDialog dlg = new CommitSelectDialog(
+									HandlerUtil.getActiveShell(event), commits);
+							if (dlg.open() == Window.OK)
+								for (RevCommit pc : previousList)
+									if (pc.equals(dlg.getSelectedCommit())) {
+										previous.set(pc);
+										break;
+									}
+						}
+					});
+		}
+
+		return previous.get();
+	}
+

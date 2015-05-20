@@ -1,0 +1,20 @@
+	/**
+	 * Creates a comma separated list of all non-null resource names. The last
+	 * element is separated with an ampersand.
+	 *
+	 * @param resources
+	 *            the collection of {@link IResource}s.
+	 * @return A comma separated list the resource names. The last element is
+	 *         separated with an ampersand.
+	 */
+	public static String getResourceNames(Iterable<IResource> resources) {
+		final List<String> names = new LinkedList<>();
+		for (IResource resource : resources) {
+			if (resource.getName() != null) {
+				names.add(resource.getName());
+			}
+		}
+
+		return StringUtils.join(names, ", ", " & "); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+

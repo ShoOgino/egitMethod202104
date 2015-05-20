@@ -7,23 +7,24 @@
 		if (repository == null) {
 			return null;
 		}
-
 		final IResource[] resources = getSelectedResources(event);
-		if (resources.length != 1) {
-			return null;
-		}
-		try {
-			IWorkbenchPage workBenchPage = HandlerUtil
-					.getActiveWorkbenchWindowChecked(event).getActivePage();
-			final PreviousCommit previous = getPreviousRevision(event,
-					resources[0]);
-			if (previous != null) {
-				CompareUtils.compare(resources, repository, Constants.HEAD,
-						previous.commit.getName(), true, workBenchPage);
+		if (resources != null && resources.length > 0) {
+			try {
+				IWorkbenchPage workBenchPage = HandlerUtil
+						.getActiveWorkbenchWindowChecked(event).getActivePage();
+				final RevCommit previous = getPreviousRevision(event,
+						resources);
+				if (previous != null) {
+					CompareUtils.compare(resources, repository, Constants.HEAD,
+							previous.getName(), true, workBenchPage);
+				} else {
+					showNotFoundDialog(event, resources);
+				}
+			} catch (Exception e) {
+				Activator.handleError(
+						UIText.CompareWithRefAction_errorOnSynchronize, e,
+						true);
 			}
-		} catch (Exception e) {
-			Activator.handleError(
-					UIText.CompareWithRefAction_errorOnSynchronize, e, true);
 		}
 
 		return null;
