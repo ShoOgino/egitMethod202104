@@ -1,0 +1,8 @@
+	@Override
+	public void pageChanged(PageChangedEvent event) {
+		// support for multi-page editors
+		if (event.getSelectedPage() instanceof IEditorPart) {
+			editorActivated((IEditorPart) event.getSelectedPage());
+		}
+	}
+

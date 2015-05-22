@@ -1,0 +1,15 @@
+	/**
+	 * Extracts the input from the activated editor and sets it as the last,
+	 * tracked selection, if possible.
+	 *
+	 * @param editor
+	 *            activated editor
+	 */
+	protected void editorActivated(IEditorPart editor) {
+		IEditorInput editorInput = editor.getEditorInput();
+		IResource resource = ResourceUtil.getResource(editorInput);
+		if (resource != null) {
+			setSelection(new StructuredSelection(resource));
+		}
+	}
+

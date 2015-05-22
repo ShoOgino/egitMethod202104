@@ -5,6 +5,8 @@
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation());
 
+		attachSelectionTracker();
+
 		historyControl = createMainPanel(parent);
 
 		warningComposite = new Composite(historyControl, SWT.NONE);

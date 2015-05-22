@@ -1,0 +1,9 @@
+	/**
+	 * Detaches the selection tracker from the workbench page, if necessary.
+	 */
+	private void detachSelectionTracker() {
+		if (selectionTracker != null) {
+			selectionTracker.detach(getSite().getPage());
+		}
+	}
+

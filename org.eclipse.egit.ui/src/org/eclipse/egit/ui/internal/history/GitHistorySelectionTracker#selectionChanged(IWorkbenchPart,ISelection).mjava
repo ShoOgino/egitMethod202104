@@ -1,0 +1,15 @@
+	@SuppressWarnings({ "restriction" })
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection newSelection) {
+		if (newSelection == null
+				|| part instanceof org.eclipse.team.internal.ui.history.GenericHistoryView) {
+			return;
+		}
+		IStructuredSelection structuredSelection = SelectionUtils
+				.getStructuredSelection(newSelection);
+		if (structuredSelection.isEmpty()) {
+			return;
+		}
+		setSelection(structuredSelection);
+	}
+

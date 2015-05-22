@@ -1,18 +1,13 @@
 	/**
+	 * Returns the resources contained in the given selection.
+	 *
 	 * @param selection
 	 * @return the resources in the selection
 	 */
 	@NonNull
 	public static IResource[] getSelectedResources(
 			@NonNull IStructuredSelection selection) {
-		Set<IResource> result = new LinkedHashSet<>();
-		for (Object o : selection.toList()) {
-			IResource resource = AdapterUtils.adaptToAnyResource(o);
-			if (resource != null)
-				result.add(resource);
-			else
-				result.addAll(extractResourcesFromMapping(o));
-		}
+		Set<IResource> result = getSelectedResourcesSet(selection);
 		return result.toArray(new IResource[result.size()]);
 	}
 

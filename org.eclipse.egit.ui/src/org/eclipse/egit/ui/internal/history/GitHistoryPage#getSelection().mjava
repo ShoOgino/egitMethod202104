@@ -1,0 +1,19 @@
+	/**
+	 * Returns the last, tracked selection. If no selection has been tracked,
+	 * returns the current selection in the active part.
+	 *
+	 * @return selection
+	 */
+	private IStructuredSelection getSelection() {
+		if (selectionTracker != null
+				&& selectionTracker.getSelection() != null) {
+			return selectionTracker.getSelection();
+		}
+		// fallback to current selection of the active part
+		ISelection selection = getSite().getPage().getSelection();
+		if (selection != null) {
+			return SelectionUtils.getStructuredSelection(selection);
+		}
+		return null;
+	}
+

@@ -1,0 +1,33 @@
+	/**
+	 * <p>
+	 * Determines the
+	 * {@link SelectionUtils#getMostFittingInput(IStructuredSelection, Object)
+	 * most fitting} HistoryPageInput for the {@link #getSelection() last
+	 * selection} and the given object. Most fitting means that the input will
+	 * contain all selected resources which are contained in the same repository
+	 * as the given object. If no most fitting input can be determined, the
+	 * given object is returned as is.
+	 * </p>
+	 * <p>
+	 * This is a workaround for the limitation of the GenericHistoryView that
+	 * only forwards the first part of a selection and adapts it immediately to
+	 * an {@link IResource}.
+	 * </p>
+	 *
+	 * @param object
+	 *            The object to which the HistoryPageInput is tailored
+	 * @return the most fitting history input
+	 * @see SelectionUtils#getMostFittingInput(IStructuredSelection, Object)
+	 */
+	private Object getMostFittingInput(Object object) {
+		IStructuredSelection selection = getSelection();
+		if (selection != null && !selection.isEmpty()) {
+			HistoryPageInput mostFittingInput = SelectionUtils
+					.getMostFittingInput(selection, object);
+			if (mostFittingInput != null) {
+				return mostFittingInput;
+			}
+		}
+		return object;
+	}
+

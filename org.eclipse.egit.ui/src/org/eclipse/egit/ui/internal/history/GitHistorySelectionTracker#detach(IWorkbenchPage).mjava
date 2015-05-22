@@ -1,0 +1,16 @@
+	/**
+	 * Detaches this tracker from the given workbench page. If this tracker has
+	 * not been {@link #attach(IWorkbenchPage) attached} to the page previously,
+	 * this call has no effect.
+	 *
+	 * @param page
+	 *            workbench page
+	 * @see #attach(IWorkbenchPage)
+	 */
+	public void detach(IWorkbenchPage page) {
+		if (page != null) {
+			page.removePartListener((IPartListener2) this);
+			page.removeSelectionListener(this);
+		}
+	}
+

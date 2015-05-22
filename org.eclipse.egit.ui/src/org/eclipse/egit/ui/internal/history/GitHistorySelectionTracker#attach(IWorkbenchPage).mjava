@@ -1,0 +1,15 @@
+	/**
+	 * Attaches this tracker to the given workbench page. Any attached tracker
+	 * should be {@link #detach(IWorkbenchPage) detached}, if no longer needed.
+	 *
+	 * @param page
+	 *            workbench page
+	 * @see #detach(IWorkbenchPage)
+	 */
+	public void attach(IWorkbenchPage page) {
+		if (page != null) {
+			page.addPartListener((IPartListener2) this);
+			page.addSelectionListener(this);
+		}
+	}
+

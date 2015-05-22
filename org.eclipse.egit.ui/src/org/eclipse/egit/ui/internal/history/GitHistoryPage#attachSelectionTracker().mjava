@@ -1,0 +1,10 @@
+	/**
+	 * Attaches the selection tracker to the workbench page containing this page.
+	 */
+	private void attachSelectionTracker() {
+		if (selectionTracker == null) {
+			selectionTracker = new GitHistorySelectionTracker();
+			selectionTracker.attach(getSite().getPage());
+		}
+	}
+
