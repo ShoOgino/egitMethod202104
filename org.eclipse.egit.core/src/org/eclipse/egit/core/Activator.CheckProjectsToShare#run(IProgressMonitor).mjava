@@ -1,0 +1,34 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			Set<IProject> projectsToCheck;
+			synchronized (lock) {
+				projectsToCheck = projectCandidates;
+				projectCandidates = new LinkedHashSet<>();
+			}
+			if (projectsToCheck.isEmpty()) {
+				return Status.OK_STATUS;
+			}
+
+			final Map<IProject, File> projects = new HashMap<IProject, File>();
+			for (IProject project : projectsToCheck) {
+				if (project.isAccessible()) {
+					try {
+						visitConnect(project, projects);
+					} catch (CoreException e) {
+						logError(e.getMessage(), e);
+					}
+				}
+			}
+			if (monitor.isCanceled()) {
+				return Status.CANCEL_STATUS;
+			}
+			if (projects.size() > 0) {
+				ConnectProviderOperation op = new ConnectProviderOperation(
+						projects);
+				JobUtil.scheduleUserJob(op,
+						CoreText.Activator_AutoShareJobName,
+						JobFamilies.AUTO_SHARE);
+			}
+			return Status.OK_STATUS;
+		}
+

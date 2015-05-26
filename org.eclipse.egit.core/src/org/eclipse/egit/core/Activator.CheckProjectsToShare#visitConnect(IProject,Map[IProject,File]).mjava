@@ -1,47 +1,42 @@
-		private boolean visitConnect(IResourceDelta delta,
+		private void visitConnect(IProject project,
 				final Map<IProject, File> projects) throws CoreException {
-			if (!doAutoShare())
-				return false;
-			if (delta.getKind() == IResourceDelta.CHANGED
-					&& (delta.getFlags() & INTERESTING_CHANGES) == 0)
-				return true;
-			final IResource resource = delta.getResource();
-			if (!resource.exists() || !resource.isAccessible() ||
-					resource.isLinked(IResource.CHECK_ANCESTORS))
-				return false;
-			if (resource.getType() != IResource.PROJECT)
-				return true;
-			if (RepositoryMapping.getMapping(resource) != null)
-				return false;
-			final IProject project = (IProject) resource;
+
+			if (RepositoryMapping.getMapping(project) != null) {
+				return;
+			}
 			RepositoryProvider provider = RepositoryProvider
 					.getProvider(project);
 			// respect if project is already shared with another
 			// team provider
-			if (provider != null)
-				return false;
+			if (provider != null) {
+				return;
+			}
 			RepositoryFinder f = new RepositoryFinder(project);
 			f.setFindInChildren(false);
 			Collection<RepositoryMapping> mappings = f.find(new NullProgressMonitor());
-			if (mappings.size() != 1)
-				return false;
+			if (mappings.size() != 1) {
+				return;
+			}
 
 			RepositoryMapping m = mappings.iterator().next();
 			IPath gitDirPath = m.getGitDirAbsolutePath();
-			if (gitDirPath.segmentCount() == 0)
-				return false;
+			if (gitDirPath.segmentCount() == 0) {
+				return;
+			}
 
 			IPath workingDir = gitDirPath.removeLastSegments(1);
 			// Don't connect "/" or "C:\"
-			if (workingDir.isRoot())
-				return false;
+			if (workingDir.isRoot()) {
+				return;
+			}
 
 			File userHome = FS.DETECTED.userHome();
 			if (userHome != null) {
 				Path userHomePath = new Path(userHome.getAbsolutePath());
 				// Don't connect "/home" or "/home/username"
-				if (workingDir.isPrefixOf(userHomePath))
-					return false;
+				if (workingDir.isPrefixOf(userHomePath)) {
+					return;
+				}
 			}
 
 			// connect
@@ -54,6 +49,5 @@
 			} catch (IllegalArgumentException e) {
 				logError(CoreText.Activator_AutoSharingFailed, e);
 			}
-			return false;
 		}
 

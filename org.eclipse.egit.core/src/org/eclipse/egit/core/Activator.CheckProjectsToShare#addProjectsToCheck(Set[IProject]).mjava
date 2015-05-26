@@ -1,0 +1,9 @@
+		public void addProjectsToCheck(Set<IProject> projects) {
+			synchronized (lock) {
+				this.projectCandidates.addAll(projects);
+				if (!projectCandidates.isEmpty()) {
+					schedule(100);
+				}
+			}
+		}
+
