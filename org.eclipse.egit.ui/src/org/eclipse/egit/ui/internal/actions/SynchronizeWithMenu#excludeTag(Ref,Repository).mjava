@@ -8,6 +8,7 @@
 			} catch (IOException e) {
 				Activator.logError(e.getMessage(), e);
 			} finally {
+				rw.close();
 				rw.dispose();
 			}
 		}

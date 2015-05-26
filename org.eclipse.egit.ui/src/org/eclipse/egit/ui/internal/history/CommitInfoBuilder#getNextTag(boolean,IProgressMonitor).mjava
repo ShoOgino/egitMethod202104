@@ -14,42 +14,47 @@
 			throws IOException, OperationCanceledException {
 		if (monitor.isCanceled())
 			throw new OperationCanceledException();
-		RevWalk revWalk = new RevWalk(db);
-		revWalk.setRetainBody(false);
-		Map<String, Ref> tagsMap = db.getTags();
-		Ref tagRef = null;
+		try (RevWalk revWalk = new RevWalk(db)) {
+			revWalk.setRetainBody(false);
+			Map<String, Ref> tagsMap = db.getTags();
+			Ref tagRef = null;
 
-		for (Ref ref : tagsMap.values()) {
-			if (monitor.isCanceled())
-				throw new OperationCanceledException();
-			// both RevCommits must be allocated using same RevWalk instance,
-			// otherwise isMergedInto returns wrong result!
-			RevCommit current = revWalk.parseCommit(commit);
-			// tags can point to any object, we only want tags pointing at
-			// commits
-			RevObject any = revWalk.peel(revWalk.parseAny(ref.getObjectId()));
-			if (!(any instanceof RevCommit))
-				continue;
-			RevCommit newTag = (RevCommit) any;
-			if (newTag.getId().equals(commit))
-				continue;
-
-			// check if newTag matches our criteria
-			if (isMergedInto(revWalk, newTag, current, searchDescendant)) {
+			for (Ref ref : tagsMap.values()) {
 				if (monitor.isCanceled())
 					throw new OperationCanceledException();
-				if (tagRef != null) {
-					RevCommit oldTag = revWalk
-							.parseCommit(tagRef.getObjectId());
+				// both RevCommits must be allocated using same RevWalk
+				// instance,
+				// otherwise isMergedInto returns wrong result!
+				RevCommit current = revWalk.parseCommit(commit);
+				// tags can point to any object, we only want tags pointing at
+				// commits
+				RevObject any = revWalk
+						.peel(revWalk.parseAny(ref.getObjectId()));
+				if (!(any instanceof RevCommit))
+					continue;
+				RevCommit newTag = (RevCommit) any;
+				if (newTag.getId().equals(commit))
+					continue;
 
-					// both oldTag and newTag satisfy search criteria, so taking
-					// the closest one
-					if (isMergedInto(revWalk, oldTag, newTag, searchDescendant))
+				// check if newTag matches our criteria
+				if (isMergedInto(revWalk, newTag, current, searchDescendant)) {
+					if (monitor.isCanceled())
+						throw new OperationCanceledException();
+					if (tagRef != null) {
+						RevCommit oldTag = revWalk
+								.parseCommit(tagRef.getObjectId());
+
+						// both oldTag and newTag satisfy search criteria, so
+						// taking
+						// the closest one
+						if (isMergedInto(revWalk, oldTag, newTag,
+								searchDescendant))
+							tagRef = ref;
+					} else
 						tagRef = ref;
-				} else
-					tagRef = ref;
+				}
 			}
+			return tagRef;
 		}
-		return tagRef;
 	}
 

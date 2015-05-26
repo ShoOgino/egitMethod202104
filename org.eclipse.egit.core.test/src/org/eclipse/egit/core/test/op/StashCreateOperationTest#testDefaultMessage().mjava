@@ -6,8 +6,10 @@
 		StashCreateOperation stashCreateOperation = new StashCreateOperation(repository);
 		stashCreateOperation.execute(null);
 
-		RevWalk revWalk = new RevWalk(repository);
-		RevCommit commit = revWalk.parseCommit(repository.resolve("stash@{0}"));
-		assertTrue(commit.getFullMessage().length() > 0);
+		try (RevWalk revWalk = new RevWalk(repository)) {
+			RevCommit commit = revWalk
+					.parseCommit(repository.resolve("stash@{0}"));
+			assertTrue(commit.getFullMessage().length() > 0);
+		}
 	}
 

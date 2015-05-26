@@ -78,8 +78,7 @@
 			}
 
 			Map<String, Date> tagMap = new HashMap<String, Date>();
-			try {
-				RevWalk rw = new RevWalk(repository);
+			try (RevWalk rw = new RevWalk(repository)) {
 				Map<String, Ref> tags = repository.getRefDatabase().getRefs(
 						Constants.R_TAGS);
 				for (Ref tagRef : tags.values()) {

@@ -18,8 +18,7 @@
 		if (treeIterator == null)
 			return true;
 		String repoRelativePath = mapping.getRepoRelativePath(path);
-		TreeWalk walk = new TreeWalk(repository);
-		try {
+		try (TreeWalk walk = new TreeWalk(repository)) {
 			walk.addTree(treeIterator);
 			walk.setFilter(PathFilter.create(repoRelativePath));
 			while (walk.next()) {
@@ -31,8 +30,6 @@
 						.equals(FileMode.TREE))
 					walk.enterSubtree();
 			}
-		} finally {
-			walk.close();
 		}
 		return false;
 	}

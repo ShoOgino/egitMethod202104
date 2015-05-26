@@ -1,7 +1,7 @@
 	private static String getCherryPickOriginalAuthor(Repository mergeRepository) {
-		try {
+		try (RevWalk rw = new RevWalk(mergeRepository)) {
 			ObjectId cherryPickHead = mergeRepository.readCherryPickHead();
-			PersonIdent author = new RevWalk(mergeRepository).parseCommit(
+			PersonIdent author = rw.parseCommit(
 					cherryPickHead).getAuthorIdent();
 			return author.getName() + " <" + author.getEmailAddress() + ">"; //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {

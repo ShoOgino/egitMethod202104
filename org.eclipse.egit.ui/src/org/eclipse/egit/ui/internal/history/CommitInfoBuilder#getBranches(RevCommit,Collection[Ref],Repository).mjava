@@ -11,12 +11,9 @@
 			Collection<Ref> allRefs, Repository db)
 			throws MissingObjectException, IncorrectObjectTypeException,
 			IOException {
-		RevWalk revWalk = new RevWalk(db);
-		try {
+		try (RevWalk revWalk = new RevWalk(db)) {
 			revWalk.setRetainBody(false);
 			return RevWalkUtils.findBranchesReachableFrom(commit, revWalk, allRefs);
-		} finally {
-			revWalk.dispose();
 		}
 	}
 
