@@ -1,23 +1,19 @@
 		public void resourceChanged(IResourceChangeEvent event) {
+			if (!doAutoShare()) {
+				return;
+			}
 			try {
-
-				final Map<IProject, File> projects = new HashMap<IProject, File>();
-
+				final Set<IProject> projectCandidates = new LinkedHashSet<>();
 				event.getDelta().accept(new IResourceDeltaVisitor() {
 					public boolean visit(IResourceDelta delta)
 							throws CoreException {
-						return visitConnect(delta, projects);
+						return collectOpenedProjects(delta,
+								projectCandidates);
 					}
 				});
-
-				if (projects.size() > 0) {
-					ConnectProviderOperation op = new ConnectProviderOperation(
-							projects);
-					JobUtil.scheduleUserJob(op,
-							CoreText.Activator_AutoShareJobName,
-							JobFamilies.AUTO_SHARE);
+				if(!projectCandidates.isEmpty()){
+					checkProjectsJob.addProjectsToCheck(projectCandidates);
 				}
-
 			} catch (CoreException e) {
 				Activator.logError(e.getMessage(), e);
 				return;

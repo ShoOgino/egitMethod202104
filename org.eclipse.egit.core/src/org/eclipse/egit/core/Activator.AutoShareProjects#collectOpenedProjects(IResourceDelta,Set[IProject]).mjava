@@ -1,0 +1,26 @@
+		/*
+		 * This method should not use RepositoryMapping.getMapping(project) or
+		 * RepositoryProvider.getProvider(project) which can trigger
+		 * RepositoryProvider.map(project) and deadlock current thread. See
+		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=468270
+		 */
+		private boolean collectOpenedProjects(IResourceDelta delta,
+				Set<IProject> projects) {
+			if (delta.getKind() == IResourceDelta.CHANGED
+					&& (delta.getFlags() & INTERESTING_CHANGES) == 0) {
+				return true;
+			}
+			final IResource resource = delta.getResource();
+			if (resource.getType() == IResource.ROOT) {
+				return true;
+			}
+			if (resource.getType() != IResource.PROJECT) {
+				return false;
+			}
+			if (!resource.isAccessible()) {
+				return false;
+			}
+			projects.add((IProject) resource);
+			return false;
+		}
+

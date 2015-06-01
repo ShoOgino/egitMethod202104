@@ -3,23 +3,9 @@
 		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
 		final String startCommitSha1 = getStartCommit(event);
 
-		InputDialog inputDialog = new InputDialog(
-				HandlerUtil.getActiveShell(event),
-				UIText.ReleaseStartHandler_provideReleaseName,
-				UIText.ReleaseStartHandler_provideANameForTheNewRelease, "", //$NON-NLS-1$
-				new ReleaseNameValidator(gfRepo));
+		Shell activeShell = HandlerUtil.getActiveShell(event);
 
-		if (inputDialog.open() != Window.OK) {
-			return null;
-		}
-
-		final String releaseName = inputDialog.getValue();
-
-		ReleaseStartOperation releaseStartOperation = new ReleaseStartOperation(
-				gfRepo, startCommitSha1, releaseName);
-		JobUtil.scheduleUserWorkspaceJob(releaseStartOperation,
-				UIText.ReleaseStartHandler_startingNewRelease,
-				JobFamilies.GITFLOW_FAMILY);
+		doExecute(gfRepo, startCommitSha1, activeShell);
 
 		return null;
 	}

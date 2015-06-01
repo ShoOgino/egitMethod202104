@@ -1,0 +1,18 @@
+	/**
+	 * @return Selected commit
+	 */
+	private RevCommit getSelectedCommit() {
+		ISelection selection = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart()
+				.getSite().getSelectionProvider().getSelection();
+		if (!(selection instanceof IStructuredSelection)) {
+			return null;
+		}
+		IStructuredSelection structSelection = (IStructuredSelection) selection;
+		Object firstElement = structSelection.getFirstElement();
+		if (!(firstElement instanceof RevCommit)) {
+			return null;
+		}
+		return (RevCommit) firstElement;
+	}
+
