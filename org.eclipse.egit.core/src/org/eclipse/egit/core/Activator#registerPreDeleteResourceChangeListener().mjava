@@ -7,8 +7,7 @@
 					if (resource instanceof IProject) {
 						IProject project = (IProject) resource;
 						if (project.isAccessible()) {
-							if (RepositoryProvider.getProvider(project,
-									GitProvider.ID) != null) {
+							if (ResourceUtil.isSharedWithGit(project)) {
 								IResource dotGit = project
 										.findMember(Constants.DOT_GIT);
 								if (dotGit != null && dotGit

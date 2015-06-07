@@ -1,0 +1,11 @@
+		private static void initProviderAsynchronously(
+				@NonNull IProject project) {
+			synchronized (INSTANCE.projects) {
+				if (INSTANCE.projects.contains(project)) {
+					return;
+				}
+				INSTANCE.projects.add(project);
+			}
+			INSTANCE.schedule();
+		}
+

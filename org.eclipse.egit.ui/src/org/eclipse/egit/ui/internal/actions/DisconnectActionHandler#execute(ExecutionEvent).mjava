@@ -3,8 +3,7 @@
 		IProject[] selectedProjects = getProjectsForSelectedResources();
 		List<IProject> projects = new ArrayList<IProject>(selectedProjects.length);
 		for (IProject project : selectedProjects) {
-			if (project.isOpen() && RepositoryProvider.getProvider(project,
-					GitProvider.ID) != null) {
+			if (project.isOpen() && ResourceUtil.isSharedWithGit(project)) {
 				projects.add(project);
 			}
 		}

@@ -1,0 +1,18 @@
+	/**
+	 * Construct a {@link RepositoryMapping} for previously unknown project.
+	 *
+	 * @param mappedContainer
+	 * @param gitDir
+	 * @return a new RepositoryMapping for given container. Returns <code>null
+	 *         <code> if container does not exists.
+	 */
+	@Nullable
+	public static RepositoryMapping create(@NonNull IContainer mappedContainer,
+			@NonNull File gitDir) {
+		IPath location = mappedContainer.getLocation();
+		if (location == null) {
+			return null;
+		}
+		return new RepositoryMapping(mappedContainer, location, gitDir);
+	}
+

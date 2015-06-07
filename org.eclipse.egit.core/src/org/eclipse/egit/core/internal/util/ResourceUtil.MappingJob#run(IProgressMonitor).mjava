@@ -1,0 +1,28 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			HashSet<IProject> work;
+			synchronized (projects) {
+				work = new LinkedHashSet<>(projects);
+			}
+
+			for (IProject project : work) {
+				if (monitor.isCanceled()) {
+					break;
+				}
+				// this will instantiate and map the provider (can lock!)
+				RepositoryProvider.getProvider(project, GitProvider.ID);
+			}
+
+			synchronized (projects) {
+				if (monitor.isCanceled()) {
+					projects.clear();
+				} else {
+					projects.removeAll(work);
+				}
+				if (!projects.isEmpty()) {
+					schedule();
+				}
+			}
+			return Status.OK_STATUS;
+		}
+

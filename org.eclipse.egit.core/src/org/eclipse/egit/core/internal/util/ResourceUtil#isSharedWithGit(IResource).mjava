@@ -1,5 +1,30 @@
-	private static boolean isSharedWithGit(@NonNull IResource resource) {
-		return RepositoryProvider.getProvider(resource.getProject(),
-				GitProvider.ID) != null;
+	/**
+	 * @param resource
+	 *            non null
+	 * @return true if the project is configured with git provider
+	 */
+	public static boolean isSharedWithGit(@NonNull IResource resource) {
+		IProject project = resource.getProject();
+		if (!project.isAccessible()) {
+			return false;
+		}
+		try {
+			// Look for an existing provider
+			GitProvider provider = lookupProviderProp(project);
+			if (provider != null) {
+				return true;
+			}
+			// There isn't one so check the persistent property
+			String existingID = project
+					.getPersistentProperty(PROVIDER_PROP_KEY);
+			boolean isGitProvider = GitProvider.ID.equals(existingID);
+			if (isGitProvider) {
+				MappingJob.initProviderAsynchronously(project);
+			}
+			return isGitProvider;
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(e.getStatus());
+			return false;
+		}
 	}
 

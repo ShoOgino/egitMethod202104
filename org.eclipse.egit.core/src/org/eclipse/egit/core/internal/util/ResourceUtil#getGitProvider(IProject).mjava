@@ -1,0 +1,35 @@
+	/**
+	 * Returns git provider if associated with the given project or
+	 * <code>null</code> if the project is not associated with a provider or the
+	 * provider is not fully loaded yet. To check if the git provider is
+	 * associated with the project, use {@link #isSharedWithGit(IResource)}.
+	 *
+	 * @param project
+	 *            the project to query for a provider
+	 * @return the repository provider or null
+	 */
+	@Nullable
+	final public static GitProvider getGitProvider(@NonNull IProject project) {
+		if (!project.isAccessible()) {
+			return null;
+		}
+		try {
+			// Look for an existing provider
+			GitProvider provider = lookupProviderProp(project);
+			if (provider != null) {
+				return provider;
+			}
+			String existingID = project
+					.getPersistentProperty(PROVIDER_PROP_KEY);
+			boolean isGitProvider = GitProvider.ID.equals(existingID);
+			if (isGitProvider) {
+				MappingJob.initProviderAsynchronously(project);
+			}
+			// not loaded yet, but we can't load it because it will use locks
+			return null;
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(e.getStatus());
+		}
+		return null;
+	}
+

@@ -1,14 +1,7 @@
-	/**
-	 * Construct a {@link RepositoryMapping} for previously
-	 * unknown project.
-	 *
-	 * @param mappedContainer
-	 * @param gitDir
-	 */
-	public RepositoryMapping(@NonNull final IContainer mappedContainer,
+	private RepositoryMapping(@NonNull
+	final IContainer mappedContainer, final @NonNull IPath location,
 			@NonNull final File gitDir) {
-		final IPath cLoc = mappedContainer.getLocation()
-				.removeTrailingSeparator();
+		final IPath cLoc = location.removeTrailingSeparator();
 		final IPath gLoc = Path.fromOSString(gitDir.getAbsolutePath())
 				.removeTrailingSeparator();
 		final IPath gLocParent = gLoc.removeLastSegments(1);

@@ -1,7 +1,7 @@
 	@Override
 	public boolean isEnabled() {
 		return resource != null
-				&& RepositoryProvider.getProvider(resource.getProject(),
-						GitProvider.ID) != null;
+				&& org.eclipse.egit.core.internal.util.ResourceUtil
+						.isSharedWithGit(resource.getProject());
 	}
 

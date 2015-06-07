@@ -2,7 +2,9 @@
 	 * @param resource any workbench resource contained within this project.
 	 * @return the mapping for the specified project
 	 */
-	public RepositoryMapping getRepositoryMapping(IResource resource) {
+	@Nullable
+	public /* TODO static */ RepositoryMapping getRepositoryMapping(
+			@Nullable IResource resource) {
 		IResource r = resource;
 		try {
 			for (; r != null; r = r.getParent()) {

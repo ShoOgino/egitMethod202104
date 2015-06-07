@@ -2,6 +2,7 @@
 	 * @return information about the mapping of an Eclipse project
 	 * to a Git repository.
 	 */
+	@Nullable
 	public synchronized GitProjectData getData() {
 		if (data == null) {
 			data = GitProjectData.get(getProject());

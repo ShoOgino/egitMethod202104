@@ -4,11 +4,11 @@
 	 *         Git provider is not associated with the project or an exception
 	 *         occurred
 	 */
-	public synchronized static GitProjectData get(final IProject p) {
+	@Nullable
+	public synchronized static GitProjectData get(final @NonNull IProject p) {
 		try {
 			GitProjectData d = lookup(p);
-			if (d == null && RepositoryProvider.getProvider(p,
-					GitProvider.ID) != null) {
+			if (d == null && ResourceUtil.isSharedWithGit(p)) {
 				d = new GitProjectData(p).load();
 				cache(p, d);
 			}

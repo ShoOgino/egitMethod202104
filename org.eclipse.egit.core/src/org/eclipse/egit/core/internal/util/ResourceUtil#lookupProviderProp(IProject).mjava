@@ -1,0 +1,13 @@
+	/*
+	 * Return the provider mapped to project, or null if none;
+	 */
+	@Nullable
+	private static GitProvider lookupProviderProp(IProject project)
+			throws CoreException {
+		Object provider = project.getSessionProperty(PROVIDER_PROP_KEY);
+		if (provider instanceof GitProvider) {
+			return (GitProvider) provider;
+		}
+		return null;
+	}
+

@@ -1,4 +1,7 @@
 	public void configureProject() throws CoreException {
-		getData().markTeamPrivateResources();
+		GitProjectData projectData = getData();
+		if (projectData != null) {
+			projectData.markTeamPrivateResources();
+		}
 	}
 

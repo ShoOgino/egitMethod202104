@@ -1,7 +1,6 @@
 	private void compare(CommitItem commitItem) {
 		IFile file = findFile(commitItem.path);
-		if (file == null || RepositoryProvider.getProvider(file.getProject(),
-				GitProvider.ID) == null) {
+		if (file == null || !ResourceUtil.isSharedWithGit(file.getProject())) {
 			CompareUtils.compareHeadWithWorkingTree(repository,
 					commitItem.path);
 		} else {
