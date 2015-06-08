@@ -141,9 +141,8 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (TreeItem item : fTreeViewer.getTree().getItems()) {
-					fTreeViewer.setSubtreeChecked(item.getData(), true);
-				}
+				isUserModifiedTreeSelection = true;
+				fTreeViewer.setAllChecked(true);
 				enableOk();
 			}
 
@@ -160,9 +159,8 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (TreeItem item : fTreeViewer.getTree().getItems()) {
-					fTreeViewer.setSubtreeChecked(item.getData(), false);
-				}
+				isUserModifiedTreeSelection = true;
+				fTreeViewer.setAllChecked(false);
 				enableOk();
 			}
 
