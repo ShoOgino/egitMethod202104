@@ -6,7 +6,9 @@
 			}
 			String branchName = remoteBranchNameText.getText();
 			if (branchName.length() == 0) {
-				setErrorMessage(UIText.PushBranchPage_ChooseBranchNameError);
+				setErrorMessage(MessageFormat.format(
+						UIText.PushBranchPage_ChooseBranchNameError,
+						remoteConfig.getName()));
 				return;
 			}
 			if (!Repository.isValidRefName(Constants.R_HEADS + branchName)) {

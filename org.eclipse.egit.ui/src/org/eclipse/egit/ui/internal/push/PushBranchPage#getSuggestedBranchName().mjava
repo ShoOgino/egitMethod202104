@@ -1,5 +1,5 @@
 	private String getSuggestedBranchName() {
-		if (ref != null) {
+		if (ref != null && !ref.getName().startsWith(Constants.R_REMOTES)) {
 			StoredConfig config = repository.getConfig();
 			String branchName = Repository.shortenRefName(ref.getName());
 
