@@ -1,0 +1,7 @@
+	private void acceptError(org.eclipse.jgit.api.RebaseResult.Status status) {
+		bot.button("Details >>").click();
+		bot.list().select(NLS.bind(
+				UIText.FeatureRebaseHandler_statusWas, status.toString()));
+		bot.button("OK").click();
+	}
+

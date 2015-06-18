@@ -12,7 +12,6 @@
 				ContextMenuHelper.clickContextMenuSync(projectExplorerTree, menuPath);
 			}
 		});
-		bot.button().click();
 		bot.waitUntil(Conditions.waitForJobs(JobFamilies.GITFLOW_FAMILY, "Git flow jobs"));
 	}
 

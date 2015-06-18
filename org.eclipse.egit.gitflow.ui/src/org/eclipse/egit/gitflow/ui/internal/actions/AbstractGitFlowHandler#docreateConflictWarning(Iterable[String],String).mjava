@@ -1,0 +1,11 @@
+	private MultiStatus docreateConflictWarning(Iterable<String> paths,
+			String message) {
+		String pluginId = Activator.getPluginId();
+		MultiStatus multiStatus = new MultiStatus(pluginId, 1, message, null);
+		for (String path : paths) {
+			multiStatus.add(new Status(IStatus.WARNING, pluginId, 1, path, null));
+		}
+
+		return multiStatus;
+	}
+

@@ -1,0 +1,22 @@
+	/**
+	 * @param develop
+	 * @param branch
+	 * @param mergeResult
+	 * @return Status describing which branches were involved in a conflicting
+	 *         merge
+	 */
+	protected MultiStatus createMergeConflictInfo(String develop,
+			String branch, MergeResult mergeResult) {
+		String pluginId = Activator.getPluginId();
+		MultiStatus info = new MultiStatus(pluginId, 1,
+				UIText.AbstractGitFlowHandler_finishConflicts, null);
+		info.add(new Status(IStatus.WARNING, pluginId, 1, NLS.bind(
+				UIText.FinishHandler_conflictsWhileMergingFromTo,
+				branch, develop), null));
+
+		MultiStatus warning = createMergeConflictWarning(mergeResult);
+		info.addAll(warning);
+
+		return info;
+	}
+

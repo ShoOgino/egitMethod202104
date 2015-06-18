@@ -15,8 +15,8 @@
 			MergeResult mergeResult = operation.getMergeResult();
 			MergeStatus mergeStatus = mergeResult.getMergeStatus();
 			if (MergeStatus.CONFLICTING.equals(mergeStatus)) {
-				MultiStatus warning = createConflictWarning(develop, featureBranch, mergeResult);
-				ErrorDialog.openError(null, UIText.FeatureFinishHandler_Conflicts, null, warning);
+				MultiStatus status = createMergeConflictInfo(develop, featureBranch, mergeResult);
+				ErrorDialog.openError(null, UIText.FeatureFinishHandler_Conflicts, null, status);
 			}
 		} catch (WrongGitFlowStateException | CoreException | IOException
 				| OperationCanceledException | InterruptedException e) {

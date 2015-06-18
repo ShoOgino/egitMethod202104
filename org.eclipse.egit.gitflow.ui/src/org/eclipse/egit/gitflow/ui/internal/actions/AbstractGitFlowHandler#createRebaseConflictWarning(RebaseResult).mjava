@@ -1,0 +1,11 @@
+	/**
+	 * @param rebaseResult
+	 * @return Status containing detailed information about what went wrong
+	 *         during rebase
+	 */
+	protected MultiStatus createRebaseConflictWarning(RebaseResult rebaseResult) {
+		Iterable<String> paths = rebaseResult.getConflicts();
+		return docreateConflictWarning(paths,
+				UIText.AbstractGitFlowHandler_rebaseConflicts);
+	}
+

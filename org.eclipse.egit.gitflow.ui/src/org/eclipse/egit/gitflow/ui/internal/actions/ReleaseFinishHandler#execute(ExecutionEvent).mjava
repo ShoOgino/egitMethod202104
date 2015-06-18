@@ -22,8 +22,8 @@
 			if (handleConflictsOnMaster(gfRepo)) {
 				return null;
 			}
-			MultiStatus warning = createConflictWarning(develop, releaseBranch, mergeResult);
-			ErrorDialog.openError(null, UIText.ReleaseFinishHandler_Conflicts, null, warning);
+			MultiStatus status = createMergeConflictInfo(develop, releaseBranch, mergeResult);
+			ErrorDialog.openError(null, UIText.ReleaseFinishHandler_Conflicts, null, status);
 		} catch (WrongGitFlowStateException | CoreException | IOException
 				| OperationCanceledException | InterruptedException e) {
 			return error(e.getMessage(), e);

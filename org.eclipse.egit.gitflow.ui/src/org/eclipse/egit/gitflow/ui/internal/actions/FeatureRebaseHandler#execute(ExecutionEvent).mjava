@@ -2,8 +2,8 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
 
-		FeatureRebaseOperation featureRebaseOperation = new FeatureRebaseOperation(gfRepo);
-		JobUtil.scheduleUserWorkspaceJob(featureRebaseOperation,
+		FeatureRebaseOperation rebaseOperation = new FeatureRebaseOperation(gfRepo);
+		JobUtil.scheduleUserWorkspaceJob(rebaseOperation,
 				UIText.FeatureRebaseHandler_rebasingFeature,
 				JobFamilies.GITFLOW_FAMILY);
 		IJobManager jobMan = Job.getJobManager();
@@ -13,23 +13,22 @@
 			return error(e.getMessage(), e);
 		}
 
-		RebaseResult.Status status = featureRebaseOperation
-				.getOperationResult().getStatus();
-		if (RebaseResult.Status.FAILED.equals(status)) {
-			return error(UIText.FeatureRebaseHandler_rebaseFailed);
-		}
-		if (!RebaseResult.Status.STOPPED.equals(status)) {
+		RebaseResult operationResult = rebaseOperation.getOperationResult();
+		RebaseResult.Status status = operationResult.getStatus();
+
+		if (status.isSuccessful()) {
 			return null;
 		}
-		MessageDialog.openWarning(null,
-				UIText.FeatureRebaseHandler_conflicts,
-				UIText.FeatureRebaseHandler_resolveConflictsManually);
-		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().showView(INTERACTIVE_REBASE_VIEW_ID);
-		} catch (PartInitException e) {
-			return error(e.getMessage(), e);
+
+		if (STOPPED.equals(status)) {
+			try {
+				showInteractiveRebaseView(event);
+			} catch (PartInitException e) {
+				return error(e.getMessage(), e);
+			}
 		}
+
+		openWarning(operationResult);
 
 		return null;
 	}

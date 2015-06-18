@@ -1,0 +1,11 @@
+	/**
+	 * @param mergeResult
+	 * @return Status containing detailed information about what went wrong
+	 *         during merge
+	 */
+	private MultiStatus createMergeConflictWarning(MergeResult mergeResult) {
+		Iterable<String> paths = mergeResult.getConflicts().keySet();
+		return docreateConflictWarning(paths,
+				UIText.AbstractGitFlowHandler_finishConflicts);
+	}
+

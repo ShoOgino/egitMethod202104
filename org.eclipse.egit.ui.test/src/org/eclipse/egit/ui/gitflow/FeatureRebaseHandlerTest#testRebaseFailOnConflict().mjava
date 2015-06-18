@@ -1,5 +1,9 @@
 	@Test
-	public void testRebase() throws Exception {
+	public void testRebaseFailOnConflict() throws Exception {
+		// if AUTOMATED_MODE is true, we wouldn't get the error
+		// dialog which is part of what we want to test here
+		ErrorDialog.AUTOMATED_MODE = false;
+
 		Git git = Git.wrap(repository);
 
 		init();
@@ -13,9 +17,10 @@
 		checkoutFeature(FEATURE_NAME);
 
 		rebaseFeature();
+		acceptError(RebaseResult.Status.STOPPED);
 
-		Status call = git.status().call();
-		Object[] conflicting = call.getConflicting().toArray();
+		Status status = git.status().call();
+		Object[] conflicting = status.getConflicting().toArray();
 		assertEquals(1, conflicting.length);
 		assertEquals(FILE1_PATH, conflicting[0]);
 
