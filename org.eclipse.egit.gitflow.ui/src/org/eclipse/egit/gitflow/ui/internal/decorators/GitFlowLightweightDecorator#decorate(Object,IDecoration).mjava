@@ -1,0 +1,29 @@
+	/**
+	 * This method should only be called by the decorator thread.
+	 *
+	 * @see org.eclipse.jface.viewers.ILightweightLabelDecorator#decorate(java.lang.Object,
+	 *      org.eclipse.jface.viewers.IDecoration)
+	 */
+	@Override
+	public void decorate(Object element, IDecoration decoration) {
+		// Don't decorate if UI plugin is not running
+		if (Activator.getDefault() == null) {
+			return;
+		}
+
+		// Don't decorate if the workbench is not running
+		if (!PlatformUI.isWorkbenchRunning()) {
+			return;
+		}
+
+
+		final GitFlowRepository repository = getRepository(element);
+		try {
+			if (repository != null) {
+				decorateRepository(repository, decoration);
+			}
+		} catch (Exception e) {
+			handleException(repository, e);
+		}
+	}
+

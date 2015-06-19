@@ -1,0 +1,15 @@
+		private void decorateIcons(IDecoration decoration,
+				GitFlowRepository repository) throws IOException {
+			ImageDescriptor overlay = null;
+
+			if (repository.getConfig().isInitialized()) {
+				overlay = INITIALIZED_IMAGE;
+			}
+
+			// TODO: change decoration depending on branch type, e.g. "F"-icon
+			// for feature branch
+
+			// Overlays can only be added once, so do it at the end
+			decoration.addOverlay(overlay);
+		}
+

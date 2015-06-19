@@ -1,0 +1,14 @@
+	private static @Nullable GitFlowRepository getRepository(Object element) {
+		GitFlowRepository repository = null;
+		if (element instanceof GitFlowRepository) {
+			repository = (GitFlowRepository) element;
+		}
+
+		if (element instanceof RepositoryNode) {
+			RepositoryNode node = (RepositoryNode) element;
+			repository = new GitFlowRepository(node.getObject());
+		}
+
+		return repository;
+	}
+

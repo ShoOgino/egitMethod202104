@@ -1,0 +1,15 @@
+	/**
+	 * Decorates a single repository.
+	 *
+	 * @param repository
+	 *            the repository to decorate
+	 * @param decoration
+	 *            the decoration
+	 * @throws IOException
+	 */
+	private void decorateRepository(GitFlowRepository repository,
+			IDecoration decoration) throws IOException {
+		final DecorationHelper helper = new DecorationHelper();
+		helper.decorate(decoration, repository);
+	}
+
