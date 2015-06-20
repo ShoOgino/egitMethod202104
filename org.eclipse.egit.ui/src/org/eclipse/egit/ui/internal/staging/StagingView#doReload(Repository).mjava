@@ -1,7 +1,6 @@
 	private IndexDiffData doReload(final Repository repository) {
-		currentRepository = repository;
-
-		IndexDiffCacheEntry entry = org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache().getIndexDiffCacheEntry(currentRepository);
+		IndexDiffCacheEntry entry = org.eclipse.egit.core.Activator.getDefault()
+				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
 
 		if(cacheEntry != null && cacheEntry != entry)
 			cacheEntry.removeIndexDiffChangedListener(myIndexDiffListener);
