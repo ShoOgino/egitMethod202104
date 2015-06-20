@@ -7,7 +7,8 @@
 	 *            Path for which we need a resource handle.
 	 * @return The resource handle for the given path in the workspace.
 	 */
-	public static IResource getResourceHandleForLocation(IPath path) {
+	@NonNull
+	public static IResource getResourceHandleForLocation(@NonNull IPath path) {
 		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace()
 				.getRoot();
 

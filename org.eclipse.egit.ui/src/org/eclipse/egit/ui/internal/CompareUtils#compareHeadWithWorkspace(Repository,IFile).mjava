@@ -7,7 +7,13 @@
 	 */
 	public static void compareHeadWithWorkspace(Repository repository,
 			IFile file) {
-		String path = RepositoryMapping.getMapping(file).getRepoRelativePath(
+		RepositoryMapping mapping = RepositoryMapping.getMapping(file);
+		if (mapping == null) {
+			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
+					file.getLocation(), repository), null);
+			return;
+		}
+		String path = mapping.getRepoRelativePath(
 				file);
 		ITypedElement base = getHeadTypedElement(repository, path);
 		if (base == null)

@@ -8,6 +8,11 @@
 	public static ITypedElement getIndexTypedElement(final IFile baseFile)
 			throws IOException {
 		final RepositoryMapping mapping = RepositoryMapping.getMapping(baseFile);
+		if (mapping == null) {
+			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
+					baseFile.getLocation(), null), null);
+			return null;
+		}
 		final Repository repository = mapping.getRepository();
 		final String gitPath = mapping.getRepoRelativePath(baseFile);
 		final String encoding = CompareCoreUtils.getResourceEncoding(baseFile);

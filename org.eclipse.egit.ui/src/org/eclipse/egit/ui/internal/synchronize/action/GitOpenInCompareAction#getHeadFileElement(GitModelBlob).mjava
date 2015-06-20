@@ -1,5 +1,8 @@
 	private ITypedElement getHeadFileElement(GitModelBlob blob) {
 		RepositoryMapping mapping = RepositoryMapping.getMapping(blob.getLocation());
+		if (mapping == null) {
+			return null;
+		}
 		Repository repo = mapping.getRepository();
 		String gitPath = mapping.getRepoRelativePath(blob.getLocation());
 		return CompareUtils.getHeadTypedElement(repo, gitPath);

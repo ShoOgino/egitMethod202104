@@ -4,7 +4,8 @@
 	 * @param p TODO
 	 * @param initialKey TODO
 	 */
-	public RepositoryMapping(final Properties p, final String initialKey) {
+	public RepositoryMapping(@NonNull final Properties p,
+			@NonNull final String initialKey) {
 		final int dot = initialKey.lastIndexOf('.');
 
 		containerPathString = initialKey.substring(0, dot);

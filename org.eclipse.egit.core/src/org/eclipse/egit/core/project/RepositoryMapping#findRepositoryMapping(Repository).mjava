@@ -5,7 +5,9 @@
 	 * @return a RepositoryMapping related to repository. Null if no
 	 *         RepositoryMapping exists.
 	 */
-	public static RepositoryMapping findRepositoryMapping(Repository repository) {
+	@Nullable
+	public static RepositoryMapping findRepositoryMapping(
+			@NonNull Repository repository) {
 		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 		for (IProject project : projects) {

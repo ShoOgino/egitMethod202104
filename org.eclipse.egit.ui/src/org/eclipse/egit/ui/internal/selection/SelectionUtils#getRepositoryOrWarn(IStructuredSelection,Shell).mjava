@@ -7,8 +7,9 @@
 	 *            the shell for showing the warning
 	 * @return the single selected repository, or <code>null</code>
 	 */
+	@Nullable
 	public static Repository getRepositoryOrWarn(
-			IStructuredSelection selection, Shell shell) {
+			@NonNull IStructuredSelection selection, @NonNull Shell shell) {
 		return getRepository(true, selection, shell);
 	}
 

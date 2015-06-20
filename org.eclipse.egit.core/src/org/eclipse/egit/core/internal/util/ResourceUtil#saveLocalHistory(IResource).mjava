@@ -1,4 +1,4 @@
-	private static void saveLocalHistory(IResource resource)
+	private static void saveLocalHistory(@NonNull IResource resource)
 			throws CoreException {
 		if (!resource.isSynchronized(IResource.DEPTH_ZERO))
 			resource.refreshLocal(IResource.DEPTH_ZERO, null);

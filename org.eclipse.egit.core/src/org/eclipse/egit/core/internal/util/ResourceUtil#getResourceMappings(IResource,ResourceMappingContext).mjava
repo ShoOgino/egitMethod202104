@@ -9,7 +9,8 @@
 	 *            Context from which remote content could be retrieved.
 	 * @return All mappings available for that file.
 	 */
-	public static ResourceMapping[] getResourceMappings(IResource resource,
+	public static ResourceMapping[] getResourceMappings(
+			@NonNull IResource resource,
 			ResourceMappingContext context) {
 		final IModelProviderDescriptor[] modelDescriptors = ModelProvider
 				.getModelProviderDescriptors();

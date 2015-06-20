@@ -1,5 +1,5 @@
 	private static IContainer getContainerForLocationURI(IWorkspaceRoot root,
-			URI uri) {
+			@NonNull URI uri) {
 		IContainer[] containers = root.findContainersForLocationURI(uri);
 		return getExistingMappedResourceWithShortestPath(containers);
 	}

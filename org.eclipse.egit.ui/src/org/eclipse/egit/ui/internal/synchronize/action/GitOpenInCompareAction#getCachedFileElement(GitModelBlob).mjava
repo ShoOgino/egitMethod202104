@@ -2,6 +2,9 @@
 		try {
 			IPath location = blob.getLocation();
 			RepositoryMapping mapping = RepositoryMapping.getMapping(location);
+			if (mapping == null) {
+				return null;
+			}
 			Repository repo = mapping.getRepository();
 			String repoRelativePath = mapping.getRepoRelativePath(location);
 			return CompareUtils.getIndexTypedElement(repo, repoRelativePath);

@@ -5,7 +5,7 @@
 	 * @return true if the resource is shared with git, not a link and
 	 *         accessible in Eclipse
 	 */
-	private static boolean isValid(IResource resource) {
+	private static boolean isValid(@NonNull IResource resource) {
 		return resource.isAccessible()
 				&& !resource.isLinked(IResource.CHECK_ANCESTORS)
 				&& isSharedWithGit(resource);

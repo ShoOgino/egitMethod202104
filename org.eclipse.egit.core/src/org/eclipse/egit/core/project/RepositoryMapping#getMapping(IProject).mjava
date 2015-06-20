@@ -5,7 +5,8 @@
 	 * @return the RepositoryMapping for this project, or null for non
 	 *         GitProvider.
 	 */
-	public static RepositoryMapping getMapping(final IProject project) {
+	@Nullable
+	public static RepositoryMapping getMapping(@Nullable final IProject project) {
 		if (project == null || isNonWorkspace(project)) {
 			return null;
 		}

@@ -2,7 +2,9 @@
 	 * @param selection
 	 * @return the single selected repository, or <code>null</code>
 	 */
-	public static Repository getRepository(IStructuredSelection selection) {
+	@Nullable
+	public static Repository getRepository(
+			@NonNull IStructuredSelection selection) {
 		return getRepository(false, selection, null);
 	}
 

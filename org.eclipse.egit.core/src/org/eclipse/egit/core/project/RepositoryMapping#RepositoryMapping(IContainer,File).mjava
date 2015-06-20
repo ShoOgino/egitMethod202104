@@ -5,7 +5,8 @@
 	 * @param mappedContainer
 	 * @param gitDir
 	 */
-	public RepositoryMapping(final IContainer mappedContainer, final File gitDir) {
+	public RepositoryMapping(@NonNull final IContainer mappedContainer,
+			@NonNull final File gitDir) {
 		final IPath cLoc = mappedContainer.getLocation()
 				.removeTrailingSeparator();
 		final IPath gLoc = Path.fromOSString(gitDir.getAbsolutePath())

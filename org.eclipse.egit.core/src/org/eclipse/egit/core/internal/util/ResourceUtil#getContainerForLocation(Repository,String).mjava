@@ -9,8 +9,9 @@
 	 *            the repository-relative path of the container to search for
 	 * @return the IContainer corresponding to this path, or null
 	 */
-	public static IContainer getContainerForLocation(Repository repository,
-			String repoRelativePath) {
+	@Nullable
+	public static IContainer getContainerForLocation(
+			@NonNull Repository repository, @NonNull String repoRelativePath) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IPath path = new Path(repository.getWorkTree().getAbsolutePath()).append(repoRelativePath);
 		return root.getContainerForLocation(path);

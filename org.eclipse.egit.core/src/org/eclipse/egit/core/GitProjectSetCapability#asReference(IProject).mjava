@@ -1,5 +1,9 @@
+	@Nullable
 	private String asReference(IProject project) throws TeamException {
 		RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+		if (mapping == null) {
+			return null;
+		}
 		String branch;
 		try {
 			branch = mapping.getRepository().getBranch();
@@ -19,6 +23,9 @@
 					project.getName()));
 
 		String projectPath = mapping.getRepoRelativePath(project);
+		if (projectPath == null) {
+			return null;
+		}
 		if (projectPath.equals("")) //$NON-NLS-1$
 			projectPath = "."; //$NON-NLS-1$
 

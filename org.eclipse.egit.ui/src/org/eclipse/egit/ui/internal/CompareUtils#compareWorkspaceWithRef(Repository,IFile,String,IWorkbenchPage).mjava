@@ -27,6 +27,11 @@
 				}
 				final RepositoryMapping mapping = RepositoryMapping
 						.getMapping(file);
+				if (mapping == null) {
+					return Activator.createErrorStatus(
+							NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
+									file.getLocation(), repository));
+				}
 				final String gitPath = mapping.getRepoRelativePath(file);
 				final ITypedElement base = SaveableCompareEditorInput
 						.createFileElement(file);

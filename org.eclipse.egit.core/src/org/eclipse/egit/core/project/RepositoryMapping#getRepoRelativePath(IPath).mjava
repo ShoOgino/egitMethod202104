@@ -10,7 +10,8 @@
 	 *         working directory (root). <code>null</code> if the path cannot be
 	 *         determined.
 	 */
-	public String getRepoRelativePath(IPath location) {
+	@Nullable
+	public String getRepoRelativePath(@NonNull IPath location) {
 		final int pfxLen = workdirPrefix.length();
 		final String p = location.toString();
 		final int pLen = p.length();

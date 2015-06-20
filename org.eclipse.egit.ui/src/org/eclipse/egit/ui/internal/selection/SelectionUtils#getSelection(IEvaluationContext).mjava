@@ -2,7 +2,9 @@
 	 * @param context
 	 * @return the structured selection of the evaluation context
 	 */
-	public static IStructuredSelection getSelection(IEvaluationContext context) {
+	@NonNull
+	public static IStructuredSelection getSelection(
+			@Nullable IEvaluationContext context) {
 		if (context == null)
 			return StructuredSelection.EMPTY;
 
