@@ -3,28 +3,11 @@
 		 * project to refresh and schedule the refresh as a job.
 		 */
 		void triggerRefresh() {
-			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
+			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
 				GitTraceLocation.getTrace().trace(
 						GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
 						"Triggered refresh"); //$NON-NLS-1$
-			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-					.getProjects();
-			Set<IProject> toRefresh = new HashSet<IProject>();
-			synchronized (repositoriesChanged) {
-				for (IProject p : projects) {
-					RepositoryMapping mapping = RepositoryMapping.getMapping(p);
-					if (mapping != null
-							&& repositoriesChanged.contains(mapping
-									.getRepository())) {
-						toRefresh.add(p);
-					}
-				}
-				repositoriesChanged.clear();
 			}
-			synchronized (projectsToScan) {
-				projectsToScan.addAll(toRefresh);
-			}
-			if (projectsToScan.size() > 0)
-				schedule();
+			schedule();
 		}
 

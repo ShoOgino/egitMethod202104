@@ -1,7 +1,8 @@
 		@Override
 		public void onIndexChanged(IndexChangedEvent e) {
 			if (Activator.getDefault().getPreferenceStore()
-					.getBoolean(UIPreferences.REFESH_ON_INDEX_CHANGE))
+					.getBoolean(UIPreferences.REFESH_ON_INDEX_CHANGE)) {
 				mayTriggerRefresh(e);
+			}
 		}
 
