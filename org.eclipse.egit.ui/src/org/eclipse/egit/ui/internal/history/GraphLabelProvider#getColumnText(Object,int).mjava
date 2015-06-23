@@ -1,5 +1,8 @@
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
+		if (element == null) {
+			return ""; //$NON-NLS-1$
+		}
 		final SWTCommit c = (SWTCommit) element;
 		try {
 			c.parseBody();
