@@ -1,0 +1,19 @@
+	@Test
+	public void testFeatureStart() throws Exception {
+		init();
+
+		setContentAddAndCommit("bar");
+
+		createFeature(FEATURE_NAME);
+		RevCommit featureBranchCommit = setContentAddAndCommit("foo");
+
+		checkoutBranch(DEVELOP);
+
+		checkoutFeature(FEATURE_NAME);
+
+		finishFeature();
+
+		RevCommit developHead = new GitFlowRepository(repository).findHead();
+		assertEquals(developHead, featureBranchCommit);
+	}
+

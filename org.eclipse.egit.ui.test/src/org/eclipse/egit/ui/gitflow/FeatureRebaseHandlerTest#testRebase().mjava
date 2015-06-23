@@ -1,0 +1,24 @@
+	@Test
+	public void testRebase() throws Exception {
+		Git git = Git.wrap(repository);
+
+		init();
+
+		createFeature(FEATURE_NAME);
+		setContentAddAndCommit("foo");
+
+		checkoutBranch(DEVELOP);
+		setContentAddAndCommit("bar");
+
+		checkoutFeature(FEATURE_NAME);
+
+		rebaseFeature();
+
+		Status call = git.status().call();
+		Object[] conflicting = call.getConflicting().toArray();
+		assertEquals(1, conflicting.length);
+		assertEquals(FILE1_PATH, conflicting[0]);
+
+		assertEquals("org.eclipse.egit.ui.InteractiveRebaseView", bot.activeView().getReference().getId());
+	}
+
