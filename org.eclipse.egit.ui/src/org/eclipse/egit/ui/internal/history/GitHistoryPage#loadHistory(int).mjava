@@ -1,0 +1,18 @@
+	/**
+	 * Load history items incrementally
+	 *
+	 * @param itemToLoad
+	 *            hint for index of item that should be loaded
+	 */
+	private void loadHistory(final int itemToLoad) {
+		if (job == null) {
+			return;
+		}
+		job.setLoadHint(itemToLoad);
+		if (trace)
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.HISTORYVIEW.getLocation(),
+					"Scheduling incremental GenerateHistoryJob"); //$NON-NLS-1$
+		schedule(job);
+	}
+
