@@ -1,8 +1,9 @@
 		public void resourceChanged(IResourceChangeEvent event) {
 			try {
 				IResourceDelta d = event.getDelta();
-				if (d == null || !autoIgnoreDerived())
+				if (d == null || !autoIgnoreDerived()) {
 					return;
+				}
 
 				final Set<IPath> toBeIgnored = new LinkedHashSet<IPath>();
 
