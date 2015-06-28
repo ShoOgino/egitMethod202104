@@ -1,13 +1,13 @@
 	@Test
-	public void testAutoIgnoresDerivedFolder() throws Exception {
-		// enable auto-ignore
-		IEclipsePreferences p = InstanceScope.INSTANCE.getNode(Activator
-				.getPluginId());
+	public void testNoAutoIgnoresDerivedFolder() throws Exception {
+		// disable auto-ignore
+		IEclipsePreferences p = InstanceScope.INSTANCE
+				.getNode(Activator.getPluginId());
 		boolean autoignore = p.getBoolean(
 				GitCorePreferences.core_autoIgnoreDerivedResources, false);
-		if (!autoignore) {
+		if (autoignore) {
 			p.putBoolean(GitCorePreferences.core_autoIgnoreDerivedResources,
-					true);
+					false);
 		}
 		try {
 			Repository repository = FileRepositoryBuilder.create(gitDir);
@@ -39,8 +39,8 @@
 			assertTrue(RepositoryProvider.isShared(project.getProject()));
 			Job.getJobManager().join(JobFamilies.AUTO_IGNORE, null);
 
-			// connected, and already automatically ignored
-			assertFalse(RepositoryUtil.canBeAutoIgnored(binPath));
+			// connected, and *can* be automatically ignored
+			assertTrue(RepositoryUtil.canBeAutoIgnored(binPath));
 			// connected, and *can* be automatically ignored
 			assertTrue(RepositoryUtil.canBeAutoIgnored(srcPath));
 			// connected but not existing: we should not autoignore
@@ -48,9 +48,9 @@
 
 			assertTrue(gitDir.exists());
 		} finally {
-			if (!autoignore) {
+			if (autoignore) {
 				p.putBoolean(GitCorePreferences.core_autoIgnoreDerivedResources,
-						false);
+						true);
 			}
 		}
 	}
