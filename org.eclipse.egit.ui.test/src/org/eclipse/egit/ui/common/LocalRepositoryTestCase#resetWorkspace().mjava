@@ -7,5 +7,6 @@
 				.getProjects())
 			project.delete(false, false, null);
 		shutDownRepositories();
+		TestUtil.waitForJobs(50, 5000);
 	}
 
