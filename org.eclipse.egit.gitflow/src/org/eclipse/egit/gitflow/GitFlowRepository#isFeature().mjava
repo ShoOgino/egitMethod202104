@@ -3,7 +3,8 @@
 	 * @throws IOException
 	 */
 	public boolean isFeature() throws IOException {
-		return repository.getBranch()
-				.startsWith(getConfig().getFeaturePrefix());
+		String branch = repository.getBranch();
+		return branch != null
+				&& branch.startsWith(getConfig().getFeaturePrefix());
 	}
 

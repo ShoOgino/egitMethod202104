@@ -3,6 +3,8 @@
 	 * @throws IOException
 	 */
 	public boolean isRelease() throws IOException {
-		return repository.getBranch().startsWith(getConfig().getReleasePrefix());
+		String branch = repository.getBranch();
+		return branch != null
+				&& branch.startsWith(getConfig().getReleasePrefix());
 	}
 

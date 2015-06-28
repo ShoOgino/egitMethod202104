@@ -3,6 +3,7 @@
 	 * @throws IOException
 	 */
 	public boolean isMaster() throws IOException {
-		return repository.getBranch().equals(getConfig().getMaster());
+		String branch = repository.getBranch();
+		return branch != null && branch.equals(getConfig().getMaster());
 	}
 

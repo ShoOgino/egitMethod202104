@@ -3,6 +3,8 @@
 	 * @throws IOException
 	 */
 	public boolean isHotfix() throws IOException {
-		return repository.getBranch().startsWith(getConfig().getHotfixPrefix());
+		String branch = repository.getBranch();
+		return branch != null
+				&& branch.startsWith(getConfig().getHotfixPrefix());
 	}
 
