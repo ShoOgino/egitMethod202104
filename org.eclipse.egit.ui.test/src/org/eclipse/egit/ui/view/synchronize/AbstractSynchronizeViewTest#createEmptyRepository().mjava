@@ -9,8 +9,10 @@
 		IProject firstProject = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(EMPTY_PROJECT);
 
-		if (firstProject.exists())
+		if (firstProject.exists()) {
 			firstProject.delete(true, null);
+			TestUtil.waitForJobs(100, 5000);
+		}
 		IProjectDescription desc = ResourcesPlugin.getWorkspace()
 				.newProjectDescription(EMPTY_PROJECT);
 		desc.setLocation(new Path(new File(myRepository.getWorkTree(),
@@ -26,6 +28,7 @@
 		IFile textFile2 = folder.getFile(FILE2);
 		textFile2.create(new ByteArrayInputStream("Some more content"
 				.getBytes(firstProject.getDefaultCharset())), false, null);
+		TestUtil.waitForJobs(100, 5000);
 
 		new ConnectProviderOperation(firstProject, gitDir).execute(null);
 	}
