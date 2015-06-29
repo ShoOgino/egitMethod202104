@@ -17,6 +17,7 @@
 		new Git(repository).branchRename().setOldName(currentBranch)
 				.setNewName("" + System.currentTimeMillis()).call();
 
+		TestUtil.waitForJobs(50, 5000);
 		selectNode(tree, useRemote, false);
 
 		runPush(tree);

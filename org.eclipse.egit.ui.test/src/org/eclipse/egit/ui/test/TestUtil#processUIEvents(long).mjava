@@ -1,0 +1,37 @@
+	/**
+	 * Process all queued UI events. If called from background thread, blocks
+	 * until all pending events are processed in UI thread.
+	 *
+	 * @param timeInMillis
+	 *            time to wait. During this time all UI events are processed but
+	 *            the current thread is blocked
+	 */
+	public static void processUIEvents(final long timeInMillis) {
+		if (Display.getCurrent() != null) {
+			if (timeInMillis <= 0) {
+				while (Display.getCurrent().readAndDispatch()) {
+					// process queued ui events at least once
+				}
+			} else {
+				long start = System.currentTimeMillis();
+				while (System.currentTimeMillis() - start <= timeInMillis) {
+					while (Display.getCurrent().readAndDispatch()) {
+						// process queued ui events
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							break;
+						}
+					}
+				}
+			}
+		} else {
+			// synchronously refresh UI
+			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+				public void run() {
+					processUIEvents();
+				}
+			});
+		}
+	}
+

@@ -1,14 +1,15 @@
 	protected static void deleteAllProjects() throws Exception {
 		for (IProject prj : ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects())
-			if (prj.getName().equals(PROJ1))
+				.getProjects()) {
+			if (prj.getName().equals(PROJ1)) {
 				prj.delete(false, false, null);
-			else if (prj.getName().equals(PROJ2)) {
+			} else if (prj.getName().equals(PROJ2)) {
 				// delete the .project on disk
 				File dotProject = prj.getLocation().append(".project").toFile();
 				prj.delete(false, false, null);
 				FileUtils.delete(dotProject, FileUtils.RETRY);
 			}
-
+		}
+		TestUtil.waitForJobs(50, 5000);
 	}
 

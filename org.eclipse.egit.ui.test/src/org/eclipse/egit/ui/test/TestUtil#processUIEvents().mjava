@@ -3,17 +3,6 @@
 	 * until all pending events are processed in UI thread.
 	 */
 	public static void processUIEvents() {
-		if (Display.getCurrent() != null) {
-			while (Display.getCurrent().readAndDispatch()) {
-				// process queued ui events
-			}
-		} else {
-			// synchronously refresh UI
-			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-				public void run() {
-					processUIEvents();
-				}
-			});
-		}
+		processUIEvents(0);
 	}
 

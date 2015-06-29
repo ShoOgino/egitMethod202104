@@ -8,5 +8,6 @@
 		updateRef
 				.setRefLogMessage("branch: Created from " + startBranch, false); //$NON-NLS-1$
 		updateRef.update();
+		TestUtil.waitForJobs(50, 5000);
 	}
 
