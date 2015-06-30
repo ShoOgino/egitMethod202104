@@ -2,9 +2,11 @@
 		RepositoryProvider provider = RepositoryProvider.getProvider(project,
 				GitProvider.ID);
 		if (provider == null) {
-			TestUtil.waitForJobs(100, 5000);
+			TestUtil.waitForJobs(500, 10000);
 			provider = RepositoryProvider.getProvider(project, GitProvider.ID);
 		}
+		assertTrue("Project is not accessible: " + project,
+				project.isAccessible());
 		assertNotNull("GitProvider not mapped to: " + project, provider);
 
 		GitProjectData data = ((GitProvider) provider).getData();
