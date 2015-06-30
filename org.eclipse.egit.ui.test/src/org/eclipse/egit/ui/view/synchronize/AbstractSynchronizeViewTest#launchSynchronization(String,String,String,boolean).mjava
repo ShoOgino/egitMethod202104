@@ -2,7 +2,8 @@
 			String dstRef, boolean includeLocal) throws IOException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName);
-		Repository repo = RepositoryMapping.getMapping(project).getRepository();
+		RepositoryMapping mapping = assertConnected(project);
+		Repository repo = mapping.getRepository();
 
 		GitSynchronizeData data = new GitSynchronizeData(repo, srcRef, dstRef,
 				includeLocal);

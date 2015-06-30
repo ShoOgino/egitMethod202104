@@ -1,4 +1,4 @@
-	private void assertConnected(IProject project) {
+	protected RepositoryMapping assertConnected(IProject project) {
 		RepositoryProvider provider = RepositoryProvider.getProvider(project,
 				GitProvider.ID);
 		if (provider == null) {
@@ -20,5 +20,6 @@
 			mapping = data.getRepositoryMapping(project);
 		}
 		assertNotNull("RepositoryMapping is null for: " + project, mapping);
+		return mapping;
 	}
 
