@@ -10,7 +10,8 @@
 		bot.shell("Show View").bot().tree().expandNode("Git").getNode(
 				"Git Repositories").doubleClick();
 
-		SWTBotTree repositoriesTree = bot.viewByTitle("Git Repositories").bot()
+		SWTBotTree repositoriesTree = bot.viewById(RepositoriesView.VIEW_ID)
+				.bot()
 				.tree();
 		SWTBotTreeItem egitRoot = repositoriesTree.getAllItems()[0];
 		egitRoot.expand();
@@ -25,7 +26,7 @@
 		// when
 
 		// then
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 		assertEquals(8, syncViewTree.getAllItems().length);
 	}
 

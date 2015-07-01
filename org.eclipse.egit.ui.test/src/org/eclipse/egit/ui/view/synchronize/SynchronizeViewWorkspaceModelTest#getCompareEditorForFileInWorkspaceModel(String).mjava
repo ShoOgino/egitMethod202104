@@ -1,6 +1,6 @@
 	protected CompareEditorTester getCompareEditorForFileInWorkspaceModel(
 			String fileName) {
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 
 		SWTBotTreeItem projNode = waitForNodeWithText(syncViewTree, PROJ1);
 		return getCompareEditor(projNode, fileName);

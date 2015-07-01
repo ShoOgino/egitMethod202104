@@ -14,7 +14,7 @@
 		launchSynchronization(INITIAL_TAG, HEAD, true);
 
 		// then
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 		SWTBotTreeItem workingTree = syncViewTree.expandNode(PROJ1);
 		assertEquals(1, syncViewTree.getAllItems().length);
 		assertEquals(1, workingTree.getNodes(name).size());

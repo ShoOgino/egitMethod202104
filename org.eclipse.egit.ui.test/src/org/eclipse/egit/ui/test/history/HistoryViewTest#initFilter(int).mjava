@@ -6,7 +6,7 @@
 	private void initFilter(int filter) throws Exception {
 		getHistoryViewTable(PROJ1);
 		SWTBotView view = bot
-				.viewById("org.eclipse.team.ui.GenericHistoryView");
+				.viewById(IHistoryView.VIEW_ID);
 		SWTBotToolbarToggleButton folder = (SWTBotToolbarToggleButton) view
 				.toolbarButton(UIText.GitHistoryPage_AllInParentTooltip);
 		SWTBotToolbarToggleButton project = (SWTBotToolbarToggleButton) view

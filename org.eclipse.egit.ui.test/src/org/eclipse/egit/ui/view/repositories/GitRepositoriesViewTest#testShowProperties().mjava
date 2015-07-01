@@ -11,7 +11,7 @@
 		ContextMenuHelper.clickContextMenuSync(tree,
 				myUtil.getPluginLocalizedValue("ShowIn"),
 				"Properties");
-		SWTBotView propertieView = bot.viewById("org.eclipse.ui.views.PropertySheet");
+		SWTBotView propertieView = bot.viewById(IPageLayout.ID_PROP_SHEET);
 		assertTrue(propertieView.isActive());
 	}
 

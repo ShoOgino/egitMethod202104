@@ -7,7 +7,7 @@
 		String trackingBranch = Constants.R_REMOTES + "origin/master";
 		launchSynchronization(Constants.HEAD, trackingBranch, false);
 
-		SWTBotView viewBot = bot.viewByTitle("Synchronize");
+		SWTBotView viewBot = bot.viewById(ISynchronizeView.VIEW_ID);
 		SWTBotToolbarButton pushButton = viewBot.toolbarButton(UIText.GitActionContributor_Push);
 		JobJoiner jobJoiner = JobJoiner.startListening(JobFamilies.PUSH, 30, TimeUnit.SECONDS);
 		pushButton.click();

@@ -14,7 +14,7 @@
 		commit(PROJ1);
 
 		// then - synchronize view should be empty
-		SWTBot viewBot = bot.viewByTitle("Synchronize").bot();
+		SWTBot viewBot = bot.viewById(ISynchronizeView.VIEW_ID).bot();
 		@SuppressWarnings("unchecked")
 		Matcher matcher = allOf(widgetOfType(Label.class),
 				withRegex("No changes in .*"));

@@ -1,5 +1,5 @@
 	private void assertSynchronizeFile1Changed() {
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
 		assertEquals(syncItems.length, 1);
 		String text = syncItems[0].getText();

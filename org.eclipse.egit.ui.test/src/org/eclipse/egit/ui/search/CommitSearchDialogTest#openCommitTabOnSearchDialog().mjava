@@ -14,7 +14,7 @@
 		TestUtil.waitForJobs(500, 5000);
 
 		TestUtil.joinJobs(InternalSearchUI.FAMILY_SEARCH);
-		bot.viewByTitle("Search").show();
+		bot.viewById(NewSearchUI.SEARCH_VIEW_ID).show();
 		TestUtil.processUIEvents();
 
 		final SWTBotTreeItem[] repos = bot.activeView().bot().tree()

@@ -14,7 +14,7 @@
 		Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
 
 		// then
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
 		assertTrue(syncItems[0].getText().contains(PROJ1));
 		syncItems[0].expand();

@@ -5,7 +5,7 @@
 		launchSynchronization(HEAD, HEAD, true);
 
 		// preconditions - sync result should contain two uncommitted changes
-		SWTBotTree syncViewTree = bot.viewByTitle("Synchronize").bot().tree();
+		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 		SWTBotTreeItem[] syncItems = syncViewTree.getAllItems();
 		assertTrue(syncItems[0].getText().contains(PROJ1));
 		syncItems[0].expand();
@@ -16,7 +16,7 @@
 		commit(PROJ1);
 
 		// then - synchronize view should be empty
-		SWTBot viewBot = bot.viewByTitle("Synchronize").bot();
+		SWTBot viewBot = bot.viewById(ISynchronizeView.VIEW_ID).bot();
 		@SuppressWarnings("unchecked")
 		Matcher matcher = allOf(widgetOfType(Label.class),
 				withRegex("No changes in .*"));

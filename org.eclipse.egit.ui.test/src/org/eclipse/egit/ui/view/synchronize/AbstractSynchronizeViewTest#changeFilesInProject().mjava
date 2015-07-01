@@ -1,5 +1,5 @@
 	protected void changeFilesInProject() throws Exception {
-		SWTBot packageExlBot = bot.viewByTitle("Package Explorer").bot();
+		SWTBot packageExlBot = bot.viewById(JavaUI.ID_PACKAGES).bot();
 		SWTBotTreeItem coreTreeItem = selectProject(PROJ1, packageExlBot.tree());
 		SWTBotTreeItem rootNode = coreTreeItem.expand().getNode(0)
 				.expand().select();

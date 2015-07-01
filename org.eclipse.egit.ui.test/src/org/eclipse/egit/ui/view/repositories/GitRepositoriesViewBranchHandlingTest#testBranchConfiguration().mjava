@@ -21,7 +21,7 @@
 				myUtil.getPluginLocalizedValue("ShowIn"),
 				"Properties");
 
-		SWTBotView propsView = bot.viewByTitle("Properties");
+		SWTBotView propsView = bot.viewById(IPageLayout.ID_PROP_SHEET);
 		SWTBotTreeItem rootItem = propsView
 				.bot()
 				.tree()
@@ -105,7 +105,7 @@
 				myUtil.getPluginLocalizedValue("ShowIn"),
 				"Properties");
 
-		propsView = bot.viewByTitle("Properties");
+		propsView = bot.viewById(IPageLayout.ID_PROP_SHEET);
 		rootItem = propsView
 				.bot()
 				.tree()
