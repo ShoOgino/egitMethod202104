@@ -14,19 +14,35 @@
 		Object[] mixedSelection = { linkedFile,
 				project.getFile(FILE1), project.getFile(FILE2) };
 		for (RepositoryActionHandler handler : handlers) {
+			String handlerClass = handler.getClass().getSimpleName();
+
 			assertTrue(linkedFile.exists());
 			assertTrue(linkedFile.isLinked(IResource.CHECK_ANCESTORS));
-			assertNotNull(linkedFile.getLocation());
-			assertNull(RepositoryMapping.getMapping(linkedFile.getLocation()));
+			IPath location = linkedFile.getLocation();
+			assertNotNull(location);
+			assertNotNull(
+					RepositoryMapping.getMapping(linkedFile.getProject()));
+			assertNull(RepositoryMapping.getMapping(linkedFile));
+			assertNull(RepositoryMapping.getMapping(location));
+			assertFalse(handler.isEnabled());
+			Repository[] repositories = handler.getRepositories();
+			assertEquals(handlerClass
+					+ " found (unexpected) repository mapping for " + location,
+					"[]", Arrays.toString(repositories));
 
 			handler.setSelection(new StructuredSelection(linkedFile));
-			assertFalse(handler.getClass().getSimpleName()
+			assertEquals(handlerClass
+					+ " found (unexpected) repository mapping for " + location,
+					"[]", Arrays.toString(repositories));
+
+			assertFalse(handlerClass
 					+ " is enabled on a linked resource pointing outside any project and repository: "
-					+ linkedFile.getLocation(), handler.isEnabled());
+					+ location, handler.isEnabled());
+
 			handler.setSelection(new StructuredSelection(mixedSelection));
 			assertFalse(handler.getClass().getSimpleName()
 					+ " is enabled when selection contains a linked resource pointing outside any project and repository: "
-					+ linkedFile.getLocation(), handler.isEnabled());
+					+ location, handler.isEnabled());
 		}
 	}
 
