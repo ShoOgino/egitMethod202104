@@ -1,5 +1,5 @@
 	private void fillTreeItemWithGitDirectory(RepositoryMapping m,
-			TreeItem treeItem, boolean isAlternative) {
+			TreeItem treeItem, IPath gitDir, boolean isAlternative) {
 		if (m.getGitDir() == null)
 			treeItem.setText(2,
 					UIText.ExistingOrNewPage_SymbolicValueEmptyMapping);
@@ -17,8 +17,8 @@
 			treeItem.setText(2, relativePath.toOSString());
 			try {
 				IProject project = m.getContainer().getProject();
-				Repository repo = new RepositoryBuilder().setGitDir(
-						m.getGitDirAbsolutePath().toFile()).build();
+				Repository repo = new RepositoryBuilder()
+						.setGitDir(gitDir.toFile()).build();
 				File workTree = repo.getWorkTree();
 				IPath workTreePath = Path.fromOSString(workTree
 						.getAbsolutePath());

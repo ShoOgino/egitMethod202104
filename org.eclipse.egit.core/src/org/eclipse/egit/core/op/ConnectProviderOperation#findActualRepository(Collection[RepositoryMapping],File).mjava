@@ -6,11 +6,14 @@
 	 * @return a repository mapping which corresponds to a suggested repository
 	 *         location, <code>null</code> otherwise
 	 */
+	@Nullable
 	private RepositoryMapping findActualRepository(
 			Collection<RepositoryMapping> repos, File suggestedRepo) {
+		IPath path = Path.fromOSString(suggestedRepo.getPath());
 		for (RepositoryMapping rm : repos) {
-			if (rm.getGitDirAbsolutePath().equals(Path.fromOSString(suggestedRepo.getPath())))
+			if (path.equals(rm.getGitDirAbsolutePath())) {
 				return rm;
+			}
 		}
 		return null;
 	}
