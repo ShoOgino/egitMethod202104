@@ -2,7 +2,7 @@
 		RepositoryProvider provider = RepositoryProvider.getProvider(project,
 				GitProvider.ID);
 		if (provider == null) {
-			TestUtil.waitForJobs(500, 10000);
+			TestUtil.waitForJobs(5000, 10000);
 			provider = RepositoryProvider.getProvider(project, GitProvider.ID);
 		}
 		assertTrue("Project is not accessible: " + project,

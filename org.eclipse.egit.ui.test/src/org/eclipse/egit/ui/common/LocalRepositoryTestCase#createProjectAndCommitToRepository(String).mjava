@@ -51,6 +51,10 @@
 				.getPath()));
 		secondProject.create(desc, null);
 		secondProject.open(null);
+		TestUtil.waitForJobs(50, 5000);
+
+		assertTrue("Project is not accessible: " + secondProject,
+				secondProject.isAccessible());
 
 		IFolder secondfolder = secondProject.getFolder(FOLDER);
 		secondfolder.create(false, true, null);
