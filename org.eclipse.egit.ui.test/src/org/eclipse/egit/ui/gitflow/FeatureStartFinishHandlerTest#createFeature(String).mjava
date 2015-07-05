@@ -1,4 +1,5 @@
-	private void createFeature(String featureName) {
+	@Override
+	protected void createFeature(String featureName) {
 		final SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		getProjectItem(projectExplorerTree, PROJ1).select();
 		final String[] menuPath = new String[] {

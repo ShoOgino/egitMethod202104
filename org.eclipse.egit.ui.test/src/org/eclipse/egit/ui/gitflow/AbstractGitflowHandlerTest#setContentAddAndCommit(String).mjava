@@ -5,6 +5,9 @@
 
 		Git git = Git.wrap(repository);
 		git.add().addFilepattern(".").call();
-		return git.commit().setMessage(newContent).call();
+		CommitCommand commit = git.commit().setMessage(newContent);
+		commit.setAuthor(TestUtil.TESTCOMMITTER_NAME, TestUtil.TESTCOMMITTER_EMAIL);
+		commit.setCommitter(TestUtil.TESTCOMMITTER_NAME, TestUtil.TESTCOMMITTER_EMAIL);
+		return commit.call();
 	}
 
