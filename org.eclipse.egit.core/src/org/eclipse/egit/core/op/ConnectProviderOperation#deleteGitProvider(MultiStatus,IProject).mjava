@@ -1,0 +1,8 @@
+	private void deleteGitProvider(MultiStatus ms, IProject project) {
+		try {
+			GitProjectData.delete(project);
+		} catch (IOException e) {
+			ms.add(Activator.error(e.getMessage(), e));
+		}
+	}
+
