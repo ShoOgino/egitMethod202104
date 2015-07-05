@@ -1,0 +1,14 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite container = new Composite(area, SWT.NONE);
+		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridLayout layout = new GridLayout(1, false);
+		container.setLayout(layout);
+
+		squashButton = new Button(container, SWT.CHECK);
+		squashButton.setText(UIText.FinishFeatureDialog_squashCheck);
+
+		return area;
+	}
+

@@ -1,28 +1,10 @@
 	/**
-	 * git flow * finish
-	 *
 	 * @param monitor
 	 * @param branchName
 	 * @throws CoreException
 	 */
 	protected void finish(IProgressMonitor monitor, String branchName)
 			throws CoreException {
-		try {
-			mergeResult = mergeTo(monitor, branchName,
-					repository.getConfig().getDevelop());
-			if (!mergeResult.getMergeStatus().isSuccessful()) {
-				return;
-			}
-
-			Ref branch = repository.findBranch(branchName);
-			if (branch == null) {
-				throw new IllegalStateException(String.format(
-						CoreText.GitFlowOperation_branchMissing, branchName));
-			}
-			new DeleteBranchOperation(repository.getRepository(), branch, false)
-					.execute(monitor);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		finish(monitor, branchName, false);
 	}
 

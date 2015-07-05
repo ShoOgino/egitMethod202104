@@ -1,0 +1,31 @@
+	/**
+	 * git flow * finish
+	 *
+	 * @param monitor
+	 * @param branchName
+	 * @param squash
+	 * @throws CoreException
+	 */
+	protected void finish(IProgressMonitor monitor, String branchName,
+			boolean squash)
+			throws CoreException {
+		try {
+			mergeResult = mergeTo(monitor, branchName, repository.getConfig()
+					.getDevelop(), squash);
+			if (!mergeResult.getMergeStatus().isSuccessful()) {
+				return;
+			}
+
+			Ref branch = repository.findBranch(branchName);
+			if (branch == null) {
+				throw new IllegalStateException(String.format(
+						CoreText.GitFlowOperation_branchMissing, branchName));
+			}
+			boolean forceDelete = squash;
+			new DeleteBranchOperation(repository.getRepository(), branch, forceDelete)
+					.execute(monitor);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
