@@ -1,0 +1,11 @@
+	private void schedule(Job job, long delay) {
+		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
+
+		if (GitTraceLocation.REPOSITORIESVIEW.isActive()) {
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.REPOSITORIESVIEW.getLocation(),
+					"Scheduling refresh job"); //$NON-NLS-1$
+		}
+		service.schedule(job, delay);
+	}
+
