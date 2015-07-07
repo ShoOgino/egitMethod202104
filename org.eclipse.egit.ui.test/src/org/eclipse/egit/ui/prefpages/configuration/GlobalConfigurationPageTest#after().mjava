@@ -1,6 +1,8 @@
 	@After
 	public void after() throws Exception {
-		if (preferencePage != null)
+		if (preferencePage != null) {
 			preferencePage.close();
+		}
+		TestUtil.processUIEvents();
 	}
 
