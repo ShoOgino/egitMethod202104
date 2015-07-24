@@ -74,6 +74,21 @@
 
 		toolbar.add(new Separator());
 
+		compareModeAction = new Action(UIText.StagingView_CompareMode,
+				IAction.AS_CHECK_BOX) {
+			@Override
+			public void run() {
+				getPreferenceStore().setValue(
+						UIPreferences.STAGING_VIEW_COMPARE_MODE, isChecked());
+			}
+		};
+		compareModeAction.setImageDescriptor(UIIcons.ELCL16_COMPARE_VIEW);
+		compareModeAction.setChecked(getPreferenceStore()
+				.getBoolean(UIPreferences.STAGING_VIEW_COMPARE_MODE));
+
+		toolbar.add(compareModeAction);
+		toolbar.add(new Separator());
+
 		openNewCommitsAction = new Action(UIText.StagingView_OpenNewCommits,
 				IAction.AS_CHECK_BOX) {
 
@@ -206,6 +221,7 @@
 		dropdownMenu.add(openNewCommitsAction);
 		dropdownMenu.add(columnLayoutAction);
 		dropdownMenu.add(fileNameModeAction);
+		dropdownMenu.add(compareModeAction);
 
 		actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(), new GlobalDeleteActionHandler());
 
