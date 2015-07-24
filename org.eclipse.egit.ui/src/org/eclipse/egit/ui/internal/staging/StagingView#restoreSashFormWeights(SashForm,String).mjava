@@ -1,0 +1,7 @@
+	private void restoreSashFormWeights(SashForm sashForm, String mementoKey) {
+		String weights = memento.getString(mementoKey);
+		if (weights != null && !weights.isEmpty()) {
+			sashForm.setWeights(stringToIntArray(weights));
+		}
+	}
+

@@ -25,7 +25,7 @@
 		toolkit.decorateFormHeading(form);
 		GridLayoutFactory.swtDefaults().applyTo(form.getBody());
 
-		SashForm horizontalSashForm = new SashForm(form.getBody(), SWT.NONE);
+		horizontalSashForm = new SashForm(form.getBody(), SWT.NONE);
 		toolkit.adapt(horizontalSashForm, true, true);
 		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(horizontalSashForm);
@@ -470,6 +470,8 @@
 		};
 		unstagedViewer.addFilter(filter);
 		stagedViewer.addFilter(filter);
+
+		restoreSashFormWeights();
 
 		IWorkbenchSiteProgressService service = CommonUtils.getService(
 				getSite(), IWorkbenchSiteProgressService.class);
