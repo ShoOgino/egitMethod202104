@@ -1,0 +1,8 @@
+	private StructuredSelection getSelectionOfActiveEditor() {
+		IEditorPart activeEditor = getSite().getPage().getActiveEditor();
+		if (activeEditor == null) {
+			return null;
+		}
+		return getSelectionOfPart(activeEditor);
+	}
+

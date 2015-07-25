@@ -3,5 +3,7 @@
 			throws PartInitException {
 		super.init(site, viewMemento);
 		this.memento = viewMemento;
+		this.initialSelection = site.getWorkbenchWindow().getSelectionService()
+				.getSelection();
 	}
 
