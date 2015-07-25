@@ -1,6 +1,7 @@
 	@Before
-	public void setUp() {
-		Activator.getDefault().getRepositoryCache().clear();
+	public void setUp() throws Exception {
+		shutDownRepositories();
 		capability = new GitProjectSetCapability();
+		initNewTestDirectory();
 	}
 

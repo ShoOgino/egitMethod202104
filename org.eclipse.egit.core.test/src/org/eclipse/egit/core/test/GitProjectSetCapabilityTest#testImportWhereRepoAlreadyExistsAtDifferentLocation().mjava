@@ -1,10 +1,10 @@
 	@Test
 	public void testImportWhereRepoAlreadyExistsAtDifferentLocation() throws Exception {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IPath reposPath = root.getLocation().append("existingbutdifferent");
+		IPath reposPath = new Path(testDirectory.getPath()).append("repo");
 		pathsToClean.add(reposPath.toFile());
 
-		IPath repoPath = reposPath.append("repo");
+		IPath repoPath = reposPath.append("existingbutdifferent");
 		IProject project = createProject(repoPath, "project");
 		project.delete(false, true, null);
 		String url = createUrl(repoPath);
@@ -23,6 +23,8 @@
 
 		IProject imported = root.getProject("project");
 		assertEquals("Expected imported project to be from already existing repository",
-				root.getLocation().append("existingbutdifferent/repo/project"), imported.getLocation());
+				reposPath.append("existingbutdifferent/project")
+						.toOSString(),
+				imported.getLocation().toOSString());
 	}
 

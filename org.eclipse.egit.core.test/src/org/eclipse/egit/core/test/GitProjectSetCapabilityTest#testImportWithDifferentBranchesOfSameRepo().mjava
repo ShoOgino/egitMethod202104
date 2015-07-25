@@ -1,7 +1,7 @@
 	@Test
 	public void testImportWithDifferentBranchesOfSameRepo() throws Exception {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IPath reposPath = root.getLocation().append("repos");
+		IPath reposPath = new Path(testDirectory.getPath()).append("repos");
 		pathsToClean.add(reposPath.toFile());
 
 		IPath xPath = reposPath.append("x");
@@ -23,7 +23,8 @@
 		IProject xaImported = root.getProject("xa");
 		createdProjects.add(xaImported);
 		assertTrue(xaImported.exists());
-		assertEquals(root.getLocation().append("x/xa"), xaImported.getLocation());
+		assertEquals(new Path(RepositoryUtil.getDefaultRepositoryDir())
+				.append("x/xa"), xaImported.getLocation());
 		RepositoryMapping xaMapping = RepositoryMapping.getMapping(xaImported);
 		assertNotNull(xaMapping);
 		assertEquals("master", xaMapping.getRepository().getBranch());
@@ -31,7 +32,8 @@
 		IProject xbImported = root.getProject("xb");
 		createdProjects.add(xbImported);
 		assertTrue(xbImported.exists());
-		assertEquals(root.getLocation().append("x_stable/xb"), xbImported.getLocation());
+		assertEquals(new Path(RepositoryUtil.getDefaultRepositoryDir())
+				.append("x_stable/xb"), xbImported.getLocation());
 		RepositoryMapping xbMapping = RepositoryMapping.getMapping(xbImported);
 		assertNotNull(xbMapping);
 		assertEquals("stable", xbMapping.getRepository().getBranch());

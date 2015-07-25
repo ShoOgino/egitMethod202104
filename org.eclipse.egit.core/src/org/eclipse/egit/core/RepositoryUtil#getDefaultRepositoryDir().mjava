@@ -1,0 +1,31 @@
+	/**
+	 * @return The default repository directory as configured in the
+	 *         preferences, with variables substituted. Returns workspace
+	 *         location if there was an error during substitution.
+	 */
+	@NonNull
+	public static String getDefaultRepositoryDir() {
+		String key = GitCorePreferences.core_defaultRepositoryDir;
+		String dir = migrateRepoRootPreference();
+		IEclipsePreferences p = InstanceScope.INSTANCE
+				.getNode(Activator.getPluginId());
+		if (dir == null) {
+			dir = p.get(key, getDefaultDefaultRepositoryDir());
+		} else {
+			p.put(key, dir);
+		}
+		IStringVariableManager manager = VariablesPlugin.getDefault()
+				.getStringVariableManager();
+		String result;
+		try {
+			result = manager.performStringSubstitution(dir);
+		} catch (CoreException e) {
+			result = ""; //$NON-NLS-1$
+		}
+		if (result == null || result.isEmpty()) {
+			result = ResourcesPlugin.getWorkspace().getRoot().getRawLocation()
+					.toOSString();
+		}
+		return result;
+	}
+

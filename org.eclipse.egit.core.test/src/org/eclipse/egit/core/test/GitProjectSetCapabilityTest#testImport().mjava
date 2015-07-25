@@ -1,7 +1,7 @@
 	@Test
 	public void testImport() throws Exception {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IPath reposPath = root.getLocation().append("repos");
+		IPath reposPath = new Path(testDirectory.getPath()).append("repos");
 		pathsToClean.add(reposPath.toFile());
 
 		IPath aPath = reposPath.append("a");
@@ -39,13 +39,15 @@
 		IProject baImported = root.getProject("ba");
 		createdProjects.add(baImported);
 		assertTrue(baImported.exists());
-		assertEquals(root.getLocation().append("b/ba"), baImported.getLocation());
+		assertEquals(new Path(RepositoryUtil.getDefaultRepositoryDir())
+				.append("b/ba"), baImported.getLocation());
 		assertNotNull(RepositoryMapping.getMapping(baImported));
 
 		IProject bbImported = root.getProject("bb");
 		createdProjects.add(bbImported);
 		assertTrue(bbImported.exists());
-		assertEquals(root.getLocation().append("b/bb"), bbImported.getLocation());
+		assertEquals(new Path(RepositoryUtil.getDefaultRepositoryDir())
+				.append("b/bb"), bbImported.getLocation());
 		assertNotNull(RepositoryMapping.getMapping(bbImported));
 
 		IProject cImported = root.getProject("c");

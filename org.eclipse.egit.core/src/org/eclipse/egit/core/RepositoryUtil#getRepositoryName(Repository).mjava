@@ -19,7 +19,7 @@
 			return ""; //$NON-NLS-1$
 
 		synchronized (repositoryNameCache) {
-			final String path = dir.getPath().toString();
+			final String path = dir.getPath();
 			String name = repositoryNameCache.get(path);
 			if (name != null)
 				return name;

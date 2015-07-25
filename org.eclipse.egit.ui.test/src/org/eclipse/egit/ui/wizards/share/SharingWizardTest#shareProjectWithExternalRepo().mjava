@@ -10,8 +10,7 @@
 				projectName1, projectName2);
 		SWTBotShell createRepoDialog = existingOrNewPage
 				.clickCreateRepository();
-		String repoDir = Activator.getDefault().getPreferenceStore()
-				.getString(UIPreferences.DEFAULT_REPO_DIR);
+		String repoDir = RepositoryUtil.getDefaultRepositoryDir();
 		File repoFolder = new File(repoDir, repoName);
 		createRepoDialog.bot()
 				.textWithLabel(UIText.CreateRepositoryPage_DirectoryLabel)

@@ -1,0 +1,21 @@
+	/**
+	 * Prior to 4.1 the preference was hosted in the UI plugin. So if this one
+	 * exists, we remove it from there and return. Otherwise null is returned.
+	 *
+	 * @return previously existing UI preference or null
+	 */
+	@Nullable
+	private static String migrateRepoRootPreference() {
+		IEclipsePreferences p = InstanceScope.INSTANCE
+				.getNode("org.eclipse.egit.ui"); //$NON-NLS-1$
+		String deprecatedUiKey = "default_repository_dir"; //$NON-NLS-1$
+		String value = p.get(deprecatedUiKey, null);
+		if (value != null && value.isEmpty()) {
+			value = null;
+		}
+		if (value != null) {
+			p.remove(deprecatedUiKey);
+		}
+		return value;
+	}
+
