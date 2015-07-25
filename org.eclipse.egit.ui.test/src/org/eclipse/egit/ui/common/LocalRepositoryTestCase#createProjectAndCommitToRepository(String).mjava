@@ -35,7 +35,11 @@
 		textFile2.create(new ByteArrayInputStream("Some more content"
 				.getBytes(firstProject.getDefaultCharset())), false, null);
 
-		new ConnectProviderOperation(firstProject, gitDir).execute(null);
+		try {
+			new ConnectProviderOperation(firstProject, gitDir).execute(null);
+		} catch (Exception e) {
+			Activator.logError("Failed to connect project to repository", e);
+		}
 		assertConnected(firstProject);
 
 		IProject secondProject = ResourcesPlugin.getWorkspace().getRoot()
@@ -72,7 +76,11 @@
 		// gitignore.create(new ByteArrayInputStream("/.project\n"
 		// .getBytes(firstProject.getDefaultCharset())), false, null);
 
-		new ConnectProviderOperation(secondProject, gitDir).execute(null);
+		try {
+			new ConnectProviderOperation(secondProject, gitDir).execute(null);
+		} catch (Exception e) {
+			Activator.logError("Failed to connect project to repository", e);
+		}
 		assertConnected(secondProject);
 
 		IFile dotProject = firstProject.getFile(".project");
