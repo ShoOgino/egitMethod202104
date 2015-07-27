@@ -35,8 +35,9 @@
 				gfRepo);
 		hotfixFinishOperation.execute(null);
 
-		// tag not created?
-		assertNotEquals(hotfixCommit, gfRepo.findCommitForTag(MY_HOTFIX));
+		// tag is created because of 473646
+		// TODO: check if the reference implementation cleans up in this case
+		assertEquals(hotfixCommit, gfRepo.findCommitForTag(MY_HOTFIX));
 
 		// branch not removed?
 		assertNotEquals(findBranch(repository, branchName), null);
