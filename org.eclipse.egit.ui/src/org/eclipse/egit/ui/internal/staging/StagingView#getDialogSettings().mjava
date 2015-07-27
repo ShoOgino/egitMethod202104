@@ -1,0 +1,6 @@
+	private IDialogSettings getDialogSettings() {
+		return DialogSettings.getOrCreateSection(
+				Activator.getDefault().getDialogSettings(),
+				StagingView.class.getName());
+	}
+

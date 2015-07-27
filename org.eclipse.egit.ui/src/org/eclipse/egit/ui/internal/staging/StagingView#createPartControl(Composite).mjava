@@ -26,12 +26,16 @@
 		GridLayoutFactory.swtDefaults().applyTo(form.getBody());
 
 		horizontalSashForm = new SashForm(form.getBody(), SWT.NONE);
+		saveSashFormWeightsOnDisposal(horizontalSashForm,
+				HORIZONTAL_SASH_FORM_WEIGHT);
 		toolkit.adapt(horizontalSashForm, true, true);
 		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(horizontalSashForm);
 
 		stagingSashForm = new SashForm(horizontalSashForm,
 				getStagingFormOrientation());
+		saveSashFormWeightsOnDisposal(stagingSashForm,
+				STAGING_SASH_FORM_WEIGHT);
 		toolkit.adapt(stagingSashForm, true, true);
 		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(stagingSashForm);

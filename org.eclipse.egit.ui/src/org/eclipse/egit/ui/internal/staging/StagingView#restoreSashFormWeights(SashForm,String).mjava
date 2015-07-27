@@ -1,5 +1,6 @@
-	private void restoreSashFormWeights(SashForm sashForm, String mementoKey) {
-		String weights = memento.getString(mementoKey);
+	private void restoreSashFormWeights(SashForm sashForm, String settingsKey) {
+		IDialogSettings settings = getDialogSettings();
+		String weights = settings.get(settingsKey);
 		if (weights != null && !weights.isEmpty()) {
 			sashForm.setWeights(stringToIntArray(weights));
 		}

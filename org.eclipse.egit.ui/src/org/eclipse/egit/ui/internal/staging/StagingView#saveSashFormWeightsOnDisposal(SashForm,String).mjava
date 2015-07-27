@@ -1,0 +1,11 @@
+	private void saveSashFormWeightsOnDisposal(final SashForm sashForm,
+			final String settingsKey) {
+		sashForm.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				getDialogSettings().put(settingsKey,
+						intArrayToString(sashForm.getWeights()));
+			}
+		});
+	}
+
