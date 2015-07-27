@@ -1,8 +1,7 @@
 	/**
 	 * @param repository
 	 */
-	public GitFlowRepository(Repository repository) {
-		Assert.isNotNull(repository);
+	public GitFlowRepository(@NonNull Repository repository) {
 		this.repository = repository;
 		this.config = new GitFlowConfig(repository);
 	}
