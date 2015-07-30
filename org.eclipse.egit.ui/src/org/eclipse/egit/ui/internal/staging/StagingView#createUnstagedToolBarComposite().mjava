@@ -24,8 +24,25 @@
 		};
 		unstagedCollapseAllAction.setImageDescriptor(UIIcons.COLLAPSEALL);
 
+		sortAction = new Action(UIText.StagingView_UnstagedSort,
+				IAction.AS_CHECK_BOX) {
+
+			@Override
+			public void run() {
+				UnstagedComparator comparator = (UnstagedComparator) unstagedViewer
+						.getComparator();
+				comparator.setAlphabeticSort(isChecked());
+				unstagedViewer.refresh();
+			}
+		};
+
+		sortAction.setImageDescriptor(UIIcons.ALPHABETICALLY_SORT);
+		sortAction.setId(SORT_ITEM_TOOLBAR_ID);
+		sortAction.setChecked(getSortCheckState());
+
 		unstagedToolBarManager = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
 
+		unstagedToolBarManager.add(sortAction);
 		unstagedToolBarManager.add(unstagedExpandAllAction);
 		unstagedToolBarManager.add(unstagedCollapseAllAction);
 

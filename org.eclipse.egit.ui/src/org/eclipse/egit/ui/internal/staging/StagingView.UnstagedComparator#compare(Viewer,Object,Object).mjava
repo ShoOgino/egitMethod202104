@@ -1,0 +1,15 @@
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			int cat1 = category(e1);
+			int cat2 = category(e2);
+
+			if (cat1 != cat2) {
+				return cat1 - cat2;
+			}
+
+			String name1 = getStagingEntryName(e1);
+			String name2 = getStagingEntryName(e2);
+
+			return comparator.compare(name1, name2);
+		}
+

@@ -6,7 +6,12 @@
 			return stagingFolderEntry.getNodePath().toString();
 		}
 
-		StagingEntry stagingEntry = (StagingEntry) element;
+		StagingEntry stagingEntry = getStagingEntry(element);
+
+		if (stagingEntry == null) {
+			return ""; //$NON-NLS-1$
+		}
+
 		final DecorationResult decoration = new DecorationResult();
 		decorationHelper.decorate(decoration, stagingEntry);
 		final StyledString styled = new StyledString();

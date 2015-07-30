@@ -1,0 +1,9 @@
+		private String getStagingEntryName(Object element) {
+			String name = ""; //$NON-NLS-1$
+			StagingEntry stagingEntry = getStagingEntry(element);
+			if (stagingEntry != null) {
+				name = stagingEntry.getName();
+			}
+			return name;
+		}
+

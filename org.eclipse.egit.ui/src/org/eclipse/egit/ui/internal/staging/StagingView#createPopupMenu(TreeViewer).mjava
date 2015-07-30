@@ -53,10 +53,11 @@
 
 					Action openCompareWithIndex = new Action(
 							UIText.StagingView_CompareWithIndexMenuLabel) {
+						@Override
 						public void run() {
 							runCommand(ActionCommands.COMPARE_WITH_INDEX_ACTION,
 									fileSelection);
-						};
+						}
 					};
 					menuMgr.add(openCompareWithIndex);
 				}

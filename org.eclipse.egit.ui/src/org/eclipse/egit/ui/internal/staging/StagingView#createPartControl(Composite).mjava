@@ -43,10 +43,12 @@
 		unstagedSection = toolkit.createSection(stagingSashForm,
 				ExpandableComposite.TITLE_BAR);
 
+		unstagedSection.setLayoutData(
+				GridDataFactory.fillDefaults().grab(true, true).create());
+
 		createUnstagedToolBarComposite();
 
-		Composite unstagedComposite = toolkit
-				.createComposite(unstagedSection);
+		Composite unstagedComposite = toolkit.createComposite(unstagedSection);
 		toolkit.paintBordersFor(unstagedComposite);
 		unstagedSection.setClient(unstagedComposite);
 		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
@@ -91,6 +93,8 @@
 				compareWith(event);
 			}
 		});
+		unstagedViewer
+				.setComparator(new UnstagedComparator(getSortCheckState()));
 		enableAutoExpand(unstagedViewer);
 		addListenerToDisableAutoExpandOnCollapse(unstagedViewer);
 
