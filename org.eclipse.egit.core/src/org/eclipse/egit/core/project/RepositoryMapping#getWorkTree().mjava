@@ -1,7 +1,13 @@
 	/**
-	 * @return the workdir file, i.e. where the files are checked out
+	 * @return the workdir file, i.e. where the files are checked out, or null
+	 *         if repository is bare
 	 */
+	@Nullable
 	public File getWorkTree() {
-		return getRepository().getWorkTree();
+		Repository repo = getRepository();
+		if (repo.isBare()) {
+			return null;
+		}
+		return repo.getWorkTree();
 	}
 

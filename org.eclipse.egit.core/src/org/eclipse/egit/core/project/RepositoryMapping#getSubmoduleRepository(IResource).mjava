@@ -16,7 +16,7 @@
 
 		String projectRelativePathStr = res.getProjectRelativePath().toString();
 		try {
-			if (SubmoduleWalk.containsGitModulesFile(db)) {
+			if (!db.isBare() && SubmoduleWalk.containsGitModulesFile(db)) {
 				SubmoduleWalk sw = SubmoduleWalk.forIndex(db);
 				while (sw.next()) {
 					if (projectRelativePathStr.startsWith(sw.getPath())) {

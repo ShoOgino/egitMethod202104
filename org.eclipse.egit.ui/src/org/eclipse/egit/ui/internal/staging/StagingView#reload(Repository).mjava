@@ -11,13 +11,19 @@
 			asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					clearRepository();
+					clearRepository(null);
 				}
 			});
 			return;
 		}
 
 		if (!isValidRepo(repository)) {
+			asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					clearRepository(repository);
+				}
+			});
 			return;
 		}
 

@@ -13,13 +13,19 @@
 		RepositoryMapping bestMapping = null;
 
 		for (IProject project : projects) {
-			if (isNonWorkspace(project))
+			if (isNonWorkspace(project)) {
 				continue;
+			}
 			RepositoryMapping mapping = getMapping(project);
-			if (mapping == null)
+			if (mapping == null) {
 				continue;
+			}
 
-			IPath workingTree = new Path(mapping.getWorkTree().toString());
+			File workTree = mapping.getWorkTree();
+			if (workTree == null) {
+				continue;
+			}
+			IPath workingTree = new Path(workTree.toString());
 			if (workingTree.isPrefixOf(path)) {
 				if (bestWorkingTree == null
 						|| workingTree.segmentCount() > bestWorkingTree

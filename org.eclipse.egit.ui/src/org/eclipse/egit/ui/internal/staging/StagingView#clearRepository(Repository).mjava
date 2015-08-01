@@ -2,8 +2,10 @@
 	 * Clear the view's state.
 	 * <p>
 	 * This method must be called from the UI-thread
+	 *
+	 * @param repository
 	 */
-	private void clearRepository() {
+	private void clearRepository(@Nullable Repository repository) {
 		saveCommitMessageComponentState();
 		currentRepository = null;
 		StagingViewUpdate update = new StagingViewUpdate(null, null, null);
@@ -12,6 +14,10 @@
 		enableCommitWidgets(false);
 		refreshAction.setEnabled(false);
 		updateSectionText();
-		form.setText(UIText.StagingView_NoSelectionTitle);
+		if (repository != null && repository.isBare()) {
+			form.setText(UIText.StagingView_BareRepoSelection);
+		} else {
+			form.setText(UIText.StagingView_NoSelectionTitle);
+		}
 	}
 

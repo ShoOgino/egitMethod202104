@@ -16,10 +16,12 @@
 		if (mapping.getRepoRelativePath(resource) == null)
 			return null;
 
-		IndexDiffData indexDiffData = org.eclipse.egit.core.Activator
+		IndexDiffCacheEntry diffCacheEntry = org.eclipse.egit.core.Activator
 				.getDefault().getIndexDiffCache()
-				.getIndexDiffCacheEntry(mapping.getRepository()).getIndexDiff();
-
-		return indexDiffData;
+				.getIndexDiffCacheEntry(mapping.getRepository());
+		if (diffCacheEntry == null) {
+			return null;
+		}
+		return diffCacheEntry.getIndexDiff();
 	}
 
