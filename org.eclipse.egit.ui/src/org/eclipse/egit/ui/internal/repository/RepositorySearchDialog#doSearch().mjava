@@ -29,11 +29,7 @@
 					findGitDirsRecursive(file, directories, monitor,
 							lookForNested);
 				} catch (Exception ex) {
-					Activator
-							.getDefault()
-							.getLog()
-							.log(new Status(IStatus.ERROR, Activator
-									.getPluginId(), ex.getMessage(), ex));
+					throw new InvocationTargetException(ex);
 				}
 				if (monitor.isCanceled()) {
 					throw new InterruptedException();
@@ -44,7 +40,8 @@
 			getContainer().run(true, true, action);
 		} catch (InvocationTargetException e1) {
 			org.eclipse.egit.ui.Activator.handleError(
-					UIText.RepositorySearchDialog_errorOccurred, e1, true);
+					UIText.RepositorySearchDialog_errorOccurred, e1.getCause(),
+					true);
 		} catch (InterruptedException e1) {
 			// ignore
 		}
