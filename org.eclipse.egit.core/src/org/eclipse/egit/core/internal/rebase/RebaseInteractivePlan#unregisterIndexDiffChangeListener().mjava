@@ -2,7 +2,8 @@
 		IndexDiffCacheEntry entry = org.eclipse.egit.core.Activator
 				.getDefault().getIndexDiffCache()
 				.getIndexDiffCacheEntry(this.repository);
-
-		entry.removeIndexDiffChangedListener(this);
+		if (entry != null) {
+			entry.removeIndexDiffChangedListener(this);
+		}
 	}
 

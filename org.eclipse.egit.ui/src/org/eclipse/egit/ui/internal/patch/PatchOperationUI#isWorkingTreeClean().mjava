@@ -2,8 +2,13 @@
 		IndexDiffCache diffCache = org.eclipse.egit.core.Activator.getDefault()
 				.getIndexDiffCache();
 		if (diffCache != null) {
-			IndexDiffData diffData = diffCache.getIndexDiffCacheEntry(
-					repository).getIndexDiff();
+			IndexDiffCacheEntry diffCacheEntry = diffCache
+					.getIndexDiffCacheEntry(
+					repository);
+			if (diffCacheEntry == null) {
+				return true;
+			}
+			IndexDiffData diffData = diffCacheEntry.getIndexDiff();
 			if (diffData != null) {
 				Set<String> modified = diffData.getModified();
 				Set<String> untracked = diffData.getUntracked();
