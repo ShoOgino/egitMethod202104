@@ -23,6 +23,6 @@
 				.getPathsWithIndexMode(FileMode.SYMLINK)));
 		submodules = Collections.unmodifiableSet(new HashSet<String>(indexDiff
 				.getPathsWithIndexMode(FileMode.GITLINK)));
-		changedResources = null;
+		changedResources = Collections.emptySet();
 	}
 
