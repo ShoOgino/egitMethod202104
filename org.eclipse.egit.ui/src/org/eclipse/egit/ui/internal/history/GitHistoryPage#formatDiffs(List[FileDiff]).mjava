@@ -12,6 +12,9 @@
 		Job formatJob = new Job(UIText.GitHistoryPage_FormatDiffJobName) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
 				final IDocument document = new Document();
 				final DiffStyleRangeFormatter formatter = new DiffStyleRangeFormatter(
 						document);
@@ -30,10 +33,16 @@
 					}
 					monitor.worked(1);
 				}
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
 				monitor.done();
 				UIJob uiJob = new UIJob(UIText.GitHistoryPage_FormatDiffJobName) {
 					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
+						if (uiMonitor.isCanceled()) {
+							return Status.CANCEL_STATUS;
+						}
 						if (UIUtils.isUsable(diffViewer)) {
 							diffViewer.setDocument(document);
 							diffViewer.setFormatter(formatter);
