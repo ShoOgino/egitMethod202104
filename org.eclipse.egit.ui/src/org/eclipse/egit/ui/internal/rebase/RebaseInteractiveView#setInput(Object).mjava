@@ -8,11 +8,8 @@
 		if (o == null)
 			return;
 
-		if (o instanceof StructuredSelection) {
-			StructuredSelection sel = (StructuredSelection) o;
-			if (sel.size() != 1)
-				return;
-			o = sel.getFirstElement();
+		if (isViewInputDerivableFromSelection(o)) {
+			o = ((StructuredSelection) o).getFirstElement();
 		}
 		Repository repo = null;
 		if (o instanceof RepositoryTreeNode<?>)
