@@ -1,4 +1,5 @@
 	private void formatDiffs(final List<FileDiff> diffs) {
+		Job.getJobManager().cancel(JobFamilies.HISTORY_DIFF);
 		if (diffs.isEmpty()) {
 			if (UIUtils.isUsable(diffViewer)) {
 				IDocument document = new Document();
@@ -57,11 +58,23 @@
 						}
 						return Status.OK_STATUS;
 					}
+
+					@Override
+					public boolean belongsTo(Object family) {
+						return JobFamilies.HISTORY_DIFF.equals(family);
+					}
 				};
-				uiJob.schedule();
+				uiJob.setRule(pageSchedulingRule);
+				GitHistoryPage.this.schedule(uiJob);
 				return Status.OK_STATUS;
 			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				return JobFamilies.HISTORY_DIFF.equals(family);
+			}
 		};
-		formatJob.schedule();
+		formatJob.setRule(pageSchedulingRule);
+		schedule(formatJob);
 	}
 
