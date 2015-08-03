@@ -1,0 +1,14 @@
+	private void setPresentation(Presentation newOne, boolean auto) {
+		Presentation old = presentation;
+		presentation = newOne;
+		IPreferenceStore store = getPreferenceStore();
+		store.setValue(UIPreferences.STAGING_VIEW_PRESENTATION, newOne.name());
+		if (auto && old != newOne) {
+			// remember user choice if we switch mode automatically
+			store.setValue(UIPreferences.STAGING_VIEW_PRESENTATION_CHANGED,
+					true);
+		} else {
+			store.setToDefault(UIPreferences.STAGING_VIEW_PRESENTATION_CHANGED);
+		}
+	}
+

@@ -1,0 +1,11 @@
+	/**
+	 * The max number of changed files we can handle in the "list" presentation
+	 * without freezing Eclipse UI for a too long time.
+	 *
+	 * @return default is 10000
+	 */
+	private int getMaxLimitForListMode() {
+		return Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.STAGING_VIEW_MAX_LIMIT_LIST_MODE);
+	}
+

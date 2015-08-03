@@ -1,0 +1,11 @@
+	private static int getUnstaged(@Nullable IndexDiffData indexDiff) {
+		if (indexDiff == null) {
+			return 0;
+		}
+		int size = indexDiff.getUntracked().size();
+		size += indexDiff.getMissing().size();
+		size += indexDiff.getModified().size();
+		size += indexDiff.getConflicting().size();
+		return size;
+	}
+

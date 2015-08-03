@@ -1,0 +1,10 @@
+	private static int getStaged(@Nullable IndexDiffData indexDiff) {
+		if (indexDiff == null) {
+			return 0;
+		}
+		int size = indexDiff.getAdded().size();
+		size += indexDiff.getChanged().size();
+		size += indexDiff.getRemoved().size();
+		return size;
+	}
+

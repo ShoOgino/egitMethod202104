@@ -1,0 +1,11 @@
+	private void switchToCompactModeInternal(boolean auto) {
+		setPresentation(Presentation.COMPACT_TREE, auto);
+		listPresentationAction.setChecked(false);
+		treePresentationAction.setChecked(false);
+		if (auto) {
+			setExpandCollapseActionsVisible(false);
+		} else {
+			setExpandCollapseActionsVisible(isExpandAllowed());
+		}
+	}
+
