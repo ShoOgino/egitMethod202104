@@ -2,22 +2,35 @@
 	 * Determine the encoding used by eclipse for the resource.
 	 *
 	 * @param resource
-	 *            must be an instance of IEncodedStorage
-	 * @return the encoding used in Eclipse for the resource if found or null
+	 *            must be non null
+	 * @return the encoding used in Eclipse for the resource if found, never
+	 *         null
 	 */
-	public static String getResourceEncoding(IResource resource) {
+	@NonNull
+	public static String getResourceEncoding(@NonNull IResource resource) {
 		// Get the encoding for the current version. As a matter of
 		// principle one might want to use the eclipse settings for the
 		// version we are retrieving as that may be defined by the
 		// project settings, but there is no historic API for this.
 		String charset;
-		IEncodedStorage encodedStorage = ((IEncodedStorage) resource);
-		try {
-			charset = encodedStorage.getCharset();
-			if (charset == null)
-				charset = resource.getParent().getDefaultCharset();
-		} catch (CoreException e) {
-			charset = Constants.CHARACTER_ENCODING;
+		if (resource instanceof IEncodedStorage) {
+			IEncodedStorage encodedStorage = ((IEncodedStorage) resource);
+			try {
+				charset = encodedStorage.getCharset();
+				if (charset == null) {
+					charset = resource.getParent().getDefaultCharset();
+				}
+			} catch (CoreException e) {
+				charset = ResourcesPlugin.getEncoding();
+			}
+		} else if (resource instanceof IContainer) {
+			try {
+				charset = ((IContainer) resource).getDefaultCharset();
+			} catch (CoreException e) {
+				charset = ResourcesPlugin.getEncoding();
+			}
+		} else {
+			charset = ResourcesPlugin.getEncoding();
 		}
 		return charset;
 	}

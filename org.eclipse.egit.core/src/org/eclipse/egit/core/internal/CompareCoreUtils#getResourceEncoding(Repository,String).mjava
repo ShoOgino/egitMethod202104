@@ -6,16 +6,19 @@
 	 *            the repository
 	 * @param repoPath
 	 *            the path in the git repository
-	 * @return the encoding used in eclipse for the resource or null if
+	 * @return the encoding used in eclipse for the resource or null if no
+	 *         resource was found for given path
 	 *
 	 */
+	@Nullable
 	public static String getResourceEncoding(Repository db, String repoPath) {
-		if (db.isBare())
+		if (db.isBare()) {
 			return null;
+		}
 		IFile resource = ResourceUtil.getFileForLocation(db, repoPath);
-		if (resource == null)
+		if (resource == null) {
 			return null;
-
+		}
 		return getResourceEncoding(resource);
 	}
 
