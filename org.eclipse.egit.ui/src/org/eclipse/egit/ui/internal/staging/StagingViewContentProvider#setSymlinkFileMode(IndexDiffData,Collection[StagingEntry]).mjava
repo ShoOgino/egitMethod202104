@@ -9,6 +9,9 @@
 	private void setSymlinkFileMode(IndexDiffData indexDiff,
 			Collection<StagingEntry> entries) {
 		final Set<String> symlinks = indexDiff.getSymlinks();
+		if (symlinks.isEmpty()) {
+			return;
+		}
 		for (StagingEntry stagingEntry : entries) {
 			if (symlinks.contains(stagingEntry.getPath()))
 				stagingEntry.setSymlink(true);
