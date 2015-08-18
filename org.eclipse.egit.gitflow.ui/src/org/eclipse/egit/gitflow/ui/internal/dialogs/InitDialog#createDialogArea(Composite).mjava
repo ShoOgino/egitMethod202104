@@ -1,0 +1,37 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite container = new Composite(area, SWT.NONE);
+		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridLayoutFactory.swtDefaults().numColumns(4).applyTo(container);
+
+		createInputs(container);
+
+		DataBindingContext bindingContext = initDataBinding();
+
+		TitleAreaDialogSupport.create(this, bindingContext).setValidationMessageProvider(new ValidationMessageProvider() {
+			@Override
+			public String getMessage(ValidationStatusProvider statusProvider) {
+				if (statusProvider == null) {
+					return InitDialog_chooseBranchNamesAndPrefixes;
+				}
+				return super.getMessage(statusProvider);
+			}
+
+			@Override
+			public int getMessageType(ValidationStatusProvider statusProvider) {
+				int type = super.getMessageType(statusProvider);
+				Button okButton = getButton(OK_ID);
+				if(okButton != null) {
+					okButton.setEnabled(type != ERROR);
+				}
+				if (ERROR != type) {
+					return INFORMATION;
+				}
+				return type;
+			}
+		});
+
+		return area;
+	}
+

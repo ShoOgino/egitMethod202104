@@ -1,0 +1,45 @@
+	/**
+	 * @generated
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InitParameters other = (InitParameters) obj;
+		if (develop == null) {
+			if (other.develop != null)
+				return false;
+		} else if (!develop.equals(other.develop))
+			return false;
+		if (feature == null) {
+			if (other.feature != null)
+				return false;
+		} else if (!feature.equals(other.feature))
+			return false;
+		if (hotfix == null) {
+			if (other.hotfix != null)
+				return false;
+		} else if (!hotfix.equals(other.hotfix))
+			return false;
+		if (master == null) {
+			if (other.master != null)
+				return false;
+		} else if (!master.equals(other.master))
+			return false;
+		if (release == null) {
+			if (other.release != null)
+				return false;
+		} else if (!release.equals(other.release))
+			return false;
+		if (versionTag == null) {
+			if (other.versionTag != null)
+				return false;
+		} else if (!versionTag.equals(other.versionTag))
+			return false;
+		return true;
+	}
+

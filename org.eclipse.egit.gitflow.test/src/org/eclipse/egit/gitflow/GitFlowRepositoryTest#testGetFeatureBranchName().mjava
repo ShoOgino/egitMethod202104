@@ -6,9 +6,14 @@
 		Repository repository = repository1.getRepository();
 		GitFlowRepository gfRepo = new GitFlowRepository(repository);
 
-		new InitOperation(repository, DEVELOP, GitFlowDefaults.MASTER,
-				FEATURE_PREFIX, RELEASE_PREFIX, HOTFIX_PREFIX, VERSION_TAG)
-				.execute(null);
+		InitParameters initParameters = new InitParameters();
+		initParameters.setDevelop(DEVELOP);
+		initParameters.setMaster(GitFlowDefaults.MASTER);
+		initParameters.setFeature(FEATURE_PREFIX);
+		initParameters.setRelease(RELEASE_PREFIX);
+		initParameters.setHotfix(HOTFIX_PREFIX);
+		initParameters.setVersionTag(VERSION_TAG);
+		new InitOperation(repository, initParameters).execute(null);
 
 		assertTrue(gfRepo.getFeatureBranches().isEmpty());
 

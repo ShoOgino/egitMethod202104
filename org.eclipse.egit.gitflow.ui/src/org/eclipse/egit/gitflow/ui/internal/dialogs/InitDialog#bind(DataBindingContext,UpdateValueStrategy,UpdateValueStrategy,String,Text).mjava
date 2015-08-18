@@ -1,0 +1,8 @@
+	private void bind(DataBindingContext dataBindingContext,
+			UpdateValueStrategy noModelToTargetUpdate,
+			UpdateValueStrategy targetToModel, String modelProperty, Text widget) {
+		dataBindingContext.bindValue(text(Modify).observe(widget),
+				value(modelProperty).observe(gitflowInitConfig), targetToModel,
+				noModelToTargetUpdate);
+	}
+
