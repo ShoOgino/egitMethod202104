@@ -1,0 +1,16 @@
+	private File searchEnclosingProjectInWorkDir(File startFolder,
+			String workingTreeRootPath) {
+		File projectFile = null;
+		File currentPath = startFolder;
+
+		while (currentPath.toString().startsWith(workingTreeRootPath)) {
+			projectFile = new File(
+					currentPath.toString() + File.separator + ".project"); //$NON-NLS-1$
+			if (projectFile.isFile())
+				break;
+			projectFile = null;
+			currentPath = currentPath.getParentFile();
+		}
+		return projectFile;
+	}
+

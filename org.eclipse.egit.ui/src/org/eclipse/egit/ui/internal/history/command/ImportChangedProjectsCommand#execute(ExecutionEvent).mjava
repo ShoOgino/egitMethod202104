@@ -1,0 +1,17 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(event);
+		Set<File> changedFiles = new HashSet<File>();
+
+		List<RevCommit> commits = getSelectedCommits(event);
+		for (RevCommit commit : commits) {
+			RepositoryCommit repoCommit = new RepositoryCommit(repository,
+					commit);
+			changedFiles.addAll(determineChangedFilesOfCommit(repoCommit));
+		}
+		Set<File> dotProjectFiles = findDotProjectFiles(changedFiles,
+				repository);
+		importProjects(dotProjectFiles);
+		return null;
+	}
+
