@@ -2,7 +2,7 @@
 	 * @param event
 	 * @return Selected GitFlowRepository
 	 */
-	public static GitFlowRepository getRepository(ExecutionEvent event) {
+	public static @Nullable GitFlowRepository getRepository(ExecutionEvent event) {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
 				.getCurrentSelection(event);
 		PlatformObject firstElement = (PlatformObject) selection
