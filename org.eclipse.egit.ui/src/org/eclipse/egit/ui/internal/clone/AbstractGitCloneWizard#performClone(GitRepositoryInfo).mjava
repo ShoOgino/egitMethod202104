@@ -43,17 +43,21 @@
 		final CloneOperation op = new CloneOperation(uri, allSelected,
 				selectedBranches, workdir, ref != null ? ref.getName() : null,
 				remoteName, timeout);
-		if (credentials != null)
-			op.setCredentialsProvider(new EGitCredentialsProvider(
-					credentials.getUser(), credentials.getPassword()));
-		else
-			op.setCredentialsProvider(new EGitCredentialsProvider());
+		CredentialsProvider credentialsProvider = null;
+		if (credentials != null) {
+			credentialsProvider = new EGitCredentialsProvider(
+					credentials.getUser(), credentials.getPassword());
+		} else {
+			credentialsProvider = new EGitCredentialsProvider();
+		}
+		op.setCredentialsProvider(credentialsProvider);
 		op.setCloneSubmodules(cloneDestination.isCloneSubmodules());
 
 		configureFetchSpec(op, gitRepositoryInfo, remoteName);
 		configurePush(op, gitRepositoryInfo, remoteName);
 		configureRepositoryConfig(op, gitRepositoryInfo);
-		configureGerrit(op, gitRepositoryInfo, remoteName, timeout);
+		configureGerrit(op, gitRepositoryInfo, credentialsProvider, remoteName,
+				timeout);
 
 		if (cloneDestination.isImportProjects()) {
 			final IWorkingSet[] sets = cloneDestination.getWorkingSets();
