@@ -1,0 +1,7 @@
+		private MergeStrategyRegistryListener(IExtensionRegistry registry) {
+			strategies = new LinkedHashMap<>();
+			IConfigurationElement[] elements = registry
+					.getConfigurationElementsFor("org.eclipse.egit.core.mergeStrategy"); //$NON-NLS-1$
+			loadMergeStrategies(elements);
+		}
+

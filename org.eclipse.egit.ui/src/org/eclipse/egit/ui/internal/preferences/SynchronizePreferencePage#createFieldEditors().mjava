@@ -11,5 +11,22 @@
 		addField(new BooleanFieldEditor(UIPreferences.USE_LOGICAL_MODEL,
 				UIText.GitPreferenceRoot_useLogicalModel,
 				getFieldEditorParent()));
+
+		Label spacer = new Label(getFieldEditorParent(), SWT.NONE);
+		spacer.setSize(0, 12);
+		Composite modelStrategyParent = getFieldEditorParent();
+		preferredMergeStrategyEditor = new RadioGroupFieldEditor(
+				GitCorePreferences.core_preferredMergeStrategy,
+				UIText.GitPreferenceRoot_preferreMergeStrategy_group, 1,
+				getAvailableMergeStrategies(), modelStrategyParent, false) {
+			@Override
+			public IPreferenceStore getPreferenceStore() {
+				return getCorePreferenceStore();
+			}
+
+		};
+		preferredMergeStrategyEditor.getLabelControl(modelStrategyParent)
+				.setToolTipText(UIText.GitPreferenceRoot_preferreMergeStrategy_label);
+		addField(preferredMergeStrategyEditor);
 	}
 

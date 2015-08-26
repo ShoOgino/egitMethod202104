@@ -1,0 +1,8 @@
+	private void registerMergeStrategyRegistryListener() {
+		mergeStrategyRegistryListener = new MergeStrategyRegistryListener(
+				Platform.getExtensionRegistry());
+		Platform.getExtensionRegistry().addListener(
+				mergeStrategyRegistryListener,
+				"org.eclipse.egit.core.mergeStrategy"); //$NON-NLS-1$
+	}
+

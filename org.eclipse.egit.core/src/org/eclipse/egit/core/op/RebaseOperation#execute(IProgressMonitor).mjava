@@ -13,6 +13,11 @@
 				RebaseCommand cmd = new Git(repository).rebase()
 						.setProgressMonitor(
 								new EclipseGitProgressTransformer(actMonitor));
+				MergeStrategy strategy = Activator.getDefault()
+						.getPreferredMergeStrategy();
+				if (strategy != null) {
+					cmd.setStrategy(strategy);
+				}
 				try {
 					if (handler != null)
 						cmd.runInteractively(handler, true);

@@ -1,0 +1,9 @@
+	private ScopedPreferenceStore getCorePreferenceStore() {
+		if (corePreferenceStore == null) {
+			corePreferenceStore = new ScopedPreferenceStore(
+					InstanceScope.INSTANCE,
+					org.eclipse.egit.core.Activator.getPluginId());
+		}
+		return corePreferenceStore;
+	}
+

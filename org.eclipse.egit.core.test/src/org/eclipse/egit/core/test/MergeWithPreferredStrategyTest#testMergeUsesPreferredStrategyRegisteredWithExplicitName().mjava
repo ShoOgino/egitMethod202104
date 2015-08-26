@@ -1,0 +1,19 @@
+	@Test
+	public void testMergeUsesPreferredStrategyRegisteredWithExplicitName()
+			throws Exception {
+		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).put(
+				GitCorePreferences.core_preferredMergeStrategy,
+				"org.eclipse.egit.core.test.theirs");
+		MergeOperation operation = new MergeOperation(
+				testRepository.getRepository(), SIDE);
+		operation.execute(new NullProgressMonitor());
+
+		// With the MergeStrategy THEIRS, new files from branch 'master' should
+		// be ignored and new files from branch 'side' should be present
+		assertEquals(4, countCommitsInHead());
+		assertFalse(testRepository.getIFile(project.getProject(), file2)
+				.exists());
+		assertTrue(testRepository.getIFile(project.getProject(), file3)
+				.exists());
+	}
+

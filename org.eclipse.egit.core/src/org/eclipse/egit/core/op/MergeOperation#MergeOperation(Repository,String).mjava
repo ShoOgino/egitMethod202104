@@ -1,9 +1,15 @@
 	/**
+	 * Create a MergeOperation object. Initializes the MergeStrategy with the
+	 * preferred merge strategy, according to preferences.
+	 *
 	 * @param repository
-	 * @param refName name of a commit which should be merged
+	 * @param refName
+	 *            name of a commit which should be merged
 	 */
-	public MergeOperation(Repository repository, String refName) {
+	public MergeOperation(@NonNull Repository repository,
+			@NonNull String refName) {
 		this.repository = repository;
 		this.refName = refName;
+		this.mergeStrategy = Activator.getDefault().getPreferredMergeStrategy();
 	}
 

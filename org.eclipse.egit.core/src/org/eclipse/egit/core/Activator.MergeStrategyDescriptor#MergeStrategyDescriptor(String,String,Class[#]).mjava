@@ -1,0 +1,19 @@
+		/**
+		 * @param name
+		 *            The referred strategy's name, to use for retrieving the
+		 *            strategy from MergeRegistry via
+		 *            {@link MergeStrategy#get(String)}
+		 * @param label
+		 *            The label to display to users so they can select the
+		 *            strategy they need
+		 * @param implementedBy
+		 *            The class of the MergeStrategy registered through the
+		 *            mergeStrategy extension point
+		 */
+		public MergeStrategyDescriptor(String name, String label,
+				Class<?> implementedBy) {
+			this.name = name;
+			this.label = label;
+			this.implementedBy = implementedBy;
+		}
+

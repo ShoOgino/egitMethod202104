@@ -23,6 +23,11 @@
 								new SubProgressMonitor(mymonitor, 1)));
 						pull.setTimeout(timeout);
 						pull.setCredentialsProvider(credentialsProvider);
+						MergeStrategy strategy = Activator.getDefault()
+								.getPreferredMergeStrategy();
+						if (strategy != null) {
+							pull.setStrategy(strategy);
+						}
 						pullResult = pull.call();
 						results.put(repository, pullResult);
 					} catch (DetachedHeadException e) {

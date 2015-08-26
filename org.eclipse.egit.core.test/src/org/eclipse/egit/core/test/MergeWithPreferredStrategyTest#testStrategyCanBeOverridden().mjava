@@ -1,0 +1,15 @@
+	@Test
+	public void testStrategyCanBeOverridden() throws Exception {
+		MergeOperation operation = new MergeOperation(
+				testRepository.getRepository(), SIDE, "recursive");
+		operation.execute(new NullProgressMonitor());
+
+		// With the MergeStrategy RECURSIVE, new files from branch 'master' and
+		// 'side' should be present
+		assertEquals(4, countCommitsInHead());
+		assertTrue(testRepository.getIFile(project.getProject(), file2)
+				.exists());
+		assertTrue(
+				testRepository.getIFile(project.getProject(), file3).exists());
+	}
+

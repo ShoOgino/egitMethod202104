@@ -18,6 +18,11 @@
 						update.addPath(path);
 					update.setProgressMonitor(new EclipseGitProgressTransformer(
 							new SubProgressMonitor(pm, 2)));
+					MergeStrategy strategy = Activator.getDefault()
+							.getPreferredMergeStrategy();
+					if (strategy != null) {
+						update.setStrategy(strategy);
+					}
 					updated = update.call();
 					pm.worked(1);
 					SubProgressMonitor refreshMonitor = new SubProgressMonitor(

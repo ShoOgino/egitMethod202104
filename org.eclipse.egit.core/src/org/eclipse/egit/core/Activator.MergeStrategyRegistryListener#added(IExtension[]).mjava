@@ -1,0 +1,7 @@
+		@Override
+		public void added(IExtension[] extensions) {
+			for (IExtension extension : extensions) {
+				loadMergeStrategies(extension.getConfigurationElements());
+			}
+		}
+

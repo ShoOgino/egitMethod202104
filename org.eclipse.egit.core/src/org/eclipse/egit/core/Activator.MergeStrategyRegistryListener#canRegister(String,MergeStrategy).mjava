@@ -1,0 +1,43 @@
+		/**
+		 * Checks whether it's possible to register the provided strategy with
+		 * the given name
+		 *
+		 * @param name
+		 *            Name to use to register the strategy
+		 * @param strategy
+		 *            Strategy to register
+		 * @return <code>true</code> if the name is neither null nor empty, no
+		 *         other strategy is already register for the same name, and the
+		 *         name is not one of the core JGit strategies. If the given
+		 *         name is that of a core JGit strategy, the method will return
+		 *         <code>true</code> only if the strategy is the matching JGit
+		 *         strategy for that name.
+		 */
+		private boolean canRegister(String name, MergeStrategy strategy) {
+			boolean result = true;
+			if (name == null || name.isEmpty()) {
+				// name is mandatory
+				Activator.logError(
+						NLS.bind(CoreText.MergeStrategy_MissingName,
+								strategy.getClass()), null);
+				result = false;
+			} else if (strategies.containsKey(name)) {
+				// Other strategy already registered for this name
+				Activator.logError(NLS.bind(
+						CoreText.MergeStrategy_DuplicateName, new Object[] {
+								name, strategies.get(name).getImplementedBy(),
+								strategy.getClass() }), null);
+				result = false;
+			} else if (MergeStrategy.get(name) != null
+					&& MergeStrategy.get(name) != strategy) {
+				// The name is reserved by a core JGit strategy, and the
+				// provided instance is not that of JGit
+				Activator.logError(NLS.bind(
+						CoreText.MergeStrategy_ReservedName, new Object[] {
+								name, MergeStrategy.get(name).getClass(),
+								strategy.getClass() }), null);
+				result = false;
+			}
+			return result;
+		}
+

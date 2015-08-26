@@ -1,0 +1,31 @@
+	/**
+	 * Sets the preference "preferred merge strategy" to "ours", so that the
+	 * MergeStrategy that will be used by any operation that needs a merge will
+	 * be the {@link MergeStrategy#OURS}.
+	 */
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).put(
+				GitCorePreferences.core_preferredMergeStrategy, "ours");
+		gitDir = new File(project.getProject().getLocationURI().getPath(),
+				Constants.DOT_GIT);
+		testRepository = new TestRepository(gitDir);
+		testRepository.connect(project.getProject());
+
+		File file1 = testRepository.createFile(project.getProject(), "file1-1");
+		testRepository.addAndCommit(project.getProject(), file1,
+				"master commit 1");
+		testRepository.createBranch(MASTER, SIDE);
+		file2 = testRepository.createFile(project.getProject(), "file2");
+		testRepository.appendFileContent(file2, "Content 2");
+		testRepository.addAndCommit(project.getProject(), file2,
+				"master commit 2");
+		testRepository.checkoutBranch(SIDE);
+		file3 = testRepository.createFile(project.getProject(), "file3");
+		testRepository.appendFileContent(file3, "Content 3");
+		testRepository.addAndCommit(project.getProject(), file3,
+				"side commit 3");
+		testRepository.checkoutBranch(MASTER);
+	}
+

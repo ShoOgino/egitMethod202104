@@ -1,0 +1,9 @@
+	/**
+	 * Removes any preference about preferred merge strategy after any test.
+	 */
+	@After
+	public void tearDown() {
+		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).remove(
+				GitCorePreferences.core_preferredMergeStrategy);
+	}
+
