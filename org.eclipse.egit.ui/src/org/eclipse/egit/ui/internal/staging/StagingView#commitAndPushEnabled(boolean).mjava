@@ -1,0 +1,5 @@
+	private boolean commitAndPushEnabled(boolean commitEnabled) {
+		return commitEnabled
+				&& !currentRepository.getRepositoryState().isRebasing();
+	}
+

@@ -1,0 +1,14 @@
+	private Group createGroup(Composite parent, int numColumns) {
+		Group group = new Group(parent, SWT.NULL);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = numColumns;
+		group.setLayout(layout);
+		GridData data = new GridData(SWT.FILL);
+		data.horizontalIndent = 0;
+		data.verticalAlignment = SWT.FILL;
+		data.horizontalAlignment = SWT.END;
+		data.grabExcessHorizontalSpace = true;
+		group.setLayoutData(data);
+		return group;
+	}
+

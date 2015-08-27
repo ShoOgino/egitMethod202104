@@ -1,0 +1,9 @@
+	@Override
+	public boolean performOk() {
+		doGetPreferenceStore().setValue(UIPreferences.WARN_BEFORE_COMMITTING,
+				warnCheckbox.getSelection());
+		doGetPreferenceStore().setValue(UIPreferences.BLOCK_COMMIT,
+				blockCheckbox.getSelection());
+		return super.performOk();
+	}
+

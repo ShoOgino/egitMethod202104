@@ -1,17 +1,22 @@
 	private void updateMessage() {
-		String message = commitMessageComponent.getStatus().getMessage();
-		boolean needsRedraw = false;
-		if (message != null) {
-			warningLabel.showMessage(message);
-			needsRedraw = true;
-		} else {
-			needsRedraw = warningLabel.getVisible();
-			warningLabel.hideMessage();
-		}
-		// Without this explicit redraw, the ControlDecoration of the
-		// commit message area would not get updated and cause visual
-		// corruption.
-		if (needsRedraw)
+		if (hasErrorsOrWarnings()) {
+			warningLabel.showMessage(UIText.StagingView_MessageErrors);
 			commitMessageSection.redraw();
+		} else {
+			String message = commitMessageComponent.getStatus().getMessage();
+			boolean needsRedraw = false;
+			if (message != null) {
+				warningLabel.showMessage(message);
+				needsRedraw = true;
+			} else {
+				needsRedraw = warningLabel.getVisible();
+				warningLabel.hideMessage();
+			}
+			// Without this explicit redraw, the ControlDecoration of the
+			// commit message area would not get updated and cause visual
+			// corruption.
+			if (needsRedraw)
+				commitMessageSection.redraw();
+		}
 	}
 
