@@ -1,0 +1,8 @@
+		@Override
+		public IStatus validate(Object value) {
+			if (value == null || !isValidRefName(R_HEADS + value)) {
+				return error(NLS.bind(InitDialog_invalidBranchName, value));
+			}
+			return Status.OK_STATUS;
+		}
+

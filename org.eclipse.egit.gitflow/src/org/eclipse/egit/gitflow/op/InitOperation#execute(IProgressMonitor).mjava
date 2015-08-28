@@ -15,6 +15,10 @@
 		}
 
 		try {
+			if (!isMasterBranchAvailable()) {
+				throw new CoreException(error(NLS.bind(CoreText.InitOperation_localMasterDoesNotExist, master)));
+			}
+
 			RevCommit head = repository.findHead();
 			if (!repository.hasBranch(develop)) {
 				CreateLocalBranchOperation branchFromHead = createBranchFromHead(

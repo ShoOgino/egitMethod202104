@@ -1,0 +1,8 @@
+		@Override
+		public IStatus validate(Object value) {
+			if (value == null || !list.contains(R_HEADS + value)) {
+				return warning(NLS.bind(InitDialog_branchDoesNotExistYetAndWillBeCreated, value));
+			}
+			return Status.OK_STATUS;
+		}
+

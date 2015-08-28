@@ -1,0 +1,15 @@
+	private void createInitialCommit(Repository repository)
+			throws ExecutionException {
+		CommitHelper commitHelper = new CommitHelper(repository);
+
+		CommitOperation commitOperation;
+		try {
+			commitOperation = new CommitOperation(repository,
+					commitHelper.getAuthor(), commitHelper.getCommitter(),
+					UIText.InitHandler_initialCommit);
+			commitOperation.execute(null);
+		} catch (CoreException e) {
+			throw new ExecutionException(e.getMessage());
+		}
+	}
+

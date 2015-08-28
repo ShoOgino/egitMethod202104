@@ -1,0 +1,10 @@
+	private List<Ref> getBranches(Repository repository) throws ExecutionException {
+		List<Ref> branchList;
+		try {
+			branchList = Git.wrap(repository).branchList().call();
+		} catch (GitAPIException e) {
+			throw new ExecutionException(e.getMessage());
+		}
+		return branchList;
+	}
+

@@ -3,24 +3,21 @@
 
 		UpdateValueStrategy noModelToTarget = new UpdateValueStrategy(false, POLICY_ON_REQUEST);
 
-		UpdateValueStrategy targetToModel = new UpdateValueStrategy();
-		targetToModel.setBeforeSetValidator(new IValidator() {
-			@Override
-			public IStatus validate(Object value) {
-				if (value == null || !isValidRefName(Constants.R_HEADS + value)) {
-					return error(NLS.bind(InitDialog_invalidBranchName, value));
-				}
-				return Status.OK_STATUS;
-			}
-		});
-		bind(context, noModelToTarget, targetToModel, DEVELOP_BRANCH_PROPERTY, developText);
-		bind(context, noModelToTarget, targetToModel, MASTER_BRANCH_PROPERTY, masterText);
+		UpdateValueStrategy developUpdateStrategy = new UpdateValueStrategy();
+		developUpdateStrategy.setBeforeSetValidator(new BranchValidator());
+		bind(context, noModelToTarget, developUpdateStrategy, DEVELOP_BRANCH_PROPERTY, developText);
+
+		UpdateValueStrategy masterUpdateStrategy = new UpdateValueStrategy();
+		masterUpdateStrategy.setBeforeSetValidator(new BranchValidator());
+		masterUpdateStrategy.setAfterConvertValidator(new BranchExistsValidator(branchList));
+		bind(context, noModelToTarget, masterUpdateStrategy, MASTER_BRANCH_PROPERTY, masterText);
 
 		UpdateValueStrategy prefixTargetToModel = new UpdateValueStrategy();
 		prefixTargetToModel.setBeforeSetValidator(new IValidator() {
 			@Override
 			public IStatus validate(Object value) {
-				if (value == null || !isValidRefName(Constants.R_HEADS + value + DUMMY_POSTFIX)) {
+				if (value == null
+						|| !isValidRefName(R_HEADS + value + DUMMY_POSTFIX)) {
 					return error(NLS.bind(InitDialog_invalidPrefix, value));
 				}
 				return Status.OK_STATUS;
