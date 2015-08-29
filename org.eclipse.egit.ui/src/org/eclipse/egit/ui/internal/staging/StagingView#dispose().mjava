@@ -21,6 +21,9 @@
 		if (refsChangedListener != null) {
 			refsChangedListener.remove();
 		}
+
+		getPreferenceStore().removePropertyChangeListener(uiPrefsListener);
+
 		disposed = true;
 	}
 
