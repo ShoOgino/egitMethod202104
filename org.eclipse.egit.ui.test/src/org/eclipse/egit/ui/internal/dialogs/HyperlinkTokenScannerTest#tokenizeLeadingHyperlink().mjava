@@ -1,0 +1,7 @@
+	@Test
+	public void tokenizeLeadingHyperlink() {
+		String testString = "http://foo bar";
+		String expected = "HHHHHHHHHHDDDD";
+		assertTokens(testString, 0, testString.length(), expected);
+	}
+

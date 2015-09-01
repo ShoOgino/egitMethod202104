@@ -1,0 +1,7 @@
+	@Test
+	public void tokenizeEmbeddedHyperlink() {
+		String testString = "Link: http://foo bar";
+		String expected = "DDDDDDHHHHHHHHHHDDDD";
+		assertTokens(testString, 0, testString.length(), expected);
+	}
+

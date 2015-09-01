@@ -74,14 +74,7 @@
 			public IHyperlinkPresenter getHyperlinkPresenter(
 					ISourceViewer targetViewer) {
 				return new MultipleHyperlinkPresenter(PlatformUI.getWorkbench()
-						.getDisplay().getSystemColor(SWT.COLOR_BLUE).getRGB()) {
-
-					@Override
-					public void hideHyperlinks() {
-						// We want links to always show.
-					}
-
-				};
+						.getDisplay().getSystemColor(SWT.COLOR_BLUE).getRGB());
 			}
 
 			@Override
@@ -108,13 +101,27 @@
 				return assistant;
 			}
 
+			@Override
+			public IPresentationReconciler getPresentationReconciler(
+					ISourceViewer viewer) {
+				PresentationReconciler reconciler = new PresentationReconciler();
+				reconciler.setDocumentPartitioning(
+						getConfiguredDocumentPartitioning(sourceViewer));
+				HyperlinkDamagerRepairer hyperlinkDamagerRepairer = new HyperlinkDamagerRepairer(
+						new HyperlinkTokenScanner(
+								getHyperlinkDetectors(sourceViewer),
+								sourceViewer));
+				reconciler.setDamager(hyperlinkDamagerRepairer,
+						IDocument.DEFAULT_CONTENT_TYPE);
+				reconciler.setRepairer(hyperlinkDamagerRepairer,
+						IDocument.DEFAULT_CONTENT_TYPE);
+				return reconciler;
+			}
+
 		};
 
 		sourceViewer.configure(configuration);
 		sourceViewer.setDocument(document, annotationModel);
-
-		UIUtils.applyHyperlinkDetectorStyleRanges(sourceViewer,
-				configuration.getHyperlinkDetectors(sourceViewer));
 
 		configureContextMenu();
 

@@ -1,0 +1,9 @@
+	@Test
+	public void tokenizeHyperlinksOutsideRegion() {
+		String testString = "Link: http://foo\n\n* http://foo\n* ftp://somewhere\n\nTwo links above.";
+		String expected = "DDDDD                                                             ";
+		assertTokens(testString, 0, 5, expected);
+		expected = "                                                  DDDDDDDDDDDD    ";
+		assertTokens(testString, 50, 12, expected);
+	}
+

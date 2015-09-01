@@ -1,0 +1,7 @@
+	@Test
+	public void tokenizeMultipleHyperlinksMultiline() {
+		String testString = "Link: http://foo\n\n* http://foo\n* ftp://somewhere\n\nTwo links above.";
+		String expected = "DDDDDDHHHHHHHHHHDDDDHHHHHHHHHHDDDHHHHHHHHHHHHHHHDDDDDDDDDDDDDDDDDD";
+		assertTokens(testString, 0, testString.length(), expected);
+	}
+

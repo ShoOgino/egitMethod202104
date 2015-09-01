@@ -1,0 +1,7 @@
+	@Test
+	public void tokenizeMultipleHyperlinksSimple() {
+		String testString = "Link: http://foo http://www.example.com bar";
+		String expected = "DDDDDDHHHHHHHHHHDHHHHHHHHHHHHHHHHHHHHHHDDDD";
+		assertTokens(testString, 0, testString.length(), expected);
+	}
+
