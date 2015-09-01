@@ -31,7 +31,11 @@
 			tracked = true;
 
 			Repository repository = repoMapping.getRepository();
-			String repoRelative = makeRepoRelative(repository, prj) + "/"; //$NON-NLS-1$
+			String repoRelative = makeRepoRelative(repository, prj);
+			if (repoRelative == null) {
+				continue;
+			}
+			repoRelative += "/"; //$NON-NLS-1$
 
 			Set<String> modified = diffData.getModified();
 			Set<String> conflicting = diffData.getConflicting();

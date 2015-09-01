@@ -1,5 +1,12 @@
+	@Nullable
 	private String makeRepoRelative(Repository repository, IResource res) {
-		return stripWorkDir(repository.getWorkTree(), res.getLocation()
-				.toFile());
+		if (repository.isBare()) {
+			return null;
+		}
+		IPath location = res.getLocation();
+		if (location == null) {
+			return null;
+		}
+		return stripWorkDir(repository.getWorkTree(), location.toFile());
 	}
 
