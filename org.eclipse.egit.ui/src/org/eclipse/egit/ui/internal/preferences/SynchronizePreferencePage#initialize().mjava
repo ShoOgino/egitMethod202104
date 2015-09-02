@@ -1,0 +1,10 @@
+	@Override
+	protected void initialize() {
+		super.initialize();
+		// The default initialize sets the same preference store for every field
+		// We want the preferred strategy to use the core store
+		preferredMergeStrategyEditor
+				.setPreferenceStore(getCorePreferenceStore());
+		preferredMergeStrategyEditor.load();
+	}
+
