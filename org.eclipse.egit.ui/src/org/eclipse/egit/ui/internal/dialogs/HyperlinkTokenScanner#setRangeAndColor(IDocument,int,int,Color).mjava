@@ -1,0 +1,27 @@
+	/**
+	 * Configures the scanner by providing access to the document range that
+	 * should be scanned, plus defining the foreground color to use for hyperlink
+	 * syntax coloring.
+	 *
+	 * @param document
+	 *            the document to scan
+	 * @param offset
+	 *            the offset of the document range to scan
+	 * @param length
+	 *            the length of the document range to scan
+	 * @param color
+	 *            the foreground color to use for hyperlinks; may be
+	 *            {@code null} in which case the SWT default color for the
+	 *            {@link org.eclipse.swt.SWT#UNDERLINE_LINK SWT.UNDERLINE_LINK}
+	 *            style is applied
+	 */
+	protected void setRangeAndColor(@NonNull IDocument document, int offset,
+			int length, @Nullable Color color) {
+		Assert.isTrue(document == viewer.getDocument());
+		this.endOfRange = offset + length;
+		this.currentOffset = offset;
+		this.tokenStart = -1;
+		hyperlinkToken = new Token(
+				new HyperlinkDamagerRepairer.HyperlinkTextAttribute(color));
+	}
+
