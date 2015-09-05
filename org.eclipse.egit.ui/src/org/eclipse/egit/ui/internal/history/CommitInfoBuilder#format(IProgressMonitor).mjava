@@ -1,13 +1,12 @@
 	/**
-	 * Format the commit info
+	 * Retrieves and formats the commit info.
 	 *
-	 * @param styles styles for text formatting
 	 * @param monitor
+	 *            for progress reporting and cancellation
 	 * @return formatted commit info
 	 * @throws IOException
 	 */
-	public String format(final List<StyleRange> styles,
-			IProgressMonitor monitor) throws IOException {
+	public FormatResult format(IProgressMonitor monitor) throws IOException {
 		boolean trace = GitTraceLocation.HISTORYVIEW.isActive();
 		if (trace)
 			GitTraceLocation.getTrace().traceEntry(
@@ -16,6 +15,7 @@
 		final StringBuilder d = new StringBuilder();
 		final PersonIdent author = commit.getAuthorIdent();
 		final PersonIdent committer = commit.getCommitterIdent();
+		List<ObjectLink> hyperlinks = new ArrayList<>();
 		d.append(UIText.CommitMessageViewer_commit);
 		d.append(SPACE);
 		d.append(commit.getId().name());
@@ -48,7 +48,7 @@
 			p.parseBody();
 			d.append(UIText.CommitMessageViewer_parent);
 			d.append(": "); //$NON-NLS-1$
-			addLink(d, styles, p);
+			addLink(d, hyperlinks, p);
 			d.append(" ("); //$NON-NLS-1$
 			d.append(p.getShortMessage());
 			d.append(")"); //$NON-NLS-1$
@@ -60,7 +60,7 @@
 			p.parseBody();
 			d.append(UIText.CommitMessageViewer_child);
 			d.append(": "); //$NON-NLS-1$
-			addLink(d, styles, p);
+			addLink(d, hyperlinks, p);
 			d.append(" ("); //$NON-NLS-1$
 			d.append(p.getShortMessage());
 			d.append(")"); //$NON-NLS-1$
@@ -79,7 +79,7 @@
 						Ref head = i.next();
 						RevCommit p;
 						p = rw.parseCommit(head.getObjectId());
-						addLink(d, formatHeadRef(head), styles, p);
+						addLink(d, formatHeadRef(head), hyperlinks, p);
 						if (i.hasNext()) {
 							if (count++ <= MAXBRANCHES) {
 								d.append(", "); //$NON-NLS-1$
@@ -114,7 +114,7 @@
 					d.append(": "); //$NON-NLS-1$
 					RevCommit p = rw.parseCommit(followingTag
 							.getObjectId());
-					addLink(d, formatTagRef(followingTag), styles, p);
+					addLink(d, formatTagRef(followingTag), hyperlinks, p);
 					d.append(LF);
 				}
 			} catch (IOException e) {
@@ -129,7 +129,7 @@
 					d.append(": "); //$NON-NLS-1$
 					RevCommit p = rw.parseCommit(precedingTag
 							.getObjectId());
-					addLink(d, formatTagRef(precedingTag), styles, p);
+					addLink(d, formatTagRef(precedingTag), hyperlinks, p);
 					d.append(LF);
 				}
 			} catch (IOException e) {
@@ -137,32 +137,34 @@
 			}
 		}
 
-		makeGrayText(d, styles);
 		d.append(LF);
-		String msg = commit.getFullMessage();
-		Pattern p = Pattern.compile("\n([A-Z](?:[A-Za-z]+-)+by: [^\n]+)"); //$NON-NLS-1$
-		if (fill) {
-			Matcher spm = p.matcher(msg);
-			if (spm.find()) {
-				String subMsg = msg.substring(0, spm.end());
-				msg = subMsg.replaceAll("([\\w.,; \t])\n(\\w)", "$1 $2") //$NON-NLS-1$ //$NON-NLS-2$
-						+ msg.substring(spm.end());
+		int headerEnd = d.length();
+		String msg = commit.getFullMessage().trim();
+		// Find start of footer:
+		Matcher spm = FOOTER_PATTERN.matcher(msg);
+		int footerStart = -1;
+		if (spm.find()) {
+			if (fill) {
+				String footer = msg.substring(spm.start());
+				msg = msg.substring(0, spm.start());
+				msg = msg.replaceAll("([\\w.,; \t])\n(\\w)", "$1 $2") //$NON-NLS-1$ //$NON-NLS-2$
+						+ footer;
+				footerStart = headerEnd + msg.length() - footer.length();
+			} else {
+				footerStart = headerEnd + spm.start();
 			}
+		} else if (fill) {
+			msg = msg.replaceAll("([\\w.,; \t])\n(\\w)", "$1 $2"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		int h0 = d.length();
+
 		d.append(msg);
 		if (!msg.endsWith(LF))
 			d.append(LF);
 
-		Matcher matcher = p.matcher(msg);
-		while (matcher.find()) {
-			styles.add(new StyleRange(h0 + matcher.start(), matcher.end()
-					- matcher.start(), null, null, SWT.ITALIC));
-		}
-
 		if (trace)
 			GitTraceLocation.getTrace().traceExit(
 					GitTraceLocation.HISTORYVIEW.getLocation());
-		return d.toString();
+		return new FormatResult(d.toString(), hyperlinks, headerEnd,
+				footerStart >= 0 ? footerStart : d.length());
 	}
 

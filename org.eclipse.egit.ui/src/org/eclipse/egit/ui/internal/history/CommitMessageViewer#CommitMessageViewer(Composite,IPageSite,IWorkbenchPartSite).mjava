@@ -5,35 +5,6 @@
 		final StyledText t = getTextWidget();
 		t.setFont(UIUtils.getFont(UIPreferences.THEME_CommitMessageFont));
 
-		sys_normalCursor = t.getCursor();
-
-		// set the cursor when hovering over a link
-		t.addListener(SWT.MouseMove, new Listener() {
-			@Override
-			public void handleEvent(final Event e) {
-				StyleRange styleRange = getStyleRange(e.x, e.y);
-				if (styleRange != null && styleRange.underline)
-					t.setCursor(SYS_LINK_CURSOR);
-				else
-					t.setCursor(sys_normalCursor);
-			}
-		});
-		// react on link click
-		t.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(final MouseEvent e) {
-				// only process the hyper link if it was a primary mouse click
-				if (e.button != 1)
-					return;
-
-				final StyleRange r = getStyleRange(e.x, e.y);
-				if (r instanceof ObjectLink) {
-					final RevCommit c = ((ObjectLink) r).targetCommit;
-					for (final Object l : navListeners.getListeners())
-						((CommitNavigationListener) l).showCommit(c);
-				}
-			}
-		});
 		setTextDoubleClickStrategy(new DefaultTextDoubleClickStrategy(),
 				IDocument.DEFAULT_CONTENT_TYPE);
 		activatePlugins();
@@ -56,11 +27,23 @@
 				}
 			}
 		};
-
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.addPropertyChangeListener(listener);
 		fill = store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL);
+
+		// React on changes in the JFace color preferences
+		syntaxColoringListener = new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (JFacePreferences.HYPERLINK_COLOR
+						.equals(event.getProperty())) {
+					format();
+				}
+			}
+		};
+		JFacePreferences.getPreferenceStore()
+				.addPropertyChangeListener(syntaxColoringListener);
 
 		// global action handlers for select all and copy
 		final IAction selectAll = new Action() {

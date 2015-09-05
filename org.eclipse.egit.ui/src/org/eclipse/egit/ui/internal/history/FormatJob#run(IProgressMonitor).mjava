@@ -2,8 +2,7 @@
 	protected IStatus run(IProgressMonitor monitor) {
 		if(monitor.isCanceled())
 			return Status.CANCEL_STATUS;
-		final List<StyleRange> styles = new ArrayList<StyleRange>();
-		final String commitInfo;
+		final FormatResult commitInfo;
 		CommitInfoBuilder builder;
 		try {
 			synchronized(lock) {
@@ -12,25 +11,15 @@
 				builder = new CommitInfoBuilder(formatRequest.getRepository(),
 						commit, formatRequest.isFill(),
 						formatRequest.getAllRefs());
-				builder.setColors(formatRequest.getLinkColor(),
-						formatRequest.getDarkGrey());
 			}
-			commitInfo = builder.format(styles, monitor);
+			commitInfo = builder.format(monitor);
 		} catch (IOException e) {
 			return Activator.createErrorStatus(e.getMessage(), e);
 		}
-		final StyleRange[] arr = new StyleRange[styles.size()];
-		styles.toArray(arr);
-		Arrays.sort(arr, new Comparator<StyleRange>() {
-			@Override
-			public int compare(StyleRange o1, StyleRange o2) {
-				return o1.start - o2.start;
-			}
-		});
 		if(monitor.isCanceled())
 			return Status.CANCEL_STATUS;
 		synchronized(lock) {
-			formatResult = new FormatResult(commitInfo, arr);
+			formatResult = commitInfo;
 		}
 		return Status.OK_STATUS;
 	}

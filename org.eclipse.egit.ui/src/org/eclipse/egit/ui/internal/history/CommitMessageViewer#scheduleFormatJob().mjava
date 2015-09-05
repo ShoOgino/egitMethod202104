@@ -3,8 +3,7 @@
 		if (siteService == null)
 			return;
 		FormatJob.FormatRequest formatRequest = new FormatJob.FormatRequest(
-				getRepository(), commit, fill, SYS_LINKCOLOR, SYS_DARKGRAY,
-				allRefs);
+				getRepository(), commit, fill, allRefs);
 		formatJob = new FormatJob(formatRequest);
 		addDoneListenerToFormatJob();
 		siteService.schedule(formatJob, 0 /* now */, true /*

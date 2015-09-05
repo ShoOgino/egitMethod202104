@@ -79,23 +79,62 @@
 			}
 
 			@Override
-			public IHyperlinkPresenter getHyperlinkPresenter(
+			public IHyperlinkDetector[] getHyperlinkDetectors(
 					ISourceViewer sourceViewer) {
-				return new MultipleHyperlinkPresenter(PlatformUI.getWorkbench()
-						.getDisplay().getSystemColor(SWT.COLOR_BLUE).getRGB()) {
-
-					@Override
-					public void hideHyperlinks() {
-						// We want links to always show.
-					}
-
-				};
+				IHyperlinkDetector[] registered = getRegisteredHyperlinkDetectors(
+						sourceViewer);
+				// Add our special detector for commit hyperlinks.
+				IHyperlinkDetector[] result = new IHyperlinkDetector[registered.length
+						+ 1];
+				System.arraycopy(registered, 0, result, 0, registered.length);
+				result[registered.length] = new CommitMessageViewer.KnownHyperlinksDetector();
+				return result;
 			}
 
 			@Override
-			public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
-				return getRegisteredHyperlinkDetectors(sourceViewer);
+			public String[] getConfiguredContentTypes(
+					ISourceViewer sourceViewer) {
+				return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
+						CommitMessageViewer.HEADER_CONTENT_TYPE,
+						CommitMessageViewer.FOOTER_CONTENT_TYPE };
 			}
+
+			@Override
+			public IPresentationReconciler getPresentationReconciler(
+					ISourceViewer viewer) {
+				PresentationReconciler reconciler = new PresentationReconciler();
+				reconciler.setDocumentPartitioning(
+						getConfiguredDocumentPartitioning(commentViewer));
+				DefaultDamagerRepairer hyperlinkDamagerRepairer = new DefaultDamagerRepairer(
+						new HyperlinkTokenScanner(
+								getHyperlinkDetectors(commentViewer),
+								commentViewer));
+				reconciler.setDamager(hyperlinkDamagerRepairer,
+						IDocument.DEFAULT_CONTENT_TYPE);
+				reconciler.setRepairer(hyperlinkDamagerRepairer,
+						IDocument.DEFAULT_CONTENT_TYPE);
+				TextAttribute headerDefault = new TextAttribute(
+						PlatformUI.getWorkbench().getDisplay()
+								.getSystemColor(SWT.COLOR_DARK_GRAY));
+				DefaultDamagerRepairer headerDamagerRepairer = new DefaultDamagerRepairer(
+						new HyperlinkTokenScanner(
+								getHyperlinkDetectors(commentViewer),
+								commentViewer, headerDefault));
+				reconciler.setDamager(headerDamagerRepairer,
+						CommitMessageViewer.HEADER_CONTENT_TYPE);
+				reconciler.setRepairer(headerDamagerRepairer,
+						CommitMessageViewer.HEADER_CONTENT_TYPE);
+				DefaultDamagerRepairer footerDamagerRepairer = new DefaultDamagerRepairer(
+						new FooterTokenScanner(
+								getHyperlinkDetectors(commentViewer),
+								commentViewer));
+				reconciler.setDamager(footerDamagerRepairer,
+						CommitMessageViewer.FOOTER_CONTENT_TYPE);
+				reconciler.setRepairer(footerDamagerRepairer,
+						CommitMessageViewer.FOOTER_CONTENT_TYPE);
+				return reconciler;
+			}
+
 		};
 
 		commentViewer.configure(configuration);

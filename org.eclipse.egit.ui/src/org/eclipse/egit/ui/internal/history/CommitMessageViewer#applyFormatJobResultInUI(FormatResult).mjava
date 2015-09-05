@@ -3,16 +3,6 @@
 		if (!UIUtils.isUsable(text))
 			return;
 
-		setDocument(new Document(formatResult.getCommitInfo()));
-
-		// Set style ranges from format job. We know that they are already
-		// ordered and don't overlap.
-		text.setStyleRanges(formatResult.getStyleRange());
-
-		// Apply additional styles. If we combined them with the above style
-		// ranges and set them all at once, we would have to manually remove
-		// overlapping ones.
-		UIUtils.applyHyperlinkDetectorStyleRanges(CommitMessageViewer.this,
-				fHyperlinkDetectors);
+		setDocument(new CommitDocument(formatResult));
 	}
 

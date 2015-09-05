@@ -6,6 +6,8 @@
 		}
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(listener);
+		JFacePreferences.getPreferenceStore()
+				.removePropertyChangeListener(syntaxColoringListener);
 		if (refsChangedListener != null)
 			refsChangedListener.remove();
 		refsChangedListener = null;

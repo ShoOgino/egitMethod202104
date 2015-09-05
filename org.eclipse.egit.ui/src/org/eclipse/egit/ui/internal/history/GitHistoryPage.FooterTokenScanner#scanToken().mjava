@@ -1,0 +1,23 @@
+		@Override
+		protected IToken scanToken() {
+			// If we're at a "Signed-off-by" or similar footer line, make it
+			// italic.
+			try {
+				IRegion region = document
+						.getLineInformationOfOffset(currentOffset);
+				if (currentOffset == region.getOffset()) {
+					String line = document.get(currentOffset,
+							region.getLength());
+					Matcher m = ITALIC_LINE.matcher(line);
+					if (m.find()) {
+						currentOffset = Math.min(endOfRange,
+								currentOffset + region.getLength());
+						return italicToken;
+					}
+				}
+			} catch (BadLocationException e) {
+				// Ignore and return null below.
+			}
+			return null;
+		}
+

@@ -1,0 +1,18 @@
+		@Override
+		public IToken nextToken() {
+			if (currentOffset < end) {
+				tokenStart = currentOffset;
+				if (currentOffset < headerEnd) {
+					currentOffset = Math.min(headerEnd, end);
+					return HEADER;
+				} else if (currentOffset < footerStart) {
+					currentOffset = Math.min(footerStart, end);
+					return BODY;
+				} else {
+					currentOffset = end;
+					return FOOTER;
+				}
+			}
+			return Token.EOF;
+		}
+

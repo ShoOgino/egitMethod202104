@@ -16,6 +16,7 @@
 	protected void setRangeAndColor(@NonNull IDocument document, int offset,
 			int length, @Nullable Color color) {
 		Assert.isTrue(document == viewer.getDocument());
+		this.document = document;
 		this.endOfRange = offset + length;
 		this.currentOffset = offset;
 		this.tokenStart = -1;
