@@ -1,0 +1,9 @@
+	@Override
+	public void dispose() {
+		if (getContainer() instanceof IPageChangeProvider) {
+			((IPageChangeProvider) getContainer())
+					.removePageChangedListener(this);
+		}
+		super.dispose();
+	}
+

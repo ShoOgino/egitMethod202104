@@ -1,0 +1,8 @@
+	@Override
+	public void setContainer(IWizardContainer container) {
+		if (container instanceof IPageChangeProvider) {
+			((IPageChangeProvider) container).addPageChangedListener(this);
+		}
+		super.setContainer(container);
+	}
+

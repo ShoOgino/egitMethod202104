@@ -1,5 +1,7 @@
 	@Override
 	public boolean canFinish() {
-		return getContainer().getCurrentPage() == this.selectRootPage && this.selectRootPage.isPageComplete();
+		return getContainer().getCurrentPage()
+				.getWizard() == this.easymportWizard
+				&& this.easymportWizard.canFinish();
 	}
 
