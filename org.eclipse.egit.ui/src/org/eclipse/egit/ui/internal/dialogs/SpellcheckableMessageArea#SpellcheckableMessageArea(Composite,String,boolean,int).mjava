@@ -117,7 +117,7 @@
 				PresentationReconciler reconciler = new PresentationReconciler();
 				reconciler.setDocumentPartitioning(
 						getConfiguredDocumentPartitioning(sourceViewer));
-				HyperlinkDamagerRepairer hyperlinkDamagerRepairer = new HyperlinkDamagerRepairer(
+				DefaultDamagerRepairer hyperlinkDamagerRepairer = new DefaultDamagerRepairer(
 						new HyperlinkTokenScanner(
 								getHyperlinkDetectors(sourceViewer),
 								sourceViewer));
