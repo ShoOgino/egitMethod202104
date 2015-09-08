@@ -15,12 +15,14 @@
 
 		testRepository.appendContentAndCommit(project.getProject(), file,
 				"Hello Release", "Release Commit");
+		testRepository.appendContentAndCommit(project.getProject(), file,
+				"Hello Merge Commit", "Release Commit 2");
 
 		new ReleaseFinishOperation(gfRepo).execute(null);
 
 		new HotfixStartOperation(gfRepo, MY_HOTFIX).execute(null);
 		// modify on first branch
-		RevCommit hotfixCommit = testRepository.appendContentAndCommit(
+		testRepository.appendContentAndCommit(
 				project.getProject(), file, "Hello Hotfix", "Hotfix Commit");
 		new BranchOperation(repository, gfRepo.getConfig().getDevelop()).execute(null);
 		assertEquals(gfRepo.getConfig().getDevelopFull(), repository.getFullBranch());
@@ -35,9 +37,8 @@
 				gfRepo);
 		hotfixFinishOperation.execute(null);
 
-		// tag is created because of 473646
 		// TODO: check if the reference implementation cleans up in this case
-		assertEquals(hotfixCommit, gfRepo.findCommitForTag(MY_HOTFIX));
+		assertNotNull(gfRepo.findCommitForTag(MY_HOTFIX));
 
 		// branch not removed?
 		assertNotEquals(findBranch(repository, branchName), null);
@@ -50,7 +51,7 @@
 
 		// merged on master
 		RevCommit masterHead = gfRepo.findHead(MY_MASTER);
-		assertEquals(hotfixCommit, masterHead);
+		assertEquals(String.format("Merge branch '%s'", branchName), masterHead.getFullMessage());
 
 		assertEquals(gfRepo.getConfig().getDevelopFull(), repository.getFullBranch());
 	}

@@ -1,0 +1,8 @@
+	private RevCommit findCommonBase(RevWalk walk, RevCommit branchCommit,
+			RevCommit developCommit) throws IOException {
+		walk.setRevFilter(RevFilter.MERGE_BASE);
+		walk.markStart(branchCommit);
+		walk.markStart(developCommit);
+		return walk.next();
+	}
+

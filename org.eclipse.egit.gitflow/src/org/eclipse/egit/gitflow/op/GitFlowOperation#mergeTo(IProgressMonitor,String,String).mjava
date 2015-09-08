@@ -1,6 +1,6 @@
 	/**
-	 * Merge without squash:
-	 * {@link org.eclipse.egit.gitflow.op.GitFlowOperation#mergeTo(IProgressMonitor, String, String, boolean)}
+	 * Merge without squash and NO_FF for single commit branches:
+	 * {@link org.eclipse.egit.gitflow.op.GitFlowOperation#mergeTo(IProgressMonitor, String, String, boolean, boolean)}
 	 *
 	 * @param monitor
 	 * @param branchName
@@ -10,6 +10,6 @@
 	 */
 	protected MergeResult mergeTo(IProgressMonitor monitor, String branchName,
 			String targetBranchName) throws CoreException {
-		return mergeTo(monitor, branchName, targetBranchName, false);
+		return mergeTo(monitor, branchName, targetBranchName, false, false);
 	}
 

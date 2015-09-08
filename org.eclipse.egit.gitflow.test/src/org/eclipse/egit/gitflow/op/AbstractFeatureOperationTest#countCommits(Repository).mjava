@@ -1,4 +1,4 @@
-	private int countCommits(Repository repository) throws GitAPIException,
+	protected int countCommits(Repository repository) throws GitAPIException,
 			NoHeadException {
 		int count = 0;
 		Iterable<RevCommit> commits = Git.wrap(repository).log().call();

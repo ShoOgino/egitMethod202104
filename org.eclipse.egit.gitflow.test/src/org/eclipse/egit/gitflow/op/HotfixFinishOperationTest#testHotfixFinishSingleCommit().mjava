@@ -1,5 +1,5 @@
 	@Test
-	public void testHotfixFinish() throws Exception {
+	public void testHotfixFinishSingleCommit() throws Exception {
 		testRepository
 				.createInitialCommit("testHotfixFinish\n\nfirst commit\n");
 
@@ -19,16 +19,16 @@
 		String branchName = gfRepo.getConfig().getHotfixBranchName(MY_HOTFIX);
 
 		// tag created?
-		assertEquals(branchCommit, gfRepo.findCommitForTag(MY_HOTFIX));
+		RevCommit taggedCommit = gfRepo.findCommitForTag(MY_HOTFIX);
+		assertEquals(formatMergeCommitMessage(branchName), taggedCommit.getShortMessage());
 
 		// branch removed?
 		assertEquals(findBranch(repository, branchName), null);
 
 		RevCommit developHead = gfRepo.findHead(DEVELOP);
-		//TODO: as soon as we start using NO_FF for all finish operations, this must be not equals.
-		assertEquals(branchCommit, developHead);
+		assertNotEquals(branchCommit, developHead);
 
 		RevCommit masterHead = gfRepo.findHead(MY_MASTER);
-		assertEquals(branchCommit, masterHead);
+		assertEquals(formatMergeCommitMessage(branchName), masterHead.getShortMessage());
 	}
 

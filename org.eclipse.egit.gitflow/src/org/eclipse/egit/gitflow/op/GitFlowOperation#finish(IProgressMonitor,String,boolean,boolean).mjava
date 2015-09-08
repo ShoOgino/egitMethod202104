@@ -4,15 +4,16 @@
 	 * @param monitor
 	 * @param branchName
 	 * @param squash
+	 * @param fastForwardSingleCommit Has no effect if {@code squash} is true.
 	 * @throws CoreException
 	 * @since 4.1
 	 */
 	protected void finish(IProgressMonitor monitor, String branchName,
-			boolean squash)
+			boolean squash, boolean fastForwardSingleCommit)
 			throws CoreException {
 		try {
 			mergeResult = mergeTo(monitor, branchName, repository.getConfig()
-					.getDevelop(), squash);
+					.getDevelop(), squash, fastForwardSingleCommit);
 			if (!mergeResult.getMergeStatus().isSuccessful()) {
 				return;
 			}

@@ -1,5 +1,5 @@
 	@Test
-	public void testReleaseFinish() throws Exception {
+	public void testReleaseFinishSingleCommit() throws Exception {
 		testRepository
 				.createInitialCommit("testReleaseFinish\n\nfirst commit\n");
 
@@ -15,21 +15,22 @@
 		GitFlowRepository gfRepo = new GitFlowRepository(repository);
 
 		new ReleaseStartOperation(gfRepo, MY_RELEASE).execute(null);
-		addFileAndCommit("foo.txt", "testReleaseFinish\n\nbranch commit 1\n");
-		addFileAndCommit("bar.txt", "testReleaseFinish\n\nbranch commit 2\n");
-		ReleaseFinishOperation releaseFinishOperation = new ReleaseFinishOperation(gfRepo);
-		releaseFinishOperation.execute(null);
-		assertEquals(gfRepo.getConfig().getDevelopFull(),
-				repository.getFullBranch());
+		RevCommit branchCommit = testRepository
+				.createInitialCommit("testReleaseFinish\n\nbranch commit\n");
+		new ReleaseFinishOperation(gfRepo).execute(null);
+		assertEquals(gfRepo.getConfig().getDevelopFull(), repository.getFullBranch());
 
 		String branchName = gfRepo.getConfig().getReleaseBranchName(MY_RELEASE);
 		// tag created?
-		RevCommit taggedCommit = gfRepo.findCommitForTag(MY_VERSION_TAG
-				+ MY_RELEASE);
-		assertEquals(formatMergeCommitMessage(branchName),
-				taggedCommit.getFullMessage());
-
+		RevCommit taggedCommit = gfRepo.findCommitForTag(MY_VERSION_TAG + MY_RELEASE);
+		assertEquals(formatMergeCommitMessage(branchName), taggedCommit.getShortMessage());
 		// branch removed?
 		assertEquals(findBranch(repository, branchName), null);
+
+		RevCommit developHead = gfRepo.findHead(DEVELOP);
+		assertNotEquals(branchCommit, developHead);
+
+		RevCommit masterHead = gfRepo.findHead(MY_MASTER);
+		assertEquals(formatMergeCommitMessage(branchName), masterHead.getShortMessage());
 	}
 

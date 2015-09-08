@@ -1,10 +1,13 @@
 	/**
+	 * Finish without squash and NO_FF for single commit branches:
+	 * {@link org.eclipse.egit.gitflow.op.GitFlowOperation#finish(IProgressMonitor, String, boolean, boolean)}
+	 *
 	 * @param monitor
 	 * @param branchName
 	 * @throws CoreException
 	 */
 	protected void finish(IProgressMonitor monitor, String branchName)
 			throws CoreException {
-		finish(monitor, branchName, false);
+		finish(monitor, branchName, false, false);
 	}
 
