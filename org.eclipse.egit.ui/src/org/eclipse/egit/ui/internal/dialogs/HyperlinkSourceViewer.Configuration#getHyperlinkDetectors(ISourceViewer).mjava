@@ -1,0 +1,60 @@
+		/**
+		 * Returns the hyperlink detectors which are to be used to detect
+		 * hyperlinks in the given source viewer. This implementation uses
+		 * {@link #internalGetHyperlinkDetectors(ISourceViewer)} to get the
+		 * hyperlink detectors.
+		 * <p>
+		 * Sets up the hyperlink detetctors such that they are active on both
+		 * {@link SWT#NONE} and on the configured modifier key combination if
+		 * the viewer is configured to open hyperlinks on direct click, i.e., if
+		 * {@link TextSourceViewerConfiguration#getHyperlinkStateMask(ISourceViewer)
+		 * getHyperlinkStateMask(ISourceViewer)} returns {@link SWT#NONE}.
+		 * </p>
+		 *
+		 * @param sourceViewer
+		 *            the {@link ISourceViewer} to be configured by this
+		 *            configuration
+		 * @return an array with {@link IHyperlinkDetector}s or {@code null} if
+		 *         no hyperlink support should be installed
+		 */
+		@Override
+		public final IHyperlinkDetector[] getHyperlinkDetectors(
+				ISourceViewer sourceViewer) {
+			IHyperlinkDetector[] detectors = internalGetHyperlinkDetectors(
+					sourceViewer);
+			if (detectors != null && detectors.length > 0
+					&& getHyperlinkStateMask(sourceViewer) == SWT.NONE) {
+				// Duplicate them all with a detector that is active on SWT.NONE
+				int defaultMask = getConfiguredDefaultMask();
+				IHyperlinkDetector[] newDetectors = new IHyperlinkDetector[detectors.length
+						* 2];
+				int j = 0;
+				for (IHyperlinkDetector original : detectors) {
+					if (original instanceof IHyperlinkDetectorExtension2) {
+						int mask = ((IHyperlinkDetectorExtension2) original)
+								.getStateMask();
+						if (mask == -1) {
+							newDetectors[j++] = new FixedMaskHyperlinkDetector(
+									original, defaultMask);
+							if (defaultMask != SWT.NONE) {
+								newDetectors[j++] = new NoMaskHyperlinkDetector(
+										original);
+							}
+						} else {
+							newDetectors[j++] = original;
+							if (mask != SWT.NONE) {
+								newDetectors[j++] = new NoMaskHyperlinkDetector(
+										original);
+							}
+						}
+					} else {
+						newDetectors[j++] = original;
+					}
+				}
+				IHyperlinkDetector[] result = new IHyperlinkDetector[j];
+				System.arraycopy(newDetectors, 0, result, 0, j);
+				return result;
+			}
+			return detectors;
+		}
+

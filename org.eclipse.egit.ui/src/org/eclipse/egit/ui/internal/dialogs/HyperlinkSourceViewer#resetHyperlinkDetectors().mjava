@@ -1,0 +1,7 @@
+	private void resetHyperlinkDetectors() {
+		IHyperlinkDetector[] detectors = configuration
+				.getHyperlinkDetectors(this);
+		int stateMask = configuration.getHyperlinkStateMask(this);
+		setHyperlinkDetectors(detectors, stateMask);
+	}
+

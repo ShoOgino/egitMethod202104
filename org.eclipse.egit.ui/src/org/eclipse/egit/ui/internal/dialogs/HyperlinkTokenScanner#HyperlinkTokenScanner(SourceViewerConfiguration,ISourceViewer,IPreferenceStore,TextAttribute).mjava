@@ -1,0 +1,24 @@
+	/**
+	 * Creates a new instance that uses the given hyperlink detector and viewer.
+	 *
+	 * @param configuration
+	 *            the {@link SourceViewerConfiguration}s to get the
+	 *            {@link IHyperlinkDetector}s from
+	 * @param viewer
+	 *            the {@link ISourceViewer} to operate in
+	 * @param preferenceStore
+	 *            to use to look up preferences related to hyperlinking
+	 * @param defaultAttribute
+	 *            the {@link TextAttribute} to use for the default token; may be
+	 *            {@code null} to use the default style of the viewer
+	 */
+	protected HyperlinkTokenScanner(SourceViewerConfiguration configuration,
+			ISourceViewer viewer, @Nullable IPreferenceStore preferenceStore,
+			@Nullable TextAttribute defaultAttribute) {
+		this.viewer = viewer;
+		this.defaultToken = new Token(defaultAttribute);
+		this.configuration = configuration;
+		this.preferenceStore = preferenceStore == null
+				? EditorsUI.getPreferenceStore() : preferenceStore;
+	}
+

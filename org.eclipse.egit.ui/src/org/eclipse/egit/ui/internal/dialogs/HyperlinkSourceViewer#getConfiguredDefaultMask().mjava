@@ -1,0 +1,11 @@
+	private static int getConfiguredDefaultMask() {
+		int mask = computeStateMask(EditorsUI.getPreferenceStore().getString(
+				AbstractTextEditor.PREFERENCE_HYPERLINK_KEY_MODIFIER));
+		if (mask == -1) {
+			// Fallback
+			mask = EditorsUI.getPreferenceStore().getInt(
+					AbstractTextEditor.PREFERENCE_HYPERLINK_KEY_MODIFIER_MASK);
+		}
+		return mask;
+	}
+

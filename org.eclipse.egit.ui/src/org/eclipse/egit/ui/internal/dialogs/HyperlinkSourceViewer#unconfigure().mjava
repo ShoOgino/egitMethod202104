@@ -1,0 +1,11 @@
+	@Override
+	public void unconfigure() {
+		super.unconfigure();
+		if (hyperlinkChangeListener != null) {
+			EditorsUI.getPreferenceStore()
+					.removePropertyChangeListener(hyperlinkChangeListener);
+		}
+		preferenceKeysForEnablement = null;
+		preferenceKeysForActivation = null;
+	}
+

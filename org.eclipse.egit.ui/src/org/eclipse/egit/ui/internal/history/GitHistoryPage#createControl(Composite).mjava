@@ -70,7 +70,7 @@
 				.getBackground());
 
 
-		TextSourceViewerConfiguration configuration = new TextSourceViewerConfiguration(
+		HyperlinkSourceViewer.Configuration configuration = new HyperlinkSourceViewer.Configuration(
 				EditorsUI.getPreferenceStore()) {
 
 			@Override
@@ -79,16 +79,23 @@
 			}
 
 			@Override
-			public IHyperlinkDetector[] getHyperlinkDetectors(
+			protected IHyperlinkDetector[] internalGetHyperlinkDetectors(
 					ISourceViewer sourceViewer) {
-				IHyperlinkDetector[] registered = getRegisteredHyperlinkDetectors(
+				IHyperlinkDetector[] registered = super.internalGetHyperlinkDetectors(
 						sourceViewer);
-				// Add our special detector for commit hyperlinks.
-				IHyperlinkDetector[] result = new IHyperlinkDetector[registered.length
-						+ 1];
-				System.arraycopy(registered, 0, result, 0, registered.length);
-				result[registered.length] = new CommitMessageViewer.KnownHyperlinksDetector();
-				return result;
+				// Always add our special detector for commit hyperlinks; we
+				// want those to show always.
+				if (registered == null) {
+					return new IHyperlinkDetector[] {
+							new CommitMessageViewer.KnownHyperlinksDetector() };
+				} else {
+					IHyperlinkDetector[] result = new IHyperlinkDetector[registered.length
+							+ 1];
+					System.arraycopy(registered, 0, result, 0,
+							registered.length);
+					result[registered.length] = new CommitMessageViewer.KnownHyperlinksDetector();
+					return result;
+				}
 			}
 
 			@Override
@@ -106,8 +113,7 @@
 				reconciler.setDocumentPartitioning(
 						getConfiguredDocumentPartitioning(viewer));
 				DefaultDamagerRepairer hyperlinkDamagerRepairer = new DefaultDamagerRepairer(
-						new HyperlinkTokenScanner(getHyperlinkDetectors(viewer),
-								viewer));
+						new HyperlinkTokenScanner(this, viewer));
 				reconciler.setDamager(hyperlinkDamagerRepairer,
 						IDocument.DEFAULT_CONTENT_TYPE);
 				reconciler.setRepairer(hyperlinkDamagerRepairer,
@@ -116,15 +122,13 @@
 						PlatformUI.getWorkbench().getDisplay()
 								.getSystemColor(SWT.COLOR_DARK_GRAY));
 				DefaultDamagerRepairer headerDamagerRepairer = new DefaultDamagerRepairer(
-						new HyperlinkTokenScanner(getHyperlinkDetectors(viewer),
-								viewer, headerDefault));
+						new HyperlinkTokenScanner(this, viewer, headerDefault));
 				reconciler.setDamager(headerDamagerRepairer,
 						CommitMessageViewer.HEADER_CONTENT_TYPE);
 				reconciler.setRepairer(headerDamagerRepairer,
 						CommitMessageViewer.HEADER_CONTENT_TYPE);
 				DefaultDamagerRepairer footerDamagerRepairer = new DefaultDamagerRepairer(
-						new FooterTokenScanner(getHyperlinkDetectors(viewer),
-								viewer));
+						new FooterTokenScanner(this, viewer));
 				reconciler.setDamager(footerDamagerRepairer,
 						CommitMessageViewer.FOOTER_CONTENT_TYPE);
 				reconciler.setRepairer(footerDamagerRepairer,
