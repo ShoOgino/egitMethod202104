@@ -1,0 +1,11 @@
+	private void addCommit(StringBuilder d, SWTCommit gitcommit, String label,
+			List<GitCommitReference> hyperlinks) throws IOException {
+		if (gitcommit != null) {
+			d.append(label).append(": "); //$NON-NLS-1$
+			gitcommit.parseBody();
+			addLink(d, hyperlinks, gitcommit);
+			d.append(" (").append(gitcommit.getShortMessage()).append(')'); //$NON-NLS-1$
+			d.append(LF);
+		}
+	}
+

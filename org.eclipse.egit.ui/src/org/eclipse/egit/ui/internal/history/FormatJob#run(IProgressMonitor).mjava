@@ -1,8 +1,9 @@
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		if(monitor.isCanceled())
+		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
-		final FormatResult commitInfo;
+		}
+		FormatResult commitInfo;
 		CommitInfoBuilder builder;
 		try {
 			synchronized(lock) {
@@ -16,8 +17,9 @@
 		} catch (IOException e) {
 			return Activator.createErrorStatus(e.getMessage(), e);
 		}
-		if(monitor.isCanceled())
+		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
+		}
 		synchronized(lock) {
 			formatResult = commitInfo;
 		}

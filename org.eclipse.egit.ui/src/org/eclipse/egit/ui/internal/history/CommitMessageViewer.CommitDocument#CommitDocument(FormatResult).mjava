@@ -2,9 +2,9 @@
 			super(format.getCommitInfo());
 			headerEnd = format.getHeaderEnd();
 			footerStart = format.getFooterStart();
-			List<ObjectLink> knownLinks = format.getKnownLinks();
+			List<GitCommitReference> knownLinks = format.getKnownLinks();
 			hyperlinks = new ArrayList<>(knownLinks.size());
-			for (ObjectLink o : knownLinks) {
+			for (GitCommitReference o : knownLinks) {
 				hyperlinks.add(new ObjectHyperlink(o));
 			}
 			IDocumentPartitioner partitioner = new FastPartitioner(

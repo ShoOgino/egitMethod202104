@@ -1,0 +1,12 @@
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof GitCommitReference) {
+			GitCommitReference other = (GitCommitReference) obj;
+			return target.equals(other.target) && region.equals(other.region);
+		}
+		return false;
+	}
+

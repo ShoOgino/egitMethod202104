@@ -1,7 +1,7 @@
 		@Override
 		public IToken nextToken() {
+			tokenStart = currentOffset;
 			if (currentOffset < end) {
-				tokenStart = currentOffset;
 				if (currentOffset < headerEnd) {
 					currentOffset = Math.min(headerEnd, end);
 					return HEADER;

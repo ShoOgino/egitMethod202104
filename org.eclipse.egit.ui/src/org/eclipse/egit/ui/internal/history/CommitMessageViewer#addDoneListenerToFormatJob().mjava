@@ -1,6 +1,5 @@
 	void addDoneListenerToFormatJob() {
 		formatJob.addJobChangeListener(new JobChangeAdapter() {
-
 			@Override
 			public void done(IJobChangeEvent event) {
 				if (!event.getResult().isOK())
@@ -8,11 +7,12 @@
 				final StyledText text = getTextWidget();
 				if (text == null || text.isDisposed())
 					return;
-				final FormatJob job = (FormatJob) event.getJob();
+				final FormatResult result = ((FormatJob) event.getJob())
+						.getFormatResult();
 				text.getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						applyFormatJobResultInUI(job.getFormatResult());
+						applyFormatJobResultInUI(result);
 					}
 				});
 			}

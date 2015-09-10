@@ -1,0 +1,10 @@
+	private void addTag(StringBuilder d, String label, RevWalk walk, Ref tag,
+			List<GitCommitReference> hyperlinks) throws IOException {
+		if (tag != null) {
+			d.append(label).append(": "); //$NON-NLS-1$
+			RevCommit p = walk.parseCommit(tag.getObjectId());
+			addLink(d, formatTagRef(tag), hyperlinks, p);
+			d.append(LF);
+		}
+	}
+

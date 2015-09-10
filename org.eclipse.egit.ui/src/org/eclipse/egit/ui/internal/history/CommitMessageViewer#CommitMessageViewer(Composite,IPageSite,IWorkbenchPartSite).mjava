@@ -32,13 +32,22 @@
 		fill = store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_FILL);
 
-		// React on changes in the JFace color preferences
+		// React on changes in the JFace color preferences by updating the view
 		syntaxColoringListener = new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
 				if (JFacePreferences.HYPERLINK_COLOR
 						.equals(event.getProperty())) {
-					format();
+					if (!t.isDisposed()) {
+						t.getDisplay().asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								if (!t.isDisposed()) {
+									refresh();
+								}
+							}
+						});
+					}
 				}
 			}
 		};
