@@ -1,0 +1,12 @@
+	@SuppressWarnings("boxing")
+	private void assertBlameEnabled(Object selected, boolean expected) {
+		assertNotNull("Nothing selected", selected);
+		IStructuredSelection selection = mock(IStructuredSelection.class);
+		when(selection.getFirstElement()).thenReturn(selected);
+		when(selection.size()).thenReturn(1);
+		ShowBlameActionHandler blame = new ShowBlameActionHandler();
+		blame.setSelection(selection);
+		assertEquals("Unexpected enablement of blame action", expected,
+				blame.isEnabled());
+	}
+

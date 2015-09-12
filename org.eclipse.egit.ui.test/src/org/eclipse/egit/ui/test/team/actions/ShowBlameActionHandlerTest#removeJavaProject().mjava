@@ -1,0 +1,42 @@
+	private void removeJavaProject() throws CoreException {
+		if (javaProject == null) {
+			return;
+		}
+		final IProject project = javaProject.getProject();
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) throws CoreException {
+				// Following code inspired by {@link
+				// org.eclipse.jdt.testplugin.JavaProjectHelper#delete(IResource)}.
+				// I don't like all this sleeping at all, but apparently it's
+				// needed because the Java indexer might still run and hold on
+				// to some resources.
+				for (int i = 0; i < MAX_DELETE_RETRY; i++) {
+					try {
+						project.delete(
+								IResource.FORCE
+										| IResource.ALWAYS_DELETE_PROJECT_CONTENT,
+								null);
+						break;
+					} catch (CoreException e) {
+						if (i == MAX_DELETE_RETRY - 1) {
+							throw e;
+						}
+						try {
+							Activator.logInfo(
+									"Sleep before retrying to delete project "
+											+ project.getLocationURI());
+							// Give other threads the time to close and release
+							// the resource.
+							Thread.sleep(DELETE_RETRY_DELAY);
+						} catch (InterruptedException e1) {
+							// Ignore and retry to delete
+						}
+					}
+				}
+
+			}
+		};
+		ResourcesPlugin.getWorkspace().run(runnable, null);
+	}
+

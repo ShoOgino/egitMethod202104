@@ -1,0 +1,7 @@
+	@BeforeClass
+	public static void setupAutobuildOff() throws CoreException {
+		// Switch off autobuild -- we don't need it, and a build job might
+		// interfere with our removing the Java project at the end.
+		initialAutobuild = setAutobuild(false);
+	}
+

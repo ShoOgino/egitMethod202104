@@ -1,0 +1,19 @@
+	@Test
+	public void testShowAnnotationsFromProjectExplorer() throws Exception {
+		IProject project = javaProject.getProject();
+		// Find the file
+		IFile file = project.getFolder(SRC_FOLDER_NAME).getFolder(PACKAGE_NAME)
+				.getFile(JAVA_FILE_NAME);
+		assertBlameEnabled(file, true);
+		// Now repeat the same with the ICompilationUnit.
+		IJavaElement element = JavaCore.create(file, javaProject);
+		assertTrue("Expected an ICompilationUnit",
+				element instanceof ICompilationUnit);
+		assertBlameEnabled(element, true);
+		// And with IType...
+		IType type = javaProject.findType(PACKAGE_NAME, JAVA_CLASS_NAME);
+		assertBlameEnabled(type, true);
+		// ... and finally with something that doesn't adapt to IResource:
+		assertBlameEnabled(this, false);
+	}
+

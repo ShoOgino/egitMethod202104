@@ -1,0 +1,59 @@
+	private IJavaProject createJavaProject(final Repository repository,
+			final String projectName) throws Exception {
+		final IJavaProject[] jProjectHolder = new IJavaProject[] { null };
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) throws CoreException {
+				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+				IProject project = root.getProject(projectName);
+				if (project.exists()) {
+					project.delete(true, null);
+					TestUtil.waitForJobs(100, 5000);
+				}
+				IProjectDescription desc = ResourcesPlugin.getWorkspace()
+						.newProjectDescription(projectName);
+				desc.setLocation(
+						new Path(new File(repository.getWorkTree(), projectName)
+								.getPath()));
+				project.create(desc, null);
+				project.open(null);
+				TestUtil.waitForJobs(50, 5000);
+				// Create a "bin" folder
+				IFolder bin = project.getFolder(BIN_FOLDER_NAME);
+				if (!bin.exists()) {
+					bin.create(IResource.FORCE | IResource.DERIVED, true, null);
+				}
+				IPath outputLocation = bin.getFullPath();
+				// Create a "src" folder
+				IFolder src = project.getFolder(SRC_FOLDER_NAME);
+				if (!src.exists()) {
+					src.create(IResource.FORCE, true, null);
+				}
+				addNatureToProject(project, JavaCore.NATURE_ID);
+				// Set up the IJavaProject
+				IJavaProject jProject = JavaCore.create(project);
+				IPackageFragmentRoot srcContainer = jProject
+						.getPackageFragmentRoot(src);
+				IClasspathEntry srcEntry = JavaCore
+						.newSourceEntry(srcContainer.getPath());
+				// Create a JRE classpath entry using the default JRE
+				IClasspathEntry jreEntry = JavaRuntime
+						.getDefaultJREContainerEntry();
+				jProject.setRawClasspath(
+						new IClasspathEntry[] { srcEntry, jreEntry },
+						outputLocation, true, null);
+				// Create a package with a single test class
+				IPackageFragment javaPackage = srcContainer
+						.createPackageFragment(PACKAGE_NAME, true, null);
+				javaPackage
+						.createCompilationUnit(JAVA_FILE_NAME,
+								"package " + PACKAGE_NAME + ";\nclass "
+										+ JAVA_CLASS_NAME + " {\n\n}",
+								true, null);
+				jProjectHolder[0] = jProject;
+			}
+		};
+		ResourcesPlugin.getWorkspace().run(runnable, null);
+		return jProjectHolder[0];
+	}
+

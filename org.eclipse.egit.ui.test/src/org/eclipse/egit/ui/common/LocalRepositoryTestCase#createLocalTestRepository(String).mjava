@@ -1,0 +1,10 @@
+	protected Repository createLocalTestRepository(String repoName)
+			throws IOException {
+		File gitDir = new File(new File(testDirectory, repoName),
+				Constants.DOT_GIT);
+		Repository myRepository = new RepositoryBuilder().setGitDir(gitDir)
+				.build();
+		myRepository.create();
+		return myRepository;
+	}
+

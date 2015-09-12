@@ -3,20 +3,15 @@
 			return null;
 
 		Object element = selection.getFirstElement();
-		if (element instanceof IResource) {
-			IResource resource = (IResource) element;
+		IResource resource = AdapterUtils.adapt(element, IResource.class);
+		if (resource instanceof IStorage) {
+			IStorage storage = (IStorage) resource;
+			RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
 
-			if (resource instanceof IStorage) {
-				IStorage storage = (IStorage) resource;
-				RepositoryMapping mapping = RepositoryMapping
-						.getMapping(resource);
-
-				if (mapping != null) {
-					String repoRelativePath = mapping
-							.getRepoRelativePath(resource);
-					return new Data(mapping.getRepository(), repoRelativePath,
-							storage, null);
-				}
+			if (mapping != null) {
+				String repoRelativePath = mapping.getRepoRelativePath(resource);
+				return new Data(mapping.getRepository(), repoRelativePath,
+						storage, null);
 			}
 		} else if (element instanceof CommitFileRevision) {
 			CommitFileRevision revision = (CommitFileRevision) element;
