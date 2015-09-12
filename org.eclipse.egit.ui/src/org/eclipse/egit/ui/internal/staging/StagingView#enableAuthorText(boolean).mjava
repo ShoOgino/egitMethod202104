@@ -1,9 +1,10 @@
 	private void enableAuthorText(boolean enabled) {
-		if (currentRepository != null
-				&& currentRepository.getRepositoryState().equals(
-				RepositoryState.CHERRY_PICKING_RESOLVED))
+		Repository repo = currentRepository;
+		if (repo != null && repo.getRepositoryState()
+				.equals(RepositoryState.CHERRY_PICKING_RESOLVED)) {
 			authorText.setEnabled(false);
-		else
+		} else {
 			authorText.setEnabled(enabled);
+		}
 	}
 

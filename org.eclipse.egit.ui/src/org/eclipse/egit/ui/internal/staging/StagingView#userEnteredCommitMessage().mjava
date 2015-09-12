@@ -7,8 +7,8 @@
 			return false;
 
 		String chIdLine = "Change-Id: I" + ObjectId.zeroId().name(); //$NON-NLS-1$
-
-		if (GerritUtil.getCreateChangeId(currentRepository.getConfig())
+		Repository repo = currentRepository;
+		if (repo != null && GerritUtil.getCreateChangeId(repo.getConfig())
 				&& commitMessageComponent.getCreateChangeId()) {
 			if (message.trim().equals(chIdLine))
 				return false;

@@ -3,7 +3,7 @@
 	 * @return cache entry
 	 */
 	@Nullable
-	public IndexDiffCacheEntry getIndexDiffCacheEntry(Repository repository) {
+	public IndexDiffCacheEntry getIndexDiffCacheEntry(@NonNull Repository repository) {
 		IndexDiffCacheEntry entry;
 		synchronized (entries) {
 			entry = entries.get(repository);

@@ -3,7 +3,12 @@
 		if (cacheEntry != null) {
 			indexDiff = cacheEntry.getIndexDiff();
 		} else {
-			indexDiff = doReload(currentRepository);
+			Repository repo = currentRepository;
+			if (repo == null) {
+				indexDiff = null;
+			} else {
+				indexDiff = doReload(repo);
+			}
 		}
 		boolean indexDiffAvailable = indexDiffAvailable(indexDiff);
 		boolean noConflicts = noConflicts(indexDiff);

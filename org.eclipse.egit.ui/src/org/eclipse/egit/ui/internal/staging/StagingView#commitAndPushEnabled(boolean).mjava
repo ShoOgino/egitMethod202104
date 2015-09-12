@@ -1,5 +1,8 @@
 	private boolean commitAndPushEnabled(boolean commitEnabled) {
-		return commitEnabled
-				&& !currentRepository.getRepositoryState().isRebasing();
+		Repository repo = currentRepository;
+		if (repo == null) {
+			return false;
+		}
+		return commitEnabled && !repo.getRepositoryState().isRebasing();
 	}
 
