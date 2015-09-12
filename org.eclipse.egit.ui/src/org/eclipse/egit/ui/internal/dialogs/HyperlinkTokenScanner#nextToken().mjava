@@ -1,20 +1,71 @@
 	@Override
 	public IToken nextToken() {
-		this.tokenStart = currentOffset;
+		tokenStart = currentOffset;
 		if (currentOffset >= endOfRange) {
+			hyperlinksOnLine.clear();
 			return Token.EOF;
 		}
-		for (IHyperlinkDetector hyperlinkDetector : hyperlinkDetectors) {
-			IHyperlink[] newLinks = hyperlinkDetector.detectHyperlinks(viewer,
-					new Region(currentOffset, 0), false);
-			if (newLinks != null && newLinks.length > 0) {
-				IRegion region = newLinks[0].getHyperlinkRegion();
-				int end = Math.min(endOfRange,
-						region.getOffset() + region.getLength());
-				if (end > tokenStart) {
-					currentOffset = end;
-					return hyperlinkToken;
+		if (hyperlinkDetectors.length > 0) {
+			try {
+				IRegion currentLine = document
+						.getLineInformationOfOffset(currentOffset);
+				if (currentLine.getOffset() != lastLineStart) {
+					// Compute all hyperlinks in the line
+					hyperlinksOnLine.clear();
+					for (IHyperlinkDetector hyperlinkDetector : hyperlinkDetectors) {
+						IHyperlink[] newLinks = hyperlinkDetector
+								.detectHyperlinks(viewer, currentLine, false);
+						if (newLinks != null && newLinks.length > 0) {
+							Collections.addAll(hyperlinksOnLine, newLinks);
+						}
+					}
+					// Sort them by offset, and with increasing length
+					Collections.sort(hyperlinksOnLine,
+							new Comparator<IHyperlink>() {
+								@Override
+								public int compare(IHyperlink a, IHyperlink b) {
+									int diff = a.getHyperlinkRegion()
+											.getOffset()
+											- b.getHyperlinkRegion()
+													.getOffset();
+									if (diff != 0) {
+										return diff;
+									}
+									return a.getHyperlinkRegion().getLength()
+											- b.getHyperlinkRegion()
+													.getLength();
+								}
+							});
+					lastLineStart = currentLine.getOffset();
 				}
+				if (!hyperlinksOnLine.isEmpty()) {
+					// Find first hyperlink for the position. We may have to
+					// skip a few in case there are several hyperlinks at the
+					// same position and with the same length.
+					Iterator<IHyperlink> iterator = hyperlinksOnLine.iterator();
+					while (iterator.hasNext()) {
+						IHyperlink next = iterator.next();
+						IRegion linkRegion = next.getHyperlinkRegion();
+						int linkEnd = linkRegion.getOffset()
+								+ linkRegion.getLength();
+						if (currentOffset >= linkEnd) {
+							iterator.remove();
+						} else if (linkRegion.getOffset() <= currentOffset) {
+							// This is our link
+							iterator.remove();
+							int end = Math.min(endOfRange, linkEnd);
+							if (end > currentOffset) {
+								currentOffset = end;
+								return hyperlinkToken;
+							}
+						} else {
+							// Next hyperlink is beyond current position
+							break;
+						}
+					}
+				}
+			} catch (BadLocationException e) {
+				// Ignore and keep going
 			}
 		}
 		int actualOffset = currentOffset;

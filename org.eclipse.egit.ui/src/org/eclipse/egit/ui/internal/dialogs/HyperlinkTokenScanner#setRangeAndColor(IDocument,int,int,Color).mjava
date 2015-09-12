@@ -17,6 +17,7 @@
 			int length, @Nullable Color color) {
 		Assert.isTrue(document == viewer.getDocument());
 		this.document = document;
+		this.lastLineStart = -1;
 		this.endOfRange = offset + length;
 		this.currentOffset = offset;
 		this.tokenStart = -1;
