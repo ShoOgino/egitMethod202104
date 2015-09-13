@@ -1,0 +1,10 @@
+	@Override
+	protected void createFieldEditors() {
+		Composite main = getFieldEditorParent();
+
+		IntegerFieldEditor historySize = new IntegerFieldEditor(
+				UIPreferences.STAGING_VIEW_MAX_LIMIT_LIST_MODE,
+				UIText.StagingViewPreferencePage_maxLimitListMode, main);
+		addField(historySize);
+	}
+

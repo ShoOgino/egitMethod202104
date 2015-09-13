@@ -1,0 +1,8 @@
+	private int updateAutoExpand(TreeViewer viewer, int newSize) {
+		if (newSize > getMaxLimitForListMode()) {
+			// auto expand with too many nodes freezes eclipse
+			disableAutoExpand(viewer);
+		}
+		return newSize;
+	}
+

@@ -140,12 +140,11 @@
 				IAction.AS_RADIO_BUTTON) {
 			@Override
 			public void run() {
-				if (!isChecked())
+				if (!isChecked()) {
 					return;
+				}
 				presentation = Presentation.LIST;
-				getPreferenceStore().setValue(
-						UIPreferences.STAGING_VIEW_PRESENTATION,
-						Presentation.LIST.name());
+				setPresentation(presentation, false);
 				treePresentationAction.setChecked(false);
 				compactTreePresentationAction.setChecked(false);
 				setExpandCollapseActionsVisible(false);
@@ -159,15 +158,14 @@
 				IAction.AS_RADIO_BUTTON) {
 			@Override
 			public void run() {
-				if (!isChecked())
+				if (!isChecked()) {
 					return;
+				}
 				presentation = Presentation.TREE;
-				getPreferenceStore().setValue(
-						UIPreferences.STAGING_VIEW_PRESENTATION,
-						Presentation.TREE.name());
+				setPresentation(presentation, false);
 				listPresentationAction.setChecked(false);
 				compactTreePresentationAction.setChecked(false);
-				setExpandCollapseActionsVisible(true);
+				setExpandCollapseActionsVisible(isExpandAllowed());
 				refreshViewers();
 			}
 		};
@@ -178,30 +176,19 @@
 				IAction.AS_RADIO_BUTTON) {
 			@Override
 			public void run() {
-				if (!isChecked())
+				if (!isChecked()) {
 					return;
-				presentation = Presentation.COMPACT_TREE;
-				getPreferenceStore().setValue(
-						UIPreferences.STAGING_VIEW_PRESENTATION,
-						Presentation.COMPACT_TREE.name());
-				listPresentationAction.setChecked(false);
-				treePresentationAction.setChecked(false);
-				setExpandCollapseActionsVisible(true);
+				}
+				switchToCompactModeInternal(false);
 				refreshViewers();
 			}
+
 		};
 		compactTreePresentationAction.setImageDescriptor(UIIcons.COMPACT);
 		presentationMenu.add(compactTreePresentationAction);
 
-		String presentationString = getPreferenceStore().getString(
-				UIPreferences.STAGING_VIEW_PRESENTATION);
-		if (presentationString.length() > 0) {
-			try {
-				presentation = Presentation.valueOf(presentationString);
-			} catch (IllegalArgumentException e) {
-				// Use already set value of presentation
-			}
-		}
+		presentation = readPresentation(UIPreferences.STAGING_VIEW_PRESENTATION,
+				Presentation.LIST);
 		switch (presentation) {
 		case LIST:
 			listPresentationAction.setChecked(true);
