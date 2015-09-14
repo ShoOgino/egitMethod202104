@@ -1,0 +1,15 @@
+	PushResultDialog(final Shell parentShell, final Repository localDb,
+			final PushOperationResult result, final String destinationString,
+			boolean modal) {
+		super(parentShell);
+		int shellStyle = getShellStyle() | SWT.RESIZE;
+		if (!modal) {
+			shellStyle &= ~SWT.APPLICATION_MODAL;
+		}
+		setShellStyle(shellStyle);
+		this.localDb = localDb;
+		this.result = result;
+		this.destinationString = destinationString;
+		setHelpAvailable(false);
+	}
+
