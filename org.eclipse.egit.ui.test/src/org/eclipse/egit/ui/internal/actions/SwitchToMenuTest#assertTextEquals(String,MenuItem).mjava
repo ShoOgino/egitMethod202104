@@ -1,6 +1,7 @@
 	private static void assertTextEquals(final String expectedText,
 			final MenuItem item) {
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				assertEquals(expectedText, item.getText());
 			}

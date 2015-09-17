@@ -24,6 +24,7 @@
 		Job.getJobManager().join(JobFamilies.GENERATE_HISTORY, null);
 		// join UI update triggered by GenerateHistoryJob
 		projectExplorerTree.widget.getDisplay().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				// empty
 			}

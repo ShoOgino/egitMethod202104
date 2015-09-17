@@ -1,3 +1,4 @@
+	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		try {
 			Git.wrap(repository).tagDelete().setTags(tag).call();

@@ -1,6 +1,8 @@
+	@Override
 	public void execute(final IProgressMonitor monitor) throws CoreException {
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
+			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
 				pm.beginTask("", 1); //$NON-NLS-1$
 				Map<String, String> updates = null;

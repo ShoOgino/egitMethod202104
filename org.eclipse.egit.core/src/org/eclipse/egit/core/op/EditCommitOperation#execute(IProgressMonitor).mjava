@@ -1,7 +1,9 @@
+	@Override
 	public void execute(IProgressMonitor m) throws CoreException {
 		IProgressMonitor monitor = m != null ? m : new NullProgressMonitor();
 
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
 				pm.beginTask("", 2); //$NON-NLS-1$
 
@@ -10,6 +12,7 @@
 						commit.name()));
 
 				InteractiveHandler handler = new InteractiveHandler() {
+					@Override
 					public void prepareSteps(List<RebaseTodoLine> steps) {
 						for (RebaseTodoLine step : steps) {
 							if (step.getCommit().prefixCompare(commit) == 0) {
@@ -22,6 +25,7 @@
 						}
 					}
 
+					@Override
 					public String modifyCommitMessage(String oldMessage) {
 						return oldMessage;
 					}

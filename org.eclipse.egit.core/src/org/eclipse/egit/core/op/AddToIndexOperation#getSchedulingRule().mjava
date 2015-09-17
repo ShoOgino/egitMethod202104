@@ -1,6 +1,7 @@
 	/* (non-Javadoc)
 	 * @see org.eclipse.egit.core.op.IEGitOperation#getSchedulingRule()
 	 */
+	@Override
 	public ISchedulingRule getSchedulingRule() {
 		return RuleUtil.getRuleForRepositories(rsrcList.toArray(new IResource[rsrcList.size()]));
 	}

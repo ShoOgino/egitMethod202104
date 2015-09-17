@@ -2,6 +2,7 @@
 			final String... texts) {
 		final MenuItem menuItem = UIThreadRunnable
 				.syncExec(new WidgetResult<MenuItem>() {
+					@Override
 					public MenuItem run() {
 						return getMenuItem(bot, texts);
 					}

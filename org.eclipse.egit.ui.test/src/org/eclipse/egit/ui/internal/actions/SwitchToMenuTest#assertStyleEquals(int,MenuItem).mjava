@@ -1,6 +1,7 @@
 	private static void assertStyleEquals(final int expectedStyle,
 			final MenuItem item) {
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				assertEquals(expectedStyle, item.getStyle());
 			}

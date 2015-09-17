@@ -1,3 +1,4 @@
+	@Override
 	public void execute(IProgressMonitor m) throws CoreException {
 		if (result != null)
 			throw new CoreException(new Status(IStatus.ERROR, Activator
@@ -9,6 +10,7 @@
 			monitor = m;
 		final IProject[] validProjects = ProjectUtil.getValidOpenProjects(repository);
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
+			@Override
 			public void run(IProgressMonitor actMonitor) throws CoreException {
 				RebaseCommand cmd = new Git(repository).rebase()
 						.setProgressMonitor(

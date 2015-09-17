@@ -1,6 +1,8 @@
+	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
+			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
 				try {
 					StashCreateCommand command = Git.wrap(repository).stashCreate();

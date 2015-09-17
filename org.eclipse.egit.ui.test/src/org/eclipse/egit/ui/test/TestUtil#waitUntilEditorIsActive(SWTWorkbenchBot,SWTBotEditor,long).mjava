@@ -2,14 +2,17 @@
 			final SWTBotEditor editor, long timeout) {
 		bot.waitUntil(new ICondition() {
 
+			@Override
 			public boolean test() throws Exception {
 				return editor.isActive();
 			}
 
+			@Override
 			public void init(SWTBot bot2) {
 				// empty
 			}
 
+			@Override
 			public String getFailureMessage() {
 				return null;
 			}

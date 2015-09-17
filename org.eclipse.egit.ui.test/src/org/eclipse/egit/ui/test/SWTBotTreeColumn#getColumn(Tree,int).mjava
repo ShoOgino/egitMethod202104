@@ -1,6 +1,7 @@
 	public static SWTBotTreeColumn getColumn(final Tree tree, final int index) {
 		TreeColumn treeColumn = UIThreadRunnable.syncExec(tree.getDisplay(),
 				new WidgetResult<TreeColumn>() {
+					@Override
 					public TreeColumn run() {
 						return tree.getColumn(index);
 					}

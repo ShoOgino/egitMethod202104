@@ -13,6 +13,7 @@
 		// bot.menu("Window").menu("Preferences").click();
 		// Launch preferences programmatically instead
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow();
