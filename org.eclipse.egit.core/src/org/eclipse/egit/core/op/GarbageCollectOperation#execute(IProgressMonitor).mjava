@@ -1,6 +1,7 @@
 	/**
 	 * Execute garbage collection
 	 */
+	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		Git git = new Git(repository);
 		EclipseGitProgressTransformer pm = new EclipseGitProgressTransformer(

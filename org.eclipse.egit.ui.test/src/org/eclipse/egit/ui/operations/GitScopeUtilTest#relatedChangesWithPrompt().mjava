@@ -11,6 +11,7 @@
 
 		final IResource[] selectedResources = new IResource[] { modelFile };
 		UIThreadRunnable.asyncExec(new VoidResult() {
+			@Override
 			public void run() {
 				try {
 					GitScopeUtil.getRelatedChanges(part, selectedResources);

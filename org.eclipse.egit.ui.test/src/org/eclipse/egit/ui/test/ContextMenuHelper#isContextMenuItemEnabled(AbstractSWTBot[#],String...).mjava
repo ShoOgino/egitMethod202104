@@ -16,6 +16,7 @@
 		// show
 		final MenuItem menuItem = UIThreadRunnable
 				.syncExec(new WidgetResult<MenuItem>() {
+					@Override
 					public MenuItem run() {
 						MenuItem theItem = getMenuItem(bot, texts);
 						if (theItem != null && theItem.isEnabled())
@@ -28,6 +29,7 @@
 					+ Arrays.asList(texts));
 		// hide
 		UIThreadRunnable.syncExec(new VoidResult() {
+			@Override
 			public void run() {
 				if (menuItem.isDisposed())
 					return; // menu already gone

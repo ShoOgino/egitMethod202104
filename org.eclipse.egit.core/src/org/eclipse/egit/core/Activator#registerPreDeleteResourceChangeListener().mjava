@@ -2,6 +2,7 @@
 		if (preDeleteProjectListener == null) {
 			preDeleteProjectListener = new IResourceChangeListener() {
 
+				@Override
 				public void resourceChanged(IResourceChangeEvent event) {
 					IResource resource = event.getResource();
 					if (resource instanceof IProject) {

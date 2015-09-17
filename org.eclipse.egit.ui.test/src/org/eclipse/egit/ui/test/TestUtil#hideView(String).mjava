@@ -1,5 +1,6 @@
 	public static void hideView(final String viewId) {
 		Display.getDefault().syncExec(new Runnable() {
+			@Override
 			public void run() {
 				IWorkbenchWindow[] windows = PlatformUI.getWorkbench()
 						.getWorkbenchWindows();
