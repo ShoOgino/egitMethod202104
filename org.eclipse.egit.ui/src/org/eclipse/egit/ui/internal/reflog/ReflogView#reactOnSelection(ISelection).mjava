@@ -22,7 +22,13 @@
 				if (mapping != null)
 					selectedRepo = mapping.getRepository();
 			}
+			if (selectedRepo == null) {
+				selectedRepo = CommonUtils.getAdapter(
+						((IAdaptable) ssel.getFirstElement()),
+						Repository.class);
+			}
 		}
+
 		if (selectedRepo == null && first instanceof RepositoryTreeNode) {
 			RepositoryTreeNode repoNode = (RepositoryTreeNode) ssel
 					.getFirstElement();
