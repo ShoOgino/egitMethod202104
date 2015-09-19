@@ -10,7 +10,7 @@
 		assertEquals(gfRepo.getConfig().getDevelopFull(), repository.getFullBranch());
 
 		String branchName = gfRepo.getConfig().getFeatureBranchName(MY_FEATURE);
-		assertEquals(null, findBranch(repository, branchName));
+		assertNull(findBranch(repository, branchName));
 
 		RevCommit developHead = gfRepo.findHead();
 		assertEquals(branchCommit, developHead);

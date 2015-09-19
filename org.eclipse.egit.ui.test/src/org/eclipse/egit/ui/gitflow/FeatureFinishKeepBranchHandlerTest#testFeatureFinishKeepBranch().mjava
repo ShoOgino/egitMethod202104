@@ -1,5 +1,5 @@
 	@Test
-	public void testFeatureStart() throws Exception {
+	public void testFeatureFinishKeepBranch() throws Exception {
 		init();
 
 		setContentAddAndCommit("bar");
@@ -17,6 +17,6 @@
 		RevCommit developHead = gfRepo.findHead();
 		assertEquals(developHead, featureBranchCommit);
 
-		assertNull(findBranch(gfRepo.getConfig().getFeatureBranchName(FEATURE_NAME)));
+		assertNotNull(findBranch(gfRepo.getConfig().getFeatureBranchName(FEATURE_NAME)));
 	}
 
