@@ -1,0 +1,15 @@
+		/**
+		 * Collects the {@link IHyperlinkDetector}s for the given
+		 * {@link ISourceViewer}.
+		 *
+		 * @param sourceViewer
+		 *            to get the detectors for
+		 * @return the hyperlink detectors, or {@code null} if none shall be
+		 *         installed
+		 * @see TextSourceViewerConfiguration#getHyperlinkDetectors(ISourceViewer)
+		 */
+		protected @Nullable IHyperlinkDetector[] internalGetHyperlinkDetectors(
+				ISourceViewer sourceViewer) {
+			return super.getHyperlinkDetectors(sourceViewer);
+		}
+

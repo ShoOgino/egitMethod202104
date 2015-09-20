@@ -1,0 +1,21 @@
+	private void configurePreferenceKeys() {
+		preferenceKeysForEnablement = new HashSet<>();
+		preferenceKeysForActivation = new HashSet<>();
+		// Global settings (master switch)
+		preferenceKeysForEnablement
+				.add(AbstractTextEditor.PREFERENCE_HYPERLINKS_ENABLED);
+		preferenceKeysForActivation
+				.add(AbstractTextEditor.PREFERENCE_HYPERLINK_KEY_MODIFIER);
+		// All applicable individual hyperlink detectors settings.
+		Map targets = configuration.getHyperlinkDetectorTargets(this);
+		for (HyperlinkDetectorDescriptor desc : EditorsUI
+				.getHyperlinkDetectorRegistry()
+				.getHyperlinkDetectorDescriptors()) {
+			if (targets.keySet().contains(desc.getTargetId())) {
+				preferenceKeysForEnablement.add(desc.getId());
+				preferenceKeysForActivation.add(desc.getId()
+						+ HyperlinkDetectorDescriptor.STATE_MASK_POSTFIX);
+			}
+		}
+	}
+

@@ -11,8 +11,8 @@
 		setLayout(new FillLayout());
 
 		AnnotationModel annotationModel = new AnnotationModel();
-		sourceViewer = new SourceViewer(this, null, null, true, SWT.MULTI
-				| SWT.V_SCROLL | SWT.WRAP);
+		sourceViewer = new HyperlinkSourceViewer(this, null, null, true,
+				SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		getTextWidget().setAlwaysShowScrollBars(false);
 		getTextWidget().setFont(UIUtils
 				.getFont(UIPreferences.THEME_CommitMessageEditorFont));
@@ -62,7 +62,6 @@
 					});
 				}
 			}
-
 		};
 		JFacePreferences.getPreferenceStore()
 				.addPropertyChangeListener(syntaxColoringChangeListener);
@@ -73,24 +72,20 @@
 
 		Document document = new Document(initialText);
 
-		configuration = new TextSourceViewerConfiguration(
-				EditorsUI
-				.getPreferenceStore()) {
+		configuration = new HyperlinkSourceViewer.Configuration(
+				EditorsUI.getPreferenceStore()) {
 
 			@Override
 			public int getHyperlinkStateMask(ISourceViewer targetViewer) {
-				return SWT.NONE;
+				if (!targetViewer.isEditable()) {
+					return SWT.NONE;
+				}
+				return super.getHyperlinkStateMask(targetViewer);
 			}
 
 			@Override
 			protected Map getHyperlinkDetectorTargets(ISourceViewer targetViewer) {
 				return getHyperlinkTargets();
-			}
-
-			@Override
-			public IHyperlinkDetector[] getHyperlinkDetectors(
-					ISourceViewer targetViewer) {
-				return getRegisteredHyperlinkDetectors(sourceViewer);
 			}
 
 			@Override
@@ -116,11 +111,9 @@
 					ISourceViewer viewer) {
 				PresentationReconciler reconciler = new PresentationReconciler();
 				reconciler.setDocumentPartitioning(
-						getConfiguredDocumentPartitioning(sourceViewer));
+						getConfiguredDocumentPartitioning(viewer));
 				DefaultDamagerRepairer hyperlinkDamagerRepairer = new DefaultDamagerRepairer(
-						new HyperlinkTokenScanner(
-								getHyperlinkDetectors(sourceViewer),
-								sourceViewer));
+						new HyperlinkTokenScanner(this, viewer));
 				reconciler.setDamager(hyperlinkDamagerRepairer,
 						IDocument.DEFAULT_CONTENT_TYPE);
 				reconciler.setRepairer(hyperlinkDamagerRepairer,

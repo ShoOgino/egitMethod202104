@@ -1,6 +1,6 @@
-		public FooterTokenScanner(IHyperlinkDetector[] hyperlinkDetectors,
+		public FooterTokenScanner(SourceViewerConfiguration configuration,
 				ISourceViewer viewer) {
-			super(hyperlinkDetectors, viewer);
+			super(configuration, viewer);
 			Object defaults = defaultToken.getData();
 			TextAttribute italic;
 			if (defaults instanceof TextAttribute) {

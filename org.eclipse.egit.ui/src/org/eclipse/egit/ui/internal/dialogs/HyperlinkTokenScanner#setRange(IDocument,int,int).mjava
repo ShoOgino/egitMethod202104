@@ -1,5 +1,6 @@
 	@Override
 	public void setRange(IDocument document, int offset, int length) {
+		Assert.isNotNull(document);
 		setRangeAndColor(document, offset, length, JFaceColors
 				.getHyperlinkText(viewer.getTextWidget().getDisplay()));
 	}
