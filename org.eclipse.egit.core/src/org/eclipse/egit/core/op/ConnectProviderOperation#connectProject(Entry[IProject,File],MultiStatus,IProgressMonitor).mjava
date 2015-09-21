@@ -5,7 +5,7 @@
 		String taskName = NLS.bind(
 				CoreText.ConnectProviderOperation_ConnectingProject,
 				project.getName());
-		monitor.setTaskName(taskName);
+		SubMonitor subMon = SubMonitor.convert(monitor, taskName, 100);
 
 		if (GitTraceLocation.CORE.isActive()) {
 			GitTraceLocation.getTrace()
@@ -14,13 +14,11 @@
 
 		RepositoryFinder finder = new RepositoryFinder(project);
 		finder.setFindInChildren(false);
-		Collection<RepositoryMapping> repos = finder
-				.find(new SubProgressMonitor(monitor, 40));
+		Collection<RepositoryMapping> repos = finder.find(subMon.newChild(50));
 		if (repos.isEmpty()) {
 			ms.add(Activator.error(NLS.bind(
 					CoreText.ConnectProviderOperation_NoRepositoriesError,
 					project.getName()), null));
-			monitor.worked(60);
 			return;
 		}
 		RepositoryMapping actualMapping = findActualRepository(repos,
@@ -31,8 +29,6 @@
 					new Object[] { project.getName(),
 							entry.getValue().toString(), repos.toString() }),
 					null));
-
-			monitor.worked(60);
 			return;
 		}
 		GitProjectData projectData = new GitProjectData(project);
@@ -50,9 +46,13 @@
 			return;
 		}
 		RepositoryProvider.map(project, GitProvider.ID);
-		autoIgnoreDerivedResources(project, monitor);
-		project.refreshLocal(IResource.DEPTH_INFINITE,
-				new SubProgressMonitor(monitor, 50));
-		monitor.worked(10);
+
+		if (refreshResources) {
+			project.refreshLocal(IResource.DEPTH_INFINITE, subMon.newChild(40));
+		} else {
+			subMon.worked(40);
+		}
+
+		autoIgnoreDerivedResources(project, subMon);
 	}
 
