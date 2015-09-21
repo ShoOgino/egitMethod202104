@@ -28,5 +28,10 @@
 
 		assertTrue(developHead.getFullMessage().startsWith(
 				SQUASHED_COMMENT_SUMMARY));
+
+		IPreferenceStore prefStore = Activator.getDefault()
+				.getPreferenceStore();
+		assertTrue(prefStore.getBoolean(FEATURE_FINISH_SQUASH));
+		assertFalse(prefStore.getBoolean(FEATURE_FINISH_KEEP_BRANCH));
 	}
 

@@ -18,5 +18,10 @@
 		assertEquals(developHead, featureBranchCommit);
 
 		assertNotNull(findBranch(gfRepo.getConfig().getFeatureBranchName(FEATURE_NAME)));
+
+		IPreferenceStore prefStore = Activator.getDefault()
+				.getPreferenceStore();
+		assertFalse(prefStore.getBoolean(FEATURE_FINISH_SQUASH));
+		assertTrue(prefStore.getBoolean(FEATURE_FINISH_KEEP_BRANCH));
 	}
 
