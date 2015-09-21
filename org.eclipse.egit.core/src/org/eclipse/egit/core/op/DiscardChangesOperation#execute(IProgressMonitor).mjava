@@ -1,10 +1,5 @@
 	@Override
 	public void execute(IProgressMonitor m) throws CoreException {
-		IProgressMonitor monitor;
-		if (m == null)
-			monitor = new NullProgressMonitor();
-		else
-			monitor = m;
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 			@Override
 			public void run(IProgressMonitor actMonitor) throws CoreException {
@@ -12,6 +7,6 @@
 			}
 		};
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-				IWorkspace.AVOID_UPDATE, monitor);
+				IWorkspace.AVOID_UPDATE, m);
 	}
 

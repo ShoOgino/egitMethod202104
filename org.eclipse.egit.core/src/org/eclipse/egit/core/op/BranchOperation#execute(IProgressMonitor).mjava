@@ -1,35 +1,28 @@
 	@Override
 	public void execute(IProgressMonitor m) throws CoreException {
-		IProgressMonitor monitor;
-		if (m == null)
-			monitor = new NullProgressMonitor();
-		else
-			monitor = m;
-
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
-				preExecute(pm);
+				SubMonitor progress = SubMonitor.convert(pm, 4);
+				preExecute(progress.newChild(1));
 
 				IProject[] missing = getMissingProjects(target, ProjectUtil
 						.getValidOpenProjects(repository));
 
-				pm.beginTask(NLS.bind(
-						CoreText.BranchOperation_performingBranch, target),
-						missing.length > 0 ? 3 : 2);
+				progress.setTaskName(NLS.bind(
+						CoreText.BranchOperation_performingBranch, target));
+				progress.setWorkRemaining(missing.length > 0 ? 4 : 3);
 
 				if (missing.length > 0) {
-					SubProgressMonitor closeMonitor = new SubProgressMonitor(
-							pm, 1);
-					closeMonitor.beginTask("", missing.length); //$NON-NLS-1$
+					SubMonitor closeMonitor = progress.newChild(1);
+					closeMonitor.setWorkRemaining(missing.length);
 					for (IProject project : missing) {
 						closeMonitor.subTask(MessageFormat.format(
 								CoreText.BranchOperation_closingMissingProject,
 								project.getName()));
-						project.close(closeMonitor);
+						project.close(closeMonitor.newChild(1));
 					}
-					closeMonitor.done();
 				}
 
 				CheckoutCommand co = new Git(repository).checkout();
@@ -48,7 +41,7 @@
 				}
 				if (result.getStatus() == Status.NONDELETED)
 					retryDelete(result.getUndeletedList());
-				pm.worked(1);
+				progress.worked(1);
 
 				List<String> pathsToHandle = new ArrayList<String>();
 				pathsToHandle.addAll(co.getResult().getModifiedList());
@@ -57,16 +50,13 @@
 				IProject[] refreshProjects = ProjectUtil
 						.getProjectsContaining(repository, pathsToHandle);
 				ProjectUtil.refreshValidProjects(refreshProjects, delete,
-						new SubProgressMonitor(pm, 1));
-				pm.worked(1);
+						progress.newChild(1));
 
-				postExecute(pm);
-
-				pm.done();
+				postExecute(progress.newChild(1));
 			}
 		};
 		// lock workspace to protect working tree changes
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-				IWorkspace.AVOID_UPDATE, monitor);
+				IWorkspace.AVOID_UPDATE, m);
 	}
 

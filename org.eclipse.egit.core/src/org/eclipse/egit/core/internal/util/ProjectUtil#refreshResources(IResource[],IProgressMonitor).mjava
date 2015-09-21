@@ -9,14 +9,13 @@
 	public static void refreshResources(IResource[] resources,
 			IProgressMonitor monitor) throws CoreException {
 		try {
-			monitor.beginTask(CoreText.ProjectUtil_refreshing,
-					resources.length);
+			SubMonitor progress = SubMonitor.convert(monitor,
+					CoreText.ProjectUtil_refreshing, resources.length);
 			for (IResource resource : resources) {
-				if (monitor.isCanceled())
+				if (progress.isCanceled())
 					break;
 				resource.refreshLocal(IResource.DEPTH_INFINITE,
-						new SubProgressMonitor(monitor, 1));
-				monitor.worked(1);
+						progress.newChild(1));
 			}
 		} finally {
 			monitor.done();

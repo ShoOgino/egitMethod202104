@@ -1,6 +1,8 @@
 	private void reset(IProgressMonitor monitor) throws CoreException {
-		monitor.beginTask(NLS.bind(CoreText.ResetOperation_performingReset,
-				type.toString().toLowerCase(), refName), 2);
+		SubMonitor progress = SubMonitor.convert(monitor,
+				NLS.bind(CoreText.ResetOperation_performingReset,
+						type.toString().toLowerCase(), refName),
+				type == ResetType.HARD ? 2 : 1);
 
 		IProject[] validProjects = null;
 		if (type == ResetType.HARD) {
@@ -16,13 +18,12 @@
 		} catch (GitAPIException e) {
 			throw new TeamException(e.getLocalizedMessage(), e.getCause());
 		}
-		monitor.worked(1);
+		progress.worked(1);
 
 		// only refresh if working tree changes
-		if (type == ResetType.HARD)
+		if (type == ResetType.HARD) {
 			ProjectUtil.refreshValidProjects(validProjects,
-					new SubProgressMonitor(monitor, 1));
-
-		monitor.done();
+					progress.newChild(1));
+		}
 	}
 

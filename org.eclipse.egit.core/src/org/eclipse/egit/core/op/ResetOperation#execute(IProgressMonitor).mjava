@@ -1,10 +1,5 @@
 	@Override
 	public void execute(IProgressMonitor m) throws CoreException {
-		IProgressMonitor monitor;
-		if (m == null)
-			monitor = new NullProgressMonitor();
-		else
-			monitor = m;
 		if (type == ResetType.HARD) {
 			IWorkspaceRunnable action = new IWorkspaceRunnable() {
 				@Override
@@ -14,9 +9,9 @@
 			};
 			// lock workspace to protect working tree changes
 			ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-					IWorkspace.AVOID_UPDATE, monitor);
+					IWorkspace.AVOID_UPDATE, m);
 		} else {
-			reset(monitor);
+			reset(m);
 		}
 	}
 

@@ -6,9 +6,12 @@
 	 */
 	protected void preExecute(IProgressMonitor monitor) throws CoreException {
 		synchronized (this) {
-			if (preTasks != null)
+			if (preTasks != null) {
+				SubMonitor progress = SubMonitor.convert(monitor,
+						preTasks.size());
 				for (PreExecuteTask task : preTasks)
-					task.preExecute(repository, monitor);
+					task.preExecute(repository, progress.newChild(1));
+			}
 		}
 	}
 

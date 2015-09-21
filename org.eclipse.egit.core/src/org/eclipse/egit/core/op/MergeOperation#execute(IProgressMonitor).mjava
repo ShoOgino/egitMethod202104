@@ -3,19 +3,15 @@
 		if (mergeResult != null)
 			throw new CoreException(new Status(IStatus.ERROR, Activator
 					.getPluginId(), CoreText.OperationAlreadyExecuted));
-		IProgressMonitor monitor;
-		if (m == null)
-			monitor = new NullProgressMonitor();
-		else
-			monitor = m;
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			@Override
 			public void run(IProgressMonitor mymonitor) throws CoreException {
 				IProject[] validProjects = ProjectUtil.getValidOpenProjects(repository);
-				mymonitor.beginTask(NLS.bind(CoreText.MergeOperation_ProgressMerge, refName), 3);
+				SubMonitor progress = SubMonitor.convert(mymonitor, NLS.bind(
+						CoreText.MergeOperation_ProgressMerge, refName), 3);
 				Git git = new Git(repository);
-				mymonitor.worked(1);
+				progress.worked(1);
 				MergeCommand merge = git.merge();
 				try {
 					Ref ref = repository.getRef(refName);
@@ -39,7 +35,7 @@
 					merge.setMessage(message);
 				try {
 					mergeResult = merge.call();
-					mymonitor.worked(1);
+					progress.worked(1);
 					if (MergeResult.MergeStatus.NOT_SUPPORTED.equals(mergeResult.getMergeStatus()))
 						throw new TeamException(new Status(IStatus.INFO, Activator.getPluginId(), mergeResult.toString()));
 				} catch (NoHeadException e) {
@@ -52,14 +48,13 @@
 				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(), e.getCause());
 				} finally {
-					ProjectUtil.refreshValidProjects(validProjects, new SubProgressMonitor(
-							mymonitor, 1));
-					mymonitor.done();
+					ProjectUtil.refreshValidProjects(validProjects,
+							progress.newChild(1));
 				}
 			}
 		};
 		// lock workspace to protect working tree changes
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-				IWorkspace.AVOID_UPDATE, monitor);
+				IWorkspace.AVOID_UPDATE, m);
 	}
 

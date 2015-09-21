@@ -12,6 +12,7 @@
 	 */
 	static void closeMissingProject(IProject p, File projectFile,
 			IProgressMonitor monitor) throws CoreException {
+		SubMonitor progress = SubMonitor.convert(monitor, 1);
 		// Don't close/delete if already closed
 		if (p.exists() && !p.isOpen())
 			return;
@@ -25,7 +26,7 @@
 				if (!hasRoot)
 					FileUtils.mkdirs(projectRoot, true);
 				if (projectFile.createNewFile())
-					p.close(new SubProgressMonitor(monitor, 1));
+					p.close(progress.newChild(1));
 				else
 					closeFailed = true;
 			} catch (IOException e) {
@@ -51,6 +52,6 @@
 			closeFailed = true;
 		// Delete projects that can't be closed
 		if (closeFailed)
-			p.delete(false, true, new SubProgressMonitor(monitor, 1));
+			p.delete(false, true, progress.newChild(1));
 	}
 

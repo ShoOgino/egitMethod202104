@@ -1,13 +1,11 @@
 	@Override
 	public void execute(IProgressMonitor m) throws CoreException {
-		IProgressMonitor monitor = m != null ? m : new NullProgressMonitor();
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
-				pm.beginTask("", 2); //$NON-NLS-1$
-
-				pm.subTask(MessageFormat.format(
+				SubMonitor progress = SubMonitor.convert(pm, 2);
+				progress.subTask(MessageFormat.format(
 						CoreText.RevertCommitOperation_reverting,
 						Integer.valueOf(commits.size())));
 				RevertCommand command = new Git(repo).revert();
@@ -26,16 +24,14 @@
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());
 				}
-				pm.worked(1);
+				progress.worked(1);
 
 				ProjectUtil.refreshValidProjects(
 						ProjectUtil.getValidOpenProjects(repo),
-						new SubProgressMonitor(pm, 1));
-
-				pm.done();
+						progress.newChild(1));
 			}
 		};
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-				IWorkspace.AVOID_UPDATE, monitor);
+				IWorkspace.AVOID_UPDATE, m);
 	}
 

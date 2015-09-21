@@ -1,22 +1,11 @@
 	@Override
 	public void execute(IProgressMonitor m) throws CoreException {
-		IProgressMonitor monitor;
-		if (m == null) {
-			monitor = new NullProgressMonitor();
-		} else {
-			monitor = m;
-		}
-
-		monitor.beginTask(CoreText.ConnectProviderOperation_connecting,
-				100 * projects.size());
+		SubMonitor progress = SubMonitor.convert(m,
+				CoreText.ConnectProviderOperation_connecting, projects.size());
 		MultiStatus ms = new MultiStatus(Activator.getPluginId(), 0,
 				CoreText.ConnectProviderOperation_ConnectErrors, null);
-		try {
-			for (Entry<IProject, File> entry : projects.entrySet()) {
-				connectProject(entry, ms, monitor);
-			}
-		} finally {
-			monitor.done();
+		for (Entry<IProject, File> entry : projects.entrySet()) {
+			connectProject(entry, ms, progress.newChild(1));
 		}
 		if (!ms.isOK()) {
 			throw new CoreException(ms);

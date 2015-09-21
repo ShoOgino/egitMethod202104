@@ -48,12 +48,11 @@
 			IFile gitignore = container.getFile(new Path(
 					Constants.GITIGNORE_FILENAME));
 			entry = getEntry(gitignore.getLocation().toFile(), entry);
-			IProgressMonitor subMonitor = new SubProgressMonitor(monitor, 1);
 			ByteArrayInputStream entryBytes = asStream(entry);
 			if (gitignore.exists())
-				gitignore.appendContents(entryBytes, true, true, subMonitor);
+				gitignore.appendContents(entryBytes, true, true, monitor);
 			else
-				gitignore.create(entryBytes, true, subMonitor);
+				gitignore.create(entryBytes, true, monitor);
 		}
 	}
 

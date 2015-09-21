@@ -1,5 +1,6 @@
 	private void discardChanges(IProgressMonitor monitor) throws CoreException {
-		monitor.beginTask(CoreText.DiscardChangesOperation_discardingChanges,
+		SubMonitor progress = SubMonitor.convert(monitor,
+				CoreText.DiscardChangesOperation_discardingChanges,
 				pathsByRepository.size() * 2);
 		boolean errorOccurred = false;
 
@@ -15,18 +16,17 @@
 				Activator.logError(
 						CoreText.DiscardChangesOperation_discardFailed, e);
 			}
-			monitor.worked(1);
+			progress.worked(1);
 
 			try {
 				ProjectUtil.refreshRepositoryResources(repository, paths,
-						new SubProgressMonitor(monitor, 1));
+						progress.newChild(1));
 			} catch (CoreException e) {
 				errorOccurred = true;
 				Activator.logError(
 						CoreText.DiscardChangesOperation_refreshFailed, e);
 			}
 		}
-		monitor.done();
 
 		if (errorOccurred) {
 			IStatus status = Activator.error(

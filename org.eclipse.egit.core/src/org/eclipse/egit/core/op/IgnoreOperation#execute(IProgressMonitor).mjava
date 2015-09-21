@@ -1,6 +1,7 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
-		monitor.beginTask(CoreText.IgnoreOperation_taskName, paths.size());
+		SubMonitor progress = SubMonitor.convert(monitor,
+				CoreText.IgnoreOperation_taskName, paths.size());
 		try {
 			for (IPath path : paths) {
 				if (monitor.isCanceled()) {
@@ -13,11 +14,11 @@
 				// DecoratableResourceAdapter, but neither currently
 				// consult .gitignore
 				if (RepositoryUtil.canBeAutoIgnored(path)) {
-					addIgnore(monitor, path);
+					addIgnore(progress.newChild(1), path);
+				} else {
+					progress.worked(1);
 				}
-				monitor.worked(1);
 			}
-			monitor.done();
 		} catch (CoreException e) {
 			throw e;
 		} catch (Exception e) {
