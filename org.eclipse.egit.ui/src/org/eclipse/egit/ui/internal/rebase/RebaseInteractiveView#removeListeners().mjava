@@ -11,5 +11,7 @@
 		InstanceScope.INSTANCE.getNode(
 				org.eclipse.egit.core.Activator.getPluginId())
 				.removePreferenceChangeListener(prefListener);
+		Activator.getDefault().getPreferenceStore()
+				.removePropertyChangeListener(uiPrefsListener);
 	}
 

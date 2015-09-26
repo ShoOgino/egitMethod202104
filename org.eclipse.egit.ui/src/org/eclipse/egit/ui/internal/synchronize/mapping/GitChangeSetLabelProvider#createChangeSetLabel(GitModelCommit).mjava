@@ -3,7 +3,8 @@
 
 		Commit commit = commitModel.getCachedCommitObj();
 		Map<String, String> bindings = new HashMap<String, String>();
-		bindings.put(BINDING_CHANGESET_DATE, DATE_FORMAT.format(commit.getCommitDate()));
+		bindings.put(BINDING_CHANGESET_DATE,
+				dateFormatter.get().formatDate(commit.getCommitDate()));
 		bindings.put(BINDING_CHANGESET_AUTHOR, commit.getAuthorName());
 		bindings.put(BINDING_CHANGESET_COMMITTER, commit.getCommitterName());
 		bindings.put(BINDING_CHANGESET_SHORT_MESSAGE, commit.getShortMessage());

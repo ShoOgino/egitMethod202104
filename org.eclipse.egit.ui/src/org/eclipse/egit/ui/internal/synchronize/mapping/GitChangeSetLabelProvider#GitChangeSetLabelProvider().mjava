@@ -1,10 +1,7 @@
 	/**
-	 * Create commit result label provider
-	 *
-	 * @param layout
+	 * Creates a new {@link GitChangeSetLabelProvider}.
 	 */
-	public CommitResultLabelProvider(int layout) {
-		this.layout = layout;
+	public GitChangeSetLabelProvider() {
 		dateFormatter.set(PreferenceBasedDateFormatter.create());
 		uiPrefsListener = new IPropertyChangeListener() {
 			@Override
@@ -14,11 +11,11 @@
 						|| UIPreferences.DATE_FORMAT_CHOICE.equals(property)) {
 					dateFormatter.set(PreferenceBasedDateFormatter.create());
 					fireLabelProviderChanged(new LabelProviderChangedEvent(
-							CommitResultLabelProvider.this));
+							GitChangeSetLabelProvider.this));
 				}
+
 			}
 		};
-		Activator.getDefault().getPreferenceStore()
-				.addPropertyChangeListener(uiPrefsListener);
+		store.addPropertyChangeListener(uiPrefsListener);
 	}
 

@@ -4,6 +4,6 @@
 	public String getTimestamp() {
 		long date = fileRevision.getTimestamp();
 		Date dateFromLong = new Date(date);
-		return DateFormat.getDateTimeInstance().format(dateFromLong);
+		return PreferenceBasedDateFormatter.create().formatDate(dateFromLong);
 	}
 

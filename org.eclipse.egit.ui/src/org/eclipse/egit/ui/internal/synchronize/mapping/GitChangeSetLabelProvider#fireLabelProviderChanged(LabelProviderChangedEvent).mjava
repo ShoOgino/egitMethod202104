@@ -1,0 +1,13 @@
+	private void fireLabelProviderChanged(
+			final LabelProviderChangedEvent event) {
+		for (Object o : listeners.getListeners()) {
+			final ILabelProviderListener l = (ILabelProviderListener) o;
+			SafeRunnable.run(new SafeRunnable() {
+				@Override
+				public void run() {
+					l.labelProviderChanged(event);
+				}
+			});
+		}
+	}
+

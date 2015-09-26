@@ -1,0 +1,7 @@
+	@Override
+	public void dispose() {
+		store.removePropertyChangeListener(uiPrefsListener);
+		listeners.clear();
+		super.dispose();
+	}
+

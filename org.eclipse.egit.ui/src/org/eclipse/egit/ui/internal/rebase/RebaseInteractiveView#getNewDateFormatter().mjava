@@ -4,6 +4,6 @@
 		if (useRelativeDates)
 			return new GitDateFormatter(Format.RELATIVE);
 		else
-			return new GitDateFormatter(Format.LOCALE);
+			return PreferenceBasedDateFormatter.create();
 	}
 

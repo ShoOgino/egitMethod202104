@@ -12,15 +12,17 @@
 		PersonIdent author = commit.getAuthorIdent();
 		PersonIdent committer = commit.getCommitterIdent();
 		if (author != null && committer != null) {
+			PreferenceBasedDateFormatter formatter = PreferenceBasedDateFormatter
+					.create();
 			if (author.getName().equals(committer.getName())) {
-				styled.append(MessageFormat.format(
-						UIText.RepositoryCommit_AuthorDate, author.getName(),
-						formatDate(author.getWhen())),
+				styled.append(
+						MessageFormat.format(UIText.RepositoryCommit_AuthorDate,
+								author.getName(), formatter.formatDate(author)),
 						StyledString.QUALIFIER_STYLER);
 			} else {
 				styled.append(MessageFormat.format(
 						UIText.RepositoryCommit_AuthorDateCommitter,
-						author.getName(), formatDate(author.getWhen()),
+								author.getName(), formatter.formatDate(author),
 						committer.getName()), StyledString.QUALIFIER_STYLER);
 			}
 		}

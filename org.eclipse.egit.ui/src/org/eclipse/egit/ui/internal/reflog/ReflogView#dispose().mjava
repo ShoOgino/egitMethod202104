@@ -3,7 +3,10 @@
 		super.dispose();
 		ISelectionService service = CommonUtils.getService(getSite(), ISelectionService.class);
 		service.removePostSelectionListener(selectionChangedListener);
-		if (addRefsChangedListener != null)
+		if (addRefsChangedListener != null) {
 			addRefsChangedListener.remove();
+		}
+		Activator.getDefault().getPreferenceStore()
+				.removePropertyChangeListener(uiPrefsListener);
 	}
 
