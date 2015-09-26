@@ -1,0 +1,8 @@
+	private GitDateFormatter.Format fromString(String value) {
+		try {
+			return GitDateFormatter.Format.valueOf(value);
+		} catch (IllegalArgumentException | NullPointerException e) {
+			return null;
+		}
+	}
+

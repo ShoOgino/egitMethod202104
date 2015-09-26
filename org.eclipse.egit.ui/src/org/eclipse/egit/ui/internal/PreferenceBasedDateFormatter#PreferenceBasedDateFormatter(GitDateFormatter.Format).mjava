@@ -1,0 +1,21 @@
+	private PreferenceBasedDateFormatter(GitDateFormatter.Format gitFormat) {
+		super(gitFormat != null ? gitFormat : GitDateFormatter.Format.DEFAULT);
+		SimpleDateFormat format = null;
+		if (gitFormat == null) {
+			String pattern = Activator.getDefault().getPreferenceStore()
+					.getString(UIPreferences.DATE_FORMAT);
+			try {
+				format = new SimpleDateFormat(pattern);
+			} catch (IllegalArgumentException | NullPointerException e1) {
+				// Corrupted preferences?
+				Activator.logError("org.eclipse.egit.ui preference " //$NON-NLS-1$
+						+ UIPreferences.DATE_FORMAT + " is invalid; ignoring", //$NON-NLS-1$
+						e1);
+				format = new SimpleDateFormat(
+						Activator.getDefault().getPreferenceStore()
+								.getDefaultString(UIPreferences.DATE_FORMAT));
+			}
+		}
+		this.customFormat = format;
+	}
+

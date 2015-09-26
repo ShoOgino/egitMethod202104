@@ -1,0 +1,20 @@
+	/**
+	 * Formats the date of a {@link PersonIdent} according to the date format
+	 * preferences set when this instance was created.
+	 *
+	 * @param ident
+	 *            to format the date of
+	 * @return the string representation of the date, or the empty string if
+	 *         {@code ident} is {@code null}.
+	 */
+	@Override
+	public String formatDate(PersonIdent ident) {
+		if (ident == null) {
+			return ""; //$NON-NLS-1$
+		}
+		if (customFormat == null) {
+			return super.formatDate(ident);
+		}
+		return customFormat.format(ident.getWhen());
+	}
+

@@ -1,0 +1,7 @@
+	private static TimeZone getDifferentTimeZone() {
+		TimeZone localTimeZone = TimeZone.getDefault();
+		int offset = (localTimeZone.getRawOffset() / 3600 / 1000 - 6) * 3600
+				* 1000; // 6h to the West, full hour
+		return TimeZone.getTimeZone(TimeZone.getAvailableIDs(offset)[0]);
+	}
+

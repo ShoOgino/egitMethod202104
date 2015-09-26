@@ -1,7 +1,9 @@
 	private void addLink(StringBuilder d, String linkLabel,
 			Collection<GitCommitReference> hyperlinks, RevCommit to) {
-		hyperlinks.add(
-				new GitCommitReference(to, new Region(d.length(), linkLabel.length())));
+		if (to != null) {
+			hyperlinks.add(new GitCommitReference(to,
+					new Region(d.length(), linkLabel.length())));
+		}
 		d.append(linkLabel);
 	}
 

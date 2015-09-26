@@ -1,0 +1,90 @@
+	@Override
+	protected void createFieldEditors() {
+		String[][] values = new String[DATA.size()][2];
+		int i = 0;
+		for (Map.Entry<GitDateFormatter.Format, FormatInfo> entry : DATA
+				.entrySet()) {
+			values[i][0] = entry.getValue().name;
+			values[i][1] = entry.getKey() == null
+					? UIPreferences.DATE_FORMAT_CUSTOM : entry.getKey().name();
+			i++;
+		}
+		final Composite pane = getFieldEditorParent();
+		formatChooser = new ComboFieldEditor(
+				UIPreferences.DATE_FORMAT_CHOICE,
+				UIText.DateFormatPreferencePage_formatChooser_label,
+				values,
+				pane);
+		addField(formatChooser);
+		dateFormat = new StringFieldEditor(
+				UIPreferences.DATE_FORMAT,
+				UIText.DateFormatPreferencePage_formatInput_label,
+				StringFieldEditor.UNLIMITED,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, pane) {
+			@Override
+			protected boolean doCheckState() {
+				// Validate the contents. If we're disabled, we're showing some
+				// built-in format string, which we always consider as valid.
+				if (!getTextControl(pane).isEnabled()) {
+					return true;
+				}
+				try {
+					updatePreview(
+							new SimpleDateFormat(getStringValue().trim()));
+					return true;
+				} catch (IllegalArgumentException e) {
+					dateFormatPreview.setText(""); //$NON-NLS-1$
+					return false;
+				}
+			}
+
+			@Override
+			protected void doLoad() {
+				// Set explicitly below
+			}
+
+			@Override
+			protected void doStore() {
+				// Never store invalid values, or built-in values
+				if (getTextControl(pane).isEnabled() && doCheckState()) {
+					super.doStore();
+				}
+			}
+
+			@Override
+			public void setStringValue(String value) {
+				super.setStringValue(value);
+				refreshValidState();
+			}
+		};
+		dateFormat.setEmptyStringAllowed(false);
+		dateFormat.setErrorMessage(
+				UIText.DateFormatPreferencePage_invalidDateFormat_message);
+		addField(dateFormat);
+		// We know that the layout will have two columns
+		Label dpLabel = SWTUtils.createLabel(pane,
+				UIText.DateFormatPreferencePage_datePreview_label);
+		dpLabel.setLayoutData(SWTUtils.createGridData(SWT.DEFAULT, SWT.DEFAULT,
+				false, false));
+		dateFormatPreview = SWTUtils.createLabel(pane, null, 1);
+		Label dummyLabel = SWTUtils.createLabel(pane, ""); //$NON-NLS-1$
+		dummyLabel.setLayoutData(SWTUtils.createGridData(SWT.DEFAULT,
+				SWT.DEFAULT, false, false));
+		formatExplanation = new Label(pane, SWT.LEFT | SWT.WRAP);
+		GridData layout = SWTUtils.createGridData(SWT.DEFAULT, SWT.DEFAULT,
+				false, true);
+		formatExplanation.setLayoutData(layout);
+		// Setup based on initial values. We don't get any events by the editors
+		// on initial load!
+		lastCustomValue = getPreferenceStore()
+				.getString(UIPreferences.DATE_FORMAT);
+		String initialValue = getPreferenceStore()
+				.getString(UIPreferences.DATE_FORMAT_CHOICE);
+		GitDateFormatter.Format initialFormat = fromString(initialValue);
+		FormatInfo info = DATA.get(initialFormat);
+		dateFormat.setEnabled(initialFormat == null, pane);
+		dateFormat.setStringValue(
+				initialFormat == null ? lastCustomValue : info.format);
+		formatExplanation.setText(info.explanation);
+	}
+

@@ -1,9 +1,5 @@
 		@Override
 		public void performOk(IPreferenceStore store) {
 			changeSetLabelFormat.performOk(store);
-
-			if (formatValid) {
-				store.setValue(UIPreferences.DATE_FORMAT, dateFormat.getText());
-			}
 		}
 

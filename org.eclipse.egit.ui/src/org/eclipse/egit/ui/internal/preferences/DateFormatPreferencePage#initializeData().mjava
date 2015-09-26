@@ -1,0 +1,56 @@
+	private static Map<GitDateFormatter.Format, FormatInfo> initializeData() {
+		Map<GitDateFormatter.Format, FormatInfo> d = new LinkedHashMap<>();
+		d.put(GitDateFormatter.Format.DEFAULT,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceGitDefault_label,
+						"EEE MMM dd HH:mm:ss yyyy Z", //$NON-NLS-1$
+						UIText.DateFormatPreferencePage_helpGitDefault_label));
+		d.put(GitDateFormatter.Format.LOCAL,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceGitLocal_label,
+						"EEE MMM dd HH:mm:ss yyyy", //$NON-NLS-1$
+						UIText.DateFormatPreferencePage_helpGitLocal_label));
+		d.put(GitDateFormatter.Format.RELATIVE,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceGitRelative_label,
+						UIText.DateFormatPreferencePage_gitRelative_format_text,
+						UIText.DateFormatPreferencePage_helpGitRelative_label));
+		d.put(GitDateFormatter.Format.ISO,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceGitIso_label,
+						"yyyy-MM-dd HH:mm:ss Z", //$NON-NLS-1$
+						UIText.DateFormatPreferencePage_helpGitIso_label));
+		d.put(GitDateFormatter.Format.RFC,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceGitRfc_label,
+						"EEE, dd MMM yyyy HH:mm:ss Z", //$NON-NLS-1$
+						UIText.DateFormatPreferencePage_helpGitRfc_label));
+		d.put(GitDateFormatter.Format.SHORT,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceGitShort_label,
+						"yyyy-MM-dd", //$NON-NLS-1$
+						UIText.DateFormatPreferencePage_helpGitShort_label));
+		DateFormat systemFormat = DateFormat
+				.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT);
+		String localeLocalFormat = (systemFormat instanceof SimpleDateFormat)
+				? ((SimpleDateFormat) systemFormat).toPattern()
+				: UIText.DateFormatPreferencePage_gitLocaleLocal_format_text;
+		String localeFormat = (systemFormat instanceof SimpleDateFormat)
+				? localeLocalFormat + " Z" //$NON-NLS-1$
+				: UIText.DateFormatPreferencePage_gitLocale_format_text;
+		d.put(GitDateFormatter.Format.LOCALE,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceGitLocale_label,
+						localeFormat,
+						UIText.DateFormatPreferencePage_helpGitLocale_label));
+		d.put(GitDateFormatter.Format.LOCALELOCAL, new FormatInfo(
+				UIText.DateFormatPreferencePage_choiceGitLocaleLocal_label,
+				localeLocalFormat,
+				UIText.DateFormatPreferencePage_helpGitLocaleLocal_label));
+		d.put(null,
+				new FormatInfo(
+						UIText.DateFormatPreferencePage_choiceCustom_label, "", //$NON-NLS-1$
+						UIText.DateFormatPreferencePage_helpCustom_label));
+		return d;
+	}
+

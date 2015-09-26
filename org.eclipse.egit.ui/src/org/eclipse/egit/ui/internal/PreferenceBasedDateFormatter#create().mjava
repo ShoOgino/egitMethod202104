@@ -1,0 +1,18 @@
+	/**
+	 * Creates a new {@link PreferenceBasedDateFormatter} that will format dates
+	 * according to the date format preferences set at the time it was created.
+	 *
+	 * @return a new {@link PreferenceBasedDateFormatter}
+	 */
+	public static @NonNull PreferenceBasedDateFormatter create() {
+		String choice = Activator.getDefault().getPreferenceStore()
+				.getString(UIPreferences.DATE_FORMAT_CHOICE);
+		GitDateFormatter.Format format = null;
+		try {
+			format = GitDateFormatter.Format.valueOf(choice);
+		} catch (IllegalArgumentException | NullPointerException e) {
+			// Custom format: ignore and leave at null
+		}
+		return new PreferenceBasedDateFormatter(format);
+	}
+

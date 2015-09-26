@@ -1,8 +1,10 @@
-		public String getMokeupText(String format, String dateFormat) {
-			SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		public String getMokeupText(String format) {
+			PreferenceBasedDateFormatter formatter = PreferenceBasedDateFormatter
+					.create();
 
 			Map<String, String> bindings = new HashMap<String, String>();
-			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_DATE, sdf.format(date));
+			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_DATE,
+					formatter.formatDate(date));
 			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_AUTHOR, author);
 			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_COMMITTER, committer);
 			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_SHORT_MESSAGE, message);

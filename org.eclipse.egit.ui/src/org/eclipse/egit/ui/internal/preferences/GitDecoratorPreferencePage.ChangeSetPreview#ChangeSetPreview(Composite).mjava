@@ -15,8 +15,8 @@
 				public String getText(Object element) {
 					if (element instanceof GitModelCommitMockup) {
 						String format = store.getString(UIPreferences.SYNC_VIEW_CHANGESET_LABEL_FORMAT);
-						String dateFormat = store.getString(UIPreferences.DATE_FORMAT);
-						return ((GitModelCommitMockup)element).getMokeupText(format, dateFormat);
+						return ((GitModelCommitMockup) element)
+								.getMokeupText(format);
 					}
 					return super.getText(element);
 				}

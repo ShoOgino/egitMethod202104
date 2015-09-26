@@ -1,0 +1,14 @@
+	/**
+	 * Formats a {@link Date} using the given {@link TimeZone} according to the
+	 * date format preferences set when this instance was created.
+	 *
+	 * @param date
+	 *            to format
+	 * @param timeZone
+	 *            to use
+	 * @return the string representation of the date
+	 */
+	public String formatDate(@NonNull Date date, @NonNull TimeZone timeZone) {
+		return formatDate(new PersonIdent("", "", date, timeZone)); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+

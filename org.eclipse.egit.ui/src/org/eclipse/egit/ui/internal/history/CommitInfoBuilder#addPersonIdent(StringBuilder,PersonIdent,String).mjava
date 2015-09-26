@@ -4,7 +4,7 @@
 			d.append(label).append(": "); //$NON-NLS-1$
 			d.append(ident.getName().trim());
 			d.append(" <").append(ident.getEmailAddress().trim()).append("> "); //$NON-NLS-1$ //$NON-NLS-2$
-			d.append(fmt.format(ident.getWhen()));
+			d.append(dateFormatter.formatDate(ident));
 			d.append(LF);
 		}
 	}

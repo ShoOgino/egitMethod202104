@@ -1,0 +1,32 @@
+	@Override
+	protected void initialize() {
+		super.initialize();
+		// When the chooser's selection changes, update the dateFormat &
+		// enablement
+		formatChooser.setPropertyChangeListener(new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (FieldEditor.VALUE.equals(event.getProperty())) {
+					GitDateFormatter.Format format = fromString(
+							(String) event.getOldValue());
+					if (format == null) {
+						lastCustomValue = dateFormat.getStringValue();
+					}
+					format = fromString((String) event.getNewValue());
+					FormatInfo info = DATA.get(format);
+					formatExplanation.setText(info.explanation);
+					if (format == null) {
+						dateFormat.getTextControl(getFieldEditorParent())
+								.setEnabled(true);
+						dateFormat.setStringValue(lastCustomValue);
+					} else {
+						dateFormat.getTextControl(getFieldEditorParent())
+								.setEnabled(false);
+						dateFormat.setStringValue(info.format);
+						updatePreview(format);
+					}
+				}
+			}
+		});
+	}
+
