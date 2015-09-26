@@ -1,0 +1,10 @@
+	private void preselectBranchSingleMode(List<T> list, TableViewer table) {
+		Set<Ref> branches = getLocalBranches(list);
+		if (branches.size() == 1) {
+			Ref b = branches.iterator().next();
+			table.setSelection(new StructuredSelection(b), true);
+			preselectedBranch = true;
+		}
+
+	}
+

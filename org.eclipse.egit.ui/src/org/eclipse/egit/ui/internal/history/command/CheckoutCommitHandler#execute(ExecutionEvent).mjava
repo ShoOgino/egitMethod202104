@@ -4,23 +4,27 @@
 		Repository repo = getRepository(event);
 
 		final BranchOperationUI op;
+		List<Ref> nodes;
+		try {
+			nodes = getBranchesOfCommit(getSelection(event), repo, true);
+		} catch (IOException e) {
+			throw new ExecutionException(
+					UIText.AbstractHistoryCommitHandler_cantGetBranches,
+					e);
+		}
 
-		List<RefNode> nodes = getRefNodes(commitId, repo, Constants.R_HEADS,
-				Constants.R_REMOTES);
-		Collections.sort(nodes);
-
-		if (nodes.isEmpty())
+		if (nodes.isEmpty()) {
 			op = BranchOperationUI.checkout(repo, commitId.name());
-		else if (nodes.size() == 1)
-			op = BranchOperationUI.checkout(repo, nodes.get(0).getObject().getName());
-		else {
-			BranchSelectionDialog<RefNode> dlg = new BranchSelectionDialog<RefNode>(
+		} else if (nodes.size() == 1) {
+			op = BranchOperationUI.checkout(repo, nodes.get(0).getName());
+		} else {
+			BranchSelectionDialog<Ref> dlg = new BranchSelectionDialog<Ref>(
 					HandlerUtil.getActiveShellChecked(event), nodes,
 					UIText.CheckoutHandler_SelectBranchTitle,
 					UIText.CheckoutHandler_SelectBranchMessage, SWT.SINGLE);
 			if (dlg.open() == Window.OK) {
-				op = BranchOperationUI.checkout(repo, dlg.getSelectedNode()
-						.getObject().getName());
+				op = BranchOperationUI.checkout(repo,
+						dlg.getSelectedNode().getName());
 			} else {
 				op = null;
 			}

@@ -1,0 +1,14 @@
+	private Set<Ref> getLocalBranches(List<T> list) {
+		Set<Ref> branches = new HashSet<Ref>();
+		for (Object o : list) {
+			if (o instanceof Ref) {
+				Ref r = (Ref) o;
+				String name = r.getName();
+				if (name.startsWith(Constants.R_HEADS)) {
+					branches.add(r);
+				}
+			}
+		}
+		return branches;
+	}
+
