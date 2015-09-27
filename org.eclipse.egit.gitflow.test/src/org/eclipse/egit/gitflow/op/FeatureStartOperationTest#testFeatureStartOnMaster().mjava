@@ -1,7 +1,6 @@
-	@Test(expected = CoreException.class)
-	public void testFeatureStartFail() throws Exception {
+	public void testFeatureStartOnMaster() throws Exception {
 		Repository repository = testRepository.getRepository();
-		GitFlowRepository gfRepo = init("testFeatureStart\n\nfirst commit\n");
+		GitFlowRepository gfRepo = init("testFeatureStartOnMaster\n\nfirst commit\n");
 
 		BranchOperation branchOperation = new BranchOperation(repository,
 				MY_MASTER);

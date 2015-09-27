@@ -1,8 +1,5 @@
 	private static String findHead(GitFlowRepository repository) {
-		try {
-			return repository.findHead().getName();
-		} catch (WrongGitFlowStateException e) {
-			throw new IllegalStateException(e);
-		}
+		GitFlowConfig config = repository.getConfig();
+		return repository.findHead(config.getDevelop()).getName();
 	}
 
