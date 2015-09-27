@@ -1,11 +1,16 @@
 	/**
 	 * @param branchName
-	 * @return HEAD commit on branch branchName
+	 * @return HEAD commit on branch branchName or {@literal null} if
+	 *         {@code branchName} could not be resolved.
 	 */
-	public RevCommit findHead(String branchName) {
+	public @Nullable RevCommit findHead(String branchName) {
 		try (RevWalk walk = new RevWalk(repository)) {
 			try {
-				ObjectId head = repository.resolve(R_HEADS + branchName);
+				String revstr = R_HEADS + branchName;
+				ObjectId head = repository.resolve(revstr);
+				if (head == null) {
+					return null;
+				}
 				return walk.parseCommit(head);
 			} catch (RevisionSyntaxException | IOException e) {
 				throw new RuntimeException(e);
