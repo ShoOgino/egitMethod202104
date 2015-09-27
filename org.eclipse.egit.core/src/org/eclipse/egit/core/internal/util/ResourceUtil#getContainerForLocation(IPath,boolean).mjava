@@ -1,0 +1,33 @@
+	/**
+	 * Return the corresponding container if it exists and has the Git
+	 * repository provider.
+	 * <p>
+	 * The returned container will be relative to the most nested non-closed
+	 * Git-managed project.
+	 *
+	 * @param location
+	 * @param innerMost
+	 *            check if there are multiple candidates in the workspace and
+	 *            return innermost resource. <b>Note</b>, this check is
+	 *            expensive and should not be used in performance critical code.
+	 * @return the container, or null
+	 */
+	@Nullable
+	public static IContainer getContainerForLocation(@NonNull IPath location,
+			boolean innerMost) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IContainer dir = root.getContainerForLocation(location);
+		if (dir == null) {
+			return null;
+		}
+		if (!innerMost && isValid(dir)) {
+			return dir;
+		}
+		URI uri = URIUtil.toURI(location);
+		IContainer dir2 = getContainerForLocationURI(root, uri);
+		if (dir2 == null && isValid(dir)) {
+			return dir;
+		}
+		return dir2;
+	}
+

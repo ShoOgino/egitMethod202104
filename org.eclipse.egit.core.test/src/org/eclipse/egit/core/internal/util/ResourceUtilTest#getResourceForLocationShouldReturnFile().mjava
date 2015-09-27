@@ -1,7 +1,7 @@
 	@Test
 	public void getResourceForLocationShouldReturnFile() throws Exception {
 		IFile file = project.createFile("file", new byte[] {});
-		IResource resource = ResourceUtil.getResourceForLocation(file.getLocation());
+		IResource resource = ResourceUtil.getResourceForLocation(file.getLocation(), false);
 		assertThat(resource, instanceOf(IFile.class));
 	}
 

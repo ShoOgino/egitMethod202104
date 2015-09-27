@@ -12,7 +12,7 @@
 		for (Object selectedElement : selection.toList()) {
 			FileDiff fileDiff = (FileDiff) selectedElement;
 			IPath path = workTreePath.append(fileDiff.getPath());
-			IFile file = ResourceUtil.getFileForLocation(path);
+			IFile file = ResourceUtil.getFileForLocation(path, false);
 			if (file != null)
 				elements.add(file);
 			else

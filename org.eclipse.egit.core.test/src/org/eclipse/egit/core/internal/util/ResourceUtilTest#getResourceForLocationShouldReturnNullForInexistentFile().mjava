@@ -1,7 +1,7 @@
 	@Test
 	public void getResourceForLocationShouldReturnNullForInexistentFile() throws Exception {
 		IPath location = project.getProject().getLocation().append("inexistent");
-		IResource resource = ResourceUtil.getResourceForLocation(location);
+		IResource resource = ResourceUtil.getResourceForLocation(location, false);
 		assertThat(resource, nullValue());
 	}
 

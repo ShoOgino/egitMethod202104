@@ -9,12 +9,16 @@
 	 *            the repository of the file
 	 * @param repoRelativePath
 	 *            the repository-relative path of the file to search for
+	 * @param innerMost
+	 *            check if there are multiple candidates in the workspace and
+	 *            return innermost resource. <b>Note</b>, this check is
+	 *            expensive and should not be used in performance critical code.
 	 * @return the IFile corresponding to this path, or null
 	 */
 	@Nullable
 	public static IFile getFileForLocation(@NonNull Repository repository,
-			@NonNull String repoRelativePath) {
+			@NonNull String repoRelativePath, boolean innerMost) {
 		IPath path = new Path(repository.getWorkTree().getAbsolutePath()).append(repoRelativePath);
-		return getFileForLocation(path);
+		return getFileForLocation(path, innerMost);
 	}
 

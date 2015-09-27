@@ -1,13 +1,30 @@
 	@Test
 	public void getFileForLocationShouldNotUseFilesWithoutRepositoryMapping()
 			throws Exception {
-		TestProject nested = new TestProject(true, "Project-1/Project-0");
+		TestProject nested = new TestProject(true, "Project-1/Project-2");
 		IFile file = nested.createFile("a.txt", new byte[] {});
 		IPath location = file.getLocation();
 
-		IFile result = ResourceUtil.getFileForLocation(location);
+		IFile result = ResourceUtil.getFileForLocation(location, false);
 		assertThat(result, notNullValue());
 		assertTrue("Returned IFile should exist", result.exists());
 		assertThat(result.getProject(), is(project.getProject()));
+
+		result = ResourceUtil.getFileForLocation(location, true);
+		assertThat(result, notNullValue());
+		assertTrue("Returned IFile should exist", result.exists());
+		assertThat(result.getProject(), is(project.getProject()));
+
+		connect(nested.getProject());
+
+		result = ResourceUtil.getFileForLocation(location, false);
+		assertThat(result, notNullValue());
+		assertTrue("Returned IFile should exist", result.exists());
+		assertThat(result.getProject(), is(project.getProject()));
+
+		result = ResourceUtil.getFileForLocation(location, true);
+		assertThat(result, notNullValue());
+		assertTrue("Returned IFile should exist", result.exists());
+		assertThat(result.getProject(), is(nested.getProject()));
 	}
 

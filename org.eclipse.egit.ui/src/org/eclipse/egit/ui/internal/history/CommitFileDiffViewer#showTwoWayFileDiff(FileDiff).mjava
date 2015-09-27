@@ -27,7 +27,7 @@
 
 		IWorkbenchPage page = site.getWorkbenchWindow().getActivePage();
 		if (oldCommit != null && newCommit != null) {
-			IFile file = ResourceUtil.getFileForLocation(getRepository(), np);
+			IFile file = ResourceUtil.getFileForLocation(getRepository(), np, false);
 			try {
 				if (file != null) {
 					IResource[] resources = new IResource[] { file, };

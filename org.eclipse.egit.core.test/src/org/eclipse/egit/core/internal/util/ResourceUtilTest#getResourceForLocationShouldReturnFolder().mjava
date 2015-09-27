@@ -1,7 +1,7 @@
 	@Test
 	public void getResourceForLocationShouldReturnFolder() throws Exception {
 		IFolder folder = project.createFolder("folder");
-		IResource resource = ResourceUtil.getResourceForLocation(folder.getLocation());
+		IResource resource = ResourceUtil.getResourceForLocation(folder.getLocation(), false);
 		assertThat(resource, instanceOf(IFolder.class));
 	}
 
