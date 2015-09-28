@@ -15,7 +15,7 @@
 
 		RevCommit commit = repository.findCommit(startCommitSha1);
 		if (commit == null) {
-			throw new IllegalStateException(NLS.bind(CoreText.ReleaseStartOperation_unableToFindCommit, startCommitSha1));
+			throw new IllegalStateException(NLS.bind(CoreText.StartOperation_unableToFindCommitFor, startCommitSha1));
 		}
 		start(monitor, branchName, commit);
 	}

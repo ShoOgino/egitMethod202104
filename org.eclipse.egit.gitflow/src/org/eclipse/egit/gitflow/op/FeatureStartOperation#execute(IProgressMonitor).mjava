@@ -3,6 +3,9 @@
 		GitFlowConfig config = repository.getConfig();
 		String branchName = config.getFeatureBranchName(featureName);
 		RevCommit head = repository.findHead(config.getDevelop());
+		if (head == null) {
+			throw new IllegalStateException(NLS.bind(CoreText.StartOperation_unableToFindCommitFor, config.getDevelop()));
+		}
 		start(monitor, branchName, head);
 	}
 
