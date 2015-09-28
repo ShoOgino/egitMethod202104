@@ -1,5 +1,7 @@
+	@Nullable
 	private static String findHead(GitFlowRepository repository) {
 		GitFlowConfig config = repository.getConfig();
-		return repository.findHead(config.getDevelop()).getName();
+		RevCommit head = repository.findHead(config.getDevelop());
+		return head == null ? null : head.getName();
 	}
 
