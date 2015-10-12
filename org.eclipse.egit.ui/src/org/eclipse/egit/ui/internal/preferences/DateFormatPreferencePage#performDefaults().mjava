@@ -1,0 +1,11 @@
+	@Override
+	protected void performDefaults() {
+		super.performDefaults();
+		// We don't get property changed events when the default values are
+		// restored...
+		lastCustomValue = getPreferenceStore()
+				.getDefaultString(UIPreferences.DATE_FORMAT);
+		updateFields(getPreferenceStore()
+				.getDefaultString(UIPreferences.DATE_FORMAT_CHOICE));
+	}
+
