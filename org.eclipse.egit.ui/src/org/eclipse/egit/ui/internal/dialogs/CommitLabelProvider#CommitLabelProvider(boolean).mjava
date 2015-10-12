@@ -15,8 +15,7 @@
 				String property = event.getProperty();
 				if ((UIPreferences.DATE_FORMAT.equals(property)
 						|| UIPreferences.DATE_FORMAT_CHOICE.equals(property))
-						&& (dateFormatter
-								.get() instanceof PreferenceBasedDateFormatter)) {
+						&& (dateFormatter instanceof PreferenceBasedDateFormatter)) {
 					setDateFormatter(PreferenceBasedDateFormatter.create());
 				} else if (UIPreferences.RESOURCEHISTORY_SHOW_RELATIVE_DATE
 						.equals(property)) {
@@ -33,8 +32,8 @@
 		};
 		if (store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_RELATIVE_DATE)) {
-			dateFormatter.set(
-					new GitDateFormatter(GitDateFormatter.Format.RELATIVE));
+			dateFormatter = new GitDateFormatter(
+					GitDateFormatter.Format.RELATIVE);
 		}
 		showEmail = canShowEmailAddresses && store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_EMAIL_ADDRESSES);

@@ -1,9 +1,7 @@
 	private GitDateFormatter getDateFormatter() {
-		GitDateFormatter result = dateFormatter.get();
-		if (result == null) {
-			result = PreferenceBasedDateFormatter.create();
-			dateFormatter.set(result);
+		if (dateFormatter == null) {
+			dateFormatter = PreferenceBasedDateFormatter.create();
 		}
-		return result;
+		return dateFormatter;
 	}
 

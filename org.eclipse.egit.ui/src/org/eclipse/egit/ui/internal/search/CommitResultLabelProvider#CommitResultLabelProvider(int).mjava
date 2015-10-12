@@ -5,14 +5,14 @@
 	 */
 	public CommitResultLabelProvider(int layout) {
 		this.layout = layout;
-		dateFormatter.set(PreferenceBasedDateFormatter.create());
+		dateFormatter = PreferenceBasedDateFormatter.create();
 		uiPrefsListener = new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
 				String property = event.getProperty();
 				if (UIPreferences.DATE_FORMAT.equals(property)
 						|| UIPreferences.DATE_FORMAT_CHOICE.equals(property)) {
-					dateFormatter.set(PreferenceBasedDateFormatter.create());
+					dateFormatter = PreferenceBasedDateFormatter.create();
 					fireLabelProviderChanged(new LabelProviderChangedEvent(
 							CommitResultLabelProvider.this));
 				}

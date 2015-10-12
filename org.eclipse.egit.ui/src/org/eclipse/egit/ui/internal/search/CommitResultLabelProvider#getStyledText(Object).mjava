@@ -16,8 +16,7 @@
 			if (author != null)
 				styled.append(MessageFormat.format(
 						UIText.CommitResultLabelProvider_SectionAuthor,
-								author.getName(),
-								dateFormatter.get().formatDate(author)),
+						author.getName(), dateFormatter.formatDate(author)),
 						StyledString.QUALIFIER_STYLER);
 
 			if (layout == AbstractTextSearchViewPage.FLAG_LAYOUT_FLAT)
