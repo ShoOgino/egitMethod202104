@@ -1,6 +1,4 @@
-	// TODO: How to set column width to fit the treeViewer (maximize to not
-	// show empty space)
-	private void createColumns() {
+	private void createColumns(TreeColumnLayout layout) {
 		String[] headings = { UIText.RebaseInteractiveView_HeadingStatus,
 				UIText.RebaseInteractiveView_HeadingStep,
 				UIText.RebaseInteractiveView_HeadingAction,
@@ -14,7 +12,9 @@
 		ColumnViewerToolTipSupport.enableFor(planTreeViewer,
 				ToolTip.NO_RECREATE);
 
-		TreeViewerColumn infoColumn = createColumn(headings[0], 70);
+		TreeViewerColumn infoColumn = createColumn(headings[0]);
+		layout.setColumnData(infoColumn.getColumn(),
+				new ColumnPixelData(70));
 		infoColumn.setLabelProvider(new HighlightingColumnLabelProvider() {
 
 			@Override
@@ -58,7 +58,9 @@
 			}
 		});
 
-		TreeViewerColumn stepColumn = createColumn(headings[1], 55);
+		TreeViewerColumn stepColumn = createColumn(headings[1]);
+		layout.setColumnData(stepColumn.getColumn(),
+				new ColumnPixelData(55));
 		stepColumn.setLabelProvider(new HighlightingColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -95,7 +97,9 @@
 		planTree.setSortColumn(stepColumn.getColumn());
 		planTree.setSortDirection(direction);
 
-		TreeViewerColumn actionColumn = createColumn(headings[2], 90);
+		TreeViewerColumn actionColumn = createColumn(headings[2]);
+		layout.setColumnData(actionColumn.getColumn(),
+				new ColumnPixelData(90));
 		actionColumn.setLabelProvider(new HighlightingColumnLabelProvider() {
 
 			@Override
@@ -147,7 +151,9 @@
 			}
 		});
 
-		TreeViewerColumn commitIDColumn = createColumn(headings[3], 70);
+		TreeViewerColumn commitIDColumn = createColumn(headings[3]);
+		layout.setColumnData(commitIDColumn.getColumn(),
+				new ColumnPixelData(70));
 		commitIDColumn.setLabelProvider(new HighlightingColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -159,7 +165,9 @@
 			}
 		});
 
-		TreeViewerColumn commitMessageColumn = createColumn(headings[4], 200);
+		TreeViewerColumn commitMessageColumn = createColumn(headings[4]);
+		layout.setColumnData(commitMessageColumn.getColumn(),
+				new ColumnWeightData(200, 200));
 		commitMessageColumn
 				.setLabelProvider(new HighlightingColumnLabelProvider() {
 					@Override
@@ -172,7 +180,9 @@
 					}
 				});
 
-		TreeViewerColumn authorColumn = createColumn(headings[5], 120);
+		TreeViewerColumn authorColumn = createColumn(headings[5]);
+		layout.setColumnData(authorColumn.getColumn(),
+				new ColumnWeightData(120, 120));
 		authorColumn.setLabelProvider(new HighlightingColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -184,7 +194,9 @@
 			}
 		});
 
-		TreeViewerColumn authoredDateColumn = createColumn(headings[6], 80);
+		TreeViewerColumn authoredDateColumn = createColumn(headings[6]);
+		layout.setColumnData(authoredDateColumn.getColumn(),
+				new ColumnWeightData(80, 80));
 		authoredDateColumn
 				.setLabelProvider(new HighlightingColumnLabelProvider() {
 					@Override
@@ -197,7 +209,9 @@
 					}
 				});
 
-		TreeViewerColumn committerColumn = createColumn(headings[7], 120);
+		TreeViewerColumn committerColumn = createColumn(headings[7]);
+		layout.setColumnData(committerColumn.getColumn(),
+				new ColumnWeightData(120, 120));
 		committerColumn.setLabelProvider(new HighlightingColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -209,7 +223,9 @@
 			}
 		});
 
-		TreeViewerColumn commitDateColumn = createColumn(headings[8], 80);
+		TreeViewerColumn commitDateColumn = createColumn(headings[8]);
+		layout.setColumnData(commitDateColumn.getColumn(),
+				new ColumnWeightData(80, 80));
 		commitDateColumn
 				.setLabelProvider(new HighlightingColumnLabelProvider() {
 					@Override

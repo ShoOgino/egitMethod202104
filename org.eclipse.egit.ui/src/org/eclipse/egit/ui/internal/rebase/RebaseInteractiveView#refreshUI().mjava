@@ -3,8 +3,18 @@
 		if (planTreeViewer != null) {
 			planTreeViewer.refresh(true);
 			// make column widths match the contents
-			for (TreeViewerColumn col : dynamicColumns)
+			for (TreeViewerColumn col : dynamicColumns) {
 				col.getColumn().pack();
+			}
+			// Re-distribute the space again, now that we know the true minimum
+			// widths.
+			for (TreeViewerColumn col : dynamicColumns) {
+				int width = col.getColumn().getWidth();
+				// Use width as weight, too.
+				planLayout.setColumnData(col.getColumn(),
+						new ColumnWeightData(width, width));
+			}
+			planLayout.layout(planTreeViewer.getTree().getParent(), true);
 		}
 
 		startItem.setEnabled(false);

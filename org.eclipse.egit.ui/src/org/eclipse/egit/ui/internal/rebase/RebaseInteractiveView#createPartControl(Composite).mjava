@@ -17,7 +17,10 @@
 				ExpandableComposite.TITLE_BAR);
 		planTreeViewer = createPlanTreeViewer(rebasePlanSection, toolkit);
 
-		createColumns();
+		planLayout = new PlanLayout();
+		planTreeViewer.getTree().getParent().setLayout(planLayout);
+
+		createColumns(planLayout);
 		createStepActionToolBar(rebasePlanSection, toolkit);
 		createPopupMenu(planTreeViewer);
 
