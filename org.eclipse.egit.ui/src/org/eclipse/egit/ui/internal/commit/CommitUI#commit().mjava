@@ -85,12 +85,20 @@
 		}
 		if (commitDialog.isAmending())
 			commitOperation.setAmending(true);
-		commitOperation.setComputeChangeId(commitDialog.getCreateChangeId());
+
+		final boolean gerritMode = commitDialog.getCreateChangeId();
+
+		PushMode pushMode = null;
+		if (commitDialog.isPushRequested()) {
+			pushMode = gerritMode ? PushMode.GERRIT : PushMode.UPSTREAM;
+		}
+
+		commitOperation.setComputeChangeId(gerritMode);
 		commitOperation.setCommitAll(commitHelper.isMergedResolved);
 		if (commitHelper.isMergedResolved)
 			commitOperation.setRepository(repo);
-		Job commitJob = new CommitJob(repo, commitOperation).
-				setPushUpstream(commitDialog.isPushRequested());
+		Job commitJob = new CommitJob(repo, commitOperation)
+				.setPushUpstream(pushMode);
 		commitJob.schedule();
 
 		return true;

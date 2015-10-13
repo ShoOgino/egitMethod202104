@@ -449,6 +449,8 @@
 			@Override
 			public void updateChangeIdToggleSelection(boolean selection) {
 				addChangeIdAction.setChecked(selection);
+				commitAndPushButton
+						.setImage(selection ? getImage(UIIcons.GERRIT) : null);
 			}
 
 			@Override

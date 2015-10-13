@@ -26,10 +26,12 @@
 		}
 
 		if (commit != null) {
-			if (openCommitEditor)
+			if (openCommitEditor) {
 				openCommitEditor(commit);
-			if (pushUpstream)
-				pushUpstream(commit);
+			}
+			if (pushMode != null) {
+				pushUpstream(commit, pushMode);
+			}
 		}
 		return Status.OK_STATUS;
 	}

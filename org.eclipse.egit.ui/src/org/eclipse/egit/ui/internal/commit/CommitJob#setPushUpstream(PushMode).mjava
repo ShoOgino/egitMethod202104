@@ -1,10 +1,11 @@
 	/**
 	 * Sets this job to push the changes upstream after successfully committing.
-	 * @param pushUpstream
+	 *
+	 * @param pushMode
 	 * @return this commit job instance
 	 */
-	public CommitJob setPushUpstream(boolean pushUpstream) {
-		this.pushUpstream = pushUpstream;
+	public CommitJob setPushUpstream(final PushMode pushMode) {
+		this.pushMode = pushMode;
 		return this;
 	}
 
