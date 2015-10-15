@@ -68,6 +68,9 @@
 		checkAllItem.setEnabled(!validDirs.isEmpty());
 		uncheckAllItem.setEnabled(!validDirs.isEmpty());
 		fTree.clearFilter();
+		// Remove the minimum height that was set initially so that we get a
+		// scrollbar when the dialog is resized.
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(fTree);
 		fTreeViewer.setInput(validDirs);
 		enableOk();
 	}

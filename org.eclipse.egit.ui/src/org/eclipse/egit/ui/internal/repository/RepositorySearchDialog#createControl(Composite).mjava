@@ -9,13 +9,15 @@
 		Group searchGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
 		searchGroup.setText(UIText.RepositorySearchDialog_SearchCriteriaGroup);
 		searchGroup.setLayout(new GridLayout(4, false));
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchGroup);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.minSize(SWT.DEFAULT, SWT.DEFAULT).applyTo(searchGroup);
 
 		Label dirLabel = new Label(searchGroup, SWT.NONE);
 		dirLabel.setText(UIText.RepositorySearchDialog_directory);
 		dir = new Text(searchGroup, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true,
-				false).hint(300, SWT.DEFAULT).applyTo(dir);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).hint(300, SWT.DEFAULT)
+				.minSize(100, SWT.DEFAULT).applyTo(dir);
 		dir.setToolTipText(UIText.RepositorySearchDialog_EnterDirectoryToolTip);
 
 		String defaultRepoPath = RepositoryUtil.getDefaultRepositoryDir();
@@ -91,7 +93,8 @@
 		searchResultGroup
 				.setText(UIText.RepositorySearchDialog_SearchResultGroup);
 		searchResultGroup.setLayout(new GridLayout(2, false));
-		GridDataFactory.fillDefaults().applyTo(searchResultGroup);
+		GridDataFactory.fillDefaults().grab(true, true).minSize(SWT.DEFAULT, 0)
+				.applyTo(searchResultGroup);
 
 		PatternFilter filter = new PatternFilter() {
 
@@ -115,6 +118,8 @@
 			}
 		});
 
+		// Set a reasonable minimum height here; otherwise the dialog comes up
+		// with a tree that has only a few rows visible.
 		GridDataFactory.fillDefaults().grab(true, true).minSize(0, 300)
 				.applyTo(fTree);
 
