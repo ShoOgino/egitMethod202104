@@ -5,7 +5,7 @@
 		WizardDialog dialog = new WizardDialog(getShell(event), wizard);
 		if (dialog.open() == Window.OK) {
 			for (String dir : wizard.getDirectories()) {
-				File repositoryDir = new File(dir);
+				File repositoryDir = FileUtils.canonicalize(new File(dir));
 				addRepository(repositoryDir);
 			}
 		}
