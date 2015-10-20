@@ -1,0 +1,8 @@
+	@Test
+	public void dontWrapLongCommitMessageFooter() {
+		String input = "short\n\nfoo\n\n"
+				+ "Change-Id: I0000000000000000000000000000000000000000\n"
+				+ "Signed-off-by: Some-Arguablylong Name <jsomearguablylong.name@somecompany.com>";
+		assertEquals(input, SpellcheckableMessageArea.wrapCommitMessage(input));
+	}
+

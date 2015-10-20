@@ -7,8 +7,9 @@
 	public String getCommitMessage() {
 		String text = getText();
 		text = Utils.normalizeLineEndings(text);
-		if (shouldHardWrap())
-			text = hardWrap(text);
+		if (shouldHardWrap()) {
+			text = wrapCommitMessage(text);
+		}
 		return text;
 	}
 

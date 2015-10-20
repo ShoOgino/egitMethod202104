@@ -1,0 +1,10 @@
+	@Test
+	public void testFooterOffsetNoFooter() {
+		assertEquals(-1, CommonUtils.getFooterOffset(""));
+		assertEquals(-1, CommonUtils.getFooterOffset("line 1"));
+		assertEquals(-1, CommonUtils.getFooterOffset("line 1\nFoobar"));
+		assertEquals(-1, CommonUtils.getFooterOffset("line 1\n\nFoobar"));
+		assertEquals(-1, CommonUtils.getFooterOffset("line 1\nFoo:bar"));
+		assertEquals(-1, CommonUtils.getFooterOffset("line 1\n_\nFoo:bar"));
+	}
+

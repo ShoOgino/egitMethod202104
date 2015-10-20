@@ -1,0 +1,22 @@
+	/**
+	 * Wraps a commit message, leaving the footer as defined by
+	 * {@link CommonUtils#getFooterOffset(String)} unwrapped.
+	 *
+	 * @param text
+	 *            of the whole commit message, including footer, using '\n' as
+	 *            line delimiter
+	 * @return the wrapped text
+	 */
+	protected static String wrapCommitMessage(String text) {
+		// protected in order to be easily testable
+		int footerStart = CommonUtils.getFooterOffset(text);
+		if (footerStart < 0) {
+			return hardWrap(text);
+		} else {
+			// Do not wrap footer lines.
+			String footer = text.substring(footerStart);
+			text = hardWrap(text.substring(0, footerStart));
+			return text + footer;
+		}
+	}
+

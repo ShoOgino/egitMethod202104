@@ -1,10 +1,12 @@
 	/**
 	 * Hard-wraps the given text.
 	 *
-	 * @param text the text to wrap, must use '\n' as line delimiter
+	 * @param text
+	 *            the text to wrap, must use '\n' as line delimiter
 	 * @return the wrapped text
 	 */
-	public static String hardWrap(String text) {
+	protected static String hardWrap(String text) {
+		// protected for testing
 		int[] wrapOffsets = calculateWrapOffsets(text, MAX_LINE_WIDTH);
 		if (wrapOffsets != null) {
 			StringBuilder builder = new StringBuilder(text.length() + wrapOffsets.length);
