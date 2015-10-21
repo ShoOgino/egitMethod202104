@@ -30,5 +30,7 @@
 		assertEmpty();
 		assertProjectExistence(PROJ1, false);
 		assertFalse(repositoryFile.exists());
+		assertFalse(new File(repositoryFile.getParentFile(), PROJ1).exists());
+		assertFalse(repositoryFile.getParentFile().exists());
 	}
 
