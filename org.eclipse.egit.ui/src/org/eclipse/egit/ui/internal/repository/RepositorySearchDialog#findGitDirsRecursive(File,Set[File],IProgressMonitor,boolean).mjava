@@ -1,4 +1,4 @@
-	private void findGitDirsRecursive(File root, Set<String> strings,
+	private void findGitDirsRecursive(File root, Set<File> strings,
 			IProgressMonitor monitor, boolean lookForNestedRepositories) {
 
 		if (!root.exists() || !root.isDirectory()) {
@@ -16,14 +16,14 @@
 				continue;
 
 			if (FileKey.isGitRepository(child, FS.DETECTED)) {
-				strings.add(child.getAbsolutePath());
+				strings.add(child.getAbsoluteFile());
 				monitor.setTaskName(NLS
 						.bind(UIText.RepositorySearchDialog_RepositoriesFound_message,
 								Integer.valueOf(strings.size())));
 			} else if (FileKey.isGitRepository(new File(child,
 					Constants.DOT_GIT), FS.DETECTED)) {
-				strings.add(new File(child, Constants.DOT_GIT)
-						.getAbsolutePath());
+				strings.add(
+						new File(child, Constants.DOT_GIT).getAbsoluteFile());
 				monitor.setTaskName(NLS
 						.bind(UIText.RepositorySearchDialog_RepositoriesFound_message,
 								Integer.valueOf(strings.size())));

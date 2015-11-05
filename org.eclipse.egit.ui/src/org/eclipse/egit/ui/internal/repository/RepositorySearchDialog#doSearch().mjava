@@ -2,7 +2,7 @@
 		setMessage(UIText.RepositorySearchDialog_searchRepositoriesMessage);
 		setErrorMessage(null);
 		// perform the search...
-		final Set<String> directories = new HashSet<String>();
+		final Set<File> directories = new HashSet<>();
 		final File file = new File(dir.getText());
 		final boolean lookForNested = lookForNestedButton.getSelection();
 		if(!file.exists())
@@ -48,9 +48,12 @@
 
 		int foundOld = 0;
 
-		for (String foundDir : directories) {
-			if (!fExistingDirectories.contains(foundDir)) {
-				validDirs.add(foundDir);
+		for (File foundDir : directories) {
+			String absolutePath = foundDir.getAbsolutePath();
+			if (!fExistingDirectories.contains(absolutePath)
+					&& !fExistingDirectories.contains(FileUtils
+							.canonicalize(foundDir).getAbsolutePath())) {
+				validDirs.add(absolutePath);
 			} else {
 				foundOld++;
 			}
