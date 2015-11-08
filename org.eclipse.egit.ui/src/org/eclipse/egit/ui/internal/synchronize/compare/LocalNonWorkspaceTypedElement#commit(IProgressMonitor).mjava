@@ -22,10 +22,7 @@
 									UIText.LocalNonWorkspaceTypedElement_errorWritingContents,
 									e));
 				} finally {
-					fireContentChanged();
-					RepositoryMapping mapping = RepositoryMapping.getMapping(path);
-					if (mapping != null)
-						mapping.getRepository().fireEvent(new IndexChangedEvent());
+					fireChanges();
 				}
 			}
 			refreshTimestamp();
