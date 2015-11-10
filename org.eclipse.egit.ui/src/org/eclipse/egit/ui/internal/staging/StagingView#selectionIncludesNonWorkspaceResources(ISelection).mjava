@@ -13,8 +13,9 @@
 				return false;
 			StagingEntry stagingEntry = (StagingEntry) selectedObject;
 			IFile file = stagingEntry.getFile();
-			if (file == null)
+			if (file == null || !file.isAccessible()) {
 				return true;
+			}
 		}
 		return false;
 	}
