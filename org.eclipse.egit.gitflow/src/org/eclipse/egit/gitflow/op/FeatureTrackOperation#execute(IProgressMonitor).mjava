@@ -3,7 +3,7 @@
 		try {
 			String newLocalBranch = repository
 					.getConfig().getFeatureBranchName(featureName);
-			operationResult = fetch(monitor);
+			operationResult = fetch(monitor, timeout);
 
 			if (repository.hasBranch(newLocalBranch)) {
 				String errorMessage = String.format(

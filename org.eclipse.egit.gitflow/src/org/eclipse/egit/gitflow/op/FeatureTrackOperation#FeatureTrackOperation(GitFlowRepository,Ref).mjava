@@ -3,10 +3,12 @@
 	 *
 	 * @param repository
 	 * @param ref
+	 * @deprecated Use
+	 *             {@link FeatureTrackOperation#FeatureTrackOperation(GitFlowRepository, Ref, int)}
+	 *             instead.
 	 */
+	@Deprecated
 	public FeatureTrackOperation(GitFlowRepository repository, Ref ref) {
-		this(repository, ref, ref.getName().substring(
-				(REMOTE_ORIGIN_FEATURE_PREFIX + repository.getConfig()
-						.getFeaturePrefix()).length()));
+		this(repository, ref, 0);
 	}
 

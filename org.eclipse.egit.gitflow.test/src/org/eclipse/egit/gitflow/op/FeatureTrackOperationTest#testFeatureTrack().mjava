@@ -9,7 +9,7 @@
 				.createInitialCommit("testFeatureTrack");
 
 		FeatureTrackOperation featureTrackOperation = new FeatureTrackOperation(
-				gfRepo2, getFirstRemoteFeatureRef(gfRepo2));
+				gfRepo2, getFirstRemoteFeatureRef(gfRepo2), NO_TIMEOUT);
 		featureTrackOperation.execute(null);
 		FetchResult operationResult = featureTrackOperation
 				.getOperationResult();
