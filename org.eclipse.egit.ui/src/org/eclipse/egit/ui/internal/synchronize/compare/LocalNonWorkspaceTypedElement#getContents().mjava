@@ -1,11 +1,12 @@
 	@Override
 	public InputStream getContents() throws CoreException {
-		try {
-			return new FileInputStream(path.toFile());
-		} catch (FileNotFoundException e) {
-			Activator.error(e.getMessage(), e);
+		if (exists) {
+			try {
+				return new FileInputStream(path.toFile());
+			} catch (FileNotFoundException e) {
+				Activator.error(e.getMessage(), e);
+			}
 		}
-
 		return null;
 	}
 
