@@ -5,6 +5,10 @@
 		super(ROOT.getFile(path));
 		this.path = path;
 
-		exists = path.toFile().exists();
+		File file = path.toFile();
+		exists = file.exists();
+		if (exists) {
+			timestamp = file.lastModified();
+		}
 	}
 
