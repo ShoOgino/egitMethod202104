@@ -1,7 +1,7 @@
 	private String getStartCommit(ExecutionEvent event)
 			throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
-				.getCurrentSelection(event);
+		ISelection currentSelection = HandlerUtil.getCurrentSelection(event);
+		IStructuredSelection selection = SelectionUtils.getStructuredSelection(currentSelection);
 		if (selection.getFirstElement() instanceof PlotCommit) {
 			RevCommit plotCommit = (RevCommit) selection.getFirstElement();
 			return plotCommit.getName();
