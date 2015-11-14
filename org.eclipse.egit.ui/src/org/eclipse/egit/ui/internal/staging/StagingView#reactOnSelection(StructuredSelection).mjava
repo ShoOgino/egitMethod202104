@@ -8,6 +8,11 @@
 			if (currentRepository != repoNode.getRepository()) {
 				reload(repoNode.getRepository());
 			}
+		} else if (firstElement instanceof Repository) {
+			Repository repo = (Repository) firstElement;
+			if (currentRepository != repo) {
+				reload(repo);
+			}
 		} else {
 			IResource resource = CommonUtils.getAdapterForObject(firstElement,
 					IResource.class);

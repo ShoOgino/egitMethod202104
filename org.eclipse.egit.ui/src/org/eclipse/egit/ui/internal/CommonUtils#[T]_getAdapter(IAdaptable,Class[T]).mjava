@@ -11,10 +11,10 @@
 	 * @return a object of the given class, or <code>null</code> if this object
 	 *         does not have an adapter for the given class
 	 */
-	@SuppressWarnings("unchecked")
+	/* TODO @Nullable */
 	public static <T> T getAdapter(IAdaptable adaptable,
 			Class<T> adapterClass) {
 		Object adapter = adaptable.getAdapter(adapterClass);
-		return (T) adapter;
+		return adapterClass.cast(adapter);
 	}
 

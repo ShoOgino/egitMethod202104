@@ -1,0 +1,13 @@
+	@Nullable
+	private static File getFile(IURIEditorInput uriInput) {
+		URI uri = uriInput.getURI();
+		if (uri == null) {
+			return null;
+		}
+		try {
+			return new File(uri);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
+
