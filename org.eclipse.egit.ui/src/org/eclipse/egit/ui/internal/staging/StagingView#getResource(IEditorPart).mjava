@@ -3,7 +3,7 @@
 		if (input instanceof IFileEditorInput) {
 			return ((IFileEditorInput) input).getFile();
 		} else {
-			return CommonUtils.getAdapter(input, IResource.class);
+			return AdapterUtils.adapt(input, IResource.class);
 		}
 	}
 

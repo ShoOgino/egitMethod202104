@@ -1,13 +1,10 @@
+	@Nullable
 	private IResource getExistingResource(IStructuredSelection selection) {
 		Object element = selection.getFirstElement();
-
-		if (element instanceof IAdaptable) {
-			IResource resource = CommonUtils.getAdapter(((IAdaptable) element), IResource.class);
-
-			if (resource != null && resource.exists())
-				return resource;
+		IResource resource = AdapterUtils.adapt(element, IResource.class);
+		if (resource != null && resource.exists()) {
+			return resource;
 		}
-
 		return null;
 	}
 

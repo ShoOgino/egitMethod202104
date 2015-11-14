@@ -11,8 +11,8 @@
 	private IProject[] getProjectsForSelectedResources(
 			IStructuredSelection selection) {
 		Set<IProject> ret = new LinkedHashSet<IProject>();
-		for (IResource resource : (IResource[]) getSelectedAdaptables(
-				selection, IResource.class)) {
+		for (IResource resource : getSelectedAdaptables(selection,
+				IResource.class)) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
 			if (mapping != null && (mapping.getContainer() instanceof IProject))
 				ret.add((IProject) mapping.getContainer());

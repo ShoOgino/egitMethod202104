@@ -5,7 +5,7 @@
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
-		if (CommonUtils.getAdapter(input, RepositoryCommit.class) == null)
+		if (AdapterUtils.adapt(input, RepositoryCommit.class) == null)
 			throw new PartInitException(
 					"Input could not be adapted to commit object"); //$NON-NLS-1$
 		super.init(site, input);

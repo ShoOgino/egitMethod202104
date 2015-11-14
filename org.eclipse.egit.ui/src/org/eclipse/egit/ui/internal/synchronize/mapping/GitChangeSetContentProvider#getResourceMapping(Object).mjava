@@ -1,4 +1,5 @@
+	@Nullable
 	private ResourceMapping getResourceMapping(Object object) {
-		return CommonUtils.getAdapter(((IAdaptable) object), ResourceMapping.class);
+		return AdapterUtils.adapt(object, ResourceMapping.class);
 	}
 

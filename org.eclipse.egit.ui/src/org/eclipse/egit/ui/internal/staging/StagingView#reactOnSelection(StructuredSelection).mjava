@@ -14,7 +14,7 @@
 				reload(repo);
 			}
 		} else {
-			IResource resource = CommonUtils.getAdapterForObject(firstElement,
+			IResource resource = AdapterUtils.adapt(firstElement,
 					IResource.class);
 			showResource(resource);
 		}

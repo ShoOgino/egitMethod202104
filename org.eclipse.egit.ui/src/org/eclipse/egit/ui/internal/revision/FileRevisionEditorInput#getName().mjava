@@ -1,12 +1,12 @@
 	@Override
 	public String getName() {
-		IFileRevision rev = CommonUtils.getAdapter(this, IFileRevision.class);
+		IFileRevision rev = AdapterUtils.adapt(this, IFileRevision.class);
 		if (rev != null) {
 			return NLS.bind(
 					UIText.FileRevisionEditorInput_NameAndRevisionTitle,
 					new String[] { rev.getName(), rev.getContentIdentifier() });
 		}
-		IFileState state = CommonUtils.getAdapter(this, IFileState.class);
+		IFileState state = AdapterUtils.adapt(this, IFileState.class);
 		if (state != null) {
 			return state.getName() + ' ' + PreferenceBasedDateFormatter.create()
 					.formatDate(new Date(state.getModificationTime()));

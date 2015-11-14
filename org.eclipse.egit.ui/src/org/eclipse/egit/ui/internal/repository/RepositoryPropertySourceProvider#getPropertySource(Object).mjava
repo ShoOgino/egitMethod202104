@@ -48,7 +48,7 @@
 			Ref ref = (Ref) node.getObject();
 			if (ref.getName().startsWith(Constants.R_HEADS) || ref.getName().startsWith(Constants.R_REMOTES)){
 				checkChangeType(SourceType.BRANCH);
-				Repository repository = CommonUtils.getAdapter(node, Repository.class);
+				Repository repository = AdapterUtils.adapt(node, Repository.class);
 				lastRepositorySource =  new BranchPropertySource(repository, ref.getName(), myPage);
 				return lastRepositorySource;
 			}

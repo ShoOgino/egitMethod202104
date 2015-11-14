@@ -1,5 +1,5 @@
 	private void scheduleFormatJob() {
-		IWorkbenchSiteProgressService siteService = CommonUtils.getAdapter(partSite, IWorkbenchSiteProgressService.class);
+		IWorkbenchSiteProgressService siteService = AdapterUtils.adapt(partSite, IWorkbenchSiteProgressService.class);
 		if (siteService == null)
 			return;
 		FormatJob.FormatRequest formatRequest = new FormatJob.FormatRequest(

@@ -2,10 +2,14 @@
 	protected ResourceTraversal[] getTraversals(
 			ISynchronizationContext context, Object object) {
 		if (object instanceof IAdaptable) {
-			if (traversalCache.containsKey(object))
+			if (traversalCache.containsKey(object)) {
 				return traversalCache.get(object);
+			}
 
 			ResourceMapping rm = getResourceMapping(object);
+			if(rm == null){
+				return null;
+			}
 			GitSubscriberMergeContext ctx = (GitSubscriberMergeContext) getContext();
 			ResourceMappingContext rmCtx = new GitSubscriberResourceMappingContext(
 					(GitResourceVariantTreeSubscriber) ctx.getSubscriber(),

@@ -5,10 +5,10 @@
 			if (fileObject instanceof LocalFileRevision){
 				try {
 					IStorage storage = ((LocalFileRevision) fileObject).getStorage(new NullProgressMonitor());
-					if (CompareUtils.getAdapter(storage, IFileState.class) != null){
+					if (AdapterUtils.adapt(storage, IFileState.class) != null) {
 						//local revision
 						return UIText.GitCompareFileRevisionEditorInput_LocalRevision;
-					} else if (CompareUtils.getAdapter(storage, IFile.class) != null) {
+					} else if (AdapterUtils.adapt(storage, IFile.class) != null) {
 						//current revision
 						return UIText.GitCompareFileRevisionEditorInput_CurrentRevision;
 					}

@@ -7,7 +7,11 @@
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				RepositoryCommit commit = CommonUtils.getAdapter(getEditor(), RepositoryCommit.class);
+				RepositoryCommit commit = AdapterUtils.adapt(getEditor(),
+						RepositoryCommit.class);
+				if (commit == null) {
+					return Status.CANCEL_STATUS;
+				}
 				FileDiff diffs[] = getDiffs(commit);
 				monitor.beginTask("", diffs.length); //$NON-NLS-1$
 				Repository repository = commit.getRepository();

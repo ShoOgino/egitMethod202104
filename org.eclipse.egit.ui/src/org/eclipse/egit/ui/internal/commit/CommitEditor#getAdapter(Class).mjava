@@ -3,8 +3,9 @@
 	 */
 	@Override
 	public Object getAdapter(Class adapter) {
-		if (RepositoryCommit.class == adapter)
-			return CommonUtils.getAdapter(getEditorInput(), adapter);
+		if (RepositoryCommit.class == adapter) {
+			return AdapterUtils.adapt(getEditorInput(), adapter);
+		}
 
 		return super.getAdapter(adapter);
 	}

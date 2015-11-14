@@ -62,10 +62,10 @@
 					showHead = true;
 					break;
 				}
-			} else if (o instanceof HistoryPageInput)
+			} else if (o instanceof HistoryPageInput) {
 				input = (HistoryPageInput) o;
-			else if (o instanceof IAdaptable) {
-				IResource resource = CommonUtils.getAdapter(((IAdaptable) o), IResource.class);
+			} else {
+				IResource resource = AdapterUtils.adapt(o, IResource.class);
 				if (resource != null) {
 					RepositoryMapping mapping = RepositoryMapping
 							.getMapping(resource);

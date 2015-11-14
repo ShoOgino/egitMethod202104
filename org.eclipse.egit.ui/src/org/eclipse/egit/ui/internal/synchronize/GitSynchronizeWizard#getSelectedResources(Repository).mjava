@@ -10,12 +10,14 @@
 
 			File workTree = repo.getWorkTree();
 			for (Object o : sel.toArray()) {
-				if (!(o instanceof IAdaptable))
+				if (o == null) {
 					continue;
+				}
 
-				IResource res = CommonUtils.getAdapter(((IAdaptable) o), IResource.class);
-				if (res == null)
+				IResource res = AdapterUtils.adapt(o, IResource.class);
+				if (res == null) {
 					continue;
+				}
 
 				int type = res.getType();
 				if (type == IResource.FOLDER) {
