@@ -1,0 +1,21 @@
+		@Nullable
+		private IPath getPath(IFileBuffer buffer) {
+			IPath location = buffer.getLocation();
+			if (location != null) {
+				return location;
+			}
+			IFileStore store = buffer.getFileStore();
+			if (store != null) {
+				URI uri = store.toURI();
+				if (uri != null) {
+					try {
+						File file = new File(uri);
+						return new Path(file.getAbsolutePath());
+					} catch (IllegalArgumentException e) {
+						// ignore
+					}
+				}
+			}
+			return null;
+		}
+
