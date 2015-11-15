@@ -17,11 +17,11 @@
 			}
 			return part;
 		} catch (PartInitException e) {
-			if (editorId.equals("org.eclipse.ui.DefaultTextEditor")) { //$NON-NLS-1$
+			if (editorId.equals(EditorsUI.DEFAULT_TEXT_EDITOR_ID)) {
 				throw e;
 			} else {
 				return page.openEditor(editorInput,
-						"org.eclipse.ui.DefaultTextEditor"); //$NON-NLS-1$
+						EditorsUI.DEFAULT_TEXT_EDITOR_ID);
 			}
 		}
 	}
