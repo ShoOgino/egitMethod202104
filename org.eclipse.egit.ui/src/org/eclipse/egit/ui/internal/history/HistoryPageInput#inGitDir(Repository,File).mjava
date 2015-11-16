@@ -1,0 +1,16 @@
+	/**
+	 * Tests whether a file is in a repository's .git directory (or is that
+	 * directory itself).
+	 *
+	 * @param repository
+	 *            to test against
+	 * @param file
+	 *            to test
+	 * @return {@code true} if the file is in the .git directory of the
+	 *         repository, or is that directory itself.
+	 */
+	private boolean inGitDir(Repository repository, File file) {
+		return file.getAbsoluteFile().toPath().startsWith(
+				repository.getDirectory().getAbsoluteFile().toPath());
+	}
+
