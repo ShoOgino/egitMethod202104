@@ -40,7 +40,7 @@
 			@Override
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
-				if (!reactOnSelection) {
+				if (!reactOnSelection || part == RepositoriesView.this) {
 					return;
 				}
 
