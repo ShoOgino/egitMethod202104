@@ -5,9 +5,13 @@
 			return null;
 		}
 		try {
-			return new File(uri);
-		} catch (IllegalArgumentException e) {
-			return null;
+			IFileStore store = EFS.getStore(uri);
+			if (store != null) {
+				return store.toLocalFile(EFS.NONE, new NullProgressMonitor());
+			}
+		} catch (CoreException ce) {
+			// ignore
 		}
+		return null;
 	}
 
