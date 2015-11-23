@@ -1,0 +1,58 @@
+	private boolean internalTest(@NonNull Object receiver,
+			@NonNull Property property) {
+		Collection<?> collection = (Collection<?>) receiver;
+		if (collection.isEmpty()) {
+			return false;
+		}
+		IStructuredSelection selection = null;
+		Object first = collection.iterator().next();
+		if (collection.size() == 1 && first instanceof ITextSelection) {
+			selection = SelectionUtils
+					.getStructuredSelection((ITextSelection) first);
+		} else {
+			selection = new StructuredSelection(new ArrayList<>(collection));
+		}
+		Repository repository = SelectionUtils.getRepository(selection);
+		if (repository == null || repository.isBare()) {
+			return false;
+		}
+		IndexDiffCacheEntry diffCacheEntry = Activator.getDefault()
+				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		if (diffCacheEntry == null) {
+			return false;
+		}
+		IndexDiffData indexDiffData = diffCacheEntry.getIndexDiff();
+		if (indexDiffData == null) {
+			return false;
+		}
+
+		Iterator<?> iterator = selection.iterator();
+		while (iterator.hasNext()) {
+			IResource resource = AdapterUtils.adapt(iterator.next(),
+					IResource.class);
+			if (resource == null || !resource.exists()) {
+				continue;
+			}
+			IResourceState state = ResourceStateFactory.getInstance()
+					.get(indexDiffData, resource);
+			switch (property) {
+			case HAS_STAGED_CHANGES:
+				if (state.isStaged()) {
+					return true;
+				}
+				break;
+			case HAS_UNSTAGED_CHANGES:
+				if (!state.isTracked() || state.isDirty()) {
+					return true;
+				}
+				break;
+			case HAS_NOT_IGNORED_RESOURCES:
+				if (!state.isIgnored()) {
+					return true;
+				}
+				break;
+			}
+		}
+		return false;
+	}
+
