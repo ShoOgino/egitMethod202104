@@ -1,5 +1,6 @@
 	@Nullable
-	private String makeRepoRelative(IResource res) {
+	private String makeRepositoryRelative(Repository repository,
+			IResource res) {
 		IPath location = res.getLocation();
 		if (location == null) {
 			return null;

@@ -1,0 +1,29 @@
+	/**
+	 * Computes an {@link IResourceState} for the given {@link IResource} from
+	 * the given {@link IndexDiffData}.
+	 *
+	 * @param indexDiffData
+	 *            to compute the state from
+	 * @param resource
+	 *            to get the state of
+	 * @return the state
+	 */
+	@NonNull
+	public IResourceState get(@NonNull IndexDiffData indexDiffData,
+			@NonNull IResource resource) {
+		ResourceState result = new ResourceState();
+		switch (resource.getType()) {
+		case IResource.FILE:
+			extractResourceProperties(indexDiffData, resource, result);
+			break;
+		case IResource.PROJECT:
+			//$FALL-THROUGH$
+		case IResource.FOLDER:
+			extractContainerProperties(indexDiffData, resource, result);
+			break;
+		default:
+			// Nothing.
+		}
+		return result;
+	}
+

@@ -1,6 +1,15 @@
+	/**
+	 * Returns the {@link IndexDiffData} for a given {@link IResource}, provided
+	 * the resource is not a phantom resource and belongs to a git-racked
+	 * project.
+	 *
+	 * @param resource
+	 *            context to get the repository to get the index diff data from
+	 * @return the IndexDiffData, or {@code null} if none.
+	 */
 	@Nullable
-	static IndexDiffData getIndexDiffDataOrNull(IResource resource) {
-		if (resource.getType() == IResource.ROOT) {
+	public IndexDiffData getIndexDiffDataOrNull(@Nullable IResource resource) {
+		if (resource == null || resource.getType() == IResource.ROOT) {
 			return null;
 		}
 
@@ -17,7 +26,7 @@
 		}
 
 		Repository repo = mapping.getRepository();
-		if(repo == null){
+		if (repo == null) {
 			return null;
 		}
 
@@ -25,18 +34,18 @@
 		if (repo.isBare()) {
 			return new IndexDiffData();
 		}
-		
+
 		// Cannot decorate linked resources
 		if (mapping.getRepoRelativePath(resource) == null) {
 			return null;
 		}
 
 		IndexDiffCacheEntry diffCacheEntry = org.eclipse.egit.core.Activator
-				.getDefault().getIndexDiffCache()
-				.getIndexDiffCacheEntry(repo);
+				.getDefault().getIndexDiffCache().getIndexDiffCacheEntry(repo);
 		if (diffCacheEntry == null) {
 			return null;
 		}
 		return diffCacheEntry.getIndexDiff();
+
 	}
 

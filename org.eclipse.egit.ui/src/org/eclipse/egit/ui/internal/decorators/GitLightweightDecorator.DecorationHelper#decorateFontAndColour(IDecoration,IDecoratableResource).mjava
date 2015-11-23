@@ -13,7 +13,7 @@
 						UIPreferences.THEME_IgnoredResourceFont);
 			} else if (!resource.isTracked()
 					|| resource.isDirty()
-					|| resource.staged() != Staged.NOT_STAGED) {
+					|| resource.isStaged()) {
 				bc = current.getColorRegistry().get(
 						UIPreferences.THEME_UncommittedChangeBackgroundColor);
 				fc = current.getColorRegistry().get(

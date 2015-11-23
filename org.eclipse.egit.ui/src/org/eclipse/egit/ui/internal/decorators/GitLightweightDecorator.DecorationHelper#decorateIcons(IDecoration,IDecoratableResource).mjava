@@ -12,12 +12,12 @@
 					overlay = assumeValidImage;
 
 				// Staged overrides tracked
-				Staged staged = resource.staged();
+				StagingState staged = resource.getStagingState();
 				if (store.getBoolean(UIPreferences.DECORATOR_SHOW_STAGED_ICON)
-						&& staged != Staged.NOT_STAGED) {
-					if (staged == Staged.ADDED)
+						&& staged != StagingState.NOT_STAGED) {
+					if (staged == StagingState.ADDED)
 						overlay = stagedAddedImage;
-					else if (staged == Staged.REMOVED)
+					else if (staged == StagingState.REMOVED)
 						overlay = stagedRemovedImage;
 					else
 						overlay = stagedImage;

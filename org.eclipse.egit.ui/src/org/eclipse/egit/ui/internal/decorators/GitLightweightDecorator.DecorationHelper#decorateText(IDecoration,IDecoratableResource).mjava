@@ -34,8 +34,7 @@
 			bindings.put(BINDING_BRANCH_NAME, resource.getBranch());
 			bindings.put(BINDING_BRANCH_STATUS, resource.getBranchStatus());
 			bindings.put(BINDING_DIRTY_FLAG, resource.isDirty() ? ">" : null); //$NON-NLS-1$
-			bindings.put(BINDING_STAGED_FLAG,
-					resource.staged() != Staged.NOT_STAGED ? "*" : null); //$NON-NLS-1$
+			bindings.put(BINDING_STAGED_FLAG, resource.isStaged() ? "*" : null); //$NON-NLS-1$
 
 			decorate(decoration, format, bindings);
 		}

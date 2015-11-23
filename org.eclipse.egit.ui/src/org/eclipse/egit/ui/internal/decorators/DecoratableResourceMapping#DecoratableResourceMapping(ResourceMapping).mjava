@@ -23,12 +23,13 @@
 			if(repoMapping == null)
 				continue;
 
-			IndexDiffData diffData = GitLightweightDecorator.getIndexDiffDataOrNull(prj);
+			IndexDiffData diffData = ResourceStateFactory.getInstance()
+					.getIndexDiffDataOrNull(prj);
 			if(diffData == null)
 				continue;
 
 			// at least one contained resource is tracked for sure here.
-			tracked = true;
+			setTracked(true);
 
 			Repository repository = repoMapping.getRepository();
 			String repoRelative = makeRepoRelative(repository, prj);
@@ -42,10 +43,10 @@
 
 			// attention - never reset these to false (so don't use the return value of the methods!)
 			if(containsPrefix(modified, repoRelative))
-				dirty = true;
+				setDirty(true);
 
 			if(containsPrefix(conflicting, repoRelative))
-				conflicts = true;
+				setConflicts(true);
 
 			// collect repository
 			repositories.add(repository);

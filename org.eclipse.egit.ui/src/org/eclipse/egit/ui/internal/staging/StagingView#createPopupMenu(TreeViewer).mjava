@@ -50,8 +50,7 @@
 					openWorkingTreeVersion.setEnabled(!submoduleSelected
 							&& anyElementIsExistingFile(fileSelection));
 					menuMgr.add(openWorkingTreeVersion);
-					String label = stagingEntryList.get(0)
-							.staged() != Staged.NOT_STAGED
+					String label = stagingEntryList.get(0).isStaged()
 									? UIText.CommitFileDiffViewer_CompareWorkingDirectoryMenuLabel
 									: UIText.StagingView_CompareWithIndexMenuLabel;
 					Action openCompareWithIndex = new Action(label) {

@@ -1,0 +1,41 @@
+	private void extractResourceProperties(@NonNull IndexDiffData indexDiffData,
+			@NonNull IResource resource, @NonNull ResourceState state) {
+		final RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
+		if (mapping == null) {
+			return;
+		}
+		Repository repository = mapping.getRepository();
+		String repoRelativePath = makeRepositoryRelative(repository, resource);
+		if (repoRelativePath == null) {
+			return;
+		}
+		// ignored
+		Set<String> ignoredFiles = indexDiffData.getIgnoredNotInIndex();
+		boolean ignored = ignoredFiles.contains(repoRelativePath)
+				|| containsPrefixPath(ignoredFiles, repoRelativePath);
+		state.setIgnored(ignored);
+		Set<String> untracked = indexDiffData.getUntracked();
+		state.setTracked(!ignored && !untracked.contains(repoRelativePath));
+
+		Set<String> added = indexDiffData.getAdded();
+		Set<String> removed = indexDiffData.getRemoved();
+		Set<String> changed = indexDiffData.getChanged();
+		if (added.contains(repoRelativePath)) {
+			state.setStagingState(StagingState.ADDED);
+		} else if (removed.contains(repoRelativePath)) {
+			state.setStagingState(StagingState.REMOVED);
+		} else if (changed.contains(repoRelativePath)) {
+			state.setStagingState(StagingState.MODIFIED);
+		} else {
+			state.setStagingState(StagingState.NOT_STAGED);
+		}
+
+		// conflicting
+		Set<String> conflicting = indexDiffData.getConflicting();
+		state.setConflicts(conflicting.contains(repoRelativePath));
+
+		// locally modified
+		Set<String> modified = indexDiffData.getModified();
+		state.setDirty(modified.contains(repoRelativePath));
+	}
+
