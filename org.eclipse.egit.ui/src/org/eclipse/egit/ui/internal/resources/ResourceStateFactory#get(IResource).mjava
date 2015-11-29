@@ -1,0 +1,16 @@
+	/**
+	 * Determines the repository state of the given {@link IResource}.
+	 *
+	 * @param resource
+	 *            to get the state for
+	 * @return the state, {@link #UNKNOWN_STATE} if none can be determined.
+	 */
+	@NonNull
+	public IResourceState get(@Nullable IResource resource) {
+		IndexDiffData indexDiffData = getIndexDiffDataOrNull(resource);
+		if (indexDiffData == null || resource == null) {
+			return UNKNOWN_STATE;
+		}
+		return get(indexDiffData, resource);
+	}
+

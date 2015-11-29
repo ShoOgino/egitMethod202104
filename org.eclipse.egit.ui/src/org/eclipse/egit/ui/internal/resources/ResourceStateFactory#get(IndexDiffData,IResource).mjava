@@ -11,19 +11,10 @@
 	@NonNull
 	public IResourceState get(@NonNull IndexDiffData indexDiffData,
 			@NonNull IResource resource) {
-		ResourceState result = new ResourceState();
-		switch (resource.getType()) {
-		case IResource.FILE:
-			extractResourceProperties(indexDiffData, resource, result);
-			break;
-		case IResource.PROJECT:
-			//$FALL-THROUGH$
-		case IResource.FOLDER:
-			extractContainerProperties(indexDiffData, resource, result);
-			break;
-		default:
-			// Nothing.
+		IPath path = resource.getLocation();
+		if (path != null) {
+			return get(indexDiffData, new ResourceItem(resource));
 		}
-		return result;
+		return UNKNOWN_STATE;
 	}
 

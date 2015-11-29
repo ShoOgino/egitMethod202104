@@ -1,0 +1,16 @@
+	/**
+	 * Determines the repository state of the given {@link File}.
+	 *
+	 * @param file
+	 *            to get the state for
+	 * @return the state, {@link #UNKNOWN_STATE} if none can be determined.
+	 */
+	@NonNull
+	public IResourceState get(@Nullable File file) {
+		IndexDiffData indexDiffData = getIndexDiffDataOrNull(file);
+		if (indexDiffData == null || file == null) {
+			return UNKNOWN_STATE;
+		}
+		return get(indexDiffData, file);
+	}
+
