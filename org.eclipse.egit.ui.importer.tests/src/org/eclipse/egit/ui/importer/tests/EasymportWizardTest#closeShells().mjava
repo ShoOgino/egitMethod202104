@@ -1,0 +1,10 @@
+	@After
+	public void closeShells() {
+		SWTBotShell[] shells = bot.shells();
+		for (SWTBotShell shell : shells) {
+			if (shell.isOpen() && !isEclipseShell(shell)) {
+				shell.close();
+			}
+		}
+	}
+
