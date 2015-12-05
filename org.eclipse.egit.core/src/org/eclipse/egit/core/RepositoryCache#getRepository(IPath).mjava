@@ -10,8 +10,7 @@
 	 * @since 3.2
 	 */
 	public Repository getRepository(final IPath location) {
-		Repository[] repositories = org.eclipse.egit.core.Activator
-				.getDefault().getRepositoryCache().getAllRepositories();
+		Repository[] repositories = getAllRepositories();
 		Repository repository = null;
 		int largestSegmentCount = 0;
 		for (Repository r : repositories) {
