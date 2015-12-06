@@ -6,11 +6,10 @@
 			RevCommit plotCommit = (RevCommit) selection.getFirstElement();
 			return plotCommit.getName();
 		} else {
-			Repository repository = getRepository(event);
-			if (repository == null) {
+			GitFlowRepository gitFlowRepository = GitFlowHandlerUtil.getRepository(event);
+			if (gitFlowRepository == null) {
 				throw new ExecutionException(UIText.ReleaseStartHandler_startCommitCouldNotBeDetermined);
 			}
-			GitFlowRepository gitFlowRepository = new GitFlowRepository(repository);
 			RevCommit head;
 			try {
 				head = gitFlowRepository.findHead();
