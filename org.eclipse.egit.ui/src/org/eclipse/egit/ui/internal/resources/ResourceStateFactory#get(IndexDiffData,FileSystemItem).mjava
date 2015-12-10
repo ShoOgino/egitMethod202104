@@ -15,8 +15,14 @@
 		if (path == null) {
 			return UNKNOWN_STATE;
 		}
-		Repository repository = Activator.getDefault().getRepositoryCache()
-				.getRepository(path);
+		Repository repository = null;
+		RepositoryMapping mapping = RepositoryMapping.getMapping(path);
+		if (mapping != null) {
+			repository = mapping.getRepository();
+		} else {
+			repository = Activator.getDefault().getRepositoryCache()
+					.getRepository(path);
+		}
 		if (repository == null || repository.isBare()) {
 			return UNKNOWN_STATE;
 		}
