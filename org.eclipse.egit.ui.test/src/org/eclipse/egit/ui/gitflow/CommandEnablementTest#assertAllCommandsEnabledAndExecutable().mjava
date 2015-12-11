@@ -1,0 +1,6 @@
+	private void assertAllCommandsEnabledAndExecutable() throws Exception {
+		testCommand(FEATURE_START_CMD, FEATURE_FINISH_CMD, UIText.FeatureStartHandler_provideFeatureName);
+		testCommand(RELEASE_START_CMD, RELEASE_END_CMD, UIText.ReleaseStartHandler_provideReleaseName);
+		testCommand(HOTFIX_START_CMD, HOTFIX_END_CMD, UIText.HotfixStartHandler_provideHotfixName);
+	}
+

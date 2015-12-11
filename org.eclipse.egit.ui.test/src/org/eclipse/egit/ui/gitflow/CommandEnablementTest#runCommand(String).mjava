@@ -1,0 +1,6 @@
+	private void runCommand(String commandId) throws Exception {
+		final Command command = getCommandService().getCommand(commandId);
+		SWTBotCommand swtBotCommand = new SWTBotCommand(command);
+		swtBotCommand.click();
+	}
+

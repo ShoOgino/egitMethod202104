@@ -1,0 +1,7 @@
+	private void assertCommandOpensDialog(String startCommandId,
+			String dialogTitle) throws Exception {
+		runCommand(startCommandId);
+		bot.waitUntil(shellIsActive(dialogTitle));
+		bot.button("Cancel").click();
+	}
+
