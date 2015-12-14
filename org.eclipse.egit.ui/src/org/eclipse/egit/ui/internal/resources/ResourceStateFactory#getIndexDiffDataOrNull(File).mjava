@@ -1,0 +1,38 @@
+	/**
+	 * Returns the {@link IndexDiffData} for a given {@link File}, provided the
+	 * file is in a git repository working tree.
+	 *
+	 * @param file
+	 *            context to get the repository to get the index diff data from
+	 * @return the IndexDiffData, or {@code null} if none.
+	 */
+	@Nullable
+	public IndexDiffData getIndexDiffDataOrNull(@Nullable File file) {
+		if (file == null) {
+			return null;
+		}
+		File absoluteFile = file.getAbsoluteFile();
+		IPath path = new org.eclipse.core.runtime.Path(absoluteFile.getPath());
+		Repository repository = null;
+		RepositoryMapping mapping = RepositoryMapping.getMapping(path);
+		if (mapping != null) {
+			repository = mapping.getRepository();
+		} else {
+			repository = Activator.getDefault().getRepositoryCache()
+					.getRepository(path);
+		}
+		if (repository == null) {
+			return null;
+		} else if (repository.isBare()) {
+			// For bare repository just return empty data
+			return new IndexDiffData();
+		}
+		IndexDiffCacheEntry diffCacheEntry = Activator.getDefault()
+				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		if (diffCacheEntry == null) {
+			return null;
+		}
+		return diffCacheEntry.getIndexDiff();
+
+	}
+

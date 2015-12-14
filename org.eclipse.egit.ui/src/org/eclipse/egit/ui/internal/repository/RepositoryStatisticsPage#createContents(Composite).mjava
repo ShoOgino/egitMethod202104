@@ -10,7 +10,7 @@
 			column.setText(titles[i]);
 		}
 
-		Repository repo = CommonUtils.getAdapter(getElement(), Repository.class);
+		Repository repo = AdapterUtils.adapt(getElement(), Repository.class);
 		if (repo == null)
 			return table;
 		Git git = new Git(repo);

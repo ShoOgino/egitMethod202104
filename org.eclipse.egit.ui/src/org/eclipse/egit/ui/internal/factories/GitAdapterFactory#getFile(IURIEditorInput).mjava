@@ -1,0 +1,17 @@
+	@Nullable
+	private static File getFile(IURIEditorInput uriInput) {
+		URI uri = uriInput.getURI();
+		if (uri == null) {
+			return null;
+		}
+		try {
+			IFileStore store = EFS.getStore(uri);
+			if (store != null) {
+				return store.toLocalFile(EFS.NONE, new NullProgressMonitor());
+			}
+		} catch (CoreException ce) {
+			// ignore
+		}
+		return null;
+	}
+

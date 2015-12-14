@@ -1,0 +1,10 @@
+		@Nullable
+		private IPath getRelativePath(Repository repo, IFileBuffer buffer) {
+			IPath path = getPath(buffer);
+			if (path == null) {
+				return null;
+			}
+			IPath repositoryRoot = new Path(repo.getWorkTree().getPath());
+			return path.makeRelativeTo(repositoryRoot);
+		}
+

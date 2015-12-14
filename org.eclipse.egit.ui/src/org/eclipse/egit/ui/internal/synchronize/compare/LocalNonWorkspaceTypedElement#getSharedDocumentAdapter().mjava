@@ -7,6 +7,7 @@
 			sharedDocumentAdapter = new EditableSharedDocumentAdapter(new EditableSharedDocumentAdapter.ISharedDocumentAdapterListener() {
 				@Override
 				public void handleDocumentConnected() {
+							refreshTimestamp();
 					if (sharedDocumentListener != null)
 						sharedDocumentListener.handleDocumentConnected();
 				}
@@ -24,6 +25,7 @@
 				}
 				@Override
 				public void handleDocumentSaved() {
+							refreshTimestamp();
 					if (sharedDocumentListener != null)
 						sharedDocumentListener.handleDocumentSaved();
 				}

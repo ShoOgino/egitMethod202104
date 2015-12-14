@@ -2,8 +2,11 @@
 	public boolean isEnabled() {
 		try {
 			Repository repository = getRepository();
-			return repository != null
-					&& repository.getRef(Constants.HEAD).getObjectId() != null;
+			if (repository == null) {
+				return false;
+			}
+			Ref ref = repository.getRef(Constants.HEAD);
+			return ref != null && ref.getObjectId() != null;
 		} catch (IOException e) {
 			Activator.handleError(e.getMessage(), e, false);
 			return false;

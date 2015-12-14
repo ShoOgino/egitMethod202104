@@ -1,0 +1,10 @@
+		@Nullable
+		private Repository getRepository(IFileBuffer buffer) {
+			IPath location = getPath(buffer);
+			if (location != null) {
+				return Activator.getDefault().getRepositoryCache()
+						.getRepository(location);
+			}
+			return null;
+		}
+

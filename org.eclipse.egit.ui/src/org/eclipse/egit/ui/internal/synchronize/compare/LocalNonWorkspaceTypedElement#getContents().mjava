@@ -2,7 +2,9 @@
 	public InputStream getContents() throws CoreException {
 		if (exists) {
 			try {
-				return new FileInputStream(path.toFile());
+				File file = path.toFile();
+				timestamp = file.lastModified();
+				return new FileInputStream(file);
 			} catch (FileNotFoundException e) {
 				Activator.error(e.getMessage(), e);
 			}

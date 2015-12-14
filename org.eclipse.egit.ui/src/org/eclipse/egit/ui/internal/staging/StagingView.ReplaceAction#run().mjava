@@ -3,9 +3,12 @@
 			boolean performAction = MessageDialog.openConfirm(form.getShell(),
 					UIText.DiscardChangesAction_confirmActionTitle,
 					UIText.DiscardChangesAction_confirmActionMessage);
-			if (!performAction)
-				return ;
-			String[] files = getSelectedFiles(selection);
-			replaceWith(files, headRevision);
+			if (!performAction) {
+				return;
+			}
+			List<String> files = new ArrayList<>();
+			List<String> inaccessibleFiles = new ArrayList<>();
+			getSelectedFiles(files, inaccessibleFiles);
+			replaceWith(files, inaccessibleFiles);
 		}
 

@@ -1,6 +1,6 @@
 	@Override
 	public String getLabel(Object o) {
-		IFileRevision rev = CommonUtils.getAdapter(this, IFileRevision.class);
+		IFileRevision rev = AdapterUtils.adapt(this, IFileRevision.class);
 		if (rev != null)
 			return rev.getName();
 		return storage.getName();

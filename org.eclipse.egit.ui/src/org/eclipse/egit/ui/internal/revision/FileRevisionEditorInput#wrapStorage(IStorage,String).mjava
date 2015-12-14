@@ -6,7 +6,7 @@
 			return new IFileState() {
 				@Override
 				public Object getAdapter(Class adapter) {
-					return CommonUtils.getAdapter(storage, adapter);
+					return AdapterUtils.adapt(storage, adapter);
 				}
 
 				@Override
@@ -49,7 +49,7 @@
 		return new IEncodedStorage() {
 			@Override
 			public Object getAdapter(Class adapter) {
-				return CommonUtils.getAdapter(storage, adapter);
+				return AdapterUtils.adapt(storage, adapter);
 			}
 
 			@Override

@@ -1,0 +1,7 @@
+		@Override
+		public void dirtyStateChanged(IFileBuffer buffer, boolean isDirty) {
+			if (!isDirty) {
+				updateRepoState(buffer);
+			}
+		}
+

@@ -1,0 +1,14 @@
+		private boolean containsFiles(IResource rsc) {
+			if (rsc instanceof IContainer) {
+				IContainer container = (IContainer) rsc;
+				try {
+					return anyFile(container.members());
+				} catch (CoreException e) {
+					// if can't get any info, treat as with file
+					return true;
+				}
+			}
+			throw new IllegalArgumentException(
+					"Expected a container resource."); //$NON-NLS-1$
+		}
+

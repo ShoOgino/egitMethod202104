@@ -12,16 +12,12 @@
 		if (!selection.isEmpty()) {
 			Set<Repository> repos = new LinkedHashSet<Repository>();
 			for (Object o : selection.toArray()) {
-				if (o instanceof Repository) {
-					repos.add((Repository) o);
-				} else if (o instanceof PlatformObject) {
-					Repository repo = CommonUtils.getAdapter(((PlatformObject) o), Repository.class);
-					if (repo != null) {
-						repos.add(repo);
-					} else {
-						// no repository found for one of the objects!
-						return new Repository[0];
-					}
+				Repository repo = AdapterUtils.adapt(o, Repository.class);
+				if (repo != null) {
+					repos.add(repo);
+				} else {
+					// no repository found for one of the objects!
+					return new Repository[0];
 				}
 			}
 			return repos.toArray(new Repository[repos.size()]);

@@ -4,6 +4,11 @@
 			IResource resource = getResource((IEditorPart) part);
 			if (resource != null) {
 				sel = new StructuredSelection(resource);
+			} else {
+				Repository repository = getRepository((IEditorPart) part);
+				if (repository != null) {
+					sel = new StructuredSelection(repository);
+				}
 			}
 		} else {
 			ISelection selection = part.getSite().getPage().getSelection();

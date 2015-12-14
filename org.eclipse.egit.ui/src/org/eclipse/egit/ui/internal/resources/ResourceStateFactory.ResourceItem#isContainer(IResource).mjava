@@ -1,0 +1,6 @@
+		private boolean isContainer(IResource rsc) {
+			int type = rsc.getType();
+			return type == IResource.FOLDER || type == IResource.PROJECT
+					|| type == IResource.ROOT;
+		}
+

@@ -1,0 +1,27 @@
+	/**
+	 * Filters all files that are inside a repository's .git directory from the
+	 * given files.
+	 *
+	 * @param repository
+	 *            to test against
+	 * @param fileItems
+	 *            to test
+	 * @return a list of all files from {@code files} that are <em>not</em> in
+	 *         the .git directory of the repository, or {@code null} if there
+	 *         are none.
+	 */
+	private List<File> filterFilesInGitDir(Repository repository,
+			File[] fileItems) {
+		List<File> result = new ArrayList<>(fileItems.length);
+		Path gitDirPath = repository.getDirectory().getAbsoluteFile().toPath();
+		for (File f : fileItems) {
+			if (!f.getAbsoluteFile().toPath().startsWith(gitDirPath)) {
+				result.add(f);
+			}
+		}
+		if (result.isEmpty()) {
+			return null;
+		}
+		return result;
+	}
+

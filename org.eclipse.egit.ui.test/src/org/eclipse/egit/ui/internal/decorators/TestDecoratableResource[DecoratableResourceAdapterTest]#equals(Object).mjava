@@ -16,7 +16,7 @@
 			return false;
 		if (!(decoratableResource.hasConflicts() == hasConflicts()))
 			return false;
-		if (!decoratableResource.staged().equals(staged()))
+		if (!decoratableResource.getStagingState().equals(getStagingState()))
 			return false;
 
 		return true;

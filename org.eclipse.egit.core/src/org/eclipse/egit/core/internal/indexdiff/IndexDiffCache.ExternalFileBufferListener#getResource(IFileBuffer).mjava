@@ -1,0 +1,14 @@
+		@Nullable
+		private IFile getResource(IFileBuffer buffer) {
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+			IPath location = buffer.getLocation();
+			if (location == null) {
+				return null;
+			}
+			IFile file = root.getFile(location);
+			if (!file.isAccessible()) {
+				return null;
+			}
+			return file;
+		}
+

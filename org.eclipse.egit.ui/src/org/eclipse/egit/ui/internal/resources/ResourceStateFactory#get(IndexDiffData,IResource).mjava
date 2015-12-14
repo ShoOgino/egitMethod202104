@@ -1,0 +1,20 @@
+	/**
+	 * Computes an {@link IResourceState} for the given {@link IResource} from
+	 * the given {@link IndexDiffData}.
+	 *
+	 * @param indexDiffData
+	 *            to compute the state from
+	 * @param resource
+	 *            to get the state of
+	 * @return the state
+	 */
+	@NonNull
+	public IResourceState get(@NonNull IndexDiffData indexDiffData,
+			@NonNull IResource resource) {
+		IPath path = resource.getLocation();
+		if (path != null) {
+			return get(indexDiffData, new ResourceItem(resource));
+		}
+		return UNKNOWN_STATE;
+	}
+

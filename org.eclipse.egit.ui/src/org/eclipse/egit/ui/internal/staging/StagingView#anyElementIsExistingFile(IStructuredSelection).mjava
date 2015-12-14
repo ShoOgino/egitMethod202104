@@ -1,0 +1,15 @@
+	private boolean anyElementIsExistingFile(IStructuredSelection s) {
+		for (Object element : s.toList()) {
+			if (element instanceof StagingEntry) {
+				StagingEntry entry = (StagingEntry) element;
+				if (entry.getType() != IResource.FILE) {
+					continue;
+				}
+				if (entry.getLocation().toFile().exists()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+

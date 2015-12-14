@@ -1,0 +1,12 @@
+	@Before
+	public void setBotAndAtivateShell() {
+		SWTBotShell[] shells = bot.shells();
+		for (SWTBotShell shell : shells) {
+			if (isEclipseShell(shell)) {
+				shell.activate();
+				return;
+			}
+		}
+		fail("No active Eclipse shell found!");
+	}
+

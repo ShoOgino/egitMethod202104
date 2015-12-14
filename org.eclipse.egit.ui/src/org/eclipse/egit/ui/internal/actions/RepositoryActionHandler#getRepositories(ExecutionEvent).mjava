@@ -10,19 +10,18 @@
 	protected Repository[] getRepositories(ExecutionEvent event)
 			throws ExecutionException {
 		IProject[] selectedProjects = getProjectsForSelectedResources(event);
-		if (selectedProjects.length > 0)
+		if (selectedProjects.length > 0) {
 			return getRepositoriesFor(selectedProjects);
+		}
 		IStructuredSelection selection = getSelection(event);
 		if (!selection.isEmpty()) {
 			Set<Repository> repos = new LinkedHashSet<Repository>();
-			for (Object o : selection.toArray())
-				if (o instanceof Repository)
-					repos.add((Repository) o);
-				else if (o instanceof PlatformObject) {
-					Repository repo = CommonUtils.getAdapter(((PlatformObject) o), Repository.class);
-					if (repo != null)
-						repos.add(repo);
+			for (Object o : selection.toArray()) {
+				Repository repo = AdapterUtils.adapt(o, Repository.class);
+				if (repo != null) {
+					repos.add(repo);
 				}
+			}
 			return repos.toArray(new Repository[repos.size()]);
 		}
 		return new Repository[0];

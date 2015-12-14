@@ -1,0 +1,16 @@
+	/**
+	 * Computes an {@link IResourceState} for the given {@link File} from the
+	 * given {@link IndexDiffData}.
+	 *
+	 * @param indexDiffData
+	 *            to compute the state from
+	 * @param file
+	 *            to get the state of
+	 * @return the state
+	 */
+	@NonNull
+	public IResourceState get(@NonNull IndexDiffData indexDiffData,
+			@NonNull File file) {
+		return get(indexDiffData, new FileItem(file));
+	}
+

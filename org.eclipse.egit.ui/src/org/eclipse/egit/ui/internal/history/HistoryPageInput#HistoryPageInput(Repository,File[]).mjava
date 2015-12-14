@@ -7,13 +7,15 @@
 	public HistoryPageInput(final Repository repository, final File[] fileItems) {
 		this.repo = repository;
 		list = null;
-		if (fileItems.length == 1 && fileItems[0].isFile()) {
+		if (fileItems.length == 1 && fileItems[0].isFile()
+				&& !inGitDir(repository, fileItems[0])) {
 			singleItem = fileItems[0];
 			singleFile = fileItems[0];
+			files = Arrays.asList(fileItems);
 		} else {
 			singleItem = null;
 			singleFile = null;
+			files = filterFilesInGitDir(repository, fileItems);
 		}
-		files = Arrays.asList(fileItems);
 	}
 

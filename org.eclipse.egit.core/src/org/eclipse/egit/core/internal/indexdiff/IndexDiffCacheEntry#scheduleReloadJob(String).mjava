@@ -49,6 +49,8 @@
 					}
 					notifyListeners();
 					return Status.OK_STATUS;
+				} catch (IndexReadException e) {
+					return Activator.error(CoreText.IndexDiffCacheEntry_cannotReadIndex, e);
 				} catch (IOException e) {
 					if (GitTraceLocation.INDEXDIFFCACHE.isActive())
 						GitTraceLocation.getTrace().trace(

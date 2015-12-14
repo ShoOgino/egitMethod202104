@@ -1,0 +1,17 @@
+	@Override
+	public StagingState getStagingState() {
+		switch (state) {
+		case ADDED:
+			return StagingState.ADDED;
+		case CHANGED:
+			return StagingState.MODIFIED;
+		case REMOVED:
+			return StagingState.REMOVED;
+		case MISSING:
+		case MISSING_AND_CHANGED:
+			return StagingState.REMOVED;
+		default:
+			return StagingState.NOT_STAGED;
+		}
+	}
+

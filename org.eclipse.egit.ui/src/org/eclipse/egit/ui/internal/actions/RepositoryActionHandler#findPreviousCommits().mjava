@@ -20,8 +20,11 @@
 				rw.setTreeFilter(filter);
 			}
 
-			RevCommit headCommit = rw.parseCommit(repository.getRef(
-					Constants.HEAD).getObjectId());
+			Ref head = repository.getRef(Constants.HEAD);
+			if (head == null) {
+				return result;
+			}
+			RevCommit headCommit = rw.parseCommit(head.getObjectId());
 			rw.markStart(headCommit);
 			headCommit = rw.next();
 

@@ -3,11 +3,18 @@
 				Map<String, Ref> branches = lastInput.getRepository()
 						.getRefDatabase().getRefs(Constants.R_HEADS);
 				int count = 0;
+				IStructuredSelection selection = (IStructuredSelection) selectionProvider
+						.getSelection();
+				if (selection.isEmpty()) {
+					return false;
+				}
+				ObjectId selectedId = ((RevCommit) selection.getFirstElement())
+						.getId();
 				for (Ref branch : branches.values()) {
-					if (branch.getLeaf().getObjectId()
-							.equals(((RevCommit) ((IStructuredSelection) selectionProvider
-									.getSelection()).getFirstElement()).getId()))
+					ObjectId objectId = branch.getLeaf().getObjectId();
+					if (objectId != null && objectId.equals(selectedId)) {
 						count++;
+					}
 				}
 				return (count > 1);
 

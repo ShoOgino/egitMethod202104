@@ -1,0 +1,17 @@
+	/**
+	 * Track given ref, referencing a feature branch.
+	 *
+	 * @param repository
+	 * @param ref
+	 * @param timeout
+	 *            timeout in seconds for remote operations
+	 * @since 4.2
+	 */
+	public FeatureTrackOperation(GitFlowRepository repository, Ref ref,
+			int timeout) {
+		this(repository, ref, ref.getName().substring(
+				(REMOTE_ORIGIN_FEATURE_PREFIX + repository.getConfig()
+						.getFeaturePrefix()).length()));
+		this.timeout = timeout;
+	}
+

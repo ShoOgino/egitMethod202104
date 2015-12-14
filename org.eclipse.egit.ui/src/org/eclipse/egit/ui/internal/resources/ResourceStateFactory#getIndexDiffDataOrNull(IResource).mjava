@@ -1,0 +1,20 @@
+	/**
+	 * Returns the {@link IndexDiffData} for a given {@link IResource}, provided
+	 * the resource exists and belongs to a git-tracked project.
+	 *
+	 * @param resource
+	 *            context to get the repository to get the index diff data from
+	 * @return the IndexDiffData, or {@code null} if none.
+	 */
+	@Nullable
+	public IndexDiffData getIndexDiffDataOrNull(@Nullable IResource resource) {
+		if (resource == null || resource.getType() == IResource.ROOT) {
+			return null;
+		}
+		IPath path = resource.getLocation();
+		if (path == null) {
+			return null;
+		}
+		return getIndexDiffDataOrNull(path.toFile());
+	}
+

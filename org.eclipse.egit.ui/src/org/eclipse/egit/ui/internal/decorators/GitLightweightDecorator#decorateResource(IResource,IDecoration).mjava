@@ -7,9 +7,13 @@
 	 */
 	private void decorateResource(@NonNull IResource resource,
 			IDecoration decoration) throws CoreException {
-		IndexDiffData indexDiffData = getIndexDiffDataOrNull(resource);
+		if (resource.getType() == IResource.ROOT || !resource.isAccessible()) {
+			return;
+		}
+		IndexDiffData indexDiffData = ResourceStateFactory.getInstance()
+				.getIndexDiffDataOrNull(resource);
 
-		if(indexDiffData == null) {
+		if (indexDiffData == null) {
 			return;
 		}
 		IDecoratableResource decoratableResource = null;

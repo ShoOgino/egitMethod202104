@@ -1,0 +1,33 @@
+		private void updateRepoState(IFileBuffer buffer) {
+			IFile file = getResource(buffer);
+			if (file != null) {
+				// this is a workspace file. Changes on those files are
+				// monitored better (and differently) in IndexDiffCacheEntry.
+				return;
+			}
+
+			// the file is not known in the workspace: we should check if it
+			// contained in a Git repository we aware of
+			Repository repo = getRepository(buffer);
+			if (repo == null || repo.isBare()) {
+				return;
+			}
+			IPath relativePath = getRelativePath(repo, buffer);
+			if (relativePath == null || relativePath.isEmpty()) {
+				return;
+			}
+
+			// manually trigger update of IndexDiffCacheEntry state
+			IndexDiffCacheEntry diffEntry = getIndexDiffCacheEntry(repo);
+			if (diffEntry != null) {
+				// since .gitignore change can affect other files, reload index
+				if (Constants.DOT_GIT_IGNORE
+						.equals(relativePath.lastSegment())) {
+					diffEntry.refresh();
+				} else {
+					diffEntry.refreshFiles(
+						Collections.singleton(relativePath.toString()));
+				}
+			}
+		}
+

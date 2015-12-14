@@ -1,21 +1,16 @@
+	@Nullable
 	private static ResourceMapping getResourceMapping(Object o) {
-		if (o instanceof ResourceMapping)
-			return (ResourceMapping) o;
+		ResourceMapping mapping = AdapterUtils.adapt(o, ResourceMapping.class);
+		if (mapping != null) {
+			return mapping;
+		}
 		if (o instanceof IAdaptable) {
-			IAdaptable adaptable = (IAdaptable) o;
-			Object adapted = CommonUtils.getAdapter(adaptable, ResourceMapping.class);
-			if (adapted instanceof ResourceMapping)
-				return (ResourceMapping) adapted;
-			adapted = CommonUtils.getAdapter(adaptable, IContributorResourceAdapter.class);
+			IContributorResourceAdapter adapted = AdapterUtils.adapt(o,
+					IContributorResourceAdapter.class);
 			if (adapted instanceof IContributorResourceAdapter2) {
 				IContributorResourceAdapter2 cra = (IContributorResourceAdapter2) adapted;
-				return cra.getAdaptedResourceMapping(adaptable);
+				return cra.getAdaptedResourceMapping((IAdaptable) o);
 			}
-		} else {
-			Object adapted = Platform.getAdapterManager().getAdapter(o,
-					ResourceMapping.class);
-			if (adapted instanceof ResourceMapping)
-				return (ResourceMapping) adapted;
 		}
 		return null;
 	}

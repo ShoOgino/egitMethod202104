@@ -1,12 +1,15 @@
 	@Override
 	public Object getAdapter(Class adapter) {
-		if (adapter == IWorkbenchAdapter.class)
+		if (adapter == IWorkbenchAdapter.class) {
 			return this;
-		if (adapter == IStorage.class)
+		}
+		if (adapter == IStorage.class) {
 			return storage;
+		}
 		Object object = super.getAdapter(adapter);
-		if (object != null)
+		if (object != null) {
 			return object;
-		return CompareUtils.getAdapter(fileRevision, adapter);
+		}
+		return AdapterUtils.adapt(fileRevision, adapter);
 	}
 
