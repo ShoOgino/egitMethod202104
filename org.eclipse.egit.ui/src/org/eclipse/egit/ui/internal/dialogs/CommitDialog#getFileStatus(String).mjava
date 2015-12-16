@@ -4,8 +4,7 @@
 	 * @throws IOException
 	 */
 	private Status getFileStatus(String path) throws IOException {
-		AdaptableFileTreeIterator fileTreeIterator = new AdaptableFileTreeIterator(
-				repository, ResourcesPlugin.getWorkspace().getRoot());
+		FileTreeIterator fileTreeIterator = new FileTreeIterator(repository);
 		IndexDiff indexDiff = new IndexDiff(repository, Constants.HEAD, fileTreeIterator);
 		Set<String> repositoryPaths = Collections.singleton(path);
 		indexDiff.setFilter(PathFilterGroup.createFromStrings(repositoryPaths));
