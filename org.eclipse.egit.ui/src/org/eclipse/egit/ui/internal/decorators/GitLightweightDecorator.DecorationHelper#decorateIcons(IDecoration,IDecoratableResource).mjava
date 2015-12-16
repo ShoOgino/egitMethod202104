@@ -7,9 +7,9 @@
 					overlay = trackedImage;
 
 				if (store
-						.getBoolean(UIPreferences.DECORATOR_SHOW_ASSUME_VALID_ICON)
-						&& resource.isAssumeValid())
-					overlay = assumeValidImage;
+						.getBoolean(UIPreferences.DECORATOR_SHOW_ASSUME_UNCHANGED_ICON)
+						&& resource.isAssumeUnchanged())
+					overlay = assumeUnchangedImage;
 
 				// Staged overrides tracked
 				StagingState staged = resource.getStagingState();

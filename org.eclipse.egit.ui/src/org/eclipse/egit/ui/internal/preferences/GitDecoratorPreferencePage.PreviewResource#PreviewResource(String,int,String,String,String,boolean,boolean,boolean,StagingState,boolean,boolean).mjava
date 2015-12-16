@@ -1,7 +1,7 @@
 		public PreviewResource(String name, int type, String repositoryName,
 				String branch, String branchStatus, boolean tracked,
 				boolean ignored, boolean dirty, @NonNull StagingState staged,
-				boolean conflicts, boolean assumeValid) {
+				boolean conflicts, boolean assumeUnchanged) {
 
 			this.name = name;
 			this.repositoryName = repositoryName;
@@ -14,6 +14,6 @@
 			this.dirty = dirty;
 			this.staged = staged;
 			this.conflicts = conflicts;
-			this.assumeValid = assumeValid;
+			this.assumeUnchanged = assumeUnchanged;
 		}
 

@@ -16,6 +16,8 @@
 		this.changedResources = Collections
 				.unmodifiableCollection(new HashSet<IResource>(changedResources));
 		Set<String> added2 = new HashSet<String>(baseDiff.getAdded());
+		Set<String> assumeUnchanged2 = new HashSet<String>(
+				baseDiff.getAssumeUnchanged());
 		Set<String> changed2 = new HashSet<String>(baseDiff.getChanged());
 		Set<String> removed2 = new HashSet<String>(baseDiff.getRemoved());
 		Set<String> missing2 = new HashSet<String>(baseDiff.getMissing());
@@ -26,6 +28,8 @@
 		Set<String> submodules2 = new HashSet<String>(baseDiff.getSubmodules());
 
 		mergeList(added2, changedFiles, diffForChangedFiles.getAdded());
+		mergeList(assumeUnchanged2, changedFiles,
+				diffForChangedFiles.getAssumeUnchanged());
 		mergeList(changed2, changedFiles, diffForChangedFiles.getChanged());
 		mergeList(removed2, changedFiles, diffForChangedFiles.getRemoved());
 		mergeList(missing2, changedFiles, diffForChangedFiles.getMissing());
@@ -44,6 +48,7 @@
 				diffForChangedFiles.getIgnoredNotInIndex());
 
 		added = Collections.unmodifiableSet(added2);
+		assumeUnchanged = Collections.unmodifiableSet(assumeUnchanged2);
 		changed = Collections.unmodifiableSet(changed2);
 		removed = Collections.unmodifiableSet(removed2);
 		missing = Collections.unmodifiableSet(missing2);
