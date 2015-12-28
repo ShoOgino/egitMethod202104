@@ -9,7 +9,7 @@
 			throws MissingObjectException, IncorrectObjectTypeException,
 			IOException {
 		try (RevWalk revWalk = new RevWalk(repository)) {
-			Ref tagRef = repository.getRef(R_TAGS + tagName);
+			Ref tagRef = repository.exactRef(R_TAGS + tagName);
 			if (tagRef == null) {
 				return null;
 			}
