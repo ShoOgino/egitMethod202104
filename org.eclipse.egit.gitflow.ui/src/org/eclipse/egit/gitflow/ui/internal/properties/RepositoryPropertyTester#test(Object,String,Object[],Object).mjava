@@ -1,11 +1,11 @@
 	@Override
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
-		if (receiver == null) {
+		if (!(receiver instanceof Repository)) {
 			return false;
 		}
-		Repository repository = getRepository((Collection<?>) receiver);
-		if (repository == null || repository.isBare()) {
+		Repository repository = (Repository) receiver;
+		if (repository.isBare()) {
 			return false;
 		}
 		GitFlowRepository gitFlowRepository = new GitFlowRepository(repository);
