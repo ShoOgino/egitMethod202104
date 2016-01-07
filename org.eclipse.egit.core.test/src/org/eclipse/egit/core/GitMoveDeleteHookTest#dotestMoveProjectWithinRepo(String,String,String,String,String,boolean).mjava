@@ -1,6 +1,6 @@
 	private void dotestMoveProjectWithinRepo(String srcParent,
 			String srcProjectName, String dstParent, String dstProjecName,
-			String gitDir, boolean sourceInsideWs) throws IOException, CoreException {
+			String gitDir, boolean sourceInsideWs) throws Exception {
 		String gdRelativeSrcParent = srcParent + srcProjectName + "/";
 		if (gdRelativeSrcParent.startsWith(gitDir))
 			gdRelativeSrcParent = gdRelativeSrcParent

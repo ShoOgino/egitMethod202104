@@ -1,8 +1,15 @@
 	/**
 	 * @param repository
+	 * @param listener
+	 *            can be null
 	 */
-	public IndexDiffCacheEntry(Repository repository) {
+	public IndexDiffCacheEntry(Repository repository,
+			@Nullable IndexDiffChangedListener listener) {
 		this.repository = repository;
+		if (listener != null) {
+			addIndexDiffChangedListener(listener);
+		}
+
 		indexChangedListenerHandle = repository.getListenerList().addIndexChangedListener(
 				new IndexChangedListener() {
 					@Override
@@ -17,6 +24,7 @@
 						scheduleReloadJob("RefsChanged"); //$NON-NLS-1$
 					}
 				});
+
 		scheduleReloadJob("IndexDiffCacheEntry construction"); //$NON-NLS-1$
 		createResourceChangeListener();
 		if (!repository.isBare()) {
