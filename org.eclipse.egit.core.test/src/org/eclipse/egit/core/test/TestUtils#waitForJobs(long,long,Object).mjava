@@ -5,9 +5,10 @@
 	 * @param maxWaitTime
 	 * @param minWaitTime
 	 * @param family
+	 *            can be null which means all job families
 	 * @throws InterruptedException
 	 */
-	public void waitForJobs(long maxWaitTime, long minWaitTime, Object family)
+	public void waitForJobs(long minWaitTime, long maxWaitTime, Object family)
 			throws InterruptedException {
 		Thread.sleep(minWaitTime);
 		long start = System.currentTimeMillis();
