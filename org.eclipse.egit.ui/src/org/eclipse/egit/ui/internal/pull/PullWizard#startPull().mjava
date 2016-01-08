@@ -1,0 +1,11 @@
+	private void startPull() {
+		Map<Repository, PullReferenceConfig> repos = new HashMap<>(1);
+		PullReferenceConfig config = new PullReferenceConfig(
+				this.page.getRemoteConfig().getName(),
+				this.page.getFullRemoteReference(),
+				this.page.getUpstreamConfig());
+		repos.put(this.repository, config);
+		PullOperationUI pullOperationUI = new PullOperationUI(repos);
+		pullOperationUI.start();
+	}
+

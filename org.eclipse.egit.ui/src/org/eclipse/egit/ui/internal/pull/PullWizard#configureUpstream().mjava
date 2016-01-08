@@ -1,0 +1,27 @@
+	private void configureUpstream() throws IOException {
+		String fullBranch = this.repository.getFullBranch();
+		if (fullBranch == null || !fullBranch.startsWith(Constants.R_HEADS)) {
+			// Don't configure upstream for detached HEAD
+			return;
+		}
+		String remoteName = this.page.getRemoteConfig().getName();
+		String fullRemoteBranchName = this.page.getFullRemoteReference();
+
+		String localBranchName = this.repository.getBranch();
+		StoredConfig config = repository.getConfig();
+		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, localBranchName,
+				ConfigConstants.CONFIG_KEY_REMOTE, remoteName);
+		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, localBranchName,
+				ConfigConstants.CONFIG_KEY_MERGE, fullRemoteBranchName);
+		if (this.page.isRebaseSelected()) {
+			config.setBoolean(ConfigConstants.CONFIG_BRANCH_SECTION,
+					localBranchName, ConfigConstants.CONFIG_KEY_REBASE, true);
+		} else {
+			// Make sure we overwrite any previous configuration
+			config.unset(ConfigConstants.CONFIG_BRANCH_SECTION, localBranchName,
+					ConfigConstants.CONFIG_KEY_REBASE);
+		}
+
+		config.save();
+	}
+

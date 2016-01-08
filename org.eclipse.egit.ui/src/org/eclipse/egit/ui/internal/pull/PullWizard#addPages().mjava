@@ -1,0 +1,12 @@
+	@Override
+	public void addPages() {
+		Set<String> remoteNames = repository.getConfig()
+				.getSubsections(ConfigConstants.CONFIG_REMOTE_SECTION);
+		if (remoteNames.isEmpty()) {
+			this.addRemotePage = new AddRemotePage(repository);
+			addPage(this.addRemotePage);
+		}
+		this.page = new PullWizardPage(this.repository);
+		addPage(this.page);
+	}
+

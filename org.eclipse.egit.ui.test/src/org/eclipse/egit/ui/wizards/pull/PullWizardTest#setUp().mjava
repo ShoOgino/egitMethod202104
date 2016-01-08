@@ -1,0 +1,12 @@
+	@Before
+	public void setUp() throws Exception {
+		deleteAllProjects();
+		clearView();
+		repositoryFile = createProjectAndCommitToRepository();
+		createRemoteRepository(repositoryFile);
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(repositoryFile);
+		refreshAndWait();
+		assertHasRepo(repositoryFile);
+	}
+

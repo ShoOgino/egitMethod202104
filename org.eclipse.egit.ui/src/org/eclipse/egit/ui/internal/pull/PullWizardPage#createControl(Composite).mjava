@@ -1,0 +1,127 @@
+	@Override
+	public void createControl(Composite parent) {
+		try {
+			this.remoteConfigs = RemoteConfig
+					.getAllRemoteConfigs(repository.getConfig());
+			Collections.sort(remoteConfigs, new Comparator<RemoteConfig>() {
+				@Override
+				public int compare(RemoteConfig first, RemoteConfig second) {
+					return String.CASE_INSENSITIVE_ORDER
+							.compare(first.getName(), second.getName());
+				}
+			});
+			setDefaultUpstreamConfig();
+		} catch (URISyntaxException e) {
+			this.remoteConfigs = new ArrayList<RemoteConfig>();
+			handleError(e);
+		}
+
+		Composite res = new Composite(parent, SWT.NONE);
+		res.setLayout(new GridLayout(3, false));
+
+		Label remoteLabel = new Label(res, SWT.NONE);
+		remoteLabel.setText(UIText.PushBranchPage_RemoteLabel);
+
+		this.remoteSelectionCombo = new RemoteSelectionCombo(
+				res, SWT.NONE, SelectionType.PUSH);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.applyTo(remoteSelectionCombo);
+		setRemoteConfigs();
+		remoteSelectionCombo
+				.addRemoteSelectionListener(new IRemoteSelectionListener() {
+					@Override
+					public void remoteSelected(RemoteConfig rc) {
+						remoteConfig = rc;
+						setRefAssist(rc);
+						checkPage();
+					}
+				});
+
+		Button newRemoteButton = new Button(res, SWT.PUSH);
+		newRemoteButton.setText(UIText.PushBranchPage_NewRemoteButton);
+		GridDataFactory.fillDefaults().applyTo(newRemoteButton);
+		newRemoteButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				showNewRemoteDialog();
+			}
+		});
+
+		Label branchNameLabel = new Label(res, SWT.NONE);
+		branchNameLabel.setText(UIText.PullWizardPage_referenceLabel);
+		branchNameLabel.setToolTipText(UIText.PullWizardPage_referenceTooltip);
+
+		remoteBranchNameText = new Text(res, SWT.BORDER);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
+				.applyTo(remoteBranchNameText);
+		UIUtils.addRefContentProposalToText(remoteBranchNameText,
+				this.repository, new IRefListProvider() {
+
+					@Override
+					public List<Ref> getRefList() {
+						if (PullWizardPage.this.assist != null) {
+							return PullWizardPage.this.assist
+									.getRefsForContentAssist(false, true);
+						}
+						return Collections.emptyList();
+					}
+				});
+		remoteBranchNameText.setText(getSuggestedBranchName());
+		remoteBranchNameText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				checkPage();
+			}
+		});
+
+		this.mergeRadio = new Button(res, SWT.RADIO);
+		this.mergeRadio.setText(UIText.UpstreamConfigComponent_MergeRadio);
+		this.mergeRadio.setLayoutData(
+				new GridData(SWT.BEGINNING, SWT.CENTER, false, false, 3, 1));
+		this.mergeRadio.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				upstreamConfig = UpstreamConfig.MERGE;
+			}
+		});
+		this.rebaseRadio = new Button(res, SWT.RADIO);
+		this.rebaseRadio.setText(UIText.UpstreamConfigComponent_RebaseRadio);
+		this.rebaseRadio.setLayoutData(
+				new GridData(SWT.BEGINNING, SWT.CENTER, false, false, 3, 1));
+		this.mergeRadio.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				upstreamConfig = UpstreamConfig.REBASE;
+			}
+		});
+		this.mergeRadio
+				.setSelection(this.upstreamConfig == UpstreamConfig.MERGE);
+		this.rebaseRadio
+				.setSelection(this.upstreamConfig == UpstreamConfig.REBASE);
+		if (this.fullBranch != null
+				&& this.fullBranch.startsWith(Constants.R_HEADS)) {
+			this.rememberConfigForBranch = new Button(res, SWT.CHECK);
+			GridData checkboxLayoutData = new GridData(SWT.BEGINNING,
+					SWT.CENTER, false, false, 3, 1);
+			checkboxLayoutData.verticalIndent = 20;
+			this.rememberConfigForBranch.setText(
+					UIText.UpstreamConfigComponent_ConfigureUpstreamCheck);
+			this.rememberConfigForBranch.setToolTipText(
+					UIText.UpstreamConfigComponent_ConfigureUpstreamToolTip);
+			this.rememberConfigForBranch.setLayoutData(checkboxLayoutData);
+			this.rememberConfigForBranch.setSelection(this.configureUpstream);
+			this.rememberConfigForBranch
+					.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							configureUpstream = rememberConfigForBranch
+									.getSelection();
+							checkPage();
+						}
+					});
+		}
+
+		setPageComplete(isPageComplete());
+		setControl(res);
+	}
+

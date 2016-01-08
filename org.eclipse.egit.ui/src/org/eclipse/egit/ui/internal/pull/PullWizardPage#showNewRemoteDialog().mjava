@@ -1,0 +1,37 @@
+	private void showNewRemoteDialog() {
+		AddRemoteWizard wizard = new AddRemoteWizard(repository);
+		WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		int result = dialog.open();
+		if (result == Window.OK) {
+			URIish uri = wizard.getUri();
+			String remoteName = wizard.getRemoteName();
+			try {
+				StoredConfig repoConfig = repository.getConfig();
+				RemoteConfig newRemoteConfig = new RemoteConfig(repoConfig,
+						remoteName);
+				newRemoteConfig.addURI(uri);
+				RefSpec defaultFetchSpec = new RefSpec().setForceUpdate(true)
+						.setSourceDestination(Constants.R_HEADS + "*", //$NON-NLS-1$
+								Constants.R_REMOTES + remoteName + "/*"); //$NON-NLS-1$
+				newRemoteConfig.addFetchRefSpec(defaultFetchSpec);
+				newRemoteConfig.update(repoConfig);
+				repoConfig.save();
+				List<RemoteConfig> allRemoteConfigs = RemoteConfig
+						.getAllRemoteConfigs(repository.getConfig());
+				remoteSelectionCombo.setItems(allRemoteConfigs);
+				// find the new remote in the list, as the initial
+				// newRemoteConfig object
+				// isn't what's stored and returned by getAllRemoteConfigs
+				for (RemoteConfig current : allRemoteConfigs) {
+					if (newRemoteConfig.getName().equals(current.getName())) {
+						setSelectedRemote(current);
+					}
+				}
+			} catch (URISyntaxException ex) {
+				Activator.logError(ex.getMessage(), ex);
+			} catch (IOException ex) {
+				Activator.logError(ex.getMessage(), ex);
+			}
+		}
+	}
+

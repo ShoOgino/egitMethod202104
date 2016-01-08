@@ -1,0 +1,23 @@
+	private boolean hasDifferentUpstreamConfiguration() {
+		String branchName = Repository.shortenRefName(this.fullBranch);
+		BranchConfig branchConfig = new BranchConfig(repository.getConfig(),
+				branchName);
+
+		String remote = branchConfig.getRemote();
+		// No upstream config -> don't show warning
+		if (remote == null)
+			return false;
+		if (!remote.equals(remoteConfig.getName()))
+			return true;
+
+		String merge = branchConfig.getMerge();
+		if (merge == null || !merge.equals(getFullRemoteReference()))
+			return true;
+
+		boolean rebase = branchConfig.isRebase();
+		if (rebase != isRebaseSelected())
+			return true;
+
+		return false;
+	}
+

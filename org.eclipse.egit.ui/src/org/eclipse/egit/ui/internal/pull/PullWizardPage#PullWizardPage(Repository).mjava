@@ -1,0 +1,19 @@
+	/**
+	 * Create the page.
+	 *
+	 * @param repository
+	 */
+	public PullWizardPage(Repository repository) {
+		super(UIText.PullWizardPage_PageName);
+		setTitle(UIText.PullWizardPage_PageTitle);
+		setMessage(UIText.PullWizardPage_PageMessage);
+		setImageDescriptor(UIIcons.WIZBAN_PULL);
+		this.repository = repository;
+		try {
+			this.head = repository.findRef(Constants.HEAD);
+			this.fullBranch = repository.getFullBranch();
+		} catch (IOException ex) {
+			Activator.logError(ex.getMessage(), ex);
+		}
+	}
+

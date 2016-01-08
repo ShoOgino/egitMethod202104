@@ -1,0 +1,22 @@
+	@Override
+	public boolean performFinish() {
+		try {
+			if (this.addRemotePage != null) {
+				storeCredentials(this.addRemotePage);
+				URIish uri = this.addRemotePage.getSelection().getURI();
+				configureNewRemote(uri);
+			}
+			if (this.page.overrideUpstreamConfiguration()) {
+				configureUpstream();
+			}
+			startPull();
+			return true;
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+			return false;
+		} catch (URISyntaxException e) {
+			Activator.logError(e.getMessage(), e);
+			return false;
+		}
+	}
+

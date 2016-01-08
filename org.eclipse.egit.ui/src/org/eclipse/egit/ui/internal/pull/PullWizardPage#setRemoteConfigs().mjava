@@ -1,0 +1,19 @@
+	private void setRemoteConfigs() {
+		remoteSelectionCombo.setItems(remoteConfigs);
+		if (this.head != null) {
+			String branchName = Repository.shortenRefName(this.head.getName());
+			BranchConfig branchConfig = new BranchConfig(repository.getConfig(),
+					branchName);
+			String remoteName = branchConfig.getRemote();
+			if (remoteName != null) {
+				for (RemoteConfig rc : remoteConfigs) {
+					if (remoteName.equals(rc.getName()))
+						remoteSelectionCombo.setSelectedRemote(rc);
+				}
+			}
+		}
+
+		remoteConfig = remoteSelectionCombo.getSelectedRemote();
+		setRefAssist(remoteConfig);
+	}
+

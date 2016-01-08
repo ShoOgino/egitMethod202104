@@ -1,0 +1,10 @@
+		@Override
+		protected boolean doMatch(Object item) {
+			SWTBotShell shell = new SWTBotShell((Shell) item);
+			if (shell.getText().startsWith(this.prefix)) {
+				this.foundShell = shell;
+				return true;
+			}
+			return false;
+		}
+

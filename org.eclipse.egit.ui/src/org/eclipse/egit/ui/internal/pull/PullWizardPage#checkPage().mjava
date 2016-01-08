@@ -1,0 +1,44 @@
+	private void checkPage() {
+		try {
+			if (remoteConfig == null) {
+				setErrorMessage(UIText.PushBranchPage_ChooseRemoteError);
+				return;
+			}
+			String branchName = remoteBranchNameText.getText();
+			String branchNameMessage = null;
+			if (branchName.length() == 0) {
+				branchNameMessage = MessageFormat.format(
+						UIText.PullWizardPage_ChooseReference,
+						remoteConfig.getName());
+			}
+			if (branchNameMessage != null) {
+				setErrorMessage(branchNameMessage);
+				if (this.missingBranchDecorator == null) {
+					this.missingBranchDecorator = new ControlDecoration(this.remoteBranchNameText, SWT.TOP | SWT.LEFT);
+					this.missingBranchDecorator
+							.setImage(FieldDecorationRegistry.getDefault()
+									.getFieldDecoration(
+											FieldDecorationRegistry.DEC_ERROR)
+									.getImage());
+				}
+				this.missingBranchDecorator
+						.setDescriptionText(branchNameMessage);
+				this.missingBranchDecorator.show();
+				return;
+			} else if (this.missingBranchDecorator != null) {
+				this.missingBranchDecorator.hide();
+			}
+
+			if (overrideUpstreamConfiguration()
+					&& hasDifferentUpstreamConfiguration()) {
+				setMessage(UIText.PushBranchPage_UpstreamConfigOverwriteWarning,
+						IMessageProvider.WARNING);
+			} else {
+				setMessage(UIText.PullWizardPage_PageMessage);
+			}
+			setErrorMessage(null);
+		} finally {
+			setPageComplete(getErrorMessage() == null);
+		}
+	}
+

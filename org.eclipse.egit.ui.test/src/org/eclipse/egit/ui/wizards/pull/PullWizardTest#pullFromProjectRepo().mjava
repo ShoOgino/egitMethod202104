@@ -1,0 +1,16 @@
+	@Test
+	public void pullFromProjectRepo() throws Exception {
+		SWTBotTree repositoriesTree = getOrOpenView().bot().tree();
+		repositoriesTree.select(0);
+		repositoriesTree.contextMenu("Pull...").click();
+		bot.shell("Pull").setFocus();
+		assertTrue("Remote combo misses items",
+				bot.comboBox().items().length > 1);
+		bot.button(IDialogConstants.FINISH_LABEL).click();
+		ShellWithTextPrefixMatcher shellWithTextPrefixMatcher = new ShellWithTextPrefixMatcher(
+				"Pull Result");
+		bot.waitUntil(waitForShell(shellWithTextPrefixMatcher));
+		shellWithTextPrefixMatcher.getFoundShell().setFocus();
+		bot.button(IDialogConstants.OK_LABEL).click();
+	}
+
