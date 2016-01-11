@@ -8,8 +8,6 @@
 	 */
 	public boolean addRebaseInteractivePlanChangeListener(
 			RebaseInteractivePlanChangeListener listener) {
-		if (planChangeListeners.contains(listener))
-			return false;
-		return planChangeListeners.add(listener);
+		return planChangeListeners.addIfAbsent(listener);
 	}
 
