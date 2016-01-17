@@ -1,0 +1,17 @@
+		private void setDirection(int newDirection) {
+			direction = newDirection;
+			Table table = column.getParent();
+			table.setSortDirection(direction);
+			if (direction == NONE) {
+				table.setSortColumn(null);
+				tv.setComparator(null);
+			} else {
+				table.setSortColumn(column);
+				if (tv.getComparator() == this) {
+					tv.refresh();
+				} else {
+					tv.setComparator(this);
+				}
+			}
+		}
+
