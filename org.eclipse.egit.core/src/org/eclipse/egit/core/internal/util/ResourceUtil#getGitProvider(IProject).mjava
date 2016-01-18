@@ -19,13 +19,25 @@
 			if (provider != null) {
 				return provider;
 			}
+			if (MappingJob.isKnownGitProject(project)
+					|| isMarkedAsNotSharedWithGit(project)) {
+				// Is in the process of being mapped, but isn't mapped yet, or
+				// isn't shared with us at all.
+				return null;
+			}
 			String existingID = project
 					.getPersistentProperty(PROVIDER_PROP_KEY);
-			boolean isGitProvider = GitProvider.ID.equals(existingID);
-			if (isGitProvider) {
-				MappingJob.initProviderAsynchronously(project);
+			if (existingID == null) {
+				markAsUnshared(project);
+			} else {
+				markAsShared(project, existingID);
+				boolean isGitProvider = GitProvider.ID.equals(existingID);
+				if (isGitProvider) {
+					MappingJob.initProviderAsynchronously(project);
+				}
 			}
 			// not loaded yet, but we can't load it because it will use locks
+			// or not a GitProvider
 			return null;
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(e.getStatus());

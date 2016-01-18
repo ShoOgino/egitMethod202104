@@ -5,8 +5,16 @@
 	private static GitProvider lookupProviderProp(IProject project)
 			throws CoreException {
 		Object provider = project.getSessionProperty(PROVIDER_PROP_KEY);
-		if (provider instanceof GitProvider) {
-			return (GitProvider) provider;
+		if (provider != null) {
+			if (provider instanceof RepositoryProvider) {
+				markAsShared(project, ((RepositoryProvider) provider).getID());
+				if (provider instanceof GitProvider) {
+					return (GitProvider) provider;
+				}
+			} else {
+				// Must be the RepositoryProvider's NOT_MAPPED marker
+				markAsUnshared(project);
+			}
 		}
 		return null;
 	}

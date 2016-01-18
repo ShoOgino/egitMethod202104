@@ -11,12 +11,20 @@
 		try {
 			// Look for an existing provider
 			GitProvider provider = lookupProviderProp(project);
-			if (provider != null) {
+			if (provider != null || MappingJob.isKnownGitProject(project)) {
+				// Is mapped or in the process of being mapped.
 				return true;
+			} else if (isMarkedAsNotSharedWithGit(project)) {
+				return false;
 			}
 			// There isn't one so check the persistent property
 			String existingID = project
 					.getPersistentProperty(PROVIDER_PROP_KEY);
+			if (existingID == null) {
+				markAsUnshared(project);
+			} else {
+				markAsShared(project, existingID);
+			}
 			boolean isGitProvider = GitProvider.ID.equals(existingID);
 			if (isGitProvider) {
 				MappingJob.initProviderAsynchronously(project);
