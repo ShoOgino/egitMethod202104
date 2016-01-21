@@ -12,7 +12,9 @@
 						CoreText.MergeOperation_ProgressMerge, refName), 3);
 				Git git = new Git(repository);
 				progress.worked(1);
-				MergeCommand merge = git.merge();
+				MergeCommand merge = git.merge()
+						.setProgressMonitor(
+								new EclipseGitProgressTransformer(progress.newChild(1)));
 				try {
 					Ref ref = repository.getRef(refName);
 					if (ref != null)
@@ -35,7 +37,6 @@
 					merge.setMessage(message);
 				try {
 					mergeResult = merge.call();
-					progress.worked(1);
 					if (MergeResult.MergeStatus.NOT_SUPPORTED.equals(mergeResult.getMergeStatus()))
 						throw new TeamException(new Status(IStatus.INFO, Activator.getPluginId(), mergeResult.toString()));
 				} catch (NoHeadException e) {

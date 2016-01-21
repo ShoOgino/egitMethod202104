@@ -1,0 +1,29 @@
+	private void updateLinkResource(boolean wasBroken,
+			java.nio.file.Path link) {
+		boolean brokenNow = !Files.exists(link);
+		if (brokenNow == wasBroken) {
+			// If the state doesn't change, we don't care, either Eclipse
+			// doesn's see broken link and we can't do anything or it is not
+			// broken and Eclipse handles the change
+			return;
+		}
+		// refresh the parent if either the link was broken before or broken
+		// just now
+		IPath parentPath = path.removeLastSegments(1);
+		@SuppressWarnings("null")
+		final IContainer parent = ResourceUtil
+				.getContainerForLocation(parentPath, true);
+		if (parent != null) {
+			WorkspaceJob job = new WorkspaceJob("Refreshing " + parentPath) { //$NON-NLS-1$
+				@Override
+				public IStatus runInWorkspace(IProgressMonitor m)
+						throws CoreException {
+					parent.refreshLocal(IResource.DEPTH_ONE, m);
+					return Status.OK_STATUS;
+				}
+			};
+			job.setSystem(true);
+			job.schedule();
+		}
+	}
+

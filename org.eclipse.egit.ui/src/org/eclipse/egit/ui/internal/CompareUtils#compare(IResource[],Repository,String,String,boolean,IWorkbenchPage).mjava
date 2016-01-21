@@ -36,13 +36,13 @@
 	public static void compare(IResource[] resources, Repository repository,
 			String leftRev, String rightRev, boolean includeLocal,
 			IWorkbenchPage page) throws IOException {
-		if (resources.length == 1 && resources[0] instanceof IFile
-				&& canDirectlyOpenInCompare((IFile) resources[0])) {
-			if (includeLocal)
-				compareWorkspaceWithRef(repository, (IFile) resources[0],
+		boolean useTreeCompare = shouldUseTreeCompare(resources);
+		if (!useTreeCompare) {
+			if (includeLocal) {
+				compareWorkspaceWithRef(repository, resources[0],
 						rightRev, page);
-			else {
-				final IFile file = (IFile) resources[0];
+			} else {
+				final IResource file = resources[0];
 				final RepositoryMapping mapping = RepositoryMapping
 						.getMapping(file);
 				if (mapping == null) {
@@ -54,8 +54,9 @@
 
 				compareBetween(repository, gitPath, leftRev, rightRev, page);
 			}
-		} else
+		} else {
 			GitModelSynchronize.synchronize(resources, repository, leftRev,
 					rightRev, includeLocal);
+		}
 	}
 

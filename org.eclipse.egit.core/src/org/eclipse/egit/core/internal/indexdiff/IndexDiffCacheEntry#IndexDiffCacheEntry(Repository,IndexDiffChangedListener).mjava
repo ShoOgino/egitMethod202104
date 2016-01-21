@@ -1,0 +1,41 @@
+	/**
+	 * @param repository
+	 * @param listener
+	 *            can be null
+	 */
+	public IndexDiffCacheEntry(Repository repository,
+			@Nullable IndexDiffChangedListener listener) {
+		this.repository = repository;
+		if (listener != null) {
+			addIndexDiffChangedListener(listener);
+		}
+
+		indexChangedListenerHandle = repository.getListenerList().addIndexChangedListener(
+				new IndexChangedListener() {
+					@Override
+					public void onIndexChanged(IndexChangedEvent event) {
+						refreshIndexDelta();
+					}
+				});
+		refsChangedListenerHandle = repository.getListenerList().addRefsChangedListener(
+				new RefsChangedListener() {
+					@Override
+					public void onRefsChanged(RefsChangedEvent event) {
+						scheduleReloadJob("RefsChanged"); //$NON-NLS-1$
+					}
+				});
+
+		scheduleReloadJob("IndexDiffCacheEntry construction"); //$NON-NLS-1$
+		createResourceChangeListener();
+		if (!repository.isBare()) {
+			try {
+				lastIndex = repository.readDirCache();
+			} catch (IOException ex) {
+				Activator
+						.error(MessageFormat
+								.format(CoreText.IndexDiffCacheEntry_errorCalculatingIndexDelta,
+										repository), ex);
+			}
+		}
+	}
+

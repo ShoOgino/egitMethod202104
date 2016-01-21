@@ -1,0 +1,9 @@
+	@Test
+	public void testRepositoryViewStartFinishEnablement() throws Exception {
+		initRepositoriesView();
+		selectRepositoryInView(0);
+		assertAllCommandsDisabled();
+		init();
+		assertAllCommandsEnabledAndExecutable();
+	}
+

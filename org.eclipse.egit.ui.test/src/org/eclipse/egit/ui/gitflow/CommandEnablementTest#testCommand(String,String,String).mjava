@@ -1,0 +1,6 @@
+	private void testCommand(String startCommandId, String finishCommandId, String dialogTitle) throws Exception {
+		assertCommandEnablement(startCommandId, true);
+		assertCommandOpensDialog(startCommandId, dialogTitle);
+		assertCommandEnablement(finishCommandId, false);
+	}
+

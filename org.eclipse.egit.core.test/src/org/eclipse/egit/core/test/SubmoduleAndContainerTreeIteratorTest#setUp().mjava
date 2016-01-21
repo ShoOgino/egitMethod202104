@@ -29,8 +29,6 @@
 		parentRepository.trackAllFiles(parentProject);
 		parentRepository.commit("Initial commit");
 
-		treeIt = new AdaptableFileTreeIterator(
-				parentRepository.getRepository(), parentFile.getWorkspace()
-						.getRoot());
+		treeIt = new FileTreeIterator(parentRepository.getRepository());
 	}
 

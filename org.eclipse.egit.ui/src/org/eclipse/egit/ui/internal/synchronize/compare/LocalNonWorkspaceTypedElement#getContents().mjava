@@ -4,8 +4,12 @@
 			try {
 				File file = path.toFile();
 				timestamp = file.lastModified();
+				if (Files.isSymbolicLink(file.toPath())) {
+					String symLink = FileUtils.readSymLink(file);
+					return new ByteArrayInputStream(Constants.encode(symLink));
+				}
 				return new FileInputStream(file);
-			} catch (FileNotFoundException e) {
+			} catch (IOException | UnsupportedOperationException e) {
 				Activator.error(e.getMessage(), e);
 			}
 		}

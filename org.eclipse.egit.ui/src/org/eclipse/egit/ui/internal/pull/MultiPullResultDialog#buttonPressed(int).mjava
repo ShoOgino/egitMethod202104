@@ -10,9 +10,9 @@
 
 			final LinkedList<PullResultDialog> dialogs= new LinkedList<PullResultDialog>();
 			IStructuredSelection sel = (IStructuredSelection) tv.getSelection();
-			for (Entry<Repository, Object> item : (List<Entry<Repository, Object>>) sel
-					.toList()) {
-
+			for (Object obj : sel.toList()) {
+				@SuppressWarnings("unchecked")
+				Entry<Repository, Object> item = (Entry<Repository, Object>) obj;
 				if (item.getValue() instanceof PullResult) {
 					final int x = xOffset;
 					final int y = yOffset;

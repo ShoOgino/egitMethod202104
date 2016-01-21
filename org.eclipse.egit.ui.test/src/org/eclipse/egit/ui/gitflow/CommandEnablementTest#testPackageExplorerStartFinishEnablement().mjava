@@ -1,0 +1,8 @@
+	@Test
+	public void testPackageExplorerStartFinishEnablement() throws Exception {
+		selectPackageExplorerItem(0);
+		assertAllCommandsDisabled();
+		init();
+		assertAllCommandsEnabledAndExecutable();
+	}
+

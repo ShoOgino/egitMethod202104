@@ -1,0 +1,23 @@
+	/**
+	 * Tests the session property {@link #PROVIDER_ID}.
+	 *
+	 * @param project
+	 *            to test
+	 * @return {@code true} is the project is marked as known to be unshared
+	 */
+	private static boolean isMarkedAsNotSharedWithGit(
+			@NonNull IProject project) {
+		try {
+			Object property = project.getSessionProperty(PROVIDER_ID);
+			if (property == PROJECT_IS_UNSHARED) {
+				return true;
+			} else if (property instanceof String
+					&& !GitProvider.ID.equals(property)) {
+				return true;
+			}
+		} catch (CoreException e) {
+			// Ignore and fall through
+		}
+		return false;
+	}
+

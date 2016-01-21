@@ -1,0 +1,19 @@
+	/**
+	 * Sets the session property {@link #PROVIDER_ID} to the given
+	 * {@code providerId}, or removes the property if the id is {@code null}.
+	 *
+	 * @param project
+	 *            to mark
+	 * @param providerId
+	 *            Id of the {@link RepositoryProvider} associated with the
+	 *            project, if known, or {@code null} otherwise.
+	 */
+	private static void markAsShared(@NonNull IProject project,
+			@Nullable String providerId) {
+		try {
+			project.setSessionProperty(PROVIDER_ID, providerId);
+		} catch (CoreException e) {
+			// Ignore since this is "only" an optimization
+		}
+	}
+

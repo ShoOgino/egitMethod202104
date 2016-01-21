@@ -1,0 +1,9 @@
+	@SuppressWarnings("boxing")
+	private void assertCommandEnablement(String id, boolean enablement) {
+		ICommandService service = getCommandService();
+		Command command = service.getCommand(id);
+		assertTrue(command.isDefined());
+		assertTrue(command.isHandled());
+		assertEquals(enablement, command.isEnabled());
+	}
+

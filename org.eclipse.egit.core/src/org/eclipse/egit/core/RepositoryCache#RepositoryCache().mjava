@@ -1,4 +1,5 @@
 	RepositoryCache() {
-		// package private constructor
+		InstanceScope.INSTANCE.getNode(Activator.getPluginId())
+				.addPreferenceChangeListener(configuredRepositoriesListener);
 	}
 

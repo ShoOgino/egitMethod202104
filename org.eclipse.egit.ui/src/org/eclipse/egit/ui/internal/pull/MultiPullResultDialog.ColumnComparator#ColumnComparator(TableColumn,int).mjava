@@ -1,0 +1,20 @@
+		public ColumnComparator(TableColumn column, int columnIndex) {
+			super(null);
+			this.column = column;
+			this.columnIndex = columnIndex;
+			column.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (tv.getComparator() == ColumnComparator.this) {
+						if (direction == ASCENDING) {
+							setDirection(DESCENDING);
+						} else {
+							setDirection(NONE);
+						}
+					} else {
+						setDirection(ASCENDING);
+					}
+				}
+			});
+		}
+

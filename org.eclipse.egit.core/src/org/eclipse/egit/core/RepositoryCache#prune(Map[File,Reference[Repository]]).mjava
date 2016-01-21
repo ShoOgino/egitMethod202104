@@ -2,9 +2,9 @@
 		for (final Iterator<Map.Entry<File, Reference<Repository>>> i = map.entrySet()
 				.iterator(); i.hasNext();) {
 			Repository repository = i.next().getValue().get();
-			if (repository == null
-					|| !repository.getDirectory().exists())
+			if (repository == null || !repository.getDirectory().exists()) {
 				i.remove();
+			}
 		}
 	}
 

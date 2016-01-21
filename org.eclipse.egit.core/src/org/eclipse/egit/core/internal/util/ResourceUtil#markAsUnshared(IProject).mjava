@@ -1,0 +1,16 @@
+	/**
+	 * Sets the session property {@link #PROVIDER_ID} to
+	 * {@link #PROJECT_IS_UNSHARED} to indicate that the project is not shared
+	 * at all.
+	 *
+	 * @param project
+	 *            to mark
+	 */
+	private static void markAsUnshared(@NonNull IProject project) {
+		try {
+			project.setSessionProperty(PROVIDER_ID, PROJECT_IS_UNSHARED);
+		} catch (CoreException e) {
+			// Ignore since this is "only" an optimization
+		}
+	}
+

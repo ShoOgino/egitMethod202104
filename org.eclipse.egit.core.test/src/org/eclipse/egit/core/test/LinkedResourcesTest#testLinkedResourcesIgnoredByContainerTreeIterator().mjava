@@ -13,7 +13,7 @@
 		// Test iterator
 		WorkingTreeIterator iterator = IteratorService
 				.createInitialIterator(repository1.repository);
-		assertTrue(iterator instanceof ContainerTreeIterator);
+		assertTrue(iterator instanceof FileTreeIterator);
 		while (!iterator.eof()) {
 			assertFalse(iterator.getEntryPathString().startsWith("link2"));
 			iterator.next(1);

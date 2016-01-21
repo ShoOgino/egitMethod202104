@@ -7,11 +7,29 @@
 			} else {
 				File file = path.toFile();
 				try {
-					if (!file.exists()) {
-						FileUtils.createNewFile(file);
-					}
-					try (FileOutputStream out = new FileOutputStream(file)) {
-						out.write(getContent());
+					java.nio.file.Path fp = file.toPath();
+					if (Files.isSymbolicLink(fp)) {
+						String sp = new String(getContent(), Constants.CHARSET)
+								.trim();
+						if (sp.indexOf('\n') > 0) {
+							sp = sp.substring(0, sp.indexOf('\n')).trim();
+						}
+						if (!sp.isEmpty()) {
+							boolean wasBrokenLink = !file.exists();
+							java.nio.file.Path link = FileUtils
+									.createSymLink(file, sp);
+							// If link state changes, Eclipse can't realize this
+							// https://bugs.eclipse.org/bugs/show_bug.cgi?id=290318
+							updateLinkResource(wasBrokenLink, link);
+						}
+					} else {
+						if (!file.exists()) {
+							FileUtils.createNewFile(file);
+						}
+						try (FileOutputStream out = new FileOutputStream(
+								file)) {
+							out.write(getContent());
+						}
 					}
 					fDirty = false;
 				} catch (IOException e) {

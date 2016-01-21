@@ -4,6 +4,8 @@
 	public IndexDiffData(IndexDiff indexDiff) {
 		added = Collections.unmodifiableSet(new HashSet<String>(indexDiff
 				.getAdded()));
+		assumeUnchanged = Collections.unmodifiableSet(
+				new HashSet<String>(indexDiff.getAssumeUnchanged()));
 		changed = Collections.unmodifiableSet(new HashSet<String>(indexDiff
 				.getChanged()));
 		removed = Collections.unmodifiableSet(new HashSet<String>(indexDiff

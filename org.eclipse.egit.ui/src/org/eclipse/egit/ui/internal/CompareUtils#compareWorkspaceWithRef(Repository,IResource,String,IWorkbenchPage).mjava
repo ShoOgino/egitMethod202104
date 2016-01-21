@@ -1,0 +1,76 @@
+	/**
+	 * Opens a compare editor comparing the working directory version of the
+	 * given file or link with the version of that file corresponding to
+	 * {@code refName}.
+	 *
+	 * @param repository
+	 *            The repository to load file revisions from.
+	 * @param file
+	 *            Resource to compare revisions for. Must be either
+	 *            {@link IFile} or a symbolic link to directory ({@link IFolder}).
+	 * @param refName
+	 *            Reference to compare with the workspace version of
+	 *            {@code file}. Can be either a commit ID, a reference or a
+	 *            branch name.
+	 * @param page
+	 *            If not {@null} try to re-use a compare editor on this page if
+	 *            any is available. Otherwise open a new one.
+	 */
+	private static void compareWorkspaceWithRef(final Repository repository,
+			final IResource file, final String refName, final IWorkbenchPage page) {
+		if (file == null) {
+			return;
+		}
+		final IPath location = file.getLocation();
+		if(location == null){
+			return;
+		}
+
+		Job job = new Job(UIText.CompareUtils_jobName) {
+
+			@Override
+			public IStatus run(IProgressMonitor monitor) {
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
+				final RepositoryMapping mapping = RepositoryMapping
+						.getMapping(file);
+				if (mapping == null) {
+					return Activator.createErrorStatus(
+							NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
+									location, repository));
+				}
+
+				final ITypedElement base;
+				if (Files.isSymbolicLink(location.toFile().toPath())) {
+					base = new LocalNonWorkspaceTypedElement(repository,
+							location);
+				} else if (file instanceof IFile) {
+					base = SaveableCompareEditorInput
+							.createFileElement((IFile) file);
+				} else {
+					return Activator.createErrorStatus(
+							NLS.bind(UIText.CompareUtils_wrongResourceArgument,
+									location, file));
+				}
+
+				final String gitPath = mapping.getRepoRelativePath(file);
+				CompareEditorInput in;
+				try {
+					in = prepareCompareInput(repository, gitPath, base, refName);
+				} catch (IOException e) {
+					return Activator.createErrorStatus(
+							UIText.CompareWithRefAction_errorOnSynchronize, e);
+				}
+
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
+				openCompareEditorRunnable(page, in);
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.schedule();
+	}
+
