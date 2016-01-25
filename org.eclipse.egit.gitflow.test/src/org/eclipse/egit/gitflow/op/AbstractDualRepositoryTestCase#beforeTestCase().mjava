@@ -6,7 +6,7 @@
 
 		repository1 = new TestRepository(new File(workdir, DOT_GIT));
 
-		repository1.createInitialCommit("setUp");
+		initialCommit = repository1.createInitialCommit("setUp");
 
 		Repository repository = repository1.getRepository();
 		new InitOperation(repository).execute(null);

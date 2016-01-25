@@ -1,0 +1,16 @@
+	private boolean isOnBranch(RevCommit commit, String fullBranch)
+			throws IOException {
+		Ref branchRef = repository.exactRef(fullBranch);
+		if (branchRef == null) {
+			return false;
+		}
+		try {
+			List<Ref> list = Git.wrap(repository).branchList().setContains(commit.name()).call();
+
+			return list.contains(branchRef);
+		} catch (GitAPIException e) {
+			// ListBranchCommand can only throw a wrapped IOException
+			throw new IOException(e);
+		}
+	}
+

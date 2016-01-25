@@ -20,12 +20,12 @@
 				abbreviate(selectedCommit)));
 		menuItem.addSelectionListener(listener);
 
+		boolean isEnabled = false;
 		try {
-			menuItem.setEnabled(gfRepo.isDevelop());
+			isEnabled = gfRepo.isOnDevelop(selectedCommit);
 		} catch (IOException e) {
-			Activator.getDefault().getLog()
-					.log(Activator.error(e.getMessage()));
-			return;
+			Activator.getDefault().getLog().log(error(e.getMessage(), e));
 		}
+		menuItem.setEnabled(isEnabled);
 	}
 
