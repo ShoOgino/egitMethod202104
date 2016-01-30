@@ -53,6 +53,7 @@
 		op.setCredentialsProvider(credentialsProvider);
 		op.setCloneSubmodules(cloneDestination.isCloneSubmodules());
 
+		rememberHttpHost(op, uri);
 		configureFetchSpec(op, gitRepositoryInfo, remoteName);
 		configurePush(op, gitRepositoryInfo, remoteName);
 		configureRepositoryConfig(op, gitRepositoryInfo);

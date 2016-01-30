@@ -1,0 +1,13 @@
+	@Override
+	public void execute(Repository repository, IProgressMonitor monitor)
+			throws CoreException {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				KnownHosts.addKnownHost(hostName);
+			}
+		});
+
+	}
+

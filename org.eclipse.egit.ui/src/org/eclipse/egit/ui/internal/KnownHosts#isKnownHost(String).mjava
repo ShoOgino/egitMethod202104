@@ -1,0 +1,11 @@
+	/**
+	 * Determines whether the given host name is known already.
+	 *
+	 * @param hostName
+	 *            to check
+	 * @return {@code true} is the host name is known, {@code false} otherwise.
+	 */
+	public static boolean isKnownHost(String hostName) {
+		return hostName != null && getKnownHosts().containsKey(hostName);
+	}
+

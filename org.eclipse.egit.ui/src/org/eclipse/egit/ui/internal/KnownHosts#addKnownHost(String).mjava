@@ -1,0 +1,11 @@
+	/**
+	 * Adds a new host name to the cache on known hosts.
+	 *
+	 * @param hostName
+	 *            to add
+	 */
+	public static void addKnownHost(@NonNull String hostName) {
+		getKnownHosts().put(hostName, null);
+		modified = true; // At least the access order has changed
+	}
+

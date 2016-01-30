@@ -1,0 +1,20 @@
+	private static HostStore getKnownHosts() {
+		if (knownHosts == null) {
+			IDialogSettings settings = Activator.getDefault()
+					.getDialogSettings();
+			String[] values = settings.getArray(KNOWN_HOSTS_KEY);
+			if (values == null) {
+				settings.put(KNOWN_HOSTS_KEY, DEFAULT_HOSTS);
+				values = DEFAULT_HOSTS;
+			}
+			knownHosts = new HostStore(values.length);
+			for (int i = values.length - 1; i >= 0; i--) {
+				String host = values[i];
+				if (host != null && !host.isEmpty()) {
+					knownHosts.put(host, null);
+				}
+			}
+		}
+		return knownHosts;
+	}
+
