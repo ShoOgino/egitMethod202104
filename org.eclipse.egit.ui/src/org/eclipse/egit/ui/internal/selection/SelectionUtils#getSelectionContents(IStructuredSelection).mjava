@@ -1,0 +1,36 @@
+	/**
+	 * Determines a set of either {@link IResource}s or {@link IPath}s from a
+	 * selection. For selection contents that adapt to {@link IResource} or
+	 * {@link ResourceMapping}, the containing {@link IResource}s are included
+	 * in the result set; otherwise for selection contents that adapt to
+	 * {@link IPath} these paths are included.
+	 *
+	 * @param selection
+	 *            to process
+	 * @return the set of {@link IResource} and {@link IPath} objects from the
+	 *         selection; not containing {@code null} values
+	 */
+	@NonNull
+	private static Set<Object> getSelectionContents(
+			@NonNull IStructuredSelection selection) {
+		Set<Object> result = new HashSet<>();
+		for (Object o : selection.toList()) {
+			IResource resource = AdapterUtils.adapt(o, IResource.class);
+			if (resource != null) {
+				result.add(resource);
+				continue;
+			}
+			ResourceMapping mapping = AdapterUtils.adapt(o,
+					ResourceMapping.class);
+			if (mapping != null) {
+				result.addAll(extractResourcesFromMapping(mapping));
+			} else {
+				IPath location = AdapterUtils.adapt(o, IPath.class);
+				if (location != null) {
+					result.add(location);
+				}
+			}
+		}
+		return result;
+	}
+

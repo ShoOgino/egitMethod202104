@@ -13,24 +13,20 @@
 	@Nullable
 	private static Repository getRepository(boolean warn,
 			@NonNull IStructuredSelection selection, Shell shell) {
-
-		IPath[] locations = getSelectedLocations(selection);
+		Set<Object> elements = getSelectionContents(selection);
 		if (GitTraceLocation.SELECTION.isActive())
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.SELECTION.getLocation(), "selection=" //$NON-NLS-1$
-							+ selection + ", locations=" //$NON-NLS-1$
-							+ Arrays.toString(locations));
+							+ selection + ", elements=" + elements.toString()); //$NON-NLS-1$
+
 		boolean hadNull = false;
 		Repository result = null;
-		for (IPath location : locations) {
-			RepositoryMapping mapping = RepositoryMapping.getMapping(location);
-			Repository repo;
-			if (mapping != null) {
-				repo = mapping.getRepository();
-			} else {
-				// location is outside workspace
-				repo = org.eclipse.egit.core.Activator.getDefault()
-						.getRepositoryCache().getRepository(location);
+		for (Object location : elements) {
+			Repository repo = null;
+			if (location instanceof IResource) {
+				repo = getRepository((IResource) location);
+			} else if (location instanceof IPath) {
+				repo = getRepository((IPath) location);
 			}
 			if (repo == null) {
 				hadNull = true;
