@@ -24,9 +24,9 @@
 		for (Object location : elements) {
 			Repository repo = null;
 			if (location instanceof IResource) {
-				repo = getRepository((IResource) location);
+				repo = ResourceUtil.getRepository((IResource) location);
 			} else if (location instanceof IPath) {
-				repo = getRepository((IPath) location);
+				repo = ResourceUtil.getRepository((IPath) location);
 			}
 			if (repo == null) {
 				hadNull = true;

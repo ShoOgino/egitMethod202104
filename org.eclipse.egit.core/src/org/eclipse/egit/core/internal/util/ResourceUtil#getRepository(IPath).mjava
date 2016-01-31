@@ -1,0 +1,16 @@
+	/**
+	 * Determines the repository containing the given {@link IPath}.
+	 *
+	 * @param path
+	 *            to get the repository for
+	 * @return the {@link Repository}, or {@code null} if none found.
+	 */
+	@Nullable
+	public static Repository getRepository(@NonNull IPath path) {
+		RepositoryMapping mapping = RepositoryMapping.getMapping(path);
+		if (mapping != null) {
+			return mapping.getRepository();
+		}
+		return Activator.getDefault().getRepositoryCache().getRepository(path);
+	}
+

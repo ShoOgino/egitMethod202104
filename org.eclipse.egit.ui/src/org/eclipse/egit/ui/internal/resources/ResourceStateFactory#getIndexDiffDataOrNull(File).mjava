@@ -13,26 +13,7 @@
 		}
 		File absoluteFile = file.getAbsoluteFile();
 		IPath path = new org.eclipse.core.runtime.Path(absoluteFile.getPath());
-		Repository repository = null;
-		RepositoryMapping mapping = RepositoryMapping.getMapping(path);
-		if (mapping != null) {
-			repository = mapping.getRepository();
-		} else {
-			repository = Activator.getDefault().getRepositoryCache()
-					.getRepository(path);
-		}
-		if (repository == null) {
-			return null;
-		} else if (repository.isBare()) {
-			// For bare repository just return empty data
-			return new IndexDiffData();
-		}
-		IndexDiffCacheEntry diffCacheEntry = Activator.getDefault()
-				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
-		if (diffCacheEntry == null) {
-			return null;
-		}
-		return diffCacheEntry.getIndexDiff();
-
+		Repository repository = ResourceUtil.getRepository(path);
+		return getIndexDiffDataOrNull(repository);
 	}
 

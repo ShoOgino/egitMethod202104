@@ -12,7 +12,8 @@
 			// Note that there is both a getResource(IEditorInput) as well as a
 			// getResource(Object), which don't do the same thing. We explicitly
 			// want the first here.
-			IResource resource = ResourceUtil.getResource(editorInput);
+			IResource resource = org.eclipse.ui.ide.ResourceUtil
+					.getResource(editorInput);
 			if (resource != null)
 				return new StructuredSelection(resource);
 			if (editorInput instanceof FileRevisionEditorInput) {

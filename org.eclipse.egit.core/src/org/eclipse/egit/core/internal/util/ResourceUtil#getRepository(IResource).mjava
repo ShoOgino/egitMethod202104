@@ -1,0 +1,17 @@
+	/**
+	 * Determines the repository containing the resource.
+	 *
+	 * @param resource
+	 *            to get the repository for
+	 * @return the {@link Repository}, or {@code null} if none found.
+	 */
+	@Nullable
+	public static Repository getRepository(@NonNull IResource resource) {
+		RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
+		if (mapping != null) {
+			return mapping.getRepository();
+		}
+		return Activator.getDefault().getRepositoryCache()
+				.getRepository(resource);
+	}
+

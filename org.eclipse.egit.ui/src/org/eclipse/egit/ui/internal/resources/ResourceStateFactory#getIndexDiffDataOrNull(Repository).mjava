@@ -1,0 +1,24 @@
+	/**
+	 * Returns the {@link IndexDiffData} for a given {@link Repository}.
+	 *
+	 * @param repository
+	 *            to get the index diff data from
+	 * @return the IndexDiffData, or {@code null} if none.
+	 */
+	@Nullable
+	private IndexDiffData getIndexDiffDataOrNull(
+			@Nullable Repository repository) {
+		if (repository == null) {
+			return null;
+		} else if (repository.isBare()) {
+			// For bare repository just return empty data
+			return new IndexDiffData();
+		}
+		IndexDiffCacheEntry diffCacheEntry = Activator.getDefault()
+				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		if (diffCacheEntry == null) {
+			return null;
+		}
+		return diffCacheEntry.getIndexDiff();
+	}
+
