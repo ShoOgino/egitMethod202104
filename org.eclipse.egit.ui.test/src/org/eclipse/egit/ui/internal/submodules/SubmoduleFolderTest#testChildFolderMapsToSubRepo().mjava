@@ -1,0 +1,7 @@
+	@Test
+	public void testChildFolderMapsToSubRepo() {
+		RepositoryMapping mapping = RepositoryMapping.getMapping(childFolder);
+		assertNotNull("Child folder should have a mapping", mapping);
+		assertEquals(subRepository, mapping.getRepository());
+	}
+

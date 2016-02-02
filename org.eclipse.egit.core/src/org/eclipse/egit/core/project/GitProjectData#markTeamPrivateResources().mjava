@@ -4,7 +4,7 @@
 	 * @throws CoreException
 	 */
 	public void markTeamPrivateResources() throws CoreException {
-		for (final RepositoryMapping rm : mappings) {
+		for (final RepositoryMapping rm : mappings.values()) {
 			final IContainer c = rm.getContainer();
 			if (c == null)
 				continue; // Not fully mapped yet?
@@ -15,6 +15,9 @@
 					final Repository r = rm.getRepository();
 					final File dotGitDir = dotGit.getLocation().toFile()
 							.getCanonicalFile();
+					// TODO: .git *files* with gitdir: "redirect"
+					// TODO: check whether Repository.getDirectory() is
+					// canonicalized! If not, this check will fail anyway.
 					if (dotGitDir.equals(r.getDirectory())) {
 						trace("teamPrivate " + dotGit);  //$NON-NLS-1$
 						dotGit.setTeamPrivateMember(true);

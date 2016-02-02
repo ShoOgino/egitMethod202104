@@ -1,0 +1,56 @@
+	@Before
+	public void setUp() throws Exception {
+		parentRepositoryGitDir = createProjectAndCommitToRepository();
+		childRepositoryGitDir = createProjectAndCommitToRepository(CHILDREPO,
+				CHILDPROJECT);
+		parentRepository = lookupRepository(parentRepositoryGitDir);
+		childRepository = lookupRepository(childRepositoryGitDir);
+		parentProject = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+		IFolder folder = parentProject.getFolder(FOLDER);
+		IFolder subfolder = folder.getFolder(SUBFOLDER);
+		subfolder.create(false, true, null);
+		assertTrue(subfolder.exists());
+		IFile someFile = subfolder.getFile("dummy.txt");
+		touch(PROJ1, someFile.getProjectRelativePath().toOSString(),
+				"Dummy content");
+		addAndCommit(someFile, "Commit sub/dummy.txt");
+		childFolder = subfolder.getFolder(CHILD);
+		Git.wrap(parentRepository).submoduleAdd()
+				.setPath(childFolder.getFullPath().toPortableString())
+				.setURI(childRepository.getDirectory().toURI()
+						.toString())
+				.call();
+		TestRepository parentRepo = new TestRepository(parentRepository);
+		parentRepo.trackAllFiles(parentProject);
+		parentRepo.commit("Commit submodule");
+		assertTrue(SubmoduleWalk.containsGitModulesFile(parentRepository));
+		parentProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+		assertTrue(childFolder.exists());
+		// Let's get rid of the child project imported directly from the child
+		// repository.
+		childProject = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(CHILDPROJECT);
+		childProject.delete(false, true, null);
+		// Re-import it from the parent repo's submodule!
+		IFile projectFile = childFolder.getFolder(CHILDPROJECT)
+				.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
+		assertTrue(projectFile.exists());
+		ProjectRecord pr = new ProjectRecord(
+				projectFile.getLocation().toFile());
+		ProjectUtils.createProjects(Collections.singleton(pr), null, null);
+		assertTrue(childProject.isOpen());
+		// Now we have a parent repo in a state as if we had recursively
+		// cloned some remote repo with a submodule and then imported all
+		// projects. Look up the submodule repository instance through the
+		// repository cache, so that we get the same instance that EGit
+		// uses.
+		subRepository = SubmoduleWalk.getSubmoduleRepository(
+				childFolder.getParent().getLocation().toFile(), CHILD);
+		assertNotNull(subRepository);
+		subRepositoryGitDir = subRepository.getDirectory();
+		subRepository.close();
+		subRepository = lookupRepository(subRepositoryGitDir);
+		assertNotNull(subRepository);
+	}
+

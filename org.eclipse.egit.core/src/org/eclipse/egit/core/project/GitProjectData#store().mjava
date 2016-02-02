@@ -17,7 +17,7 @@
 			final FileOutputStream o = new FileOutputStream(tmp);
 			try {
 				final Properties p = new Properties();
-				for (final RepositoryMapping repoMapping : mappings) {
+				for (final RepositoryMapping repoMapping : mappings.values()) {
 					repoMapping.store(p);
 				}
 				p.store(o, "GitProjectData");  //$NON-NLS-1$

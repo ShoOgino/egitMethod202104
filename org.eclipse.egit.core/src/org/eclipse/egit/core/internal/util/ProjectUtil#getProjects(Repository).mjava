@@ -1,21 +1,20 @@
 	/**
 	 * The method retrieves all accessible projects related to the given
-	 * repository
+	 * repository.
 	 *
 	 * @param repository
-	 * @return list of projects
+	 *            to get the projects of
+	 * @return list of projects, with nested projects first.
 	 */
 	public static IProject[] getProjects(Repository repository) {
 		List<IProject> result = new ArrayList<IProject>();
-		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
-		for (IProject project : projects)
-			if (project.isAccessible()) {
-				RepositoryMapping mapping = RepositoryMapping
-						.getMapping(project);
-				if (mapping != null && mapping.getRepository() == repository)
-					result.add(project);
+		for (IProject project : getProjectsUnderPath(
+				new Path(repository.getWorkTree().getAbsolutePath()))) {
+			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
+			if (mapping != null) {
+				result.add(project);
 			}
+		}
 		return result.toArray(new IProject[result.size()]);
 	}
 

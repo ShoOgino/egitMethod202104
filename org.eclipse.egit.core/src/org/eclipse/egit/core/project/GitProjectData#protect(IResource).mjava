@@ -1,16 +1,15 @@
 	private void protect(IResource resource) {
 		IResource c = resource;
+		try {
+			c.setTeamPrivateMember(true);
+		} catch (CoreException e) {
+			Activator.logError(MessageFormat.format(
+					CoreText.GitProjectData_FailedToMarkTeamPrivate,
+					c.getFullPath()), e);
+		}
 		while (c != null && !c.equals(getProject())) {
 			trace("protect " + c);  //$NON-NLS-1$
 			protectedResources.add(c);
-			try {
-				c.setTeamPrivateMember(true);
-			} catch (CoreException e) {
-				Activator.logError(MessageFormat.format(
-						CoreText.GitProjectData_FailedToMarkTeamPrivate,
-						c.getFullPath()),
-						e);
-			}
 			c = c.getParent();
 		}
 	}

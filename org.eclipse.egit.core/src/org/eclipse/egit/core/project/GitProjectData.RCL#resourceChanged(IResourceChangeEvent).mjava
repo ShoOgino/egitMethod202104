@@ -12,6 +12,9 @@
 					Activator.logError(e.getMessage(), e);
 				}
 				break;
+			case IResourceChangeEvent.POST_CHANGE:
+				update(event);
+				break;
 			default:
 				break;
 			}

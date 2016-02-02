@@ -8,12 +8,12 @@
 	@Nullable
 	public static RepositoryMapping findRepositoryMapping(
 			@NonNull Repository repository) {
-		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
-		for (IProject project : projects) {
+		for (IProject project : ProjectUtil.getProjectsUnderPath(
+				new Path(repository.getWorkTree().getAbsolutePath()))) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
-			if (mapping != null && mapping.getRepository() == repository)
+			if (mapping != null && mapping.getRepository() == repository) {
 				return mapping;
+			}
 		}
 		return null;
 	}

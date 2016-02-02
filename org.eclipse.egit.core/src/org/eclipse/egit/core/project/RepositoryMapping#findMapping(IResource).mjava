@@ -1,0 +1,33 @@
+	/**
+	 * Get the repository mapping for a project.
+	 *
+	 * @param resource
+	 *            to find the mapping for
+	 * @return the RepositoryMapping for this project, or null for non
+	 *         GitProvider.
+	 */
+	@Nullable
+	private static RepositoryMapping findMapping(@NonNull
+	final IResource resource) {
+		final IProject project = resource.getProject();
+		if (project == null || isNonWorkspace(project)) {
+			return null;
+		}
+		final GitProvider rp = ResourceUtil.getGitProvider(project);
+		GitProjectData data;
+		// The provider could not yet be mapped
+		if (rp == null) {
+			// Load the data directly
+			data = GitProjectData.get(project);
+			if (data == null) {
+				return null;
+			}
+		} else {
+			data = rp.getData();
+		}
+		if (data == null) {
+			return null;
+		}
+		return data.getRepositoryMapping(resource);
+	}
+

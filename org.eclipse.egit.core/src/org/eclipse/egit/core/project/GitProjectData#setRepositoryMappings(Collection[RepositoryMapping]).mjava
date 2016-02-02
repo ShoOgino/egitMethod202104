@@ -5,7 +5,9 @@
 	 */
 	public void setRepositoryMappings(final Collection<RepositoryMapping> newMappings) {
 		mappings.clear();
-		mappings.addAll(newMappings);
+		for (RepositoryMapping mapping : newMappings) {
+			mappings.put(mapping.getContainerPath(), mapping);
+		}
 		remapAll();
 	}
 

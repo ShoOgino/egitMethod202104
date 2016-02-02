@@ -1,0 +1,42 @@
+	/**
+	 * Tests AddToIndex and RemoveFromIndex commands on a file from a submodule
+	 * folder. Verifies the execution of the command by testing the state of the
+	 * file in the index diff after it has been executed. Additionally verifies
+	 * that decorations do get updated.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testStageUnstageInSubRepo() throws Exception {
+		IFolder childProjectFolder = childFolder.getFolder(CHILDPROJECT);
+		IFolder folder = childProjectFolder.getFolder(FOLDER);
+		IFile file = folder.getFile(FILE1);
+		touch(PROJ1, file.getProjectRelativePath().toOSString(), "Modified");
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		SWTBotTreeItem node = TestUtil.navigateTo(projectExplorerTree,
+				file.getFullPath().segments());
+		waitForDecorations();
+		assertTrue(node.getText().startsWith("> " + file.getName()));
+		node.select();
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
+				util.getPluginLocalizedValue("AddToIndexAction_label"));
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		IndexDiffCacheEntry cache = Activator.getDefault().getIndexDiffCache()
+				.getIndexDiffCacheEntry(subRepository);
+		IResourceState state = ResourceStateFactory.getInstance()
+				.get(cache.getIndexDiff(), file);
+		assertTrue("File should be staged", state.isStaged());
+		waitForDecorations();
+		assertFalse(node.getText().startsWith("> "));
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
+				util.getPluginLocalizedValue("RemoveFromIndexAction_label"));
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		state = ResourceStateFactory.getInstance().get(cache.getIndexDiff(),
+				file);
+		assertFalse("File should not be staged", state.isStaged());
+		assertTrue("File should be dirty", state.isDirty());
+		waitForDecorations();
+		assertTrue(node.getText().startsWith("> " + file.getName()));
+	}
+

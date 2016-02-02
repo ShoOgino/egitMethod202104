@@ -2,14 +2,19 @@
 		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 		List<IProject> result = new ArrayList<IProject>();
-		final File parentFile = repository.getWorkTree();
+		final Path workTree = repository.getWorkTree().getAbsoluteFile()
+				.toPath();
 		for (IProject p : projects) {
 			IPath projectLocation = p.getLocation();
-			if (projectLocation == null)
+			if (projectLocation == null) {
 				continue;
-			if (projectLocation.toFile().getAbsolutePath()
-					.startsWith(parentFile.getAbsolutePath()))
+			}
+			Path projectPath = projectLocation.toFile().getAbsoluteFile()
+					.toPath();
+			if (projectPath.startsWith(workTree)
+					|| workTree.startsWith(projectPath)) {
 				result.add(p);
+			}
 		}
 		return result.toArray(new IProject[result.size()]);
 	}

@@ -11,7 +11,8 @@
 			for (final Object keyObj : p.keySet()) {
 				final String key = keyObj.toString();
 				if (RepositoryMapping.isInitialKey(key)) {
-					mappings.add(new RepositoryMapping(p, key));
+					RepositoryMapping mapping = new RepositoryMapping(p, key);
+					mappings.put(mapping.getContainerPath(), mapping);
 				}
 			}
 		} finally {

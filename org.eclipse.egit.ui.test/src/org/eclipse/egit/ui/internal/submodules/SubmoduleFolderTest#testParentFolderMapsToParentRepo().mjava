@@ -1,0 +1,8 @@
+	@Test
+	public void testParentFolderMapsToParentRepo() {
+		RepositoryMapping mapping = RepositoryMapping
+				.getMapping(childFolder.getParent());
+		assertNotNull("Child folder's parent should have a mapping", mapping);
+		assertEquals(parentRepository, mapping.getRepository());
+	}
+

@@ -9,12 +9,16 @@
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
-				Repository newRep = getRepositoryOrNestedSubmoduleRepository(resource);
-				if (newRep != null && newRep != currentRepository) {
-					if (monitor.isCanceled()) {
-						return Status.CANCEL_STATUS;
+				RepositoryMapping mapping = RepositoryMapping
+						.getMapping(resource);
+				if (mapping != null) {
+					Repository newRep = mapping.getRepository();
+					if (newRep != null && newRep != currentRepository) {
+						if (monitor.isCanceled()) {
+							return Status.CANCEL_STATUS;
+						}
+						reload(newRep);
 					}
-					reload(newRep);
 				}
 				return Status.OK_STATUS;
 			}

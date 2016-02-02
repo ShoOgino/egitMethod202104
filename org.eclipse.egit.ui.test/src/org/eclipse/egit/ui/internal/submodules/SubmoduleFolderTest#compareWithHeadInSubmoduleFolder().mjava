@@ -1,0 +1,42 @@
+	/**
+	 * Tests that a CompareWithHeadAction on a file from a submodule folder does
+	 * open the right compare editor, comparing against the version from the
+	 * submodule (as opposed to the version from the parent repo).
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void compareWithHeadInSubmoduleFolder() throws Exception {
+		// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=446344#c11
+		// If the compare editor's title does not contain the HEAD id of
+		// the subrepo, then either no compare editor got opened, or
+		// it was opened using the parent repo.
+		IFolder childProjectFolder = childFolder.getFolder(CHILDPROJECT);
+		IFolder folder = childProjectFolder.getFolder(FOLDER);
+		IFile file = folder.getFile(FILE1);
+		touch(PROJ1, file.getProjectRelativePath().toOSString(), "Modified");
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		SWTBotTreeItem node = TestUtil.navigateTo(projectExplorerTree,
+				file.getFullPath().segments());
+		node.select();
+		Ref headRef = subRepository.findRef(Constants.HEAD);
+		final String headId = headRef.getObjectId().abbreviate(6).name();
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree,
+				"Compare With",
+				util.getPluginLocalizedValue("CompareWithHeadAction_label"));
+		bot.waitUntil(waitForEditor(new BaseMatcher<IEditorReference>() {
+
+			@Override
+			public boolean matches(Object item) {
+				return (item instanceof IEditorReference)
+						&& ((IEditorReference) item).getTitle()
+								.contains(headId);
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("Wait for editor containing " + headId);
+			}
+		}), 5000);
+	}
+

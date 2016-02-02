@@ -1,0 +1,7 @@
+	@Test
+	public void testChildProjectMapsToSubRepo() {
+		RepositoryMapping mapping = RepositoryMapping.getMapping(childProject);
+		assertNotNull("Child project should have a mapping", mapping);
+		assertEquals(subRepository, mapping.getRepository());
+	}
+

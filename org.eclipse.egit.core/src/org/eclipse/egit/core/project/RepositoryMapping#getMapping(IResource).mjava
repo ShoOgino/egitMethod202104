@@ -4,6 +4,7 @@
 	 * determine a repository mapping.
 	 *
 	 * @param resource
+	 *            to find the mapping for
 	 * @return the RepositoryMapping for this resource, or null for non
 	 *         GitProvider.
 	 */
@@ -19,6 +20,6 @@
 			}
 			return getMapping(location);
 		}
-		return getMapping(resource.getProject());
+		return findMapping(resource);
 	}
 
