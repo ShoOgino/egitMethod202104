@@ -1,7 +1,8 @@
 	public static PushBranchWizardTester startWizard(SWTBotTree projectTree,
 			String branchName) {
-		String pushBranchMenu = NLS
-				.bind(UIText.PushMenu_PushBranch, branchName);
+		String pushBranchMenu = branchName.equals(Constants.HEAD)
+				? UIText.PushMenu_PushHEAD
+				: NLS.bind(UIText.PushMenu_PushBranch, branchName);
 		ContextMenuHelper.clickContextMenu(projectTree, "Team", pushBranchMenu);
 		return forBranchName(branchName);
 	}

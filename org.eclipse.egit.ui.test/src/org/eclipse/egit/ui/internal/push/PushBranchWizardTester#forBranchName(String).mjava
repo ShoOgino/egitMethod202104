@@ -1,7 +1,9 @@
 	public static PushBranchWizardTester forBranchName(String branchName) {
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		String title = MessageFormat.format(
-				UIText.PushBranchWizard_WindowTitle, branchName);
+		String title = branchName.equals(Constants.HEAD)
+				? UIText.PushCommitHandler_pushCommitTitle
+				: MessageFormat.format(UIText.PushBranchWizard_WindowTitle,
+						branchName);
 		SWTBot wizard = bot.shell(title).bot();
 		return new PushBranchWizardTester(wizard);
 	}
