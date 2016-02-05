@@ -3,17 +3,18 @@
 				boolean ignored, boolean dirty, @NonNull StagingState staged,
 				boolean conflicts, boolean assumeUnchanged) {
 
+			super(null);
 			this.name = name;
 			this.repositoryName = repositoryName;
 			this.branch = branch;
 			this.branchStatus = branchStatus;
 			this.type = type;
 			this.children = Collections.EMPTY_LIST;
-			this.tracked = tracked;
-			this.ignored = ignored;
-			this.dirty = dirty;
-			this.staged = staged;
-			this.conflicts = conflicts;
-			this.assumeUnchanged = assumeUnchanged;
+			setTracked(tracked);
+			setIgnored(ignored);
+			setDirty(dirty);
+			setStagingState(staged);
+			setConflicts(conflicts);
+			setAssumeUnchanged(assumeUnchanged);
 		}
 

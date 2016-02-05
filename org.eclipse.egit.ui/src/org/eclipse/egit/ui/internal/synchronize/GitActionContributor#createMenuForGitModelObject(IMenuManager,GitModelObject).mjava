@@ -9,8 +9,7 @@
 			if (path != null) {
 				IResourceState state = ResourceStateFactory.getInstance()
 						.get(path.toFile());
-				if (!state.isTracked() || state.isDirty()
-						|| state.isMissing()) {
+				if (state.hasUnstagedChanges()) {
 					menu.appendToGroup(GIT_ACTIONS, createItem(ADD_TO_INDEX));
 				}
 				if (state.isStaged()) {

@@ -1,0 +1,5 @@
+	@Override
+	public boolean hasUnstagedChanges() {
+		return !isTracked() || isDirty() || isMissing() || hasConflicts();
+	}
+

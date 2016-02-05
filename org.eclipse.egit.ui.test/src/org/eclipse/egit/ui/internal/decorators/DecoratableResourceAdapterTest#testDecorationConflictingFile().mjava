@@ -43,5 +43,6 @@
 				new DecoratableResourceAdapter(indexDiffData, file) };
 
 		assertArrayEquals(expectedDRs, actualDRs);
+		assertHasUnstagedChanges(true, actualDRs);
 	}
 
