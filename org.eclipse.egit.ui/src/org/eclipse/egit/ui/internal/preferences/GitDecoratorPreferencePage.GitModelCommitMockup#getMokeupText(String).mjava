@@ -7,7 +7,9 @@
 					formatter.formatDate(date));
 			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_AUTHOR, author);
 			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_COMMITTER, committer);
-			bindings.put(GitChangeSetLabelProvider.BINDING_CHANGESET_SHORT_MESSAGE, message);
+			bindings.put(
+					GitChangeSetLabelProvider.BINDING_CHANGESET_SHORT_MESSAGE,
+					SAMPLE_COMMIT_MESSAGE);
 
 			return GitChangeSetLabelProvider.formatName(format, bindings);
 		}

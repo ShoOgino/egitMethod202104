@@ -17,10 +17,16 @@
 					UIText.DecoratorPreferencesPage_addVariablesAction3,
 					PROJECT_BINDINGS,
 					UIPreferences.DECORATOR_PROJECTTEXT_DECORATION);
+			submoduleTextFormat = new FormatEditor(composite,
+					UIText.DecoratorPreferencesPage_submoduleFormatLabel,
+					UIText.DecoratorPreferencesPage_addVariablesAction3,
+					PROJECT_BINDINGS,
+					UIPreferences.DECORATOR_SUBMODULETEXT_DECORATION);
 
 			fileTextFormat.addModifyListener(this);
 			folderTextFormat.addModifyListener(this);
 			projectTextFormat.addModifyListener(this);
+			submoduleTextFormat.addModifyListener(this);
 
 			final TabItem tabItem = new TabItem(parent, SWT.NONE);
 			tabItem.setText(UIText.DecoratorPreferencesPage_textLabel);
