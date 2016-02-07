@@ -1,10 +1,12 @@
 	/**
-	 * Construct a {@link RepositoryMapping} for previously unknown project.
+	 * Construct a {@link RepositoryMapping} for previously unmapped container.
 	 *
 	 * @param mappedContainer
+	 *            to create the mapping for
 	 * @param gitDir
-	 * @return a new RepositoryMapping for given container. Returns <code>null
-	 *         <code> if container does not exists.
+	 *            for the new mapping
+	 * @return a new RepositoryMapping for given container. Returns {@code null}
+	 *         if container does not exist or is not local.
 	 */
 	@Nullable
 	public static RepositoryMapping create(@NonNull IContainer mappedContainer,
