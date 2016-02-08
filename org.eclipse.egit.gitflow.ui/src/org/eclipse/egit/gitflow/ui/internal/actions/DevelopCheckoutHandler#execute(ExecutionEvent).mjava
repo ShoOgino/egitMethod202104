@@ -1,0 +1,10 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+
+		BranchOperationUI.checkout(gfRepo.getRepository(),
+				gfRepo.getConfig().getDevelopFull()).start();
+
+		return null;
+	}
+
