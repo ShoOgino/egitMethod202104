@@ -1,9 +1,7 @@
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == OK) {
-			selected = ((IStructuredSelection) branchesList.getSelection())
-					.toList();
+			selected = filteredFeatures.getSelection();
 		}
 		super.buttonPressed(buttonId);
 	}

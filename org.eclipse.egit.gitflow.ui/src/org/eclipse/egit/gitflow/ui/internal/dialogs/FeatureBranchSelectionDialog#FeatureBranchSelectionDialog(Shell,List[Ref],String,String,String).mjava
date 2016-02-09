@@ -1,0 +1,15 @@
+	/**
+	 * @param parentShell
+	 * @param refs
+	 * @param title
+	 * @param message
+	 * @param featurePrefix
+	 */
+	public FeatureBranchSelectionDialog(Shell parentShell,
+			List<Ref> refs, String title, String message,
+			String featurePrefix) {
+		super(parentShell, title, null, message, MessageDialog.QUESTION,
+				new String[] { OK_LABEL, CANCEL_LABEL }, 0);
+		filteredFeatures = new FilteredBranchesWidget(refs, featurePrefix);
+	}
+

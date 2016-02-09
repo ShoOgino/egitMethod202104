@@ -28,16 +28,12 @@
 		}
 		refs.addAll(remoteFeatures);
 
-		AbstractGitFlowBranchSelectionDialog<Ref> dialog = new AbstractGitFlowBranchSelectionDialog<Ref>(
-				activeShell, refs,
-				UIText.FeatureTrackHandler_selectFeature,
-				UIText.FeatureTrackHandler_remoteFeatures) {
-			@Override
-			protected String getPrefix() {
-				return R_REMOTES + DEFAULT_REMOTE_NAME + SEP
-						+ gfRepo.getConfig().getFeaturePrefix();
-			}
-		};
+		FeatureBranchSelectionDialog dialog = new FeatureBranchSelectionDialog(
+				HandlerUtil.getActiveShell(event), refs,
+				UIText.FeatureCheckoutHandler_selectFeature,
+				UIText.FeatureTrackHandler_remoteFeatures,
+				R_REMOTES + DEFAULT_REMOTE_NAME + SEP + gfRepo.getConfig().getFeaturePrefix());
+
 		if (dialog.open() != Window.OK) {
 			return Status.CANCEL_STATUS;
 		}

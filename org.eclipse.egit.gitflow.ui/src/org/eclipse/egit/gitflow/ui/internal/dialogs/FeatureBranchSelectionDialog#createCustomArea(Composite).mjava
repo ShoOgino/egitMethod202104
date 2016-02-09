@@ -1,0 +1,22 @@
+	@Override
+	protected Control createCustomArea(Composite parent) {
+		Control result = filteredFeatures.create(parent);
+
+		TreeViewer viewer = filteredFeatures.getBranchesList();
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				checkPage();
+			}
+		});
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				buttonPressed(OK);
+			}
+		});
+		return result;
+	}
+
