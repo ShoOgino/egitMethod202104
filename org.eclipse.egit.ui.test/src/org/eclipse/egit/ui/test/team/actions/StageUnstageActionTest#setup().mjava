@@ -1,0 +1,10 @@
+	@Before
+	public void setup() throws Exception {
+		createProjectAndCommitToRepository(REPO_A, PROJ_A);
+		createProjectAndCommitToRepository(REPO_B, PROJ_B);
+		addToIndexLabel = util
+				.getPluginLocalizedValue("AddToIndexAction_label");
+		removeFromIndexLabel = util
+				.getPluginLocalizedValue("RemoveFromIndexAction_label");
+	}
+

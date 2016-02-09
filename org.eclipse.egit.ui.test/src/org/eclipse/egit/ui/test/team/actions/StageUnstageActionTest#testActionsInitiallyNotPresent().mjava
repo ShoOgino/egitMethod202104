@@ -1,0 +1,27 @@
+	@Test
+	public void testActionsInitiallyNotPresent() {
+		// Verify that neither add to index nor remove from index are available.
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		util.getProjectItems(projectExplorerTree, PROJ_A)[0].select();
+		assertFalse("Add To Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", addToIndexLabel));
+		assertFalse("Remove From Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", removeFromIndexLabel));
+		util.getProjectItems(projectExplorerTree, PROJ_B)[0].select();
+		assertFalse("Add To Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", addToIndexLabel));
+		assertFalse("Remove From Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", removeFromIndexLabel));
+		projectExplorerTree.select(projectExplorerTree.getAllItems());
+		assertFalse("Add To Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", addToIndexLabel));
+		assertFalse("Remove From Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", removeFromIndexLabel));
+	}
+

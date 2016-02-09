@@ -12,29 +12,13 @@
 		} else {
 			selection = new StructuredSelection(new ArrayList<>(collection));
 		}
-		Repository repository = SelectionUtils.getRepository(selection);
-		if (repository == null || repository.isBare()) {
-			return false;
-		}
-		IndexDiffCacheEntry diffCacheEntry = Activator.getDefault()
-				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
-		if (diffCacheEntry == null) {
-			return false;
-		}
-		IndexDiffData indexDiffData = diffCacheEntry.getIndexDiff();
-		if (indexDiffData == null) {
-			return false;
-		}
-
-		Iterator<?> iterator = selection.iterator();
-		while (iterator.hasNext()) {
-			IResource resource = AdapterUtils.adapt(iterator.next(),
-					IResource.class);
+		for (IResource resource : SelectionUtils
+				.getSelectedResources(selection)) {
 			if (resource == null || !resource.isAccessible()) {
 				continue;
 			}
 			IResourceState state = ResourceStateFactory.getInstance()
-					.get(indexDiffData, resource);
+					.get(resource);
 			switch (property) {
 			case HAS_STAGED_CHANGES:
 				if (state.isStaged()) {

@@ -1,0 +1,34 @@
+	@Test
+	public void testSingleProject() throws Exception {
+		// Change something in first project
+		String filePath = FOLDER + '/' + FILE1;
+		touch(PROJ_A, filePath, "Changed content");
+		// Select other project
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		util.getProjectItems(projectExplorerTree, PROJ_B)[0].select();
+		// Verify that Add to index is not present
+		assertFalse("Add To Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", addToIndexLabel));
+		assertFalse("Remove From Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", removeFromIndexLabel));
+		// Select first project; add to index
+		util.getProjectItems(projectExplorerTree, PROJ_A)[0].select();
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
+				addToIndexLabel);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		// Verify file got staged
+		verifyStaging(PROJ_A, filePath, true);
+		// Remove from index
+		util.getProjectItems(projectExplorerTree, PROJ_A)[0].select();
+		assertFalse("Add To Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", addToIndexLabel));
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
+				removeFromIndexLabel);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		// Verify file is unstaged again
+		verifyStaging(PROJ_A, filePath, false);
+	}
+

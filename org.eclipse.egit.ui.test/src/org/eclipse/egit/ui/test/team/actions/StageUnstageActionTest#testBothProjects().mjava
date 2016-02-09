@@ -1,0 +1,30 @@
+	@Test
+	public void testBothProjects() throws Exception {
+		// Change something in both
+		String filePath = FOLDER + '/' + FILE1;
+		touch(PROJ_A, filePath, "Changed content");
+		touch(PROJ_B, filePath, "Changed content");
+		// Select both projects
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		projectExplorerTree.select(projectExplorerTree.getAllItems());
+		assertFalse("Remove From Index should not be present",
+				ContextMenuHelper.contextMenuItemExists(projectExplorerTree,
+						"Team", removeFromIndexLabel));
+		// Add to index
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
+				addToIndexLabel);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		// Verify both files got staged
+		verifyStaging(PROJ_A, filePath, true);
+		verifyStaging(PROJ_B, filePath, true);
+		// Select both projects
+		projectExplorerTree.select(projectExplorerTree.getAllItems());
+		// Remove from index
+		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
+				removeFromIndexLabel);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		// Verify both files got unstaged
+		verifyStaging(PROJ_A, filePath, false);
+		verifyStaging(PROJ_B, filePath, false);
+	}
+

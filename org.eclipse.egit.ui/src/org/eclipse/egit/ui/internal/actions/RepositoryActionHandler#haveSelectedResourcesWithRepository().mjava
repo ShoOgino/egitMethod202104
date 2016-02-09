@@ -1,0 +1,25 @@
+	/**
+	 * Determines whether the selection contains only resources that are in some
+	 * git repository.
+	 *
+	 * @return {@code true} if all resources in the selection belong to a git
+	 *         repository known to EGit.
+	 */
+	protected boolean haveSelectedResourcesWithRepository() {
+		IStructuredSelection selection = getSelection();
+		if (selection != null) {
+			IResource[] resources = SelectionUtils
+					.getSelectedResources(selection);
+			if (resources.length > 0) {
+				for (IResource resource : resources) {
+					if (resource == null
+							|| RepositoryMapping.getMapping(resource) == null) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
