@@ -32,7 +32,10 @@
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
 					"Jobs terminated"); //$NON-NLS-1$
-
+		if (resourceManager != null) {
+			resourceManager.dispose();
+			resourceManager = null;
+		}
 		super.stop(context);
 		plugin = null;
 	}
