@@ -1,0 +1,16 @@
+	/**
+	 * @param repo
+	 *            the repository
+	 * @param uri
+	 *            the uri to fetch branches from
+	 * @param container
+	 *            used to attach progress dialogs to.
+	 */
+	public RefContentAssistProvider(Repository repo, URIish uri,
+			IWizardContainer container) {
+		this.repo = repo;
+		this.uri = uri;
+		this.shell = null;
+		this.container = container;
+	}
+
