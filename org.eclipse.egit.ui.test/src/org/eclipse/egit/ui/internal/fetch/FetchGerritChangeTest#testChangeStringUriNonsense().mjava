@@ -1,0 +1,8 @@
+	@Test
+	public void testChangeStringUriNonsense() {
+		assertNull(FetchGerritChangePage
+				.determineChangeFromString("http://www.example.org/foo/bar"));
+		assertNull(FetchGerritChangePage.determineChangeFromString(
+				"https://git example.org/r/#/c/65510/"));
+	}
+

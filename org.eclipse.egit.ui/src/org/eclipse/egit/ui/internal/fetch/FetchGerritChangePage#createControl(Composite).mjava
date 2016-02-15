@@ -6,13 +6,16 @@
 		String defaultUri = null;
 		String defaultCommand = null;
 		String defaultChange = null;
+		String candidateChange = null;
 		if (clipText != null) {
-			final String pattern = "git fetch (\\w+:\\S+) (refs/changes/\\d+/\\d+/\\d+) && git (\\w+) FETCH_HEAD"; //$NON-NLS-1$
+			String pattern = "git fetch (\\w+:\\S+) (refs/changes/\\d+/\\d+/\\d+) && git (\\w+) FETCH_HEAD"; //$NON-NLS-1$
 			Matcher matcher = Pattern.compile(pattern).matcher(clipText);
 			if (matcher.matches()) {
 				defaultUri = matcher.group(1);
 				defaultChange = matcher.group(2);
 				defaultCommand = matcher.group(3);
+			} else {
+				candidateChange = determineChangeFromString(clipText.trim());
 			}
 		}
 		Composite main = new Composite(parent, SWT.NONE);
@@ -31,10 +34,9 @@
 		new Label(main, SWT.NONE)
 				.setText(UIText.FetchGerritChangePage_ChangeLabel);
 		refText = new Text(main, SWT.BORDER);
-		if (defaultChange != null)
-			refText.setText(defaultChange);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(refText);
-		addRefContentProposalToText(refText);
+		final ExplicitContentProposalAdapter contentProposer = addRefContentProposalToText(
+				refText);
 		refText.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent event) {
@@ -184,7 +186,11 @@
 				checkPage();
 			}
 		});
-
+		if (defaultChange != null) {
+			refText.setText(defaultChange);
+		} else if (candidateChange != null) {
+			refText.setText(candidateChange);
+		}
 		runInBackgroud = new Button(main, SWT.CHECK);
 		GridDataFactory.fillDefaults().span(2, 1).align(SWT.BEGINNING, SWT.END)
 				.grab(true, true)
@@ -216,6 +222,36 @@
 		refText.setFocus();
 		Dialog.applyDialogFont(main);
 		setControl(main);
+		if (candidateChange != null) {
+			// Launch content assist when the page is displayed
+			final IWizardContainer container = getContainer();
+			if (container instanceof IPageChangeProvider) {
+				((IPageChangeProvider) container)
+						.addPageChangedListener(new IPageChangedListener() {
+							@Override
+							public void pageChanged(PageChangedEvent event) {
+								if (event
+										.getSelectedPage() == FetchGerritChangePage.this) {
+									// Only the first time: remove myself
+									event.getPageChangeProvider()
+											.removePageChangedListener(this);
+									getControl().getDisplay()
+											.asyncExec(new Runnable() {
+										@Override
+										public void run() {
+											Control control = getControl();
+											if (control != null
+													&& !control.isDisposed()) {
+												contentProposer
+														.openProposalPopup();
+											}
+										}
+									});
+								}
+							}
+						});
+			}
+		}
 		checkPage();
 	}
 

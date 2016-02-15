@@ -1,0 +1,22 @@
+	@Test
+	public void testChangeStringUri() {
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510/"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510/6"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510/6/"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510/6/some.path/some/File.txt"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510/4..5"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510/4..5/"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org/r/#/c/65510/4..5/some.path/some/File.txt"));
+		assertEquals("65510", FetchGerritChangePage.determineChangeFromString(
+				"https://git.example.org:8080/r/#/c/65510"));
+	}
+

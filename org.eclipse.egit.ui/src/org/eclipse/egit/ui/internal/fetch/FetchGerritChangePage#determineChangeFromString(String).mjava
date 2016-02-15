@@ -1,0 +1,51 @@
+	/**
+	 * Tries to determine a Gerrit change number from an input string.
+	 *
+	 * @param input
+	 *            string to derive a change number from
+	 * @return the change number as a string, or {@code null} if none could be
+	 *         determined.
+	 */
+	protected static String determineChangeFromString(String input) {
+		if (input == null) {
+			return null;
+		}
+		Pattern pattern = Pattern.compile(
+				"(?:https?://\\S+?/|/)?([1-9][0-9]*)(?:/([1-9][0-9]*)(?:/([1-9][0-9]*)(?:..\\d+)?)?)?(?:/\\S*)?"); //$NON-NLS-1$
+		Matcher matcher = pattern.matcher(input);
+		if (matcher.matches()) {
+			String first = matcher.group(1);
+			String second = matcher.group(2);
+			String third = matcher.group(3);
+			if (second != null && !second.isEmpty()) {
+				if (third != null && !third.isEmpty()) {
+					return second;
+				} else if (input.startsWith("http")) { //$NON-NLS-1$
+					// A URL ending with two digits: take the first.
+					return first;
+				} else {
+					// Take the numerically larger. Might be a fragment like
+					// /10/65510 as in refs/changes/10/65510/6, or /65510/6 as
+					// in https://git.eclipse.org/r/#/c/65510/6. This is a
+					// heuristic, it might go wrong on a Gerrit where there are
+					// not many changes (yet), and one of them has many patch
+					// sets.
+					try {
+						if (Integer.parseInt(first) > Integer
+								.parseInt(second)) {
+							return first;
+						} else {
+							return second;
+						}
+					} catch (NumberFormatException e) {
+						// Numerical overflow?
+						return null;
+					}
+				}
+			} else {
+				return first;
+			}
+		}
+		return null;
+	}
+

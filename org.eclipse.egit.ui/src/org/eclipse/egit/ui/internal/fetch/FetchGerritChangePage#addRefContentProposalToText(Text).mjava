@@ -1,4 +1,5 @@
-	private void addRefContentProposalToText(final Text textField) {
+	private ExplicitContentProposalAdapter addRefContentProposalToText(
+			final Text textField) {
 		KeyStroke stroke = UIUtils
 				.getKeystrokeOfBestActiveBindingFor(IWorkbenchCommandConstants.EDIT_CONTENT_ASSIST);
 		if (stroke != null)
@@ -65,9 +66,10 @@
 			}
 		};
 
-		ContentProposalAdapter adapter = new ContentProposalAdapter(textField,
-				new TextContentAdapter(), cp, stroke, null);
+		ExplicitContentProposalAdapter adapter = new ExplicitContentProposalAdapter(
+				textField, cp, stroke);
 		// set the acceptance style to always replace the complete content
 		adapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+		return adapter;
 	}
 

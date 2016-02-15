@@ -1,0 +1,8 @@
+	@Test
+	public void testChangeStringOverflow() {
+		assertNull(FetchGerritChangePage
+				.determineChangeFromString("4444444444444444/4"));
+		assertNull(FetchGerritChangePage
+				.determineChangeFromString("4/4444444444444444/"));
+	}
+
