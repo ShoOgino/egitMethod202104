@@ -1,5 +1,8 @@
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
+			if (!doReschedule)
+				return Status.OK_STATUS;
+
 			// The core plugin might have been stopped before we could cancel
 			// this job.
 			RepositoryCache repositoryCache = org.eclipse.egit.core.Activator
