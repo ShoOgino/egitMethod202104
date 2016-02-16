@@ -24,7 +24,8 @@
 			return;
 		}
 		git = absolutePath.toFile();
-		if (!git.isDirectory() || !new File(git, "config").isFile()) { //$NON-NLS-1$
+
+		if (!RepositoryCache.FileKey.isGitRepository(git, FS.DETECTED)) {
 			logAndUnmapGoneMappedResource(m);
 			return;
 		}
