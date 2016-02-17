@@ -9,7 +9,7 @@
 					UIText.InitHandler_initialCommit);
 			commitOperation.execute(null);
 		} catch (CoreException e) {
-			throw new ExecutionException(e.getMessage());
+			throw new ExecutionException(e.getMessage(), e);
 		}
 	}
 

@@ -3,7 +3,7 @@
 		try {
 			branchList = Git.wrap(repository).branchList().call();
 		} catch (GitAPIException e) {
-			throw new ExecutionException(e.getMessage());
+			throw new ExecutionException(e.getMessage(), e);
 		}
 		return branchList;
 	}
