@@ -1,17 +1,16 @@
 	private void find(final IProgressMonitor m, final IContainer c,
 			boolean searchLinkedFolders)
 				throws CoreException {
-		if (!searchLinkedFolders && c.isLinked())
+		if (!searchLinkedFolders && c.isLinked()) {
 			return; // Ignore linked folders
+		}
 		final IPath loc = c.getLocation();
-
+		if (loc == null) {
+			return; // Either gone, or provided by an EFS
+		}
 		SubMonitor progress = SubMonitor.convert(m, 101);
 		progress.subTask(CoreText.RepositoryFinder_finding);
-		if (loc == null) {
-			throw new CoreException(Activator.error(
-					NLS.bind(CoreText.RepositoryFinder_ResourceDoesNotExist, c),
-					null));
-		}
+
 		final File fsLoc = loc.toFile();
 		assert fsLoc.isAbsolute();
 
