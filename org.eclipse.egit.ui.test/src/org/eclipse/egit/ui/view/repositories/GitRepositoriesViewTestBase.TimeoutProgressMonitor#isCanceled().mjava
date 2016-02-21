@@ -1,0 +1,10 @@
+		@Override
+		public boolean isCanceled() {
+			boolean canceled = super.isCanceled();
+			if (canceled) {
+				return true;
+			}
+			setCanceled(System.currentTimeMillis() > stopTime);
+			return super.isCanceled();
+		}
+
