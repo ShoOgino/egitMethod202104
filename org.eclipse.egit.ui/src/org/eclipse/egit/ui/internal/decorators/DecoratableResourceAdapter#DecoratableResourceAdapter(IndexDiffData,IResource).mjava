@@ -7,7 +7,7 @@
 		if (trace) {
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.DECORATION.getLocation(),
-					"Decorate " + resource.getFullPath()); //$NON-NLS-1$
+					"Decorate " + resourceToWrap.getFullPath()); //$NON-NLS-1$
 			start = System.currentTimeMillis();
 		}
 		try {
@@ -20,6 +20,7 @@
 			if (repository == null) {
 				return;
 			}
+			setIsRepositoryContainer(resourceToWrap.equals(mapping.getContainer()));
 			IResourceState baseState = ResourceStateFactory.getInstance()
 					.get(indexDiffData, resourceToWrap);
 			setTracked(baseState.isTracked());
@@ -28,10 +29,10 @@
 			setConflicts(baseState.hasConflicts());
 			setAssumeUnchanged(baseState.isAssumeUnchanged());
 			setStagingState(baseState.getStagingState());
-			if (resource.getType() == IResource.PROJECT
-					|| resource.equals(mapping.getContainer())) {
-				// We only need this very expensive info for project decoration,
-				// and for decorating folders that are submodule roots.
+			if (isRepositoryContainer()) {
+				// We only need this very expensive info for for decorating
+				// projects and folders that are submodule or nested repository
+				// roots
 				repositoryName = DecoratableResourceHelper
 						.getRepositoryName(repository);
 				branch = DecoratableResourceHelper.getShortBranch(repository);

@@ -8,8 +8,9 @@
 				break;
 			case IResource.FOLDER:
 			case DecoratableResourceMapping.RESOURCE_MAPPING:
-				// Use the submodule formatting if it's a submodule root
-				if (resource.getBranch() != null) {
+				if (resource.isRepositoryContainer()) {
+					// Use the submodule formatting if it's a submodule or
+					// nested repository root
 					format = store.getString(
 							UIPreferences.DECORATOR_SUBMODULETEXT_DECORATION);
 				} else {
