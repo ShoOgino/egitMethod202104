@@ -8,34 +8,27 @@
 	public static RepositoryMapping getMapping(@NonNull IPath path) {
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
-
 		IPath bestWorkingTree = null;
 		RepositoryMapping bestMapping = null;
-
 		for (IProject project : projects) {
 			if (isNonWorkspace(project)) {
 				continue;
 			}
-			RepositoryMapping mapping = getMapping(project);
-			if (mapping == null) {
-				continue;
-			}
-
-			File workTree = mapping.getWorkTree();
-			if (workTree == null) {
-				continue;
-			}
-			IPath workingTree = new Path(workTree.toString());
-			if (workingTree.isPrefixOf(path)) {
-				if (bestWorkingTree == null
-						|| workingTree.segmentCount() > bestWorkingTree
-								.segmentCount()) {
-					bestWorkingTree = workingTree;
-					bestMapping = mapping;
+			for (RepositoryMapping mapping : getMappings(project).values()) {
+				File workTree = mapping.getWorkTree();
+				if (workTree == null) {
+					continue;
+				}
+				IPath workingTree = new Path(workTree.toString());
+				if (workingTree.isPrefixOf(path)) {
+					if (bestWorkingTree == null || workingTree
+							.segmentCount() > bestWorkingTree.segmentCount()) {
+						bestWorkingTree = workingTree;
+						bestMapping = mapping;
+					}
 				}
 			}
 		}
-
 		return bestMapping;
 	}
 

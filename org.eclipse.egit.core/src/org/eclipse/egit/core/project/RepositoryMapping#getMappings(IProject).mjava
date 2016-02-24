@@ -1,0 +1,17 @@
+	/**
+	 * Get all repository mappings for a project.
+	 *
+	 * @param project
+	 * @return all RepositoryMappings for this project, can be empty list for
+	 *         non GitProvider.
+	 */
+	@NonNull
+	private static Map<IPath, RepositoryMapping> getMappings(
+			final @Nullable IProject project) {
+		GitProjectData data = getProjectData(project);
+		if (data == null) {
+			return Collections.emptyMap();
+		}
+		return data.getRepositoryMappings();
+	}
+

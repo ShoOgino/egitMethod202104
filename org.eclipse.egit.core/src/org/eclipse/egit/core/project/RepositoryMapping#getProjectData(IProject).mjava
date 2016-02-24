@@ -1,0 +1,29 @@
+	/**
+	 * Get the git project data for a project.
+	 *
+	 * @param project
+	 *            to find the data for
+	 * @return the git project data for this project, or null for non
+	 *         GitProvider.
+	 */
+	@Nullable
+	private static GitProjectData getProjectData(
+			final @Nullable IProject project) {
+		if (project == null || isNonWorkspace(project)) {
+			return null;
+		}
+		final GitProvider rp = ResourceUtil.getGitProvider(project);
+		GitProjectData data;
+		// The provider could not yet be mapped
+		if (rp == null) {
+			// Load the data directly
+			data = GitProjectData.get(project);
+			if (data == null) {
+				return null;
+			}
+		} else {
+			data = rp.getData();
+		}
+		return data;
+	}
+
