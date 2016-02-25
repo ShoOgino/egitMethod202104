@@ -5,8 +5,12 @@
 	 * @return styled string
 	 */
 	protected StyledString getStyledTextForSubmodule(RepositoryTreeNode node) {
-		StyledString string = new StyledString();
 		Repository repository = (Repository) node.getObject();
+		if (repository == null) {
+			return new StyledString();
+		}
+		StyledString string = GitLabels.getChangedPrefix(repository);
+
 		String path = Repository.stripWorkDir(node.getParent().getRepository()
 				.getWorkTree(), repository.getWorkTree());
 		string.append(path);
