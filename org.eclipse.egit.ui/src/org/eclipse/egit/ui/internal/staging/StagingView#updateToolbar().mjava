@@ -125,9 +125,12 @@
 				getLabelProvider(unstagedViewer).setFileNameMode(enable);
 				getContentProvider(stagedViewer).setFileNameMode(enable);
 				getContentProvider(unstagedViewer).setFileNameMode(enable);
-				refreshViewersPreservingExpandedElements();
+				UnstagedComparator comparator = (UnstagedComparator) unstagedViewer
+						.getComparator();
+				comparator.setFileNamesFirst(enable);
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_FILENAME_MODE, enable);
+				refreshViewersPreservingExpandedElements();
 			}
 		};
 		fileNameModeAction.setChecked(getPreferenceStore().getBoolean(

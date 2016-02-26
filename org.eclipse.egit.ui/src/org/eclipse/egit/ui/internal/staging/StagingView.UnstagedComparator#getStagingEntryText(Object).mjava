@@ -1,0 +1,13 @@
+		private String getStagingEntryText(Object element) {
+			String text = ""; //$NON-NLS-1$
+			StagingEntry stagingEntry = getStagingEntry(element);
+			if (stagingEntry != null) {
+				if (isFileNamesFirst()) {
+					text = stagingEntry.getName();
+				} else {
+					text = stagingEntry.getPath();
+				}
+			}
+			return text;
+		}
+

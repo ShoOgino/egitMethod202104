@@ -93,8 +93,9 @@
 				compareWith(event);
 			}
 		});
-		unstagedViewer
-				.setComparator(new UnstagedComparator(getSortCheckState()));
+		unstagedViewer.setComparator(
+				new UnstagedComparator(getSortCheckState(), getPreferenceStore()
+						.getBoolean(UIPreferences.STAGING_VIEW_FILENAME_MODE)));
 		enableAutoExpand(unstagedViewer);
 		addListenerToDisableAutoExpandOnCollapse(unstagedViewer);
 
