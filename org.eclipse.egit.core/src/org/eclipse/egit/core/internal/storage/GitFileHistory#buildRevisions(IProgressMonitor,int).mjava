@@ -7,9 +7,11 @@
 		try {
 			final AnyObjectId headId = db.resolve(Constants.HEAD);
 			if (headId == null) {
+				IProject project = resource.getProject();
+				String projectName = project != null? project.getName() : ""; //$NON-NLS-1$
 				Activator.logError(NLS.bind(
 						CoreText.GitFileHistory_noHeadRevisionAvailable,
-						resource.getProject().getName()), null);
+						projectName), null);
 				return NO_REVISIONS;
 			}
 
@@ -31,9 +33,10 @@
 
 			walk.markStart(root);
 		} catch (IOException e) {
+			IProject project = resource.getProject();
+			String projectName = project != null? project.getName() : ""; //$NON-NLS-1$
 			Activator.logError(NLS.bind(
-					CoreText.GitFileHistory_invalidHeadRevision, resource
-							.getProject().getName()), e);
+					CoreText.GitFileHistory_invalidHeadRevision, projectName), e);
 			return NO_REVISIONS;
 		}
 
