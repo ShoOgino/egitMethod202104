@@ -69,6 +69,8 @@
 			return getStyledTextForTag((TagNode) node);
 		case STASHED_COMMIT:
 			return getStyledTextForCommit((StashedCommitNode) node);
+		case SUBMODULES:
+			return getStyledTextForSubmodules((SubmodulesNode) node);
 		case PUSH:
 			// fall through
 		case FETCH:
@@ -92,8 +94,6 @@
 		case REMOTES:
 			// fall through
 		case REMOTE:
-			// fall through
-		case SUBMODULES:
 			// fall through
 		case STASH:
 			// fall through

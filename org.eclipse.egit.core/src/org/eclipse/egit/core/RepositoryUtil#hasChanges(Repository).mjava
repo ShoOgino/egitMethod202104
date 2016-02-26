@@ -1,0 +1,16 @@
+	/**
+	 * Determines whether the given {@link Repository} has any changes by
+	 * checking the {@link IndexDiffCacheEntry} of the repository.
+	 *
+	 * @param repository
+	 *            to check
+	 * @return {@code true} if the repository has any changes, {@code false}
+	 *         otherwise
+	 */
+	public static boolean hasChanges(@NonNull Repository repository) {
+		IndexDiffCacheEntry entry = Activator.getDefault().getIndexDiffCache()
+				.getIndexDiffCacheEntry(repository);
+		IndexDiffData data = entry != null ? entry.getIndexDiff() : null;
+		return data != null && data.hasChanges();
+	}
+

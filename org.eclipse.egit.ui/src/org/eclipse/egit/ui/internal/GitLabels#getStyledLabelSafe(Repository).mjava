@@ -8,7 +8,8 @@
 	 * @param repository
 	 * @return repository label
 	 */
-	public static StyledString getStyledLabelSafe(Repository repository) {
+	public static @NonNull StyledString getStyledLabelSafe(
+			@NonNull Repository repository) {
 		try {
 			return getStyledLabel(repository);
 		} catch (IOException e) {

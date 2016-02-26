@@ -7,29 +7,13 @@
 	 * @return a styled string for the repository
 	 * @throws IOException
 	 */
-	public static StyledString getStyledLabel(Repository repository)
+	public static @NonNull StyledString getStyledLabel(
+			@NonNull Repository repository)
 			throws IOException {
 		RepositoryUtil repositoryUtil = Activator.getDefault()
 				.getRepositoryUtil();
 
-		StyledString string = new StyledString();
-
-		IndexDiffCacheEntry entry = org.eclipse.egit.core.Activator
-				.getDefault().getIndexDiffCache()
-				.getIndexDiffCacheEntry(repository);
-		if (entry != null) {
-			IndexDiffData indexDiffData = entry.getIndexDiff();
-			if (indexDiffData != null
-					&& (!indexDiffData.getAdded().isEmpty()
-							|| !indexDiffData.getChanged().isEmpty()
-							|| !indexDiffData.getRemoved().isEmpty()
-							|| !indexDiffData.getUntracked().isEmpty()
-							|| !indexDiffData.getModified().isEmpty() || !indexDiffData
-							.getMissing().isEmpty())) {
-				string.append('>', StyledString.DECORATIONS_STYLER);
-				string.append(' ');
-			}
-		}
+		StyledString string = getChangedPrefix(repository);
 
 		string.append(repositoryUtil.getRepositoryName(repository));
 
