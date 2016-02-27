@@ -125,8 +125,10 @@
 				getLabelProvider(unstagedViewer).setFileNameMode(enable);
 				getContentProvider(stagedViewer).setFileNameMode(enable);
 				getContentProvider(unstagedViewer).setFileNameMode(enable);
-				UnstagedComparator comparator = (UnstagedComparator) unstagedViewer
+				StagingEntryComparator comparator = (StagingEntryComparator) unstagedViewer
 						.getComparator();
+				comparator.setFileNamesFirst(enable);
+				comparator = (StagingEntryComparator) stagedViewer.getComparator();
 				comparator.setFileNamesFirst(enable);
 				getPreferenceStore().setValue(
 						UIPreferences.STAGING_VIEW_FILENAME_MODE, enable);

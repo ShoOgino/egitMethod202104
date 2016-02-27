@@ -29,14 +29,17 @@
 
 			@Override
 			public void run() {
-				UnstagedComparator comparator = (UnstagedComparator) unstagedViewer
+				StagingEntryComparator comparator = (StagingEntryComparator) unstagedViewer
 						.getComparator();
-				comparator.setAlphabeticSort(isChecked());
+				comparator.setAlphabeticSort(!isChecked());
+				comparator = (StagingEntryComparator) stagedViewer.getComparator();
+				comparator.setAlphabeticSort(!isChecked());
 				unstagedViewer.refresh();
+				stagedViewer.refresh();
 			}
 		};
 
-		sortAction.setImageDescriptor(UIIcons.ALPHABETICALLY_SORT);
+		sortAction.setImageDescriptor(UIIcons.STATE_SORT);
 		sortAction.setId(SORT_ITEM_TOOLBAR_ID);
 		sortAction.setChecked(getSortCheckState());
 

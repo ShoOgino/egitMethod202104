@@ -94,7 +94,7 @@
 			}
 		});
 		unstagedViewer.setComparator(
-				new UnstagedComparator(getSortCheckState(), getPreferenceStore()
+				new StagingEntryComparator(getSortCheckState(), getPreferenceStore()
 						.getBoolean(UIPreferences.STAGING_VIEW_FILENAME_MODE)));
 		enableAutoExpand(unstagedViewer);
 		addListenerToDisableAutoExpandOnCollapse(unstagedViewer);
@@ -400,6 +400,9 @@
 				compareWith(event);
 			}
 		});
+		stagedViewer.setComparator(
+				new StagingEntryComparator(getSortCheckState(), getPreferenceStore()
+						.getBoolean(UIPreferences.STAGING_VIEW_FILENAME_MODE)));
 		enableAutoExpand(stagedViewer);
 		addListenerToDisableAutoExpandOnCollapse(stagedViewer);
 
