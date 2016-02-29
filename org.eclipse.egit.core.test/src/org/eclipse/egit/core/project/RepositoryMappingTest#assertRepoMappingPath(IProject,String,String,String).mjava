@@ -1,13 +1,13 @@
-	private void assertRepoMappingPath(IProject testProject, String path,
-			String testDir, String parents) {
-		String testDirOS = testDir.replace('/', File.separatorChar);
+	private void assertRepoMappingPath(IProject testProject, String pathOS,
+			String testDirPortable, String parentsPortable) {
+		String testDirOS = testDirPortable.replace('/', File.separatorChar);
 		File testFile = new File(testDirOS);
 		if (!testFile.isAbsolute()) {
-			testFile = new File(new File(path), testDirOS);
+			testFile = new File(new File(pathOS), testDirOS);
 		}
 		RepositoryMapping mapping = RepositoryMapping.create(testProject,
 				testFile);
-		assertEquals(parents + testDir,
+		assertEquals(parentsPortable + testDirPortable,
 				mapping.getGitDirPath().toPortableString());
 	}
 

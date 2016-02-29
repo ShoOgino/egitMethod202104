@@ -16,7 +16,7 @@
 		// component.
 		String gitAbsolute = projectPath.uptoSegment(0)
 				.append(projectPath.segment(0) + "fake").append(".git")
-				.toOSString();
+				.toPortableString();
 		String parents = "";
 		while (projectPath.segmentCount() > 2) {
 			String pathString = projectPath.toOSString();
