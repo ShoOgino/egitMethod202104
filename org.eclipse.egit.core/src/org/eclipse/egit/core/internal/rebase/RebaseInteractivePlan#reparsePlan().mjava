@@ -1,9 +1,0 @@
-	private void reparsePlan() {
-		try (RevWalk walk = new RevWalk(repository.newObjectReader())) {
-			doneList = parseDone(walk);
-			todoList = parseTodo(walk);
-		}
-		planList = JoinedList.wrap(doneList, todoList);
-		notifyPlanWasUpdatedFromRepository();
-	}
-

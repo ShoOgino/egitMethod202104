@@ -3,6 +3,8 @@
 		parentRepositoryGitDir = createProjectAndCommitToRepository();
 		childRepositoryGitDir = createProjectAndCommitToRepository(CHILDREPO,
 				CHILDPROJECT);
+		Activator.getDefault().getRepositoryUtil()
+				.addConfiguredRepository(parentRepositoryGitDir);
 		parentRepository = lookupRepository(parentRepositoryGitDir);
 		childRepository = lookupRepository(childRepositoryGitDir);
 		parentProject = ResourcesPlugin.getWorkspace().getRoot()

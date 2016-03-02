@@ -3,6 +3,11 @@
 	 * Unit tests can use this method to get a clean beginning state
 	 */
 	public synchronized void clear() {
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		for (Map.Entry<File, Reference<Repository>> entry : repositoryCache
+				.entrySet()) {
+			cache.remove(entry.getKey());
+		}
 		repositoryCache.clear();
 	}
 

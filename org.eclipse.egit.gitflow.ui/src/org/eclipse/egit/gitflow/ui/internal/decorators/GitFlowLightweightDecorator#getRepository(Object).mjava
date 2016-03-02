@@ -6,7 +6,10 @@
 
 		if (element instanceof RepositoryNode) {
 			RepositoryNode node = (RepositoryNode) element;
-			repository = new GitFlowRepository(node.getObject());
+			Repository repo = node.getObject();
+			if (repo != null) {
+				repository = new GitFlowRepository(repo);
+			}
 		}
 
 		return repository;

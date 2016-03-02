@@ -1,4 +1,4 @@
-	private List<PlanElement> parseTodo(RevWalk walk) {
+	private List<PlanElement> parseTodo(Repository repository, RevWalk walk) {
 		List<RebaseTodoLine> rebaseTodoLines;
 		try {
 			rebaseTodoLines = repository.readRebaseTodo(REBASE_TODO, true);

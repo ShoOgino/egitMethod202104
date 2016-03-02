@@ -52,7 +52,7 @@
 			if (!projectsToDelete.isEmpty()) {
 				final boolean[] confirmedCanceled = new boolean[] { false,
 						false };
-				Display.getDefault().syncExec(new Runnable() {
+				PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 
 					@Override
 					public void run() {
@@ -96,6 +96,16 @@
 						return Activator.createErrorStatus(e.getMessage(), e);
 					}
 				}
+				PlatformUI.getWorkbench().getDisplay()
+						.asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						for (RepositoryNode node : selectedNodes) {
+							node.clear();
+						}
+					}
+				});
 				return Status.OK_STATUS;
 			}
 

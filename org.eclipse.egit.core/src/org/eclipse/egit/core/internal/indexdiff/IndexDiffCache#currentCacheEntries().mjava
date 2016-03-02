@@ -1,12 +1,13 @@
 	/**
-	 * Retrieves the set of repositories for which there are currently entries
-	 * in the cache; primarily intended for use in tests.
+	 * Retrieves the set of git directories of repositories for which there are
+	 * currently entries in the cache; primarily intended for use in tests.
 	 *
-	 * @return the set of repositories for which the cache currently has entries
+	 * @return the set of git directories of repositories for which the cache
+	 *         currently has entries
 	 */
 	@NonNull
-	public Set<Repository> currentCacheEntries() {
-		Set<Repository> result = null;
+	public Set<File> currentCacheEntries() {
+		Set<File> result = null;
 		synchronized (entries) {
 			result = new HashSet<>(entries.keySet());
 		}

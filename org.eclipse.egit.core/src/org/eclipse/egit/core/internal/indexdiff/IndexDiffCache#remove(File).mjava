@@ -1,0 +1,15 @@
+	/**
+	 * Removes the {@link IndexDiffCacheEntry} for the given repository.
+	 *
+	 * @param gitDir
+	 *            of the {@link Repository} to remove the cache entry of
+	 */
+	public void remove(@NonNull File gitDir) {
+		synchronized (entries) {
+			IndexDiffCacheEntry cachedEntry = entries.remove(gitDir);
+			if (cachedEntry != null) {
+				cachedEntry.dispose();
+			}
+		}
+	}
+

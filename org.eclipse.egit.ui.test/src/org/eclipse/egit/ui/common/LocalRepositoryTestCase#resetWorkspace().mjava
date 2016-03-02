@@ -3,6 +3,7 @@
 		TestUtil.processUIEvents();
 		// close all editors/dialogs
 		new Eclipse().reset();
+		closeGitViews();
 		TestUtil.processUIEvents();
 		// cleanup
 		for (IProject project : ResourcesPlugin.getWorkspace().getRoot()

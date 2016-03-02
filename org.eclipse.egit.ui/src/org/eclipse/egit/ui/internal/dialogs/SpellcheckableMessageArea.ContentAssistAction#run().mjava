@@ -1,0 +1,8 @@
+		@Override
+		public void run() {
+			if (viewer.canDoOperation(ISourceViewer.CONTENTASSIST_PROPOSALS)
+					&& viewer.getTextWidget().isFocusControl()) {
+				viewer.doOperation(ISourceViewer.CONTENTASSIST_PROPOSALS);
+			}
+		}
+

@@ -1,6 +1,5 @@
 	private String getReloadJobName() {
-		String repoName = Activator.getDefault().getRepositoryUtil()
-				.getRepositoryName(repository);
-		return MessageFormat.format(CoreText.IndexDiffCacheEntry_reindexing, repoName);
+		return MessageFormat.format(CoreText.IndexDiffCacheEntry_reindexing,
+				repositoryName);
 	}
 

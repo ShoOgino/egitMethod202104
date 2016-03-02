@@ -2,10 +2,13 @@
 	 * @return all Repository instances contained in the cache
 	 */
 	public synchronized Repository[] getAllRepositories() {
-		prune(repositoryCache);
+		prune();
 		List<Repository> repositories = new ArrayList<Repository>();
 		for (Reference<Repository> reference : repositoryCache.values()) {
-			repositories.add(reference.get());
+			Repository repository = reference.get();
+			if (repository != null) {
+				repositories.add(repository);
+			}
 		}
 		return repositories.toArray(new Repository[repositories.size()]);
 	}

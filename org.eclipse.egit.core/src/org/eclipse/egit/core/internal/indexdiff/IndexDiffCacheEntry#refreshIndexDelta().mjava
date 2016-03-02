@@ -6,11 +6,13 @@
 	 * For bare repositories this does nothing.
 	 */
 	private void refreshIndexDelta() {
-		if (repository.isBare())
+		Repository repository = getRepository();
+		if (repository == null || repository.isBare()) {
 			return;
-
+		}
 		try {
-			DirCache currentIndex = repository.readDirCache();
+			DirCache currentIndex = DirCache.read(repository.getIndexFile(),
+					repository.getFS());
 			DirCache oldIndex = lastIndex;
 
 			lastIndex = currentIndex;

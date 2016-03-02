@@ -3,7 +3,7 @@
 		testMethodNumber++;
 		// create standalone temporary directory
 		testDirectory = testUtils.createTempDir("LocalRepositoriesTests"
-				+ testMethodNumber);
+				+ testMethodNumber + '_' + testName.getMethodName());
 		if (testDirectory.exists())
 			FileUtils.delete(testDirectory, FileUtils.RECURSIVE
 					| FileUtils.RETRY);

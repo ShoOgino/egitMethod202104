@@ -6,7 +6,9 @@
 	public IndexDiffCacheEntry getIndexDiffCacheEntry(@NonNull Repository repository) {
 		IndexDiffCacheEntry entry;
 		synchronized (entries) {
-			entry = entries.get(repository);
+			File gitDir = new Path(repository.getDirectory().getAbsolutePath())
+					.toFile();
+			entry = entries.get(gitDir);
 			if (entry != null) {
 				return entry;
 			}
@@ -14,7 +16,7 @@
 				return null;
 			}
 			entry = new IndexDiffCacheEntry(repository, globalListener);
-			entries.put(repository, entry);
+			entries.put(gitDir, entry);
 		}
 		return entry;
 	}

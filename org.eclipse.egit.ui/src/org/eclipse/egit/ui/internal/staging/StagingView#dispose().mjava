@@ -24,8 +24,9 @@
 
 		getPreferenceStore().removePropertyChangeListener(uiPrefsListener);
 
-
 		getDialogSettings().put(STORE_SORT_STATE, sortAction.isChecked());
+
+		currentRepository = null;
 
 		disposed = true;
 	}

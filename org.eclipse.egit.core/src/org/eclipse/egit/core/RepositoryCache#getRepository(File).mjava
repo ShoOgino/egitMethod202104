@@ -1,0 +1,18 @@
+	/**
+	 * Looks in the cache for a {@link Repository} matching the given git
+	 * directory.
+	 *
+	 * @param gitDir
+	 * @return the cached repository, if any, or {@code null} if node found in
+	 *         the cache.
+	 */
+	public synchronized Repository getRepository(final File gitDir) {
+		prune();
+		if (gitDir == null) {
+			return null;
+		}
+		File normalizedGitDir = new Path(gitDir.getAbsolutePath()).toFile();
+		Reference<Repository> r = repositoryCache.get(normalizedGitDir);
+		return r != null ? r.get() : null;
+	}
+

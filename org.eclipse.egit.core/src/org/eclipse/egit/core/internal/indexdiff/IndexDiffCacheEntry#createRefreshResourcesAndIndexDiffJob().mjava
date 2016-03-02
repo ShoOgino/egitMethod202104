@@ -7,8 +7,6 @@
 	 * @return new job ready to be scheduled, never null
 	 */
 	public Job createRefreshResourcesAndIndexDiffJob() {
-		final String repositoryName = Activator.getDefault().getRepositoryUtil()
-				.getRepositoryName(repository);
 		String jobName = MessageFormat
 				.format(CoreText.IndexDiffCacheEntry_refreshingProjects,
 						repositoryName);
@@ -16,6 +14,10 @@
 
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) {
+				Repository repository = getRepository();
+				if (repository == null) {
+					return Status.CANCEL_STATUS;
+				}
 				final long start = System.currentTimeMillis();
 				ISchedulingRule rule = RuleUtil.getRule(repository);
 				try {
@@ -23,6 +25,7 @@
 					try {
 						IProject[] validOpenProjects = ProjectUtil
 								.getValidOpenProjects(repository);
+						repository = null;
 						ProjectUtil.refreshResources(validOpenProjects,
 								monitor);
 					} catch (CoreException e) {
@@ -39,6 +42,7 @@
 					return Status.CANCEL_STATUS;
 				} finally {
 					Job.getJobManager().endRule(rule);
+					repository = null;
 				}
 				refresh();
 				Job next = reloadJob;

@@ -1,0 +1,14 @@
+	@Override
+	public boolean isConflicting(ISchedulingRule rule) {
+		if (rule instanceof RepositoryCacheRule) {
+			return true;
+		} else if (rule instanceof MultiRule) {
+			for (ISchedulingRule child : ((MultiRule) rule).getChildren()) {
+				if (isConflicting(child)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+

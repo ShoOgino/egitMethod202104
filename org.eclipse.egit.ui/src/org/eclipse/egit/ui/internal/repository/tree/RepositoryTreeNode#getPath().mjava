@@ -2,6 +2,10 @@
 	 * @return the path of the file, folder or repository
 	 */
 	public IPath getPath() {
+		Repository repository = getRepository();
+		if (repository == null) {
+			return null;
+		}
 		return new Path(getRepository().getWorkTree().getAbsolutePath());
 	}
 

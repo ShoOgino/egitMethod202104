@@ -6,8 +6,9 @@
 	 */
 	protected void scheduleUpdateJob(final Collection<String> filesToUpdate,
 			final Collection<IResource> resourcesToUpdate) {
-		if (!checkRepository())
+		if (getRepository() == null) {
 			return;
+		}
 		if (reloadJob != null && reloadJobIsInitializing)
 			return;
 
@@ -47,8 +48,12 @@
 				lock.lock();
 				try {
 					long startTime = System.currentTimeMillis();
+					Repository repository = getRepository();
+					if (repository == null) {
+						return Status.CANCEL_STATUS;
+					}
 					IndexDiffData result = calcIndexDiffDataIncremental(monitor,
-							getName(), files, resources);
+							getName(), repository, files, resources);
 					if (monitor.isCanceled() || (result == null)) {
 						return Status.CANCEL_STATUS;
 					}
@@ -65,7 +70,7 @@
 								message.append(indexDiffData.toString())
 								.toString());
 					}
-					notifyListeners();
+					notifyListeners(repository);
 					return Status.OK_STATUS;
 				} catch (IOException e) {
 					if (GitTraceLocation.INDEXDIFFCACHE.isActive()) {

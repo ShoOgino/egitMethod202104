@@ -4,12 +4,17 @@
 	 * Only {@link PlanElement Elements} of {@link ElementType#TODO} are
 	 * persisted.
 	 *
+	 * @param repository
+	 *            the plan belong to
+	 *
 	 * @return true if the todo file has been written successfully, otherwise
 	 *         false
 	 */
-	public boolean persist() {
-		if (!isRebasingInteractive())
+	private boolean persist(Repository repository) {
+		if (repository == null || repository
+				.getRepositoryState() != RepositoryState.REBASING_INTERACTIVE) {
 			return false;
+		}
 		List<RebaseTodoLine> todoLines = new LinkedList<RebaseTodoLine>();
 		for (PlanElement element : planList.getSecondList())
 			todoLines.add(element.getRebaseTodoLine());

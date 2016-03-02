@@ -1,0 +1,18 @@
+	/**
+	 * Removes the references to the repository and to the object. <strong>Call
+	 * only after this node has been removed from the view!</strong>
+	 * <p>
+	 * The CommonViewer framework keeps on to a hard reference to the last
+	 * selection, even if that no longer will appear in the view. Moreover, the
+	 * WorkbenchSourceProvider may also hold such a reference to the
+	 * RepositoryNode(s). This will preclude for some time the garbage
+	 * collection and eventual removal of the Repository instance
+	 * (RepositoryCache relies on WeakReference semantics). Therefore, this
+	 * operation provides a means to clear the reference to the Repository in a
+	 * now otherwise unreferenced RepositoryNode.
+	 */
+	public void clear() {
+		myRepository = null;
+		myObject = null;
+	}
+

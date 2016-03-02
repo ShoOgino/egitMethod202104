@@ -24,6 +24,7 @@
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		IndexDiffCacheEntry cache = Activator.getDefault().getIndexDiffCache()
 				.getIndexDiffCacheEntry(subRepository);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		IResourceState state = ResourceStateFactory.getInstance()
 				.get(cache.getIndexDiff(), file);
 		assertTrue("File should be staged", state.isStaged());

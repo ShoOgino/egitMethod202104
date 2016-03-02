@@ -3,6 +3,8 @@
 	 *         {@link RepositoryState#REBASING_INTERACTIVE}
 	 */
 	public boolean isRebasingInteractive() {
-		return repository.getRepositoryState() == RepositoryState.REBASING_INTERACTIVE;
+		Repository repository = getRepository();
+		return repository != null && repository
+				.getRepositoryState() == RepositoryState.REBASING_INTERACTIVE;
 	}
 

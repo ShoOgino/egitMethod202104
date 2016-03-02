@@ -1,7 +1,8 @@
 	private RebaseInteractivePlan(Repository repo) {
-		this.repository = repo;
-		reparsePlan();
-		registerIndexDiffChangeListener();
+		this.repositoryRef = new WeakReference<>(repo);
+		this.myGitDir = repo.getDirectory().getAbsoluteFile();
+		reparsePlan(repo);
+		registerIndexDiffChangeListener(repo);
 		registerRefChangedListener();
 	}
 

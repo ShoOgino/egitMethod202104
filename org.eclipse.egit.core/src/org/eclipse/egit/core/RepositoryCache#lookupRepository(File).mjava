@@ -1,4 +1,7 @@
 	/**
+	 * Looks in the cache for a {@link Repository} matching the given git
+	 * directory. If there is no such Repository instance in the cache, one is
+	 * created.
 	 *
 	 * @param gitDir
 	 * @return an existing instance of Repository for <code>gitDir</code> or a
@@ -8,7 +11,7 @@
 	 */
 	public synchronized Repository lookupRepository(final File gitDir)
 			throws IOException {
-		prune(repositoryCache);
+		prune();
 		// Make sure we have a normalized path without .. segments here.
 		File normalizedGitDir = new Path(gitDir.getAbsolutePath()).toFile();
 		Reference<Repository> r = repositoryCache.get(normalizedGitDir);
