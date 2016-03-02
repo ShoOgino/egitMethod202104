@@ -12,12 +12,11 @@
 		assertHasRepo(repositoryFile);
 		SWTBotTree tree = getOrOpenView().bot().tree();
 		tree.getAllItems()[0].select();
-		JobJoiner joiner = JobJoiner.startListening(
-				JobFamilies.REPOSITORY_DELETE, 10, TimeUnit.SECONDS);
-		ContextMenuHelper.clickContextMenu(tree, myUtil.getPluginLocalizedValue(
+		ContextMenuHelper.clickContextMenuSync(tree,
+				myUtil.getPluginLocalizedValue(
 				REMOVE_REPOSITORY_FROM_VIEW_CONTEXT_MENU_LABEL));
+		TestUtil.joinJobs(JobFamilies.REPOSITORY_DELETE);
 		refreshAndWait();
-		joiner.join();
 		assertEmpty();
 		assertTrue(repositoryFile.exists());
 		assertTrue(
