@@ -1,11 +1,17 @@
 	private void saveDirs(Set<String> gitDirStrings) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sbRelative = new StringBuilder();
+		StringBuilder sbAbsolute = new StringBuilder();
 		for (String gitDirString : gitDirStrings) {
-			sb.append(gitDirString);
-			sb.append(File.pathSeparatorChar);
+			sbRelative.append(relativizeToWorkspace(gitDirString));
+			sbRelative.append(File.pathSeparatorChar);
+			sbAbsolute.append(gitDirString);
+			sbAbsolute.append(File.pathSeparatorChar);
 		}
 
-		prefs.put(PREFS_DIRECTORIES, sb.toString());
+		prefs.put(PREFS_DIRECTORIES_REL, sbRelative.toString());
+		// redundantly store absolute paths to ensure compatibility with older
+		// EGit versions
+		prefs.put(PREFS_DIRECTORIES, sbAbsolute.toString());
 		try {
 			prefs.flush();
 		} catch (BackingStoreException e) {
