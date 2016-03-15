@@ -17,11 +17,6 @@
 				monitor.worked(1);
 			} catch (GitAPIException e) {
 				Activator.logError(e.getMessage(), e);
-			} finally {
-				RepositoryMapping mapping = findRepositoryMapping(repository);
-				if (mapping != null) {
-					mapping.fireRepositoryChanged();
-				}
 			}
 		}
 

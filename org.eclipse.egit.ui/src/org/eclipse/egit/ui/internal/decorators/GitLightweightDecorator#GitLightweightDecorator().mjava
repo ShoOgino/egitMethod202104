@@ -11,5 +11,6 @@
 				.addPropertyChangeListener(this);
 
 		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache().addIndexDiffChangedListener(this);
+		GitProjectData.addRepositoryChangeListener(mappingChangeListener);
 	}
 

@@ -5,10 +5,6 @@
 			commitOperation.execute(monitor);
 			commit = commitOperation.getCommit();
 			CommitMessageComponentStateManager.deleteState(repository);
-			RepositoryMapping mapping = RepositoryMapping
-					.findRepositoryMapping(repository);
-			if (mapping != null)
-				mapping.fireRepositoryChanged();
 		} catch (CoreException e) {
 			if (e.getCause() instanceof JGitInternalException) {
 				return Activator.createErrorStatus(e.getLocalizedMessage(),

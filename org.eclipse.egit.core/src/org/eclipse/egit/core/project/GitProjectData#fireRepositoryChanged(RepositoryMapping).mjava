@@ -1,5 +1,5 @@
 	/**
-	 * Notify registered {@link RepositoryChangeListener}s of a change.
+	 * Notify registered {@link RepositoryMappingChangeListener}s of a change.
 	 *
 	 * @param which
 	 *            the repository which has had changes occur within it.
@@ -9,12 +9,12 @@
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				RepositoryChangeListener[] listeners = getRepositoryChangeListeners();
+				RepositoryMappingChangeListener[] listeners = getRepositoryChangeListeners();
 				monitor.beginTask(
 						CoreText.GitProjectData_repositoryChangedTaskName,
 						listeners.length);
 
-				for (RepositoryChangeListener listener : listeners) {
+				for (RepositoryMappingChangeListener listener : listeners) {
 					listener.repositoryChanged(which);
 					monitor.worked(1);
 				}

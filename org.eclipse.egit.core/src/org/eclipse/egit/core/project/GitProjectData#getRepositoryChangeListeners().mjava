@@ -5,9 +5,9 @@
 	 *
 	 * @return a copy of the current repository change listeners
 	 */
-	private static synchronized RepositoryChangeListener[] getRepositoryChangeListeners() {
+	private static synchronized RepositoryMappingChangeListener[] getRepositoryChangeListeners() {
 		return repositoryChangeListeners
-				.toArray(new RepositoryChangeListener[repositoryChangeListeners
+				.toArray(new RepositoryMappingChangeListener[repositoryChangeListeners
 						.size()]);
 	}
 

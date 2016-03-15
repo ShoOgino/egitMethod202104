@@ -3,15 +3,15 @@
 		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
 		SWTBotTreeItem node = TestUtil.navigateTo(projectExplorerTree,
 				childFolder.getFullPath().segments());
-		waitForDecorations();
+		TestUtil.waitForDecorations();
 		assertTrue("Folder should have repo/branch decoration",
 				node.getText().contains("[master"));
 		node = TestUtil.getChildNode(node.expand(), CHILDPROJECT);
-		waitForDecorations();
+		TestUtil.waitForDecorations();
 		assertFalse("Folder should not have repo/branch decoration",
 				node.getText().contains("["));
 		node = TestUtil.navigateTo(projectExplorerTree, CHILDPROJECT);
-		waitForDecorations();
+		TestUtil.waitForDecorations();
 		assertTrue("Project should have subrepo/branch decoration",
 				node.getText().contains("[child"));
 	}
