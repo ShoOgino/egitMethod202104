@@ -2,7 +2,8 @@
 	 * @param repository
 	 * @return {@code true} if repository has been configured for Gerrit
 	 */
-	public static boolean hasGerritConfiguration(Repository repository) {
+	public static boolean hasGerritConfiguration(
+			@NonNull Repository repository) {
 		Config config = repository.getConfig();
 		if (GerritUtil.getCreateChangeId(config))
 			return true;
