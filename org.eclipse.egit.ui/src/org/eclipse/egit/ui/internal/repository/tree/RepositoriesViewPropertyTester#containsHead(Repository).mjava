@@ -1,0 +1,8 @@
+	private boolean containsHead(Repository repository) {
+		try {
+			return repository.resolve(Constants.HEAD) != null;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
