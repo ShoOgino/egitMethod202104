@@ -1,0 +1,19 @@
+	/**
+	 * @param dirs
+	 *            String with repository directories separated by path separator
+	 * @return set of absolute paths of repository directories, relative paths
+	 *         are resolved against the workspace root
+	 */
+	private Set<String> toDirSet(String dirs) {
+		if (dirs == null || dirs.isEmpty()) {
+			return Collections.emptySet();
+		}
+		Set<String> configuredStrings = new HashSet<String>();
+		StringTokenizer tok = new StringTokenizer(dirs, File.pathSeparator);
+		while (tok.hasMoreTokens()) {
+			configuredStrings
+					.add(workspacePath.resolve(tok.nextToken()).toString());
+		}
+		return configuredStrings;
+	}
+
