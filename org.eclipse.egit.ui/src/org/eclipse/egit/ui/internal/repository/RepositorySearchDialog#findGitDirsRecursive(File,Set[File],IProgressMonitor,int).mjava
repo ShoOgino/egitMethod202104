@@ -1,0 +1,33 @@
+	private void findGitDirsRecursive(File root, Set<File> gitDirs,
+			IProgressMonitor monitor, int depth) {
+
+		if (!root.exists() || !root.isDirectory()) {
+			return;
+		}
+
+		// check the root first
+		File resolved = FileKey.resolve(root, FS.DETECTED);
+		if (resolved != null) {
+			gitDirs.add(resolved.getAbsoluteFile());
+			monitor.setTaskName(NLS.bind(
+					UIText.RepositorySearchDialog_RepositoriesFound_message,
+					Integer.valueOf(gitDirs.size())));
+		}
+
+		// check depth and if we are not in private git folder ".git" itself
+		if ((depth != 0) && !root.equals(resolved)) {
+			File[] children = root.listFiles();
+			for (File child : children) {
+				if (monitor.isCanceled()) {
+					return;
+				}
+				// skip files and .git subfolders in root
+				if (child.isDirectory()
+						&& !Constants.DOT_GIT.equals(child.getName())) {
+					monitor.subTask(child.getPath());
+					findGitDirsRecursive(child, gitDirs, monitor, depth - 1);
+				}
+			}
+		}
+	}
+

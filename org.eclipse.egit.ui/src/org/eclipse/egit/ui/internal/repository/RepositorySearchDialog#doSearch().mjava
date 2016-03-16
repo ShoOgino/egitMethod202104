@@ -27,7 +27,7 @@
 						IProgressMonitor.UNKNOWN);
 				try {
 					findGitDirsRecursive(file, directories, monitor,
-							lookForNested);
+							lookForNested ? -1 : 1);
 				} catch (Exception ex) {
 					throw new InvocationTargetException(ex);
 				}
