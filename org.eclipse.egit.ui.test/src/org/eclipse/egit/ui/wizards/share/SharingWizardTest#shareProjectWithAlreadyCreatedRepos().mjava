@@ -1,6 +1,5 @@
 	@Test
-	public void shareProjectWithAlreadyCreatedRepos() throws IOException,
-			InterruptedException, JGitInternalException, GitAPIException {
+	public void shareProjectWithAlreadyCreatedRepos() throws Exception {
 		Repository repo1 = FileRepositoryBuilder.create(new File(
 				new File(createProject(projectName1)).getParent(), ".git"));
 		repo1.create();

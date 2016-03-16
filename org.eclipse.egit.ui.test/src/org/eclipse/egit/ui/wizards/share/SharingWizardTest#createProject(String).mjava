@@ -1,4 +1,5 @@
-	private static String createProject(String projectName) {
+	private static String createProject(String projectName)
+			throws CoreException {
 		bot.menu("File").menu("New").menu("Project...").click();
 		SWTBotShell createProjectDialogShell = bot.shell("New Project");
 		bot.tree().getTreeItem("General").expand().getNode("Project").select();
@@ -9,6 +10,8 @@
 		String path = bot.textWithLabel("Location:").getText();
 		bot.button("Finish").click();
 		bot.waitUntil(Conditions.shellCloses(createProjectDialogShell), 10000);
+		ResourcesPlugin.getWorkspace().getRoot()
+				.refreshLocal(IResource.DEPTH_INFINITE, null);
 		return path;
 	}
 

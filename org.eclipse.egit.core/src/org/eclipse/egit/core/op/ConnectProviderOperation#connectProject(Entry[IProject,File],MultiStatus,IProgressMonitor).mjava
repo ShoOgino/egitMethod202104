@@ -48,7 +48,8 @@
 		RepositoryProvider.map(project, GitProvider.ID);
 
 		if (refreshResources) {
-			project.refreshLocal(IResource.DEPTH_INFINITE, subMon.newChild(40));
+			touchGitResources(project, subMon.newChild(10));
+			project.refreshLocal(IResource.DEPTH_INFINITE, subMon.newChild(30));
 		} else {
 			subMon.worked(40);
 		}
