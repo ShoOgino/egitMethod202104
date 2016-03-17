@@ -1,0 +1,20 @@
+	/**
+	 * Drop the Eclipse project from our association of projects/repositories
+	 * and remove all RepositoryMappings.
+	 *
+	 * @param p
+	 *            to deconfigure
+	 * @throws IOException
+	 *             if the property file cannot be removed.
+	 */
+	public static void deconfigure(final IProject p) throws IOException {
+		trace("deconfigure(" + p.getName() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+		GitProjectData d = lookup(p);
+		if (d == null) {
+			deletePropertyFiles(p);
+		} else {
+			d.deletePropertyFilesAndUncache();
+			unmap(d);
+		}
+	}
+

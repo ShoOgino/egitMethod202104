@@ -38,8 +38,6 @@
 			return;
 		}
 
-		fireRepositoryChanged(m);
-
 		trace("map "  //$NON-NLS-1$
 				+ c
 				+ " -> "  //$NON-NLS-1$
@@ -50,6 +48,8 @@
 			Activator.logError(
 					CoreText.GitProjectData_failedToCacheRepoMapping, err);
 		}
+
+		fireRepositoryChanged(m);
 
 		dotGit = c.findMember(Constants.DOT_GIT);
 		if (dotGit != null) {
