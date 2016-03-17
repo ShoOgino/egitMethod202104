@@ -20,10 +20,16 @@
 
 				@Override
 				public IStatus runInWorkspace(IProgressMonitor monitor) {
-					internalDoFetch(spec, uri, doCheckout, doCreateTag,
-							doCreateBranch, doCheckoutNewBranch,
-							doActivateAdditionalRefs,
-							textForTag, textForBranch, monitor);
+					try {
+						internalDoFetch(spec, uri, doCheckout, doCreateTag,
+								doCreateBranch, doCheckoutNewBranch,
+								doActivateAdditionalRefs, textForTag,
+								textForBranch, monitor);
+					} catch (CoreException ce) {
+						return ce.getStatus();
+					} catch (Exception e) {
+						return Activator.createErrorStatus(e.getLocalizedMessage(), e);
+					}
 					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 

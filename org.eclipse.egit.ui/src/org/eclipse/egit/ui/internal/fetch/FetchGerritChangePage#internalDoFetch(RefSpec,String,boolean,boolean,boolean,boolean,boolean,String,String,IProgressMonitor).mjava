@@ -1,8 +1,9 @@
 	private void internalDoFetch(RefSpec spec, String uri, boolean doCheckout,
 			boolean doCreateTag, boolean doCreateBranch,
-			boolean doCheckoutNewBranch,
-			boolean doActivateAdditionalRefs, String textForTag,
-			String textForBranch, IProgressMonitor monitor) {
+			boolean doCheckoutNewBranch, boolean doActivateAdditionalRefs,
+			String textForTag, String textForBranch, IProgressMonitor monitor)
+					throws IOException, CoreException, URISyntaxException,
+					GitAPIException {
 
 		int totalWork = 1;
 		if (doCheckout)
@@ -31,8 +32,6 @@
 
 			storeLastUsedUri(uri);
 
-		} catch (Exception e) {
-			Activator.handleError(e.getMessage(), e, true);
 		} finally {
 			monitor.done();
 		}
