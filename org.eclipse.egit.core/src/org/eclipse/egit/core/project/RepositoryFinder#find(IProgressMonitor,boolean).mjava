@@ -6,13 +6,15 @@
 	 * @param searchLinkedFolders
 	 *            specify if linked folders should be included in the search
 	 * @return all found {@link RepositoryMapping} instances associated with the
-	 *         project supplied to this instance's constructor.
+	 *         project supplied to this instance's constructor, in the order
+	 *         they were found.
 	 * @throws CoreException
 	 *             Eclipse was unable to access its workspace, and threw up on
 	 *             us. We're throwing it back at the caller.
 	 * @since 2.3
 	 */
-	public Collection<RepositoryMapping> find(IProgressMonitor m, boolean searchLinkedFolders)
+	public List<RepositoryMapping> find(IProgressMonitor m,
+			boolean searchLinkedFolders)
 			throws CoreException {
 		find(m, proj, searchLinkedFolders);
 		return results;
