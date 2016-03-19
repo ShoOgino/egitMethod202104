@@ -3,8 +3,15 @@
 	 * are canceled.
 	 */
 	public void dispose() {
-		indexChangedListenerHandle.remove();
-		refsChangedListenerHandle.remove();
+		for (ListenerHandle h : indexChangedListenerHandles) {
+			h.remove();
+		}
+		for (ListenerHandle h : refsChangedListenerHandles) {
+			h.remove();
+		}
+		indexChangedListenerHandles.clear();
+		refsChangedListenerHandles.clear();
+		submodules.clear();
 		if (resourceChangeListener != null) {
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 		}
