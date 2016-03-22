@@ -7,12 +7,7 @@
 				util.getPluginLocalizedValue("TeamGitFlowMenu.name", false, Activator.getDefault().getBundle()),
 				util.getPluginLocalizedValue("TeamGitFlowFeatureStart.name", false, Activator.getDefault().getBundle()) };
 
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				ContextMenuHelper.clickContextMenuSync(projectExplorerTree, menuPath);
-			}
-		});
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, menuPath);
 
 		bot.waitUntil(shellIsActive(UIText.FeatureStartHandler_provideFeatureName));
 		bot.text().setText(featureName);

@@ -7,12 +7,7 @@
 				util.getPluginLocalizedValue("TeamGitFlowMenu.name", false, Activator.getDefault().getBundle()),
 				util.getPluginLocalizedValue("TeamGitFlowFeatureCheckout.name", false, Activator.getDefault().getBundle()) };
 
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				ContextMenuHelper.clickContextMenuSync(projectExplorerTree, menuPath);
-			}
-		});
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, menuPath);
 
 		bot.waitUntil(shellIsActive(UIText.FeatureCheckoutHandler_selectFeature));
 		bot.text().setText("these are not the features you're looking for");

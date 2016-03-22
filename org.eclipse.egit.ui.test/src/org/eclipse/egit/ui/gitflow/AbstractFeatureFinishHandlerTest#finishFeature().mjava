@@ -5,12 +5,9 @@
 				util.getPluginLocalizedValue("TeamMenu.label"),
 				util.getPluginLocalizedValue("TeamGitFlowMenu.name", false, Activator.getDefault().getBundle()),
 				util.getPluginLocalizedValue("TeamGitFlowFeatureFinish.name", false, Activator.getDefault().getBundle()) };
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				ContextMenuHelper.clickContextMenuSync(projectExplorerTree, menuPath);
-			}
-		});
+
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, menuPath);
+		bot.waitUntil(shellIsActive(UIText.FinishFeatureDialog_title));
 		selectOptions();
 		bot.checkBox(UIText.FinishFeatureDialog_saveAsDefault).click();
 		bot.button("OK").click();
