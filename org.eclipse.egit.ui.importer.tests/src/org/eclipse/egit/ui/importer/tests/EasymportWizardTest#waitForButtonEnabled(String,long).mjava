@@ -1,8 +1,9 @@
-	private void waitForNextEnabled(final long timeoutInSec) {
+	private void waitForButtonEnabled(final String buttonLabel,
+			final long timeoutInSec) {
 		bot.waitWhile(new ICondition() {
 			@Override
 			public boolean test() throws Exception {
-				return !bot.button("Next >").isEnabled();
+				return !bot.button(buttonLabel).isEnabled();
 			}
 
 			@Override
@@ -12,7 +13,8 @@
 
 			@Override
 			public String getFailureMessage() {
-				return "Next > button not enabled within " + timeoutInSec
+				return buttonLabel + " button not enabled within "
+						+ timeoutInSec
 						+ "sec";
 			}
 		}, timeoutInSec * 1000L);

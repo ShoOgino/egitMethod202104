@@ -17,7 +17,7 @@
 		bot.button("Next >").click();
 		bot.text().setText("https://git.eclipse.org/r/jgit/jgit");
 		bot.button("Next >").click();
-		waitForNextEnabled(30); // Time to fetch branch info, up to 30sec
+		waitForButtonEnabled("Next >", 30); // Time to fetch branch info
 		bot.button("Deselect All").click();
 		bot.tree().getTreeItem("master").check();
 		bot.button("Next >").click();
@@ -25,13 +25,11 @@
 		try {
 			bot.text().setText(tmpDir.toString());
 			bot.button("Next >").click();
-			waitForNextEnabled(180); // Time to clone repo, up to 3 minutes
-			bot.button("Next >").click();
+			waitForButtonEnabled("Finish", 180); // Time to clone repo
 			bot.button("Finish").click();
 
-			bot.shell("Nested Projects");
-			waitForLabel("Completed", 30);
-			bot.button("OK").click();
+			Job.getJobManager().join(SmartImportJob.class,
+					new NullProgressMonitor());
 
 			newProjects = new HashSet<>(Arrays.asList(ResourcesPlugin.getWorkspace().getRoot().getProjects()));
 			newProjects.removeAll(initialProjects);

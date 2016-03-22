@@ -1,14 +1,15 @@
 	/**
 	 * Constructor
 	 */
-	public EasymportGitWizard() {
+	public SmartImportGitWizard() {
 		super();
 		IDialogSettings dialogSettings = super.getDialogSettings();
 		if (dialogSettings == null) {
-			dialogSettings = Activator.getDefault().getDialogSettings();
+			dialogSettings = org.eclipse.egit.ui.Activator.getDefault()
+					.getDialogSettings();
 			setDialogSettings(dialogSettings);
 		}
 		setDefaultPageImageDescriptor(UIIcons.WIZBAN_IMPORT_REPO);
-		this.easymportWizard = new EasymportWizard();
+		this.easymportWizard = new SmartImportWizard();
 	}
 

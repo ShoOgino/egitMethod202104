@@ -1,4 +1,4 @@
-	private File doClone() {
+	private File doClone(final SmartImportRootWizardPage importRootPage) {
 		setCallerRunsCloneOperation(true);
 		try {
 			final GitRepositoryInfo repositoryInfo = currentSearchResult.getGitRepositoryInfo();
@@ -8,6 +8,8 @@
 				public void run() {
 					runCloneOperation(getContainer(), repositoryInfo);
 					cloneDestination.saveSettingsForClonedRepo();
+					importRootPage.setInitialImportRoot(
+							getCloneDestinationPage().getDestinationFile());
 				}
 			});
 		} catch (URISyntaxException e) {
