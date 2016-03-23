@@ -11,6 +11,7 @@
 		context.registerService(DebugOptionsListener.class.getName(), this,
 				props);
 
+		setupSSH(context);
 		repositoryCache = new RepositoryCache();
 		indexDiffCache = new IndexDiffCache();
 		try {
