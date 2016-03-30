@@ -1,5 +1,5 @@
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(final Composite parent) {
 		GridLayoutFactory.fillDefaults().applyTo(parent);
 
 		toolkit = new FormToolkit(parent.getDisplay());
@@ -18,21 +18,44 @@
 		});
 
 		form = toolkit.createForm(parent);
+		parent.addControlListener(new ControlListener() {
 
+			private int[] defaultWeights = { 1, 1 };
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				org.eclipse.swt.graphics.Rectangle b = parent.getBounds();
+				int oldOrientation = mainSashForm.getOrientation();
+				if ((oldOrientation == SWT.HORIZONTAL)
+						&& (b.height > b.width)) {
+					mainSashForm.setOrientation(SWT.VERTICAL);
+					mainSashForm.setWeights(defaultWeights);
+				} else if ((oldOrientation == SWT.VERTICAL)
+						&& (b.height <= b.width)) {
+					mainSashForm.setOrientation(SWT.HORIZONTAL);
+					mainSashForm.setWeights(defaultWeights);
+				}
+			}
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				// ignore
+			}
+		});
 		form.setImage(getImage(UIIcons.REPOSITORY));
 		form.setText(UIText.StagingView_NoSelectionTitle);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(form);
 		toolkit.decorateFormHeading(form);
 		GridLayoutFactory.swtDefaults().applyTo(form.getBody());
 
-		horizontalSashForm = new SashForm(form.getBody(), SWT.NONE);
-		saveSashFormWeightsOnDisposal(horizontalSashForm,
+		mainSashForm = new SashForm(form.getBody(), SWT.HORIZONTAL);
+		saveSashFormWeightsOnDisposal(mainSashForm,
 				HORIZONTAL_SASH_FORM_WEIGHT);
-		toolkit.adapt(horizontalSashForm, true, true);
+		toolkit.adapt(mainSashForm, true, true);
 		GridDataFactory.fillDefaults().grab(true, true)
-				.applyTo(horizontalSashForm);
+				.applyTo(mainSashForm);
 
-		stagingSashForm = new SashForm(horizontalSashForm,
+		stagingSashForm = new SashForm(mainSashForm,
 				getStagingFormOrientation());
 		saveSashFormWeightsOnDisposal(stagingSashForm,
 				STAGING_SASH_FORM_WEIGHT);
@@ -99,7 +122,7 @@
 		enableAutoExpand(unstagedViewer);
 		addListenerToDisableAutoExpandOnCollapse(unstagedViewer);
 
-		Composite rebaseAndCommitComposite = toolkit.createComposite(horizontalSashForm);
+		Composite rebaseAndCommitComposite = toolkit.createComposite(mainSashForm);
 		rebaseAndCommitComposite.setLayout(GridLayoutFactory.fillDefaults().create());
 
 		rebaseSection = toolkit.createSection(rebaseAndCommitComposite,
