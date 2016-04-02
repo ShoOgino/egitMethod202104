@@ -1,5 +1,7 @@
 	@Before
 	public void setupViews() {
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, false);
 		TestUtil.showExplorerView();
 	}
 
