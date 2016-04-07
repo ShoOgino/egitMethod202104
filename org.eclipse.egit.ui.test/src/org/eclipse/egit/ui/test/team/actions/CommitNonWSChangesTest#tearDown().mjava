@@ -1,7 +1,6 @@
 	@After
-	public void closeSynchronizeView() {
+	public void tearDown() {
 		Activator.getDefault().getPreferenceStore()
 				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, true);
-		TestUtil.hideView(ISynchronizeView.VIEW_ID);
 	}
 

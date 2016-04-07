@@ -1,7 +1,7 @@
 		private ISaveablesLifecycleListener getSaveablesLifecycleListener(
 				IWorkbenchPart part) {
-			ISaveablesLifecycleListener listener = (ISaveablesLifecycleListener) Utils
-					.getAdapter(part, ISaveablesLifecycleListener.class);
+			ISaveablesLifecycleListener listener = AdapterUtils.adapt(part,
+					ISaveablesLifecycleListener.class);
 			if (listener == null)
 				listener = CommonUtils.getService(part.getSite(), ISaveablesLifecycleListener.class);
 			return listener;

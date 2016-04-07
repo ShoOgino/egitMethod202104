@@ -38,8 +38,8 @@
 				tw.addTree(dci);
 				fti.setDirCacheIterator(tw, 3);
 			}
-			List<ThreeWayDiffEntry> diffEntrys = ThreeWayDiffEntry.scan(tw);
-
+			List<ThreeWayDiffEntry> diffEntrys = ThreeWayDiffEntry
+					.scan(tw, gsd);
 			for (ThreeWayDiffEntry diffEntry : diffEntrys)
 				repoCache.addMember(diffEntry);
 		} catch (Exception e) {

@@ -6,6 +6,8 @@
 	 */
 	@Test
 	public void testContextMenuRepository() throws Exception {
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, false);
 		// We just check if the dialogs open, the actual commit and import projects
 		// is tested elsewhere
 		SWTBotTree tree = getOrOpenView().bot().tree();
@@ -18,5 +20,7 @@
 				myUtil.getPluginLocalizedValue("RepoViewImportProjects.label"),
 				NLS.bind(UIText.GitCreateProjectViaWizardWizard_WizardTitle,
 						repositoryFile));
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, true);
 	}
 

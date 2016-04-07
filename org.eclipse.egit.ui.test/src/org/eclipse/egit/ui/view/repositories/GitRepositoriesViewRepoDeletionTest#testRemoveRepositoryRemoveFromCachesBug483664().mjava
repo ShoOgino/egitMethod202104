@@ -1,6 +1,9 @@
 	@Test
 	public void testRemoveRepositoryRemoveFromCachesBug483664()
 			throws Exception {
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, false);
+
 		deleteAllProjects();
 		assertProjectExistence(PROJ1, false);
 		clearView();
@@ -121,5 +124,8 @@
 				configuredRepos.isEmpty());
 		assertEquals("Expected no cached repositories", "[]", results[0]);
 		assertEquals("Expected no IndexDiffCache entries", "[]", results[1]);
+
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, true);
 	}
 

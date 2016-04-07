@@ -1,0 +1,18 @@
+		private void initPaths() {
+			Set<IResource> resources = gsd.getIncludedResources();
+			if (resources != null && !resources.isEmpty()) {
+				paths = new HashSet<String>(resources.size());
+				final Path repositoryPath = new Path(gsd.getRepository()
+						.getWorkTree().getAbsolutePath());
+				for (IResource resource : gsd.getIncludedResources()) {
+					IPath resourceLocation = resource.getLocation();
+					if (resourceLocation != null) {
+						paths.add(resourceLocation.makeRelativeTo(
+								repositoryPath).toString());
+					}
+				}
+			} else {
+				paths = Collections.emptySet();
+			}
+		}
+

@@ -1,0 +1,11 @@
+		boolean apply(String pathString) {
+			if (gsd == null) {
+				// This means that all paths must be included
+				return true;
+			}
+			if (paths == null) {
+				initPaths();
+			}
+			return paths.contains(pathString);
+		}
+

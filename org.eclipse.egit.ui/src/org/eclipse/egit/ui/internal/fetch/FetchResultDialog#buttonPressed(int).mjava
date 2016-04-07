@@ -7,8 +7,9 @@
 				@Override
 				public void run() {
 					Dialog dlg = SimpleConfigureFetchDialog.getDialog(
-							PlatformUI.getWorkbench().getDisplay()
-									.getActiveShell(), localDb);
+							PlatformUI.getWorkbench()
+									.getModalDialogShellProvider().getShell(),
+							localDb);
 					dlg.open();
 				}
 			});
