@@ -1,0 +1,12 @@
+	static String gatherRevision(ExecutionEvent event) throws IOException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil
+				.getRepository(event);
+		Ref develop = gfRepo.getRepository()
+				.exactRef(gfRepo.getConfig().getDevelopFull());
+		if (develop == null) {
+			throw new IllegalStateException(
+					"Gitflow command called on non-Gitflow repository"); //$NON-NLS-1$
+		}
+		return develop.getName();
+	}
+

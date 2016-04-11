@@ -1,0 +1,39 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IWorkbenchPart part = HandlerUtil.getActivePartChecked(event);
+
+		final DiscardChangesOperation operation;
+		try {
+			operation = createOperation(part, event);
+		} catch (IOException e) {
+			throw new ExecutionException(e.getMessage(), e);
+		}
+
+		if (operation == null) {
+			return null;
+		}
+		Job job = new WorkspaceJob(DiscardChangesAction_discardChanges) {
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
+				try {
+					operation.execute(monitor);
+				} catch (CoreException e) {
+					return createErrorStatus(e.getStatus().getMessage(), e);
+				}
+				return OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (DISCARD_CHANGES.equals(family)) {
+					return true;
+				}
+				return super.belongsTo(family);
+			}
+		};
+		job.setUser(true);
+		job.setRule(operation.getSchedulingRule());
+		job.schedule();
+		return null;
+	}
+

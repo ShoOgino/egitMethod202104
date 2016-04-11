@@ -1,0 +1,11 @@
+	static IStructuredSelection getSelection(ExecutionEvent event) {
+		if (event == null) {
+			throw new IllegalArgumentException("event must not be NULL"); //$NON-NLS-1$
+		}
+		Object context = event.getApplicationContext();
+		if (context instanceof IEvaluationContext) {
+			return SelectionUtils.getSelection((IEvaluationContext) context);
+		}
+		return StructuredSelection.EMPTY;
+	}
+
