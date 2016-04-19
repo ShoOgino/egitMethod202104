@@ -1,0 +1,8 @@
+	@Override
+	public Image getImage(Object element) {
+		if (element instanceof Ref) {
+			return decorateImage((Ref) element);
+		}
+		return super.getImage(element);
+	}
+

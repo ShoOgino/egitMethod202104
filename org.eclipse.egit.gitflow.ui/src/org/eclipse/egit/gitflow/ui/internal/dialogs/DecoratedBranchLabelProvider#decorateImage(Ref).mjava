@@ -1,0 +1,20 @@
+	private Image decorateImage(Ref node) {
+		String refName = node.getName();
+
+		String branchName;
+		String compareString;
+
+		try {
+			branchName = repository.getFullBranch();
+			compareString = refName;
+		} catch (IOException e) {
+			return UIIcons.getImage(resourceManager, UIIcons.BRANCH);
+		}
+
+		if (compareString.equals(branchName)) {
+			return UIIcons.getImage(resourceManager, UIIcons.CHECKED_OUT_BRANCH);
+		} else {
+			return UIIcons.getImage(resourceManager, UIIcons.BRANCH);
+		}
+	}
+
