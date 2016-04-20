@@ -1,5 +1,7 @@
 	@Override
 	public boolean performFinish() {
+		activePage = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
 		if (!existingPage.getInternalMode()) {
 			try {
 				final Map<IProject, File> projectsToMove = existingPage
@@ -13,7 +15,7 @@
 							InterruptedException {
 						for (Map.Entry<IProject, File> entry : projectsToMove
 								.entrySet()) {
-
+							closeOpenEditorsForProject(entry.getKey());
 							IPath targetLocation = new Path(entry.getValue()
 									.getPath());
 							IPath currentLocation = entry.getKey()
