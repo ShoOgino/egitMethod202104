@@ -5,7 +5,7 @@
 		if (userConfig == null)
 			userConfig = SystemReader.getInstance().openUserConfig(null, FS.DETECTED); // no inherit here!
 		if (repositories == null) {
-			repositories = new ArrayList<Repository>();
+			repositories = new ArrayList<>();
 			List<String> repoPaths = Activator.getDefault().getRepositoryUtil().getConfiguredRepositories();
 			RepositoryCache repositoryCache = org.eclipse.egit.core.Activator.getDefault().getRepositoryCache();
 			for (String repoPath : repoPaths) {

@@ -15,14 +15,14 @@
 		if (getPresentation() == Presentation.LIST)
 			return;
 
-		Set<IPath> paths = new HashSet<IPath>(additionalPaths);
+		Set<IPath> paths = new HashSet<>(additionalPaths);
 		// Instead of just expanding the previous elements directly, also expand
 		// all parent paths. This makes it work in case of "re-folding" of
 		// compact tree.
 		for (Object element : previous)
 			if (element instanceof StagingFolderEntry)
 				addPathAndParentPaths(((StagingFolderEntry) element).getPath(), paths);
-		List<StagingFolderEntry> expand = new ArrayList<StagingFolderEntry>();
+		List<StagingFolderEntry> expand = new ArrayList<>();
 
 		calculateNodesToExpand(paths, stagedContentProvider.getElements(null),
 				expand);

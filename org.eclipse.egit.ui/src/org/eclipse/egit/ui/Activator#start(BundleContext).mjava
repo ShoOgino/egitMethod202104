@@ -4,7 +4,7 @@
 		resourceManager = new LocalResourceManager(
 				JFaceResources.getResources());
 		// we want to be notified about debug options changes
-		Dictionary<String, String> props = new Hashtable<String, String>(4);
+		Dictionary<String, String> props = new Hashtable<>(4);
 		props.put(DebugOptions.LISTENER_SYMBOLICNAME, context.getBundle()
 				.getSymbolicName());
 		context.registerService(DebugOptionsListener.class.getName(), this,

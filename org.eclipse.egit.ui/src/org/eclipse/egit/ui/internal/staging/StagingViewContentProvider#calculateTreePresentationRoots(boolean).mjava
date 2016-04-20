@@ -2,11 +2,11 @@
 		if (content == null || content.length == 0)
 			return new Object[0];
 
-		List<Object> roots = new ArrayList<Object>();
-		Map<IPath, List<Object>> childrenForPath = new HashMap<IPath, List<Object>>();
+		List<Object> roots = new ArrayList<>();
+		Map<IPath, List<Object>> childrenForPath = new HashMap<>();
 
-		Set<IPath> folderPaths = new HashSet<IPath>();
-		Map<IPath, String> childSegments = new HashMap<IPath, String>();
+		Set<IPath> folderPaths = new HashSet<>();
+		Map<IPath, String> childSegments = new HashMap<>();
 
 		for (StagingEntry file : content) {
 			IPath folderPath = file.getParentPath();
@@ -39,7 +39,7 @@
 		IPath workingDirectory = new Path(repository.getWorkTree()
 				.getAbsolutePath());
 
-		List<StagingFolderEntry> folderEntries = new ArrayList<StagingFolderEntry>();
+		List<StagingFolderEntry> folderEntries = new ArrayList<>();
 		for (IPath folderPath : folderPaths) {
 			IPath parent = folderPath.removeLastSegments(1);
 			// Find first existing parent node, but stop at root

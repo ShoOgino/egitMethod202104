@@ -16,7 +16,7 @@
 								UIText.RepositoryAction_multiRepoSelection));
 			}
 			Repository repo = pathsByRepository.keySet().iterator().next();
-			List<String> filterPaths = new ArrayList<String>(
+			List<String> filterPaths = new ArrayList<>(
 					pathsByRepository.get(repo));
 
 			if (monitor.isCanceled())
@@ -71,7 +71,7 @@
 			}
 
 			// try to obtain the common ancestor
-			List<RevCommit> startPoints = new ArrayList<RevCommit>();
+			List<RevCommit> startPoints = new ArrayList<>();
 			rw.setRevFilter(RevFilter.MERGE_BASE);
 			startPoints.add(rightCommit);
 			startPoints.add(headCommit);

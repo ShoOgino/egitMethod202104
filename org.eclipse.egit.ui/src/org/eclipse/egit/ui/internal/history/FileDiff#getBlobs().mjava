@@ -4,7 +4,7 @@
 	 * @return non-null but possibly empty array of object ids
 	 */
 	public ObjectId[] getBlobs() {
-		List<ObjectId> objectIds = new ArrayList<ObjectId>();
+		List<ObjectId> objectIds = new ArrayList<>();
 		if (diffEntry.getOldId() != null)
 			objectIds.add(diffEntry.getOldId().toObjectId());
 		if (diffEntry.getNewId() != null)

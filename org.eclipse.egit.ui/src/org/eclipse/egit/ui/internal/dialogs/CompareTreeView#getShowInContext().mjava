@@ -6,7 +6,7 @@
 	public ShowInContext getShowInContext() {
 		IPath repoPath = getRepositoryPath();
 		ITreeSelection selection = (ITreeSelection) tree.getSelection();
-		List<IResource> resources = new ArrayList<IResource>();
+		List<IResource> resources = new ArrayList<>();
 		for (Iterator it = selection.iterator(); it.hasNext();) {
 			Object obj = it.next();
 			if (obj instanceof IResource)

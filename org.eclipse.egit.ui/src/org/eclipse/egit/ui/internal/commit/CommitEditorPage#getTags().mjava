@@ -1,6 +1,6 @@
 	private List<Ref> getTags() {
 		Repository repository = getCommit().getRepository();
-		List<Ref> tags = new ArrayList<Ref>(repository.getTags().values());
+		List<Ref> tags = new ArrayList<>(repository.getTags().values());
 		Collections.sort(tags, new Comparator<Ref>() {
 
 			@Override

@@ -6,7 +6,7 @@
 	 *            the paths to show
 	 */
 	private void showPaths(final List<IPath> paths) {
-		final List<RepositoryTreeNode> nodesToShow = new ArrayList<RepositoryTreeNode>();
+		final List<RepositoryTreeNode> nodesToShow = new ArrayList<>();
 
 		Map<Repository, Collection<String>> pathsByRepo = ResourceUtil.splitPathsByRepository(paths);
 		for (Map.Entry<Repository, Collection<String>> entry : pathsByRepo.entrySet()) {

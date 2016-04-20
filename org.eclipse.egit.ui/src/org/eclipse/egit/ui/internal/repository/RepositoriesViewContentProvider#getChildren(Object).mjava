@@ -7,7 +7,7 @@
 		switch (node.getType()) {
 
 		case BRANCHES: {
-			List<RepositoryTreeNode> nodes = new ArrayList<RepositoryTreeNode>();
+			List<RepositoryTreeNode> nodes = new ArrayList<>();
 			nodes.add(new LocalNode(node, repo));
 			nodes.add(new RemoteTrackingNode(node, repo));
 			return nodes.toArray();
@@ -17,7 +17,7 @@
 			if (branchHierarchyMode) {
 				BranchHierarchyNode hierNode = new BranchHierarchyNode(node,
 						repo, new Path(Constants.R_HEADS));
-				List<RepositoryTreeNode> children = new ArrayList<RepositoryTreeNode>();
+				List<RepositoryTreeNode> children = new ArrayList<>();
 				try {
 					for (IPath path : hierNode.getChildPaths()) {
 						children.add(new BranchHierarchyNode(node, node
@@ -32,7 +32,7 @@
 				}
 				return children.toArray();
 			} else {
-				List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
+				List<RepositoryTreeNode<Ref>> refs = new ArrayList<>();
 				try {
 					for (Entry<String, Ref> refEntry : getRefs(repo, Constants.R_HEADS).entrySet()) {
 						if (!refEntry.getValue().isSymbolic())
@@ -50,7 +50,7 @@
 			if (branchHierarchyMode) {
 				BranchHierarchyNode hierNode = new BranchHierarchyNode(node,
 						repo, new Path(Constants.R_REMOTES));
-				List<RepositoryTreeNode> children = new ArrayList<RepositoryTreeNode>();
+				List<RepositoryTreeNode> children = new ArrayList<>();
 				try {
 					for (IPath path : hierNode.getChildPaths()) {
 						children.add(new BranchHierarchyNode(node, node
@@ -65,7 +65,7 @@
 				}
 				return children.toArray();
 			} else {
-				List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
+				List<RepositoryTreeNode<Ref>> refs = new ArrayList<>();
 				try {
 					for (Entry<String, Ref> refEntry : getRefs(repo, Constants.R_REMOTES).entrySet()) {
 						if (!refEntry.getValue().isSymbolic())
@@ -82,7 +82,7 @@
 
 		case BRANCHHIERARCHY: {
 			BranchHierarchyNode hierNode = (BranchHierarchyNode) node;
-			List<RepositoryTreeNode> children = new ArrayList<RepositoryTreeNode>();
+			List<RepositoryTreeNode> children = new ArrayList<>();
 			try {
 				for (IPath path : hierNode.getChildPaths()) {
 					children.add(new BranchHierarchyNode(node, node
@@ -102,7 +102,7 @@
 		}
 
 		case ADDITIONALREFS: {
-			List<RepositoryTreeNode<Ref>> refs = new ArrayList<RepositoryTreeNode<Ref>>();
+			List<RepositoryTreeNode<Ref>> refs = new ArrayList<>();
 			try {
 				for (Entry<String, Ref> refEntry : getRefs(repo, RefDatabase.ALL).entrySet()) {
 					String name=refEntry.getKey();
@@ -119,7 +119,7 @@
 		}
 
 		case REMOTES: {
-			List<RepositoryTreeNode<String>> remotes = new ArrayList<RepositoryTreeNode<String>>();
+			List<RepositoryTreeNode<String>> remotes = new ArrayList<>();
 
 			Repository rep = node.getRepository();
 
@@ -135,7 +135,7 @@
 
 		case REPO: {
 
-			List<RepositoryTreeNode<? extends Object>> nodeList = new ArrayList<RepositoryTreeNode<? extends Object>>();
+			List<RepositoryTreeNode<? extends Object>> nodeList = new ArrayList<>();
 			nodeList.add(new BranchesNode(node, repo));
 			nodeList.add(new TagsNode(node, repo));
 			nodeList.add(new AdditionalRefsNode(node, repo));
@@ -152,7 +152,7 @@
 		}
 
 		case WORKINGDIR: {
-			List<RepositoryTreeNode<File>> children = new ArrayList<RepositoryTreeNode<File>>();
+			List<RepositoryTreeNode<File>> children = new ArrayList<>();
 
 			if (node.getRepository().isBare())
 				return children.toArray();
@@ -187,7 +187,7 @@
 		}
 
 		case FOLDER: {
-			List<RepositoryTreeNode<File>> children = new ArrayList<RepositoryTreeNode<File>>();
+			List<RepositoryTreeNode<File>> children = new ArrayList<>();
 
 			File parent = ((File) node.getObject());
 
@@ -222,7 +222,7 @@
 
 		case REMOTE: {
 
-			List<RepositoryTreeNode<String>> children = new ArrayList<RepositoryTreeNode<String>>();
+			List<RepositoryTreeNode<String>> children = new ArrayList<>();
 
 			String remoteName = (String) node.getObject();
 			RemoteConfig rc;
@@ -262,7 +262,7 @@
 		}
 
 		case SUBMODULES:
-			List<RepositoryNode> children = new ArrayList<RepositoryNode>();
+			List<RepositoryNode> children = new ArrayList<>();
 			try {
 				SubmoduleWalk walk = SubmoduleWalk.forIndex(node
 						.getRepository());
@@ -285,7 +285,7 @@
 			}
 			return children.toArray();
 		case STASH:
-			List<StashedCommitNode> stashNodes = new ArrayList<StashedCommitNode>();
+			List<StashedCommitNode> stashNodes = new ArrayList<>();
 			int index = 0;
 			try {
 				for (RevCommit commit : Git.wrap(repo).stashList().call())

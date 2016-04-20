@@ -22,7 +22,7 @@
 							}
 
 							listOp.run(monitor);
-							changeRefs = new ArrayList<Change>();
+							changeRefs = new ArrayList<>();
 							for (Ref ref : listOp.getRemoteRefs()) {
 								Change change = Change.fromRef(ref.getName());
 								if (change != null)

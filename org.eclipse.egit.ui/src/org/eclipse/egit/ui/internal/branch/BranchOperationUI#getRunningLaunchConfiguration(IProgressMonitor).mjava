@@ -8,7 +8,7 @@
 				public void run(IProgressMonitor m)
 						throws InvocationTargetException, InterruptedException {
 
-					Set<IProject> projects = new HashSet<IProject>(Arrays
+					Set<IProject> projects = new HashSet<>(Arrays
 							.asList(ProjectUtil.getProjects(repository)));
 
 					ILaunchManager launchManager = DebugPlugin.getDefault()

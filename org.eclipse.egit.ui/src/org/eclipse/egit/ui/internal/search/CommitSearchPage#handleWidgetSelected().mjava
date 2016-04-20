@@ -25,7 +25,7 @@
 		searchTreeButton.setSelection(settings.isMatchTree());
 		searchAllBranchesButton.setSelection(settings.isAllBranches());
 
-		List<RepositoryNode> repositories = new LinkedList<RepositoryNode>();
+		List<RepositoryNode> repositories = new LinkedList<>();
 		for (String path : settings.getRepositories()) {
 			File file = new File(path);
 			if (file.exists())

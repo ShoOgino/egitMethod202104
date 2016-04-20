@@ -12,7 +12,7 @@
 				if (sectionparent != null) {
 					// Arrays.asList returns a fixed-size list, so we need to
 					// copy over to a mutable list
-					entries = new ArrayList<String>(Arrays.asList(config
+					entries = new ArrayList<>(Arrays.asList(config
 							.getStringList(sectionparent.name, null, name)));
 
 					entries.remove(index);
@@ -21,7 +21,7 @@
 				} else {
 					// Arrays.asList returns a fixed-size list, so we need to
 					// copy over to a mutable list
-					entries = new ArrayList<String>(Arrays.asList(config
+					entries = new ArrayList<>(Arrays.asList(config
 							.getStringList(subsectionparent.parent.name,
 									subsectionparent.name, name)));
 					// the list is fixed-size, so we have to copy over

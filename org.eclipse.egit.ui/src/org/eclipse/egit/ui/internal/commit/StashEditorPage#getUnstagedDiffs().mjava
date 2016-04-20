@@ -2,7 +2,7 @@
 	 * @return diffs for unstaged and untracked changes
 	 */
 	protected FileDiff[] getUnstagedDiffs() {
-		List<FileDiff> unstagedDiffs = new ArrayList<FileDiff>();
+		List<FileDiff> unstagedDiffs = new ArrayList<>();
 
 		RevCommit stagedCommit = getCommit().getRevCommit().getParent(
 				PARENT_COMMIT_STAGED);

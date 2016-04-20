@@ -3,7 +3,7 @@
 	 * @throws IOException
 	 */
 	public List<Ref> getChildRefs() throws IOException {
-		List<Ref> childRefs = new ArrayList<Ref>();
+		List<Ref> childRefs = new ArrayList<>();
 		for (IPath myPath : getPathList()) {
 			if (getObject().isPrefixOf(myPath)) {
 				int segmentDiff = myPath.segmentCount()

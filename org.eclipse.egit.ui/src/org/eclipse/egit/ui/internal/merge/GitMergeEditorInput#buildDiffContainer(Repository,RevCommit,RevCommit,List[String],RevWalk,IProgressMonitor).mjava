@@ -18,7 +18,7 @@
 					fileTreeIndex);
 			// filter by selected resources
 			if (filterPaths.size() > 1) {
-				List<TreeFilter> suffixFilters = new ArrayList<TreeFilter>();
+				List<TreeFilter> suffixFilters = new ArrayList<>();
 				for (String filterPath : filterPaths)
 					suffixFilters.add(PathFilter.create(filterPath));
 				TreeFilter otf = OrTreeFilter.create(suffixFilters);

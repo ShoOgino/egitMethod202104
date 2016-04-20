@@ -1,6 +1,6 @@
 	private Set<CommitFile> computeFileProposals() {
 		Collection<String> paths = computeFileNameProposals();
-		Set<CommitFile> files = new TreeSet<CommitFile>();
+		Set<CommitFile> files = new TreeSet<>();
 		for (String path : paths) {
 			String name = new Path(path).lastSegment();
 			if (name == null)

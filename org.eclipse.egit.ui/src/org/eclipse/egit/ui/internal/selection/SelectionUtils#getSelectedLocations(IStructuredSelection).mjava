@@ -5,7 +5,7 @@
 	@NonNull
 	public static IPath[] getSelectedLocations(
 			@NonNull IStructuredSelection selection) {
-		Set<IPath> result = new LinkedHashSet<IPath>();
+		Set<IPath> result = new LinkedHashSet<>();
 		for (Object o : selection.toList()) {
 			IResource resource = AdapterUtils.adapt(o, IResource.class);
 			if (resource != null) {

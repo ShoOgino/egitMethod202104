@@ -1,7 +1,7 @@
 	private Set<ResourceTraversal> createTraversalForContainer(
 			GitModelObject child, GitSynchronizeDataSet dataSet) {
 		GitModelObject[] containerChildren = child.getChildren();
-		Set<ResourceTraversal> result = new LinkedHashSet<ResourceTraversal>();
+		Set<ResourceTraversal> result = new LinkedHashSet<>();
 		for (GitModelObject aChild : containerChildren) {
 			if(aChild.isContainer())
 				result.addAll(createTraversalForContainer(aChild, dataSet));

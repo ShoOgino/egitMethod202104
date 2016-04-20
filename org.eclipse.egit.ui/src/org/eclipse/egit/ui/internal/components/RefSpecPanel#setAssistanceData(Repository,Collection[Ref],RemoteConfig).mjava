@@ -17,7 +17,7 @@
 		final List<RefContentProposal> remoteProposals = createContentProposals(
 				remoteRefs, null);
 		remoteProposalProvider.setProposals(remoteProposals);
-		remoteRefNames = new HashSet<String>();
+		remoteRefNames = new HashSet<>();
 		for (final RefContentProposal p : remoteProposals)
 			remoteRefNames.add(p.getContent());
 
@@ -30,7 +30,7 @@
 		final List<RefContentProposal> localProposals = createContentProposals(
 				localDb.getAllRefs().values(), HEAD);
 		localProposalProvider.setProposals(localProposals);
-		localRefNames = new HashSet<String>();
+		localRefNames = new HashSet<>();
 		for (final RefContentProposal ref : localProposals)
 			localRefNames.add(ref.getContent());
 

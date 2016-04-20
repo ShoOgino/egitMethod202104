@@ -1,6 +1,6 @@
 	private List<String> getSelectedPaths(ITreeSelection selection) {
 		IPath repoPath = getRepositoryPath();
-		List<String> pathsToOpen = new ArrayList<String>();
+		List<String> pathsToOpen = new ArrayList<>();
 		for (Iterator it = selection.iterator(); it.hasNext();) {
 			Object obj = it.next();
 			if (obj instanceof IFile) {

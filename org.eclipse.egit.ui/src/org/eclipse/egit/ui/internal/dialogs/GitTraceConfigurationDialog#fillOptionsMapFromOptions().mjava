@@ -1,5 +1,5 @@
 	private void fillOptionsMapFromOptions() {
-		Map<String, String> oldValues = new HashMap<String, String>();
+		Map<String, String> oldValues = new HashMap<>();
 		for (Properties props : optionsMap.values())
 			for (Object keyObject : props.keySet()) {
 				String key = (String) keyObject;
@@ -26,7 +26,7 @@
 			optionsMap.put(plugin, props);
 		}
 
-		Map<String, String> newValues = new HashMap<String, String>();
+		Map<String, String> newValues = new HashMap<>();
 		for (Properties props : optionsMap.values())
 			for (Object keyObject : props.keySet()) {
 				String key = (String) keyObject;

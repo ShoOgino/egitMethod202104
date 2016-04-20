@@ -2,7 +2,7 @@
 		Repository repo = gsd.getRepository();
 		Set<IProject> projectsSet = gsd.getProjects();
 		IProject[] projects = projectsSet.toArray(new IProject[projectsSet.size()]);
-		List<GitModelObjectContainer> result = new ArrayList<GitModelObjectContainer>();
+		List<GitModelObjectContainer> result = new ArrayList<>();
 
 		for (Commit commit : commitCache)
 			result.add(new GitModelCommit(this, repo, commit, projects));

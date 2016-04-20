@@ -19,7 +19,7 @@
 			final RevCommit[] parents,
 			final TreeFilter... markTreeFilters) throws MissingObjectException,
 			IncorrectObjectTypeException, CorruptObjectException, IOException {
-		final ArrayList<FileDiff> r = new ArrayList<FileDiff>();
+		final ArrayList<FileDiff> r = new ArrayList<>();
 
 		if (parents.length > 0) {
 			walk.reset(trees(commit, parents));
@@ -31,7 +31,7 @@
 
 		if (walk.getTreeCount() <= 2) {
 			List<DiffEntry> entries = DiffEntry.scan(walk, false, markTreeFilters);
-			List<DiffEntry> xentries = new LinkedList<DiffEntry>(entries);
+			List<DiffEntry> xentries = new LinkedList<>(entries);
 			RenameDetector detector = new RenameDetector(repository);
 			detector.addAll(entries);
 			List<DiffEntry> renames = detector.compute(walk.getObjectReader(),

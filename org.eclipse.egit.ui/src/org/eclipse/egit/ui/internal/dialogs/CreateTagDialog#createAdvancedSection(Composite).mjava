@@ -31,7 +31,7 @@
 				// fill the Combo lazily to improve UI responsiveness
 				if (((Boolean) e.data).booleanValue()
 						&& commitCombo.getItemCount() == 0) {
-					final Collection<RevCommit> commits = new ArrayList<RevCommit>();
+					final Collection<RevCommit> commits = new ArrayList<>();
 					try {
 						PlatformUI.getWorkbench().getProgressService()
 								.busyCursorWhile(new IRunnableWithProgress() {

@@ -19,7 +19,7 @@
 		if (prefix.equals(RefDatabase.ALL))
 			return allRefs;
 
-		Map<String, Ref> filtered = new HashMap<String, Ref>();
+		Map<String, Ref> filtered = new HashMap<>();
 		for (Map.Entry<String, Ref> entry : allRefs.entrySet()) {
 			if (entry.getKey().startsWith(prefix))
 				filtered.put(entry.getKey(), entry.getValue());

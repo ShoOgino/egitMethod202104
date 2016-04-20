@@ -12,7 +12,7 @@
 			return previousCommitMessage;
 		String calculatedCommitMessage = null;
 
-		Set<IResource> resources = new HashSet<IResource>();
+		Set<IResource> resources = new HashSet<>();
 		for (String path : paths) {
 			IFile file = findFile(path);
 			if (file != null)

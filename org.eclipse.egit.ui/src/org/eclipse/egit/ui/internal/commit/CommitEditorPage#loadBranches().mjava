@@ -2,7 +2,7 @@
 		Repository repository = getCommit().getRepository();
 		RevCommit commit = getCommit().getRevCommit();
 		try (RevWalk revWalk = new RevWalk(repository)) {
-			Map<String, Ref> refsMap = new HashMap<String, Ref>();
+			Map<String, Ref> refsMap = new HashMap<>();
 			refsMap.putAll(repository.getRefDatabase().getRefs(
 					Constants.R_HEADS));
 			refsMap.putAll(repository.getRefDatabase().getRefs(

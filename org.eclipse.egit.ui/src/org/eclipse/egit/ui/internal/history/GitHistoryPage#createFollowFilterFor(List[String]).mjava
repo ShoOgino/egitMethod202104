@@ -10,7 +10,7 @@
 
 		DiffConfig diffConfig = currentRepo.getConfig().get(DiffConfig.KEY);
 
-		List<TreeFilter> followFilters = new ArrayList<TreeFilter>(paths.size());
+		List<TreeFilter> followFilters = new ArrayList<>(paths.size());
 		for (String path : paths)
 			followFilters.add(createFollowFilter(path, diffConfig));
 

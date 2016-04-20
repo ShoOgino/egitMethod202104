@@ -38,7 +38,7 @@
 				styleProvider));
 		viewer.setSorter(new ViewerSorter());
 
-		Map<MergeFailureReason, RevertFailure> failures = new HashMap<MergeFailureReason, RevertFailure>();
+		Map<MergeFailureReason, RevertFailure> failures = new HashMap<>();
 		for (Entry<String, MergeFailureReason> reason : reasons.entrySet()) {
 			RevertFailure failure = failures.get(reason.getValue());
 			if (failure == null) {

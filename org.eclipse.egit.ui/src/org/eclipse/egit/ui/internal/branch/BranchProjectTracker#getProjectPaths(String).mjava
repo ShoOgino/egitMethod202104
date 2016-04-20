@@ -21,7 +21,7 @@
 		IMemento[] children = memento.getChildren(KEY_PROJECT);
 		if (children.length == 0)
 			return new String[0];
-		List<String> projects = new ArrayList<String>(children.length);
+		List<String> projects = new ArrayList<>(children.length);
 		for (int i = 0; i < children.length; i++) {
 			String path = children[i].getTextData();
 			if (path != null && path.length() > 0)

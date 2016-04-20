@@ -2,7 +2,7 @@
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof PluginNode) {
 				PluginNode node = (PluginNode) parentElement;
-				List<OptionNode> result = new ArrayList<OptionNode>();
+				List<OptionNode> result = new ArrayList<>();
 				for (Object key : myOptionsMap.get(node).keySet()) {
 					// hide the main switch
 					if (key.equals(node.getPlugin() + MAINSWITCH))

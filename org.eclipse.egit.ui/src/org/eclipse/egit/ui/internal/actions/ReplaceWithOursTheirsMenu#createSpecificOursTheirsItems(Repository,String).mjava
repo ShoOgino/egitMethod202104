@@ -3,7 +3,7 @@
 
 		Collection<IPath> paths = Collections.<IPath> singleton(new Path(
 				new File(repository.getWorkTree(), path).getAbsolutePath()));
-		List<IContributionItem> result = new ArrayList<IContributionItem>();
+		List<IContributionItem> result = new ArrayList<>();
 
 		try {
 			ConflictCommits conflictCommits = RevUtils.getConflictCommits(

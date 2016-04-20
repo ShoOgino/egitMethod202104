@@ -15,7 +15,7 @@
 		}
 		IStructuredSelection selection = getSelection(event);
 		if (!selection.isEmpty()) {
-			Set<Repository> repos = new LinkedHashSet<Repository>();
+			Set<Repository> repos = new LinkedHashSet<>();
 			for (Object o : selection.toArray()) {
 				Repository repo = AdapterUtils.adapt(o, Repository.class);
 				if (repo != null) {

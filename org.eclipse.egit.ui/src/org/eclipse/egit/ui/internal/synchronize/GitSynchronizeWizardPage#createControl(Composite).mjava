@@ -14,7 +14,7 @@
 			Repository repo = repositoryMapping.getRepository();
 			Set<IProject> projects = resources.get(repo);
 			if (projects == null) {
-				projects = new HashSet<IProject>();
+				projects = new HashSet<>();
 				resources.put(repo, projects);
 			}
 			projects.add(project);
@@ -117,7 +117,7 @@
 			@Override
 			protected CellEditor getCellEditor(Object element) {
 				Repository repo = (Repository) element;
-				List<String> refs = new LinkedList<String>(repo.getAllRefs()
+				List<String> refs = new LinkedList<>(repo.getAllRefs()
 						.keySet());
 
 				List<Ref> additionalRefs;
@@ -183,7 +183,7 @@
 			}
 		});
 
-		List<Repository> repositoriesList = new ArrayList<Repository>(
+		List<Repository> repositoriesList = new ArrayList<>(
 				resources.keySet());
 		Collections.sort(repositoriesList, new Comparator<Repository>() {
 			@Override

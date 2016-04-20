@@ -23,15 +23,15 @@
 	public static final void synchronize(IResource[] resources,
 			Repository repository, String srcRev, String dstRev,
 			boolean includeLocal) throws IOException {
-		final Set<IResource> includedResources = new HashSet<IResource>(
+		final Set<IResource> includedResources = new HashSet<>(
 				Arrays.asList(resources));
-		final Set<ResourceMapping> allMappings = new HashSet<ResourceMapping>();
+		final Set<ResourceMapping> allMappings = new HashSet<>();
 
-		Set<IResource> newResources = new HashSet<IResource>(
+		Set<IResource> newResources = new HashSet<>(
 				includedResources);
 		do {
 			final Set<IResource> copy = newResources;
-			newResources = new HashSet<IResource>();
+			newResources = new HashSet<>();
 			for (IResource resource : copy) {
 				ResourceMapping[] mappings = ResourceUtil.getResourceMappings(
 						resource, ResourceMappingContext.LOCAL_CONTEXT);

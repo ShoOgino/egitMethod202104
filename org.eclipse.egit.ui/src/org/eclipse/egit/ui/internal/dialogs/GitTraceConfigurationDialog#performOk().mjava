@@ -4,7 +4,7 @@
 			options.setDebugEnabled(platformSwitch.getSelection());
 			if (platformSwitch.getSelection()) {
 				// if this is off, we won't be able to save anything
-				List<String> checkedKeys = new ArrayList<String>();
+				List<String> checkedKeys = new ArrayList<>();
 				for (Object checked : Arrays.asList(tv.getCheckedElements())) {
 					if (checked instanceof PluginNode)
 						checkedKeys.add(((PluginNode) checked).getPlugin()

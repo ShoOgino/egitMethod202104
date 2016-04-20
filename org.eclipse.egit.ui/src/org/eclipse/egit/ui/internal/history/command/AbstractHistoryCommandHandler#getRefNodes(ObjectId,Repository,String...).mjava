@@ -10,10 +10,10 @@
 	 */
 	protected List<RefNode> getRefNodes(ObjectId commit, Repository repo,
 			String... refPrefixes) {
-		List<Ref> availableBranches = new ArrayList<Ref>();
-		List<RefNode> nodes = new ArrayList<RefNode>();
+		List<Ref> availableBranches = new ArrayList<>();
+		List<RefNode> nodes = new ArrayList<>();
 		try {
-			Map<String, Ref> branches = new HashMap<String, Ref>();
+			Map<String, Ref> branches = new HashMap<>();
 			for (String refPrefix : refPrefixes) {
 				branches.putAll(repo.getRefDatabase().getRefs(refPrefix));
 			}

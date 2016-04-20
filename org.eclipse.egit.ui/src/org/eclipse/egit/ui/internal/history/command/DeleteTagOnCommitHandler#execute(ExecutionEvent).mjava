@@ -16,7 +16,7 @@
 		// show a dialog in case there are multiple tags on the selected commit
 		final List<Ref> tagsToDelete;
 		if (tags.size() > 1) {
-			BranchSelectionDialog<Ref> dialog = new BranchSelectionDialog<Ref>(
+			BranchSelectionDialog<Ref> dialog = new BranchSelectionDialog<>(
 					shell,
 					tags,
 					UIText.DeleteTagOnCommitHandler_SelectTagDialogTitle,

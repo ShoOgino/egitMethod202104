@@ -2,7 +2,7 @@
 		RepositoryCommit repoCommit = getCommit();
 		RevCommit commit = repoCommit.getRevCommit();
 		Repository repository = repoCommit.getRepository();
-		List<Ref> tags = new ArrayList<Ref>();
+		List<Ref> tags = new ArrayList<>();
 		for (Ref tag : getTags()) {
 			tag = repository.peel(tag);
 			ObjectId id = tag.getPeeledObjectId();

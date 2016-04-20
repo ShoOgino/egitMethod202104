@@ -2,8 +2,8 @@
 		StagingViewContentProvider contentProvider = getContentProvider(unstagedViewer);
 		final Git git = new Git(currentRepository);
 		Iterator iterator = selection.iterator();
-		final List<String> addPaths = new ArrayList<String>();
-		final List<String> rmPaths = new ArrayList<String>();
+		final List<String> addPaths = new ArrayList<>();
+		final List<String> rmPaths = new ArrayList<>();
 		resetPathsToExpand();
 		while (iterator.hasNext()) {
 			Object element = iterator.next();

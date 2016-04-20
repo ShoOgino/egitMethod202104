@@ -2,7 +2,7 @@
 		public Object[] getChildren(Object o) {
 			if (children == null)
 				if (config != null) {
-					List<Section> sections = new ArrayList<Section>();
+					List<Section> sections = new ArrayList<>();
 					Set<String> sectionNames = config.getSections();
 					for (String sectionName : sectionNames)
 						sections.add(new Section(this, sectionName));

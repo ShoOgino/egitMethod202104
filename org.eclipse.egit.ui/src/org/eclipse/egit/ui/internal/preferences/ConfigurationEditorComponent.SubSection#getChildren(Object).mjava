@@ -1,7 +1,7 @@
 		@Override
 		public Object[] getChildren(Object o) {
 			if (children == null) {
-				List<Entry> entries = new ArrayList<Entry>();
+				List<Entry> entries = new ArrayList<>();
 				Set<String> entryNames = config.getNames(parent.name, name);
 				for (String entryName : entryNames) {
 					String[] values = config.getStringList(parent.name, name,

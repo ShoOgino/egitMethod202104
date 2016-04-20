@@ -1,7 +1,7 @@
 	private void enableMoveButtons(
 			PlanElement firstSelectedEntry, PlanElement lastSelectedEntry) {
 		List<PlanElement> list = view.getCurrentPlan().getList();
-		List<PlanElement> stepList = new ArrayList<PlanElement>();
+		List<PlanElement> stepList = new ArrayList<>();
 		for (PlanElement planElement : list) {
 			if (!planElement.isComment())
 				stepList.add(planElement);

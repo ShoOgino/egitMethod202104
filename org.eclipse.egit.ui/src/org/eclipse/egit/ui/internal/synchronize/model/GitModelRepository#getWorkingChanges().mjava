@@ -1,5 +1,5 @@
 	private List<GitModelObjectContainer> getWorkingChanges() {
-		List<GitModelObjectContainer> result = new ArrayList<GitModelObjectContainer>();
+		List<GitModelObjectContainer> result = new ArrayList<>();
 		if (gsd.shouldIncludeLocal()) {
 			Repository repo = gsd.getRepository();
 			Map<String, Change> stagedChanges = StagedChangeCache.build(repo);

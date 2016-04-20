@@ -1,7 +1,7 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repository = getRepository(event);
-		Set<File> changedFiles = new HashSet<File>();
+		Set<File> changedFiles = new HashSet<>();
 
 		List<RevCommit> commits = getSelectedCommits(event);
 		for (RevCommit commit : commits) {

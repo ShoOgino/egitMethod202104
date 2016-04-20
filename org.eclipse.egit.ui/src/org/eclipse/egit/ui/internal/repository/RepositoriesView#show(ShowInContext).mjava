@@ -3,7 +3,7 @@
 		ISelection selection = context.getSelection();
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection ss = (IStructuredSelection) selection;
-			List<IPath> paths = new ArrayList<IPath>();
+			List<IPath> paths = new ArrayList<>();
 			for (Iterator it = ss.iterator(); it.hasNext();) {
 				Object element = it.next();
 				IResource resource = AdapterUtils.adapt(element, IResource.class);

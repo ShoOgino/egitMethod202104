@@ -19,9 +19,9 @@
 
 		final IPath rootPath = new Path(repo.getWorkTree()
 				.getAbsolutePath());
-		final List<GitModelObject> rootChildren = new ArrayList<GitModelObject>();
+		final List<GitModelObject> rootChildren = new ArrayList<>();
 
-		final Map<IPath, Node> nodes = new HashMap<IPath, Node>();
+		final Map<IPath, Node> nodes = new HashMap<>();
 
 		for (Map.Entry<String, Change> entry : changes.entrySet()) {
 			String repoRelativePath = entry.getKey();

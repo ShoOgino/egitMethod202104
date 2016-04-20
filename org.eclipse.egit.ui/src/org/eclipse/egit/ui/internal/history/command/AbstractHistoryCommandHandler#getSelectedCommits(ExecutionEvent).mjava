@@ -14,7 +14,7 @@
 		IStructuredSelection selection = getSelection(event);
 		if (selection.isEmpty())
 			return Collections.emptyList();
-		List<RevCommit> commits = new ArrayList<RevCommit>();
+		List<RevCommit> commits = new ArrayList<>();
 		try (RevWalk walk = new RevWalk(repository)) {
 			for (Object element : selection.toList()) {
 				RevCommit commit = (RevCommit) element;

@@ -1,6 +1,6 @@
 	private Set<File> findDotProjectFiles(Set<File> changedFiles,
 			Repository repository) {
-		Set<File> result = new HashSet<File>();
+		Set<File> result = new HashSet<>();
 		String workingTreeRootPath = repository.getWorkTree().toString();
 		for (File changedFile : changedFiles) {
 			File projectFile = searchEnclosingProjectInWorkDir(

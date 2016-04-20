@@ -1,6 +1,6 @@
 	private Object[] getTagsChildren(RepositoryTreeNode parentNode,
 			Repository repo) {
-		List<RepositoryTreeNode<Ref>> nodes = new ArrayList<RepositoryTreeNode<Ref>>();
+		List<RepositoryTreeNode<Ref>> nodes = new ArrayList<>();
 
 		try (RevWalk walk = new RevWalk(repo)) {
 			walk.setRetainBody(true);

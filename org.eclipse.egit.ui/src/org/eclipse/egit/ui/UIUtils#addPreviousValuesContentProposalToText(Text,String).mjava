@@ -28,7 +28,7 @@
 			@Override
 			public IContentProposal[] getProposals(String contents, int position) {
 
-				List<IContentProposal> resultList = new ArrayList<IContentProposal>();
+				List<IContentProposal> resultList = new ArrayList<>();
 
 				// make the simplest possible pattern check: allow "*"
 				// for multiple characters
@@ -125,7 +125,7 @@
 						settings.put(preferenceKey, existingValues);
 					} else {
 
-						List<String> values = new ArrayList<String>(
+						List<String> values = new ArrayList<>(
 								existingValues.length + 1);
 
 						for (String existingValue : existingValues)

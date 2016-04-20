@@ -11,7 +11,7 @@
 		Collection<String> messages = computeMessageProposals();
 		Set<CommitFile> files = computeFileProposals();
 
-		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		List<ICompletionProposal> proposals = new ArrayList<>();
 		if (prefix != null && prefix.length() > 0) {
 			int replacementLength = prefix.length();
 			int replacementOffset = offset - replacementLength;

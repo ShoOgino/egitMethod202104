@@ -11,7 +11,7 @@
 		forceUpdateAllButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final List<RefSpec> specsCopy = new ArrayList<RefSpec>(specs);
+				final List<RefSpec> specsCopy = new ArrayList<>(specs);
 				for (final RefSpec spec : specsCopy) {
 					if (!isDeleteRefSpec(spec))
 						setRefSpec(spec, spec.setForceUpdate(true));
