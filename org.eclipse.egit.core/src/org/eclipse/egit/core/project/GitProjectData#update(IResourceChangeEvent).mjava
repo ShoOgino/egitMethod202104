@@ -62,9 +62,10 @@
 								.getRepositoryCache().lookupRepository(git);
 						if (m != null && r != null
 								&& gitCandidate.equals(r.getWorkTree())) {
-							data.mappings.put(m.getContainerPath(), m);
-							data.map(m);
-							modified.add(data);
+							if (data.map(m)) {
+								data.mappings.put(m.getContainerPath(), m);
+								modified.add(data);
+							}
 						}
 					} catch (IOException e) {
 						Activator.logError(e.getMessage(), e);

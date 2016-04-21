@@ -1,7 +1,14 @@
-	private void remapAll() {
+	private boolean remapAll() {
 		protectedResources.clear();
-		for (final RepositoryMapping repoMapping : mappings.values()) {
-			map(repoMapping);
+		boolean allMapped = true;
+		Iterator<RepositoryMapping> iterator = mappings.values().iterator();
+		while (iterator.hasNext()) {
+			RepositoryMapping m = iterator.next();
+			if (!map(m)) {
+				iterator.remove();
+				allMapped = false;
+			}
 		}
+		return allMapped;
 	}
 

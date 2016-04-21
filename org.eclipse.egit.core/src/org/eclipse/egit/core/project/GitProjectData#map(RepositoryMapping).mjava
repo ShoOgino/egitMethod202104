@@ -1,4 +1,4 @@
-	private void map(final RepositoryMapping m) {
+	private boolean map(final RepositoryMapping m) {
 		final IResource r;
 		final File git;
 		final IResource dotGit;
@@ -13,29 +13,29 @@
 		}
 
 		if (c == null) {
-			logAndUnmapGoneMappedResource(m);
-			return;
+			logAndUnmapGoneMappedResource(m, null);
+			return false;
 		}
 		m.setContainer(c);
 
 		IPath absolutePath = m.getGitDirAbsolutePath();
 		if (absolutePath == null) {
-			logAndUnmapGoneMappedResource(m);
-			return;
+			logAndUnmapGoneMappedResource(m, c);
+			return false;
 		}
 		git = absolutePath.toFile();
 
 		if (!RepositoryCache.FileKey.isGitRepository(git, FS.DETECTED)) {
-			logAndUnmapGoneMappedResource(m);
-			return;
+			logAndUnmapGoneMappedResource(m, c);
+			return false;
 		}
 
 		try {
 			m.setRepository(Activator.getDefault().getRepositoryCache()
 					.lookupRepository(git));
 		} catch (IOException ioe) {
-			logAndUnmapGoneMappedResource(m);
-			return;
+			logAndUnmapGoneMappedResource(m, c);
+			return false;
 		}
 
 		trace("map "  //$NON-NLS-1$
@@ -49,11 +49,13 @@
 					CoreText.GitProjectData_failedToCacheRepoMapping, err);
 		}
 
-		fireRepositoryChanged(m);
-
 		dotGit = c.findMember(Constants.DOT_GIT);
 		if (dotGit != null) {
 			protect(dotGit);
 		}
+
+		fireRepositoryChanged(m);
+
+		return true;
 	}
 
