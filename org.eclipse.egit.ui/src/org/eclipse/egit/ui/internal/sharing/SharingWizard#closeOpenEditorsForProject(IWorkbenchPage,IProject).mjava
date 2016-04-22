@@ -1,0 +1,19 @@
+	private void closeOpenEditorsForProject(final IWorkbenchPage activePage,
+			IProject project) {
+		final List<IEditorReference> editorRefsToClose = findEditorReferencesForProject(
+				activePage, project);
+		if (editorRefsToClose.isEmpty()) {
+			return;
+		}
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				activePage.closeEditors(
+						editorRefsToClose.toArray(
+								new IEditorReference[editorRefsToClose.size()]),
+						true);
+			}
+		});
+	}
+
