@@ -1,0 +1,19 @@
+	/**
+	 * Set the column to sort by, flipping sort direction, if the same column
+	 * was set before.
+	 *
+	 * @param column
+	 *            to sort by
+	 * @param labelProvider
+	 *            to convert cells from selected column into text
+	 */
+	public void setColumn(TreeColumn column, ColumnLabelProvider labelProvider) {
+		this.labelProvider = labelProvider;
+		if (column.equals(currentColumn)) {
+			flipSortDirection();
+		} else {
+			currentColumn = column;
+			direction = DESCENDING;
+		}
+	}
+
