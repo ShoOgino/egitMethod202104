@@ -1,16 +1,20 @@
-	private List<RefNode> deleteBranches(final List<RefNode> nodes,
+	private Map<Ref, Repository> deleteBranches(final Map<Ref, Repository> refs,
 			final boolean forceDeletionOfUnmergedBranches,
 			IProgressMonitor progressMonitor) throws InvocationTargetException {
-		final List<RefNode> unmergedNodes = new ArrayList<>();
+		final Map<Ref, Repository> unmergedNodes = new LinkedHashMap<>();
 		try {
 			ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
 
 				@Override
 				public void run(IProgressMonitor monitor) throws CoreException {
-					monitor.beginTask(UIText.DeleteBranchCommand_DeletingBranchesProgress, nodes.size());
-					for (RefNode refNode : nodes) {
-						int result = deleteBranch(refNode, refNode
-								.getObject(), forceDeletionOfUnmergedBranches);
+					monitor.beginTask(
+							UIText.DeleteBranchCommand_DeletingBranchesProgress,
+							refs.size());
+					for (Entry<Ref, Repository> entry : refs.entrySet()) {
+						Repository repository = entry.getValue();
+						Ref ref = entry.getKey();
+						int result = deleteBranch(repository, ref,
+								forceDeletionOfUnmergedBranches);
 						if (result == DeleteBranchOperation.REJECTED_CURRENT) {
 							throw new CoreException(
 									Activator
@@ -18,7 +22,7 @@
 											UIText.DeleteBranchCommand_CannotDeleteCheckedOutBranch,
 											null));
 						} else if (result == DeleteBranchOperation.REJECTED_UNMERGED) {
-							unmergedNodes.add(refNode);
+							unmergedNodes.put(ref, repository);
 						} else
 							monitor.worked(1);
 					}

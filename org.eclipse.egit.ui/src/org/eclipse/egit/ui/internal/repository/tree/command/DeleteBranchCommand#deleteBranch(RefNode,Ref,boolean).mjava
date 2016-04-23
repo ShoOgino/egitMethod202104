@@ -1,8 +1,0 @@
-	private int deleteBranch(final RefNode node, final Ref ref, boolean force)
-			throws CoreException {
-		DeleteBranchOperation dbop = new DeleteBranchOperation(node
-				.getRepository(), ref, force);
-		dbop.execute(null);
-		return dbop.getStatus();
-	}
-
