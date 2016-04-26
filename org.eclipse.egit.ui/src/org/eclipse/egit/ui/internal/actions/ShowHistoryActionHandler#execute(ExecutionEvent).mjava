@@ -5,15 +5,15 @@
 		if (repo == null) {
 			return null;
 		}
-		IHistoryView view;
 		try {
 			IWorkbenchWindow activeWorkbenchWindow = HandlerUtil
 					.getActiveWorkbenchWindow(event);
 			if (activeWorkbenchWindow != null) {
 				IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
 				if (page != null) {
-					view = (IHistoryView) page.showView(IHistoryView.VIEW_ID);
 					IResource[] resources = getSelectedResources(event);
+					IHistoryView view = (IHistoryView) page
+							.showView(IHistoryView.VIEW_ID);
 					if (resources.length == 1) {
 						view.showHistoryFor(resources[0]);
 						return null;
