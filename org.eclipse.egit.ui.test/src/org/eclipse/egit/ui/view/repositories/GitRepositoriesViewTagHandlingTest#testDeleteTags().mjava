@@ -11,8 +11,8 @@
 		createTag("Delete2", "The first tag");
 		createTag("Delete3", "The second tag");
 		refreshAndWait();
-		SWTBotTreeItem tagsItem = myRepoViewUtil.getTagsItem(tree,
-				repositoryFile).expand();
+		SWTBotTreeItem tagsItem = TestUtil.expandAndWait(
+				myRepoViewUtil.getTagsItem(tree, repositoryFile));
 		SWTBotTreeItem[] items = tagsItem.getItems();
 		assertEquals("Wrong number of tags", initialCount + 2, items.length);
 		tagsItem.select("Delete2", "Delete3");

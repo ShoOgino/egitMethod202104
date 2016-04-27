@@ -35,8 +35,8 @@
 
 		SWTBotShell mergeDialog = openMergeDialog();
 
-		SWTBotTreeItem remoteBranches = mergeDialog.bot().tree()
-				.getTreeItem(REMOTE_BRANCHES).expand();
+		SWTBotTreeItem remoteBranches = TestUtil.expandAndWait(
+				mergeDialog.bot().tree().getTreeItem(REMOTE_BRANCHES));
 		TestUtil.getChildNode(remoteBranches, "origin/master").select();
 		mergeDialog.bot().button(UIText.MergeTargetSelectionDialog_ButtonMerge)
 				.click();

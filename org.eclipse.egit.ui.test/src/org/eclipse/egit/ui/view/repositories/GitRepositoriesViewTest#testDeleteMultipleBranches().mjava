@@ -4,8 +4,8 @@
 		SWTBotTree tree = getOrOpenView().bot().tree();
 		refreshAndWait();
 		// open a branch (checkout)
-		SWTBotTreeItem localBranchesItem = myRepoViewUtil.getLocalBranchesItem(
-				tree, repositoryFile).expand();
+		SWTBotTreeItem localBranchesItem = TestUtil.expandAndWait(
+				myRepoViewUtil.getLocalBranchesItem(tree, repositoryFile));
 		SWTBotTreeItem masterNode = localBranchesItem.getNode("master");
 		// create first branch (abc)
 		masterNode.select();
@@ -24,8 +24,8 @@
 				.checkBox(UIText.CreateBranchPage_CheckoutButton).deselect();
 		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
 		refreshAndWait();
-		localBranchesItem = myRepoViewUtil.getLocalBranchesItem(tree,
-				repositoryFile).expand();
+		localBranchesItem = TestUtil.expandAndWait(
+				myRepoViewUtil.getLocalBranchesItem(tree, repositoryFile));
 		// delete both
 		localBranchesItem.select("abc", "123");
 		ContextMenuHelper.clickContextMenuSync(tree, myUtil

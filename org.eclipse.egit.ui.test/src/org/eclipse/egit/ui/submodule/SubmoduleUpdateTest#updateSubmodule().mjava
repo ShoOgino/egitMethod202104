@@ -31,10 +31,9 @@
 
 		refreshAndWait();
 		SWTBotTree tree = getOrOpenView().bot().tree();
-		tree.getAllItems()[0]
-				.expand()
-				.expandNode(
-						UIText.RepositoriesViewLabelProvider_SubmodulesNodeText)
+		SWTBotTreeItem item = TestUtil.expandAndWait(tree.getAllItems()[0]);
+		TestUtil.expandAndWait(item.getNode(
+				UIText.RepositoriesViewLabelProvider_SubmodulesNodeText))
 				.select();
 		ContextMenuHelper.clickContextMenuSync(tree, myUtil
 				.getPluginLocalizedValue(UPDATE_SUBMODULE_CONTEXT_MENU_LABEL));

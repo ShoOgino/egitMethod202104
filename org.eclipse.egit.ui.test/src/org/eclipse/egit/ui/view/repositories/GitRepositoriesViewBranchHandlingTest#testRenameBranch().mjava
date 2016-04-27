@@ -2,8 +2,8 @@
 	public void testRenameBranch() throws Exception {
 		SWTBotTree tree = getOrOpenView().bot().tree();
 
-		SWTBotTreeItem item = myRepoViewUtil.getLocalBranchesItem(tree,
-				clonedRepositoryFile).expand();
+		SWTBotTreeItem item = TestUtil.expandAndWait(myRepoViewUtil
+				.getLocalBranchesItem(tree, clonedRepositoryFile));
 
 		item.getNode("master").select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
@@ -25,8 +25,8 @@
 
 		refreshAndWait();
 
-		item = myRepoViewUtil.getLocalBranchesItem(tree, clonedRepositoryFile)
-				.expand();
+		item = TestUtil.expandAndWait(myRepoViewUtil.getLocalBranchesItem(tree,
+				clonedRepositoryFile));
 		assertEquals("newmaster", item.getNode(0).select().getText());
 
 		ContextMenuHelper.clickContextMenu(tree, myUtil
@@ -41,8 +41,8 @@
 
 		refreshAndWait();
 
-		item = myRepoViewUtil.getLocalBranchesItem(tree, clonedRepositoryFile)
-				.expand();
+		item = TestUtil.expandAndWait(myRepoViewUtil.getLocalBranchesItem(tree,
+				clonedRepositoryFile));
 		assertEquals("master", item.getNode(0).select().getText());
 	}
 

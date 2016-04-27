@@ -16,13 +16,15 @@
 		SWTBotView view = TestUtil.showExplorerView();
 		SWTBotTree projectExplorerTree = view.bot().tree();
 
-		SWTBotTreeItem item = getProjectItem(projectExplorerTree, PROJ1)
-				.expand().getNode(FOLDER).expand().getNode(FILE1);
+		SWTBotTreeItem item = TestUtil
+				.expandAndWait(getProjectItem(projectExplorerTree, PROJ1));
+		item = TestUtil.expandAndWait(item.getNode(FOLDER)).getNode(FILE1);
 		view.show();
 		item.doubleClick();
 
-		item = getProjectItem(projectExplorerTree, PROJ1).expand()
-				.getNode(FOLDER).expand().getNode(FILE2);
+		item = TestUtil
+				.expandAndWait(getProjectItem(projectExplorerTree, PROJ1));
+		item = TestUtil.expandAndWait(item.getNode(FOLDER)).getNode(FILE2);
 		view.show();
 		item.doubleClick();
 		// now we should have two editors
@@ -50,9 +52,11 @@
 
 		bot.editorByTitle(FILE1).show();
 
-		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
-				.getNode(PROJ1).expand().getNode(FOLDER).expand()
-				.getNode(FILE2).select();
+		item = TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile));
+		item = TestUtil.expandAndWait(item.getNode(PROJ1));
+		item = TestUtil.expandAndWait(item.getNode(FOLDER));
+		item.getNode(FILE2).select();
 
 		// the editor should still be test.txt
 		assertEquals(FILE1, bot.activeEditor().getTitle());
@@ -65,22 +69,28 @@
 		// tried setting focus, waiting for focus, joining RepositoriesView
 		// refresh job
 		waitInUI();
-		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
-				.getNode(PROJ1).expand().getNode(FOLDER).expand()
-				.getNode(FILE2).select();
+		item = TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile));
+		item = TestUtil.expandAndWait(item.getNode(PROJ1));
+		item = TestUtil.expandAndWait(item.getNode(FOLDER));
+		item.getNode(FILE2).select();
 		TestUtil.waitUntilEditorIsActive(bot, bot.editorByTitle(FILE2), 10000);
 
-		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
-				.getNode(PROJ1).expand().getNode(FOLDER).expand()
-				.getNode(FILE1).select();
+		item = TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile));
+		item = TestUtil.expandAndWait(item.getNode(PROJ1));
+		item = TestUtil.expandAndWait(item.getNode(FOLDER));
+		item.getNode(FILE1).select();
 		TestUtil.waitUntilEditorIsActive(bot, bot.editorByTitle(FILE1), 10000);
 
 		// deactivate the link with editor
 		toggleLinkWithSelection();
 
-		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand()
-				.getNode(PROJ1).expand().getNode(FOLDER).expand()
-				.getNode(FILE2).select();
+		item = TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile));
+		item = TestUtil.expandAndWait(item.getNode(PROJ1));
+		item = TestUtil.expandAndWait(item.getNode(FOLDER));
+		item.getNode(FILE2).select();
 		TestUtil.waitUntilEditorIsActive(bot, bot.editorByTitle(FILE1), 10000);
 	}
 

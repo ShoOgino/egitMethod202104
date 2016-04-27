@@ -9,8 +9,8 @@
 		assertFalse("Wrong content", initialContent.equals(newContent));
 		createTag("ResetToSecond", "The second tag");
 		refreshAndWait();
-		myRepoViewUtil.getTagsItem(tree, repositoryFile).expand().getNode(
-				"ResetToFirst").select();
+		TestUtil.expandAndWait(myRepoViewUtil.getTagsItem(tree, repositoryFile))
+				.getNode("ResetToFirst").select();
 
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("ResetCommand"));

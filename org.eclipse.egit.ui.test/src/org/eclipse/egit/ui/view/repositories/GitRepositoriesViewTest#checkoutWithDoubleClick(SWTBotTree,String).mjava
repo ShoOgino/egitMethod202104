@@ -1,7 +1,8 @@
 	private void checkoutWithDoubleClick(SWTBotTree tree, String branch)
 			throws Exception {
-		myRepoViewUtil.getLocalBranchesItem(tree, repositoryFile).expand()
-				.getNode(branch).doubleClick();
+		SWTBotTreeItem node = myRepoViewUtil.getLocalBranchesItem(tree,
+				repositoryFile);
+		TestUtil.expandAndWait(node).getNode(branch).doubleClick();
 		SWTBotShell shell = bot
 				.shell(UIText.RepositoriesView_CheckoutConfirmationTitle);
 		shell.bot().button(IDialogConstants.OK_LABEL).click();

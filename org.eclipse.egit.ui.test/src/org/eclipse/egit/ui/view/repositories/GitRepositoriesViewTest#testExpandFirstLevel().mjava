@@ -6,8 +6,8 @@
 	@Test
 	public void testExpandFirstLevel() throws Exception {
 		SWTBotTree tree = getOrOpenView().bot().tree();
-		SWTBotTreeItem item = myRepoViewUtil.getRootItem(tree, repositoryFile)
-				.expand();
+		SWTBotTreeItem item = TestUtil.expandAndWait(
+				myRepoViewUtil.getRootItem(tree, repositoryFile));
 		SWTBotTreeItem[] children = item.getItems();
 		assertEquals("Wrong number of children", 5, children.length);
 	}

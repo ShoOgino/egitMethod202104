@@ -3,7 +3,7 @@
 		final SWTBotView view = getOrOpenView();
 		SWTBotTreeItem localItem = myRepoViewUtil.getLocalBranchesItem(view
 				.bot().tree(), repositoryFile);
-		localItem.expand();
+		TestUtil.expandAndWait(localItem);
 		assertEquals("Wrong number of children", 1, localItem.getNodes().size());
 
 		assertEquals("master", localItem.getNodes().get(0));
@@ -24,7 +24,7 @@
 
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),
 				repositoryFile);
-		localItem.expand();
+		TestUtil.expandAndWait(localItem);
 		assertEquals("Wrong number of children", 2, localItem.getNodes().size());
 
 		localItem.getNode(0).select();
@@ -47,7 +47,7 @@
 		refreshAndWait();
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),
 				repositoryFile);
-		localItem.expand();
+		TestUtil.expandAndWait(localItem);
 		assertEquals("Wrong number of children", 1, localItem.getNodes().size());
 	}
 

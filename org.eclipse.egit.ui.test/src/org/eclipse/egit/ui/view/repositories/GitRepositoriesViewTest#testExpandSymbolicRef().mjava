@@ -6,13 +6,16 @@
 	@Test
 	public void testExpandSymbolicRef() throws Exception {
 		SWTBotTree tree = getOrOpenView().bot().tree();
-		SWTBotTreeItem item = myRepoViewUtil.getSymbolicRefsItem(tree,
-				repositoryFile).expand();
+		SWTBotTreeItem item = TestUtil.expandAndWait(
+				myRepoViewUtil.getSymbolicRefsItem(tree, repositoryFile));
 		List<String> children = item.getNodes();
 		boolean found = false;
-		for (String child : children)
-			if (child.contains(Constants.HEAD))
+		for (String child : children) {
+			if (child.contains(Constants.HEAD)) {
 				found = true;
+				break;
+			}
+		}
 		assertTrue(found);
 	}
 

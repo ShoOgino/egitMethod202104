@@ -2,14 +2,14 @@
 	public void testClonedRepository() throws Exception {
 		SWTBotTree tree = getOrOpenView().bot().tree();
 
-		SWTBotTreeItem item = myRepoViewUtil.getLocalBranchesItem(tree,
-				clonedRepositoryFile).expand();
+		SWTBotTreeItem item = TestUtil.expandAndWait(myRepoViewUtil
+				.getLocalBranchesItem(tree, clonedRepositoryFile));
 
 		List<String> children = item.getNodes();
 		assertEquals("Wrong number of local children", 1, children.size());
 
-		item = myRepoViewUtil.getRemoteBranchesItem(tree, clonedRepositoryFile)
-				.expand();
+		item = TestUtil.expandAndWait(myRepoViewUtil.getRemoteBranchesItem(tree,
+				clonedRepositoryFile));
 		children = item.getNodes();
 		assertEquals("Wrong number of children", 2, children.size());
 		assertTrue("Missing remote branch", children.contains("origin/master"));
@@ -22,8 +22,8 @@
 		assertEquals("stable", shell.bot().textWithId("BranchName").getText());
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
 		refreshAndWait();
-		item = myRepoViewUtil.getLocalBranchesItem(tree, clonedRepositoryFile)
-				.expand();
+		item = TestUtil.expandAndWait(myRepoViewUtil.getLocalBranchesItem(tree,
+				clonedRepositoryFile));
 
 		children = item.getNodes();
 		assertEquals("Wrong number of local children", 2, children.size());

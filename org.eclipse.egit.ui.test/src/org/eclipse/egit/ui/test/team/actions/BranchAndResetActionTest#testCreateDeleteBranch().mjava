@@ -11,8 +11,8 @@
 		assertNotNull(lookupRepository(repositoryFile).resolve("newBranch"));
 
 		SWTBotShell deleteBranchDialog = openDeleteBranchDialog();
-		SWTBotTreeItem localBranches = deleteBranchDialog.bot().tree()
-				.getTreeItem(LOCAL_BRANCHES).expand();
+		SWTBotTreeItem localBranches = TestUtil.expandAndWait(
+				deleteBranchDialog.bot().tree().getTreeItem(LOCAL_BRANCHES));
 		TestUtil.getChildNode(localBranches, "newBranch").select();
 		deleteBranchDialog.bot().button(IDialogConstants.OK_LABEL).click();
 

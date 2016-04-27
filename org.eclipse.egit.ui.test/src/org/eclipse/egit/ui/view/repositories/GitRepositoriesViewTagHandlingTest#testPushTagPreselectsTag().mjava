@@ -2,8 +2,8 @@
 	public void testPushTagPreselectsTag() throws Exception {
 		createTag("tag-to-push", "Tag to push");
 		SWTBotTree tree = getOrOpenView().bot().tree();
-		myRepoViewUtil.getTagsItem(tree, repositoryFile)
-				.expand().getNode("tag-to-push").select();
+		TestUtil.expandAndWait(myRepoViewUtil.getTagsItem(tree, repositoryFile))
+				.getNode("tag-to-push").select();
 		ContextMenuHelper.clickContextMenu(tree,
 				myUtil.getPluginLocalizedValue("RepoViewPushTag.label"));
 

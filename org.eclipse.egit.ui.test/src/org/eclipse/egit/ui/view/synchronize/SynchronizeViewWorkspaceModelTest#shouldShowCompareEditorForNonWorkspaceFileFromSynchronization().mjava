@@ -18,7 +18,7 @@
 		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 		SWTBotTreeItem workingTree = syncViewTree.expandNode(PROJ1);
 		assertEquals(1, syncViewTree.getAllItems().length);
-		workingTree.expand().getNode(name).doubleClick();
+		TestUtil.expandAndWait(workingTree).getNode(name).doubleClick();
 
 		SWTBotEditor editor = bot.editorByTitle(name);
 		editor.setFocus();

@@ -13,8 +13,8 @@
 		touchAndSubmit(null);
 		refreshAndWait();
 
-		item = myRepoViewUtil.getRemoteBranchesItem(tree, clonedRepositoryFile)
-				.expand();
+		item = TestUtil.expandAndWait(myRepoViewUtil.getRemoteBranchesItem(tree,
+				clonedRepositoryFile));
 		List<String> children = item.getNodes();
 		assertEquals("Wrong number of remote children", 2, children.size());
 
@@ -31,9 +31,8 @@
 						.getBranch()));
 
 		// now let's try to create a local branch from the remote one
-		item = myRepoViewUtil.getRemoteBranchesItem(tree, clonedRepositoryFile)
-				.expand();
-		item.getNode("origin/stable").select();
+		item = myRepoViewUtil.getRemoteBranchesItem(tree, clonedRepositoryFile);
+		TestUtil.expandAndWait(item).getNode("origin/stable").select();
 		ContextMenuHelper.clickContextMenu(tree,
 				myUtil.getPluginLocalizedValue("CreateBranchCommand"));
 
@@ -45,8 +44,8 @@
 		createPage.close();
 		// checkout master again
 
-		myRepoViewUtil.getLocalBranchesItem(tree, clonedRepositoryFile)
-				.expand().getNode("master").select();
+		item = myRepoViewUtil.getLocalBranchesItem(tree, clonedRepositoryFile);
+		TestUtil.expandAndWait(item).getNode("master").select();
 		ContextMenuHelper.clickContextMenu(tree,
 				myUtil.getPluginLocalizedValue("CheckoutCommand"));
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);

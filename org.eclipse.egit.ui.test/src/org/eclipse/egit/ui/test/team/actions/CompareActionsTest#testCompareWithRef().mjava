@@ -20,7 +20,8 @@
 
 		// use the tag -> should have a change
 		dialog = openCompareWithDialog(compareWithRefActionLabel, dialogTitle);
-		SWTBotTreeItem tags = dialog.bot().tree().getTreeItem(TAGS).expand();
+		SWTBotTreeItem tags = TestUtil
+				.expandAndWait(dialog.bot().tree().getTreeItem(TAGS));
 		TestUtil.getChildNode(tags, "SomeTag").select();
 
 		jobJoiner = JobJoiner.startListening(

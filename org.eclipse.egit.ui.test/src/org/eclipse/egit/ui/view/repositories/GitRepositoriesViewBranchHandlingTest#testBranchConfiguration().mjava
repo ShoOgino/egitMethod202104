@@ -15,7 +15,7 @@
 
 		SWTBotTreeItem localItem = myRepoViewUtil.getLocalBranchesItem(view
 				.bot().tree(), clonedRepositoryFile);
-		localItem.expand().getNode("configTest").select();
+		TestUtil.expandAndWait(localItem).getNode("configTest").select();
 
 		ContextMenuHelper.clickContextMenuSync(view.bot().tree(),
 				myUtil.getPluginLocalizedValue("ShowIn"),
@@ -27,24 +27,24 @@
 				.tree()
 				.getTreeItem(
 						UIText.BranchPropertySource_UpstreamConfigurationCategory);
-		SWTBotTreeItem rebaseItem = rootItem.expand().getNode(
-				UIText.BranchPropertySource_RebaseDescriptor);
+		SWTBotTreeItem rebaseItem = TestUtil.expandAndWait(rootItem)
+				.getNode(UIText.BranchPropertySource_RebaseDescriptor);
 		assertEquals(UIText.BranchPropertySource_ValueNotSet,
 				rebaseItem.cell(1));
 
-		SWTBotTreeItem remoteItem = rootItem.expand().getNode(
-				UIText.BranchPropertySource_RemoteDescriptor);
+		SWTBotTreeItem remoteItem = rootItem
+				.getNode(UIText.BranchPropertySource_RemoteDescriptor);
 		assertEquals("origin", remoteItem.cell(1));
 
-		SWTBotTreeItem upstreamItem = rootItem.expand().getNode(
-				UIText.BranchPropertySource_UpstreamBranchDescriptor);
+		SWTBotTreeItem upstreamItem = rootItem
+				.getNode(UIText.BranchPropertySource_UpstreamBranchDescriptor);
 		assertEquals("refs/heads/master", upstreamItem.cell(1));
 
 		view = getOrOpenView();
 
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),
 				clonedRepositoryFile);
-		localItem.expand().getNode("configTest").select();
+		TestUtil.expandAndWait(localItem).getNode("configTest").select();
 
 		ContextMenuHelper.clickContextMenu(view.bot().tree(),
 				myUtil.getPluginLocalizedValue("ConfigurBranchCommand.label"));
@@ -100,7 +100,7 @@
 
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),
 				clonedRepositoryFile);
-		localItem.expand().getNode("configTest").select();
+		TestUtil.expandAndWait(localItem).getNode("configTest").select();
 
 		ContextMenuHelper.clickContextMenu(view.bot().tree(),
 				myUtil.getPluginLocalizedValue("ShowIn"),
@@ -112,8 +112,8 @@
 				.tree()
 				.getTreeItem(
 						UIText.BranchPropertySource_UpstreamConfigurationCategory);
-		rebaseItem = rootItem.expand().getNode(
-				UIText.BranchPropertySource_RebaseDescriptor);
+		rebaseItem = TestUtil.expandAndWait(rootItem)
+				.getNode(UIText.BranchPropertySource_RebaseDescriptor);
 		assertEquals("true", rebaseItem.cell(1));
 	}
 

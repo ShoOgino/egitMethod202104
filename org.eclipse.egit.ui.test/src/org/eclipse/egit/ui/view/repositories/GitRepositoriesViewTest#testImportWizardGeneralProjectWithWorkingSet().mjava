@@ -9,8 +9,9 @@
 				UIText.GitCreateProjectViaWizardWizard_WizardTitle,
 				repositoryFile.getPath());
 		// start wizard from PROJ1
-		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand().getNode(
-				PROJ1).select();
+		TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile))
+				.getNode(PROJ1).select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("ImportProjectsCommand"));
 		SWTBotShell shell = bot.shell(wizardTitle);

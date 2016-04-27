@@ -6,8 +6,8 @@
 
 		String rootText = labelProvider.getStyledText(root).getString();
 		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
-		SWTBotTreeItem tagsItem = rootItem.expand().getNode(
-				labelProvider.getStyledText(tags).getString());
+		SWTBotTreeItem tagsItem = TestUtil.expandAndWait(rootItem)
+				.getNode(labelProvider.getStyledText(tags).getString());
 		return tagsItem;
 	}
 

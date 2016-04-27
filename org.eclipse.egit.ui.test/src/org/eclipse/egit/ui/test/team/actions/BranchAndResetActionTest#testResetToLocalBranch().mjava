@@ -6,8 +6,8 @@
 		String master = getTestFileContent();
 		assertFalse(stable.equals(master));
 		SWTBotShell resetDialog = openResetDialog();
-		SWTBotTreeItem localBranches = resetDialog.bot().tree()
-				.getTreeItem(LOCAL_BRANCHES).expand();
+		SWTBotTreeItem localBranches = TestUtil.expandAndWait(
+				resetDialog.bot().tree().getTreeItem(LOCAL_BRANCHES));
 		TestUtil.getChildNode(localBranches, "stable").select();
 		resetDialog.bot().radio(
 				UIText.ResetTargetSelectionDialog_ResetTypeHardButton).click();

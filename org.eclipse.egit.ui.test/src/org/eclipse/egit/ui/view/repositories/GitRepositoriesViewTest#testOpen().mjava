@@ -15,9 +15,11 @@
 		item.doubleClick();
 		assertTrue("Item should be expanded", item.isExpanded());
 		// open a file in editor
-		item = myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand();
-		SWTBotTreeItem fileiItem = item.getNode(PROJ1).expand().getNode(FOLDER)
-				.expand().getNode(FILE1).select();
+		item = TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile));
+		SWTBotTreeItem fileiItem = TestUtil.expandAndWait(item.getNode(PROJ1))
+				.getNode(FOLDER);
+		fileiItem = TestUtil.expandAndWait(fileiItem).getNode(FILE1).select();
 		fileiItem.doubleClick();
 		assertTrue(bot.activeEditor().getTitle().equals(FILE1));
 		bot.activeEditor().close();

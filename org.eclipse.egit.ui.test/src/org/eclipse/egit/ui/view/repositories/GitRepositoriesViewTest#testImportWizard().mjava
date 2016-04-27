@@ -25,8 +25,9 @@
 				.getText(), wizardNode);
 		shell.close();
 		// start wizard from .git
-		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand().getNode(
-				Constants.DOT_GIT).select();
+		TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile))
+				.getNode(Constants.DOT_GIT).select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("ImportProjectsCommand"));
 		shell = bot.shell(wizardTitle);

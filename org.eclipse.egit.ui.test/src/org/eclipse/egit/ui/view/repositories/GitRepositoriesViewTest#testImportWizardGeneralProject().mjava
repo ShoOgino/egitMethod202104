@@ -7,8 +7,9 @@
 				UIText.GitCreateProjectViaWizardWizard_WizardTitle,
 				repositoryFile.getPath());
 		// start wizard from PROJ2
-		myRepoViewUtil.getWorkdirItem(tree, repositoryFile).expand().getNode(
-				PROJ2).select();
+		TestUtil.expandAndWait(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile))
+				.getNode(PROJ2).select();
 		ContextMenuHelper.clickContextMenu(tree, myUtil
 				.getPluginLocalizedValue("ImportProjectsCommand"));
 		SWTBotShell shell = bot.shell(wizardTitle);
@@ -30,15 +31,17 @@
 				UIText.GitCreateGeneralProjectPage_ProjectNameLabel).getText());
 		// switch to a sub directory and see if this is used
 		shell.bot().button(IDialogConstants.BACK_LABEL).click();
-		shell.bot().tree().getAllItems()[0].expand().getNode(PROJ2).expand()
-				.getNode(FOLDER).select();
+		SWTBotTreeItem item = TestUtil
+				.expandAndWait(shell.bot().tree().getAllItems()[0]);
+		TestUtil.expandAndWait(item.getNode(PROJ2)).getNode(FOLDER).select();
 		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
 		String name = shell.bot().textWithLabel(
 				UIText.GitCreateGeneralProjectPage_ProjectNameLabel).getText();
 		assertEquals(FOLDER, name);
 		shell.bot().button(IDialogConstants.BACK_LABEL).click();
 		// switch back to the root directory
-		shell.bot().tree().getAllItems()[0].expand().getNode(PROJ2).select();
+		TestUtil.expandAndWait(shell.bot().tree().getAllItems()[0])
+				.getNode(PROJ2).select();
 		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
 		assertEquals(PROJ2, shell.bot().textWithLabel(
 				UIText.GitCreateGeneralProjectPage_ProjectNameLabel).getText());

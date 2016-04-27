@@ -23,7 +23,7 @@
 		// then
 		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot().tree();
 		SWTBotTreeItem projectTree = waitForNodeWithText(syncViewTree, PROJ1);
-		projectTree.expand();
+		TestUtil.expandAndWait(projectTree);
 		assertEquals(1, projectTree.getItems().length);
 	}
 

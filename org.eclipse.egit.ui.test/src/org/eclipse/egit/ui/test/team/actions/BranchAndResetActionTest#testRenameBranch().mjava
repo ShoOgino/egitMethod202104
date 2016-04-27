@@ -2,8 +2,8 @@
 	public void testRenameBranch() throws Exception {
 		SWTBotShell dialog = openRenameBranchDialog();
 
-		SWTBotTreeItem localBranches = dialog.bot().tree()
-				.getTreeItem(LOCAL_BRANCHES).expand();
+		SWTBotTreeItem localBranches = TestUtil
+				.expandAndWait(dialog.bot().tree().getTreeItem(LOCAL_BRANCHES));
 		TestUtil.getChildNode(localBranches, "stable").select();
 		dialog.bot().button(UIText.RenameBranchDialog_RenameButtonLabel)
 				.click();
@@ -20,7 +20,8 @@
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 
 		dialog = openRenameBranchDialog();
-		SWTBotTreeItem localBranches2 = dialog.bot().tree().getTreeItem(LOCAL_BRANCHES).expand();
+		SWTBotTreeItem localBranches2 = TestUtil
+				.expandAndWait(dialog.bot().tree().getTreeItem(LOCAL_BRANCHES));
 		TestUtil.getChildNode(localBranches2, "renamed").select();
 		dialog.bot().button(UIText.RenameBranchDialog_RenameButtonLabel)
 				.click();
@@ -33,8 +34,8 @@
 
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		dialog = openRenameBranchDialog();
-		SWTBotTreeItem localBranches3 = dialog.bot().tree()
-				.getTreeItem(LOCAL_BRANCHES).expand();
+		SWTBotTreeItem localBranches3 = TestUtil
+				.expandAndWait(dialog.bot().tree().getTreeItem(LOCAL_BRANCHES));
 		TestUtil.getChildNode(localBranches3, "stable").select();
 		dialog.close();
 	}
