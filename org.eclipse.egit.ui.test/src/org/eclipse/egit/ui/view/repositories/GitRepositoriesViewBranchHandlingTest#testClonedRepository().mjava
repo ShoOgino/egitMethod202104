@@ -21,6 +21,7 @@
 		shell.activate();
 		assertEquals("stable", shell.bot().textWithId("BranchName").getText());
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		bot.waitUntil(Conditions.shellCloses(shell));
 		refreshAndWait();
 		item = TestUtil.expandAndWait(myRepoViewUtil.getLocalBranchesItem(tree,
 				clonedRepositoryFile));
