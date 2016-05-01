@@ -5,9 +5,12 @@
 				setErrorMessage(UIText.PushToGerritPage_MissingUriMessage);
 				return;
 			}
-			if (branchText.getText().length() == 0) {
+			if (branchText.getText().trim().isEmpty()) {
 				setErrorMessage(UIText.PushToGerritPage_MissingBranchMessage);
 				return;
+			}
+			if (topicText.isEnabled()) {
+				setErrorMessage(validateTopic(topicText.getText().trim()));
 			}
 		} finally {
 			setPageComplete(getErrorMessage() == null);

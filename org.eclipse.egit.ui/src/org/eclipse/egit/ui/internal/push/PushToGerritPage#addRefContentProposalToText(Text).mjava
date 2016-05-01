@@ -1,4 +1,7 @@
 	private void addRefContentProposalToText(final Text textField) {
+		if (knownRemoteRefs.isEmpty()) {
+			return;
+		}
 		KeyStroke stroke = UIUtils
 				.getKeystrokeOfBestActiveBindingFor(IWorkbenchCommandConstants.EDIT_CONTENT_ASSIST);
 		if (stroke != null)
@@ -39,24 +42,7 @@
 					pattern = null;
 				}
 
-				Set<String> proposals = new TreeSet<>(
-						String.CASE_INSENSITIVE_ORDER);
-
-				try {
-					Set<String> remotes = repository.getRefDatabase()
-							.getRefs(Constants.R_REMOTES).keySet();
-					for (String remote : remotes) {
-						// these are "origin/master", "origin/xxx"...
-						int slashIndex = remote.indexOf('/');
-						if (slashIndex > 0 && slashIndex < remote.length() - 1)
-							proposals
-									.add(remote.substring(remote.indexOf('/') + 1));
-					}
-				} catch (IOException e) {
-					// simply ignore, no proposals then
-				}
-
-				for (final String proposal : proposals) {
+				for (final String proposal : knownRemoteRefs) {
 					if (pattern != null && !pattern.matcher(proposal).matches())
 						continue;
 					IContentProposal propsal = new BranchContentProposal(
