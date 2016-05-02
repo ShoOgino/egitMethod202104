@@ -1,0 +1,22 @@
+	@Before
+	public void setup() throws Exception {
+		TestUtil.hideView(StagingView.VIEW_ID);
+		initialUseStagingView = Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.ALWAYS_USE_STAGING_VIEW);
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, true);
+		Activator.getDefault().getPreferenceStore()
+				.setDefault(UIPreferences.STAGING_VIEW_SYNC_SELECTION, false);
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.STAGING_VIEW_SYNC_SELECTION, false);
+		repositoryFile = createProjectAndCommitToRepository();
+		Repository repo = lookupRepository(repositoryFile);
+		TestUtil.configureTestCommitterAsUser(repo);
+		// TODO delete the second project for the time being (.gitignore is
+		// currently not hiding the .project file from commit)
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ2);
+		File dotProject = new File(project.getLocation().toOSString(), ".project");
+		project.delete(false, false, null);
+		assertTrue(dotProject.delete());
+	}
+

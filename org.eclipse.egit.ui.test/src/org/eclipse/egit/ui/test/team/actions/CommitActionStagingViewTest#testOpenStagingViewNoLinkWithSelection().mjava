@@ -1,0 +1,30 @@
+	@Test
+	public void testOpenStagingViewNoLinkWithSelection() throws Exception {
+		setTestFileContent("I have changed this");
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		util.getProjectItems(projectExplorerTree, PROJ1)[0].select();
+		String menuString = util.getPluginLocalizedValue("CommitAction_label");
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+				menuString);
+		TestUtil.waitUntilViewWithGivenIdShows(StagingView.VIEW_ID);
+		final Repository[] repo = { null };
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				StagingView view;
+				try {
+					view = (StagingView) PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage()
+							.showView(StagingView.VIEW_ID);
+					repo[0] = view.getCurrentRepository();
+				} catch (PartInitException e) {
+					// Ignore, repo[0] remains null
+				}
+			}
+		});
+		Repository repository = lookupRepository(repositoryFile);
+		assertNotNull("No repository found", repository);
+		assertEquals("Repository mismatch", repository, repo[0]);
+	}
+
