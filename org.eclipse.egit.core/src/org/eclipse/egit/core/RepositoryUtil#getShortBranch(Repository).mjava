@@ -6,7 +6,7 @@
 	 * @throws IOException
 	 */
 	public String getShortBranch(Repository repository) throws IOException {
-		Ref head = repository.getRef(Constants.HEAD);
+		Ref head = repository.exactRef(Constants.HEAD);
 		if (head == null) {
 			return CoreText.RepositoryUtil_noHead;
 		}
