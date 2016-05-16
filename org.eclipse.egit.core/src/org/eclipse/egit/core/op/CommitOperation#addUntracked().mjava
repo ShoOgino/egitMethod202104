@@ -1,18 +1,20 @@
 	private void addUntracked() throws CoreException {
-		if (notTracked == null || notTracked.size() == 0)
+		if (notTracked == null || notTracked.size() == 0) {
 			return;
-		AddCommand addCommand = new Git(repo).add();
-		boolean fileAdded = false;
-		for (String path : notTracked)
-			if (commitFileList.contains(path)) {
-				addCommand.addFilepattern(path);
-				fileAdded = true;
-			}
-		if (fileAdded)
-			try {
+		}
+		try (Git git = new Git(repo)) {
+			AddCommand addCommand = git.add();
+			boolean fileAdded = false;
+			for (String path : notTracked)
+				if (commitFileList.contains(path)) {
+					addCommand.addFilepattern(path);
+					fileAdded = true;
+				}
+			if (fileAdded) {
 				addCommand.call();
-			} catch (Exception e) {
-				throw new CoreException(Activator.error(e.getMessage(), e));
 			}
+		} catch (GitAPIException e) {
+			throw new CoreException(Activator.error(e.getMessage(), e));
+		}
 	}
 
