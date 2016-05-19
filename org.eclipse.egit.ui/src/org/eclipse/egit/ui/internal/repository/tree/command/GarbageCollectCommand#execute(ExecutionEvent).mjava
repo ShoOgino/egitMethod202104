@@ -38,9 +38,14 @@
 				return Status.OK_STATUS;
 			}
 		};
-		IWorkbenchSite activeSite = HandlerUtil.getActiveSite(event);
-		IWorkbenchSiteProgressService service = CommonUtils.getService(activeSite, IWorkbenchSiteProgressService.class);
-		service.schedule(job);
+		IServiceLocator serviceLocator = HandlerUtil.getActiveSite(event);
+		if (serviceLocator != null) {
+			IWorkbenchSiteProgressService service = CommonUtils.getService(
+					serviceLocator, IWorkbenchSiteProgressService.class);
+			service.schedule(job);
+		} else {
+			job.schedule();
+		}
 
 		return null;
 	}
