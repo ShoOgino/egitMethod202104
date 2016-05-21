@@ -19,6 +19,6 @@
 		assertEquals(HOTFIX_BRANCH_PREFIX, config.getHotfixPrefix());
 		assertEquals(VERSION_TAG_PREFIX, config.getVersionTagPrefix());
 
-		assertNotNull(repository.getRef(Constants.R_HEADS + DEVELOP_BRANCH));
+		assertNotNull(repository.exactRef(Constants.R_HEADS + DEVELOP_BRANCH));
 	}
 

@@ -23,9 +23,8 @@
 		assertEquals(first, topicCommit.getParent(0));
 
 		// rebase topic onto master
-		RebaseOperation op = new RebaseOperation(
-				testRepository.getRepository(), testRepository.getRepository()
-						.getRef(MASTER));
+		RebaseOperation op = new RebaseOperation(testRepository.getRepository(),
+				testRepository.getRepository().exactRef(MASTER));
 		op.execute(null);
 
 		RebaseResult res = op.getResult();

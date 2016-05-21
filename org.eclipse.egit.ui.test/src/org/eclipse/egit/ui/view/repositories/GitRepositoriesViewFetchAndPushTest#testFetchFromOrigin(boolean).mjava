@@ -29,7 +29,7 @@
 
 		deleteAllProjects();
 		shareProjects(clonedRepositoryFile2);
-		String objid = repository.getRef("refs/heads/master").getTarget()
+		String objid = repository.exactRef("refs/heads/master").getTarget()
 				.getObjectId().name();
 		objid = objid.substring(0, 7);
 		touchAndSubmit(null);
