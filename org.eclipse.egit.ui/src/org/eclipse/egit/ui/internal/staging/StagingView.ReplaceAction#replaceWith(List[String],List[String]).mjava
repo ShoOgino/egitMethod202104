@@ -4,15 +4,14 @@
 			if (files.isEmpty() || repository == null) {
 				return;
 			}
-			CheckoutCommand checkoutCommand = new Git(repository)
-					.checkout();
-			if (headRevision) {
-				checkoutCommand.setStartPoint(Constants.HEAD);
-			}
-			for (String path : files) {
-				checkoutCommand.addPath(path);
-			}
-			try {
+			try (Git git = new Git(repository)) {
+				CheckoutCommand checkoutCommand = git.checkout();
+				if (headRevision) {
+					checkoutCommand.setStartPoint(Constants.HEAD);
+				}
+				for (String path : files) {
+					checkoutCommand.addPath(path);
+				}
 				checkoutCommand.call();
 				if (!inaccessibleFiles.isEmpty()) {
 					IndexDiffCacheEntry indexDiffCacheForRepository = org.eclipse.egit.core.Activator

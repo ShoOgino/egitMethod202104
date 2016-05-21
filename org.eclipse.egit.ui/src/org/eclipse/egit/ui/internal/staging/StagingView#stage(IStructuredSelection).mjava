@@ -1,6 +1,6 @@
 	private void stage(IStructuredSelection selection) {
 		StagingViewContentProvider contentProvider = getContentProvider(unstagedViewer);
-		final Git git = new Git(currentRepository);
+		final Repository repository = currentRepository;
 		Iterator iterator = selection.iterator();
 		final List<String> addPaths = new ArrayList<>();
 		final List<String> rmPaths = new ArrayList<>();
@@ -42,7 +42,7 @@
 			Job addJob = new Job(UIText.StagingView_AddJob) {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					try {
+					try (Git git = new Git(repository)) {
 						AddCommand add = git.add();
 						for (String addPath : addPaths)
 							add.addFilepattern(addPath);
@@ -71,7 +71,7 @@
 			Job removeJob = new Job(UIText.StagingView_RemoveJob) {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					try {
+					try (Git git = new Git(repository)) {
 						RmCommand rm = git.rm().setCached(true);
 						for (String rmPath : rmPaths)
 							rm.addFilepattern(rmPath);
