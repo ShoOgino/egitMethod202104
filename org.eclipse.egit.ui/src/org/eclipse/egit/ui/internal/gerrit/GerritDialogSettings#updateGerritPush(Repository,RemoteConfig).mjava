@@ -1,0 +1,13 @@
+	private static void updateGerritPush(@NonNull Repository repository,
+			@NonNull RemoteConfig config) {
+		IDialogSettings section = getSection(PUSH_TO_GERRIT_SECTION);
+		String configured = section.get(repository + LAST_URI_SUFFIX);
+		if (configured == null || configured.isEmpty()) {
+			List<URIish> pushUris = config.getPushURIs();
+			if (!pushUris.isEmpty()) {
+				section.put(repository + LAST_URI_SUFFIX,
+						pushUris.get(0).toPrivateString());
+			}
+		}
+	}
+
