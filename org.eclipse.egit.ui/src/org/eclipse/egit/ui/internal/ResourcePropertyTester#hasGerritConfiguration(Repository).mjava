@@ -5,26 +5,15 @@
 	public static boolean hasGerritConfiguration(
 			@NonNull Repository repository) {
 		Config config = repository.getConfig();
-		if (GerritUtil.getCreateChangeId(config))
+		if (GerritUtil.getCreateChangeId(config)) {
 			return true;
+		}
 		try {
 			List<RemoteConfig> remoteConfigs = RemoteConfig.getAllRemoteConfigs(config);
 			for (RemoteConfig remoteConfig : remoteConfigs) {
-				for (RefSpec pushSpec : remoteConfig.getPushRefSpecs()) {
-					String destination = pushSpec.getDestination();
-					if (destination == null)
-						continue;
-					if (destination.startsWith(GerritUtil.REFS_FOR))
-						return true;
-				}
-				for (RefSpec fetchSpec : remoteConfig.getFetchRefSpecs()) {
-					String source = fetchSpec.getSource();
-					String destination = fetchSpec.getDestination();
-					if (source == null || destination == null)
-						continue;
-					if (source.startsWith(Constants.R_NOTES)
-							&& destination.startsWith(Constants.R_NOTES))
-						return true;
+				if (GerritUtil.isGerritPush(remoteConfig)
+						|| GerritUtil.isGerritFetch(remoteConfig)) {
+					return true;
 				}
 			}
 		} catch (URISyntaxException e) {
