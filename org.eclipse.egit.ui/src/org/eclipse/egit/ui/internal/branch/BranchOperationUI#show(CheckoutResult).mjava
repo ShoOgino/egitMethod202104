@@ -2,7 +2,7 @@
 	 * @param result
 	 *            the result to show
 	 */
-	public void show(final CheckoutResult result) {
+	private void show(final @NonNull CheckoutResult result) {
 		if (result.getStatus() == CheckoutResult.Status.CONFLICTS) {
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				@Override
