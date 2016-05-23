@@ -3,9 +3,10 @@
 			List<Ref> branches, Ref head) {
 		if (!repositorySelection.equals(validatedRepoSelection)
 				|| !branches.equals(validatedSelectedBranches)
-				|| !head.equals(validatedHEAD))
+				|| (head != null && !head.equals(validatedHEAD))) {
 			setPageComplete(false);
-		else
+		} else {
 			checkPage();
+		}
 	}
 
