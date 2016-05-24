@@ -5,7 +5,10 @@
 	@Nullable
 	public synchronized GitProjectData getData() {
 		if (data == null) {
-			data = GitProjectData.get(getProject());
+			IProject project = getProject();
+			if (project != null) {
+				data = GitProjectData.get(project);
+			}
 		}
 		return data;
 	}
