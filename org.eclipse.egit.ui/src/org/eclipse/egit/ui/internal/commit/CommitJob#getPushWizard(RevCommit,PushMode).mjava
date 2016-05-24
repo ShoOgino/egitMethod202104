@@ -1,0 +1,27 @@
+	private Wizard getPushWizard(final RevCommit commit,
+			final PushMode pushTo) {
+		switch (pushTo) {
+		case GERRIT:
+			return new PushToGerritWizard(repository);
+		case UPSTREAM:
+			try {
+				String fullBranch = repository.getFullBranch();
+				if (fullBranch != null
+						&& fullBranch.startsWith(Constants.R_HEADS)) {
+					Ref ref = repository.exactRef(fullBranch);
+					return new PushBranchWizard(repository, ref);
+				} else {
+					return new PushBranchWizard(repository,
+							commit.getId());
+				}
+			} catch (IOException e) {
+				Activator.handleError(
+						NLS.bind(UIText.CommitUI_pushFailedMessage, e), e,
+						true);
+				return null;
+			}
+		default:
+			return null;
+		}
+	}
+
