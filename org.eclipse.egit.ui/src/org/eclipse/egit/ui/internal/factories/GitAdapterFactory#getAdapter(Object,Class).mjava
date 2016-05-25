@@ -1,7 +1,7 @@
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if (adapterType.isAssignableFrom(IHistoryPageSource.class)) {
-			return historyPageSource;
+			return GitHistoryPageSource.INSTANCE;
 		}
 
 		if (IWorkbenchAdapter.class == adapterType) {

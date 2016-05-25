@@ -28,7 +28,7 @@
 			if (rebaseTargetSelectionDialog.open() == IDialogConstants.OK_ID) {
 				String refName = rebaseTargetSelectionDialog.getRefName();
 				try {
-					ref = repository.getRef(refName);
+					ref = repository.findRef(refName);
 				} catch (IOException e) {
 					throw new ExecutionException(e.getMessage(), e);
 				}

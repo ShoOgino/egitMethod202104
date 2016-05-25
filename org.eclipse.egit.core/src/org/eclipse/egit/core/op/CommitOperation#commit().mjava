@@ -1,6 +1,5 @@
 	private void commit() throws TeamException {
-		Git git = new Git(repo);
-		try {
+		try (Git git = new Git(repo)) {
 			CommitCommand commitCommand = git.commit();
 			setAuthorAndCommitter(commitCommand);
 			commitCommand.setAmend(amending)

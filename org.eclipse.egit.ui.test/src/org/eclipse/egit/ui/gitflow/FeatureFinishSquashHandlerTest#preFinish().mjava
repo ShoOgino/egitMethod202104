@@ -1,5 +1,7 @@
 	@Override
 	protected void preFinish() {
+		bot.waitUntil(shellIsActive(
+				UIText.FeatureFinishHandler_rewordSquashedCommitMessage));
 		String text = bot.styledText().getText();
 		text = text.substring(text.indexOf('\n'));
 		bot.styledText().setText(SQUASHED_COMMENT_SUMMARY + text);

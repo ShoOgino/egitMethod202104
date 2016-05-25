@@ -1,0 +1,5 @@
+	static IResource[] getSelectedResources(ExecutionEvent event) {
+		IStructuredSelection selection = getSelection(event);
+		return SelectionUtils.getSelectedResources(selection);
+	}
+

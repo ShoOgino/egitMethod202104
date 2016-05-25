@@ -1,0 +1,22 @@
+	private String validateTopic(String topic) {
+		if (WHITESPACE.matcher(topic).find()) {
+			return UIText.PushToGerritPage_TopicHasWhitespace;
+		}
+		if (topic.indexOf(',') >= 0) {
+			if (topic.indexOf('%') >= 0) {
+				return UIText.PushToGerritPage_TopicInvalidCharacters;
+			}
+			String withTopic = branchText.getText().trim();
+			int i = withTopic.indexOf('%');
+			if (i >= 0) {
+				withTopic = withTopic.substring(0, i);
+			}
+			withTopic += '/' + topic;
+			if (knownRemoteRefs.contains(withTopic)) {
+				return NLS.bind(UIText.PushToGerritPage_TopicCollidesWithBranch,
+						withTopic);
+			}
+		}
+		return null;
+	}
+

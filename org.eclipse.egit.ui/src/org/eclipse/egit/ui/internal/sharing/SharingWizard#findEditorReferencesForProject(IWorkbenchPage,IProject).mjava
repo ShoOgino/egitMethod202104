@@ -1,13 +1,16 @@
-	private Map<IFile, IEditorReference> findAllEditorReferences() {
-		IEditorReference[] editorReferences = activePage.getEditorReferences();
-		Map<IFile, IEditorReference> fileEditors = new HashMap<>();
-		for (IEditorReference editorReference : editorReferences) {
+	private List<IEditorReference> findEditorReferencesForProject(
+			IWorkbenchPage activePage, IProject project) {
+		List<IEditorReference> fileEditors = new ArrayList<>();
+		for (IEditorReference editorReference : activePage
+				.getEditorReferences()) {
 			try {
 				IEditorInput editorInput = editorReference.getEditorInput();
 				if (editorInput instanceof IFileEditorInput) {
 					IFileEditorInput fileEditorInput = (IFileEditorInput) editorInput;
 					IFile file = fileEditorInput.getFile();
-					fileEditors.put(file, editorReference);
+					if (file.getProject().equals(project)) {
+						fileEditors.add(editorReference);
+					}
 				}
 			} catch (PartInitException e) {
 				Activator.logError("PartInitException - should not happen", e); //$NON-NLS-1$

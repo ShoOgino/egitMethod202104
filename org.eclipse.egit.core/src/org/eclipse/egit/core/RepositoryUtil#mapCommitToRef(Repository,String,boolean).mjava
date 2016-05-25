@@ -42,7 +42,8 @@
 						if (entry.getNewId().name().equals(commitId)) {
 							CheckoutEntry checkoutEntry = entry.parseCheckout();
 							if (checkoutEntry != null) {
-								Ref ref = repository.getRef(checkoutEntry.getToBranch());
+								Ref ref = repository
+										.findRef(checkoutEntry.getToBranch());
 								if (ref != null) {
 									ObjectId objectId = ref.getObjectId();
 									if (objectId != null && objectId.getName()

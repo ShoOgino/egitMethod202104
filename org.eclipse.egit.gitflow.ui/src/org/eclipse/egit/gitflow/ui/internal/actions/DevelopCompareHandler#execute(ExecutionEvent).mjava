@@ -1,0 +1,24 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+
+		IResource[] selectedResources = GitFlowHandlerUtil.gatherResourceToOperateOn(event);
+		String revision;
+		try {
+			revision = GitFlowHandlerUtil.gatherRevision(event);
+		} catch (OperationCanceledException e) {
+			return null;
+		} catch (IOException e) {
+			throw new ExecutionException(e.getMessage(), e);
+		}
+
+		IWorkbenchPage workBenchPage = getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		try {
+			CompareUtils.compare(selectedResources, gfRepo.getRepository(),
+					HEAD, revision, true, workBenchPage);
+		} catch (IOException e) {
+			handleError(CompareWithRefAction_errorOnSynchronize, e, true);
+		}
+		return null;
+	}
+

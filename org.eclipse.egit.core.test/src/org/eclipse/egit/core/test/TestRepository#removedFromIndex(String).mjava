@@ -3,7 +3,7 @@
 		if (dc == null)
 			return true;
 
-		Ref ref = repository.getRef(Constants.HEAD);
+		Ref ref = repository.exactRef(Constants.HEAD);
 		try (RevWalk rw = new RevWalk(repository)) {
 			RevCommit c = rw.parseCommit(ref.getObjectId());
 

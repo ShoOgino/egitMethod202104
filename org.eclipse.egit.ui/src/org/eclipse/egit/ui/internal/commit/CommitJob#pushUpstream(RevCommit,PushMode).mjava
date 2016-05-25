@@ -1,28 +1,22 @@
 	private void pushUpstream(final RevCommit commit, final PushMode pushTo) {
-		RemoteConfig config = SimpleConfigurePushDialog
+		final RemoteConfig config = SimpleConfigurePushDialog
 				.getConfiguredRemote(repository);
 
-		if (pushTo == PushMode.GERRIT) {
-			final Wizard pushWizard = new PushToGerritWizard(repository);
-			openPushWizard(pushWizard);
-		} else if (config == null) {
-			try {
-				Wizard pushWizard = null;
-				String fullBranch = repository.getFullBranch();
-				if (fullBranch != null
-						&& fullBranch.startsWith(Constants.R_HEADS)) {
-					Ref ref = repository.getRef(fullBranch);
-					pushWizard = new PushBranchWizard(repository, ref);
-				} else {
-					pushWizard = new PushBranchWizard(repository,
-							commit.getId());
+		if (pushTo == PushMode.GERRIT || config == null) {
+			final Display display = PlatformUI.getWorkbench().getDisplay();
+			display.asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					Wizard pushWizard = getPushWizard(commit, pushTo);
+					if (pushWizard != null) {
+						WizardDialog wizardDialog = new WizardDialog(
+								display.getActiveShell(), pushWizard);
+						wizardDialog.setHelpAvailable(true);
+						wizardDialog.open();
+					}
 				}
-				openPushWizard(pushWizard);
-			} catch (IOException e) {
-				Activator.handleError(
-						NLS.bind(UIText.CommitUI_pushFailedMessage, e), e,
-						true);
-			}
+			});
 		} else {
 			PushOperationUI op = new PushOperationUI(repository,
 					config.getName(), false);

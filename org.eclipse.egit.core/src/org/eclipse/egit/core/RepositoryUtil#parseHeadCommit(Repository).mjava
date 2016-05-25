@@ -10,7 +10,7 @@
 	 */
 	public RevCommit parseHeadCommit(Repository repository) {
 		try (RevWalk walk = new RevWalk(repository)) {
-			Ref head = repository.getRef(Constants.HEAD);
+			Ref head = repository.exactRef(Constants.HEAD);
 			if (head == null || head.getObjectId() == null)
 				return null;
 

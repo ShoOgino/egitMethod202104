@@ -6,12 +6,12 @@
 		if (paths.isEmpty())
 			return;
 
-		final Git git = new Git(currentRepository);
+		final Repository repository = currentRepository;
 
 		Job resetJob = new Job(UIText.StagingView_ResetJob) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				try {
+				try (Git git = new Git(repository)) {
 					ResetCommand reset = git.reset();
 					for (String path : paths)
 						reset.addPath(path);

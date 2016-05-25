@@ -2,7 +2,7 @@
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == OK)
 			try {
-				String newName = name.getText();
+				newName = name.getText();
 				new RenameBranchOperation(repository, branchToRename, newName)
 						.execute(null);
 			} catch (CoreException e) {

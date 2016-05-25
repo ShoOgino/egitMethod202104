@@ -16,6 +16,9 @@
 						StagingView view = (StagingView) PlatformUI.getWorkbench()
 								.getActiveWorkbenchWindow().getActivePage()
 								.showView(StagingView.VIEW_ID);
+						if (view.getCurrentRepository() != repository) {
+							view.reload(repository);
+						}
 						view.setFocus();
 					} catch (PartInitException e) {
 						Activator.logError(e.getMessage(), e);

@@ -2,7 +2,7 @@
 		String[] parts = s.split(","); //$NON-NLS-1$
 		int[] ints = new int[parts.length];
 		for (int i = 0; i < parts.length; i++) {
-			ints[i] = Integer.valueOf(parts[i]).intValue();
+			ints[i] = Integer.parseInt(parts[i]);
 		}
 		return ints;
 	}

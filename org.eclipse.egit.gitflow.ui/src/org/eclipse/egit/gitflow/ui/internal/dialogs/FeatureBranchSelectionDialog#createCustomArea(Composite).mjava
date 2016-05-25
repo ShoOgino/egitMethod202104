@@ -14,7 +14,9 @@
 
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				buttonPressed(OK);
+				if (getButton(OK).isEnabled()) {
+					buttonPressed(OK);
+				}
 			}
 		});
 		return result;

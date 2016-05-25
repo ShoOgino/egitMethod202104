@@ -28,9 +28,11 @@
 		branchesViewer.getTree().setLinesVisible(false);
 		branchesViewer.getTree().setHeaderVisible(true);
 
-		TreeColumn nameColumn = createColumn(UIText.BranchSelectionTree_NameColumn, branchesViewer, createNameLabelProvider());
+		TreeColumn nameColumn = createColumn(
+				UIText.BranchSelectionTree_NameColumn, branchesViewer,
+				new DecoratedBranchLabelProvider(gfRepo.getRepository(), prefix));
 		TreeColumn idColumn = createColumn(UIText.BranchSelectionTree_IdColumn, branchesViewer, new ColumnLabelProvider() {
-			
+
 			@Override
 			public String getText(Object element) {
 				if (element instanceof Ref) {
@@ -43,7 +45,7 @@
 				return super.getText(element);
 			}});
 		TreeColumn msgColumn = createColumn(UIText.BranchSelectionTree_MessageColumn, branchesViewer, new ColumnLabelProvider() {
-			
+
 			@Override
 			public String getText(Object element) {
 				if (element instanceof Ref) {

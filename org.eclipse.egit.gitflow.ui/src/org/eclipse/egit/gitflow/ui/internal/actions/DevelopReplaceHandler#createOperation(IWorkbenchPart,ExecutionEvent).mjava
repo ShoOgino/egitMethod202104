@@ -1,0 +1,23 @@
+	private @Nullable DiscardChangesOperation createOperation(
+			IWorkbenchPart part, ExecutionEvent event)
+					throws ExecutionException, IOException {
+		IResource[] selectedResources = GitFlowHandlerUtil.gatherResourceToOperateOn(event);
+		String revision;
+		try {
+			revision = GitFlowHandlerUtil.gatherRevision(event);
+		} catch (OperationCanceledException e) {
+			return null;
+		}
+
+		IResource[] resourcesInScope;
+		try {
+			resourcesInScope = getRelatedChanges(part, selectedResources);
+		} catch (InterruptedException e) {
+			// ignore, we will not discard the files in case the user
+			// cancels the scope operation
+			return null;
+		}
+
+		return new DiscardChangesOperation(resourcesInScope, revision);
+	}
+

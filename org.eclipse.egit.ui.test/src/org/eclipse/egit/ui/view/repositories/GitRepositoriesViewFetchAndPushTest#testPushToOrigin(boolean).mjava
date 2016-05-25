@@ -59,7 +59,7 @@
 		confirmed.close();
 		assertTrue("Up to date expected", uptodate);
 		// touch and run again: expect new branch
-		String objectIdBefore = repository.getRef(repository.getFullBranch())
+		String objectIdBefore = repository.exactRef(repository.getFullBranch())
 				.getLeaf().getObjectId().name();
 		objectIdBefore = objectIdBefore.substring(0, 7);
 		touchAndSubmit(null);

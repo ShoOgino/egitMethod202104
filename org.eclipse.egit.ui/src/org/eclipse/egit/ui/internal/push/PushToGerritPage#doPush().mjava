@@ -1,11 +1,14 @@
 	void doPush() {
 		try {
 			URIish uri = new URIish(uriCombo.getText());
-			Ref currentHead = repository.getRef(Constants.HEAD);
+			Ref currentHead = repository.exactRef(Constants.HEAD);
+			String ref = prefixCombo.getItem(prefixCombo.getSelectionIndex())
+					+ branchText.getText().trim();
+			if (topicText.isEnabled()) {
+				ref = setTopicInRef(ref, topicText.getText().trim());
+			}
 			RemoteRefUpdate update = new RemoteRefUpdate(repository,
-					currentHead, prefixCombo.getItem(prefixCombo
-							.getSelectionIndex()) + branchText.getText(),
-					false, null, null);
+					currentHead, ref, false, null, null);
 			PushOperationSpecification spec = new PushOperationSpecification();
 
 			spec.addURIRefUpdates(uri, Arrays.asList(update));
@@ -28,6 +31,8 @@
 					op.getDestinationString(), false, false);
 			storeLastUsedUri(uriCombo.getText());
 			storeLastUsedBranch(branchText.getText());
+			storeLastUsedTopic(topicText.isEnabled(),
+					topicText.getText().trim(), repository.getBranch());
 		} catch (URISyntaxException e) {
 			Activator.handleError(e.getMessage(), e, true);
 		} catch (IOException e) {
