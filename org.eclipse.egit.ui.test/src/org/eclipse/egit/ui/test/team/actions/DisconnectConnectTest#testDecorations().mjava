@@ -10,6 +10,7 @@
 		touch("File modified");
 		clickOnDisconnect();
 		TestUtil.waitForJobs(500, 5000);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		TestUtil.waitForDecorations();
 		assertFalse("Project should not have git decorations",
 				getProjectItem(projectExplorerTree, PROJ1).getText()
@@ -17,6 +18,7 @@
 		SWTBotShell connectDialog = openConnectDialog();
 		connectDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
 		TestUtil.waitForJobs(500, 5000);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		TestUtil.waitForDecorations();
 		assertTrue("Project should have git decorations",
 				getProjectItem(projectExplorerTree, PROJ1).getText()
