@@ -17,6 +17,7 @@
 		util.getProjectItems(projectExplorerTree, PROJ_A)[0].select();
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				addToIndexLabel);
+		TestUtil.joinJobs(ADD_TO_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		// Verify file got staged
 		verifyStaging(PROJ_A, filePath, true);
@@ -27,6 +28,7 @@
 						"Team", addToIndexLabel));
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				removeFromIndexLabel);
+		TestUtil.joinJobs(REMOVE_FROM_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		// Verify file is unstaged again
 		verifyStaging(PROJ_A, filePath, false);
