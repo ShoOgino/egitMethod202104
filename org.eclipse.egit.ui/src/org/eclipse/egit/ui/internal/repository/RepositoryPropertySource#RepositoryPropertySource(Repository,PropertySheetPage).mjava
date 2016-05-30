@@ -58,14 +58,30 @@
 							public void run() {
 								changeModeAction.getAction().setText(
 										aMode.getText());
-								editAction.getAction().setEnabled(
-										aMode != DisplayMode.EFFECTIVE);
+								boolean enabled = true;
+								switch (aMode) {
+								case EFFECTIVE:
+									enabled = false;
+									break;
+								case SYSTEM:
+									enabled = systemConfig.getFile() != null
+											&& systemConfig.getFile()
+													.canWrite();
+									break;
+								default:
+									// Nothing; enabled is true
+									break;
+								}
+								editAction.getAction().setEnabled(enabled);
 								myPage.refresh();
 							}
 
 							@Override
 							public boolean isEnabled() {
-								return aMode != getCurrentMode();
+								return aMode != getCurrentMode()
+										&& (aMode != DisplayMode.SYSTEM
+												|| systemConfig
+														.getFile() != null);
 							}
 
 							@Override

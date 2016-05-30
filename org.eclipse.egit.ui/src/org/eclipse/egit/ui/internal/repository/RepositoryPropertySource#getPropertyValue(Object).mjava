@@ -3,13 +3,17 @@
 		String actId = ((String) id);
 		Object value = null;
 		if (actId.startsWith(SYSTEM_ID_PREFIX)) {
-			value = getValueFromConfig(systemConfig, actId.substring(4));
+			value = getValueFromConfig(systemConfig,
+					actId.substring(SYSTEM_ID_PREFIX.length()));
 		} else if (actId.startsWith(USER_ID_PREFIX)) {
-			value = getValueFromConfig(userHomeConfig, actId.substring(4));
+			value = getValueFromConfig(userHomeConfig,
+					actId.substring(USER_ID_PREFIX.length()));
 		} else if (actId.startsWith(REPO_ID_PREFIX)) {
-			value = getValueFromConfig(repositoryConfig, actId.substring(4));
+			value = getValueFromConfig(repositoryConfig,
+					actId.substring(REPO_ID_PREFIX.length()));
 		} else if (actId.startsWith(EFFECTIVE_ID_PREFIX)) {
-			value = getValueFromConfig(effectiveConfig, actId.substring(4));
+			value = getValueFromConfig(effectiveConfig,
+					actId.substring(EFFECTIVE_ID_PREFIX.length()));
 		}
 		if (value == null)
 			// the text editor needs this to work
