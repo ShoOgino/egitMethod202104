@@ -2,7 +2,7 @@
 			List<Ref> branches, Ref head) {
 		if (repoSelection.equals(validatedRepoSelection)
 				&& branches.equals(validatedSelectedBranches)
-				&& head.equals(validatedHEAD)) {
+				&& head != null && head.equals(validatedHEAD)) {
 			checkPage();
 			return;
 		}
