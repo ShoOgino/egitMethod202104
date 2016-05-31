@@ -4,7 +4,8 @@
 			return 0;
 
 		int mul = 1;
-		switch (Character.toLowerCase(n.charAt(n.length() - 1))) {
+		char lastChar = n.charAt(n.length() - 1);
+		switch (Character.toLowerCase(lastChar)) {
 		case 'g':
 			mul = GB;
 			break;
@@ -14,6 +15,11 @@
 		case 'k':
 			mul = KB;
 			break;
+		default:
+			if (Character.isDigit(lastChar)) {
+				break;
+			}
+			return 0; // Invalid input
 		}
 		if (mul > 1)
 			n = n.substring(0, n.length() - 1).trim();
