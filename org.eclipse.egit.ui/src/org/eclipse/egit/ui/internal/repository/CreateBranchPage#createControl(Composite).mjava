@@ -12,7 +12,9 @@
 		sourceIcon.setLayoutData(GridDataFactory.fillDefaults()
 				.align(SWT.END, SWT.CENTER).create());
 
-		sourceNameLabel = new Label(main, SWT.NONE);
+		sourceNameLabel = new StyledText(main, SWT.NONE);
+		sourceNameLabel.setBackground(main.getBackground());
+		sourceNameLabel.setEditable(false);
 		sourceNameLabel.setLayoutData(GridDataFactory.fillDefaults()
 				.align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).create());

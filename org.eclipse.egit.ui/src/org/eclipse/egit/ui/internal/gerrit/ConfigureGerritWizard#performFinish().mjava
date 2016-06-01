@@ -8,6 +8,7 @@
 			gerritConfiguration.setErrorMessage(e.getMessage());
 			return false;
 		}
+		GerritDialogSettings.updateRemoteConfig(repository, remoteConfig);
 		return true;
 	}
 

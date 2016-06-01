@@ -1,7 +1,8 @@
-	private void revalidate(RepositorySelection repoSelection, List<Ref> branches, Ref head) {
+	private void revalidate(@NonNull RepositorySelection repoSelection,
+			List<Ref> branches, Ref head) {
 		if (repoSelection.equals(validatedRepoSelection)
 				&& branches.equals(validatedSelectedBranches)
-				&& head.equals(validatedHEAD)) {
+				&& head != null && head.equals(validatedHEAD)) {
 			checkPage();
 			return;
 		}

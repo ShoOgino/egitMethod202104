@@ -31,8 +31,11 @@
 		assertTrue((new File(repopath)).exists());
 
 		// share project
-		bot.button("Finish").click();
-		Thread.sleep(1000);
+		SWTBotShell shell = bot.activeShell();
+		bot.button(IDialogConstants.FINISH_LABEL).click();
+		bot.waitUntil(Conditions.shellCloses(shell));
+		ResourcesPlugin.getWorkspace().getRoot()
+				.refreshLocal(IResource.DEPTH_INFINITE, null);
 		assertEquals("org.eclipse.egit.core.GitProvider",
 				workspace.getRoot().getProject(projectName0)
 						.getPersistentProperty(

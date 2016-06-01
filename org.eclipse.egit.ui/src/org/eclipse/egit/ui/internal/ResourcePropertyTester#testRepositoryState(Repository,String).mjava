@@ -8,9 +8,15 @@
 		if ("isShared".equals(property)) //$NON-NLS-1$
 			return repository != null;
 		if (repository != null) {
-			if ("hasGerritConfiguration".equals(property)) //$NON-NLS-1$
+			if ("hasGerritConfiguration".equals(property)) { //$NON-NLS-1$
 				return hasGerritConfiguration(repository);
-
+			}
+			if ("canFetchFromGerrit".equals(property)) { //$NON-NLS-1$
+				return canFetchFromGerrit(repository);
+			}
+			if ("canPushToGerrit".equals(property)) { //$NON-NLS-1$
+				return canPushToGerrit(repository);
+			}
 			RepositoryState state = repository.getRepositoryState();
 
 			if ("canAbortRebase".equals(property)) //$NON-NLS-1$

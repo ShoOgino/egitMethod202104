@@ -49,6 +49,9 @@
 		}
 		case SYSTEM: {
 			prefix = SYSTEM_ID_PREFIX;
+			if (systemConfig.getFile() == null) {
+				return new IPropertyDescriptor[0];
+			}
 			String location = systemConfig.getFile().getAbsolutePath();
 			category = NLS
 					.bind(UIText.RepositoryPropertySource_GlobalConfigurationCategory,

@@ -44,8 +44,11 @@
 
 		bot.tree().getAllItems()[1].getItems()[0].check();
 		existingOrNewPage.assertEnabling(false, false, true);
-		bot.button("Finish").click();
-		Thread.sleep(1000);
+		SWTBotShell shell = bot.activeShell();
+		bot.button(IDialogConstants.FINISH_LABEL).click();
+		bot.waitUntil(Conditions.shellCloses(shell));
+		ResourcesPlugin.getWorkspace().getRoot()
+				.refreshLocal(IResource.DEPTH_INFINITE, null);
 		assertEquals(repo1.getDirectory().getAbsolutePath(), RepositoryMapping
 				.getMapping(workspace.getRoot().getProject(projectName1))
 				.getRepository().getDirectory().toString());

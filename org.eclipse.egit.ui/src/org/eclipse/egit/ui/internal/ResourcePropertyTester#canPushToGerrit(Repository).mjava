@@ -1,0 +1,21 @@
+	/**
+	 * @param repository
+	 * @return {@code true} if repository has been configured for pushing to
+	 *         Gerrit
+	 */
+	public static boolean canPushToGerrit(@NonNull Repository repository) {
+		Config config = repository.getConfig();
+		try {
+			List<RemoteConfig> remoteConfigs = RemoteConfig
+					.getAllRemoteConfigs(config);
+			for (RemoteConfig remoteConfig : remoteConfigs) {
+				if (GerritUtil.isGerritPush(remoteConfig)) {
+					return true;
+				}
+			}
+		} catch (URISyntaxException e) {
+			return false;
+		}
+		return false;
+	}
+

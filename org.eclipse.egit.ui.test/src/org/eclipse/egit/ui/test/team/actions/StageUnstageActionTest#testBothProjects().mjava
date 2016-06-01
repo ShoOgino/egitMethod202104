@@ -13,6 +13,7 @@
 		// Add to index
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				addToIndexLabel);
+		TestUtil.joinJobs(ADD_TO_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		// Verify both files got staged
 		verifyStaging(PROJ_A, filePath, true);
@@ -22,6 +23,7 @@
 		// Remove from index
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				removeFromIndexLabel);
+		TestUtil.joinJobs(REMOVE_FROM_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		// Verify both files got unstaged
 		verifyStaging(PROJ_A, filePath, false);

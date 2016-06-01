@@ -50,8 +50,11 @@
 				.append("a/b").append(projectName2).toString();
 		existingOrNewPage.assertTableContents(contents);
 
+		SWTBotShell shell = bot.activeShell();
 		bot.button(IDialogConstants.FINISH_LABEL).click();
-		Thread.sleep(1000);
+		bot.waitUntil(Conditions.shellCloses(shell));
+		ResourcesPlugin.getWorkspace().getRoot()
+				.refreshLocal(IResource.DEPTH_INFINITE, null);
 		String location1Path = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName1).getLocation().toString();
 		assertEquals(contents[0][2], location1Path);

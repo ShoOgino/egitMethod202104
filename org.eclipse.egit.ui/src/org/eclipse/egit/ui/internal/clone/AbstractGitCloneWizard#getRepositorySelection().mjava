@@ -1,6 +1,8 @@
 	/**
-	 * @return the repository selected by the user
+	 * @return the repository selected by the user or {@code null} if an error
+	 *         occurred
 	 */
+	@Nullable
 	protected RepositorySelection getRepositorySelection() {
 		try {
 			return (new RepositorySelection(new URIish(currentSearchResult.getGitRepositoryInfo().getCloneUri()), null));

@@ -1,0 +1,21 @@
+	/**
+	 * Updates dialog settings as appropriate. Called within the UI thread.
+	 *
+	 * @param repository
+	 *            the {@code config} belongs to
+	 * @param config
+	 *            that was updated
+	 */
+	public static void updateRemoteConfig(Repository repository,
+			RemoteConfig config) {
+		if (repository == null || config == null) {
+			return;
+		}
+		if (GerritUtil.isGerritFetch(config)) {
+			updateGerritFetch(repository, config);
+		}
+		if (GerritUtil.isGerritPush(config)) {
+			updateGerritPush(repository, config);
+		}
+	}
+

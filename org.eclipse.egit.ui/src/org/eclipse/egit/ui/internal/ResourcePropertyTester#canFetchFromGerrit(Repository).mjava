@@ -1,0 +1,21 @@
+	/**
+	 * @param repository
+	 * @return {@code true} if repository has been configured to fetch from
+	 *         Gerrit
+	 */
+	public static boolean canFetchFromGerrit(@NonNull Repository repository) {
+		Config config = repository.getConfig();
+		try {
+			List<RemoteConfig> remoteConfigs = RemoteConfig
+					.getAllRemoteConfigs(config);
+			for (RemoteConfig remoteConfig : remoteConfigs) {
+				if (GerritUtil.isGerritFetch(remoteConfig)) {
+					return true;
+				}
+			}
+		} catch (URISyntaxException e) {
+			return false;
+		}
+		return false;
+	}
+

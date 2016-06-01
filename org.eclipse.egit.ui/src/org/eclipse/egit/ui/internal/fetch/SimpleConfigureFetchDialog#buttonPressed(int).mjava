@@ -63,6 +63,7 @@
 			} catch (IOException e) {
 				Activator.handleError(e.getMessage(), e, true);
 			}
+			GerritDialogSettings.updateRemoteConfig(repository, config);
 			if (buttonId == OK)
 				try {
 					new ProgressMonitorDialog(getShell()).run(true, true,
