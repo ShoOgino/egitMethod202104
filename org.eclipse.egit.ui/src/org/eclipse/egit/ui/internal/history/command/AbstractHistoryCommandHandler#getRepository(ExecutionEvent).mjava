@@ -10,25 +10,11 @@
 		if (input instanceof RepositoryTreeNode) {
 			return ((RepositoryTreeNode) input).getRepository();
 		}
-		if (input instanceof IResource) {
-			IResource resource = (IResource) input;
-			RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
-			if (mapping != null) {
-				return mapping.getRepository();
-			}
-			// for closed projects team framework doesn't allow to get mapping
-			// so try again using a path based approach
-			Repository repository = Activator.getDefault().getRepositoryCache()
-					.getRepository(resource);
-			if (repository != null) {
-				return repository;
-			}
-		}
 		IResource resource = AdapterUtils.adapt(input, IResource.class);
 		if (resource != null) {
-			RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
-			if (mapping != null) {
-				return mapping.getRepository();
+			Repository repository = ResourceUtil.getRepository(resource);
+			if (repository != null) {
+				return repository;
 			}
 		}
 
