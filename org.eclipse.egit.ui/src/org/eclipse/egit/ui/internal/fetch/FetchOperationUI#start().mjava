@@ -3,14 +3,20 @@
 	 * completion
 	 */
 	public void start() {
-		Job job = new WorkspaceJob(NLS.bind(
+		final Repository repo = repository;
+		if (repo == null) {
+			return;
+		}
+		Job job = new RepositoryJob(NLS.bind(
 				UIText.FetchOperationUI_FetchJobName,
 				sourceString)) {
 
+			private FetchResult result;
+
 			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) {
+			public IStatus performJob(IProgressMonitor monitor) {
 				try {
-					execute(monitor);
+					result = execute(monitor);
 				} catch (CoreException e) {
 					return Activator.createErrorStatus(e.getStatus()
 							.getMessage(), e);
@@ -19,24 +25,20 @@
 			}
 
 			@Override
+			protected IAction getAction() {
+				return new ShowResultAction(repo, result, sourceString);
+			}
+
+			@Override
 			public boolean belongsTo(Object family) {
-				if (JobFamilies.FETCH.equals(family))
+				if (JobFamilies.FETCH.equals(family)) {
 					return true;
+				}
 				return super.belongsTo(family);
 			}
+
 		};
 		job.setUser(true);
 		job.schedule();
-		job.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				if (event.getResult().isOK())
-					FetchResultDialog.show(repository, op.getOperationResult(),
-							sourceString);
-				else
-					Activator.handleError(event.getResult().getMessage(), event
-							.getResult().getException(), true);
-			}
-		});
 	}
 

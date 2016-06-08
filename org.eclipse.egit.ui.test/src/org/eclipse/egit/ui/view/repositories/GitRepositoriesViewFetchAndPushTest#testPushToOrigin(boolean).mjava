@@ -31,6 +31,7 @@
 				destinationString);
 
 		// first time: expect new branch
+		bot.waitUntil(Conditions.shellIsActive(dialogTitle));
 		SWTBotShell confirmed = bot.shell(dialogTitle);
 		SWTBotTreeItem[] treeItems = confirmed.bot().tree().getAllItems();
 		boolean newBranch = false;
@@ -47,6 +48,7 @@
 
 		runPush(tree);
 
+		bot.waitUntil(Conditions.shellIsActive(dialogTitle));
 		confirmed = bot.shell(dialogTitle);
 		treeItems = confirmed.bot().tree().getAllItems();
 		boolean uptodate = false;
@@ -70,6 +72,7 @@
 
 		runPush(updatedTree);
 
+		bot.waitUntil(Conditions.shellIsActive(dialogTitle));
 		confirmed = bot.shell(dialogTitle);
 		treeItems = confirmed.bot().tree().getAllItems();
 		newBranch = false;

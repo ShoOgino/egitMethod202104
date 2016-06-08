@@ -15,11 +15,17 @@
 			}
 
 			pushDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
-			if (withConfirmPage)
+			if (withConfirmPage) {
 				pushDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
+			}
+			JobJoiner joiner = JobJoiner.startListening(JobFamilies.PUSH, 20,
+					TimeUnit.SECONDS);
 			pushDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
-			SWTBotShell confirm = bot.shell(
-					NLS.bind(UIText.PushResultDialog_title, destination));
+			Job job = joiner.join();
+			openResultDialog(job);
+			String title = NLS.bind(UIText.PushResultDialog_title, destination);
+			bot.waitUntil(Conditions.shellIsActive(title));
+			SWTBotShell confirm = bot.shell(title);
 			String result = confirm.bot().tree().getAllItems()[0].getText();
 
 			assertTrue("Wrong result",
@@ -36,11 +42,16 @@
 			}
 
 			pushDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
-			if (withConfirmPage)
+			if (withConfirmPage) {
 				pushDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
+			}
+			joiner = JobJoiner.startListening(JobFamilies.PUSH, 20,
+					TimeUnit.SECONDS);
 			pushDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
-			confirm = bot.shell(
-					NLS.bind(UIText.PushResultDialog_title, destination));
+			job = joiner.join();
+			openResultDialog(job);
+			bot.waitUntil(Conditions.shellIsActive(title));
+			confirm = bot.shell(title);
 			result = confirm.bot().tree().getAllItems()[0].getText();
 
 			confirm.close();

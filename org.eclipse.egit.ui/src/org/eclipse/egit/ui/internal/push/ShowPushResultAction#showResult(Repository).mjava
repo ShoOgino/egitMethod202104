@@ -1,0 +1,10 @@
+	@Override
+	protected void showResult(Repository repository) {
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getShell();
+		PushResultDialog dialog = new PushResultDialog(shell, repository,
+				operationResult, destination, false);
+		dialog.showConfigureButton(showConfigure);
+		dialog.open();
+	}
+

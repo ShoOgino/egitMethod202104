@@ -1,8 +1,11 @@
 	private void fetch() throws Exception {
-		SWTBotShell fetchDialog = openFetchDialog();
-		fetchDialog.bot().button(IDialogConstants.NEXT_LABEL).click();
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		getProjectItem(projectExplorerTree, PROJ1).select();
+		String menuString = util
+				.getPluginLocalizedValue("FetchFromUpstreamAction.label");
 		JobJoiner jobJoiner = JobJoiner.startListening(JobFamilies.FETCH, 20, TimeUnit.SECONDS);
-		fetchDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+				menuString);
 		jobJoiner.join();
 	}
 

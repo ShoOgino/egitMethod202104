@@ -6,12 +6,11 @@
 
 		String oldContent = getTestFileContent();
 		fetch();
+		final String title = NLS.bind(UIText.FetchResultDialog_title,
+				childRepositoryFile.getParentFile().getName() + " - origin");
+		bot.waitUntil(Conditions.shellIsActive(title));
 
-		String uri = lookupRepository(childRepositoryFile).getConfig()
-				.getString(ConfigConstants.CONFIG_REMOTE_SECTION, "origin",
-						ConfigConstants.CONFIG_KEY_URL);
-		SWTBotShell confirm = bot.shell(NLS.bind(
-				UIText.FetchResultDialog_title, uri));
+		SWTBotShell confirm = bot.shell(title);
 		SWTBotTree tree = confirm.bot().tree();
 		String branch = tree.getAllItems()[0].getText();
 		assertTrue("Wrong result",
@@ -23,7 +22,8 @@
 		assertEquals(oldContent, newContent);
 
 		fetch();
-		confirm = bot.shell(NLS.bind(UIText.FetchResultDialog_title, uri));
+		bot.waitUntil(Conditions.shellIsActive(title));
+		confirm = bot.shell(title);
 		int count = confirm.bot().tree().rowCount();
 
 		confirm.close();

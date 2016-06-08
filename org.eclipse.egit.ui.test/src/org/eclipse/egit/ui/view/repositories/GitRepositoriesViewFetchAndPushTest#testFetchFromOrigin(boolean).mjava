@@ -22,6 +22,7 @@
 		selectNode(tree, useRemote, true);
 		runFetch(tree);
 
+		bot.waitUntil(Conditions.shellIsActive(dialogTitle));
 		SWTBotShell confirm = bot.shell(dialogTitle);
 		assertEquals("Wrong result tree row count", 0, confirm.bot().tree()
 				.rowCount());
@@ -49,6 +50,7 @@
 		selectNode(tree, useRemote, true);
 		runFetch(tree);
 
+		bot.waitUntil(Conditions.shellIsActive(dialogTitle));
 		confirm = bot.shell(dialogTitle);
 		SWTBotTreeItem[] treeItems = confirm.bot().tree().getAllItems();
 		boolean found = false;

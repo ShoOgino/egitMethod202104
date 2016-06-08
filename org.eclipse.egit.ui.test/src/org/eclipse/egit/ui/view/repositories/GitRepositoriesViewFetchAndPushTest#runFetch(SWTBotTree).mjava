@@ -2,6 +2,6 @@
 		JobJoiner jobJoiner = JobJoiner.startListening(JobFamilies.FETCH, 60, TimeUnit.SECONDS);
 		ContextMenuHelper.clickContextMenuSync(tree, myUtil
 				.getPluginLocalizedValue("SimpleFetchCommand"));
-		jobJoiner.join();
+		openResultDialog(jobJoiner.join());
 	}
 

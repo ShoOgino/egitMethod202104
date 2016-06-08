@@ -1,0 +1,22 @@
+	/**
+	 * Creates a new {@link ShowPushResultAction}.
+	 *
+	 * @param repository
+	 *            the result belongs to
+	 * @param result
+	 *            to show
+	 * @param destination
+	 *            describing where the push went to
+	 * @param showConfigureButton
+	 *            {@code true} to show a configure button in the
+	 *            {@link PushResultDialog}
+	 */
+	public ShowPushResultAction(@NonNull Repository repository,
+			PushOperationResult result, String destination,
+			boolean showConfigureButton) {
+		super(repository, UIText.ShowPushResultAction_name);
+		this.operationResult = result;
+		this.destination = destination;
+		this.showConfigure = showConfigureButton;
+	}
+

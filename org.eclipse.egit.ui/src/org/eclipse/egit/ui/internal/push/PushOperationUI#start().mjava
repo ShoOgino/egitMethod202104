@@ -3,12 +3,19 @@
 	 * completion
 	 */
 	public void start() {
-		Job job = new Job(NLS.bind(UIText.PushOperationUI_PushJobName,
+		final Repository repo = repository;
+		if (repo == null) {
+			return;
+		}
+		Job job = new RepositoryJob(NLS.bind(UIText.PushOperationUI_PushJobName,
 				destinationString)) {
+
+			private PushOperationResult result;
+
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			protected IStatus performJob(IProgressMonitor monitor) {
 				try {
-					execute(monitor);
+					result = execute(monitor);
 				} catch (CoreException e) {
 					return Activator.createErrorStatus(e.getStatus()
 							.getMessage(), e);
@@ -17,27 +24,24 @@
 			}
 
 			@Override
+			protected IAction getAction() {
+				if (expectedResult == null || !expectedResult.equals(result)) {
+					return new ShowPushResultAction(repo, result,
+							destinationString, showConfigureButton);
+				}
+				return null;
+			}
+
+			@Override
 			public boolean belongsTo(Object family) {
-				if (JobFamilies.PUSH.equals(family))
+				if (JobFamilies.PUSH.equals(family)) {
 					return true;
+				}
 				return super.belongsTo(family);
 			}
+
 		};
 		job.setUser(true);
 		job.schedule();
-		job.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				PushOperationResult result = op.getOperationResult();
-				if (expectedResult == null || !expectedResult.equals(result)) {
-					if (event.getResult().isOK())
-						PushResultDialog.show(repository, result,
-								destinationString, showConfigureButton, false);
-					else
-						Activator.handleError(event.getResult().getMessage(),
-								event.getResult().getException(), true);
-				}
-			}
-		});
 	}
 

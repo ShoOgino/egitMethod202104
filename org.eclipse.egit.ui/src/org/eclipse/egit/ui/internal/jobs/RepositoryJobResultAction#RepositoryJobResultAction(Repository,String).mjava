@@ -1,0 +1,14 @@
+	/**
+	 * Creates a new {@link RepositoryJobResultAction}.
+	 *
+	 * @param repository
+	 *            the result belongs to
+	 * @param title
+	 *            of the action
+	 */
+	public RepositoryJobResultAction(@NonNull Repository repository,
+			String title) {
+		super(title);
+		this.repositoryDir = repository.getDirectory();
+	}
+
