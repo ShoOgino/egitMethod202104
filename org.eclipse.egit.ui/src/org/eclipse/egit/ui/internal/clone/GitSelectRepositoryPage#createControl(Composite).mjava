@@ -82,8 +82,10 @@
 				display.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						refreshRepositoryList();
-						checkPage();
+						if (!tv.getControl().isDisposed()) {
+							refreshRepositoryList();
+							checkPage();
+						}
 					}
 				});
 			}

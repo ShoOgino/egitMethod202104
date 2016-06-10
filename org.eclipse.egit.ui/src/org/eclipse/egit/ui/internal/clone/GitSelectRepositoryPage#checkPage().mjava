@@ -1,7 +1,8 @@
 	private void checkPage() {
 		setErrorMessage(null);
 		try {
-			if (((List) tv.getInput()).isEmpty()) {
+			List<?> currentInput = (List<?>) tv.getInput();
+			if (currentInput == null || currentInput.isEmpty()) {
 				setErrorMessage(UIText.GitSelectRepositoryPage_NoRepoFoundMessage);
 				return;
 			}
