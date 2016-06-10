@@ -5,6 +5,8 @@
 			dirsBefore = Collections.emptyList();
 		}
 		if (!dirsBefore.containsAll(dirsAfter)) {
+			IStructuredSelection previousSelection = (IStructuredSelection) tv
+					.getSelection();
 			tv.setInput(dirsAfter);
 			for (String dir : dirsAfter) {
 				if (!dirsBefore.contains(dir)) {
@@ -12,14 +14,21 @@
 						Repository newRepository = org.eclipse.egit.core.Activator
 								.getDefault().getRepositoryCache()
 								.lookupRepository(new File(dir));
-						RepositoryNode node = new RepositoryNode(null,
-								newRepository);
-						tv.setSelection(new StructuredSelection(node));
-						break;
+						if (!allowBare && newRepository.isBare()) {
+							// Re-set to previous selection, if any
+							if (!previousSelection.isEmpty()) {
+								tv.setSelection(previousSelection);
+							}
+						} else {
+							RepositoryNode node = new RepositoryNode(null,
+									newRepository);
+							tv.setSelection(new StructuredSelection(node));
+						}
 					} catch (IOException e1) {
 						Activator.handleError(e1.getMessage(), e1,
 								false);
 					}
+					break;
 				}
 			}
 		}

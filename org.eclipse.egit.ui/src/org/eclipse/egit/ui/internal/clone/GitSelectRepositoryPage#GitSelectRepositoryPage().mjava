@@ -1,10 +1,8 @@
 	/**
-	 *
+	 * Creates a new {@link GitSelectRepositoryPage} that allows also bare
+	 * repositories to be selected.
 	 */
 	public GitSelectRepositoryPage() {
-		super(GitSelectRepositoryPage.class.getName());
-		setTitle(UIText.GitSelectRepositoryPage_PageTitle);
-		setMessage(UIText.GitSelectRepositoryPage_PageMessage);
-		util = Activator.getDefault().getRepositoryUtil();
+		this(true);
 	}
 
