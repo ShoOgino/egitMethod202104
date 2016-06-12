@@ -2,6 +2,8 @@
 	public void after() throws Exception {
 		if (preferencePage != null) {
 			preferencePage.close();
+			bot.waitUntil(Conditions.shellCloses(preferencePage));
+			preferencePage = null;
 		}
 		TestUtil.processUIEvents();
 	}

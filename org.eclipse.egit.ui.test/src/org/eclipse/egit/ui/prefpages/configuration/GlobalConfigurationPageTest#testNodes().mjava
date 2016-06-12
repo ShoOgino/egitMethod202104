@@ -1,5 +1,6 @@
 	@Test
 	public void testNodes() throws Exception {
+		getGitConfigurationPreferencePage();
 		SWTBotTree configTree = preferencePage.bot().tree(1);
 		for (String section : config.getSections()) {
 			SWTBotTreeItem sectionItem = configTree.getTreeItem(section);

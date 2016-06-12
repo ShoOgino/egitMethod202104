@@ -1,5 +1,6 @@
 	@Test
 	public void testAddSubSectionEntry() throws Exception {
+		getGitConfigurationPreferencePage();
 		preferencePage.bot().button(
 				UIText.ConfigurationEditorComponent_AddButton).click();
 		SWTBotShell addDialog = bot

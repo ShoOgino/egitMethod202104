@@ -17,6 +17,7 @@
 						.contains("["));
 		SWTBotShell connectDialog = openConnectDialog();
 		connectDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		bot.waitUntil(Conditions.shellCloses(connectDialog));
 		TestUtil.waitForJobs(500, 5000);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		TestUtil.waitForDecorations();

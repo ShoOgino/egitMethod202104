@@ -21,10 +21,10 @@
 		node.select();
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				util.getPluginLocalizedValue("AddToIndexAction_label"));
+		TestUtil.joinJobs(ADD_TO_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		IndexDiffCacheEntry cache = Activator.getDefault().getIndexDiffCache()
 				.getIndexDiffCacheEntry(subRepository);
-		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		IResourceState state = ResourceStateFactory.getInstance()
 				.get(cache.getIndexDiff(), file);
 		assertTrue("File should be staged", state.isStaged());
@@ -32,6 +32,7 @@
 		assertFalse(node.getText().startsWith("> "));
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				util.getPluginLocalizedValue("RemoveFromIndexAction_label"));
+		TestUtil.joinJobs(REMOVE_FROM_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		state = ResourceStateFactory.getInstance().get(cache.getIndexDiff(),
 				file);

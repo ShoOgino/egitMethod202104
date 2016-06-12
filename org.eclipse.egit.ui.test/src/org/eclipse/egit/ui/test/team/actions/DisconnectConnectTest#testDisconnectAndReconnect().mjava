@@ -17,6 +17,7 @@
 				.select();
 		connectDialog.bot().tree().getAllItems()[0].select();
 		connectDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
+		bot.waitUntil(Conditions.shellCloses(connectDialog));
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		TestUtil.waitForJobs(500, 5000);

@@ -6,6 +6,8 @@
 				.getPluginLocalizedValue("DisconnectAction_label");
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				menuString);
+		TestUtil.waitForJobs(500, 5000);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		ResourcesPlugin.getWorkspace().getRoot()
 				.refreshLocal(IResource.DEPTH_INFINITE, null);
 		// Access the session property directly: RepositoryMapping.getMapping()
