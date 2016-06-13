@@ -1,14 +1,13 @@
 	private boolean shouldCancelBecauseOfRunningLaunches(
 			IProgressMonitor monitor) {
-		if (mode == MODE_CHECKOUT)
+		if (!showQuestionsBeforeCheckout) {
 			return false;
-		if (!showQuestionsBeforeCheckout)
-			return false;
+		}
 		final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		if (!store
-				.getBoolean(UIPreferences.SHOW_RUNNING_LAUNCH_ON_CHECKOUT_WARNING))
+		if (!store.getBoolean(
+				UIPreferences.SHOW_RUNNING_LAUNCH_ON_CHECKOUT_WARNING)) {
 			return false;
-
+		}
 		final ILaunchConfiguration launchConfiguration = getRunningLaunchConfiguration(monitor);
 		if (launchConfiguration != null) {
 			final boolean[] dialogResult = new boolean[1];

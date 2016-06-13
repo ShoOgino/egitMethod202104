@@ -1,9 +1,13 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final Repository repository = getRepository(true, event);
-		if (repository == null)
+		if (repository == null) {
 			return null;
-		BranchOperationUI.checkout(repository).start();
+		}
+		CheckoutDialog dialog = new CheckoutDialog(getShell(event), repository);
+		if (dialog.open() == Window.OK) {
+			BranchOperationUI.checkout(repository, dialog.getRefName()).start();
+		}
 		return null;
 	}
 

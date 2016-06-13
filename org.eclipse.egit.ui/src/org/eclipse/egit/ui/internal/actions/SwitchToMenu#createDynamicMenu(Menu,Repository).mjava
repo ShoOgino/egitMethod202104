@@ -8,16 +8,28 @@
 				String sourceRef = repository.getConfig().getString(
 						ConfigConstants.CONFIG_WORKFLOW_SECTION, null,
 						ConfigConstants.CONFIG_KEY_DEFBRANCHSTARTPOINT);
+				CreateBranchWizard wiz = null;
 				try {
-					Ref ref = repository.findRef(sourceRef);
-					if (ref != null)
-						BranchOperationUI.createWithRef(repository,
-								ref.getName()).start();
-					else
-						BranchOperationUI.create(repository).start();
+					Ref ref = null;
+					if (sourceRef != null) {
+						ref = repository.findRef(sourceRef);
+					}
+					if (ref != null) {
+						wiz = new CreateBranchWizard(repository, ref.getName());
+					} else {
+						wiz = new CreateBranchWizard(repository,
+								repository.getFullBranch());
+					}
 				} catch (IOException e1) {
-					BranchOperationUI.create(repository).start();
+					// Ignore
 				}
+				if (wiz == null) {
+					wiz = new CreateBranchWizard(repository);
+				}
+				WizardDialog dlg = new WizardDialog(e.display.getActiveShell(),
+						wiz);
+				dlg.setHelpAvailable(false);
+				dlg.open();
 			}
 		});
 		createSeparator(menu);
@@ -90,7 +102,14 @@
 			others.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					BranchOperationUI.checkout(repository).start();
+					CheckoutDialog dialog = new CheckoutDialog(
+							e.display.getActiveShell(), repository);
+					if (dialog.open() == Window.OK) {
+						BranchOperationUI
+								.checkout(repository, dialog.getRefName())
+								.start();
+					}
+
 				}
 			});
 		} catch (IOException e) {

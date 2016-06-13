@@ -1,45 +1,28 @@
 	private ILaunchConfiguration getRunningLaunchConfiguration(
 			IProgressMonitor monitor) {
-		final ILaunchConfiguration[] lc = new ILaunchConfiguration[1];
+		final ILaunchConfiguration[] result = { null };
+		IRunnableWithProgress operation = new IRunnableWithProgress() {
+
+			@Override
+			public void run(IProgressMonitor m)
+					throws InvocationTargetException, InterruptedException {
+				Set<IProject> projects = new HashSet<>(
+						Arrays.asList(ProjectUtil.getProjects(repository)));
+				result[0] = LaunchFinder.findLaunch(projects, m);
+			}
+		};
 		try {
-			ModalContext.run(new IRunnableWithProgress() {
-
-				@Override
-				public void run(IProgressMonitor m)
-						throws InvocationTargetException, InterruptedException {
-
-					Set<IProject> projects = new HashSet<>(Arrays
-							.asList(ProjectUtil.getProjects(repository)));
-
-					ILaunchManager launchManager = DebugPlugin.getDefault()
-							.getLaunchManager();
-					ILaunch[] launches = launchManager.getLaunches();
-					m.beginTask(
-							UIText.BranchOperationUI_SearchLaunchConfiguration,
-							launches.length);
-					for (ILaunch launch : launches) {
-						m.worked(1);
-						if (launch.isTerminated())
-							continue;
-						ISourceLocator locator = launch.getSourceLocator();
-						if (locator instanceof ISourceLookupDirector) {
-							ISourceLookupDirector director = (ISourceLookupDirector) locator;
-							ISourceContainer[] containers = director
-									.getSourceContainers();
-							if (isAnyProjectInSourceContainers(containers,
-									projects)) {
-								lc[0] = launch.getLaunchConfiguration();
-								return;
-							}
-						}
-					}
-				}
-			}, true, monitor, Display.getDefault());
+			if (ModalContext.isModalContextThread(Thread.currentThread())) {
+				operation.run(monitor);
+			} else {
+				ModalContext.run(operation, true, monitor,
+						PlatformUI.getWorkbench().getDisplay());
+			}
 		} catch (InvocationTargetException e) {
 			// ignore
 		} catch (InterruptedException e) {
 			// ignore
 		}
-		return lc[0];
+		return result[0];
 	}
 

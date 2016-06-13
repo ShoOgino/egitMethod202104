@@ -1,35 +1,20 @@
 	/**
-	 * Runs the operation synchronously
+	 * Runs the operation synchronously.
 	 *
 	 * @param monitor
 	 * @throws CoreException
 	 *
 	 */
 	public void run(IProgressMonitor monitor) throws CoreException {
-		if (!repository.getRepositoryState().canCheckout()) {
-			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					MessageDialog.openError(getShell(),
-							UIText.BranchAction_cannotCheckout, NLS.bind(
-									UIText.BranchAction_repositoryState,
-									repository.getRepositoryState()
-											.getDescription()));
-				}
-			});
+		SubMonitor progress = SubMonitor.convert(monitor, 100);
+		target = confirmTarget(progress.newChild(20));
+		if (target == null) {
 			return;
 		}
-
-		if (shouldCancelBecauseOfRunningLaunches(monitor))
-			return;
-
-		askForTargetIfNecessary();
-		if (target == null)
-			return;
-
-		BranchOperation bop = new BranchOperation(repository, target);
-		bop.execute(monitor);
-
+		final boolean restore = Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.CHECKOUT_PROJECT_RESTORE);
+		BranchOperation bop = getOperation(restore);
+		bop.execute(progress.newChild(80));
 		show(bop.getResult());
 	}
 

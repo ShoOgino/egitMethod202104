@@ -1,0 +1,29 @@
+	private static boolean isAnyProjectInSourceContainers(
+			ISourceContainer[] containers, Set<IProject> projects,
+			IProgressMonitor monitor) {
+		SubMonitor progress = SubMonitor.convert(monitor, containers.length);
+		for (ISourceContainer container : containers) {
+			if (progress.isCanceled()) {
+				break;
+			}
+			if (container instanceof ProjectSourceContainer) {
+				ProjectSourceContainer projectContainer = (ProjectSourceContainer) container;
+				if (projects.contains(projectContainer.getProject())) {
+					progress.worked(1);
+					return true;
+				}
+			}
+			try {
+				boolean found = isAnyProjectInSourceContainers(
+						container.getSourceContainers(), projects,
+						progress.newChild(1));
+				if (found) {
+					return true;
+				}
+			} catch (CoreException e) {
+				// Ignore the child source containers, continue search
+			}
+		}
+		return false;
+	}
+

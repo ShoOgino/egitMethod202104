@@ -1,0 +1,42 @@
+	/**
+	 * If there is a running launch covering one of the given projects, return
+	 * the first such launch configuration.
+	 *
+	 * @param projects
+	 *            to check for
+	 * @param monitor
+	 *            for progress reporting and cancellation
+	 * @return the launch configuration, or {@code null} if none found.
+	 */
+	@Nullable
+	public static ILaunchConfiguration findLaunch(Set<IProject> projects,
+			IProgressMonitor monitor) {
+		ILaunchManager launchManager = DebugPlugin.getDefault()
+				.getLaunchManager();
+		ILaunch[] launches = launchManager.getLaunches();
+		SubMonitor progress = SubMonitor.convert(monitor,
+				UIText.BranchOperationUI_SearchLaunchConfiguration,
+				launches.length);
+		for (ILaunch launch : launches) {
+			if (progress.isCanceled()) {
+				break;
+			}
+			if (launch.isTerminated()) {
+				progress.worked(1);
+				continue;
+			}
+			ISourceLocator locator = launch.getSourceLocator();
+			if (locator instanceof ISourceLookupDirector) {
+				ISourceLookupDirector director = (ISourceLookupDirector) locator;
+				ISourceContainer[] containers = director.getSourceContainers();
+				if (isAnyProjectInSourceContainers(containers, projects,
+						progress.newChild(1))) {
+					return launch.getLaunchConfiguration();
+				}
+			} else {
+				progress.worked(1);
+			}
+		}
+		return null;
+	}
+
