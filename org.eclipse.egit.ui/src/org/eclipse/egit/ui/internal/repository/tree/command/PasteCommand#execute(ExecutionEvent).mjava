@@ -42,17 +42,19 @@
 
 			if (util.addConfiguredRepository(file)) {
 				// let's do the auto-refresh the rest
-			} else
+			} else {
 				errorMessage = NLS.bind(
 						UIText.RepositoriesView_PasteRepoAlreadyThere, content);
-
+			}
 			return null;
 		} finally {
-			if (clip != null)
+			if (clip != null) {
 				// we must dispose ourselves
 				clip.dispose();
-			if (errorMessage != null)
-				Activator.handleError(errorMessage, null, true);
+			}
+			if (errorMessage != null) {
+				Activator.showError(errorMessage, null);
+			}
 		}
 	}
 
