@@ -70,9 +70,14 @@
 		branchesViewer.setContentProvider(new BranchListContentProvider());
 		branchesViewer.setInput(refs);
 
+		// Layout tree for maximum width of message column
+		TreeColumnLayout layout = new TreeColumnLayout();
 		nameColumn.pack();
+		layout.setColumnData(nameColumn, new ColumnWeightData(0, nameColumn.getWidth()));
 		idColumn.pack();
-		msgColumn.pack();
+		layout.setColumnData(idColumn, new ColumnWeightData(0, idColumn.getWidth()));
+		layout.setColumnData(msgColumn, new ColumnWeightData(100));
+		branchesViewer.getTree().getParent().setLayout(layout);
 
 		branchesViewer.addFilter(createFilter());
 		return area;
