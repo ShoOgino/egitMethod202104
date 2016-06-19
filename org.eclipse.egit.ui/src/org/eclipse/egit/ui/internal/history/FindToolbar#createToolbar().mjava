@@ -1,26 +1,29 @@
 	private void createToolbar() {
 		errorBackgroundColor = new Color(getDisplay(), new RGB(255, 150, 150));
-		nextIcon = UIIcons.ELCL16_NEXT.createImage();
-		previousIcon = UIIcons.ELCL16_PREVIOUS.createImage();
-		allIcon = UIIcons.SEARCH_COMMIT.createImage();
-		commitIdIcon = UIIcons.ELCL16_ID.createImage();
-		commentsIcon = UIIcons.ELCL16_COMMENTS.createImage();
-		authorIcon = UIIcons.ELCL16_AUTHOR.createImage();
-		committerIcon = UIIcons.ELCL16_COMMITTER.createImage();
-		branchesIcon = UIIcons.BRANCHES.createImage();
-
+		ResourceManager resourceManager = Activator.getDefault()
+				.getResourceManager();
+		nextIcon = UIIcons.getImage(resourceManager, UIIcons.ELCL16_NEXT);
+		previousIcon = UIIcons.getImage(resourceManager,
+				UIIcons.ELCL16_PREVIOUS);
+		allIcon = UIIcons.getImage(resourceManager, UIIcons.SEARCH_COMMIT);
+		commitIdIcon = UIIcons.getImage(resourceManager,
+				UIIcons.ELCL16_ID);
+		commentsIcon = UIIcons.getImage(resourceManager,
+				UIIcons.ELCL16_COMMENTS);
+		authorIcon = UIIcons.getImage(resourceManager, UIIcons.ELCL16_AUTHOR);
+		committerIcon = UIIcons.getImage(resourceManager,
+				UIIcons.ELCL16_COMMITTER);
+		branchesIcon = UIIcons.getImage(resourceManager, UIIcons.BRANCHES);
 		GridLayout findLayout = new GridLayout();
 		findLayout.marginHeight = 2;
 		findLayout.marginWidth = 2;
-		findLayout.numColumns = 8;
+		findLayout.numColumns = 5;
 		setLayout(findLayout);
 		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		Label findLabel = new Label(this, SWT.NULL);
-		findLabel.setText(UIText.HistoryPage_findbar_find);
-
-		patternField = new Text(this, SWT.SEARCH);
-		GridData findTextData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		patternField = new Text(this,
+				SWT.SEARCH | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
+		GridData findTextData = new GridData(SWT.FILL, SWT.LEFT, true, false);
 		findTextData.minimumWidth = 50;
 		patternField.setLayoutData(findTextData);
 		patternField.setTextLimit(100);
@@ -98,24 +101,25 @@
 		currentPositionLabel.setAlignment(SWT.RIGHT);
 		currentPositionLabel.setText(""); //$NON-NLS-1$
 
-		progressBar = new ProgressBar(this, SWT.HORIZONTAL);
-		GridData findProgressBarData = new GridData();
-		findProgressBarData.heightHint = 12;
-		findProgressBarData.widthHint = 35;
-		progressBar.setLayoutData(findProgressBarData);
-		progressBar.setMinimum(0);
-		progressBar.setMaximum(100);
-
 		patternField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				final FindToolbarThread finder = createFinder();
-				getDisplay().timerExec(200, new Runnable() {
-					@Override
-					public void run() {
-						finder.start();
-					}
-				});
+				final FindToolbarJob finder = createFinder();
+				finder.setUser(true);
+				finder.schedule(200);
+			}
+		});
+
+		patternField.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				if (e.detail != SWT.ICON_CANCEL
+						&& !patternField.getText().isEmpty()) {
+					// ENTER or the search icon clicked
+					final FindToolbarJob finder = createFinder();
+					finder.setUser(true);
+					finder.schedule();
+				}
 			}
 		});
 
@@ -126,8 +130,9 @@
 						&& findResults.size() == 0) {
 					// If the toolbar was cleared and has a pattern typed,
 					// then we redo the find with the new table data.
-					final FindToolbarThread finder = createFinder();
-					finder.start();
+					final FindToolbarJob finder = createFinder();
+					finder.setUser(true);
+					finder.schedule();
 					patternField.setSelection(0, 0);
 				} else {
 					int currentIx = historyTable.getSelectionIndex();
@@ -146,14 +151,14 @@
 					sendEvent(event.widget, newIx);
 
 					String current = null;
-					int currentValue = findResults.getMatchNumberFor(newIx);
-					if (currentValue == -1) {
+					currentPosition = findResults.getMatchNumberFor(newIx);
+					if (currentPosition == -1) {
 						current = "-"; //$NON-NLS-1$
 					} else {
-						current = String.valueOf(currentValue);
+						current = String.valueOf(currentPosition);
 					}
-					currentPositionLabel.setText(current + "/" //$NON-NLS-1$
-							+ findResults.size());
+					currentPositionLabel
+							.setText(current + '/' + findResults.size());
 				}
 			}
 		};

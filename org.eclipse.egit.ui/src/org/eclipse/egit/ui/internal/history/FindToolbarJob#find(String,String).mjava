@@ -1,0 +1,10 @@
+	private boolean find(String needle, String text) {
+		if (text == null) {
+			return false;
+		}
+		if (ignoreCase) {
+			return text.toLowerCase().indexOf(needle) >= 0;
+		}
+		return text.indexOf(needle) >= 0;
+	}
+

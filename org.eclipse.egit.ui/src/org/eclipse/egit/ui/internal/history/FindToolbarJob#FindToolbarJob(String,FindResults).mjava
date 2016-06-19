@@ -1,0 +1,14 @@
+	/**
+	 * Creates a new history search job.
+	 *
+	 * @param name
+	 *            of the job
+	 * @param findResults
+	 *            to fill
+	 */
+	public FindToolbarJob(String name, FindResults findResults) {
+		super(name);
+		this.findResults = findResults;
+		setRule(SINGLE_JOB_RULE);
+	}
+

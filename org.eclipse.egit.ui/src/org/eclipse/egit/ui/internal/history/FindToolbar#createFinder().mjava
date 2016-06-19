@@ -1,22 +1,52 @@
-	private FindToolbarThread createFinder() {
-		final FindToolbarThread finder = new FindToolbarThread();
-		finder.pattern = patternField.getText();
-		finder.fileRevisions = fileRevisions;
-		finder.toolbar = this;
-		finder.ignoreCase = caseItem.getSelection();
-		if (allItem.getSelection()) {
-			finder.findInCommitId = true;
-			finder.findInComments = true;
-			finder.findInAuthor = true;
-			finder.findInCommitter = true;
-			finder.findInReference = true;
-		} else {
-			finder.findInCommitId = commitIdItem.getSelection();
-			finder.findInComments = commentsItem.getSelection();
-			finder.findInAuthor = authorItem.getSelection();
-			finder.findInCommitter = committerItem.getSelection();
-			finder.findInReference = referenceItem.getSelection();
+	private FindToolbarJob createFinder() {
+		if (job != null) {
+			job.cancel();
 		}
-		return finder;
+		final String currentPattern = patternField.getText();
+
+		job = new FindToolbarJob(MessageFormat
+				.format(UIText.HistoryPage_findbar_find, currentPattern),
+				findResults);
+		job.pattern = currentPattern;
+		job.fileRevisions = fileRevisions;
+		job.ignoreCase = caseItem.getSelection();
+		if (allItem.getSelection()) {
+			job.findInCommitId = true;
+			job.findInComments = true;
+			job.findInAuthor = true;
+			job.findInCommitter = true;
+			job.findInReference = true;
+		} else {
+			job.findInCommitId = commitIdItem.getSelection();
+			job.findInComments = commentsItem.getSelection();
+			job.findInAuthor = authorItem.getSelection();
+			job.findInCommitter = committerItem.getSelection();
+			job.findInReference = referenceItem.getSelection();
+		}
+		job.addJobChangeListener(new JobChangeAdapter() {
+
+			private final FindToolbarJob myJob = job;
+
+			@Override
+			public void done(final IJobChangeEvent event) {
+				if (event.getResult().isOK()) {
+					getDisplay().asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							if (myJob != job) {
+								// Job superseded by another one
+								return;
+							}
+							if (!isDisposed()) {
+								findCompletionUpdate(currentPattern,
+										findResults.isOverflow());
+							}
+						}
+					});
+				}
+			}
+		});
+		return job;
 	}
 
