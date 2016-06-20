@@ -28,9 +28,15 @@
 		branchesViewer.getTree().setLinesVisible(false);
 		branchesViewer.getTree().setHeaderVisible(true);
 
+		comparator = new BranchComparator();
+		branchesViewer.setComparator(comparator);
+
+		DecoratedBranchLabelProvider nameLabelProvider = new DecoratedBranchLabelProvider(gfRepo.getRepository(), prefix);
 		TreeColumn nameColumn = createColumn(
 				UIText.BranchSelectionTree_NameColumn, branchesViewer,
-				new DecoratedBranchLabelProvider(gfRepo.getRepository(), prefix));
+				nameLabelProvider);
+		setSortedColumn(nameColumn, nameLabelProvider);
+
 		TreeColumn idColumn = createColumn(UIText.BranchSelectionTree_IdColumn, branchesViewer, new ColumnLabelProvider() {
 
 			@Override
@@ -62,7 +68,6 @@
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(branchesViewer.getControl());
 
 		branchesViewer.setContentProvider(new BranchListContentProvider());
-		branchesViewer.setComparator(new ViewerComparator(STRING_ASCENDING_COMPARATOR));
 		branchesViewer.setInput(refs);
 
 		nameColumn.pack();

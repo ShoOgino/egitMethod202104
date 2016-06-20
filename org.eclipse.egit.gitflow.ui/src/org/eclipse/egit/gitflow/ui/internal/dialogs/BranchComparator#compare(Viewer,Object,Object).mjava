@@ -1,0 +1,15 @@
+	@Override
+	public int compare(Viewer viewer, Object e1, Object e2) {
+		int rc = 0;
+
+		String firstCell = labelProvider.getText(e1).toLowerCase();
+		String secondCell = labelProvider.getText(e2).toLowerCase();
+		if (direction == DESCENDING) {
+			rc = secondCell.compareTo(firstCell);
+		} else {
+			rc = firstCell.compareTo(secondCell);
+		}
+
+		return rc;
+	}
+

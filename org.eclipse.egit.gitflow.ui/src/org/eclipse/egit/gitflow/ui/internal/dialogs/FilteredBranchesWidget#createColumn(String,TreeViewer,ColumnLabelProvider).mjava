@@ -1,7 +1,13 @@
-	private TreeColumn createColumn(String name, TreeViewer treeViewer, ColumnLabelProvider labelProvider) {
-		TreeColumn column = new TreeColumn(treeViewer.getTree(), SWT.LEFT);
+	private TreeColumn createColumn(final String name, TreeViewer treeViewer, final ColumnLabelProvider labelProvider) {
+		final TreeColumn column = new TreeColumn(treeViewer.getTree(), SWT.LEFT);
 		column.setAlignment(SWT.LEFT);
 		column.setText(name);
+		column.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setSortedColumn(column, labelProvider);
+			}
+		});
 
 		TreeViewerColumn treeViewerNameColumn = new TreeViewerColumn(treeViewer, column);
 		treeViewerNameColumn.setLabelProvider(labelProvider);
