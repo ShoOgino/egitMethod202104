@@ -8,13 +8,14 @@
 			return;
 		}
 		final String dstpath = directoryText.getText();
-		if (dstpath.length() == 0) {
-			setErrorMessage(UIText.CloneDestinationPage_errorDirectoryRequired);
+		RepositoryPathChecker checker = new RepositoryPathChecker();
+		if (!checker.check(dstpath)) {
+			setErrorMessage(checker.getErrorMessage());
 			setPageComplete(false);
 			return;
 		}
 		final File absoluteFile = new File(dstpath).getAbsoluteFile();
-		if (!isEmptyDir(absoluteFile)) {
+		if (checker.hasContent()) {
 			setErrorMessage(NLS.bind(
 					UIText.CloneDestinationPage_errorNotEmptyDir, absoluteFile
 							.getPath()));

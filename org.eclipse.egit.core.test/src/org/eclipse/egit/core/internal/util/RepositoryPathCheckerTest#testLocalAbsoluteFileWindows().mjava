@@ -1,0 +1,6 @@
+	@Test
+	public void testLocalAbsoluteFileWindows() {
+		Assume.assumeTrue(SystemReader.getInstance().isWindows());
+		assertTrue(checker.check("C:/a/b"));
+	}
+

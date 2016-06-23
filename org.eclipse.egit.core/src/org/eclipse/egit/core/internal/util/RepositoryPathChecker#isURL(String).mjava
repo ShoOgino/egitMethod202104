@@ -1,0 +1,10 @@
+	private boolean isURL(String dir) {
+		try {
+			URIish u = new URIish(dir);
+			return u.isRemote() || u.getScheme() != null;
+		} catch (URISyntaxException e) {
+			// skip
+		}
+		return false;
+	}
+
