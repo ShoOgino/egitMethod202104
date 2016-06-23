@@ -1,0 +1,10 @@
+	private <T> boolean listEquals(List<? extends T> a, List<? extends T> b) {
+		if (a == b) {
+			return true;
+		}
+		if (a == null || b == null) {
+			return false;
+		}
+		return Arrays.equals(a.toArray(), b.toArray());
+	}
+

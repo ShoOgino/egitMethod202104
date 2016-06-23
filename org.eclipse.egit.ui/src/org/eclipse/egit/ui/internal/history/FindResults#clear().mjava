@@ -10,7 +10,12 @@
 		matchesMap.clear();
 		revObjList.clear();
 		keysArray = null;
+		boolean hadItems = matchesCount > 0;
 		matchesCount = 0;
-		listener.cleared();
+		if (hadItems) {
+			for (IFindListener listener : listeners) {
+				listener.cleared();
+			}
+		}
 	}
 

@@ -11,6 +11,9 @@
 		// this may cause a FindBugs warning, but
 		// copying the array is probably not a good
 		// idea
+		if (job != null) {
+			job.cancel();
+		}
 		this.fileRevisions = commitArray;
 		this.historyTable = historyTable;
 		findResults.setHighlightFlag(hFlag);

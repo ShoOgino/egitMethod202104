@@ -1,0 +1,40 @@
+		@Override
+		protected Control createControl(Composite parent) {
+			toolbar = new FindToolbar(parent);
+			toolbar.setBackground(null);
+			toolbar.addKeyListener(keyListener);
+			toolbar.addListener(SWT.FocusIn, mouseListener);
+			toolbar.addListener(SWT.FocusOut, mouseListener);
+			toolbar.addListener(SWT.MouseDown, mouseListener);
+			toolbar.addListener(SWT.MouseUp, mouseListener);
+			toolbar.addStatusListener(statusListener);
+			toolbar.addSelectionListener(selectionListener);
+			boolean hasInput = provider != null;
+			if (hasInput) {
+				setInput(provider);
+			}
+			if (lastText != null) {
+				if (lastSearchContext != null
+						&& lastSearchContext.equals(searchContext)) {
+					toolbar.setPreselect(lastObjectId);
+				}
+				toolbar.setText(lastText, hasInput);
+			}
+			lastSearchContext = null;
+			lastObjectId = null;
+			// This fixes the wrong background when Eclipse starts up with the
+			// search bar visible.
+			toolbar.getDisplay().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					if (toolbar != null && !toolbar.isDisposed()) {
+						// See setVisible() above. Somehow, we need this, too.
+						graph.getControl().setFocus();
+						toolbar.setFocus();
+					}
+				}
+			});
+			return toolbar;
+		}
+

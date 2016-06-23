@@ -1,43 +1,43 @@
 	private void findCompletionUpdate(String pattern, boolean overflow) {
 		int total = findResults.size();
+		String label;
 		if (total > 0) {
 			String position = (currentPosition < 0) ? "1" //$NON-NLS-1$
 					: Integer.toString(currentPosition);
 			if (overflow) {
-				currentPositionLabel.setText(UIText.HistoryPage_findbar_exceeded
-						+ ' ' + position + '/' + total);
+				label = UIText.HistoryPage_findbar_exceeded + ' ' + position
+						+ '/' + total;
 			} else {
-				currentPositionLabel.setText(position + '/' + total);
+				label = position + '/' + total;
 			}
 			if (currentPosition < 0) {
 				currentPosition = 1;
 				int ix = findResults.getFirstIndex();
-				sendEvent(null, ix);
+				notifyListeners(ix);
 			}
 			patternField.setBackground(null);
-			nextButton.setEnabled(true);
-			previousButton.setEnabled(true);
+			findNextAction.setEnabled(total > 1);
+			findPreviousAction.setEnabled(total > 1);
 			lastErrorPattern = null;
 		} else {
 			currentPosition = -1;
 			if (pattern.length() > 0) {
 				patternField.setBackground(errorBackgroundColor);
-				currentPositionLabel
-						.setText(UIText.HistoryPage_findbar_notFound);
+				label = UIText.HistoryPage_findbar_notFound;
 				// Don't keep beeping every time if the user is deleting
 				// a long not found pattern
 				if (lastErrorPattern == null
 						|| !lastErrorPattern.startsWith(pattern)) {
 					getDisplay().beep();
-					nextButton.setEnabled(false);
-					previousButton.setEnabled(false);
+					findNextAction.setEnabled(false);
+					findPreviousAction.setEnabled(false);
 				}
 				lastErrorPattern = pattern;
 			} else {
 				patternField.setBackground(null);
-				currentPositionLabel.setText(""); //$NON-NLS-1$
-				nextButton.setEnabled(false);
-				previousButton.setEnabled(false);
+				label = ""; //$NON-NLS-1$
+				findNextAction.setEnabled(false);
+				findPreviousAction.setEnabled(false);
 				lastErrorPattern = null;
 			}
 		}
@@ -45,11 +45,8 @@
 
 		if (overflow) {
 			Display display = getDisplay();
-			currentPositionLabel.setForeground(display
-					.getSystemColor(SWT.COLOR_RED));
 			display.beep();
-		} else {
-			currentPositionLabel.setForeground(null);
 		}
+		notifyStatus(label);
 	}
 

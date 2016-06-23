@@ -2,9 +2,6 @@
 		errorBackgroundColor = new Color(getDisplay(), new RGB(255, 150, 150));
 		ResourceManager resourceManager = Activator.getDefault()
 				.getResourceManager();
-		nextIcon = UIIcons.getImage(resourceManager, UIIcons.ELCL16_NEXT);
-		previousIcon = UIIcons.getImage(resourceManager,
-				UIIcons.ELCL16_PREVIOUS);
 		allIcon = UIIcons.getImage(resourceManager, UIIcons.SEARCH_COMMIT);
 		commitIdIcon = UIIcons.getImage(resourceManager,
 				UIIcons.ELCL16_ID);
@@ -15,31 +12,45 @@
 				UIIcons.ELCL16_COMMITTER);
 		branchesIcon = UIIcons.getImage(resourceManager, UIIcons.BRANCHES);
 		GridLayout findLayout = new GridLayout();
-		findLayout.marginHeight = 2;
-		findLayout.marginWidth = 2;
+		findLayout.marginHeight = 0;
+		findLayout.marginBottom = 1;
+		findLayout.marginWidth = 0;
 		findLayout.numColumns = 5;
 		setLayout(findLayout);
-		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
 		patternField = new Text(this,
 				SWT.SEARCH | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
 		GridData findTextData = new GridData(SWT.FILL, SWT.LEFT, true, false);
-		findTextData.minimumWidth = 50;
+		findTextData.minimumWidth = 150;
 		patternField.setLayoutData(findTextData);
+		patternField.setMessage(UIText.HistoryPage_findbar_find_msg);
 		patternField.setTextLimit(100);
-
-		nextButton = new Button(this, SWT.PUSH);
-		nextButton.setImage(nextIcon);
-		nextButton.setText(UIText.HistoryPage_findbar_next);
-		nextButton.setToolTipText(UIText.FindToolbar_NextTooltip);
-
-		previousButton = new Button(this, SWT.PUSH);
-		previousButton.setImage(previousIcon);
-		previousButton.setText(UIText.HistoryPage_findbar_previous);
-		previousButton.setToolTipText(UIText.FindToolbar_PreviousTooltip);
-
-		final ToolBar toolBar = new ToolBar(this, SWT.FLAT);
-		new ToolItem(toolBar, SWT.SEPARATOR);
+		patternField.setFont(JFaceResources.getDialogFont());
+		ToolBarManager manager = new ToolBarManager(SWT.HORIZONTAL);
+		findNextAction = new Action() {
+			@Override
+			public void run() {
+				findNext();
+			}
+		};
+		findNextAction.setImageDescriptor(UIIcons.ELCL16_NEXT);
+		findNextAction.setText(UIText.HistoryPage_findbar_next);
+		findNextAction.setToolTipText(UIText.FindToolbar_NextTooltip);
+		findNextAction.setEnabled(false);
+		manager.add(findNextAction);
+		findPreviousAction = new Action() {
+			@Override
+			public void run() {
+				findPrevious();
+			}
+		};
+		findPreviousAction.setImageDescriptor(UIIcons.ELCL16_PREVIOUS);
+		findPreviousAction.setText(UIText.HistoryPage_findbar_previous);
+		findPreviousAction.setToolTipText(UIText.FindToolbar_PreviousTooltip);
+		findPreviousAction.setEnabled(false);
+		manager.add(findPreviousAction);
+		final ToolBar toolBar = manager.createControl(this);
 
 		prefsDropDown = new ToolItem(toolBar, SWT.DROP_DOWN);
 		prefsMenu = new Menu(getShell(), SWT.POP_UP);
@@ -93,93 +104,39 @@
 			}
 		});
 
-		currentPositionLabel = new Label(this, SWT.NULL);
-		GridData totalLabelData = new GridData();
-		totalLabelData.horizontalAlignment = SWT.FILL;
-		totalLabelData.grabExcessHorizontalSpace = true;
-		currentPositionLabel.setLayoutData(totalLabelData);
-		currentPositionLabel.setAlignment(SWT.RIGHT);
-		currentPositionLabel.setText(""); //$NON-NLS-1$
-
-		patternField.addModifyListener(new ModifyListener() {
+		patternModifyListener = new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				final FindToolbarJob finder = createFinder();
-				finder.setUser(true);
+				finder.setUser(false);
 				finder.schedule(200);
 			}
-		});
+		};
+
+		patternField.addModifyListener(patternModifyListener);
 
 		patternField.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				if (e.detail != SWT.ICON_CANCEL
 						&& !patternField.getText().isEmpty()) {
 					// ENTER or the search icon clicked
 					final FindToolbarJob finder = createFinder();
-					finder.setUser(true);
+					finder.setUser(false);
 					finder.schedule();
 				}
 			}
 		});
 
-		final Listener findButtonsListener = new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				if (patternField.getText().length() > 0
-						&& findResults.size() == 0) {
-					// If the toolbar was cleared and has a pattern typed,
-					// then we redo the find with the new table data.
-					final FindToolbarJob finder = createFinder();
-					finder.setUser(true);
-					finder.schedule();
-					patternField.setSelection(0, 0);
-				} else {
-					int currentIx = historyTable.getSelectionIndex();
-					int newIx = -1;
-					if (event.widget == nextButton) {
-						newIx = findResults.getIndexAfter(currentIx);
-						if (newIx == -1) {
-							newIx = findResults.getFirstIndex();
-						}
-					} else {
-						newIx = findResults.getIndexBefore(currentIx);
-						if (newIx == -1) {
-							newIx = findResults.getLastIndex();
-						}
-					}
-					sendEvent(event.widget, newIx);
-
-					String current = null;
-					currentPosition = findResults.getMatchNumberFor(newIx);
-					if (currentPosition == -1) {
-						current = "-"; //$NON-NLS-1$
-					} else {
-						current = String.valueOf(currentPosition);
-					}
-					currentPositionLabel
-							.setText(current + '/' + findResults.size());
-				}
-			}
-		};
-		nextButton.addListener(SWT.Selection, findButtonsListener);
-		previousButton.addListener(SWT.Selection, findButtonsListener);
-
 		patternField.addKeyListener(new KeyAdapter() {
-			private Event event = new Event();
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.ARROW_DOWN) {
-					if (nextButton.isEnabled()) {
-						event.widget = nextButton;
-						findButtonsListener.handleEvent(event);
-					}
+					findNext();
 				} else if (e.keyCode == SWT.ARROW_UP) {
-					if (previousButton.isEnabled()) {
-						event.widget = previousButton;
-						findButtonsListener.handleEvent(event);
-					}
+					findPrevious();
 				}
 			}
 		});

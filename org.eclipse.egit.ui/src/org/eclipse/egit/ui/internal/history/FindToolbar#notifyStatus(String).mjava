@@ -1,0 +1,6 @@
+	private void notifyStatus(String text) {
+		for (StatusListener l : layoutListeners) {
+			l.setMessage(this, text);
+		}
+	}
+

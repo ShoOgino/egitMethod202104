@@ -13,6 +13,8 @@
 		revObjList.add(revObj);
 		revObj.add(highlight);
 		keysArray = null;
-		listener.itemAdded(matchIx, revObj);
+		for (IFindListener listener : listeners) {
+			listener.itemAdded(matchIx, revObj);
+		}
 	}
 

@@ -34,8 +34,10 @@
 
 						@Override
 						public void run() {
-							if (myJob != job) {
-								// Job superseded by another one
+							if (myJob != job
+									|| myJob.fileRevisions != fileRevisions) {
+								// Job superseded by another one; or input
+								// changed
 								return;
 							}
 							if (!isDisposed()) {

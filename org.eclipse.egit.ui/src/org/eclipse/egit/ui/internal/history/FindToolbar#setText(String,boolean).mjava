@@ -1,0 +1,19 @@
+	/**
+	 * Sets the text of the widget's search text field, and optionally triggers
+	 * a search.
+	 *
+	 * @param text
+	 *            to set
+	 * @param search
+	 *            if {@code true}, triggers a search after having set the text
+	 */
+	public void setText(String text, boolean search) {
+		if (!search) {
+			patternField.removeModifyListener(patternModifyListener);
+		}
+		patternField.setText(text);
+		if (!search) {
+			patternField.addModifyListener(patternModifyListener);
+		}
+	}
+

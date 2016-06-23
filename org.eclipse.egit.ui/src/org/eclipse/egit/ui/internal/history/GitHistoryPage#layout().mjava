@@ -3,8 +3,6 @@
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_REV_COMMENT);
 		final boolean showFiles = store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_REV_DETAIL);
-		final boolean showFindToolbar = store
-				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR);
 
 		if (showComment && showFiles) {
 			graphDetailSplit.setMaximizedControl(null);
@@ -17,12 +15,6 @@
 			revInfoSplit.setMaximizedControl(fileViewer.getControl());
 		} else if (!showComment && !showFiles)
 			graphDetailSplit.setMaximizedControl(graph.getControl());
-		if (showFindToolbar)
-			((GridData) findToolbar.getLayoutData()).heightHint = SWT.DEFAULT;
-		else {
-			((GridData) findToolbar.getLayoutData()).heightHint = 0;
-			findToolbar.clear();
-		}
 		historyControl.layout();
 	}
 

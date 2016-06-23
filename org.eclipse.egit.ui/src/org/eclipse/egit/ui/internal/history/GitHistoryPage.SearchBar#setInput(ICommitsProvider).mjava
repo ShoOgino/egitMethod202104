@@ -1,0 +1,9 @@
+		public void setInput(ICommitsProvider provider) {
+			this.provider = provider;
+			if (toolbar != null) {
+				searchContext = provider.getSearchContext();
+				toolbar.setInput(provider.getHighlight(),
+						graph.getTableView().getTable(), provider.getCommits());
+			}
+		}
+

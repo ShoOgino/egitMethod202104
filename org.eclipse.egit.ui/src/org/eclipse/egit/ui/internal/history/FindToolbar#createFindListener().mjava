@@ -6,31 +6,46 @@
 			private long lastUpdate = 0L;
 
 			@Override
-			public void itemAdded(int index, RevObject rev) {
+			public void itemAdded(final int index, RevObject rev) {
 				long now = System.currentTimeMillis();
-				if (now - lastUpdate > UPDATE_INTERVAL) {
+				if (preselect != null && preselect.equals(rev.getId())
+						|| preselect == null && currentPosition < 0) {
+					currentPosition = findResults.getMatchNumberFor(index);
+					preselect = null;
+					getDisplay().asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							notifyListeners(index);
+						}
+					});
+				}
+				if (now - lastUpdate > UPDATE_INTERVAL && !isDisposed()) {
 					final boolean firstUpdate = lastUpdate == 0L;
 					lastUpdate = now;
 					getDisplay().asyncExec(new Runnable() {
 
 						@Override
 						public void run() {
+							if (isDisposed()) {
+								return;
+							}
 							int total = findResults.size();
-							currentPositionLabel.setForeground(null);
 							if (total > 0) {
+								String label;
 								if (currentPosition == -1) {
-									currentPositionLabel.setText("-/" + total); //$NON-NLS-1$
+									label = "-/" + total; //$NON-NLS-1$
 								} else {
-									currentPositionLabel.setText(
-											Integer.toString(currentPosition)
-													+ '/' + total);
+									label = Integer.toString(currentPosition)
+											+ '/' + total;
 								}
-								nextButton.setEnabled(true);
-								previousButton.setEnabled(true);
+								findNextAction.setEnabled(total > 1);
+								findPreviousAction.setEnabled(total > 1);
 								patternField.setBackground(null);
 								if (firstUpdate) {
 									historyTable.clearAll();
 								}
+								notifyStatus(label);
 							} else {
 								clear();
 							}
@@ -57,10 +72,12 @@
 
 			private void clear() {
 				currentPosition = -1;
-				currentPositionLabel.setText(""); //$NON-NLS-1$
-				nextButton.setEnabled(false);
-				previousButton.setEnabled(false);
-				if (historyTable != null) {
+				if (!isDisposed()) {
+					findNextAction.setEnabled(false);
+					findPreviousAction.setEnabled(false);
+					notifyStatus(""); //$NON-NLS-1$
+				}
+				if (historyTable != null && !historyTable.isDisposed()) {
 					historyTable.clearAll();
 				}
 			}

@@ -172,8 +172,6 @@
 			}
 		});
 
-		findToolbar = new FindToolbar(historyControl);
-
 		layoutSashForm(graphDetailSplit,
 				UIPreferences.RESOURCEHISTORY_GRAPH_SPLIT);
 		layoutSashForm(revInfoSplit, UIPreferences.RESOURCEHISTORY_REV_SPLIT);
@@ -190,6 +188,11 @@
 		myRefsChangedHandle = Repository.getGlobalListenerList()
 				.addRefsChangedListener(this);
 
+		IToolBarManager manager = getSite().getActionBars().getToolBarManager();
+		searchBar = new SearchBar(GitHistoryPage.class.getName() + ".searchBar", //$NON-NLS-1$
+				graph, actions.findAction, getSite().getActionBars());
+		manager.prependToGroup("org.eclipse.team.ui.historyView", searchBar); //$NON-NLS-1$
+		getSite().getActionBars().updateActionBars();
 		if (trace)
 			GitTraceLocation.getTrace().traceExit(
 					GitTraceLocation.HISTORYVIEW.getLocation());

@@ -1,0 +1,30 @@
+		@Override
+		public void setVisible(boolean visible) {
+			if (visible != isVisible()) {
+				if (!visible) {
+					beforeHide();
+				}
+				super.setVisible(visible);
+				// Update the toolbar. Will dispose our FindToolbar widget on
+				// hide, and will create a new one (through createControl())
+				// on show. It'll also reposition the toolbar, if needed.
+				// Note: just doing bars.getToolBarManager().update(true);
+				// messes up big time (doesn't resize or re-position).
+				bars.updateActionBars();
+				if (visible && toolbar != null) {
+					openCloseToggle.setChecked(true);
+					// If the toolbar was moved below the tabs, we now have
+					// the wrong background. It disappears when one clicks
+					// elsewhere. Looks like an inactive selection... Let's
+					// fix that: parent is the ToolBar, grand-parent is a
+					// Composite with the freak background.
+					// toolbar.getParent().getParent().setBackground(null);
+					// Doesn't help?! Let's try changing the focus:
+					graph.getControl().setFocus();
+					toolbar.setFocus();
+				} else if (!visible && !graph.getControl().isDisposed()) {
+					graph.getControl().setFocus();
+				}
+			}
+		}
+

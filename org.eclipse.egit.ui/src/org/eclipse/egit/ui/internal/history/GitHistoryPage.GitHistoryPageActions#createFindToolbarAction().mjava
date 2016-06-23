@@ -1,23 +1,48 @@
 		private void createFindToolbarAction() {
 			findAction = new Action(UIText.GitHistoryPage_FindMenuLabel,
 					UIIcons.ELCL16_FIND) {
+
 				@Override
 				public void run() {
 					historyPage.store.setValue(
 							UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR,
 							isChecked());
-					if (historyPage.store.needsSaving())
+					if (historyPage.store.needsSaving()) {
 						try {
 							historyPage.store.save();
 						} catch (IOException e) {
 							Activator.handleError(e.getMessage(), e, false);
 						}
-					historyPage.layout();
+					}
+					historyPage.searchBar.setVisible(isChecked());
 				}
+
+				@Override
+				public void setChecked(boolean checked) {
+					super.setChecked(checked);
+					int accelerator = getAccelerator();
+					if (checked) {
+						setToolTipText(
+								NLS.bind(UIText.GitHistoryPage_FindHideTooltip,
+										formatAccelerator(accelerator)));
+					} else {
+						setToolTipText(
+								NLS.bind(UIText.GitHistoryPage_FindShowTooltip,
+										formatAccelerator(accelerator)));
+					}
+				}
+
 			};
-			findAction
-					.setChecked(historyPage.store
-							.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR));
-			findAction.setToolTipText(UIText.GitHistoryPage_FindTooltip);
+			// TODO: how not to hard-wire this?
+			findAction.setAccelerator(SWT.MOD1 | 'F');
+			findAction.setEnabled(false);
+			// Gets enabled once we have commits
+			boolean isChecked = historyPage.store
+					.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_FINDTOOLBAR);
+			findAction.setChecked(isChecked);
+			historyPage.getSite().getActionBars().setGlobalActionHandler(
+					ActionFactory.FIND.getId(), findAction);
+			historyPage.getSite().getActionBars().getMenuManager()
+					.update(false);
 		}
 

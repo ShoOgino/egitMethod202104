@@ -1,0 +1,9 @@
+	@Override
+	public int hashCode() {
+		return (repo == null ? 0 : repo.hashCode())
+				^ (singleFile == null ? 0 : singleFile.hashCode())
+				^ (singleItem == null ? 0 : singleItem.hashCode())
+				^ (files == null ? 0 : Arrays.hashCode(files.toArray()))
+				^ (list == null ? 0 : Arrays.hashCode(list.toArray()));
+	}
+

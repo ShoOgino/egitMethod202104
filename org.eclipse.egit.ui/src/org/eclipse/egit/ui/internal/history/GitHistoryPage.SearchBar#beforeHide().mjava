@@ -1,0 +1,9 @@
+		private void beforeHide() {
+			lastText = toolbar.getText();
+			lastSearchContext = searchContext;
+			statusListener.setMessage(toolbar, ""); //$NON-NLS-1$
+			// It will be disposed by the IToolBarManager
+			toolbar = null;
+			openCloseToggle.setChecked(false);
+		}
+

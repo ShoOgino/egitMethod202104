@@ -1,0 +1,12 @@
+	/**
+	 * Adds the given listener to be notified when search results are added or
+	 * the results are cleared. Has no effect if the listener is already
+	 * registered.
+	 *
+	 * @param listener
+	 *            to add
+	 */
+	public void addFindListener(IFindListener listener) {
+		listeners.addIfAbsent(listener);
+	}
+
