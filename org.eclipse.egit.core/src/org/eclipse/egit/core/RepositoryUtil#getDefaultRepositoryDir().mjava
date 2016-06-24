@@ -10,7 +10,9 @@
 		IEclipsePreferences p = InstanceScope.INSTANCE
 				.getNode(Activator.getPluginId());
 		if (dir == null) {
-			dir = p.get(key, getDefaultDefaultRepositoryDir());
+			dir = Platform.getPreferencesService().getString(
+					Activator.getPluginId(), key,
+					getDefaultDefaultRepositoryDir(), null);
 		} else {
 			p.put(key, dir);
 		}
