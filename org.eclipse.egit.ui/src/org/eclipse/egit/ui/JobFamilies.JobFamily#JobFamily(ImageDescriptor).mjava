@@ -1,0 +1,12 @@
+		/**
+		 * job family with custom progress icon
+		 *
+		 * @param imageDescriptor
+		 *            icon for this job family
+		 */
+		protected JobFamily(final ImageDescriptor imageDescriptor) {
+			IProgressService service = PlatformUI.getWorkbench()
+					.getProgressService();
+			service.registerIconForFamily(imageDescriptor, this);
+		}
+
