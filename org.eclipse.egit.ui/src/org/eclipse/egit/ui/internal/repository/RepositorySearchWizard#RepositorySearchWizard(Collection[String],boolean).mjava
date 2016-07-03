@@ -2,9 +2,12 @@
 	 * Create repository search wizard
 	 *
 	 * @param existingDirs
+	 * @param allowBare
 	 */
-	public RepositorySearchWizard(Collection<String> existingDirs) {
+	public RepositorySearchWizard(Collection<String> existingDirs,
+			boolean allowBare) {
 		dirs = existingDirs;
+		this.allowBare = allowBare;
 		setWindowTitle(UIText.RepositorySearchDialog_AddGitRepositories);
 		setNeedsProgressMonitor(true);
 	}

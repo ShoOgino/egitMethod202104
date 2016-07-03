@@ -1,0 +1,16 @@
+	/**
+	 * @param existingDirs
+	 * @param fillSearch
+	 *            true to fill search results when initially displayed
+	 * @param allowBare
+	 *            if {@code true} allow bare repositories
+	 */
+	public RepositorySearchDialog(Collection<String> existingDirs,
+			boolean fillSearch, boolean allowBare) {
+		super("searchPage", UIText.RepositorySearchDialog_SearchTitle, //$NON-NLS-1$
+				UIIcons.WIZBAN_IMPORT_REPO);
+		this.fExistingDirectories.addAll(existingDirs);
+		this.fillSearch = fillSearch;
+		this.allowBare = allowBare;
+	}
+
