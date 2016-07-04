@@ -1,0 +1,37 @@
+	/**
+	 * Execute installation
+	 */
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		if (!LfsFactory.getInstance().isAvailable()) {
+			return null;
+		}
+
+		// get selected nodes
+		final List<RepositoryNode> selectedNodes;
+		try {
+			selectedNodes = getSelectedNodes(event);
+			if (selectedNodes.isEmpty())
+				return null;
+		} catch (ExecutionException e) {
+			Activator.handleError(e.getMessage(), e, true);
+			return null;
+		}
+
+		for (RepositoryNode n : selectedNodes) {
+			try {
+				LfsInstallCommand cmd = LfsFactory.getInstance()
+						.getInstallCommand();
+				if (cmd != null) {
+					cmd.setRepository(n.getRepository()).call();
+				}
+			} catch (Exception e) {
+				Activator.handleError(
+						UIText.ConfigurationChecker_installLfsCannotInstall, e,
+						false);
+			}
+		}
+
+		return null;
+	}
+

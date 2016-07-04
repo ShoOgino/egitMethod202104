@@ -9,7 +9,7 @@
 				return Status.OK_STATUS;
 			}
 
-			final Map<IProject, File> projects = new HashMap<IProject, File>();
+			final Map<IProject, File> projects = new HashMap<>();
 			for (IProject project : projectsToCheck) {
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;

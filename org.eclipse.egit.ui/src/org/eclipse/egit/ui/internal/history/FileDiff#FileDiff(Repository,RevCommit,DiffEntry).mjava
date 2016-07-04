@@ -2,10 +2,14 @@
 	 * Create a file diff for a specified {@link RevCommit} and
 	 * {@link DiffEntry}
 	 *
+	 * @param repo
+	 *
 	 * @param c
 	 * @param entry
 	 */
-	public FileDiff(final RevCommit c, final DiffEntry entry) {
+	public FileDiff(final Repository repo, final RevCommit c,
+			final DiffEntry entry) {
+		repository = repo;
 		diffEntry = entry;
 		commit = c;
 	}

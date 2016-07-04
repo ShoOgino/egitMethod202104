@@ -7,7 +7,7 @@
 
 		Config.setTypedConfigGetter(new ReportingTypedConfigGetter());
 		// we want to be notified about debug options changes
-		Dictionary<String, String> props = new Hashtable<String, String>(4);
+		Dictionary<String, String> props = new Hashtable<>(4);
 		props.put(DebugOptions.LISTENER_SYMBOLICNAME, pluginId);
 		context.registerService(DebugOptionsListener.class.getName(), this,
 				props);
@@ -32,5 +32,6 @@
 		registerAutoIgnoreDerivedResources();
 		registerPreDeleteResourceChangeListener();
 		registerMergeStrategyRegistryListener();
+		registerBuiltinLFS();
 	}
 

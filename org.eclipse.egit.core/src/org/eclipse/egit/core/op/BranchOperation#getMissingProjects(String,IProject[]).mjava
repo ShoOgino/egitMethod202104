@@ -22,7 +22,7 @@
 		if (targetTreeId == null || currentTreeId == null)
 			return new IProject[0];
 
-		Map<File, IProject> locations = new HashMap<File, IProject>();
+		Map<File, IProject> locations = new HashMap<>();
 		for (IProject project : currentProjects) {
 			IPath location = project.getLocation();
 			if (location == null)
@@ -32,7 +32,7 @@
 			locations.put(location.toFile(), project);
 		}
 
-		List<IProject> toBeClosed = new ArrayList<IProject>();
+		List<IProject> toBeClosed = new ArrayList<>();
 		File root = repository.getWorkTree();
 		try (TreeWalk walk = new TreeWalk(repository)) {
 			walk.addTree(targetTreeId);
