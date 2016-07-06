@@ -1,0 +1,8 @@
+	private boolean isSameFile(@NonNull File f1, @NonNull File f2) {
+		try {
+			return Files.isSameFile(f1.toPath(), f2.toPath());
+		} catch (IOException e) {
+			return false;
+		}
+	}
+

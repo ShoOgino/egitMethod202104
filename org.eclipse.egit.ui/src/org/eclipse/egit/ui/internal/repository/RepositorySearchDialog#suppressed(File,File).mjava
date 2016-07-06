@@ -1,0 +1,5 @@
+	private boolean suppressed(@NonNull File root, @NonNull File resolved) {
+			return !allowBare && !Constants.DOT_GIT.equals(resolved.getName())
+				&& isSameFile(root, resolved);
+	}
+
