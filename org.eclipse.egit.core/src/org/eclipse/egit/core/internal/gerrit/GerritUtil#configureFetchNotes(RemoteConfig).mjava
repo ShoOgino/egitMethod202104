@@ -3,15 +3,18 @@
 	 *
 	 * @param remoteConfig
 	 *            the remote configuration to configure this in
+	 * @return {@code true} if the {@code remoteConfig} was changed,
+	 *         {@code false} otherwise.
 	 */
-	public static void configureFetchNotes(RemoteConfig remoteConfig) {
+	public static boolean configureFetchNotes(RemoteConfig remoteConfig) {
 		String notesRef = Constants.R_NOTES + "*"; //$NON-NLS-1$
 		List<RefSpec> fetchRefSpecs = remoteConfig.getFetchRefSpecs();
 		for (RefSpec refSpec : fetchRefSpecs) {
 			if (refSpec.matchSource(notesRef)) {
-				return;
+				return false;
 			}
 		}
-		remoteConfig.addFetchRefSpec(new RefSpec(notesRef + ":" + notesRef)); //$NON-NLS-1$
+		remoteConfig.addFetchRefSpec(new RefSpec(notesRef + ':' + notesRef));
+		return true;
 	}
 

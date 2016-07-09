@@ -1,0 +1,25 @@
+	/**
+	 * If the repository is not bare and looks like it might be a Gerrit
+	 * repository, try to configure it such that EGit's Gerrit support is
+	 * enabled. Does nothing if the {@code repositoryDir} is {@code null} or the
+	 * repository cannot be configured.
+	 *
+	 * @param repositoryDir
+	 *            .git Directory of the repository to try to configure
+	 */
+	public static void tryToAutoConfigureForGerrit(
+			@Nullable File repositoryDir) {
+		if (repositoryDir != null) {
+			try {
+				Repository repository = Activator.getDefault()
+						.getRepositoryCache().lookupRepository(repositoryDir);
+				if (repository != null) {
+					tryToAutoConfigureForGerrit(repository);
+				}
+			} catch (IOException ignored) {
+				// Ignore it here -- this is just a best-effort. If the repo
+				// cannot be read, other places will report the problem.
+			}
+		}
+	}
+

@@ -1,6 +1,8 @@
 	private void addRepository(File repositoryDir) {
+		GerritUtil.tryToAutoConfigureForGerrit(repositoryDir);
 		util.addConfiguredRepository(repositoryDir);
-		if (doAutoShare())
+		if (doAutoShare()) {
 			autoShareProjects(repositoryDir);
+		}
 	}
 
