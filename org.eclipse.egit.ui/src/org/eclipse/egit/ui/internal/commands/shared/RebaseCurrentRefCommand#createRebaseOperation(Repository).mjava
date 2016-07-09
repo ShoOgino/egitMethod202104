@@ -1,6 +1,10 @@
 	@Override
 	protected RebaseOperation createRebaseOperation(Repository repository)
 			throws ExecutionException {
+		if (LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
+				null)) {
+			return null;
+		}
 		InteractiveHandler handler = interactive ? RebaseInteractiveHandler.INSTANCE
 				: null;
 		RebaseOperation operation = new RebaseOperation(repository, ref,

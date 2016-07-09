@@ -5,8 +5,12 @@
 		if (repository == null)
 			return null;
 
-		if (!MergeActionHandler.checkMergeIsPossible(repository, getShell(event)))
+		if (!MergeActionHandler.checkMergeIsPossible(repository,
+				getShell(event))
+				|| LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
+						null)) {
 			return null;
+		}
 
 		List<Ref> nodes;
 		try {

@@ -8,6 +8,8 @@
 	 */
 	public void execute(Repository repository) throws ExecutionException {
 		final RebaseOperation rebase = createRebaseOperation(repository);
-		execute(rebase);
+		if (rebase != null) {
+			execute(rebase);
+		}
 	}
 

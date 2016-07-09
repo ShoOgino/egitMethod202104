@@ -1,11 +1,12 @@
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final Repository repository = getRepository(true, event);
-		if (repository == null)
+		if (repository == null
+				|| !checkMergeIsPossible(repository, getShell(event))
+				|| LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
+						null)) {
 			return null;
-
-		if (!checkMergeIsPossible(repository, getShell(event)))
-			return null;
+		}
 		BasicConfigurationDialog.show(repository);
 		MergeTargetSelectionDialog mergeTargetSelectionDialog = new MergeTargetSelectionDialog(
 				getShell(event), repository);

@@ -1,5 +1,4 @@
 	boolean doFetch() {
-
 		final RefSpec spec = new RefSpec().setSource(refText.getText())
 				.setDestination(Constants.FETCH_HEAD);
 		final String uri = uriCombo.getText();
@@ -12,6 +11,10 @@
 		final String textForTag = tagText.getText();
 		final String textForBranch = branchText.getText();
 
+		if (doCheckoutNewBranch && LaunchFinder
+				.shouldCancelBecauseOfRunningLaunches(repository, null)) {
+			return false;
+		}
 		storeRunInBackgroundSelection();
 
 		if (runInBackgroud.getSelection()) {

@@ -3,10 +3,13 @@
 		RepositoryTreeNode node = getSelectedNodes(event).get(0);
 		final Repository repository = node.getRepository();
 
-		BasicConfigurationDialog.show(repository);
-
-		if (!MergeActionHandler.checkMergeIsPossible(repository, getShell(event)))
+		if (!MergeActionHandler.checkMergeIsPossible(repository,
+				getShell(event))
+				|| LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
+						null)) {
 			return null;
+		}
+		BasicConfigurationDialog.show(repository);
 
 		String targetRef;
 		if (node instanceof RefNode) {

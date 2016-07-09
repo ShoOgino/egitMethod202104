@@ -20,6 +20,7 @@
 			final PullOperationUI parentOperation = this;
 			final PullOperationUI pullOperationUI = new PullOperationUI(
 					Collections.singleton(repository));
+			pullOperationUI.checkForLaunches = false;
 			tasksToWaitFor.incrementAndGet();
 			pullOperationUI.start(new JobChangeAdapter() {
 

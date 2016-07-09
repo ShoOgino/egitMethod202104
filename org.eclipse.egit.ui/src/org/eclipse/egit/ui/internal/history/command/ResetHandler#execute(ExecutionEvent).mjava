@@ -4,7 +4,8 @@
 		final ObjectId commitId = getSelectedCommitId(event);
 
 		String resetMode = event.getParameter(ResetMenu.RESET_MODE);
-		ResetMenu.performReset(event, repo, commitId, resetMode);
+		ResetMenu.performReset(HandlerUtil.getActiveShellChecked(event), repo,
+				commitId, ResetType.valueOf(resetMode));
 		return null;
 	}
 

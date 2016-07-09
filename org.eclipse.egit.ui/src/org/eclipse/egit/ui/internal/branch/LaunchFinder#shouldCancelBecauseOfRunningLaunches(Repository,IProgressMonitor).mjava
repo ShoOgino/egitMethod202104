@@ -1,0 +1,21 @@
+	/**
+	 * Checks whether there are any running launches based on projects belonging
+	 * to the given repository. If so, asks the user whether to cancel, and
+	 * returns the user's choice. The user has the possibility to suppress the
+	 * dialog, in which case this method returns {@code false} without checking
+	 * for running launches.
+	 *
+	 * @param repository
+	 *            to determine projects to be checked whether they are used in
+	 *            running launches
+	 * @param monitor
+	 *            for progress reporting and cancellation
+	 * @return {@code true} if the operation should be canceled, {@code false}
+	 *         otherwise
+	 */
+	public static boolean shouldCancelBecauseOfRunningLaunches(
+			Repository repository, IProgressMonitor monitor) {
+		return shouldCancelBecauseOfRunningLaunches(
+				Collections.singleton(repository), monitor);
+	}
+

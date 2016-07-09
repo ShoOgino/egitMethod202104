@@ -1,6 +1,10 @@
 	@Override
 	protected RebaseOperation createRebaseOperation(Repository repository,
 			Ref ref) {
+		if (LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
+				null)) {
+			return null;
+		}
 		return new RebaseOperation(repository, ref);
 	}
 

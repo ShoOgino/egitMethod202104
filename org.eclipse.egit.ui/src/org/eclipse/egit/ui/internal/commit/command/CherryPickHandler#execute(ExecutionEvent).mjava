@@ -21,7 +21,7 @@
 
 		final CherryPickOperation op = new CherryPickOperation(repo, commit);
 		Job job = new Job(MessageFormat.format(
-				UIText.CherryPickHandler_JobName, 1)) {
+				UIText.CherryPickHandler_JobName, Integer.valueOf(1))) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {

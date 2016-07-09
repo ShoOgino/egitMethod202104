@@ -2,22 +2,30 @@
 			final Repository repository, final RevCommit commit)
 			throws ExecutionException {
 		final AtomicBoolean confirmed = new AtomicBoolean(false);
-		final String message;
+		String message;
 		try {
 			message = MessageFormat.format(
-					UIText.CherryPickHandler_ConfirmMessage, 1,
+					UIText.CherryPickHandler_ConfirmMessage, Integer.valueOf(1),
 					repository.getBranch());
 		} catch (IOException e) {
 			throw new ExecutionException(
 					"Exception obtaining current repository branch", e); //$NON-NLS-1$
 		}
 
+		ILaunchConfiguration launch = LaunchFinder
+				.getRunningLaunchConfiguration(
+						Collections.singleton(repository), null);
+		if (launch != null) {
+			message += "\n\n" + MessageFormat.format( //$NON-NLS-1$
+					UIText.LaunchFinder_RunningLaunchMessage, launch.getName());
+		}
+		final String question = message;
 		shell.getDisplay().syncExec(new Runnable() {
 
 			@Override
 			public void run() {
 				ConfirmCherryPickDialog dialog = new ConfirmCherryPickDialog(
-						shell, message, repository, Arrays.asList(commit));
+						shell, question, repository, Arrays.asList(commit));
 				int result = dialog.open();
 				confirmed.set(result == Window.OK);
 			}

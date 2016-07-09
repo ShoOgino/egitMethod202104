@@ -1,0 +1,47 @@
+	/**
+	 * @param shell
+	 * @param repo
+	 * @param commitId
+	 * @param resetType
+	 */
+	public static void performReset(Shell shell,
+			final Repository repo, final ObjectId commitId,
+			ResetType resetType) {
+
+		final String jobName;
+		switch (resetType) {
+		case HARD:
+			String question = UIText.ResetTargetSelectionDialog_ResetConfirmQuestion;
+			ILaunchConfiguration launch = LaunchFinder
+					.getRunningLaunchConfiguration(Collections.singleton(repo),
+							null);
+			if (launch != null) {
+				question = MessageFormat.format(question,
+						"\n\n" + MessageFormat.format( //$NON-NLS-1$
+								UIText.LaunchFinder_RunningLaunchMessage,
+								launch.getName()));
+			} else {
+				question = MessageFormat.format(question, ""); //$NON-NLS-1$
+			}
+			if (!MessageDialog.openQuestion(shell,
+					UIText.ResetTargetSelectionDialog_ResetQuestion,
+					question)) {
+				return;
+			}
+			jobName = UIText.HardResetToRevisionAction_hardReset;
+			break;
+		case SOFT:
+			jobName = UIText.SoftResetToRevisionAction_softReset;
+			break;
+		case MIXED:
+			jobName = UIText.MixedResetToRevisionAction_mixedReset;
+			break;
+		default:
+			return; // other types are currently not used
+		}
+
+		ResetOperation operation = new ResetOperation(repo, commitId.getName(),
+				resetType);
+		JobUtil.scheduleUserWorkspaceJob(operation, jobName, JobFamilies.RESET);
+	}
+
