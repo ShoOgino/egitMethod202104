@@ -1,0 +1,7 @@
+	private void unselectAllActionItemsExecpt(ElementAction action) {
+		for (Map.Entry<ElementAction, ToolItem> entry : rebaseActionItems
+				.entrySet()) {
+			entry.getValue().setSelection(entry.getKey() == action);
+		}
+	}
+
