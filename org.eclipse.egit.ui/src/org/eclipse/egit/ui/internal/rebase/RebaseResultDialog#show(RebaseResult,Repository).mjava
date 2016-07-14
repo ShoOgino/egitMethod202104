@@ -5,6 +5,10 @@
 	 */
 	public static void show(final RebaseResult result,
 			final Repository repository) {
+		if (result.getStatus() == Status.ABORTED) {
+			return;
+		}
+
 		boolean shouldShow = result.getStatus() == Status.STOPPED
 				|| result.getStatus() == Status.STASH_APPLY_CONFLICTS
 				|| Activator.getDefault().getPreferenceStore().getBoolean(
