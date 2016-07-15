@@ -21,8 +21,7 @@
 			JobJoiner joiner = JobJoiner.startListening(JobFamilies.PUSH, 20,
 					TimeUnit.SECONDS);
 			pushDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
-			Job job = joiner.join();
-			openResultDialog(job);
+			TestUtil.openJobResultDialog(joiner.join());
 			String title = NLS.bind(UIText.PushResultDialog_title, destination);
 			bot.waitUntil(Conditions.shellIsActive(title));
 			SWTBotShell confirm = bot.shell(title);
@@ -48,8 +47,7 @@
 			joiner = JobJoiner.startListening(JobFamilies.PUSH, 20,
 					TimeUnit.SECONDS);
 			pushDialog.bot().button(IDialogConstants.FINISH_LABEL).click();
-			job = joiner.join();
-			openResultDialog(job);
+			TestUtil.openJobResultDialog(joiner.join());
 			bot.waitUntil(Conditions.shellIsActive(title));
 			confirm = bot.shell(title);
 			result = confirm.bot().tree().getAllItems()[0].getText();
