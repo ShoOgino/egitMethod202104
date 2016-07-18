@@ -1,0 +1,26 @@
+	private void doCheckout(BranchOperation bop, boolean restore,
+			IProgressMonitor monitor)
+			throws CoreException {
+		SubMonitor progress = SubMonitor.convert(monitor, restore ? 10 : 1);
+		if (!restore) {
+			bop.execute(progress.newChild(1));
+		} else {
+			final BranchProjectTracker tracker = new BranchProjectTracker(
+					repository);
+			IMemento snapshot = tracker.snapshot();
+			bop.execute(progress.newChild(7));
+			tracker.save(snapshot);
+			IWorkspaceRunnable action = new IWorkspaceRunnable() {
+
+				@Override
+				public void run(IProgressMonitor innerMonitor)
+						throws CoreException {
+					tracker.restore(innerMonitor);
+				}
+			};
+			ResourcesPlugin.getWorkspace().run(action,
+					ResourcesPlugin.getWorkspace().getRoot(),
+					IWorkspace.AVOID_UPDATE, progress.newChild(3));
+		}
+	}
+
