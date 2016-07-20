@@ -32,10 +32,7 @@
 		branchesViewer.setComparator(comparator);
 
 		DecoratedBranchLabelProvider nameLabelProvider = new DecoratedBranchLabelProvider(gfRepo.getRepository(), prefix);
-		TreeColumn nameColumn = createColumn(
-				UIText.BranchSelectionTree_NameColumn, branchesViewer,
-				nameLabelProvider);
-		setSortedColumn(nameColumn, nameLabelProvider);
+		TreeColumn nameColumn = createColumn(UIText.BranchSelectionTree_NameColumn, branchesViewer, nameLabelProvider);
 
 		TreeColumn idColumn = createColumn(UIText.BranchSelectionTree_IdColumn, branchesViewer, new ColumnLabelProvider() {
 
@@ -50,6 +47,23 @@
 				}
 				return super.getText(element);
 			}});
+		ColumnLabelProvider dateLabelProvider = new ColumnLabelProvider() {
+
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Ref) {
+					String name = ((Ref) element).getName().substring(Constants.R_HEADS.length());
+					RevCommit revCommit = gfRepo.findHead(name);
+					if (revCommit == null) {
+						return ""; //$NON-NLS-1$
+					}
+					return getDateFormatter().formatDate(revCommit.getCommitterIdent());
+				}
+				return super.getText(element);
+			}};
+		TreeColumn dateColumn = createColumn(UIText.FilteredBranchesWidget_lastModified, branchesViewer, dateLabelProvider);
+		setSortedColumn(dateColumn, dateLabelProvider);
+
 		TreeColumn msgColumn = createColumn(UIText.BranchSelectionTree_MessageColumn, branchesViewer, new ColumnLabelProvider() {
 
 			@Override
@@ -65,6 +79,7 @@
 				return super.getText(element);
 			}});
 
+
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(branchesViewer.getControl());
 
 		branchesViewer.setContentProvider(new BranchListContentProvider());
@@ -76,6 +91,8 @@
 		layout.setColumnData(nameColumn, new ColumnWeightData(0, nameColumn.getWidth()));
 		idColumn.pack();
 		layout.setColumnData(idColumn, new ColumnWeightData(0, idColumn.getWidth()));
+		dateColumn.pack();
+		layout.setColumnData(dateColumn, new ColumnWeightData(0, dateColumn.getWidth()));
 		layout.setColumnData(msgColumn, new ColumnWeightData(100));
 		branchesViewer.getTree().getParent().setLayout(layout);
 
