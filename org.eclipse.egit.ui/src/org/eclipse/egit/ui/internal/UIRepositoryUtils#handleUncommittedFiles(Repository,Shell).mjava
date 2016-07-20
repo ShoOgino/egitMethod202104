@@ -14,25 +14,11 @@
 	 */
 	public static boolean handleUncommittedFiles(Repository repo, Shell shell)
 			throws GitAPIException {
-		Status status = null;
-		try (Git git = new Git(repo)) {
-			status = git.status().call();
-		}
-		if (status != null && status.hasUncommittedChanges()) {
-			List<String> files = new ArrayList<>(status.getModified());
-			Collections.sort(files);
-			String repoName = Activator.getDefault().getRepositoryUtil()
-					.getRepositoryName(repo);
-			CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
-					shell,
-					MessageFormat
-							.format(UIText.AbstractRebaseCommandHandler_cleanupDialog_title,
-									repoName),
-					UIText.AbstractRebaseCommandHandler_cleanupDialog_text,
-					repo, files);
-			cleanupUncomittedChangesDialog.open();
-			return cleanupUncomittedChangesDialog.shouldContinue();
-		} else
-			return true;
+		String repoName = Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repo);
+		return handleUncommittedFiles(repo, shell,
+				MessageFormat.format(
+						UIText.AbstractRebaseCommandHandler_cleanupDialog_title,
+						repoName));
 	}
 
