@@ -1,5 +1,7 @@
 	@Test
-	public void testImportWizardGeneralProjectWithWorkingSet() throws Exception {
+	public void testImportWizardGeneralProjectWithWorkingSet()
+			throws Exception {
+		removeSmartImportWizardToForceGitImportWizardUsage();
 		deleteAllProjects();
 		assertProjectExistence(PROJ1, false);
 		String workingSetName = "myWorkingSet";
@@ -12,20 +14,23 @@
 		TestUtil.expandAndWait(
 				myRepoViewUtil.getWorkdirItem(tree, repositoryFile))
 				.getNode(PROJ1).select();
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("ImportProjectsCommand"));
+		ContextMenuHelper.clickContextMenu(tree,
+				myUtil.getPluginLocalizedValue("ImportProjectsCommand"));
 		SWTBotShell shell = bot.shell(wizardTitle);
 		shell = bot.shell(wizardTitle);
 		// try import existing project first
 		bot.radio(UIText.GitSelectWizardPage_ImportExistingButton).click();
 		SWTBotButton button = shell.bot().button(IDialogConstants.NEXT_LABEL);
-		// Set focus on the next button. If this is not done, Wizard Framework restores
-		// the focus to the "Import as &General Project" radio button. Setting the focus on
+		// Set focus on the next button. If this is not done, Wizard Framework
+		// restores
+		// the focus to the "Import as &General Project" radio button. Setting
+		// the focus on
 		// the radio button selects the button and causes the test to fail.
 		// See also SWTBot Bug 337465
 		button.setFocus();
 		button.click();
-		shell.bot().text(UIText.WizardProjectsImportPage_ImportProjectsDescription);
+		shell.bot().text(
+				UIText.WizardProjectsImportPage_ImportProjectsDescription);
 		shell.bot().tree().getAllItems()[0].check();
 		// add to working set
 		shell.bot().checkBox("Add project to working sets").select();

@@ -2,8 +2,7 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		List<RepositoryTreeNode> selectedNodes = getSelectedNodes(event);
 		if (selectedNodes == null || selectedNodes.isEmpty()) {
-			MessageDialog
-					.openError(Display.getDefault().getActiveShell(),
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
 					UIText.ImportProjectsWrongSelection,
 					UIText.ImportProjectsSelectionInRepositoryRequired);
 			return null;
@@ -33,17 +32,12 @@
 			return null;
 		}
 
-		WizardDialog dlg = new WizardDialog(
-				getShell(event),
-				new GitCreateProjectViaWizardWizard(node.getRepository(), path)) {
-			@Override
-			protected IDialogSettings getDialogBoundsSettings() {
-				// preserve dialog bounds
-				return Activator.getDefault().getDialogSettings();
-			}
-		};
-		dlg.setHelpAvailable(false);
-		dlg.open();
+		IWizardDescriptor descriptor = findSmartImportWizardDescriptor();
+		if (descriptor != null) {
+			openSmartImportWizard(event, descriptor, path);
+		} else {
+			openGitCreateProjectViaWizardWizard(event, node, path);
+		}
 
 		return null;
 	}

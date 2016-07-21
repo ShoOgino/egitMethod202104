@@ -9,8 +9,7 @@
 		SWTBotTreeItem item = myRepoViewUtil.getRootItem(tree, repositoryFile);
 		item.select();
 		ContextMenuHelper.clickContextMenuSync(tree,
-				myUtil.getPluginLocalizedValue("ShowIn"),
-				"Properties");
+				myUtil.getPluginLocalizedValue("ShowIn"), "Properties");
 		SWTBotView propertieView = bot.viewById(IPageLayout.ID_PROP_SHEET);
 		assertTrue(propertieView.isActive());
 	}

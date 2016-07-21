@@ -5,6 +5,7 @@
 	 */
 	@Test
 	public void testImportWizard() throws Exception {
+		removeSmartImportWizardToForceGitImportWizardUsage();
 		deleteAllProjects();
 		assertProjectExistence(PROJ1, false);
 		SWTBotTree tree = getOrOpenView().bot().tree();
@@ -12,25 +13,27 @@
 		String wizardTitle = NLS.bind(
 				UIText.GitCreateProjectViaWizardWizard_WizardTitle,
 				repositoryFile.getPath());
+
 		// start wizard from root item
 		item.select();
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("ImportProjectsCommand"));
+		ContextMenuHelper.clickContextMenu(tree,
+				myUtil.getPluginLocalizedValue("ImportProjectsCommand"));
 		SWTBotShell shell = bot.shell(wizardTitle);
 		bot.radio(UIText.GitSelectWizardPage_ImportExistingButton).click();
 		TableCollection selected = shell.bot().tree().selection();
 		String wizardNode = selected.get(0, 0);
 		// wizard directory should be working dir
-		assertEquals(myRepoViewUtil.getWorkdirItem(tree, repositoryFile)
-				.getText(), wizardNode);
+		assertEquals(
+				myRepoViewUtil.getWorkdirItem(tree, repositoryFile).getText(),
+				wizardNode);
 		shell.close();
 		tree = getOrOpenView().bot().tree();
 		// start wizard from .git
 		TestUtil.expandAndWait(
 				myRepoViewUtil.getWorkdirItem(tree, repositoryFile))
 				.getNode(Constants.DOT_GIT).select();
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("ImportProjectsCommand"));
+		ContextMenuHelper.clickContextMenu(tree,
+				myUtil.getPluginLocalizedValue("ImportProjectsCommand"));
 		shell = bot.shell(wizardTitle);
 		selected = shell.bot().tree().selection();
 		wizardNode = selected.get(0, 0);
@@ -46,11 +49,11 @@
 		shell.bot().button(IDialogConstants.NEXT_LABEL).click();
 		bot.button(UIText.WizardProjectsImportPage_deselectAll).click();
 		assertEquals(1, shell.bot().tree().getAllItems().length);
-		assertTrue(!shell.bot().button(IDialogConstants.FINISH_LABEL)
-				.isEnabled());
+		assertTrue(
+				!shell.bot().button(IDialogConstants.FINISH_LABEL).isEnabled());
 		shell.bot().button(UIText.WizardProjectsImportPage_selectAll).click();
-		assertTrue(shell.bot().button(IDialogConstants.FINISH_LABEL)
-				.isEnabled());
+		assertTrue(
+				shell.bot().button(IDialogConstants.FINISH_LABEL).isEnabled());
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
 		bot.waitUntil(Conditions.shellCloses(shell));
 		assertProjectExistence(PROJ1, true);
