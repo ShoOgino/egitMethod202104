@@ -1,0 +1,15 @@
+	private void openGitCreateProjectViaWizardWizard(ExecutionEvent event,
+			RepositoryTreeNode node, String path) {
+		WizardDialog dlg = new WizardDialog(getShell(event),
+				new GitCreateProjectViaWizardWizard(node.getRepository(),
+						path)) {
+			@Override
+			protected IDialogSettings getDialogBoundsSettings() {
+				// preserve dialog bounds
+				return Activator.getDefault().getDialogSettings();
+			}
+		};
+		dlg.setHelpAvailable(false);
+		dlg.open();
+	}
+

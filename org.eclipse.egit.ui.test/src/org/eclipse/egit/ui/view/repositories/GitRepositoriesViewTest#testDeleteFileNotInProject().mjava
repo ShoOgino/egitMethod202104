@@ -9,7 +9,8 @@
 		ContextMenuHelper.clickContextMenu(tree,
 				myUtil.getPluginLocalizedValue("RepoViewDeleteFile.label"));
 
-		SWTBotShell confirm = bot.shell(UIText.DeleteResourcesOperationUI_confirmActionTitle);
+		SWTBotShell confirm = bot
+				.shell(UIText.DeleteResourcesOperationUI_confirmActionTitle);
 		confirm.bot().button(IDialogConstants.OK_LABEL).click();
 		bot.waitUntil(shellCloses(confirm));
 		TestUtil.joinJobs(JobFamilies.REPO_VIEW_REFRESH);

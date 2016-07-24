@@ -8,13 +8,13 @@
 				myRepoViewUtil.getLocalBranchesItem(tree, repositoryFile));
 		SWTBotTreeItem masterNode = localBranchesItem.getNode("master");
 		masterNode.select();
-		ContextMenuHelper.clickContextMenu(tree, myUtil
-				.getPluginLocalizedValue("RepoViewCreateBranch.label"));
+		ContextMenuHelper.clickContextMenu(tree,
+				myUtil.getPluginLocalizedValue("RepoViewCreateBranch.label"));
 		SWTBotShell createBranchShell = bot
 				.shell(UIText.CreateBranchWizard_NewBranchTitle);
 		createBranchShell.bot().textWithId("BranchName").setText("abc");
-		createBranchShell.bot()
-				.checkBox(UIText.CreateBranchPage_CheckoutButton).deselect();
+		createBranchShell.bot().checkBox(UIText.CreateBranchPage_CheckoutButton)
+				.deselect();
 		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
 		refreshAndWait();
 		// delete branch
@@ -26,8 +26,8 @@
 				myUtil.getPluginLocalizedValue("RepoViewDeleteBranch.label"));
 
 		refreshAndWait();
-		SWTBotTreeItem[] items = myRepoViewUtil.getLocalBranchesItem(tree,
-				repositoryFile).getItems();
+		SWTBotTreeItem[] items = myRepoViewUtil
+				.getLocalBranchesItem(tree, repositoryFile).getItems();
 		assertEquals("Wrong number of branches", 2, items.length);
 		assertEquals("master", items[0].getText());
 		assertEquals("stable", items[1].getText());

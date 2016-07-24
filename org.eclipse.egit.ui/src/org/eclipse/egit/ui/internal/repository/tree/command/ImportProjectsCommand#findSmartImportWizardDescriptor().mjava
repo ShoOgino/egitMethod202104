@@ -1,0 +1,6 @@
+	private IWizardDescriptor findSmartImportWizardDescriptor() {
+		final String smartImportWizardId = "org.eclipse.e4.ui.importer.wizard"; //$NON-NLS-1$
+		return PlatformUI.getWorkbench().getImportWizardRegistry()
+				.findWizard(smartImportWizardId);
+	}
+

@@ -3,8 +3,10 @@
 		SWTBotTree tree = getOrOpenView().bot().tree();
 		refreshAndWait();
 
-		IProject project1 = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1);
-		// Make sure that the refresh doesn't happen on delete and cause a timeout
+		IProject project1 = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+		// Make sure that the refresh doesn't happen on delete and cause a
+		// timeout
 		project1.refreshLocal(IResource.DEPTH_INFINITE, null);
 
 		SWTBotTreeItem folder = findWorkdirNode(tree, PROJ1, FOLDER);
