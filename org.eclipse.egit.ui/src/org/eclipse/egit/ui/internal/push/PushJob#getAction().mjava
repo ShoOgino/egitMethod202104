@@ -1,0 +1,11 @@
+	@Override
+	protected IAction getAction() {
+		Repository repo = localDb;
+		if (repo != null && (resultToCompare == null
+				|| !resultToCompare.equals(operationResult))) {
+			return new ShowPushResultAction(repo, operationResult,
+					destinationString, showConfigureButton);
+		}
+		return null;
+	}
+

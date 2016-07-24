@@ -1,0 +1,28 @@
+	/**
+	 * Creates a new {@link PushJob} that performs the given
+	 * {@link PushOperation} on the given {@link Repository}.
+	 *
+	 * @param name
+	 *            of the job
+	 * @param repository
+	 *            to push to
+	 * @param operation
+	 *            to perform
+	 * @param expectedResult
+	 *            of the operation
+	 * @param destinationString
+	 *            describing where to push to
+	 * @param showConfigureButton
+	 *            whether the result dialog should have a configuration button
+	 */
+	public PushJob(String name, Repository repository, PushOperation operation,
+			PushOperationResult expectedResult, String destinationString,
+			boolean showConfigureButton) {
+		super(name);
+		this.operation = operation;
+		this.resultToCompare = expectedResult;
+		this.destinationString = destinationString;
+		this.localDb = repository;
+		this.showConfigureButton = showConfigureButton;
+	}
+

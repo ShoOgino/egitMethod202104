@@ -1,0 +1,12 @@
+	/**
+	 * Obtains an {@link IStatus} describing the final outcome of the operation.
+	 * This default implementation returns an {@link IStatus#OK OK} status.
+	 *
+	 * @return an {@link IStatus} describing the outcome of the job
+	 */
+	@NonNull
+	protected IStatus getDeferredStatus() {
+		return new Status(IStatus.OK, Activator.getPluginId(), IStatus.OK, "", //$NON-NLS-1$
+				null);
+	}
+

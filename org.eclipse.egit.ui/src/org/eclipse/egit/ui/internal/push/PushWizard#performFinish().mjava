@@ -22,12 +22,16 @@
 			operation.setCredentialsProvider(new EGitCredentialsProvider(
 					credentials.getUser(), credentials.getPassword()));
 		final PushOperationResult resultToCompare;
-		if (confirmPage.isShowOnlyIfChangedSelected())
+		if (confirmPage.isShowOnlyIfChangedSelected()) {
 			resultToCompare = confirmPage.getConfirmedResult();
-		else
+		} else {
 			resultToCompare = null;
-		final Job job = new PushJob(localDb, operation, resultToCompare,
-				getDestinationString(repoPage.getSelection()));
+		}
+		final Job job = new PushJob(
+				NLS.bind(UIText.PushWizard_jobName,
+						getURIsString(operation.getSpecification().getURIs())),
+				localDb, operation, resultToCompare,
+				getDestinationString(repoPage.getSelection()), true);
 
 		job.setUser(true);
 		job.schedule();

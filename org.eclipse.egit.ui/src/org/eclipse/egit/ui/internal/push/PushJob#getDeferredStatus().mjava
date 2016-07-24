@@ -1,0 +1,19 @@
+	@Override
+	protected IStatus getDeferredStatus() {
+		for (URIish uri : operationResult.getURIs()) {
+			PushResult outcome = operationResult.getPushResult(uri);
+			for (RemoteRefUpdate update : outcome.getRemoteUpdates()) {
+				switch (update.getStatus()) {
+				case NOT_ATTEMPTED:
+				case UP_TO_DATE:
+				case OK:
+					continue;
+				default:
+					return new Status(IStatus.ERROR, Activator.getPluginId(),
+							IStatus.ERROR, update.getMessage(), null);
+				}
+			}
+		}
+		return super.getDeferredStatus();
+	}
+
