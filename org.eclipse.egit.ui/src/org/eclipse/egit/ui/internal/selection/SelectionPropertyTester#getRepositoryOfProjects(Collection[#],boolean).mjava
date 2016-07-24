@@ -9,23 +9,31 @@
 			boolean single) {
 		Repository repo = null;
 		for (Object element : collection) {
-			IProject project = AdapterUtils.adapt(element, IProject.class);
-			if (project != null) {
-				Repository r = getRepositoryOfMapping(project);
-				if (single && r != null && repo != null && r != repo)
+			IContainer container = AdapterUtils.adapt(element,
+					IContainer.class);
+			RepositoryMapping mapping = null;
+			if (container != null) {
+				mapping = RepositoryMapping.getMapping(container);
+			}
+			if (container != null && mapping != null
+					&& container.equals(mapping.getContainer())) {
+				Repository r = mapping.getRepository();
+				if (single && r != null && repo != null && r != repo) {
 					return null;
-				else if (r != null)
+				} else if (r != null) {
 					repo = r;
+				}
 			} else {
 				IWorkingSet workingSet = AdapterUtils.adapt(element,
 						IWorkingSet.class);
 				if (workingSet != null) {
 					for (IAdaptable adaptable : workingSet.getElements()) {
 						Repository r = getRepositoryOfProject(adaptable);
-						if (single && r != null && repo != null && r != repo)
+						if (single && r != null && repo != null && r != repo) {
 							return null;
-						else if (r != null)
+						} else if (r != null) {
 							repo = r;
+						}
 					}
 				}
 			}
