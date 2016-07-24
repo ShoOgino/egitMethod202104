@@ -11,7 +11,7 @@
 					allItemsHaveTargetType &= element.getPlanElementAction() == type;
 				if (allItemsHaveTargetType) {
 					typeToSet = ElementAction.PICK;
-					itemPick.setSelection(true);
+					rebaseActionItems.get(ElementAction.PICK).setSelection(true);
 					if (e.getSource() instanceof ToolItem)
 						((ToolItem) e.getSource()).setSelection(false);
 				}
@@ -20,5 +20,6 @@
 			for (RebaseInteractivePlan.PlanElement element : selected)
 				element.setPlanElementAction(typeToSet);
 			mapActionItemsToSelection(view.planTreeViewer.getSelection());
+			view.planTreeViewer.getControl().setFocus();
 		}
 
