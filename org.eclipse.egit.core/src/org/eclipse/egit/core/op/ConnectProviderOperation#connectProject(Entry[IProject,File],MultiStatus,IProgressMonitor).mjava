@@ -50,6 +50,12 @@
 		if (refreshResources) {
 			touchGitResources(project, subMon.newChild(10));
 			project.refreshLocal(IResource.DEPTH_INFINITE, subMon.newChild(30));
+			IndexDiffCacheEntry cacheEntry = org.eclipse.egit.core.Activator
+					.getDefault().getIndexDiffCache()
+					.getIndexDiffCacheEntry(actualMapping.getRepository());
+			if (cacheEntry != null) {
+				cacheEntry.refresh();
+			}
 		} else {
 			subMon.worked(40);
 		}
