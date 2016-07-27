@@ -15,16 +15,8 @@
 			private static final int NUMBER_OF_OWN_CONTROLS = 1;
 
 			@Override
-			public void setPreferenceStore(IPreferenceStore store) {
-				if (store == null) {
-					// allow reset store on dispose
-					super.setPreferenceStore(store);
-				} else if (getPreferenceStore() == null) {
-					// only allow set store once, to the egit core version
-					super.setPreferenceStore(new ScopedPreferenceStore(
-							InstanceScope.INSTANCE,
-							org.eclipse.egit.core.Activator.getPluginId()));
-				}
+			public IPreferenceStore getPreferenceStore() {
+				return corePreferences;
 			}
 
 			@Override
