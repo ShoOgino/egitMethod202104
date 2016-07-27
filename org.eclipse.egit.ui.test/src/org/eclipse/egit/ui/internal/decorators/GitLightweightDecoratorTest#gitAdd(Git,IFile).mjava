@@ -1,0 +1,6 @@
+	protected static void gitAdd(Git git, IFile file) throws Exception {
+		String filePath = file.getFullPath().toString();
+		// remove leading '/'
+		git.add().addFilepattern(filePath.substring(1)).call();
+	}
+

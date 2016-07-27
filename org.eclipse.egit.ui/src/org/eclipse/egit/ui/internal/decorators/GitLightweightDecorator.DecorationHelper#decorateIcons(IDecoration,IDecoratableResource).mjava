@@ -4,40 +4,40 @@
 
 			if (resource.isTracked()) {
 				if (store.getBoolean(UIPreferences.DECORATOR_SHOW_TRACKED_ICON))
-					overlay = trackedImage;
+					overlay = TRACKED_IMAGE;
 
 				if (store
 						.getBoolean(UIPreferences.DECORATOR_SHOW_ASSUME_UNCHANGED_ICON)
 						&& resource.isAssumeUnchanged())
-					overlay = assumeUnchangedImage;
+					overlay = ASSUME_UNCHANGED_IMAGE;
 
 				// Staged overrides tracked
 				StagingState staged = resource.getStagingState();
 				if (store.getBoolean(UIPreferences.DECORATOR_SHOW_STAGED_ICON)
 						&& staged != StagingState.NOT_STAGED) {
 					if (staged == StagingState.ADDED)
-						overlay = stagedAddedImage;
+						overlay = STAGED_ADDED_IMAGE;
 					else if (staged == StagingState.REMOVED)
-						overlay = stagedRemovedImage;
+						overlay = STAGED_REMOVED_IMAGE;
 					else
-						overlay = stagedImage;
+						overlay = STAGED_IMAGE;
 				}
 
 				// Dirty overrides staged
 				if(store
 						.getBoolean(UIPreferences.DECORATOR_SHOW_DIRTY_ICON) && resource.isDirty()) {
-					overlay = dirtyImage;
+					overlay = DIRTY_IMAGE;
 				}
 
 				// Conflicts override everything
 				if (store
 						.getBoolean(UIPreferences.DECORATOR_SHOW_CONFLICTS_ICON)
 						&& resource.hasConflicts())
-					overlay = conflictImage;
+					overlay = CONFLICT_IMAGE;
 
 			} else if (store
 					.getBoolean(UIPreferences.DECORATOR_SHOW_UNTRACKED_ICON)) {
-				overlay = untrackedImage;
+				overlay = UNTRACKED_IMAGE;
 			}
 
 			// Overlays can only be added once, so do it at the end

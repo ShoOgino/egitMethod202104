@@ -1,0 +1,20 @@
+	@Test
+	public void testSameStagingStateIsState_Added() throws Exception {
+		gitAdd(git, rmContentA);
+		gitAdd(git, rmContentB);
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(rmContentA).tracked().added(),
+				newExpectedDecoratableResource(rmContentB).tracked().added(),
+				newExpectedDecoratableResourceMapping().tracked().added() };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, rmContentA),
+				newDecoratableResource(indexDiffData, rmContentB),
+				newDecoratableResourceMapping(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationAdded(resourceMapping);
+	}
+

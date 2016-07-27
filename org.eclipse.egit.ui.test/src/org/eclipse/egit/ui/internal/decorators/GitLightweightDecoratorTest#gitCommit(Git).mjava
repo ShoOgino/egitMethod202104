@@ -1,0 +1,4 @@
+	protected static RevCommit gitCommit(Git git) throws Exception {
+		return git.commit().setMessage("Commit staged changes.").call();
+	}
+

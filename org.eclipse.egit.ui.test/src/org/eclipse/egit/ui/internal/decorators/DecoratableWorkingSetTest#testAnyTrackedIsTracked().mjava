@@ -1,0 +1,17 @@
+	@Test
+	public void testAnyTrackedIsTracked() throws Exception {
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(project1).tracked(),
+				newExpectedDecoratableResource(project2),
+				newExpectedDecoratableWorkingSet(WORKING_SET).tracked() };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, project1),
+				newDecoratableResource(indexDiffData, project2),
+				newDecoratableWorkingSet(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationTracked(resourceMapping);
+	}
+

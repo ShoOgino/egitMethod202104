@@ -1,0 +1,29 @@
+	@Test
+	public void testAllIgnoredIsUnstaged() throws Exception {
+		IFile gitignore = createFile(project, ".gitignore", "*.testrm_*");
+		gitAdd(git, gitignore);
+		gitAdd(git, rmContentA);
+		gitAdd(git, rmContentB);
+		gitCommit(git);
+
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		rmContentA = findFile(project, RM_CONTENT_A_FILE_NAME);
+		gitignore = findFile(project, ".gitignore");
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(gitignore).tracked(),
+				newExpectedDecoratableResource(rmContentA).ignored(),
+				newExpectedDecoratableResource(rmContentB).ignored(),
+				newExpectedDecoratableResourceMapping() };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, gitignore),
+				newDecoratableResource(indexDiffData, rmContentA),
+				newDecoratableResource(indexDiffData, rmContentB),
+				newDecoratableResourceMapping(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationUntracked(resourceMapping);
+	}
+

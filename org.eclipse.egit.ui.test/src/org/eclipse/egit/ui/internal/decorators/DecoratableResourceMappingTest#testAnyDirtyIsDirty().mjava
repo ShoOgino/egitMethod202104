@@ -1,0 +1,22 @@
+	@Test
+	public void testAnyDirtyIsDirty() throws Exception {
+		gitAdd(git, rmContentA);
+		gitAdd(git, rmContentB);
+		gitCommit(git);
+		write(rmContentA.getLocation().toFile(), "Changed content");
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(rmContentA).tracked().dirty(),
+				newExpectedDecoratableResource(rmContentB).tracked(),
+				newExpectedDecoratableResourceMapping().tracked().dirty() };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, rmContentA),
+				newDecoratableResource(indexDiffData, rmContentB),
+				newDecoratableResourceMapping(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationDirty(resourceMapping);
+	}
+

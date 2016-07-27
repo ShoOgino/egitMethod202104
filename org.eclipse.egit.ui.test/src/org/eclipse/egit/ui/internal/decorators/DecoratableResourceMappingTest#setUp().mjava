@@ -1,0 +1,27 @@
+	@Before
+	public void setUp() throws Exception {
+		gitDir = createProjectAndCommitToRepository();
+		project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1);
+
+		rmContentA = createFile(project, RM_CONTENT_A_FILE_NAME,
+				"Just some content.");
+		rmContentB = createFile(project, RM_CONTENT_B_FILE_NAME,
+				"Just some content.");
+		resourceMapping = new TestResourceMapping(project, rmContentA,
+				rmContentB);
+
+		ResourceTraversal[] traversals = resourceMapping.getTraversals(null,
+				null);
+		assertEquals(1, traversals.length);
+		ResourceTraversal traversal = traversals[0];
+		assertEquals(2, traversal.getResources().length);
+		assertTrue(traversal.contains(rmContentA));
+		assertTrue(traversal.contains(rmContentB));
+
+		Repository repo = lookupRepository(gitDir);
+		git = new Git(repo);
+		indexDiffCacheEntry = org.eclipse.egit.core.Activator.getDefault()
+				.getIndexDiffCache().getIndexDiffCacheEntry(repo);
+		waitForIndexDiff(false);
+	}
+

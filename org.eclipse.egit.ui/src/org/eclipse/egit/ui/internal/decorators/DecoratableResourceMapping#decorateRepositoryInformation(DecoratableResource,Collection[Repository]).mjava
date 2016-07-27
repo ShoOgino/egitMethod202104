@@ -1,0 +1,45 @@
+	/**
+	 * Decorate repositoryName, branch and branchStatus of
+	 * {@link ResourceMapping}s.
+	 *
+	 * @param resource
+	 *            the {@link DecoratableResource} to decorate.
+	 * @param repositories
+	 *            the collection of {@link Repository} which are affected by the
+	 *            given {@link DecoratableResource}.
+	 * @throws IOException
+	 */
+	protected static void decorateRepositoryInformation(
+			DecoratableResource resource, Collection<Repository> repositories)
+			throws IOException {
+		// collect repository info for decoration (bug 369969)
+		if (repositories.size() == 1) {
+			// single repo, single branch --> [repo branch]
+			Repository repository = repositories.iterator().next();
+			resource.repositoryName = DecoratableResourceHelper
+					.getRepositoryName(repository);
+			resource.branch = DecoratableResourceHelper
+					.getShortBranch(repository);
+			resource.branchStatus = DecoratableResourceHelper
+					.getBranchStatus(repository);
+		} else if (repositories.size() > 1) {
+			// collect branch names but skip branch status (doesn't make sense)
+			Set<String> branches = new HashSet<>(2);
+			for (Repository repository : repositories) {
+				branches.add(
+						DecoratableResourceHelper.getShortBranch(repository));
+				if (branches.size() > 1)
+					break;
+			}
+
+			// multiple repos, one branch --> [* branch]
+			if (branches.size() == 1) {
+				resource.repositoryName = MULTIPLE;
+				resource.branch = branches.iterator().next();
+			}
+
+			// we set nothing in the following case:
+			// multiple repos, multiple branches
+		}
+	}
+

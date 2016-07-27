@@ -1,0 +1,21 @@
+	@Before
+	public void setUp() throws Exception {
+		gitDir = createProjectAndCommitToRepository(REPO1, PROJ1, null);
+		project1 = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1);
+		project2 = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ2);
+		project2.create(null);
+		project2.open(null);
+		TestUtil.waitForJobs(50, 5000);
+		assertTrue("Project is not accessible: " + project2,
+				project2.isAccessible());
+
+		setWorkingSet(project1, project2);
+		resourceMapping = createResourceMapping();
+
+		Repository repo = lookupRepository(gitDir);
+		git = new Git(repo);
+		indexDiffCacheEntry = org.eclipse.egit.core.Activator.getDefault()
+				.getIndexDiffCache().getIndexDiffCacheEntry(repo);
+		waitForIndexDiff(false);
+	}
+

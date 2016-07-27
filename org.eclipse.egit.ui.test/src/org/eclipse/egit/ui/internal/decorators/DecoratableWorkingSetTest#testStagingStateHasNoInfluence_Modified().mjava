@@ -1,0 +1,22 @@
+	@Test
+	public void testStagingStateHasNoInfluence_Modified() throws Exception {
+		IFile file = createFile(project1, TEST_FILE, "Something");
+		gitAdd(git, file);
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(project1).tracked().modified(),
+				newExpectedDecoratableResource(file).tracked().added(),
+				newExpectedDecoratableResource(project2),
+				newExpectedDecoratableWorkingSet(WORKING_SET).tracked() };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, project1),
+				newDecoratableResource(indexDiffData, file),
+				newDecoratableResource(indexDiffData, project2),
+				newDecoratableWorkingSet(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationTracked(resourceMapping);
+	}
+

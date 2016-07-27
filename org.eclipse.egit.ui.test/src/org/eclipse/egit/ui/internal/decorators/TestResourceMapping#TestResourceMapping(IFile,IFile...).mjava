@@ -1,0 +1,16 @@
+	/**
+	 * Creates a new resource mapping whose model object is the given main file.
+	 *
+	 * @param mainFile
+	 *            file used as {@link #getModelObject() model object}
+	 * @param mappedFiles
+	 *            files used for
+	 *            {@link #getTraversals(ResourceMappingContext, IProgressMonitor)
+	 *            traversal}.
+	 */
+	public TestResourceMapping(IFile mainFile, IFile... mappedFiles) {
+		this.mainFile = mainFile;
+		this.project = mainFile.getProject();
+		this.mappedFiles = mappedFiles;
+	}
+

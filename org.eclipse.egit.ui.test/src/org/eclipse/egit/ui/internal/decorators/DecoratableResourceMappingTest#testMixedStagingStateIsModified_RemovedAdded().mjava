@@ -1,0 +1,23 @@
+	@Test
+	public void testMixedStagingStateIsModified_RemovedAdded()
+			throws Exception {
+		gitAdd(git, rmContentA);
+		gitCommit(git);
+		gitRemove(git, rmContentA);
+		gitAdd(git, rmContentB);
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(rmContentA).tracked().removed(),
+				newExpectedDecoratableResource(rmContentB).tracked().added(),
+				newExpectedDecoratableResourceMapping().tracked().modified() };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, rmContentA),
+				newDecoratableResource(indexDiffData, rmContentB),
+				newDecoratableResourceMapping(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationStaged(resourceMapping);
+	}
+

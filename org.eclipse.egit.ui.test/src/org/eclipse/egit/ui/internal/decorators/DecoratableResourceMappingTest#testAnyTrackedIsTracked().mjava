@@ -1,0 +1,19 @@
+	@Test
+	public void testAnyTrackedIsTracked() throws Exception {
+		gitAdd(git, rmContentA);
+		gitCommit(git);
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(rmContentA).tracked(),
+				newExpectedDecoratableResource(rmContentB),
+				newExpectedDecoratableResourceMapping().tracked() };
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, rmContentA),
+				newDecoratableResource(indexDiffData, rmContentB),
+				newDecoratableResourceMapping(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationTracked(resourceMapping);
+	}
+

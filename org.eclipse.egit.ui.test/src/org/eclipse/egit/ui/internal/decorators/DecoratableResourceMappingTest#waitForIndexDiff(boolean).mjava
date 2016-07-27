@@ -1,0 +1,8 @@
+	private IndexDiffData waitForIndexDiff(final boolean refreshCache)
+			throws Exception {
+		if (refreshCache)
+			indexDiffCacheEntry.refresh();
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		return indexDiffCacheEntry.getIndexDiff();
+	}
+

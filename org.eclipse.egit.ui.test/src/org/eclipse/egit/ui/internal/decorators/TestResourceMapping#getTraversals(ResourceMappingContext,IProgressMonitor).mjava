@@ -1,0 +1,8 @@
+	@Override
+	public ResourceTraversal[] getTraversals(ResourceMappingContext context,
+			IProgressMonitor monitor) throws CoreException {
+		return new ResourceTraversal[] {
+				new ResourceTraversal(mappedFiles,
+						IResource.DEPTH_INFINITE, IResource.NONE) };
+	}
+

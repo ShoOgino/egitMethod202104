@@ -1,0 +1,58 @@
+	/**
+	 * Creates a decoratable resource mapping (used for e.g. working sets)
+	 *
+	 * @param mapping the resource mapping to decorate
+	 * @throws IOException
+	 */
+	public DecoratableWorkingSet(ResourceMapping mapping) throws IOException {
+		super(null); // no resource ...
+
+		this.mapping = mapping;
+		IProject[] projects = mapping.getProjects();
+
+		if(projects == null || projects.length == 0)
+			return;
+
+		// collect repositories to allow decoration of mappings (bug 369969)
+		Set<Repository> repositories = new HashSet<>(projects.length);
+
+		// we could use DecoratableResourceAdapter for each project, but that would be too much overhead,
+		// as we need only very little information at all...
+		for(IProject prj : projects) {
+			RepositoryMapping repoMapping = RepositoryMapping.getMapping(prj);
+			if(repoMapping == null)
+				continue;
+
+			IndexDiffData diffData = ResourceStateFactory.getInstance()
+					.getIndexDiffDataOrNull(prj);
+			if(diffData == null)
+				continue;
+
+			// at least one contained resource is tracked for sure here.
+			setTracked(true);
+
+			Repository repository = repoMapping.getRepository();
+			String repoRelative = makeRepoRelative(repository, prj);
+			if (repoRelative == null) {
+				continue;
+			}
+			repoRelative += "/"; //$NON-NLS-1$
+
+			Set<String> modified = diffData.getModified();
+			Set<String> conflicting = diffData.getConflicting();
+
+			// attention - never reset these to false (so don't use the return value of the methods!)
+			if(containsPrefix(modified, repoRelative))
+				setDirty(true);
+
+			if(containsPrefix(conflicting, repoRelative))
+				setConflicts(true);
+
+			// collect repository
+			repositories.add(repository);
+		}
+
+		DecoratableResourceMapping.decorateRepositoryInformation(this,
+				repositories);
+	}
+

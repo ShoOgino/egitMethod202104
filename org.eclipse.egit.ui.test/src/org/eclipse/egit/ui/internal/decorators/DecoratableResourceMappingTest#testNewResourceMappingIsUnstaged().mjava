@@ -1,0 +1,17 @@
+	@Test
+	public void testNewResourceMappingIsUnstaged() throws Exception {
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(rmContentA),
+				newExpectedDecoratableResource(rmContentB),
+				newExpectedDecoratableResourceMapping() };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, rmContentA),
+				newDecoratableResource(indexDiffData, rmContentB),
+				newDecoratableResourceMapping(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationUntracked(resourceMapping);
+	}
+

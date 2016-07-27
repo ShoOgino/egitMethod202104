@@ -1,0 +1,53 @@
+	/**
+	 * Tests that if the resource mapping is both conflicting and dirty, that
+	 * the conflicting decoration image is used over the dirty decoration image.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testDecorationConflictingOverDirty() throws Exception {
+		// commit changes on master
+		gitAdd(git, rmContentA);
+		gitAdd(git, rmContentB);
+		RevCommit masterCommit = gitCommit(git);
+
+		// add change on new branch first_topic
+		git.checkout().setCreateBranch(true).setName("first_topic").call();
+		rmContentA = findFile(project, RM_CONTENT_A_FILE_NAME);
+		write(rmContentA.getLocation().toFile(), "First Topic Content");
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		gitAdd(git, rmContentA);
+		RevCommit firstTopicCommit = gitCommit(git);
+
+		// add change on new branch second_topic
+		git.checkout().setCreateBranch(true).setStartPoint(masterCommit)
+				.setName("second_topic").call();
+		rmContentA = findFile(project, RM_CONTENT_A_FILE_NAME);
+		write(rmContentA.getLocation().toFile(), "Second Topic Content");
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		gitAdd(git, rmContentA);
+		gitCommit(git);
+
+		// modify b to make it dirty
+		write(rmContentB.getLocation().toFile(), "Changed content");
+
+		// merge second_topic with first_topic
+		MergeResult mergeResult = git.merge().include(firstTopicCommit).call();
+		assertEquals(MergeStatus.CONFLICTING, mergeResult.getMergeStatus());
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(rmContentA).tracked()
+						.conflicts(),
+				newExpectedDecoratableResource(rmContentB).tracked().dirty(),
+				newExpectedDecoratableResourceMapping().tracked().dirty()
+						.conflicts() };
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, rmContentA),
+				newDecoratableResource(indexDiffData, rmContentB),
+				newDecoratableResourceMapping(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertDecorationConflicts(resourceMapping);
+	}
+

@@ -1,0 +1,47 @@
+	@Test
+	public void testAnyConflictsIsConflicts() throws Exception {
+		// Create new file and commit
+		IFile file = createFile(project1, TEST_FILE, "Something");
+		gitAdd(git, file);
+		RevCommit masterCommit = gitCommit(git);
+
+		// Create and checkout new branch, change file content, add and commit
+		// file
+		git.checkout().setCreateBranch(true).setName("first_topic").call();
+		file = findFile(project1, TEST_FILE);
+		write(file.getLocation().toFile(), "First Topic Content");
+		project1.refreshLocal(IResource.DEPTH_INFINITE, null);
+		gitAdd(git, file);
+		RevCommit firstTopicCommit = gitCommit(git);
+
+		// Create and checkout new branch (from master), change file content,
+		// add and commit file
+		git.checkout().setCreateBranch(true).setStartPoint(masterCommit)
+				.setName("second_topic").call();
+		file = findFile(project1, TEST_FILE);
+		write(file.getLocation().toFile(), "Second Topic Content");
+		project1.refreshLocal(IResource.DEPTH_INFINITE, null);
+		gitAdd(git, file);
+		gitCommit(git);
+
+		// merge second_topic with first_topic
+		MergeResult mergeResult = git.merge().include(firstTopicCommit).call();
+		assertEquals(MergeStatus.CONFLICTING, mergeResult.getMergeStatus());
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(project1).tracked()
+						.conflicts(),
+				newExpectedDecoratableResource(file).tracked().conflicts(),
+				newExpectedDecoratableWorkingSet(WORKING_SET).tracked()
+						.conflicts() };
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, project1),
+				newDecoratableResource(indexDiffData, file),
+				newDecoratableWorkingSet(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertHasUnstagedChanges(true, actualDRs);
+		assertDecorationConflicts(resourceMapping);
+	}
+

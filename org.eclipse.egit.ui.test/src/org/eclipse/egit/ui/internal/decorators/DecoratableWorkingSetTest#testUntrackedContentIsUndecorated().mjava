@@ -1,0 +1,17 @@
+	@Test
+	public void testUntrackedContentIsUndecorated() throws Exception {
+		setWorkingSet(project2);
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableResource(project2),
+				newExpectedDecoratableWorkingSet(WORKING_SET) };
+
+		IndexDiffData indexDiffData = waitForIndexDiff(true);
+		IDecoratableResource[] actualDRs = {
+				newDecoratableResource(indexDiffData, project2),
+				newDecoratableWorkingSet(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertUndecorated(resourceMapping);
+	}
+

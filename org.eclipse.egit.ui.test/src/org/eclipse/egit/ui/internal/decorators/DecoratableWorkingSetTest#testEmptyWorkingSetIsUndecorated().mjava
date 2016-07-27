@@ -1,0 +1,19 @@
+	/**
+	 * Tests that working sets do not show the untracked decoration, but instead
+	 * they are just undecorated.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testEmptyWorkingSetIsUndecorated() throws Exception {
+		clearWorkingSet();
+
+		IDecoratableResource[] expectedDRs = new IDecoratableResource[] {
+				newExpectedDecoratableWorkingSet(WORKING_SET) };
+		IDecoratableResource[] actualDRs = {
+				newDecoratableWorkingSet(resourceMapping) };
+
+		assertArrayEquals(expectedDRs, actualDRs);
+		assertUndecorated(resourceMapping);
+	}
+

@@ -1,0 +1,6 @@
+	protected static void gitRemove(Git git, IFile file) throws Exception {
+		String filePath = file.getFullPath().toString();
+		// remove leading '/'
+		git.rm().addFilepattern(filePath.substring(1)).call();
+	}
+

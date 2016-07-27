@@ -1,0 +1,7 @@
+	protected static IFile createFile(IContainer container, String name,
+			String content) throws IOException, CoreException {
+		write(new File(container.getLocation().toFile(), name), content);
+		container.refreshLocal(IResource.DEPTH_INFINITE, null);
+		return findFile(container, name);
+	}
+
