@@ -7,6 +7,6 @@
 		}
 
 		Object selected = ((IStructuredSelection) sel).getFirstElement();
-		return AdapterUtils.adapt(selected, IResource.class);
+		return AdapterUtils.adaptToAnyResource(selected);
 	}
 

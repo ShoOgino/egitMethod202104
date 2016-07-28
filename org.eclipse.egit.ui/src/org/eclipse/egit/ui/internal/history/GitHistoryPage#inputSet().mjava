@@ -65,7 +65,7 @@
 			} else if (o instanceof HistoryPageInput) {
 				input = (HistoryPageInput) o;
 			} else {
-				IResource resource = AdapterUtils.adapt(o, IResource.class);
+				IResource resource = AdapterUtils.adaptToAnyResource(o);
 				if (resource != null) {
 					RepositoryMapping mapping = RepositoryMapping
 							.getMapping(resource);

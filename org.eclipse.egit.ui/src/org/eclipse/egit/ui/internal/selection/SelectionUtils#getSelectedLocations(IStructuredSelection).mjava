@@ -7,7 +7,7 @@
 			@NonNull IStructuredSelection selection) {
 		Set<IPath> result = new LinkedHashSet<>();
 		for (Object o : selection.toList()) {
-			IResource resource = AdapterUtils.adapt(o, IResource.class);
+			IResource resource = AdapterUtils.adaptToAnyResource(o);
 			if (resource != null) {
 				IPath location = resource.getLocation();
 				if (location != null)

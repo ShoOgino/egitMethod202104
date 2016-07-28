@@ -6,7 +6,7 @@
 			List<IPath> paths = new ArrayList<>();
 			for (Iterator it = ss.iterator(); it.hasNext();) {
 				Object element = it.next();
-				IResource resource = AdapterUtils.adapt(element, IResource.class);
+				IResource resource = AdapterUtils.adaptToAnyResource(element);
 				if (resource != null) {
 					IPath location = resource.getLocation();
 					if (location != null)

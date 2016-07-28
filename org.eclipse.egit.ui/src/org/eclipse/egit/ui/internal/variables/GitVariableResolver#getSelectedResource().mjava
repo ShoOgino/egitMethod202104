@@ -10,7 +10,8 @@
 				IWorkbenchPart part = page.getActivePart();
 				if(part instanceof IEditorPart) {
 					IEditorPart epart = (IEditorPart) part;
-					resource = AdapterUtils.adapt(epart.getEditorInput(), IResource.class);
+					resource = AdapterUtils
+							.adaptToAnyResource(epart.getEditorInput());
 				}
 				else if(part != null) {
 					IWorkbenchPartSite site = part.getSite();
@@ -24,8 +25,8 @@
 									Iterator iterator = ss.iterator();
 									while (iterator.hasNext() && resource == null) {
 										Object next = iterator.next();
-										resource = getAdapterFromManager(next,
-												IResource.class);
+										resource = AdapterUtils
+												.adaptToAnyResource(next);
 									}
 								}
 							}

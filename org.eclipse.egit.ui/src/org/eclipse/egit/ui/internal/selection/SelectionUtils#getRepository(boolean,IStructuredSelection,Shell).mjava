@@ -13,6 +13,9 @@
 	@Nullable
 	private static Repository getRepository(boolean warn,
 			@NonNull IStructuredSelection selection, Shell shell) {
+		if (selection.isEmpty()) {
+			return null;
+		}
 		Set<Object> elements = getSelectionContents(selection);
 		if (GitTraceLocation.SELECTION.isActive())
 			GitTraceLocation.getTrace().trace(
@@ -23,7 +26,9 @@
 		Repository result = null;
 		for (Object location : elements) {
 			Repository repo = null;
-			if (location instanceof IResource) {
+			if (location instanceof Repository) {
+				repo = (Repository) location;
+			} else if (location instanceof IResource) {
 				repo = ResourceUtil.getRepository((IResource) location);
 			} else if (location instanceof IPath) {
 				repo = ResourceUtil.getRepository((IPath) location);

@@ -4,12 +4,8 @@
 			if (ssel.size() != 1) {
 				return;
 			}
-			if (ssel.getFirstElement() instanceof IResource) {
-				showResource((IResource) ssel.getFirstElement());
-				return;
-			}
-			IResource adapted = AdapterUtils.adapt(ssel.getFirstElement(),
-					IResource.class);
+			IResource adapted = AdapterUtils
+					.adaptToAnyResource(ssel.getFirstElement());
 			if (adapted != null) {
 				showResource(adapted);
 				return;
