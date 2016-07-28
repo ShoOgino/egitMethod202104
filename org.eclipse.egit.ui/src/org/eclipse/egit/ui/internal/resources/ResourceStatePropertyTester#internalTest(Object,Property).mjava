@@ -14,7 +14,8 @@
 		}
 		for (IResource resource : SelectionUtils
 				.getSelectedResources(selection)) {
-			if (resource == null || !resource.isAccessible()) {
+			if (resource == null || !resource.isAccessible()
+					|| RepositoryMapping.getMapping(resource) == null) {
 				continue;
 			}
 			IResourceState state = ResourceStateFactory.getInstance()
