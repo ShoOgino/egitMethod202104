@@ -3,7 +3,7 @@
 		// external file change must be reported explicitly, see bug 481682
 		Repository myRepository = repository;
 		boolean updated = false;
-		if (myRepository != null && !myRepository.isBare()) {
+		if (!myRepository.isBare()) {
 			updated = refreshRepositoryState(myRepository);
 		}
 		if (!updated) {

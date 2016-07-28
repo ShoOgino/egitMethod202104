@@ -6,7 +6,7 @@
 	 * @param file
 	 */
 	public static void compareHeadWithWorkspace(Repository repository,
-			IFile file) {
+			@NonNull IFile file) {
 		RepositoryMapping mapping = RepositoryMapping.getMapping(file);
 		if (mapping == null) {
 			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,

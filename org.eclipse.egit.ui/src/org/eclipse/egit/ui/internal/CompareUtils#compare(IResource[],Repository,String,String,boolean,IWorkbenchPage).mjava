@@ -33,7 +33,8 @@
 	 *            page if any is available. Otherwise open a new one.
 	 * @throws IOException
 	 */
-	public static void compare(IResource[] resources, Repository repository,
+	public static void compare(IResource[] resources,
+			@NonNull Repository repository,
 			String leftRev, String rightRev, boolean includeLocal,
 			IWorkbenchPage page) throws IOException {
 		boolean useTreeCompare = shouldUseTreeCompare(resources);
