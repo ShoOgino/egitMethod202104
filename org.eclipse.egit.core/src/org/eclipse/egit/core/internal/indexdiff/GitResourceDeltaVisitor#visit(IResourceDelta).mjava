@@ -6,6 +6,13 @@
 		}
 
 		if (resource.getType() == IResource.PROJECT) {
+			if (delta.getKind() == IResourceDelta.REMOVED) {
+				IPath loc = deletedProjects.remove(resource);
+				if (loc != null) {
+					projectDeleted |= !loc.toFile().isDirectory();
+				}
+				return false;
+			}
 			// If the resource is not part of a project under
 			// Git revision control or from a different repository
 			if (!ResourceUtil.isSharedWithGit(resource)) {

@@ -1,0 +1,19 @@
+	/**
+	 * Constructs {@link GitResourceDeltaVisitor}
+	 *
+	 * @param repository
+	 *            which should be considered during visiting
+	 *            {@link IResourceDelta}s
+	 * @param deletedProjects
+	 *            possibly empty map of projects that were removed from the
+	 *            workspace, with their (former) locations
+	 */
+	public GitResourceDeltaVisitor(Repository repository,
+			Map<IProject, IPath> deletedProjects) {
+		this.repository = repository;
+
+		filesToUpdate = new HashSet<String>();
+		resourcesToUpdate = new HashSet<IResource>();
+		this.deletedProjects = deletedProjects;
+	}
+
