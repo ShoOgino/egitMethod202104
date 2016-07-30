@@ -1,0 +1,43 @@
+	private IndexDiffData getIndexDiffData(final @NonNull Repository repository,
+			final @NonNull Collection<IProject> projects) {
+		IndexDiffCacheEntry diffCacheEntry = org.eclipse.egit.core.Activator
+				.getDefault().getIndexDiffCache()
+				.getIndexDiffCacheEntry(repository);
+		IndexDiffData diff = null;
+		if (diffCacheEntry != null) {
+			diff = diffCacheEntry.getIndexDiff();
+		}
+		if (diff != null) {
+			return diff;
+		}
+		final IndexDiffData[] result = { null };
+		try {
+			PlatformUI.getWorkbench().getProgressService()
+					.busyCursorWhile(new IRunnableWithProgress() {
+
+						@Override
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							try {
+								result[0] = new IndexDiffData(
+										CommitUI.getIndexDiff(repository,
+												projects.toArray(
+														new IProject[projects
+																.size()]),
+												monitor));
+							} catch (IOException e) {
+								throw new InvocationTargetException(e);
+							}
+						}
+					});
+		} catch (InvocationTargetException e) {
+			Activator.handleError(UIText.CommitAction_errorComputingDiffs,
+					e.getCause(), true);
+			return null;
+		} catch (InterruptedException e) {
+			return null;
+		}
+		return result[0];
+	}
+

@@ -2,33 +2,13 @@
 			IProgressMonitor monitor) throws IOException,
 			OperationCanceledException {
 
-		monitor.beginTask(UIText.CommitActionHandler_calculatingChanges, 1000);
-		EclipseGitProgressTransformer jgitMonitor = new EclipseGitProgressTransformer(
-				monitor);
-		CountingVisitor counter = new CountingVisitor();
-		for (IProject p : selectedProjects) {
-			try {
-				p.accept(counter);
-			} catch (CoreException e) {
-				// ignore
-			}
-		}
-		WorkingTreeIterator it = IteratorService.createInitialIterator(repo);
-		if (it == null)
-			throw new OperationCanceledException(); // workspace is closed
-		indexDiff = new IndexDiff(repo, Constants.HEAD, it);
-		indexDiff.diff(jgitMonitor, counter.count, 0, NLS.bind(
-				UIText.CommitActionHandler_repository, repo.getDirectory()
-						.getPath()));
-
+		indexDiff = getIndexDiff(repo, selectedProjects, monitor);
 		includeList(indexDiff.getAdded(), indexChanges);
 		includeList(indexDiff.getChanged(), indexChanges);
 		includeList(indexDiff.getRemoved(), indexChanges);
 		includeList(indexDiff.getMissing(), notIndexed);
 		includeList(indexDiff.getModified(), notIndexed);
 		includeList(indexDiff.getUntracked(), notTracked);
-		if (monitor.isCanceled())
-			throw new OperationCanceledException();
 		monitor.done();
 	}
 

@@ -5,6 +5,10 @@
 				.getBoolean(UIPreferences.ALWAYS_USE_STAGING_VIEW);
 		Activator.getDefault().getPreferenceStore()
 				.setValue(UIPreferences.ALWAYS_USE_STAGING_VIEW, true);
+		initialAutoStage = Activator.getDefault().getPreferenceStore()
+				.getBoolean(UIPreferences.AUTO_STAGE_ON_COMMIT);
+		Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.AUTO_STAGE_ON_COMMIT, false);
 		Activator.getDefault().getPreferenceStore()
 				.setDefault(UIPreferences.STAGING_VIEW_SYNC_SELECTION, false);
 		Activator.getDefault().getPreferenceStore()

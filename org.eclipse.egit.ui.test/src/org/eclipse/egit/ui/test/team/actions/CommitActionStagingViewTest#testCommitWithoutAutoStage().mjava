@@ -1,0 +1,14 @@
+	@Test
+	public void testCommitWithoutAutoStage() throws Exception {
+		setTestFileContent("I have changed this");
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		util.getProjectItems(projectExplorerTree, PROJ1)[0].select();
+		String menuString = util.getPluginLocalizedValue("CommitAction_label");
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+				menuString);
+		TestUtil.joinJobs(ADD_TO_INDEX);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtil.waitUntilViewWithGivenIdShows(StagingView.VIEW_ID);
+		StagingUtil.assertStaging(PROJ1, FOLDER + '/' + FILE1, false);
+	}
+

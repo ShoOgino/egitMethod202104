@@ -16,8 +16,8 @@
 		TestUtil.joinJobs(ADD_TO_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		// Verify both files got staged
-		verifyStaging(PROJ_A, filePath, true);
-		verifyStaging(PROJ_B, filePath, true);
+		StagingUtil.assertStaging(PROJ_A, filePath, true);
+		StagingUtil.assertStaging(PROJ_B, filePath, true);
 		// Select both projects
 		projectExplorerTree.select(projectExplorerTree.getAllItems());
 		// Remove from index
@@ -26,7 +26,7 @@
 		TestUtil.joinJobs(REMOVE_FROM_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		// Verify both files got unstaged
-		verifyStaging(PROJ_A, filePath, false);
-		verifyStaging(PROJ_B, filePath, false);
+		StagingUtil.assertStaging(PROJ_A, filePath, false);
+		StagingUtil.assertStaging(PROJ_B, filePath, false);
 	}
 

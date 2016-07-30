@@ -4,19 +4,28 @@
 	 * user only selected one folder when the action was performed, if the
 	 * folder contains any files that could be committed, they will be returned.
 	 *
+	 * @param repository
+	 *            being operated on
+	 * @param mayBeCommitted
+	 *            {@link Set} containing all files that may be committed
+	 * @param resourcesSelected
+	 *            the resources currently selected
+	 *
 	 * @return a collection of files that is eligible to be committed based on
 	 *         the user's selection
 	 */
-	private Set<String> getSelectedFiles() {
+	public static Set<String> getSelectedFiles(Repository repository,
+			Set<String> mayBeCommitted,
+			IResource[] resourcesSelected) {
 		Set<String> preselectionCandidates = new LinkedHashSet<>();
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		// iterate through all the files that may be committed
-		for (String fileName : files) {
-			URI uri = new File(repo.getWorkTree(), fileName).toURI();
+		for (String fileName : mayBeCommitted) {
+			URI uri = new File(repository.getWorkTree(), fileName).toURI();
 			IFile[] workspaceFiles = root.findFilesForLocationURI(uri);
 			if (workspaceFiles.length > 0) {
 				IFile file = workspaceFiles[0];
-				for (IResource resource : selectedResources) {
+				for (IResource resource : resourcesSelected) {
 					// if any selected resource contains the file, add it as a
 					// preselection candidate
 					if (resource.contains(file)) {
@@ -26,7 +35,7 @@
 				}
 			} else {
 				// could be file outside of workspace
-				for (IResource resource : selectedResources) {
+				for (IResource resource : resourcesSelected) {
 					IPath location = resource.getLocation();
 					if(location != null && location.toFile().equals(new File(uri))) {
 						preselectionCandidates.add(fileName);

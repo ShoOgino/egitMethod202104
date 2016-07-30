@@ -63,7 +63,8 @@
 		commitDialog.setAmending(amending);
 		commitDialog.setAmendAllowed(amendAllowed);
 		commitDialog.setFiles(repo, files, indexDiff);
-		commitDialog.setPreselectedFiles(getSelectedFiles());
+		commitDialog.setPreselectedFiles(
+				getSelectedFiles(repo, files, selectedResources));
 		commitDialog.setPreselectAll(preselectAll);
 		commitDialog.setAuthor(commitHelper.getAuthor());
 		commitDialog.setCommitter(commitHelper.getCommitter());

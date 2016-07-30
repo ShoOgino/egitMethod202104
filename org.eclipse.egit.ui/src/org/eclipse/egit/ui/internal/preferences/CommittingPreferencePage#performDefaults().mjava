@@ -1,0 +1,11 @@
+	@Override
+	protected void performDefaults() {
+		super.performDefaults();
+		// We don't get property changed events when the default values are
+		// restored...
+		autoStage.setEnabled(
+				getPreferenceStore().getDefaultBoolean(
+						UIPreferences.ALWAYS_USE_STAGING_VIEW),
+				getFieldEditorParent());
+	}
+

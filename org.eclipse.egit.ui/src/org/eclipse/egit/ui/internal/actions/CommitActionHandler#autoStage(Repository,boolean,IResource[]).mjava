@@ -1,0 +1,68 @@
+	private void autoStage(final @NonNull Repository repository,
+			boolean includeUntracked, IResource[] resourcesInScope) {
+		if (resourcesInScope == null || resourcesInScope.length == 0) {
+			return;
+		}
+		final Set<IProject> projects = new HashSet<>();
+		for (IResource rsc : resourcesInScope) {
+			projects.add(rsc.getProject());
+		}
+		IndexDiffData diff = getIndexDiffData(repository, projects);
+		if (diff == null) {
+			return;
+		}
+		Set<String> mayBeCommitted = new HashSet<>();
+		mayBeCommitted.addAll(diff.getAdded());
+		mayBeCommitted.addAll(diff.getChanged());
+		mayBeCommitted.addAll(diff.getRemoved());
+		mayBeCommitted.addAll(diff.getModified());
+		mayBeCommitted.addAll(diff.getMissing());
+		if (!includeUntracked) {
+			mayBeCommitted.removeAll(diff.getUntracked());
+		} else {
+			mayBeCommitted.addAll(diff.getUntracked());
+		}
+		mayBeCommitted.removeAll(diff.getAssumeUnchanged());
+		final Set<String> toBeStaged = CommitUI.getSelectedFiles(repository,
+				mayBeCommitted, resourcesInScope);
+		if (toBeStaged.isEmpty()) {
+			return;
+		}
+		Job job = new Job(UIText.AddToIndexAction_addingFiles) {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				SubMonitor progress = SubMonitor.convert(monitor,
+						toBeStaged.size() + 1);
+				try (Git git = new Git(repository)) {
+					AddCommand add = git.add();
+					for (String toStage : toBeStaged) {
+						add.addFilepattern(toStage);
+						if (progress.isCanceled()) {
+							return Status.CANCEL_STATUS;
+						}
+						progress.worked(1);
+					}
+					add.call();
+					progress.worked(1);
+				} catch (GitAPIException e) {
+					return Activator.createErrorStatus(
+							CoreText.AddToIndexOperation_failed, e);
+				} finally {
+					monitor.done();
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				return JobFamilies.ADD_TO_INDEX.equals(family)
+						|| super.belongsTo(family);
+			}
+
+		};
+		job.setUser(true);
+		job.setRule(RuleUtil.getRule(repository));
+		job.schedule();
+	}
+

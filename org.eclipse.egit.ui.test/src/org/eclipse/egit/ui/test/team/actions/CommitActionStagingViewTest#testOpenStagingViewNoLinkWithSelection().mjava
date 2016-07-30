@@ -6,6 +6,7 @@
 		String menuString = util.getPluginLocalizedValue("CommitAction_label");
 		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
 				menuString);
+		TestUtil.joinJobs(ADD_TO_INDEX);
 		TestUtil.waitUntilViewWithGivenIdShows(StagingView.VIEW_ID);
 		final Repository[] repo = { null };
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
