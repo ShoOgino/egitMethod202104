@@ -11,17 +11,13 @@
 		});
 		form = createForm(parent, toolkit);
 		createCommandToolBar(form, toolkit);
-		SashForm sashForm = createRebasePlanSashForm(form, toolkit);
-
-		Section rebasePlanSection = toolkit.createSection(sashForm,
-				ExpandableComposite.TITLE_BAR);
-		planTreeViewer = createPlanTreeViewer(rebasePlanSection, toolkit);
+		planTreeViewer = createPlanTreeViewer(form.getBody(), toolkit);
 
 		planLayout = new PlanLayout();
 		planTreeViewer.getTree().getParent().setLayout(planLayout);
 
 		createColumns(planLayout);
-		createStepActionToolBar(rebasePlanSection, toolkit);
+		createStepActionToolBar(toolkit);
 		createPopupMenu(planTreeViewer);
 
 		setupListeners();

@@ -1,10 +1,12 @@
 	private void createCommandToolBar(Form theForm, FormToolkit toolkit) {
-		ToolBar toolBar = new ToolBar(theForm.getHead(), SWT.FLAT);
-		toolBar.setOrientation(SWT.RIGHT_TO_LEFT);
-		theForm.setHeadClient(toolBar);
-
+		headComposite = new Composite(theForm.getHead(), SWT.NONE);
+		theForm.setHeadClient(headComposite);
+		headComposite.setLayout(new GridLayout(2, false));
+		ToolBar toolBar = new ToolBar(headComposite, SWT.FLAT);
+		GridDataFactory.fillDefaults().grab(false, false).applyTo(toolBar);
 		toolkit.adapt(toolBar);
 		toolkit.paintBordersFor(toolBar);
+		toolBar.setBackground(null);
 
 		startItem = new ToolItem(toolBar, SWT.NONE);
 		startItem.setImage(UIIcons.getImage(resources,
@@ -49,5 +51,6 @@
 			}
 		});
 		refreshItem.setText(UIText.InteractiveRebaseView_refreshItem_text);
+		toolBar.pack();
 	}
 

@@ -1,9 +1,0 @@
-	private void createStepActionToolBar(Section rebasePlanSection,
-			final FormToolkit toolkit) {
-		actionToolBarProvider = new RebaseInteractiveStepActionToolBarProvider(
-				rebasePlanSection, SWT.FLAT | SWT.WRAP, this);
-		toolkit.adapt(actionToolBarProvider.getTheToolbar());
-		toolkit.paintBordersFor(actionToolBarProvider.getTheToolbar());
-		rebasePlanSection.setTextClient(actionToolBarProvider.getTheToolbar());
-	}
-
