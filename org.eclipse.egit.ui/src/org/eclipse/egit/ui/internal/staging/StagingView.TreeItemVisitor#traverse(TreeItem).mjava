@@ -1,0 +1,19 @@
+		/**
+		 * The public entry point for invoking this visitor.
+		 *
+		 * @param treeItem
+		 *            the item at which to start, are null, to start at the
+		 *            bottom.
+		 */
+		public void traverse(TreeItem treeItem) {
+			if (treeItem == null) {
+				treeItem = getLastItem(roots);
+				if (treeItem == null) {
+					return;
+				}
+			}
+			if (treeItem.getData() != null && visit(treeItem)) {
+				traversePrecedingSiblings(treeItem);
+			}
+		}
+

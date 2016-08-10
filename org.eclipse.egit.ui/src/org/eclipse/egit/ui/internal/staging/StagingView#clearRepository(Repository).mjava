@@ -9,8 +9,8 @@
 		saveCommitMessageComponentState();
 		currentRepository = null;
 		StagingViewUpdate update = new StagingViewUpdate(null, null, null);
-		unstagedViewer.setInput(update);
-		stagedViewer.setInput(update);
+		setStagingViewerInput(unstagedViewer, update, null, null);
+		setStagingViewerInput(stagedViewer, update, null, null);
 		enableCommitWidgets(false);
 		refreshAction.setEnabled(false);
 		updateSectionText();

@@ -1,0 +1,15 @@
+		private boolean traversePrecedingSiblings(TreeItem treeItem) {
+			TreeItem parent = treeItem.getParentItem();
+			if (parent == null) {
+				// If there is no parent, traverse based on the root items.
+				return traversePrecedingSiblings(roots, treeItem);
+			}
+			// Traverse based on the parent items, i.e., the siblings of the
+			// tree item.
+			if (!traversePrecedingSiblings(parent.getItems(), treeItem)) {
+				return false;
+			}
+			// Recursively traverse the parent.
+			return traversePrecedingSiblings(parent);
+		}
+

@@ -1,0 +1,16 @@
+		private boolean traverseChildren(TreeItem treeItem) {
+			if (treeItem.getExpanded()) {
+				// If the tree item is expanded, traverse all the children in
+				// reverse order.
+				TreeItem[] children = treeItem.getItems();
+				for (int i = children.length - 1; i >= 0; --i) {
+					// Recursively traverse the children of the children.
+					if (!traverseChildren(children[i])) {
+						return false;
+					}
+				}
+			}
+			// Call the visitor callback after the children have been visited.
+			return visit(treeItem);
+		}
+

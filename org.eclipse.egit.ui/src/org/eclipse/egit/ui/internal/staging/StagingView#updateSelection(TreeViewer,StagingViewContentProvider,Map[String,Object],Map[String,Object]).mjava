@@ -1,0 +1,142 @@
+	/**
+	 * Updates the selection depending on the type of change in the staging
+	 * viewer's state. If something has been removed, it returns
+	 * {@link StagingViewerUpdate#REMOVED} and the item before the removed
+	 * element is selected. If something has been added, it returns
+	 * {@link StagingViewerUpdate#ADDED} and those added elements are selected
+	 * and revealed. If nothing has changed, it returns
+	 * {@link StagingViewerUpdate#UNCHANGED} and the selection state is
+	 * unchanged.
+	 *
+	 * @param stagingViewer
+	 *            the staging viewer for which to update the selection.
+	 * @param contentProvider
+	 *            the content provider used by that staging viewer.
+	 * @param oldPaths
+	 *            the old content state of the staging viewer.
+	 * @param newPaths
+	 *            the new content state of the staging viewer.
+	 * @return the type of change to the selecting of the staging viewer
+	 */
+	private static StagingViewerUpdate updateSelection(TreeViewer stagingViewer,
+			StagingViewContentProvider contentProvider,
+			Map<String, Object> oldPaths, Map<String, Object> newPaths) {
+		// Update the staging viewer's selection by analyzing the change
+		// to the contents of the viewer.
+		Map<String, Object> addedPaths = new LinkedHashMap<>(newPaths);
+		addedPaths.keySet().removeAll(oldPaths.keySet());
+		if (!addedPaths.isEmpty()) {
+			// If anything has been added to the viewer, select those added
+			// things. But, to minimize the selection, select a parent node when
+			// all its children have been added. The general idea is that if you
+			// drag and drop between staged and unstaged, the new selection in
+			// the target view, when dragged back again to the source view, will
+			// undo the original drag-and-drop operation operation.
+			List<Object> newSelection = new ArrayList<>();
+			Set<Object> elements = new LinkedHashSet<>(addedPaths.values());
+			Set<Object> excludeChildren = new LinkedHashSet<>();
+			for (Object element : elements) {
+				if (element instanceof StagingEntry) {
+					StagingEntry stagingEntry = (StagingEntry) element;
+					if (!excludeChildren.contains(stagingEntry.getParent())) {
+						// If it's a leaf entry and its parent has not been
+						// excluded from the selection, include it in the
+						// selection.
+						newSelection.add(stagingEntry);
+					}
+				} else if (element instanceof StagingFolderEntry) {
+					StagingFolderEntry stagingFolderEntry = (StagingFolderEntry) element;
+					StagingFolderEntry parent = stagingFolderEntry.getParent();
+					if (excludeChildren.contains(parent)) {
+						// If its parent has been excluded from the selection,
+						// exclude this folder entry also.
+						excludeChildren.add(stagingFolderEntry);
+					} else if (elements.containsAll(contentProvider
+							.getStagingEntriesFiltered(stagingFolderEntry))) {
+						// If all of this folder's visible children are added,
+						// i.e., it had no existing children before, then
+						// include it in the selection, and exclude its
+						// children from the selection.
+						newSelection.add(stagingFolderEntry);
+						excludeChildren.add(stagingFolderEntry);
+					}
+				}
+			}
+
+			// Select and reveal the selection of the newly added elements.
+			stagingViewer.setSelection(new StructuredSelection(newSelection),
+					true);
+			return StagingViewerUpdate.ADDED;
+		} else {
+			Map<String, Object> removedPaths = new LinkedHashMap<>(oldPaths);
+			removedPaths.keySet().removeAll(newPaths.keySet());
+			if (!removedPaths.isEmpty()) {
+				// If anything has been removed from the viewer, try to select
+				// the closest following unremoved sibling of the first removed
+				// element, a parent if there isn't such a sibling, or the first
+				// element in the viewer failing those. The general idea is that
+				// it's really annoying to have the viewer scroll to the top
+				// element whenever you drag something out of a staging viewer.
+				Collection<Object> removedElements = removedPaths.values();
+				Object firstRemovedElement = removedElements.iterator()
+						.next();
+				Object parent = contentProvider.getParent(firstRemovedElement);
+				Object candidate = null;
+				boolean visitSubsequentSiblings = false;
+				for (Object oldElement : oldPaths.values()) {
+					if (oldElement == firstRemovedElement) {
+						// Once we reach the first removed element, siblings
+						// that follow are ideal candidates.
+						visitSubsequentSiblings = true;
+					}
+
+					if (visitSubsequentSiblings) {
+						if (!removedElements.contains(oldElement)) {
+							if (contentProvider
+									.getParent(oldElement) == parent) {
+								// If this is a subsequent sibling that's not
+								// itself removed, it's the best candidate.
+								candidate = oldElement;
+								break;
+							} else if (candidate != null) {
+								// If we already have a candidate, and we're
+								// looking for a subsequent sibling, but now
+								// we've hit an element with a different parent
+								// of the removed element, then we're never
+								// going to find a subsequent unremoved sibling,
+								// so just return the candidate.
+								break;
+							}
+						}
+					} else if (candidate == null || oldElement == parent
+							|| contentProvider
+									.getParent(oldElement) == parent) {
+						// If there is no candidate, or there is a better
+						// candidate, i.e., the parent or an element with the
+						// same parent, record the current entry.
+						candidate = oldElement;
+					}
+				}
+
+				if (candidate == null && !newPaths.isEmpty()) {
+					// If there is no selected object yet, just choose the first
+					// element in the viewer, if there is such an element.
+					candidate = newPaths.values().iterator().next();
+				}
+
+				if (candidate != null) {
+					// If we have a selection, which will always be the case
+					// unless the viewer is empty, set it. This selection is
+					// preserved during update of the viewer. Unfortunately the
+					// scroll position is generally quite poor. Fixing the
+					// scroll position is done after the viewer is updated.
+					stagingViewer.setSelection(
+							new StructuredSelection(candidate), true);
+					return StagingViewerUpdate.REMOVED;
+				}
+			}
+
+			return StagingViewerUpdate.UNCHANGED;
+		}
+	}
+

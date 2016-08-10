@@ -3,9 +3,12 @@
 		listPresentationAction.setChecked(false);
 		treePresentationAction.setChecked(false);
 		if (auto) {
-			setExpandCollapseActionsVisible(false);
+			setExpandCollapseActionsVisible(false, false, true);
+			setExpandCollapseActionsVisible(true, false, true);
 		} else {
-			setExpandCollapseActionsVisible(isExpandAllowed());
+			setExpandCollapseActionsVisible(false, isExpandAllowed(false),
+					true);
+			setExpandCollapseActionsVisible(true, isExpandAllowed(true), true);
 		}
 	}
 

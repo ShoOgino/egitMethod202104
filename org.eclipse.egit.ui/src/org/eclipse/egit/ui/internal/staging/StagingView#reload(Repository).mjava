@@ -59,15 +59,14 @@
 							});
 				}
 				final StagingViewUpdate update = new StagingViewUpdate(repository, indexDiff, null);
-				Object[] unstagedExpanded = unstagedViewer
-						.getExpandedElements();
-				Object[] stagedExpanded = stagedViewer
-						.getExpandedElements();
+				Object[] unstagedExpanded = unstagedViewer.getVisibleExpandedElements();
+				Object[] stagedExpanded = stagedViewer.getVisibleExpandedElements();
 
-				int elementsCount = updateAutoExpand(unstagedViewer,
+				int unstagedElementsCount = updateAutoExpand(unstagedViewer,
 						getUnstaged(indexDiff));
-				elementsCount += updateAutoExpand(stagedViewer,
+				int stagedElementsCount = updateAutoExpand(stagedViewer,
 						getStaged(indexDiff));
+				int elementsCount = unstagedElementsCount + stagedElementsCount;
 
 				if (elementsCount > getMaxLimitForListMode()) {
 					listPresentationAction.setEnabled(false);
@@ -75,7 +74,12 @@
 						compactTreePresentationAction.setChecked(true);
 						switchToCompactModeInternal(true);
 					} else {
-						setExpandCollapseActionsVisible(false);
+						setExpandCollapseActionsVisible(false,
+								unstagedElementsCount <= getMaxLimitForListMode(),
+								true);
+						setExpandCollapseActionsVisible(true,
+								stagedElementsCount <= getMaxLimitForListMode(),
+								true);
 					}
 				} else {
 					listPresentationAction.setEnabled(true);
@@ -85,16 +89,16 @@
 						listPresentationAction.setChecked(true);
 						switchToListMode();
 					} else if (presentation != Presentation.LIST) {
-						setExpandCollapseActionsVisible(true);
+						setExpandCollapseActionsVisible(false, true, true);
+						setExpandCollapseActionsVisible(true, true, true);
 					}
 				}
 
-				unstagedViewer.setInput(update);
-				stagedViewer.setInput(update);
-				expandPreviousExpandedAndPaths(unstagedExpanded, unstagedViewer,
+				setStagingViewerInput(unstagedViewer, update, unstagedExpanded,
 						pathsToExpandInUnstaged);
-				expandPreviousExpandedAndPaths(stagedExpanded, stagedViewer,
+				setStagingViewerInput(stagedViewer, update, stagedExpanded,
 						pathsToExpandInStaged);
+				resetPathsToExpand();
 				refreshAction.setEnabled(true);
 
 				updateRebaseButtonVisibility(repository.getRepositoryState()

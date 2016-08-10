@@ -1,0 +1,50 @@
+	private static boolean visitElement(TreeViewer stagingViewer,
+			StagingViewContentProvider contentProvider,
+			ViewerComparator comparator,
+			Object element, Map<String, Object> paths) {
+		if (element instanceof StagingEntry) {
+			StagingEntry stagingEntry = (StagingEntry) element;
+			if (contentProvider.isInFilter(stagingEntry)) {
+				// If the element is a staging entry, and it's included by the
+				// filter, add a mapping for it.
+				String path = stagingEntry.getPath();
+				paths.put(path, stagingEntry);
+				return true;
+			}
+
+			return false;
+		}
+
+		// If the element is a staging folder entry, visit all the children,
+		// checking that at least one visited descendant has been added to the
+		// map before adding a mapping for this staging folder entry.
+		if (element instanceof StagingFolderEntry) {
+			StagingFolderEntry stagingFolderEntry = (StagingFolderEntry) element;
+			// Visit the children in the order in which they appear in the UI.
+			Object[] children = contentProvider.getChildren(stagingFolderEntry);
+			comparator.sort(stagingViewer, children);
+
+			IPath path = stagingFolderEntry.getPath();
+			String pathString = path.toString();
+			paths.put(pathString, stagingFolderEntry);
+
+			boolean hasVisibleChildren = false;
+			for (Object child : children) {
+				if (visitElement(stagingViewer, contentProvider, comparator,
+						child, paths)) {
+					hasVisibleChildren = true;
+				}
+			}
+
+			if (hasVisibleChildren) {
+				return true;
+			}
+
+			// If there were no visible children, remove the path from the map.
+			paths.remove(pathString);
+			return false;
+		}
+
+		return false;
+	}
+

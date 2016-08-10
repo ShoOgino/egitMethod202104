@@ -19,9 +19,20 @@
 		// Instead of just expanding the previous elements directly, also expand
 		// all parent paths. This makes it work in case of "re-folding" of
 		// compact tree.
-		for (Object element : previous)
-			if (element instanceof StagingFolderEntry)
+		for (Object element : previous) {
+			if (element instanceof StagingFolderEntry) {
 				addPathAndParentPaths(((StagingFolderEntry) element).getPath(), paths);
+			}
+		}
+		// Also consider the currently expanded elements because auto selection
+		// could have expanded some elements.
+		for (Object element : viewer.getVisibleExpandedElements()) {
+			if (element instanceof StagingFolderEntry) {
+				addPathAndParentPaths(((StagingFolderEntry) element).getPath(),
+						paths);
+			}
+		}
+
 		List<StagingFolderEntry> expand = new ArrayList<>();
 
 		calculateNodesToExpand(paths, stagedContentProvider.getElements(null),

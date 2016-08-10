@@ -5,9 +5,8 @@
 		syncExec(new Runnable() {
 			@Override
 			public void run() {
-				Object[] unstagedExpanded = unstagedViewer
-						.getExpandedElements();
-				Object[] stagedExpanded = stagedViewer.getExpandedElements();
+				Object[] unstagedExpanded = unstagedViewer.getVisibleExpandedElements();
+				Object[] stagedExpanded = stagedViewer.getVisibleExpandedElements();
 				refreshViewersInternal();
 				unstagedViewer.setExpandedElements(unstagedExpanded);
 				stagedViewer.setExpandedElements(stagedExpanded);

@@ -1,0 +1,17 @@
+	private static Map<String, Object> buildElementMap(TreeViewer stagingViewer,
+			StagingViewContentProvider contentProvider,
+			ViewerComparator comparator) {
+		// Builds a map from paths, represented as strings, to elements visible
+		// in the staging viewer.
+		Map<String, Object> result = new LinkedHashMap<>();
+		// Start visiting the root elements in the order in which they appear in
+		// the UI.
+		Object[] elements = contentProvider.getElements(null);
+		comparator.sort(stagingViewer, elements);
+		for (Object element : elements) {
+			visitElement(stagingViewer, contentProvider, comparator, element,
+					result);
+		}
+		return result;
+	}
+

@@ -1,0 +1,115 @@
+	private void setStagingViewerInput(TreeViewer stagingViewer,
+			StagingViewUpdate newInput, Object[] previous,
+			Set<IPath> additionalPaths) {
+		// Disable painting and show a busy cursor for the tree during the
+		// entire update process.
+		final Tree tree = stagingViewer.getTree();
+		tree.setRedraw(false);
+		Cursor oldCursor = tree.getCursor();
+		tree.setCursor(tree.getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+
+		try {
+			// Remember the elements at or before the current top element of the
+			// viewer.
+			TreeItem topItem = tree.getTopItem();
+			final Set<Object> precedingObjects = new LinkedHashSet<>();
+			if (topItem != null) {
+				new TreeItemVisitor(tree.getItems()) {
+					@Override
+					public boolean visit(TreeItem treeItem) {
+						precedingObjects.add(treeItem.getData());
+						return true;
+					}
+				}.traverse(topItem);
+				precedingObjects.remove(null);
+			}
+
+			// Controls whether we'll try to preserve the top element in the
+			// view, i.e., the scroll position. We generally want that unless
+			// the update has added new objects to the view, in which case those
+			// are selected and revealed.
+			boolean preserveTop = true;
+			boolean keepSelectionVisible = false;
+			StagingViewUpdate oldInput = (StagingViewUpdate) stagingViewer
+					.getInput();
+			if (oldInput != null && oldInput.repository == newInput.repository
+					&& oldInput.indexDiff != null) {
+				// If the input has changed and wasn't empty before or wasn't
+				// for a different repository before, record the contents of the
+				// viewer before the input is changed.
+				StagingViewContentProvider contentProvider = getContentProvider(
+						stagingViewer);
+				ViewerComparator comparator = stagingViewer.getComparator();
+				Map<String, Object> oldPaths = buildElementMap(stagingViewer,
+						contentProvider, comparator);
+
+				// Update the input.
+				stagingViewer.setInput(newInput);
+				// Restore the previous expansion state, if there is one.
+				if (previous != null) {
+					expandPreviousExpandedAndPaths(previous, stagingViewer,
+							additionalPaths);
+				}
+
+				// Update the selection.
+				StagingViewerUpdate stagingViewerUpdate = updateSelection(
+						stagingViewer, contentProvider, oldPaths,
+						buildElementMap(stagingViewer, contentProvider,
+								comparator));
+
+				// If something has been removed, the element before the removed
+				// item has been selected, in which case we want to preserve the
+				// scroll state as much as possible, keeping the selection in
+				// view. If something has been added, those added things have
+				// been selected and revealed, so we don't want to preserve the
+				// top but rather leave the revealed selection alone. If nothing
+				// has changed, we want to preserve the top, regardless of where
+				// the current unmodified selection might be, which is what's
+				// done by default anyway.
+				if (stagingViewerUpdate == StagingViewerUpdate.REMOVED) {
+					keepSelectionVisible = true;
+				} else if (stagingViewerUpdate == StagingViewerUpdate.ADDED) {
+					preserveTop = false;
+				}
+			} else {
+				// The update is completely different so don't do any of the
+				// above analysis to see what's different.
+				stagingViewer.setInput(newInput);
+				// Restore the previous expansion state, if there is one.
+				if (previous != null) {
+					expandPreviousExpandedAndPaths(previous, stagingViewer,
+							additionalPaths);
+				}
+			}
+
+			if (preserveTop) {
+				// It's likely that the tree has scrolled to change the top
+				// item. So try to restore the current top item to be the one
+				// with the same data as was at the top before, either starting
+				// with the selection so that it generally stays in view, or at
+				// the bottom, if we're not trying to keep the selection
+				// visible.
+				TreeItem[] selection = tree.getSelection();
+				TreeItem initialItem = keepSelectionVisible
+						&& selection.length > 0 ? selection[0] : null;
+				new TreeItemVisitor(tree.getItems()) {
+					@Override
+					public boolean visit(TreeItem treeItem) {
+						if (precedingObjects.contains(treeItem.getData())) {
+							// If we reach an item that was at or before the
+							// original top item, make it the top item
+							// again, and stop the visitor.
+							tree.setTopItem(treeItem);
+							return false;
+						}
+						return true;
+					}
+				}.traverse(initialItem);
+			}
+		} finally {
+			// The viewer is fully updated now, so we can paint it.
+			tree.setRedraw(true);
+			tree.setCursor(oldCursor);
+		}
+	}
+

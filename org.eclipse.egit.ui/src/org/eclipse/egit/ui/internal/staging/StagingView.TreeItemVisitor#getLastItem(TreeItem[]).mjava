@@ -1,0 +1,14 @@
+		private TreeItem getLastItem(TreeItem[] treeItems) {
+			if (treeItems.length == 0) {
+				return null;
+			}
+			TreeItem lastItem = treeItems[treeItems.length - 1];
+			if (lastItem.getExpanded()) {
+				TreeItem result = getLastItem(lastItem.getItems());
+				if (result != null) {
+					return result;
+				}
+			}
+			return lastItem;
+		}
+

@@ -1,0 +1,6 @@
+	private boolean isExpandAllowed(boolean staged) {
+		StagingViewContentProvider contentProvider = getContentProvider(
+				staged ? stagedViewer : unstagedViewer);
+		return contentProvider.getCount() <= getMaxLimitForListMode();
+	}
+

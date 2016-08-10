@@ -166,7 +166,10 @@
 				setPresentation(presentation, false);
 				listPresentationAction.setChecked(false);
 				compactTreePresentationAction.setChecked(false);
-				setExpandCollapseActionsVisible(isExpandAllowed());
+				setExpandCollapseActionsVisible(false, isExpandAllowed(false),
+						true);
+				setExpandCollapseActionsVisible(true, isExpandAllowed(true),
+						true);
 				refreshViewers();
 			}
 		};
@@ -193,7 +196,8 @@
 		switch (presentation) {
 		case LIST:
 			listPresentationAction.setChecked(true);
-			setExpandCollapseActionsVisible(false);
+			setExpandCollapseActionsVisible(false, false, false);
+			setExpandCollapseActionsVisible(true, false, false);
 			break;
 		case TREE:
 			treePresentationAction.setChecked(true);
