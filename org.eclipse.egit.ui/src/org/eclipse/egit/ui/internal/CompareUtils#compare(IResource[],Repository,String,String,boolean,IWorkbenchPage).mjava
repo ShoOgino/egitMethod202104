@@ -2,9 +2,9 @@
 	 * This can be used to compare a given set of resources between two
 	 * revisions. If only one resource is to be compared, and that resource is
 	 * not part of a more important model (as defined in
-	 * {@link #canDirectlyOpenInCompare(IFile)}, we'll open a comparison editor
-	 * for that file alone. Otherwise, we'll launch a synchronization restrained
-	 * of the given resources set.
+	 * {@link #canDirectlyOpenInCompare(IFile, ResourceMappingContext)}, we'll
+	 * open a comparison editor for that file alone. Otherwise, we'll launch a
+	 * synchronization restrained of the given resources set.
 	 * <p>
 	 * This can also be used to synchronize the whole repository if
 	 * <code>resources</code> is empty.
@@ -37,7 +37,8 @@
 			@NonNull Repository repository,
 			String leftRev, String rightRev, boolean includeLocal,
 			IWorkbenchPage page) throws IOException {
-		boolean useTreeCompare = shouldUseTreeCompare(resources);
+		boolean useTreeCompare = shouldUseTreeCompare(resources, repository,
+				leftRev, rightRev, includeLocal);
 		if (!useTreeCompare) {
 			if (includeLocal) {
 				compareWorkspaceWithRef(repository, resources[0],
@@ -56,8 +57,10 @@
 				compareBetween(repository, gitPath, leftRev, rightRev, page);
 			}
 		} else {
+			ResourceMappingContext mappingContext = prepareContext(repository,
+					leftRev, rightRev, includeLocal);
 			GitModelSynchronize.synchronize(resources, repository, leftRev,
-					rightRev, includeLocal);
+					rightRev, includeLocal, mappingContext);
 		}
 	}
 

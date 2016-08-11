@@ -1,6 +1,6 @@
-	private static Set<IResource> collectResources(ResourceMapping[] mappings) {
+	private static Set<IResource> collectResources(ResourceMapping[] mappings,
+			ResourceMappingContext context) {
 		final Set<IResource> resources = new HashSet<>();
-		ResourceMappingContext context = ResourceMappingContext.LOCAL_CONTEXT;
 		for (ResourceMapping mapping : mappings) {
 			try {
 				ResourceTraversal[] traversals = mapping.getTraversals(context,

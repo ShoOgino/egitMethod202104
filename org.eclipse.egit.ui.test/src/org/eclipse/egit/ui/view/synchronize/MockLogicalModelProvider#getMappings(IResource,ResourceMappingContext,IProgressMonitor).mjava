@@ -1,0 +1,12 @@
+	@Override
+	public ResourceMapping[] getMappings(IResource resource,
+			ResourceMappingContext context, IProgressMonitor monitor)
+			throws CoreException {
+		if (resource instanceof IFile && MOCK_LOGICAL_FILE_EXTENSION
+				.equals(resource.getFileExtension())) {
+			return new ResourceMapping[] { new MockLogicalResourceMapping(
+					(IFile) resource, ID), };
+		}
+		return super.getMappings(resource, context, monitor);
+	}
+

@@ -1,8 +1,12 @@
-	private static boolean shouldUseTreeCompare(IResource[] resources) {
+	private static boolean shouldUseTreeCompare(IResource[] resources,
+			Repository repository, String leftRev, String rightRev,
+			boolean includeLocal) throws IOException {
 		if (resources.length == 1) {
 			IResource resource = resources[0];
 			if (resource instanceof IFile) {
-				return !canDirectlyOpenInCompare((IFile) resource);
+				ResourceMappingContext mappingContext = prepareContext(
+						repository, leftRev, rightRev, includeLocal);
+				return !canDirectlyOpenInCompare((IFile) resource, mappingContext);
 			} else {
 				IPath location = resource.getLocation();
 				if (location != null

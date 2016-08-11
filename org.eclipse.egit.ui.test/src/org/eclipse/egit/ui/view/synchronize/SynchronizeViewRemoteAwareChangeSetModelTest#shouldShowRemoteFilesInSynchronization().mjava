@@ -1,0 +1,43 @@
+	/**
+	 * Make sure that files that are not part of the logical model because of
+	 * remote file content will be taken into account in the comparison.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void shouldShowRemoteFilesInSynchronization() throws Exception {
+		// given
+		createMockLogicalRepository();
+
+		// when comparing file 'index.mocklogical' with branch 'stable'
+		String compareWithBranchActionLabel = util
+				.getPluginLocalizedValue("ReplaceWithRefAction_label");
+		clickCompareWith(compareWithBranchActionLabel);
+		SWTBotShell compareShell = bot.shell("Compare");
+		SWTBotTree tree = compareShell.bot().tree();
+		for (SWTBotTreeItem item : tree.getTreeItem("Local").getItems()) {
+			if (item.getText().contains("stable")) {
+				tree.select(item);
+				break;
+			}
+		}
+		bot.button("Compare").click();
+
+		// then
+		SWTBotTree syncViewTree = bot.viewById(ISynchronizeView.VIEW_ID).bot()
+				.tree();
+		SWTBotTreeItem mockLogicalProjectItem = waitForNodeWithText(
+				syncViewTree, MOCK_LOGICAL_PROJECT);
+		SWTBotTreeItem[] items = mockLogicalProjectItem.getItems();
+		assertEquals(4, items.length);
+
+		SWTBotTreeItem fileTree = items[0];
+		assertEquals("file1.txt", fileTree.getText());
+		fileTree = items[1];
+		assertEquals("file2.txt", fileTree.getText());
+		fileTree = items[2];
+		assertEquals("file3.txt", fileTree.getText());
+		fileTree = items[3];
+		assertEquals("index.mocklogical", fileTree.getText());
+	}
+
