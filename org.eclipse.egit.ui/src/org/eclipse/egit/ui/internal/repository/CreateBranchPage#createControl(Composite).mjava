@@ -55,19 +55,14 @@
 		GridDataFactory.fillDefaults().grab(true, false).span(3, 1)
 				.applyTo(nameText);
 
-		upstreamConfigComponent = new UpstreamConfigComponent(
-				main, SWT.NONE);
+		upstreamConfigComponent = new UpstreamConfigComponent(main, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).span(4, 1)
 				.applyTo(upstreamConfigComponent.getContainer());
 
 		upstreamConfigComponent
-				.addUpstreamConfigSelectionListener(new UpstreamConfigSelectionListener() {
-					@Override
-					public void upstreamConfigSelected(
-							UpstreamConfig newUpstreamConfig) {
-						upstreamConfig = newUpstreamConfig;
-						checkPage();
-					}
+				.addUpstreamConfigSelectionListener((newConfig) -> {
+					upstreamConfig = newConfig;
+					checkPage();
 				});
 
 		boolean isBare = myRepository.isBare();
@@ -98,11 +93,6 @@
 
 		nameText.setFocus();
 		// add the listener just now to avoid unneeded checkPage()
-		nameText.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				checkPage();
-			}
-		});
+		nameText.addModifyListener(e -> checkPage());
 	}
 

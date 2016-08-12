@@ -1,6 +1,7 @@
 	public void selectMerge() {
 		wizard.checkBox(UIText.UpstreamConfigComponent_ConfigureUpstreamCheck)
 				.select();
-		wizard.radio(UIText.UpstreamConfigComponent_MergeRadio).click();
+		wizard.comboBoxWithLabel(UIText.BranchRebaseModeCombo_RebaseModeLabel)
+				.setSelection(UIText.BranchRebaseMode_None);
 	}
 

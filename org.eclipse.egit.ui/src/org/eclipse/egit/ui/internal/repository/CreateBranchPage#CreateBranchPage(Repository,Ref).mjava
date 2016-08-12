@@ -11,17 +11,20 @@
 	public CreateBranchPage(Repository repo, Ref baseRef) {
 		super(CreateBranchPage.class.getName());
 		this.myRepository = repo;
-		if (baseRef != null)
+		if (baseRef != null) {
 			this.myBaseRef = baseRef.getName();
-		else
+		} else {
 			this.myBaseRef = null;
+		}
 		this.myBaseCommit = null;
 		this.myValidator = ValidationUtils.getRefNameInputValidator(
 				myRepository, Constants.R_HEADS, false);
-		if (baseRef != null)
-			this.upstreamConfig = UpstreamConfig.getDefault(repo, baseRef.getName());
-		else
-			this.upstreamConfig = UpstreamConfig.NONE;
+		if (baseRef != null) {
+			this.upstreamConfig = CreateLocalBranchOperation
+					.getDefaultUpstreamConfig(repo, baseRef.getName());
+		} else {
+			this.upstreamConfig = null;
+		}
 		setTitle(UIText.CreateBranchPage_Title);
 		setMessage(UIText.CreateBranchPage_ChooseBranchAndNameMessage);
 	}

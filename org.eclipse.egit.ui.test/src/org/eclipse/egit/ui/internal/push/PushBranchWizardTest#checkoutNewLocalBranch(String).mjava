@@ -1,8 +1,7 @@
 	private void checkoutNewLocalBranch(String branchName)
 			throws Exception {
 		CreateLocalBranchOperation createBranch = new CreateLocalBranchOperation(
-				repository, branchName, repository.findRef("master"),
-				UpstreamConfig.NONE);
+				repository, branchName, repository.findRef("master"), null);
 		createBranch.execute(null);
 		BranchOperation checkout = new BranchOperation(repository, branchName);
 		checkout.execute(null);

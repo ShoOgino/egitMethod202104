@@ -1,6 +1,7 @@
 	public void assertMergeSelected() {
 		assertConfigureUpstreamSelected();
-		assertTrue(wizard.radio(UIText.UpstreamConfigComponent_MergeRadio)
-				.isSelected());
+		assertEquals(UIText.BranchRebaseMode_None, wizard
+				.comboBoxWithLabel(UIText.BranchRebaseModeCombo_RebaseModeLabel)
+				.selection());
 	}
 

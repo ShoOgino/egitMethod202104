@@ -1,0 +1,49 @@
+	/**
+	 * Get the default upstream config for the specified repository and upstream
+	 * branch ref.
+	 *
+	 * @param repo
+	 * @param upstreamRefName
+	 * @return the default {@link BranchRebaseMode}, or {@code null} if none is
+	 *         configured
+	 */
+	public static BranchRebaseMode getDefaultUpstreamConfig(Repository repo,
+			String upstreamRefName) {
+		boolean isLocalBranch = upstreamRefName.startsWith(Constants.R_HEADS);
+		boolean isRemoteBranch = upstreamRefName
+				.startsWith(Constants.R_REMOTES);
+		if (!isLocalBranch && !isRemoteBranch) {
+			return null;
+		}
+		String autosetupMerge = repo.getConfig().getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, null,
+				ConfigConstants.CONFIG_KEY_AUTOSETUPMERGE);
+		if (autosetupMerge == null) {
+			autosetupMerge = ConfigConstants.CONFIG_KEY_TRUE;
+		}
+		boolean setupMerge = autosetupMerge
+				.equals(ConfigConstants.CONFIG_KEY_ALWAYS)
+				|| (isRemoteBranch && autosetupMerge
+						.equals(ConfigConstants.CONFIG_KEY_TRUE));
+		if (!setupMerge) {
+			return null;
+		}
+		String autosetupRebase = repo.getConfig().getString(
+				ConfigConstants.CONFIG_BRANCH_SECTION, null,
+				ConfigConstants.CONFIG_KEY_AUTOSETUPREBASE);
+		if (autosetupRebase == null) {
+			autosetupRebase = ConfigConstants.CONFIG_KEY_NEVER;
+		}
+		boolean setupRebase = autosetupRebase
+				.equals(ConfigConstants.CONFIG_KEY_ALWAYS)
+				|| (autosetupRebase.equals(ConfigConstants.CONFIG_KEY_LOCAL)
+						&& isLocalBranch)
+				|| (autosetupRebase.equals(ConfigConstants.CONFIG_KEY_REMOTE)
+						&& isRemoteBranch);
+		if (setupRebase) {
+			// Like cgit: plain rebase
+			return BranchRebaseMode.REBASE;
+		}
+		return BranchRebaseMode.NONE;
+	}
+

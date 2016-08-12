@@ -1,6 +1,7 @@
 	private void upstreamConfigSelected() {
-		UpstreamConfig config = getSelectedUpstreamConfig();
-		for (UpstreamConfigSelectionListener listener : listeners)
+		BranchRebaseMode config = getSelectedRebaseMode();
+		for (UpstreamConfigSelectionListener listener : listeners) {
 			listener.upstreamConfigSelected(config);
+		}
 	}
 

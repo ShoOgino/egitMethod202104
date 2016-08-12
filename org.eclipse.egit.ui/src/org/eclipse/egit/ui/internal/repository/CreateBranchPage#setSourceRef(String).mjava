@@ -14,7 +14,9 @@
 		sourceRefName = refName;
 
 		suggestBranchName(refName);
-		upstreamConfig = UpstreamConfig.getDefault(myRepository, refName);
+		upstreamConfig = CreateLocalBranchOperation
+				.getDefaultUpstreamConfig(myRepository, refName);
+		updateUpstreamComponent();
 		checkPage();
 	}
 

@@ -7,8 +7,9 @@
 				URIish uri = remotePage.getSelection().getURI();
 				configureNewRemote(uri);
 			}
-			if (pushBranchPage.isConfigureUpstreamSelected())
+			if (pushBranchPage.getUpstreamConfig() != null) {
 				configureUpstream();
+			}
 			startPush();
 		} catch (IOException e) {
 			confirmationPage.setErrorMessage(e.getMessage());

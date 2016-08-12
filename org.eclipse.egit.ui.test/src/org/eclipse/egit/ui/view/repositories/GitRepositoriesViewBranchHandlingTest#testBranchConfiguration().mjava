@@ -1,15 +1,16 @@
 	@Test
 	public void testBranchConfiguration() throws Exception {
 		Repository repo = lookupRepository(clonedRepositoryFile);
-		Git git = new Git(repo);
-		git.branchCreate().setName("configTest")
-				.setStartPoint("refs/remotes/origin/master")
-				.setUpstreamMode(SetupUpstreamMode.TRACK).call();
-
-		boolean rebase = repo.getConfig().getBoolean(
+		try (Git git = new Git(repo)) {
+			git.branchCreate().setName("configTest")
+					.setStartPoint("refs/remotes/origin/master")
+					.setUpstreamMode(SetupUpstreamMode.TRACK).call();
+		}
+		BranchRebaseMode rebase = repo.getConfig().getEnum(
+				BranchRebaseMode.values(),
 				ConfigConstants.CONFIG_BRANCH_SECTION, "configTest",
-				ConfigConstants.CONFIG_KEY_REBASE, false);
-		assertFalse(rebase);
+				ConfigConstants.CONFIG_KEY_REBASE, BranchRebaseMode.NONE);
+		assertEquals(BranchRebaseMode.NONE, rebase);
 
 		SWTBotView view = getOrOpenView();
 
@@ -68,13 +69,16 @@
 						.comboBoxWithLabel(
 								UIText.BranchConfigurationDialog_RemoteLabel)
 						.getText());
-		assertFalse(configureBranchDialog.bot()
-				.checkBox(UIText.BranchConfigurationDialog_RebaseLabel)
-				.isChecked());
+		assertEquals(UIText.BranchRebaseMode_None,
+				configureBranchDialog.bot()
+						.comboBoxWithLabel(
+								UIText.BranchRebaseModeCombo_RebaseModeLabel)
+						.getText());
 
 		configureBranchDialog.bot()
-				.checkBox(UIText.BranchConfigurationDialog_RebaseLabel)
-				.select();
+				.comboBoxWithLabel(
+						UIText.BranchRebaseModeCombo_RebaseModeLabel)
+				.setSelection(0);
 		// add a listener to wait for the configuration changed event
 		final AtomicBoolean changed = new AtomicBoolean();
 		ConfigChangedListener listener =
@@ -94,10 +98,10 @@
 			fail("We should have received a config change event");
 
 		refreshAndWait(); // Repo view updates itself after config change.
-		rebase = repo.getConfig().getBoolean(
+		rebase = repo.getConfig().getEnum(BranchRebaseMode.values(),
 				ConfigConstants.CONFIG_BRANCH_SECTION, "configTest",
-				ConfigConstants.CONFIG_KEY_REBASE, false);
-		assertTrue(rebase);
+				ConfigConstants.CONFIG_KEY_REBASE, BranchRebaseMode.NONE);
+		assertEquals(BranchRebaseMode.REBASE, rebase);
 
 		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),
 				clonedRepositoryFile);

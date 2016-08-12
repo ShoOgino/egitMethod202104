@@ -13,7 +13,7 @@
 			}
 			CreateLocalBranchOperation createLocalBranchOperation = new CreateLocalBranchOperation(
 					repository.getRepository(), newLocalBranch, remoteFeature,
-					UpstreamConfig.MERGE);
+					BranchRebaseMode.NONE);
 			createLocalBranchOperation.execute(monitor);
 
 			BranchOperation branchOperation = new BranchOperation(

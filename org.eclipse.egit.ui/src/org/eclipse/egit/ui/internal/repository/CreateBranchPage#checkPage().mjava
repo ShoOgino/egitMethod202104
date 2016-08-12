@@ -1,22 +1,8 @@
 	private void checkPage() {
 		try {
-			upstreamConfigComponent.setUpstreamConfig(upstreamConfig);
-
-			boolean showUpstreamConfig = sourceRefName
-					.startsWith(Constants.R_HEADS)
-					|| sourceRefName.startsWith(Constants.R_REMOTES);
-			Composite container = upstreamConfigComponent.getContainer();
-			GridData gd = (GridData) container.getLayoutData();
-			if (gd.exclude == showUpstreamConfig) {
-				gd.exclude = !showUpstreamConfig;
-				container.setVisible(showUpstreamConfig);
-				container.getParent().layout(true);
-				ensurePreferredHeight(getShell());
-			}
-
 			boolean basedOnLocalBranch = sourceRefName
 					.startsWith(Constants.R_HEADS);
-			if (basedOnLocalBranch && upstreamConfig != UpstreamConfig.NONE)
+			if (basedOnLocalBranch && upstreamConfig != null)
 				setMessage(UIText.CreateBranchPage_LocalBranchWarningMessage,
 						IMessageProvider.INFORMATION);
 

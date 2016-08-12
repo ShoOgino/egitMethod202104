@@ -27,9 +27,14 @@
 			}
 		});
 
-		rebase = new Button(main, SWT.CHECK);
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(rebase);
-		rebase.setText(UIText.BranchConfigurationDialog_RebaseLabel);
+
+		rebase = new BranchRebaseModeCombo(main);
+		BranchRebaseMode rebaseMode = PullCommand.getRebaseMode(myBranchName,
+				myConfig);
+		rebase.setRebaseMode(rebaseMode);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.align(SWT.BEGINNING, SWT.CENTER)
+				.applyTo(rebase.getViewer().getCombo());
 
 		String branch = myConfig.getString(
 				ConfigConstants.CONFIG_BRANCH_SECTION, myBranchName,
@@ -46,13 +51,7 @@
 		remoteText.setText(remote);
 		updateBranchItems();
 
-		boolean rebaseFlag = myConfig.getBoolean(
-				ConfigConstants.CONFIG_BRANCH_SECTION, myBranchName,
-				ConfigConstants.CONFIG_KEY_REBASE, false);
-		rebase.setSelection(rebaseFlag);
-
 		applyDialogFont(main);
-		// return result;
 		return main;
 	}
 

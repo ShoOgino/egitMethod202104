@@ -12,13 +12,11 @@
 				ConfigConstants.CONFIG_KEY_REMOTE, remoteName);
 		config.setString(ConfigConstants.CONFIG_BRANCH_SECTION, localBranchName,
 				ConfigConstants.CONFIG_KEY_MERGE, fullRemoteBranchName);
-		if (pushBranchPage.isRebaseSelected()) {
-			config.setBoolean(ConfigConstants.CONFIG_BRANCH_SECTION,
-					localBranchName, ConfigConstants.CONFIG_KEY_REBASE, true);
-		} else {
-			// Make sure we overwrite any previous configuration
-			config.unset(ConfigConstants.CONFIG_BRANCH_SECTION, localBranchName,
-					ConfigConstants.CONFIG_KEY_REBASE);
+		BranchRebaseMode rebaseMode = pushBranchPage.getUpstreamConfig();
+		if (rebaseMode != null) {
+			config.setEnum(ConfigConstants.CONFIG_BRANCH_SECTION,
+					localBranchName, ConfigConstants.CONFIG_KEY_REBASE,
+					rebaseMode);
 		}
 
 		config.save();

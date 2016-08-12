@@ -22,28 +22,12 @@
 		upstreamConfigGroup.setLayoutData(GridDataFactory.fillDefaults()
 				.grab(true, false).indent(UIUtils.getControlIndent(), 0)
 				.create());
-		upstreamConfigGroup.setLayout(GridLayoutFactory.swtDefaults().create());
-		upstreamConfigGroup
-				.setText(UIText.UpstreamConfigComponent_PullGroup);
+		upstreamConfigGroup.setLayout(
+				GridLayoutFactory.swtDefaults().numColumns(2).create());
 
-		mergeRadio = new Button(upstreamConfigGroup, SWT.RADIO);
-		mergeRadio.setText(UIText.UpstreamConfigComponent_MergeRadio);
-		mergeRadio.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				upstreamConfigSelected();
-			}
-		});
-		mergeRadio.setSelection(true);
-
-		rebaseRadio = new Button(upstreamConfigGroup, SWT.RADIO);
-		rebaseRadio.setText(UIText.UpstreamConfigComponent_RebaseRadio);
-		rebaseRadio.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				upstreamConfigSelected();
-			}
-		});
+		rebase = new BranchRebaseModeCombo(upstreamConfigGroup);
+		rebase.getViewer().addSelectionChangedListener(
+				(event) -> upstreamConfigSelected());
 
 		configureUpstreamCheck.addSelectionListener(new SelectionAdapter() {
 			@Override

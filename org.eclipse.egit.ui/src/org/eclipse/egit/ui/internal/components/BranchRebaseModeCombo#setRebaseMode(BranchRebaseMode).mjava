@@ -1,0 +1,14 @@
+	/**
+	 * Sets the currently selected {@link BranchRebaseMode}.
+	 *
+	 * @param mode
+	 *            to select and reveal, or {@code null} to clear the selection
+	 */
+	public void setRebaseMode(BranchRebaseMode mode) {
+		if (mode == null) {
+			combo.setSelection(StructuredSelection.EMPTY, false);
+		} else {
+			combo.setSelection(new StructuredSelection(mode), true);
+		}
+	}
+

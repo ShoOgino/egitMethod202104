@@ -14,6 +14,7 @@
 		assertNotNull(pushed);
 		assertEquals(repository.resolve("localname"), pushed);
 
-		assertBranchConfig("localname", "fetch", "refs/heads/remotename", null);
+		assertBranchConfig("localname", "fetch", "refs/heads/remotename",
+				"false");
 	}
 

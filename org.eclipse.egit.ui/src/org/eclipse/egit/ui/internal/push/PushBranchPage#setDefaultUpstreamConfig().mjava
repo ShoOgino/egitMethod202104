@@ -4,12 +4,13 @@
 			BranchConfig branchConfig = new BranchConfig(
 					repository.getConfig(), branchName);
 			boolean alreadyConfigured = branchConfig.getMerge() != null;
-			UpstreamConfig config;
+			BranchRebaseMode config;
 			if (alreadyConfigured) {
-				boolean rebase = branchConfig.isRebase();
-				config = rebase ? UpstreamConfig.REBASE : UpstreamConfig.MERGE;
+				config = PullCommand.getRebaseMode(branchName,
+						repository.getConfig());
 			} else {
-				config = UpstreamConfig.getDefault(repository, Constants.R_REMOTES
+				config = CreateLocalBranchOperation.getDefaultUpstreamConfig(
+						repository, Constants.R_REMOTES
 						+ Constants.DEFAULT_REMOTE_NAME + "/" + branchName); //$NON-NLS-1$
 			}
 			this.upstreamConfig = config;

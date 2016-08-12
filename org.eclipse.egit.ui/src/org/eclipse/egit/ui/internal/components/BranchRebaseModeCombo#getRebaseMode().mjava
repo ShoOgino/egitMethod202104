@@ -1,0 +1,13 @@
+	/**
+	 * Retrieves the currently selected {@link BranchRebaseMode}.
+	 *
+	 * @return the {@link BranchRebaseMode}, or {@code null} if none selected.
+	 */
+	public BranchRebaseMode getRebaseMode() {
+		IStructuredSelection selection = (IStructuredSelection) combo
+				.getSelection();
+		return selection.isEmpty() ? null
+				: (BranchRebaseMode) selection.getFirstElement();
+
+	}
+

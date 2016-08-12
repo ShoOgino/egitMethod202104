@@ -1,0 +1,13 @@
+	/**
+	 * Retrieves the selected {@link BranchRebaseMode}.
+	 *
+	 * @return the {@link BranchRebaseMode}, or {@code null} if none selected.
+	 */
+	public BranchRebaseMode getSelectedRebaseMode() {
+		if (!configureUpstreamCheck.getSelection()) {
+			return null;
+		} else {
+			return rebase.getRebaseMode();
+		}
+	}
+

@@ -1,6 +1,7 @@
 	public void selectRebase() {
 		wizard.checkBox(UIText.UpstreamConfigComponent_ConfigureUpstreamCheck)
 				.select();
-		wizard.radio(UIText.UpstreamConfigComponent_RebaseRadio).click();
+		wizard.comboBoxWithLabel(UIText.BranchRebaseModeCombo_RebaseModeLabel)
+				.setSelection(UIText.BranchRebaseMode_Rebase);
 	}
 

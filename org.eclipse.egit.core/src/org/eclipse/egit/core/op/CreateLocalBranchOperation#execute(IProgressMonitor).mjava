@@ -17,7 +17,7 @@
 				try (Git git = new Git(repository)) {
 					if (ref != null) {
 						SetupUpstreamMode mode;
-						if (upstreamConfig == UpstreamConfig.NONE)
+						if (upstreamConfig == null)
 							mode = SetupUpstreamMode.NOTRACK;
 						else
 							mode = SetupUpstreamMode.SET_UPSTREAM;
@@ -32,11 +32,11 @@
 					throw new CoreException(Activator.error(e.getMessage(), e));
 				}
 
-				if (UpstreamConfig.REBASE == upstreamConfig) {
-					// set "branch.<name>.rebase" to "true"
+				if (upstreamConfig != null) {
+					// set "branch.<name>.rebase"
 					StoredConfig config = repository.getConfig();
-					config.setBoolean(ConfigConstants.CONFIG_BRANCH_SECTION,
-							name, ConfigConstants.CONFIG_KEY_REBASE, true);
+					config.setEnum(ConfigConstants.CONFIG_BRANCH_SECTION, name,
+							ConfigConstants.CONFIG_KEY_REBASE, upstreamConfig);
 					try {
 						config.save();
 					} catch (IOException e) {

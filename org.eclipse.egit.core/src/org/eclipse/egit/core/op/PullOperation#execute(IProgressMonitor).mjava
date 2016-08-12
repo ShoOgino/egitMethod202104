@@ -32,8 +32,7 @@
 							if (config.getReference() != null) {
 								pull.setRemoteBranchName(config.getReference());
 							}
-							pull.setRebase(config
-									.getUpstreamConfig() == UpstreamConfig.REBASE);
+							pull.setRebase(config.getUpstreamConfig());
 						}
 						MergeStrategy strategy = Activator.getDefault()
 								.getPreferredMergeStrategy();

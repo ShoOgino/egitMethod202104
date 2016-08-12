@@ -1,6 +1,7 @@
 	public void assertRebaseSelected() {
 		assertConfigureUpstreamSelected();
-		assertTrue(wizard.radio(UIText.UpstreamConfigComponent_RebaseRadio)
-				.isSelected());
+		assertEquals(UIText.BranchRebaseMode_Rebase, wizard
+				.comboBoxWithLabel(UIText.BranchRebaseModeCombo_RebaseModeLabel)
+				.selection());
 	}
 
