@@ -1,0 +1,7 @@
+	private static void clean() throws Exception {
+		config.unsetSection(TESTSECTION, TESTSUBSECTION + '.' + TESTNAME);
+		config.unsetSection(TESTSECTION, TESTSUBSECTION);
+		config.unsetSection(TESTSECTION, null);
+		config.save();
+	}
+
