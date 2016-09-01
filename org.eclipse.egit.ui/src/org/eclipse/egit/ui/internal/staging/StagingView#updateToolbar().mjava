@@ -148,11 +148,7 @@
 				if (!isChecked()) {
 					return;
 				}
-				presentation = Presentation.LIST;
-				setPresentation(presentation, false);
-				treePresentationAction.setChecked(false);
-				compactTreePresentationAction.setChecked(false);
-				setExpandCollapseActionsVisible(false);
+				switchToListMode();
 				refreshViewers();
 			}
 		};
