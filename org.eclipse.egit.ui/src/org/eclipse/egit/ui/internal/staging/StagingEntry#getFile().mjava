@@ -3,6 +3,10 @@
 	 *         workspace, null otherwise.
 	 */
 	public IFile getFile() {
+		if (!fileLoaded) {
+			fileLoaded = true;
+			file = ResourceUtil.getFileForLocation(repository, path, false);
+		}
 		return file;
 	}
 
