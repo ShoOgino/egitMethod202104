@@ -2,20 +2,41 @@
 	 * Run the operation.
 	 */
 	public void run() {
+		if (paths.size() > WARNING_THRESHOLD) {
+			Shell shell = PlatformUI.getWorkbench()
+					.getModalDialogShellProvider().getShell();
+			if (!MessageDialog.openQuestion(shell,
+					MessageFormat.format(
+							UIText.IgnoreActionHandler_manyFilesToBeIgnoredTitle,
+							Integer.toString(paths.size())),
+					UIText.IgnoreActionHandler_manyFilesToBeIgnoredQuestion)) {
+				return;
+			}
+		}
 		final IgnoreOperation operation = new IgnoreOperation(paths);
 		String jobname = UIText.IgnoreActionHandler_addToGitignore;
-		Job job = new Job(jobname) {
+		Job job = new WorkspaceJob(jobname) {
+
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public IStatus runInWorkspace(IProgressMonitor monitor)
+					throws CoreException {
 				try {
-					operation.execute(monitor);
-				} catch (CoreException e) {
-					return Activator.createErrorStatus(e.getStatus()
-							.getMessage(), e);
+					try {
+						operation.execute(monitor);
+					} catch (CoreException e) {
+						return Activator.createErrorStatus(
+								e.getStatus().getMessage(), e);
+					}
+					if (operation.isGitignoreOutsideWSChanged()) {
+						refresh();
+					}
+					if (monitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
+					return Status.OK_STATUS;
+				} finally {
+					monitor.done();
 				}
-				if (operation.isGitignoreOutsideWSChanged())
-					refresh();
-				return Status.OK_STATUS;
 			}
 		};
 		job.setUser(true);

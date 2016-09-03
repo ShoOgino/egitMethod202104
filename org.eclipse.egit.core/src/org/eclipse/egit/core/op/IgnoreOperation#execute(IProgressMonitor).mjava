@@ -1,24 +1,19 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		SubMonitor progress = SubMonitor.convert(monitor,
-				CoreText.IgnoreOperation_taskName, paths.size());
+				CoreText.IgnoreOperation_taskName, 3);
 		try {
-			for (IPath path : paths) {
-				if (monitor.isCanceled()) {
-					break;
-				}
-				// TODO This is pretty inefficient; multiple ignores in
-				// the same directory cause multiple writes.
-
-				// NB This does the same thing in
-				// DecoratableResourceAdapter, but neither currently
-				// consult .gitignore
-				if (RepositoryUtil.canBeAutoIgnored(path)) {
-					addIgnore(progress.newChild(1), path);
-				} else {
-					progress.worked(1);
-				}
+			Map<IPath, Collection<String>> perFolder = getFolderMap(
+					progress.newChild(1));
+			if (perFolder == null) {
+				return;
 			}
+			perFolder = pruneFolderMap(perFolder, progress.newChild(1));
+			if (perFolder == null) {
+				return;
+			}
+
+			updateGitIgnores(perFolder, progress.newChild(1));
 		} catch (CoreException e) {
 			throw e;
 		} catch (Exception e) {

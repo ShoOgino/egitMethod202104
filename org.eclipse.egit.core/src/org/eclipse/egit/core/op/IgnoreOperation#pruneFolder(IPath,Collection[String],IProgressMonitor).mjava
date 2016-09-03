@@ -1,0 +1,52 @@
+	private void pruneFolder(IPath folder, Collection<String> files,
+			IProgressMonitor monitor)
+			throws IOException {
+		if (files.isEmpty()) {
+			return;
+		}
+		Repository repository = Activator.getDefault().getRepositoryCache()
+				.getRepository(folder);
+		if (repository == null || repository.isBare()) {
+			files.clear();
+			return;
+		}
+		WorkingTreeIterator treeIterator = IteratorService
+				.createInitialIterator(repository);
+		if (treeIterator == null) {
+			files.clear();
+			return;
+		}
+		IPath repoRelativePath = folder.makeRelativeTo(
+				new Path(repository.getWorkTree().getAbsolutePath()));
+		if (repoRelativePath.equals(folder)) {
+			files.clear();
+			return;
+		}
+		Collection<String> repoRelative = new HashSet<>(files.size());
+		for (String file : files) {
+			repoRelative.add(repoRelativePath.append(file).toPortableString());
+		}
+		// Remove all entries,then re-add only those found during the tree walk
+		// that are not ignored already
+		files.clear();
+		try (TreeWalk walk = new TreeWalk(repository)) {
+			walk.addTree(treeIterator);
+			walk.setFilter(PathFilterGroup.createFromStrings(repoRelative));
+			while (walk.next()) {
+				if (monitor.isCanceled()) {
+					return;
+				}
+				WorkingTreeIterator workingTreeIterator = walk.getTree(0,
+						WorkingTreeIterator.class);
+				if (repoRelative.contains(walk.getPathString())) {
+					if (!workingTreeIterator.isEntryIgnored()) {
+						files.add(walk.getNameString());
+					}
+				} else if (workingTreeIterator.getEntryFileMode()
+						.equals(FileMode.TREE)) {
+					walk.enterSubtree();
+				}
+			}
+		}
+	}
+

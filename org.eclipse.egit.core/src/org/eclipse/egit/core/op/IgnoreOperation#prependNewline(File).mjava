@@ -2,8 +2,7 @@
 		boolean prepend = false;
 		long length = file.length();
 		if (length > 0) {
-			RandomAccessFile raf = new RandomAccessFile(file, "r"); //$NON-NLS-1$
-			try {
+			try (RandomAccessFile raf = new RandomAccessFile(file, "r")) { //$NON-NLS-1$
 				// Read the last byte and see if it is a newline
 				ByteBuffer buffer = ByteBuffer.allocate(1);
 				FileChannel channel = raf.getChannel();
@@ -12,8 +11,6 @@
 					buffer.rewind();
 					prepend = buffer.get() != '\n';
 				}
-			} finally {
-				raf.close();
 			}
 		}
 		return prepend;

@@ -13,17 +13,26 @@
 					return;
 
 				Set<StagingEntry> stagingEntrySet = new LinkedHashSet<>();
+				Set<StagingFolderEntry> stagingFolderSet = new LinkedHashSet<>();
 
 				boolean submoduleSelected = false;
 				boolean folderSelected = false;
+				boolean onlyFoldersSelected = true;
 				for (Object element : selection.toArray()) {
 					if (element instanceof StagingFolderEntry) {
 						StagingFolderEntry folder = (StagingFolderEntry) element;
 						folderSelected = true;
+						if (onlyFoldersSelected) {
+							stagingFolderSet.add(folder);
+						}
 						StagingViewContentProvider contentProvider = getContentProvider(treeViewer);
 						stagingEntrySet.addAll(contentProvider
 								.getStagingEntriesFiltered(folder));
 					} else if (element instanceof StagingEntry) {
+						if (onlyFoldersSelected) {
+							stagingFolderSet.clear();
+						}
+						onlyFoldersSelected = false;
 						StagingEntry entry = (StagingEntry) element;
 						if (entry.isSubmodule()) {
 							submoduleSelected = true;
@@ -109,8 +118,12 @@
 								UIText.StagingView_replaceWithHeadRevision,
 								ActionCommands.REPLACE_WITH_HEAD_ACTION,
 								fileSelection));
-				if (addIgnore)
+				if (addIgnore) {
+					if (!stagingFolderSet.isEmpty()) {
+						menuMgr.add(new IgnoreFoldersAction(stagingFolderSet));
+					}
 					menuMgr.add(new IgnoreAction(fileSelection));
+				}
 				if (addDelete)
 					menuMgr.add(new DeleteAction(fileSelection));
 				if (addLaunchMergeTool)

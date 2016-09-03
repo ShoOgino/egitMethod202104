@@ -1,0 +1,44 @@
+	private void updateGitIgnores(Map<IPath, Collection<String>> perFolder,
+			IProgressMonitor monitor) throws CoreException, IOException {
+		SubMonitor progress = SubMonitor.convert(monitor, perFolder.size() * 2);
+		for (Map.Entry<IPath, Collection<String>> entry : perFolder
+				.entrySet()) {
+			if (progress.isCanceled()) {
+				return;
+			}
+			IContainer container = ResourceUtil
+					.getContainerForLocation(entry.getKey(), false);
+			if (container instanceof IWorkspaceRoot) {
+				container = null;
+			}
+			Collection<String> files = entry.getValue();
+			if (files.isEmpty()) {
+				progress.worked(1);
+				continue;
+			}
+			StringBuilder builder = new StringBuilder();
+			for (String file : files) {
+				builder.append('/').append(file);
+				boolean isDirectory = false;
+				IResource resource = container != null
+						? container.findMember(file) : null;
+				if (resource != null) {
+					isDirectory = resource.getType() != IResource.FILE;
+				} else {
+					isDirectory = entry.getKey().append(file).toFile()
+							.isDirectory();
+				}
+				if (isDirectory) {
+					builder.append('/');
+				}
+				builder.append('\n');
+			}
+			progress.worked(1);
+			if (progress.isCanceled()) {
+				return;
+			}
+			addToGitIgnore(container, entry.getKey(), builder.toString(),
+					progress.newChild(1));
+		}
+	}
+

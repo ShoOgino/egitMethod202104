@@ -1,0 +1,20 @@
+	private Map<IPath, Collection<String>> getFolderMap(
+			IProgressMonitor monitor) {
+		SubMonitor progress = SubMonitor.convert(monitor, paths.size());
+		Map<IPath, Collection<String>> result = new HashMap<>();
+		for (IPath path : paths) {
+			if (progress.isCanceled()) {
+				return null;
+			}
+			IPath parent = path.removeLastSegments(1);
+			Collection<String> values = result.get(parent);
+			if (values == null) {
+				values = new LinkedHashSet<>();
+				result.put(parent, values);
+			}
+			values.add(path.lastSegment());
+			progress.worked(1);
+		}
+		return result;
+	}
+

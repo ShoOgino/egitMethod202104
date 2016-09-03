@@ -1,0 +1,45 @@
+	private void addToGitIgnore(IContainer container, IPath parent,
+			String entry, IProgressMonitor monitor)
+			throws CoreException, IOException {
+		SubMonitor progress = SubMonitor.convert(monitor, 1);
+		if (container == null) {
+			// .gitignore outside of workspace
+			Repository repository = Activator.getDefault().getRepositoryCache()
+					.getRepository(parent);
+			if (repository == null || repository.isBare()) {
+				String message = NLS.bind(
+						CoreText.IgnoreOperation_parentOutsideRepo,
+						parent.toOSString(), null);
+				IStatus status = Activator.error(message, null);
+				throw new CoreException(status);
+			}
+			IPath gitIgnorePath = parent.append(Constants.GITIGNORE_FILENAME);
+			IPath repoPath = new Path(repository.getWorkTree()
+					.getAbsolutePath());
+			if (!repoPath.isPrefixOf(gitIgnorePath)) {
+				String message = NLS.bind(
+						CoreText.IgnoreOperation_parentOutsideRepo,
+						parent.toOSString(), repoPath.toOSString());
+				IStatus status = Activator.error(message, null);
+				throw new CoreException(status);
+			}
+			File gitIgnore = new File(gitIgnorePath.toOSString());
+			updateGitIgnore(gitIgnore, entry);
+			// no resource change event when updating .gitignore outside
+			// workspace => trigger manual decorator refresh
+			gitignoreOutsideWSChanged = true;
+		} else {
+			// .gitignore is in workspace
+			IFile gitignore = container.getFile(new Path(
+					Constants.GITIGNORE_FILENAME));
+			String toAdd = getEntry(gitignore.getLocation().toFile(), entry);
+			ByteArrayInputStream entryBytes = asStream(toAdd);
+			if (gitignore.exists()) {
+				gitignore.appendContents(entryBytes, true, true,
+						progress.newChild(1));
+			} else {
+				gitignore.create(entryBytes, true, progress.newChild(1));
+			}
+		}
+	}
+

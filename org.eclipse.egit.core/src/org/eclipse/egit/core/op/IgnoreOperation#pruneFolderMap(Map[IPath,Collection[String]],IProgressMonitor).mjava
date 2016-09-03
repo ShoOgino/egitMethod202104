@@ -1,0 +1,14 @@
+	private Map<IPath, Collection<String>> pruneFolderMap(
+			Map<IPath, Collection<String>> perFolder, IProgressMonitor monitor)
+			throws IOException {
+		SubMonitor progress = SubMonitor.convert(monitor, perFolder.size());
+		for (Map.Entry<IPath, Collection<String>> entry : perFolder
+				.entrySet()) {
+			pruneFolder(entry.getKey(), entry.getValue(), progress.newChild(1));
+			if (progress.isCanceled()) {
+				return null;
+			}
+		}
+		return perFolder;
+	}
+
