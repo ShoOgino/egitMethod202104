@@ -5,7 +5,7 @@
 
 		try {
 			return container.findMaxProblemSeverity(IMarker.PROBLEM, true,
-					IResource.DEPTH_ONE);
+					IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
 			return SEVERITY_NONE;
 		}

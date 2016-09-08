@@ -4,10 +4,17 @@
 
 		IMarkerDelta[] markerDeltas = event.findMarkerDeltas(IMarker.PROBLEM,
 				true);
-		for (IMarkerDelta delta : markerDeltas)
-			resources.add(delta.getResource());
+		for (IMarkerDelta delta : markerDeltas) {
+			// Also add parents
+			IResource resource = delta.getResource();
+			while (resource.getType() != IResource.ROOT
+					&& resources.add(resource)) {
+				resource = resource.getParent();
+			}
+		}
 
-		if (!resources.isEmpty())
+		if (!resources.isEmpty()) {
 		    updateLabels(resources);
+		}
 	}
 

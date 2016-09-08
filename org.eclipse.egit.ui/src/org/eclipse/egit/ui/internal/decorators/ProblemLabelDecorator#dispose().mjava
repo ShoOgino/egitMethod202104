@@ -1,8 +1,8 @@
 	@Override
 	public void dispose() {
+		super.dispose();
 		resourceManager.dispose();
 		if (this.viewer != null)
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
-		super.dispose();
 	}
 
