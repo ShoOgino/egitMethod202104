@@ -1,7 +1,5 @@
 		public TreeDecoratingLabelProvider(ILabelProvider provider,
 				ILabelDecorator decorator) {
-			super(provider, decorator);
-			this.provider = provider;
-			this.decorator = decorator;
+			this.provider = new DecoratingLabelProvider(provider, decorator);
 		}
 
