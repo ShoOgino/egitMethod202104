@@ -3,7 +3,16 @@
 	 *
 	 * @return the {@link ResourceManager} of this plugin
 	 */
-	public ResourceManager getResourceManager() {
+	public synchronized ResourceManager getResourceManager() {
+		if (resourceManager == null) {
+			Display display = PlatformUI.getWorkbench().getDisplay();
+			if (display == null) {
+				// Workbench already closed?
+				throw new IllegalStateException();
+			}
+			resourceManager = new LocalResourceManager(JFaceResources
+					.getResources(display));
+		}
 		return resourceManager;
 	}
 
