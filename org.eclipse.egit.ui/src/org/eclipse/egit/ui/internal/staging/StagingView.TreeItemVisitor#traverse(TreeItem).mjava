@@ -12,6 +12,9 @@
 					return;
 				}
 			}
+			if (treeItem.isDisposed()) {
+				return;
+			}
 			if (treeItem.getData() != null && visit(treeItem)) {
 				traversePrecedingSiblings(treeItem);
 			}
