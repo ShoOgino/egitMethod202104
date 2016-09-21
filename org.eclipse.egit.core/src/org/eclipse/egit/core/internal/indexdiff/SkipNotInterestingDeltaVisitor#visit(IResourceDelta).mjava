@@ -1,0 +1,17 @@
+	@Override
+	public boolean visit(IResourceDelta delta) throws CoreException {
+		if (atLeastOneInterestingDelta) {
+			// Skip further iterating. Root delta has at least one interesting
+			// change
+			return false;
+		}
+
+		if (GitResourceDeltaVisitor.isInteresting(delta)) {
+			atLeastOneInterestingDelta = true;
+			return false;
+		}
+
+		// No interesting changes found. Continue iterating over delta
+		return true;
+	}
+

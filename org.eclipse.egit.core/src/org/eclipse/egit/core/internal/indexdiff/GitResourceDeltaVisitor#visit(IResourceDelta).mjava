@@ -81,11 +81,7 @@
 			return false;
 		}
 
-		// If the file has changed but not in a way that we
-		// care about (e.g. marker changes to files) then
-		// ignore
-		if (delta.getKind() == IResourceDelta.CHANGED
-				&& (delta.getFlags() & INTERESTING_CHANGES) == 0) {
+		if (!isInteresting(delta)) {
 			return false;
 		}
 
