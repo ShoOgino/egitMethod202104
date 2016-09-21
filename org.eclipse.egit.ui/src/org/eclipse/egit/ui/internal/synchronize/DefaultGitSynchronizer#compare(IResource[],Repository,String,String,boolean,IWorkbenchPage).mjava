@@ -1,0 +1,31 @@
+	@Override
+	public void compare(IResource[] resources, @NonNull Repository repository,
+			String leftRev, String rightRev, boolean includeLocal,
+			IWorkbenchPage page) throws IOException {
+		if (canCompareDirectly(resources)) {
+			if (includeLocal) {
+				CompareUtils.compareWorkspaceWithRef(
+						repository, resources[0], rightRev, page);
+			} else {
+				final IResource file = resources[0];
+				Assert.isNotNull(file);
+				final RepositoryMapping mapping = RepositoryMapping
+						.getMapping(file);
+				if (mapping == null) {
+					Activator.error(
+							NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
+									file.getLocation(),
+									repository),
+							null);
+					return;
+				}
+				final String gitPath = mapping.getRepoRelativePath(file);
+
+				CompareUtils.compareBetween(repository, gitPath, leftRev,
+						rightRev, page);
+			}
+		} else {
+			synchronize(resources, repository, leftRev, rightRev, includeLocal);
+		}
+	}
+

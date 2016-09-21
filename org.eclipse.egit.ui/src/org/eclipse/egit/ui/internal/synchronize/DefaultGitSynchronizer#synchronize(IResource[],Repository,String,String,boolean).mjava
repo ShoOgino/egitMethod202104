@@ -1,0 +1,44 @@
+	/**
+	 * Synchronize the given descriptor.
+	 *
+	 * @param resources
+	 *            The resources to compare, can be empty in which case the whole
+	 *            repositpry will be synchronized.
+	 * @param repository
+	 *            The repository to use.
+	 * @param leftRev
+	 *            The left revision.
+	 * @param rightRev
+	 *            The right revision.
+	 * @param includeLocal
+	 *            Whether the local version of the file should be used, in which
+	 *            case leftRev is ignored.
+	 *
+	 * @throws IOException
+	 */
+	protected void synchronize(IResource[] resources, Repository repository,
+			String leftRev, String rightRev, boolean includeLocal)
+			throws IOException {
+		if (rightRev.equals(GitFileRevision.INDEX)) {
+			openGitTreeCompare(resources, leftRev,
+					CompareTreeView.INDEX_VERSION, includeLocal);
+		} else if (leftRev.equals(GitFileRevision.INDEX)) {
+			// Even git tree compare cannot handle index as source...
+			// Synchronize using the local data for now.
+			Set<IResource> resSet = new HashSet<>(
+					Arrays.asList(resources));
+			final GitSynchronizeData gsd = new GitSynchronizeData(
+					repository, leftRev, rightRev, true, resSet);
+			GitModelSynchronize.launch(new GitSynchronizeDataSet(gsd),
+					resources);
+		} else {
+			Set<IResource> resSet = new HashSet<>(
+					Arrays.asList(resources));
+			final GitSynchronizeData gsd = new GitSynchronizeData(
+					repository, leftRev, rightRev, includeLocal,
+					resSet);
+			GitModelSynchronize.launch(new GitSynchronizeDataSet(gsd),
+					resources);
+		}
+	}
+

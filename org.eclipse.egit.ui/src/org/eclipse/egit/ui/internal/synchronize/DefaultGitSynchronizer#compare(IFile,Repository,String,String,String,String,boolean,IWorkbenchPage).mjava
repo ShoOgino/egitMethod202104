@@ -1,0 +1,18 @@
+	@Override
+	public void compare(IFile file, Repository repository, String leftPath,
+			String rightPath, String leftRev, String rightRev,
+			boolean includeLocal, IWorkbenchPage page) throws IOException {
+		if (canCompareDirectly(file)) {
+			if (includeLocal) {
+				CompareUtils.compareWorkspaceWithRef(repository, file, rightRev,
+						page);
+			} else {
+				CompareUtils.compareBetween(repository, leftPath, rightPath,
+						leftRev, rightRev, page);
+			}
+		} else {
+			synchronize(new IResource[] { file }, repository, leftRev, rightRev,
+					includeLocal);
+		}
+	}
+

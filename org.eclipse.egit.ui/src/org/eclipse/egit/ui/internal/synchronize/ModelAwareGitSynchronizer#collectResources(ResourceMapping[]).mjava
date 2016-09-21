@@ -1,0 +1,22 @@
+	/**
+	 * Provide all the resources to take into account for the given mappings.
+	 *
+	 * @param mappings
+	 *            The mappings for which we seek the resources involved
+	 * @return The set of all the resources involved in the given mappings
+	 */
+	private Set<IResource> collectResources(ResourceMapping[] mappings) {
+		final Set<IResource> result = new HashSet<>();
+		for (ResourceMapping mapping : mappings) {
+			try {
+				ResourceTraversal[] traversals = mapping.getTraversals(context,
+						new NullProgressMonitor());
+				for (ResourceTraversal traversal : traversals)
+					result.addAll(Arrays.asList(traversal.getResources()));
+			} catch (CoreException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+		return result;
+	}
+

@@ -1,0 +1,32 @@
+	/**
+	 * Provide a {@link SyncInfo} for the given resource that is not part of the
+	 * resources with which the given {@link GitSynchronizeData} was created
+	 * (which implies that the synchronization data for this resource is not yet
+	 * cached).
+	 *
+	 * @param local
+	 * @param base
+	 * @param remote
+	 * @param gsd
+	 *            Data that describe the synchronization to perform
+	 * @return a new and initialized instance of {@link GitSyncInfo} for the
+	 *         given resource that was not part of the resources to synchronize.
+	 *         Returns <code>null</code> if anything goes wrong (corrupted repo,
+	 *         IO problem, ...)
+	 */
+	private SyncInfo getSyncInfo(IResource local, IResourceVariant base,
+			IResourceVariant remote, @NonNull GitSynchronizeData gsd) {
+		GitSyncObjectCache repoCache = getCache().get(gsd.getRepository());
+		if (repoCache == null) {
+			return null;
+		}
+		if (GitSyncCache.loadDataFromGit(gsd, null, repoCache)) {
+			try {
+				return getSyncInfo(local, base, remote, gsd.getRepository());
+			} catch (TeamException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+		return null;
+	}
+

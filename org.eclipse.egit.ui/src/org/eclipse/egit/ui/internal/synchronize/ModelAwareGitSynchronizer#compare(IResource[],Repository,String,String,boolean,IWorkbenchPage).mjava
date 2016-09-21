@@ -1,0 +1,34 @@
+	@Override
+	public void compare(IResource[] resources, Repository repository,
+			String leftRev, String rightRev, boolean includeLocal,
+			IWorkbenchPage page) throws IOException {
+		try {
+			PlatformUI.getWorkbench().getProgressService()
+					.busyCursorWhile(new IRunnableWithProgress() {
+
+						@Override
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							try {
+								Set<IResource> resourceSet = new LinkedHashSet<>(
+										Arrays.asList(resources));
+								context = createResourceMappingContext(
+										resourceSet, repository, leftRev,
+										rightRev, includeLocal, monitor);
+								ModelAwareGitSynchronizer.super.compare(
+										resources, repository, leftRev,
+										rightRev, includeLocal, page);
+							} catch (IOException e) {
+								throw new InvocationTargetException(e);
+							}
+						}
+					});
+		} catch (InvocationTargetException e) {
+			Activator.error(e.getTargetException().getMessage(),
+					e.getTargetException());
+		} catch (InterruptedException e) {
+			// Nothing to do, operation has been cancelled
+		}
+	}
+

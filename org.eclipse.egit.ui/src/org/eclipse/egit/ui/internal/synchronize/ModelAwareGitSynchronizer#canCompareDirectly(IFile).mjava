@@ -1,0 +1,31 @@
+	@Override
+	protected boolean canCompareDirectly(IFile file) {
+		// Using a local context for the ResourceMapping computation would make
+		// for a faster test... but we need the model providers to be able to
+		// load remote information. The local file may very well be a single
+		// file, but it is possible that the remote side has multiple files to
+		// take into account for that model. (if part of the logical model has
+		// been locally deleted, or if some new files have been created on the
+		// remote side(s).)
+		final ResourceMapping[] mappings = ResourceUtil
+				.getResourceMappings(file, context);
+
+		for (ResourceMapping mapping : mappings) {
+			try {
+				final ResourceTraversal[] traversals = mapping
+						.getTraversals(context, null);
+				for (ResourceTraversal traversal : traversals) {
+					final IResource[] traversalResources = traversal
+							.getResources();
+					if (traversalResources.length > 1 && Arrays
+							.asList(traversalResources).contains(file)) {
+						return false;
+					}
+				}
+			} catch (CoreException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+		return true;
+	}
+

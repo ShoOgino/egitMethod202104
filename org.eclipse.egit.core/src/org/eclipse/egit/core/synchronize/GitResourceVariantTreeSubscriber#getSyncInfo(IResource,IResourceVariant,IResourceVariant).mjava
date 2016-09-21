@@ -3,10 +3,6 @@
 			IResourceVariant remote) throws TeamException {
 
 		Repository repo = gsds.getData(local.getProject()).getRepository();
-		SyncInfo info = new GitSyncInfo(local, base, remote,
-				getResourceComparator(), cache.get(repo), repo);
-
-		info.init();
-		return info;
+		return getSyncInfo(local, base, remote, repo);
 	}
 

@@ -43,8 +43,7 @@
 					: null;
 			try {
 				if (file != null) {
-					IResource[] resources = new IResource[] { file, };
-					CompareUtils.compare(resources, repository, np, op,
+					CompareUtils.compare(file, repository, np, op,
 							newCommit.getName(), oldCommit.getName(), false,
 							page);
 				} else {

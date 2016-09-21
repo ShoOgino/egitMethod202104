@@ -1,0 +1,14 @@
+	@Override
+	public IResource[] roots() {
+		List<IResource> projects = new ArrayList<>();
+		try {
+			for (GitSynchronizeData data : getDataSet()) {
+				projects.addAll(Arrays.asList(ProjectUtil
+						.getValidOpenProjects(data.getRepository())));
+			}
+		} catch (CoreException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+		return projects.toArray(new IResource[projects.size()]);
+	}
+

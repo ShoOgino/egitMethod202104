@@ -1,0 +1,33 @@
+	@Override
+	public void compare(IFile file, Repository repository, String leftPath,
+			String rightPath, String leftRev, String rightRev,
+			boolean includeLocal, IWorkbenchPage page) throws IOException {
+		try {
+			PlatformUI.getWorkbench().getProgressService()
+					.busyCursorWhile(new IRunnableWithProgress() {
+
+						@Override
+						public void run(IProgressMonitor monitor)
+								throws InvocationTargetException,
+								InterruptedException {
+							try {
+								context = createResourceMappingContext(
+										Collections.singleton(file), repository,
+										leftRev, rightRev, includeLocal,
+										monitor);
+								ModelAwareGitSynchronizer.super.compare(file,
+										repository, leftPath, rightPath,
+										leftRev, rightRev, includeLocal, page);
+							} catch (IOException e) {
+								throw new InvocationTargetException(e);
+							}
+						}
+					});
+		} catch (InvocationTargetException e) {
+			Activator.error(e.getTargetException().getMessage(),
+					e.getTargetException());
+		} catch (InterruptedException e) {
+			// Nothing to do, operation has been cancelled
+		}
+	}
+

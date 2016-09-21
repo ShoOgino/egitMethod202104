@@ -1,4 +1,4 @@
-	private static void loadDataFromGit(GitSynchronizeData gsd,
+	static boolean loadDataFromGit(GitSynchronizeData gsd,
 			TreeFilter filter, GitSyncObjectCache repoCache) {
 		Repository repo = gsd.getRepository();
 
@@ -44,6 +44,8 @@
 				repoCache.addMember(diffEntry);
 		} catch (Exception e) {
 			Activator.logError(e.getMessage(), e);
+			return false;
 		}
+		return true;
 	}
 

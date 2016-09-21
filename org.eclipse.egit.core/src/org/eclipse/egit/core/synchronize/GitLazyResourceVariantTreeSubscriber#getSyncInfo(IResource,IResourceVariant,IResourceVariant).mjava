@@ -1,0 +1,29 @@
+	@Override
+	protected SyncInfo getSyncInfo(IResource local, IResourceVariant base,
+			IResourceVariant remote) throws TeamException {
+		if (getDataSet().shouldBeIncluded(local)) {
+			return super.getSyncInfo(local, base, remote);
+		}
+		// Otherwise, the given resource was not in the original scope this
+		// subscriber was built. However, we want to access it anyway.
+
+		IProject project = local.getProject();
+		Repository repo = ResourceUtil.getRepository(local);
+		if (repo == null) {
+			return null;
+		}
+		GitSynchronizeData data = getDataSet().getData(project);
+		if (data == null) {
+			for (GitSynchronizeData sd : getDataSet()) {
+				if (repo.equals(sd.getRepository())) {
+					data = sd;
+					break;
+				}
+			}
+		}
+		if (data == null) {
+			return null;
+		}
+		return getSyncInfo(local, base, remote, data);
+	}
+
