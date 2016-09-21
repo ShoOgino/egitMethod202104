@@ -23,11 +23,6 @@
 				if (resources.length > 0) {
 					// get mappings from model provider if there are matching resources
 					final ModelProvider model = candidate.getModelProvider();
-					IgnoreInGitSynchronizations adapter = model
-							.getAdapter(IgnoreInGitSynchronizations.class);
-					if (adapter != null) {
-						continue;
-					}
 					final ResourceMapping[] modelMappings = model.getMappings(
 							resource, context, new NullProgressMonitor());
 					for (ResourceMapping mapping : modelMappings)
