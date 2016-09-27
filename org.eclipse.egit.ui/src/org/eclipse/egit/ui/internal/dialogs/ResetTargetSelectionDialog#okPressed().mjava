@@ -1,9 +1,7 @@
 	@Override
 	protected void okPressed() {
 		if (resetType == ResetType.HARD) {
-			if (!MessageDialog.openQuestion(getShell(),
-					UIText.ResetTargetSelectionDialog_ResetQuestion,
-					UIText.ResetTargetSelectionDialog_ResetConfirmQuestion)) {
+			if (!CommandConfirmation.confirmHardReset(getShell(), repo)) {
 				return;
 			}
 		}
