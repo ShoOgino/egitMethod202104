@@ -32,12 +32,15 @@
 						.name());
 		commitLabel.setText(linkText);
 
+		PreferenceBasedDateFormatter dateFormatter = PreferenceBasedDateFormatter
+				.create();
 		PersonIdent author = commit.getAuthorIdent();
 		if (author != null) {
 			setControlVisible(authorLabel, true);
 			authorLabel.setText(MessageFormat.format(
 					UIText.BlameInformationControl_Author, author.getName(),
-					author.getEmailAddress(), author.getWhen()));
+					author.getEmailAddress(),
+					dateFormatter.formatDate(author)));
 		} else
 			setControlVisible(authorLabel, false);
 
@@ -48,7 +51,7 @@
 			committerLabel.setText(MessageFormat.format(
 					UIText.BlameInformationControl_Committer,
 					committer.getName(), committer.getEmailAddress(),
-					committer.getWhen()));
+					dateFormatter.formatDate(committer)));
 		} else
 			setControlVisible(committerLabel, false);
 

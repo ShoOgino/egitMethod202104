@@ -14,14 +14,23 @@
 
 		boolean signedOff = isSignedOffBy(person);
 
-		Text userText = new Text(userArea, SWT.FLAT | SWT.READ_ONLY);
-		userText.setText(MessageFormat.format(
-				author ? UIText.CommitEditorPage_LabelAuthor
-						: UIText.CommitEditorPage_LabelCommitter, person
-						.getName(), person.getEmailAddress(), person.getWhen()));
+		final Text userText = new Text(userArea, SWT.FLAT | SWT.READ_ONLY);
+		setPerson(userText, person, author);
 		toolkit.adapt(userText, false, false);
 		userText.setData(FormToolkit.KEY_DRAW_BORDER, Boolean.FALSE);
-
+		IPropertyChangeListener uiPrefsListener = (event) -> {
+			String property = event.getProperty();
+			if (UIPreferences.DATE_FORMAT.equals(property)
+					|| UIPreferences.DATE_FORMAT_CHOICE.equals(property)) {
+				setPerson(userText, person, author);
+				userText.requestLayout();
+			}
+		};
+		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(uiPrefsListener);
+		userText.addDisposeListener((e) -> {
+			Activator.getDefault().getPreferenceStore()
+					.removePropertyChangeListener(uiPrefsListener);
+		});
 		GridDataFactory.fillDefaults().span(signedOff ? 1 : 2, 1)
 				.applyTo(userText);
 		if (signedOff) {

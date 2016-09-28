@@ -1,5 +1,6 @@
 	private PreferenceBasedDateFormatter(GitDateFormatter.Format gitFormat) {
 		super(gitFormat != null ? gitFormat : GitDateFormatter.Format.DEFAULT);
+		this.gitFormat = gitFormat;
 		SimpleDateFormat format = null;
 		if (gitFormat == null) {
 			String pattern = Activator.getDefault().getPreferenceStore()
