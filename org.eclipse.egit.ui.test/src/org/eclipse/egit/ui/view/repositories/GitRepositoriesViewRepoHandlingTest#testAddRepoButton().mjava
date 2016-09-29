@@ -30,6 +30,7 @@
 		SWTBotTreeItem item = shell.bot().tree().getAllItems()[0];
 		item.check();
 		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		TestUtil.joinJobs(org.eclipse.egit.core.JobFamilies.AUTO_SHARE);
 		refreshAndWait();
 		assertHasRepo(repositoryFile);
 	}
