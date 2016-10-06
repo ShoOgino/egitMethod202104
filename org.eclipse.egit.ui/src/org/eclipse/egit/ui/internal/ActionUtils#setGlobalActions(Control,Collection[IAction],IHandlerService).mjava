@@ -1,0 +1,41 @@
+	/**
+	 * Hooks up the {@link Control} such that the given {@link IAction}s are
+	 * registered with the given {@link IHandlerService} while the control has
+	 * the focus. Ensures that actions are properly de-registered when the
+	 * control is disposed.
+	 *
+	 * @param control
+	 *            to hook up
+	 * @param actions
+	 *            to be registered while the control has the focus
+	 * @param service
+	 *            to register the actions with
+	 */
+	public static void setGlobalActions(Control control,
+			Collection<IAction> actions, IHandlerService service) {
+		Collection<IHandlerActivation> handlerActivations = new HashSet<>();
+		control.addDisposeListener((event) -> {
+			service.deactivateHandlers(handlerActivations);
+			handlerActivations.clear();
+		});
+		final ActiveShellExpression expression = new ActiveShellExpression(
+				control.getShell());
+		control.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				service.deactivateHandlers(handlerActivations);
+				handlerActivations.clear();
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				for (final IAction action : actions) {
+					handlerActivations.add(service.activateHandler(
+							action.getActionDefinitionId(),
+							new ActionHandler(action), expression, true));
+				}
+			}
+		});
+	}
+

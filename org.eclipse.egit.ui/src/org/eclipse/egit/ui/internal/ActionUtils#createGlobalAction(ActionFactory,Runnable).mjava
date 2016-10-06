@@ -1,0 +1,32 @@
+	/**
+	 * Create an {@link IAction} taking the text, id, and action definition id
+	 * from the given {@link ActionFactory}.
+	 *
+	 * @param factory
+	 *            from which the new {@link IAction} shall be derived
+	 * @param action
+	 *            to execute
+	 * @return the new {@link IAction}
+	 */
+	public static IAction createGlobalAction(ActionFactory factory,
+			final Runnable action) {
+		final String text = factory
+				.create(PlatformUI.getWorkbench().getActiveWorkbenchWindow())
+				.getText();
+		Action result = new Action() {
+
+			@Override
+			public String getText() {
+				return text;
+			}
+
+			@Override
+			public void run() {
+				action.run();
+			}
+		};
+		result.setActionDefinitionId(factory.getCommandId());
+		result.setId(factory.getId());
+		return result;
+	}
+

@@ -65,8 +65,8 @@
 			}
 		});
 
-		copy = createStandardAction(ActionFactory.COPY);
-
+		copy = ActionUtils.createGlobalAction(ActionFactory.COPY,
+				() -> doCopy());
 		table.setUseHashlookup(true);
 
 		table.addSelectionChangedListener(new ISelectionChangedListener() {

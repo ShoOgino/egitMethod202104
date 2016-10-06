@@ -1,0 +1,18 @@
+	/**
+	 * Hooks up the {@link Control} such that the given {@link IAction}s are
+	 * registered with the given {@link IHandlerService} while the control has
+	 * the focus. Ensures that actions are properly de-registered when the
+	 * control is disposed.
+	 *
+	 * @param control
+	 *            to hook up
+	 * @param service
+	 *            to register the actions with
+	 * @param actions
+	 *            to be registered while the control has the focus
+	 */
+	public static void setGlobalActions(Control control,
+			IHandlerService service, IAction... actions) {
+		setGlobalActions(control, Arrays.asList(actions), service);
+	}
+
