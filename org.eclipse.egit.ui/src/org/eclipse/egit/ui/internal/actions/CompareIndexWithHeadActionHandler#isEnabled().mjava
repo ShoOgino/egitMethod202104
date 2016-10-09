@@ -15,10 +15,13 @@
 		if (resource instanceof IFile) {
 			// action is only working on files. Avoid calculation
 			// of unnecessary expensive IndexDiff on a folder
-			return isStaged(repository, resource.getLocation(), false);
+			return ResourceStateFactory.getInstance().get(resource).isStaged();
 		} else if (resource == null) {
 			IPath location = AdapterUtils.adapt(selected, IPath.class);
-			return isStaged(repository, location, false);
+			if (location != null) {
+				return ResourceStateFactory.getInstance().get(location.toFile())
+						.isStaged();
+			}
 		}
 
 		return false;
