@@ -23,13 +23,12 @@
 		fileiItem.doubleClick();
 		assertTrue(bot.activeEditor().getTitle().equals(FILE1));
 		bot.activeEditor().close();
-		TestUtil.processUIEvents();
+		refreshAndWait();
 
 		// open a branch (checkout)
 		checkoutWithDoubleClick(tree, "master");
 		String contentMaster = getTestFileContent();
 		checkoutWithDoubleClick(tree, "stable");
-		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		String contentStable = getTestFileContent();
 		assertNotEquals("Content of master and stable should differ",
 				contentMaster, contentStable);

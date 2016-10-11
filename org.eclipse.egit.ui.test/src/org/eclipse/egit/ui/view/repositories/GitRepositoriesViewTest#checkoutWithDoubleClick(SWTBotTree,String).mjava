@@ -6,8 +6,7 @@
 		SWTBotShell shell = bot
 				.shell(UIText.RepositoriesView_CheckoutConfirmationTitle);
 		shell.bot().button(IDialogConstants.OK_LABEL).click();
-		TestUtil.processUIEvents();
-		TestUtil.waitForJobs(50, 5000);
+		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 		refreshAndWait();
 	}
 
