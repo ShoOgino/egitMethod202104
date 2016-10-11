@@ -40,8 +40,10 @@
 		ContextMenuHelper.clickContextMenuSync(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("CheckoutCommand"));
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
-		localItem.getNode(1).select();
 		refreshAndWait();
+		localItem = myRepoViewUtil.getLocalBranchesItem(view.bot().tree(),
+				repositoryFile);
+		localItem.getNode(1).select();
 		ContextMenuHelper.clickContextMenuSync(view.bot().tree(), myUtil
 				.getPluginLocalizedValue("RepoViewDeleteBranch.label"));
 		refreshAndWait();
