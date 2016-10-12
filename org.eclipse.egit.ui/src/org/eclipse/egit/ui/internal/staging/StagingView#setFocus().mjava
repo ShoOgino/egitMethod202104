@@ -1,7 +1,7 @@
 	@Override
 	public void setFocus() {
 		Tree tree = unstagedViewer.getTree();
-		if (tree.getItemCount() > 0) {
+		if (tree.getItemCount() > 0 && !isAutoStageOnCommitEnabled()) {
 			unstagedViewer.getControl().setFocus();
 			return;
 		}
