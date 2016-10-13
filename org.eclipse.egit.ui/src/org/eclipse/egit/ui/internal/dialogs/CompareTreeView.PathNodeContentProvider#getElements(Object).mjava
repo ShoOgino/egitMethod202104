@@ -1,6 +1,9 @@
 		@Override
 		public Object[] getElements(Object inputElement) {
 			ContainerNode rootContainer = containerNodes.get(new Path("")); //$NON-NLS-1$
+			if (rootContainer == null) {
+				return new PathNode[0];
+			}
 			if (rootContainer.isOnlyEqualContent() && !showEquals)
 				return new String[] { UIText.CompareTreeView_NoDifferencesFoundMessage };
 

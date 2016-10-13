@@ -12,14 +12,12 @@
 		} else {
 			selection = new StructuredSelection(new ArrayList<>(collection));
 		}
-		for (IResource resource : SelectionUtils
-				.getSelectedResources(selection)) {
-			if (resource == null || !resource.isAccessible()
-					|| RepositoryMapping.getMapping(resource) == null) {
+		for (IPath path : SelectionUtils.getSelectedLocations(selection)) {
+			if (path == null || ResourceUtil.getRepository(path) == null) {
 				continue;
 			}
 			IResourceState state = ResourceStateFactory.getInstance()
-					.get(resource);
+					.get(path.toFile());
 			switch (property) {
 			case HAS_STAGED_CHANGES:
 				if (state.isStaged()) {
@@ -33,6 +31,11 @@
 				break;
 			case HAS_NOT_IGNORED_RESOURCES:
 				if (!state.isIgnored()) {
+					return true;
+				}
+				break;
+			case HAS_TRACKED_RESOURCES:
+				if (state.isTracked()) {
 					return true;
 				}
 				break;
