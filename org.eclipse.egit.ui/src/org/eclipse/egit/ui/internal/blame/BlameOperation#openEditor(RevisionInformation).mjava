@@ -1,20 +1,22 @@
 	private void openEditor(final RevisionInformation info) {
-		AbstractDecoratedTextEditor editor;
+		IEditorPart editorPart;
 		try {
-			if (storage instanceof IFile)
-				editor = RevisionAnnotationController.openEditor(page,
-						(IFile) storage);
-			else
-				editor = RevisionAnnotationController.openEditor(page, storage,
-						storage);
-		} catch (PartInitException e) {
+			if (fileRevision != null) {
+				editorPart = EgitUiEditorUtils.openEditor(page, fileRevision,
+						null);
+			} else {
+				editorPart = IDE.openEditor(page, (IFile) storage,
+						OpenStrategy.activateOnOpen());
+			}
+		} catch (CoreException e) {
 			Activator.handleError("Error displaying blame annotations", e, //$NON-NLS-1$
 					false);
 			return;
 		}
-		if (editor == null)
+		if (!(editorPart instanceof AbstractDecoratedTextEditor)) {
 			return;
-
+		}
+		AbstractDecoratedTextEditor editor = (AbstractDecoratedTextEditor) editorPart;
 		// IRevisionRulerColumn would also be possible but using
 		// IVerticalRulerInfo seems to work in more situations.
 		IVerticalRulerInfo rulerInfo = AdapterUtils.adapt(editor,

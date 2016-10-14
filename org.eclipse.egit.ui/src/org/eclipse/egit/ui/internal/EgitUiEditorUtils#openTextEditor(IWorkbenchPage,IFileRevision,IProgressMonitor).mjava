@@ -13,8 +13,9 @@
 	public static void openTextEditor(IWorkbenchPage page,
 			IFileRevision revision, IProgressMonitor monitor)
 			throws CoreException {
+		SubMonitor progress = SubMonitor.convert(monitor, 1);
 		FileRevisionEditorInput fileRevEditorInput = FileRevisionEditorInput
-				.createEditorInputFor(revision, monitor);
+				.createEditorInputFor(revision, progress.newChild(1));
 		openEditor(page, fileRevEditorInput, EditorsUI.DEFAULT_TEXT_EDITOR_ID);
 	}
 

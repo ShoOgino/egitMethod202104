@@ -7,18 +7,15 @@
 	 * @param startCommit
 	 * @param shell
 	 * @param page
-	 * @param lineNumberToReveal
-	 *            0-based line number to reveal, -1 for no reveal
 	 */
-	public BlameOperation(Repository repository, IStorage storage, String path,
-			RevCommit startCommit, Shell shell, IWorkbenchPage page,
-			int lineNumberToReveal) {
+	public BlameOperation(Repository repository, IFile storage, String path,
+			RevCommit startCommit, Shell shell, IWorkbenchPage page) {
 		this.repository = repository;
 		this.storage = storage;
 		this.path = path;
 		this.startCommit = startCommit;
 		this.shell = shell;
 		this.page = page;
-		this.lineNumberToReveal = lineNumberToReveal;
+		this.lineNumberToReveal = -1;
 	}
 

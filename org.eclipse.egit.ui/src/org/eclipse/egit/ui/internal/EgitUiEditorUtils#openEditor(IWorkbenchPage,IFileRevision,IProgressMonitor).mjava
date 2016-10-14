@@ -8,14 +8,15 @@
 	public static IEditorPart openEditor(IWorkbenchPage page,
 			IFileRevision revision, IProgressMonitor monitor)
 			throws CoreException {
-		IStorage file = revision.getStorage(monitor);
+		SubMonitor progress = SubMonitor.convert(monitor, 2);
+		IStorage file = revision.getStorage(progress.newChild(1));
 		if (file instanceof IFile) {
 			// if this is the current workspace file, open it
 			return IDE.openEditor(page, (IFile) file, OpenStrategy
 					.activateOnOpen());
 		} else {
 			FileRevisionEditorInput fileRevEditorInput = FileRevisionEditorInput
-					.createEditorInputFor(revision, monitor);
+					.createEditorInputFor(revision, progress.newChild(1));
 			IEditorPart part = openEditor(page, fileRevEditorInput);
 			return part;
 		}

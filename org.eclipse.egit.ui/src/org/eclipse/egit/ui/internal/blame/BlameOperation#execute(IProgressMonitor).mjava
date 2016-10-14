@@ -1,5 +1,6 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
+		SubMonitor progress = SubMonitor.convert(monitor, 3);
 		final RevisionInformation info = new RevisionInformation();
 
 		final BlameCommand command = new BlameCommand(repository)
@@ -26,6 +27,7 @@
 			Activator.error(e1.getMessage(), e1);
 			return;
 		}
+		progress.worked(1);
 		if (result == null)
 			return;
 
@@ -66,10 +68,16 @@
 		if (previous != null)
 			previous.register();
 
+		progress.worked(1);
 		if (shell.isDisposed()) {
 			return;
 		}
 
+		if (fileRevision != null) {
+			storage = fileRevision.getStorage(progress.newChild(1));
+		} else {
+			progress.worked(1);
+		}
 		shell.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
