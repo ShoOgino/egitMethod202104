@@ -1,7 +1,8 @@
 		@Override
 		public void dragFinished(DragSourceEvent event) {
 			if (LocalSelectionTransfer.getTransfer().isSupportedType(
-					event.dataType))
+					event.dataType)) {
 				LocalSelectionTransfer.getTransfer().setSelection(null);
+			}
 		}
 

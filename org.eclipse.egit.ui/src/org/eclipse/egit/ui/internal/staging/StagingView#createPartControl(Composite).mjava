@@ -77,51 +77,8 @@
 		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
 				.applyTo(unstagedComposite);
 
-		unstagedViewer = createTree(unstagedComposite);
-		GridDataFactory.fillDefaults().grab(true, true)
-				.applyTo(unstagedViewer.getControl());
-		unstagedViewer.getTree().setData(FormToolkit.KEY_DRAW_BORDER,
-				FormToolkit.TREE_BORDER);
-		unstagedViewer.setLabelProvider(createLabelProvider(unstagedViewer));
-		unstagedViewer.setContentProvider(createStagingContentProvider(true));
-		unstagedViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY
-				| DND.DROP_LINK,
-				new Transfer[] { LocalSelectionTransfer.getTransfer(),
-						FileTransfer.getInstance() }, new StagingDragListener(
-						unstagedViewer));
-		unstagedViewer.addDropSupport(DND.DROP_MOVE,
-				new Transfer[] { LocalSelectionTransfer.getTransfer() },
-				new DropTargetAdapter() {
-					@Override
-					public void drop(DropTargetEvent event) {
-						// Bug 411466: It is very important that detail is set
-						// to DND.DROP_COPY. If it was left as DND.DROP_MOVE and
-						// the drag comes from the Navigator view, the code in
-						// NavigatorDragAdapter would delete the resources.
-						event.detail = DND.DROP_COPY;
-						if (event.data instanceof IStructuredSelection) {
-							final IStructuredSelection selection = (IStructuredSelection) event.data;
-							unstage(selection);
-						}
-					}
-
-					@Override
-					public void dragOver(DropTargetEvent event) {
-						event.detail = DND.DROP_MOVE;
-					}
-				});
-		unstagedViewer.addOpenListener(new IOpenListener() {
-			@Override
-			public void open(OpenEvent event) {
-				compareWith(event);
-			}
-		});
-		unstagedViewer.setComparator(
-				new StagingEntryComparator(getSortCheckState(), getPreferenceStore()
-						.getBoolean(UIPreferences.STAGING_VIEW_FILENAME_MODE)));
-		enableAutoExpand(unstagedViewer);
-		addListenerToDisableAutoExpandOnCollapse(unstagedViewer);
-
+		unstagedViewer = createViewer(unstagedComposite, true,
+				selection -> unstage(selection));
 		Composite rebaseAndCommitComposite = toolkit.createComposite(mainSashForm);
 		rebaseAndCommitComposite.setLayout(GridLayoutFactory.fillDefaults().create());
 
@@ -385,59 +342,12 @@
 		GridLayoutFactory.fillDefaults().extendedMargins(2, 2, 2, 2)
 				.applyTo(stagedComposite);
 
-		stagedViewer = createTree(stagedComposite);
-		GridDataFactory.fillDefaults().grab(true, true)
-				.applyTo(stagedViewer.getControl());
-		stagedViewer.getTree().setData(FormToolkit.KEY_DRAW_BORDER,
-				FormToolkit.TREE_BORDER);
-		IBaseLabelProvider labelProvider = createLabelProvider(stagedViewer);
-		labelProvider.addListener(new ILabelProviderListener() {
-
-			@Override
-			public void labelProviderChanged(LabelProviderChangedEvent event) {
-				updateCommitButtons();
-			}
+		stagedViewer = createViewer(stagedComposite, false,
+				selection -> stage(selection));
+		stagedViewer.getLabelProvider().addListener(event -> {
+			updateMessage();
+			updateCommitButtons();
 		});
-		stagedViewer.setLabelProvider(labelProvider);
-
-		stagedViewer.setContentProvider(createStagingContentProvider(false));
-		stagedViewer.addDragSupport(
-				DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK,
-				new Transfer[] { LocalSelectionTransfer.getTransfer(),
-						FileTransfer.getInstance() }, new StagingDragListener(
-						stagedViewer));
-		stagedViewer.addDropSupport(DND.DROP_MOVE,
-				new Transfer[] { LocalSelectionTransfer.getTransfer() },
-				new DropTargetAdapter() {
-					@Override
-					public void drop(DropTargetEvent event) {
-						// Bug 411466: It is very important that detail is set
-						// to DND.DROP_COPY. If it was left as DND.DROP_MOVE and
-						// the drag comes from the Navigator view, the code in
-						// NavigatorDragAdapter would delete the resources.
-						event.detail = DND.DROP_COPY;
-						if (event.data instanceof IStructuredSelection) {
-							final IStructuredSelection selection = (IStructuredSelection) event.data;
-							stage(selection);
-						}
-					}
-
-					@Override
-					public void dragOver(DropTargetEvent event) {
-						event.detail = DND.DROP_MOVE;
-					}
-				});
-		stagedViewer.addOpenListener(new IOpenListener() {
-			@Override
-			public void open(OpenEvent event) {
-				compareWith(event);
-			}
-		});
-		stagedViewer.setComparator(
-				new StagingEntryComparator(getSortCheckState(), getPreferenceStore()
-						.getBoolean(UIPreferences.STAGING_VIEW_FILENAME_MODE)));
-		enableAutoExpand(stagedViewer);
-		addListenerToDisableAutoExpandOnCollapse(stagedViewer);
 
 		selectionChangedListener = new ISelectionListener() {
 			@Override

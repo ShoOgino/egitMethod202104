@@ -2,30 +2,46 @@
 		public void dragSetData(DragSourceEvent event) {
 			IStructuredSelection selection = (IStructuredSelection) provider
 					.getSelection();
-			if (selection.isEmpty())
+			if (selection.isEmpty()) {
+				// Should never happen as per dragStart()
 				return;
-
+			}
 			if (LocalSelectionTransfer.getTransfer().isSupportedType(
 					event.dataType)) {
-				LocalSelectionTransfer.getTransfer().setSelection(selection);
+				LocalSelectionTransfer.getTransfer().setSelection(
+						new StagingDragSelection(selection, unstaged));
 				return;
 			}
 
 			if (FileTransfer.getInstance().isSupportedType(event.dataType)) {
-				List<String> files = new ArrayList<>();
+				Set<String> files = new HashSet<>();
 				for (Object selected : selection.toList())
 					if (selected instanceof StagingEntry) {
-						StagingEntry entry = (StagingEntry) selected;
-						File file = new File(
-								entry.getRepository().getWorkTree(),
-								entry.getPath());
-						if (file.exists())
-							files.add(file.getAbsolutePath());
+						add((StagingEntry) selected, files);
+					} else if (selected instanceof StagingFolderEntry) {
+						// Only add the files, otherwise much more than intended
+						// might be copied or moved. The user selected a staged
+						// or unstaged folder, so only the staged or unstaged
+						// files inside that folder should be included, not
+						// everything.
+						StagingFolderEntry folder = (StagingFolderEntry) selected;
+						for (StagingEntry entry : contentProvider
+								.getStagingEntriesFiltered(folder)) {
+							add(entry, files);
+						}
 					}
 				if (!files.isEmpty()) {
 					event.data = files.toArray(new String[files.size()]);
 					return;
 				}
+				// We may still end up with an empty list here if the selection
+				// contained only deleted files. In that case, the drag&drop
+				// will log an SWTException: Data does not have correct format
+				// for type. Note that GTK sometimes creates the FileTransfer
+				// up front even though a drag between our own viewers would
+				// need only the LocalSelectionTransfer. Drag&drop between our
+				// viewers still works (also on GTK) even if the creation of
+				// the FileTransfer fails.
 			}
 		}
 
