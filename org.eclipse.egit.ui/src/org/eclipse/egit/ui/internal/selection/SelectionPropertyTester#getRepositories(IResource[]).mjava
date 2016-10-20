@@ -1,0 +1,20 @@
+	/**
+	 * @param resources
+	 *            the resources
+	 * @return a collection containing all the repositories the given resources
+	 *         belong to, or an empty collection if a resource is not in a git
+	 *         repository
+	 */
+	private static Collection<Repository> getRepositories(
+			IResource[] resources) {
+		Set<Repository> result = new HashSet<>();
+		for (IResource resource : resources) {
+			Repository r = getRepositoryOfMapping(resource);
+			if (r == null) {
+				return Collections.emptySet();
+			}
+			result.add(r);
+		}
+		return result;
+	}
+
