@@ -6,6 +6,8 @@
 		bot.shell("Pull").setFocus();
 		assertTrue("Remote combo misses items",
 				bot.comboBox().items().length > 1);
+		bot.textWithLabel(UIText.PullWizardPage_referenceLabel)
+				.setText("master");
 		bot.button(IDialogConstants.FINISH_LABEL).click();
 		ShellWithTextPrefixMatcher shellWithTextPrefixMatcher = new ShellWithTextPrefixMatcher(
 				"Pull Result");
