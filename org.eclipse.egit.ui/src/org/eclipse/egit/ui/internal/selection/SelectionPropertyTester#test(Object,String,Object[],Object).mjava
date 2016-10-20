@@ -13,6 +13,10 @@
 			Repository repository = getRepositoryOfProjects(collection, false);
 			return repository != null;
 
+		} else if ("selectionSingleRepository".equals(property)) { //$NON-NLS-1$
+			return SelectionUtils
+					.getRepository(getStructuredSelection(collection)) != null;
+
 		} else if ("resourcesSingleRepository".equals(property)) { //$NON-NLS-1$
 			IStructuredSelection selection = getStructuredSelection(collection);
 
