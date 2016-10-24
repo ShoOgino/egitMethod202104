@@ -1,6 +1,11 @@
 	static String gatherRevision(ExecutionEvent event) throws IOException {
 		final GitFlowRepository gfRepo = GitFlowHandlerUtil
 				.getRepository(event);
+		if (gfRepo == null) {
+			throw new IllegalStateException(
+					"Gitflow command called with no Gitflow repository present"); //$NON-NLS-1$
+		}
+
 		Ref develop = gfRepo.getRepository()
 				.exactRef(gfRepo.getConfig().getDevelopFull());
 		if (develop == null) {
