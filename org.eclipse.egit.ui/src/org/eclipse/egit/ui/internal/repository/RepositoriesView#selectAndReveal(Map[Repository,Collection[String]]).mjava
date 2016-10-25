@@ -1,0 +1,17 @@
+	private void selectAndReveal(
+			Map<Repository, Collection<String>> pathsByRepo) {
+		final List<RepositoryTreeNode> nodesToShow = new ArrayList<>();
+		for (Map.Entry<Repository, Collection<String>> entry : pathsByRepo
+				.entrySet()) {
+			Repository repository = entry.getKey();
+			for (String repoPath : entry.getValue()) {
+				final RepositoryTreeNode node = getNodeForPath(repository,
+						repoPath);
+				if (node != null) {
+					nodesToShow.add(node);
+				}
+			}
+		}
+		selectReveal(new StructuredSelection(nodesToShow));
+	}
+

@@ -6,39 +6,17 @@
 	 *            the paths to show
 	 */
 	private void showPaths(final List<IPath> paths) {
-		final List<RepositoryTreeNode> nodesToShow = new ArrayList<>();
-
-		Map<Repository, Collection<String>> pathsByRepo = ResourceUtil.splitPathsByRepository(paths);
-		for (Map.Entry<Repository, Collection<String>> entry : pathsByRepo.entrySet()) {
-			Repository repository = entry.getKey();
-			try {
-				boolean added = repositoryUtil.addConfiguredRepository(repository.getDirectory());
-				if (added)
-					scheduleRefresh(0);
-			} catch (IllegalArgumentException iae) {
-				Activator.handleError(iae.getMessage(), iae, false);
-				continue;
-			}
-
-			if (this.scheduledJob != null)
-				try {
-					this.scheduledJob.join();
-				} catch (InterruptedException e) {
-					Activator.handleError(e.getMessage(), e, false);
+		Map<Repository, Collection<String>> pathsByRepo = ResourceUtil
+				.splitPathsByRepository(paths);
+		boolean added = checkNotConfiguredRepositories(pathsByRepo);
+		if (added) {
+			scheduleRefresh(0, () -> {
+				if (UIUtils.isUsable(getCommonViewer())) {
+					selectAndReveal(pathsByRepo);
 				}
-
-			for (String repoPath : entry.getValue()) {
-				final RepositoryTreeNode node = getNodeForPath(repository, repoPath);
-				if (node != null)
-					nodesToShow.add(node);
-			}
+			});
+		} else {
+			selectAndReveal(pathsByRepo);
 		}
-
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				selectReveal(new StructuredSelection(nodesToShow));
-			}
-		});
 	}
 

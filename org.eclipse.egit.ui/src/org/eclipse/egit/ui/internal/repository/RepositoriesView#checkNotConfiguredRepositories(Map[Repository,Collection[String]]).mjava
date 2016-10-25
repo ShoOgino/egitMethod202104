@@ -1,0 +1,19 @@
+	private boolean checkNotConfiguredRepositories(
+			Map<Repository, Collection<String>> pathsByRepo) {
+		boolean added = false;
+		for (Map.Entry<Repository, Collection<String>> entry : pathsByRepo.entrySet()) {
+			Repository repository = entry.getKey();
+			try {
+				boolean newOne = repositoryUtil
+						.addConfiguredRepository(repository.getDirectory());
+				if (newOne) {
+					added = true;
+				}
+			} catch (IllegalArgumentException iae) {
+				Activator.handleError(iae.getMessage(), iae, false);
+				continue;
+			}
+		}
+		return added;
+	}
+
