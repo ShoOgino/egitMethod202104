@@ -19,6 +19,10 @@
 			Thread.sleep(50);
 			jobs = jobManager.find(family);
 			if (System.currentTimeMillis() - start > maxWaitTime) {
+				if (busy(jobs)) {
+					System.out.println("Following jobs were still running: "
+							+ getJobNames(jobs));
+				}
 				return;
 			}
 		}

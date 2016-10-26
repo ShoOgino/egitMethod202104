@@ -3,6 +3,7 @@
 		Repository repository = testRepository.getRepository();
 		InitOperation initOperation = new InitOperation(repository);
 		initOperation.execute(null);
+
 		GitFlowRepository gfRepo = new GitFlowRepository(repository);
 		assertEquals(gfRepo.getConfig().getDevelopFull(), repository.getFullBranch());
 	}

@@ -1,0 +1,6 @@
+	private void assertBranchEquals(String expected, String key,
+			Repository repo) {
+		assertEquals("Unexpected branch in: " + repo.getConfig().toText(),
+				expected, getBranch(repo, key));
+	}
+

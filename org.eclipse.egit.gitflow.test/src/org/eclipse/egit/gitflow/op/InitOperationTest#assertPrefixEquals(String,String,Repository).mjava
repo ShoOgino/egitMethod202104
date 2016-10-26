@@ -1,0 +1,8 @@
+	private void assertPrefixEquals(String expected, String key,
+			Repository repo) {
+		assertEquals(
+				"Unexpected value for key " + key + ", config: "
+						+ repo.getConfig().toText(),
+				expected, getPrefix(repo, key));
+	}
+
