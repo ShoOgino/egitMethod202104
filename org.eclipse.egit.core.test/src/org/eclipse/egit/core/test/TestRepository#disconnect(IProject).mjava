@@ -2,13 +2,19 @@
 	 * Disconnects provider from project
 	 *
 	 * @param project
-	 * @throws CoreException
+	 * @throws Exception
 	 */
-	public void disconnect(IProject project) throws CoreException {
+	public void disconnect(IProject project) throws Exception {
 		Collection<IProject> projects = Collections.singleton(project
 				.getProject());
 		DisconnectProviderOperation disconnect = new DisconnectProviderOperation(
 				projects);
-		disconnect.execute(null);
+		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) throws CoreException {
+				disconnect.execute(null);
+			}
+		}, project, IWorkspace.AVOID_UPDATE, null);
+		TestUtils.waitForJobs(5000, null);
 	}
 
