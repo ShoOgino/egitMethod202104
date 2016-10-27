@@ -3,7 +3,7 @@
 		if (!results.isEmpty())
 			throw new CoreException(new Status(IStatus.ERROR, Activator
 					.getPluginId(), CoreText.OperationAlreadyExecuted));
-		SubMonitor progress = SubMonitor.convert(m,
+		SubMonitor totalProgress = SubMonitor.convert(m,
 				NLS.bind(CoreText.PullOperation_TaskName,
 						Integer.valueOf(repositories.length)),
 				1);
@@ -20,11 +20,15 @@
 					PullResult pullResult = null;
 					try (Git git = new Git(repository)) {
 						PullCommand pull = git.pull();
+						SubMonitor newChild = progress.newChild(1,
+								SubMonitor.SUPPRESS_NONE);
 						pull.setProgressMonitor(new EclipseGitProgressTransformer(
-										progress.newChild(1)));
+										newChild));
 						pull.setTimeout(timeout);
 						pull.setCredentialsProvider(credentialsProvider);
 						PullReferenceConfig config = configs.get(repository);
+						newChild.setTaskName(
+								getPullTaskName(repository, config));
 						if (config != null) {
 							if (config.getRemote() != null) {
 								pull.setRemote(config.getRemote());
@@ -59,11 +63,11 @@
 						results.put(repository,
 								Activator.error(cause.getMessage(), cause));
 					} finally {
-						progress.worked(1);
 						if (refreshNeeded(pullResult)) {
-							progress.setWorkRemaining(2);
 							ProjectUtil.refreshValidProjects(validProjects,
-									progress.newChild(1));
+									progress.newChild(1,
+											SubMonitor.SUPPRESS_NONE));
+						} else {
 							progress.worked(1);
 						}
 					}
@@ -72,6 +76,6 @@
 		};
 		// lock workspace to protect working tree changes
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-				IWorkspace.AVOID_UPDATE, progress);
+				IWorkspace.AVOID_UPDATE, totalProgress);
 	}
 
