@@ -1,5 +1,6 @@
 	@Override
 	public void init(IWorkbench workbench) {
-		// Nothing to do
+		corePreferences = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				org.eclipse.egit.core.Activator.getPluginId());
 	}
 

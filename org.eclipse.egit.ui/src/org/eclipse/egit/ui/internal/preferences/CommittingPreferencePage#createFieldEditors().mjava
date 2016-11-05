@@ -31,6 +31,18 @@
 				UIText.CommittingPreferencePage_includeUntrackedFilesTooltip);
 		addField(includeUntracked);
 
+		BooleanFieldEditor autoStageDeletion = new BooleanFieldEditor(
+				GitCorePreferences.core_autoStageDeletion,
+				UIText.CommittingPreferencePage_autoStageDeletion,
+				generalGroup) {
+
+			@Override
+			public IPreferenceStore getPreferenceStore() {
+				return corePreferences;
+			}
+		};
+		addField(autoStageDeletion);
+
 		IntegerFieldEditor historySize = new IntegerFieldEditor(
 				UIPreferences.COMMIT_DIALOG_HISTORY_SIZE,
 				UIText.CommittingPreferencePage_commitMessageHistory,

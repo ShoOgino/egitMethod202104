@@ -1,5 +1,8 @@
 	@Test
 	public void mergeModelWithDeletedFileNoConflict() throws Exception {
+		IEclipsePreferences p = InstanceScope.INSTANCE
+				.getNode(Activator.getPluginId());
+		p.putBoolean(GitCorePreferences.core_autoStageDeletion, true);
 		File file1 = testRepo.createFile(iProject, "file1."
 				+ SAMPLE_FILE_EXTENSION);
 		File file2 = testRepo.createFile(iProject, "file2."

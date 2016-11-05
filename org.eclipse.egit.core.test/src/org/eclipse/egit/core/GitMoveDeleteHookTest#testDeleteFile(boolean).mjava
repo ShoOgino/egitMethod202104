@@ -1,5 +1,10 @@
-	@Test
-	public void testDeleteFile() throws Exception {
+	@Theory
+	public void testDeleteFile(boolean autoStageDelete) throws Exception {
+		IEclipsePreferences p = InstanceScope.INSTANCE
+				.getNode(Activator.getPluginId());
+		p.putBoolean(GitCorePreferences.core_autoStageDeletion,
+				autoStageDelete);
+
 		TestProject project = initRepoInsideProjectInsideWorkspace();
 		testUtils.addFileToProject(project.getProject(), "file.txt",
 				"some text");
@@ -27,8 +32,13 @@
 
 		// Check index for the deleted file
 		dirCache.read();
-		assertEquals(1, dirCache.getEntryCount());
-		assertNull(dirCache.getEntry("file.txt"));
+		if (autoStageDelete) {
+			assertEquals(1, dirCache.getEntryCount());
+			assertNull(dirCache.getEntry("file.txt"));
+		} else {
+			assertEquals(2, dirCache.getEntryCount());
+			assertNotNull(dirCache.getEntry("file.txt"));
+		}
 		assertNotNull(dirCache.getEntry("file2.txt"));
 		// Actual file is deleted
 		assertFalse(file.exists());
