@@ -1,6 +1,8 @@
 	private void dotestMoveProjectWithinRepo(String srcParent,
 			String srcProjectName, String dstParent, String dstProjecName,
-			String gitDir, boolean sourceInsideWs) throws Exception {
+			String gitDir, boolean sourceInsideWs, boolean autoStageMoves)
+			throws Exception {
+		configureAutoStageMoves(autoStageMoves);
 		String gdRelativeSrcParent = srcParent + srcProjectName + "/";
 		if (gdRelativeSrcParent.startsWith(gitDir))
 			gdRelativeSrcParent = gdRelativeSrcParent
@@ -58,11 +60,14 @@
 		// Check that our file exists on disk has a new location in the index
 		dirCache.read();
 		assertTrue(project2.getFile("file.txt").exists());
-		assertNotNull(dirCache.getEntry(gdRelativeDstParent + "file.txt"));
-
-		// Same content in index as before the move, i.e. not same as on disk
-		assertEquals(oldContentId,
-				dirCache.getEntry(gdRelativeDstParent + "file.txt")
-						.getObjectId());
+		if (autoStageMoves) {
+			assertNotNull(dirCache.getEntry(gdRelativeDstParent + "file.txt"));
+			// Same content in index as before the move, i.e. not same as on
+			// disk
+			assertEquals(oldContentId, dirCache
+					.getEntry(gdRelativeDstParent + "file.txt").getObjectId());
+		} else {
+			assertNull(dirCache.getEntry(gdRelativeDstParent + "file.txt"));
+		}
 	}
 

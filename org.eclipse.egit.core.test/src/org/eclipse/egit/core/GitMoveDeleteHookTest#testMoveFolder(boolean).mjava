@@ -1,10 +1,12 @@
 	/**
 	 * Rename "folder" to "dir".
-	 *
+	 * @param autoStageMoves
 	 * @throws Exception
 	 */
-	@Test
-	public void testMoveFolder() throws Exception {
+	@Theory
+	public void testMoveFolder(boolean autoStageMoves) throws Exception {
+		configureAutoStageMoves(autoStageMoves);
+
 		TestProject project = initRepoInsideProjectInsideWorkspace();
 		testUtils.addFileToProject(project.getProject(), "folder/file.txt",
 				"some text");
@@ -34,11 +36,16 @@
 
 		dirCache.read();
 		assertTrue(project.getProject().getFile("dir/file.txt").exists());
-		assertNull(dirCache.getEntry("folder/file.txt"));
-		assertNotNull(dirCache.getEntry("dir/file.txt"));
-		// Same content in index as before the move
-		assertEquals(oldContentId, dirCache.getEntry("dir/file.txt")
-				.getObjectId());
+		if (autoStageMoves) {
+			assertNull(dirCache.getEntry("folder/file.txt"));
+			assertNotNull(dirCache.getEntry("dir/file.txt"));
+			// Same content in index as before the move
+			assertEquals(oldContentId,
+					dirCache.getEntry("dir/file.txt").getObjectId());
+		} else {
+			assertNotNull(dirCache.getEntry("folder/file.txt"));
+			assertNull(dirCache.getEntry("dir/file.txt"));
+		}
 		// Not moved file still there
 		assertNotNull(dirCache.getEntry("folder2/file.txt"));
 	}

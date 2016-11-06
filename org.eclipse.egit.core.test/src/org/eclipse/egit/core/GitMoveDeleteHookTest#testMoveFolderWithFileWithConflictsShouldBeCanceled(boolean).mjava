@@ -1,5 +1,8 @@
-	@Test
-	public void testMoveFolderWithFileWithConflictsShouldBeCanceled() throws Exception {
+	@Theory
+	public void testMoveFolderWithFileWithConflictsShouldBeCanceled(
+			boolean autoStageMoves) throws Exception {
+		configureAutoStageMoves(autoStageMoves);
+
 		TestProject project = initRepoInsideProjectInsideWorkspace();
 		String filePath = "folder/file.txt";
 		IFile file = testUtils.addFileToProject(project.getProject(), filePath, "some text");

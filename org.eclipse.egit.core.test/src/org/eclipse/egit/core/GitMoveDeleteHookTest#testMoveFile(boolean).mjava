@@ -1,5 +1,7 @@
-	@Test
-	public void testMoveFile() throws Exception {
+	@Theory
+	public void testMoveFile(boolean autoStageMoves) throws Exception {
+		configureAutoStageMoves(autoStageMoves);
+
 		TestProject project = initRepoInsideProjectInsideWorkspace();
 		testUtils.addFileToProject(project.getProject(), "file.txt",
 				"some text");
@@ -28,9 +30,14 @@
 
 		dirCache.read();
 		assertTrue(project.getProject().getFile("data.txt").exists());
-		assertNotNull(dirCache.getEntry("data.txt"));
-		// Same content in index as before the move
-		assertEquals(oldContentId, dirCache.getEntry("data.txt").getObjectId());
+		if (autoStageMoves) {
+			assertNotNull(dirCache.getEntry("data.txt"));
+			// Same content in index as before the move
+			assertEquals(oldContentId,
+					dirCache.getEntry("data.txt").getObjectId());
+		} else {
+			assertNull(dirCache.getEntry("data.txt"));
+		}
 
 		// Not moved file still in its old place
 		assertNotNull(dirCache.getEntry("file2.txt"));

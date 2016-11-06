@@ -1,0 +1,9 @@
+	private void dotestMoveProjectWithinRepoOutsideWorkspace(String srcParent,
+			String srcProjectName, String dstParent, String dstProjecName,
+			String gitDir, boolean autoStageMoves) throws CoreException,
+			IOException, Exception,
+			CorruptObjectException {
+		dotestMoveProjectWithinRepo(srcParent, srcProjectName, dstParent,
+				dstProjecName, gitDir, false, autoStageMoves);
+	}
+
