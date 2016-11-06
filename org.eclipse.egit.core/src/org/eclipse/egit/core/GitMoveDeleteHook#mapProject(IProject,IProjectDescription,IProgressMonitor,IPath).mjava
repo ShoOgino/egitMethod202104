@@ -11,8 +11,7 @@
 			projectData.store();
 			GitProjectData.add(destination, projectData);
 			RepositoryProvider.map(destination, GitProvider.class.getName());
-			destination.refreshLocal(IResource.DEPTH_INFINITE,
-					new SubProgressMonitor(monitor, 50));
+			destination.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		}
 	}
 

@@ -5,14 +5,16 @@
 		final IProject project = workspace.getRoot().getProject(projectName);
 		if (project.exists()) {
 			if (open && !project.isOpen()) {
+				SubMonitor progress = SubMonitor.convert(monitor, 2);
 				IPath location = project.getFile(
 						IProjectDescription.DESCRIPTION_FILE_NAME)
 						.getLocation();
 				if (location != null
 						&& location.toFile().equals(
 								record.getProjectSystemFile())) {
-					project.open(monitor);
-					project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+					project.open(progress.newChild(1));
+					project.refreshLocal(IResource.DEPTH_INFINITE,
+							progress.newChild(1));
 				}
 			}
 			return null;
@@ -29,19 +31,14 @@
 				record.getProjectDescription().setLocation(null);
 			else
 				record.getProjectDescription().setLocation(locationPath);
-		} else
+		} else {
 			record.getProjectDescription().setName(projectName);
-
-		try {
-			monitor.beginTask(
-					UIText.WizardProjectsImportPage_CreateProjectsTask, 100);
-			project.create(record.getProjectDescription(),
-					new SubProgressMonitor(monitor, 30));
-			project.open(IResource.BACKGROUND_REFRESH, new SubProgressMonitor(
-					monitor, 50));
-			return project;
-		} finally {
-			monitor.done();
 		}
+
+		SubMonitor progress = SubMonitor.convert(monitor,
+				UIText.WizardProjectsImportPage_CreateProjectsTask, 8);
+		project.create(record.getProjectDescription(), progress.newChild(3));
+		project.open(IResource.BACKGROUND_REFRESH, progress.newChild(5));
+		return project;
 	}
 

@@ -3,12 +3,13 @@
 			IProgressMonitor monitor) throws InterruptedException,
 			InvocationTargetException {
 
+		SubMonitor progress = SubMonitor.convert(monitor, 2);
 		SubscriberScopeManager manager = GitScopeUtil.createScopeManager(
-				selectedResources, new SubProgressMonitor(monitor, 50));
+				selectedResources, progress.newChild(1));
 		GitScopeOperation buildScopeOperation = GitScopeOperationFactory
 				.getFactory().createGitScopeOperation(part, manager);
 
-		buildScopeOperation.run(new SubProgressMonitor(monitor, 50));
+		buildScopeOperation.run(progress.newChild(1));
 
 		return buildScopeOperation.getRelevantResources();
 	}
