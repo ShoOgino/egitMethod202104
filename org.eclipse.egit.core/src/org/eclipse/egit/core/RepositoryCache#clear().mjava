@@ -1,13 +1,17 @@
 	/**
-	 * TESTING ONLY!
-	 * Unit tests can use this method to get a clean beginning state
+	 * Removes all cached repositories and their IndexDiffCache entries.
 	 */
-	public synchronized void clear() {
-		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
-		for (Map.Entry<File, Reference<Repository>> entry : repositoryCache
-				.entrySet()) {
-			cache.remove(entry.getKey());
+	public void clear() {
+		List<File> gitDirs;
+		synchronized (repositoryCache) {
+			gitDirs = new ArrayList<>(repositoryCache.keySet());
+			repositoryCache.clear();
 		}
-		repositoryCache.clear();
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		if (cache != null) {
+			for (File f : gitDirs) {
+				cache.remove(f);
+			}
+		}
 	}
 

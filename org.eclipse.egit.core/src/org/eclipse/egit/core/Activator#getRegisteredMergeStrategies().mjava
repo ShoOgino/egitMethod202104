@@ -4,6 +4,9 @@
 	 * @since 4.1
 	 */
 	public Collection<MergeStrategyDescriptor> getRegisteredMergeStrategies() {
+		if (mergeStrategyRegistryListener == null) {
+			return Collections.emptyList();
+		}
 		return mergeStrategyRegistryListener.getStrategies();
 	}
 

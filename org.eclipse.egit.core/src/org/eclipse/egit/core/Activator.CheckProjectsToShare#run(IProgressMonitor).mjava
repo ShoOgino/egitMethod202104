@@ -11,6 +11,9 @@
 
 			final Map<IProject, File> projects = new HashMap<IProject, File>();
 			for (IProject project : projectsToCheck) {
+				if (monitor.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
 				if (project.isAccessible()) {
 					try {
 						visitConnect(project, projects);

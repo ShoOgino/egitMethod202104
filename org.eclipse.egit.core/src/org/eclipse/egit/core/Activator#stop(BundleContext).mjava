@@ -1,15 +1,10 @@
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		GitProjectData.detachFromWorkspace();
-		repositoryCache.clear();
-		repositoryCache = null;
-		indexDiffCache.dispose();
-		indexDiffCache = null;
-		repositoryUtil.dispose();
-		repositoryUtil = null;
-		secureStore = null;
-		super.stop(context);
-		plugin = null;
+		if (mergeStrategyRegistryListener != null) {
+			Platform.getExtensionRegistry()
+					.removeListener(mergeStrategyRegistryListener);
+			mergeStrategyRegistryListener = null;
+		}
 		if (preDeleteProjectListener != null) {
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(preDeleteProjectListener);
 			preDeleteProjectListener = null;
@@ -17,12 +12,24 @@
 		if (ignoreDerivedResourcesListener != null) {
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
 					ignoreDerivedResourcesListener);
+			ignoreDerivedResourcesListener.stop();
 			ignoreDerivedResourcesListener = null;
 		}
 		if (shareGitProjectsJob != null) {
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
 					shareGitProjectsJob);
+			shareGitProjectsJob.stop();
 			shareGitProjectsJob = null;
 		}
+		GitProjectData.detachFromWorkspace();
+		indexDiffCache.dispose();
+		indexDiffCache = null;
+		repositoryCache.clear();
+		repositoryCache = null;
+		repositoryUtil.dispose();
+		repositoryUtil = null;
+		secureStore = null;
+		super.stop(context);
+		plugin = null;
 	}
 
