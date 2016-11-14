@@ -15,11 +15,8 @@
 					openCloseToggle.setChecked(true);
 					// If the toolbar was moved below the tabs, we now have
 					// the wrong background. It disappears when one clicks
-					// elsewhere. Looks like an inactive selection... Let's
-					// fix that: parent is the ToolBar, grand-parent is a
-					// Composite with the freak background.
-					// toolbar.getParent().getParent().setBackground(null);
-					// Doesn't help?! Let's try changing the focus:
+					// elsewhere. Looks like an inactive selection... No
+					// way found to fix this but this ugly focus juggling:
 					graph.getControl().setFocus();
 					toolbar.setFocus();
 				} else if (!visible && !graph.getControl().isDisposed()) {

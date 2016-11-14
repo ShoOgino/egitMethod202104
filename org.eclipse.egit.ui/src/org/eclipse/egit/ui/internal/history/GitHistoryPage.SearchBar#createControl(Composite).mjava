@@ -7,6 +7,8 @@
 			toolbar.addListener(SWT.FocusOut, mouseListener);
 			toolbar.addListener(SWT.MouseDown, mouseListener);
 			toolbar.addListener(SWT.MouseUp, mouseListener);
+			toolbar.addListener(SWT.Modify,
+					(e) -> lastText = toolbar.getText());
 			toolbar.addStatusListener(statusListener);
 			toolbar.addSelectionListener(selectionListener);
 			boolean hasInput = provider != null;
@@ -22,6 +24,10 @@
 			}
 			lastSearchContext = null;
 			lastObjectId = null;
+			if (wasVisible) {
+				return toolbar;
+			}
+			wasVisible = true;
 			// This fixes the wrong background when Eclipse starts up with the
 			// search bar visible.
 			toolbar.getDisplay().asyncExec(new Runnable() {
