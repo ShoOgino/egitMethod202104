@@ -1,6 +1,4 @@
 	private void openPreviousVersionInEditor(FileDiff d) {
-		RevCommit commit = d.getCommit().getParent(0);
-		ObjectId blob = d.getBlobs()[0];
-		openInEditor(d.getOldPath(), commit, blob);
+		DiffViewer.openInEditor(getRepository(), d, DiffEntry.Side.OLD, -1);
 	}
 

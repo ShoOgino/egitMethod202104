@@ -12,6 +12,6 @@
 			IWorkbenchPage page = window.getActivePage();
 			IEditorPart editor = EgitUiEditorUtils.openEditor(workspaceFile,
 					page);
-			selectLine(editor, selectedLine);
+			EgitUiEditorUtils.revealLine(editor, selectedLine);
 		}
 

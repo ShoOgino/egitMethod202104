@@ -3,16 +3,20 @@
 				.addPropertyChangeListener(this.themeListener);
 		EditorsUI.getPreferenceStore().addPropertyChangeListener(
 				this.editorPrefListener);
-		getTextWidget().addLineBackgroundListener(new LineBackgroundListener() {
-
-			@Override
-			public void lineGetBackground(LineBackgroundEvent event) {
-				StyledText text = getTextWidget();
-				if (event.lineOffset < text.getCharCount()) {
-					StyleRange style = text
-							.getStyleRangeAtOffset(event.lineOffset);
-					if (style instanceof DiffStyleRange)
-						event.lineBackground = ((DiffStyleRange) style).lineBackground;
+		getTextWidget().addLineBackgroundListener((event) -> {
+			IDocument document = getDocument();
+			if (document instanceof DiffDocument) {
+				try {
+					ITypedRegion partition = ((DiffDocument) document)
+							.getPartition(event.lineOffset);
+					if (partition != null) {
+						Color color = backgroundColors.get(partition.getType());
+						if (color != null) {
+							event.lineBackground = color;
+						}
+					}
+				} catch (BadLocationException e) {
+					// Ignore
 				}
 			}
 		});

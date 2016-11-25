@@ -1,0 +1,23 @@
+	private static void openInEditor(Repository repository, String path,
+			RevCommit commit, ObjectId blob, int reveal) {
+		try {
+			IFileRevision rev = CompareUtils.getFileRevision(path, commit,
+					repository, blob);
+			if (rev == null) {
+				String message = NLS.bind(
+						UIText.DiffViewer_notContainedInCommit, path,
+						commit.getName());
+				Activator.showError(message, null);
+				return;
+			}
+			IWorkbenchWindow window = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow();
+			IWorkbenchPage page = window.getActivePage();
+			IEditorPart editor = EgitUiEditorUtils.openEditor(page, rev,
+					new NullProgressMonitor());
+			EgitUiEditorUtils.revealLine(editor, reveal);
+		} catch (IOException | CoreException e) {
+			Activator.handleError(UIText.GitHistoryPage_openFailed, e, true);
+		}
+	}
+

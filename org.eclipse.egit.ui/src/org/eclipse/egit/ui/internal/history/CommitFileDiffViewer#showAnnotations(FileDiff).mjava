@@ -3,8 +3,8 @@
 			IWorkbenchWindow window = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow();
 			IWorkbenchPage page = window.getActivePage();
-			RevCommit commit = d.getChange().equals(ChangeType.DELETE) ? d
-					.getCommit().getParent(0) : d.getCommit();
+			RevCommit commit = d.getChange().equals(ChangeType.DELETE)
+					? d.getCommit().getParent(0) : d.getCommit();
 			String path = d.getPath();
 			IFileRevision rev = CompareUtils.getFileRevision(path, commit,
 					getRepository(),
@@ -17,8 +17,8 @@
 						JobFamilies.BLAME);
 			} else {
 				String message = NLS.bind(
-						UIText.CommitFileDiffViewer_notContainedInCommit,
-						path, d.getCommit().getId().getName());
+						UIText.DiffViewer_notContainedInCommit, path,
+						d.getCommit().getId().getName());
 				Activator.showError(message, null);
 			}
 		} catch (IOException e) {

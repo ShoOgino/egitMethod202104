@@ -5,7 +5,8 @@
 	 *
 	 * @param parent
 	 * @param site
-	 * @param style SWT style bits
+	 * @param style
+	 *            SWT style bits
 	 */
 	public CommitFileDiffViewer(final Composite parent,
 			final IWorkbenchSite site, final int style) {
@@ -24,28 +25,21 @@
 		addOpenListener(new IOpenListener() {
 			@Override
 			public void open(final OpenEvent event) {
-				final ISelection s = event.getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection))
+				ISelection s = event.getSelection();
+				if (s.isEmpty() || !(s instanceof IStructuredSelection)) {
 					return;
-				final IStructuredSelection iss = (IStructuredSelection) s;
-				final FileDiff d = (FileDiff) iss.getFirstElement();
+				}
+				IStructuredSelection iss = (IStructuredSelection) s;
+				FileDiff d = (FileDiff) iss.getFirstElement();
 				if (Activator.getDefault().getPreferenceStore().getBoolean(
 						UIPreferences.RESOURCEHISTORY_COMPARE_MODE)) {
-					if (d.getBlobs().length <= 2)
-						showTwoWayFileDiff(d);
-					else
-						MessageDialog
-								.openInformation(
-										PlatformUI.getWorkbench()
-												.getActiveWorkbenchWindow()
-												.getShell(),
-										UIText.CommitFileDiffViewer_CanNotOpenCompareEditorTitle,
-										UIText.CommitFileDiffViewer_MergeCommitMultiAncestorMessage);
+					showTwoWayFileDiff(d);
 				} else {
-					if (d.getChange() == ChangeType.DELETE)
+					if (d.getChange() == ChangeType.DELETE) {
 						openPreviousVersionInEditor(d);
-					else
+					} else {
 						openThisVersionInEditor(d);
+					}
 				}
 			}
 		});
@@ -69,7 +63,8 @@
 		Control c = getControl();
 		c.setMenu(mgr.createContextMenu(c));
 
-		openThisVersion = new Action(UIText.CommitFileDiffViewer_OpenInEditorMenuLabel) {
+		openThisVersion = new Action(
+				UIText.CommitFileDiffViewer_OpenInEditorMenuLabel) {
 			@Override
 			public void run() {
 				final ISelection s = getSelection();
@@ -94,8 +89,7 @@
 			}
 		};
 
-		blame = new Action(
-				UIText.CommitFileDiffViewer_ShowAnnotationsMenuLabel,
+		blame = new Action(UIText.CommitFileDiffViewer_ShowAnnotationsMenuLabel,
 				UIIcons.ANNOTATE) {
 			@Override
 			public void run() {
@@ -118,10 +112,10 @@
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();) {
 					String relativePath = it.next().getPath();
-					String path = new Path(getRepository().getWorkTree()
-							.getAbsolutePath()).append(relativePath)
-							.toOSString();
-					openFileInEditor(path);
+					File file = new Path(
+							getRepository().getWorkTree().getAbsolutePath())
+									.append(relativePath).toFile();
+					DiffViewer.openFileInEditor(file, -1);
 				}
 			}
 		};
@@ -129,21 +123,13 @@
 		compare = new Action(UIText.CommitFileDiffViewer_CompareMenuLabel) {
 			@Override
 			public void run() {
-				final ISelection s = getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection))
+				ISelection s = getSelection();
+				if (s.isEmpty() || !(s instanceof IStructuredSelection)) {
 					return;
-				final IStructuredSelection iss = (IStructuredSelection) s;
-				final FileDiff d = (FileDiff) iss.getFirstElement();
-				if (d.getBlobs().length <= 2)
-					showTwoWayFileDiff(d);
-				else
-					MessageDialog
-							.openInformation(
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow()
-											.getShell(),
-									UIText.CommitFileDiffViewer_CanNotOpenCompareEditorTitle,
-									UIText.CommitFileDiffViewer_MergeCommitMultiAncestorMessage);
+				}
+				IStructuredSelection iss = (IStructuredSelection) s;
+				FileDiff d = (FileDiff) iss.getFirstElement();
+				showTwoWayFileDiff(d);
 			}
 		};
 
@@ -160,7 +146,8 @@
 		};
 
 		showInHistory = new Action(
-				UIText.CommitFileDiffViewer_ShowInHistoryLabel, UIIcons.HISTORY) {
+				UIText.CommitFileDiffViewer_ShowInHistoryLabel,
+				UIIcons.HISTORY) {
 			@Override
 			public void run() {
 				ShowInContext context = getShowInContext();
@@ -188,8 +175,8 @@
 
 		mgr.add(new Separator());
 		mgr.add(showInHistory);
-		MenuManager showInSubMenu = UIUtils.createShowInMenu(site
-				.getWorkbenchWindow());
+		MenuManager showInSubMenu = UIUtils
+				.createShowInMenu(site.getWorkbenchWindow());
 		mgr.add(showInSubMenu);
 
 		mgr.add(new Separator());

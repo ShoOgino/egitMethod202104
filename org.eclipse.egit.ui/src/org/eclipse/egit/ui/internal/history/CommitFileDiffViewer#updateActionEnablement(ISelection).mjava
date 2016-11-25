@@ -30,9 +30,9 @@
 			blame.setEnabled(oneOrMoreSelected);
 			if (sel.size() == 1 && !db.isBare()) {
 				FileDiff diff = (FileDiff) sel.getFirstElement();
-				String path = new Path(getRepository().getWorkTree()
-						.getAbsolutePath()).append(diff.getPath())
-							.toOSString();
+				String path = new Path(
+						getRepository().getWorkTree().getAbsolutePath())
+								.append(diff.getPath()).toOSString();
 				boolean workTreeFileExists = new File(path).exists();
 				compareWorkingTreeVersion.setEnabled(workTreeFileExists);
 				openWorkingTreeVersion.setEnabled(workTreeFileExists);

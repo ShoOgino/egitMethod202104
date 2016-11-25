@@ -4,7 +4,6 @@
 			if (UIUtils.isUsable(diffViewer)) {
 				IDocument document = new Document();
 				diffViewer.setDocument(document);
-				diffViewer.setFormatter(null);
 			}
 			return;
 		}
@@ -18,7 +17,7 @@
 				}
 				int maxLines = Activator.getDefault().getPreferenceStore()
 						.getInt(UIPreferences.HISTORY_MAX_DIFF_LINES);
-				final IDocument document = new Document();
+				final DiffDocument document = new DiffDocument();
 				final DiffStyleRangeFormatter formatter = new DiffStyleRangeFormatter(
 						document, document.getLength(), maxLines);
 
@@ -52,8 +51,8 @@
 							return Status.CANCEL_STATUS;
 						}
 						if (UIUtils.isUsable(diffViewer)) {
+							document.connect(formatter);
 							diffViewer.setDocument(document);
-							diffViewer.setFormatter(formatter);
 							resizeCommentAndDiffScrolledComposite();
 						}
 						return Status.OK_STATUS;

@@ -1,0 +1,40 @@
+		private void createHeaderLinks(DiffDocument document, IRegion region,
+				FileDiffRange fileRange, DiffStyleRange range, String line,
+				DiffEntry.Side side, List<IHyperlink> links) {
+			Pattern p = document.getPathPattern(side);
+			if (p == null) {
+				return;
+			}
+			DiffEntry.ChangeType change = fileRange.getDiff().getChange();
+			switch (side) {
+			case OLD:
+				if (change == DiffEntry.ChangeType.ADD) {
+					return;
+				}
+				break;
+			default:
+				if (change == DiffEntry.ChangeType.DELETE) {
+					return;
+				}
+				break;
+
+			}
+			Matcher m = p.matcher(line);
+			if (m.find()) {
+				IRegion linkRegion = new Region(range.start + m.start(),
+						m.end() - m.start());
+				if (TextUtilities.overlaps(region, linkRegion)) {
+					if (side == DiffEntry.Side.NEW) {
+						File file = new Path(fileRange.getRepository()
+								.getWorkTree().getAbsolutePath()).append(
+										fileRange.getDiff().getNewPath())
+										.toFile();
+						if (file.exists()) {
+							links.add(new FileLink(linkRegion, file, -1));
+						}
+					}
+					links.add(new OpenLink(linkRegion, fileRange, side, -1));
+				}
+			}
+		}
+

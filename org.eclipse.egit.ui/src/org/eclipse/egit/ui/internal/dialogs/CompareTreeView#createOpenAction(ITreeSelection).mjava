@@ -5,10 +5,12 @@
 
 		return new Action(
 				UIText.CommitFileDiffViewer_OpenWorkingTreeVersionInEditorMenuLabel) {
+
 			@Override
 			public void run() {
-				for (String filePath : pathsToOpen)
-					openFileInEditor(filePath);
+				for (String filePath : pathsToOpen) {
+					DiffViewer.openFileInEditor(new File(filePath), -1);
+				}
 			}
 		};
 	}

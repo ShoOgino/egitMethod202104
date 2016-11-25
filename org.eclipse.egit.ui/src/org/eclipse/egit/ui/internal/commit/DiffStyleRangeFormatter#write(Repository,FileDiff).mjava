@@ -10,8 +10,11 @@
 			throws IOException {
 		this.stream.charset = CompareCoreUtils.getResourceEncoding(repository,
 				diff.getPath());
+		int start = stream.offset;
 		diff.outputDiff(null, repository, this, true);
 		flush();
+		fileRanges
+				.add(new FileDiffRange(repository, diff, start, stream.offset));
 		return this;
 	}
 

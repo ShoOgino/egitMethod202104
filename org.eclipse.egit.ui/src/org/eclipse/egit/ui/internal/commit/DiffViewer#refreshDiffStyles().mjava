@@ -1,0 +1,33 @@
+	private void refreshDiffStyles() {
+		ColorRegistry col = PlatformUI.getWorkbench().getThemeManager()
+				.getCurrentTheme().getColorRegistry();
+		FontRegistry reg = PlatformUI.getWorkbench().getThemeManager()
+				.getCurrentTheme().getFontRegistry();
+		// We do the foreground via syntax coloring and the background via a
+		// line background listener. If we did the background also via the
+		// TextAttributes, this would take precedence over the line background
+		// resulting in strange display if the current line is highlighted:
+		// that highlighting would appear only beyond the end of the actual
+		// text content (i.e., beyond the end-of-line), while actual text
+		// would still get the background from the attribute.
+		tokens.put(IDocument.DEFAULT_CONTENT_TYPE, new Token(null));
+		tokens.put(DiffDocument.HEADLINE_CONTENT_TYPE,
+				new Token(new TextAttribute(
+						col.get(THEME_DiffHeadlineForegroundColor), null,
+						SWT.NORMAL, reg.get(THEME_DiffHeadlineFont))));
+		tokens.put(DiffDocument.HUNK_CONTENT_TYPE, new Token(
+				new TextAttribute(col.get(THEME_DiffHunkForegroundColor))));
+		tokens.put(DiffDocument.ADDED_CONTENT_TYPE, new Token(
+				new TextAttribute(col.get(THEME_DiffAddForegroundColor))));
+		tokens.put(DiffDocument.REMOVED_CONTENT_TYPE, new Token(
+				new TextAttribute(col.get(THEME_DiffRemoveForegroundColor))));
+		backgroundColors.put(DiffDocument.HEADLINE_CONTENT_TYPE,
+				col.get(THEME_DiffHeadlineBackgroundColor));
+		backgroundColors.put(DiffDocument.HUNK_CONTENT_TYPE,
+				col.get(THEME_DiffHunkBackgroundColor));
+		backgroundColors.put(DiffDocument.ADDED_CONTENT_TYPE,
+				col.get(THEME_DiffAddBackgroundColor));
+		backgroundColors.put(DiffDocument.REMOVED_CONTENT_TYPE,
+				col.get(THEME_DiffRemoveBackgroundColor));
+	}
+

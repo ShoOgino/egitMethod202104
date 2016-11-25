@@ -1,0 +1,13 @@
+	private static ITextEditor getTextEditor(IEditorPart editor) {
+		if (editor instanceof ITextEditor) {
+			return (ITextEditor) editor;
+		} else if (editor instanceof MultiPageEditorPart) {
+			Object nestedEditor = ((MultiPageEditorPart) editor)
+					.getSelectedPage();
+			if (nestedEditor instanceof ITextEditor) {
+				return (ITextEditor) nestedEditor;
+			}
+		}
+		return null;
+	}
+

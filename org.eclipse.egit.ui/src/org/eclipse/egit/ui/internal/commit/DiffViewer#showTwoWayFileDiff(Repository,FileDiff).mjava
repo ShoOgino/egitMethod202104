@@ -1,0 +1,73 @@
+	/**
+	 * Shows a two-way diff between the old and new versions of a
+	 * {@link FileDiff} in a compare editor.
+	 *
+	 * @param repository
+	 *            the {@link FileDiff} belongs to
+	 * @param d
+	 *            the {@link FileDiff} to show
+	 */
+	public static void showTwoWayFileDiff(Repository repository, FileDiff d) {
+		String np = d.getNewPath();
+		String op = d.getOldPath();
+		RevCommit c = d.getCommit();
+		ObjectId[] blobs = d.getBlobs();
+
+		// extract commits
+		final RevCommit oldCommit;
+		final ObjectId oldObjectId;
+		if (!d.getChange().equals(ChangeType.ADD)) {
+			oldCommit = c.getParent(0);
+			oldObjectId = blobs[0];
+		} else {
+			// Initial import
+			oldCommit = null;
+			oldObjectId = null;
+		}
+
+		final RevCommit newCommit;
+		final ObjectId newObjectId;
+		if (d.getChange().equals(ChangeType.DELETE)) {
+			newCommit = null;
+			newObjectId = null;
+		} else {
+			newCommit = c;
+			newObjectId = blobs[blobs.length - 1];
+		}
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		IWorkbenchPage page = window.getActivePage();
+		if (oldCommit != null && newCommit != null && repository != null) {
+			IFile file = np != null
+					? ResourceUtil.getFileForLocation(repository, np, false)
+					: null;
+			try {
+				if (file != null) {
+					IResource[] resources = new IResource[] { file, };
+					CompareUtils.compare(resources, repository, np, op,
+							newCommit.getName(), oldCommit.getName(), false,
+							page);
+				} else {
+					IPath location = new Path(
+							repository.getWorkTree().getAbsolutePath())
+									.append(np);
+					CompareUtils.compare(location, repository,
+							newCommit.getName(), oldCommit.getName(), false,
+							page);
+				}
+			} catch (IOException e) {
+				Activator.handleError(UIText.GitHistoryPage_openFailed, e,
+						true);
+			}
+			return;
+		}
+
+		// still happens on initial commits
+		final ITypedElement oldSide = createTypedElement(repository, op,
+				oldCommit, oldObjectId);
+		final ITypedElement newSide = createTypedElement(repository, np,
+				newCommit, newObjectId);
+		CompareUtils.openInCompare(page,
+				new GitCompareFileRevisionEditorInput(newSide, oldSide, null));
+	}
+

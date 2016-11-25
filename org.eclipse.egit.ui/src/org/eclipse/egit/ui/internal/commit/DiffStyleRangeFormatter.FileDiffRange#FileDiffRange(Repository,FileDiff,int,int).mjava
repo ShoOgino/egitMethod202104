@@ -1,0 +1,20 @@
+		/**
+		 * Creates a new {@link FileDiffRange}
+		 *
+		 * @param repository
+		 *            the {@link FileDiff} belongs to
+		 * @param fileDiff
+		 *            the range belongs to
+		 * @param start
+		 *            of the range
+		 * @param end
+		 *            of the range
+		 */
+		public FileDiffRange(Repository repository, FileDiff fileDiff,
+				int start, int end) {
+			this.startOffset = start;
+			this.endOffset = end;
+			this.diff = fileDiff;
+			this.repository = repository;
+		}
+

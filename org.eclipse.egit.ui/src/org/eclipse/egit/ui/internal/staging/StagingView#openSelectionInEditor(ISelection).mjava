@@ -8,10 +8,9 @@
 			if (element instanceof StagingEntry) {
 				StagingEntry entry = (StagingEntry) element;
 				String relativePath = entry.getPath();
-				String path = new Path(repo.getWorkTree()
-						.getAbsolutePath()).append(relativePath)
-						.toOSString();
-				openFileInEditor(path);
+				File file = new Path(repo.getWorkTree().getAbsolutePath())
+						.append(relativePath).toFile();
+				DiffViewer.openFileInEditor(file, -1);
 			}
 		}
 	}

@@ -1,0 +1,9 @@
+	Pattern getPathPattern(DiffEntry.Side side) {
+		switch (side) {
+		case OLD:
+			return oldPathPattern;
+		default:
+			return newPathPattern;
+		}
+	}
+

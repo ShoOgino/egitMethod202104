@@ -1,7 +1,6 @@
 	private void formatDiff() {
-		final IDocument document = new Document();
+		final DiffDocument document = new DiffDocument();
 		formatter = new DiffStyleRangeFormatter(document);
-		viewer.setFormatter(formatter);
 
 		Job job = new Job(UIText.DiffEditorPage_TaskGeneratingDiff) {
 
@@ -32,8 +31,8 @@
 					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
 						if (UIUtils.isUsable(viewer)) {
+							document.connect(formatter);
 							viewer.setDocument(document);
-							viewer.refreshStyleRanges();
 						}
 						return Status.OK_STATUS;
 					}

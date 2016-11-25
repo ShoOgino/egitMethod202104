@@ -1,0 +1,10 @@
+		@Override
+		public IToken nextToken() {
+			tokenStart = currentOffset;
+			if (currentOffset < end) {
+				currentOffset = end;
+				return tokens.get(contentType);
+			}
+			return Token.EOF;
+		}
+

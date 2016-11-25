@@ -1,0 +1,28 @@
+	/**
+	 * Opens either the new or the old version of a {@link FileDiff} in an
+	 * editor.
+	 *
+	 * @param repository
+	 *            the {@link FileDiff} belongs to
+	 * @param d
+	 *            the {@link FileDiff}
+	 * @param side
+	 *            to show
+	 * @param lineNoToReveal
+	 *            if >= 0, select and reveals the given line
+	 */
+	public static void openInEditor(Repository repository, FileDiff d,
+			DiffEntry.Side side, int lineNoToReveal) {
+		ObjectId[] blobs = d.getBlobs();
+		switch (side) {
+		case OLD:
+			openInEditor(repository, d.getOldPath(), d.getCommit().getParent(0),
+					blobs[0], lineNoToReveal);
+			break;
+		default:
+			openInEditor(repository, d.getNewPath(), d.getCommit(),
+					blobs[blobs.length - 1], lineNoToReveal);
+			break;
+		}
+	}
+

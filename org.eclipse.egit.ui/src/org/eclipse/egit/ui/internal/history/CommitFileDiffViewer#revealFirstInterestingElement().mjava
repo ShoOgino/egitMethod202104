@@ -7,7 +7,8 @@
 		for (final Object element : elements) {
 			if (element instanceof FileDiff) {
 				FileDiff fileDiff = (FileDiff) element;
-				boolean marked = fileDiff.isMarked(FileDiffContentProvider.INTERESTING_MARK_TREE_FILTER_INDEX);
+				boolean marked = fileDiff.isMarked(
+						FileDiffContentProvider.INTERESTING_MARK_TREE_FILTER_INDEX);
 				if (marked) {
 					// Does not yet work reliably, see comment on bug 393610.
 					getTable().getDisplay().asyncExec(new Runnable() {

@@ -7,11 +7,12 @@
 		preferenceKeysForActivation
 				.add(AbstractTextEditor.PREFERENCE_HYPERLINK_KEY_MODIFIER);
 		// All applicable individual hyperlink detectors settings.
-		Map targets = configuration.getHyperlinkDetectorTargets(this);
+		Set<?> targets = configuration.getHyperlinkDetectorTargets(this)
+				.keySet();
 		for (HyperlinkDetectorDescriptor desc : EditorsUI
 				.getHyperlinkDetectorRegistry()
 				.getHyperlinkDetectorDescriptors()) {
-			if (targets.keySet().contains(desc.getTargetId())) {
+			if (targets.contains(desc.getTargetId())) {
 				preferenceKeysForEnablement.add(desc.getId());
 				preferenceKeysForActivation.add(desc.getId()
 						+ HyperlinkDetectorDescriptor.STATE_MASK_POSTFIX);

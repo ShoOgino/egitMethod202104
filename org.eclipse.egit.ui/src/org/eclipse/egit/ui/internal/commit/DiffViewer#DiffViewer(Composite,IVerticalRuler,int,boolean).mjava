@@ -1,8 +1,19 @@
 	/**
+	 * Creates a new {@link DiffViewer} and
+	 * {@link #configure(org.eclipse.jface.text.source.SourceViewerConfiguration)
+	 * configures} it with a {@link PresentationReconciler} and syntax coloring,
+	 * and an {@link IHyperlinkDetector} to provide hyperlinks to open the files
+	 * being diff'ed if the document used with the viewer is a
+	 * {@link DiffDocument}.
+	 *
 	 * @param parent
+	 *            to contain the viewer
 	 * @param ruler
+	 *            for the viewer (left side)
 	 * @param styles
+	 *            for the viewer
 	 * @param showCursorLine
+	 *            if {@code true},the current line is highlighted
 	 */
 	public DiffViewer(Composite parent, IVerticalRuler ruler, int styles,
 			boolean showCursorLine) {
@@ -33,8 +44,43 @@
 				colors.dispose();
 			}
 		});
-		refreshDiffColors();
-		refreshDiffFonts();
+		refreshDiffStyles();
 		styleViewer();
+		configure(new HyperlinkSourceViewer.Configuration(
+				EditorsUI.getPreferenceStore()) {
+
+			@Override
+			public int getHyperlinkStateMask(ISourceViewer sourceViewer) {
+				return SWT.NONE;
+			}
+
+			@Override
+			protected IHyperlinkDetector[] internalGetHyperlinkDetectors(
+					ISourceViewer sourceViewer) {
+				IHyperlinkDetector[] result = { new HyperlinkDetector() };
+				return result;
+			}
+
+			@Override
+			public String[] getConfiguredContentTypes(
+					ISourceViewer sourceViewer) {
+				return tokens.keySet().toArray(new String[tokens.size()]);
+			}
+
+			@Override
+			public IPresentationReconciler getPresentationReconciler(
+					ISourceViewer viewer) {
+				PresentationReconciler reconciler = new PresentationReconciler();
+				reconciler.setDocumentPartitioning(
+						getConfiguredDocumentPartitioning(viewer));
+				for (String contentType : tokens.keySet()) {
+					DefaultDamagerRepairer damagerRepairer = new DefaultDamagerRepairer(
+							new SingleTokenScanner(contentType));
+					reconciler.setDamager(damagerRepairer, contentType);
+					reconciler.setRepairer(damagerRepairer, contentType);
+				}
+				return reconciler;
+			}
+		});
 	}
 

@@ -1,0 +1,22 @@
+	/**
+	 * Opens the file, if it exists, in an editor.
+	 *
+	 * @param file
+	 *            to open
+	 * @param lineNoToReveal
+	 *            if >= 0, select and reveals the given line
+	 */
+	public static void openFileInEditor(File file, int lineNoToReveal) {
+		if (!file.exists()) {
+			Activator.showError(
+					NLS.bind(UIText.DiffViewer_FileDoesNotExist,
+							file.getPath()),
+					null);
+			return;
+		}
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+		IEditorPart editor = EgitUiEditorUtils.openEditor(file, page);
+		EgitUiEditorUtils.revealLine(editor, lineNoToReveal);
+	}
+

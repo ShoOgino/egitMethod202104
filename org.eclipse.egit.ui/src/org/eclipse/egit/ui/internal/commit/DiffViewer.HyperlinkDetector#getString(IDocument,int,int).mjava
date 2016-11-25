@@ -1,0 +1,8 @@
+		private String getString(IDocument document, int offset, int length) {
+			try {
+				return document.get(offset, length);
+			} catch (BadLocationException e) {
+				return ""; //$NON-NLS-1$
+			}
+		}
+

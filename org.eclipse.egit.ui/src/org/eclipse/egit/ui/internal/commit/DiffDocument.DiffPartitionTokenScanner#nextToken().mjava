@@ -1,0 +1,52 @@
+		@Override
+		public IToken nextToken() {
+			if (tokenStart < 0) {
+				DiffStyleRange key = new DiffStyleRange();
+				key.start = currentOffset;
+				key.length = 0;
+				currIdx = Arrays.binarySearch(DiffDocument.this.ranges, key,
+						(a, b) -> {
+							if (a.start > b.start + b.length) {
+								return 1;
+							}
+							if (b.start > a.start + a.length) {
+								return -1;
+							}
+							return 0;
+						});
+				if (currIdx < 0) {
+					currIdx = -(currIdx + 1);
+				}
+			}
+			tokenStart = currentOffset;
+			if (currentOffset < end) {
+				if (currIdx >= DiffDocument.this.ranges.length) {
+					currentOffset = end;
+					return OTHER_TOKEN;
+				}
+				if (currentOffset < DiffDocument.this.ranges[currIdx].start) {
+					currentOffset = DiffDocument.this.ranges[currIdx].start;
+					return OTHER_TOKEN;
+				}
+				// We're in range[currIdx]. Typically at the beginning, but if
+				// called via setPartialRange, we may also be somewhere in the
+				// middle.
+				currentOffset += DiffDocument.this.ranges[currIdx].length
+						- (currentOffset
+								- DiffDocument.this.ranges[currIdx].start);
+				switch (DiffDocument.this.ranges[currIdx++].diffType) {
+				case HEADLINE:
+					return HEADLINE_TOKEN;
+				case HUNK:
+					return HUNK_TOKEN;
+				case ADD:
+					return ADDED_TOKEN;
+				case REMOVE:
+					return DELETED_TOKEN;
+				default:
+					return OTHER_TOKEN;
+				}
+			}
+			return Token.EOF;
+		}
+

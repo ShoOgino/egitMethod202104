@@ -1,0 +1,7 @@
+		public CompareLink(IRegion region, FileDiffRange fileRange,
+				int lineNo) {
+			super(region, lineNo);
+			this.repository = fileRange.getRepository();
+			this.fileDiff = fileRange.getDiff();
+		}
+
