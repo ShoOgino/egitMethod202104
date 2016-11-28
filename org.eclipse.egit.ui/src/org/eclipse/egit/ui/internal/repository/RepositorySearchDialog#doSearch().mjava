@@ -2,13 +2,16 @@
 		setMessage(UIText.RepositorySearchDialog_searchRepositoriesMessage);
 		setErrorMessage(null);
 		// perform the search...
-		final Set<File> directories = new HashSet<>();
-		final File file = new File(dir.getText());
+		final Set<Path> directories = new TreeSet<>(
+				CommonUtils.PATH_STRING_COMPARATOR);
+		final Path file = Paths.get(dir.getText());
 		final boolean lookForNested = lookForNestedButton.getSelection();
-		if(!file.exists())
+		final boolean skipHidden = skipHiddenButton.getSelection();
+		if (!Files.exists(file)) {
 			return;
+		}
 
-		prefs.put(PREF_PATH, file.getAbsolutePath());
+		prefs.put(PREF_PATH, file.toAbsolutePath().toString());
 		try {
 			prefs.flush();
 		} catch (BackingStoreException e1) {
@@ -16,7 +19,7 @@
 		}
 
 		final TreeSet<String> validDirs = new TreeSet<>(getCheckedItems());
-
+		final String[] summary = new String[1];
 		IRunnableWithProgress action = new IRunnableWithProgress() {
 
 			@Override
@@ -26,8 +29,8 @@
 						UIText.RepositorySearchDialog_ScanningForRepositories_message,
 						IProgressMonitor.UNKNOWN);
 				try {
-					findGitDirsRecursive(file, directories, monitor,
-							lookForNested ? -1 : 1);
+					summary[0] = findGitDirsRecursive(file, directories, monitor,
+							lookForNested, skipHidden);
 				} catch (Exception ex) {
 					throw new InvocationTargetException(ex);
 				}
@@ -48,11 +51,12 @@
 
 		int foundOld = 0;
 
-		for (File foundDir : directories) {
-			String absolutePath = foundDir.getAbsolutePath();
+		for (Path foundDir : directories) {
+			String absolutePath = foundDir.toAbsolutePath().toString();
 			if (!fExistingDirectories.contains(absolutePath)
 					&& !fExistingDirectories.contains(FileUtils
-							.canonicalize(foundDir).getAbsolutePath())) {
+							.canonicalize(foundDir.toFile())
+							.getAbsolutePath())) {
 				validDirs.add(absolutePath);
 			} else {
 				foundOld++;
@@ -60,13 +64,16 @@
 		}
 
 		if (foundOld > 0) {
-			String message = NLS.bind(
+			String message = summary[0] + '\n'
+					+ MessageFormat.format(
 					UIText.RepositorySearchDialog_SomeDirectoriesHiddenMessage,
 					Integer.valueOf(foundOld));
 			setMessage(message, IMessageProvider.INFORMATION);
-		} else if (directories.isEmpty())
-			setMessage(UIText.RepositorySearchDialog_NothingFoundMessage,
-					IMessageProvider.INFORMATION);
+		} else if (directories.isEmpty()) {
+			setMessage(summary[0], IMessageProvider.INFORMATION);
+		} else {
+			setMessage(summary[0]);
+		}
 
 		checkAllItem.setEnabled(!validDirs.isEmpty());
 		uncheckAllItem.setEnabled(!validDirs.isEmpty());
