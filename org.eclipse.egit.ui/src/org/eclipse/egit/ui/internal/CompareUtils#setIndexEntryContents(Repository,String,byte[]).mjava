@@ -28,7 +28,7 @@
 					break;
 				case INPUT:
 				case TRUE:
-					EolCanonicalizingInputStream in = new EolCanonicalizingInputStream(
+					AutoLFInputStream in = new AutoLFInputStream(
 							new ByteArrayInputStream(newContent), true);
 					// Canonicalization should lead to same or shorter length
 					// (CRLF to LF), so we don't have to expand the byte[].
