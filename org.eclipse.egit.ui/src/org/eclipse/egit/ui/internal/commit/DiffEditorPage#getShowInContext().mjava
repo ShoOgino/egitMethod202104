@@ -1,0 +1,11 @@
+	@Override
+	public ShowInContext getShowInContext() {
+		RepositoryCommit commit = AdapterUtils.adapt(getEditorInput(),
+				RepositoryCommit.class);
+		if (commit != null) {
+			return new ShowInContext(getEditorInput(),
+					new StructuredSelection(commit));
+		}
+		return null;
+	}
+

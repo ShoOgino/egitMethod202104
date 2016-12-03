@@ -1,0 +1,15 @@
+	@Override
+	protected void initializeEditor() {
+		super.initializeEditor();
+		setDocumentProvider(new DiffDocumentProvider());
+		setSourceViewerConfiguration(
+				new DiffViewer.Configuration(getPreferenceStore()) {
+					@Override
+					public IReconciler getReconciler(
+							ISourceViewer sourceViewer) {
+						// Switch off spell-checking
+						return null;
+					}
+				});
+	}
+

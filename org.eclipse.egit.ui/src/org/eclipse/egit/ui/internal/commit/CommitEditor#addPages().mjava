@@ -4,13 +4,14 @@
 	@Override
 	protected void addPages() {
 		try {
-			if (getCommit().isStash())
+			if (getCommit().isStash()) {
 				commitPage = new StashEditorPage(this);
-			else
+			} else {
 				commitPage = new CommitEditorPage(this);
+			}
 			addPage(commitPage);
 			diffPage = new DiffEditorPage(this);
-			addPage(diffPage);
+			addPage(diffPage, getEditorInput());
 			if (getCommit().getNotes().length > 0) {
 				notePage = new NotesEditorPage(this);
 				addPage(notePage);

@@ -1,0 +1,25 @@
+	private void setFolding() {
+		ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
+		IDocument document = viewer.getDocument();
+		if (document instanceof DiffDocument) {
+			FileDiffRange[] ranges = ((DiffDocument) document).getFileRanges();
+			if (ranges == null || ranges.length <= 1) {
+				viewer.disableProjection();
+				return;
+			}
+			viewer.enableProjection();
+			Map<Annotation, Position> newAnnotations = new HashMap<>();
+			for (FileDiffRange range : ranges) {
+				newAnnotations.put(new ProjectionAnnotation(),
+						new Position(range.getStartOffset(),
+								range.getEndOffset() - range.getStartOffset()));
+			}
+			viewer.getProjectionAnnotationModel().modifyAnnotations(
+					currentFoldingAnnotations, newAnnotations, null);
+			currentFoldingAnnotations = newAnnotations.keySet()
+					.toArray(new Annotation[newAnnotations.size()]);
+		} else {
+			viewer.disableProjection();
+		}
+	}
+

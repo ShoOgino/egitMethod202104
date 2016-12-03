@@ -1,0 +1,9 @@
+	@Override
+	public boolean selectReveal(Object object) {
+		if (object instanceof IMarker) {
+			IDE.gotoMarker(this, (IMarker) object);
+			return true;
+		}
+		return false;
+	}
+

@@ -1,0 +1,8 @@
+		@Override
+		public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
+			Assert.isTrue(sourceViewer instanceof DiffViewer);
+			DiffViewer viewer = (DiffViewer) sourceViewer;
+			return viewer.tokens.keySet()
+					.toArray(new String[viewer.tokens.size()]);
+		}
+

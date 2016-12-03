@@ -1,0 +1,6 @@
+		@Override
+		public boolean equals(Object obj) {
+			return super.equals(obj) && (obj instanceof DiffEditorInput)
+					&& document.equals(((DiffEditorInput) obj).document);
+		}
+

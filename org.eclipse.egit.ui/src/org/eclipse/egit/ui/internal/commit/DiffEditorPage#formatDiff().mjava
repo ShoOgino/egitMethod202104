@@ -1,6 +1,13 @@
+	/**
+	 * Asynchronously gets the diff of the commit set on our
+	 * {@link CommitEditorInput}, formats it into a {@link DiffDocument}, and
+	 * then re-sets this editors's input to a {@link DiffEditorInput} which will
+	 * cause this document to be shown.
+	 */
 	private void formatDiff() {
 		final DiffDocument document = new DiffDocument();
-		formatter = new DiffStyleRangeFormatter(document);
+		final DiffStyleRangeFormatter formatter = new DiffStyleRangeFormatter(
+				document);
 
 		Job job = new Job(UIText.DiffEditorPage_TaskGeneratingDiff) {
 
@@ -30,9 +37,9 @@
 
 					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
-						if (UIUtils.isUsable(viewer)) {
+						if (UIUtils.isUsable(getPartControl())) {
 							document.connect(formatter);
-							viewer.setDocument(document);
+							setInput(new DiffEditorInput(commit, document));
 						}
 						return Status.OK_STATUS;
 					}

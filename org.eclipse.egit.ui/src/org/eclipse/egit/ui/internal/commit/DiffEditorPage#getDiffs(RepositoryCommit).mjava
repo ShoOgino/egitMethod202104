@@ -1,6 +1,9 @@
 	/**
+	 * Gets the full unified diff of a {@link RepositoryCommit}.
+	 *
 	 * @param commit
-	 * @return diffs for changes of of a commit
+	 *            to get the diff
+	 * @return the diff as a sorted (by file path) array of {@link FileDiff}s
 	 */
 	protected FileDiff[] getDiffs(RepositoryCommit commit) {
 		List<FileDiff> diffResult = new ArrayList<>();
@@ -8,12 +11,13 @@
 		diffResult.addAll(asList(commit.getDiffs()));
 
 		if (commit.getRevCommit().getParentCount() > 2) {
-			RevCommit untrackedCommit = commit.getRevCommit().getParent(
-					StashEditorPage.PARENT_COMMIT_UNTRACKED);
-			diffResult.addAll(asList(new RepositoryCommit(commit
-					.getRepository(), untrackedCommit).getDiffs()));
+			RevCommit untrackedCommit = commit.getRevCommit()
+					.getParent(StashEditorPage.PARENT_COMMIT_UNTRACKED);
+			diffResult
+					.addAll(asList(new RepositoryCommit(commit.getRepository(),
+							untrackedCommit).getDiffs()));
 		}
 		Collections.sort(diffResult, FileDiff.PATH_COMPARATOR);
-		return diffResult.toArray(new FileDiff[0]);
+		return diffResult.toArray(new FileDiff[diffResult.size()]);
 	}
 

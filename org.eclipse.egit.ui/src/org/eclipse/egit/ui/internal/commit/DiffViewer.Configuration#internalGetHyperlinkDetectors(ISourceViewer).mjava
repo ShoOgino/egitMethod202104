@@ -1,0 +1,8 @@
+		@Override
+		protected IHyperlinkDetector[] internalGetHyperlinkDetectors(
+				ISourceViewer sourceViewer) {
+			Assert.isTrue(sourceViewer instanceof DiffViewer);
+			IHyperlinkDetector[] result = { new HyperlinkDetector() };
+			return result;
+		}
+

@@ -1,7 +1,8 @@
 	@Override
 	public boolean show(ShowInContext context) {
 		ISelection selection = context.getSelection();
-		if (selection instanceof IStructuredSelection) {
+		if ((selection instanceof IStructuredSelection)
+				&& !selection.isEmpty()) {
 			IStructuredSelection ss = (IStructuredSelection) selection;
 			List<IPath> paths = new ArrayList<>();
 			for (Iterator it = ss.iterator(); it.hasNext();) {
@@ -28,6 +29,13 @@
 		if(context.getInput() instanceof IFileEditorInput) {
 			IFileEditorInput input = (IFileEditorInput) context.getInput();
 			showResource(input.getFile());
+			return true;
+		}
+		Repository repository = AdapterUtils.adapt(context.getInput(),
+				Repository.class);
+		if (repository != null) {
+			showRepository(repository);
+			return true;
 		}
 		return false;
 	}

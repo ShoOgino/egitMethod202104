@@ -1,0 +1,22 @@
+	@Override
+	public void setActivePage(IEditorPart activeEditor) {
+		IFormPage formerPage = currentPage;
+		if (activeEditor instanceof IFormPage) {
+			currentPage = (IFormPage) activeEditor;
+		} else {
+			currentPage = null;
+		}
+		if (formerPage != null && !formerPage.isEditor()
+				&& currentPage != null && !currentPage.isEditor()) {
+			getActionBars().updateActionBars();
+			return;
+		}
+		boolean isTextEditor = currentPage instanceof ITextEditor;
+		if (isTextEditor && currentPage == formerPage) {
+			return;
+		}
+		getTextEditorActionContributor().setActiveEditor(currentPage);
+		updateTextEditorContributions(isTextEditor);
+		getActionBars().updateActionBars();
+	}
+

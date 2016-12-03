@@ -1,7 +1,8 @@
-	ShowInContext getShowInContext() {
-		if (diffViewer != null && diffViewer.getControl().isFocusControl())
+	@Override
+	public ShowInContext getShowInContext() {
+		if (diffViewer != null && diffViewer.getControl().isFocusControl()) {
 			return diffViewer.getShowInContext();
-		else
-			return null;
+		}
+		return null;
 	}
 

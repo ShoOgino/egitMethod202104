@@ -32,9 +32,9 @@
 		showAnnotationsLink
 				.addSelectionListener(showAnnotationsLinkSelectionAdapter);
 
-		DiffViewer diffText = new DiffViewer(diffComposite, null, SWT.NONE,
-				false);
-		diffText.setEditable(false);
+		DiffViewer diffText = new DiffViewer(diffComposite, null, SWT.NONE);
+		diffText.configure(
+				new DiffViewer.Configuration(EditorsUI.getPreferenceStore()));
 		diffText.getControl().setLayoutData(
 				GridDataFactory.fillDefaults().grab(true, true).create());
 

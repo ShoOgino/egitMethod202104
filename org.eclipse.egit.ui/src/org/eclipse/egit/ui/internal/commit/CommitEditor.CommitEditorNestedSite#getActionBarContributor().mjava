@@ -1,0 +1,11 @@
+		@Override
+		public IEditorActionBarContributor getActionBarContributor() {
+			IEditorActionBarContributor globalContributor = getMultiPageEditor()
+					.getEditorSite().getActionBarContributor();
+			if (globalContributor instanceof CommitEditorActionBarContributor) {
+				return ((CommitEditorActionBarContributor) globalContributor)
+						.getTextEditorActionContributor();
+			}
+			return super.getActionBarContributor();
+		}
+

@@ -1,0 +1,37 @@
+	/**
+	 * Creates a new {@link DiffViewer}.
+	 *
+	 * @param parent
+	 *            to contain the viewer
+	 * @param ruler
+	 *            for the viewer (left side)
+	 * @param overviewRuler
+	 *            ruler for overview annotations
+	 * @param showsAnnotationOverview
+	 *            whether to show overview annotations
+	 * @param styles
+	 *            for the viewer
+	 */
+	public DiffViewer(Composite parent, IVerticalRuler ruler,
+			IOverviewRuler overviewRuler, boolean showsAnnotationOverview,
+			int styles) {
+		super(parent, ruler, overviewRuler, showsAnnotationOverview, styles);
+		getTextWidget().setAlwaysShowScrollBars(false);
+		setEditable(false);
+		setDocument(new Document());
+		initListeners();
+		getControl().addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				EditorsUI.getPreferenceStore()
+						.removePropertyChangeListener(editorPrefListener);
+				PlatformUI.getWorkbench().getThemeManager()
+						.removePropertyChangeListener(themeListener);
+				colors.dispose();
+			}
+		});
+		refreshDiffStyles();
+		styleViewer();
+	}
+

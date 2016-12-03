@@ -2,8 +2,7 @@
 		public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 				IRegion region, boolean canShowMultipleHyperlinks) {
 			IDocument document = textViewer.getDocument();
-			if (textViewer != DiffViewer.this
-					|| !(document instanceof DiffDocument)
+			if (!(document instanceof DiffDocument)
 					|| document.getLength() == 0) {
 				return null;
 			}
