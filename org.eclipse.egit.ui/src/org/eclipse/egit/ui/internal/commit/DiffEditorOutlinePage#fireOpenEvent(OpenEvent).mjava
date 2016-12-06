@@ -1,0 +1,12 @@
+	private void fireOpenEvent(OpenEvent event) {
+		for (IOpenListener listener : openListeners) {
+			SafeRunnable.run(new SafeRunnable() {
+
+				@Override
+				public void run() {
+					listener.open(event);
+				}
+			});
+		}
+	}
+

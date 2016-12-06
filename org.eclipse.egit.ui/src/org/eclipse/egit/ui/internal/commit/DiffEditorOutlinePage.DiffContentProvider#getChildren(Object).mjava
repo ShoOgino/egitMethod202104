@@ -1,0 +1,8 @@
+		@Override
+		public Object[] getChildren(Object parentElement) {
+			if (parentElement instanceof Folder) {
+				return ((Folder) parentElement).files.toArray();
+			}
+			return NOTHING;
+		}
+

@@ -1,0 +1,15 @@
+	private Collection<FileDiffRegion> getSelectedFileDiffs() {
+		ISelection currentSelection = getSelection();
+		List<FileDiffRegion> result = new ArrayList<>();
+		if (!currentSelection.isEmpty() && currentSelection instanceof StructuredSelection) {
+			for (Object selected : ((StructuredSelection) currentSelection).toList()) {
+				if (selected instanceof FileDiffRegion
+						&& !((FileDiffRegion) selected).getDiff()
+								.isSubmodule()) {
+					result.add((FileDiffRegion) selected);
+				}
+			}
+		}
+		return result;
+	}
+

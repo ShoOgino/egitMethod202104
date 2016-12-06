@@ -1,0 +1,9 @@
+	@Override
+	public void setSelection(ISelection selection) {
+		this.selection = selection;
+		TreeViewer viewer = getTreeViewerChecked();
+		if (viewer != null) {
+			super.setSelection(selection);
+		}
+	}
+

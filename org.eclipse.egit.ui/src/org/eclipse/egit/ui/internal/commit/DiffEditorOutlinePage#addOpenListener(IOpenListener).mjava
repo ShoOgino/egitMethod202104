@@ -1,0 +1,11 @@
+	/**
+	 * Adds a listener for selection-open in this page's viewer. Has no effect
+	 * if an identical listener is already registered.
+	 *
+	 * @param listener
+	 *            to add to the page'sviewer
+	 */
+	public void addOpenListener(IOpenListener listener) {
+		openListeners.addIfAbsent(listener);
+	}
+

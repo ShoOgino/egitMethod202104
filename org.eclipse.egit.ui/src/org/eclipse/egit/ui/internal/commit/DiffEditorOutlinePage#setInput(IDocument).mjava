@@ -1,0 +1,14 @@
+	/**
+	 * Sets the input of the page to the given {@link IDocument}.
+	 *
+	 * @param input
+	 *            to set for the page
+	 */
+	public void setInput(IDocument input) {
+		this.input = input;
+		TreeViewer viewer = getTreeViewerChecked();
+		if (viewer != null) {
+			viewer.setInput(input);
+		}
+	}
+

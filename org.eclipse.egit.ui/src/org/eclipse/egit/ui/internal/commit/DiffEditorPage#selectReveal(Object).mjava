@@ -3,6 +3,9 @@
 		if (object instanceof IMarker) {
 			IDE.gotoMarker(this, (IMarker) object);
 			return true;
+		} else if (object instanceof ISelection) {
+			doSetSelection((ISelection) object);
+			return true;
 		}
 		return false;
 	}

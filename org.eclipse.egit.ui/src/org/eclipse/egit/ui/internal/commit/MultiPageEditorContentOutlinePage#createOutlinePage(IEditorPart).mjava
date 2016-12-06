@@ -1,0 +1,16 @@
+	private IPage createOutlinePage(IEditorPart editor) {
+		IContentOutlinePage outlinePage = AdapterUtils.adapt(editor,
+				IContentOutlinePage.class);
+		if (outlinePage == null) {
+			pages.put(editor, emptyPage);
+			return emptyPage;
+		}
+		pages.put(editor, outlinePage);
+		if (outlinePage instanceof NestedContentOutlinePage) {
+			((Page) outlinePage).init(getSite());
+		}
+		SubActionBars pageBars = new SubActionBars(getSite().getActionBars());
+		bars.put(outlinePage, pageBars);
+		return outlinePage;
+	}
+

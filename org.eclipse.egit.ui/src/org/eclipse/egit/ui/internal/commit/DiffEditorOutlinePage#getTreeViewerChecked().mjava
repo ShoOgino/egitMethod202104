@@ -1,0 +1,9 @@
+	private TreeViewer getTreeViewerChecked() {
+		TreeViewer viewer = getTreeViewer();
+		if (viewer == null || viewer.getControl() == null
+				|| viewer.getControl().isDisposed()) {
+			return null;
+		}
+		return viewer;
+	}
+

@@ -1,0 +1,29 @@
+	@Override
+	public void createControl(Composite parent) {
+		book = new PageBook(parent, SWT.NONE);
+		emptyPage = new MessagePage();
+		emptyPage.createControl(book);
+		emptyPage
+				.setMessage(UIText.MultiPageEditorContentOutlinePage_NoOutline);
+		Object activePage = editorPart.getSelectedPage();
+		if (activePage instanceof IEditorPart) {
+			showPage(createOutlinePage((IEditorPart) activePage));
+		} else {
+			currentPage = emptyPage;
+			book.showPage(emptyPage.getControl());
+		}
+		pageListener = (event) -> {
+			Object newPage = event.getSelectedPage();
+			if (!(newPage instanceof IEditorPart)) {
+				showPage(emptyPage);
+				return;
+			}
+			IPage newOutlinePage = pages.get(newPage);
+			if (newOutlinePage == null) {
+				newOutlinePage = createOutlinePage((IEditorPart) newPage);
+			}
+			showPage(newOutlinePage);
+		};
+		editorPart.addPageChangedListener(pageListener);
+	}
+

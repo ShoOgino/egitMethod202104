@@ -1,0 +1,11 @@
+	@Override
+	public void dispose() {
+		// Nested editors are responsible for disposing their outline pages
+		// themselves.
+		if (outlinePage != null) {
+			outlinePage.dispose();
+			outlinePage = null;
+		}
+		super.dispose();
+	}
+

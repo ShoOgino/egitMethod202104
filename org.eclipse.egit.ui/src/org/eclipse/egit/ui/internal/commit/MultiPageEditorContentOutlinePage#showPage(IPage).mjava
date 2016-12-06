@@ -1,0 +1,43 @@
+	private void showPage(IPage page) {
+		if (page == null) {
+			page = emptyPage;
+		}
+		if (currentPage == page) {
+			return;
+		}
+		if (currentPage instanceof ISelectionProvider) {
+			((ISelectionProvider) currentPage)
+					.removeSelectionChangedListener(globalSelectionListener);
+		}
+		SubActionBars localBars = bars.get(currentPage);
+		if (localBars != null) {
+			localBars.deactivate();
+		}
+		currentPage = page;
+		if (currentPage instanceof ISelectionProvider) {
+			((ISelectionProvider) currentPage)
+					.addSelectionChangedListener(globalSelectionListener);
+		}
+		localBars = bars.get(currentPage);
+		Control control = page.getControl();
+		if (control == null || control.isDisposed()) {
+			page.createControl(book);
+			page.setActionBars(localBars);
+			control = page.getControl();
+		}
+		if (localBars != null) {
+			localBars.activate();
+		}
+		getSite().getActionBars().updateActionBars();
+		book.showPage(control);
+		if (currentPage instanceof ISelectionProvider) {
+			ISelection selection = ((ISelectionProvider) currentPage)
+					.getSelection();
+			fireSelectionChangedEvent(new SelectionChangedEvent(
+					(ISelectionProvider) currentPage, selection));
+		} else {
+			fireSelectionChangedEvent(
+					new SelectionChangedEvent(this, StructuredSelection.EMPTY));
+		}
+	}
+

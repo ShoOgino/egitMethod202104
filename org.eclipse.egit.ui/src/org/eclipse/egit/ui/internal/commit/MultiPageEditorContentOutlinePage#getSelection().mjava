@@ -1,0 +1,8 @@
+	@Override
+	public ISelection getSelection() {
+		if (currentPage instanceof ISelectionProvider) {
+			return ((ISelectionProvider) currentPage).getSelection();
+		}
+		return StructuredSelection.EMPTY;
+	}
+

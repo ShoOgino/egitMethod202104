@@ -1,0 +1,7 @@
+	@Override
+	public void setSelection(ISelection selection) {
+		if (currentPage instanceof ISelectionProvider) {
+			((ISelectionProvider) currentPage).setSelection(selection);
+		}
+	}
+

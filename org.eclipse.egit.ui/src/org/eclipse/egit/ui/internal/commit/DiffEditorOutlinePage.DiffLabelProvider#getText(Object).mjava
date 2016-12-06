@@ -1,0 +1,14 @@
+		@Override
+		public String getText(Object element) {
+			if (element instanceof DiffContentProvider.Folder) {
+				return ((DiffContentProvider.Folder) element).name;
+			}
+			if (element instanceof FileDiffRegion) {
+				FileDiff diff = ((FileDiffRegion) element).getDiff();
+				String path = diff.getPath();
+				int i = path.lastIndexOf('/');
+				return path.substring(i + 1);
+			}
+			return super.getText(element);
+		}
+

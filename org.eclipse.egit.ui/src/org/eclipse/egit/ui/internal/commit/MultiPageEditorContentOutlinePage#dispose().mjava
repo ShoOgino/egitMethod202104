@@ -1,0 +1,27 @@
+	@Override
+	public void dispose() {
+		if (pageListener != null) {
+			editorPart.removePageChangedListener(pageListener);
+			pageListener = null;
+		}
+		pages.clear();
+		selectionListeners.clear();
+		for (SubActionBars bar : bars.values()) {
+			bar.dispose();
+		}
+		bars.clear();
+		if (currentPage instanceof ISelectionProvider) {
+			((ISelectionProvider) currentPage)
+					.removeSelectionChangedListener(globalSelectionListener);
+		}
+		currentPage = null;
+		if (book != null) {
+			book.dispose();
+			book = null;
+		}
+		if (emptyPage != null) {
+			emptyPage.dispose();
+			emptyPage = null;
+		}
+	}
+

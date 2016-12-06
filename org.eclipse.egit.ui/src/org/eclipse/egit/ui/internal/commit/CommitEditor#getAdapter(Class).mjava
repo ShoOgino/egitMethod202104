@@ -4,9 +4,10 @@
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (RepositoryCommit.class == adapter) {
-			return AdapterUtils.adapt(getEditorInput(), adapter);
+			return AdapterUtils.adapt(getEditorInput(), RepositoryCommit.class);
+		} else if (IContentOutlinePage.class == adapter) {
+			return getOutlinePage();
 		}
-
 		return super.getAdapter(adapter);
 	}
 

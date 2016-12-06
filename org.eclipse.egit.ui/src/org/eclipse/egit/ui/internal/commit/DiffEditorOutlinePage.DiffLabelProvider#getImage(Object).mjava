@@ -1,0 +1,13 @@
+		@Override
+		public Image getImage(Object element) {
+			if (element instanceof DiffContentProvider.Folder) {
+				return FOLDER;
+			}
+			if (element instanceof FileDiffRegion) {
+				FileDiff diff = ((FileDiffRegion) element).getDiff();
+				return (Image) resourceManager
+						.get(diff.getImageDescriptor(diff));
+			}
+			return super.getImage(element);
+		}
+

@@ -3,8 +3,18 @@
 		super.doSetInput(input);
 		if (input instanceof DiffEditorInput) {
 			setFolding();
+			FileDiffRegion region = getFileDiffRange(0);
+			currentFileDiffRange = region;
 		} else if (input instanceof CommitEditorInput) {
 			formatDiff();
+			currentFileDiffRange = null;
+		}
+		if (outlinePage != null) {
+			outlinePage.setInput(getDocumentProvider().getDocument(input));
+			if (currentFileDiffRange != null) {
+				outlinePage.setSelection(
+						new StructuredSelection(currentFileDiffRange));
+			}
 		}
 	}
 

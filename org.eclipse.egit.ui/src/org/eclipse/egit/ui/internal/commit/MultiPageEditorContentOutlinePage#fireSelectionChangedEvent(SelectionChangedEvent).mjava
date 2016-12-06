@@ -1,0 +1,12 @@
+	private void fireSelectionChangedEvent(SelectionChangedEvent event) {
+		for (ISelectionChangedListener listener : selectionListeners) {
+			SafeRunnable.run(new SafeRunnable() {
+
+				@Override
+				public void run() {
+					listener.selectionChanged(event);
+				}
+			});
+		}
+	}
+
