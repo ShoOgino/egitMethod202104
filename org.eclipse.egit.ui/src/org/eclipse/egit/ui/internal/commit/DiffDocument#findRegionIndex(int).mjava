@@ -1,0 +1,10 @@
+	private int findRegionIndex(int offset) {
+		DiffRegion key = new DiffRegion(offset, 0);
+		return Arrays.binarySearch(regions, key, (a, b) -> {
+			if (!TextUtilities.overlaps(a, b)) {
+				return a.getOffset() - b.getOffset();
+			}
+			return 0;
+		});
+	}
+

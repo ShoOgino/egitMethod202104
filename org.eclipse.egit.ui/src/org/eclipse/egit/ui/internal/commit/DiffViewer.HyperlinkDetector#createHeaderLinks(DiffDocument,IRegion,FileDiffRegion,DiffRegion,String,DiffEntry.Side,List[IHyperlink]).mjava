@@ -1,5 +1,5 @@
 		private void createHeaderLinks(DiffDocument document, IRegion region,
-				FileDiffRange fileRange, DiffStyleRange range, String line,
+				FileDiffRegion fileRange, DiffRegion range, String line,
 				DiffEntry.Side side, List<IHyperlink> links) {
 			Pattern p = document.getPathPattern(side);
 			if (p == null) {
@@ -21,7 +21,7 @@
 			}
 			Matcher m = p.matcher(line);
 			if (m.find()) {
-				IRegion linkRegion = new Region(range.start + m.start(),
+				IRegion linkRegion = new Region(range.getOffset() + m.start(),
 						m.end() - m.start());
 				if (TextUtilities.overlaps(region, linkRegion)) {
 					if (side == DiffEntry.Side.NEW) {

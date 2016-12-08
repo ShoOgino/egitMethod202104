@@ -9,12 +9,9 @@
 	 *            end offset
 	 * @return added range
 	 */
-	protected DiffStyleRange addRange(Type type, int start, int end) {
-		DiffStyleRange range = new DiffStyleRange();
-		range.start = start;
-		range.diffType = type;
-		range.length = end - start;
-		ranges.add(range);
+	protected DiffRegion addRegion(Type type, int start, int end) {
+		DiffRegion range = new DiffRegion(start, end - start, type);
+		regions.add(range);
 		return range;
 	}
 

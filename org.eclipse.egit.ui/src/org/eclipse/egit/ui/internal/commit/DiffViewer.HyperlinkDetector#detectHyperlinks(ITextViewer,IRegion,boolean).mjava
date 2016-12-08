@@ -6,42 +6,40 @@
 					|| document.getLength() == 0) {
 				return null;
 			}
-			DiffStyleRange[] ranges = ((DiffDocument) document).getRanges();
-			FileDiffRange[] fileRanges = ((DiffDocument) document)
-					.getFileRanges();
-			if (ranges == null || ranges.length == 0 || fileRanges == null
-					|| fileRanges.length == 0) {
+			DiffDocument diffDocument = (DiffDocument) document;
+			DiffRegion[] regions = diffDocument.getRegions();
+			FileDiffRegion[] fileRegions = diffDocument.getFileRegions();
+			if (regions == null || regions.length == 0 || fileRegions == null
+					|| fileRegions.length == 0) {
 				return null;
 			}
 			int start = region.getOffset();
 			int end = region.getOffset() + region.getLength();
-			DiffStyleRange key = new DiffStyleRange();
-			key.start = start;
-			key.length = region.getLength();
-			int i = Arrays.binarySearch(ranges, key, (a, b) -> {
-				if (a.start > b.start + b.length) {
+			DiffRegion key = new DiffRegion(start, 0);
+			int i = Arrays.binarySearch(regions, key, (a, b) -> {
+				if (a.getOffset() > b.getOffset() + b.getLength()) {
 					return 1;
 				}
-				if (a.start + a.length < b.start) {
+				if (a.getOffset() + a.getLength() < b.getOffset()) {
 					return -1;
 				}
 				return 0;
 			});
 			List<IHyperlink> links = new ArrayList<>();
-			FileDiffRange fileRange = null;
-			for (; i >= 0 && i < ranges.length; i++) {
-				DiffStyleRange range = ranges[i];
-				if (range.start >= end) {
+			FileDiffRegion fileRange = null;
+			for (; i >= 0 && i < regions.length; i++) {
+				DiffRegion range = regions[i];
+				if (range.getOffset() >= end) {
 					break;
 				}
-				if (range.start + range.length <= start) {
+				if (range.getOffset() + range.getLength() <= start) {
 					continue;
 				}
 				// Range overlaps region
 				switch (range.diffType) {
 				case HEADLINE:
-					fileRange = findFileRange(fileRanges, fileRange,
-							range.start);
+					fileRange = findFileRange(diffDocument, fileRange,
+							range.getOffset());
 					if (fileRange != null) {
 						DiffEntry.ChangeType change = fileRange.getDiff()
 								.getChange();
@@ -50,10 +48,11 @@
 						case DELETE:
 							break;
 						default:
-							if (getString(document, range.start, range.length)
-									.startsWith("diff")) { //$NON-NLS-1$
+							if (getString(document, range.getOffset(),
+									range.getLength()).startsWith("diff")) { //$NON-NLS-1$
 								// "diff" is at the beginning
-								IRegion linkRegion = new Region(range.start, 4);
+								IRegion linkRegion = new Region(
+										range.getOffset(), 4);
 								if (TextUtilities.overlaps(region,
 										linkRegion)) {
 									links.add(new CompareLink(linkRegion,
@@ -65,11 +64,11 @@
 					}
 					break;
 				case HEADER:
-					fileRange = findFileRange(fileRanges, fileRange,
-							range.start);
+					fileRange = findFileRange(diffDocument, fileRange,
+							range.getOffset());
 					if (fileRange != null) {
-						String line = getString(document, range.start,
-								range.length);
+						String line = getString(document, range.getOffset(),
+								range.getLength());
 						createHeaderLinks((DiffDocument) document, region,
 								fileRange, range, line, DiffEntry.Side.OLD,
 								links);
@@ -79,15 +78,15 @@
 					}
 					break;
 				case HUNK:
-					fileRange = findFileRange(fileRanges, fileRange,
-							range.start);
+					fileRange = findFileRange(diffDocument, fileRange,
+							range.getOffset());
 					if (fileRange != null) {
-						String line = getString(document, range.start,
-								range.length);
+						String line = getString(document, range.getOffset(),
+								range.getLength());
 						Matcher m = HUNK_LINE_PATTERN.matcher(line);
 						if (m.find()) {
 							int lineOffset = getContextLines(document, range,
-									i + 1 < ranges.length ? ranges[i + 1]
+									i + 1 < regions.length ? regions[i + 1]
 											: null);
 							createHunkLinks(region, fileRange, range, m,
 									lineOffset, links);

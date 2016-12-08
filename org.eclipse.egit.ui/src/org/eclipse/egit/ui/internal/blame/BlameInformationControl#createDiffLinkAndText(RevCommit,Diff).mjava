@@ -39,7 +39,7 @@
 				GridDataFactory.fillDefaults().grab(true, true).create());
 
 		DiffDocument document = new DiffDocument();
-		DiffStyleRangeFormatter diffFormatter = new DiffStyleRangeFormatter(
+		DiffRegionFormatter diffFormatter = new DiffRegionFormatter(
 				document);
 		diffFormatter.setContext(1);
 		diffFormatter.setRepository(revision.getRepository());

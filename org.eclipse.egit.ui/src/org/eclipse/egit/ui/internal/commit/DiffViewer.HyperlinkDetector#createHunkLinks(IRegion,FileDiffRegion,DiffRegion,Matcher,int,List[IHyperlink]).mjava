@@ -1,9 +1,9 @@
-		private void createHunkLinks(IRegion region, FileDiffRange fileRange,
-				DiffStyleRange range, Matcher m, int lineOffset,
+		private void createHunkLinks(IRegion region, FileDiffRegion fileRange,
+				DiffRegion range, Matcher m, int lineOffset,
 				List<IHyperlink> links) {
 			DiffEntry.ChangeType change = fileRange.getDiff().getChange();
 			if (change != DiffEntry.ChangeType.ADD) {
-				IRegion linkRegion = new Region(range.start + m.start(1),
+				IRegion linkRegion = new Region(range.getOffset() + m.start(1),
 						m.end(1) - m.start(1));
 				if (TextUtilities.overlaps(linkRegion, region)) {
 					int lineNo = Integer.parseInt(m.group(2)) - 1 + lineOffset;
@@ -16,7 +16,7 @@
 				}
 			}
 			if (change != DiffEntry.ChangeType.DELETE) {
-				IRegion linkRegion = new Region(range.start + m.start(3),
+				IRegion linkRegion = new Region(range.getOffset() + m.start(3),
 						m.end(3) - m.start(3));
 				if (TextUtilities.overlaps(linkRegion, region)) {
 					int lineNo = Integer.parseInt(m.group(4)) - 1 + lineOffset;

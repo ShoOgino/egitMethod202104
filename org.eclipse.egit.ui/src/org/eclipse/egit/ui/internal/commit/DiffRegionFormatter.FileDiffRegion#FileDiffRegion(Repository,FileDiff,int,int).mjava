@@ -1,5 +1,5 @@
 		/**
-		 * Creates a new {@link FileDiffRange}
+		 * Creates a new {@link FileDiffRegion}.
 		 *
 		 * @param repository
 		 *            the {@link FileDiff} belongs to
@@ -7,13 +7,12 @@
 		 *            the range belongs to
 		 * @param start
 		 *            of the range
-		 * @param end
+		 * @param length
 		 *            of the range
 		 */
-		public FileDiffRange(Repository repository, FileDiff fileDiff,
-				int start, int end) {
-			this.startOffset = start;
-			this.endOffset = end;
+		public FileDiffRegion(Repository repository, FileDiff fileDiff,
+				int start, int length) {
+			super(start, length);
 			this.diff = fileDiff;
 			this.repository = repository;
 		}

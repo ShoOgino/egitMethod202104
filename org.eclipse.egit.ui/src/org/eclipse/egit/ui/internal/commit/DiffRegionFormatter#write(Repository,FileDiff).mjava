@@ -6,15 +6,16 @@
 	 * @return this formatter
 	 * @throws IOException
 	 */
-	public DiffStyleRangeFormatter write(Repository repository, FileDiff diff)
+	public DiffRegionFormatter write(Repository repository, FileDiff diff)
 			throws IOException {
 		this.stream.charset = CompareCoreUtils.getResourceEncoding(repository,
 				diff.getPath());
 		int start = stream.offset;
 		diff.outputDiff(null, repository, this, true);
 		flush();
-		fileRanges
-				.add(new FileDiffRange(repository, diff, start, stream.offset));
+		fileRegions
+				.add(new FileDiffRegion(repository, diff, start,
+						stream.offset - start));
 		return this;
 	}
 

@@ -2,17 +2,17 @@
 		ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
 		IDocument document = viewer.getDocument();
 		if (document instanceof DiffDocument) {
-			FileDiffRange[] ranges = ((DiffDocument) document).getFileRanges();
-			if (ranges == null || ranges.length <= 1) {
+			FileDiffRegion[] regions = ((DiffDocument) document)
+					.getFileRegions();
+			if (regions == null || regions.length <= 1) {
 				viewer.disableProjection();
 				return;
 			}
 			viewer.enableProjection();
 			Map<Annotation, Position> newAnnotations = new HashMap<>();
-			for (FileDiffRange range : ranges) {
+			for (FileDiffRegion region : regions) {
 				newAnnotations.put(new ProjectionAnnotation(),
-						new Position(range.getStartOffset(),
-								range.getEndOffset() - range.getStartOffset()));
+						new Position(region.getOffset(), region.getLength()));
 			}
 			viewer.getProjectionAnnotationModel().modifyAnnotations(
 					currentFoldingAnnotations, newAnnotations, null);

@@ -11,6 +11,6 @@
 		int start = o.size();
 		super.formatGitDiffFirstHeaderLine(o, type, oldPath, newPath);
 		int end = o.size();
-		addRange(Type.HEADLINE, offset + start, offset + end);
+		addRegion(Type.HEADLINE, offset + start, offset + end);
 	}
 

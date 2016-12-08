@@ -18,7 +18,7 @@
 				int maxLines = Activator.getDefault().getPreferenceStore()
 						.getInt(UIPreferences.HISTORY_MAX_DIFF_LINES);
 				final DiffDocument document = new DiffDocument();
-				final DiffStyleRangeFormatter formatter = new DiffStyleRangeFormatter(
+				final DiffRegionFormatter formatter = new DiffRegionFormatter(
 						document, document.getLength(), maxLines);
 
 				monitor.beginTask("", diffs.size()); //$NON-NLS-1$

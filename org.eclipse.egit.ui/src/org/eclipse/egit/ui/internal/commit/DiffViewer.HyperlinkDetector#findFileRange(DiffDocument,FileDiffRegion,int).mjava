@@ -1,0 +1,9 @@
+		private FileDiffRegion findFileRange(DiffDocument document,
+				FileDiffRegion candidate, int offset) {
+			if (candidate != null && TextUtilities.overlaps(candidate,
+					new Region(offset, 0))) {
+				return candidate;
+			}
+			return document.findFileRegion(offset);
+		}
+

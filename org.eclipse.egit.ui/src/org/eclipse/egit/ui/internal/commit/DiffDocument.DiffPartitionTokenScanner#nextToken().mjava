@@ -1,40 +1,31 @@
 		@Override
 		public IToken nextToken() {
 			if (tokenStart < 0) {
-				DiffStyleRange key = new DiffStyleRange();
-				key.start = currentOffset;
-				key.length = 0;
-				currIdx = Arrays.binarySearch(DiffDocument.this.ranges, key,
-						(a, b) -> {
-							if (a.start > b.start + b.length) {
-								return 1;
-							}
-							if (b.start > a.start + a.length) {
-								return -1;
-							}
-							return 0;
-						});
+				currIdx = findRegionIndex(currentOffset);
 				if (currIdx < 0) {
 					currIdx = -(currIdx + 1);
 				}
 			}
 			tokenStart = currentOffset;
 			if (currentOffset < end) {
-				if (currIdx >= DiffDocument.this.ranges.length) {
+				if (currIdx >= DiffDocument.this.regions.length) {
 					currentOffset = end;
 					return OTHER_TOKEN;
 				}
-				if (currentOffset < DiffDocument.this.ranges[currIdx].start) {
-					currentOffset = DiffDocument.this.ranges[currIdx].start;
+				if (currentOffset < DiffDocument.this.regions[currIdx]
+						.getOffset()) {
+					currentOffset = DiffDocument.this.regions[currIdx]
+							.getOffset();
 					return OTHER_TOKEN;
 				}
 				// We're in range[currIdx]. Typically at the beginning, but if
 				// called via setPartialRange, we may also be somewhere in the
 				// middle.
-				currentOffset += DiffDocument.this.ranges[currIdx].length
+				currentOffset += DiffDocument.this.regions[currIdx].getLength()
 						- (currentOffset
-								- DiffDocument.this.ranges[currIdx].start);
-				switch (DiffDocument.this.ranges[currIdx++].diffType) {
+								- DiffDocument.this.regions[currIdx]
+										.getOffset());
+				switch (DiffDocument.this.regions[currIdx++].diffType) {
 				case HEADLINE:
 					return HEADLINE_TOKEN;
 				case HUNK:
