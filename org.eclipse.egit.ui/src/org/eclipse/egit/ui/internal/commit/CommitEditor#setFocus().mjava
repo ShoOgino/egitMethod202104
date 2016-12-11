@@ -1,9 +1,8 @@
-	/**
-	 * @see org.eclipse.ui.forms.editor.SharedHeaderFormEditor#setFocus()
-	 * @since 2.0
-	 */
 	@Override
 	public void setFocus() {
-		commitPage.getPartControl().setFocus();
+		IFormPage currentPage = getActivePageInstance();
+		if (currentPage != null) {
+			currentPage.setFocus();
+		}
 	}
 
