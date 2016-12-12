@@ -5,6 +5,8 @@
 				return;
 			}
 		}
+		IDialogSettings settings = Activator.getDefault().getDialogSettings();
+		settings.put(RESET_TYPE_SETTING, resetType.name());
 		super.okPressed();
 	}
 

@@ -117,12 +117,16 @@
 				}
 			}
 		});
+		IDialogSettings settings = Activator.getDefault().getDialogSettings();
+		if (settings.get(RESET_TYPE_SETTING) != null) {
+			resetType = ResetType.valueOf(settings.get(RESET_TYPE_SETTING));
+		}
 		createResetButton(g,
 				UIText.ResetTargetSelectionDialog_ResetTypeSoftButton,
 				ResetType.SOFT);
 		createResetButton(g,
 				UIText.ResetTargetSelectionDialog_ResetTypeMixedButton,
-				ResetType.MIXED).setSelection(true);
+				ResetType.MIXED);
 		createResetButton(g,
 				UIText.ResetTargetSelectionDialog_ResetTypeHardButton,
 				ResetType.HARD);
