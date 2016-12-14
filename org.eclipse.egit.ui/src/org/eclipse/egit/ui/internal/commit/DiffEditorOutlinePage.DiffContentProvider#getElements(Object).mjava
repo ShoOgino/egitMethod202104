@@ -1,9 +1,6 @@
 		@Override
 		public Object[] getElements(Object inputElement) {
-			folders.clear();
-			parents.clear();
 			if (inputElement instanceof DiffDocument) {
-				computeFolders(((DiffDocument) inputElement).getFileRegions());
 				return folders.values().toArray();
 			}
 			return NOTHING;
