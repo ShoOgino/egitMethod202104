@@ -1,6 +1,9 @@
 	@Override
 	protected void initializeEditor() {
 		super.initializeEditor();
+		overviewStore = new ThemePreferenceStore();
+		setPreferenceStore(new ChainedPreferenceStore(new IPreferenceStore[] {
+				overviewStore, EditorsUI.getPreferenceStore() }));
 		setDocumentProvider(new DiffDocumentProvider());
 		setSourceViewerConfiguration(
 				new DiffViewer.Configuration(getPreferenceStore()) {

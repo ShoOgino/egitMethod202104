@@ -1,0 +1,16 @@
+		@Override
+		protected void layout(Composite composite, boolean flushCache) {
+			Rectangle bounds = composite.getBounds();
+			if (bounds.width == 0 || bounds.height == 0) {
+				// The overview ruler is laid out wrongly in the DiffEditorPage:
+				// it ends up with a negative y-coordinate. This seems to be
+				// caused by layout attempts while the page is not visible,
+				// which cache that bogus negative offset in RulerLayout, which
+				// will re-use it even when the viewer is laid out again when
+				// the page is visible. So don't layout if the containing
+				// composite has no extent.
+				return;
+			}
+			super.layout(composite, flushCache);
+		}
+

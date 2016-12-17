@@ -1,0 +1,14 @@
+		private void initColors() {
+			// The overview ruler tones down colors. Since our background colors
+			// usually are already rather pale, let's saturate them more and
+			// brighten them, otherwise the annotations will be barely visible.
+			RGB rgb = adjust(currentColors.getRGB(THEME_DiffAddBackgroundColor),
+					4.0);
+			setValue(ADD_ANNOTATION_COLOR_PREFERENCE,
+					StringConverter.asString(rgb));
+			rgb = adjust(currentColors.getRGB(THEME_DiffRemoveBackgroundColor),
+					4.0);
+			setValue(REMOVE_ANNOTATION_COLOR_PREFERENCE,
+					StringConverter.asString(rgb));
+		}
+

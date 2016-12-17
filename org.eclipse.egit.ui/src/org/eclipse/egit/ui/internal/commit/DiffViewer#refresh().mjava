@@ -1,0 +1,7 @@
+	@Override
+	public void refresh() {
+		// Don't lose the annotation model, if there is one!
+		// (The super implementation ignores it.)
+		setDocument(getDocument(), getAnnotationModel());
+	}
+

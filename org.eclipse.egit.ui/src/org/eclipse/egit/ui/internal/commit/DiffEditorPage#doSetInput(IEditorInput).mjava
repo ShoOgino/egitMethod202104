@@ -5,6 +5,7 @@
 			setFolding();
 			FileDiffRegion region = getFileDiffRange(0);
 			currentFileDiffRange = region;
+			setOverviewAnnotations();
 		} else if (input instanceof CommitEditorInput) {
 			formatDiff();
 			currentFileDiffRange = null;

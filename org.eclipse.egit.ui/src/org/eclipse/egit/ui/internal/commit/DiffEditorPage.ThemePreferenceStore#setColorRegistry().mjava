@@ -1,0 +1,9 @@
+		private void setColorRegistry() {
+			if (currentColors != null) {
+				currentColors.removeListener(listener);
+			}
+			currentColors = PlatformUI.getWorkbench().getThemeManager()
+					.getCurrentTheme().getColorRegistry();
+			currentColors.addListener(listener);
+		}
+

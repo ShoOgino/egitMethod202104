@@ -1,0 +1,9 @@
+		public void dispose() {
+			PlatformUI.getWorkbench().getThemeManager()
+					.removePropertyChangeListener(listener);
+			if (currentColors != null) {
+				currentColors.removeListener(listener);
+				currentColors = null;
+			}
+		}
+

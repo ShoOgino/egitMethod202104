@@ -1,0 +1,20 @@
+		/**
+		 * Increases the saturation (simple multiplier), and brightens dark
+		 * colors.
+		 *
+		 * @param rgb
+		 *            to modify
+		 * @param saturation
+		 *            multiplier
+		 * @return A new {@link RGB} for the new saturated and possibly
+		 *         brightened color
+		 */
+		private RGB adjust(RGB rgb, double saturation) {
+			float[] hsb = rgb.getHSB();
+			// We also brighten the color because otherwise the color
+			// manipulations in OverviewRuler result in a fill color barely
+			// discernible from a dark background.
+			return new RGB(hsb[0], (float) Math.min(hsb[1] * saturation, 1.0),
+					hsb[2] < 0.5 ? hsb[2] * 2 : hsb[2]);
+		}
+
