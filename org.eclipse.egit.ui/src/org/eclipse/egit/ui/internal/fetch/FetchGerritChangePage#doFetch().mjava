@@ -4,6 +4,7 @@
 		final String uri = uriCombo.getText();
 		final boolean doCheckout = checkout.getSelection();
 		final boolean doCreateTag = createTag.getSelection();
+		final boolean doChangeBranch = changeBranch.getSelection();
 		final boolean doCreateBranch = createBranch.getSelection();
 		final boolean doCheckoutNewBranch = branchCheckoutButton.getSelection();
 		final boolean doActivateAdditionalRefs = (checkout.getSelection() || dontCheckout
@@ -21,9 +22,9 @@
 				public IStatus runInWorkspace(IProgressMonitor monitor) {
 					try {
 						internalDoFetch(spec, uri, doCheckout, doCreateTag,
-								doCreateBranch, doCheckoutNewBranch,
-								doActivateAdditionalRefs, textForTag,
-								textForBranch, monitor);
+								doChangeBranch, doCreateBranch,
+								doCheckoutNewBranch, doActivateAdditionalRefs,
+								textForTag, textForBranch, monitor);
 					} catch (CoreException ce) {
 						return ce.getStatus();
 					} catch (Exception e) {
@@ -52,10 +53,10 @@
 								InterruptedException {
 							try {
 								internalDoFetch(spec, uri, doCheckout,
-											doCreateTag, doCreateBranch,
-											doCheckoutNewBranch,
-										doActivateAdditionalRefs, textForTag,
-										textForBranch, monitor);
+											doCreateTag, doChangeBranch,
+											doCreateBranch,
+										doCheckoutNewBranch, doActivateAdditionalRefs,
+										textForTag, textForBranch, monitor);
 							} catch (RuntimeException e) {
 								throw e;
 							} catch (Exception e) {
