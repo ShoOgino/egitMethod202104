@@ -1,0 +1,9 @@
+	@Override
+	public int getLogicalLine(int lineNumber) {
+		IDocument document = viewer.getDocument();
+		if (document instanceof DiffDocument) {
+			return ((DiffDocument) document).getLogicalLine(lineNumber, side);
+		}
+		return lineNumber;
+	}
+

@@ -1,21 +1,24 @@
 		private int getContextLines(IDocument document, DiffRegion hunk,
 				DiffRegion next) {
 			if (next != null) {
-				switch (next.diffType) {
-				case ADD:
-				case REMOVE:
-					try {
-						int diffLine = document
-								.getLineOfOffset(next.getOffset());
+				try {
+					switch (next.getType()) {
+					case CONTEXT:
+						int nofLines = document.getNumberOfLines(
+								next.getOffset(), next.getLength());
+						return nofLines - 1;
+					case ADD:
+					case REMOVE:
 						int hunkLine = document
 								.getLineOfOffset(hunk.getOffset());
+						int diffLine = document
+								.getLineOfOffset(next.getOffset());
 						return diffLine - hunkLine - 1;
-					} catch (BadLocationException e) {
-						// Ignore
+					default:
+						break;
 					}
-					break;
-				default:
-					break;
+				} catch (BadLocationException e) {
+					// Ignore
 				}
 			}
 			return 0;

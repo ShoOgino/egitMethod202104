@@ -1,0 +1,15 @@
+		/**
+		 * Returns the first logical line number of the region.
+		 *
+		 * @param side
+		 *            to get the line number of
+		 * @return the line number; -1 indicates that the range has no line
+		 *         number for the given side.
+		 */
+		public int getLine(@NonNull DiffEntry.Side side) {
+			if (DiffEntry.Side.NEW.equals(side)) {
+				return bLine;
+			}
+			return aLine;
+		}
+

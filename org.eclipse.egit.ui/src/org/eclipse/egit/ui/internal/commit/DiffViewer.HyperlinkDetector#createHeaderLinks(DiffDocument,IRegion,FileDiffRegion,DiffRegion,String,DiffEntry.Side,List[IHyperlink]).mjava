@@ -1,6 +1,6 @@
 		private void createHeaderLinks(DiffDocument document, IRegion region,
 				FileDiffRegion fileRange, DiffRegion range, String line,
-				DiffEntry.Side side, List<IHyperlink> links) {
+				@NonNull DiffEntry.Side side, List<IHyperlink> links) {
 			Pattern p = document.getPathPattern(side);
 			if (p == null) {
 				return;

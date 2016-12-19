@@ -1,0 +1,14 @@
+	/**
+	 * Creates a new {@link LogicalLineNumberProvider}.
+	 *
+	 * @param side
+	 *            of the diff to report line numbers for
+	 * @param viewer
+	 *            to get the document from
+	 */
+	public LogicalLineNumberProvider(@NonNull DiffEntry.Side side,
+			@NonNull ITextViewer viewer) {
+		this.side = side;
+		this.viewer = viewer;
+	}
+

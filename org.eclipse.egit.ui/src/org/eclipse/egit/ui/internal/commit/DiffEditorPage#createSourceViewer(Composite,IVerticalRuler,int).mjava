@@ -7,7 +7,7 @@
 		ProjectionSupport projector = new ProjectionSupport(viewer,
 				getAnnotationAccess(), getSharedColors());
 		projector.install();
-		viewer.getTextWidget().addCaretListener((event) -> {
+		viewer.getTextWidget().addCaretListener(event -> {
 			if (outlinePage != null) {
 				FileDiffRegion region = getFileDiffRange(event.caretOffset);
 				if (region != null && !region.equals(currentFileDiffRange)) {

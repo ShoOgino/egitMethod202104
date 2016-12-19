@@ -1,0 +1,10 @@
+	@Override
+	protected int computeNumberOfDigits() {
+		int max = getLogicalLineNumberProvider().getMaximum();
+		int digits = 2;
+		while (max > Math.pow(10, digits) - 1) {
+			++digits;
+		}
+		return digits;
+	}
+

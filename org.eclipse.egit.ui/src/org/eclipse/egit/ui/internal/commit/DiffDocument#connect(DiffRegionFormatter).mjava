@@ -20,6 +20,7 @@
 				Pattern.quote(formatter.getNewPrefix()) + "\\S+"); //$NON-NLS-1$
 		oldPathPattern = Pattern.compile(
 				Pattern.quote(formatter.getOldPrefix()) + "\\S+"); //$NON-NLS-1$
+		maximumLineNumbers = formatter.getMaximumLineNumbers();
 		// Connect a new partitioner.
 		IDocumentPartitioner partitioner = new FastPartitioner(
 				new DiffPartitionTokenScanner(),

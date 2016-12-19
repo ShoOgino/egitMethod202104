@@ -1,0 +1,40 @@
+	/**
+	 * Create and add a new {@link DiffRegion}, coalescing it with the previous
+	 * region,if any, if that has the same type and the two regions are
+	 * adjacent.
+	 *
+	 * @param type
+	 *            the {@link Type}
+	 * @param start
+	 *            start offset
+	 * @param end
+	 *            end offset
+	 * @param aLine
+	 *            line number in the old version, or {@link DiffRegion#NO_LINE}
+	 * @param bLine
+	 *            line number in the new version, or {@link DiffRegion#NO_LINE}
+	 * @return added range
+	 */
+	protected DiffRegion addRegion(@NonNull Type type, int start, int end,
+			int aLine, int bLine) {
+		maximumLineNumbers[0] = Math.max(aLine, maximumLineNumbers[0]);
+		maximumLineNumbers[1] = Math.max(bLine, maximumLineNumbers[1]);
+		if (bLine != DiffRegion.NO_LINE) {
+			lastNewLine = bLine;
+		}
+		if (!regions.isEmpty()) {
+			DiffRegion last = regions.get(regions.size() - 1);
+			if (last.getType().equals(type)
+					&& start == last.getOffset() + last.getLength()) {
+				regions.remove(regions.size() - 1);
+				start = last.getOffset();
+				aLine = last.getLine(DiffEntry.Side.OLD);
+				bLine = last.getLine(DiffEntry.Side.NEW);
+			}
+		}
+		DiffRegion range = new DiffRegion(start, end - start, aLine, bLine,
+				type);
+		regions.add(range);
+		return range;
+	}
+

@@ -25,7 +25,7 @@
 						- (currentOffset
 								- DiffDocument.this.regions[currIdx]
 										.getOffset());
-				switch (DiffDocument.this.regions[currIdx++].diffType) {
+				switch (DiffDocument.this.regions[currIdx++].getType()) {
 				case HEADLINE:
 					return HEADLINE_TOKEN;
 				case HUNK:

@@ -8,5 +8,6 @@
 		super(new DocumentOutputStream(document, offset));
 		this.stream = (DocumentOutputStream) getOutputStream();
 		this.maxLines = maxLines;
+		this.lastNewLine = DiffRegion.NO_LINE;
 	}
 

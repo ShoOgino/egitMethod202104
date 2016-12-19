@@ -1,0 +1,17 @@
+	/**
+	 * Creates a new {@link OldNewLogicalLineNumberRulerColumn}.
+	 *
+	 * @param plain
+	 *            {@code true} to show physical line numbers only, or
+	 *            {@code false} to show both old and new logical line numbers.
+	 */
+	public OldNewLogicalLineNumberRulerColumn(boolean plain) {
+		this.plain = plain;
+		if (!plain) {
+			composite.addDecorator(0, oldLines);
+			composite.addDecorator(1, newLines);
+		} else {
+			composite.addDecorator(0, plainLines);
+		}
+	}
+

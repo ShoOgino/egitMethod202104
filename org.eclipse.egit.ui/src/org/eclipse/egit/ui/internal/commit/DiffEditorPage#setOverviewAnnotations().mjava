@@ -15,11 +15,11 @@
 		}
 		Map<Annotation, Position> newAnnotations = new HashMap<>();
 		for (DiffRegion region : diffs) {
-			if (DiffRegion.Type.ADD.equals(region.diffType)) {
+			if (DiffRegion.Type.ADD.equals(region.getType())) {
 				newAnnotations.put(
 						new Annotation(ADD_ANNOTATION_TYPE, true, null),
 						new Position(region.getOffset(), region.getLength()));
-			} else if (DiffRegion.Type.REMOVE.equals(region.diffType)) {
+			} else if (DiffRegion.Type.REMOVE.equals(region.getType())) {
 				newAnnotations.put(
 						new Annotation(REMOVE_ANNOTATION_TYPE, true, null),
 						new Position(region.getOffset(), region.getLength()));

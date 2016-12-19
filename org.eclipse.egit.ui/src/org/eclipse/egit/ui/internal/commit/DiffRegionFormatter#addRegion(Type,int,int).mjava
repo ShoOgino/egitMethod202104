@@ -1,5 +1,7 @@
 	/**
-	 * Create and add diff style range
+	 * Create and add a new {@link DiffRegion} without line number information,
+	 * coalescing it with the previous region,if any, if that has the same type
+	 * and the two regions are adjacent.
 	 *
 	 * @param type
 	 *            the {@link Type}
@@ -9,17 +11,8 @@
 	 *            end offset
 	 * @return added range
 	 */
-	protected DiffRegion addRegion(Type type, int start, int end) {
-		if (!regions.isEmpty()) {
-			DiffRegion last = regions.get(regions.size() - 1);
-			if (last.diffType.equals(type)
-					&& start == last.getOffset() + last.getLength()) {
-				regions.remove(regions.size() - 1);
-				start = last.getOffset();
-			}
-		}
-		DiffRegion range = new DiffRegion(start, end - start, type);
-		regions.add(range);
-		return range;
+	protected DiffRegion addRegion(@NonNull Type type, int start, int end) {
+		return addRegion(type, start, end, DiffRegion.NO_LINE,
+				DiffRegion.NO_LINE);
 	}
 
