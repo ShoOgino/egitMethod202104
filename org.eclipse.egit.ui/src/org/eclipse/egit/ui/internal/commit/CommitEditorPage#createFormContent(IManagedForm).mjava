@@ -1,8 +1,12 @@
-	/**
-	 * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
-	 */
 	@Override
 	protected void createFormContent(IManagedForm managedForm) {
+		managedForm.addPart(new FocusManagerFormPart(focusTracker) {
+
+			@Override
+			public void setDefaultFocus() {
+				getManagedForm().getForm().setFocus();
+			}
+		});
 		Composite body = managedForm.getForm().getBody();
 		body.addDisposeListener(new DisposeListener() {
 
@@ -18,7 +22,18 @@
 
 		FormToolkit toolkit = managedForm.getToolkit();
 
-		Composite displayArea = toolkit.createComposite(body);
+		Composite displayArea = new Composite(body, toolkit.getOrientation()) {
+
+			@Override
+			public boolean setFocus() {
+				Control control = focusTracker.getLastFocusControl();
+				if (control != null && control.forceFocus()) {
+					return true;
+				}
+				return super.setFocus();
+			}
+		};
+		toolkit.adapt(displayArea);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(displayArea);
 
 		createHeaderArea(displayArea, toolkit, 2);

@@ -1,0 +1,13 @@
+	/**
+	 * Stops tracking focus changes for the given {@link Control}. Has no effect
+	 * if the control is {@code null} or is not currently being tracked.
+	 *
+	 * @param control
+	 *            to remove from focus tracking
+	 */
+	public void removeFromFocusTracking(Control control) {
+		if (trackedControls.remove(control) && !control.isDisposed()) {
+			unhookControl(control);
+		}
+	}
+

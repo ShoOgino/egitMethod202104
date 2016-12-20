@@ -1,0 +1,13 @@
+	/**
+	 * Retrieves the last control to have had the focus.
+	 *
+	 * @return the control, or {@code null} if none determined yet.
+	 */
+	public Control getLastFocusControl() {
+		if (lastFocusControl != null && lastFocusControl.isDisposed()) {
+			trackedControls.remove(lastFocusControl);
+			lastFocusControl = null;
+		}
+		return lastFocusControl;
+	}
+

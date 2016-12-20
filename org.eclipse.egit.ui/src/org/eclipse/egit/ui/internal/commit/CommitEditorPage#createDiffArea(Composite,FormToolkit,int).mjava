@@ -1,15 +1,15 @@
 	void createDiffArea(Composite parent, FormToolkit toolkit, int span) {
-		diffSection = createSection(parent, toolkit, span);
-		diffSection.setText(UIText.CommitEditorPage_SectionFilesEmpty);
+		diffSection = createSection(parent, toolkit,
+				UIText.CommitEditorPage_SectionFilesEmpty, span);
 		Composite filesArea = createSectionClient(diffSection, toolkit);
 
 		diffViewer = new CommitFileDiffViewer(filesArea, getSite(), SWT.MULTI
 				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
 				| toolkit.getBorderStyle());
-		diffViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
-				FormToolkit.TREE_BORDER);
-		GridDataFactory.fillDefaults().grab(true, true)
-				.applyTo(diffViewer.getControl());
+		Control control = diffViewer.getControl();
+		control.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(control);
+		addToFocusTracking(control);
 		diffViewer.setContentProvider(ArrayContentProvider.getInstance());
 		diffViewer.setTreeWalk(getCommit().getRepository(), null);
 

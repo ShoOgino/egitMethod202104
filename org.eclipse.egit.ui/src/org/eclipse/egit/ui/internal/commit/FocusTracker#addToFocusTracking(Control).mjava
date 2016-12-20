@@ -1,0 +1,13 @@
+	/**
+	 * Registers the given {@link Control} for having focus changes being
+	 * tracked. Has no effect if the control is already being tracked.
+	 *
+	 * @param control
+	 *            to track
+	 */
+	public void addToFocusTracking(@NonNull Control control) {
+		if (trackedControls.add(control)) {
+			hookControl(control);
+		}
+	}
+

@@ -1,9 +1,8 @@
 	private void createMessageArea(Composite parent, FormToolkit toolkit,
 			int span) {
-		Section messageSection = createSection(parent, toolkit, span);
+		Section messageSection = createSection(parent, toolkit,
+				UIText.CommitEditorPage_SectionMessage, span);
 		Composite messageArea = createSectionClient(messageSection, toolkit);
-
-		messageSection.setText(UIText.CommitEditorPage_SectionMessage);
 
 		RevCommit commit = getCommit().getRevCommit();
 		String message = commit.getFullMessage();
@@ -33,12 +32,14 @@
 			textContent.setData(FormToolkit.KEY_DRAW_BORDER,
 					FormToolkit.TEXT_BORDER);
 
-		Point size = textContent.getTextWidget().computeSize(SWT.DEFAULT,
+		StyledText textWidget = textContent.getTextWidget();
+		Point size = textWidget.computeSize(SWT.DEFAULT,
 				SWT.DEFAULT);
 		int yHint = size.y > 80 ? 80 : SWT.DEFAULT;
 		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, yHint).minSize(1, 20)
 				.grab(true, true).applyTo(textContent);
 
+		addToFocusTracking(textWidget);
 		updateSectionClient(messageSection, messageArea, toolkit);
 	}
 

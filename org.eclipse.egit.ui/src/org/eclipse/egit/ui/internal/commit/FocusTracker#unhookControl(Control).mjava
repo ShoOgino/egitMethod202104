@@ -1,0 +1,6 @@
+	private void unhookControl(@NonNull Control control) {
+		control.removeListener(SWT.FocusOut, listener);
+		control.removeListener(SWT.FocusIn, listener);
+		control.removeListener(SWT.Dispose, listener);
+	}
+

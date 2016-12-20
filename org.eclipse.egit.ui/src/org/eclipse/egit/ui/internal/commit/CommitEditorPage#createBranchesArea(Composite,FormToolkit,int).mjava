@@ -1,13 +1,16 @@
 	private void createBranchesArea(Composite parent, FormToolkit toolkit,
 			int span) {
-		branchSection = createSection(parent, toolkit, span);
-		branchSection.setText(UIText.CommitEditorPage_SectionBranchesEmpty);
+		branchSection = createSection(parent, toolkit,
+				UIText.CommitEditorPage_SectionBranchesEmpty, span);
 		Composite branchesArea = createSectionClient(branchSection, toolkit);
 
 		branchViewer = new TableViewer(toolkit.createTable(branchesArea,
 				SWT.V_SCROLL | SWT.H_SCROLL));
+		Control control = branchViewer.getControl();
+		control.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER);
 		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 50)
-				.applyTo(branchViewer.getControl());
+				.applyTo(control);
+		addToFocusTracking(control);
 		branchViewer.setSorter(new ViewerSorter());
 		branchViewer.setLabelProvider(new GitLabelProvider() {
 
@@ -18,9 +21,6 @@
 
 		});
 		branchViewer.setContentProvider(ArrayContentProvider.getInstance());
-		branchViewer.getTable().setData(FormToolkit.KEY_DRAW_BORDER,
-				FormToolkit.TREE_BORDER);
-
 		updateSectionClient(branchSection, branchesArea, toolkit);
 	}
 

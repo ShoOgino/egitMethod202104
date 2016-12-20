@@ -15,6 +15,7 @@
 		boolean signedOff = isSignedOffBy(person);
 
 		final Text userText = new Text(userArea, SWT.FLAT | SWT.READ_ONLY);
+		addToFocusTracking(userText);
 		setPerson(userText, person, author);
 		toolkit.adapt(userText, false, false);
 		userText.setData(FormToolkit.KEY_DRAW_BORDER, Boolean.FALSE);

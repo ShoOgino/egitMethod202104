@@ -1,0 +1,9 @@
+	@Override
+	public void setFocus() {
+		Control control = focusTracker.getLastFocusControl();
+		if (control != null && control.forceFocus()) {
+			return;
+		}
+		setDefaultFocus();
+	}
+
