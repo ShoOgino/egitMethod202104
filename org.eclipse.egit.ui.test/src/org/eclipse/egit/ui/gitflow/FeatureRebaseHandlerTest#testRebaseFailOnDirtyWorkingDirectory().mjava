@@ -1,8 +1,6 @@
 	@Test
 	public void testRebaseFailOnDirtyWorkingDirectory() throws Exception {
-		// if AUTOMATED_MODE is true, we wouldn't get the error
-		// dialog which is part of what we want to test here
-		ErrorDialog.AUTOMATED_MODE = false;
+		disableAutomatedMode();
 
 		Git git = Git.wrap(repository);
 
