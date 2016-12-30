@@ -128,16 +128,12 @@
 				.applyTo(remoteBranchNameText);
 		remoteBranchNameText.setText(getSuggestedBranchName());
 		UIUtils.addRefContentProposalToText(remoteBranchNameText,
-				this.repository, new IRefListProvider() {
-
-					@Override
-					public List<Ref> getRefList() {
-						if (PushBranchPage.this.assist != null) {
-							return PushBranchPage.this.assist
-									.getRefsForContentAssist(false, true);
-						}
-						return Collections.emptyList();
+				this.repository, () -> {
+					if (PushBranchPage.this.assist != null) {
+						return PushBranchPage.this.assist
+								.getRefsForContentAssist(false, true);
 					}
+					return Collections.emptyList();
 				});
 
 		if (this.ref != null) {

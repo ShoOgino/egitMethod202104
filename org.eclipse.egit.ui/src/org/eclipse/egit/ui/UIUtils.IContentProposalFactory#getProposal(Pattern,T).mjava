@@ -1,0 +1,14 @@
+		/**
+		 * Gets a new {@link IContentProposal} for the given element. May or may
+		 * not consider the {@link Pattern} and creates a proposal only if it
+		 * matches the element with implementation-defined semantics.
+		 *
+		 * @param pattern
+		 *            constructed from current input to aid in selecting
+		 *            meaningful proposals; may be {@code null}
+		 * @param element
+		 *            to consider creating a proposal for
+		 * @return a new {@link IContentProposal}, or {@code null} if none
+		 */
+		public IContentProposal getProposal(Pattern pattern, T element);
+

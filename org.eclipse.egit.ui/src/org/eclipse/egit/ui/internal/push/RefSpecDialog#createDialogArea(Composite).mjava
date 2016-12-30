@@ -48,12 +48,7 @@
 		});
 		// content assist for source
 		UIUtils.addRefContentProposalToText(sourceText, repo,
-				new IRefListProvider() {
-					@Override
-					public List<Ref> getRefList() {
-						return assistProvider.getRefsForContentAssist(true, pushMode);
-					}
-				});
+				() -> assistProvider.getRefsForContentAssist(true, pushMode));
 
 		// suggest remote tracking branch
 		if (!pushMode) {
@@ -90,12 +85,7 @@
 		});
 		// content assist for destination
 		UIUtils.addRefContentProposalToText(destinationText, repo,
-				new IRefListProvider() {
-					@Override
-					public List<Ref> getRefList() {
-						return assistProvider.getRefsForContentAssist(false, pushMode);
-					}
-				});
+				() -> assistProvider.getRefsForContentAssist(false, pushMode));
 
 		// force update
 		forceButton = new Button(main, SWT.CHECK);

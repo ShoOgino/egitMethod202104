@@ -22,12 +22,7 @@
 		});
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(sourceText);
 		UIUtils.addRefContentProposalToText(sourceText, repository,
-				new IRefListProvider() {
-					@Override
-					public List<Ref> getRefList() {
-						return getRemoteRefs();
-					}
-				});
+				() -> getRemoteRefs());
 		checkPage();
 		setControl(main);
 	}

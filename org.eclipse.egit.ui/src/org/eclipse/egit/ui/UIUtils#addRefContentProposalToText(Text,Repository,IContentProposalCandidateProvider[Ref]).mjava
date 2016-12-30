@@ -1,0 +1,28 @@
+	/**
+	 * Adds a content proposal for {@link Ref}s (branches, tags...) to a text
+	 * field
+	 *
+	 * @param textField
+	 *            the text field
+	 * @param repository
+	 *            the repository
+	 * @param refListProvider
+	 *            provides the {@link Ref}s to show in the proposal
+	 */
+	public static final void addRefContentProposalToText(Text textField,
+			Repository repository,
+			IContentProposalCandidateProvider<Ref> refListProvider) {
+		UIUtils.<Ref> addContentProposalToText(textField,
+				refListProvider, (pattern, ref) -> {
+					String shortenedName = Repository
+							.shortenRefName(ref.getName());
+					if (pattern != null
+							&& !pattern.matcher(ref.getName()).matches()
+							&& !pattern.matcher(shortenedName).matches()) {
+						return null;
+					}
+					return new RefContentProposal(repository, ref);
+				}, UIText.UIUtils_StartTypingForRemoteRefMessage,
+				UIText.UIUtils_PressShortcutForRemoteRefMessage);
+	}
+

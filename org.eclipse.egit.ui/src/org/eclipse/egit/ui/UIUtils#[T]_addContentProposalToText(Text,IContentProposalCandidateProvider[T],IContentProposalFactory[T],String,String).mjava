@@ -1,27 +1,36 @@
 	/**
-	 * Adds a content proposal for {@link Ref}s (branches, tags...) to a text
-	 * field
+	 * Adds a content proposal for arbitrary elements to a text field.
+	 *
+	 * @param <T>
+	 *            type of the proposal candidate objects
 	 *
 	 * @param textField
 	 *            the text field
-	 * @param repository
-	 *            the repository
-	 * @param refListProvider
-	 *            provides the {@link Ref}s to show in the proposal
+	 * @param candidateProvider
+	 *            {@link IContentProposalCandidateProvider} providing the
+	 *            candidates eligible for creating {@link IContentProposal}s
+	 * @param factory
+	 *            {@link IContentProposalFactory} to use to create proposals
+	 *            from candidates
+	 * @param startTypingMessage
+	 *            hover message if no content assist key binding is active
+	 * @param shortcutMessage
+	 *            hover message if a content assist key binding is active,
+	 *            should have a "{0}" placeholder that will be filled by the
+	 *            appropriate keystroke
 	 */
-	public static final void addRefContentProposalToText(final Text textField,
-			final Repository repository, final IRefListProvider refListProvider) {
+	public static final <T> void addContentProposalToText(Text textField,
+			IContentProposalCandidateProvider<T> candidateProvider,
+			IContentProposalFactory<T> factory, String startTypingMessage,
+			String shortcutMessage) {
 		KeyStroke stroke = UIUtils
 				.getKeystrokeOfBestActiveBindingFor(IWorkbenchCommandConstants.EDIT_CONTENT_ASSIST);
-		if (stroke == null)
+		if (stroke == null) {
+			addBulbDecorator(textField, startTypingMessage);
+		} else {
 			addBulbDecorator(textField,
-					UIText.UIUtils_StartTypingForRemoteRefMessage);
-		else
-			addBulbDecorator(
-					textField,
-					NLS.bind(UIText.UIUtils_PressShortcutForRemoteRefMessage,
-							stroke.format()));
-
+					NLS.bind(shortcutMessage, stroke.format()));
+		}
 		IContentProposalProvider cp = new IContentProposalProvider() {
 			@Override
 			public IContentProposal[] getProposals(String contents, int position) {
@@ -56,20 +65,16 @@
 					pattern = null;
 				}
 
-				List<Ref> proposals = refListProvider.getRefList();
+				Collection<? extends T> candidates = candidateProvider
+						.getCandidates();
 
-				if (proposals != null)
-					for (final Ref ref : proposals) {
-						final String shortenedName = Repository
-								.shortenRefName(ref.getName());
-						if (pattern != null
-								&& !pattern.matcher(ref.getName()).matches()
-								&& !pattern.matcher(shortenedName).matches())
-							continue;
-
-						IContentProposal propsal = new RefContentProposal(
-								repository, ref);
-						resultList.add(propsal);
+				if (candidates != null)
+					for (final T ref : candidates) {
+						IContentProposal proposal = factory.getProposal(pattern,
+								ref);
+						if (proposal != null) {
+							resultList.add(proposal);
+						}
 					}
 
 				return resultList.toArray(new IContentProposal[resultList
@@ -81,7 +86,7 @@
 				new TextContentAdapter(), cp, stroke,
 				UIUtils.VALUE_HELP_ACTIVATIONCHARS);
 		// set the acceptance style to always replace the complete content
-		adapter
-				.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+		adapter.setProposalAcceptanceStyle(
+				ContentProposalAdapter.PROPOSAL_REPLACE);
 	}
 

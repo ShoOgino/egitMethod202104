@@ -30,12 +30,7 @@
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(
 				destinationText);
 		UIUtils.addRefContentProposalToText(sourceText, repository,
-				new IRefListProvider() {
-					@Override
-					public List<Ref> getRefList() {
-						return getRemoteRefs();
-					}
-				});
+				() -> getRemoteRefs());
 
 		force = new Button(main, SWT.CHECK);
 		force.setText(UIText.FetchDestinationPage_ForceCheckbox);

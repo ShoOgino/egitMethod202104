@@ -55,16 +55,12 @@
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
 				.applyTo(remoteBranchNameText);
 		UIUtils.addRefContentProposalToText(remoteBranchNameText,
-				this.repository, new IRefListProvider() {
-
-					@Override
-					public List<Ref> getRefList() {
-						if (PullWizardPage.this.assist != null) {
-							return PullWizardPage.this.assist
-									.getRefsForContentAssist(false, true);
-						}
-						return Collections.emptyList();
+				this.repository, () -> {
+					if (PullWizardPage.this.assist != null) {
+						return PullWizardPage.this.assist
+								.getRefsForContentAssist(false, true);
 					}
+					return Collections.emptyList();
 				});
 		remoteBranchNameText.setText(getSuggestedBranchName());
 		remoteBranchNameText.addModifyListener(new ModifyListener() {
