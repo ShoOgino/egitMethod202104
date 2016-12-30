@@ -5,6 +5,15 @@
 	 * cause this document to be shown.
 	 */
 	private void formatDiff() {
+		RepositoryCommit commit = AdapterUtils.adapt(getEditor(),
+				RepositoryCommit.class);
+		if (commit == null) {
+			return;
+		}
+		if (commit.getRevCommit().getParentCount() > 1) {
+			setInput(new DiffEditorInput(commit, null));
+			return;
+		}
 		final DiffDocument document = new DiffDocument();
 		final DiffRegionFormatter formatter = new DiffRegionFormatter(
 				document);
@@ -13,11 +22,6 @@
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				RepositoryCommit commit = AdapterUtils.adapt(getEditor(),
-						RepositoryCommit.class);
-				if (commit == null) {
-					return Status.CANCEL_STATUS;
-				}
 				FileDiff diffs[] = getDiffs(commit);
 				monitor.beginTask("", diffs.length); //$NON-NLS-1$
 				Repository repository = commit.getRepository();

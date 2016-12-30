@@ -1,5 +1,8 @@
 	private void setFolding() {
 		ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
+		if (viewer == null) {
+			return;
+		}
 		IDocument document = viewer.getDocument();
 		if (document instanceof DiffDocument) {
 			FileDiffRegion[] regions = ((DiffDocument) document)

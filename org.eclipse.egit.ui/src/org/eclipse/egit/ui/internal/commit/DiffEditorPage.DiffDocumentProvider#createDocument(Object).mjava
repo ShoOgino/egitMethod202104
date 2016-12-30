@@ -2,7 +2,10 @@
 		protected IDocument createDocument(Object element)
 				throws CoreException {
 			if (element instanceof DiffEditorInput) {
-				return ((DiffEditorInput) element).getDocument();
+				IDocument document = ((DiffEditorInput) element).getDocument();
+				if (document != null) {
+					return document;
+				}
 			}
 			return new Document();
 		}
