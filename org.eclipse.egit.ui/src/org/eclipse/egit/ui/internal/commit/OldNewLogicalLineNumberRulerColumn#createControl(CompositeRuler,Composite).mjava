@@ -1,6 +1,15 @@
 	@Override
 	public Control createControl(CompositeRuler parentRuler,
 			Composite parentControl) {
+		menuListener = (event) -> {
+			if (event.type == SWT.MenuDetect) {
+				Menu contextMenu = parentControl.getMenu();
+				if (contextMenu != null) {
+					contextMenu.setLocation(event.x, event.y);
+					contextMenu.setVisible(true);
+				}
+			}
+		};
 		return composite.createControl(parentControl,
 				parentRuler.getTextViewer());
 	}
