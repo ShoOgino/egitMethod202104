@@ -1,8 +1,7 @@
 	@Override
 	public boolean isEnabled() {
-		final Repository repository = getRepository(getPage());
-		if (repository == null)
-			return false;
-		return repository.getRepositoryState().equals(RepositoryState.SAFE);
+		Repository repository = getRepository(getPage());
+		return repository != null
+				&& repository.getRepositoryState().equals(RepositoryState.SAFE);
 	}
 
