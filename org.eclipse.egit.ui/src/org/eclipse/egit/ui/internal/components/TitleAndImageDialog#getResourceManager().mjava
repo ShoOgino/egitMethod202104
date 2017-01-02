@@ -1,0 +1,13 @@
+	/**
+	 * Retrieves this dialog's {@link LocalResourceManager}.
+	 *
+	 * @return the {@link LocalResourceManager}
+	 */
+	protected ResourceManager getResourceManager() {
+		if (resourceManager == null) {
+			resourceManager = new LocalResourceManager(
+					JFaceResources.getResources());
+		}
+		return resourceManager;
+	}
+

@@ -14,15 +14,18 @@
 	 *            describing where to push to
 	 * @param showConfigureButton
 	 *            whether the result dialog should have a configuration button
+	 * @param pushMode
+	 *            this push is for
 	 */
 	public PushJob(String name, Repository repository, PushOperation operation,
 			PushOperationResult expectedResult, String destinationString,
-			boolean showConfigureButton) {
+			boolean showConfigureButton, @NonNull PushMode pushMode) {
 		super(name);
 		this.operation = operation;
 		this.resultToCompare = expectedResult;
 		this.destinationString = destinationString;
 		this.localDb = repository;
 		this.showConfigureButton = showConfigureButton;
+		this.pushMode = pushMode;
 	}
 

@@ -1,0 +1,16 @@
+	@Override
+	protected Control createContents(Composite parent) {
+		if (defaultImageDescriptor != null && !explicitImageSet) {
+			super.setTitleImage(
+					getResourceManager().createImage(defaultImageDescriptor));
+		}
+		Control control = super.createContents(parent);
+		control.addDisposeListener(event -> {
+			if (resourceManager != null) {
+				resourceManager.dispose();
+				resourceManager = null;
+			}
+		});
+		return control;
+	}
+

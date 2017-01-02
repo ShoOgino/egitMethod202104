@@ -13,22 +13,14 @@
 								try {
 									final PushOperationResult result = op
 											.execute(monitor);
-									getShell().getDisplay().asyncExec(
-											new Runnable() {
-
-												@Override
-												public void run() {
-													PushResultDialog dlg = new PushResultDialog(
-															getShell(),
-															repository,
-															result,
-															op
-													.getDestinationString(),
-													true);
-													dlg.showConfigureButton(false);
-													dlg.open();
-												}
-											});
+									getShell().getDisplay().asyncExec(() -> {
+										PushResultDialog dlg = new PushResultDialog(
+												getShell(), repository, result,
+												op.getDestinationString(), true,
+												PushMode.UPSTREAM);
+										dlg.showConfigureButton(false);
+										dlg.open();
+									});
 								} catch (CoreException e) {
 									Activator.handleError(e.getMessage(), e,
 											true);

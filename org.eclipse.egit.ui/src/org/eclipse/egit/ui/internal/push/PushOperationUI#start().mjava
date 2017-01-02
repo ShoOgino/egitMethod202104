@@ -20,7 +20,7 @@
 		Job job = new PushJob(
 				NLS.bind(UIText.PushOperationUI_PushJobName, destinationString),
 				repo, op, expectedResult, destinationString,
-				showConfigureButton);
+				showConfigureButton, pushMode);
 		job.setUser(true);
 		job.schedule();
 	}

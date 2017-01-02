@@ -6,12 +6,11 @@
 	 */
 	public FetchResultDialog(final Shell parentShell, final Repository localDb,
 			final FetchOperationResult result, final String sourceString) {
-		super(parentShell);
+		super(parentShell, UIIcons.WIZBAN_FETCH);
 		setShellStyle(getShellStyle() & ~SWT.APPLICATION_MODAL | SWT.RESIZE);
 		setBlockOnOpen(false);
 		this.localDb = localDb;
 		this.result = result;
 		this.sourceString = sourceString;
-		fetchResultImage = UIIcons.WIZBAN_FETCH.createImage();
 	}
 

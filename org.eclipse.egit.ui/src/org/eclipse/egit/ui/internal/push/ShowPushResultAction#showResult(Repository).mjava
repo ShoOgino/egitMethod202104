@@ -3,7 +3,7 @@
 		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider()
 				.getShell();
 		PushResultDialog dialog = new PushResultDialog(shell, repository,
-				operationResult, destination, isModal(shell));
+				operationResult, destination, isModal(shell), pushMode);
 		dialog.showConfigureButton(showConfigure);
 		dialog.open();
 	}

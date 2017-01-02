@@ -1,7 +1,8 @@
 	PushResultDialog(final Shell parentShell, final Repository localDb,
 			final PushOperationResult result, final String destinationString,
-			boolean modal) {
-		super(parentShell);
+			boolean modal, @NonNull PushMode pushMode) {
+		super(parentShell, pushMode == PushMode.UPSTREAM ? UIIcons.WIZBAN_PUSH
+				: UIIcons.WIZBAN_PUSH_GERRIT);
 		int shellStyle = getShellStyle() | SWT.RESIZE;
 		if (!modal) {
 			shellStyle &= ~SWT.APPLICATION_MODAL;
