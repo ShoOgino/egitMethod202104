@@ -1,0 +1,13 @@
+		@Override
+		public void modifyText(ModifyEvent e) {
+			nameText.setFocus();
+			if (listenerActive || normalizeName.getSelection() == false)
+				return;
+			try {
+				listenerActive = true;
+				normalize();
+			} finally {
+				listenerActive = false;
+			}
+		}
+
