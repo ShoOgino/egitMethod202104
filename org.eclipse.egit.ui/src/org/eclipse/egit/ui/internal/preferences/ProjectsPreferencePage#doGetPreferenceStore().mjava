@@ -1,0 +1,6 @@
+	@Override
+	protected IPreferenceStore doGetPreferenceStore() {
+		return new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				Activator.getPluginId());
+	}
+

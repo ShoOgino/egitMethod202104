@@ -1,19 +1,19 @@
-	@Override
-	public boolean performOk() {
-		boolean isOk = super.performOk();
-		if (isOk && corePreferences.needsSaving()) {
+	private void saveSecondaryPreferenceStore() {
+		IPreferenceStore store = getSecondaryPreferenceStore();
+		if (store != null && store.needsSaving()
+				&& (store instanceof IPersistentPreferenceStore)) {
 			try {
-				corePreferences.save();
+				((IPersistentPreferenceStore) store).save();
 			} catch (IOException e) {
 				String message = JFaceResources.format(
 						"PreferenceDialog.saveErrorMessage", //$NON-NLS-1$
 						new Object[] { getTitle(), e.getMessage() });
 				Policy.getStatusHandler().show(
-						new Status(IStatus.ERROR, Policy.JFACE, message, e),
+						new Status(IStatus.ERROR, Activator.getPluginId(),
+								message, e),
 						JFaceResources
 								.getString("PreferenceDialog.saveErrorTitle")); //$NON-NLS-1$
 			}
 		}
-		return isOk;
 	}
 

@@ -1,23 +1,9 @@
 	@Override
 	public boolean performOk() {
-		doGetPreferenceStore().setValue(UIPreferences.WARN_BEFORE_COMMITTING,
+		getPreferenceStore().setValue(UIPreferences.WARN_BEFORE_COMMITTING,
 				warnCheckbox.getSelection());
-		doGetPreferenceStore().setValue(UIPreferences.BLOCK_COMMIT,
+		getPreferenceStore().setValue(UIPreferences.BLOCK_COMMIT,
 				blockCheckbox.getSelection());
-		boolean isOk = super.performOk();
-		if (isOk && corePreferences.needsSaving()) {
-			try {
-				corePreferences.save();
-			} catch (IOException e) {
-				String message = JFaceResources.format(
-						"PreferenceDialog.saveErrorMessage", //$NON-NLS-1$
-						new Object[] { getTitle(), e.getMessage() });
-				Policy.getStatusHandler().show(
-						new Status(IStatus.ERROR, Policy.JFACE, message, e),
-						JFaceResources
-								.getString("PreferenceDialog.saveErrorTitle")); //$NON-NLS-1$
-			}
-		}
-		return isOk;
+		return super.performOk();
 	}
 

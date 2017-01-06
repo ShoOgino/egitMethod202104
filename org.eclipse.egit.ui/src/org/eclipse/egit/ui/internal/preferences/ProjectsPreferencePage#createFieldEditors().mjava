@@ -8,8 +8,7 @@
 				getFieldEditorParent()) {
 			@Override
 			public IPreferenceStore getPreferenceStore() {
-				return org.eclipse.egit.ui.Activator.getDefault()
-						.getPreferenceStore();
+				return getSecondaryPreferenceStore();
 			}
 		});
 		addField(new BooleanFieldEditor(

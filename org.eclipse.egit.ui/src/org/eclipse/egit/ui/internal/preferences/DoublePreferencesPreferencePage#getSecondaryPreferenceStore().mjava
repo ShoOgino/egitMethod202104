@@ -1,0 +1,12 @@
+	/**
+	 * Returns the secondary preference store of this preference page.
+	 *
+	 * @return the preference store, or {@code null} if none
+	 */
+	public IPreferenceStore getSecondaryPreferenceStore() {
+		if (secondaryStore == null) {
+			secondaryStore = doGetSecondaryPreferenceStore();
+		}
+		return secondaryStore;
+	}
+

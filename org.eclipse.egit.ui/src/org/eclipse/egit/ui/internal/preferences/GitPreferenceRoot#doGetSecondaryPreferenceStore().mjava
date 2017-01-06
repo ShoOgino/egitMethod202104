@@ -1,0 +1,6 @@
+	@Override
+	protected IPreferenceStore doGetSecondaryPreferenceStore() {
+		return new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				org.eclipse.egit.core.Activator.getPluginId());
+	}
+

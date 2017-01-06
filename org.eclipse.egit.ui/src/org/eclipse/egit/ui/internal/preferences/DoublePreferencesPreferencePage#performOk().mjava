@@ -1,0 +1,9 @@
+	@Override
+	public boolean performOk() {
+		boolean isOk = super.performOk();
+		if (isOk) {
+			saveSecondaryPreferenceStore();
+		}
+		return isOk;
+	}
+
