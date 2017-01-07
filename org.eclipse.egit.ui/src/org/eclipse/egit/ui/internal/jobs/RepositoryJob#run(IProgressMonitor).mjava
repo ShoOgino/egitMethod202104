@@ -11,8 +11,15 @@
 			}
 			IAction action = getAction();
 			if (action != null) {
-				if (isModal()) {
-					showResult(action);
+				boolean showDialog = dialogPreference == null
+						|| Activator.getDefault().getPreferenceStore()
+								.getBoolean(dialogPreference);
+				if (showDialog) {
+					if (isModal()) {
+						showResult(action);
+					} else {
+						showResultDeferred(action);
+					}
 				} else {
 					setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
 					setProperty(IProgressConstants.ACTION_PROPERTY, action);

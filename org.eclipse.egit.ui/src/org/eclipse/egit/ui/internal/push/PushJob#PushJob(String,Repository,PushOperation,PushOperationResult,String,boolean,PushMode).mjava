@@ -20,7 +20,7 @@
 	public PushJob(String name, Repository repository, PushOperation operation,
 			PushOperationResult expectedResult, String destinationString,
 			boolean showConfigureButton, @NonNull PushMode pushMode) {
-		super(name);
+		super(name, UIPreferences.SHOW_PUSH_POPUP_SUCCESS);
 		this.operation = operation;
 		this.resultToCompare = expectedResult;
 		this.destinationString = destinationString;
