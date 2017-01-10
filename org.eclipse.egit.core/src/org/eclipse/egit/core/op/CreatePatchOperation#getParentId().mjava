@@ -1,0 +1,16 @@
+	private AnyObjectId getParentId() {
+		RevCommit[] parents = commit.getParents();
+		if (parents.length > 1) {
+			throw new IllegalStateException(
+					CoreText.CreatePatchOperation_cannotCreatePatchForMergeCommit);
+		}
+
+		ObjectId parentId;
+		if (parents.length > 0) {
+			parentId = parents[0].getId();
+		} else {
+			parentId = null;
+		}
+		return parentId;
+	}
+
