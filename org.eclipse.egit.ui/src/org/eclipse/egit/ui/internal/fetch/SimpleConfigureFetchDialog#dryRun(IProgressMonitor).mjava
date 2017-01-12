@@ -1,0 +1,24 @@
+	@Override
+	protected void dryRun(IProgressMonitor monitor) {
+		int timeout = Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+		final FetchOperationUI op = new FetchOperationUI(getRepository(),
+				getConfig(), timeout, true);
+		try {
+			final FetchResult result = op.execute(monitor);
+			getShell().getDisplay().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					FetchResultDialog dlg;
+					dlg = new FetchResultDialog(getShell(), getRepository(),
+							result, op.getSourceString());
+					dlg.showConfigureButton(false);
+					dlg.open();
+				}
+			});
+		} catch (CoreException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+	}
+

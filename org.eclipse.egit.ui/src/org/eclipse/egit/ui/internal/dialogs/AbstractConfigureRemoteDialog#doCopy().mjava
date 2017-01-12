@@ -1,0 +1,12 @@
+	private void doCopy() {
+		String toCopy = ((IStructuredSelection) specViewer.getSelection())
+				.getFirstElement().toString();
+		Clipboard clipboard = new Clipboard(getShell().getDisplay());
+		try {
+			clipboard.setContents(new String[] { toCopy },
+					new TextTransfer[] { TextTransfer.getInstance() });
+		} finally {
+			clipboard.dispose();
+		}
+	}
+

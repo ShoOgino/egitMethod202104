@@ -1,0 +1,8 @@
+	@Override
+	protected RefSpec getNewRefSpec() {
+		SimpleFetchRefSpecWizard wiz = new SimpleFetchRefSpecWizard(
+				getRepository(), getConfig());
+		WizardDialog dlg = new WizardDialog(getShell(), wiz);
+		return dlg.open() == Window.OK ? wiz.getSpec() : null;
+	}
+

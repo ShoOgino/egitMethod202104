@@ -1,0 +1,8 @@
+	private void doDeleteRefSpecs() {
+		for (Object spec : ((IStructuredSelection) specViewer.getSelection())
+				.toArray()) {
+			removeRefSpec((RefSpec) spec);
+		}
+		updateControls();
+	}
+

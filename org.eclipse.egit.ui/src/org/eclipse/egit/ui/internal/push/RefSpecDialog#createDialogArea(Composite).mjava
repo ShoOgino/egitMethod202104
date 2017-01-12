@@ -27,10 +27,9 @@
 				false).applyTo(sourceText);
 		if (spec != null && spec.getSource() != null)
 			sourceText.setText(spec.getSource());
-		sourceText.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (sourceText.isFocusControl())
+		sourceText.addModifyListener(event -> {
+			if (sourceText.isFocusControl()) {
+				try {
 					if (autoSuggestDestination) {
 						String name = sourceText.getText();
 						if (name.startsWith(Constants.R_HEADS))
@@ -42,8 +41,12 @@
 						setSpec(sourceChanged
 								.setDestination(Constants.R_REMOTES
 										+ config.getName() + '/' + name));
-					} else
+					} else {
 						setSpec(getSpec().setSource(sourceText.getText()));
+					}
+				} catch (IllegalArgumentException | IllegalStateException e) {
+					// Text is not a valid source
+				}
 			}
 		});
 		// content assist for source
@@ -76,11 +79,13 @@
 				false).applyTo(destinationText);
 		if (spec != null && spec.getDestination() != null)
 			destinationText.setText(spec.getDestination());
-		destinationText.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (destinationText.isFocusControl())
+		destinationText.addModifyListener(event -> {
+			if (destinationText.isFocusControl()) {
+				try {
 					setSpec(getSpec().setDestination(destinationText.getText()));
+				} catch (IllegalArgumentException | IllegalStateException e) {
+					// Text is not a valid spec
+				}
 			}
 		});
 		// content assist for destination
@@ -111,13 +116,15 @@
 				specString);
 		if (spec != null)
 			specString.setText(spec.toString());
-		specString.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (!specString.isFocusControl()
-						|| getSpec().toString().equals(specString.getText()))
-					return;
+		specString.addModifyListener(event -> {
+			if (!specString.isFocusControl()
+					|| getSpec().toString().equals(specString.getText())) {
+				return;
+			}
+			try {
 				setSpec(new RefSpec(specString.getText()));
+			} catch (IllegalArgumentException | IllegalStateException e) {
+				// Invalid spec text
 			}
 		});
 

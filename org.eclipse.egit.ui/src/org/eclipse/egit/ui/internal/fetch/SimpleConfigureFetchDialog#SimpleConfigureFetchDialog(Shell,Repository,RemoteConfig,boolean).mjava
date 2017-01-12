@@ -8,13 +8,7 @@
 	 */
 	private SimpleConfigureFetchDialog(Shell shell, Repository repository,
 			RemoteConfig config, boolean showBranchInfo) {
-		super(shell);
-		setHelpAvailable(false);
-		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
-		this.repository = repository;
-		this.config = config;
-		this.showBranchInfo = showBranchInfo;
-
+		super(shell, repository, config, showBranchInfo, false);
 		// Add default fetch ref spec if this is a new remote config
 		if (config.getFetchRefSpecs().isEmpty()
 				&& !repository.getConfig()

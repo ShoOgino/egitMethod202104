@@ -2,8 +2,10 @@
 	public boolean performFinish() {
 		uri = page.getSelection().getURI();
 		if (page.getStoreInSecureStore()) {
-			if (!SecureStoreUtils.storeCredentials(page.getCredentials(), uri))
+			if (!SecureStoreUtils.storeCredentials(page.getCredentials(),
+					uri)) {
 				return false;
+			}
 		}
 
 		return uri != null;

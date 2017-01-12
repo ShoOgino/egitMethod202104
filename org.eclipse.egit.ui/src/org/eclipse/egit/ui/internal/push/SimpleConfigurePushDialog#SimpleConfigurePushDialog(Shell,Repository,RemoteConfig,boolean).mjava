@@ -9,11 +9,6 @@
 	 */
 	private SimpleConfigurePushDialog(Shell shell, Repository repository,
 			RemoteConfig config, boolean showBranchInfo) {
-		super(shell);
-		setHelpAvailable(false);
-		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
-		this.repository = repository;
-		this.config = config;
-		this.showBranchInfo = showBranchInfo;
+		super(shell, repository, config, showBranchInfo, true);
 	}
 

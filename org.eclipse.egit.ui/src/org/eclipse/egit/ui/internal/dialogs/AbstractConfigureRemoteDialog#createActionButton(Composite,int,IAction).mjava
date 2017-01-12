@@ -1,0 +1,33 @@
+	private Button createActionButton(Composite parent, int style,
+			IAction action) {
+		Button button = new Button(parent, style);
+		button.setText(action.getText());
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				action.run();
+			}
+		});
+		IPropertyChangeListener listener = event -> {
+			if (IAction.ENABLED.equals(event.getProperty())) {
+				if (!button.isDisposed()) {
+					if (Display.getCurrent() == null) {
+						button.getShell().getDisplay().syncExec(() -> {
+							if (!button.isDisposed()) {
+								button.setEnabled(action.isEnabled());
+							}
+						});
+					} else {
+						button.setEnabled(action.isEnabled());
+					}
+				}
+			}
+		};
+		button.addDisposeListener(
+				event -> action.removePropertyChangeListener(listener));
+		action.addPropertyChangeListener(listener);
+		GridDataFactory.fillDefaults().applyTo(button);
+		return button;
+	}
+

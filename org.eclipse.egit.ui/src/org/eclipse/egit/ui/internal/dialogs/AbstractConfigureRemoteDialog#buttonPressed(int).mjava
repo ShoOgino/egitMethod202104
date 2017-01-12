@@ -1,0 +1,47 @@
+	@Override
+	protected final void buttonPressed(int buttonId) {
+		switch (buttonId) {
+		case DRY_RUN:
+			try {
+				new ProgressMonitorDialog(getShell()).run(true, true,
+						(monitor) -> dryRun(monitor));
+			} catch (InvocationTargetException e) {
+				Activator.showError(e.getMessage(), e);
+			} catch (InterruptedException e1) {
+				// Ignore cancellation here
+			}
+			return;
+		case REVERT:
+			try {
+				config = new RemoteConfig(repository.getConfig(),
+						config.getName());
+				updateControls();
+			} catch (URISyntaxException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+			return;
+		case OK:
+		case SAVE_ONLY:
+			StoredConfig repoConfig = getRepository().getConfig();
+			boolean saved = false;
+			try {
+				config.update(repoConfig);
+				repoConfig.save();
+				saved = true;
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, true);
+			}
+			if (saved) {
+				GerritDialogSettings.updateRemoteConfig(repository, config);
+			}
+			if (buttonId == OK) {
+				performOperation();
+			}
+			okPressed();
+			return;
+		default:
+			break;
+		}
+		super.buttonPressed(buttonId);
+	}
+

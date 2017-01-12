@@ -1,0 +1,12 @@
+	private void doChangeRefSpec() {
+		RefSpec oldSpec = (RefSpec) ((IStructuredSelection) specViewer
+				.getSelection()).getFirstElement();
+		RefSpecDialog dlg = new RefSpecDialog(getShell(), getRepository(),
+				getConfig(), oldSpec, isPush);
+		if (dlg.open() == Window.OK) {
+			removeRefSpec(oldSpec);
+			addRefSpec(dlg.getSpec());
+		}
+		updateControls();
+	}
+

@@ -1,0 +1,8 @@
+	private void doAdvanced() {
+		RefSpecWizard wizard = new RefSpecWizard(getRepository(), getConfig(),
+				isPush);
+		if (new WizardDialog(getShell(), wizard).open() == Window.OK) {
+			updateControls();
+		}
+	}
+

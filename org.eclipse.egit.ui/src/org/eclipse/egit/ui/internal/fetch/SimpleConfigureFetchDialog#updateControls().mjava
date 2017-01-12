@@ -1,24 +1,27 @@
-	private void updateControls() {
+	@Override
+	protected void updateControls() {
 		setErrorMessage(null);
 		boolean anyUri = false;
-		if (!config.getURIs().isEmpty()) {
-			commonUriText.setText(config.getURIs().get(0).toPrivateString());
+		if (!getConfig().getURIs().isEmpty()) {
+			commonUriText
+					.setText(getConfig().getURIs().get(0).toPrivateString());
 			anyUri = true;
-		} else
+		} else {
 			commonUriText.setText(""); //$NON-NLS-1$
-
-		specViewer.setInput(config.getFetchRefSpecs());
+		}
+		specViewer.setInput(getConfig().getFetchRefSpecs());
 		specViewer.getTable().setEnabled(true);
 
-		addRefSpec.setEnabled(anyUri);
-		addRefSpecAdvanced.setEnabled(anyUri);
+		addRefSpecAction.setEnabled(anyUri);
+		addRefSpecAdvancedAction.setEnabled(anyUri);
 
-		if (config.getURIs().isEmpty())
-			setErrorMessage(UIText.SimpleConfigureFetchDialog_MissingUriMessage);
-		else if (config.getFetchRefSpecs().isEmpty())
+		if (getConfig().getURIs().isEmpty()) {
+			setErrorMessage(
+					UIText.AbstractConfigureRemoteDialog_MissingUriMessage);
+		} else if (getConfig().getFetchRefSpecs().isEmpty()) {
 			setErrorMessage(UIText.SimpleConfigureFetchDialog_MissingMappingMessage);
-
-		boolean anySpec = !config.getFetchRefSpecs().isEmpty();
+		}
+		boolean anySpec = !getConfig().getFetchRefSpecs().isEmpty();
 		getButton(OK).setEnabled(anyUri && anySpec);
 		getButton(SAVE_ONLY).setEnabled(anyUri && anySpec);
 	}

@@ -1,0 +1,195 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		final Composite main = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().applyTo(main);
+		GridDataFactory.fillDefaults().grab(true, true)
+				.minSize(SWT.DEFAULT, SWT.DEFAULT).applyTo(main);
+
+		if (showBranchInfo) {
+			Composite branchArea = new Composite(main, SWT.NONE);
+			GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false)
+					.applyTo(branchArea);
+			GridDataFactory.fillDefaults().grab(true, false)
+					.applyTo(branchArea);
+
+			Label branchLabel = new Label(branchArea, SWT.NONE);
+			branchLabel.setText(UIText.AbstractConfigureRemoteDialog_BranchLabel);
+			String branch;
+			try {
+				branch = getRepository().getBranch();
+			} catch (IOException e) {
+				branch = null;
+			}
+			if (branch == null || ObjectId.isId(branch)) {
+				branch = UIText.AbstractConfigureRemoteDialog_DetachedHeadMessage;
+			}
+			Text branchText = new Text(branchArea, SWT.BORDER | SWT.READ_ONLY);
+			GridDataFactory.fillDefaults().grab(true, false)
+					.applyTo(branchText);
+			branchText.setText(branch);
+
+			addDefaultOriginWarning(main);
+
+		}
+
+		final Composite sameUriDetails = new Composite(main, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(4).equalWidth(false)
+				.applyTo(sameUriDetails);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.applyTo(sameUriDetails);
+		Label commonUriLabel = new Label(sameUriDetails, SWT.NONE);
+		commonUriLabel.setText(UIText.AbstractConfigureRemoteDialog_UriLabel);
+		commonUriText = new Text(sameUriDetails, SWT.BORDER | SWT.READ_ONLY);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(commonUriText);
+		changeCommonUriAction = new Action(
+				UIText.AbstractConfigureRemoteDialog_ChangeUriLabel) {
+
+			@Override
+			public void run() {
+				SelectUriWizard wiz;
+				if (!commonUriText.getText().isEmpty()) {
+					wiz = new SelectUriWizard(true, commonUriText.getText());
+				} else {
+					wiz = new SelectUriWizard(true);
+				}
+				if (new WizardDialog(getShell(), wiz).open() == Window.OK) {
+					if (!commonUriText.getText().isEmpty()) {
+						try {
+							getConfig().removeURI(
+									new URIish(commonUriText.getText()));
+						} catch (URISyntaxException ex) {
+							Activator.handleError(ex.getMessage(), ex, true);
+						}
+					}
+					getConfig().addURI(wiz.getUri());
+					updateControls();
+				}
+			}
+		};
+		deleteCommonUriAction = new Action(
+				UIText.AbstractConfigureRemoteDialog_DeleteUriLabel) {
+
+			@Override
+			public void run() {
+				getConfig().removeURI(getConfig().getURIs().get(0));
+				updateControls();
+			}
+		};
+		createActionButton(sameUriDetails, SWT.PUSH, changeCommonUriAction);
+		createActionButton(sameUriDetails, SWT.PUSH, deleteCommonUriAction)
+				.setEnabled(false);
+
+		commonUriText.addModifyListener(event -> deleteCommonUriAction
+				.setEnabled(!commonUriText.getText().isEmpty()));
+
+		createAdditionalUriArea(main);
+
+		final Group refSpecGroup = new Group(main, SWT.SHADOW_ETCHED_IN);
+		GridDataFactory.fillDefaults().grab(true, true)
+				.minSize(SWT.DEFAULT, SWT.DEFAULT).applyTo(refSpecGroup);
+		refSpecGroup.setText(UIText.AbstractConfigureRemoteDialog_RefMappingGroup);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(refSpecGroup);
+
+		specViewer = new TableViewer(refSpecGroup, SWT.BORDER | SWT.MULTI);
+		specViewer.setContentProvider(ArrayContentProvider.getInstance());
+		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, 150)
+				.minSize(SWT.DEFAULT, 30).grab(true, true)
+				.applyTo(specViewer.getTable());
+
+		addRefSpecAction = new Action(
+				UIText.AbstractConfigureRemoteDialog_AddRefSpecLabel) {
+
+			@Override
+			public void run() {
+				doAddRefSpec();
+			}
+		};
+		changeRefSpecAction = new Action(
+				UIText.AbstractConfigureRemoteDialog_ChangeRefSpecLabel) {
+
+			@Override
+			public void run() {
+				doChangeRefSpec();
+			}
+		};
+		addRefSpecAdvancedAction = new Action(
+				UIText.AbstractConfigureRemoteDialog_EditAdvancedLabel) {
+
+			@Override
+			public void run() {
+				doAdvanced();
+			}
+		};
+		IAction deleteRefSpecAction = ActionUtils.createGlobalAction(
+				ActionFactory.DELETE, () -> doDeleteRefSpecs());
+		IAction copyRefSpecAction = ActionUtils
+				.createGlobalAction(ActionFactory.COPY, () -> doCopy());
+		IAction pasteRefSpecAction = ActionUtils
+				.createGlobalAction(ActionFactory.PASTE, () -> doPaste());
+		IAction selectAllRefSpecsAction = ActionUtils.createGlobalAction(
+				ActionFactory.SELECT_ALL,
+				() -> {
+					specViewer.getTable().selectAll();
+					// selectAll doesn't fire a "selection changed" event
+					specViewer.setSelection(specViewer.getSelection());
+				});
+
+		Composite buttonArea = new Composite(refSpecGroup, SWT.NONE);
+		GridLayoutFactory.fillDefaults().applyTo(buttonArea);
+		GridDataFactory.fillDefaults().grab(false, true)
+				.minSize(SWT.DEFAULT, SWT.DEFAULT).applyTo(buttonArea);
+
+		createActionButton(buttonArea, SWT.PUSH, addRefSpecAction);
+		createActionButton(buttonArea, SWT.PUSH, changeRefSpecAction);
+		createActionButton(buttonArea, SWT.PUSH, deleteRefSpecAction);
+		createActionButton(buttonArea, SWT.PUSH, copyRefSpecAction);
+		createActionButton(buttonArea, SWT.PUSH, pasteRefSpecAction);
+		createActionButton(buttonArea, SWT.PUSH, addRefSpecAdvancedAction);
+
+		MenuManager contextMenu = new MenuManager();
+		contextMenu.setRemoveAllWhenShown(true);
+		contextMenu.addMenuListener(manager -> {
+			specViewer.getTable().setFocus();
+			if (addRefSpecAction.isEnabled()) {
+				manager.add(addRefSpecAction);
+			}
+			if (changeRefSpecAction.isEnabled()) {
+				manager.add(changeRefSpecAction);
+			}
+			if (deleteRefSpecAction.isEnabled()) {
+				manager.add(deleteRefSpecAction);
+			}
+			manager.add(new Separator());
+			manager.add(copyRefSpecAction);
+			manager.add(pasteRefSpecAction);
+			manager.add(selectAllRefSpecsAction);
+		});
+		specViewer.getTable()
+				.setMenu(contextMenu.createContextMenu(specViewer.getTable()));
+		ActionUtils.setGlobalActions(specViewer.getTable(), deleteRefSpecAction,
+				copyRefSpecAction, pasteRefSpecAction, selectAllRefSpecsAction);
+
+		specViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection sel = (IStructuredSelection) specViewer
+						.getSelection();
+				copyRefSpecAction.setEnabled(sel.size() == 1);
+				changeRefSpecAction.setEnabled(sel.size() == 1);
+				deleteRefSpecAction.setEnabled(!sel.isEmpty());
+				selectAllRefSpecsAction.setEnabled(specViewer.getTable()
+						.getItemCount() > 0
+						&& sel.size() != specViewer.getTable().getItemCount());
+			}
+		});
+
+		// Initial action enablement (no selection in the specViewer):
+		copyRefSpecAction.setEnabled(false);
+		changeRefSpecAction.setEnabled(false);
+		deleteRefSpecAction.setEnabled(false);
+
+		applyDialogFont(main);
+		return main;
+	}
+

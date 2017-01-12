@@ -1,0 +1,7 @@
+	@Override
+	protected RefSpec getNewRefSpec() {
+		RefSpecDialog dlg = new RefSpecDialog(getShell(), getRepository(),
+				getConfig(), true);
+		return dlg.open() == Window.OK ? dlg.getSpec() : null;
+	}
+

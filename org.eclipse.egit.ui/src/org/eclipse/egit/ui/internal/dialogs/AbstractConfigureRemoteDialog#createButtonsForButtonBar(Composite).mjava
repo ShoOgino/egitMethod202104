@@ -1,0 +1,13 @@
+	@Override
+	protected final void createButtonsForButtonBar(Composite parent) {
+		createOkButton(parent);
+		createButton(parent, SAVE_ONLY,
+				UIText.AbstractConfigureRemoteDialog_SaveButton, false);
+		createButton(parent, DRY_RUN,
+				UIText.AbstractConfigureRemoteDialog_DryRunButton, false);
+		createButton(parent, REVERT,
+				UIText.AbstractConfigureRemoteDialog_RevertButton, false);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
+	}
+

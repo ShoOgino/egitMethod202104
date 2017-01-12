@@ -1,0 +1,25 @@
+	/**
+	 * Create a new {@link AbstractConfigureRemoteDialog}.
+	 *
+	 * @param parent
+	 *            SWT {@link Shell} to parent the dialog on
+	 * @param repository
+	 *            the remote belongs to
+	 * @param config
+	 *            of the remote to be configured
+	 * @param showBranchInfo
+	 *            whether to show additional branch information
+	 * @param isPush
+	 *            whether this dialog is for configuring push
+	 */
+	protected AbstractConfigureRemoteDialog(Shell parent, Repository repository,
+			RemoteConfig config, boolean showBranchInfo, boolean isPush) {
+		super(parent, isPush ? UIIcons.WIZBAN_PUSH : UIIcons.WIZBAN_FETCH);
+		setHelpAvailable(false);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.repository = repository;
+		this.config = config;
+		this.showBranchInfo = showBranchInfo;
+		this.isPush = isPush;
+	}
+

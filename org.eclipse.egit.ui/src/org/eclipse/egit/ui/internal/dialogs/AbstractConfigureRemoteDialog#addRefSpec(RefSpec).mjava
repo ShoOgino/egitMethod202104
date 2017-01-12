@@ -1,0 +1,8 @@
+	private void addRefSpec(RefSpec spec) {
+		if (isPush) {
+			getConfig().addPushRefSpec(spec);
+		} else {
+			getConfig().addFetchRefSpec(spec);
+		}
+	}
+

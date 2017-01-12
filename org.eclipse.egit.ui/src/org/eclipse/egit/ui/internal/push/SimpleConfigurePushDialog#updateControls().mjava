@@ -1,36 +1,40 @@
-	private void updateControls() {
-		boolean anyFetchUri = !config.getURIs().isEmpty();
-		boolean anyPushUri = !config.getPushURIs().isEmpty();
+	@Override
+	protected void updateControls() {
+		boolean anyFetchUri = !getConfig().getURIs().isEmpty();
+		boolean anyPushUri = !getConfig().getPushURIs().isEmpty();
 		boolean anyUri = anyFetchUri || anyPushUri;
 		setErrorMessage(null);
-		if (!anyUri)
-			setErrorMessage(UIText.SimpleConfigurePushDialog_MissingUriMessage);
-
-		if (anyFetchUri)
-			commonUriText.setText(config.getURIs().get(0).toPrivateString());
-		else
+		if (!anyUri) {
+			setErrorMessage(UIText.AbstractConfigureRemoteDialog_MissingUriMessage);
+		}
+		if (anyFetchUri) {
+			commonUriText
+					.setText(getConfig().getURIs().get(0).toPrivateString());
+		} else {
 			commonUriText.setText(""); //$NON-NLS-1$
+		}
 		uriViewer.getTable().setEnabled(anyPushUri);
-		if (anyPushUri)
-			uriViewer.setInput(config.getPushURIs());
-		else if (anyFetchUri)
+		if (anyPushUri) {
+			uriViewer.setInput(getConfig().getPushURIs());
+		} else if (anyFetchUri) {
 			uriViewer.setInput(new String[] { NLS.bind(
 					UIText.SimpleConfigurePushDialog_UseUriForPushUriMessage,
 					commonUriText.getText()) });
-		else
+		} else {
 			uriViewer.setInput(null);
-
-		if (config.getPushRefSpecs().isEmpty())
+		}
+		if (getConfig().getPushRefSpecs().isEmpty()) {
 			specViewer.setInput(new String[] { UIText.SimpleConfigurePushDialog_DefaultPushNoRefspec});
-		else
-			specViewer.setInput(config.getPushRefSpecs());
+		} else {
+			specViewer.setInput(getConfig().getPushRefSpecs());
+		}
+		specViewer.getTable()
+				.setEnabled(!getConfig().getPushRefSpecs().isEmpty());
 
-		specViewer.getTable().setEnabled(!config.getPushRefSpecs().isEmpty());
-
-		addRefSpec.setEnabled(anyUri);
-		addRefSpecAdvanced.setEnabled(anyUri);
-		changeCommonUri.setEnabled(!anyPushUri);
-		deleteCommonUri.setEnabled(!anyPushUri && anyUri);
+		addRefSpecAction.setEnabled(anyUri);
+		addRefSpecAdvancedAction.setEnabled(anyUri);
+		changeCommonUriAction.setEnabled(!anyPushUri);
+		deleteCommonUriAction.setEnabled(!anyPushUri && anyUri);
 		commonUriText.setEnabled(!anyPushUri);
 
 		getButton(OK).setEnabled(anyUri);

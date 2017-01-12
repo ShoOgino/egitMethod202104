@@ -1,0 +1,8 @@
+	private void removeRefSpec(RefSpec spec) {
+		if (isPush) {
+			getConfig().removePushRefSpec(spec);
+		} else {
+			getConfig().removeFetchRefSpec(spec);
+		}
+	}
+
