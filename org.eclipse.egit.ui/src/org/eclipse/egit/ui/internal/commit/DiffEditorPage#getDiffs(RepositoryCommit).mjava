@@ -17,7 +17,8 @@
 					.addAll(asList(new RepositoryCommit(commit.getRepository(),
 							untrackedCommit).getDiffs()));
 		}
-		Collections.sort(diffResult, FileDiff.PATH_COMPARATOR);
-		return diffResult.toArray(new FileDiff[diffResult.size()]);
+		FileDiff[] result = diffResult.toArray(new FileDiff[diffResult.size()]);
+		Arrays.sort(result, FileDiff.PATH_COMPARATOR);
+		return result;
 	}
 

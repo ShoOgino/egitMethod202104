@@ -18,8 +18,6 @@
 			unstagedDiffs.addAll(asList(untrackedDiffs));
 		}
 
-		Collections.sort(unstagedDiffs, FileDiff.PATH_COMPARATOR);
-
-		return unstagedDiffs.toArray(new FileDiff[0]);
+		return unstagedDiffs.toArray(new FileDiff[unstagedDiffs.size()]);
 	}
 

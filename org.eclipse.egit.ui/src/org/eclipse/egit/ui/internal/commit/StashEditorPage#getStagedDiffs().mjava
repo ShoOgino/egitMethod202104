@@ -10,6 +10,7 @@
 					.getRepository(), stagedCommit).getDiffs();
 			stagedDiffsResult.addAll(asList(stagedDiffs));
 		}
-		return stagedDiffsResult.toArray(new FileDiff[0]);
+		return stagedDiffsResult
+				.toArray(new FileDiff[stagedDiffsResult.size()]);
 	}
 
