@@ -1,6 +1,5 @@
 	private void setupRepoChangeScanner() {
 		rcs = new RepositoryChangeScanner();
-		rcs.setSystem(true);
-		rcs.schedule(RepositoryChangeScanner.REPO_SCAN_INTERVAL);
+		getPreferenceStore().addPropertyChangeListener(rcs);
 	}
 

@@ -6,32 +6,36 @@
 		}
 
 		if (focusListener != null) {
-			if (PlatformUI.isWorkbenchRunning())
+			if (PlatformUI.isWorkbenchRunning()) {
 				PlatformUI.getWorkbench().removeWindowListener(focusListener);
+			}
 			focusListener = null;
 		}
 
-		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
+		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
 					"Trying to cancel " + rcs.getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
+		getPreferenceStore().removePropertyChangeListener(rcs);
 		rcs.setReschedule(false);
-
 		rcs.cancel();
-		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
+		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
 					"Trying to cancel " + refreshJob.getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		refreshJob.cancel();
 
 		rcs.join();
 		refreshJob.join();
 
-		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
+		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
 			GitTraceLocation.getTrace().trace(
 					GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
 					"Jobs terminated"); //$NON-NLS-1$
+		}
 		if (resourceManager != null) {
 			resourceManager.dispose();
 			resourceManager = null;

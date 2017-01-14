@@ -1,19 +1,9 @@
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			if (!doReschedule)
-				return Status.OK_STATUS;
-
-			// The core plugin might have been stopped before we could cancel
-			// this job.
-			RepositoryCache repositoryCache = org.eclipse.egit.core.Activator
-					.getDefault().getRepositoryCache();
-			if (repositoryCache == null)
-				return Status.OK_STATUS;
-
 			// When people use Git from the command line a lot of changes
 			// may happen. Don't scan when inactive depending on the user's
 			// choice.
-			if (Activator.getDefault().getPreferenceStore()
+			if (getDefault().getPreferenceStore()
 					.getBoolean(UIPreferences.REFESH_ONLY_WHEN_ACTIVE)) {
 				if (!isActive()) {
 					monitor.done();
@@ -22,40 +12,44 @@
 			}
 
 			Repository[] repos = repositoryCache.getAllRepositories();
-			if (repos.length == 0)
+			if (repos.length == 0) {
 				return Status.OK_STATUS;
+			}
 
 			monitor.beginTask(UIText.Activator_scanningRepositories,
 					repos.length);
 			try {
 				for (Repository repo : repos) {
-					if (monitor.isCanceled())
+					if (monitor.isCanceled()) {
 						break;
-					if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
+					}
+					if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
 						GitTraceLocation.getTrace().trace(
 								GitTraceLocation.REPOSITORYCHANGESCANNER
 										.getLocation(),
 								"Scanning " + repo + " for changes"); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 
 					repo.scanForRepoChanges();
 					monitor.worked(1);
 				}
 			} catch (IOException e) {
-				if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
+				if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
 					GitTraceLocation.getTrace().trace(
 							GitTraceLocation.REPOSITORYCHANGESCANNER
 									.getLocation(),
 							"Stopped rescheduling " + getName() + "job"); //$NON-NLS-1$ //$NON-NLS-2$
+				}
 				return createErrorStatus(UIText.Activator_scanError, e);
 			} finally {
 				monitor.done();
 			}
-			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive())
+			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
 				GitTraceLocation.getTrace().trace(
 						GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
 						"Rescheduling " + getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
-			if (doReschedule)
-				schedule(REPO_SCAN_INTERVAL);
+			}
+			schedule(interval);
 			return Status.OK_STATUS;
 		}
 

@@ -42,8 +42,8 @@
 			@Override
 			public void windowActivated(IWorkbenchWindow window) {
 				updateUiState();
-				if (rcs.doReschedule)
-					rcs.schedule();
+				// 500: give the UI task a chance to update the active state
+				rcs.schedule(500);
 				refreshJob.triggerRefresh();
 			}
 		};

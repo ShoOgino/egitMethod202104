@@ -1,0 +1,9 @@
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if (!UIPreferences.REFESH_INDEX_INTERVAL
+					.equals(event.getProperty())) {
+				return;
+			}
+			updateRefreshInterval();
+		}
+

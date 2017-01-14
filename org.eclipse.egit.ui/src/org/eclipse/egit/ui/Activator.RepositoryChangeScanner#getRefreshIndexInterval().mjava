@@ -1,0 +1,9 @@
+		/**
+		 * @return interval in milliseconds for automatic index check, 0 is if
+		 *         check should be disabled
+		 */
+		private static int getRefreshIndexInterval() {
+			return 1000 * getDefault().getPreferenceStore()
+					.getInt(UIPreferences.REFESH_INDEX_INTERVAL);
+		}
+

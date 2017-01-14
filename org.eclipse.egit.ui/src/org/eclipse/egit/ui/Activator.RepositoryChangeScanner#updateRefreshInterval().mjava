@@ -1,0 +1,7 @@
+		private void updateRefreshInterval() {
+			interval = getRefreshIndexInterval();
+			setReschedule(interval > 0);
+			cancel();
+			schedule(interval);
+		}
+
