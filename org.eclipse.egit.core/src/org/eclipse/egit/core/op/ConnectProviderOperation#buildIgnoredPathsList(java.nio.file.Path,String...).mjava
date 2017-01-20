@@ -1,0 +1,18 @@
+	private static Collection<IPath> buildIgnoredPathsList(
+			java.nio.file.Path workspaceRoot,
+			String... metaDataDirectoryNames) {
+		Collection<IPath> ignoredPaths = new HashSet<IPath>();
+		for (String m : metaDataDirectoryNames) {
+			Path metaData = new Path(
+					workspaceRoot.resolve(m).toAbsolutePath().toString());
+			try {
+				if (RepositoryUtil.canBeAutoIgnored(metaData)) {
+					ignoredPaths.add(metaData);
+				}
+			} catch (IOException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+		}
+		return ignoredPaths;
+	}
+

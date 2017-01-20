@@ -1,0 +1,26 @@
+	/**
+	 * Auto-ignore the .metadata and .recommenders folders located in the
+	 * workspace root if the workspace is in the working tree of a git
+	 * repository (which is not recommended)
+	 *
+	 * @param gitDir
+	 *            path of git directory containing the git repository
+	 */
+	private static void autoIgnoreWorkspaceMetaData(java.nio.file.Path gitDir) {
+		java.nio.file.Path workspaceRoot = ResourcesPlugin.getWorkspace()
+				.getRoot().getLocation().toFile().toPath();
+		try (Repository r = FileRepositoryBuilder.create(gitDir.toFile())) {
+			if (!r.isBare()
+					&& workspaceRoot.startsWith(r.getWorkTree().toPath())) {
+				Collection<IPath> ignoredPaths = buildIgnoredPathsList(
+						workspaceRoot, ".metadata", //$NON-NLS-1$
+						".recommenders"); //$NON-NLS-1$
+				JobUtil.scheduleUserJob(new IgnoreOperation(ignoredPaths),
+						CoreText.ConnectProviderOperation_autoIgnoreMetaData,
+						JobFamilies.AUTO_IGNORE);
+			}
+		} catch (IOException e) {
+			Activator.logError(e.getMessage(), e);
+		}
+	}
+
