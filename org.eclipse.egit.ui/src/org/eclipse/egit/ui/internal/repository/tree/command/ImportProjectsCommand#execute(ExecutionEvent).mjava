@@ -13,32 +13,8 @@
 					UIText.ImportProjectsSelectionInRepositoryRequired);
 			return null;
 		}
-		RepositoryTreeNode node = selectedNodes.get(0);
-		String path;
 
-		switch (node.getType()) {
-		case REPO:
-			// fall through
-		case WORKINGDIR:
-			path = node.getRepository().getWorkTree().toString();
-			break;
-		case FOLDER:
-			path = ((FolderNode) node).getObject().getPath().toString();
-			break;
-		default:
-			MessageDialog.openError(Display.getDefault().getActiveShell(),
-					UIText.ImportProjectsWrongSelection,
-					UIText.ImportProjectsSelectionInRepositoryRequired);
-			return null;
-		}
-
-		IWizardDescriptor descriptor = findSmartImportWizardDescriptor();
-		if (descriptor != null) {
-			openSmartImportWizard(event, descriptor, path);
-		} else {
-			openGitCreateProjectViaWizardWizard(event, node, path);
-		}
-
+		openWizard(event, selectedNodes);
 		return null;
 	}
 

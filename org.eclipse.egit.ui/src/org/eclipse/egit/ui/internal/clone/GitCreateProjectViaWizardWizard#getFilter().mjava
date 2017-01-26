@@ -1,0 +1,15 @@
+	/**
+	 * Gets the list of projects that will filter in a subset of all eligible
+	 * projects.
+	 *
+	 * @return an unmodifiable list of projects which could be empty but never
+	 *         null.
+	 * @see #setFilter(List)
+	 */
+	public List<String> getFilter() {
+		if (myFilter == null) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(myFilter);
+	}
+

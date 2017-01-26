@@ -1,0 +1,22 @@
+	private void openWizard(ExecutionEvent event,
+			List<RepositoryTreeNode> selectedNodes) throws ExecutionException {
+		IWizardDescriptor descriptor = findSmartImportWizardDescriptor();
+		if (descriptor == null || multipleProjectsSelected(selectedNodes)) {
+			RepositoryTreeNode node;
+			if (multipleProjectsSelected(selectedNodes)) {
+				node = findRepoNode(selectedNodes.get(0));
+			} else {
+				node = selectedNodes.get(0);
+			}
+			String path = getPathFromNode(node);
+			if (path == null) {
+				return;
+			}
+			openGitCreateProjectViaWizardWizard(event, node, path,
+					getMultipleSelectedProjects(selectedNodes));
+		} else {
+			String path = getPathFromNode(selectedNodes.get(0));
+			openSmartImportWizard(event, descriptor, path);
+		}
+	}
+

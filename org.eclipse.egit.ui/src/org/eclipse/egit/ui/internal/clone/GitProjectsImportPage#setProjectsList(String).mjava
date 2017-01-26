@@ -51,31 +51,34 @@
 						if (!found)
 							return;
 
+						ArrayList<ProjectRecord> result = new ArrayList<>();
 						Iterator<File> filesIterator = files.iterator();
-						selectedProjects = new ProjectRecord[files.size()];
-						int index = 0;
 						monitor.worked(50);
 						monitor
 								.subTask(UIText.WizardProjectsImportPage_ProcessingMessage);
 						while (filesIterator.hasNext()) {
 							File file = filesIterator.next();
-							selectedProjects[index] = new ProjectRecord(file);
-							index++;
+							if (isSelected(file)) {
+								result.add(new ProjectRecord(file));
+							}
 						}
+						selectedProjects = result
+								.toArray(new ProjectRecord[result.size()]);
 
-						if (files.isEmpty())
+						if (selectedProjects.length == 0) {
 							// run in UI thread
-							Display.getDefault().syncExec(new Runnable() {
-								@Override
-								public void run() {
-									setErrorMessage(UIText.GitProjectsImportPage_NoProjectsMessage);
-								}
-							});
-
+							Display.getDefault().syncExec(() -> setErrorMessage(
+									UIText.GitProjectsImportPage_NoProjectsMessage));
+						}
 					} else {
 						monitor.worked(60);
 					}
 					monitor.done();
+				}
+
+				private boolean isSelected(File pFile) {
+					GitCreateProjectViaWizardWizard wizard = (GitCreateProjectViaWizardWizard) getWizard();
+					return wizard.getFilter().isEmpty() || wizard.getFilter().contains(pFile.getParent());
 				}
 
 			});

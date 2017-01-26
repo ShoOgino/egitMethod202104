@@ -1,0 +1,8 @@
+	private RepositoryTreeNode findRepoNode(RepositoryTreeNode pNode) {
+		RepositoryTreeNode result = pNode;
+		while (!result.getType().equals(RepositoryTreeNodeType.REPO)) {
+			result = result.getParent();
+		}
+		return result;
+	}
+

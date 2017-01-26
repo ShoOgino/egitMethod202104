@@ -29,6 +29,7 @@
 		importExisting = new Button(wizardType, SWT.RADIO);
 		importExisting.setText(UIText.GitSelectWizardPage_ImportExistingButton);
 		importExisting.addSelectionListener(sl);
+		decorateWithFilterCount(importExisting);
 
 		newProjectWizard = new Button(wizardType, SWT.RADIO);
 		newProjectWizard
