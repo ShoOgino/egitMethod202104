@@ -14,10 +14,10 @@
 			// not windows???
 			return;
 		}
-		if (!device.toLowerCase().equals(device)) {
-			path = path.setDevice(device.toLowerCase());
+		if (!device.toLowerCase(Locale.ROOT).equals(device)) {
+			path = path.setDevice(device.toLowerCase(Locale.ROOT));
 		} else {
-			path = path.setDevice(device.toUpperCase());
+			path = path.setDevice(device.toUpperCase(Locale.ROOT));
 		}
 		assertNotEquals(path, new Path(gitDir.toString()));
 		assertNotEquals(path.toFile().toString(),
