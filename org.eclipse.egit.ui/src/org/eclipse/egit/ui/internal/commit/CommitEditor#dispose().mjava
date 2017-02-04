@@ -1,5 +1,7 @@
 	@Override
 	public void dispose() {
+		CommonUtils.getService(getSite(), IPartService.class)
+				.removePartListener(activationListener);
 		refListenerHandle.remove();
 		headerFocusTracker.dispose();
 		super.dispose();

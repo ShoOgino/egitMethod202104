@@ -1,0 +1,11 @@
+	private void updateToolbar() {
+		if (toolbar != null) {
+			// isEnabled() on a CommandContributionItem actually re-evaluates
+			// the enablement.
+			for (IContributionItem item : toolbar.getItems()) {
+				item.isEnabled();
+			}
+			toolbar.update(true);
+		}
+	}
+

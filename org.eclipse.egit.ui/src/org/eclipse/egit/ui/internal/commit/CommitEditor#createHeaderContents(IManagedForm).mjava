@@ -22,7 +22,7 @@
 		form.setToolTipText(commitName);
 		getToolkit().decorateFormHeading(form.getForm());
 
-		IToolBarManager toolbar = form.getToolBarManager();
+		toolbar = form.getToolBarManager();
 
 		ControlContribution repositoryLabelControl = new ControlContribution(
 				"repositoryLabel") { //$NON-NLS-1$
@@ -71,6 +71,8 @@
 			}
 		};
 		toolbar.add(repositoryLabelControl);
+		CommonUtils.getService(getSite(), IPartService.class)
+				.addPartListener(activationListener);
 		if (commit.isStash()) {
 			toolbar.add(createCommandContributionItem(StashApplyHandler.ID));
 			toolbar.add(createCommandContributionItem(StashDropHandler.ID));
