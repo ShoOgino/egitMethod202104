@@ -26,15 +26,11 @@
 				continue;
 			records.add(new ProjectRecord(projectDescription));
 		}
-		if (records.isEmpty())
+		if (records.isEmpty()) {
 			return;
-		IProgressMonitor importMonitor;
-		if (monitor != null)
-			importMonitor = monitor;
-		else
-			importMonitor = new NullProgressMonitor();
+		}
 		try {
-			ProjectUtils.createProjects(records, true, null, importMonitor);
+			ProjectUtils.createProjects(records, true, null, monitor);
 		} catch (InvocationTargetException e) {
 			Activator
 					.logError("Error restoring branch-project associations", e); //$NON-NLS-1$

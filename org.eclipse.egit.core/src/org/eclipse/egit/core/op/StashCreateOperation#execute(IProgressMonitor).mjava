@@ -17,14 +17,13 @@
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());
 				} finally {
-					if (commit != null)
+					if (commit != null) {
 						repository.notifyIndexChanged();
-					pm.done();
+					}
 				}
 			}
 		};
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-				IWorkspace.AVOID_UPDATE,
-				monitor != null ? monitor : new NullProgressMonitor());
+				IWorkspace.AVOID_UPDATE, monitor);
 	}
 

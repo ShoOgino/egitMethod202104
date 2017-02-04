@@ -4,8 +4,9 @@
 			throws CoreException {
 		String pattern = itemsFilter.getPattern();
 		Repository[] repositories = getRepositories();
-		progressMonitor.beginTask(UIText.CommitSelectionDialog_TaskSearching,
+		SubMonitor progress = SubMonitor.convert(progressMonitor,
 				repositories.length);
+		progress.setTaskName(UIText.CommitSelectionDialog_TaskSearching);
 		for (Repository repository : repositories) {
 			try {
 				ObjectId commitId;
@@ -27,7 +28,7 @@
 			} catch (IOException ignored) {
 				// Ignore and advance
 			}
-			progressMonitor.worked(1);
+			progress.worked(1);
 		}
 	}
 

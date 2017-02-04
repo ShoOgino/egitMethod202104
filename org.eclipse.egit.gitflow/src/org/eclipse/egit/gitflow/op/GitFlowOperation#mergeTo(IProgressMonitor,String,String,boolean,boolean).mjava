@@ -16,11 +16,12 @@
 						CoreText.GitFlowOperation_branchNotFound,
 						targetBranchName));
 			}
+			SubMonitor progress = SubMonitor.convert(monitor, 2);
 			boolean dontCloseProjects = false;
 			BranchOperation branchOperation = new BranchOperation(
 					repository.getRepository(), targetBranchName,
 					dontCloseProjects);
-			branchOperation.execute(monitor);
+			branchOperation.execute(progress.newChild(1));
 			Status status = branchOperation.getResult().getStatus();
 			if (!CheckoutResult.Status.OK.equals(status)) {
 				throw new CoreException(error(format(
@@ -36,7 +37,7 @@
 			if (!squash && (!fastForwardSingleCommit || hasMultipleCommits(branchName))) {
 				mergeOperation.setFastForwardMode(NO_FF);
 			}
-			mergeOperation.execute(monitor);
+			mergeOperation.execute(progress.newChild(1));
 
 			MergeResult result = mergeOperation.getResult();
 			if (result == null) {

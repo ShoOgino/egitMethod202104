@@ -13,7 +13,9 @@
 			boolean squash, boolean keepBranch, boolean fastForwardSingleCommit)
 			throws CoreException {
 		try {
-			mergeResult = mergeTo(monitor, branchName, repository.getConfig()
+			SubMonitor progress = SubMonitor.convert(monitor, 2);
+			mergeResult = mergeTo(progress.newChild(1), branchName,
+					repository.getConfig()
 					.getDevelop(), squash, fastForwardSingleCommit);
 			if (!mergeResult.getMergeStatus().isSuccessful()) {
 				return;
@@ -28,7 +30,7 @@
 
 			if (!keepBranch) {
 				new DeleteBranchOperation(repository.getRepository(), branch,
-						forceDelete).execute(monitor);
+						forceDelete).execute(progress.newChild(1));
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

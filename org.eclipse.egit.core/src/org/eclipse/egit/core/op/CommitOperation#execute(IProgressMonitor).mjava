@@ -1,10 +1,5 @@
 	@Override
-	public void execute(IProgressMonitor m) throws CoreException {
-		IProgressMonitor monitor;
-		if (m == null)
-			monitor = new NullProgressMonitor();
-		else
-			monitor = m;
+	public void execute(IProgressMonitor monitor) throws CoreException {
 		IWorkspaceRunnable action = new IWorkspaceRunnable() {
 
 			@Override
@@ -13,13 +8,11 @@
 					commitAll();
 				else if (amending || commitFileList != null
 						&& commitFileList.size() > 0 || commitIndex) {
-					actMonitor.beginTask(
-							CoreText.CommitOperation_PerformingCommit,
-							20);
-					actMonitor.setTaskName(CoreText.CommitOperation_PerformingCommit);
+					SubMonitor progress = SubMonitor.convert(actMonitor);
+					progress.setTaskName(
+							CoreText.CommitOperation_PerformingCommit);
 					addUntracked();
 					commit();
-					actMonitor.worked(10);
 				} else if (commitWorkingDirChanges) {
 					// TODO commit -a
 				} else {

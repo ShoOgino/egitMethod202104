@@ -5,11 +5,14 @@
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor)
 					throws CoreException {
+				SubMonitor progress = SubMonitor.convert(monitor,
+						dotProjectFiles.size());
 				for (File f : dotProjectFiles) {
-					if (monitor.isCanceled())
+					if (progress.isCanceled()) {
 						return Status.CANCEL_STATUS;
+					}
 					String ap = f.getAbsolutePath();
-					importProject(ap);
+					importProject(ap, progress.newChild(1));
 				}
 				return Status.OK_STATUS;
 			}

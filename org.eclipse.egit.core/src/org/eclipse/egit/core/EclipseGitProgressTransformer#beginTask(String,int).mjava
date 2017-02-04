@@ -1,14 +1,8 @@
 	@Override
 	public void beginTask(final String name, final int total) {
-		endTask();
 		msg = name;
 		lastWorked = 0;
-		totalWork = total;
-		task = new SubProgressMonitor(root, 1000);
-		if (totalWork == UNKNOWN)
-			task.beginTask(EMPTY_STRING, IProgressMonitor.UNKNOWN);
-		else
-			task.beginTask(EMPTY_STRING, totalWork);
-		task.subTask(msg);
+		totalWork = total <= 0 ? UNKNOWN : total;
+		root.subTask(msg);
 	}
 

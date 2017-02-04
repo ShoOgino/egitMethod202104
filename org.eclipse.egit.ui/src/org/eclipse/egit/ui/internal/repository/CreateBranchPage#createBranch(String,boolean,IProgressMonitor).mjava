@@ -7,10 +7,10 @@
 	 */
 	public void createBranch(String newRefName, boolean checkoutNewBranch,
 			IProgressMonitor monitor)
-			throws CoreException,
-			IOException {
-		monitor.beginTask(UIText.CreateBranchPage_CreatingBranchMessage,
-				IProgressMonitor.UNKNOWN);
+			throws CoreException, IOException {
+		SubMonitor progress = SubMonitor.convert(monitor,
+				checkoutNewBranch ? 2 : 1);
+		progress.setTaskName(UIText.CreateBranchPage_CreatingBranchMessage);
 
 		final CreateLocalBranchOperation cbop;
 
@@ -23,15 +23,12 @@
 					myRepository.findRef(this.sourceRefName),
 					upstreamConfig);
 
-		cbop.execute(monitor);
+		cbop.execute(progress.newChild(1));
 
-		if (checkoutNewBranch) {
-			if (monitor.isCanceled())
-				return;
-			monitor.beginTask(UIText.CreateBranchPage_CheckingOutMessage,
-					IProgressMonitor.UNKNOWN);
+		if (checkoutNewBranch && !progress.isCanceled()) {
+			progress.setTaskName(UIText.CreateBranchPage_CheckingOutMessage);
 			BranchOperationUI.checkout(myRepository, Constants.R_HEADS + newRefName)
-					.run(monitor);
+					.run(progress.newChild(1));
 		}
 	}
 

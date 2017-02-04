@@ -1,9 +1,7 @@
 	/**
 	 * @param task to be performed after clone
 	 */
-	public synchronized void addPostCloneTask(PostCloneTask task) {
-		if (postCloneTasks == null)
-			postCloneTasks = new ArrayList<PostCloneTask>();
+	public void addPostCloneTask(PostCloneTask task) {
 		postCloneTasks.add(task);
 	}
 

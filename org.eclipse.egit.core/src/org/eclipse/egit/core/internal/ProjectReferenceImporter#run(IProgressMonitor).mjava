@@ -11,12 +11,15 @@
 
 		final List<IProject> importedProjects = new ArrayList<IProject>();
 
+		SubMonitor progress = SubMonitor.convert(monitor, repositories.size());
 		for (final Map.Entry<URIish, Map<String, Set<ProjectReference>>> entry : repositories
 				.entrySet()) {
 			final URIish gitUrl = entry.getKey();
 			final Map<String, Set<ProjectReference>> refs = entry
 					.getValue();
 
+			SubMonitor subProgress = progress.newChild(1)
+					.setWorkRemaining(refs.size());
 			for (final Map.Entry<String, Set<ProjectReference>> refEntry : refs
 					.entrySet()) {
 				final String refName = refEntry.getKey();
@@ -28,10 +31,13 @@
 				if (allRefs.size() == 1)
 					repositoryPath = findConfiguredRepository(gitUrl);
 
+				SubMonitor subSubProgress = subProgress.newChild(1)
+						.setWorkRemaining(repositoryPath == null ? 2 : 1);
 				if (repositoryPath == null) {
 					try {
 						IPath workDir = getWorkingDir(gitUrl, refName, refs.keySet());
-						repositoryPath = cloneIfNecessary(gitUrl, refName, workDir, projects, monitor);
+						repositoryPath = cloneIfNecessary(gitUrl, refName,
+								workDir, projects, subSubProgress.newChild(1));
 					} catch (final InterruptedException e) {
 						// was canceled by user
 						return Collections.emptyList();
@@ -43,7 +49,7 @@
 				IPath newWorkDir = new Path(repositoryPath.getAbsolutePath())
 						.removeLastSegments(1);
 				List<IProject> p = importProjects(projects, newWorkDir,
-						repositoryPath, monitor);
+						repositoryPath, subSubProgress.newChild(1));
 				importedProjects.addAll(p);
 			}
 		}

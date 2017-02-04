@@ -17,29 +17,21 @@
 					if (strategy != null) {
 						cmd.setStrategy(strategy);
 					}
-					if (handler != null)
+					if (handler != null) {
 						cmd.runInteractively(handler, true);
+					}
 					if (operation == Operation.BEGIN) {
 						cmd.setPreserveMerges(preserveMerges);
 						result = cmd.setUpstream(ref.getName()).call();
-					}
-					else
+					} else {
 						result = cmd.setOperation(operation).call();
-
-				} catch (NoHeadException e) {
-					throw new CoreException(Activator.error(e.getMessage(), e));
-				} catch (RefNotFoundException e) {
-					throw new CoreException(Activator.error(e.getMessage(), e));
-				} catch (JGitInternalException e) {
-					throw new CoreException(Activator.error(e.getMessage(), e));
-				} catch (GitAPIException e) {
+					}
+				} catch (JGitInternalException | GitAPIException e) {
 					throw new CoreException(Activator.error(e.getMessage(), e));
 				} finally {
 					if (refreshNeeded()) {
 						ProjectUtil.refreshValidProjects(validProjects,
 								progress.newChild(1));
-					} else {
-						progress.worked(1);
 					}
 				}
 			}

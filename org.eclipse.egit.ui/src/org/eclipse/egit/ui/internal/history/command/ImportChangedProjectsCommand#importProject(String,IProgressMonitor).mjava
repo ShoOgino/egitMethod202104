@@ -1,4 +1,4 @@
-	private void importProject(String path) {
+	private void importProject(String path, IProgressMonitor monitor) {
 		try {
 			IProjectDescription description = IDEWorkbenchPlugin
 					.getPluginWorkspace().loadProjectDescription(
@@ -7,14 +7,15 @@
 				String projectName = description.getName();
 				IProject project = ResourcesPlugin.getWorkspace().getRoot()
 						.getProject(projectName);
-				if (project.exists() == true) {
-					if (project.isOpen() == false)
-						project.open(IResource.BACKGROUND_REFRESH,
-								new NullProgressMonitor());
+				if (project.exists()) {
+					if (!project.isOpen()) {
+						project.open(IResource.BACKGROUND_REFRESH, monitor);
+					}
 				} else {
-					project.create(description, new NullProgressMonitor());
+					SubMonitor progress = SubMonitor.convert(monitor, 2);
+					project.create(description, progress.newChild(1));
 					project.open(IResource.BACKGROUND_REFRESH,
-							new NullProgressMonitor());
+							progress.newChild(1));
 				}
 			}
 		} catch (CoreException e) {

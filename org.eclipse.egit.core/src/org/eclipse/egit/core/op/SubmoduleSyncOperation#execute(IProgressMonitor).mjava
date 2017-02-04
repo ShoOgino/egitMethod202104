@@ -4,26 +4,25 @@
 
 			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
-				pm.beginTask("", 1); //$NON-NLS-1$
 				Map<String, String> updates = null;
 				try {
 					SubmoduleSyncCommand sync = Git.wrap(repository)
 							.submoduleSync();
-					for (String path : paths)
+					for (String path : paths) {
 						sync.addPath(path);
+					}
 					updates = sync.call();
 				} catch (GitAPIException e) {
 					throw new TeamException(e.getLocalizedMessage(),
 							e.getCause());
 				} finally {
-					if (updates != null && !updates.isEmpty())
+					if (updates != null && !updates.isEmpty()) {
 						repository.notifyIndexChanged();
-					pm.done();
+					}
 				}
 			}
 		};
 		ResourcesPlugin.getWorkspace().run(action, getSchedulingRule(),
-				IWorkspace.AVOID_UPDATE,
-				monitor != null ? monitor : new NullProgressMonitor());
+				IWorkspace.AVOID_UPDATE, monitor);
 	}
 
