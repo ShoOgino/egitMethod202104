@@ -93,7 +93,7 @@
 
 		nameText.setFocus();
 		// add the listeners just now to avoid unneeded checkPage()
-		nameText.addModifyListener(branchNormalizer);
+		nameText.addModifyListener(new BranchNormalizerModifyListener());
 		nameText.addModifyListener(e -> checkPage());
 	}
 
