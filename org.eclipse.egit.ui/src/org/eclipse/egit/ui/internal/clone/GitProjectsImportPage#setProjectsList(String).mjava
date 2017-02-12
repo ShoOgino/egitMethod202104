@@ -71,7 +71,11 @@
 				}
 
 				private boolean isSelected(File pFile) {
-					GitCreateProjectViaWizardWizard wizard = (GitCreateProjectViaWizardWizard) getWizard();
+					IWizard wiz = getWizard();
+					if (!(wiz instanceof GitCreateProjectViaWizardWizard)) {
+						return true;
+					}
+					GitCreateProjectViaWizardWizard wizard = (GitCreateProjectViaWizardWizard) wiz;
 					return wizard.getFilter().isEmpty() || wizard.getFilter().contains(pFile.getParent());
 				}
 
