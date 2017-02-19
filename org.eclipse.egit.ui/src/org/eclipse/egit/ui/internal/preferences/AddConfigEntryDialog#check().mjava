@@ -13,6 +13,11 @@
 				hasError = true;
 				return;
 			}
+			if (!isValidKey(keyText.getText())) {
+				setErrorMessage(UIText.AddConfigEntryDialog_InvalidKeyMessage);
+				hasError = true;
+				return;
+			}
 			if (valueText.getText().length() == 0) {
 				setErrorMessage(UIText.AddConfigEntryDialog_EnterValueMessage);
 				hasError = true;

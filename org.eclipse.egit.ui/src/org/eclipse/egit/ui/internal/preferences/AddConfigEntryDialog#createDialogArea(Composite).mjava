@@ -12,7 +12,7 @@
 		keylLabel.setToolTipText(UIText.AddConfigEntryDialog_ConfigKeyTooltip);
 		keyText = new Text(main, SWT.BORDER);
 		if (suggestedKey != null) {
-			keyText.setText(suggestedKey);
+			keyText.setText(trimKey(suggestedKey));
 			keyText.selectAll();
 		}
 
