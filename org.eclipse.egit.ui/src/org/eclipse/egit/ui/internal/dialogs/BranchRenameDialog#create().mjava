@@ -35,7 +35,9 @@
 			}
 		});
 
-		name.addModifyListener(new BranchNormalizerModifyListener());
+		BranchNameNormalizer normalizer = new BranchNameNormalizer(name,
+				UIText.BranchRenameDialog_NormalizeNameTooltip);
+		normalizer.setVisible(false);
 		getButton(OK).setEnabled(false);
 	}
 

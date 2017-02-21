@@ -1,0 +1,43 @@
+	/**
+	 * Creates a new {@link BranchNameNormalizer}.
+	 *
+	 * @param text
+	 *            {@link Text} to operate on
+	 * @param tooltipText
+	 *            to show on the bulb decorator
+	 */
+	public BranchNameNormalizer(Text text, String tooltipText) {
+		KeyStroke stroke = UIUtils.getKeystrokeOfBestActiveBindingFor(
+				IWorkbenchCommandConstants.EDIT_CONTENT_ASSIST);
+		if (stroke == null) {
+			stroke = KeyStroke.getInstance(SWT.MOD1, ' ');
+		}
+		decorator = UIUtils.addBulbDecorator(text,
+				MessageFormat.format(tooltipText, stroke.format()));
+		decorator.hide();
+		ContentProposalAdapter proposer = new ContentProposalAdapter(text,
+				new TextContentAdapter(),
+				(c, p) -> {
+					if (c.isEmpty() || Repository
+							.isValidRefName(Constants.R_HEADS + c)) {
+						return null;
+					}
+					String normalized = Repository.normalizeBranchName(c);
+					if (normalized.isEmpty()) {
+						return new ContentProposal[0];
+					}
+					return new ContentProposal[] {
+							new ContentProposal(normalized) };
+				}, stroke, BRANCH_NAME_NORMALIZER_ACTIVATION_CHARS);
+		proposer.setProposalAcceptanceStyle(
+				ContentProposalAdapter.PROPOSAL_REPLACE);
+		text.addVerifyListener(
+				e -> e.text = e.text.replaceAll(REGEX_BLANK, UNDERSCORE));
+		text.addModifyListener(e -> {
+			String input = text.getText();
+			boolean doProposeCorrection = !input.isEmpty()
+					&& !Repository.isValidRefName(Constants.R_HEADS + input);
+			setVisible(doProposeCorrection);
+		});
+	}
+
