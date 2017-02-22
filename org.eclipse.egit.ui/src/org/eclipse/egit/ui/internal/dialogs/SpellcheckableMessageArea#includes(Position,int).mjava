@@ -1,5 +1,5 @@
 	private boolean includes(Position position, int caretOffset) {
-		return position.includes(caretOffset)
-		|| (position.offset + position.length) == caretOffset;
+		return position != null && (position.includes(caretOffset)
+				|| (position.offset + position.length) == caretOffset);
 	}
 
