@@ -62,6 +62,7 @@
 			Activator.handleError(e.getMessage(), e, true);
 			return result;
 		}
+		Collections.sort(result, CommonUtils.REF_ASCENDING_COMPARATOR);
 		if (source)
 			sourceRefs = result;
 		else
