@@ -2,8 +2,7 @@
 			boolean doCreateTag, boolean doCreateBranch,
 			boolean doCheckoutNewBranch, boolean doActivateAdditionalRefs,
 			String textForTag, String textForBranch, IProgressMonitor monitor)
-					throws IOException, CoreException, URISyntaxException,
-					GitAPIException {
+			throws IOException, CoreException, URISyntaxException {
 
 		int totalWork = 1;
 		if (doCheckout)
@@ -15,17 +14,17 @@
 				totalWork);
 
 		try {
-			RevCommit commit = fetchChange(uri, spec,
-					monitor);
+			RevCommit commit = fetchChange(uri, spec, monitor);
 
 			if (doCreateTag)
 				createTag(spec, textForTag, commit, monitor);
 
 			if (doCreateBranch)
-				createBranch(textForBranch, doCheckoutNewBranch, commit, monitor);
+				createBranch(textForBranch, doCheckoutNewBranch, commit,
+						monitor);
 
 			if (doCheckout || doCreateTag)
-				checkout(commit, monitor);
+				checkout(commit.name(), monitor);
 
 			if (doActivateAdditionalRefs)
 				activateAdditionalRefs();
