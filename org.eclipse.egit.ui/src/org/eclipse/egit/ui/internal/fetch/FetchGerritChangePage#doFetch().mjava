@@ -11,10 +11,6 @@
 		final String textForTag = tagText.getText();
 		final String textForBranch = branchText.getText();
 
-		if (doCheckoutNewBranch && LaunchFinder
-				.shouldCancelBecauseOfRunningLaunches(repository, null)) {
-			return false;
-		}
 		storeRunInBackgroundSelection();
 
 		if (runInBackgroud.getSelection()) {

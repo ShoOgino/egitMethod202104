@@ -1,31 +1,13 @@
 	private void createBranch(final String textForBranch, boolean doCheckout,
-			RevCommit commit, IProgressMonitor monitor) throws CoreException,
-			GitAPIException {
-		monitor.setTaskName(UIText.FetchGerritChangePage_CreatingBranchTaskName);
+			RevCommit commit, IProgressMonitor monitor) throws CoreException {
+		SubMonitor progress = SubMonitor.convert(monitor,
+				UIText.FetchGerritChangePage_CreatingBranchTaskName,
+				doCheckout ? 10 : 2);
 		CreateLocalBranchOperation bop = new CreateLocalBranchOperation(
 				repository, textForBranch, commit);
-		bop.execute(monitor);
-
+		bop.execute(progress.newChild(2));
 		if (doCheckout) {
-			CheckoutCommand co = null;
-			try (Git git = new Git(repository)) {
-				co = git.checkout();
-				co.setName(textForBranch).call();
-			} catch (CheckoutConflictException e) {
-				final CheckoutResult result = co.getResult();
-
-				if (result.getStatus() == Status.CONFLICTS) {
-					PlatformUI.getWorkbench().getDisplay()
-							.asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							new CheckoutConflictDialog(null, repository,
-									result.getConflictList()).open();
-						}
-					});
-				}
-			}
+			checkout(textForBranch, progress.newChild(8));
 		}
-		monitor.worked(1);
 	}
 

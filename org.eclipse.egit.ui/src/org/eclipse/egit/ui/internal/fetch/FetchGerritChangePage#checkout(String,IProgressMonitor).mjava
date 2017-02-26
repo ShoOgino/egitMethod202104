@@ -1,0 +1,7 @@
+	private void checkout(String targetName, IProgressMonitor monitor)
+			throws CoreException {
+		monitor.setTaskName(UIText.FetchGerritChangePage_CheckingOutTaskName);
+		BranchOperationUI.checkout(repository, targetName).run(monitor);
+		monitor.worked(1);
+	}
+
