@@ -1,4 +1,6 @@
-	private String getPathForResource(IResource resource) {
-		return resource.getLocation().toPortableString();
+	private @Nullable String getPathForResource(IResource resource) {
+		return resource.getLocation() != null
+				? resource.getLocation().toPortableString()
+				: null;
 	}
 
