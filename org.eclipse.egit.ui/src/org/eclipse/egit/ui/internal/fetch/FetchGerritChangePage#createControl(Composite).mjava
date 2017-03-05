@@ -136,10 +136,10 @@
 		tagNormalizer.setVisible(false);
 
 		// radio: checkout FETCH_HEAD
-		checkout = new Button(checkoutGroup, SWT.RADIO);
-		GridDataFactory.fillDefaults().span(3, 1).applyTo(checkout);
-		checkout.setText(UIText.FetchGerritChangePage_CheckoutRadio);
-		checkout.addSelectionListener(new SelectionAdapter() {
+		checkoutFetchHead = new Button(checkoutGroup, SWT.RADIO);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(checkoutFetchHead);
+		checkoutFetchHead.setText(UIText.FetchGerritChangePage_CheckoutRadio);
+		checkoutFetchHead.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				checkPage();
@@ -147,20 +147,21 @@
 		});
 
 		// radio: don't checkout
-		dontCheckout = new Button(checkoutGroup, SWT.RADIO);
-		GridDataFactory.fillDefaults().span(3, 1).applyTo(checkout);
-		dontCheckout.setText(UIText.FetchGerritChangePage_UpdateRadio);
-		dontCheckout.addSelectionListener(new SelectionAdapter() {
+		updateFetchHead = new Button(checkoutGroup, SWT.RADIO);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(updateFetchHead);
+		updateFetchHead.setText(UIText.FetchGerritChangePage_UpdateRadio);
+		updateFetchHead.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				checkPage();
 			}
 		});
 
-		if ("checkout".equals(defaultCommand)) //$NON-NLS-1$
-			checkout.setSelection(true);
-		else
+		if ("checkout".equals(defaultCommand)) { //$NON-NLS-1$
+			checkoutFetchHead.setSelection(true);
+		} else {
 			createBranch.setSelection(true);
+		}
 
 		warningAdditionalRefNotActive = new Composite(main, SWT.NONE);
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false)
@@ -200,11 +201,6 @@
 		} else if (candidateChange != null) {
 			refText.setText(candidateChange);
 		}
-		runInBackgroud = new Button(main, SWT.CHECK);
-		GridDataFactory.fillDefaults().span(2, 1).align(SWT.BEGINNING, SWT.END)
-				.grab(true, true)
-				.applyTo(runInBackgroud);
-		runInBackgroud.setText(UIText.FetchGerritChangePage_RunInBackground);
 
 		// get all available Gerrit URIs from the repository
 		SortedSet<String> uris = new TreeSet<>();
@@ -233,7 +229,6 @@
 		} else {
 			selectLastUsedUri();
 		}
-		restoreRunInBackgroundSelection();
 		refText.setFocus();
 		Dialog.applyDialogFont(main);
 		setControl(main);

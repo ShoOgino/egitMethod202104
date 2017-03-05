@@ -1,8 +1,7 @@
 	private void createBranch(final String textForBranch, boolean doCheckout,
 			RevCommit commit, IProgressMonitor monitor) throws CoreException {
-		SubMonitor progress = SubMonitor.convert(monitor,
-				UIText.FetchGerritChangePage_CreatingBranchTaskName,
-				doCheckout ? 10 : 2);
+		SubMonitor progress = SubMonitor.convert(monitor, doCheckout ? 10 : 2);
+		progress.subTask(UIText.FetchGerritChangePage_CreatingBranchTaskName);
 		CreateLocalBranchOperation bop = new CreateLocalBranchOperation(
 				repository, textForBranch, commit);
 		bop.execute(progress.newChild(2));

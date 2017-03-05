@@ -10,7 +10,7 @@
 		String taskName = NLS
 				.bind(UIText.FetchGerritChangePage_FetchingTaskName,
 						spec.getSource());
-		monitor.setTaskName(taskName);
+		monitor.subTask(taskName);
 		FetchResult fetchRes = new FetchOperationUI(repository,
 				new URIish(uri), specs, timeout, false).execute(monitor);
 
