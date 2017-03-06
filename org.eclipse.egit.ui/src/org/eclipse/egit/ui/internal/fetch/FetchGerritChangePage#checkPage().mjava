@@ -1,11 +1,17 @@
 	private void checkPage() {
+		boolean hasLocalBranch = getLocalRef(refText.getText()) != null;
+		changeBranch.setEnabled(hasLocalBranch);
+		changeBranch.setVisible(hasLocalBranch);
+		GridData gd = (GridData) changeBranch.getLayoutData();
+		gd.exclude = !hasLocalBranch;
+
 		boolean createBranchSelected = createBranch.getSelection();
 		branchText.setEnabled(createBranchSelected);
 		branchText.setVisible(createBranchSelected);
 		branchTextlabel.setVisible(createBranchSelected);
 		branchEditButton.setVisible(createBranchSelected);
 		branchCheckoutButton.setVisible(createBranchSelected);
-		GridData gd = (GridData) branchText.getLayoutData();
+		gd = (GridData) branchText.getLayoutData();
 		gd.exclude = !createBranchSelected;
 		gd = (GridData) branchTextlabel.getLayoutData();
 		gd.exclude = !createBranchSelected;
@@ -22,7 +28,6 @@
 		gd.exclude = !createTagSelected;
 		gd = (GridData) tagTextlabel.getLayoutData();
 		gd.exclude = !createTagSelected;
-		branchText.getParent().layout(true);
 
 		boolean showActivateAdditionalRefs = false;
 		showActivateAdditionalRefs = (checkout.getSelection() || dontCheckout
@@ -36,7 +41,8 @@
 		gd = (GridData) warningAdditionalRefNotActive.getLayoutData();
 		gd.exclude = !showActivateAdditionalRefs;
 		warningAdditionalRefNotActive.setVisible(showActivateAdditionalRefs);
-		warningAdditionalRefNotActive.getParent().layout(true);
+
+		main.getParent().layout(true);
 
 		setErrorMessage(null);
 		try {

@@ -1,6 +1,6 @@
-		static Change fromRef(String refName) {
+		static @Nullable Change fromRef(@Nullable String refName) {
 			try {
-				if (!refName.startsWith("refs/changes/")) //$NON-NLS-1$
+				if (refName == null || !refName.startsWith("refs/changes/")) //$NON-NLS-1$
 					return null;
 				String[] tokens = refName.substring(13).split("/"); //$NON-NLS-1$
 				if (tokens.length != 3)
