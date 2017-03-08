@@ -1,0 +1,31 @@
+	/**
+	 * Checks if the incoming string is a valid git URL. It is recommended to
+	 * {@link #sanitizeAsGitUrl(String) sanitize} the String first if coming
+	 * from an untrustworthy source.
+	 *
+	 * @param url
+	 *            to check
+	 * @return {@code true} if the {@code url} is a valid git URL, {@code false}
+	 *         otherwise
+	 */
+	public static boolean isValidGitUrl(String url) {
+		try {
+			if (url != null) {
+				URIish u = new URIish(url);
+				if (canHandleProtocol(u)) {
+					if (Protocol.GIT.handles(u) || Protocol.SSH.handles(u)
+							|| (Protocol.HTTP.handles(u)
+									|| Protocol.HTTPS.handles(u))
+									&& KnownHosts.isKnownHost(u.getHost())
+							|| url.endsWith(Constants.DOT_GIT_EXT)) {
+						return true;
+					}
+				}
+			}
+		} catch (URISyntaxException e) {
+			// Ignore. This is used to check arbitrary input for being a
+			// possibly valid git URL; we don't want to flood the log here.
+		}
+		return false;
+	}
+

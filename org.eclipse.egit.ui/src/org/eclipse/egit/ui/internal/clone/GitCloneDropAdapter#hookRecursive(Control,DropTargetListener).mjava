@@ -1,0 +1,15 @@
+	private void hookRecursive(Control child, DropTargetListener dropAdapter) {
+		DropTarget childTarget = findDropTarget(child);
+		if (childTarget != null) {
+			registerWithExistingTarget(childTarget);
+			registerDropListener(childTarget, dropAdapter);
+		}
+		if (child instanceof Composite) {
+			Composite composite = (Composite) child;
+			Control[] children = composite.getChildren();
+			for (Control control : children) {
+				hookRecursive(control, dropAdapter);
+			}
+		}
+	}
+

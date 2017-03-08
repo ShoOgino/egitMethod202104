@@ -1,0 +1,13 @@
+		private boolean extractEventData(DropTargetEvent e) {
+			TransferData transferData = e.currentDataType;
+			if (transferData != null) {
+				Object data = URLTransfer.getInstance()
+						.nativeToJava(transferData);
+				if (data != null && getUrl(data) != null) {
+					e.data = data;
+					return true;
+				}
+			}
+			return false;
+		}
+

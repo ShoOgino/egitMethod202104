@@ -1,0 +1,23 @@
+		private void runUpdate(final Shell shell) {
+			if (shell == null || shell.isDisposed()) {
+				return;
+			}
+			Display display = shell.getDisplay();
+			if (display == null || display.isDisposed()) {
+				return;
+			}
+			try {
+				display.asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						if (!shell.isDisposed()) {
+							installDropTarget(shell);
+						}
+					}
+				});
+			} catch (RuntimeException ex) {
+				// Swallow
+			}
+		}
+

@@ -1,0 +1,21 @@
+		private boolean dropTargetIsValid(DropTargetEvent e, boolean isDrop) {
+			if (URLTransfer.getInstance().isSupportedType(e.currentDataType)) {
+				// on Windows, we get the URL already during drag operations...
+				// FIXME find a way to check the URL early on other platforms,
+				// too...
+				if (isDrop || Util.isWindows()) {
+					if (e.data == null && !extractEventData(e)) {
+						// ... but if we don't, it's no problem, unless this is
+						// already the final drop event
+						return !isDrop;
+					}
+					final String url = getUrl(e.data);
+					if (!GitUrlChecker.isValidGitUrl(url)) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+

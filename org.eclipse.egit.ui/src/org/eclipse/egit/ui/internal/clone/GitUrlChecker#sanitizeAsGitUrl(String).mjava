@@ -1,0 +1,21 @@
+	/**
+	 * Sanitize a string for use as a git URL. Strips the Git Clone command if
+	 * needed and reduces remaining the input to anything before the first
+	 * whitespace.
+	 *
+	 * @param input
+	 *            String to be sanitized
+	 * @return sanitized string; if the input came from an untrustworthy source,
+	 *         is should still be checked using {@link #isValidGitUrl(String)}
+	 *         before being used for real as a git URL
+	 */
+	public static String sanitizeAsGitUrl(String input) {
+		String sanitized = input.trim();
+		if (sanitized.startsWith(GIT_CLONE_COMMAND_PREFIX)) {
+			sanitized = sanitized.substring(GIT_CLONE_COMMAND_PREFIX.length())
+					.trim();
+		}
+		// Take only the part up to the first whitespace character
+		return sanitized.split("[\\h|\\v]", 2)[0]; //$NON-NLS-1$
+	}
+

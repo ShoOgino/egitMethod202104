@@ -1,0 +1,8 @@
+		private void pageChanged(IWorkbenchPage page) {
+			if (page == null) {
+				return;
+			}
+			IWorkbenchWindow workbenchWindow = page.getWorkbenchWindow();
+			windowChanged(workbenchWindow);
+		}
+

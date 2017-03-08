@@ -1,0 +1,8 @@
+		private void windowChanged(IWorkbenchWindow window) {
+			if (window == null) {
+				return;
+			}
+			Shell shell = window.getShell();
+			runUpdate(shell);
+		}
+

@@ -1,0 +1,11 @@
+		private void setDropOperation(DropTargetEvent e) {
+			int allowedOperations = e.operations;
+			for (int op : PREFERRED_DROP_OPERATIONS) {
+				if ((allowedOperations & op) != 0) {
+					e.detail = op;
+					return;
+				}
+			}
+			e.detail = allowedOperations;
+		}
+

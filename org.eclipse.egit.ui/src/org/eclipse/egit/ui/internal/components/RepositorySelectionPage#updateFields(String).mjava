@@ -4,7 +4,7 @@
 			if (eventDepth != 1)
 				return;
 
-			String strippedText = stripGitCloneCommand(text);
+			String strippedText = GitUrlChecker.sanitizeAsGitUrl(text);
 			final URIish u = new URIish(strippedText);
 			if (!text.equals(strippedText)) {
 				uriText.setText(strippedText);

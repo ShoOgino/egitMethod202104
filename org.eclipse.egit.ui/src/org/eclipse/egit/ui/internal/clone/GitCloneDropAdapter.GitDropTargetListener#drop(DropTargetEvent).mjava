@@ -1,0 +1,29 @@
+		@Override
+		public void drop(DropTargetEvent event) {
+			if (!URLTransfer.getInstance()
+					.isSupportedType(event.currentDataType)) {
+				// ignore
+				return;
+			}
+			if (event.data == null) {
+				// reject
+				event.detail = DND.DROP_NONE;
+				return;
+			}
+			if (!dropTargetIsValid(event, true)) {
+				// reject
+				event.detail = DND.DROP_NONE;
+				return;
+			}
+			final String url = getUrl(event.data);
+			DropTarget source = (DropTarget) event.getSource();
+			Display display = source.getDisplay();
+			display.asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					proceedClone(url);
+				}
+			});
+
+		}
+

@@ -1,0 +1,15 @@
+	private void registerWithExistingTarget(DropTarget target) {
+		Transfer[] transfers = target.getTransfer();
+		if (transfers != null) {
+			for (Transfer transfer : transfers) {
+				if (transfer instanceof URLTransfer) {
+					return;
+				}
+			}
+			Transfer[] newTransfers = new Transfer[transfers.length + 1];
+			System.arraycopy(transfers, 0, newTransfers, 0, transfers.length);
+			newTransfers[transfers.length] = URLTransfer.getInstance();
+			target.setTransfer(newTransfers);
+		}
+	}
+

@@ -1,0 +1,8 @@
+		private void partUpdate(IWorkbenchPartReference partRef) {
+			if (partRef == null) {
+				return;
+			}
+			IWorkbenchPage page = partRef.getPage();
+			pageChanged(page);
+		}
+
