@@ -19,7 +19,10 @@
 
 		assertEquals(2, countCommitsInHead());
 
-		LogCommand log = new Git(testRepository.getRepository()).log();
+		LogCommand log;
+		try (Git git = new Git(testRepository.getRepository())) {
+			log = git.log();
+		}
 		Iterable<RevCommit> logCommits = log.call();
 		RevCommit latestCommit = logCommits.iterator().next();
 		assertEquals("squashed", latestCommit.getFullMessage());

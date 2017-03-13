@@ -13,8 +13,10 @@
 		commitOperation.setRepository(repository);
 		commitOperation.execute(null);
 
-		Git git = new Git(repository);
-		Iterator<RevCommit> commits = git.log().call().iterator();
+		Iterator<RevCommit> commits;
+		try (Git git = new Git(repository)) {
+			commits = git.log().call().iterator();
+		}
 		RevCommit firstCommit = commits.next();
 		assertTrue(firstCommit.getCommitTime() > 0);
 
@@ -28,8 +30,9 @@
 		commitOperation.setRepository(repository);
 		commitOperation.execute(null);
 
-		git = new Git(repository);
-		commits = git.log().call().iterator();
+		try (Git git = new Git(repository)) {
+			commits = git.log().call().iterator();
+		}
 		RevCommit secondCommit = commits.next();
 		assertTrue(secondCommit.getCommitTime() > 0);
 

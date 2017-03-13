@@ -3,7 +3,9 @@
 		// given
 		writeTrashFile(db, "a.txt", "trash");
 		writeTrashFile(db, "b.txt", "trash");
-		new Git(db).add().addFilepattern("a.txt").addFilepattern("b.txt").call();
+		try (Git git = new Git(db)) {
+			git.add().addFilepattern("a.txt").addFilepattern("b.txt").call();
+		}
 		deleteTrashFile(db, "a.txt");
 		deleteTrashFile(db, "b.txt");
 

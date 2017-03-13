@@ -2,9 +2,11 @@
 	public void shouldListConflictingChange2() throws Exception {
 		// given
 		writeTrashFile("a.txt", "content");
-		Git git = new Git(db);
-		git.add().addFilepattern("a.txt").call();
-		RevCommit c = git.commit().setMessage("initial commit").call();
+		RevCommit c;
+		try (Git git = new Git(db)) {
+			git.add().addFilepattern("a.txt").call();
+			c = git.commit().setMessage("initial commit").call();
+		}
 
 		// when
 		try (TreeWalk walk = new TreeWalk(db)) {

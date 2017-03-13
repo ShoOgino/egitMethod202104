@@ -9,6 +9,8 @@
 	public void track(File file) throws IOException, NoFilepatternException, GitAPIException {
 		String repoPath = getRepoRelativePath(new Path(file.getPath())
 				.toString());
-		new Git(repository).add().addFilepattern(repoPath).call();
+		try (Git git = new Git(repository)) {
+			git.add().addFilepattern(repoPath).call();
+		}
 	}
 

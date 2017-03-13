@@ -2,7 +2,9 @@
 	public void shouldListSingleWorkspaceChangeInFolder() throws Exception {
 		// given
 		writeTrashFile(db, "folder/a.txt", "trash");
-		new Git(db).add().addFilepattern("folder/a.txt").call();
+		try (Git git = new Git(db)) {
+			git.add().addFilepattern("folder/a.txt").call();
+		}
 		writeTrashFile(db, "folder/a.txt", "modification");
 
 		// when

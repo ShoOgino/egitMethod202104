@@ -14,8 +14,9 @@
 		assertSynchronizeFile1Changed();
 
 		// add to index -> should still show as change
-		new Git(lookupRepository(repositoryFile)).add().addFilepattern(
-				PROJ1 + "/" + FOLDER + "/" + FILE1).call();
+		try (Git git = new Git(lookupRepository(repositoryFile))) {
+			git.add().addFilepattern(PROJ1 + "/" + FOLDER + "/" + FILE1).call();
+		}
 
 		clickCompareWithAndWaitForSync(compareWithHeadMenuLabel);
 
