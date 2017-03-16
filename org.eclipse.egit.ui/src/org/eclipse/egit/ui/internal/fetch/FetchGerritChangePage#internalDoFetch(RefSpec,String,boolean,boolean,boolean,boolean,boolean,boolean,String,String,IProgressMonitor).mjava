@@ -15,9 +15,7 @@
 
 		if (doChangeBranch) {
 			Ref localRef = getLocalRef(spec.getSource());
-			if (localRef != null) {
-				checkout(localRef.getName(), monitor);
-			}
+			checkout(localRef.getName(), monitor);
 		} else {
 			try {
 				RevCommit commit = fetchChange(uri, spec, monitor);
