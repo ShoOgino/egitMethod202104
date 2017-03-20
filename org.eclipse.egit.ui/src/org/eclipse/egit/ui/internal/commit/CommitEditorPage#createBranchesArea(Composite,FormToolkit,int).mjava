@@ -11,7 +11,7 @@
 		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 50)
 				.applyTo(control);
 		addToFocusTracking(control);
-		branchViewer.setComparator(new ViewerComparator());
+		branchViewer.setSorter(new ViewerSorter());
 		branchViewer.setLabelProvider(new GitLabelProvider() {
 
 			@Override
