@@ -36,7 +36,7 @@
 		};
 		viewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
 				styleProvider));
-		viewer.setSorter(new ViewerSorter());
+		viewer.setComparator(new ViewerComparator());
 
 		Map<MergeFailureReason, RevertFailure> failures = new HashMap<>();
 		for (Entry<String, MergeFailureReason> reason : reasons.entrySet()) {
