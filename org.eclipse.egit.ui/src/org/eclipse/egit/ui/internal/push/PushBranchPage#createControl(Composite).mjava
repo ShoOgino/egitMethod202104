@@ -199,5 +199,10 @@
 				checkPage();
 			}
 		});
+		// Do not use a tooltip since there is already a content proposal
+		// adapter on this field
+		BranchNameNormalizer normalizer = new BranchNameNormalizer(
+				remoteBranchNameText, null);
+		normalizer.setVisible(false);
 	}
 
