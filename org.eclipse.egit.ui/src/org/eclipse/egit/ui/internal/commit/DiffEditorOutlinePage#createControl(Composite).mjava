@@ -5,6 +5,8 @@
 		viewer.setAutoExpandLevel(2);
 		viewer.setContentProvider(new DiffContentProvider());
 		viewer.setLabelProvider(new DiffLabelProvider());
+		viewer.addDoubleClickListener(
+				event -> openFolder(event.getSelection()));
 		viewer.addOpenListener(event -> fireOpenEvent(event));
 		if (input != null) {
 			viewer.setInput(input);
