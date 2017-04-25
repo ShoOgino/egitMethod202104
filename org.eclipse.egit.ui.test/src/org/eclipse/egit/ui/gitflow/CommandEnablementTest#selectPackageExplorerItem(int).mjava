@@ -1,6 +1,5 @@
 	private void selectPackageExplorerItem(int index) {
 		SWTBotTree explorerTree = TestUtil.getExplorerTree();
-		PlatformUI.getWorkbench().getDisplay()
-				.syncExec(() -> explorerTree.select(index));
+		explorerTree.select(index);
 	}
 

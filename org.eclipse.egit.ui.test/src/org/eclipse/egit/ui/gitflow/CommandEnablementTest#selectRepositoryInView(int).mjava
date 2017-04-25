@@ -1,6 +1,5 @@
 	private void selectRepositoryInView(int index) {
-		SWTBotTree repoTree = getRepositoryTree();
-		PlatformUI.getWorkbench().getDisplay()
-				.syncExec(() -> repoTree.select(index));
+		SWTBotTree explorerTree = getRepositoryTree();
+		explorerTree.select(index);
 	}
 
