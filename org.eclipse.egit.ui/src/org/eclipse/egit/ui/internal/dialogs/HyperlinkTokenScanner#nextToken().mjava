@@ -5,24 +5,43 @@
 			hyperlinksOnLine.clear();
 			return Token.EOF;
 		}
-		if (hyperlinkDetectors != null && hyperlinkDetectors.length > 0) {
+		if (hyperlinkDetectors != null && !hyperlinkDetectors.isEmpty()) {
 			try {
 				IRegion currentLine = document
 						.getLineInformationOfOffset(currentOffset);
 				if (currentLine.getOffset() != lastLineStart) {
 					// Compute all hyperlinks in the line
 					hyperlinksOnLine.clear();
-					for (IHyperlinkDetector hyperlinkDetector : hyperlinkDetectors) {
+					Iterator<IHyperlinkDetector> detectors = hyperlinkDetectors
+							.iterator();
+					while (detectors.hasNext()) {
+						IHyperlinkDetector hyperlinkDetector = detectors.next();
 						// The NoMaskHyperlinkDetectors can be skipped; if there
 						// are any, they're only duplicates of others to ensure
 						// hyperlinks open also if no modifier key is active.
-						if (!(hyperlinkDetector instanceof HyperlinkSourceViewer.NoMaskHyperlinkDetector)) {
-							IHyperlink[] newLinks = hyperlinkDetector
-									.detectHyperlinks(viewer, currentLine,
-											false);
-							if (newLinks != null && newLinks.length > 0) {
-								Collections.addAll(hyperlinksOnLine, newLinks);
-							}
+						if (hyperlinkDetector instanceof HyperlinkSourceViewer.NoMaskHyperlinkDetector) {
+							continue;
+						}
+						IHyperlink[] newLinks = null;
+						try {
+							newLinks = hyperlinkDetector.detectHyperlinks(
+									viewer, currentLine, false);
+						} catch (RuntimeException e) {
+							// Do *not* log: we have no way of identifying the
+							// broken hyperlink detector to ignore it in the
+							// future. Since we re-get the contributed detectors
+							// frequently, we'll get new instances of
+							// HyperlinkDetectorDelegate, and that doesn't give
+							// access to the extension id. So even if we remove
+							// the detector here, we may acquire a new broken
+							// instance again and then log over and over again,
+							// which is hyper-bothersome if the error log is
+							// open and set to activate on new errors. And
+							// anyway the problem is not in EGit.
+							detectors.remove();
+						}
+						if (newLinks != null && newLinks.length > 0) {
+							Collections.addAll(hyperlinksOnLine, newLinks);
 						}
 					}
 					// Sort them by offset, and with increasing length

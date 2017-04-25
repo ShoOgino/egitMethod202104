@@ -1,0 +1,40 @@
+	@SuppressWarnings("boxing")
+	private void assertTokens(String text, int offset, int length,
+			IHyperlinkDetector[] hyperlinkDetectors, String expected) {
+		assertEquals("Test definition problem: 'expected' length mismatch",
+				text.length(), expected.length());
+		IDocument testDocument = new Document(text);
+		when(viewer.getDocument()).thenReturn(testDocument);
+		when(configuration.getHyperlinkDetectors(viewer))
+				.thenReturn(hyperlinkDetectors);
+		when(preferenceStore
+				.getBoolean(AbstractTextEditor.PREFERENCE_HYPERLINKS_ENABLED))
+						.thenReturn(true);
+		when(preferenceStore.getBoolean(
+				"org.eclipse.ui.internal.editors.text.URLHyperlinkDetector"))
+						.thenReturn(hyperlinkDetectors.length == 0
+								|| (hyperlinkDetectors[0] instanceof CrashingHyperlinkDetector));
+		HyperlinkTokenScanner scanner = new HyperlinkTokenScanner(configuration,
+				viewer, preferenceStore, null);
+		scanner.setRangeAndColor(testDocument, offset, length, null);
+		IToken token = null;
+		char[] found = new char[text.length()];
+		Arrays.fill(found, ' ');
+		while (!(token = scanner.nextToken()).isEOF()) {
+			int tokenOffset = scanner.getTokenOffset();
+			int tokenLength = scanner.getTokenLength();
+			char ch = 'x';
+			Object data = token.getData();
+			if (data == null) {
+				ch = 'D';
+			} else if (data instanceof TextAttribute) {
+				int style = ((TextAttribute) data).getStyle();
+				if ((style & TextAttribute.UNDERLINE) != 0) {
+					ch = 'H';
+				}
+			}
+			Arrays.fill(found, tokenOffset, tokenOffset + tokenLength, ch);
+		}
+		assertEquals("Unexpected tokens", expected, new String(found));
+	}
+
