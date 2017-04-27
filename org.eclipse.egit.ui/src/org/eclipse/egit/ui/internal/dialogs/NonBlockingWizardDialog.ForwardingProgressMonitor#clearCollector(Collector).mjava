@@ -1,0 +1,14 @@
+		/**
+		 * Clears the collector object used to accumulate work and subtask calls
+		 * if it matches the given one.
+		 *
+		 * @param collectorToClear
+		 */
+		private synchronized void clearCollector(Collector collectorToClear) {
+			// Check if the accumulator is still using the given collector.
+			// If not, don't clear it.
+			if (this.collector == collectorToClear) {
+				this.collector = null;
+			}
+		}
+

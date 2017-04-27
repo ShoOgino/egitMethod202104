@@ -1,0 +1,9 @@
+		@Override
+		public synchronized void internalWorked(final double work) {
+			if (collector == null) {
+				createCollector(null, null, work);
+			} else {
+				collector.worked(work);
+			}
+		}
+

@@ -1,0 +1,11 @@
+		@Override
+		public void beginTask(final String name, final int totalWork) {
+			synchronized (this) {
+				collector = null;
+			}
+			display.asyncExec(() -> {
+				currentTask = name;
+				getWrappedProgressMonitor().beginTask(name, totalWork);
+			});
+		}
+

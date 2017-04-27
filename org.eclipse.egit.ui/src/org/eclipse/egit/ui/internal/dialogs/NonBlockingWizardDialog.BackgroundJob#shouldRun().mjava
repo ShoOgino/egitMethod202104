@@ -1,0 +1,7 @@
+		@Override
+		public boolean shouldRun() {
+			synchronized (jobs) {
+				return page == getCurrentPage() && jobs.peek() == this;
+			}
+		}
+

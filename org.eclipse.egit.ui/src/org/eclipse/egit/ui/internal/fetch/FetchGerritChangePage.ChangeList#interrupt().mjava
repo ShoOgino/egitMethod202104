@@ -1,0 +1,6 @@
+		private synchronized void interrupt() {
+			state = State.INTERRUPT;
+			job.interrupt();
+			notifyAll(); // Abandon outstanding get() calls
+		}
+

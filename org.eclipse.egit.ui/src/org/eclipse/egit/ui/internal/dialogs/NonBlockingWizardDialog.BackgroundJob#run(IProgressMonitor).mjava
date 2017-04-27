@@ -1,0 +1,58 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			if (!shouldRun()) {
+				// Should actually not occur. Just to be on the safe side.
+				return Status.CANCEL_STATUS;
+			}
+			// Hook up monitors so that we can report progress in the UI.
+			IProgressMonitor uiMonitor = getProgressMonitor();
+			IProgressMonitor combinedMonitor;
+			if (uiMonitor instanceof ProgressMonitorPart) {
+				ProgressMonitorPart part = ((ProgressMonitorPart) uiMonitor);
+				IProgressMonitor[] newMonitor = { null };
+				Display display = PlatformUI.getWorkbench().getDisplay();
+				if (display == null || display.isDisposed()) {
+					return Status.CANCEL_STATUS;
+				}
+				display.syncExec(() -> {
+					if (((ProgressMonitorPart) uiMonitor).isDisposed()) {
+						return;
+					}
+					try {
+						Control focusControl = display.getFocusControl();
+						part.setVisible(true);
+						part.attachToCancelComponent(null);
+						// Attaching sets the focus to the stop button...
+						restoreFocus(focusControl);
+						if (part instanceof BackgroundProgressMonitorPart) {
+							((BackgroundProgressMonitorPart) part)
+									.setJob(BackgroundJob.this);
+						}
+						newMonitor[0] = new ForwardingProgressMonitor(uiMonitor,
+								monitor, part.getDisplay());
+					} catch (SWTException e) {
+						return;
+					}
+				});
+				combinedMonitor = newMonitor[0];
+				if (combinedMonitor == null) {
+					return Status.CANCEL_STATUS;
+				}
+			} else {
+				combinedMonitor = monitor;
+			}
+			try {
+				runnable.run(combinedMonitor);
+			} catch (InvocationTargetException e) {
+				return Activator.createErrorStatus(e.getLocalizedMessage(), e);
+			} catch (InterruptedException e) {
+				return Status.CANCEL_STATUS;
+			} finally {
+				monitor.done();
+				if (combinedMonitor != monitor) {
+					combinedMonitor.done();
+				}
+			}
+			return Status.OK_STATUS;
+		}
+

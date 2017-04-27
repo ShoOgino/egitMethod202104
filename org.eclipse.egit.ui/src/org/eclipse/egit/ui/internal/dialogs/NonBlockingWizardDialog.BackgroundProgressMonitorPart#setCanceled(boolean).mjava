@@ -1,0 +1,10 @@
+		@Override
+		public void setCanceled(boolean cancel) {
+			super.setCanceled(cancel);
+			if (cancel) {
+				if (job != null) {
+					job.cancel();
+				}
+			}
+		}
+

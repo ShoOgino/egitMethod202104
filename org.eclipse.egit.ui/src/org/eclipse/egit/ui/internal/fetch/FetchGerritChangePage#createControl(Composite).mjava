@@ -1,5 +1,11 @@
 	@Override
 	public void createControl(Composite parent) {
+		parent.addDisposeListener(event -> {
+			for (ChangeList l : changeRefs.values()) {
+				l.cancel(ChangeList.CancelMode.INTERRUPT);
+			}
+			changeRefs.clear();
+		});
 		Clipboard clipboard = new Clipboard(parent.getDisplay());
 		String clipText = (String) clipboard.getContents(TextTransfer
 				.getInstance());
@@ -29,15 +35,21 @@
 		uriCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				changeRefs = null;
+				String uriText = uriCombo.getText();
+				ChangeList list = changeRefs.get(uriText);
+				if (list != null) {
+					list.cancel(ChangeList.CancelMode.INTERRUPT);
+				}
+				list = new ChangeList(repository, uriText);
+				changeRefs.put(uriText, list);
+				preFetch(list);
 			}
 		});
 		new Label(main, SWT.NONE)
 				.setText(UIText.FetchGerritChangePage_ChangeLabel);
 		refText = new Text(main, SWT.SINGLE | SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(refText);
-		final ExplicitContentProposalAdapter contentProposer = addRefContentProposalToText(
-				refText);
+		contentProposer = addRefContentProposalToText(refText);
 		refText.addVerifyListener(event -> {
 			event.text = event.text
 					// C.f. https://bugs.eclipse.org/bugs/show_bug.cgi?id=273470
@@ -77,6 +89,18 @@
 		branchText = new Text(checkoutGroup, SWT.SINGLE | SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false)
 				.align(SWT.FILL, SWT.CENTER).applyTo(branchText);
+		branchText.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				branchTextEdited = true;
+			}
+		});
+		branchText.addVerifyListener(event -> {
+			if (event.text.isEmpty()) {
+				branchTextEdited = false;
+			}
+		});
 		branchText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -98,6 +122,7 @@
 				if (dlg.open() == Window.OK) {
 					branchText.setText(Repository.shortenRefName(dlg
 							.getRefName()));
+					branchTextEdited = true;
 				} else {
 					// force calling branchText's modify listeners
 					branchText.setText(branchText.getText());
@@ -125,6 +150,18 @@
 		tagText = new Text(checkoutGroup, SWT.SINGLE | SWT.BORDER);
 		GridDataFactory.fillDefaults().exclude(true).grab(true, false)
 				.applyTo(tagText);
+		tagText.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				tagTextEdited = true;
+			}
+		});
+		tagText.addVerifyListener(event -> {
+			if (event.text.isEmpty()) {
+				tagTextEdited = false;
+			}
+		});
 		tagText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -183,15 +220,18 @@
 			@Override
 			public void modifyText(ModifyEvent e) {
 				Change change = Change.fromRef(refText.getText());
+				String suggestion = ""; //$NON-NLS-1$
 				if (change != null) {
-					branchText.setText(NLS
-							.bind(UIText.FetchGerritChangePage_SuggestedRefNamePattern,
-									change.getChangeNumber(),
-									change.getPatchSetNumber()));
-					tagText.setText(branchText.getText());
-				} else {
-					branchText.setText(""); //$NON-NLS-1$
-					tagText.setText(""); //$NON-NLS-1$
+					suggestion = NLS.bind(
+							UIText.FetchGerritChangePage_SuggestedRefNamePattern,
+							change.getChangeNumber(),
+							change.getPatchSetNumber());
+				}
+				if (!branchTextEdited) {
+					branchText.setText(suggestion);
+				}
+				if (!tagTextEdited) {
+					tagText.setText(suggestion);
 				}
 				checkPage();
 			}
@@ -223,12 +263,20 @@
 		}
 		for (String aUri : uris) {
 			uriCombo.add(aUri);
+			changeRefs.put(aUri, new ChangeList(repository, aUri));
 		}
 		if (defaultUri != null) {
 			uriCombo.setText(defaultUri);
 		} else {
 			selectLastUsedUri();
 		}
+		String currentUri = uriCombo.getText();
+		ChangeList list = changeRefs.get(currentUri);
+		if (list == null) {
+			list = new ChangeList(repository, currentUri);
+			changeRefs.put(currentUri, list);
+		}
+		preFetch(list);
 		refText.setFocus();
 		Dialog.applyDialogFont(main);
 		setControl(main);

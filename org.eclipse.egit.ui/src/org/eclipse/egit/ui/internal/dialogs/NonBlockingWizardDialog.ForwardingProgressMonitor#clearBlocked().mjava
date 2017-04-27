@@ -1,0 +1,16 @@
+		@Override
+		public void clearBlocked() {
+			// If this is a monitor that can report blocking do so.
+			// Don't bother with a collector as this should only ever
+			// happen once.
+			IProgressMonitor wrapped = getWrappedProgressMonitor();
+			if (!(wrapped instanceof IProgressMonitorWithBlocking)) {
+				return;
+			}
+
+			display.asyncExec(() -> {
+				((IProgressMonitorWithBlocking) wrapped).clearBlocked();
+				Dialog.getBlockedHandler().clearBlocked();
+			});
+		}
+

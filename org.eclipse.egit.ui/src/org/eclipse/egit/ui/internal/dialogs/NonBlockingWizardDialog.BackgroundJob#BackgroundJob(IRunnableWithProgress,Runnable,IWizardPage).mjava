@@ -1,0 +1,52 @@
+		public BackgroundJob(IRunnableWithProgress runnable, Runnable onCancel,
+				IWizardPage page) {
+			super(MessageFormat.format(
+					UIText.NonBlockingWizardDialog_BackgroundJobName,
+					page.getName()));
+			this.runnable = runnable;
+			this.onCancel = onCancel;
+			this.page = page;
+			this.addJobChangeListener(new JobChangeAdapter() {
+
+				@Override
+				public void done(IJobChangeEvent event) {
+					if (!PlatformUI.isWorkbenchRunning()) {
+						return;
+					}
+					Display display = PlatformUI.getWorkbench().getDisplay();
+					if (display == null || display.isDisposed()) {
+						return;
+					}
+					display.syncExec(() -> {
+						boolean hideProgress = false;
+						synchronized (jobs) {
+							Job currentJob = jobs.peek();
+							if (currentJob == BackgroundJob.this) {
+								jobs.poll();
+								Job nextJob = jobs.peek();
+								if (nextJob != null) {
+									nextJob.schedule();
+								} else {
+									hideProgress = true;
+								}
+							} else if (currentJob == null) {
+								hideProgress = true;
+							}
+							if (hideProgress) {
+								IProgressMonitor uiMonitor = getProgressMonitor();
+								if (uiMonitor instanceof ProgressMonitorPart) {
+									ProgressMonitorPart part = ((ProgressMonitorPart) uiMonitor);
+									if (!part.isDisposed()) {
+										part.setVisible(false);
+										part.removeFromCancelComponent(null);
+									}
+								}
+							}
+						}
+					});
+				}
+			});
+			this.setUser(false);
+			this.setSystem(true);
+		}
+

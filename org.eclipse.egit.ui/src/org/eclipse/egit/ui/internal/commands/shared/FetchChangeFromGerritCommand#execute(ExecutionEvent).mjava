@@ -13,8 +13,8 @@
 		}
 
 		FetchGerritChangeWizard wiz = new FetchGerritChangeWizard(repository);
-		WizardDialog dlg = new WizardDialog(HandlerUtil
-				.getActiveShellChecked(event), wiz);
+		NonBlockingWizardDialog dlg = new NonBlockingWizardDialog(
+				HandlerUtil.getActiveShellChecked(event), wiz);
 		dlg.setHelpAvailable(false);
 		dlg.open();
 		return null;

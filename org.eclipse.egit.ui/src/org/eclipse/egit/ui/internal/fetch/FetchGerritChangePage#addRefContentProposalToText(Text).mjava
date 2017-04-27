@@ -8,12 +8,9 @@
 					stroke.format()));
 		}
 		IContentProposalProvider cp = new IContentProposalProvider() {
+
 			@Override
 			public IContentProposal[] getProposals(String contents, int position) {
-				List<IContentProposal> resultList = new ArrayList<>();
-
-				Pattern pattern = UIUtils.createProposalPattern(contents);
-
 				List<Change> proposals;
 				try {
 					proposals = getRefsForContentAssist();
@@ -24,19 +21,21 @@
 					return null;
 				}
 
-				if (proposals != null) {
-					for (final Change ref : proposals) {
-						if (pattern != null
-								&& !pattern.matcher(
-										ref.getChangeNumber().toString())
-										.matches()) {
-							continue;
-						}
-						resultList.add(new ChangeContentProposal(ref));
-					}
+				if (proposals == null) {
+					return null;
 				}
-				return resultList.toArray(new IContentProposal[resultList
-						.size()]);
+				List<IContentProposal> resultList = new ArrayList<>();
+				Pattern pattern = UIUtils.createProposalPattern(contents);
+				for (final Change ref : proposals) {
+					if (pattern != null && !pattern
+							.matcher(ref.getChangeNumber().toString())
+							.matches()) {
+						continue;
+					}
+					resultList.add(new ChangeContentProposal(ref));
+				}
+				return resultList
+						.toArray(new IContentProposal[resultList.size()]);
 			}
 		};
 

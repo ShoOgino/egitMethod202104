@@ -1,0 +1,11 @@
+		@Override
+		protected void canceling() {
+			try {
+				if (onCancel != null) {
+					onCancel.run();
+				}
+			} finally {
+				super.canceling();
+			}
+		}
+

@@ -1,0 +1,19 @@
+		@Override
+		public void done() {
+			synchronized (this) {
+				collector = null;
+			}
+			if (!display.isDisposed()) {
+				display.asyncExec(() -> {
+					try {
+						getWrappedProgressMonitor().done();
+					} catch (SWTException e) {
+						// May occur if the wrapped monitor is some already
+						// disposed control. ProgressMonitorPart is otherwise
+						// careful not to do anything when it has been disposed,
+						// but neglects to check in done(). Just ignore it.
+					}
+				});
+			}
+		}
+

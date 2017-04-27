@@ -1,0 +1,9 @@
+	@Override
+	public void showPage(IWizardPage page) {
+		// Need to synchronize to avoid race condition with a background job
+		// terminating.
+		synchronized (jobs) {
+			super.showPage(page);
+		}
+	}
+

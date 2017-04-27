@@ -1,0 +1,9 @@
+		@Override
+		public synchronized void subTask(final String name) {
+			if (collector == null) {
+				createCollector(null, name, 0);
+			} else {
+				collector.subTask(name);
+			}
+		}
+

@@ -1,0 +1,14 @@
+			@Override
+			public void run() {
+				clearCollector(this);
+				if (taskName != null) {
+					monitor.setTaskName(taskName);
+				}
+				if (subTask != null) {
+					monitor.subTask(subTask);
+				}
+				if (worked > 0) {
+					monitor.internalWorked(worked);
+				}
+			}
+

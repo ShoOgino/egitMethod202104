@@ -1,0 +1,10 @@
+	private void restoreFocus(Control focusControl) {
+		if (focusControl != null && !focusControl.isDisposed()) {
+			Shell shell = getShell();
+			if (shell != null && !shell.isDisposed()
+					&& focusControl.getShell() == shell) {
+				focusControl.setFocus();
+			}
+		}
+	}
+

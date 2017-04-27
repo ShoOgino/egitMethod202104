@@ -1,0 +1,31 @@
+		/**
+		 * Retrieves the result. If the result is not yet available, the method
+		 * blocks until it is or {@link #cancel(CancelMode)} is called with
+		 * {@link CancelMode#ABANDON} or {@link CancelMode#INTERRUPT}.
+		 *
+		 * @return the result, which may be {@code null} if the future was
+		 *         canceled
+		 * @throws InterruptedException
+		 *             if waiting was interrupted
+		 * @throws InvocationTargetException
+		 *             if the future's job cannot be created
+		 */
+		public synchronized List<Change> get()
+				throws InterruptedException, InvocationTargetException {
+			switch (state) {
+			case DONE:
+			case CANCELED:
+				return result;
+			case PRISTINE:
+				fetch();
+				return get();
+			default:
+				wait();
+				if (state == State.CANCELING || state == State.INTERRUPT) {
+					// canceled with ABANDON or INTERRUPT
+					throw new InterruptedException();
+				}
+				return get();
+			}
+		}
+

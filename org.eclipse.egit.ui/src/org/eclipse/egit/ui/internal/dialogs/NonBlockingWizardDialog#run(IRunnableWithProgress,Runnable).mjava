@@ -1,0 +1,22 @@
+	/**
+	 * Runs the given {@code runnable} in a background job, reporting progress
+	 * through the dialog's progress monitor, if any, and invoking
+	 * {@code onCancel} if the job is canceled.
+	 *
+	 * @param runnable
+	 *            to run
+	 * @param onCancel
+	 *            to run when the job is canceled; may be {@code null}
+	 */
+	public void run(IRunnableWithProgress runnable, Runnable onCancel) {
+		Assert.isNotNull(runnable);
+		synchronized (jobs) {
+			BackgroundJob newJob = new BackgroundJob(runnable, onCancel,
+					getCurrentPage());
+			jobs.add(newJob);
+			if (jobs.size() == 1) {
+				newJob.schedule();
+			}
+		}
+	}
+
