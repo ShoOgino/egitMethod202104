@@ -11,8 +11,10 @@
 			return;
 		}
 
-		// Don't decorate if the workbench is not running
-		if (!PlatformUI.isWorkbenchRunning()) {
+		// Don't decorate if the workbench is not running or the workspace is
+		// not yet ready or already shut down
+		if (!PlatformUI.isWorkbenchRunning()
+				|| ResourcesPlugin.getWorkspace() == null) {
 			return;
 		}
 
