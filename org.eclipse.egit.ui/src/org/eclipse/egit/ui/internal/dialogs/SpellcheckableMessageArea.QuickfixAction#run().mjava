@@ -1,5 +1,7 @@
 		@Override
 		public void run() {
-			textOperationTarget.doOperation(ISourceViewer.QUICK_ASSIST);
+			if (textOperationTarget.canDoOperation(ISourceViewer.QUICK_ASSIST)) {
+				textOperationTarget.doOperation(ISourceViewer.QUICK_ASSIST);
+			}
 		}
 

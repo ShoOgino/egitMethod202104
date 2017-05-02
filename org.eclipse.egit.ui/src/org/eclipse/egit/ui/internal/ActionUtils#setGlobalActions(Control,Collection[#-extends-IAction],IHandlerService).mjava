@@ -12,8 +12,8 @@
 	 *            to register the actions with
 	 */
 	public static void setGlobalActions(Control control,
-			Collection<IAction> actions, IHandlerService service) {
-		Collection<IHandlerActivation> handlerActivations = new HashSet<>();
+			Collection<? extends IAction> actions, IHandlerService service) {
+		Collection<IHandlerActivation> handlerActivations = new ArrayList<>();
 		control.addDisposeListener(event -> {
 			if (!handlerActivations.isEmpty()) {
 				service.deactivateHandlers(handlerActivations);
@@ -41,7 +41,10 @@
 				for (final IAction action : actions) {
 					handlerActivations.add(service.activateHandler(
 							action.getActionDefinitionId(),
-							new ActionHandler(action), expression, true));
+							new ActionHandler(action), expression, false));
+					if (action instanceof IUpdate) {
+						((IUpdate) action).update();
+					}
 				}
 			}
 		});

@@ -1,0 +1,9 @@
+	private void updateSpellChecking(boolean isEnabled) {
+		// See TextEditor.handlePreferenceStoreChanged.
+		this.unconfigure();
+		this.configure(configuration);
+		if (!isEnabled) {
+			SpellingProblem.removeAll(this, null);
+		}
+	}
+

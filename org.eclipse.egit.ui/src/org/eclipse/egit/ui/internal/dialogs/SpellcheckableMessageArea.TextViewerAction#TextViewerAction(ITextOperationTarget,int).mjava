@@ -1,0 +1,15 @@
+		/**
+		 * Creates a new action.
+		 *
+		 * @param target
+		 *            to operate on
+		 * @param operationCode
+		 *            the opcode
+		 */
+		public TextViewerAction(ITextOperationTarget target,
+				int operationCode) {
+			fOperationCode= operationCode;
+			fOperationTarget = target;
+			update();
+		}
+

@@ -1,0 +1,9 @@
+	private IAction createContentAssistAction(
+			final SourceViewer viewer) {
+		Action proposalAction = new TextViewerAction(viewer,
+				ISourceViewer.CONTENTASSIST_PROPOSALS);
+		proposalAction
+				.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
+		return proposalAction;
+	}
+

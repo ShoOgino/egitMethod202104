@@ -30,6 +30,7 @@
 		createMarginPainter();
 
 		configureHardWrap();
+
 		final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
@@ -66,9 +67,6 @@
 		JFacePreferences.getPreferenceStore()
 				.addPropertyChangeListener(syntaxColoringChangeListener);
 		final SourceViewerDecorationSupport support = configureAnnotationPreferences();
-		if (isEditable(sourceViewer)) {
-			quickFixActionHandler = createQuickFixActionHandler(sourceViewer);
-		}
 
 		Document document = new Document(initialText);
 
@@ -102,7 +100,8 @@
 				IContentAssistant assistant = createContentAssistant(viewer);
 				// Add content assist proposal handler if assistant exists
 				if (assistant != null)
-					contentAssistActionHandler = createContentAssistActionHandler(sourceViewer);
+					contentAssistAction = createContentAssistAction(
+							sourceViewer);
 				return assistant;
 			}
 

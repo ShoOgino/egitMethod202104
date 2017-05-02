@@ -5,6 +5,10 @@
 			EditorsUI.getPreferenceStore()
 					.removePropertyChangeListener(hyperlinkChangeListener);
 		}
+		if (spellCheckingListener != null) {
+			EditorsUI.getPreferenceStore()
+					.removePropertyChangeListener(spellCheckingListener);
+		}
 		preferenceKeysForEnablement = null;
 		preferenceKeysForActivation = null;
 	}
