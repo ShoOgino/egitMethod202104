@@ -1,5 +1,7 @@
-	private @NonNull SWTWalk createNewWalk(Repository db, AnyObjectId headId) {
+	private @NonNull SWTWalk createNewWalk(Repository db, AnyObjectId headId,
+			AnyObjectId fetchHeadId) {
 		currentHeadId = headId;
+		currentFetchHeadId = fetchHeadId;
 		SWTWalk walk = new SWTWalk(db);
 		try {
 			if (store

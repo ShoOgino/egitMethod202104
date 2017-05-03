@@ -16,16 +16,18 @@
 			if (headId == null) {
 				graph.getTableView().setInput(new SWTCommit[0]);
 				currentHeadId = null;
+				currentFetchHeadId = null;
 				return;
 			}
+			AnyObjectId fetchHeadId = resolveFetchHead(db);
 
 			List<FilterPath> paths = buildFilterPaths(input.getItems(), input
 					.getFileList(), db);
 
-			if (forceNewWalk || shouldRedraw(db, headId, paths)) {
+			if (forceNewWalk || shouldRedraw(db, headId, fetchHeadId, paths)) {
 				releaseGenerateHistoryJob();
 
-				SWTWalk walk = createNewWalk(db, headId);
+				SWTWalk walk = createNewWalk(db, headId, fetchHeadId);
 				setWalkStartPoints(walk, db, headId);
 
 				setupFileViewer(walk, db, paths);
