@@ -1,5 +1,9 @@
 	@Override
 	public void dispose() {
-		// Do nothing
+		if (currentInput != null && loader != null) {
+			loader.cancel(currentInput);
+		}
+		currentInput = null;
+		loader = null;
 	}
 

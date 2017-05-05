@@ -1,5 +1,8 @@
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		return null;
+		if (parentElement instanceof ReflogInput && loader != null) {
+			return loader.getChildren(parentElement);
+		}
+		return new Object[0];
 	}
 
