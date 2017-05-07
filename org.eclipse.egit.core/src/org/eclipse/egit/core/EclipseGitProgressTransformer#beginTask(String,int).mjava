@@ -2,6 +2,8 @@
 	public void beginTask(final String name, final int total) {
 		msg = name;
 		lastWorked = 0;
+		lastShown = 0;
+		lastUpdatedAt = 0;
 		totalWork = total <= 0 ? UNKNOWN : total;
 		root.subTask(msg);
 	}
