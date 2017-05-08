@@ -1,0 +1,11 @@
+	/**
+	 * Enable workaround for HiDPI line number rulers on macOS retina. This
+	 * method will override an internal method in Oxygen (4.7).
+	 *
+	 * @return true
+	 * @see <a href="https://bugs.eclipse.org/516322">Bug 516322</a>
+	 */
+	protected boolean internalSupportsZoomedPaint() {
+		return true;
+	}
+

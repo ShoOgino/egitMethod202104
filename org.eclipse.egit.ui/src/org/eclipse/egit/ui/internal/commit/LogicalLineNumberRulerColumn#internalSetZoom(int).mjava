@@ -1,0 +1,12 @@
+	/**
+	 * Store zoom level for workaround for HiDPI line number rulers on macOS
+	 * retina. This method will override an internal method in Oxygen (4.7).
+	 *
+	 * @param zoomLevel
+	 *            the zoom level to use for drawing operations
+	 * @see <a href="https://bugs.eclipse.org/516322">Bug 516322</a>
+	 */
+	protected void internalSetZoom(int zoomLevel) {
+		this.zoom = zoomLevel;
+	}
+
