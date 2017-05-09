@@ -20,7 +20,11 @@
 		if (repoCache == null) {
 			return null;
 		}
-		if (GitSyncCache.loadDataFromGit(gsd, null, repoCache)) {
+		if (!isLoaded) {
+			isLoaded = true;
+			isValid = GitSyncCache.loadDataFromGit(gsd, null, repoCache);
+		}
+		if (isValid) {
 			try {
 				return getSyncInfo(local, base, remote, gsd.getRepository());
 			} catch (TeamException e) {
