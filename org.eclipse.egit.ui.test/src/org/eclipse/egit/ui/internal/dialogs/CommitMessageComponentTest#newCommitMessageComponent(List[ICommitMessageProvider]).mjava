@@ -1,0 +1,13 @@
+	private CommitMessageComponent newCommitMessageComponent(
+			List<ICommitMessageProvider> providers) {
+		// Create anonymous subclass, as mocking does not currently work.
+		// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=349164
+		return new CommitMessageComponent(null) {
+
+			@Override
+			List<ICommitMessageProvider> getCommitMessageProviders() {
+				return providers;
+			}
+		};
+	}
+

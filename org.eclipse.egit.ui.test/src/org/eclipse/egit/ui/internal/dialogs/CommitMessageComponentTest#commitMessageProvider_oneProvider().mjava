@@ -1,0 +1,13 @@
+	@Test
+	public void commitMessageProvider_oneProvider() throws Exception {
+		String message = "example single-line commit message";
+
+		CommitMessageComponent commitMessageComponent = newCommitMessageComponent(
+				createProviderList(message));
+
+		String calculatedCommitMessage = commitMessageComponent
+				.calculateCommitMessage(Collections.emptyList());
+
+		assertEquals(message, calculatedCommitMessage);
+	}
+

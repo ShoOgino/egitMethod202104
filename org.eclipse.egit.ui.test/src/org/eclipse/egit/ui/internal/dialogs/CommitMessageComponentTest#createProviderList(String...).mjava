@@ -1,0 +1,17 @@
+	private List<ICommitMessageProvider> createProviderList(
+			String... messages) {
+		List<ICommitMessageProvider> providerList = new ArrayList<>();
+
+		for (String message : messages) {
+			providerList.add(new ICommitMessageProvider() {
+
+				@Override
+				public String getMessage(IResource[] resources) {
+					return message;
+				}
+			});
+		}
+
+		return providerList;
+	}
+

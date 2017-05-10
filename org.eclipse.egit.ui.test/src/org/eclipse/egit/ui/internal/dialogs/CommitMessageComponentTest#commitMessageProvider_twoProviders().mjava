@@ -1,0 +1,14 @@
+	@Test
+	public void commitMessageProvider_twoProviders() throws Exception {
+		String message1 = "example single-line commit message";
+		String message2 = "example multi-line\n\ncommit message";
+
+		CommitMessageComponent commitMessageComponent = newCommitMessageComponent(
+				createProviderList(message1, message2));
+
+		String calculatedCommitMessage = commitMessageComponent
+				.calculateCommitMessage(Collections.emptyList());
+
+		assertEquals(message1 + "\n\n" + message2, calculatedCommitMessage);
+	}
+
