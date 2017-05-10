@@ -19,6 +19,7 @@
 		FilteredTree tree = new FilteredTree(composite, selectionModel | SWT.BORDER,
 				new PatternFilter(), true);
 		branchTree = tree.getViewer();
+		branchTree.setUseHashlookup(true);
 		branchTree
 				.setLabelProvider(new RepositoriesViewStyledCellLabelProvider());
 		branchTree.setContentProvider(new RepositoriesViewContentProvider());

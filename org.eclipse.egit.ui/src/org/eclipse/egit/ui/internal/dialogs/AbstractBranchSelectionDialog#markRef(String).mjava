@@ -17,12 +17,12 @@
 				Ref ref = repo.exactRef(refName);
 				if (ref == null)
 					return false;
-				node = new RefNode(localBranches, repo, ref);
+				node = createRefNode(localBranches, repo, ref);
 			} else if (refName.startsWith(Constants.R_REMOTES)) {
 				Ref ref = repo.exactRef(refName);
 				if (ref == null)
 					return false;
-				node = new RefNode(remoteBranches, repo, ref);
+				node = createRefNode(remoteBranches, repo, ref);
 			} else if (Constants.HEAD.equals(refName)) {
 				Ref ref = repo.exactRef(refName);
 				if (ref == null)
@@ -36,7 +36,7 @@
 					Ref ref = repo.exactRef(mappedRef);
 					if (ref == null)
 						return false;
-					node = new RefNode(remoteBranches, repo, ref);
+					node = createRefNode(remoteBranches, repo, ref);
 				} else if (mappedRef != null
 						&& mappedRef.startsWith(Constants.R_TAGS)) {
 					Ref ref = repo.exactRef(mappedRef);
@@ -49,7 +49,6 @@
 		} catch (IOException e) {
 			return false;
 		}
-
 		branchTree.setSelection(new StructuredSelection(node), true);
 		return true;
 	}
