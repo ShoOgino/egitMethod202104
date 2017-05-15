@@ -19,7 +19,13 @@
 		} else {
 			question = MessageFormat.format(question, ""); //$NON-NLS-1$
 		}
-		return MessageDialog.openQuestion(shell,
-				UIText.ResetTargetSelectionDialog_ResetQuestion, question);
+
+		MessageDialog messageDialog = new MessageDialog(shell,
+				UIText.ResetTargetSelectionDialog_ResetQuestion, null, question,
+				MessageDialog.QUESTION, 0,
+				UIText.CommandConfirmationHardResetDialog_resetButtonLabel,
+				IDialogConstants.CANCEL_LABEL);
+
+		return messageDialog.open() == Window.OK;
 	}
 
