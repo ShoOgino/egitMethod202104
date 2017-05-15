@@ -1,7 +1,9 @@
-	private void executeReplace(SWTBotShell dialog) {
+	private void executeReplace(SWTBotShell dialog, String buttonLabel) {
 		JobJoiner jobJoiner = JobJoiner.startListening(
 				JobFamilies.DISCARD_CHANGES, 30, TimeUnit.SECONDS);
-		dialog.bot().button(IDialogConstants.OK_LABEL).click();
+		dialog.bot()
+				.button(buttonLabel)
+				.click();
 		jobJoiner.join();
 	}
 
