@@ -1,0 +1,22 @@
+	@Test
+	public void commitMessageProvider_twoProvidersSecondWithUndefinedCaretPosition() {
+		String singleLineMessage = "Descr.: ";
+		String multiLineMessage = "Description: \n\nExample\nmulti-line\n\ncommit message";
+		int caretPositionInMultiLineMessage = CommitMessageWithCaretPosition.NO_POSITION;
+
+		ICommitMessageProvider2 secondProviderWithUndefinedCaretPositioning = createProviderWithCaretPositioning(
+				multiLineMessage, caretPositionInMultiLineMessage);
+
+		List<ICommitMessageProvider> providers = createProviderList(
+				singleLineMessage);
+		providers.add(secondProviderWithUndefinedCaretPositioning);
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				providers);
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals(CommitMessageComponentState.CARET_DEFAULT_POSITION,
+				commitMessageWithPosition.getDesiredCaretPosition());
+	}
+

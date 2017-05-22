@@ -5,7 +5,13 @@
 		if (amending)
 			getHeadCommitInfo();
 
-		String calculatedCommitMessage = calculateCommitMessage(filesToCommit);
+		CommitMessageWithCaretPosition commitMessageWithCaretPosition = new CommitMessageBuilder(
+				repository, filesToCommit).build();
+
+		String calculatedCommitMessage = calculateCommitMessage(
+				commitMessageWithCaretPosition);
+		int calculatedCaretPosition = calculateCaretPosition(
+				commitMessageWithCaretPosition);
 		boolean calculatedMessageHasChangeId = findOffsetOfChangeIdLine(calculatedCommitMessage) > 0;
 		commitText.setText(calculatedCommitMessage);
 		authorText.setText(getSafeString(author));
@@ -23,5 +29,8 @@
 		}
 		updateSignedOffButton();
 		updateChangeIdButton();
+
+		commitText.getTextWidget()
+				.setCaretOffset(calculatedCaretPosition);
 	}
 

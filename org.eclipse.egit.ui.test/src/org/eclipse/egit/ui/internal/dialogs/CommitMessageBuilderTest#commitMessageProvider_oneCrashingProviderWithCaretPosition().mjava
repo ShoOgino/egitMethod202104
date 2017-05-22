@@ -1,0 +1,15 @@
+	@Test
+	public void commitMessageProvider_oneCrashingProviderWithCaretPosition() {
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				Arrays.asList(
+						new CrashingCommitMessageProviderWithCaretPositioning()));
+
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals("", commitMessageWithPosition.getMessage());
+		assertEquals(CommitMessageComponentState.CARET_DEFAULT_POSITION,
+				commitMessageWithPosition.getDesiredCaretPosition());
+	}
+

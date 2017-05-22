@@ -1,0 +1,13 @@
+	private int calculateCaretPosition(
+			CommitMessageWithCaretPosition messageWithCaretPosition) {
+		if (commitMessage != null) {
+			// special case for merge / cherry-pick
+			return caretPosition;
+		}
+
+		if (amending)
+			return previousCaretPosition;
+
+		return messageWithCaretPosition.getDesiredCaretPosition();
+	}
+

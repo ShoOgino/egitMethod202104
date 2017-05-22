@@ -5,12 +5,12 @@
 		List<ICommitMessageProvider> providers = createProviderList(message);
 		providers.add(0, new CrashingCommitMessageProvider());
 
-		CommitMessageComponent commitMessageComponent = newCommitMessageComponent(
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
 				providers);
 
-		String calculatedCommitMessage = commitMessageComponent
-				.calculateCommitMessage(Collections.emptyList());
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
 
-		assertEquals(message, calculatedCommitMessage);
+		assertEquals(message, commitMessageWithPosition.getMessage());
 	}
 

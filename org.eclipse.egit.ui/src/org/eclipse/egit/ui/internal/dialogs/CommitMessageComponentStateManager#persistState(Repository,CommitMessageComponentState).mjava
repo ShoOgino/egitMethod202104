@@ -7,7 +7,9 @@
 		IDialogSettings dialogSettings = getDialogSettings();
 		String[] values = new String[] { Boolean.toString(state.getAmend()),
 				state.getAuthor(), state.getCommitMessage(),
-				state.getCommitter(), state.getHeadCommit().getName().toString() };
+				state.getCommitter(),
+				state.getHeadCommit().getName().toString(),
+				String.valueOf(state.getCaretPosition()) };
 		dialogSettings.put(repository.getDirectory().getAbsolutePath(), values);
 	}
 

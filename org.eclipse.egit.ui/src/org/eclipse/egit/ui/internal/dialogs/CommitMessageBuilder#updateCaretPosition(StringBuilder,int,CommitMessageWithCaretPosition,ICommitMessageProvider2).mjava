@@ -1,0 +1,45 @@
+	@SuppressWarnings("boxing")
+	private int updateCaretPosition(StringBuilder currentMessage,
+			int currentCaretPosition,
+			CommitMessageWithCaretPosition messageWithPosition,
+			ICommitMessageProvider2 provider) {
+		int pos = currentCaretPosition;
+		if (currentCaretPosition == CommitMessageWithCaretPosition.NO_POSITION) {
+			String providedMessage = messageWithPosition.getMessage();
+			if (providedMessage == null || providedMessage.trim().isEmpty()) {
+				return pos;
+			}
+			int providedCaretPosition = messageWithPosition
+					.getDesiredCaretPosition();
+			if (providedCaretPosition == CommitMessageWithCaretPosition.NO_POSITION) {
+				return pos;
+			}
+			if (providedCaretPosition > providedMessage.length()
+					|| providedCaretPosition < 0) {
+				Activator.logWarning(
+						MessageFormat.format(
+								UIText.CommitDialog_CaretPositionOutOfBounds,
+								provider.getClass().getName(),
+								providedCaretPosition),
+						null);
+				return CommitMessageWithCaretPosition.NO_POSITION;
+
+			} else {
+				pos = currentMessage.length();
+				if (currentMessage.length() > 0) {
+					pos += MESSAGE_SEPARATOR.length();
+				}
+				pos += providedCaretPosition;
+			}
+		} else {
+			Activator
+					.logWarning(
+							MessageFormat.format(
+									UIText.CommitDialog_IgnoreCaretPosition,
+									provider.getClass().getName()),
+							null);
+		}
+
+		return pos;
+	}
+

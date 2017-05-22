@@ -1,0 +1,12 @@
+	@Test
+	public void commitMessageProvider_oneCrashingProvider() throws Exception {
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				Arrays.asList(new CrashingCommitMessageProvider()));
+
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals("", commitMessageWithPosition.getMessage());
+	}
+

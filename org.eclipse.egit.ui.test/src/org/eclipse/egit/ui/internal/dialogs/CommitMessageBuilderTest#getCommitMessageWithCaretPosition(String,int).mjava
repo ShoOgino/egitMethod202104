@@ -1,0 +1,14 @@
+	private CommitMessageWithCaretPosition getCommitMessageWithCaretPosition(
+			String message, int caretPosition) {
+		ICommitMessageProvider2 providerWithCaretPositioning = createProviderWithCaretPositioning(
+				message, caretPosition);
+
+		List<ICommitMessageProvider> providers = new ArrayList<>();
+		providers.add(providerWithCaretPositioning);
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				providers);
+		return commitMessageBuilder
+				.build();
+	}
+

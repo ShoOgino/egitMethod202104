@@ -1,0 +1,39 @@
+	/**
+	 * Returns an object, containing the commit message and the caret position
+	 * within that message.
+	 *
+	 * @return a commit message with caret position. The caret position is 0, if
+	 *         there was no {@link ICommitMessageProvider2} providing a caret
+	 *         position.
+	 */
+	CommitMessageWithCaretPosition build() {
+		StringBuilder finalMessage = new StringBuilder();
+		int caretPosition = CommitMessageWithCaretPosition.NO_POSITION;
+		isMessageEmpty = true;
+
+		for (ICommitMessageProvider provider : getCommitMessageProviders()) {
+			String message = ""; //$NON-NLS-1$
+			try {
+				if (provider instanceof ICommitMessageProvider2) {
+					CommitMessageWithCaretPosition commitMessageWithPosition = ((ICommitMessageProvider2) provider)
+							.getCommitMessageWithPosition(resourcesArray);
+					if (commitMessageWithPosition != null) {
+						caretPosition = updateCaretPosition(finalMessage,
+								caretPosition, commitMessageWithPosition,
+								(ICommitMessageProvider2) provider);
+					}
+					message = getCommitMessage(commitMessageWithPosition);
+				} else {
+					message = append(
+							provider.getMessage(resourcesArray));
+				}
+			} catch (RuntimeException e) {
+				Activator.logError(e.getMessage(), e);
+			}
+			finalMessage.append(message);
+			isMessageEmpty = finalMessage.length() == 0;
+		}
+		return new CommitMessageWithCaretPosition(finalMessage.toString(),
+				Math.max(0, caretPosition));
+	}
+

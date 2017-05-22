@@ -1,0 +1,20 @@
+	private IResource[] toResourceArray(Collection<String> paths) {
+		Set<IResource> resources = new HashSet<>();
+		for (String path : paths) {
+			IFile file = null;
+			if (path != null) {
+				file = ResourceUtil.getFileForLocation(repository, path,
+						false);
+			}
+			if (file != null) {
+				resources.add(file.getProject());
+			}
+		}
+		if (resources.size() == 0) {
+			resources
+					.addAll(Arrays
+							.asList(ProjectUtil.getProjects(repository)));
+		}
+		return resources.toArray(new IResource[0]);
+	}
+

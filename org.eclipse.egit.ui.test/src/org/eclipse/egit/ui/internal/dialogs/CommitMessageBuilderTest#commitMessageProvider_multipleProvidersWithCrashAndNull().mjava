@@ -1,0 +1,20 @@
+	@Test
+	public void commitMessageProvider_multipleProvidersWithCrashAndNull()
+			throws Exception {
+		String message1 = "\nexample commit message";
+		String multiLineMessage = "example\nmulti-line\n\ncommit message\n\n\n";
+		List<ICommitMessageProvider> providers = createProviderList(
+				multiLineMessage, null, message1);
+		providers.add(0, new CrashingCommitMessageProvider());
+		providers.add(3, new CrashingCommitMessageProvider());
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				providers);
+
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals(multiLineMessage + "\n\n" + message1,
+				commitMessageWithPosition.getMessage());
+	}
+

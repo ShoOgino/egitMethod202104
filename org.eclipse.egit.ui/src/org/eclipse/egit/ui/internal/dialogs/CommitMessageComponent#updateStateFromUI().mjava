@@ -3,6 +3,7 @@
 	 */
 	public void updateStateFromUI() {
 		commitMessage = commitText.getText();
+		caretPosition = commitText.getTextWidget().getCaretOffset();
 		author = authorText.getText().trim();
 		committer = committerText.getText().trim();
 	}

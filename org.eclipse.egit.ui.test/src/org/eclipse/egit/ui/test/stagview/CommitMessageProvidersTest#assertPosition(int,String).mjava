@@ -1,0 +1,6 @@
+	private void assertPosition(int actualPosition, String message) {
+		// Convention: expected position in message is marked by "><"
+		int expectedPosition = message.indexOf("><") + 1;
+		assertEquals("Position mismatch", expectedPosition, actualPosition);
+	}
+

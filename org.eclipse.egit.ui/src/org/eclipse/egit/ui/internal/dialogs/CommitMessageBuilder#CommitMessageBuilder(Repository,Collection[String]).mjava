@@ -1,0 +1,15 @@
+	/**
+	 * Creates a CommitMessageBuilder for the specified repository and the
+	 * files, that are about to be committed.
+	 *
+	 * @param repository
+	 *            the repository, messages are built for
+	 * @param paths
+	 *            list of file paths, selected for the next commit
+	 */
+	CommitMessageBuilder(@NonNull Repository repository,
+			Collection<String> paths) {
+		this.repository = repository;
+		this.resourcesArray = toResourceArray(paths);
+	}
+

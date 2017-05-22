@@ -1,0 +1,9 @@
+	@Test
+	public void commitMessageProvider_oneProviderWithInvalidCaretPositionExceedingMessageLength() {
+		String message = "Description: ";
+		CommitMessageWithCaretPosition commitMessageWithPosition = getCommitMessageWithCaretPosition(
+				message, message.length() + 1);
+
+		assertEquals(0, commitMessageWithPosition.getDesiredCaretPosition());
+	}
+

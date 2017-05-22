@@ -1,0 +1,18 @@
+	private ICommitMessageProvider2 createProviderWithCaretPositioning(
+			String message, int caretPosition) {
+		return new ICommitMessageProvider2() {
+
+			@Override
+			public String getMessage(IResource[] resources) {
+				return message;
+			}
+
+			@Override
+			public CommitMessageWithCaretPosition getCommitMessageWithPosition(
+					IResource[] resources) {
+				return new CommitMessageWithCaretPosition(message,
+						caretPosition);
+			}
+		};
+	}
+

@@ -1,0 +1,11 @@
+	@Test
+	public void commitMessageProvider_oneProviderWithCaretPositionEqualsMessageLength() {
+		String message = "Description: ";
+		int caretPosition = message.length();
+		CommitMessageWithCaretPosition commitMessageWithPosition = getCommitMessageWithCaretPosition(
+				message, caretPosition);
+
+		assertEquals(caretPosition,
+				commitMessageWithPosition.getDesiredCaretPosition());
+	}
+

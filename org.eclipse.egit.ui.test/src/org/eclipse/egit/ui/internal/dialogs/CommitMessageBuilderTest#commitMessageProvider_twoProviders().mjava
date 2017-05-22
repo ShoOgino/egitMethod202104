@@ -1,0 +1,15 @@
+	@Test
+	public void commitMessageProvider_twoProviders() throws Exception {
+		String message1 = "example single-line commit message";
+		String message2 = "example multi-line\n\ncommit message";
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				createProviderList(message1, message2));
+
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals(message1 + "\n\n" + message2,
+				commitMessageWithPosition.getMessage());
+	}
+

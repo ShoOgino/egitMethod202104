@@ -1,0 +1,11 @@
+		@Override
+		public Object create() throws CoreException {
+			if (!providers.isEmpty()) {
+				ICommitMessageProvider p = providers.poll();
+				if (p != null) {
+					return p;
+				}
+			}
+			return emptyProvider;
+		}
+

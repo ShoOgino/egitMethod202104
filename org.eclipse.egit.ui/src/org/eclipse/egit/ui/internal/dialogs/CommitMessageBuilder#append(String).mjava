@@ -1,0 +1,11 @@
+	private String append(String msg) {
+		StringBuilder returnMsg = new StringBuilder();
+		if (msg != null && !msg.trim().isEmpty()) {
+			if (!isMessageEmpty) {
+				returnMsg.append(MESSAGE_SEPARATOR);
+			}
+			returnMsg.append(msg);
+		}
+		return returnMsg.toString();
+	}
+

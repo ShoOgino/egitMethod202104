@@ -1,0 +1,11 @@
+	@Test
+	public void commitMessageProvider_noProvider() throws Exception {
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				createProviderList());
+
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals("", commitMessageWithPosition.getMessage());
+	}
+

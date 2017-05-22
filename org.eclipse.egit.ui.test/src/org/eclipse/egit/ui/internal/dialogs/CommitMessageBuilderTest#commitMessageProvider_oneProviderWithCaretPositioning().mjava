@@ -1,0 +1,11 @@
+	@Test
+	public void commitMessageProvider_oneProviderWithCaretPositioning() {
+		String message = "Description: \n\nExample\nmulti-line\n\ncommit message";
+		int caretPosition = 13;
+		CommitMessageWithCaretPosition commitMessageWithPosition = getCommitMessageWithCaretPosition(
+				message, caretPosition);
+
+		assertEquals(caretPosition,
+				commitMessageWithPosition.getDesiredCaretPosition());
+	}
+

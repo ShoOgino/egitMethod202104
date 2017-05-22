@@ -7,12 +7,18 @@
 			originalChangeId = null;
 			authorText.setText(author);
 			commitText.setText(commitMessageBeforeAmending);
+			commitText.getTextWidget()
+					.setCaretOffset(carePositionBeforeAmending);
 			commitMessageBeforeAmending = EMPTY_STRING;
+			carePositionBeforeAmending = CommitMessageComponentState.CARET_DEFAULT_POSITION;
 		} else {
 			getHeadCommitInfo();
 			saveOriginalChangeId();
 			commitMessageBeforeAmending = commitText.getText();
+			carePositionBeforeAmending = commitText.getTextWidget()
+					.getCaretOffset();
 			commitText.setText(previousCommitMessage);
+			commitText.getTextWidget().setCaretOffset(previousCaretPosition);
 			if (previousAuthor != null)
 				authorText.setText(previousAuthor);
 		}

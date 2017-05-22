@@ -1,0 +1,9 @@
+	private String getCommitMessage(
+			CommitMessageWithCaretPosition messageWithPosition) {
+		if (messageWithPosition == null) {
+			return ""; //$NON-NLS-1$
+		} else {
+			return append(messageWithPosition.getMessage());
+		}
+	}
+

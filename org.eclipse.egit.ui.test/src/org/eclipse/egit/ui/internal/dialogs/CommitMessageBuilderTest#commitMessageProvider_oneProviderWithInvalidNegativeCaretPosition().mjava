@@ -1,0 +1,10 @@
+	@Test
+	public void commitMessageProvider_oneProviderWithInvalidNegativeCaretPosition() {
+		String message = "Description: ";
+		CommitMessageWithCaretPosition commitMessageWithPosition = getCommitMessageWithCaretPosition(
+				message, -42);
+
+		assertEquals(0,
+				commitMessageWithPosition.getDesiredCaretPosition());
+	}
+

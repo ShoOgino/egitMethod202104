@@ -1,0 +1,25 @@
+	@Test
+	public void commitMessageProvider_multipleProvidersWithCrashingAndNullAndOneCaretPositioning() {
+		String multiLineMessage = "Description: \n\nExample\nmulti-line\n\ncommit message";
+		int caretPositionInMultiLineMessage = 13;
+		String singleLineMessage = "example single-line commit message";
+
+		ICommitMessageProvider2 providerWithCaretPositioning = createProviderWithCaretPositioning(
+				multiLineMessage, caretPositionInMultiLineMessage);
+
+		List<ICommitMessageProvider> providers = createProviderList(null,
+				singleLineMessage);
+		providers.add(0, new CrashingCommitMessageProvider());
+		providers.add(0, providerWithCaretPositioning);
+		providers.add(3, new CrashingCommitMessageProvider());
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				providers);
+
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals(multiLineMessage + "\n\n" + singleLineMessage,
+				commitMessageWithPosition.getMessage());
+	}
+

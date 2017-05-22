@@ -1,0 +1,17 @@
+	/**
+	 * @param messageWithCaretPosition
+	 * @return the calculated commit message
+	 */
+	String calculateCommitMessage(
+			CommitMessageWithCaretPosition messageWithCaretPosition) {
+		if (commitMessage != null) {
+			// special case for merge / cherry-pick
+			return commitMessage;
+		}
+
+		if (amending)
+			return previousCommitMessage;
+
+		return messageWithCaretPosition.getMessage();
+	}
+

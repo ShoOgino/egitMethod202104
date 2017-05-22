@@ -1,0 +1,13 @@
+	@Test
+	public void commitMessageProvider_oneProvider() throws Exception {
+		String message = "example single-line commit message";
+
+		CommitMessageBuilder commitMessageBuilder = newCommitMessageBuilder(
+				createProviderList(message));
+
+		CommitMessageWithCaretPosition commitMessageWithPosition = commitMessageBuilder
+				.build();
+
+		assertEquals(message, commitMessageWithPosition.getMessage());
+	}
+
