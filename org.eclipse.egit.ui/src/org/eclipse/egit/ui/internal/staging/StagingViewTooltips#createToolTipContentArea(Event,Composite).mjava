@@ -1,0 +1,28 @@
+	@Override
+	protected Composite createToolTipContentArea(Event event,
+			Composite parent) {
+		ToolBar bar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL);
+		for (IAction action : actions) {
+			ToolItem item = new ToolItem(bar, SWT.PUSH);
+			item.setImage(UIIcons.getImage(
+					Activator.getDefault().getResourceManager(),
+					action.getImageDescriptor()));
+			String tooltip = action.getToolTipText();
+			if (tooltip == null || tooltip.isEmpty()) {
+				tooltip = action.getText();
+			}
+			item.setToolTipText(tooltip);
+			item.setEnabled(true);
+			item.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					hide();
+					if (action.isEnabled()) { // Double-check...
+						action.run();
+					}
+				}
+			});
+		}
+		return bar;
+	}
+

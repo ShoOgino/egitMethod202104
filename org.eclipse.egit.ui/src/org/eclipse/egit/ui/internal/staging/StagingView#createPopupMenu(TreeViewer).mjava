@@ -85,14 +85,18 @@
 						.contains(StagingEntry.Action.REPLACE_WITH_OURS_THEIRS_MENU);
 
 				if (addStage)
-					menuMgr.add(new Action(UIText.StagingView_StageItemMenuLabel) {
+					menuMgr.add(
+							new Action(UIText.StagingView_StageItemMenuLabel,
+									UIIcons.ELCL16_ADD) {
 						@Override
 						public void run() {
 							stage(selection);
 						}
 					});
 				if (addUnstage)
-					menuMgr.add(new Action(UIText.StagingView_UnstageItemMenuLabel) {
+					menuMgr.add(
+							new Action(UIText.StagingView_UnstageItemMenuLabel,
+									UIIcons.UNSTAGE) {
 						@Override
 						public void run() {
 							unstage(selection);

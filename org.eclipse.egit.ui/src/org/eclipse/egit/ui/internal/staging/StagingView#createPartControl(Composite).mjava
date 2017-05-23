@@ -63,6 +63,26 @@
 		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(stagingSashForm);
 
+		unstageAction = new Action(UIText.StagingView_UnstageItemMenuLabel,
+				UIIcons.UNSTAGE) {
+			@Override
+			public void run() {
+				unstage((IStructuredSelection) stagedViewer.getSelection());
+			}
+		};
+		unstageAction.setToolTipText(UIText.StagingView_UnstageItemTooltip);
+		stageAction = new Action(UIText.StagingView_StageItemMenuLabel,
+				UIIcons.ELCL16_ADD) {
+			@Override
+			public void run() {
+				stage((IStructuredSelection) unstagedViewer.getSelection());
+			}
+		};
+		stageAction.setToolTipText(UIText.StagingView_StageItemTooltip);
+
+		unstageAction.setEnabled(false);
+		stageAction.setEnabled(false);
+
 		unstagedSection = toolkit.createSection(stagingSashForm,
 				ExpandableComposite.TITLE_BAR);
 
@@ -78,7 +98,14 @@
 				.applyTo(unstagedComposite);
 
 		unstagedViewer = createViewer(unstagedComposite, true,
-				selection -> unstage(selection));
+				selection -> unstage(selection), stageAction);
+		unstagedViewer.addSelectionChangedListener(event -> {
+			boolean hasSelection = !event.getSelection().isEmpty();
+			if (hasSelection != stageAction.isEnabled()) {
+				stageAction.setEnabled(hasSelection);
+				unstagedToolBarManager.update(true);
+			}
+		});
 		Composite rebaseAndCommitComposite = toolkit.createComposite(mainSashForm);
 		rebaseAndCommitComposite.setLayout(GridLayoutFactory.fillDefaults().create());
 
@@ -343,10 +370,17 @@
 				.applyTo(stagedComposite);
 
 		stagedViewer = createViewer(stagedComposite, false,
-				selection -> stage(selection));
+				selection -> stage(selection), unstageAction);
 		stagedViewer.getLabelProvider().addListener(event -> {
 			updateMessage();
 			updateCommitButtons();
+		});
+		stagedViewer.addSelectionChangedListener(event -> {
+			boolean hasSelection = !event.getSelection().isEmpty();
+			if (hasSelection != unstageAction.isEnabled()) {
+				unstageAction.setEnabled(hasSelection);
+				stagedToolBarManager.update(true);
+			}
 		});
 
 		selectionChangedListener = new ISelectionListener() {
@@ -379,6 +413,9 @@
 				.addPreferenceChangeListener(prefListener);
 
 		updateSectionText();
+		stagedSection.setToolTipText(UIText.StagingView_StagedChangesTooltip);
+		unstagedSection
+				.setToolTipText(UIText.StagingView_UnstagedChangesTooltip);
 		updateToolbar();
 		enableCommitWidgets(false);
 		refreshAction.setEnabled(false);

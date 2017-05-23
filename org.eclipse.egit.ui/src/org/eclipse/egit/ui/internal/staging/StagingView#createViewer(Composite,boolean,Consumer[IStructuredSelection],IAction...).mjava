@@ -1,5 +1,6 @@
 	private TreeViewer createViewer(Composite parent, boolean unstaged,
-			final Consumer<IStructuredSelection> dropAction) {
+			final Consumer<IStructuredSelection> dropAction,
+			IAction... tooltipActions) {
 		final TreeViewer viewer = createTree(parent);
 		GridDataFactory.fillDefaults().grab(true, true)
 				.applyTo(viewer.getControl());
@@ -9,6 +10,11 @@
 		StagingViewContentProvider contentProvider = createStagingContentProvider(
 				unstaged);
 		viewer.setContentProvider(contentProvider);
+		if (tooltipActions != null && tooltipActions.length > 0) {
+			StagingViewTooltips tooltips = new StagingViewTooltips(viewer,
+					tooltipActions);
+			tooltips.setShift(new Point(1, 1));
+		}
 		viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK,
 				new Transfer[] { LocalSelectionTransfer.getTransfer(),
 						FileTransfer.getInstance() },

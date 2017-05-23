@@ -1,0 +1,25 @@
+	private boolean isSelected(Event event) {
+		ViewerCell currentCell = getToolTipArea(event);
+		if (currentCell == null) {
+			return false;
+		}
+		Object item = currentCell.getElement();
+		if (!(item instanceof StagingEntry)
+				&& !(item instanceof StagingFolderEntry)) {
+			return false;
+		}
+		ISelection selection = viewer.getSelection();
+		if (selection.isEmpty()
+				|| !(selection instanceof IStructuredSelection)) {
+			return false;
+		}
+		Iterator<?> selectedObjects = ((IStructuredSelection) selection)
+				.iterator();
+		while (selectedObjects.hasNext()) {
+			if (item == selectedObjects.next()) {
+				return true;
+			}
+		}
+		return false;
+	}
+

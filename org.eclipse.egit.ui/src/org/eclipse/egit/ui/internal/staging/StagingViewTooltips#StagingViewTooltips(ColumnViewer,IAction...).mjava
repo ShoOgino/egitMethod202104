@@ -1,0 +1,26 @@
+	/**
+	 * Enables the tooltips for the given viewer. The tooltips will appear when
+	 * the mouse pointer hovers over a selected staging entry or folder and will
+	 * display a {@link ToolBar} with the given actions.
+	 *
+	 * @param viewer
+	 *            to show the tooltips for
+	 * @param actions
+	 *            to show in the toolbar; must be neither {@code null} nor
+	 *            empty, and all actions must have an image descriptor set and
+	 *            must <em>not</em> have style
+	 *            {@link IAction#AS_DROP_DOWN_MENU}.
+	 */
+	protected StagingViewTooltips(ColumnViewer viewer, IAction... actions) {
+		super(viewer.getControl(), ToolTip.NO_RECREATE, false);
+		Assert.isLegal(actions != null && actions.length > 0);
+		for (IAction action : actions) {
+			Assert.isNotNull(action.getImageDescriptor());
+			Assert.isLegal(
+					(action.getStyle() & IAction.AS_DROP_DOWN_MENU) == 0);
+		}
+		this.viewer = viewer;
+		this.actions = actions;
+		setHideOnMouseDown(false);
+	}
+
