@@ -8,7 +8,8 @@
 		clickReplaceWith(menuLabel);
 		SWTBotShell confirm = bot
 				.shell(UIText.DiscardChangesAction_confirmActionTitle);
-		executeReplace(confirm);
+		executeReplace(confirm,
+				UIText.DiscardChangesAction_discardChangesButtonText);
 		String replacedContent = getTestFileContent();
 		assertThat(replacedContent, not(initialContent));
 	}
