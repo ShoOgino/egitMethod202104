@@ -1,0 +1,10 @@
+	@Nullable
+	private String getPathFrom(Object obj) {
+		if (obj instanceof StagingEntry) {
+			return ((StagingEntry) obj).getPath();
+		} else if (obj instanceof StagingFolderEntry) {
+			return ((StagingFolderEntry) obj).getPath().toString();
+		}
+		return null;
+	}
+

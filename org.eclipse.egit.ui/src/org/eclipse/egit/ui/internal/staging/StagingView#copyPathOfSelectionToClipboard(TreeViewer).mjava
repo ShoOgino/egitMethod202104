@@ -1,0 +1,14 @@
+	private void copyPathOfSelectionToClipboard(final TreeViewer viewer) {
+		Clipboard cb = new Clipboard(viewer.getControl().getDisplay());
+		TextTransfer t = TextTransfer.getInstance();
+		String text = getTextFrom(
+				(IStructuredSelection) viewer.getSelection());
+		try {
+			if (text != null) {
+				cb.setContents(new Object[] { text }, new Transfer[] { t });
+			}
+		} finally {
+			cb.dispose();
+		}
+	}
+

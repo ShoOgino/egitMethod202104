@@ -1,0 +1,7 @@
+	private void addCopyAction(final TreeViewer viewer) {
+		IAction copyAction = createSelectionPathCopyAction(viewer);
+
+		ActionUtils.setGlobalActions(viewer.getControl(),
+				getSite().getService(IHandlerService.class), copyAction);
+	}
+

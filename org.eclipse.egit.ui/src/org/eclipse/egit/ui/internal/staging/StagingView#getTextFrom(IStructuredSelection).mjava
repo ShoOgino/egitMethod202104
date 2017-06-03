@@ -1,0 +1,23 @@
+	@Nullable
+	private String getTextFrom(IStructuredSelection selection) {
+		Object[] selectionEntries = selection.toArray();
+		if (selectionEntries.length <= 0) {
+			return null;
+		} else if (selectionEntries.length == 1) {
+			return getPathFrom(selectionEntries[0]);
+		} else {
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < selectionEntries.length; i++) {
+				String text = getPathFrom(selectionEntries[i]);
+				if (text != null) {
+					if (i < selectionEntries.length - 1) {
+						sb.append(text).append(System.lineSeparator());
+					} else {
+						sb.append(text);
+					}
+				}
+			}
+			return sb.toString();
+		}
+	}
+
