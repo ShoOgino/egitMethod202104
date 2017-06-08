@@ -11,7 +11,7 @@
 		cloneOperation
 				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
 						"agitter", "letmein"));
-		cloneOperation.run(null);
+		cloneOperation.run(new NullProgressMonitor());
 		file = new File(localRepoPath, SampleTestRepository.A_txt_name);
 		assertTrue(file.exists());
 		localRepository = Activator.getDefault().getRepositoryCache()
