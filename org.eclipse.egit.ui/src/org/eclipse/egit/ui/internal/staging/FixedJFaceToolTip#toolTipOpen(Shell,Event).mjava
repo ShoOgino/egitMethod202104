@@ -1,0 +1,23 @@
+	private void toolTipOpen(final Shell shell, final Event event) {
+		// Ensure that only one Tooltip is shown in time
+		if (CURRENT_TOOLTIP != null) {
+			toolTipHide(CURRENT_TOOLTIP, null);
+		}
+
+		CURRENT_TOOLTIP = shell;
+
+		control.getShell().addListener(SWT.Deactivate, shellListener);
+
+		if (popupDelay > 0) {
+			control.getDisplay().timerExec(popupDelay,
+					() -> toolTipShow(shell, event));
+		} else {
+			toolTipShow(CURRENT_TOOLTIP, event);
+		}
+
+		if (hideDelay > 0) {
+			control.getDisplay().timerExec(popupDelay + hideDelay,
+					() -> toolTipHide(shell, null));
+		}
+	}
+

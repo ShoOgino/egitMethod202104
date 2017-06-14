@@ -1,0 +1,27 @@
+	/**
+	 * Should the tooltip displayed because of the given event.
+	 * <p>
+	 * <b>Subclasses may overwrite this to get custom behavior</b>
+	 * </p>
+	 *
+	 * @param event
+	 *            the event
+	 * @return <code>true</code> if tooltip should be displayed
+	 */
+	protected boolean shouldCreateToolTip(Event event) {
+		if ((style & ToolTip.NO_RECREATE) != 0) {
+			Object tmp = getToolTipArea(event);
+
+			// No new area close the current tooltip
+			if (tmp == null) {
+				hide();
+				return false;
+			}
+
+			boolean rv = !tmp.equals(currentArea);
+			return rv;
+		}
+
+		return true;
+	}
+

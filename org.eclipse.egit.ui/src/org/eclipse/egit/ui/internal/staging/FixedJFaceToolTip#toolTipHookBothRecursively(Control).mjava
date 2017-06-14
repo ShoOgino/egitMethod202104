@@ -1,0 +1,12 @@
+	private void toolTipHookBothRecursively(Control c) {
+		c.addListener(SWT.MouseDown, hideListener);
+		c.addListener(SWT.MouseExit, hideListener);
+
+		if (c instanceof Composite) {
+			Control[] children = ((Composite) c).getChildren();
+			for (int i = 0; i < children.length; i++) {
+				toolTipHookBothRecursively(children[i]);
+			}
+		}
+	}
+

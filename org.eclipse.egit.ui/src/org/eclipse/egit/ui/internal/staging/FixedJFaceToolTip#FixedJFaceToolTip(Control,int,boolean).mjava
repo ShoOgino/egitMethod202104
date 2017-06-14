@@ -1,0 +1,38 @@
+	/**
+	 * @param control
+	 *            the control to which the tooltip is bound
+	 * @param style
+	 *            style passed to control tooltip behavior
+	 *
+	 * @param manualActivation
+	 *            <code>true</code> if the activation is done manually using
+	 *            {@link #show(Point)}
+	 * @see ToolTip#RECREATE
+	 * @see ToolTip#NO_RECREATE
+	 */
+	public FixedJFaceToolTip(Control control, int style,
+			boolean manualActivation) {
+		this.control = control;
+		this.style = style;
+		this.listener = new ToolTipOwnerControlListener();
+		this.shellListener = event -> {
+			if (FixedJFaceToolTip.this.control != null
+					&& !FixedJFaceToolTip.this.control.isDisposed()) {
+				FixedJFaceToolTip.this.control.getDisplay().asyncExec(() -> {
+					// Check if the new active shell is the tooltip
+					// itself
+					if (FixedJFaceToolTip.this.control != null
+							&& !FixedJFaceToolTip.this.control.isDisposed()
+							&& FixedJFaceToolTip.this.control.getDisplay()
+									.getActiveShell() != CURRENT_TOOLTIP) {
+						toolTipHide(CURRENT_TOOLTIP, event);
+					}
+				});
+			}
+		};
+
+		if (!manualActivation) {
+			activate();
+		}
+	}
+

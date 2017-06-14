@@ -1,0 +1,12 @@
+	/**
+	 * Deactivate tooltip support for the underlying control
+	 */
+	public void deactivate() {
+		control.removeListener(SWT.Dispose, listener);
+		control.removeListener(SWT.MouseHover, listener);
+		control.removeListener(SWT.MouseMove, listener);
+		control.removeListener(SWT.MouseExit, listener);
+		control.removeListener(SWT.MouseDown, listener);
+		control.removeListener(SWT.MouseWheel, listener);
+	}
+

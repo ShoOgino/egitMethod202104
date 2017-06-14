@@ -1,0 +1,20 @@
+	/**
+	 * This method is called to check for which area the tooltip is
+	 * created/hidden for. In case of {@link ToolTip#NO_RECREATE} this is used
+	 * to decide if the tooltip is hidden recreated.
+	 *
+	 * <code>By the default it is the widget the tooltip is created for but could be any object. To decide if
+	 * the area changed the {@link Object#equals(Object)} method is used.</code>
+	 *
+	 * @param event
+	 *            the event
+	 * @return the area responsible for the tooltip creation or
+	 *         <code>null</code> this could be any object describing the area
+	 *         (e.g. the {@link Control} onto which the tooltip is bound to, a
+	 *         part of this area e.g. for {@link ColumnViewer} this could be a
+	 *         {@link ViewerCell})
+	 */
+	protected Object getToolTipArea(Event event) {
+		return control;
+	}
+

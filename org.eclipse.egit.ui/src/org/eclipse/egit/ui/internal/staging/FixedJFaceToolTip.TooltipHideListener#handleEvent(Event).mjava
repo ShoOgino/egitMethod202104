@@ -1,0 +1,30 @@
+		@Override
+		public void handleEvent(Event event) {
+			if (event.widget instanceof Control) {
+
+				Control c = (Control) event.widget;
+				Shell shell = c.getShell();
+
+				switch (event.type) {
+				case SWT.MouseDown:
+					if (isHideOnMouseDown()) {
+						toolTipHide(shell, event);
+					}
+					break;
+				case SWT.MouseExit:
+					Rectangle rect = shell.getBounds();
+					// rect.x += 5;
+					// rect.y += 5;
+					// rect.width -= 10;
+					// rect.height -= 10;
+
+					if (!rect.contains(c.getDisplay().getCursorLocation())) {
+						toolTipHide(shell, event);
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+

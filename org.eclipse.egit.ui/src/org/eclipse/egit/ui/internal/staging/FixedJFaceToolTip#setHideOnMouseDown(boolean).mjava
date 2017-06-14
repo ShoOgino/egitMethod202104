@@ -1,0 +1,28 @@
+	/**
+	 * If you don't want the tool tip to be hidden when the user clicks inside
+	 * the tool tip set this to <code>false</code>. You maybe also need to hide
+	 * the tool tip yourself depending on what you do after clicking in the
+	 * tooltip (e.g. if you open a new {@link Shell})
+	 *
+	 * @param hideOnMouseDown
+	 *            flag to indicate of tooltip is hidden automatically on mouse
+	 *            down inside the tool tip
+	 */
+	public void setHideOnMouseDown(final boolean hideOnMouseDown) {
+		// Only needed if there's currently a tooltip active
+		if (CURRENT_TOOLTIP != null && !CURRENT_TOOLTIP.isDisposed()) {
+			// Only change if value really changed
+			if (hideOnMouseDown != this.hideOnMouseDown) {
+				control.getDisplay().syncExec(() -> {
+					if (CURRENT_TOOLTIP != null
+							&& CURRENT_TOOLTIP.isDisposed()) {
+						toolTipHookByTypeRecursively(CURRENT_TOOLTIP,
+								hideOnMouseDown, SWT.MouseDown);
+					}
+				});
+			}
+		}
+
+		this.hideOnMouseDown = hideOnMouseDown;
+	}
+

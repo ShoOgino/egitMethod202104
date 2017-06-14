@@ -1,0 +1,9 @@
+	private void passOnEvent(Shell tip, Event event) {
+		if (control != null && !control.isDisposed() && event != null
+				&& event.widget != control && event.type == SWT.MouseDown) {
+			// the following was left in order to fix bug 298770 with minimal
+			// change. In 3.7, the complete method should be removed.
+			tip.close();
+		}
+	}
+

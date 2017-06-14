@@ -1,0 +1,15 @@
+	private void toolTipHide(Shell tip, Event event) {
+		if (tip != null && !tip.isDisposed() && shouldHideToolTip(event)) {
+			control.getShell().removeListener(SWT.Deactivate, shellListener);
+			currentArea = null;
+			passOnEvent(tip, event);
+			tip.dispose();
+			CURRENT_TOOLTIP = null;
+			afterHideToolTip(event);
+		}
+		if (event != null && event.type == SWT.Dispose) {
+			deactivate();
+			data = null;
+		}
+	}
+

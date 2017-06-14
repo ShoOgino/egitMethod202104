@@ -1,0 +1,25 @@
+	/**
+	 * This method is called before the tooltip is hidden
+	 *
+	 * @param event
+	 *            the event trying to hide the tooltip
+	 * @return <code>true</code> if the tooltip should be hidden
+	 */
+	private boolean shouldHideToolTip(Event event) {
+		if (event != null && event.type == SWT.MouseMove
+				&& (style & ToolTip.NO_RECREATE) != 0) {
+			Object tmp = getToolTipArea(event);
+
+			// No new area close the current tooltip
+			if (tmp == null) {
+				hide();
+				return false;
+			}
+
+			boolean rv = !tmp.equals(currentArea);
+			return rv;
+		}
+
+		return true;
+	}
+

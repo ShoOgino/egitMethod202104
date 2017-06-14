@@ -1,0 +1,13 @@
+	/**
+	 * Activate tooltip support for this control
+	 */
+	public void activate() {
+		deactivate();
+		control.addListener(SWT.Dispose, listener);
+		control.addListener(SWT.MouseHover, listener);
+		control.addListener(SWT.MouseMove, listener);
+		control.addListener(SWT.MouseExit, listener);
+		control.addListener(SWT.MouseDown, listener);
+		control.addListener(SWT.MouseWheel, listener);
+	}
+

@@ -1,0 +1,32 @@
+		@Override
+		public void handleEvent(Event event) {
+			switch (event.type) {
+			case SWT.Dispose:
+			case SWT.KeyDown:
+			case SWT.MouseDown:
+			case SWT.MouseMove:
+			case SWT.MouseWheel:
+				toolTipHide(CURRENT_TOOLTIP, event);
+				break;
+			case SWT.MouseHover:
+				toolTipCreate(event);
+				break;
+			case SWT.MouseExit:
+				/*
+				 * Check if the mouse exit happened because we move over the
+				 * tooltip
+				 */
+				if (CURRENT_TOOLTIP != null && !CURRENT_TOOLTIP.isDisposed()) {
+					if (CURRENT_TOOLTIP.getBounds()
+							.contains(control.toDisplay(event.x, event.y))) {
+						break;
+					}
+				}
+
+				toolTipHide(CURRENT_TOOLTIP, event);
+				break;
+			default:
+				break;
+			}
+		}
+

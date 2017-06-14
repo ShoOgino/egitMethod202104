@@ -1,0 +1,14 @@
+	/**
+	 * Get the display relative location where the tooltip is displayed.
+	 * Subclasses may overwrite to implement custom positioning.
+	 *
+	 * @param tipSize
+	 *            the size of the tooltip to be shown
+	 * @param event
+	 *            the event triggered showing the tooltip
+	 * @return the absolute position on the display
+	 */
+	public Point getLocation(Point tipSize, Event event) {
+		return control.toDisplay(event.x + xShift, event.y + yShift);
+	}
+

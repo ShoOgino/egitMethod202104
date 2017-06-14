@@ -1,0 +1,14 @@
+	/**
+	 * Start up the tooltip programmatically
+	 *
+	 * @param location
+	 *            the location relative to the control the tooltip is shown
+	 */
+	public void show(Point location) {
+		Event event = new Event();
+		event.x = location.x;
+		event.y = location.y;
+		event.widget = control;
+		toolTipCreate(event);
+	}
+
