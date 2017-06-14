@@ -1,7 +1,21 @@
 	private StagingViewContentProvider createStagingContentProvider(
 			boolean unstaged) {
 		StagingViewContentProvider provider = new StagingViewContentProvider(
-				this, unstaged);
+				this, unstaged) {
+
+			@Override
+			public void inputChanged(Viewer viewer, Object oldInput,
+					Object newInput) {
+				super.inputChanged(viewer, oldInput, newInput);
+				if (unstaged) {
+					stageAllAction.setEnabled(getCount() > 0);
+					unstagedToolBarManager.update(true);
+				} else {
+					unstageAllAction.setEnabled(getCount() > 0);
+					stagedToolBarManager.update(true);
+				}
+			}
+		};
 		provider.setFileNameMode(getPreferenceStore().getBoolean(
 				UIPreferences.STAGING_VIEW_FILENAME_MODE));
 		return provider;
