@@ -10,9 +10,7 @@
 		if (input == null) {
 			return null;
 		}
-		Pattern pattern = Pattern.compile(
-				"(?:https?://\\S+?/|/)?([1-9][0-9]*)(?:/([1-9][0-9]*)(?:/([1-9][0-9]*)(?:\\.\\.\\d+)?)?)?(?:/\\S*)?"); //$NON-NLS-1$
-		Matcher matcher = pattern.matcher(input);
+		Matcher matcher = GERRIT_URL_PATTERN.matcher(input);
 		if (matcher.matches()) {
 			String first = matcher.group(1);
 			String second = matcher.group(2);

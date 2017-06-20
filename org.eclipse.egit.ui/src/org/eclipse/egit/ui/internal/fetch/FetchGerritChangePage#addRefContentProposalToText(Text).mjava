@@ -25,7 +25,12 @@
 					return null;
 				}
 				List<IContentProposal> resultList = new ArrayList<>();
-				Pattern pattern = UIUtils.createProposalPattern(contents);
+				String input = contents;
+				Matcher matcher = GERRIT_CHANGE_REF_PATTERN.matcher(contents);
+				if (matcher.find()) {
+					input = matcher.group(1);
+				}
+				Pattern pattern = UIUtils.createProposalPattern(input);
 				for (final Change ref : proposals) {
 					if (pattern != null && !pattern
 							.matcher(ref.getChangeNumber().toString())
