@@ -11,7 +11,7 @@
 
 			@Override
 			public IContentProposal[] getProposals(String contents, int position) {
-				List<Change> proposals;
+				Collection<Change> proposals;
 				try {
 					proposals = getRefsForContentAssist();
 				} catch (InvocationTargetException e) {

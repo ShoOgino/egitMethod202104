@@ -1,17 +1,17 @@
-	private List<Change> getRefsForContentAssist()
+	private Collection<Change> getRefsForContentAssist()
 			throws InvocationTargetException, InterruptedException {
 		String uriText = uriCombo.getText();
 		if (!changeRefs.containsKey(uriText)) {
 			changeRefs.put(uriText, new ChangeList(repository, uriText));
 		}
 		ChangeList list = changeRefs.get(uriText);
-		if (!list.isDone()) {
+		if (!list.isFinished()) {
 			IWizardContainer container = getContainer();
 			IRunnableWithProgress operation = monitor -> {
 				monitor.beginTask(MessageFormat.format(
 						UIText.FetchGerritChangePage_FetchingRemoteRefsMessage,
 						uriText), IProgressMonitor.UNKNOWN);
-				List<Change> result = list.get();
+				Collection<Change> result = list.get();
 				if (monitor.isCanceled()) {
 					return;
 				}

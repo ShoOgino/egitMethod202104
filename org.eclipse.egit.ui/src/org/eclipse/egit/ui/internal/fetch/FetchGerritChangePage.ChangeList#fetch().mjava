@@ -52,7 +52,7 @@
 						}
 					}
 					Collections.sort(changes, Collections.reverseOrder());
-					result = changes;
+					result = new LinkedHashSet<>(changes);
 					return Status.OK_STATUS;
 				}
 
