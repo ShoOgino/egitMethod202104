@@ -1,9 +1,12 @@
 		static Change fromRef(String refName) {
 			try {
-				if (refName == null || !refName.startsWith("refs/changes/")) { //$NON-NLS-1$
+				if (refName == null
+						|| !refName.startsWith(GERRIT_CHANGE_REF_PREFIX)) {
 					return null;
 				}
-				String[] tokens = refName.substring(13).split("/"); //$NON-NLS-1$
+				String[] tokens = refName
+						.substring(GERRIT_CHANGE_REF_PREFIX.length())
+						.split("/"); //$NON-NLS-1$
 				if (tokens.length != 3) {
 					return null;
 				}

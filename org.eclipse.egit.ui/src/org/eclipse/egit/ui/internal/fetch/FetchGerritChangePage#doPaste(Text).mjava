@@ -4,8 +4,20 @@
 			String clipText = (String) clipboard
 					.getContents(TextTransfer.getInstance());
 			if (clipText != null) {
-				String toInsert = determineChangeFromString(clipText.trim());
-				if (toInsert != null) {
+				Change input = determineChangeFromString(
+						clipText.trim());
+				if (input != null) {
+					String toInsert = input.getChangeNumber().toString();
+					if (input.getPatchSetNumber() != null) {
+						if (text.getText().trim().isEmpty() || text
+								.getSelectionText().equals(text.getText())) {
+							// Paste will replace everything
+							toInsert = input.getRefName();
+						} else {
+							toInsert = toInsert + '/'
+									+ input.getPatchSetNumber();
+						}
+					}
 					clipboard.setContents(new Object[] { toInsert },
 							new Transfer[] { TextTransfer.getInstance() });
 					try {

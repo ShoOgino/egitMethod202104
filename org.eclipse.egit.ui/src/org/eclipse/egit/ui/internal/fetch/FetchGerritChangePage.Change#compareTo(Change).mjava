@@ -1,8 +1,13 @@
 		@Override
 		public int compareTo(Change o) {
-			int changeDiff = this.changeNumber.compareTo(o.changeNumber);
+			int changeDiff = this.changeNumber.compareTo(o.getChangeNumber());
 			if (changeDiff == 0) {
-				changeDiff = this.getPatchSetNumber()
+				if (patchSetNumber == null) {
+					return o.getPatchSetNumber() != null ? -1 : 0;
+				} else if (o.getPatchSetNumber() == null) {
+					return 1;
+				}
+				changeDiff = this.patchSetNumber
 						.compareTo(o.getPatchSetNumber());
 			}
 			return changeDiff;

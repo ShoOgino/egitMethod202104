@@ -1,0 +1,12 @@
+	@Test
+	public void testChangeRefs() {
+		assertEquals(Change.create(65510, 6), FetchGerritChangePage
+				.determineChangeFromString("refs/changes/10/65510/6"));
+		assertNull(FetchGerritChangePage
+				.determineChangeFromString("refs/changes/10/65510/"));
+		assertNull(FetchGerritChangePage
+				.determineChangeFromString("refs/changes/10/"));
+		assertEquals(Change.create(65510, 6), FetchGerritChangePage
+				.determineChangeFromString("refs/changes/42/65510/6"));
+	}
+

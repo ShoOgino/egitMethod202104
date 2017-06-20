@@ -13,7 +13,7 @@
 		String defaultUri = null;
 		String defaultCommand = null;
 		String defaultChange = null;
-		String candidateChange = null;
+		Change candidateChange = null;
 		if (clipText != null) {
 			Matcher matcher = GERRIT_FETCH_PATTERN.matcher(clipText);
 			if (matcher.matches()) {
@@ -238,7 +238,12 @@
 		if (defaultChange != null) {
 			refText.setText(defaultChange);
 		} else if (candidateChange != null) {
-			refText.setText(candidateChange);
+			String ref = candidateChange.getRefName();
+			if (ref != null) {
+				refText.setText(ref);
+			} else {
+				refText.setText(candidateChange.getChangeNumber().toString());
+			}
 		}
 
 		// get all available Gerrit URIs from the repository
