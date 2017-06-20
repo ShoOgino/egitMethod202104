@@ -58,10 +58,11 @@
 				return;
 			}
 
-			if (createBranchSelected)
+			if (createBranchSelected) {
 				setErrorMessage(branchValidator.isValid(branchText.getText()));
-			else if (createTagSelected)
+			} else if (createTagSelected) {
 				setErrorMessage(tagValidator.isValid(tagText.getText()));
+			}
 		} finally {
 			setPageComplete(getErrorMessage() == null);
 		}
