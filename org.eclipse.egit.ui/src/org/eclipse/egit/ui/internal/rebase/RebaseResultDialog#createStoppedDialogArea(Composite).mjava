@@ -113,75 +113,61 @@
 		startMergeButton = new Button(actionGroup, SWT.RADIO);
 		startMergeButton.setText(UIText.RebaseResultDialog_StartMergeRadioText);
 		startMergeButton.setEnabled(mergeToolAvailable);
-		startMergeButton.addSelectionListener(new SelectionListener() {
+		startMergeButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (startMergeButton.getSelection())
-					nextSteps
-							.getTextWidget()
-							.setText(
-									UIText.RebaseResultDialog_NextStepsAfterResolveConflicts);
+				if (startMergeButton.getSelection()) {
+					nextSteps.getTextWidget().setText(
+							UIText.RebaseResultDialog_NextStepsAfterResolveConflicts);
+					getButton(getDefaultButtonIndex())
+							.setText(IDialogConstants.PROCEED_LABEL);
+				}
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// nothing
-			}
-
 		});
 
 		skipCommitButton = new Button(actionGroup, SWT.RADIO);
 		skipCommitButton.setText(UIText.RebaseResultDialog_SkipCommitButton);
-		skipCommitButton.addSelectionListener(new SelectionListener() {
+		skipCommitButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (skipCommitButton.getSelection())
+				if (skipCommitButton.getSelection()) {
 					nextSteps.getTextWidget().setText(""); //$NON-NLS-1$
+					getButton(getDefaultButtonIndex())
+							.setText(IDialogConstants.PROCEED_LABEL);
+				}
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// nothing
-			}
-
 		});
 
 		abortRebaseButton = new Button(actionGroup, SWT.RADIO);
 		abortRebaseButton
 				.setText(UIText.RebaseResultDialog_AbortRebaseRadioText);
-		abortRebaseButton.addSelectionListener(new SelectionListener() {
+		abortRebaseButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (abortRebaseButton.getSelection())
+				if (abortRebaseButton.getSelection()) {
 					nextSteps.getTextWidget().setText(""); //$NON-NLS-1$
+					getButton(getDefaultButtonIndex())
+							.setText(IDialogConstants.ABORT_LABEL);
+				}
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// nothing
-			}
-
 		});
 
 		doNothingButton = new Button(actionGroup, SWT.RADIO);
 		doNothingButton.setText(UIText.RebaseResultDialog_DoNothingRadioText);
-		doNothingButton.addSelectionListener(new SelectionListener() {
+		doNothingButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (doNothingButton.getSelection())
+				if (doNothingButton.getSelection()) {
 					nextSteps.getTextWidget().setText(
 							UIText.RebaseResultDialog_NextStepsDoNothing);
+					getButton(getDefaultButtonIndex())
+							.setText(IDialogConstants.CLOSE_LABEL);
+				}
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// nothing
-			}
-
 		});
 
 		if (mergeToolAvailable)
