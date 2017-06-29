@@ -1,4 +1,4 @@
-	private Collection<Change> getRefsForContentAssist()
+	private Collection<Change> getRefsForContentAssist(String originalRefText)
 			throws InvocationTargetException, InterruptedException {
 		String uriText = uriCombo.getText();
 		if (!changeRefs.containsKey(uriText)) {
@@ -25,6 +25,11 @@
 						UIText.FetchGerritChangePage_ShowingProposalsJobName) {
 
 					@Override
+					public boolean shouldRun() {
+						return super.shouldRun() && !fetching;
+					}
+
+					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
 						// But only if we're not disposed, the focus is still
 						// (or again) in the Change field, and the uri is still
@@ -33,20 +38,33 @@
 							if (container instanceof NonBlockingWizardDialog) {
 								// Otherwise the dialog was blocked anyway, and
 								// focus will be restored
-								if (refText != refText.getDisplay()
-										.getFocusControl()) {
+								if (fetching) {
 									return Status.CANCEL_STATUS;
 								}
 								String uriNow = uriCombo.getText();
 								if (!uriNow.equals(uriText)) {
 									return Status.CANCEL_STATUS;
 								}
+								if (refText != refText.getDisplay()
+										.getFocusControl()) {
+									fillInPatchSet(result, null);
+									return Status.CANCEL_STATUS;
+								}
+								// Try not to interfere with the user's typing.
+								// Only fill in the patch set number if the text
+								// is still the same.
+								fillInPatchSet(result, originalRefText);
+								doAutoFill = false;
+							} else {
+								// Dialog was blocked
+								fillInPatchSet(result, null);
 							}
 							contentProposer.openProposalPopup();
 						} catch (SWTException e) {
 							// Disposed already
 							return Status.CANCEL_STATUS;
 						} finally {
+							doAutoFill = true;
 							uiMonitor.done();
 						}
 						return Status.OK_STATUS;
@@ -64,6 +82,11 @@
 			}
 			return null;
 		}
-		return list.get();
+		// ChangeList is already here, so get() won't block
+		Collection<Change> changes = list.get();
+		if (doAutoFill) {
+			fillInPatchSet(changes, originalRefText);
+		}
+		return changes;
 	}
 

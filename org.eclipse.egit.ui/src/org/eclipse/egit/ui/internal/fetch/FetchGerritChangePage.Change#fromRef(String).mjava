@@ -1,21 +1,18 @@
 		static Change fromRef(String refName) {
 			try {
-				if (refName == null
-						|| !refName.startsWith(GERRIT_CHANGE_REF_PREFIX)) {
+				if (refName == null) {
 					return null;
 				}
-				String[] tokens = refName
-						.substring(GERRIT_CHANGE_REF_PREFIX.length())
-						.split("/"); //$NON-NLS-1$
-				if (tokens.length != 3) {
+				Matcher m = GERRIT_CHANGE_REF_PATTERN.matcher(refName);
+				if (!m.matches() || m.group(3) == null) {
 					return null;
 				}
-				Integer subdir = Integer.valueOf(tokens[0]);
-				Integer changeNumber = Integer.valueOf(tokens[1]);
+				Integer subdir = Integer.valueOf(m.group(1));
+				Integer changeNumber = Integer.valueOf(m.group(2));
 				if (subdir.intValue() != changeNumber.intValue() % 100) {
 					return null;
 				}
-				Integer patchSetNumber = Integer.valueOf(tokens[2]);
+				Integer patchSetNumber = Integer.valueOf(m.group(3));
 				return new Change(refName, changeNumber, patchSetNumber);
 			} catch (NumberFormatException e) {
 				// if we can't parse this, just return null

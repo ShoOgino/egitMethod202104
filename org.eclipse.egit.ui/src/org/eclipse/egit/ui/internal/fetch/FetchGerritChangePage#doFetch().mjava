@@ -1,4 +1,5 @@
 	boolean doFetch() {
+		fetching = true;
 		final RefSpec spec = new RefSpec().setSource(refText.getText())
 				.setDestination(Constants.FETCH_HEAD);
 		final String uri = uriCombo.getText();

@@ -1,0 +1,29 @@
+	private void fillInPatchSet(Collection<Change> changes,
+			String originalText) {
+		String currentText = refText.getText();
+		if (contentProposer.isProposalPopupOpen()
+				|| originalText != null && !originalText.equals(currentText)) {
+			// User has modified the text: don't interfere
+			return;
+		}
+		Change change = determineChangeFromString(currentText);
+		if (change != null && change.getPatchSetNumber() == null) {
+			int changeNumber = change.getChangeNumber().intValue();
+			// We know that the result is sorted by change and
+			// patch set number descending
+			for (Change fromGerrit : changes) {
+				int num = fromGerrit.getChangeNumber().intValue();
+				if (num < changeNumber) {
+					return; // Doesn't exist
+				} else if (changeNumber == num) {
+					// Must be the one with the highest patch
+					// set number.
+					String fullRef = fromGerrit.getRefName();
+					refText.setText(fullRef);
+					refText.setSelection(fullRef.length());
+					return;
+				}
+			}
+		}
+	}
+
