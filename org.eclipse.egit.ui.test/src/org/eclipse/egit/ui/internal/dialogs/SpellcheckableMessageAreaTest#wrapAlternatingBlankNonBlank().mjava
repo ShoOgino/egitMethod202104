@@ -1,0 +1,9 @@
+	@Test
+	public void wrapAlternatingBlankNonBlank() {
+		String input = " x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x";
+		String expected = " x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x\n"
+				+ "x x x x x x";
+		assertEquals(expected,
+				SpellcheckableMessageArea.wrapCommitMessage(input));
+	}
+
