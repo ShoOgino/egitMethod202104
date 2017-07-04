@@ -218,13 +218,17 @@
 		refText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				Change change = Change.fromRef(refText.getText());
+				Change change = determineChangeFromString(refText.getText());
 				String suggestion = ""; //$NON-NLS-1$
 				if (change != null) {
+					Object ps = change.getPatchSetNumber();
+					if (ps == null) {
+						ps = SIMPLE_TIMESTAMP.format(new Date());
+					}
 					suggestion = NLS.bind(
 							UIText.FetchGerritChangePage_SuggestedRefNamePattern,
 							change.getChangeNumber(),
-							change.getPatchSetNumber());
+							ps);
 				}
 				if (!branchTextEdited) {
 					branchText.setText(suggestion);

@@ -1,8 +1,16 @@
 	boolean doFetch() {
 		fetching = true;
-		final RefSpec spec = new RefSpec().setSource(refText.getText())
-				.setDestination(Constants.FETCH_HEAD);
+		final Change change = determineChangeFromString(refText.getText());
 		final String uri = uriCombo.getText();
+		// If we have an incomplete change (missing patch set number), remove
+		// the change list future from the global map so that it won't be
+		// interrupted when the dialog closes.
+		final ChangeList changeList = change.getPatchSetNumber() == null
+				? changeRefs.remove(uri) : null;
+		if (changeList != null) {
+			// Make sure a pending get() from the content assist gets aborted
+			changeList.cancel(ChangeList.CancelMode.ABANDON);
+		}
 		final CheckoutMode mode = getCheckoutMode();
 		final boolean doCheckoutNewBranch = (mode == CheckoutMode.CREATE_BRANCH)
 				&& branchCheckoutButton.getSelection();
@@ -10,32 +18,65 @@
 		final String textForTag = tagText.getText();
 		final String textForBranch = branchText.getText();
 
-		Job job = new WorkspaceJob(
+		Job job = new Job(
 				UIText.FetchGerritChangePage_GetChangeTaskName) {
 
 			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) {
+			public IStatus run(IProgressMonitor monitor) {
 				try {
+					int steps = getTotalWork(mode);
 					SubMonitor progress = SubMonitor.convert(monitor,
 							UIText.FetchGerritChangePage_GetChangeTaskName,
-							getTotalWork(mode));
+							steps + 1);
+					Change finalChange = completeChange(change,
+							progress.newChild(1));
+					if (finalChange == null) {
+						// Returning an error status would log the message
+						Activator.showError(NLS.bind(
+								UIText.FetchGerritChangePage_NoSuchChangeMessage,
+								change.getChangeNumber()), null);
+						return Status.CANCEL_STATUS;
+					}
+					final RefSpec spec = new RefSpec()
+							.setSource(finalChange.getRefName())
+							.setDestination(Constants.FETCH_HEAD);
+					if (progress.isCanceled()) {
+						return Status.CANCEL_STATUS;
+					}
 					RevCommit commit = fetchChange(uri, spec,
 							progress.newChild(1));
-					switch (mode) {
-					case CHECKOUT_FETCH_HEAD:
-						checkout(commit.name(), progress.newChild(1));
-						break;
-					case CREATE_TAG:
-						createTag(spec, textForTag, commit,
-								progress.newChild(1));
-						checkout(commit.name(), progress.newChild(1));
-						break;
-					case CREATE_BRANCH:
-						createBranch(textForBranch, doCheckoutNewBranch, commit,
-								progress.newChild(1));
-						break;
-					default:
-						break;
+					if (mode != CheckoutMode.NOCHECKOUT) {
+						IWorkspace workspace = ResourcesPlugin.getWorkspace();
+						IWorkspaceRunnable operation = new IWorkspaceRunnable() {
+
+							@Override
+							public void run(IProgressMonitor innerMonitor)
+									throws CoreException {
+								SubMonitor innerProgress = SubMonitor
+										.convert(innerMonitor, steps);
+								switch (mode) {
+								case CHECKOUT_FETCH_HEAD:
+									checkout(commit.name(),
+											innerProgress.newChild(1));
+									break;
+								case CREATE_TAG:
+									createTag(spec, textForTag, commit,
+											innerProgress.newChild(1));
+									checkout(commit.name(),
+											innerProgress.newChild(1));
+									break;
+								case CREATE_BRANCH:
+									createBranch(textForBranch,
+											doCheckoutNewBranch, commit,
+											innerProgress.newChild(1));
+									break;
+								default:
+									break;
+								}
+							}
+						};
+						workspace.run(operation, null, IWorkspace.AVOID_UPDATE,
+								progress.newChild(steps));
 					}
 					if (doActivateAdditionalRefs) {
 						activateAdditionalRefs();
@@ -47,6 +88,8 @@
 						repository.fireEvent(new FetchHeadChangedEvent());
 					}
 					storeLastUsedUri(uri);
+				} catch (OperationCanceledException oe) {
+					return Status.CANCEL_STATUS;
 				} catch (CoreException ce) {
 					return ce.getStatus();
 				} catch (Exception e) {
@@ -56,6 +99,37 @@
 					monitor.done();
 				}
 				return Status.OK_STATUS;
+			}
+
+			@Override
+			protected void canceling() {
+				super.canceling();
+				if (changeList != null) {
+					changeList.cancel(ChangeList.CancelMode.INTERRUPT);
+				}
+			}
+
+			private Change completeChange(Change originalChange,
+					IProgressMonitor monitor)
+					throws OperationCanceledException {
+				if (changeList != null) {
+					monitor.subTask(NLS.bind(
+							UIText.FetchGerritChangePage_FetchingRemoteRefsMessage,
+							uri));
+					Collection<Change> changes;
+					try {
+						changes = changeList.get();
+					} catch (InvocationTargetException
+							| InterruptedException e) {
+						throw new OperationCanceledException();
+					}
+					if (monitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
+					return findHighestPatchSet(changes,
+							originalChange.getChangeNumber().intValue());
+				}
+				return originalChange;
 			}
 
 			private int getTotalWork(final CheckoutMode m) {

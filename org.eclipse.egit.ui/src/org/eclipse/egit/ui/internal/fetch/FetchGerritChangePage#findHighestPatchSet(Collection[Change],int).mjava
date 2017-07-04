@@ -1,0 +1,17 @@
+	private Change findHighestPatchSet(Collection<Change> changes,
+			int changeNumber) {
+		// We know that the result is sorted by change and
+		// patch set number descending
+		for (Change fromGerrit : changes) {
+			int num = fromGerrit.getChangeNumber().intValue();
+			if (num < changeNumber) {
+				return null; // Doesn't exist
+			} else if (changeNumber == num) {
+				// Must be the one with the highest patch
+				// set number.
+				return fromGerrit;
+			}
+		}
+		return null;
+	}
+
