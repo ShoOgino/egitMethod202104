@@ -6,10 +6,11 @@
 		}
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(listener);
-		JFacePreferences.getPreferenceStore()
-				.removePropertyChangeListener(syntaxColoringListener);
-		if (refsChangedListener != null)
+		PlatformUI.getWorkbench().getThemeManager()
+				.removePropertyChangeListener(themeListener);
+		if (refsChangedListener != null) {
 			refsChangedListener.remove();
+		}
 		refsChangedListener = null;
 		showBranchSequencePrefAction.dispose();
 		showTagSequencePrefAction.dispose();

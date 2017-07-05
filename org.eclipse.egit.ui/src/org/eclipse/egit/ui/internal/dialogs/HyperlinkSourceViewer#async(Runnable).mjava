@@ -1,0 +1,18 @@
+	/**
+	 * Executes the given {@link Runnable} via
+	 * {@link Display#asyncExec(Runnable)} if the viewer still exists.
+	 *
+	 * @param runnable
+	 *            to perform some operation in the UI thread.
+	 */
+	protected void async(Runnable runnable) {
+		Control control = getControl();
+		if (control != null && !control.isDisposed()) {
+			control.getDisplay().asyncExec(() -> {
+				if (!control.isDisposed()) {
+					runnable.run();
+				}
+			});
+		}
+	}
+

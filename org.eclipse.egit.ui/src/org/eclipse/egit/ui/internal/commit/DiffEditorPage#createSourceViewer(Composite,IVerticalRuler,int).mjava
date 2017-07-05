@@ -2,7 +2,12 @@
 	protected ISourceViewer createSourceViewer(Composite parent,
 			IVerticalRuler ruler, int styles) {
 		DiffViewer viewer = new DiffViewer(parent, ruler, getOverviewRuler(),
-				isOverviewRulerVisible(), styles);
+				isOverviewRulerVisible(), styles) {
+			@Override
+			protected void setFont(Font font) {
+				// Don't do anything; AbstractTextEditor handles this.
+			}
+		};
 		getSourceViewerDecorationSupport(viewer);
 		ProjectionSupport projector = new ProjectionSupport(viewer,
 				getAnnotationAccess(), getSharedColors());

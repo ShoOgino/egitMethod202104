@@ -4,10 +4,7 @@
 		if (hyperlinkChangeListener != null) {
 			EditorsUI.getPreferenceStore()
 					.removePropertyChangeListener(hyperlinkChangeListener);
-		}
-		if (spellCheckingListener != null) {
-			EditorsUI.getPreferenceStore()
-					.removePropertyChangeListener(spellCheckingListener);
+			hyperlinkChangeListener = null;
 		}
 		preferenceKeysForEnablement = null;
 		preferenceKeysForActivation = null;

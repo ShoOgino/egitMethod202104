@@ -1,8 +1,6 @@
 	private void initListeners() {
 		PlatformUI.getWorkbench().getThemeManager()
 				.addPropertyChangeListener(this.themeListener);
-		EditorsUI.getPreferenceStore().addPropertyChangeListener(
-				this.editorPrefListener);
 		getTextWidget().addLineBackgroundListener((event) -> {
 			IDocument document = getDocument();
 			if (document instanceof DiffDocument) {

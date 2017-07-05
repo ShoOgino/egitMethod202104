@@ -20,18 +20,8 @@
 		setEditable(false);
 		setDocument(new Document());
 		initListeners();
-		getControl().addDisposeListener(new DisposeListener() {
-
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				EditorsUI.getPreferenceStore()
-						.removePropertyChangeListener(editorPrefListener);
-				PlatformUI.getWorkbench().getThemeManager()
-						.removePropertyChangeListener(themeListener);
-				colors.dispose();
-			}
-		});
+		getTextWidget()
+				.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
 		refreshDiffStyles();
-		styleViewer();
 	}
 

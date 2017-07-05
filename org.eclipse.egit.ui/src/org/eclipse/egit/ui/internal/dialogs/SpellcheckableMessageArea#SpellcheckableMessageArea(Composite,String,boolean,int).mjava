@@ -5,14 +5,28 @@
 	 * @param styles
 	 */
 	public SpellcheckableMessageArea(Composite parent, String initialText,
-			boolean readOnly,
-			int styles) {
+			boolean readOnly, int styles) {
 		super(parent, styles);
 		setLayout(new FillLayout());
 
 		AnnotationModel annotationModel = new AnnotationModel();
 		sourceViewer = new HyperlinkSourceViewer(this, null,
-				SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
+				SWT.MULTI | SWT.V_SCROLL | SWT.WRAP) {
+			@Override
+			protected void handleJFacePreferencesChange(
+					PropertyChangeEvent event) {
+				if (JFaceResources.TEXT_FONT.equals(event.getProperty())) {
+					Font themeFont = UIUtils.getFont(
+							UIPreferences.THEME_CommitMessageEditorFont);
+					Font jFaceFont = JFaceResources.getTextFont();
+					if (themeFont.equals(jFaceFont)) {
+						setFont(jFaceFont);
+					}
+				} else {
+					super.handleJFacePreferencesChange(event);
+				}
+			}
+		};
 		getTextWidget().setAlwaysShowScrollBars(false);
 		getTextWidget().setFont(UIUtils
 				.getFont(UIPreferences.THEME_CommitMessageEditorFont));
@@ -31,41 +45,37 @@
 
 		configureHardWrap();
 
-		final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				if (UIPreferences.COMMIT_DIALOG_HARD_WRAP_MESSAGE.equals(event.getProperty())) {
-					getDisplay().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							configureHardWrap();
-							if (brokenBidiPlatformTextWidth != -1) {
-								layout();
-							}
+		final IPropertyChangeListener propertyChangeListener = event -> {
+			if (UIPreferences.COMMIT_DIALOG_HARD_WRAP_MESSAGE
+					.equals(event.getProperty())) {
+				getDisplay().asyncExec(() -> {
+					if (!isDisposed()) {
+						configureHardWrap();
+						if (brokenBidiPlatformTextWidth != -1) {
+							layout();
 						}
-					});
-				}
+					}
+				});
 			}
 		};
 		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
-		final IPropertyChangeListener syntaxColoringChangeListener = new IPropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				if (JFacePreferences.HYPERLINK_COLOR
-						.equals(event.getProperty())) {
-					getDisplay().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							if (!isDisposed()) {
-								sourceViewer.refresh();
-							}
-						}
-					});
-				}
+		final IPropertyChangeListener themeListener = event -> {
+			String property = event.getProperty();
+			if (IThemeManager.CHANGE_CURRENT_THEME.equals(property)
+					|| UIPreferences.THEME_CommitMessageEditorFont
+							.equals(property)) {
+				Font themeFont = UIUtils
+						.getFont(UIPreferences.THEME_CommitMessageEditorFont);
+				getDisplay().asyncExec(() -> {
+					if (!isDisposed()) {
+						sourceViewer.setFont(themeFont);
+					}
+				});
 			}
 		};
-		JFacePreferences.getPreferenceStore()
-				.addPropertyChangeListener(syntaxColoringChangeListener);
+		PlatformUI.getWorkbench().getThemeManager()
+				.addPropertyChangeListener(themeListener);
+
 		final SourceViewerDecorationSupport support = configureAnnotationPreferences();
 
 		Document document = new Document(initialText);
@@ -132,9 +142,8 @@
 			public void widgetDisposed(DisposeEvent disposeEvent) {
 				support.uninstall();
 				Activator.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
-				JFacePreferences.getPreferenceStore()
-						.removePropertyChangeListener(
-								syntaxColoringChangeListener);
+				PlatformUI.getWorkbench().getThemeManager()
+						.removePropertyChangeListener(themeListener);
 			}
 		});
 	}

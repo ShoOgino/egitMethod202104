@@ -1,0 +1,41 @@
+	/**
+	 * Update the font of this viewer, trying to maintain the selection and the
+	 * top index. Note that when this viewer is used in an
+	 * {@link AbstractTextEditor}, the editor takes care of this and this method
+	 * should not be called.
+	 *
+	 * @param font
+	 *            to set
+	 */
+	protected void setFont(Font font) {
+		// See AbstractTextEditor.setFont()
+		StyledText styledText = getTextWidget();
+		IVerticalRuler verticalRuler = getVerticalRuler();
+		if (getDocument() != null) {
+			ISelectionProvider provider = getSelectionProvider();
+			ISelection selection = provider.getSelection();
+			int topIndex = getTopIndex();
+
+			Control parent = getControl();
+			parent.setRedraw(false);
+			styledText.setFont(font);
+			if (verticalRuler instanceof IVerticalRulerExtension) {
+				IVerticalRulerExtension e = (IVerticalRulerExtension) verticalRuler;
+				e.setFont(font);
+			}
+			provider.setSelection(selection);
+			setTopIndex(topIndex);
+			if (parent instanceof Composite) {
+				Composite composite = (Composite) parent;
+				composite.layout(true);
+			}
+			parent.setRedraw(true);
+		} else {
+			styledText.setFont(font);
+			if (verticalRuler instanceof IVerticalRulerExtension) {
+				IVerticalRulerExtension e = (IVerticalRulerExtension) verticalRuler;
+				e.setFont(font);
+			}
+		}
+	}
+

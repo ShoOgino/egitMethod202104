@@ -5,26 +5,13 @@
 			configuration = (Configuration) config;
 			configurePreferenceKeys();
 			// Install a listener
-			hyperlinkChangeListener = new IPropertyChangeListener() {
-				@Override
-				public void propertyChange(PropertyChangeEvent event) {
-					String property = event.getProperty();
-					if (preferenceKeysForEnablement.contains(property)) {
-						resetHyperlinkDetectors();
-						final Control control = getControl();
-						if (control != null && !control.isDisposed()) {
-							control.getDisplay().asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									if (!control.isDisposed()) {
-										refresh();
-									}
-								}
-							});
-						}
-					} else if (preferenceKeysForActivation.contains(property)) {
-						resetHyperlinkDetectors();
-					}
+			hyperlinkChangeListener = event -> {
+				String property = event.getProperty();
+				if (preferenceKeysForEnablement.contains(property)) {
+					resetHyperlinkDetectors();
+					async(() -> refresh());
+				} else if (preferenceKeysForActivation.contains(property)) {
+					resetHyperlinkDetectors();
 				}
 			};
 			EditorsUI.getPreferenceStore()
@@ -33,23 +20,5 @@
 			configuration = null;
 			hyperlinkChangeListener = null;
 		}
-		spellCheckingListener = event -> {
-			if (SpellingService.PREFERENCE_SPELLING_ENABLED
-					.equals(event.getProperty())) {
-				boolean isEnabled = EditorsUI.getPreferenceStore().getBoolean(
-						SpellingService.PREFERENCE_SPELLING_ENABLED);
-				updateSpellChecking(isEnabled);
-			}
-		};
-		EditorsUI.getPreferenceStore()
-				.addPropertyChangeListener(spellCheckingListener);
-		this.getTextWidget().addDisposeListener(event -> {
-			if (hyperlinkChangeListener != null) {
-				EditorsUI.getPreferenceStore()
-						.removePropertyChangeListener(hyperlinkChangeListener);
-			}
-			EditorsUI.getPreferenceStore()
-					.removePropertyChangeListener(spellCheckingListener);
-		});
 	}
 

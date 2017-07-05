@@ -1,0 +1,16 @@
+	private Color createColor(Display display, IPreferenceStore store,
+			String key) {
+		RGB rgb = null;
+		if (store.contains(key)) {
+			if (store.isDefault(key)) {
+				rgb = PreferenceConverter.getDefaultColor(store, key);
+			} else {
+				rgb = PreferenceConverter.getColor(store, key);
+			}
+			if (rgb != null) {
+				return new Color(display, rgb);
+			}
+		}
+		return null;
+	}
+

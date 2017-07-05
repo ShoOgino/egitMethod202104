@@ -1,0 +1,7 @@
+	@Override
+	protected void handleDispose() {
+		PlatformUI.getWorkbench().getThemeManager()
+				.removePropertyChangeListener(themeListener);
+		super.handleDispose();
+	}
+

@@ -1,0 +1,27 @@
+	private void setColor(StyledText styledText, IPreferenceStore store,
+			String key, boolean useDefault) {
+		Color newColor = useDefault ? null
+				: createColor(styledText.getDisplay(), store, key);
+		switch (key) {
+		case AbstractTextEditor.PREFERENCE_COLOR_FOREGROUND:
+			styledText.setForeground(newColor);
+			break;
+		case AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND:
+			styledText.setBackground(newColor);
+			break;
+		case AbstractTextEditor.PREFERENCE_COLOR_SELECTION_FOREGROUND:
+			styledText.setSelectionForeground(newColor);
+			break;
+		case AbstractTextEditor.PREFERENCE_COLOR_SELECTION_BACKGROUND:
+			styledText.setSelectionBackground(newColor);
+			break;
+		default:
+			return;
+		}
+		Color oldColor = customColors.remove(key);
+		if (oldColor != null) {
+			oldColor.dispose();
+		}
+		customColors.put(key, newColor);
+	}
+

@@ -1,0 +1,14 @@
+	/**
+	 * Handle a change in EditorsUI preferences. The default implementation
+	 * handles hyperlink coloring changes. May be overridden, but the subclass
+	 * should invoke super.
+	 *
+	 * @param event
+	 *            describing the property change.
+	 */
+	protected void handleJFacePreferencesChange(PropertyChangeEvent event) {
+		if (JFacePreferences.HYPERLINK_COLOR.equals(event.getProperty())) {
+			async(() -> invalidateTextPresentation());
+		}
+	}
+
