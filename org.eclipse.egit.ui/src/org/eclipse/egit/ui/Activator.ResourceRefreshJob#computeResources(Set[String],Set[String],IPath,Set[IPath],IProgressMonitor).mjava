@@ -1,0 +1,115 @@
+		private Map<IResource, Boolean> computeResources(
+				Set<String> modified, Set<String> deleted, IPath workTree,
+				Set<IPath> roots, IProgressMonitor monitor) {
+			// Attempt to minimize the refreshes by returning IContainers if
+			// more than one file in a container has changed.
+			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
+						"Calculating refresh for repository " + workTree + ' ' //$NON-NLS-1$
+								+ modified.size() + ' ' + deleted.size());
+			}
+			SubMonitor progress = SubMonitor.convert(monitor,
+					modified.size() + deleted.size());
+			Set<IPath> fullRefreshes = new HashSet<>();
+			Map<IPath, IFile> handled = new HashMap<>();
+			Map<IResource, Boolean> result = new HashMap<>();
+			Stream.concat(modified.stream(), deleted.stream()).forEach(path -> {
+				if (progress.isCanceled()) {
+					throw new OperationCanceledException();
+				}
+				IPath filePath = "/".equals(path) ? workTree //$NON-NLS-1$
+						: workTree.append(path);
+				if (fullRefreshes.stream()
+						.anyMatch(full -> full.isPrefixOf(filePath))
+						|| !roots.stream()
+								.anyMatch(root -> root.isPrefixOf(filePath))) {
+					// Not in workspace or covered by a full container refresh
+					progress.worked(1);
+					return;
+				}
+				IPath containerPath;
+				boolean isFile;
+				if (path.endsWith("/")) { //$NON-NLS-1$
+					// It's already a directory
+					isFile = false;
+					containerPath = filePath.removeTrailingSeparator();
+				} else {
+					isFile = true;
+					containerPath = filePath.removeLastSegments(1);
+				}
+				if (!handled.containsKey(containerPath)) {
+					if (!isFile && containerPath != null) {
+						IContainer container = ResourceUtil
+								.getContainerForLocation(containerPath, false);
+						if (container != null) {
+							IFile file = handled.get(containerPath);
+							handled.put(containerPath, null);
+							if (file != null) {
+								result.remove(file);
+							}
+							result.put(container, Boolean.FALSE);
+						}
+					} else if (isFile) {
+						// First file in this container. Find the deepest
+						// existing container and record its non-existing child.
+						String lastPart = filePath.lastSegment();
+						while (containerPath != null
+								&& workTree.isPrefixOf(containerPath)) {
+							IContainer container = ResourceUtil
+									.getContainerForLocation(containerPath,
+											false);
+							if (container == null) {
+								lastPart = containerPath.lastSegment();
+								containerPath = containerPath
+										.removeLastSegments(1);
+								isFile = false;
+								continue;
+							}
+							if (container.getType() == IResource.ROOT) {
+								// Missing project... ignore it and anything
+								// beneath. The user or our own branch project
+								// tracker will have to properly add/import the
+								// project.
+								containerPath = containerPath.append(lastPart);
+								fullRefreshes.add(containerPath);
+								handled.put(containerPath, null);
+							} else if (isFile) {
+								IFile file = container
+										.getFile(new Path(lastPart));
+								handled.put(containerPath, file);
+								result.put(file, Boolean.FALSE);
+							} else {
+								// New or deleted folder.
+								container = container
+										.getFolder(new Path(lastPart));
+								containerPath = containerPath.append(lastPart);
+								fullRefreshes.add(containerPath);
+								handled.put(containerPath, null);
+								result.put(container, Boolean.TRUE);
+							}
+							break;
+						}
+					}
+				} else {
+					IFile file = handled.get(containerPath);
+					if (file != null) {
+						// Second file in this container: replace file by
+						// its container.
+						handled.put(containerPath, null);
+						result.remove(file);
+						result.put(file.getParent(), Boolean.FALSE);
+					}
+					// Otherwise we already have this container.
+				}
+				progress.worked(1);
+			});
+
+			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
+						"Calculated refresh for repository " + workTree); //$NON-NLS-1$
+			}
+			return result;
+		}
+

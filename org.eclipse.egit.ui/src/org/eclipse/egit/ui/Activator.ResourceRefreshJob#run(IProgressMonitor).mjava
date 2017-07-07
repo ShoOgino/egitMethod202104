@@ -1,73 +1,40 @@
 		@Override
 		public IStatus run(IProgressMonitor monitor) {
-			Set<Repository> repos;
-			synchronized (repositoriesChanged) {
-				if (repositoriesChanged.isEmpty()) {
-					return Status.OK_STATUS;
-				}
-				repos = new LinkedHashSet<>(repositoriesChanged);
-				repositoriesChanged.clear();
-			}
-			IWorkspace workspace = ResourcesPlugin.getWorkspace();
-			IProject[] projects = workspace.getRoot().getProjects();
-			final Set<IProject> toRefresh = new LinkedHashSet<>();
-			for (IProject p : projects) {
-				if (!p.isAccessible()) {
-					continue;
-				}
-				RepositoryMapping mapping = RepositoryMapping.getMapping(p);
-				if (mapping != null
-						&& repos.contains(mapping.getRepository())) {
-					toRefresh.add(p);
-				}
-			}
-
-			if (toRefresh.isEmpty()) {
-				return Status.OK_STATUS;
-			}
-
 			try {
-				workspace.run(new IWorkspaceRunnable() {
-					@Override
-					public void run(IProgressMonitor m) throws CoreException {
-						SubMonitor subMonitor = SubMonitor.convert(m,
-								UIText.Activator_refreshingProjects,
-								toRefresh.size());
-						for (IProject p : toRefresh) {
-							if (subMonitor.isCanceled()) {
-								return;
-							}
-							ISchedulingRule rule = p.getWorkspace().getRuleFactory().refreshRule(p);
-							try {
-								getJobManager().beginRule(rule, subMonitor);
-								// handle missing projects after branch switch
-								if (p.isAccessible()) {
-									p.refreshLocal(IResource.DEPTH_INFINITE,
-											subMonitor.newChild(1));
-								}
-							} catch (CoreException e) {
-								handleError(UIText.Activator_refreshFailed, e, false);
-							} finally {
-								getJobManager().endRule(rule);
-							}
+				List<WorkingTreeChanges> changes;
+				synchronized (repositoriesChanged) {
+					if (repositoriesChanged.isEmpty()) {
+						return Status.OK_STATUS;
+					}
+					changes = new ArrayList<>(repositoriesChanged.values());
+					repositoriesChanged.clear();
+				}
+
+				SubMonitor progress = SubMonitor.convert(monitor,
+						changes.size());
+				try {
+					for (WorkingTreeChanges change : changes) {
+						refreshRepository(change, progress.newChild(1));
+					}
+				} catch (OperationCanceledException oe) {
+					return Status.CANCEL_STATUS;
+				} catch (CoreException e) {
+					handleError(UIText.Activator_refreshFailed, e, false);
+					return new Status(IStatus.ERROR, getPluginId(),
+							e.getMessage());
+				}
+
+				if (!monitor.isCanceled()) {
+					// re-schedule if we got some changes in the meantime
+					synchronized (repositoriesChanged) {
+						if (!repositoriesChanged.isEmpty()) {
+							schedule(100);
 						}
 					}
-				}, workspace.getRuleFactory().refreshRule(workspace.getRoot()),
-						IWorkspace.AVOID_UPDATE, monitor);
-			} catch (CoreException e) {
-				handleError(UIText.Activator_refreshFailed, e, false);
-				return new Status(IStatus.ERROR, getPluginId(), e.getMessage());
-			}
-
-			if (!monitor.isCanceled()) {
-				// re-schedule if we got some changes in the meantime
-				synchronized (repositoriesChanged) {
-					if (!repositoriesChanged.isEmpty()) {
-						schedule(100);
-					}
 				}
+			} finally {
+				monitor.done();
 			}
-			monitor.done();
 			return Status.OK_STATUS;
 		}
 

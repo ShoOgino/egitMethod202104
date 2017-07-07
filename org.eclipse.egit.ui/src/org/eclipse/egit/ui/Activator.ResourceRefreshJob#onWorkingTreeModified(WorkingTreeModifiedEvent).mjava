@@ -1,8 +1,8 @@
 		@Override
-		public void onIndexChanged(IndexChangedEvent e) {
+		public void onWorkingTreeModified(WorkingTreeModifiedEvent event) {
 			if (Activator.getDefault().getPreferenceStore()
 					.getBoolean(UIPreferences.REFESH_ON_INDEX_CHANGE)) {
-				mayTriggerRefresh(e);
+				mayTriggerRefresh(event);
 			}
 		}
 
