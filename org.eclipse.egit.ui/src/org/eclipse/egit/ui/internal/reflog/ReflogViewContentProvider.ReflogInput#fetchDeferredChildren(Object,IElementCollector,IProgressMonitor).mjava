@@ -1,12 +1,15 @@
 		@Override
 		public void fetchDeferredChildren(Object object,
 				IElementCollector collector, IProgressMonitor monitor) {
+			if (refLog != null) {
+				return; // Already loaded.
+			}
 			try (Git git = new Git(repository)) {
 				refLog = git.reflog().setRef(ref).call();
 				collector.add(refLog.toArray(), monitor);
 			} catch (Exception e) {
 				Activator.logError("Error running reflog command", e); //$NON-NLS-1$
-				collector.add(new ErrorElement(), monitor);
+				collector.add(ERROR_ELEMENT, monitor);
 			}
 		}
 

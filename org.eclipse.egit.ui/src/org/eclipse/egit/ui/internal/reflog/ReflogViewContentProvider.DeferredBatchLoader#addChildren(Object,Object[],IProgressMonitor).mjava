@@ -1,0 +1,30 @@
+		/**
+		 * Add child nodes, removing the error element if appropriate. Contrary
+		 * to the super implementation, this does <em>not</em> use a UI job but
+		 * a simple {@link org.eclipse.swt.widgets.Display#syncExec(Runnable)
+		 * syncExec()}.
+		 *
+		 * @param parent
+		 *            to add the {@code children} to
+		 * @param children
+		 *            to add to the {@code parent}
+		 * @param monitor
+		 *            is ignored
+		 */
+		@Override
+		protected void addChildren(Object parent, Object[] children,
+				IProgressMonitor monitor) {
+			Control control = viewer.getControl();
+			if (control == null || control.isDisposed()) {
+				return;
+			}
+			control.getDisplay().syncExec(() -> {
+				if (!control.isDisposed()) {
+					if (children.length != 1 || children[0] != ERROR_ELEMENT) {
+						viewer.remove(ERROR_ELEMENT);
+					}
+					viewer.add(parent, children);
+				}
+			});
+		}
+

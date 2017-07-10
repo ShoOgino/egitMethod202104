@@ -9,5 +9,6 @@
 			Assert.isNotNull(ref, "Ref cannot be null"); //$NON-NLS-1$
 			this.repository = repository;
 			this.ref = ref;
+			this.rule = new ReflogSchedulingRule(repository.getDirectory());
 		}
 

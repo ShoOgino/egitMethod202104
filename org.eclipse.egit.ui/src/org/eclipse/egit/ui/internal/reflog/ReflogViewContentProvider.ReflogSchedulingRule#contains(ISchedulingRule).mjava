@@ -1,0 +1,9 @@
+		@Override
+		public boolean contains(ISchedulingRule rule) {
+			if (rule instanceof ReflogSchedulingRule) {
+				return Objects.equals(gitDir,
+						((ReflogSchedulingRule) rule).gitDir);
+			}
+			return false;
+		}
+

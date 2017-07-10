@@ -5,8 +5,7 @@
 		}
 		currentInput = newInput;
 		if (viewer instanceof AbstractTreeViewer && newInput != null) {
-			loader = new DeferredTreeContentManager(
-					(AbstractTreeViewer) viewer);
+			loader = new DeferredBatchLoader((AbstractTreeViewer) viewer);
 		}
 	}
 

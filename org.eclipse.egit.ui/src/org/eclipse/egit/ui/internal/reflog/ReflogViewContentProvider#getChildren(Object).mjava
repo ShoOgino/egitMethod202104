@@ -1,6 +1,11 @@
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof ReflogInput && loader != null) {
+			Object[] knownChildren = ((ReflogInput) parentElement)
+					.getChildren(parentElement);
+			if (knownChildren != null) {
+				return knownChildren;
+			}
 			return loader.getChildren(parentElement);
 		}
 		return new Object[0];
