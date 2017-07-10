@@ -1,14 +1,17 @@
-	private void extractContainerProperties(
+	private @NonNull IResourceState extractContainerProperties(
 			@NonNull IndexDiffData indexDiffData,
-			@NonNull String repoRelativePath, @NonNull FileSystemItem directory,
-			@NonNull ResourceState state) {
+			@NonNull String repoRelativePath,
+			@NonNull FileSystemItem directory) {
 		Set<String> ignoredFiles = indexDiffData.getIgnoredNotInIndex();
-		Set<String> untrackedFolders = indexDiffData.getUntrackedFolders();
 		boolean ignored = containsPrefixPath(ignoredFiles, repoRelativePath)
 				|| !directory.hasContainerAnyFiles();
-		state.setIgnored(ignored);
-		state.setTracked(!ignored
-				&& !containsPrefixPath(untrackedFolders, repoRelativePath));
+		if (ignored) {
+			return IGNORED;
+		}
+		ResourceState state = new ResourceState();
+		Set<String> untrackedFolders = indexDiffData.getUntrackedFolders();
+		state.setTracked(
+				!containsPrefixPath(untrackedFolders, repoRelativePath));
 
 		// containers are marked as staged whenever file was added, removed or
 		// changed
@@ -31,5 +34,6 @@
 		state.setDirty(containsPrefix(modified, repoRelativePath)
 				|| containsPrefix(untracked, repoRelativePath)
 				|| containsPrefix(missing, repoRelativePath));
+		return state;
 	}
 

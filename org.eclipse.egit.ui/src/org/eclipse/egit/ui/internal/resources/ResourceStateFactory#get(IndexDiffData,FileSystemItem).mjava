@@ -27,7 +27,6 @@
 			// Could not be made relative.
 			return UNKNOWN_STATE;
 		}
-		ResourceState result = new ResourceState();
 		if (file.isContainer()) {
 			if (!repoRelativePath.endsWith("/")) { //$NON-NLS-1$
 				repoRelativePath += '/';
@@ -36,14 +35,13 @@
 				// The Eclipse resource model handles a symlink to a folder like
 				// the container it refers to but git status handles the symlink
 				// source like a special file.
-				extractFileProperties(indexDiffData, repoRelativePath, result);
+				return extractFileProperties(indexDiffData, repoRelativePath);
 			} else {
-				extractContainerProperties(indexDiffData, repoRelativePath,
-						file, result);
+				return extractContainerProperties(indexDiffData,
+						repoRelativePath, file);
 			}
 		} else {
-			extractFileProperties(indexDiffData, repoRelativePath, result);
+			return extractFileProperties(indexDiffData, repoRelativePath);
 		}
-		return result;
 	}
 
