@@ -22,6 +22,11 @@
 			refsChangedListener.remove();
 		}
 
+		if (switchRepositoriesAction != null) {
+			switchRepositoriesAction.dispose();
+			switchRepositoriesAction = null;
+		}
+
 		getPreferenceStore().removePropertyChangeListener(uiPrefsListener);
 
 		getDialogSettings().put(STORE_SORT_STATE, sortAction.isChecked());

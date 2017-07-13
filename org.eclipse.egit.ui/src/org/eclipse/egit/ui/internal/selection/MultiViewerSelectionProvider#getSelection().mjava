@@ -1,0 +1,8 @@
+	@Override
+	public ISelection getSelection() {
+		if (currentViewer != null) {
+			return currentViewer.getSelection();
+		}
+		return StructuredSelection.EMPTY;
+	}
+

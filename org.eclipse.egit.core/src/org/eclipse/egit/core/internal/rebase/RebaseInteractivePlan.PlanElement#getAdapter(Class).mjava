@@ -1,0 +1,12 @@
+		@SuppressWarnings("unchecked")
+		@Override
+		public Object getAdapter(Class adapter) {
+			// TODO generify once EGit baseline is Eclipse 4.5
+			if (adapter.isInstance(this)) {
+				return this;
+			} else if (Repository.class.equals(adapter)) {
+				return repositoryRef.get();
+			}
+			return null;
+		}
+

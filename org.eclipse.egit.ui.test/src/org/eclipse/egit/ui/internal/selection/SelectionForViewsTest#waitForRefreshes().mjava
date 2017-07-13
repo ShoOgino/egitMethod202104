@@ -1,0 +1,10 @@
+	private void waitForRefreshes() throws Exception {
+		TestUtil.joinJobs(JobFamilies.GENERATE_HISTORY);
+		TestUtil.joinJobs(JobFamilies.STAGING_VIEW_RELOAD);
+		// Join UI update triggered by GenerateHistoryJob
+		PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+			// Nothing
+		});
+		refreshAndWait();
+	}
+

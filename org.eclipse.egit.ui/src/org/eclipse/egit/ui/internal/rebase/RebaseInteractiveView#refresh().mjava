@@ -11,6 +11,8 @@
 				try {
 					planTreeViewer.setInput(currentPlan);
 					refreshUI();
+					// Force a selection changed event
+					planTreeViewer.setSelection(planTreeViewer.getSelection());
 				} finally {
 					t.setRedraw(true);
 				}

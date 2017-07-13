@@ -1,0 +1,13 @@
+	private void focusChanged(Control control) {
+		for (Viewer viewer : viewers) {
+			if (control == viewer.getControl()) {
+				if (viewer != currentViewer) {
+					currentViewer = viewer;
+					fireSelectionChanged(getSelectionListeners());
+					fireSelectionChanged(getPostSelectionListeners());
+				}
+				return;
+			}
+		}
+	}
+

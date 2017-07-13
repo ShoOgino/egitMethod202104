@@ -2,6 +2,10 @@
 	public void dispose() {
 		removeListeners();
 		resources.dispose();
+		if (switchRepositoriesAction != null) {
+			switchRepositoriesAction.dispose();
+			switchRepositoriesAction = null;
+		}
 		super.dispose();
 	}
 

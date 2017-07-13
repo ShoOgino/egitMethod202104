@@ -74,6 +74,15 @@
 
 		toolbar.add(new Separator());
 
+		switchRepositoriesAction = new RepositoryToolbarAction(false,
+				() -> realRepository,
+				repo -> {
+					if (realRepository != repo) {
+						reload(repo);
+					}
+				});
+		toolbar.add(switchRepositoriesAction);
+
 		compareModeAction = new Action(UIText.StagingView_CompareMode,
 				IAction.AS_CHECK_BOX) {
 			@Override

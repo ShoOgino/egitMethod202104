@@ -1,0 +1,11 @@
+	@Test
+	public void testViewsReactOnRepoViewSelection() throws Exception {
+		repoView.show();
+		repoView.setFocus();
+		SWTBotTree tree = repoView.bot().tree();
+		SWTBotTreeItem repoNode = myRepoViewUtil.getRootItem(tree,
+				clonedRepositoryDir);
+		repoNode.select();
+		assertAllViews(clonedRepositoryDir);
+	}
+

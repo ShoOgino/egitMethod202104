@@ -5,8 +5,10 @@
 				return; // Already loaded.
 			}
 			try (Git git = new Git(repository)) {
-				refLog = git.reflog().setRef(ref).call();
-				collector.add(refLog.toArray(), monitor);
+				refLog = git.reflog().setRef(ref).call().stream()
+						.map(entry -> new ReflogItem(ReflogInput.this, entry))
+						.toArray(ReflogItem[]::new);
+				collector.add(refLog, monitor);
 			} catch (Exception e) {
 				Activator.logError("Error running reflog command", e); //$NON-NLS-1$
 				collector.add(ERROR_ELEMENT, monitor);

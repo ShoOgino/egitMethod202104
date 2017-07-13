@@ -14,9 +14,13 @@
 
 			AnyObjectId headId = resolveHead(db, true);
 			if (headId == null) {
-				graph.getTableView().setInput(new SWTCommit[0]);
+				TableViewer viewer = graph.getTableView();
+				viewer.setInput(new SWTCommit[0]);
 				currentHeadId = null;
 				currentFetchHeadId = null;
+				currentRepo = db;
+				// Force a selection changed event
+				viewer.setSelection(viewer.getSelection());
 				return;
 			}
 			AnyObjectId fetchHeadId = resolveFetchHead(db);

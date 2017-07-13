@@ -510,7 +510,9 @@
 		UIUtils.notifySelectionChangedWithCurrentSelection(
 				selectionChangedListener, site);
 
-		site.setSelectionProvider(unstagedViewer);
+		site.setSelectionProvider(new RepositorySelectionProvider(
+				new MultiViewerSelectionProvider(unstagedViewer, stagedViewer),
+				() -> realRepository));
 
 		ViewerFilter filter = new ViewerFilter() {
 			@Override

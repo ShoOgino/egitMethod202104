@@ -1,0 +1,28 @@
+	/**
+	 * Populates the given {@link IMenuManager} with a list of repositories.
+	 * Each currently known configured repository is shown with its repository
+	 * name and the path to the .git directory as tooltip; when a menu item is
+	 * selected, the given {@code action} is invoked. Bare repositories can be
+	 * excluded from the list. Menu items are sorted by repository name and .git
+	 * directory paths.
+	 *
+	 * @param menuManager
+	 *            to populate with the list of repositories
+	 * @param includeBare
+	 *            {@code true} if bare repositories should be included in the
+	 *            list, {@code false} otherwise
+	 * @param currentRepoDir
+	 *            git directory of a repository that is to be marked as
+	 *            "current"; may be {@code null}.
+	 * @param action
+	 *            to perform on the chosen repository
+	 */
+	public static void fillRepositories(@NonNull IMenuManager menuManager,
+			boolean includeBare, @Nullable File currentRepoDir,
+			@NonNull Consumer<Repository> action) {
+		for (IAction item : getRepositoryActions(includeBare, currentRepoDir,
+				action)) {
+			menuManager.add(item);
+		}
+	}
+

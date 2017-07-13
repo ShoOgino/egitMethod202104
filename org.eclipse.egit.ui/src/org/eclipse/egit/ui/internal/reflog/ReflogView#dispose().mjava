@@ -8,5 +8,9 @@
 		}
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(uiPrefsListener);
+		if (switchRepositoriesAction != null) {
+			switchRepositoriesAction.dispose();
+			switchRepositoriesAction = null;
+		}
 	}
 

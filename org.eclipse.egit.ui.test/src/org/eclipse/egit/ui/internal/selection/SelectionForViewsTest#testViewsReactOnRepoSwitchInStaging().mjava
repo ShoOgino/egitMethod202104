@@ -1,0 +1,29 @@
+	@Ignore("Doesn't work for an unknown reason. Other views do not update in test, while this works in production.")
+	@Test
+	public void testViewsReactOnRepoSwitchInStaging() throws Exception {
+		stagingView.show();
+		stagingView.setFocus();
+		waitForRefreshes();
+		SWTBotToolbarDropDownButton button = stagingView
+				.toolbarDropDownButton(UIText.RepositoryToolbarAction_tooltip);
+		button.menuItem(allOf(instanceOf(MenuItem.class),
+				withMnemonic(repositoryName(clonedRepositoryDir)))).click();
+		TestUtil.joinJobs(JobFamilies.STAGING_VIEW_RELOAD);
+		PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+			// Nothing
+		});
+		assertAllViews(clonedRepositoryDir);
+		stagingView.show();
+		stagingView.setFocus();
+		waitForRefreshes();
+		button = stagingView
+				.toolbarDropDownButton(UIText.RepositoryToolbarAction_tooltip);
+		button.menuItem(allOf(instanceOf(MenuItem.class),
+				withMnemonic(repositoryName(clonedRepositoryDir)))).click();
+		TestUtil.joinJobs(JobFamilies.STAGING_VIEW_RELOAD);
+		PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+			// Nothing
+		});
+		assertAllViews(localRepositoryDir);
+	}
+

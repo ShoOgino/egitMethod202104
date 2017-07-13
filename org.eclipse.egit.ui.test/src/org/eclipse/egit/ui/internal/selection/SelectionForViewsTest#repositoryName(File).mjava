@@ -1,0 +1,5 @@
+	private String repositoryName(File repoDir) throws Exception {
+		return org.eclipse.egit.core.Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(lookupRepository(repoDir));
+	}
+

@@ -8,117 +8,101 @@
 			return;
 		}
 		if (repository == null) {
-			asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					clearRepository(null);
-				}
-			});
+			asyncUpdate(() -> clearRepository(null));
 			return;
 		}
 
 		if (!isValidRepo(repository)) {
-			asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					clearRepository(repository);
-				}
-			});
+			asyncUpdate(() -> clearRepository(repository));
 			return;
 		}
 
 		final boolean repositoryChanged = currentRepository != repository;
+		realRepository = repository;
 		currentRepository = repository;
 
-		asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				if (isDisposed()) {
-					return;
-				}
-
-				final IndexDiffData indexDiff = doReload(repository);
-				boolean indexDiffAvailable = indexDiffAvailable(indexDiff);
-				boolean noConflicts = noConflicts(indexDiff);
-
-				if (repositoryChanged) {
-					// Reset paths, they're from the old repository
-					resetPathsToExpand();
-					if (refsChangedListener != null)
-						refsChangedListener.remove();
-					refsChangedListener = repository.getListenerList()
-							.addRefsChangedListener(new RefsChangedListener() {
-
-								@Override
-								public void onRefsChanged(RefsChangedEvent event) {
-									updateRebaseButtonVisibility(repository
-											.getRepositoryState().isRebasing());
-								}
-
-							});
-				}
-				final StagingViewUpdate update = new StagingViewUpdate(repository, indexDiff, null);
-				Object[] unstagedExpanded = unstagedViewer.getVisibleExpandedElements();
-				Object[] stagedExpanded = stagedViewer.getVisibleExpandedElements();
-
-				int unstagedElementsCount = updateAutoExpand(unstagedViewer,
-						getUnstaged(indexDiff));
-				int stagedElementsCount = updateAutoExpand(stagedViewer,
-						getStaged(indexDiff));
-				int elementsCount = unstagedElementsCount + stagedElementsCount;
-
-				if (elementsCount > getMaxLimitForListMode()) {
-					listPresentationAction.setEnabled(false);
-					if (presentation == Presentation.LIST) {
-						compactTreePresentationAction.setChecked(true);
-						switchToCompactModeInternal(true);
-					} else {
-						setExpandCollapseActionsVisible(false,
-								unstagedElementsCount <= getMaxLimitForListMode(),
-								true);
-						setExpandCollapseActionsVisible(true,
-								stagedElementsCount <= getMaxLimitForListMode(),
-								true);
-					}
-				} else {
-					listPresentationAction.setEnabled(true);
-					boolean changed = getPreferenceStore().getBoolean(
-							UIPreferences.STAGING_VIEW_PRESENTATION_CHANGED);
-					if (changed) {
-						listPresentationAction.setChecked(true);
-						switchToListMode();
-					} else if (presentation != Presentation.LIST) {
-						setExpandCollapseActionsVisible(false, true, true);
-						setExpandCollapseActionsVisible(true, true, true);
-					}
-				}
-
-				setStagingViewerInput(unstagedViewer, update, unstagedExpanded,
-						pathsToExpandInUnstaged);
-				setStagingViewerInput(stagedViewer, update, stagedExpanded,
-						pathsToExpandInStaged);
-				resetPathsToExpand();
-				refreshAction.setEnabled(true);
-
-				updateRebaseButtonVisibility(repository.getRepositoryState()
-						.isRebasing());
-
-				updateIgnoreErrorsButtonVisibility();
-
-				boolean rebaseContinueEnabled = indexDiffAvailable
-						&& repository.getRepositoryState().isRebasing()
-						&& noConflicts;
-				rebaseContinueButton.setEnabled(rebaseContinueEnabled);
-
-				form.setText(GitLabels.getStyledLabelSafe(repository).toString());
-				updateCommitMessageComponent(repositoryChanged, indexDiffAvailable);
-				enableCommitWidgets(indexDiffAvailable && noConflicts);
-
-				updateCommitButtons();
-				updateSectionText();
+		asyncUpdate(() -> {
+			if (isDisposed()) {
+				return;
 			}
 
+			final IndexDiffData indexDiff = doReload(repository);
+			boolean indexDiffAvailable = indexDiffAvailable(indexDiff);
+			boolean noConflicts = noConflicts(indexDiff);
+
+			if (repositoryChanged) {
+				// Reset paths, they're from the old repository
+				resetPathsToExpand();
+				if (refsChangedListener != null)
+					refsChangedListener.remove();
+				refsChangedListener = repository.getListenerList()
+						.addRefsChangedListener(
+								event -> updateRebaseButtonVisibility(repository
+										.getRepositoryState().isRebasing()));
+			}
+			final StagingViewUpdate update = new StagingViewUpdate(repository,
+					indexDiff, null);
+			Object[] unstagedExpanded = unstagedViewer
+					.getVisibleExpandedElements();
+			Object[] stagedExpanded = stagedViewer.getVisibleExpandedElements();
+
+			int unstagedElementsCount = updateAutoExpand(unstagedViewer,
+					getUnstaged(indexDiff));
+			int stagedElementsCount = updateAutoExpand(stagedViewer,
+					getStaged(indexDiff));
+			int elementsCount = unstagedElementsCount + stagedElementsCount;
+
+			if (elementsCount > getMaxLimitForListMode()) {
+				listPresentationAction.setEnabled(false);
+				if (presentation == Presentation.LIST) {
+					compactTreePresentationAction.setChecked(true);
+					switchToCompactModeInternal(true);
+				} else {
+					setExpandCollapseActionsVisible(false,
+							unstagedElementsCount <= getMaxLimitForListMode(),
+							true);
+					setExpandCollapseActionsVisible(true,
+							stagedElementsCount <= getMaxLimitForListMode(),
+							true);
+				}
+			} else {
+				listPresentationAction.setEnabled(true);
+				boolean changed = getPreferenceStore().getBoolean(
+						UIPreferences.STAGING_VIEW_PRESENTATION_CHANGED);
+				if (changed) {
+					listPresentationAction.setChecked(true);
+					switchToListMode();
+				} else if (presentation != Presentation.LIST) {
+					setExpandCollapseActionsVisible(false, true, true);
+					setExpandCollapseActionsVisible(true, true, true);
+				}
+			}
+
+			setStagingViewerInput(unstagedViewer, update, unstagedExpanded,
+					pathsToExpandInUnstaged);
+			setStagingViewerInput(stagedViewer, update, stagedExpanded,
+					pathsToExpandInStaged);
+			resetPathsToExpand();
+			// Force a selection changed event
+			unstagedViewer.setSelection(unstagedViewer.getSelection());
+			refreshAction.setEnabled(true);
+
+			updateRebaseButtonVisibility(
+					repository.getRepositoryState().isRebasing());
+
+			updateIgnoreErrorsButtonVisibility();
+
+			boolean rebaseContinueEnabled = indexDiffAvailable
+					&& repository.getRepositoryState().isRebasing()
+					&& noConflicts;
+			rebaseContinueButton.setEnabled(rebaseContinueEnabled);
+
+			form.setText(GitLabels.getStyledLabelSafe(repository).toString());
+			updateCommitMessageComponent(repositoryChanged, indexDiffAvailable);
+			enableCommitWidgets(indexDiffAvailable && noConflicts);
+
+			updateCommitButtons();
+			updateSectionText();
 		});
 	}
 

@@ -5,17 +5,21 @@
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
 				if (!listenOnRepositoryViewSelection
-						|| part == getSite().getPart())
+						|| part == getSite().getPart()) {
 					return;
-
+				}
 				// this may happen if we switch between editors
 				if (part instanceof IEditorPart) {
 					IEditorInput input = ((IEditorPart) part).getEditorInput();
-					if (input instanceof IFileEditorInput)
-						setInput(new StructuredSelection(
-								((IFileEditorInput) input).getFile()));
-				} else
-					setInput(selection);
+					if (input instanceof IFileEditorInput) {
+						newInput(
+								new StructuredSelection(
+										((IFileEditorInput) input).getFile()),
+								false);
+					}
+				} else {
+					newInput(selection, false);
+				}
 			}
 		};
 

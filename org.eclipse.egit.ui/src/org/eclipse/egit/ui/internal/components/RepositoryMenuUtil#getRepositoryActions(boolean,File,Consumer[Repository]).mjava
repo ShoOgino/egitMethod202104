@@ -1,0 +1,74 @@
+	/**
+	 * Creates for each configured repository an {@link IAction} that will
+	 * perform the given {@code action} when invoked.
+	 *
+	 * @param includeBare
+	 *            {@code true} if bare repositories should be included in the
+	 *            list, {@code false} otherwise
+	 * @param currentRepoDir
+	 *            git directory of a repository that is to be marked as
+	 *            "current"; may be {@code null}.
+	 * @param action
+	 *            to perform on the chosen repository
+	 * @return the (possibly empty) list of actions
+	 */
+	public static Collection<IAction> getRepositoryActions(boolean includeBare,
+			@Nullable File currentRepoDir,
+			@NonNull Consumer<Repository> action) {
+		RepositoryUtil util = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryUtil();
+		RepositoryCache cache = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryCache();
+		Set<String> repositories = util.getRepositories();
+		Map<String, Set<File>> repos = new HashMap<>();
+		for (String repo : repositories) {
+			File gitDir = new File(repo);
+			String name = null;
+			try {
+				Repository r = cache.lookupRepository(gitDir);
+				if (!includeBare && r.isBare()) {
+					continue;
+				}
+				name = util.getRepositoryName(r);
+			} catch (IOException e) {
+				continue;
+			}
+			Set<File> files = repos.get(name);
+			if (files == null) {
+				files = new HashSet<>();
+				files.add(gitDir);
+				repos.put(name, files);
+			} else {
+				files.add(gitDir);
+			}
+		}
+		String[] repoNames = repos.keySet().toArray(new String[repos.size()]);
+		Arrays.sort(repoNames, CommonUtils.STRING_ASCENDING_COMPARATOR);
+		List<IAction> result = new ArrayList<>();
+		for (String repoName : repoNames) {
+			Set<File> files = repos.get(repoName);
+			File[] gitDirs = files.toArray(new File[files.size()]);
+			Arrays.sort(gitDirs);
+			for (File f : gitDirs) {
+				IAction menuItem = new Action(repoName,
+						IAction.AS_RADIO_BUTTON) {
+					@Override
+					public void run() {
+						try {
+							Repository r = cache.lookupRepository(f);
+							action.accept(r);
+						} catch (IOException e) {
+							Activator.showError(e.getLocalizedMessage(), e);
+						}
+					}
+				};
+				menuItem.setToolTipText(f.getPath());
+				if (f.equals(currentRepoDir)) {
+					menuItem.setChecked(true);
+				}
+				result.add(menuItem);
+			}
+		}
+		return result;
+	}
+

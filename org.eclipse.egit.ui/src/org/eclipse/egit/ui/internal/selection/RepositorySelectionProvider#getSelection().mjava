@@ -1,0 +1,13 @@
+	@Override
+	public ISelection getSelection() {
+		ISelection selection = baseProvider.getSelection();
+		if (selection.isEmpty() && selection instanceof IStructuredSelection) {
+			Repository repository = repositoryProvider.get();
+			if (repository != null) {
+				return new StructuredSelection(
+						new RepositoryNode(null, repository));
+			}
+		}
+		return selection;
+	}
+

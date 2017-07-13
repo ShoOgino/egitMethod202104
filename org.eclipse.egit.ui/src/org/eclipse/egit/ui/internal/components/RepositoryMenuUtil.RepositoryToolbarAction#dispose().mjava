@@ -1,0 +1,9 @@
+		@Override
+		public void dispose() {
+			if (menu != null) {
+				menu.dispose();
+				menu = null;
+			}
+			preferences.removePreferenceChangeListener(listener);
+		}
+

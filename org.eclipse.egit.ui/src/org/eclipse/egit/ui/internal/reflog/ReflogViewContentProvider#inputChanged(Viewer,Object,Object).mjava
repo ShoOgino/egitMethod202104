@@ -6,6 +6,16 @@
 		currentInput = newInput;
 		if (viewer instanceof AbstractTreeViewer && newInput != null) {
 			loader = new DeferredBatchLoader((AbstractTreeViewer) viewer);
+			loader.addUpdateCompleteListener(new JobChangeAdapter() {
+
+				@Override
+				public void done(IJobChangeEvent event) {
+					if (event.getResult().isOK()) {
+						// Force a selection event
+						viewer.setSelection(viewer.getSelection());
+					}
+				}
+			});
 		}
 	}
 

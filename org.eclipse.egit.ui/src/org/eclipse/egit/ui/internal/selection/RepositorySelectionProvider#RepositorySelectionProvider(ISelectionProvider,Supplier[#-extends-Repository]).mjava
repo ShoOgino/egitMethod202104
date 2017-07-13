@@ -1,0 +1,21 @@
+	/**
+	 * Creates a new {@link RepositorySelectionProvider}. If the base provider
+	 * yields an empty selection, it supplies the current repository as
+	 * determined by the given {@link Supplier}.
+	 *
+	 * @param baseProvider
+	 *            to use normally for selections
+	 * @param repositoryProvider
+	 *            to use to get the repository
+	 */
+	public RepositorySelectionProvider(ISelectionProvider baseProvider,
+			Supplier<? extends Repository> repositoryProvider) {
+		this.repositoryProvider = repositoryProvider;
+		this.baseProvider = baseProvider;
+		baseProvider.addSelectionChangedListener(selectionHook);
+		if (baseProvider instanceof IPostSelectionProvider) {
+			((IPostSelectionProvider) baseProvider)
+					.addPostSelectionChangedListener(postSelectionHook);
+		}
+	}
+

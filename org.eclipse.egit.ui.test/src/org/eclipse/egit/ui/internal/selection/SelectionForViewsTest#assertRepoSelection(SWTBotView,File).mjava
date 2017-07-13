@@ -1,0 +1,24 @@
+	private void assertRepoSelection(SWTBotView view, File repoDir)
+			throws Exception {
+		view.show();
+		waitForRefreshes();
+		String viewId = view.getViewReference().getId();
+		ISelectionProvider selectionProvider = view.getViewReference()
+				.getView(false).getViewSite().getSelectionProvider();
+		assertNotNull("No selection provider " + viewId, selectionProvider);
+		ISelection selection = UIThreadRunnable
+				.syncExec(() -> selectionProvider.getSelection());
+		assertTrue("Expected an IStructuredSelection " + viewId,
+				selection instanceof IStructuredSelection);
+		assertFalse("Expected a non-empty selection " + viewId,
+				selection.isEmpty());
+		Object firstElement = ((IStructuredSelection) selection)
+				.getFirstElement();
+		assertNotNull("Null in selection " + viewId, firstElement);
+		Repository repo = AdapterUtils.adapt(firstElement, Repository.class);
+		assertNotNull("Expected a repository " + viewId + ", but "
+				+ firstElement.getClass().getName()
+				+ " doesn't adapt to Repository", repo);
+		assertEquals("Wrong directory " + viewId, repoDir, repo.getDirectory());
+	}
+

@@ -1,0 +1,42 @@
+	@Before
+	public void before() throws Exception {
+		localRepositoryDir = createProjectAndCommitToRepository();
+		remoteRepositoryDir = createRemoteRepository(localRepositoryDir);
+		URIish uri = new URIish("file:///" + remoteRepositoryDir.getPath());
+		File workdir = new File(getTestDirectory(), "ClonedRepo");
+		CloneOperation op = new CloneOperation(uri, true, null, workdir,
+				"refs/heads/master", "origin", 0);
+		op.run(null);
+		clonedRepositoryDir = new File(workdir, Constants.DOT_GIT);
+		RepositoryUtil repoUtil = Activator.getDefault().getRepositoryUtil();
+		repoUtil.addConfiguredRepository(localRepositoryDir);
+		repoUtil.addConfiguredRepository(clonedRepositoryDir);
+		repoUtil.addConfiguredRepository(remoteRepositoryDir); // it's bare
+		stagingView = TestUtil.showView(StagingView.VIEW_ID);
+		reflogView = TestUtil.showView(ReflogView.VIEW_ID);
+		rebaseInteractiveView = TestUtil
+				.showView(RebaseInteractiveView.VIEW_ID);
+		repoView = TestUtil.showView(RepositoriesView.VIEW_ID);
+		RepositoriesView repos = (RepositoriesView) repoView.getViewReference()
+				.getView(false);
+		repos.setReactOnSelection(true);
+		historyView = TestUtil.showHistoryView();
+		IHistoryView history = (IHistoryView) historyView.getViewReference()
+				.getView(false);
+		((GenericHistoryView) history).setLinkingEnabled(true);
+		// Ensure that the git history page is active
+		Exception[] exception = { null };
+		PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+			try {
+				history.showHistoryFor(new RepositoryNode(null,
+						lookupRepository(localRepositoryDir)), true);
+			} catch (Exception e) {
+				exception[0] = e;
+			}
+		});
+		if (exception[0] != null) {
+			throw exception[0];
+		}
+		waitForRefreshes();
+	}
+

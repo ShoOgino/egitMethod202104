@@ -1,0 +1,40 @@
+		/**
+		 * Creates a new {@link RepositoryToolbarAction} with the given text and
+		 * the given {@code action}.
+		 *
+		 * @param text
+		 *            for the action
+		 * @param image
+		 *            for the action
+		 * @param tooltip
+		 *            for the action
+		 * @param includeBare
+		 *            {@code true} if bare repositories shall be included,
+		 *            {@code false} otherwise
+		 * @param currentRepo
+		 *            supplying the "current" repository, if any, or
+		 *            {@code null} otherwise
+		 * @param action
+		 *            to run when a repository is selected from the drop-down
+		 *            menu
+		 */
+		public RepositoryToolbarAction(String text,
+				@Nullable ImageDescriptor image, @Nullable String tooltip,
+				boolean includeBare, @NonNull Supplier<Repository> currentRepo,
+				@NonNull Consumer<Repository> action) {
+			super(text, IAction.AS_DROP_DOWN_MENU);
+			setImageDescriptor(image);
+			setToolTipText(tooltip == null ? text : tooltip);
+			this.includeBare = includeBare;
+			this.currentRepo = currentRepo;
+			this.action = action;
+			this.listener = event -> {
+				if (RepositoryUtil.PREFS_DIRECTORIES_REL
+						.equals(event.getKey())) {
+					setEnabled(!util.getRepositories().isEmpty());
+				}
+			};
+			setEnabled(!util.getRepositories().isEmpty());
+			preferences.addPreferenceChangeListener(listener);
+		}
+

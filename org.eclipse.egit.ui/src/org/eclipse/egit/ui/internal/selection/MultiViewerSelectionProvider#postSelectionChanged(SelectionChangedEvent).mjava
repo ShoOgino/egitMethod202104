@@ -1,0 +1,6 @@
+	private void postSelectionChanged(SelectionChangedEvent event) {
+		if (event.getSelectionProvider() == currentViewer) {
+			fireSelectionChanged(getPostSelectionListeners());
+		}
+	}
+
