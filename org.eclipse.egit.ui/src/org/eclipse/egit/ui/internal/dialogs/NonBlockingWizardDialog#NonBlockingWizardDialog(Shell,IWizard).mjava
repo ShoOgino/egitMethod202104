@@ -1,5 +1,6 @@
 	/**
-	 * Creates a new {@link NonBlockingWizardDialog}.
+	 * Creates a new {@link NonBlockingWizardDialog} that prevents the dialog
+	 * from being made too small to show the starting page.
 	 *
 	 * @param parentShell
 	 *            for the dialog
@@ -7,6 +8,6 @@
 	 *            to show in the dialog
 	 */
 	public NonBlockingWizardDialog(Shell parentShell, IWizard newWizard) {
-		super(parentShell, newWizard);
+		this(parentShell, newWizard, true);
 	}
 

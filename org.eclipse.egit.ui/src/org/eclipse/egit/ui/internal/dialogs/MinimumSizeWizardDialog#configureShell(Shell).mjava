@@ -1,0 +1,16 @@
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		if (restrictResize) {
+			newShell.addShellListener(new ShellAdapter() {
+
+				@Override
+				public void shellActivated(ShellEvent e) {
+					// Prevent making the dialog smaller than the starting page
+					newShell.removeShellListener(this); // Only the first time
+					newShell.setMinimumSize(newShell.getSize());
+				}
+			});
+		}
+	}
+
