@@ -1,0 +1,24 @@
+		@Override
+		public RevCommit getRevCommit() {
+			if (commit != null) {
+				return commit;
+			}
+			ObjectId id = getObjectId();
+			if (commit != null) {
+				return commit;
+			}
+			if (id == null) {
+				return null;
+			}
+			Repository repo = getRepository();
+			if (repo == null) {
+				return null;
+			}
+			try {
+				commit = repo.parseCommit(id);
+				return commit;
+			} catch (IOException e) {
+				return null;
+			}
+		}
+

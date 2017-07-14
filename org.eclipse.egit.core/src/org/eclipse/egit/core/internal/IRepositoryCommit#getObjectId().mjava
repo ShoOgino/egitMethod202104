@@ -1,0 +1,11 @@
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return the {@link ObjectId} of the {@link RevCommit}.
+	 */
+	@Override
+	default ObjectId getObjectId() {
+		RevCommit commit = getRevCommit();
+		return commit == null ? null : commit.getId();
+	}
+
