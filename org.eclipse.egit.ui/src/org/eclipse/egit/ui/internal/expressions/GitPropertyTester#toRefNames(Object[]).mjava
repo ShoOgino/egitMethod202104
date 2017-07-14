@@ -1,0 +1,16 @@
+	private Collection<String> toRefNames(Object[] args) {
+		List<String> names = new ArrayList<>(2);
+		if (args != null) {
+			for (Object arg : args) {
+				String name = arg.toString();
+				if (name.startsWith(Constants.R_REFS)) {
+					names.add(name);
+				}
+			}
+		}
+		if (names.isEmpty()) {
+			names.add(Constants.R_HEADS);
+		}
+		return names;
+	}
+

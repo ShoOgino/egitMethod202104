@@ -1,0 +1,35 @@
+	private boolean hasRef(IRepositoryCommit commit, Collection<String> names) {
+		Repository repository = commit.getRepository();
+		if (repository == null) {
+			return false;
+		}
+		RevCommit revCommit = commit.getRevCommit();
+		if (revCommit instanceof PlotCommit) {
+			int n = ((PlotCommit) revCommit).getRefCount();
+			for (int i = 0; i < n; i++) {
+				Ref ref = ((PlotCommit) revCommit).getRef(i);
+				for (String name : names) {
+					if (ref.getName().startsWith(name)) {
+						return true;
+					}
+				}
+			}
+		} else {
+			try {
+				ObjectId selectedId = commit.getRevCommit().getId();
+				for (String name : names) {
+					for (Ref branch : repository.getRefDatabase().getRefs(name)
+							.values()) {
+						ObjectId objectId = branch.getLeaf().getObjectId();
+						if (objectId != null && objectId.equals(selectedId)) {
+							return true;
+						}
+					}
+				}
+			} catch (IOException e) {
+				// ignore here
+			}
+		}
+		return false;
+	}
+

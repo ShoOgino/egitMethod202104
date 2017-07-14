@@ -1,0 +1,21 @@
+	/**
+	 * If the expected value is a {@link Boolean}, returns {@code true} if it's
+	 * equal to {@code result}, otherwise returns {@code result}.
+	 *
+	 * @param expectedValue
+	 *            as passed in to the
+	 *            {@link PropertyTester#test(Object, String, Object[], Object)
+	 *            test()} method (the {@code value="..."} attribute from the
+	 *            XML, converted as usual)
+	 * @param result
+	 *            as computed by the test
+	 * @return {@code true} is the {@code result} matches the
+	 *         {@code expectedValue}
+	 */
+	protected boolean computeResult(Object expectedValue, boolean result) {
+		if (expectedValue instanceof Boolean) {
+			return ((Boolean) expectedValue).booleanValue() == result;
+		}
+		return result;
+	}
+
