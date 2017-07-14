@@ -6,7 +6,7 @@
 		SWTBotTableItem item = table.getTableItem(0);
 		item.select();
 		ContextMenuHelper.clickContextMenu(table,
-				UIText.GitHistoryPage_CreateBranchMenuLabel);
+				util.getPluginLocalizedValue("HistoryCreateBranch.label"));
 		SWTBotShell dialog = bot
 				.shell(UIText.CreateBranchWizard_NewBranchTitle);
 		dialog.bot().textWithId("BranchName").setText("NewBranch");

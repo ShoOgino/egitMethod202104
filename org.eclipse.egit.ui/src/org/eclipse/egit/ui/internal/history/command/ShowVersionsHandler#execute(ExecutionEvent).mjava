@@ -1,7 +1,7 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		boolean compareMode = Boolean.TRUE.toString().equals(
-				event.getParameter(HistoryViewCommands.COMPARE_MODE_PARAM));
+		boolean compareMode = Boolean.TRUE.toString()
+				.equals(event.getParameter(COMPARE_MODE_PARAM));
 		IStructuredSelection selection = getSelection(getPage());
 		if (selection.size() < 1)
 			return null;

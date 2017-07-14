@@ -16,13 +16,14 @@
 
 				ICommandService srv = CommonUtils.getService(site, ICommandService.class);
 				IHandlerService hsrv = CommonUtils.getService(site, IHandlerService.class);
-				Command cmd = srv.getCommand(HistoryViewCommands.SHOWVERSIONS);
+				Command cmd = srv.getCommand(ShowVersionsHandler.COMMAND_ID);
 				Parameterization[] parms;
 				if (Activator.getDefault().getPreferenceStore().getBoolean(
 						UIPreferences.RESOURCEHISTORY_COMPARE_MODE))
 					try {
 						IParameter parm = cmd
-								.getParameter(HistoryViewCommands.COMPARE_MODE_PARAM);
+								.getParameter(
+										ShowVersionsHandler.COMPARE_MODE_PARAM);
 						parms = new Parameterization[] { new Parameterization(
 								parm, Boolean.TRUE.toString()) };
 					} catch (NotDefinedException e) {
@@ -41,10 +42,12 @@
 			}
 		});
 
-		Control c = getControl();
+		menuMgr.add(new Separator(IWorkbenchActionConstants.HISTORY_GROUP));
 		menuMgr.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuMgr.add(new Separator());
+		menuMgr.add(copy);
+		Control c = getControl();
+		menuMgr.addMenuListener(manager -> c.setFocus());
 		c.setMenu(menuMgr.createContextMenu(c));
-		c.addMenuDetectListener(menuListener = new MenuListener(menuMgr,
-				getTableView(), site, copy));
 	}
 

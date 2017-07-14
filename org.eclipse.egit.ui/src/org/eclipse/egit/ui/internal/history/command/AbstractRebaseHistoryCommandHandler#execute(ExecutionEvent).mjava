@@ -1,7 +1,11 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		PlotCommit commit = (PlotCommit) getSelection(event).getFirstElement();
+		RevCommit revCommit = AdapterUtils
+				.adapt(getSelection(event).getFirstElement(), RevCommit.class);
+		if (!(revCommit instanceof PlotCommit)) {
+			return null;
+		}
+		PlotCommit commit = (PlotCommit) revCommit;
 		final Repository repository = getRepository(event);
 		if (repository == null)
 			return null;

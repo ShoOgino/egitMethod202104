@@ -17,10 +17,12 @@
 		List<RevCommit> commits = new ArrayList<>();
 		try (RevWalk walk = new RevWalk(repository)) {
 			for (Object element : selection.toList()) {
-				RevCommit commit = (RevCommit) element;
-				// Re-parse commit to clear effects of TreeFilter
-				RevCommit reparsed = walk.parseCommit(commit.getId());
-				commits.add(reparsed);
+				RevCommit commit = AdapterUtils.adapt(element, RevCommit.class);
+				if (commit != null) {
+					// Re-parse commit to clear effects of TreeFilter
+					RevCommit reparsed = walk.parseCommit(commit.getId());
+					commits.add(reparsed);
+				}
 			}
 		} catch (IOException e) {
 			throw new ExecutionException(e.getMessage(), e);

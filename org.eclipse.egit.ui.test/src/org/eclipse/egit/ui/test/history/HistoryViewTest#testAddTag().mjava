@@ -17,7 +17,7 @@
 		});
 
 		ContextMenuHelper.clickContextMenu(table,
-				UIText.GitHistoryPage_CreateTagMenuLabel);
+				util.getPluginLocalizedValue("HistoryCreateTag.label"));
 		SWTBotShell dialog = bot.shell(UIText.CreateTagDialog_NewTag);
 		dialog.bot().textWithLabel(UIText.CreateTagDialog_tagName)
 				.setText("NewTag");

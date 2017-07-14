@@ -1,10 +1,15 @@
 	private List<Ref> getBranchesOfCommit(IStructuredSelection selection,
-			String head,
-			boolean hideCurrentBranch) {
+			String head, boolean hideCurrentBranch) {
 		final List<Ref> branchesOfCommit = new ArrayList<>();
-		if (selection.isEmpty())
+		if (selection.isEmpty()) {
 			return branchesOfCommit;
-		PlotCommit commit = (PlotCommit) selection.getFirstElement();
+		}
+		RevCommit revCommit = AdapterUtils.adapt(selection.getFirstElement(),
+				RevCommit.class);
+		if (!(revCommit instanceof PlotCommit)) {
+			return branchesOfCommit;
+		}
+		PlotCommit commit = (PlotCommit) revCommit;
 
 		int refCount = commit.getRefCount();
 		for (int i = 0; i < refCount; i++) {
