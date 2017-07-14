@@ -1,0 +1,11 @@
+	private GitHistoryPage getGitHistoryPage(Object receiver) {
+		if (!(receiver instanceof IHistoryView)) {
+			return null;
+		}
+		IHistoryPage page = ((IHistoryView) receiver).getHistoryPage();
+		if (page instanceof GitHistoryPage) {
+			return (GitHistoryPage) page;
+		}
+		return null;
+	}
+

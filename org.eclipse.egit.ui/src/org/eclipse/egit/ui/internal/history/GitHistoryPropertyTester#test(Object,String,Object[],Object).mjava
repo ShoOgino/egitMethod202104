@@ -1,0 +1,22 @@
+	@Override
+	public boolean test(Object receiver, String property, Object[] args,
+			Object expectedValue) {
+		if ("isSingleFileHistory".equals(property)) { //$NON-NLS-1$
+			GitHistoryPage page = getGitHistoryPage(receiver);
+			if (page == null) {
+				return false;
+			}
+			Object single = page.getInputInternal().getSingleFile();
+			if (expectedValue instanceof String) {
+				if (expectedValue.equals("resource")) { //$NON-NLS-1$
+					return single instanceof IResource;
+				} else if (expectedValue.equals("file")) { //$NON-NLS-1$
+					return single instanceof File;
+				}
+			} else {
+				return computeResult(expectedValue, single != null);
+			}
+		}
+		return false;
+	}
+
