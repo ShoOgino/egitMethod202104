@@ -1,8 +1,10 @@
 	private void commit(boolean pushUpstream) {
 		if (!isCommitWithoutFilesAllowed()) {
-			MessageDialog.openError(getSite().getShell(),
-					UIText.StagingView_committingNotPossible,
-					UIText.StagingView_noStagedFiles);
+			MessageDialog md = new MessageDialog(getSite().getShell(),
+					UIText.StagingView_committingNotPossible, null,
+					UIText.StagingView_noStagedFiles, MessageDialog.ERROR,
+					new String[] { IDialogConstants.CLOSE_LABEL }, 0);
+			md.open();
 			return;
 		}
 		if (!commitMessageComponent.checkCommitInfo())
