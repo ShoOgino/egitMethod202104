@@ -1,27 +1,14 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		PlotCommit commit = (PlotCommit) getSelection(event).getFirstElement();
 		final Repository repository = getRepository(event);
-		if (repository == null)
+		if (repository == null) {
 			return null;
-
-		String currentBranch = getCurrentBranch(repository);
-		final Ref ref = getRef(commit, repository, currentBranch);
-
-		String jobname = NLS.bind(
-				UIText.RebaseCurrentRefCommand_RebasingCurrentJobName,
-				currentBranch, ref.getName());
-		AbstractRebaseCommandHandler rebaseCurrentRef = new AbstractRebaseCommandHandler(
-				jobname, UIText.RebaseCurrentRefCommand_RebaseCanceledMessage) {
-			@Override
-			protected RebaseOperation createRebaseOperation(
-					Repository repository2) throws ExecutionException {
-				return new RebaseOperation(repository2, ref,
-						RebaseInteractiveHandler.INSTANCE);
-			}
-		};
-		rebaseCurrentRef.execute(repository);
+		}
+		if (LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
+				null)) {
+			return null;
+		}
+		super.execute(event);
 		try {
 			RebaseInteractiveView rebaseInteractiveView = (RebaseInteractiveView) HandlerUtil
 					.getActiveWorkbenchWindowChecked(event).getActivePage()
