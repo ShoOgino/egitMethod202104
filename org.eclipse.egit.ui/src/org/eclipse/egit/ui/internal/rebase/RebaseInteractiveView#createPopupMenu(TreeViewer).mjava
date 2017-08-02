@@ -2,24 +2,24 @@
 		createContextMenuItems(planViewer);
 
 		MenuManager manager = new MenuManager();
-		manager.addMenuListener(new IMenuListener() {
-			@Override
-			public void menuAboutToShow(IMenuManager menuManager) {
-				boolean selectionNotEmpty = !planViewer.getSelection()
-						.isEmpty();
-				boolean rebaseNotStarted = !currentPlan
-						.hasRebaseBeenStartedYet();
-				boolean menuEnabled = selectionNotEmpty && rebaseNotStarted;
-				for (PlanContextMenuAction item : contextMenuItems)
-					item.setEnabled(menuEnabled);
+		Control c = planViewer.getControl();
+		manager.setRemoveAllWhenShown(true);
+		manager.addMenuListener(m -> {
+			c.setFocus();
+			boolean selectionNotEmpty = !planViewer.getSelection().isEmpty();
+			boolean rebaseNotStarted = currentPlan != null
+					&& !currentPlan.hasRebaseBeenStartedYet();
+			boolean menuEnabled = selectionNotEmpty && rebaseNotStarted;
+			if (menuEnabled) {
+				for (PlanContextMenuAction item : contextMenuItems) {
+					m.add(item);
+				}
 			}
+			m.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		});
-
-		for (PlanContextMenuAction item : contextMenuItems)
-			manager.add(item);
-
-		Menu menu = manager.createContextMenu(planViewer.getControl());
-		planViewer.getControl().setMenu(menu);
-		planViewer.getControl().addKeyListener(new ContextMenuKeyListener());
+		Menu menu = manager.createContextMenu(c);
+		c.setMenu(menu);
+		c.addKeyListener(new ContextMenuKeyListener());
+		getSite().registerContextMenu(manager, planTreeViewer);
 	}
 
