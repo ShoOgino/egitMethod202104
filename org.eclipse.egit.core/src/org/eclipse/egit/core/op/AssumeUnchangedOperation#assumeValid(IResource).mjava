@@ -11,28 +11,7 @@
 		if (rm == null) {
 			return;
 		}
-		final Repository db = rm.getRepository();
-
-		DirCache cache = caches.get(db);
-		if (cache == null) {
-			try {
-				cache = db.lockDirCache();
-			} catch (IOException err) {
-				throw new CoreException(Activator.error(CoreText.UntrackOperation_failed, err));
-			}
-			caches.put(db, cache);
-		}
-
-		final String path = rm.getRepoRelativePath(resource);
-		if (resource instanceof IContainer) {
-			for (final DirCacheEntry ent : cache.getEntriesWithin(path)) {
-				ent.setAssumeValid(assumeUnchanged);
-			}
-		} else {
-			final DirCacheEntry ent = cache.getEntry(path);
-			if (ent != null) {
-				ent.setAssumeValid(assumeUnchanged);
-			}
-		}
+		this.db = rm.getRepository();
+		assumeValid(resource.getLocation());
 	}
 

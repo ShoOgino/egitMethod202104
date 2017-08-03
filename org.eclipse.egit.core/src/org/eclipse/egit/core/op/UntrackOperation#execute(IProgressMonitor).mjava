@@ -1,6 +1,6 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
-		SubMonitor progress = SubMonitor.convert(monitor, rsrcList.size() * 2);
+		SubMonitor progress = SubMonitor.convert(monitor, (rsrcList.size() + locations.size()) * 2);
 		progress.setTaskName(CoreText.UntrackOperation_adding);
 
 		edits.clear();
@@ -10,10 +10,13 @@
 				remove(obj);
 				progress.worked(1);
 			}
+			for (IPath location : locations) {
+				remove(location);
+				progress.worked(1);
+			}
 
 			progress.setWorkRemaining(edits.size());
 			for (Map.Entry<Repository, DirCacheEditor> e : edits.entrySet()) {
-				final Repository db = e.getKey();
 				final DirCacheEditor editor = e.getValue();
 				progress.setTaskName(
 						NLS.bind(CoreText.UntrackOperation_writingIndex,

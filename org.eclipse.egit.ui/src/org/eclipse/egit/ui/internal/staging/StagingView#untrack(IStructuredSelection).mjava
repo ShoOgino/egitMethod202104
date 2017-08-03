@@ -1,0 +1,13 @@
+	private void untrack(@NonNull IStructuredSelection selection) {
+		List<IPath> locations = new ArrayList<>();
+		collectPaths(selection.toList(), locations);
+
+		if (locations.isEmpty()) {
+			return;
+		}
+
+		JobUtil.scheduleUserJob(
+				new UntrackOperation(currentRepository, locations),
+				UIText.Untrack_untrack, JobFamilies.UNTRACK);
+	}
+

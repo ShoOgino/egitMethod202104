@@ -1,0 +1,20 @@
+	private void remove(final IPath location) throws CoreException {
+		DirCacheEditor e = edits.get(db);
+		if (e == null) {
+			try {
+				e = db.lockDirCache().editor();
+			} catch (IOException err) {
+				throw new CoreException(Activator.error(CoreText.UntrackOperation_failed, err));
+			}
+			edits.put(db, e);
+		}
+
+		IPath dbDir = new Path(db.getWorkTree().getAbsolutePath());
+		String path = location.makeRelativeTo(dbDir).toString();
+		if (location.toFile().isDirectory()) {
+			e.add(new DirCacheEditor.DeleteTree(path));
+		} else {
+			e.add(new DirCacheEditor.DeletePath(path));
+		}
+	}
+

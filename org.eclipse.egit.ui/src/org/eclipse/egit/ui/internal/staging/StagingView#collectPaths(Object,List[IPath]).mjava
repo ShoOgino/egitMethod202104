@@ -1,0 +1,13 @@
+	private void collectPaths(Object o, List<IPath> result) {
+		if (o instanceof Iterable<?>) {
+			((Iterable<?>) o).forEach(child -> collectPaths(child, result));
+		} else if (o instanceof StagingFolderEntry) {
+			StagingViewContentProvider contentProvider = getContentProvider(unstagedViewer);
+			List<StagingEntry> entries = contentProvider
+					.getStagingEntriesFiltered((StagingFolderEntry) o);
+			collectPaths(entries, result);
+		} else if (o instanceof StagingEntry) {
+			result.add(AdapterUtils.adapt(o, IPath.class));
+		}
+	}
+

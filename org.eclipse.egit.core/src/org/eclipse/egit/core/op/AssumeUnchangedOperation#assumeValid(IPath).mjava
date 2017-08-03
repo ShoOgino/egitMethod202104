@@ -1,0 +1,19 @@
+	private void assumeValid(final IPath location) throws CoreException {
+		DirCache cache = caches.get(db);
+		if (cache == null) {
+			try {
+				cache = db.lockDirCache();
+			} catch (IOException err) {
+				throw new CoreException(Activator.error(CoreText.UntrackOperation_failed, err));
+			}
+			caches.put(db, cache);
+		}
+
+		IPath dbDir = new Path(db.getWorkTree().getAbsolutePath());
+		final String path = location.makeRelativeTo(dbDir).toString();
+		final DirCacheEntry ent = cache.getEntry(path);
+		if (ent != null) {
+			ent.setAssumeValid(assumeUnchanged);
+		}
+	}
+

@@ -1,0 +1,14 @@
+	private void assumeUnchanged(@NonNull IStructuredSelection selection) {
+		List<IPath> locations = new ArrayList<>();
+		collectPaths(selection.toList(), locations);
+
+		if (locations.isEmpty()) {
+			return;
+		}
+
+		JobUtil.scheduleUserJob(
+				new AssumeUnchangedOperation(currentRepository, locations, true),
+				UIText.AssumeUnchanged_assumeUnchanged,
+				JobFamilies.ASSUME_NOASSUME_UNCHANGED);
+	}
+

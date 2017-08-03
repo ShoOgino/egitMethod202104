@@ -1,6 +1,6 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
-		SubMonitor progress = SubMonitor.convert(monitor, rsrcList.size() * 2);
+		SubMonitor progress = SubMonitor.convert(monitor, (rsrcList.size() + locations.size()) * 2);
 		progress.setTaskName(CoreText.AssumeUnchangedOperation_adding);
 
 		caches.clear();
@@ -8,6 +8,10 @@
 		try {
 			for (IResource resource : rsrcList) {
 				assumeValid(resource);
+				progress.worked(1);
+			}
+			for (IPath location : locations) {
+				assumeValid(location);
 				progress.worked(1);
 			}
 
