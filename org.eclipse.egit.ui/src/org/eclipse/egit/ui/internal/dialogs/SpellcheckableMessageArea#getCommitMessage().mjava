@@ -1,8 +1,9 @@
 	/**
-	 * Returns the commit message, converting platform-specific line endings to '\n'
-	 * and hard-wrapping lines if necessary.
+	 * Returns the commit message, converting platform-specific line endings to
+	 * '\n' and hard-wrapping lines if necessary.
 	 *
-	 * @return commit message
+	 * @return commit message, without trailing whitespace on lines and without
+	 *         trailing empty lines.
 	 */
 	public String getCommitMessage() {
 		String text = getText();
@@ -10,6 +11,8 @@
 		if (shouldHardWrap()) {
 			text = wrapCommitMessage(text);
 		}
+		text = TRAILING_WHITE_SPACE_ON_LINES.matcher(text).replaceAll(""); //$NON-NLS-1$
+		text = TRAILING_NEWLINES.matcher(text).replaceFirst("\n"); //$NON-NLS-1$
 		return text;
 	}
 
