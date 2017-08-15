@@ -1,0 +1,20 @@
+	private static void warn(Config config, String entry, String defaultValue,
+			Throwable cause) {
+		String location = null;
+		if (config instanceof FileBasedConfig) {
+			File file = ((FileBasedConfig) config).getFile();
+			location = file.getAbsolutePath();
+		}
+		if (location == null) {
+			Activator.logWarning(MessageFormat.format(
+					CoreText.ReportingTypedConfigGetter_invalidConfig, entry,
+					defaultValue), cause);
+		} else {
+			Activator.logWarning(
+					MessageFormat.format(
+							CoreText.ReportingTypedConfigGetter_invalidConfigWithLocation,
+							location, entry, defaultValue),
+					cause);
+		}
+	}
+

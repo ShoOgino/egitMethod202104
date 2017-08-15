@@ -1,0 +1,13 @@
+	@Override
+	public int getInt(Config config, String section, String subsection,
+			String name, int defaultValue) {
+		try {
+			return super.getInt(config, section, subsection, name,
+					defaultValue);
+		} catch (IllegalArgumentException e) {
+			warn(config, join(section, subsection, name),
+					Integer.toString(defaultValue), e);
+			return defaultValue;
+		}
+	}
+

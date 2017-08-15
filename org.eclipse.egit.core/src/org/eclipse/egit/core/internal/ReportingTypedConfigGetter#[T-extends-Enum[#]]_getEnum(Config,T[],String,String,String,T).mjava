@@ -1,0 +1,18 @@
+	@Override
+	public <T extends Enum<?>> T getEnum(Config config, T[] all, String section,
+			String subsection, String name, T defaultValue) {
+		try {
+			return super.getEnum(config, all, section, subsection, name,
+					defaultValue);
+		} catch (IllegalArgumentException e) {
+			String valueUsed;
+			if (defaultValue instanceof Config.ConfigEnum) {
+				valueUsed = ((Config.ConfigEnum) defaultValue).toConfigValue();
+			} else {
+				valueUsed = defaultValue.toString().toLowerCase(Locale.ROOT);
+			}
+			warn(config, join(section, subsection, name), valueUsed, e);
+			return defaultValue;
+		}
+	}
+

@@ -29,6 +29,7 @@
 		repositoryUtil.dispose();
 		repositoryUtil = null;
 		secureStore = null;
+		Config.setTypedConfigGetter(null);
 		super.stop(context);
 		plugin = null;
 	}

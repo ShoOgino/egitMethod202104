@@ -1,0 +1,13 @@
+	@Override
+	public long getLong(Config config, String section, String subsection,
+			String name, long defaultValue) {
+		try {
+			return super.getLong(config, section, subsection, name,
+					defaultValue);
+		} catch (IllegalArgumentException e) {
+			warn(config, join(section, subsection, name),
+					Long.toString(defaultValue), e);
+			return defaultValue;
+		}
+	}
+

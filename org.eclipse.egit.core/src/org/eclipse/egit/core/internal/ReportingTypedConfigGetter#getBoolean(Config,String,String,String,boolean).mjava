@@ -1,0 +1,13 @@
+	@Override
+	public boolean getBoolean(Config config, String section, String subsection,
+			String name, boolean defaultValue) {
+		try {
+			return super.getBoolean(config, section, subsection, name,
+					defaultValue);
+		} catch (IllegalArgumentException e) {
+			warn(config, join(section, subsection, name),
+					Boolean.toString(defaultValue), e);
+			return defaultValue;
+		}
+	}
+

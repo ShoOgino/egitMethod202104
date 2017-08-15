@@ -1,0 +1,13 @@
+	@Override
+	public long getTimeUnit(Config config, String section, String subsection,
+			String name, long defaultValue, TimeUnit wantUnit) {
+		try {
+			return super.getTimeUnit(config, section, subsection, name,
+					defaultValue, wantUnit);
+		} catch (IllegalArgumentException e) {
+			warn(config, join(section, subsection, name),
+					Long.toString(defaultValue) + ' ' + toString(wantUnit), e);
+			return defaultValue;
+		}
+	}
+
