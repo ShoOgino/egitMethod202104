@@ -2,7 +2,7 @@
 			throws InvocationTargetException, InterruptedException {
 		String uriText = uriCombo.getText();
 		if (!changeRefs.containsKey(uriText)) {
-			changeRefs.put(uriText, new ChangeList(repository, uriText));
+			changeRefs.put(uriText, new ChangeList(uriText));
 		}
 		ChangeList list = changeRefs.get(uriText);
 		if (!list.isFinished()) {

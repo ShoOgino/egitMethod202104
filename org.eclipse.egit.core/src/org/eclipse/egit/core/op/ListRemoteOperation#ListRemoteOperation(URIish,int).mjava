@@ -1,0 +1,13 @@
+	/**
+	 * Create listing operation for specified local repository (needed by
+	 * transport) and remote repository URI.
+	 * @param uri
+	 *            URI of remote repository to list.
+	 * @param timeout
+	 *            timeout is seconds; 0 means no timeout
+	 */
+	public ListRemoteOperation(final URIish uri, int timeout) {
+		rc = Git.lsRemoteRepository();
+		rc.setRemote(uri.toString()).setTimeout(timeout);
+	}
+

@@ -8,7 +8,7 @@
 
 			URIish uri = new URIish(uriString);
 			ListRemoteOperation listRemoteOperation = new ListRemoteOperation(
-					repository.getRepository(), uri, timeout);
+					uri, timeout);
 			listRemoteOperation.run(progress.newChild(1));
 			Collection<Ref> remoteRefs = listRemoteOperation.getRemoteRefs();
 			for (Ref ref : remoteRefs) {

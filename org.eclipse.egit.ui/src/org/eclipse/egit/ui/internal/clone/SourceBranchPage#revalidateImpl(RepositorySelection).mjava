@@ -5,11 +5,9 @@
 		final ListRemoteOperation listRemoteOp;
 		final URIish uri = newRepoSelection.getURI();
 		try {
-			final Repository db = FileRepositoryBuilder
-					.create(new File("/tmp")); //$NON-NLS-1$
 			int timeout = Activator.getDefault().getPreferenceStore().getInt(
 					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-			listRemoteOp = new ListRemoteOperation(db, uri, timeout);
+			listRemoteOp = new ListRemoteOperation(uri, timeout);
 			if (credentials != null)
 				listRemoteOp
 						.setCredentialsProvider(new EGitCredentialsProvider(
@@ -27,9 +25,6 @@
 			transportError(why);
 			if (showDetailedFailureDialog())
 				SourceBranchFailureDialog.show(getShell(), uri);
-			return;
-		} catch (IOException e) {
-			transportError(UIText.SourceBranchPage_cannotCreateTemp);
 			return;
 		} catch (InterruptedException e) {
 			transportError(UIText.SourceBranchPage_remoteListingCancelled);

@@ -7,8 +7,7 @@
 	public void testIllegalURI() throws Exception {
 
 		URIish uri = new URIish("file:///" + "no/path");
-		ListRemoteOperation lrop = new ListRemoteOperation(repository1
-				.getRepository(), uri, 0);
+		ListRemoteOperation lrop = new ListRemoteOperation(uri, 0);
 		try {
 			lrop.run(new NullProgressMonitor());
 			fail("Expected Exception not thrown");
