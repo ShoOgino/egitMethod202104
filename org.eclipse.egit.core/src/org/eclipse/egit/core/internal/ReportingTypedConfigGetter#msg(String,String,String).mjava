@@ -1,0 +1,25 @@
+	private static String msg(String location, String entry,
+			String defaultValue) {
+		if (location == null) {
+			if (defaultValue == null) {
+				return MessageFormat.format(
+						CoreText.ReportingTypedConfigGetter_invalidConfigIgnored,
+						entry);
+			} else {
+				return MessageFormat.format(
+						CoreText.ReportingTypedConfigGetter_invalidConfig,
+						entry, defaultValue);
+			}
+		} else {
+			if (defaultValue == null) {
+				return MessageFormat.format(
+						CoreText.ReportingTypedConfigGetter_invalidConfigWithLocationIgnored,
+						location, entry);
+			} else {
+				return MessageFormat.format(
+						CoreText.ReportingTypedConfigGetter_invalidConfigWithLocation,
+						location, entry, defaultValue);
+			}
+		}
+	}
+

@@ -5,16 +5,6 @@
 			File file = ((FileBasedConfig) config).getFile();
 			location = file.getAbsolutePath();
 		}
-		if (location == null) {
-			Activator.logWarning(MessageFormat.format(
-					CoreText.ReportingTypedConfigGetter_invalidConfig, entry,
-					defaultValue), cause);
-		} else {
-			Activator.logWarning(
-					MessageFormat.format(
-							CoreText.ReportingTypedConfigGetter_invalidConfigWithLocation,
-							location, entry, defaultValue),
-					cause);
-		}
+		Activator.logWarning(msg(location, entry, defaultValue), cause);
 	}
 
