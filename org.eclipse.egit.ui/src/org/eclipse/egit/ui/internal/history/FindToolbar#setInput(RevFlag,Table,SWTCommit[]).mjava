@@ -8,12 +8,14 @@
 	 */
 	void setInput(final RevFlag hFlag, final Table historyTable,
 			final SWTCommit[] commitArray) {
-		// this may cause a FindBugs warning, but
-		// copying the array is probably not a good
-		// idea
+		// This may cause a FindBugs warning, but copying the array is probably
+		// not a good idea.
 		if (job != null) {
 			job.cancel();
 		}
+		// Reset last used pattern -- we must not prevent a re-search when the
+		// input changed.
+		this.lastSearchPattern = null;
 		this.fileRevisions = commitArray;
 		this.historyTable = historyTable;
 		findResults.setHighlightFlag(hFlag);

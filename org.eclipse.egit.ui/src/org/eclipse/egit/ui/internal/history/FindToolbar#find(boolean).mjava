@@ -1,5 +1,5 @@
 	private void find(boolean next) {
-		if (patternField.getText().length() > 0 && findResults.size() == 0) {
+		if (!getSearchPattern().isEmpty() && findResults.size() == 0) {
 			// If the toolbar was cleared and has a pattern typed,
 			// then we redo the find with the new table data.
 			final FindToolbarJob finder = createFinder();
