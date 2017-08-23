@@ -17,6 +17,10 @@
 			if (commitCombo != null)
 				tagCommit = commitCombo.getValue();
 			tagMessage = tagMessageText.getCommitMessage();
+			if (tagMessage != null) {
+				tagMessage = LEADING_WHITESPACE.matcher(tagMessage)
+						.replaceFirst(""); //$NON-NLS-1$
+			}
 			overwriteTag = overwriteButton.getSelection();
 			okPressed();
 		} else {

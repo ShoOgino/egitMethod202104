@@ -15,7 +15,7 @@
 			String author, String committer, String message) throws CoreException {
 		this.author = author;
 		this.committer = committer;
-		this.message = message;
+		this.message = stripLeadingWhitespace(message);
 		if (filesToCommit != null && filesToCommit.length > 0)
 			setRepository(filesToCommit[0]);
 		if (filesToCommit != null)

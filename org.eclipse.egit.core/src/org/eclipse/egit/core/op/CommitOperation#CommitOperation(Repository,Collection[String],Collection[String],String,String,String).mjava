@@ -17,7 +17,7 @@
 		this.repo = repository;
 		this.author = author;
 		this.committer = committer;
-		this.message = message;
+		this.message = stripLeadingWhitespace(message);
 		if (filesToCommit != null)
 			commitFileList = new HashSet<String>(filesToCommit);
 		if (notTracked != null)
