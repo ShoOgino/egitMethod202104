@@ -26,7 +26,8 @@
 		patternField.setLayoutData(findTextData);
 		patternField.setMessage(UIText.HistoryPage_findbar_find_msg);
 		patternField.setTextLimit(100);
-		patternField.setFont(JFaceResources.getDialogFont());
+		// Do _not_ set the font to JFaceResources.getDialogFont() here. It'll
+		// scale if changed, but the Text field may not adjust.
 		ToolBarManager manager = new ToolBarManager(SWT.HORIZONTAL);
 		findNextAction = new Action() {
 			@Override
