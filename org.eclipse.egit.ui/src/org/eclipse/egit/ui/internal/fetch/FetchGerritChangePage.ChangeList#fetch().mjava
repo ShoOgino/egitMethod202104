@@ -11,7 +11,8 @@
 			}
 			ListRemoteOperation listOp;
 			try {
-				listOp = new ListRemoteOperation(new URIish(uriText),
+				listOp = new ListRemoteOperation(repository,
+						new URIish(uriText),
 						Activator.getDefault().getPreferenceStore().getInt(
 								UIPreferences.REMOTE_CONNECTION_TIMEOUT));
 			} catch (URISyntaxException e) {

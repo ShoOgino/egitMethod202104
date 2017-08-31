@@ -8,7 +8,8 @@
 
 		URIish uri = new URIish("file:///"
 				+ repository2.getRepository().getDirectory().getPath());
-		ListRemoteOperation lrop = new ListRemoteOperation(uri, 0);
+		ListRemoteOperation lrop = new ListRemoteOperation(repository1
+				.getRepository(), uri, 0);
 		try {
 			lrop.getRemoteRefs();
 			fail("Expected Exception not thrown");

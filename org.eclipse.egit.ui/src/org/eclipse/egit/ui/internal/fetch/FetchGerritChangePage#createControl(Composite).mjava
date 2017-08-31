@@ -39,7 +39,7 @@
 				if (list != null) {
 					list.cancel(ChangeList.CancelMode.INTERRUPT);
 				}
-				list = new ChangeList(uriText);
+				list = new ChangeList(repository, uriText);
 				changeRefs.put(uriText, list);
 				preFetch(list);
 			}
@@ -271,7 +271,7 @@
 		}
 		for (String aUri : uris) {
 			uriCombo.add(aUri);
-			changeRefs.put(aUri, new ChangeList(aUri));
+			changeRefs.put(aUri, new ChangeList(repository, aUri));
 		}
 		if (defaultUri != null) {
 			uriCombo.setText(defaultUri);
@@ -281,7 +281,7 @@
 		String currentUri = uriCombo.getText();
 		ChangeList list = changeRefs.get(currentUri);
 		if (list == null) {
-			list = new ChangeList(currentUri);
+			list = new ChangeList(repository, currentUri);
 			changeRefs.put(currentUri, list);
 		}
 		preFetch(list);
