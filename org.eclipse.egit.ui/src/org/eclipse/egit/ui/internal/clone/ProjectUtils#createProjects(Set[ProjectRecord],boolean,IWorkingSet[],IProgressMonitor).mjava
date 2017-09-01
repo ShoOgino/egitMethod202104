@@ -18,6 +18,9 @@
 			final boolean open, final IWorkingSet[] selectedWorkingSets,
 			IProgressMonitor monitor)
 			throws InvocationTargetException, InterruptedException {
+		if (projectsToCreate.isEmpty()) {
+			return;
+		}
 		IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
 			@Override
 			public void run(IProgressMonitor actMonitor) throws CoreException {

@@ -20,20 +20,14 @@
 			return null;
 		}
 		if (record.getProjectDescription() == null) {
-			// error case
-			record.setProjectDescription(workspace
-					.newProjectDescription(projectName));
-			IPath locationPath = new Path(record.getProjectSystemFile()
-					.getAbsolutePath());
-
-			// If it is under the root use the default location
-			if (Platform.getLocation().isPrefixOf(locationPath))
-				record.getProjectDescription().setLocation(null);
-			else
-				record.getProjectDescription().setLocation(locationPath);
-		} else {
-			record.getProjectDescription().setName(projectName);
+			// error case; should not occur.
+			String message = MessageFormat.format(
+					UIText.ProjectUtils_Invalid_ProjectFile,
+					record.getProjectSystemFile(), projectName);
+			Activator.logError(message, new IllegalStateException(message));
+			return null;
 		}
+		record.getProjectDescription().setName(projectName);
 
 		SubMonitor progress = SubMonitor.convert(monitor,
 				UIText.WizardProjectsImportPage_CreateProjectsTask, 8);
