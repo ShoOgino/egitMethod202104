@@ -1,0 +1,25 @@
+	/**
+	 * Create a bare repository, generate some sample data and start git daemon
+	 * on a free port
+	 *
+	 * @param n
+	 *            hint how many random commits should be generated
+	 * @param serveHttp
+	 *            whether to serve the repository over HTTP
+	 * @param withSsl
+	 *            whether to server the repository also over HTTPS if
+	 *            {@code serveHttp} is {@code true}
+	 *
+	 * @throws Exception
+	 */
+	public SampleTestRepository(int n, boolean serveHttp, boolean withSsl)
+			throws Exception {
+		this.serveHttp = serveHttp;
+		src = createRepository();
+		generateSampleData(n);
+		if (serveHttp)
+			serveHttp(withSsl);
+		else
+			serve();
+	}
+

@@ -5,16 +5,11 @@
 	 * @param n
 	 *            hint how many random commits should be generated
 	 * @param serveHttp
+	 *            whether to serve the repository over HTTP
 	 *
 	 * @throws Exception
 	 */
 	public SampleTestRepository(int n, boolean serveHttp) throws Exception {
-		this.serveHttp = serveHttp;
-		src = createRepository();
-		generateSampleData(n);
-		if (serveHttp)
-			serveHttp();
-		else
-			serve();
+		this(n, serveHttp, false);
 	}
 

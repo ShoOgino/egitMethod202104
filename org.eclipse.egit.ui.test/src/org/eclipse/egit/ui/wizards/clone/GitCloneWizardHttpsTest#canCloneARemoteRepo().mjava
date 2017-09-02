@@ -1,0 +1,24 @@
+	@Test
+	public void canCloneARemoteRepo() throws Exception {
+		destRepo = new File(ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().toFile(), "test" + System.nanoTime());
+
+		importWizard.openWizard();
+		RepoPropertiesPage propertiesPage = importWizard.openRepoPropertiesPage();
+		propertiesPage.setURI(r.getSecureUri());
+		propertiesPage.setUser("agitter");
+		propertiesPage.setPassword("letmein");
+		propertiesPage.setStoreInSecureStore(false);
+		SWTBotShell wizardShell = bot.activeShell();
+
+		RepoRemoteBranchesPage remoteBranches = propertiesPage
+				.nextToRemoteBranches();
+		bot.waitUntil(
+				shellIsActive(UIText.EGitCredentialsProvider_information));
+		// SSL trust dialog
+		bot.checkBox(1).select();
+		bot.button("OK").click();
+		bot.waitUntil(new ActiveShell(wizardShell, "import wizard shell"));
+		cloneRepo(destRepo, remoteBranches);
+	}
+

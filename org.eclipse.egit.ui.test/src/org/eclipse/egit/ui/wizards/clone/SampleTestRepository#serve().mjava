@@ -1,6 +1,6 @@
 	private void serve() throws IOException {
 		d = new Daemon();
-		FileResolver<DaemonClient> resolver = new FileResolver<DaemonClient>();
+		FileResolver<DaemonClient> resolver = new FileResolver<>();
 		resolver.exportRepository(REPO_NAME, src.getRepository());
 		d.setRepositoryResolver(resolver);
 		d.start();

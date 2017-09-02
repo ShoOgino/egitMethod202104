@@ -5,6 +5,6 @@
 		Repository db = new RepositoryBuilder().setGitDir(gitdir).build();
 		assertFalse(gitdir.exists());
 		db.create(true);
-		return new TestRepository<Repository>(db);
+		return new TestRepository<>(db);
 	}
 

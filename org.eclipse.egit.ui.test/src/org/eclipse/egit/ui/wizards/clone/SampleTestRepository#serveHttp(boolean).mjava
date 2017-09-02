@@ -1,0 +1,9 @@
+	private void serveHttp(boolean withSsl) throws Exception {
+		httpServer = new SimpleHttpServer(src.getRepository(), withSsl);
+		httpServer.start();
+		uri = httpServer.getUri().toString();
+		if (withSsl) {
+			secureUri = httpServer.getSecureUri().toString();
+		}
+	}
+
