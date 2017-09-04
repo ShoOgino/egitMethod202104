@@ -1,4 +1,5 @@
-	private void executeOpenCommandWithConfirmation(String refName) {
+	private void executeOpenCommandWithConfirmation(RepositoryTreeNode element,
+			String refName) {
 		if (!BranchOperationUI.checkoutWillShowQuestionDialog(refName)) {
 			IPreferenceStore store = Activator.getDefault()
 					.getPreferenceStore();
@@ -33,6 +34,6 @@
 				}
 			}
 		}
-		executeOpenCommand();
+		executeOpenCommand(element);
 	}
 
