@@ -4,12 +4,12 @@
 	 * repository (which is not recommended)
 	 *
 	 * @param gitDir
-	 *            path of git directory containing the git repository
+	 *            the .git directory containing the repository metadata
 	 */
-	private static void autoIgnoreWorkspaceMetaData(java.nio.file.Path gitDir) {
+	private static void autoIgnoreWorkspaceMetaData(File gitDir) {
 		java.nio.file.Path workspaceRoot = ResourcesPlugin.getWorkspace()
 				.getRoot().getLocation().toFile().toPath();
-		try (Repository r = FileRepositoryBuilder.create(gitDir.toFile())) {
+		try (Repository r = FileRepositoryBuilder.create(gitDir)) {
 			if (!r.isBare()
 					&& workspaceRoot.startsWith(r.getWorkTree().toPath())) {
 				Collection<IPath> ignoredPaths = buildIgnoredPathsList(

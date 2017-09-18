@@ -47,21 +47,32 @@
 		}
 		RepositoryProvider.map(project, GitProvider.ID);
 
+		IPath gitPath = actualMapping.getGitDirAbsolutePath();
 		if (refreshResources) {
 			touchGitResources(project, subMon.newChild(10));
 			project.refreshLocal(IResource.DEPTH_INFINITE, subMon.newChild(30));
-			IndexDiffCacheEntry cacheEntry = org.eclipse.egit.core.Activator
-					.getDefault().getIndexDiffCache()
-					.getIndexDiffCacheEntry(actualMapping.getRepository());
-			if (cacheEntry != null) {
-				cacheEntry.refresh();
+			if (gitPath != null) {
+				try {
+					Repository repository = org.eclipse.egit.core.Activator
+							.getDefault().getRepositoryCache()
+							.lookupRepository(gitPath.toFile());
+					IndexDiffCacheEntry cacheEntry = org.eclipse.egit.core.Activator
+							.getDefault().getIndexDiffCache()
+							.getIndexDiffCacheEntry(repository);
+					if (cacheEntry != null) {
+						cacheEntry.refresh();
+					}
+				} catch (IOException e) {
+					Activator.logError(e.getMessage(), e);
+				}
 			}
 		} else {
 			subMon.worked(40);
 		}
 
 		autoIgnoreDerivedResources(project, subMon.newChild(10));
-		autoIgnoreWorkspaceMetaData(
-				actualMapping.getRepository().getDirectory().toPath());
+		if (gitPath != null) {
+			autoIgnoreWorkspaceMetaData(gitPath.toFile());
+		}
 	}
 
