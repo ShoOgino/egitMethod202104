@@ -21,6 +21,7 @@
 		wizardTester.finish();
 		loginDialogTester.login("agitter", "letmein");
 		PushResultDialogTester pushResultDialogTester = new PushResultDialogTester();
+		bot.waitUntil(shellIsActive("Push Results: push"));
 		String expectedMessage = "Repository " + remoteRepository.getUri();
 		pushResultDialogTester.assertResultMessage(expectedMessage);
 		pushResultDialogTester.closeDialog();
