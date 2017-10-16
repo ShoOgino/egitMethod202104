@@ -1,0 +1,20 @@
+	private boolean versionCheck(Object[] args) {
+		if (args != null && args.length > 0 && args[0] instanceof String) {
+			Bundle bundle = Platform.getBundle((String) args[0]);
+			if (bundle == null) {
+				return false;
+			}
+			Version min = args.length > 1 ? toVersion(args[1]) : null;
+			Version max = args.length > 2 ? toVersion(args[2]) : null;
+			boolean inRange = true;
+			if (min != null) {
+				inRange = bundle.getVersion().compareTo(min) >= 0;
+			}
+			if (inRange && max != null) {
+				inRange = bundle.getVersion().compareTo(max) < 0;
+			}
+			return inRange;
+		}
+		return false;
+	}
+

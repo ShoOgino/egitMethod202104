@@ -1,0 +1,8 @@
+	private Version toVersion(Object arg) {
+		try {
+			return Version.valueOf(arg.toString());
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
+

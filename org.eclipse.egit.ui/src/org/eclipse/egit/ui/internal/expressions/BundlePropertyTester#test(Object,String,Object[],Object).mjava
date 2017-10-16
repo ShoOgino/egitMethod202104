@@ -1,0 +1,9 @@
+	@Override
+	public boolean test(Object receiver, String property, Object[] args,
+			Object expectedValue) {
+		if ("isBundleInstalled".equals(property)) { //$NON-NLS-1$
+			return computeResult(expectedValue, versionCheck(args));
+		}
+		return false;
+	}
+
