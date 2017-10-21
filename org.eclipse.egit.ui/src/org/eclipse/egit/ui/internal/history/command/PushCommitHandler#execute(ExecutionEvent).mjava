@@ -16,7 +16,7 @@
 				wizard = new PushBranchWizard(repo, commit.getId());
 			else
 				wizard = new PushBranchWizard(repo, localBranch);
-			WizardDialog dlg = new WizardDialog(
+			PushWizardDialog dlg = new PushWizardDialog(
 					HandlerUtil.getActiveShellChecked(event),
 					wizard);
 			dlg.setHelpAvailable(true);

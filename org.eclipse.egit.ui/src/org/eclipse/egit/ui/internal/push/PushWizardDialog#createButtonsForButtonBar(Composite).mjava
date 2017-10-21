@@ -1,0 +1,13 @@
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		super.createButtonsForButtonBar(parent);
+		Button nextButton = getButton(IDialogConstants.NEXT_ID);
+		if (nextButton != null) {
+			nextButton.setText(UIText.PushBranchWizard_previewButton);
+		}
+		Button finishButton = getButton(IDialogConstants.FINISH_ID);
+		if (finishButton != null) {
+			finishButton.setText(UIText.PushBranchWizard_pushButton);
+		}
+	}
+

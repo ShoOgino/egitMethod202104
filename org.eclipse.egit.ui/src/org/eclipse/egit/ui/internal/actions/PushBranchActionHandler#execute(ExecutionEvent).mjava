@@ -11,7 +11,8 @@
 				ObjectId id = repository.resolve(repository.getFullBranch());
 				wizard = new PushBranchWizard(repository, id);
 			}
-			WizardDialog dlg = new WizardDialog(getShell(event), wizard);
+			PushWizardDialog dlg = new PushWizardDialog(getShell(event),
+					wizard);
 			dlg.open();
 		} catch (IOException ex) {
 			Activator.handleError(ex.getLocalizedMessage(), ex, false);
