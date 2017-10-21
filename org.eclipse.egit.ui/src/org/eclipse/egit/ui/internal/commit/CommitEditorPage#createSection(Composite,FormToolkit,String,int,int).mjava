@@ -1,8 +1,6 @@
 	Section createSection(Composite parent, FormToolkit toolkit, String title,
-			int span) {
-		Section section = toolkit.createSection(parent,
-				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
-						| ExpandableComposite.EXPANDED);
+			int span, int extraStyles) {
+		Section section = toolkit.createSection(parent, extraStyles);
 		GridDataFactory.fillDefaults().span(span, 1).grab(true, true)
 				.applyTo(section);
 		section.setText(title);

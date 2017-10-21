@@ -1,0 +1,12 @@
+		protected final void updateUI(IProgressMonitor monitor, Runnable task) {
+			ScrolledForm form = getManagedForm().getForm();
+			PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+				if (!shouldContinue(monitor, form)) {
+					return;
+				}
+				task.run();
+				form.reflow(true);
+				form.layout(true, true);
+			});
+		}
+

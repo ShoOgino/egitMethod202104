@@ -1,0 +1,14 @@
+	private Map<String, Ref> getAllBranchRefs(Repository repository) {
+		Map<String, Ref> refsMap = new HashMap<>();
+		try {
+			refsMap.putAll(repository.getRefDatabase().getRefs(
+					Constants.R_HEADS));
+			refsMap.putAll(repository.getRefDatabase().getRefs(
+					Constants.R_REMOTES));
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, false);
+			return Collections.emptyMap();
+		}
+		return refsMap;
+	}
+

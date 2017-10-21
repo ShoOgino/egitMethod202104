@@ -1,0 +1,7 @@
+		public CommitEditorPageJob(RepositoryCommit commit) {
+			super(MessageFormat.format(UIText.CommitEditorPage_JobName,
+					commit.getRevCommit().name()));
+			this.commit = commit;
+			setRule(CommitEditorPage.this);
+		}
+

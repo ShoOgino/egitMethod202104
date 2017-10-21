@@ -1,6 +1,7 @@
 	@Override
 	public void dispose() {
 		focusTracker.dispose();
+		Job.getJobManager().cancel(this);
 		super.dispose();
 	}
 

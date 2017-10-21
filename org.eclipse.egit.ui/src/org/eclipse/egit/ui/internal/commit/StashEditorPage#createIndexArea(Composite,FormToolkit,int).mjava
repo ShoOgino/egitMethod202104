@@ -2,7 +2,9 @@
 			FormToolkit toolkit, int span) {
 		String sectionTitle = MessageFormat.format(
 				UIText.StashEditorPage_StagedChanges, Integer.valueOf(0));
-		stagedDiffSection = createSection(parent, toolkit, sectionTitle, span);
+		stagedDiffSection = createSection(parent, toolkit, sectionTitle, span,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
 		Composite unstagedChangesArea = createSectionClient(
 				stagedDiffSection, toolkit);
 

@@ -1,7 +1,10 @@
 	private void createBranchesArea(Composite parent, FormToolkit toolkit,
 			int span) {
 		branchSection = createSection(parent, toolkit,
-				UIText.CommitEditorPage_SectionBranchesEmpty, span);
+				UIText.CommitEditorPage_SectionBranchesEmpty, span,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		((GridData) branchSection
+				.getLayoutData()).grabExcessVerticalSpace = false;
 		Composite branchesArea = createSectionClient(branchSection, toolkit);
 
 		branchViewer = new TableViewer(toolkit.createTable(branchesArea,

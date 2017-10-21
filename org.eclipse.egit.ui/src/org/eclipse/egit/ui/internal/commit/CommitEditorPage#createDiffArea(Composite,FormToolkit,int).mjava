@@ -1,6 +1,8 @@
 	void createDiffArea(Composite parent, FormToolkit toolkit, int span) {
 		diffSection = createSection(parent, toolkit,
-				UIText.CommitEditorPage_SectionFilesEmpty, span);
+				UIText.CommitEditorPage_SectionFilesEmpty, span,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
 		Composite filesArea = createSectionClient(diffSection, toolkit);
 
 		diffViewer = new CommitFileDiffViewer(filesArea, getSite(), SWT.MULTI

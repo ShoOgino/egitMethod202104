@@ -1,7 +1,9 @@
 	private void createMessageArea(Composite parent, FormToolkit toolkit,
 			int span) {
 		Section messageSection = createSection(parent, toolkit,
-				UIText.CommitEditorPage_SectionMessage, span);
+				UIText.CommitEditorPage_SectionMessage, span,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
 		Composite messageArea = createSectionClient(messageSection, toolkit);
 
 		RevCommit commit = getCommit().getRevCommit();
