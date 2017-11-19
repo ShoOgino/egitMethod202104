@@ -29,13 +29,9 @@
 			@Override
 			protected Control createControl(Composite parent) {
 				FormToolkit toolkit = getHeaderForm().getToolkit();
-				Composite composite = toolkit.createComposite(parent);
-				RowLayout layout = new RowLayout();
-				composite.setLayout(layout);
-				composite.setBackground(null);
 				String label = getCommit().getRepositoryName();
 
-				ImageHyperlink link = new ImageHyperlink(composite, SWT.NONE);
+				ImageHyperlink link = new ImageHyperlink(parent, SWT.NONE);
 				// Focus tracking on this link doesn't really work. It's a
 				// focusable control inside another focusable control (the
 				// toolbar). When focus leaves this control through tabbing
@@ -67,7 +63,7 @@
 					}
 				});
 
-				return composite;
+				return link;
 			}
 		};
 		toolbar.add(repositoryLabelControl);
