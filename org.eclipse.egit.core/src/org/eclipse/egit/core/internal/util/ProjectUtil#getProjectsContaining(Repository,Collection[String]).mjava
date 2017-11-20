@@ -11,7 +11,10 @@
 	 */
 	public static IProject[] getProjectsContaining(Repository repository,
 			Collection<String> fileList) throws CoreException {
-		Set<IProject> result = new LinkedHashSet<IProject>();
+		if (repository == null || repository.isBare()) {
+			return new IProject[0];
+		}
+		Set<IProject> result = new LinkedHashSet<>();
 		File workTree = repository.getWorkTree();
 
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();

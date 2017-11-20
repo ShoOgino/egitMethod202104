@@ -8,9 +8,12 @@
 	 */
 	public static IProject[] getValidOpenProjects(Repository repository)
 			throws CoreException {
+		if (repository == null || repository.isBare()) {
+			return new IProject[0];
+		}
 		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
-		List<IProject> result = new ArrayList<IProject>();
+		List<IProject> result = new ArrayList<>();
 		final Path repositoryPath = new Path(
 				repository.getWorkTree().getAbsolutePath());
 		for (IProject p : projects) {

@@ -7,7 +7,10 @@
 	 * @return list of projects, with nested projects first.
 	 */
 	public static IProject[] getProjects(Repository repository) {
-		List<IProject> result = new ArrayList<IProject>();
+		if (repository == null || repository.isBare()) {
+			return new IProject[0];
+		}
+		List<IProject> result = new ArrayList<>();
 		for (IProject project : getProjectsUnderPath(
 				new Path(repository.getWorkTree().getAbsolutePath()))) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(project);
