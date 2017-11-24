@@ -3,13 +3,12 @@
 	 * files, that are about to be committed.
 	 *
 	 * @param repository
-	 *            the repository, messages are built for
+	 *            the message is built for
 	 * @param paths
 	 *            list of file paths, selected for the next commit
 	 */
-	CommitMessageBuilder(@NonNull Repository repository,
+	CommitMessageBuilder(Repository repository,
 			Collection<String> paths) {
-		this.repository = repository;
-		this.resourcesArray = toResourceArray(paths);
+		this.resourcesArray = toResourceArray(repository, paths);
 	}
 

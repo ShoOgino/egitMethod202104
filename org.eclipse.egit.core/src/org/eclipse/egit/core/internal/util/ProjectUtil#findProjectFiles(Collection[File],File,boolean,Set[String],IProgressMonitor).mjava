@@ -24,7 +24,7 @@
 		Set<String> directoriesVisited;
 		// Initialize recursion guard for recursive symbolic links
 		if (visistedDirs == null) {
-			directoriesVisited = new HashSet<String>();
+			directoriesVisited = new HashSet<>();
 			directoriesVisited.add(directory.getAbsolutePath());
 		} else
 			directoriesVisited = visistedDirs;

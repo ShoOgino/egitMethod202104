@@ -1,4 +1,8 @@
-	private IResource[] toResourceArray(Collection<String> paths) {
+	private IResource[] toResourceArray(Repository repository,
+			Collection<String> paths) {
+		if (repository == null || repository.isBare()) {
+			return new IResource[0];
+		}
 		Set<IResource> resources = new HashSet<>();
 		for (String path : paths) {
 			IFile file = null;

@@ -8,7 +8,7 @@
 	public static IProject[] getProjectsUnderPath(@NonNull final IPath path) {
 		IProject[] allProjects = getProjectsForContainerMatch(ResourcesPlugin
 				.getWorkspace().getRoot());
-		Set<IProject> projects = new HashSet<IProject>();
+		Set<IProject> projects = new HashSet<>();
 		for (IProject p : allProjects) {
 			IPath loc = p.getLocation();
 			if (loc != null && path.isPrefixOf(loc)) {
