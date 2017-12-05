@@ -44,13 +44,10 @@
 
 			@Override
 			public void done(IJobChangeEvent event) {
-				asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						enableAllWidgets(true);
-						if (event.getResult().isOK()) {
-							commitMessageText.setText(EMPTY_STRING);
-						}
+				asyncExec(() -> {
+					enableAllWidgets(true);
+					if (event.getResult().isOK()) {
+						commitMessageText.setText(EMPTY_STRING);
 					}
 				});
 			}

@@ -1,4 +1,7 @@
 	private void asyncUpdate(Runnable runnable) {
+		if (isDisposed()) {
+			return;
+		}
 		Job update = new WorkbenchJob(UIText.StagingView_LoadJob) {
 
 			@Override
@@ -10,6 +13,16 @@
 					return Activator.createErrorStatus(e.getLocalizedMessage(),
 							e);
 				}
+			}
+
+			@Override
+			public boolean shouldSchedule() {
+				return super.shouldSchedule() && !isDisposed();
+			}
+
+			@Override
+			public boolean shouldRun() {
+				return super.shouldRun() && !isDisposed();
 			}
 
 			@Override

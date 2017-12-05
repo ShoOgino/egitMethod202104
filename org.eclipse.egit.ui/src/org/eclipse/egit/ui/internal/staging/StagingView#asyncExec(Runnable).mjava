@@ -1,4 +1,10 @@
 	private void asyncExec(Runnable runnable) {
-		PlatformUI.getWorkbench().getDisplay().asyncExec(runnable);
+		if (!isDisposed()) {
+			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+				if (!isDisposed()) {
+					runnable.run();
+				}
+			});
+		}
 	}
 

@@ -331,13 +331,10 @@
 									.removePropertyChangeListener(this);
 							return;
 						}
-						asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								updateIgnoreErrorsButtonVisibility();
-								updateMessage();
-								updateCommitButtons();
-							}
+						asyncExec(() -> {
+							updateIgnoreErrorsButtonVisibility();
+							updateMessage();
+							updateCommitButtons();
 						});
 					}
 				});

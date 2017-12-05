@@ -9,6 +9,9 @@
 		saveCommitMessageComponentState();
 		realRepository = repository;
 		currentRepository = null;
+		if (isDisposed()) {
+			return;
+		}
 		StagingViewUpdate update = new StagingViewUpdate(null, null, null);
 		setStagingViewerInput(unstagedViewer, update, null, null);
 		setStagingViewerInput(stagedViewer, update, null, null);
