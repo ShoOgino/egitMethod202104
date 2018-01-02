@@ -21,7 +21,7 @@
 								.encode(headCommit.name()));
 					}
 				}
-				return new FileInputStream(file);
+				return Files.newInputStream(file.toPath());
 			} catch (IOException | UnsupportedOperationException e) {
 				Activator.error(e.getMessage(), e);
 			}

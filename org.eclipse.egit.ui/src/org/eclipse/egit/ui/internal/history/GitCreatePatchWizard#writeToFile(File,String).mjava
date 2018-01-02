@@ -1,13 +1,10 @@
 	private void writeToFile(final File file, String content)
 			throws IOException {
-		Writer output = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(file), RawParseUtils.UTF8_CHARSET));
-		try {
-			// FileWriter always assumes default encoding is
-			// OK!
+		try (Writer output = new BufferedWriter(
+				new OutputStreamWriter(Files.newOutputStream(file.toPath()),
+						RawParseUtils.UTF8_CHARSET))) {
+			// FileWriter always assumes default encoding is OK!
 			output.write(content);
-		} finally {
-			output.close();
 		}
 	}
 

@@ -14,11 +14,9 @@
 				hasItem("Project-1/sub/ignore"));
 
 		IFile file = project.getProject().getFile("sub/ignore");
-		FileOutputStream str = new FileOutputStream(file.getLocation().toFile());
-		try {
+		try (OutputStream str = Files
+				.newOutputStream((file.getLocation().toFile().toPath()))) {
 			str.write("other contents".getBytes("UTF-8"));
-		} finally {
-			str.close();
 		}
 
 		// no job should be triggered for that change.

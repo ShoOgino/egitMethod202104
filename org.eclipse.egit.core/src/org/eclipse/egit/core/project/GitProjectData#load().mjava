@@ -2,8 +2,7 @@
 		final File dat = propertyFile();
 		trace("load " + dat);  //$NON-NLS-1$
 
-		final FileInputStream o = new FileInputStream(dat);
-		try {
+		try (InputStream o = Files.newInputStream(dat.toPath())) {
 			final Properties p = new Properties();
 			p.load(o);
 
@@ -15,8 +14,6 @@
 					mappings.put(mapping.getContainerPath(), mapping);
 				}
 			}
-		} finally {
-			o.close();
 		}
 
 		if (!remapAll()) {

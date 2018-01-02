@@ -6,14 +6,12 @@
 				+ id.name().substring(0, 2) + "/" + id.name().substring(2));
 		byte[] readFully = IO.readFully(file);
 		FileUtils.delete(file);
-		FileOutputStream fileOutputStream = new FileOutputStream(file);
-		try {
+		try (OutputStream fileOutputStream = Files
+				.newOutputStream(file.toPath())) {
 			byte[] truncatedData = new byte[readFully.length - 1];
 			System.arraycopy(readFully, 0, truncatedData, 0,
 					truncatedData.length);
 			fileOutputStream.write(truncatedData);
-		} finally {
-			fileOutputStream.close();
 		}
 		return id;
 	}

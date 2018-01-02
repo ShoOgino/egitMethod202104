@@ -25,8 +25,8 @@
 			@Override
 			public InputStream getContents() throws CoreException {
 				try {
-					return new FileInputStream(file);
-				} catch (FileNotFoundException e) {
+					return Files.newInputStream(file.toPath());
+				} catch (IOException e) {
 					throw new CoreException(Activator.error(e.getMessage(), e));
 				}
 			}

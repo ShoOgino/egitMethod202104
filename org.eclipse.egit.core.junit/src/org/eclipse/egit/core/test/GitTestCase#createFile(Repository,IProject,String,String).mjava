@@ -1,9 +1,9 @@
 	protected ObjectId createFile(Repository repository, IProject actProject, String name, String content) throws IOException {
 		File file = new File(actProject.getProject().getLocation().toFile(), name);
-		Writer fileWriter = new OutputStreamWriter(new FileOutputStream(
-				file), "UTF-8");
-		fileWriter.write(content);
-		fileWriter.close();
+		try (Writer fileWriter = new OutputStreamWriter(
+				Files.newOutputStream(file.toPath()), "UTF-8")) {
+			fileWriter.write(content);
+		}
 		byte[] fileContents = IO.readFully(file);
 		try (ObjectInserter inserter = repository.newObjectInserter()) {
 			ObjectId objectId = inserter.insert(Constants.OBJ_BLOB, fileContents);

@@ -24,11 +24,8 @@
 							updateLinkResource(wasBrokenLink, link);
 						}
 					} else {
-						if (!file.exists()) {
-							FileUtils.createNewFile(file);
-						}
-						try (FileOutputStream out = new FileOutputStream(
-								file)) {
+						try (OutputStream out = Files
+								.newOutputStream(file.toPath())) {
 							out.write(getContent());
 						}
 					}

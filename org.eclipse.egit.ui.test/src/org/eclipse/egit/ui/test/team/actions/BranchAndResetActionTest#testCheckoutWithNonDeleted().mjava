@@ -7,17 +7,16 @@
 		test.create(new ByteArrayInputStream(new byte[0]), false, null);
 		File testFile = new File(test.getLocation().toString());
 		assertTrue(testFile.exists());
-		FileInputStream fis = new FileInputStream(testFile);
-		try {
+		try (InputStream fis = Files.newInputStream(testFile.toPath())) {
 			FileUtils.delete(testFile);
 			return;
 		} catch (IOException e) {
 			// the test makes sense only if deletion of
 			// a file with open stream fails
 		} finally {
-			fis.close();
-			if (testFile.exists())
+			if (testFile.exists()) {
 				FileUtils.delete(testFile);
+			}
 		}
 		final Image folderImage = PlatformUI.getWorkbench().getSharedImages()
 				.getImage(ISharedImages.IMG_OBJ_FOLDER);

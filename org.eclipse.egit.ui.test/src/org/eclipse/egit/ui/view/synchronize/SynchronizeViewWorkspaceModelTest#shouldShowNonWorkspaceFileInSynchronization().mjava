@@ -6,7 +6,7 @@
 		File root = new File(getTestDirectory(), REPO1);
 		File nonWorkspace = new File(root, name);
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(nonWorkspace), "UTF-8"));
+				Files.newOutputStream(nonWorkspace.toPath()), "UTF-8"));
 		writer.append("file content");
 		writer.close();
 
