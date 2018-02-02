@@ -5,6 +5,10 @@
 			GitTraceLocation.getTrace().traceEntry(
 					GitTraceLocation.HISTORYVIEW.getLocation());
 
+		if (focusTracker != null) {
+			focusTracker.dispose();
+			focusTracker = null;
+		}
 		detachSelectionTracker();
 
 		Activator.getDefault().getPreferenceStore()

@@ -188,8 +188,13 @@
 					return myInput != null ? myInput.getRepository() : null;
 				}));
 		getSite().registerContextMenu(POPUP_ID, popupMgr, graph.getTableView());
-		// due to the issues described in bug 322751, it makes no
-		// sense to set a selection provider for the site here
+		// Track which of our controls has the focus, so that we can focus the
+		// last focused one in setFocus().
+		focusTracker = new FocusTracker();
+		trackFocus(graph.getControl());
+		trackFocus(diffViewer.getControl());
+		trackFocus(commentViewer.getControl());
+		trackFocus(fileViewer.getControl());
 		layout();
 
 		myRefsChangedHandle = Repository.getGlobalListenerList()

@@ -1,8 +1,14 @@
 	@Override
 	public void setFocus() {
-		if (repoHasBeenRemoved(currentRepo))
+		if (repoHasBeenRemoved(currentRepo)) {
 			clearHistoryPage();
-
-		graph.getControl().setFocus();
+			graph.getControl().setFocus();
+		} else {
+			Control control = focusTracker.getLastFocusControl();
+			if (control == null) {
+				control = graph.getControl();
+			}
+			control.setFocus();
+		}
 	}
 
