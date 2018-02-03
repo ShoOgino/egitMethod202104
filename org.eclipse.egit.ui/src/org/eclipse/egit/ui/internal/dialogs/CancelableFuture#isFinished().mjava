@@ -1,0 +1,10 @@
+	/**
+	 * Tells whether or not the future's background job is still running.
+	 *
+	 * @return {@code true} if the future's background job isn't running anymore
+	 *         (was canceled or terminated normally)
+	 */
+	public synchronized boolean isFinished() {
+		return state == State.CANCELED || state == State.DONE;
+	}
+

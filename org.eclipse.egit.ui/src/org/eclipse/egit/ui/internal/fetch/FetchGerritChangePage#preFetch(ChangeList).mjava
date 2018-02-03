@@ -1,6 +1,6 @@
 	private void preFetch(ChangeList list) {
 		try {
-			list.fetch();
+			list.start();
 		} catch (InvocationTargetException e) {
 			Activator.handleError(e.getLocalizedMessage(), e.getCause(), true);
 		}

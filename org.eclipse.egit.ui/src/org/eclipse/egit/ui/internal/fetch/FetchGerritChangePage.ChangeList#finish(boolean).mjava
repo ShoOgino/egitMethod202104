@@ -1,6 +1,0 @@
-		private synchronized void finish(boolean done) {
-			state = done ? State.DONE : State.CANCELED;
-			job = null;
-			notifyAll(); // We're done, wake up all outstanding get() calls
-		}
-
