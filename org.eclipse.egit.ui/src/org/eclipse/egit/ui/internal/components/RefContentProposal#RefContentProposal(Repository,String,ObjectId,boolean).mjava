@@ -9,11 +9,14 @@
 	 * @param objectId
 	 *            object being pointed by this ref name. May be null or locally
 	 *            non-existent object.
+	 * @param upstream
+	 *            {@code true} if the ref comes from an upstream repository
 	 */
-	public RefContentProposal(final Repository repo, final String refName,
-			final ObjectId objectId) {
+	public RefContentProposal(Repository repo, String refName,
+			ObjectId objectId, boolean upstream) {
 		this.db = repo;
 		this.refName = refName;
 		this.objectId = objectId;
+		this.upstream = upstream;
 	}
 

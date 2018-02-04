@@ -8,13 +8,15 @@
 			}
 		});
 		set.addAll(refs);
-		if (HEAD != null)
+		if (HEAD != null) {
 			set.add(HEAD);
+		}
 
 		final List<RefContentProposal> result = new ArrayList<>(
 				set.size());
-		for (final Ref r : set)
-			result.add(new RefContentProposal(localDb, r));
+		for (final Ref r : set) {
+			result.add(new RefContentProposal(localDb, r, HEAD == null));
+		}
 		return result;
 	}
 
