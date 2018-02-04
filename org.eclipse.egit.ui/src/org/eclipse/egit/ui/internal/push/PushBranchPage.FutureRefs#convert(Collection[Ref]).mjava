@@ -1,0 +1,15 @@
+		@Override
+		protected Collection<Ref> convert(Collection<Ref> refs) {
+			List<Ref> filtered = new ArrayList<>();
+			// Restrict to branches
+			for (Ref ref : refs) {
+				String name = ref.getName();
+				if (name.startsWith(Constants.R_HEADS)) {
+					filtered.add(ref);
+				}
+			}
+			// Sort them
+			Collections.sort(filtered, CommonUtils.REF_ASCENDING_COMPARATOR);
+			return filtered;
+		}
+

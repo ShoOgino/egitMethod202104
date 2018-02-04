@@ -1,5 +1,11 @@
 	@Override
 	public void createControl(Composite parent) {
+		parent.addDisposeListener(event -> {
+			for (CancelableFuture<Collection<Ref>> l : refs.values()) {
+				l.cancel(CancelableFuture.CancelMode.INTERRUPT);
+			}
+			refs.clear();
+		});
 		try {
 			this.remoteConfigs = RemoteConfig.getAllRemoteConfigs(repository.getConfig());
 			Collections.sort(remoteConfigs, new Comparator<RemoteConfig>() {
@@ -127,15 +133,29 @@
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
 				.applyTo(remoteBranchNameText);
 		remoteBranchNameText.setText(getSuggestedBranchName());
-		UIUtils.addRefContentProposalToText(remoteBranchNameText,
-				this.repository, () -> {
-					if (PushBranchPage.this.assist != null) {
-						return PushBranchPage.this.assist
-								.getRefsForContentAssist(false, true);
+		AsynchronousRefProposalProvider candidateProvider = new AsynchronousRefProposalProvider(
+				getContainer(), remoteBranchNameText, () -> {
+					RemoteConfig config = remoteSelectionCombo
+							.getSelectedRemote();
+					if (config == null) {
+						return null;
 					}
-					return Collections.emptyList();
+					List<URIish> uris = config.getURIs();
+					if (uris == null || uris.isEmpty()) {
+						return null;
+					}
+					return uris.get(0).toString();
+				}, uri -> {
+					FutureRefs list = refs.get(uri);
+					if (list == null) {
+						list = new FutureRefs(repository, uri);
+						refs.put(uri, list);
+					}
+					return list;
 				});
-
+		candidateProvider.setContentProposalAdapter(
+				UIUtils.addRefContentProposalToText(remoteBranchNameText,
+						this.repository, candidateProvider));
 		if (this.ref != null) {
 			upstreamConfigComponent = new UpstreamConfigComponent(inputPanel,
 					SWT.NONE);
