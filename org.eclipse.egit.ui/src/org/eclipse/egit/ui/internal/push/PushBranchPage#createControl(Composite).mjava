@@ -148,7 +148,8 @@
 				}, uri -> {
 					FutureRefs list = refs.get(uri);
 					if (list == null) {
-						list = new FutureRefs(repository, uri);
+						list = new FutureRefs(repository, uri,
+								getLocalBranchName());
 						refs.put(uri, list);
 					}
 					return list;

@@ -3,7 +3,8 @@
 			String uriText = config.getURIs().get(0).toString();
 			FutureRefs list = refs.get(uriText);
 			if (list == null) {
-				list = new FutureRefs(repository, uriText);
+				list = new FutureRefs(repository, uriText,
+						getLocalBranchName());
 				refs.put(uriText, list);
 				preFetch(list);
 			}
