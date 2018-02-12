@@ -1,0 +1,11 @@
+	private static InputStream runInternalFilter(Repository repository,
+			InputStream raw, String command) throws IOException {
+		LocalFile buffer = new TemporaryBuffer.LocalFile(null);
+		FilterCommand filter = FilterCommandRegistry
+				.createFilterCommand(command, repository, raw, buffer);
+		while (filter.run() != -1) {
+			// loop as long as filter.run() tells there is work to do
+		}
+		return buffer.openInputStream();
+	}
+

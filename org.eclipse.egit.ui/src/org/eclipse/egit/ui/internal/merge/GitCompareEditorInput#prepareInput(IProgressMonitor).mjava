@@ -8,6 +8,9 @@
 					IProgressMonitor.UNKNOWN);
 
 			for (IResource resource : resources) {
+				if (resource == null) {
+					continue;
+				}
 				RepositoryMapping map = RepositoryMapping.getMapping(resource);
 				if (map == null) {
 					throw new InvocationTargetException(

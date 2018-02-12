@@ -1,8 +1,9 @@
 	@Override
 	public IStorage getStorage(final IProgressMonitor monitor)
 			throws CoreException {
-		if (blobId == null)
-			blobId = locateBlobObjectId();
-		return new CommitBlobStorage(db, path, blobId, commit);
+		if (blobId == null) {
+			locateBlobObjectId();
+		}
+		return new CommitBlobStorage(db, path, blobId, commit, metadata);
 	}
 

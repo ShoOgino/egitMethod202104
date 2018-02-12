@@ -1,0 +1,45 @@
+	@Test
+	public void testWithAttributesCheckedIn() throws Exception {
+		java.nio.file.Path filePath = createFile(project.getProject(),
+				"attr.txt", "a");
+		try (Git git = new Git(repository)) {
+			git.add().addFilepattern(".").call();
+			git.commit().setMessage("Initial commit").call();
+			// Verify that we do have "a" in the repo: modify the file, do a
+			// hard reset, verify the contents to be "a" again
+			createFile(project.getProject(), "attr.txt", "aa");
+			git.reset().setMode(ResetType.HARD).call();
+			List<String> content = Files.readAllLines(filePath,
+					StandardCharsets.UTF_8);
+			assertEquals(1, content.size());
+			assertEquals("a", content.get(0));
+			// Now create a smudge filter that will replace all a's by x's, and
+			// commit the .gitattributes file.
+			RevCommit head = setupFilter(repository, project.getProject(),
+					true);
+			// Modify the file again and do a hard reset. We should end up with
+			// a file containing "x".
+			createFile(project.getProject(), "attr.txt", "aa");
+			git.reset().setMode(ResetType.HARD).call();
+			content = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+			assertEquals(1, content.size());
+			assertEquals("x", content.get(0));
+			// All right. Now get a CommitFileRevision and check its contents.
+			String relativePath = repository.getWorkTree().toPath()
+					.relativize(filePath).toString();
+			CommitFileRevision fileRevision = new CommitFileRevision(repository,
+					head, relativePath);
+			ByteBuffer rawContent = null;
+			try (InputStream blobStream = fileRevision
+					.getStorage(new NullProgressMonitor()).getContents()) {
+				rawContent = IO.readWholeStream(blobStream, 1);
+			}
+			assertNotNull(rawContent);
+			String blobContent = new String(rawContent.array(), 0,
+					rawContent.limit(), StandardCharsets.UTF_8);
+			assertEquals("x", blobContent);
+		} finally {
+			FilterCommandRegistry.unregister("egit://builtin/test/smudge");
+		}
+	}
+

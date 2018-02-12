@@ -1,11 +1,15 @@
-	private ObjectId locateBlobObjectId() throws CoreException {
-		try {
-			final TreeWalk w = TreeWalk.forPath(db, path, commit.getTree());
+	private void locateBlobObjectId() throws CoreException {
+		try (TreeWalk w = TreeWalk.forPath(db, path, commit.getTree())) {
 			if (w == null)
 				throw new CoreException(Activator.error(NLS.bind(
 						CoreText.CommitFileRevision_pathNotIn, commit.getId().name(),
 						path), null));
-			return w.getObjectId(0);
+			blobId = w.getObjectId(0);
+			final EolStreamType eolStreamType = w
+					.getEolStreamType(TreeWalk.OperationType.CHECKOUT_OP);
+			final String filterCommand = w
+					.getFilterCommand(Constants.ATTR_FILTER_TYPE_SMUDGE);
+			metadata = new CheckoutMetadata(eolStreamType, filterCommand);
 		} catch (IOException e) {
 			throw new CoreException(Activator.error(NLS.bind(
 					CoreText.CommitFileRevision_errorLookingUpPath, commit

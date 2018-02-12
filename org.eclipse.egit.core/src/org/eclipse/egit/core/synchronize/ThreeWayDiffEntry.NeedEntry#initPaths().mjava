@@ -1,7 +1,7 @@
 		private void initPaths() {
 			Set<IResource> resources = gsd.getIncludedResources();
 			if (resources != null && !resources.isEmpty()) {
-				paths = new HashSet<String>(resources.size());
+				paths = new HashSet<>(resources.size());
 				final Path repositoryPath = new Path(gsd.getRepository()
 						.getWorkTree().getAbsolutePath());
 				for (IResource resource : gsd.getIncludedResources()) {

@@ -21,9 +21,9 @@
 		String path = Repository.stripWorkDir(repo.getWorkTree(), file);
 
 		GitRemoteFile base = new GitRemoteFile(repo, baseCommit,
-				baseCommit.getTree(), path);
+				baseCommit.getTree(), path, null);
 		GitRemoteFile remote = new GitRemoteFile(repo, remoteCommit,
-				remoteCommit.getTree(), path);
+				remoteCommit.getTree(), path, null);
 
 		// then
 		assertFalse(grvc.compare(base, remote));

@@ -1,0 +1,18 @@
+	private RevCommit setupFilter(Repository repo, IProject base,
+			boolean commit) throws Exception {
+		createFile(base, ".gitattributes", "*.txt filter=test");
+		String builtinCommandName = "egit://builtin/test/smudge";
+		FilterCommandRegistry.register(builtinCommandName,
+				new TestCommandFactory('a', 'x'));
+		StoredConfig config = repo.getConfig();
+		config.setString("filter", "test", "smudge", builtinCommandName);
+		config.save();
+		if (commit) {
+			try (Git git = new Git(repo)) {
+				git.add().addFilepattern(".").call();
+				return git.commit().setMessage("Add .gitattributes").call();
+			}
+		}
+		return null;
+	}
+

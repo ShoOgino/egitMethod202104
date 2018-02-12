@@ -1,9 +1,9 @@
 	@Override
 	protected void fetchContents(IProgressMonitor monitor) throws TeamException {
-		CommitBlobStorage content = new CommitBlobStorage(repo, getPath(),
-				getObjectId(), getCommitId());
+		SubMonitor progress = SubMonitor.convert(monitor, 2);
+		IStorage content = getStorage(progress.newChild(1));
 		try {
-			setContents(content.getContents(), monitor);
+			setContents(content.getContents(), progress.newChild(1));
 		} catch (CoreException e) {
 			Activator.logError("", e); //$NON-NLS-1$
 		}

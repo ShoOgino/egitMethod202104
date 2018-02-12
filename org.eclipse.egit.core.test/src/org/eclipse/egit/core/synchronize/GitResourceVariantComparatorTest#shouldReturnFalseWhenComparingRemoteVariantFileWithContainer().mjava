@@ -20,7 +20,7 @@
 		String folderPath = Repository.stripWorkDir(repo.getWorkTree(),
 				new File(file.getParent()));
 		GitRemoteFile base = new GitRemoteFile(repo, commit, commit.getTree(),
-				filePath);
+				filePath, null);
 		GitRemoteFolder remote = new GitRemoteFolder(repo, null, commit,
 				commit.getTree(), folderPath);
 

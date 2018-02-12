@@ -1,0 +1,6 @@
+	private String get(InputStream in) throws IOException {
+		ByteBuffer buffer = IO.readWholeStream(in, 1);
+		return new String(buffer.array(), 0, buffer.limit(),
+				StandardCharsets.UTF_8);
+	}
+
