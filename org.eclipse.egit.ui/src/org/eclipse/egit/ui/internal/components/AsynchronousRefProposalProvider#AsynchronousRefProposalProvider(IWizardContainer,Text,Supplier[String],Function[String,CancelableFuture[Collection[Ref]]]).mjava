@@ -1,0 +1,27 @@
+	/**
+	 * Creates a new {@link AsynchronousRefProposalProvider}. Because this is
+	 * supposed to run truly asynchronously, typically in a
+	 * {@link NonBlockingWizardDialog}, it needs to know the text field it
+	 * belongs to and also the URI it was run for. It opens the proposals only
+	 * if both are in a state where it still makes sense to show the proposals.
+	 *
+	 * @param container
+	 *            this candidate provider will be run for
+	 * @param uriProvider
+	 *            a function returning the upstream URI to get proposals from
+	 * @param textField
+	 *            this candidate provider belongs to
+	 * @param listProvider
+	 *            a function that provides the CancelableFuture used to obtain
+	 *            the upstream refs
+	 */
+	public AsynchronousRefProposalProvider(
+			IWizardContainer container, Text textField,
+			Supplier<String> uriProvider,
+			Function<String, CancelableFuture<Collection<Ref>>> listProvider) {
+		this.container = container;
+		this.textField = textField;
+		this.uriProvider = uriProvider;
+		this.listProvider = listProvider;
+	}
+

@@ -1,0 +1,7 @@
+	@Override
+	protected void run(IProgressMonitor monitor)
+			throws InterruptedException, InvocationTargetException {
+		listOp.run(monitor);
+		set(convert(listOp.getRemoteRefs()));
+	}
+

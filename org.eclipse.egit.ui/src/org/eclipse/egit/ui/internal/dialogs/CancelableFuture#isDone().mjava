@@ -1,0 +1,10 @@
+	/**
+	 * Tells whether the future completed normally.
+	 *
+	 * @return {@code true} if the future completed normally, {@code false}
+	 *         otherwise
+	 */
+	public synchronized boolean isDone() {
+		return state == State.DONE;
+	}
+

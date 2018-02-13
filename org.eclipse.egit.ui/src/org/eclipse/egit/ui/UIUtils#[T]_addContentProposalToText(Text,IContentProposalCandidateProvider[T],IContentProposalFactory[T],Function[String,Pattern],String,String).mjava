@@ -12,20 +12,32 @@
 	 * @param factory
 	 *            {@link IContentProposalFactory} to use to create proposals
 	 *            from candidates
+	 * @param patternProvider
+	 *            to convert the current text of the field into a pattern
+	 *            suitable for filtering the candidates. If {@code null}, a
+	 *            default pattern is constructed using
+	 *            {@link #createProposalPattern(String)}.
 	 * @param startTypingMessage
 	 *            hover message if no content assist key binding is active
 	 * @param shortcutMessage
 	 *            hover message if a content assist key binding is active,
 	 *            should have a "{0}" placeholder that will be filled by the
 	 *            appropriate keystroke
+	 * @return the content proposal adapter set on the {@code textField}
 	 */
-	public static final <T> void addContentProposalToText(Text textField,
+	public static final <T> ExplicitContentProposalAdapter addContentProposalToText(
+			Text textField,
 			IContentProposalCandidateProvider<T> candidateProvider,
-			IContentProposalFactory<T> factory, String startTypingMessage,
+			IContentProposalFactory<T> factory,
+			Function<String, Pattern> patternProvider,
+			String startTypingMessage,
 			String shortcutMessage) {
 		KeyStroke stroke = UIUtils
 				.getKeystrokeOfBestActiveBindingFor(IWorkbenchCommandConstants.EDIT_CONTENT_ASSIST);
 		if (stroke == null) {
+			if (startTypingMessage == null) {
+				return null;
+			}
 			addBulbDecorator(textField, startTypingMessage);
 		} else {
 			addBulbDecorator(textField,
@@ -36,16 +48,19 @@
 			public IContentProposal[] getProposals(String contents, int position) {
 				List<IContentProposal> resultList = new ArrayList<>();
 
-				Pattern pattern = createProposalPattern(contents);
 				Collection<? extends T> candidates = candidateProvider
 						.getCandidates();
-				if (candidates != null) {
-					for (final T candidate : candidates) {
-						IContentProposal proposal = factory.getProposal(pattern,
-								candidate);
-						if (proposal != null) {
-							resultList.add(proposal);
-						}
+				if (candidates == null) {
+					return null;
+				}
+				Pattern pattern = patternProvider != null
+						? patternProvider.apply(contents)
+						: createProposalPattern(contents);
+				for (final T candidate : candidates) {
+					IContentProposal proposal = factory.getProposal(pattern,
+							candidate);
+					if (proposal != null) {
+						resultList.add(proposal);
 					}
 				}
 				return resultList.toArray(new IContentProposal[resultList
@@ -53,11 +68,12 @@
 			}
 		};
 
-		ContentProposalAdapter adapter = new ContentProposalAdapter(textField,
-				new TextContentAdapter(), cp, stroke,
+		ExplicitContentProposalAdapter adapter = new ExplicitContentProposalAdapter(
+				textField, new TextContentAdapter(), cp, stroke,
 				UIUtils.VALUE_HELP_ACTIVATIONCHARS);
 		// set the acceptance style to always replace the complete content
 		adapter.setProposalAcceptanceStyle(
 				ContentProposalAdapter.PROPOSAL_REPLACE);
+		return adapter;
 	}
 

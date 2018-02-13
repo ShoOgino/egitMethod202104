@@ -7,8 +7,10 @@
 	 * @param ref
 	 *            ref being a content proposal. May have null or locally
 	 *            non-existent object id.
+	 * @param upstream
+	 *            {@code true} if the ref comes from an upstream repository
 	 */
-	public RefContentProposal(final Repository repo, final Ref ref) {
-		this(repo, ref.getName(), ref.getObjectId());
+	public RefContentProposal(Repository repo, Ref ref, boolean upstream) {
+		this(repo, ref.getName(), ref.getObjectId(), upstream);
 	}
 

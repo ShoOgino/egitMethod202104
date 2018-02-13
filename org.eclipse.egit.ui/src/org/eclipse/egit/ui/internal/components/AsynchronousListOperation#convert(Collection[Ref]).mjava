@@ -1,0 +1,11 @@
+	/**
+	 * Transforms the {@link Ref}s obtained into the final objects. May just
+	 * return the input if the generic type T is Ref, or may post-process the
+	 * results as appropriate.
+	 *
+	 * @param refs
+	 *            obtained from the upstream repository
+	 * @return final result
+	 */
+	protected abstract Collection<T> convert(Collection<Ref> refs);
+

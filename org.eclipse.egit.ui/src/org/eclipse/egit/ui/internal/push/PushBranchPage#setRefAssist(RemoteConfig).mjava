@@ -1,8 +1,13 @@
 	private void setRefAssist(RemoteConfig config) {
 		if (config != null && config.getURIs().size() > 0) {
-			this.assist = new RefContentAssistProvider(
-					PushBranchPage.this.repository, config.getURIs().get(0),
-					getShell());
+			String uriText = config.getURIs().get(0).toString();
+			FutureRefs list = refs.get(uriText);
+			if (list == null) {
+				list = new FutureRefs(repository, uriText,
+						getLocalBranchName());
+				refs.put(uriText, list);
+				preFetch(list);
+			}
 		}
 	}
 

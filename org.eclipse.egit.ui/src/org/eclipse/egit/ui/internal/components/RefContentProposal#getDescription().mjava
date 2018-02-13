@@ -1,9 +1,22 @@
 	@Override
 	public String getDescription() {
-		if (objectId == null)
+		if (objectId == null) {
 			return null;
+		} else if (upstream && objectId.equals(ObjectId.zeroId())) {
+			return refName + '\n' + UIText.RefContentProposal_newRemoteObject;
+		}
 		try (ObjectReader reader = db.newObjectReader()) {
-			final ObjectLoader loader = reader.open(objectId);
+			ObjectLoader loader = null;
+			try {
+				loader = reader.open(objectId);
+			} catch (MissingObjectException e) {
+				if (upstream) {
+					return refName + '\n' + objectId.abbreviate(7).name()
+							+ " - " //$NON-NLS-1$
+							+ UIText.RefContentProposal_unknownRemoteObject;
+				}
+				throw e;
+			}
 			final StringBuilder sb = new StringBuilder();
 			sb.append(refName);
 			sb.append('\n');
@@ -37,7 +50,8 @@
 			return sb.toString();
 		} catch (IOException e) {
 			Activator.logError(NLS.bind(
-					UIText.RefContentProposal_errorReadingObject, objectId), e);
+					UIText.RefContentProposal_errorReadingObject, objectId,
+					refName), e);
 			return null;
 		}
 	}

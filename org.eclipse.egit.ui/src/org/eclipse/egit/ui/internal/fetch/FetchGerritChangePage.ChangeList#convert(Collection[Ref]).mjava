@@ -1,0 +1,13 @@
+		@Override
+		protected Collection<Change> convert(Collection<Ref> refs) {
+			List<Change> changes = new ArrayList<>();
+			for (Ref ref : refs) {
+				Change change = Change.fromRef(ref.getName());
+				if (change != null) {
+					changes.add(change);
+				}
+			}
+			Collections.sort(changes, Collections.reverseOrder());
+			return new LinkedHashSet<>(changes);
+		}
+
