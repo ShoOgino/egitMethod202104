@@ -85,8 +85,9 @@
 			}
 			URIish sshUri = u.setPath(""); //$NON-NLS-1$
 			try {
-				String result = runSshCommand(sshUri, credentialsProvider,
-						repo.getFS(), GERRIT_SSHD_VERSION_API);
+				String result = SshSupport.runSshCommand(sshUri,
+						credentialsProvider, repo.getFS(),
+						GERRIT_SSHD_VERSION_API, timeout);
 				return result != null
 						&& GERRIT_SSHD_REPLY.matcher(result).matches();
 			} catch (IOException e) {
