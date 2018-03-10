@@ -4,7 +4,7 @@
 	 */
 	public void setIncludedResources(Set<IResource> includedResources) {
 		this.includedResources = includedResources;
-		Set<String> paths = new HashSet<String>();
+		Set<String> paths = new HashSet<>();
 		RepositoryMapping rm = RepositoryMapping.findRepositoryMapping(repo);
 		if (rm != null) {
 			for (IResource resource : includedResources) {
