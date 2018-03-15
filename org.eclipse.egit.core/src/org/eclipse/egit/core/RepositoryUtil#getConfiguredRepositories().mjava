@@ -3,7 +3,7 @@
 	 * @return the list of configured Repository paths; will be sorted
 	 */
 	public List<String> getConfiguredRepositories() {
-		final List<String> repos = new ArrayList<String>(getRepositories());
+		final List<String> repos = new ArrayList<>(getRepositories());
 		Collections.sort(repos);
 		return repos;
 	}

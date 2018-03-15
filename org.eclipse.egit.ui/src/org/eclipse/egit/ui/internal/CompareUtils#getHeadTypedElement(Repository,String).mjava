@@ -26,7 +26,7 @@
 				RevCommit headCommit = rw.parseCommit(head.getObjectId());
 				rw.markStart(headCommit);
 				rw.setTreeFilter(AndTreeFilter.create(
-						PathFilter.create(repoRelativePath),
+						PathFilterGroup.createFromStrings(repoRelativePath),
 						TreeFilter.ANY_DIFF));
 				rw.setRewriteParents(false);
 				latestFileCommit = rw.next();

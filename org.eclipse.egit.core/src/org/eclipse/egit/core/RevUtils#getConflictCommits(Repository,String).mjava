@@ -10,7 +10,8 @@
 		try (RevWalk walk = new RevWalk(repository)) {
 			RevCommit ourCommit;
 			RevCommit theirCommit = null;
-			walk.setTreeFilter(AndTreeFilter.create(PathFilter.create(path),
+			walk.setTreeFilter(AndTreeFilter.create(
+					PathFilterGroup.createFromStrings(path),
 					TreeFilter.ANY_DIFF));
 
 			RevCommit head = walk.parseCommit(repository

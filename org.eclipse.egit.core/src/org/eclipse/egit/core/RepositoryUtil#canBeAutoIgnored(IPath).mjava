@@ -31,7 +31,7 @@
 		}
 		try (TreeWalk walk = new TreeWalk(repository)) {
 			walk.addTree(treeIterator);
-			walk.setFilter(PathFilter.create(repoRelativePath));
+			walk.setFilter(PathFilterGroup.createFromStrings(repoRelativePath));
 			while (walk.next()) {
 				WorkingTreeIterator workingTreeIterator = walk.getTree(0,
 						WorkingTreeIterator.class);

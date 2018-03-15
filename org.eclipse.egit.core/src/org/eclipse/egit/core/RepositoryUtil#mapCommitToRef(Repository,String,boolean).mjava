@@ -74,14 +74,14 @@
 				return cacheEntry.get(commitId);
 			}
 			if (cacheEntry == null) {
-				cacheEntry = new HashMap<String, String>();
+				cacheEntry = new HashMap<>();
 				commitMappingCache.put(repository.getDirectory().getPath(),
 						cacheEntry);
 			} else {
 				cacheEntry.clear();
 			}
 
-			Map<String, Date> tagMap = new HashMap<String, Date>();
+			Map<String, Date> tagMap = new HashMap<>();
 			try (RevWalk rw = new RevWalk(repository)) {
 				Map<String, Ref> tags = repository.getRefDatabase().getRefs(
 						Constants.R_TAGS);
@@ -140,7 +140,7 @@
 
 			if (cacheValue == null) {
 				// we didnt't find a tag, so let's look for local branches
-				Set<String> branchNames = new TreeSet<String>();
+				Set<String> branchNames = new TreeSet<>();
 				// put this into a sorted set
 				try {
 					Map<String, Ref> remoteBranches = repository
@@ -164,7 +164,7 @@
 
 			if (cacheValue == null) {
 				// last try: remote branches
-				Set<String> branchNames = new TreeSet<String>();
+				Set<String> branchNames = new TreeSet<>();
 				// put this into a sorted set
 				try {
 					Map<String, Ref> remoteBranches = repository
