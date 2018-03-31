@@ -1,0 +1,23 @@
+	/**
+	 * Convert a filter string to a regex pattern. Wildcard characters "*" will
+	 * match anything, other characters must match literally (case insensitive).
+	 * The filter string will be trimmed.
+	 *
+	 * @param filter
+	 * @return compiled pattern, or {@code null} if trimmed filter input is
+	 *         empty
+	 */
+	private Pattern wildcardToRegex(String filter) {
+		String trimmed = filter.trim();
+		if (trimmed.isEmpty()) {
+			return null;
+		}
+		String regex = (trimmed.contains("*") ? "^" : "") + "\\Q"//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				+ trimmed.replaceAll("\\*", //$NON-NLS-1$
+						Matcher.quoteReplacement("\\E.*?\\Q")) //$NON-NLS-1$
+				+ "\\E";//$NON-NLS-1$
+		// remove potentially empty quotes at begin or end
+		regex = regex.replaceAll(Pattern.quote("\\Q\\E"), ""); //$NON-NLS-1$ //$NON-NLS-2$
+		return Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+	}
+

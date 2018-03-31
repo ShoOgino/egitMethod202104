@@ -1,6 +1,6 @@
 	int getShownCount() {
-		String filterString = getFilterString();
-		if (filterString.length() == 0) {
+		Pattern filterPattern = getFilterPattern();
+		if (filterPattern == null) {
 			return getCount();
 		} else {
 			int shownCount = 0;

@@ -1,7 +1,6 @@
 	boolean isInFilter(StagingEntry stagingEntry) {
-		String filterString = getFilterString();
-		return filterString.length() == 0
-				|| stagingEntry.getPath().toUpperCase(Locale.ROOT)
-						.contains(filterString.toUpperCase(Locale.ROOT));
+		Pattern filterPattern = getFilterPattern();
+		return filterPattern == null
+				|| filterPattern.matcher(stagingEntry.getPath()).find();
 	}
 
