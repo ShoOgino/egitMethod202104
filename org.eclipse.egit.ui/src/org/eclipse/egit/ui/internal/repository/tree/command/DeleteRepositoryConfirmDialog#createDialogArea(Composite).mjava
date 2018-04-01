@@ -35,18 +35,30 @@
 			}
 		});
 
-		if (numberOfProjects > 0) {
+		if (!projectsToDelete.isEmpty()) {
 			removeProjects.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					shouldRemoveProjects = removeProjects.getSelection();
+					updateUI();
 				}
 			});
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(removeProjects);
 			removeProjects
 					.setText(MessageFormat
 							.format(UIText.DeleteRepositoryConfirmDialog_DeleteProjectsCheckbox,
-								Integer.valueOf(numberOfProjects)));
+									Integer.valueOf(projectsToDelete.size())));
+			TableViewer projectsViewer = new TableViewer(main,
+					SWT.BORDER | SWT.V_SCROLL);
+			// same indentation as the indented labels
+			GridDataFactory.fillDefaults().grab(true, true).indent(20, 0)
+					.hint(SWT.DEFAULT, 100)
+					.applyTo(projectsViewer.getControl());
+
+			projectsViewer.setLabelProvider(WorkbenchLabelProvider
+					.getDecoratingWorkbenchLabelProvider());
+			projectsViewer.setContentProvider(ArrayContentProvider.getInstance());
+			projectsViewer.setInput(projectsToDelete);
 		} else
 			removeProjects.setVisible(false);
 		deleteGitDir.setFocus();

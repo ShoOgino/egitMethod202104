@@ -5,7 +5,7 @@
 		deleteWorkDirLabel.setEnabled(shouldDeleteGitDir);
 		removeProjects
 				.setEnabled(shouldDeleteGitDir && !shouldDeleteWorkingDir);
-		if (shouldDeleteWorkingDir && numberOfProjects > 0) {
+		if (shouldDeleteWorkingDir && !projectsToDelete.isEmpty()) {
 			removeProjects.setSelection(true);
 			shouldRemoveProjects = true;
 		}
