@@ -12,12 +12,9 @@
 					"Exception obtaining current repository branch", e); //$NON-NLS-1$
 		}
 
-		ILaunchConfiguration launch = LaunchFinder
-				.getRunningLaunchConfiguration(
-						Collections.singleton(repository), null);
-		if (launch != null) {
-			message += "\n\n" + MessageFormat.format( //$NON-NLS-1$
-					UIText.LaunchFinder_RunningLaunchMessage, launch.getName());
+		String launchMessage = getLaunchMessage(repository);
+		if (launchMessage != null) {
+			message += "\n\n" + launchMessage; //$NON-NLS-1$
 		}
 		final String question = message;
 		shell.getDisplay().syncExec(new Runnable() {

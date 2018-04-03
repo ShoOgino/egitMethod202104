@@ -49,6 +49,11 @@
 				okPressed();
 			}
 		});
+		if (message != null) {
+			Label label = new Label(main, SWT.LEFT | SWT.WRAP);
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
+			label.setText(message);
+		}
 		return main;
 	}
 

@@ -3,9 +3,6 @@
 	 * @param commits
 	 **/
 	public CommitSelectDialog(Shell parent, List<RevCommit> commits) {
-		super(parent);
-		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
-		this.commits.addAll(commits);
-		setHelpAvailable(false);
+		this(parent, commits, null);
 	}
 

@@ -1,0 +1,19 @@
+	/**
+	 * Creates a new {@link CommitSelectDialog} instance.
+	 *
+	 * @param parent
+	 *            {@link Shell} to use as parent for the dialog
+	 * @param commits
+	 *            to display
+	 * @param message
+	 *            to display
+	 */
+	public CommitSelectDialog(Shell parent, List<RevCommit> commits,
+			String message) {
+		super(parent);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.commits.addAll(commits);
+		setHelpAvailable(false);
+		this.message = message;
+	}
+

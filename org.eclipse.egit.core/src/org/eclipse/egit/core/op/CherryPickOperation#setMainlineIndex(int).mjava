@@ -1,0 +1,13 @@
+	/**
+	 * Defines the parent to diff against if the commit is a merge commit.
+	 * Ignored if the commit has only one parent.
+	 *
+	 * @param parentIndex
+	 *            defining the diff, zero-based
+	 */
+	public void setMainlineIndex(int parentIndex) {
+		if (parentIndex >= 0 && parentIndex < commit.getParentCount()) {
+			this.parentIndex = parentIndex;
+		}
+	}
+
