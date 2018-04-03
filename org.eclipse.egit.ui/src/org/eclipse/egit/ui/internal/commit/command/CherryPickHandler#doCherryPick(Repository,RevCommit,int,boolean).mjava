@@ -1,0 +1,79 @@
+	private void doCherryPick(@NonNull Repository repo, RevCommit commit,
+			int parentIndex, boolean withCleanup) {
+		CherryPickOperation op = new CherryPickOperation(repo, commit);
+		op.setMainlineIndex(parentIndex);
+
+		Job job = new RepositoryJob(MessageFormat.format(
+				UIText.CherryPickHandler_JobName, Integer.valueOf(1)), null) {
+
+			private CherryPickResult result;
+
+			@Override
+			protected IStatus performJob(IProgressMonitor monitor) {
+				try {
+					op.execute(monitor);
+					result = op.getResult();
+					if (!withCleanup
+							&& result.getStatus() == CherryPickStatus.FAILED) {
+						return getErrorList(result.getFailingPaths());
+					}
+				} catch (CoreException e) {
+					return Activator.createErrorStatus(
+							UIText.CherryPickOperation_InternalError, e);
+				}
+				return Status.OK_STATUS;
+			}
+
+			@Override
+			protected IAction getAction() {
+				RevCommit newHead = result.getNewHead();
+				if (newHead == null) {
+					switch (result.getStatus()) {
+					case CONFLICTING:
+						return new MessageAction(
+								UIText.CherryPickHandler_CherryPickConflictsTitle,
+								UIText.CherryPickHandler_CherryPickConflictsMessage);
+					case FAILED:
+						if (!withCleanup) {
+							return new RepositoryJobResultAction(repo,
+									UIText.CherryPickHandler_CherryPickFailedMessage) {
+
+								@Override
+								protected void showResult(
+										Repository repository) {
+									Activator.showErrorStatus(
+											UIText.CherryPickHandler_CherryPickFailedMessage,
+											getErrorList(
+													result.getFailingPaths()));
+								}
+							};
+						}
+						return new CleanupAction(repo,
+								UIText.CherryPickHandler_UncommittedFilesTitle,
+								result, () -> doCherryPick(repo, commit,
+										parentIndex, false));
+					case OK:
+						return null;
+					}
+				} else if (result.getCherryPickedRefs().isEmpty()) {
+					return new MessageAction(
+							UIText.CherryPickHandler_NoCherryPickPerformedTitle,
+							UIText.CherryPickHandler_NoCherryPickPerformedMessage);
+				}
+				return null;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				if (JobFamilies.CHERRY_PICK.equals(family)) {
+					return true;
+				}
+				return super.belongsTo(family);
+			}
+
+		};
+		job.setUser(true);
+		job.setRule(op.getSchedulingRule());
+		job.schedule();
+	}
+

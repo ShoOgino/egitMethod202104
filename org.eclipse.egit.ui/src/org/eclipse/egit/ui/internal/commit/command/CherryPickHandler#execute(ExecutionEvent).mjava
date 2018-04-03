@@ -39,61 +39,7 @@
 			return null;
 		}
 
-		try {
-			if (!UIRepositoryUtils.handleUncommittedFiles(repo, shell))
-				return null;
-		} catch (GitAPIException e) {
-			Activator.logError(e.getMessage(), e);
-			return null;
-		}
-
-		final CherryPickOperation op = new CherryPickOperation(repo, commit);
-		op.setMainlineIndex(parentIndex);
-
-		Job job = new Job(MessageFormat.format(
-				UIText.CherryPickHandler_JobName, Integer.valueOf(1))) {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					op.execute(monitor);
-					CherryPickResult cherryPickResult = op.getResult();
-					RevCommit newHead = cherryPickResult.getNewHead();
-					if (newHead != null
-							&& cherryPickResult.getCherryPickedRefs()
-									.isEmpty()) {
-						showNotPerformedDialog(shell);
-					}
-					if (newHead == null) {
-						CherryPickStatus status = cherryPickResult.getStatus();
-						switch (status) {
-						case CONFLICTING:
-							showConflictDialog(shell);
-							break;
-						case FAILED:
-							showFailure(cherryPickResult);
-							break;
-						case OK:
-							break;
-						}
-					}
-				} catch (CoreException e) {
-					Activator.logError(
-							UIText.CherryPickOperation_InternalError, e);
-				}
-				return Status.OK_STATUS;
-			}
-
-			@Override
-			public boolean belongsTo(Object family) {
-				if (JobFamilies.CHERRY_PICK.equals(family)) {
-					return true;
-				}
-				return super.belongsTo(family);
-			}
-		};
-		job.setUser(true);
-		job.setRule(op.getSchedulingRule());
-		job.schedule();
+		doCherryPick(repo, commit, parentIndex, true);
 		return null;
 	}
 

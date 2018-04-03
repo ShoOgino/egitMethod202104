@@ -1,4 +1,5 @@
-	private IStatus getErrorList(Map<String, MergeFailureReason> failingPaths) {
+	private static IStatus getErrorList(
+			Map<String, MergeFailureReason> failingPaths) {
 		MultiStatus result = new MultiStatus(Activator.getPluginId(),
 				IStatus.ERROR,
 				UIText.CherryPickHandler_CherryPickFailedMessage, null);
