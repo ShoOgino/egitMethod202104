@@ -1,0 +1,8 @@
+	private void setDevelopRemote(GitFlowRepository remote,
+			GitFlowRepository local) throws IOException {
+		String develop = local.getConfig().getDevelop();
+		String developFull = remote.getConfig().getDevelopFull();
+		local.setRemote(develop, DEFAULT_REMOTE_NAME);
+		local.setUpstreamBranchName(develop, developFull);
+	}
+
