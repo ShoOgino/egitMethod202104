@@ -83,6 +83,8 @@
 			}
 		});
 
+		createValidateJob();
+
 		Dialog.applyDialogFont(main);
 		setControl(main);
 
@@ -93,7 +95,14 @@
 
 		nameText.setFocus();
 		// add the listeners just now to avoid unneeded checkPage()
-		nameText.addModifyListener(e -> checkPage());
+		nameText.addModifyListener(e -> {
+			validateJob.cancel();
+			// Schedule without delay to ensure the job finishes before the user
+			// can use the Finish button of the wizard. Otherwise we would have
+			// to disable the Finish button, leading to flickering from job
+			// start to job finish.
+			validateJob.schedule();
+		});
 		BranchNameNormalizer normalizer = new BranchNameNormalizer(nameText);
 		normalizer.setVisible(false);
 	}
