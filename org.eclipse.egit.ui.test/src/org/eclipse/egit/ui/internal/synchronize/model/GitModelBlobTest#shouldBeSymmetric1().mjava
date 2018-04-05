@@ -1,8 +1,8 @@
 	@Test
 	public void shouldBeSymmetric1() throws Exception {
 		// given
-		GitModelBlob left = createGitModelBlob(zeroId(), getFile1Location());
-		GitModelCommit right = new GitModelCommit(createModelRepository(),
+		GitModelObject left = createGitModelBlob(zeroId(), getFile1Location());
+		GitModelObject right = new GitModelCommit(createModelRepository(),
 				lookupRepository(leftRepoFile), getCommit(leftRepoFile, HEAD),
 				null);
 

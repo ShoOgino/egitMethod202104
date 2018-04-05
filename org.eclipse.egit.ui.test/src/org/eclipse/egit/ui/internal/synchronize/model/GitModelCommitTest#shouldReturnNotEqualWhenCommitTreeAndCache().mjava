@@ -1,10 +1,10 @@
 	@Test public void shouldReturnNotEqualWhenCommitTreeAndCache()
 			throws Exception {
 		// given
-		GitModelCommit left = new GitModelCommit(createModelRepository(),
+		GitModelObject left = new GitModelCommit(createModelRepository(),
 				lookupRepository(leftRepoFile), getCommit(leftRepoFile, HEAD),
 				null);
-		GitModelCache right = mock(GitModelCache.class);
+		GitModelObject right = mock(GitModelCache.class);
 
 		// when
 		boolean actual = left.equals(right);

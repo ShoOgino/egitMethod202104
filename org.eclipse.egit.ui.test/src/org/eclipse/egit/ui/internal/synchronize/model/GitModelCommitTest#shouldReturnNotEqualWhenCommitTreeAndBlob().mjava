@@ -1,10 +1,10 @@
 	@Test public void shouldReturnNotEqualWhenCommitTreeAndBlob()
 			throws Exception {
 		// given
-		GitModelCommit left = new GitModelCommit(createModelRepository(),
+		GitModelObject left = new GitModelCommit(createModelRepository(),
 				lookupRepository(leftRepoFile), getCommit(leftRepoFile, HEAD),
 				null);
-		GitModelBlob right = mock(GitModelBlob.class);
+		GitModelObject right = mock(GitModelBlob.class);
 
 		// when
 		boolean actual = left.equals(right);
