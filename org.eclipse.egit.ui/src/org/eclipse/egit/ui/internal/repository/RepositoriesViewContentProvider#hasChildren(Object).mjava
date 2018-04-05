@@ -13,11 +13,7 @@
 		case SUBMODULES:
 			return true;
 		case TAGS:
-			try {
-				return !getRefs(repo, Constants.R_TAGS).isEmpty();
-			} catch (IOException e) {
-				return true;
-			}
+			return hasTagsChildren(repo);
 		case WORKINGDIR:
 			if (node.getRepository().isBare())
 				return false;
