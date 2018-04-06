@@ -2,10 +2,11 @@
 		if (createChangeId) {
 			// ChangeIdUtil uses \n line endings
 			String text = commitText.getText().replaceAll(Text.DELIMITER, "\n"); //$NON-NLS-1$
-			String changedText = ChangeIdUtil.insertId(
-					text,
-					originalChangeId != null ? originalChangeId : ObjectId
-							.zeroId(), true);
+			String changedText = ChangeIdUtil.insertId(text,
+					originalChangeId != null ? originalChangeId
+							: ObjectId.zeroId(),
+					repository
+							.getRepositoryState() != RepositoryState.CHERRY_PICKING_RESOLVED);
 			if (!text.equals(changedText)) {
 				changedText = changedText.replaceAll("\n", Text.DELIMITER); //$NON-NLS-1$
 				commitText.setText(changedText);
