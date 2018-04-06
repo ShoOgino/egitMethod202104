@@ -36,6 +36,11 @@
 					if (message != null) {
 						merge.setMessage(message);
 					}
+					if (repository.getConfig().getBoolean(
+							ConfigConstants.CONFIG_GERRIT_SECTION,
+							ConfigConstants.CONFIG_KEY_CREATECHANGEID, false)) {
+						merge.setInsertChangeId(true);
+					}
 					mergeResult = merge.call();
 					if (MergeResult.MergeStatus.NOT_SUPPORTED
 							.equals(mergeResult.getMergeStatus())) {
