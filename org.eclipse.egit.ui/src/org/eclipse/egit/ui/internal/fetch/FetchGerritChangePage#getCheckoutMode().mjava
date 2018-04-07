@@ -5,6 +5,8 @@
 			return CheckoutMode.CREATE_TAG;
 		} else if (checkoutFetchHead.getSelection()) {
 			return CheckoutMode.CHECKOUT_FETCH_HEAD;
+		} else if (cherryPickFetchHead.getSelection()) {
+			return CheckoutMode.CHERRY_PICK;
 		} else {
 			return CheckoutMode.NOCHECKOUT;
 		}

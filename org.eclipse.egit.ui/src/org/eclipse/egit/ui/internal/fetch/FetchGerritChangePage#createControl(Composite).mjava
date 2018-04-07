@@ -24,6 +24,12 @@
 				candidateChange = determineChangeFromString(clipText.trim());
 			}
 		}
+		SelectionAdapter validatePage = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkPage();
+			}
+		};
 		Composite main = new Composite(parent, SWT.NONE);
 		main.setLayout(new GridLayout(2, false));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
@@ -66,12 +72,7 @@
 		createBranch = new Button(checkoutGroup, SWT.RADIO);
 		GridDataFactory.fillDefaults().span(1, 1).applyTo(createBranch);
 		createBranch.setText(UIText.FetchGerritChangePage_LocalBranchRadio);
-		createBranch.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				checkPage();
-			}
-		});
+		createBranch.addSelectionListener(validatePage);
 
 		branchCheckoutButton = new Button(checkoutGroup, SWT.CHECK);
 		GridDataFactory.fillDefaults().span(2, 1).align(SWT.END, SWT.CENTER)
@@ -135,12 +136,7 @@
 		createTag = new Button(checkoutGroup, SWT.RADIO);
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(createTag);
 		createTag.setText(UIText.FetchGerritChangePage_TagRadio);
-		createTag.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				checkPage();
-			}
-		});
+		createTag.addSelectionListener(validatePage);
 
 		tagTextlabel = new Label(checkoutGroup, SWT.NONE);
 		GridDataFactory.defaultsFor(tagTextlabel).exclude(true)
@@ -175,23 +171,29 @@
 		checkoutFetchHead = new Button(checkoutGroup, SWT.RADIO);
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(checkoutFetchHead);
 		checkoutFetchHead.setText(UIText.FetchGerritChangePage_CheckoutRadio);
-		checkoutFetchHead.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				checkPage();
+		checkoutFetchHead.addSelectionListener(validatePage);
+
+		// radio: cherry-pick onto current HEAD
+		try {
+			String headName = repository.getBranch();
+			if (headName != null) {
+				cherryPickFetchHead = new Button(checkoutGroup, SWT.RADIO);
+				GridDataFactory.fillDefaults().span(3, 1)
+						.applyTo(cherryPickFetchHead);
+				cherryPickFetchHead.setText(MessageFormat.format(
+						UIText.FetchGerritChangePage_CherryPickRadio,
+						headName));
+				cherryPickFetchHead.addSelectionListener(validatePage);
 			}
-		});
+		} catch (IOException e) {
+			Activator.logError(e.getLocalizedMessage(), e);
+		}
 
 		// radio: don't checkout
 		updateFetchHead = new Button(checkoutGroup, SWT.RADIO);
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(updateFetchHead);
 		updateFetchHead.setText(UIText.FetchGerritChangePage_UpdateRadio);
-		updateFetchHead.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				checkPage();
-			}
-		});
+		updateFetchHead.addSelectionListener(validatePage);
 
 		if ("checkout".equals(defaultCommand)) { //$NON-NLS-1$
 			checkoutFetchHead.setSelection(true);

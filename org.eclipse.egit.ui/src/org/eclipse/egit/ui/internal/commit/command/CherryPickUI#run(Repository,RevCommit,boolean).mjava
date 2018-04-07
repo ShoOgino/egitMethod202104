@@ -1,0 +1,61 @@
+	/**
+	 * UI for doing a cherry-pick. Will prompt for confirmation if
+	 * {@code confirm} is {@code true} or the {@code commit} is a merge commit,
+	 * in which case the user will also be given the opportunity to choose the
+	 * parent commit to define the changes to be applied. Always will inform the
+	 * user about running launch configurations that might be affected by the
+	 * working tree changes.
+	 * <p>
+	 * Must be called in the UI thread.
+	 * </p>
+	 *
+	 * @param repository
+	 *            to work on
+	 * @param commit
+	 *            to cherry-pick
+	 * @param confirm
+	 *            whether to ask for confirmation before doing the operation
+	 * @throws CoreException
+	 *             if an error occurs
+	 */
+	public void run(@NonNull Repository repository, @NonNull RevCommit commit,
+			boolean confirm) throws CoreException {
+		final Shell shell = PlatformUI.getWorkbench()
+				.getModalDialogShellProvider().getShell();
+
+		int parentIndex = -1;
+		if (commit.getParentCount() > 1) {
+			// Merge commit: select parent
+			List<RevCommit> parents = new ArrayList<>();
+			String branch = null;
+			try {
+				for (RevCommit parent : commit.getParents()) {
+					parents.add(repository.parseCommit(parent));
+				}
+				branch = repository.getBranch();
+			} catch (Exception e) {
+				Activator.handleError(e.getLocalizedMessage(), e, true);
+			}
+			CommitSelectDialog selectCommit = new CommitSelectDialog(shell,
+					parents, getLaunchMessage(repository));
+			selectCommit.create();
+			selectCommit.setTitle(UIText.CommitSelectDialog_ChooseParentTitle);
+			selectCommit.setMessage(MessageFormat.format(
+					UIText.CherryPickHandler_CherryPickMergeMessage,
+					commit.abbreviate(7).name(), branch));
+			if (selectCommit.open() != Window.OK) {
+				return;
+			}
+			parentIndex = parents.indexOf(selectCommit.getSelectedCommit());
+		} else if (confirm) {
+			if (!confirmCherryPick(shell, repository, commit)) {
+				return;
+			}
+		} else if (LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
+				null)) {
+			return;
+		}
+
+		doCherryPick(repository, commit, parentIndex, true);
+	}
+

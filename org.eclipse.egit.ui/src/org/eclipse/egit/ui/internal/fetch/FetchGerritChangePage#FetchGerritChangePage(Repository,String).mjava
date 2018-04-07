@@ -4,6 +4,7 @@
 	 */
 	public FetchGerritChangePage(Repository repository, String refName) {
 		super(FetchGerritChangePage.class.getName());
+		Assert.isNotNull(repository);
 		this.repository = repository;
 		this.refName = refName;
 		setTitle(NLS

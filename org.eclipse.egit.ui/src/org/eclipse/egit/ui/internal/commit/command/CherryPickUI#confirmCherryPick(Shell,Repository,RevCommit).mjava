@@ -1,6 +1,6 @@
 	private boolean confirmCherryPick(final Shell shell,
 			final Repository repository, final RevCommit commit)
-			throws ExecutionException {
+			throws CoreException {
 		final AtomicBoolean confirmed = new AtomicBoolean(false);
 		String message;
 		try {
@@ -8,8 +8,8 @@
 					UIText.CherryPickHandler_ConfirmMessage, Integer.valueOf(1),
 					repository.getBranch());
 		} catch (IOException e) {
-			throw new ExecutionException(
-					"Exception obtaining current repository branch", e); //$NON-NLS-1$
+			throw new CoreException(Activator.createErrorStatus(
+					"Exception obtaining current repository branch", e)); //$NON-NLS-1$
 		}
 
 		String launchMessage = getLaunchMessage(repository);
