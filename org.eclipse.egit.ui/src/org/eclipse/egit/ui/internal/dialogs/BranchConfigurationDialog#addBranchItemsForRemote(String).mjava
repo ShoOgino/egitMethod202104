@@ -7,7 +7,7 @@
 		}
 
 		Collection<Ref> allRefs = myRepository.getRefDatabase()
-				.getRefs(Constants.R_REFS).values();
+				.getRefsByPrefix(Constants.R_REFS);
 		for (Ref ref : allRefs) {
 			for (RefSpec fetchSpec : fetchSpecs) {
 				// Fetch specs map remote ref names (source) to local ref names

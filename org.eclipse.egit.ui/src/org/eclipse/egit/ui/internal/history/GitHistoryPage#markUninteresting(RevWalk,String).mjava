@@ -1,8 +1,7 @@
 	private void markUninteresting(RevWalk walk, String prefix) throws IOException,
 			MissingObjectException, IncorrectObjectTypeException {
-		for (Entry<String, Ref> refEntry : input.getRepository()
-				.getRefDatabase().getRefs(prefix).entrySet()) {
-			Ref ref = refEntry.getValue();
+		for (Ref ref : input.getRepository().getRefDatabase()
+				.getRefsByPrefix(prefix)) {
 			if (ref.isSymbolic())
 				continue;
 			Object refTarget = walk

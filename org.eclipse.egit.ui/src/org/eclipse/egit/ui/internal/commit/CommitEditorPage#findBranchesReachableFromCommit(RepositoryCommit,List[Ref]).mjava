@@ -1,8 +1,8 @@
 	private List<Ref> findBranchesReachableFromCommit(RepositoryCommit commit,
-			Map<String, Ref> refsMap) {
+			List<Ref> refs) {
 		try (RevWalk revWalk = new RevWalk(commit.getRepository())) {
 			return RevWalkUtils.findBranchesReachableFrom(commit.getRevCommit(),
-					revWalk, refsMap.values());
+					revWalk, refs);
 		} catch (IOException e) {
 			Activator.handleError(e.getMessage(), e, false);
 			return Collections.emptyList();
