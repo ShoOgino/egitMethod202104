@@ -21,13 +21,13 @@
 		IResourceVariant variant = null;
 		ObjectId objectId = getObjectId(cachedData.getDiffEntry());
 		if (!objectId.equals(zeroId())) {
-			if (resource.getType() == IResource.FILE)
+			if (resource.getType() == IResource.FILE) {
 				variant = new GitRemoteFile(repo, getCommitId(gsd), objectId,
-						path);
-			else
+						path, cachedData.getDiffEntry().getMetadata());
+			} else {
 				variant = new GitRemoteFolder(repo, cachedData,
 						getCommitId(gsd), objectId, path);
-
+			}
 			cache.put(resource, variant);
 		}
 

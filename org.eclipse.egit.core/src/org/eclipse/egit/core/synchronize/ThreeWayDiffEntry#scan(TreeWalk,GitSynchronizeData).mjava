@@ -25,7 +25,7 @@
 			throw new IllegalArgumentException(
 					"TreeWalk shouldn't be recursive."); //$NON-NLS-1$
 
-		List<ThreeWayDiffEntry> r = new ArrayList<ThreeWayDiffEntry>();
+		List<ThreeWayDiffEntry> r = new ArrayList<>();
 		MutableObjectId idBuf = new MutableObjectId();
 		NeedEntry needEntry = new NeedEntry(gsd);
 		while (walk.next()) {
@@ -39,6 +39,14 @@
 
 			walk.getObjectId(idBuf, 2);
 			e.remoteId = AbbreviatedObjectId.fromObjectId(idBuf);
+
+			if (!walk.isSubtree()) {
+				e.metadata = new CheckoutMetadata(
+						walk.getEolStreamType(
+								TreeWalk.OperationType.CHECKOUT_OP),
+						walk.getFilterCommand(
+								Constants.ATTR_FILTER_TYPE_SMUDGE));
+			}
 
 			boolean localSameAsBase = e.localId.equals(e.baseId);
 			if (!A_ZERO.equals(e.localId) && localSameAsBase

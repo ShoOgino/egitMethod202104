@@ -1,0 +1,24 @@
+	/**
+	 * @param repository
+	 *                       The repository containing this object.
+	 * @param path
+	 *                       Repository-relative path of the underlying object.
+	 *                       This path is not validated by this class, i.e. it's
+	 *                       returned as is by {@code #getAbsolutePath()} and
+	 *                       {@code #getFullPath()} without validating if the
+	 *                       blob is reachable using this path.
+	 * @param blob
+	 *                       Id of this object in its repository.
+	 * @param metadata
+	 *                       Smudge filters and EOL stream type to apply when
+	 *                       the content is to be gotten.
+	 * @since 5.0
+	 */
+	public GitBlobStorage(final Repository repository, final String path,
+			final ObjectId blob, final CheckoutMetadata metadata) {
+		this.db = repository;
+		this.path = path;
+		this.blobId = blob;
+		this.metadata = metadata;
+	}
+

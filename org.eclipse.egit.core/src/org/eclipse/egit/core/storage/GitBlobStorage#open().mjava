@@ -1,22 +1,27 @@
 	private InputStream open() throws IOException, CoreException,
 			IncorrectObjectTypeException {
-		if (blobId == null)
+		if (blobId == null) {
 			return new ByteArrayInputStream(new byte[0]);
-
+		}
 		try {
 			WorkingTreeOptions workingTreeOptions = db.getConfig().get(WorkingTreeOptions.KEY);
-			final InputStream objectInputStream = db.open(blobId,
+			InputStream objectInputStream = db.open(blobId,
 					Constants.OBJ_BLOB).openStream();
-			switch (workingTreeOptions.getAutoCRLF()) {
-			case INPUT:
-				// When autocrlf == input the working tree could be either CRLF or LF, i.e. the comparison
-				// itself should ignore line endings.
-			case FALSE:
-				return objectInputStream;
-			case TRUE:
-			default:
-				return new AutoCRLFInputStream(objectInputStream, true);
+			InputStream filteredInputStream = objectInputStream;
+			if (metadata != null) {
+				filteredInputStream = Filtering.filter(db, path,
+						objectInputStream, metadata.smudgeFilterCommand);
 			}
+			EolStreamType streamType;
+			if (metadata != null && metadata.eolStreamType != null) {
+				streamType = metadata.eolStreamType;
+			} else if (workingTreeOptions.getAutoCRLF() == AutoCRLF.TRUE) {
+				streamType = EolStreamType.AUTO_CRLF;
+			} else {
+				streamType = EolStreamType.DIRECT;
+			}
+			return EolStreamTypeUtil.wrapInputStream(filteredInputStream,
+					streamType);
 		} catch (MissingObjectException notFound) {
 			throw new CoreException(Activator.error(NLS.bind(
 					CoreText.BlobStorage_blobNotFound, blobId.name(), path),

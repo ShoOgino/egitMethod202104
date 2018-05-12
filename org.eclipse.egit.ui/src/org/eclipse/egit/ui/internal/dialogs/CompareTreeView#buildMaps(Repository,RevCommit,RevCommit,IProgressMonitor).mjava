@@ -55,9 +55,6 @@
 			}
 
 			tw.setRecursive(true);
-
-			if (monitor.isCanceled())
-				throw new InterruptedException();
 			while (tw.next()) {
 				if (monitor.isCanceled())
 					throw new InterruptedException();
@@ -115,6 +112,7 @@
 						repoRelativePath, false);
 				}
 
+				CheckoutMetadata metadata = null;
 				if (baseVersionIterator != null) {
 					if (baseCommit == null) {
 						if (file != null)
@@ -126,21 +124,33 @@
 									path.toFile());
 						}
 					} else {
-						left = GitFileRevision
-								.inCommit(repository, baseCommit,
-										repoRelativePath,
-										tw.getObjectId(baseTreeIndex));
+						metadata = new CheckoutMetadata(
+								tw.getEolStreamType(
+										TreeWalk.OperationType.CHECKOUT_OP),
+								tw.getFilterCommand(
+										Constants.ATTR_FILTER_TYPE_SMUDGE));
+						left = GitFileRevision.inCommit(repository, baseCommit,
+								repoRelativePath, tw.getObjectId(baseTreeIndex),
+								metadata);
 					}
 				}
 
 				if (compareVersionIterator != null) {
-					if (!useIndex)
+					if (!useIndex) {
+						if (metadata == null) {
+							metadata = new CheckoutMetadata(
+									tw.getEolStreamType(
+											TreeWalk.OperationType.CHECKOUT_OP),
+									tw.getFilterCommand(
+											Constants.ATTR_FILTER_TYPE_SMUDGE));
+						}
 						right = GitFileRevision.inCommit(repository,
 								compareCommit, repoRelativePath,
-								tw.getObjectId(compareTreeIndex));
-					else
+								tw.getObjectId(compareTreeIndex), metadata);
+					} else {
 						right = GitFileRevision.inIndex(repository,
 								repoRelativePath);
+					}
 				}
 
 				IPath containerPath = currentPath.removeLastSegments(1);

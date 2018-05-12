@@ -1,0 +1,58 @@
+	@Test
+	public void testWithAttributesNotCheckedInButWithGlobalAttributes()
+			throws Exception {
+		java.nio.file.Path filePath = createFile(project.getProject(),
+				"attr.txt", "a");
+		try (Git git = new Git(repository)) {
+			git.add().addFilepattern(".").call();
+			RevCommit head = git.commit().setMessage("Initial commit").call();
+			// Verify that we do have "a" in the repo: modify the file, do a
+			// hard reset, verify the contents to be "a" again
+			createFile(project.getProject(), "attr.txt", "aa");
+			git.reset().setMode(ResetType.HARD).call();
+			List<String> content = Files.readAllLines(filePath,
+					StandardCharsets.UTF_8);
+			assertEquals(1, content.size());
+			assertEquals("a", content.get(0));
+			// Now create a smudge filter that will replace all a's by x's.
+			setupFilter(repository, project.getProject(), false);
+			// Set up the global attributes. For simplicity, we create the file
+			// inside the work tree.
+			java.nio.file.Path globalAttributes = createFile(
+					project.getProject(), "globalattrs", "*.txt filter=test2");
+			FilterCommandRegistry.register("egit://builtin/test/smudge2",
+					new TestCommandFactory('a', 'y'));
+			StoredConfig config = repository.getConfig();
+			config.setString("core", null, "attributesFile",
+					globalAttributes.toString());
+			config.setString("filter", "test2", "smudge",
+					"egit://builtin/test/smudge2");
+			config.save();
+			// Modify the file again and do a hard reset. File contains 'x'.
+			createFile(project.getProject(), "attr.txt", "aa");
+			git.reset().setMode(ResetType.HARD).call();
+			content = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+			assertEquals(1, content.size());
+			assertEquals("x", content.get(0));
+			// All right. Now get a CommitFileRevision and check its contents.
+			String relativePath = repository.getWorkTree().toPath()
+					.relativize(filePath).toString();
+			CommitFileRevision fileRevision = new CommitFileRevision(repository,
+					head, relativePath);
+			ByteBuffer rawContent = null;
+			try (InputStream blobStream = fileRevision
+					.getStorage(new NullProgressMonitor()).getContents()) {
+				rawContent = IO.readWholeStream(blobStream, 1);
+			}
+			assertNotNull(rawContent);
+			String blobContent = new String(rawContent.array(), 0,
+					rawContent.limit(), StandardCharsets.UTF_8);
+			// This should have ignored the not-yet-committed .gitignore and
+			// applied the global smudge2 command.
+			assertEquals("y", blobContent);
+		} finally {
+			FilterCommandRegistry.unregister("egit://builtin/test/smudge");
+			FilterCommandRegistry.unregister("egit://builtin/test/smudge2");
+		}
+	}
+

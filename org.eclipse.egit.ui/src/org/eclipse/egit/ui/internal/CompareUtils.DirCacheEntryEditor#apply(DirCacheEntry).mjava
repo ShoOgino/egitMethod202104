@@ -4,11 +4,14 @@
 			if (ent.getFileMode() != FileMode.REGULAR_FILE)
 				ent.setFileMode(FileMode.REGULAR_FILE);
 
-			ent.setLength(contentLength);
+			ent.setLength(content.limit());
 			ent.setLastModified(System.currentTimeMillis());
 			try {
-				ent.setObjectId(inserter.insert(Constants.OBJ_BLOB, content, 0,
-						contentLength));
+				ByteArrayInputStream in = new ByteArrayInputStream(
+						content.array(), 0, content.limit());
+				ent.setObjectId(
+						inserter.insert(Constants.OBJ_BLOB, content.limit(),
+								in));
 				inserter.flush();
 			} catch (IOException ex) {
 				throw new RuntimeException(ex);

@@ -1,6 +1,7 @@
 	GitRemoteFile(Repository repo, RevCommit commitId, ObjectId objectId,
-			String path) {
+			String path, CheckoutMetadata metadata) {
 		super(commitId, objectId, path);
 		this.repo = repo;
+		this.metadata = metadata;
 	}
 

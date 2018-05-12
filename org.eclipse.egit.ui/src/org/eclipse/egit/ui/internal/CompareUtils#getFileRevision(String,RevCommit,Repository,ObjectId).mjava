@@ -13,17 +13,22 @@
 	 *         contained in {@code commit}
 	 * @throws IOException
 	 */
-	public static IFileRevision getFileRevision(final String gitPath,
-			final RevCommit commit, final Repository db, ObjectId blobId)
+	public static IFileRevision getFileRevision(String gitPath,
+			RevCommit commit, Repository db, ObjectId blobId)
 			throws IOException {
-
-		TreeWalk w = TreeWalk.forPath(db, gitPath, commit.getTree());
-		// check if file is contained in commit
-		if (w != null) {
-			final IFileRevision fileRevision = GitFileRevision.inCommit(db,
-					commit, gitPath, blobId);
-			return fileRevision;
+		try (TreeWalk w = TreeWalk.forPath(db, gitPath, commit.getTree())) {
+			if (w == null) {
+				// Not in commit
+				return null;
+			}
+			CheckoutMetadata metadata = new CheckoutMetadata(
+					w.getEolStreamType(OperationType.CHECKOUT_OP),
+					w.getFilterCommand(Constants.ATTR_FILTER_TYPE_SMUDGE));
+			if (blobId == null) {
+				blobId = w.getObjectId(0);
+			}
+			return GitFileRevision.inCommit(db, commit, gitPath, blobId,
+					metadata);
 		}
-		return null;
 	}
 

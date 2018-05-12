@@ -1,0 +1,26 @@
+	private static InputStream runExternalFilter(Repository repository,
+			String path, InputStream raw, String command) throws IOException {
+		FS fs = repository.getFS();
+		ProcessBuilder filterProcessBuilder = fs.runInShell(command,
+				new String[0]);
+		filterProcessBuilder.directory(!repository.isBare()
+				? repository.getWorkTree() : repository.getDirectory());
+		filterProcessBuilder.environment().put(Constants.GIT_DIR_KEY,
+				repository.getDirectory().getAbsolutePath());
+		ExecutionResult result;
+		int rc;
+		try {
+			result = fs.execute(filterProcessBuilder, raw);
+			rc = result.getRc();
+		} catch (IOException | InterruptedException e) {
+			throw new IOException(new FilterFailedException(e, command, path));
+		}
+		if (rc != 0) {
+			throw new IOException(new FilterFailedException(rc, command, path,
+					result.getStdout().toByteArray(MAX_EXCEPTION_TEXT_SIZE),
+					RawParseUtils.decode(result.getStderr()
+							.toByteArray(MAX_EXCEPTION_TEXT_SIZE))));
+		}
+		return result.getStdout().openInputStream();
+	}
+

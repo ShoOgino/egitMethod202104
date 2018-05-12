@@ -8,11 +8,13 @@
 	 *            validating if the blob is reachable using this path.
 	 * @param blob
 	 *            Id of this object in its repository.
+	 * @deprecated Use
+	 *             {@link #GitBlobStorage(Repository, String, ObjectId, CheckoutMetadata)}
+	 *             instead.
 	 */
+	@Deprecated
 	public GitBlobStorage(final Repository repository, final String path,
 			final ObjectId blob) {
-		this.db = repository;
-		this.path = path;
-		this.blobId = blob;
+		this(repository, path, blob, null);
 	}
 

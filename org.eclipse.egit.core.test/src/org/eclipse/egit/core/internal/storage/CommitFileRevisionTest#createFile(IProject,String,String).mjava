@@ -1,0 +1,8 @@
+	private java.nio.file.Path createFile(IProject base, String name,
+			String content) throws IOException {
+		java.nio.file.Path path = base.getLocation().toFile().toPath()
+				.resolve(name);
+		Files.write(path, content.getBytes(StandardCharsets.UTF_8));
+		return path;
+	}
+

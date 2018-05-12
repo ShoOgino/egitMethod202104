@@ -1,0 +1,27 @@
+	/**
+	 * Filter the given {@link InputStream} through the given filter command.
+	 *
+	 * @param repository
+	 *            we're working in
+	 * @param path
+	 *            of the file whose content is to be filtered
+	 * @param raw
+	 *            unfiltered raw byte data
+	 * @param command
+	 *            to run to filter the stream
+	 * @return An {@link InputStream} the filtered result can be read from.
+	 * @throws IOException
+	 *             if filtering fails.
+	 */
+	public static InputStream filter(Repository repository, String path,
+			InputStream raw, String command) throws IOException {
+		if (command == null || command.isEmpty()) {
+			return raw;
+		}
+		if (FilterCommandRegistry.isRegistered(command)) {
+			return runInternalFilter(repository, raw, command);
+		} else {
+			return runExternalFilter(repository, path, raw, command);
+		}
+	}
+

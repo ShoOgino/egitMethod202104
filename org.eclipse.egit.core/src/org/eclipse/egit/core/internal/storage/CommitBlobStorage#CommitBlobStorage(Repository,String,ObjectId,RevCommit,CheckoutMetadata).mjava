@@ -8,10 +8,13 @@
 	 *            blob id
 	 * @param commit
 	 *            from with blob version should be taken
+	 * @param metadata
+	 *            Smudge filters and EOL stream type to apply when the content
+	 *            is to be gotten.
 	 */
 	public CommitBlobStorage(final Repository repository, final String fileName,
-			final ObjectId blob, RevCommit commit) {
-		super(repository, fileName, blob);
+			final ObjectId blob, RevCommit commit, CheckoutMetadata metadata) {
+		super(repository, fileName, blob, metadata);
 		this.commit = commit;
 	}
 

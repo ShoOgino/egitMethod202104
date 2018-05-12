@@ -10,10 +10,14 @@
 	 *            path within the commit's tree of the file.
 	 * @param blobId
 	 *            unique name of the content.
+	 * @param metadata
+	 *            Smudge filters and EOL stream type to apply when the content
+	 *            is to be gotten.
 	 * @return revision implementation for this file in the given commit.
 	 */
 	public static GitFileRevision inCommit(final Repository db,
-			final RevCommit commit, final String path, final ObjectId blobId) {
-		return new CommitFileRevision(db, commit, path, blobId);
+			final RevCommit commit, final String path, final ObjectId blobId,
+			CheckoutMetadata metadata) {
+		return new CommitFileRevision(db, commit, path, blobId, metadata);
 	}
 

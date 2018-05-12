@@ -1,0 +1,31 @@
+	@Test
+	public void testIndexEdit() throws Exception {
+		IFile testFile = touch("a");
+		stage(testFile);
+		// Get the index file revision.
+		ITypedElement element = CompareUtils.getIndexTypedElement(testFile);
+		assert (element instanceof EditableRevision);
+		EditableRevision revision = (EditableRevision) element;
+		// Check that its contents are 'a'.
+		try (InputStream in = revision.getContents()) {
+			assertEquals("a", get(in));
+		}
+		// Change the contents to 'xx'
+		revision.setContent("xx".getBytes(StandardCharsets.UTF_8));
+		// Commit the index
+		CommitOperation op = new CommitOperation(repository,
+				TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER,
+				"Commit modified index");
+		op.execute(null);
+		TestUtil.waitForJobs(50, 5000);
+		// Do a reset --hard
+		ResetOperation reset = new ResetOperation(repository, Constants.HEAD,
+				ResetType.HARD);
+		reset.execute(null);
+		TestUtil.waitForJobs(50, 5000);
+		// Should have 'xx' now
+		try (InputStream in = testFile.getContents()) {
+			assertEquals("xx", get(in));
+		}
+	}
+

@@ -1,6 +1,6 @@
 	@Override
 	public ITag[] getTags() {
-		final Collection<GitTag> ret = new ArrayList<GitTag>();
+		final Collection<GitTag> ret = new ArrayList<>();
 		for (final Map.Entry<String, Ref> tag : db.getTags().entrySet()) {
 			Ref ref = db.peel(tag.getValue());
 			ObjectId refId = ref.getPeeledObjectId();

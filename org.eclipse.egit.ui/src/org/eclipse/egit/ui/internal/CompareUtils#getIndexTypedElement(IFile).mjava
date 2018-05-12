@@ -5,9 +5,8 @@
 	 * @return typed element
 	 * @throws IOException
 	 */
-	public static ITypedElement getIndexTypedElement(@NonNull
-	final IFile baseFile)
-			throws IOException {
+	public static ITypedElement getIndexTypedElement(
+			final @NonNull IFile baseFile) throws IOException {
 		final RepositoryMapping mapping = RepositoryMapping.getMapping(baseFile);
 		if (mapping == null) {
 			Activator.error(NLS.bind(UIText.GitHistoryPage_errorLookingUpPath,
