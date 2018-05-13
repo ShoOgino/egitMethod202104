@@ -74,7 +74,7 @@
 							e.getCause());
 				} finally {
 					if (updated != null && !updated.isEmpty()) {
-						repository.notifyIndexChanged();
+						repository.notifyIndexChanged(true);
 					}
 				}
 			}

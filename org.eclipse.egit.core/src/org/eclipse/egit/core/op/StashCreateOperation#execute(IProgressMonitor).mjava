@@ -18,7 +18,7 @@
 							e.getCause());
 				} finally {
 					if (commit != null) {
-						repository.notifyIndexChanged();
+						repository.notifyIndexChanged(true);
 					}
 				}
 			}
