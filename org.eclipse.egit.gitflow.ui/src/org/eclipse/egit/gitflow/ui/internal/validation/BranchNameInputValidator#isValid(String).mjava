@@ -1,17 +1,14 @@
 	@Override
 	public String isValid(String newText) {
-		try {
-			if (branchExists(newText)) {
-				return String.format(UIText.NameValidator_nameAlreadyExists,
-						newText);
-			}
-			if (!BranchNameValidator.isBranchNameValid(newText)) {
-				return String.format(UIText.NameValidator_invalidName, newText,
-						BranchNameValidator.ILLEGAL_CHARS);
-			}
-		} catch (CoreException e) {
+		String fullBranchName = getFullBranchName(newText);
+		IStatus status = Utils.validateNewRefName(fullBranchName,
+				repository.getRepository(), "", //$NON-NLS-1$
+				false);
+
+		if (status.isOK()) {
 			return null;
 		}
-		return null;
+
+		return status.getMessage();
 	}
 
