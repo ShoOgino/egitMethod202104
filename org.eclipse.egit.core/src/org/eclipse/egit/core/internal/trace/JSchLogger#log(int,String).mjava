@@ -1,0 +1,9 @@
+	@Override
+	public void log(int level, String message) {
+		if (isEnabled(level)) {
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.JSCH.getLocation(),
+					levelToString(level) + ": " + message); //$NON-NLS-1$
+		}
+	}
+
