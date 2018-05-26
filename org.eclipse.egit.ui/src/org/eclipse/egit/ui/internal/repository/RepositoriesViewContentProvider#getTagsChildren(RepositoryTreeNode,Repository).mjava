@@ -4,8 +4,7 @@
 
 		try (RevWalk walk = new RevWalk(repo)) {
 			walk.setRetainBody(true);
-			Map<String, Ref> tagRefs = getRefs(repo, Constants.R_TAGS);
-			for (Ref tagRef : tagRefs.values()) {
+			for (Ref tagRef : getRefs(repo, Constants.R_TAGS).values()) {
 				ObjectId objectId = tagRef.getLeaf().getObjectId();
 				RevObject revObject = walk.parseAny(objectId);
 				RevObject peeledObject = walk.peel(revObject);

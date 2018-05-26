@@ -1,0 +1,17 @@
+	private Object[] getBranchChildren(RepositoryTreeNode node, Repository repo,
+			String prefix) {
+		if (branchHierarchyMode) {
+			return getBranchHierarchyChildren(
+					new BranchHierarchyNode(node, repo, new Path(prefix)), repo,
+					node);
+		} else {
+			try {
+				return getRefs(repo, prefix).values().stream()
+						.filter(ref -> !ref.isSymbolic())
+						.map(ref -> new RefNode(node, repo, ref)).toArray();
+			} catch (IOException e) {
+				return handleException(e, node);
+			}
+		}
+	}
+

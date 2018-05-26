@@ -8,13 +8,12 @@
 				.getRepositoryUtil();
 
 		if (inputElement instanceof Collection) {
-			for (Iterator it = ((Collection) inputElement).iterator(); it
-					.hasNext();) {
-				Object next = it.next();
-				if (next instanceof RepositoryTreeNode)
+			for (Object next : ((Collection) inputElement)) {
+				if (next instanceof RepositoryTreeNode) {
 					nodes.add((RepositoryTreeNode) next);
-				else if (next instanceof String)
+				} else if (next instanceof String) {
 					directories.add((String) next);
+				}
 			}
 		} else if (inputElement instanceof IWorkspaceRoot) {
 			directories.addAll(repositoryUtil.getConfiguredRepositories());
