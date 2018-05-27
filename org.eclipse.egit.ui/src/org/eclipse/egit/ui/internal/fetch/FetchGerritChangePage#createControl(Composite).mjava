@@ -216,7 +216,15 @@
 						UIText.FetchGerritChangePage_ActivateAdditionalRefsTooltip);
 
 		ActionUtils.setGlobalActions(refText, ActionUtils.createGlobalAction(
-				ActionFactory.PASTE, () -> doPaste(refText)));
+				ActionFactory.PASTE, () -> {
+					if (doPaste(refText) && contentProposer != null) {
+						refText.getDisplay().asyncExec(() -> {
+							if (!refText.isDisposed()) {
+								contentProposer.openProposalPopup();
+							}
+						});
+					}
+				}));
 		refText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
