@@ -8,6 +8,10 @@
 			if (message != null) {
 				warningLabel.showMessage(message);
 				needsRedraw = true;
+			} else if (isUnbornHead) {
+				warningLabel.showInfo(MessageFormat.format(
+						UIText.StagingView_InitialCommitText, currentBranch));
+				needsRedraw = true;
 			} else {
 				needsRedraw = warningLabel.getVisible();
 				warningLabel.hideMessage();

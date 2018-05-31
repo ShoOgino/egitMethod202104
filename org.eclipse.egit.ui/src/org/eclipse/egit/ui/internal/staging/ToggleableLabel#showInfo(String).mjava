@@ -1,0 +1,17 @@
+	/**
+	 * Show the info message with an info icon.
+	 *
+	 * @param message
+	 *            to show
+	 */
+	public void showInfo(String message) {
+		if (!isInfo) {
+			setImage(PlatformUI.getWorkbench().getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_INFO_TSK));
+			isInfo = true;
+		}
+		setText(message);
+		layout(true);
+		changeVisibility(true);
+	}
+

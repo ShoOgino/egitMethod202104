@@ -1,12 +1,15 @@
 	/**
-	 * Set the warning message and show the label.
+	 * Set the warning message and show the label. Forces the image to the
+	 * warning icon if it had been changed.
 	 *
 	 * @param message
 	 */
 	public void showMessage(String message) {
-		warningText.setText(message);
-		layout(true);
-
-		changeVisibility(true);
+		if (!isBuiltInImage) {
+			image.setImage(PlatformUI.getWorkbench().getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_WARN_TSK));
+			isBuiltInImage = true;
+		}
+		setText(message);
 	}
 

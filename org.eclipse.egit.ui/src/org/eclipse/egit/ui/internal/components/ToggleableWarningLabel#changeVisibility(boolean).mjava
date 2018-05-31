@@ -1,4 +1,10 @@
-	private void changeVisibility(boolean visible) {
+	/**
+	 * Defines the visibility of the whole Composite.
+	 *
+	 * @param visible
+	 *            whether to show the composite
+	 */
+	protected void changeVisibility(boolean visible) {
 		setVisible(visible);
 		GridData data = (GridData) getLayoutData();
 		data.exclude = !visible;
