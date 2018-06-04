@@ -2,6 +2,8 @@
 			ViewerCell cell, MouseEvent e) {
 		final int columnIndex = cell.getColumnIndex();
 		switch (columnIndex) {
+		case 0:
+			return computeInformationForHash(commit, cell);
 		case 1:
 			return computeInformationForRef(commit, cell, e);
 		case 2:
@@ -12,7 +14,8 @@
 			return computeInformationForName(commit.getCommitterIdent(), cell);
 		case 5:
 			return computeInformationForDate(commit.getCommitterIdent(), cell);
+		default:
+			return null;
 		}
-		return null;
 	}
 
