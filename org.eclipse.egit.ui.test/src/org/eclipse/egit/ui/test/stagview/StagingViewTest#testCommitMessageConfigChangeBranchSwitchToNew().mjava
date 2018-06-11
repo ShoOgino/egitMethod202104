@@ -1,0 +1,31 @@
+	@Test
+	public void testCommitMessageConfigChangeBranchSwitchToNew()
+			throws Exception {
+		setContent("something");
+		StagingViewTester stagingViewTester = StagingViewTester
+				.openStagingView();
+		stagingViewTester.setAuthor(TestUtil.TESTCOMMITTER);
+		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER);
+		stagingViewTester.setCommitMessage("Commit message");
+		stagingViewTester.setSignedOff(true);
+		String commitMessage = stagingViewTester.getCommitMessage();
+		assertTrue("Should have a signed-off footer",
+				commitMessage.indexOf("Signed-off-by") > 0);
+		try (Git git = new Git(repository)) {
+			git.checkout().setAllPaths(true).setCreateBranch(true)
+					.setName("refs/heads/myBranch").call();
+		}
+		TestUtil.joinJobs(
+				org.eclipse.egit.core.JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtil.processUIEvents();
+		assertEquals("Author should be unchanged", TestUtil.TESTCOMMITTER,
+				stagingViewTester.getAuthor());
+		assertEquals("Committer should be unchanged", TestUtil.TESTCOMMITTER,
+				stagingViewTester.getCommitter());
+		assertEquals("Commit message should be unchanged", commitMessage,
+				stagingViewTester.getCommitMessage());
+		assertTrue("Sign-off should be enabled",
+				stagingViewTester.getSignedOff());
+
+	}
+

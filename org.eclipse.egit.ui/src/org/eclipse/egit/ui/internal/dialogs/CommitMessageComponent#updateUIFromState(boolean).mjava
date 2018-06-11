@@ -1,0 +1,16 @@
+	/**
+	 * Set the UI widgets to the values from the internal state.
+	 *
+	 * @param withCommitMessage
+	 *            {@code true} if the commit message shall be updated, too,
+	 *            {@code false} to only update author and committer
+	 */
+	public void updateUIFromState(boolean withCommitMessage) {
+		if (withCommitMessage) {
+			commitText.setText(commitMessage);
+			commitText.getTextWidget().setCaretOffset(caretPosition);
+		}
+		committerText.setText(committer);
+		authorText.setText(author);
+	}
+

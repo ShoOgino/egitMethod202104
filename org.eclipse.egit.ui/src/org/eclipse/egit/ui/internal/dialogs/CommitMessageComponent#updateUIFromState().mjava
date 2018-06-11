@@ -2,9 +2,6 @@
 	 *
 	 */
 	public void updateUIFromState() {
-		commitText.setText(commitMessage);
-		commitText.getTextWidget().setCaretOffset(caretPosition);
-		authorText.setText(author);
-		committerText.setText(committer);
+		updateUIFromState(true);
 	}
 

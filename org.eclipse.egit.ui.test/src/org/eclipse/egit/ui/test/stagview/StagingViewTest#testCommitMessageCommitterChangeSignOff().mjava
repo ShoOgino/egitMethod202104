@@ -1,0 +1,32 @@
+	@Test
+	public void testCommitMessageCommitterChangeSignOff() throws Exception {
+		setContent("something");
+
+		StagingViewTester stagingViewTester = StagingViewTester
+				.openStagingView();
+		stagingViewTester.setAuthor(TestUtil.TESTAUTHOR);
+		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER);
+		stagingViewTester.setCommitMessage("Commit message");
+		stagingViewTester.setSignedOff(true);
+		String commitMessage = stagingViewTester.getCommitMessage();
+		assertTrue("Should have a signed-off footer",
+				commitMessage.indexOf("Signed-off-by") > 0);
+		// Edit the committer field: pretend the user typed a backspace,
+		// deleting the closing ">"
+		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER.substring(0,
+				TestUtil.TESTCOMMITTER.length() - 1));
+		// Now the committer field has an invalid value.
+		assertTrue("Sign off should still be enabled",
+				stagingViewTester.getSignedOff());
+		assertEquals("Commit message should be unchanged", commitMessage,
+				stagingViewTester.getCommitMessage());
+		// Now change it back to some valid value.
+		stagingViewTester.setCommitter("Somebody <some.body@some.where.org>");
+		assertEquals("Commit message should be updated",
+				commitMessage.replace(TestUtil.TESTCOMMITTER,
+						"Somebody <some.body@some.where.org>"),
+				stagingViewTester.getCommitMessage());
+		assertTrue("Sign off should still be enabled",
+				stagingViewTester.getSignedOff());
+	}
+

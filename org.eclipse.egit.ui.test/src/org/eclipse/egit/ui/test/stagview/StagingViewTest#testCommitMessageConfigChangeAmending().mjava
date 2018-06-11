@@ -1,0 +1,44 @@
+	@Test
+	public void testCommitMessageConfigChangeAmending() throws Exception {
+		// Make a commit directly -- we want to test amending a commit made by
+		// someone else (for instance, fetched from Gerrit).
+		setContent("something");
+		try (Git git = new Git(repository)) {
+			git.add().addFilepattern(FILE1_PATH).call();
+			PersonIdent author = RawParseUtils
+					.parsePersonIdent(TestUtil.TESTAUTHOR);
+			git.commit().setAuthor(author).setCommitter(author)
+					.setMessage("Author's commit\n\nSigned-off-by: "
+							+ TestUtil.TESTAUTHOR)
+					.call();
+		}
+		StagingViewTester stagingViewTester = StagingViewTester
+				.openStagingView();
+		stagingViewTester.setAmend(true);
+		stagingViewTester.setSignedOff(true);
+		String commitMessage = stagingViewTester.getCommitMessage();
+		assertTrue("Commit message should have two signed-off lines",
+				commitMessage.contains(TestUtil.TESTAUTHOR)
+						&& commitMessage.contains(TestUtil.TESTCOMMITTER));
+		StoredConfig cfg = repository.getConfig();
+		cfg.load();
+		cfg.setString(ConfigConstants.CONFIG_USER_SECTION, null,
+				ConfigConstants.CONFIG_KEY_NAME, "Some One");
+		cfg.save();
+		TestUtil.processUIEvents();
+		assertEquals("Author should be unchanged", TestUtil.TESTAUTHOR,
+				stagingViewTester.getAuthor());
+		String expectedCommitter = "Some One <" + TestUtil.TESTCOMMITTER_EMAIL
+				+ '>';
+		assertEquals("Committer should be changed", expectedCommitter,
+				stagingViewTester.getCommitter());
+		assertTrue("Sign-off should be enabled",
+				stagingViewTester.getSignedOff());
+		assertTrue("Amend should be enabled", stagingViewTester.getAmend());
+		commitMessage = stagingViewTester.getCommitMessage();
+		assertTrue("Commit message should have two signed-off lines",
+				commitMessage.contains(TestUtil.TESTAUTHOR)
+						&& commitMessage.contains(expectedCommitter)
+						&& !commitMessage.contains(TestUtil.TESTCOMMITTER));
+	}
+

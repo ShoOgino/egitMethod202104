@@ -1,0 +1,33 @@
+	@Test
+	public void testCommitMessageConfigChangeWithAuthor() throws Exception {
+		setContent("something");
+
+		StagingViewTester stagingViewTester = StagingViewTester
+				.openStagingView();
+		stagingViewTester.setAuthor(TestUtil.TESTCOMMITTER);
+		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER);
+		stagingViewTester.setCommitMessage("Commit message");
+		stagingViewTester.setSignedOff(true);
+		String commitMessage = stagingViewTester.getCommitMessage();
+		assertTrue("Should have a signed-off footer",
+				commitMessage.indexOf("Signed-off-by") > 0);
+		StoredConfig cfg = repository.getConfig();
+		cfg.load();
+		cfg.setString(ConfigConstants.CONFIG_USER_SECTION, null,
+				ConfigConstants.CONFIG_KEY_NAME, "Some One");
+		cfg.save();
+		TestUtil.processUIEvents();
+		String expectedCommitter = "Some One <" + TestUtil.TESTCOMMITTER_EMAIL
+				+ '>';
+		assertEquals("Author should be changed", expectedCommitter,
+				stagingViewTester.getAuthor());
+		assertEquals("Committer should be changed", expectedCommitter,
+				stagingViewTester.getCommitter());
+		assertEquals("Commit message should be updated",
+				commitMessage.replace(TestUtil.TESTCOMMITTER,
+						expectedCommitter),
+				stagingViewTester.getCommitMessage());
+		assertTrue("Sign-off should be enabled",
+				stagingViewTester.getSignedOff());
+	}
+

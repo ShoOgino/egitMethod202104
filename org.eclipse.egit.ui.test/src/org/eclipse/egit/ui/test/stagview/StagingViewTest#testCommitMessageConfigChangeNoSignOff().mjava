@@ -1,0 +1,35 @@
+	@Test
+	public void testCommitMessageConfigChangeNoSignOff() throws Exception {
+		setContent("something");
+
+		StagingViewTester stagingViewTester = StagingViewTester
+				.openStagingView();
+		stagingViewTester.setAuthor(TestUtil.TESTAUTHOR);
+		stagingViewTester.setCommitter(TestUtil.TESTCOMMITTER);
+		stagingViewTester.setCommitMessage("Commit message");
+		stagingViewTester.setSignedOff(true);
+		String commitMessage = stagingViewTester.getCommitMessage();
+		assertTrue("Should have a signed-off footer",
+				commitMessage.indexOf("Signed-off-by") > 0);
+		stagingViewTester.setSignedOff(false);
+		commitMessage = stagingViewTester.getCommitMessage();
+		assertTrue("Should not have a signed-off footer",
+				commitMessage.indexOf("Signed-off-by") < 0);
+		StoredConfig cfg = repository.getConfig();
+		cfg.load();
+		cfg.setString(ConfigConstants.CONFIG_USER_SECTION, null,
+				ConfigConstants.CONFIG_KEY_NAME, "Some One");
+		cfg.save();
+		TestUtil.processUIEvents();
+		String expectedCommitter = "Some One <" + TestUtil.TESTCOMMITTER_EMAIL
+				+ '>';
+		assertEquals("Author should be unchanged", TestUtil.TESTAUTHOR,
+				stagingViewTester.getAuthor());
+		assertEquals("Committer should be changed", expectedCommitter,
+				stagingViewTester.getCommitter());
+		assertEquals("Commit message should be unchanged", commitMessage,
+				stagingViewTester.getCommitMessage());
+		assertFalse("Sign-off should be disabled",
+				stagingViewTester.getSignedOff());
+	}
+

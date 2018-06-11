@@ -33,12 +33,15 @@
 			if (repositoryChanged) {
 				// Reset paths, they're from the old repository
 				resetPathsToExpand();
-				if (refsChangedListener != null)
-					refsChangedListener.remove();
+				removeRepositoryListeners();
 				refsChangedListener = repository.getListenerList()
 						.addRefsChangedListener(
 								event -> updateRebaseButtonVisibility(repository
 										.getRepositoryState().isRebasing()));
+				configChangedListener = repository.getListenerList()
+						.addConfigChangedListener(
+								event -> updateCommitAuthorAndCommitter(
+										repository));
 			}
 			final StagingViewUpdate update = new StagingViewUpdate(repository,
 					indexDiff, null);
