@@ -39,13 +39,6 @@
 						.addRefsChangedListener(
 								event -> updateRebaseButtonVisibility(repository
 										.getRepositoryState().isRebasing()));
-				if (configChangedListener != null) {
-					configChangedListener.remove();
-				}
-				configChangedListener = repository.getListenerList()
-						.addConfigChangedListener(
-								event -> asyncExec(
-										() -> resetCommitMessageComponent()));
 			}
 			final StagingViewUpdate update = new StagingViewUpdate(repository,
 					indexDiff, null);
