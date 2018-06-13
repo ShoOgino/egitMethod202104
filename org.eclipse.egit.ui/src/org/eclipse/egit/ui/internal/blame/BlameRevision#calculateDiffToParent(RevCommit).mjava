@@ -5,8 +5,10 @@
 			if (diffEntry == null)
 				return null;
 
-			RawText oldText = readText(diffEntry.getOldId(), reader);
-			RawText newText = readText(diffEntry.getNewId(), reader);
+			RawText oldText = readText(repository, diffEntry.getOldId(), reader,
+					diffEntry.getOldPath());
+			RawText newText = readText(repository, diffEntry.getNewId(), reader,
+					diffEntry.getNewPath());
 
 			StoredConfig config = repository.getConfig();
 			DiffAlgorithm diffAlgorithm = DiffAlgorithm.getAlgorithm(config

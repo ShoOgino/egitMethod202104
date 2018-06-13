@@ -37,7 +37,7 @@
 			List<DiffEntry> renames = detector.compute(walk.getObjectReader(),
 					org.eclipse.jgit.lib.NullProgressMonitor.INSTANCE);
 			for (DiffEntry m : renames) {
-				final FileDiff d = new FileDiff(commit, m);
+				final FileDiff d = new FileDiff(repository, commit, m);
 				r.add(d);
 				for (Iterator<DiffEntry> i = xentries.iterator(); i.hasNext();) {
 					DiffEntry n = i.next();
@@ -48,7 +48,7 @@
 				}
 			}
 			for (DiffEntry m : xentries) {
-				final FileDiff d = new FileDiff(commit, m);
+				final FileDiff d = new FileDiff(repository, commit, m);
 				r.add(d);
 			}
 		}
@@ -65,7 +65,8 @@
 
 				int treeFilterMarks = treeFilterMarker.getMarks(walk);
 
-				final FileDiffForMerges d = new FileDiffForMerges(commit,
+				final FileDiffForMerges d = new FileDiffForMerges(repository,
+						commit,
 						treeFilterMarks);
 				d.path = walk.getPathString();
 				int m0 = 0;

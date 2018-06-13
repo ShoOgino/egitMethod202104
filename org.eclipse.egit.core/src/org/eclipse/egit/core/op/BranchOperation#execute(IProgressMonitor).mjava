@@ -10,7 +10,9 @@
 				closeProjectsMissingAfterCheckout(progress);
 
 				try (Git git = new Git(repository)) {
-					CheckoutCommand co = git.checkout();
+					CheckoutCommand co = git.checkout().setProgressMonitor(
+							new EclipseGitProgressTransformer(
+									progress.newChild(1)));
 					co.setName(target);
 
 					try {
@@ -29,7 +31,6 @@
 					if (result.getStatus() == Status.NONDELETED) {
 						retryDelete(result.getUndeletedList());
 					}
-					progress.worked(1);
 					refreshAffectedProjects(progress);
 
 					postExecute(progress.newChild(1));
@@ -59,7 +60,7 @@
 
 			private void refreshAffectedProjects(SubMonitor progress)
 					throws CoreException {
-				List<String> pathsToHandle = new ArrayList<String>();
+				List<String> pathsToHandle = new ArrayList<>();
 				pathsToHandle.addAll(result.getModifiedList());
 				pathsToHandle.addAll(result.getRemovedList());
 				pathsToHandle.addAll(result.getConflictList());

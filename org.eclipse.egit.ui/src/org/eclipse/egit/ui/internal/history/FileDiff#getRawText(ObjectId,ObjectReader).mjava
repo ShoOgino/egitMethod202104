@@ -2,7 +2,10 @@
 			throws IOException {
 		if (id.equals(ObjectId.zeroId()))
 			return new RawText(new byte[] {});
-		ObjectLoader ldr = reader.open(id, Constants.OBJ_BLOB);
+		ObjectLoader ldr = LfsFactory.getInstance().applySmudgeFilter(repository,
+				reader.open(id, Constants.OBJ_BLOB),
+				LfsFactory.getAttributesForPath(repository, getPath())
+						.get(Constants.ATTR_DIFF));
 		return new RawText(ldr.getCachedBytes(Integer.MAX_VALUE));
 	}
 

@@ -10,13 +10,12 @@
 			Collection<String> paths = entry.getValue();
 
 			try {
-				discardChanges(repository, paths);
+				discardChanges(repository, paths, progress.newChild(1));
 			} catch (GitAPIException e) {
 				errorOccurred = true;
 				Activator.logError(
 						CoreText.DiscardChangesOperation_discardFailed, e);
 			}
-			progress.worked(1);
 
 			try {
 				ProjectUtil.refreshRepositoryResources(repository, paths,

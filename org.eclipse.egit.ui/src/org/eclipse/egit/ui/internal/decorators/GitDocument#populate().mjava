@@ -107,7 +107,9 @@
 					GitTraceLocation.getTrace().trace(
 							GitTraceLocation.QUICKDIFF.getLocation(),
 							"(GitDocument) compareTo: " + baseline); //$NON-NLS-1$
-				ObjectLoader loader = repository.open(id, Constants.OBJ_BLOB);
+				ObjectLoader loader = LfsFactory.getInstance().applySmudgeFilter(
+						repository, repository.open(id, Constants.OBJ_BLOB),
+						tw.getAttributes().get(Constants.ATTR_DIFF));
 				byte[] bytes = loader.getBytes();
 				String charset;
 				charset = CompareCoreUtils.getResourceEncoding(resource);
