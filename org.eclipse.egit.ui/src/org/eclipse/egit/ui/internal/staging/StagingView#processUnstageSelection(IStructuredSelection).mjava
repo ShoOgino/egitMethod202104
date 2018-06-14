@@ -1,5 +1,6 @@
-	private List<String> processUnstageSelection(IStructuredSelection selection) {
-		List<String> paths = new ArrayList<>();
+	private Collection<String> processUnstageSelection(
+			IStructuredSelection selection) {
+		Set<String> paths = new HashSet<>();
 		resetPathsToExpand();
 		for (Object element : selection.toList()) {
 			if (element instanceof StagingEntry) {

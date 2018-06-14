@@ -1,6 +1,4 @@
 	boolean isInFilter(StagingEntry stagingEntry) {
-		Pattern filterPattern = getFilterPattern();
-		return filterPattern == null
-				|| filterPattern.matcher(stagingEntry.getPath()).find();
+		return matches(stagingEntry, getFilterPattern());
 	}
 

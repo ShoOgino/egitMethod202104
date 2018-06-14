@@ -1,11 +1,6 @@
 	List<StagingEntry> getStagingEntriesFiltered(StagingFolderEntry folder) {
 		List<StagingEntry> stagingEntries = new ArrayList<>();
-		for (StagingEntry stagingEntry : content) {
-			if (folder.getLocation().isPrefixOf(stagingEntry.getLocation())) {
-				if (isInFilter(stagingEntry))
-					stagingEntries.add(stagingEntry);
-			}
-		}
+		addFilteredDescendants(folder, getFilterPattern(), stagingEntries);
 		return stagingEntries;
 	}
 

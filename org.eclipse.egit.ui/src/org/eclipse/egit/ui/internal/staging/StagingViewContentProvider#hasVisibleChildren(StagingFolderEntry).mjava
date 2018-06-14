@@ -1,7 +1,8 @@
 	boolean hasVisibleChildren(StagingFolderEntry folder) {
-		if (getFilterPattern() == null)
+		Pattern pattern = getFilterPattern();
+		if (pattern == null) {
 			return true;
-		else
-			return !getStagingEntriesFiltered(folder).isEmpty();
+		}
+		return hasVisibleDescendants(folder, pattern);
 	}
 

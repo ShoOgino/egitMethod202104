@@ -5,8 +5,9 @@
 		} else {
 			int shownCount = 0;
 			for (StagingEntry entry : content) {
-				if (isInFilter(entry))
+				if (matches(entry, filterPattern)) {
 					shownCount++;
+				}
 			}
 			return shownCount;
 		}

@@ -1,13 +1,8 @@
 	private static void addExpandedPathsBelowFolder(StagingFolderEntry folder,
 			TreeViewer treeViewer, Set<IPath> addToSet) {
-		Object[] expandedElements = treeViewer.getVisibleExpandedElements();
-		for (Object expandedElement : expandedElements) {
-			if (expandedElement instanceof StagingFolderEntry) {
-				StagingFolderEntry expandedFolder = (StagingFolderEntry) expandedElement;
-				if (folder.getPath().isPrefixOf(
-						expandedFolder.getPath()))
-					addPathAndParentPaths(expandedFolder.getPath(), addToSet);
-			}
+		if (treeViewer.getExpandedState(folder)) {
+			addPathAndParentPaths(folder.getPath(), addToSet);
 		}
+		addExpandedSubfolders(folder, treeViewer, addToSet);
 	}
 
