@@ -12,24 +12,16 @@
 			}
 			if (startMergeButton.getSelection()) {
 				super.buttonPressed(buttonId);
-				// open the merge tool
-				IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-						.getProjects();
-				for (IProject project : projects) {
-					RepositoryMapping mapping = RepositoryMapping
-							.getMapping(project);
-					if (mapping != null && mapping.getRepository().equals(repo)) {
-						try {
-							// make sure to refresh before opening the merge
-							// tool
-							project
-									.refreshLocal(IResource.DEPTH_INFINITE,
-											null);
-						} catch (CoreException e) {
-							Activator.handleError(e.getMessage(), e, false);
-						}
-					}
+				// make sure to refresh before opening the merge tool
+				IProject[] projects = ProjectUtil.getProjects(repo);
+				try {
+					ResourcesPlugin.getWorkspace().run(
+							pm -> ProjectUtil.refreshResources(projects, pm),
+							null, IWorkspace.AVOID_UPDATE, null);
+				} catch (CoreException e) {
+					Activator.logError(e.getMessage(), e);
 				}
+				// open the merge tool
 				List<IPath> locationList = new ArrayList<>();
 				IPath repoWorkdirPath = new Path(repo.getWorkTree().getPath());
 				for (String repoPath : conflictPaths) {

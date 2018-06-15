@@ -5,7 +5,7 @@
 	 * have become newly untracked.
 	 */
 	private List<String> calcTreeFilterPaths(Collection<String> filesToUpdate) {
-		List<String> paths = new ArrayList<String>();
+		List<String> paths = new ArrayList<>();
 		for (String fileToUpdate : filesToUpdate) {
 			for (String untrackedFolder : indexDiffData.getUntrackedFolders()) {
 				if (fileToUpdate.startsWith(untrackedFolder)

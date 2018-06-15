@@ -26,8 +26,10 @@
 						IProject[] validOpenProjects = ProjectUtil
 								.getValidOpenProjects(repository);
 						repository = null;
-						ProjectUtil.refreshResources(validOpenProjects,
-								monitor);
+						ResourcesPlugin.getWorkspace()
+								.run(pm -> ProjectUtil.refreshResources(
+										validOpenProjects, pm), null,
+										IWorkspace.AVOID_UPDATE, monitor);
 					} catch (CoreException e) {
 						return Activator.error(e.getMessage(), e);
 					}

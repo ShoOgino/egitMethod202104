@@ -25,7 +25,10 @@
 
 					try {
 						IProject[] projects = ProjectUtil.getProjectsContaining(repository, itemsToClean);
-						ProjectUtil.refreshResources(projects,
+						ResourcesPlugin.getWorkspace().run(
+								pm -> ProjectUtil.refreshResources(projects,
+										pm),
+								null, IWorkspace.AVOID_UPDATE,
 								subMonitor.newChild(1));
 					} catch (CoreException e) {
 						// could not refresh... not a "real" problem
