@@ -1,6 +1,5 @@
 	@SuppressWarnings("unused")
 	private void createToolbar() {
-		errorBackgroundColor = new Color(getDisplay(), new RGB(255, 150, 150));
 		ResourceManager resourceManager = Activator.getDefault()
 				.getResourceManager();
 		allIcon = UIIcons.getImage(resourceManager, UIIcons.SEARCH_COMMIT);
@@ -16,13 +15,13 @@
 		findLayout.marginHeight = 0;
 		findLayout.marginBottom = 1;
 		findLayout.marginWidth = 0;
-		findLayout.numColumns = 5;
+		findLayout.numColumns = 2;
 		setLayout(findLayout);
-		setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
 
 		patternField = new Text(this,
 				SWT.SEARCH | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
-		GridData findTextData = new GridData(SWT.FILL, SWT.LEFT, true, false);
+		GridData findTextData = new GridData(SWT.LEFT, SWT.TOP, true, false);
 		findTextData.minimumWidth = 150;
 		patternField.setLayoutData(findTextData);
 		patternField.setMessage(UIText.HistoryPage_findbar_find_msg);
@@ -53,6 +52,7 @@
 		findPreviousAction.setEnabled(false);
 		manager.add(findPreviousAction);
 		final ToolBar toolBar = manager.createControl(this);
+		toolBar.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
 
 		prefsDropDown = new ToolItem(toolBar, SWT.DROP_DOWN);
 		prefsMenu = new Menu(getShell(), SWT.POP_UP);
@@ -109,9 +109,13 @@
 		patternModifyListener = new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				if (getSearchPattern().equals(lastSearchPattern)) {
+				String pattern = getSearchPattern();
+				if (pattern.equals(lastSearchPattern)) {
 					// Don't bother if it's still the same.
 					return;
+				}
+				if (pattern.isEmpty()) {
+					setNormalBackgroundColor();
 				}
 				final FindToolbarJob finder = createFinder();
 				finder.setUser(false);

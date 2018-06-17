@@ -1,0 +1,15 @@
+	private void setNormalBackgroundColor() {
+		if (noResults) {
+			Color currentColor = patternField.getBackground();
+			patternField.setData(CCS_CLASS_KEY, null);
+			patternField.reskin(SWT.ALL);
+			if (currentColor.equals(patternField.getBackground())) {
+				// If the theme has no definition for the text field's
+				// background, it remains unchanged. Reset it to the SWT default
+				// in that case.
+				patternField.setBackground(null);
+			}
+			noResults = false;
+		}
+	}
+

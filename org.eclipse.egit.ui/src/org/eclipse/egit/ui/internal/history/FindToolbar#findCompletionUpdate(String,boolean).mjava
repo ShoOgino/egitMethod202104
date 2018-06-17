@@ -16,14 +16,14 @@
 				int ix = findResults.getFirstIndex();
 				notifyListeners(ix);
 			}
-			patternField.setBackground(null);
+			setNormalBackgroundColor();
 			findNextAction.setEnabled(total > 1);
 			findPreviousAction.setEnabled(total > 1);
 			lastErrorPattern = null;
 		} else {
 			currentPosition = -1;
 			if (pattern.length() > 0) {
-				patternField.setBackground(errorBackgroundColor);
+				setNotFoundBackgroundColor();
 				label = UIText.HistoryPage_findbar_notFound;
 				// Don't keep beeping every time if the user is deleting
 				// a long not found pattern
@@ -35,7 +35,7 @@
 				}
 				lastErrorPattern = pattern;
 			} else {
-				patternField.setBackground(null);
+				setNormalBackgroundColor();
 				label = ""; //$NON-NLS-1$
 				findNextAction.setEnabled(false);
 				findPreviousAction.setEnabled(false);
