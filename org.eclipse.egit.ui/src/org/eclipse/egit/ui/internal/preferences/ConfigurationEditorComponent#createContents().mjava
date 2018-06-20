@@ -3,7 +3,8 @@
 	 */
 	public Control createContents() {
 		final Composite main = new Composite(parent, SWT.NONE);
-		main.setLayout(new GridLayout(2, false));
+		GridLayoutFactory.fillDefaults().numColumns(2).margins(margin, 0)
+				.applyTo(main);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 
 		if (editableConfig instanceof FileBasedConfig) {
