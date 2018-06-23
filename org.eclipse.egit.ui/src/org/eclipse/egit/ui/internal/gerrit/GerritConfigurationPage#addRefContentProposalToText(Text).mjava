@@ -3,7 +3,7 @@
 				() -> {
 					try {
 						Set<String> sortedSet = new TreeSet<>(
-								String.CASE_INSENSITIVE_ORDER);
+								CommonUtils.STRING_ASCENDING_COMPARATOR);
 						sortedSet.addAll(repository.getRefDatabase()
 								.getRefs(Constants.R_REMOTES + remoteName + '/')
 								.keySet());
