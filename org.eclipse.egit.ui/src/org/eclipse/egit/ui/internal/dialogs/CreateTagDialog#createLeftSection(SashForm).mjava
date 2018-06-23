@@ -33,9 +33,8 @@
 				validateInput();
 			}
 		});
-
-		UIUtils.addBulbDecorator(tagNameText,
-				UIText.CreateTagDialog_tagNameToolTip);
+		BranchNameNormalizer normalizer = new BranchNameNormalizer(tagNameText);
+		normalizer.setVisible(false);
 
 		new Label(left, SWT.WRAP).setText(UIText.CreateTagDialog_tagMessage);
 
