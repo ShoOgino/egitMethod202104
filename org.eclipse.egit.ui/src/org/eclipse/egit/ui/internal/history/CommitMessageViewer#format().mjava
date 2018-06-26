@@ -1,10 +1,11 @@
 	private void format() {
-		if (db == null || commit == null) {
-			setDocument(new Document("")); //$NON-NLS-1$
-			return;
-		}
-		if (formatJob != null && formatJob.getState() != Job.NONE)
+		if (formatJob != null && formatJob.getState() != Job.NONE) {
 			formatJob.cancel();
-		scheduleFormatJob();
+		}
+		if (commit == null) {
+			setDocument(new Document("")); //$NON-NLS-1$
+		} else {
+			scheduleFormatJob();
+		}
 	}
 

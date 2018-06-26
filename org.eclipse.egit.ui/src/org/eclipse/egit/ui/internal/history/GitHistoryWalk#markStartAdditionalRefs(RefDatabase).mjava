@@ -1,0 +1,7 @@
+	private void markStartAdditionalRefs(RefDatabase db)
+			throws IOException, IncorrectObjectTypeException {
+		for (Ref ref : db.getAdditionalRefs()) {
+			markStartRef(ref);
+		}
+	}
+

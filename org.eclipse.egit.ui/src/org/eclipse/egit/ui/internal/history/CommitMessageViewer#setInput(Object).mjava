@@ -4,12 +4,12 @@
 		// so we only rebuild this when the commit did in fact change
 		if (input == commit)
 			return;
-		commit = (PlotCommit<?>) input;
+		commit = (SWTCommit) input;
 		if (refsChangedListener != null) {
 			refsChangedListener.remove();
 			refsChangedListener = null;
 		}
-
+		Repository db = commit == null ? null : commit.getRepository();
 		if (db != null) {
 			allRefs = getBranches(db);
 			refsChangedListener = db.getListenerList().addRefsChangedListener(

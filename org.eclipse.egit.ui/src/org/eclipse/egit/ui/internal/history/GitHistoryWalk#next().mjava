@@ -1,0 +1,9 @@
+	@Override
+	public RevCommit next() throws MissingObjectException,
+			IncorrectObjectTypeException, IOException {
+		if (!initialized) {
+			initialize();
+		}
+		return super.next();
+	}
+

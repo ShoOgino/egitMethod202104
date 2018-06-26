@@ -5,6 +5,8 @@
 	 * @param walk
 	 * @param commit
 	 * @param parents
+	 * @param monitor
+	 *            for progress reporting an cancellation; may be {@code null}
 	 * @param markTreeFilters
 	 *            optional filters for marking entries, see
 	 *            {@link #isMarked(int)}
@@ -14,11 +16,12 @@
 	 * @throws CorruptObjectException
 	 * @throws IOException
 	 */
-	public static FileDiff[] compute(final Repository repository,
-			final TreeWalk walk, final RevCommit commit,
-			final RevCommit[] parents,
-			final TreeFilter... markTreeFilters) throws MissingObjectException,
-			IncorrectObjectTypeException, CorruptObjectException, IOException {
+	public static FileDiff[] compute(Repository repository, TreeWalk walk,
+			RevCommit commit, RevCommit[] parents,
+			@Nullable IProgressMonitor monitor, TreeFilter... markTreeFilters)
+			throws MissingObjectException, IncorrectObjectTypeException,
+			CorruptObjectException, IOException {
+
 		final ArrayList<FileDiff> r = new ArrayList<>();
 
 		if (parents.length > 0) {
@@ -30,21 +33,36 @@
 		}
 
 		if (walk.getTreeCount() <= 2) {
-			List<DiffEntry> entries = DiffEntry.scan(walk, false, markTreeFilters);
+			// TODO: make JGit DiffEntry.scan and RenameDetector.compute
+			// cancelable
+			SubMonitor progress = SubMonitor.convert(monitor, 3);
+			List<DiffEntry> entries = DiffEntry.scan(walk, false,
+					markTreeFilters);
+			if (progress.isCanceled()) {
+				return new FileDiff[0];
+			}
+			progress.worked(1);
 			List<DiffEntry> xentries = new LinkedList<>(entries);
 			RenameDetector detector = new RenameDetector(repository);
 			detector.addAll(entries);
+			EclipseGitProgressTransformer jgitProgress = new EclipseGitProgressTransformer(
+					progress.newChild(1));
 			List<DiffEntry> renames = detector.compute(walk.getObjectReader(),
-					org.eclipse.jgit.lib.NullProgressMonitor.INSTANCE);
-			for (DiffEntry m : renames) {
-				final FileDiff d = new FileDiff(repository, commit, m);
-				r.add(d);
-				for (Iterator<DiffEntry> i = xentries.iterator(); i.hasNext();) {
-					DiffEntry n = i.next();
-					if (m.getOldPath().equals(n.getOldPath()))
-						i.remove();
-					else if (m.getNewPath().equals(n.getNewPath()))
-						i.remove();
+					jgitProgress);
+			if (!progress.isCanceled()) {
+				progress.setWorkRemaining(renames.size());
+				for (DiffEntry m : renames) {
+					final FileDiff d = new FileDiff(repository, commit, m);
+					r.add(d);
+					for (Iterator<DiffEntry> i = xentries.iterator(); i
+							.hasNext();) {
+						DiffEntry n = i.next();
+						if (m.getOldPath().equals(n.getOldPath()))
+							i.remove();
+						else if (m.getNewPath().equals(n.getNewPath()))
+							i.remove();
+					}
+					progress.worked(1);
 				}
 			}
 			for (DiffEntry m : xentries) {
@@ -53,6 +71,7 @@
 			}
 		}
 		else { // DiffEntry does not support walks with more than two trees
+			SubMonitor progress = SubMonitor.convert(monitor, 1);
 			final int nTree = walk.getTreeCount();
 			final int myTree = nTree - 1;
 
@@ -60,9 +79,13 @@
 					markTreeFilters);
 
 			while (walk.next()) {
-				if (matchAnyParent(walk, myTree))
+				if (progress.isCanceled()) {
+					break;
+				}
+				progress.setWorkRemaining(100).worked(1);
+				if (matchAnyParent(walk, myTree)) {
 					continue;
-
+				}
 				int treeFilterMarks = treeFilterMarker.getMarks(walk);
 
 				final FileDiffForMerges d = new FileDiffForMerges(repository,
@@ -86,7 +109,6 @@
 					d.blobs[i] = walk.getObjectId(i);
 					d.modes[i] = walk.getFileMode(i);
 				}
-
 
 				r.add(d);
 			}

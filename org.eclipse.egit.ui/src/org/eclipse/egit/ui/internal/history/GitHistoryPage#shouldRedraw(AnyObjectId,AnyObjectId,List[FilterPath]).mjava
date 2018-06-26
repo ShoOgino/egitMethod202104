@@ -1,8 +1,7 @@
-	private boolean shouldRedraw(Repository db, AnyObjectId headId,
-			AnyObjectId fetchHeadId, List<FilterPath> paths) {
+	private boolean shouldRedraw(AnyObjectId headId, AnyObjectId fetchHeadId,
+			List<FilterPath> paths) {
 		boolean pathChanged = pathChanged(pathFilters, paths);
 		boolean headChanged = headId == null || !headId.equals(currentHeadId);
-		boolean repoChanged = false;
 
 		boolean allBranchesChanged = currentShowAllBranches != store
 			.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
@@ -24,12 +23,7 @@
 		boolean followRenamesChanged = currentFollowRenames != getFollowRenames();
 		currentFollowRenames = getFollowRenames();
 
-		if (!db.equals(currentRepo)) {
-			repoChanged = true;
-			currentRepo = db;
-		}
-
-		return pathChanged || headChanged || fetchHeadChanged || repoChanged
+		return pathChanged || headChanged || fetchHeadChanged
 				|| allBranchesChanged || additionalRefsChange
 				|| showNotesChanged || followRenamesChanged;
 	}

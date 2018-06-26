@@ -1,0 +1,9 @@
+	private void markStartAllRefs(RefDatabase db, String prefix)
+			throws IOException, IncorrectObjectTypeException {
+		for (Ref ref : db.getRefsByPrefix(prefix)) {
+			if (!ref.isSymbolic()) {
+				markStartRef(ref);
+			}
+		}
+	}
+

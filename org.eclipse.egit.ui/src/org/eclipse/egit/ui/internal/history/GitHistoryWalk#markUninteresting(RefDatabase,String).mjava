@@ -1,0 +1,16 @@
+	private void markUninteresting(RefDatabase db, String prefix)
+			throws IOException, IncorrectObjectTypeException {
+		for (Ref ref : db.getRefsByPrefix(prefix)) {
+			if (!ref.isSymbolic()) {
+				try {
+					RevObject refTarget = parseAny(ref.getLeaf().getObjectId());
+					if (refTarget instanceof RevCommit) {
+						markUninteresting((RevCommit) refTarget);
+					}
+				} catch (MissingObjectException e) {
+					// See above.
+				}
+			}
+		}
+	}
+

@@ -14,13 +14,10 @@
 
 			AnyObjectId headId = resolveHead(db, true);
 			if (headId == null) {
-				TableViewer viewer = graph.getTableView();
-				viewer.setInput(new SWTCommit[0]);
 				currentHeadId = null;
 				currentFetchHeadId = null;
 				currentRepo = db;
-				// Force a selection changed event
-				viewer.setSelection(viewer.getSelection());
+				clearViewers();
 				return;
 			}
 			AnyObjectId fetchHeadId = resolveFetchHead(db);
@@ -28,19 +25,34 @@
 			List<FilterPath> paths = buildFilterPaths(input.getItems(), input
 					.getFileList(), db);
 
-			if (forceNewWalk || shouldRedraw(db, headId, fetchHeadId, paths)) {
+			boolean repoChanged = false;
+			if (!db.equals(currentRepo)) {
+				repoChanged = true;
+				currentRepo = db;
+			}
+
+			if (forceNewWalk || repoChanged
+					|| shouldRedraw(headId, fetchHeadId, paths)) {
 				releaseGenerateHistoryJob();
 
-				SWTWalk walk = createNewWalk(db, headId, fetchHeadId);
-				setWalkStartPoints(walk, db, headId);
+				if (repoChanged) {
+					// Clear all viewers. Otherwise it may be possible that the
+					// user invokes a context menu command and due to to the
+					// highly asynchronous loading we end up with inconsistent
+					// diff computations trying to find the diff for a commit in
+					// the wrong repository.
+					clearViewers();
+				}
 
-				setupFileViewer(walk, db, paths);
-				setupCommentViewer(db);
+				SWTWalk walk = createNewWalk(db, headId, fetchHeadId);
+
+				fileDiffWalker = createFileWalker(walk, db, paths);
 
 				loadInitialHistory(walk);
-			} else
+			} else {
 				// needed for context menu and double click
 				graph.setHistoryPageInput(input);
+			}
 		} finally {
 			if (trace)
 				GitTraceLocation.getTrace().traceExit(

@@ -18,7 +18,7 @@
 				if (input == null) {
 					return;
 				}
-				final PlotCommit<?> c = (PlotCommit<?>) sel.getFirstElement();
+				final SWTCommit c = (SWTCommit) sel.getFirstElement();
 				if (c.equals(commentViewer.getInput())) {
 					return;
 				}
@@ -28,15 +28,17 @@
 					final RevCommit unfilteredCommit = walk.parseCommit(c);
 					for (RevCommit parent : unfilteredCommit.getParents())
 						walk.parseBody(parent);
-					fileViewer.setInput(unfilteredCommit);
+					fileViewer.setInput(new FileDiffInput(input.getRepository(),
+							fileDiffWalker, unfilteredCommit,
+							fileViewerInterestingPaths,
+							input.getSingleFile() != null));
 				} catch (IOException e) {
-					fileViewer.setInput(c);
+					fileViewer.setInput(new FileDiffInput(input.getRepository(),
+							fileDiffWalker, c, fileViewerInterestingPaths,
+							input.getSingleFile() != null));
 				} finally {
 					walk.dispose();
 				}
-
-				if (input.getSingleFile() != null)
-					fileViewer.selectFirstInterestingElement();
 			}
 		});
 		commentViewer

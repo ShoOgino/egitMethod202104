@@ -3,14 +3,20 @@
 	 * @see IShowInSource#getShowInContext()
 	 */
 	public ShowInContext getShowInContext() {
-		if (db.isBare())
-			return null;
-		IPath workTreePath = new Path(db.getWorkTree().getAbsolutePath());
 		IStructuredSelection selection = (IStructuredSelection) getSelection();
 		List<Object> elements = new ArrayList<>();
 		List<File> files = new ArrayList<>();
+		Repository repo = null;
+		IPath workTreePath = null;
 		for (Object selectedElement : selection.toList()) {
 			FileDiff fileDiff = (FileDiff) selectedElement;
+			if (repo == null || workTreePath == null) {
+				repo = fileDiff.getRepository();
+				if (repo == null || repo.isBare()) {
+					return null;
+				}
+				workTreePath = new Path(repo.getWorkTree().getAbsolutePath());
+			}
 			IPath path = workTreePath.append(fileDiff.getPath());
 			IFile file = ResourceUtil.getFileForLocation(path, false);
 			if (file != null)
@@ -21,7 +27,7 @@
 		}
 		HistoryPageInput historyPageInput = null;
 		if (!files.isEmpty()) {
-			historyPageInput = new HistoryPageInput(db,
+			historyPageInput = new HistoryPageInput(repo,
 					files.toArray(new File[files.size()]));
 		}
 		return new ShowInContext(historyPageInput,

@@ -1,0 +1,19 @@
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			if (viewer.getControl().isDisposed() || loader != loadJob) {
+				return Status.CANCEL_STATUS;
+			}
+			diff = loadJob.getDiffs();
+			viewer.refresh();
+			FileDiff interesting = getFirstInterestingElement();
+			if (interesting != null) {
+				if (currentInput.isSelectMarked()) {
+					viewer.setSelection(new StructuredSelection(interesting),
+							true);
+				} else {
+					viewer.reveal(interesting);
+				}
+			}
+			return Status.OK_STATUS;
+		}
+

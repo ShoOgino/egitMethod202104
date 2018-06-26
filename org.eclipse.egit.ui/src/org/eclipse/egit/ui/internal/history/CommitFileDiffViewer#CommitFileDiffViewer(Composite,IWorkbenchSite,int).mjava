@@ -122,9 +122,11 @@
 					return;
 				final IStructuredSelection iss = (IStructuredSelection) s;
 				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();) {
-					String relativePath = it.next().getPath();
+					FileDiff diff = it.next();
+					String relativePath = diff.getPath();
 					File file = new Path(
-							getRepository().getWorkTree().getAbsolutePath())
+							diff.getRepository().getWorkTree()
+									.getAbsolutePath())
 									.append(relativePath).toFile();
 					DiffViewer.openFileInEditor(file, -1);
 				}

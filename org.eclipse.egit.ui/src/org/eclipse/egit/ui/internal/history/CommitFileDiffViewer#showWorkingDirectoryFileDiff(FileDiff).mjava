@@ -1,31 +1,31 @@
 	void showWorkingDirectoryFileDiff(final FileDiff d) {
-		final String p = d.getPath();
-		final RevCommit commit = d.getCommit();
+		String p = d.getPath();
+		RevCommit commit = d.getCommit();
+		Repository repo = d.getRepository();
 
-		if (commit == null) {
+		if (commit == null || repo == null) {
 			Activator.showError(UIText.GitHistoryPage_openFailed, null);
 			return;
 		}
 
 		IWorkbenchPage activePage = site.getWorkbenchWindow().getActivePage();
-		IFile file = ResourceUtil.getFileForLocation(getRepository(), p, false);
+		IFile file = ResourceUtil.getFileForLocation(repo, p, false);
 		try {
 			if (file != null) {
 				final IResource[] resources = new IResource[] { file, };
-				CompareUtils.compare(resources, getRepository(), Constants.HEAD,
+				CompareUtils.compare(resources, repo, Constants.HEAD,
 						commit.getName(), true, activePage);
 			} else {
-				IPath path = new Path(
-						getRepository().getWorkTree().getAbsolutePath())
-								.append(p);
+				IPath path = new Path(repo.getWorkTree().getAbsolutePath())
+						.append(p);
 				File ioFile = path.toFile();
-				if (ioFile.exists())
-					CompareUtils.compare(path, getRepository(), Constants.HEAD,
+				if (ioFile.exists()) {
+					CompareUtils.compare(path, repo, Constants.HEAD,
 							commit.getName(), true, activePage);
+				}
 			}
 		} catch (IOException e) {
-			Activator.logError(UIText.GitHistoryPage_openFailed, e);
-			Activator.showError(UIText.GitHistoryPage_openFailed, null);
+			Activator.handleError(UIText.GitHistoryPage_openFailed, e, true);
 		}
 	}
 

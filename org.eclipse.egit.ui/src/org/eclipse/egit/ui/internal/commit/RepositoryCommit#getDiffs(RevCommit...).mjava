@@ -14,7 +14,7 @@
 			treewalk.setFilter(TreeFilter.ANY_DIFF);
 			loadParents();
 			diffsResult = FileDiff.compute(repository, treewalk, commit,
-					parents, TreeFilter.ALL);
+					parents, null, TreeFilter.ALL);
 		} catch (IOException e) {
 			diffsResult = new FileDiff[0];
 		}

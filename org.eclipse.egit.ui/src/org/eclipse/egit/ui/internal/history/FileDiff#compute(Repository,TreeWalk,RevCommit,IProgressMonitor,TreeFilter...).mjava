@@ -4,6 +4,8 @@
 	 * @param repository
 	 * @param walk
 	 * @param commit
+	 * @param monitor
+	 *            for progress reporting an cancellation; may be {@code null}
 	 * @param markTreeFilters
 	 *            optional filters for marking entries, see
 	 *            {@link #isMarked(int)}
@@ -13,11 +15,11 @@
 	 * @throws CorruptObjectException
 	 * @throws IOException
 	 */
-	public static FileDiff[] compute(final Repository repository,
-			final TreeWalk walk, final RevCommit commit,
-			final TreeFilter... markTreeFilters) throws MissingObjectException,
+	public static FileDiff[] compute(Repository repository, TreeWalk walk,
+			RevCommit commit, @Nullable IProgressMonitor monitor,
+			TreeFilter... markTreeFilters) throws MissingObjectException,
 			IncorrectObjectTypeException, CorruptObjectException, IOException {
-		return compute(repository, walk, commit, commit.getParents(),
+		return compute(repository, walk, commit, commit.getParents(), monitor,
 				markTreeFilters);
 	}
 

@@ -9,13 +9,14 @@
 		boolean deleteSelected = false;
 		for (Object item : sel.toList()) {
 			FileDiff fileDiff = (FileDiff) item;
-			if (fileDiff.isSubmodule())
+			if (fileDiff.isSubmodule()) {
 				submoduleSelected = true;
-
-			if (fileDiff.getChange() == ChangeType.ADD)
+			}
+			if (fileDiff.getChange() == ChangeType.ADD) {
 				addSelected = true;
-			else if (fileDiff.getChange() == ChangeType.DELETE)
+			} else if (fileDiff.getChange() == ChangeType.DELETE) {
 				deleteSelected = true;
+			}
 		}
 
 		selectAll.setEnabled(!allSelected);
@@ -28,12 +29,15 @@
 			openPreviousVersion.setEnabled(oneOrMoreSelected && !addSelected);
 			compare.setEnabled(sel.size() == 1);
 			blame.setEnabled(oneOrMoreSelected);
-			if (sel.size() == 1 && !db.isBare()) {
+			if (sel.size() == 1) {
 				FileDiff diff = (FileDiff) sel.getFirstElement();
-				String path = new Path(
-						getRepository().getWorkTree().getAbsolutePath())
-								.append(diff.getPath()).toOSString();
-				boolean workTreeFileExists = new File(path).exists();
+				Repository repo = diff.getRepository();
+				boolean workTreeFileExists = false;
+				if (!repo.isBare()) {
+					String path = new Path(repo.getWorkTree().getAbsolutePath())
+							.append(diff.getPath()).toOSString();
+					workTreeFileExists = new File(path).exists();
+				}
 				compareWorkingTreeVersion.setEnabled(workTreeFileExists);
 				openWorkingTreeVersion.setEnabled(workTreeFileExists);
 			} else {

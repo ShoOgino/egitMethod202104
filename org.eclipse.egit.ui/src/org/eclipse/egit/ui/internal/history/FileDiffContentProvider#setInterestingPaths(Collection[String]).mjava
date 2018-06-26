@@ -2,12 +2,12 @@
 	 * Set the paths which are interesting and should be highlighted in the view.
 	 * @param interestingPaths
 	 */
-	void setInterestingPaths(Set<String> interestingPaths) {
-		if (interestingPaths != null)
+	void setInterestingPaths(Collection<String> interestingPaths) {
+		if (interestingPaths != null) {
 			this.markTreeFilter = PathFilterGroup.createFromStrings(interestingPaths);
-		else
+		} else {
 			this.markTreeFilter = TreeFilter.ALL;
-		// FileDiffs need to be updated
-		this.diff = null;
+		}
+		needsRecompute = true;
 	}
 

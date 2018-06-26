@@ -1,0 +1,9 @@
+		@Override
+		public boolean contains(ISchedulingRule rule) {
+			if (rule instanceof TreeWalkSchedulingRule) {
+				return Objects.equals(treeWalk,
+						((TreeWalkSchedulingRule) rule).treeWalk);
+			}
+			return false;
+		}
+

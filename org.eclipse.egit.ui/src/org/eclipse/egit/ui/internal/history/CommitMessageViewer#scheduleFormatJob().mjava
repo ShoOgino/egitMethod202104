@@ -1,9 +1,10 @@
 	private void scheduleFormatJob() {
 		IWorkbenchSiteProgressService siteService = AdapterUtils.adapt(partSite, IWorkbenchSiteProgressService.class);
-		if (siteService == null)
+		if (siteService == null) {
 			return;
+		}
 		FormatJob.FormatRequest formatRequest = new FormatJob.FormatRequest(
-				getRepository(), commit, fill, allRefs);
+				commit.getRepository(), commit, fill, allRefs);
 		formatJob = new FormatJob(formatRequest);
 		addDoneListenerToFormatJob();
 		siteService.schedule(formatJob, 0 /* now */, true /*
