@@ -1,0 +1,12 @@
+	/**
+	 * The super implementation returns the raw input (e.g. the workbench
+	 * selection). The Git History Page however adapts that input before
+	 * actually using it. If we don't return this adapted input, then the
+	 * history drop down will show the same (adapted) history input multiple
+	 * times.
+	 */
+	@Override
+	public Object getInput() {
+		return getInputInternal();
+	}
+

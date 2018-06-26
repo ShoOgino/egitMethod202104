@@ -21,7 +21,7 @@
 						GitTraceLocation.getTrace().trace(
 								GitTraceLocation.HISTORYVIEW.getLocation(),
 								"Setting input to table"); //$NON-NLS-1$
-					final Object currentInput = getInput();
+					final Object currentInput = GitHistoryPage.super.getInput();
 					searchBar.setInput(new ICommitsProvider() {
 
 						@Override
