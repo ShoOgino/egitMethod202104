@@ -1,6 +1,12 @@
+	/**
+	 * {@link FieldEditor} sets the margin of its parent to zero in its
+	 * <code>createControl(Composite)</code> method. Therefore fix the group
+	 * margin only after adding the field editors.
+	 *
+	 * @param group
+	 *            group control
+	 */
 	private void updateMargins(Group group) {
-		// make sure there is some room between the group border
-		// and the controls in the group
 		GridLayout layout = (GridLayout) group.getLayout();
 		layout.marginWidth = 5;
 		layout.marginHeight = 5;
