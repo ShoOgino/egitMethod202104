@@ -1,0 +1,23 @@
+	private void getAffectedElements(Set<IPath> paths, Object[] elements,
+			IStructuredContentProvider contentProvider, List<Object> result) {
+		for (Object element : elements) {
+			IPath path = AdapterUtils.adapt(element, IPath.class);
+			if (path == null) {
+				IResource resource = AdapterUtils.adapt(element,
+						IResource.class);
+				if (resource != null) {
+					path = resource.getLocation();
+				}
+			}
+			if (path != null && paths.contains(path)) {
+				result.add(element);
+				if (contentProvider instanceof ITreeContentProvider) {
+					getAffectedElements(paths,
+							((ITreeContentProvider) contentProvider)
+									.getChildren(element),
+							contentProvider, result);
+				}
+			}
+		}
+	}
+

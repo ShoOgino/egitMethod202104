@@ -1,5 +1,5 @@
-	private void updateLabels(Set<IResource> changedResources) {
-		List<Object> elements = getAffectedElements(changedResources);
+	private void updateLabels(Set<IPath> changedPaths) {
+		List<Object> elements = getAffectedElements(changedPaths);
 		if (!elements.isEmpty()) {
 			final Object[] updateElements = elements.toArray(new Object[elements.size()]);
 			Display display = viewer.getControl().getDisplay();

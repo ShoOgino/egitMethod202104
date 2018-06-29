@@ -1,8 +1,8 @@
-	private List<Object> getAffectedElements(Set<IResource> resources) {
+	private List<Object> getAffectedElements(Set<IPath> paths) {
 		List<Object> result = new ArrayList<>();
 		if (viewer.getContentProvider() instanceof IStructuredContentProvider) {
 			IStructuredContentProvider contentProvider = (IStructuredContentProvider) viewer.getContentProvider();
-			getAffectedElements(resources, contentProvider.getElements(null),
+			getAffectedElements(paths, contentProvider.getElements(null),
 					contentProvider, result);
 		}
 		return result;

@@ -1,20 +1,36 @@
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		Set<IResource> resources = new HashSet<>();
+		Set<IPath> paths = new HashSet<>();
 
 		IMarkerDelta[] markerDeltas = event.findMarkerDeltas(IMarker.PROBLEM,
 				true);
 		for (IMarkerDelta delta : markerDeltas) {
-			// Also add parents
 			IResource resource = delta.getResource();
-			while (resource.getType() != IResource.ROOT
-					&& resources.add(resource)) {
-				resource = resource.getParent();
+			if (resource == null) {
+				continue;
+			}
+			RepositoryMapping mapping = RepositoryMapping.getMapping(resource);
+			if (mapping == null || mapping.getRepository().isBare()) {
+				continue;
+			}
+			IPath path = resource.getLocation();
+			if (path == null) {
+				continue;
+			}
+			// Also add parents
+			File workTree = mapping.getWorkTree();
+			if (workTree == null) {
+				continue;
+			}
+			int n = new Path(workTree.getAbsolutePath()).segmentCount();
+			for (int i = path.segmentCount(); i > n; i--) {
+				paths.add(path);
+				path = path.removeLastSegments(1);
 			}
 		}
 
-		if (!resources.isEmpty()) {
-		    updateLabels(resources);
+		if (!paths.isEmpty()) {
+			updateLabels(paths);
 		}
 	}
 
