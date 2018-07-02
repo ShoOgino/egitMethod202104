@@ -3,7 +3,7 @@
 		project2 = new TestProject(true, "Project-1/Project-Nested");
 		File workingDir = gitDir.getParentFile();
 
-		Collection<File> nestedResult = new ArrayList<File>();
+		Collection<File> nestedResult = new ArrayList<>();
 		boolean nestedFound = ProjectUtil.findProjectFiles(nestedResult,
 				workingDir, true,
 				new NullProgressMonitor());
@@ -15,7 +15,7 @@
 		assertThat(nestedResult, hasItem(new File(workingDir,
 				"Project-1/Project-Nested/.project")));
 
-		Collection<File> noNestedResult = new ArrayList<File>();
+		Collection<File> noNestedResult = new ArrayList<>();
 		boolean noNestedFound = ProjectUtil.findProjectFiles(noNestedResult,
 				workingDir, false, new NullProgressMonitor());
 		assertTrue("Expected to find projects", noNestedFound);
