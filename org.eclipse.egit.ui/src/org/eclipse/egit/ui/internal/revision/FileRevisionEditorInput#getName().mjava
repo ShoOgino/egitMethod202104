@@ -2,9 +2,9 @@
 	public String getName() {
 		IFileRevision rev = AdapterUtils.adapt(this, IFileRevision.class);
 		if (rev != null) {
-			return NLS.bind(
+			return MessageFormat.format(
 					UIText.FileRevisionEditorInput_NameAndRevisionTitle,
-					new String[] { rev.getName(), rev.getContentIdentifier() });
+					rev.getName(), rev.getContentIdentifier());
 		}
 		IFileState state = AdapterUtils.adapt(this, IFileState.class);
 		if (state != null) {
@@ -12,6 +12,5 @@
 					.formatDate(new Date(state.getModificationTime()));
 		}
 		return storage.getName();
-
 	}
 

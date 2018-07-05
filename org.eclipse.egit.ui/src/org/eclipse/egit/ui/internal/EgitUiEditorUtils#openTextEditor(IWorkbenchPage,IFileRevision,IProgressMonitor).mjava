@@ -16,6 +16,6 @@
 		SubMonitor progress = SubMonitor.convert(monitor, 1);
 		FileRevisionEditorInput fileRevEditorInput = FileRevisionEditorInput
 				.createEditorInputFor(revision, progress.newChild(1));
-		openEditor(page, fileRevEditorInput, EditorsUI.DEFAULT_TEXT_EDITOR_ID);
+		page.openEditor(fileRevEditorInput, EditorsUI.DEFAULT_TEXT_EDITOR_ID);
 	}
 

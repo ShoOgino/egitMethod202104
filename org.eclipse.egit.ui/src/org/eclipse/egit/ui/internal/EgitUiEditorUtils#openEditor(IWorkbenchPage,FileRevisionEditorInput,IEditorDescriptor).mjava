@@ -1,17 +1,18 @@
 	/**
 	 * @param page
 	 * @param editorInput
-	 * @param editorId
+	 * @param editor
 	 * @return the part
 	 * @throws PartInitException
 	 */
 	private static IEditorPart openEditor(IWorkbenchPage page,
-			FileRevisionEditorInput editorInput, String editorId)
+			FileRevisionEditorInput editorInput, IEditorDescriptor editor)
 			throws PartInitException {
+		String editorId = editor.getId();
 		try {
 			IEditorPart part = page.openEditor(editorInput, editorId,
 					OpenStrategy.activateOnOpen());
-			if (part == null) {
+			if (part == null && !editor.isOpenExternal()) {
 				throw new PartInitException(NLS.bind(
 						UIText.EgitUiUtils_CouldNotOpenEditorMessage, editorId));
 			}

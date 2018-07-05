@@ -1,12 +1,15 @@
 	/**
+	 * Opens an editor for a {@link FileRevisionEditorInput}.
+	 *
 	 * @param page
+	 *            to open the editor in
 	 * @param editorInput
-	 * @return the part
+	 *            to open
+	 * @return the part; may be {@code null} if an external editor was opened
 	 * @throws PartInitException
 	 */
 	public static IEditorPart openEditor(IWorkbenchPage page,
 			FileRevisionEditorInput editorInput) throws PartInitException {
-		String id = getEditorId(editorInput);
-		return openEditor(page, editorInput, id);
+		return openEditor(page, editorInput, getEditor(editorInput));
 	}
 

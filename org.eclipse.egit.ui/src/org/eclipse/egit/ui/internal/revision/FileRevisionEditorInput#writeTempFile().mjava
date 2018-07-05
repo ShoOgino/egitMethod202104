@@ -1,0 +1,35 @@
+	private IPath writeTempFile() {
+		java.nio.file.Path path;
+		try {
+			String tempName = getRevisionPrefix() + storage.getName();
+			// Same name length limit as in DirCacheCheckout.checkoutEntry()
+			if (tempName.length() > 200) {
+				tempName = storage.getName();
+			}
+			path = Files.createTempDirectory("egit") //$NON-NLS-1$
+					.resolve(tempName);
+			try (InputStream in = storage.getContents()) {
+				Files.copy(in, path);
+			}
+			path = path.toAbsolutePath();
+		} catch (CoreException | IOException e) {
+			Activator.logError(MessageFormat.format(
+					UIText.FileRevisionEditorInput_cannotWriteTempFile,
+					storage.getName()), e);
+			// We mustn't return null; doing so might cause an NPE in
+			// WorkBenchPage.busyOpenEditor()
+			return new Path(""); //$NON-NLS-1$
+		}
+		File file = path.toFile();
+		file.setReadOnly();
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			if (file.setWritable(true) && file.delete()) {
+				file.getParentFile().delete();
+			} else {
+				// Couldn't delete: re-set as read-only
+				file.setReadOnly();
+			}
+		}));
+		return new Path(path.toString());
+	}
+

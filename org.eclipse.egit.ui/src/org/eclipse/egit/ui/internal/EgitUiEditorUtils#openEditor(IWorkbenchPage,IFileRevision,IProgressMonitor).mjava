@@ -1,8 +1,13 @@
 	/**
+	 * Opens an {@link IFileRevision} is the configured editor.
+	 *
 	 * @param page
+	 *            to open the editor in
 	 * @param revision
+	 *            to open
 	 * @param monitor
-	 * @return the part
+	 *            for progress reporting
+	 * @return the part; may be {@code null} if an external editor was opened
 	 * @throws CoreException
 	 */
 	public static IEditorPart openEditor(IWorkbenchPage page,

@@ -1,0 +1,8 @@
+	@Override
+	public IPath getPath() {
+		if (tmpFile == null) {
+			tmpFile = writeTempFile();
+		}
+		return tmpFile;
+	}
+
