@@ -47,11 +47,8 @@
 							newCommit.getName(), oldCommit.getName(), false,
 							page);
 				} else {
-					IPath location = new Path(
-							repository.getWorkTree().getAbsolutePath())
-									.append(np);
-					CompareUtils.compare(location, repository,
-							newCommit.getName(), oldCommit.getName(), false,
+					CompareUtils.compareBetween(repository, np, op,
+							newCommit.getName(), oldCommit.getName(),
 							page);
 				}
 			} catch (IOException e) {
