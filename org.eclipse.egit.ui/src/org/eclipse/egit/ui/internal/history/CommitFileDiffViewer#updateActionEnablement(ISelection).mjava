@@ -27,7 +27,8 @@
 			boolean oneOrMoreSelected = !sel.isEmpty();
 			openThisVersion.setEnabled(oneOrMoreSelected && !deleteSelected);
 			openPreviousVersion.setEnabled(oneOrMoreSelected && !addSelected);
-			compare.setEnabled(sel.size() == 1 && !addSelected);
+			compareWithPrevious.setEnabled(
+					sel.size() == 1 && !addSelected && !deleteSelected);
 			blame.setEnabled(oneOrMoreSelected);
 			if (sel.size() == 1) {
 				FileDiff diff = (FileDiff) sel.getFirstElement();
@@ -48,7 +49,7 @@
 			openThisVersion.setEnabled(false);
 			openPreviousVersion.setEnabled(false);
 			openWorkingTreeVersion.setEnabled(false);
-			compare.setEnabled(false);
+			compareWithPrevious.setEnabled(false);
 			blame.setEnabled(false);
 			compareWorkingTreeVersion.setEnabled(false);
 		}
