@@ -11,11 +11,12 @@
 		}
 		highlight = hFlag;
 		allCommits = list;
-		int newAllCommitsLength = allCommits.size();
+		int newAllCommitsLength = asArray == null ? 0 : asArray.length;
 		table.setInput(asArray);
-		if (asArray != null && asArray.length > 0) {
-			if (oldList != list || allCommitsLength < newAllCommitsLength)
-				initCommitsMap();
+		if (newAllCommitsLength > 0) {
+			if (oldList != list || allCommitsLength < newAllCommitsLength) {
+				initCommitsMap(asArray);
+			}
 		} else {
 			table.getTable().deselectAll();
 			// Fire an event

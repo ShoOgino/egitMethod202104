@@ -1,0 +1,9 @@
+	private void initCommitsMap(SWTCommit[] asArray) {
+		commitsMap = new HashMap<>();
+		for (SWTCommit commit : asArray) {
+			if (commit != null) {
+				commitsMap.put(commit.getId().name(), commit);
+			}
+		}
+	}
+
