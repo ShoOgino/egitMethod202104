@@ -6,7 +6,8 @@
 			if (changes.isEmpty()) {
 				return; // Should actually not occur
 			}
-			Set<IPath> roots = getProjectLocations(changes.getWorkTree());
+			Map<IPath, IProject> roots = getProjectLocations(
+					changes.getWorkTree());
 			if (roots.isEmpty()) {
 				// No open projects from this repository in the workspace
 				return;

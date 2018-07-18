@@ -1,6 +1,6 @@
 		private Map<IResource, Boolean> computeResources(
 				Set<String> modified, Set<String> deleted, IPath workTree,
-				Set<IPath> roots, IProgressMonitor monitor) {
+				Map<IPath, IProject> roots, IProgressMonitor monitor) {
 			// Attempt to minimize the refreshes by returning IContainers if
 			// more than one file in a container has changed.
 			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
@@ -20,9 +20,19 @@
 				}
 				IPath filePath = "/".equals(path) ? workTree //$NON-NLS-1$
 						: workTree.append(path);
+				IProject project = roots.get(filePath);
+				if (project != null) {
+					// Eclipse knows this as a project. Make sure it gets
+					// refreshed as such. One can refresh a folder via an IFile,
+					// but not an IProject.
+					handled.put(filePath, null);
+					result.put(project, Boolean.FALSE);
+					progress.worked(1);
+					return;
+				}
 				if (fullRefreshes.stream()
 						.anyMatch(full -> full.isPrefixOf(filePath))
-						|| !roots.stream()
+						|| !roots.keySet().stream()
 								.anyMatch(root -> root.isPrefixOf(filePath))) {
 					// Not in workspace or covered by a full container refresh
 					progress.worked(1);
