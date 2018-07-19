@@ -1,0 +1,6 @@
+	private boolean openConfirm(Shell parent, String title, String message) {
+		MessageDialog dialog = new MessageDialog(parent, title, null, message,
+				MessageDialog.CONFIRM, 0, getButtonLabels());
+		return dialog.open() == 0;
+	}
+

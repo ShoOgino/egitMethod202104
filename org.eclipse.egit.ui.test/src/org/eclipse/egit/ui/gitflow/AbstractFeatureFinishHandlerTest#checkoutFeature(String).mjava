@@ -18,7 +18,7 @@
 		bot.text().setText(featureName);
 		TestUtil.waitForJobs(500, 5000);
 		bot.tree().select(featureName);
-		bot.button("OK").click();
+		bot.button(UIText.FeatureCheckoutHandler_ButtonOK).click();
 		bot.waitUntil(Conditions.waitForJobs(JobFamilies.GITFLOW_FAMILY, "Git flow jobs"));
 	}
 

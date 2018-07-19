@@ -12,7 +12,7 @@
 				.setText(TESTSECTION + "." + TESTNAME);
 		addDialog.bot().textWithLabel(UIText.AddConfigEntryDialog_ValueLabel)
 				.setText("true");
-		assertTrue(addDialog.bot().button(IDialogConstants.OK_LABEL)
+		assertTrue(addDialog.bot().button(UIText.AddConfigEntryDialog_ButtonOK)
 				.isEnabled());
 		addDialog.close();
 	}

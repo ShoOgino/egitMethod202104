@@ -90,7 +90,8 @@
 		};
 		ListenerHandle handle = repo.getConfig().addChangeListener(listener);
 		// only now click ok
-		configureBranchDialog.bot().button("OK").click();
+		configureBranchDialog.bot()
+				.button(UIText.BranchConfigurationDialog_ButtonOK).click();
 
 		// cleanup behind ourselves
 		handle.remove();

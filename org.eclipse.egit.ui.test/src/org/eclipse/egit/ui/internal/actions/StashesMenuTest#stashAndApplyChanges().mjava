@@ -14,7 +14,7 @@
 		SWTBotText enterMessageText = createDialog.bot().text(0);
 		String stashMessage = "stash message";
 		enterMessageText.setText(stashMessage);
-		createDialog.bot().button(IDialogConstants.OK_LABEL).click();
+		createDialog.bot().button(UIText.StashCreateCommand_ButtonOK).click();
 
 		assertEquals(originalContent, getTestFileContent());
 
