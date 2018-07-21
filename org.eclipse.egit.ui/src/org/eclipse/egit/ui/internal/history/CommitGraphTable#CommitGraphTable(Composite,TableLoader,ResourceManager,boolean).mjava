@@ -4,7 +4,9 @@
 		hFont = highlightFont();
 		tableLoader = loader;
 
-		final Table rawTable = new Table(parent, SWT.MULTI | SWT.H_SCROLL
+		Composite tableContainer = new Composite(parent, SWT.NONE);
+		final Table rawTable = new Table(tableContainer,
+				SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		rawTable.setHeaderVisible(true);
 		rawTable.setLinesVisible(false);
@@ -24,11 +26,13 @@
 			}
 		});
 
-		final TableLayout layout = new TableLayout();
-		rawTable.setLayout(layout);
+		TableColumnLayout layout = new TableColumnLayout();
+		tableContainer.setLayout(layout);
 
 		createColumns(rawTable, layout);
 		createPaintListener(rawTable);
+
+		rawTable.addListener(SWT.Resize, event -> layout(rawTable, layout));
 
 		table = new TableViewer(rawTable) {
 			@Override
