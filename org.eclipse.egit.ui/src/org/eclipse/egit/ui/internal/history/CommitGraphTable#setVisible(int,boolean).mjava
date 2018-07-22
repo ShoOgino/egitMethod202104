@@ -1,0 +1,23 @@
+	void setVisible(int columnIndex, boolean visible) {
+		Assert.isLegal(columnIndex >= 0 && columnIndex < columnLayouts.length);
+		if (columnIndex == 1) {
+			return; // Commit message column is always visible
+		}
+		Table rawTable = table.getTable();
+		TableColumn col = rawTable.getColumn(columnIndex);
+		boolean isVisible = col.getWidth() > 0;
+		if (isVisible != visible) {
+			if (isVisible) {
+				columnLayouts[columnIndex] = tableLayout.getLayoutData(rawTable,
+						columnIndex);
+				if (columnLayouts[columnIndex] == null) {
+					columnLayouts[columnIndex] = defaultLayouts[columnIndex];
+				}
+				tableLayout.setColumnData(col, new ColumnPixelData(0));
+			} else {
+				tableLayout.setColumnData(col, columnLayouts[columnIndex]);
+			}
+			rawTable.getParent().layout();
+		}
+	}
+

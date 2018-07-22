@@ -1,0 +1,14 @@
+	private void applyColumnPreferences(IPreferenceStore store,
+			Table rawTable) {
+		setColumn(rawTable.getColumn(0), 0,
+				store.getBoolean(UIPreferences.HISTORY_COLUMN_ID));
+		setColumn(rawTable.getColumn(2), 2,
+				store.getBoolean(UIPreferences.HISTORY_COLUMN_AUTHOR));
+		setColumn(rawTable.getColumn(3), 3,
+				store.getBoolean(UIPreferences.HISTORY_COLUMN_AUTHOR_DATE));
+		setColumn(rawTable.getColumn(4), 4,
+				store.getBoolean(UIPreferences.HISTORY_COLUMN_COMMITTER));
+		setColumn(rawTable.getColumn(5), 5,
+				store.getBoolean(UIPreferences.HISTORY_COLUMN_COMMITTER_DATE));
+	}
+

@@ -1,5 +1,4 @@
-	private void createColumns(Table rawTable,
-			TableColumnLayout layout) {
+	private void createColumns(Table rawTable) {
 		final TableColumn commitId = new TableColumn(rawTable, SWT.NONE);
 		commitId.setResizable(true);
 		commitId.setText(UIText.CommitGraphTable_CommitId);
@@ -11,36 +10,42 @@
 		} finally {
 			gc.dispose();
 		}
-		layout.setColumnData(commitId, new ColumnPixelData(minWidth, false));
+		columnLayouts[0] = new ColumnPixelData(minWidth, false);
+		tableLayout.setColumnData(commitId, columnLayouts[0]);
 
 		final TableColumn graph = new TableColumn(rawTable, SWT.NONE);
 		graph.setResizable(true);
 		graph.setText(UIText.CommitGraphTable_messageColumn);
 		graph.setWidth(400);
-		layout.setColumnData(graph, new ColumnWeightData(20, 200, true));
+		columnLayouts[1] = new ColumnWeightData(20, 200, true);
+		tableLayout.setColumnData(graph, columnLayouts[1]);
 
 		final TableColumn author = new TableColumn(rawTable, SWT.NONE);
 		author.setResizable(true);
 		author.setText(UIText.HistoryPage_authorColumn);
 		author.setWidth(100);
-		layout.setColumnData(author, new ColumnWeightData(5, 80, true));
+		columnLayouts[2] = new ColumnWeightData(5, 80, true);
+		tableLayout.setColumnData(author, columnLayouts[2]);
 
 		final TableColumn date = new TableColumn(rawTable, SWT.NONE);
 		date.setResizable(true);
 		date.setText(UIText.HistoryPage_authorDateColumn);
 		date.setWidth(100);
-		layout.setColumnData(date, new ColumnWeightData(5, 80, true));
+		columnLayouts[3] = new ColumnWeightData(5, 80, true);
+		tableLayout.setColumnData(date, columnLayouts[3]);
 
 		final TableColumn committer = new TableColumn(rawTable, SWT.NONE);
 		committer.setResizable(true);
 		committer.setText(UIText.CommitGraphTable_Committer);
 		committer.setWidth(100);
-		layout.setColumnData(committer, new ColumnWeightData(5, 80, true));
+		columnLayouts[4] = new ColumnWeightData(5, 80, true);
+		tableLayout.setColumnData(committer, columnLayouts[4]);
 
 		final TableColumn committerDate = new TableColumn(rawTable, SWT.NONE);
 		committerDate.setResizable(true);
-		committerDate.setText(UIText.CommitGraphTable_committerDataColumn);
+		committerDate.setText(UIText.CommitGraphTable_committerDateColumn);
 		committerDate.setWidth(100);
-		layout.setColumnData(committerDate, new ColumnWeightData(5, 80, true));
+		columnLayouts[5] = new ColumnWeightData(5, 80, true);
+		tableLayout.setColumnData(committerDate, columnLayouts[5]);
 	}
 
