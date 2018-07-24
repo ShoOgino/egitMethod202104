@@ -2,13 +2,12 @@
 			throws Exception {
 		Repository repository = lookupRepository(repositoryFile);
 		RepositoryNode root = new RepositoryNode(null, repository);
-
 		WorkingDirNode workdir = new WorkingDirNode(root, repository);
 
-		String rootText = labelProvider.getStyledText(root).getString();
-		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
-		SWTBotTreeItem workdirItem = TestUtil.expandAndWait(rootItem)
-				.getNode(labelProvider.getStyledText(workdir).getString());
+		String rootText = labelProvider.getText(root);
+		String workDirText = labelProvider.getText(workdir);
+		SWTBotTreeItem workdirItem = TestUtil.navigateTo(tree, rootText,
+				workDirText);
 		return workdirItem;
 	}
 

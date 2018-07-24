@@ -12,7 +12,7 @@
 		IFile file = touch(newContent);
 
 		IFile[] commitables = new IFile[] { file };
-		ArrayList<IFile> untracked = new ArrayList<IFile>();
+		ArrayList<IFile> untracked = new ArrayList<>();
 		untracked.addAll(Arrays.asList(commitables));
 		String message = commitMessage;
 		if (message == null)

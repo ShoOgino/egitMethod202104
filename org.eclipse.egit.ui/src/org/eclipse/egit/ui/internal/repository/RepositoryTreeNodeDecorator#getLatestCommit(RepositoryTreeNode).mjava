@@ -1,0 +1,19 @@
+	private RevCommit getLatestCommit(RepositoryTreeNode node) {
+		Ref ref = (Ref) node.getObject();
+		ObjectId id;
+		if (ref.isSymbolic()) {
+			id = ref.getLeaf().getObjectId();
+		} else {
+			id = ref.getObjectId();
+		}
+		if (id == null) {
+			return null;
+		}
+		try (RevWalk walk = new RevWalk(node.getRepository())) {
+			walk.setRetainBody(true);
+			return walk.parseCommit(id);
+		} catch (IOException ignored) {
+			return null;
+		}
+	}
+

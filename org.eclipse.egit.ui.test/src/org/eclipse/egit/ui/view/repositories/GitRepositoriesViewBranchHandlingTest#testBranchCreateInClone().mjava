@@ -1,0 +1,32 @@
+	@Test
+	public void testBranchCreateInClone() throws Exception {
+		SWTBotTree tree = getOrOpenView().bot().tree();
+
+		SWTBotTreeItem item = TestUtil.expandAndWait(myRepoViewUtil
+				.getLocalBranchesItem(tree, clonedRepositoryFile));
+
+		List<String> children = item.getNodes();
+		assertEquals("Wrong number of local children", 1, children.size());
+
+		item = TestUtil.expandAndWait(myRepoViewUtil.getRemoteBranchesItem(tree,
+				clonedRepositoryFile));
+		children = item.getNodes();
+		assertEquals("Wrong number of children", 2, children.size());
+		assertTrue("Missing remote branch", children.contains("origin/master"));
+		assertTrue("Missing remote branch", children.contains("origin/stable"));
+		item.getNode("origin/stable").select();
+		ContextMenuHelper.clickContextMenu(tree, myUtil
+				.getPluginLocalizedValue("CreateBranchCommand"));
+		SWTBotShell shell = bot.shell(UIText.CreateBranchWizard_NewBranchTitle);
+		shell.activate();
+		assertEquals("stable", shell.bot().textWithId("BranchName").getText());
+		shell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		bot.waitUntil(Conditions.shellCloses(shell));
+		refreshAndWait();
+		item = TestUtil.expandAndWait(myRepoViewUtil.getLocalBranchesItem(tree,
+				clonedRepositoryFile));
+
+		children = item.getNodes();
+		assertEquals("Wrong number of local children", 2, children.size());
+	}
+

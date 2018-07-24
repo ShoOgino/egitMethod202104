@@ -20,6 +20,7 @@
 		}
 
 		Job.getJobManager().join(JobFamilies.REPO_VIEW_REFRESH, null);
+		TestUtil.waitForDecorations();
 		SWTBotTree tree = repoView.bot().tree();
 		tree.select(0);
 

@@ -1,0 +1,14 @@
+	@Override
+	public void dispose() {
+		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache()
+				.removeIndexDiffChangedListener(this);
+		Job job;
+		synchronized (lock) {
+			job = eventJob;
+			eventJob = null;
+		}
+		if (job != null) {
+			job.cancel();
+		}
+	}
+

@@ -2,8 +2,8 @@
 			throws Exception {
 		SWTBotTreeItem remotesNode = myRepoViewUtil.getRemotesItem(tree,
 				clonedRepositoryFile);
-		SWTBotTreeItem originNode = TestUtil.expandAndWait(remotesNode)
-				.getNode("origin");
+		SWTBotTreeItem originNode = TestUtil
+				.getChildNode(TestUtil.expandAndWait(remotesNode), "origin");
 		if (useRemote) {
 			originNode.select();
 		} else {

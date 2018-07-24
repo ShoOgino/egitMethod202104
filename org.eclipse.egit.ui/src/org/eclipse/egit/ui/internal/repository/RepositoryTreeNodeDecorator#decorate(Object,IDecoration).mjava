@@ -1,0 +1,16 @@
+	@Override
+	public void decorate(Object element, IDecoration decoration) {
+		RepositoryTreeNode<?> node = (RepositoryTreeNode) element;
+		Repository repository = node.getRepository();
+		if (repository != null) {
+			try {
+				decorateText(node, repository, decoration);
+				decorateImage(node, repository, decoration);
+			} catch (IOException e) {
+				Activator.logError(MessageFormat.format(
+						UIText.GitLabelProvider_UnableToRetrieveLabel,
+						element.toString()), e);
+			}
+		}
+	}
+

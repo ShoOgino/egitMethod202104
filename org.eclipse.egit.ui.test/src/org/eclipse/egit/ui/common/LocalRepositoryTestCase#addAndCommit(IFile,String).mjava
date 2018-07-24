@@ -4,7 +4,7 @@
 		if (!prj.isAccessible())
 			throw new IllegalStateException("No project to touch");
 		IFile[] commitables = new IFile[] { file };
-		ArrayList<IFile> untracked = new ArrayList<IFile>();
+		ArrayList<IFile> untracked = new ArrayList<>();
 		untracked.addAll(Arrays.asList(commitables));
 		CommitOperation op = new CommitOperation(commitables,
 				untracked, TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER,

@@ -13,11 +13,7 @@
 		top.execute(null);
 		touchAndSubmit(null);
 
-		RepositoriesViewLabelProvider provider = GitRepositoriesViewTestUtils
-				.createLabelProvider();
-		LOCAL_BRANCHES = provider.getText(new LocalNode(new RepositoryNode(
-				null, repo), repo));
-		TAGS = provider.getText(new TagsNode(new RepositoryNode(null, repo),
-				repo));
+		LOCAL_BRANCHES = UIText.RepositoriesViewLabelProvider_LocalNodetext;
+		TAGS = UIText.RepositoriesViewLabelProvider_TagsNodeText;
 	}
 

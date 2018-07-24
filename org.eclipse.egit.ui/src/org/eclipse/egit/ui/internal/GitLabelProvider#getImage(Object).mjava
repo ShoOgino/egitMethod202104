@@ -1,7 +1,8 @@
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof Repository) {
-			return RepositoryTreeNodeType.REPO.getIcon();
+			return UIIcons.getImage(getImageCache(),
+					RepositoryTreeNodeType.REPO.getIcon());
 		}
 
 		if (element instanceof RefNode) {

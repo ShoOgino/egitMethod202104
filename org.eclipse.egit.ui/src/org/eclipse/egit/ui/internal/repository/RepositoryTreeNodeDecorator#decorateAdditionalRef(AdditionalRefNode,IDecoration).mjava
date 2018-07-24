@@ -1,0 +1,22 @@
+	private void decorateAdditionalRef(AdditionalRefNode node,
+			IDecoration decoration) {
+		Ref ref = node.getObject();
+		StringBuilder suffix = new StringBuilder();
+		if (ref.isSymbolic()) {
+			suffix.append(" [").append(ref.getLeaf().getName()).append(']'); //$NON-NLS-1$
+		}
+		ObjectId refId = ref.getObjectId();
+		suffix.append(' ');
+		RevCommit commit = getLatestCommit(node);
+		if (commit != null) {
+			suffix.append(abbreviate(commit)).append(' ')
+					.append(commit.getShortMessage());
+		} else if (!ref.isSymbolic() || refId != null) {
+			suffix.append(abbreviate(refId));
+		} else {
+			suffix.append(
+					UIText.RepositoriesViewLabelProvider_UnbornBranchText);
+		}
+		decoration.addSuffix(suffix.toString());
+	}
+

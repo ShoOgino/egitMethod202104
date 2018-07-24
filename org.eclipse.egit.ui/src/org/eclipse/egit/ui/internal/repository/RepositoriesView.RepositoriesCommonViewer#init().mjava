@@ -1,0 +1,11 @@
+		@Override
+		protected void init() {
+			super.init();
+			IBaseLabelProvider labelProvider = getLabelProvider();
+			// Our label provider already decorates. Avoid double decorating.
+			if (labelProvider instanceof DecoratingStyledCellLabelProvider) {
+				((DecoratingStyledCellLabelProvider) labelProvider)
+						.setLabelDecorator(null);
+			}
+		}
+

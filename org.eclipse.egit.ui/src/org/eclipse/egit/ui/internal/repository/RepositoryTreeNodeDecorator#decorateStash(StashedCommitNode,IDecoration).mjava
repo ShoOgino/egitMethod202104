@@ -1,0 +1,6 @@
+	private void decorateStash(StashedCommitNode node, IDecoration decoration) {
+		RevCommit commit = node.getObject();
+		decoration.addSuffix(
+				" [" + abbreviate(commit) + "] " + commit.getShortMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+

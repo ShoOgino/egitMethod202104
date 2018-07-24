@@ -3,10 +3,11 @@
 		Repository repository = lookupRepository(repositoryFile);
 		RepositoryNode root = new RepositoryNode(null, repository);
 		AdditionalRefsNode symrefsnode = new AdditionalRefsNode(root, repository);
-		SWTBotTreeItem rootItem = tree
-				.getTreeItem(labelProvider.getStyledText(root).getString());
-		SWTBotTreeItem symrefsitem = TestUtil.expandAndWait(rootItem)
-				.getNode(labelProvider.getStyledText(symrefsnode).getString());
+
+		String rootText = labelProvider.getText(root);
+		String symrefsText = labelProvider.getText(symrefsnode);
+		SWTBotTreeItem symrefsitem = TestUtil.navigateTo(tree, rootText,
+				symrefsText);
 		return symrefsitem;
 	}
 

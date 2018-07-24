@@ -77,7 +77,9 @@
 
 			@Override
 			public Image getImage(Object element) {
-				return RepositoryTreeNodeType.REF.getIcon();
+				return UIIcons.getImage(
+						Activator.getDefault().getResourceManager(),
+						RepositoryTreeNodeType.REF.getIcon());
 			}
 		});
 

@@ -1,0 +1,9 @@
+	/**
+	 * Creates a new {@link GitDecorator}, registering to receive notifications
+	 * about index changes.
+	 */
+	public GitDecorator() {
+		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache()
+				.addIndexDiffChangedListener(this);
+	}
+

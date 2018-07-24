@@ -8,15 +8,23 @@
 	private void waitForFinalization(int maxMillis) {
 		long stop = System.currentTimeMillis() + maxMillis;
 		MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
-		do {
+		for (;;) {
 			System.gc();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
+				System.out.println("Garbage collection interrupted");
 				break;
 			}
-		} while (System.currentTimeMillis() < stop
-				&& memoryBean.getObjectPendingFinalizationCount() > 0);
+			if (memoryBean.getObjectPendingFinalizationCount() == 0) {
+				break;
+			}
+			if (System.currentTimeMillis() > stop) {
+				System.out.println(
+						"Garbage collection timed out; not all objects collected.");
+				break;
+			}
+		}
 	}
 

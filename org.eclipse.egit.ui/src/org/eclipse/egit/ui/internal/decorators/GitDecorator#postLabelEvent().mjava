@@ -1,0 +1,8 @@
+	/**
+	 * Posts an asynchronous {@link LabelProviderChangedEvent} invalidating all
+	 * labels.
+	 */
+	protected void postLabelEvent() {
+		getEventJob().post(this);
+	}
+

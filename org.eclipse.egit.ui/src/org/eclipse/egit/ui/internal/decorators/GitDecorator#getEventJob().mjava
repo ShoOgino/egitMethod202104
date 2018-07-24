@@ -1,0 +1,11 @@
+	private EventJob getEventJob() {
+		synchronized (lock) {
+			if (eventJob == null) {
+				eventJob = new EventJob(getName());
+				eventJob.setSystem(true);
+				eventJob.setUser(false);
+			}
+			return eventJob;
+		}
+	}
+

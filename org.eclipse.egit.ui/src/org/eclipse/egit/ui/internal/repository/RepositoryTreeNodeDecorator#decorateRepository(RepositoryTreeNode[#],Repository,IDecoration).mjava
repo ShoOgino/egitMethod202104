@@ -1,0 +1,59 @@
+	private void decorateRepository(RepositoryTreeNode<?> node,
+			@NonNull Repository repository, IDecoration decoration)
+			throws IOException {
+		boolean isSubModule = node.getParent() != null && node.getParent()
+				.getType() == RepositoryTreeNodeType.SUBMODULES;
+		if (RepositoryUtil.hasChanges(repository)) {
+			decoration.addPrefix("> "); //$NON-NLS-1$
+		}
+		StringBuilder suffix = new StringBuilder();
+		if (isSubModule) {
+			Ref head = repository.exactRef(Constants.HEAD);
+			if (head == null) {
+				return;
+			}
+			suffix.append(" ["); //$NON-NLS-1$
+			if (head.isSymbolic()) {
+				suffix.append(
+						Repository.shortenRefName(head.getLeaf().getName()));
+			} else if (head.getObjectId() != null) {
+				suffix.append(abbreviate(head.getObjectId()));
+			}
+			suffix.append(']');
+			if (verboseBranchMode && head.getObjectId() != null) {
+				try (RevWalk walk = new RevWalk(repository)) {
+					RevCommit commit = walk.parseCommit(head.getObjectId());
+					suffix.append(' ').append(commit.getShortMessage());
+				} catch (IOException ignored) {
+					// Ignored
+				}
+			}
+		} else {
+			// Not a submodule
+			String branch = Activator.getDefault().getRepositoryUtil()
+					.getShortBranch(repository);
+			if (branch == null) {
+				return;
+			}
+			suffix.append(" ["); //$NON-NLS-1$
+			suffix.append(branch);
+
+			BranchTrackingStatus trackingStatus = BranchTrackingStatus
+					.of(repository, branch);
+			if (trackingStatus != null && (trackingStatus.getAheadCount() != 0
+					|| trackingStatus.getBehindCount() != 0)) {
+				String formattedTrackingStatus = GitLabels
+						.formatBranchTrackingStatus(trackingStatus);
+				suffix.append(' ').append(formattedTrackingStatus);
+			}
+
+			RepositoryState repositoryState = repository.getRepositoryState();
+			if (repositoryState != RepositoryState.SAFE) {
+				suffix.append(" - ") //$NON-NLS-1$
+						.append(repositoryState.getDescription());
+			}
+			suffix.append(']');
+		}
+		decoration.addSuffix(suffix.toString());
+	}
+

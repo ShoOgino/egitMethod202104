@@ -1,0 +1,8 @@
+		public void post(GitDecorator source) {
+			this.decorator = source;
+			if (getState() == SLEEPING || getState() == WAITING) {
+				cancel();
+			}
+			schedule(DELAY);
+		}
+

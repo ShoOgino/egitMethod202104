@@ -1,0 +1,31 @@
+	@Override
+	public ImageDescriptor getImageDescriptor(Object object) {
+		RepositoryTreeNode<?> node = (RepositoryTreeNode) object;
+		switch (node.getType()) {
+		case FILE: {
+			Object item = node.getObject();
+			if (item instanceof File) {
+				return PlatformUI.getWorkbench().getEditorRegistry()
+						.getImageDescriptor(((File) item).getName());
+			}
+			break;
+		}
+		case REPO: {
+			Object item = node.getObject();
+			if (item instanceof Repository && ResourcePropertyTester
+					.hasGerritConfiguration((Repository) item)) {
+				return UIIcons.REPOSITORY_GERRIT;
+			}
+			break;
+		}
+		case TAG:
+			if (((TagNode) node).isAnnotated()) {
+				return UIIcons.TAG_ANNOTATED;
+			}
+			break;
+		default:
+			break;
+		}
+		return node.getType().getIcon();
+	}
+

@@ -1,0 +1,8 @@
+		@Override
+		public IStatus run(IProgressMonitor monitor) {
+			if (decorator != null) {
+				decorator.fireLabelEvent();
+			}
+			return Status.OK_STATUS;
+		}
+

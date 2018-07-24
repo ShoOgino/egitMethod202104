@@ -1,0 +1,27 @@
+	private void decorateText(RepositoryTreeNode<?> node,
+			@NonNull Repository repository, IDecoration decoration)
+			throws IOException {
+		switch (node.getType()) {
+		case REPO:
+			decorateRepository(node, repository, decoration);
+			break;
+		case ADDITIONALREF:
+			decorateAdditionalRef((AdditionalRefNode) node, decoration);
+			break;
+		case REF:
+			decorateRef((RefNode) node, decoration);
+			break;
+		case TAG:
+			decorateTag((TagNode) node, decoration);
+			break;
+		case STASHED_COMMIT:
+			decorateStash((StashedCommitNode) node, decoration);
+			break;
+		case SUBMODULES:
+			decorateSubmodules(repository, decoration);
+			break;
+		default:
+			break;
+		}
+	}
+

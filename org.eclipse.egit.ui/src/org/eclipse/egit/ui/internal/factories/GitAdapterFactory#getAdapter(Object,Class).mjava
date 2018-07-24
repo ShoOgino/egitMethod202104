@@ -5,10 +5,8 @@
 		}
 
 		if (IWorkbenchAdapter.class == adapterType) {
-			// property page names for git repository tree nodes
 			if (adaptableObject instanceof RepositoryTreeNode) {
-				return getRepositoryTreeNodeWorkbenchAdapter(
-						(RepositoryTreeNode) adaptableObject);
+				return RepositoryTreeNodeWorkbenchAdapter.INSTANCE;
 			}
 
 			if (gitModelWorkbenchAdapter == null) {

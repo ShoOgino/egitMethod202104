@@ -50,7 +50,7 @@
 		ContentProvider contentProvider = new ContentProvider(tagsNode);
 		treeViewer.setContentProvider(contentProvider);
 		treeViewer
-				.setLabelProvider(new RepositoriesViewStyledCellLabelProvider());
+				.setLabelProvider(new RepositoriesViewLabelProvider());
 		treeViewer.setComparator(new ViewerComparator(
 				CommonUtils.STRING_ASCENDING_COMPARATOR));
 		treeViewer.setInput(tagsNode);

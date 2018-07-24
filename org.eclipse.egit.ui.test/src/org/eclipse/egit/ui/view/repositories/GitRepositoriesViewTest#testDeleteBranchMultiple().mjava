@@ -1,0 +1,43 @@
+	@Test
+	public void testDeleteBranchMultiple() throws Exception {
+		// expand first level
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		refreshAndWait();
+		// open a branch (checkout)
+		SWTBotTreeItem localBranchesItem = TestUtil.expandAndWait(
+				myRepoViewUtil.getLocalBranchesItem(tree, repositoryFile));
+		SWTBotTreeItem masterNode = localBranchesItem.getNode("master");
+		// create first branch (abc)
+		masterNode.select();
+		ContextMenuHelper.clickContextMenu(tree, "Create Branch...");
+		SWTBotShell createBranchShell = bot
+				.shell(UIText.CreateBranchWizard_NewBranchTitle);
+		createBranchShell.bot().textWithId("BranchName").setText("abc");
+		createBranchShell.bot().checkBox(UIText.CreateBranchPage_CheckoutButton)
+				.deselect();
+		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		// create second branch (123)
+		ContextMenuHelper.clickContextMenu(tree, "Create Branch...");
+		createBranchShell = bot.shell(UIText.CreateBranchWizard_NewBranchTitle);
+		SWTBotText bn = createBranchShell.bot().textWithId("BranchName");
+		TestUtil.processUIEvents();
+		bn.setText("123");
+		createBranchShell.bot().checkBox(UIText.CreateBranchPage_CheckoutButton)
+				.deselect();
+		createBranchShell.bot().button(IDialogConstants.FINISH_LABEL).click();
+		refreshAndWait();
+		localBranchesItem = TestUtil.expandAndWait(
+				myRepoViewUtil.getLocalBranchesItem(tree, repositoryFile));
+		// delete both
+		localBranchesItem.select("abc", "123");
+		ContextMenuHelper.clickContextMenuSync(tree,
+				myUtil.getPluginLocalizedValue("RepoViewDeleteBranch.label"));
+		refreshAndWait();
+
+		SWTBotTreeItem[] items = myRepoViewUtil
+				.getLocalBranchesItem(tree, repositoryFile).getItems();
+		assertEquals("Wrong number of branches", 2, items.length);
+		assertEquals("master", items[0].getText());
+		assertEquals("stable", items[1].getText());
+	}
+

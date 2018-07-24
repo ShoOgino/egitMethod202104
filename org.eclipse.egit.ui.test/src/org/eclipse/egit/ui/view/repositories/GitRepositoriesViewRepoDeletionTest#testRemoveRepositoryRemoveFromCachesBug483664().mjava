@@ -94,10 +94,13 @@
 					Thread.currentThread().interrupt();
 					return Status.CANCEL_STATUS;
 				}
+				// Make sure the label provider is disposed. We don't need it
+				// anymore.
+				myRepoViewUtil.dispose();
 				// Finally... Java does not give any guarantees about when
 				// exactly an only weakly reachable object is finalized and
 				// garbage collected.
-				waitForFinalization(5000);
+				waitForFinalization(10000);
 				// Experience shows that an explicit garbage collection run very
 				// often does reclaim only weakly reachable objects and set the
 				// weak references' referents to null, but not even that can be

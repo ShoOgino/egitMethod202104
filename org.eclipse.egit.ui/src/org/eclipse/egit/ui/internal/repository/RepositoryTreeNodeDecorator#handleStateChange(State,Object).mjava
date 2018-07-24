@@ -1,0 +1,14 @@
+	@Override
+	public void handleStateChange(State state, Object oldValue) {
+		try {
+			boolean newValue = ((Boolean) state.getValue())
+					.booleanValue();
+			if (newValue != verboseBranchMode) {
+				verboseBranchMode = newValue;
+				postLabelEvent();
+			}
+		} catch (Exception e) {
+			Activator.logError(e.getMessage(), e);
+		}
+	}
+

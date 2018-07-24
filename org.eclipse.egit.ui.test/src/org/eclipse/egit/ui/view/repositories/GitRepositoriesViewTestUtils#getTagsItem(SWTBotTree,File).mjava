@@ -4,10 +4,9 @@
 		RepositoryNode root = new RepositoryNode(null, repository);
 		TagsNode tags = new TagsNode(root, repository);
 
-		String rootText = labelProvider.getStyledText(root).getString();
-		SWTBotTreeItem rootItem = tree.getTreeItem(rootText);
-		SWTBotTreeItem tagsItem = TestUtil.expandAndWait(rootItem)
-				.getNode(labelProvider.getStyledText(tags).getString());
+		String rootText = labelProvider.getText(root);
+		String tagsText = labelProvider.getText(tags);
+		SWTBotTreeItem tagsItem = TestUtil.navigateTo(tree, rootText, tagsText);
 		return tagsItem;
 	}
 

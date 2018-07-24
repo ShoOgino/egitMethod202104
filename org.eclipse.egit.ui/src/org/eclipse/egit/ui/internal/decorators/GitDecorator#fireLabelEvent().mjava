@@ -1,0 +1,10 @@
+	/**
+	 * Posts a {@link LabelProviderChangedEvent} invalidating all labels.
+	 */
+	protected void fireLabelEvent() {
+		LabelProviderChangedEvent event = new LabelProviderChangedEvent(this);
+		// Re-trigger decoration process (in UI thread)
+		PlatformUI.getWorkbench().getDisplay()
+				.asyncExec(() -> fireLabelProviderChanged(event));
+	}
+
