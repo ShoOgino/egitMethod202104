@@ -3,6 +3,8 @@
 
 		super.start(context);
 
+		SystemReader.setInstance(
+				new EclipseSystemReader(SystemReader.getInstance()));
 		pluginId = context.getBundle().getSymbolicName();
 
 		Config.setTypedConfigGetter(new ReportingTypedConfigGetter());

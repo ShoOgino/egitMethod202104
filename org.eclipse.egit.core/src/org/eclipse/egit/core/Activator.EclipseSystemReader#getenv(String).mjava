@@ -1,0 +1,16 @@
+		@Override
+		public String getenv(String variable) {
+			String result = delegate.getenv(variable);
+			if (result == null) {
+				return result;
+			}
+			boolean isWin = isWindows();
+			for (String gitvar : HIDDEN_VARIABLES) {
+				if (isWin && gitvar.equalsIgnoreCase(variable)
+						|| !isWin && gitvar.equals(variable)) {
+					return null;
+				}
+			}
+			return result;
+		}
+
