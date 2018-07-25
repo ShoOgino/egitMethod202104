@@ -23,8 +23,7 @@
 				selectionModel | SWT.BORDER, filter, true);
 		branchTree = tree.getViewer();
 		branchTree.setUseHashlookup(true);
-		branchTree
-				.setLabelProvider(new RepositoriesViewLabelProvider());
+		branchTree.setLabelProvider(new RepositoryTreeNodeLabelProvider());
 		branchTree.setContentProvider(new RepositoriesViewContentProvider());
 		ColumnViewerToolTipSupport.enableFor(branchTree);
 

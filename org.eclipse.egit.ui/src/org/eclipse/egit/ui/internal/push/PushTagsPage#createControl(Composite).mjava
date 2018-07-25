@@ -49,8 +49,7 @@
 		TagsNode tagsNode = new TagsNode(null, repository);
 		ContentProvider contentProvider = new ContentProvider(tagsNode);
 		treeViewer.setContentProvider(contentProvider);
-		treeViewer
-				.setLabelProvider(new RepositoriesViewLabelProvider());
+		treeViewer.setLabelProvider(new RepositoryTreeNodeLabelProvider());
 		treeViewer.setComparator(new ViewerComparator(
 				CommonUtils.STRING_ASCENDING_COMPARATOR));
 		treeViewer.setInput(tagsNode);
