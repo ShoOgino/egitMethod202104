@@ -45,11 +45,16 @@
 			List<DiffEntry> xentries = new LinkedList<>(entries);
 			RenameDetector detector = new RenameDetector(repository);
 			detector.addAll(entries);
-			EclipseGitProgressTransformer jgitProgress = new EclipseGitProgressTransformer(
-					progress.newChild(1));
-			List<DiffEntry> renames = detector.compute(walk.getObjectReader(),
-					jgitProgress);
-			if (!progress.isCanceled()) {
+			boolean cancelled = false;
+			List<DiffEntry> renames = Collections.emptyList();
+			try {
+				renames = detector.compute(walk.getObjectReader(),
+						new EclipseGitProgressTransformer(
+								progress.newChild(1)));
+			} catch (CancelledException e) {
+				cancelled = true;
+			}
+			if (!cancelled) {
 				progress.setWorkRemaining(renames.size());
 				for (DiffEntry m : renames) {
 					final FileDiff d = new FileDiff(repository, commit, m);

@@ -37,8 +37,13 @@
 
 			RenameDetector detector = new RenameDetector(repository);
 			detector.addAll(entries);
-			List<DiffEntry> renames = detector.compute(walk.getObjectReader(),
-					NullProgressMonitor.INSTANCE);
+			List<DiffEntry> renames = Collections.emptyList();
+			try {
+				renames = detector.compute(walk.getObjectReader(),
+						NullProgressMonitor.INSTANCE);
+			} catch (CancelledException e) {
+				return null;
+			}
 			for (DiffEntry diff : renames) {
 				if (diff.getChangeType() == ChangeType.RENAME
 						&& newPath.equals(diff.getNewPath()))
