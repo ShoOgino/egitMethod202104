@@ -6,7 +6,8 @@
 	 * @param c
 	 * @return the selected adaptables
 	 */
-	private <T> List<T> getSelectedAdaptables(ISelection selection,
+	@NonNull
+	private static <T> List<T> getSelectedAdaptables(ISelection selection,
 			Class<T> c) {
 		List<T> result;
 		if (selection != null && !selection.isEmpty()) {

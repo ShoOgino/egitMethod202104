@@ -1,0 +1,35 @@
+	/**
+	 * Retrieves all the repositories associated with the current selection. It
+	 * attempts to first identify the selections as projects and if that yields
+	 * an empty result, it then changes to adapt the selections to the
+	 * repository class
+	 *
+	 * @param selection
+	 * @return array of repositories
+	 */
+	@NonNull
+	public static Repository[] getRepositories(
+			@NonNull IStructuredSelection selection) {
+
+		IProject[] selectedProjects = getSelectedProjects(selection);
+
+		if (selectedProjects.length > 0)
+			return getRepositoriesFor(selectedProjects);
+
+		if (selection.isEmpty()) {
+			return new Repository[0];
+		}
+
+		Set<Repository> repos = new LinkedHashSet<>();
+		for (Object o : selection.toArray()) {
+			Repository repo = AdapterUtils.adapt(o, Repository.class);
+			if (repo != null) {
+				repos.add(repo);
+			} else {
+				// no repository found for one of the objects!
+				return new Repository[0];
+			}
+		}
+		return repos.toArray(new Repository[0]);
+	}
+

@@ -1,4 +1,4 @@
-	private Set<IProject> extractProjectsFromMappings(
+	private static Set<IProject> extractProjectsFromMappings(
 			IStructuredSelection selection) {
 		Set<IProject> ret = new LinkedHashSet<>();
 		for (ResourceMapping mapping : getSelectedAdaptables(selection,
@@ -10,8 +10,8 @@
 				// correspond to the order the user usually sees.
 				List<IProject> projects = new ArrayList<>(
 						Arrays.asList(mappedProjects));
-				Collections
-						.sort(projects, CommonUtils.RESOURCE_NAME_COMPARATOR);
+				Collections.sort(projects,
+						CommonUtils.RESOURCE_NAME_COMPARATOR);
 				ret.addAll(projects);
 			}
 		}

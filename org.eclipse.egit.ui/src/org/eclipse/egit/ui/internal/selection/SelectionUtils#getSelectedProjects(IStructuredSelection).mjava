@@ -8,7 +8,7 @@
 	 * @param selection
 	 * @return the projects hosting the selected resources
 	 */
-	private IProject[] getProjectsForSelectedResources(
+	public static IProject[] getSelectedProjects(
 			IStructuredSelection selection) {
 		Set<IProject> ret = new LinkedHashSet<>();
 		for (IResource resource : getSelectedAdaptables(selection,
