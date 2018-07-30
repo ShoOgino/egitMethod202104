@@ -32,7 +32,8 @@
 		final TreeColumnLayout layout = new TreeColumnLayout();
 
 		FilteredTree filteredTree = new FilteredTree(tableComposite, SWT.NONE
-				| SWT.BORDER | SWT.FULL_SELECTION, new PatternFilter(), true) {
+				| SWT.BORDER | SWT.FULL_SELECTION,
+				new TreeColumnPatternFilter(), true) {
 			@Override
 			protected void createControl(Composite composite, int treeStyle) {
 				super.createControl(composite, treeStyle);
