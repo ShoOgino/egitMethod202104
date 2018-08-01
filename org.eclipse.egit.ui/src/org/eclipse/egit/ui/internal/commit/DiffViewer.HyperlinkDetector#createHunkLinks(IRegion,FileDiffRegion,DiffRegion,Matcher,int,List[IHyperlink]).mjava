@@ -24,7 +24,8 @@
 						links.add(
 								new CompareLink(linkRegion, fileRange, lineNo));
 					}
-					File file = new Path(fileRange.getRepository().getWorkTree()
+					File file = new Path(
+							fileRange.getDiff().getRepository().getWorkTree()
 							.getAbsolutePath())
 									.append(fileRange.getDiff().getNewPath())
 									.toFile();

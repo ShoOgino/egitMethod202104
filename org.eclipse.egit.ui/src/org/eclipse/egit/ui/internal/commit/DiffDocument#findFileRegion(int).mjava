@@ -1,5 +1,5 @@
 	FileDiffRegion findFileRegion(int offset) {
-		FileDiffRegion key = new FileDiffRegion(null, null, offset, 0);
+		Region key = new Region(offset, 0);
 		int i = Arrays.binarySearch(fileRegions, key, (a, b) -> {
 			if (!TextUtilities.overlaps(a, b)) {
 				return a.getOffset() - b.getOffset();

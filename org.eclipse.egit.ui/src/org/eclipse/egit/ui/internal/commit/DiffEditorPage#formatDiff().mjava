@@ -25,14 +25,13 @@
 						document)) {
 					SubMonitor progress = SubMonitor.convert(monitor,
 							diffs.length);
-					Repository repository = commit.getRepository();
 					for (FileDiff diff : diffs) {
 						if (progress.isCanceled()) {
 							break;
 						}
 						progress.subTask(diff.getPath());
 						try {
-							formatter.write(repository, diff);
+							formatter.write(diff);
 						} catch (IOException ignore) {
 							// Ignored
 						}

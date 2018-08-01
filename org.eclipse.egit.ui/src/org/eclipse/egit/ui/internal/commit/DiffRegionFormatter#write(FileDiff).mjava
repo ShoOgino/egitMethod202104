@@ -1,21 +1,19 @@
 	/**
 	 * Write diff
 	 *
-	 * @param repository
 	 * @param diff
 	 * @return this formatter
 	 * @throws IOException
 	 */
-	public DiffRegionFormatter write(Repository repository, FileDiff diff)
+	public DiffRegionFormatter write(FileDiff diff)
 			throws IOException {
+		Repository repository = diff.getRepository();
 		this.stream.charset = CompareCoreUtils.getResourceEncoding(repository,
 				diff.getPath());
 		int start = stream.offset;
 		diff.outputDiff(null, repository, this, true);
 		flush();
-		fileRegions
-				.add(new FileDiffRegion(repository, diff, start,
-						stream.offset - start));
+		fileRegions.add(new FileDiffRegion(diff, start, stream.offset - start));
 		return this;
 	}
 

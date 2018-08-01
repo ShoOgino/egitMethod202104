@@ -25,7 +25,7 @@
 						m.end() - m.start());
 				if (TextUtilities.overlaps(region, linkRegion)) {
 					if (side == DiffEntry.Side.NEW) {
-						File file = new Path(fileRange.getRepository()
+						File file = new Path(fileRange.getDiff().getRepository()
 								.getWorkTree().getAbsolutePath()).append(
 										fileRange.getDiff().getNewPath())
 										.toFile();
