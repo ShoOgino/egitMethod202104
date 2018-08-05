@@ -1,0 +1,33 @@
+	@Override
+	public Object getPropertyValue(Object id) {
+		switch (id.toString()) {
+		case PROPERTY_TAG_ID:
+			return tag.name();
+		case PROPERTY_TAG_NAME:
+			return name;
+		case PROPERTY_TAG_TARGET:
+			if (tag != null) {
+				RevObject target = tag.getObject();
+				if (target instanceof RevTag) {
+					return new TagPropertySource(repository, (RevTag) target);
+				} else if (target instanceof RevCommit) {
+					return new CommitPropertySource((RevCommit) target);
+				}
+				return Constants.typeString(target.getType()) + ' '
+						+ target.name();
+			}
+			if (commit != null) {
+				return new CommitPropertySource(commit);
+			}
+			return null;
+		case PROPERTY_TAG_TAGGER:
+			return new PersonIdentPropertySource(tag.getTaggerIdent());
+		case PROPERTY_TAG_MESSAGE:
+			// TODO: figure out a way to show the full message, if different
+			// from the short message.
+			return tag.getShortMessage();
+		default:
+			return null;
+		}
+	}
+

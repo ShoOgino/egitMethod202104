@@ -1,0 +1,25 @@
+	private IPropertyDescriptor[] createDescriptors() {
+		List<PropertyDescriptor> result = new ArrayList<>();
+		result.add(new PropertyDescriptor(PROPERTY_TAG_NAME,
+				UIText.TagPropertySource_TagName));
+		if (tag == null) {
+			if (commit != null) {
+				result.add(new PropertyDescriptor(PROPERTY_TAG_TARGET,
+						UIText.TagPropertySource_TagTarget));
+			}
+		} else {
+			result.add(new PropertyDescriptor(PROPERTY_TAG_ID,
+					UIText.TagPropertySource_TagId));
+			result.add(new PropertyDescriptor(PROPERTY_TAG_MESSAGE,
+					UIText.TagPropertySource_TagMessage));
+			result.add(new PropertyDescriptor(PROPERTY_TAG_TAGGER,
+					UIText.TagPropertySource_TagTagger));
+			result.add(new PropertyDescriptor(PROPERTY_TAG_TARGET,
+					UIText.TagPropertySource_TagTarget));
+		}
+		for (PropertyDescriptor p : result) {
+			p.setCategory(UIText.TagPropertySource_TagCategory);
+		}
+		return result.toArray(new IPropertyDescriptor[0]);
+	}
+

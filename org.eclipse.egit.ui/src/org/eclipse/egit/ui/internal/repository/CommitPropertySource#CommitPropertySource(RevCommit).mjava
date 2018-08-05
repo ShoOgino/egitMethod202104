@@ -1,0 +1,23 @@
+	/**
+	 * Create a property source for a tag.
+	 *
+	 * @param commit
+	 *            to show
+	 */
+	public CommitPropertySource(RevCommit commit) {
+		this.commit = commit;
+		List<PropertyDescriptor> result = new ArrayList<>();
+		result.add(new PropertyDescriptor(PROPERTY_COMMIT_ID,
+				UIText.CommitPropertySource_CommitId));
+		result.add(new PropertyDescriptor(PROPERTY_COMMIT_MESSAGE,
+				UIText.CommitPropertySource_CommitMessage));
+		result.add(new PropertyDescriptor(PROPERTY_COMMIT_AUTHOR,
+				UIText.CommitPropertySource_CommitAuthor));
+		result.add(new PropertyDescriptor(PROPERTY_COMMITTER,
+				UIText.CommitPropertySource_Committer));
+		for (PropertyDescriptor p : result) {
+			p.setCategory(UIText.CommitPropertySource_CommitCategory);
+		}
+		descriptors = result.toArray(new IPropertyDescriptor[0]);
+	}
+

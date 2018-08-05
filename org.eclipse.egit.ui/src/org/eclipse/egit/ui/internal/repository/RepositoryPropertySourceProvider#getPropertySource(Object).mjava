@@ -21,20 +21,7 @@
 
 		RepositoryTreeNode node = (RepositoryTreeNode) object;
 		listenerHandle = node.getRepository().getListenerList()
-				.addConfigChangedListener(new ConfigChangedListener() {
-					@Override
-					public void onConfigChanged(ConfigChangedEvent event) {
-						// force a refresh of the page
-						lastObject = null;
-						myPage.getSite().getShell().getDisplay().asyncExec(new Runnable() {
-
-							@Override
-							public void run() {
-								myPage.setPropertySourceProvider(RepositoryPropertySourceProvider.this);
-							}
-						});
-					}
-				});
+				.addConfigChangedListener(event -> refreshPage());
 
 		if (node.getType() == RepositoryTreeNodeType.REPO) {
 			lastObject = object;
@@ -62,7 +49,13 @@
 				return lastRepositorySource;
 			}
 			return null;
-		} else
-			return null;
+		} else if (node.getType() == RepositoryTreeNodeType.TAG) {
+			lastObject = object;
+			checkChangeType(SourceType.TAG);
+			lastRepositorySource = new TagPropertySource(node.getRepository(),
+					(Ref) node.getObject());
+			return lastRepositorySource;
+		}
+		return null;
 	}
 

@@ -1,0 +1,29 @@
+	/**
+	 * Create a property source for a tag from a {@link Ref}.
+	 *
+	 * @param repo
+	 *            repository
+	 * @param ref
+	 *            ref of the tag
+	 */
+	public TagPropertySource(Repository repo, Ref ref) {
+		this.repository = repo;
+		try (RevWalk refWalk = new RevWalk(repo)) {
+			ObjectId objectId = repo.resolve(ref.getName());
+			RevObject any = refWalk.parseAny(objectId);
+			if (any instanceof RevTag) {
+				tag = (RevTag) any;
+				refWalk.parseBody(tag.getObject());
+			} else {
+				RevObject peeledObject = refWalk.peel(any);
+				if (peeledObject instanceof RevCommit) {
+					commit = (RevCommit) peeledObject;
+				}
+			}
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+		name = tag != null ? tag.getTagName() : Repository.shortenRefName(ref.getName());
+		descriptors = createDescriptors();
+	}
+

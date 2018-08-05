@@ -16,6 +16,15 @@
 				// removed.
 				bars.updateActionBars();
 			}
+			if (lastSourceType == SourceType.TAG) {
+				// Remove date format listener
+				store.removePropertyChangeListener(dateFormatListener);
+				listenToDateFormatChanges = false;
+			} else if (type == SourceType.TAG) {
+				// Add date format listener
+				listenToDateFormatChanges = true;
+				store.addPropertyChangeListener(dateFormatListener);
+			}
 		}
 		lastSourceType = type;
 	}

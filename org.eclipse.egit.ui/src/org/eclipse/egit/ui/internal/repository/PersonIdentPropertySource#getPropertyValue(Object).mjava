@@ -1,0 +1,14 @@
+	@Override
+	public Object getPropertyValue(Object id) {
+		switch (id.toString()) {
+		case PROPERTY_NAME:
+			return person.getName();
+		case PROPERTY_EMAIL:
+			return person.getEmailAddress();
+		case PROPERTY_DATE:
+			return PreferenceBasedDateFormatter.create().formatDate(person);
+		default:
+			return null;
+		}
+	}
+

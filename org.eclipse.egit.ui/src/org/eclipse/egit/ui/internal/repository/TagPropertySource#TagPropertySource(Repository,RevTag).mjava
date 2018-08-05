@@ -1,0 +1,20 @@
+	/**
+	 * Create a property source for a {@link RevTag}.
+	 *
+	 * @param repo
+	 *            repository
+	 * @param tag
+	 *            to show
+	 */
+	public TagPropertySource(Repository repo, RevTag tag) {
+		this.repository = repo;
+		this.tag = tag;
+		name = tag.getName();
+		try (RevWalk refWalk = new RevWalk(repo)) {
+			refWalk.parseBody(tag.getObject());
+		} catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+		descriptors = createDescriptors();
+	}
+
