@@ -1,27 +1,34 @@
 	private void decorateText(RepositoryTreeNode<?> node,
 			@NonNull Repository repository, IDecoration decoration)
 			throws IOException {
+		boolean decorated = false;
 		switch (node.getType()) {
 		case REPO:
-			decorateRepository(node, repository, decoration);
+			decorated = decorateRepository(node, repository, decoration);
 			break;
 		case ADDITIONALREF:
-			decorateAdditionalRef((AdditionalRefNode) node, decoration);
+			decorated = decorateAdditionalRef((AdditionalRefNode) node,
+					decoration);
 			break;
 		case REF:
-			decorateRef((RefNode) node, decoration);
+			decorated = decorateRef((RefNode) node, decoration);
 			break;
 		case TAG:
-			decorateTag((TagNode) node, decoration);
+			decorated = decorateTag((TagNode) node, decoration);
 			break;
 		case STASHED_COMMIT:
-			decorateStash((StashedCommitNode) node, decoration);
+			decorated = decorateStash((StashedCommitNode) node, decoration);
 			break;
 		case SUBMODULES:
-			decorateSubmodules(repository, decoration);
+			decorated = decorateSubmodules(repository, decoration);
 			break;
 		default:
-			break;
+			return;
+		}
+		if (!decorated) {
+			// Ensure the caching of last labels in
+			// RepositoryTreeNodeLabelProvider works
+			decoration.addSuffix(" "); //$NON-NLS-1$
 		}
 	}
 
