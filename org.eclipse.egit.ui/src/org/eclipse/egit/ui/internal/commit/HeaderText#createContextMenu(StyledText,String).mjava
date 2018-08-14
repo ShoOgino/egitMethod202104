@@ -7,7 +7,7 @@
 		copySHA1MenuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				copyToClipboard(sha1String, shell);
+				ClipboardUtils.copySha1ToClipboard(sha1String, shell);
 			}
 		});
 
