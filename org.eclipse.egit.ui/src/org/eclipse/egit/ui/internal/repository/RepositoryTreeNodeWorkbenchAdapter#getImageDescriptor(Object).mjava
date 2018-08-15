@@ -1,31 +1,20 @@
 	@Override
 	public ImageDescriptor getImageDescriptor(Object object) {
+		if (object == null) {
+			return null;
+		}
 		RepositoryTreeNode<?> node = (RepositoryTreeNode) object;
-		switch (node.getType()) {
-		case FILE: {
-			Object item = node.getObject();
-			if (item instanceof File) {
-				return PlatformUI.getWorkbench().getEditorRegistry()
-						.getImageDescriptor(((File) item).getName());
-			}
-			break;
+		ImageDescriptor base = getBaseImageDescriptor(node);
+		if (base == null) {
+			return null;
 		}
-		case REPO: {
-			Object item = node.getObject();
-			if (item instanceof Repository && ResourcePropertyTester
-					.hasGerritConfiguration((Repository) item)) {
-				return UIIcons.REPOSITORY_GERRIT;
-			}
-			break;
+		// We have to decorate here: if we let an asynchronous lightweight
+		// decorator do it, image decorations may flicker in the repositories
+		// view and elsewhere where we'd refresh viewers.
+		try {
+			return decorateImageDescriptor(base, node);
+		} catch (IOException e) {
+			return base;
 		}
-		case TAG:
-			if (((TagNode) node).isAnnotated()) {
-				return UIIcons.TAG_ANNOTATED;
-			}
-			break;
-		default:
-			break;
-		}
-		return node.getType().getIcon();
 	}
 

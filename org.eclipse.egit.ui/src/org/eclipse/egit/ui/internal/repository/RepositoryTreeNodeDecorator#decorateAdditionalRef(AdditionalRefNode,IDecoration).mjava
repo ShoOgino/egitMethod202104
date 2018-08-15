@@ -1,4 +1,4 @@
-	private void decorateAdditionalRef(AdditionalRefNode node,
+	private boolean decorateAdditionalRef(AdditionalRefNode node,
 			IDecoration decoration) {
 		Ref ref = node.getObject();
 		StringBuilder suffix = new StringBuilder();
@@ -18,5 +18,6 @@
 					UIText.RepositoriesViewLabelProvider_UnbornBranchText);
 		}
 		decoration.addSuffix(suffix.toString());
+		return true;
 	}
 

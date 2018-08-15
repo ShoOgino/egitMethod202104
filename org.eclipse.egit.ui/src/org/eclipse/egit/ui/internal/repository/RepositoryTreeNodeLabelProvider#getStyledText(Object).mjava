@@ -1,7 +1,9 @@
 	@Override
 	public StyledString getStyledText(Object element) {
 		StyledString decoratedLabel = super.getStyledText(element);
-		if (decoratedLabel.getString().equals(labelProvider.getText(element))) {
+		String decoratedValue = decoratedLabel.getString();
+		String simpleValue = labelProvider.getText(element);
+		if (decoratedValue.equals(simpleValue)) {
 			// Decoration not available yet... but may be shortly. Try to
 			// prevent flickering by returning the previous decorated label, if
 			// any.
@@ -9,6 +11,9 @@
 			if (previousLabel != null) {
 				return previousLabel;
 			}
+		} else if (decoratedValue.trim().equals(simpleValue)) {
+			// No decoration...
+			decoratedLabel = labelProvider.getStyledText(element);
 		}
 		if (element instanceof RepositoryNode) {
 			Repository repository = ((RepositoryNode) element).getRepository();

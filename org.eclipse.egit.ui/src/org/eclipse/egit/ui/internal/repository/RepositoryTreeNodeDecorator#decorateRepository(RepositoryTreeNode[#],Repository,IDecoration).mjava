@@ -1,4 +1,4 @@
-	private void decorateRepository(RepositoryTreeNode<?> node,
+	private boolean decorateRepository(RepositoryTreeNode<?> node,
 			@NonNull Repository repository, IDecoration decoration)
 			throws IOException {
 		boolean isSubModule = node.getParent() != null && node.getParent()
@@ -10,7 +10,7 @@
 		if (isSubModule) {
 			Ref head = repository.exactRef(Constants.HEAD);
 			if (head == null) {
-				return;
+				return false;
 			}
 			suffix.append(" ["); //$NON-NLS-1$
 			if (head.isSymbolic()) {
@@ -33,7 +33,7 @@
 			String branch = Activator.getDefault().getRepositoryUtil()
 					.getShortBranch(repository);
 			if (branch == null) {
-				return;
+				return false;
 			}
 			suffix.append(" ["); //$NON-NLS-1$
 			suffix.append(branch);
@@ -55,5 +55,6 @@
 			suffix.append(']');
 		}
 		decoration.addSuffix(suffix.toString());
+		return true;
 	}
 
