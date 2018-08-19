@@ -1,7 +1,8 @@
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID,
+		Button okayButton = createButton(parent, IDialogConstants.OK_ID,
 				IDialogConstants.CLOSE_LABEL,
 				true);
+		okayButton.setFocus();
 	}
 
