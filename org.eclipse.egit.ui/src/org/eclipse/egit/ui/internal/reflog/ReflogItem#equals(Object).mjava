@@ -8,6 +8,7 @@
 		}
 		ReflogItem other = (ReflogItem) obj;
 		return input == other.input
+				&& Objects.equals(commitMessage, other.commitMessage)
 				&& Objects.equals(getNewId(), other.getNewId())
 				&& Objects.equals(getOldId(), other.getOldId())
 				&& Objects.equals(getWho(), other.getWho())
