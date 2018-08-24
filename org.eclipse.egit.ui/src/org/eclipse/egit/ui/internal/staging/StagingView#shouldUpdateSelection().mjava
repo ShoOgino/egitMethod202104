@@ -1,4 +1,4 @@
 	private boolean shouldUpdateSelection() {
-		return !isDisposed() && !isViewHidden && reactOnSelection;
+		return !isDisposed() && partListener.isVisible() && reactOnSelection;
 	}
 

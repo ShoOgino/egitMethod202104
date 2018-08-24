@@ -1,6 +1,10 @@
 	@Override
 	public void dispose() {
-		super.dispose();
+		InstanceScope.INSTANCE
+				.getNode(org.eclipse.egit.core.Activator.getPluginId())
+				.removePreferenceChangeListener(prefListener);
+		CommonUtils.getService(getSite(), IPartService.class)
+				.removePartListener(partListener);
 		ISelectionService service = CommonUtils.getService(getSite(), ISelectionService.class);
 		service.removePostSelectionListener(selectionChangedListener);
 		if (addRefsChangedListener != null) {
@@ -8,6 +12,8 @@
 		}
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(uiPrefsListener);
+		pendingInput = null;
+		super.dispose();
 		if (switchRepositoriesAction != null) {
 			switchRepositoriesAction.dispose();
 			switchRepositoriesAction = null;

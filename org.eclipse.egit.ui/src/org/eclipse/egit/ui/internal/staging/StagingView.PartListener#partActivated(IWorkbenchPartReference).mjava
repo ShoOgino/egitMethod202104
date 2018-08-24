@@ -11,7 +11,7 @@
 			}
 			IWorkbenchPart part = partRef.getPart(false);
 			StructuredSelection sel = getSelectionOfPart(part);
-			if (isViewHidden) {
+			if (!isVisible()) {
 				// remember last selection in the part so that we can
 				// synchronize on it as soon as we will be visible
 				lastSelection = sel;
