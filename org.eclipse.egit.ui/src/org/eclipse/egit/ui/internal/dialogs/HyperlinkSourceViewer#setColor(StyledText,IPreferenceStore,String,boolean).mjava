@@ -18,10 +18,9 @@
 		default:
 			return;
 		}
-		Color oldColor = customColors.remove(key);
+		Color oldColor = customColors.put(key, newColor);
 		if (oldColor != null) {
 			oldColor.dispose();
 		}
-		customColors.put(key, newColor);
 	}
 
