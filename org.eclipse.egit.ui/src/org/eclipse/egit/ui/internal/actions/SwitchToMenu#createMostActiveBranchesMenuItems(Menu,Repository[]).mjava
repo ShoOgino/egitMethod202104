@@ -1,0 +1,56 @@
+	private int createMostActiveBranchesMenuItems(Menu menu, Repository[] repositories)
+	{
+		int itemCount = 0;
+		try {
+			List<Map<String, Ref>> activeBranches = new ArrayList<>();
+
+			for (Repository repository : repositories) {
+				Map<String, Ref> branchRefMapping = getMostActiveBranches(
+						repository, MAX_NUM_MENU_ENTRIES);
+				activeBranches.add(branchRefMapping);
+			}
+
+			Set<String> activeBranchIntersection = getBranchNameIntersection(activeBranches);
+			for (String branchName : activeBranchIntersection) {
+				itemCount++;
+				createMenuItemMultiple(menu, repositories,
+						branchName);
+			}
+
+			if (itemCount >= MAX_NUM_MENU_ENTRIES) {
+				return itemCount;
+			}
+
+			List<Map<String, Ref>> localBranchMapping = new ArrayList<>();
+			for (Repository repository : repositories) {
+				Map<String, Ref> localBranches = repository.getRefDatabase()
+						.getRefs(Constants.R_HEADS);
+				localBranchMapping.add(localBranches);
+			}
+
+			// A separator between recently used branches and local branches is
+			// nice but only if we have both recently used branches and other
+			// local branches
+			Set<String> localBranchNameIntersection = getBranchNameIntersection(
+					localBranchMapping);
+			localBranchNameIntersection.removeAll(activeBranchIntersection);
+			if (itemCount > 0 && !localBranchNameIntersection.isEmpty()) {
+				createSeparator(menu);
+			}
+
+			for (String localBranchName : localBranchNameIntersection) {
+				itemCount++;
+				if (itemCount > MAX_NUM_MENU_ENTRIES) {
+					break;
+				}
+
+				createMenuItemMultiple(menu, repositories, localBranchName);
+			}
+		}
+		catch (IOException e) {
+			Activator.handleError(e.getMessage(), e, true);
+		}
+
+		return itemCount;
+	}
+

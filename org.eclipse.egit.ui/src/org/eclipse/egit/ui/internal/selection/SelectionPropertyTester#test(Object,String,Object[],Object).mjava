@@ -17,6 +17,14 @@
 			return SelectionUtils
 					.getRepository(getStructuredSelection(collection)) != null;
 
+		} else if ("resourcesMultipleRepositories".equals(property)) { //$NON-NLS-1$
+			return resourceSelectionContainsMoreThanOneRepository(collection,
+					args);
+
+		} else if ("selectionMultipleRepositories".equals(property)) { //$NON-NLS-1$
+			return selectionContainsMoreThanOneRepository(collection,
+					args);
+
 		} else if ("resourcesSingleRepository".equals(property)) { //$NON-NLS-1$
 			IStructuredSelection selection = getStructuredSelection(collection);
 
