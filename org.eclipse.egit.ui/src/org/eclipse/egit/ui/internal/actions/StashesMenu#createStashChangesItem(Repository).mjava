@@ -1,6 +1,7 @@
 	private static IContributionItem createStashChangesItem(
 			final Repository repository) {
-		Action action = new Action(UIText.StashesMenu_StashChangesActionText) {
+		Action action = new Action(UIText.StashesMenu_StashChangesActionText,
+				UIIcons.STASH_CREATE) {
 			@Override
 			public void run() {
 				StashCreateUI stashCreateUI = new StashCreateUI(repository);
