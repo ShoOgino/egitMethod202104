@@ -1,6 +1,7 @@
 	private void addBranchItemsForLocal() throws IOException {
-		Collection<Ref> localRefs = myRepository.getRefDatabase()
-				.getRefsByPrefix(Constants.R_HEADS);
+		List<Ref> localRefs = new ArrayList<>(myRepository.getRefDatabase()
+				.getRefsByPrefix(Constants.R_HEADS));
+		Collections.sort(localRefs, CommonUtils.REF_ASCENDING_COMPARATOR);
 		for (Ref ref : localRefs)
 			branchText.add(ref.getName());
 	}

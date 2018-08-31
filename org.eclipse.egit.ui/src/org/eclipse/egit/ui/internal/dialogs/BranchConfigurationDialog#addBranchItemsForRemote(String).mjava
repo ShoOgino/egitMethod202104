@@ -6,8 +6,9 @@
 			return;
 		}
 
-		Collection<Ref> allRefs = myRepository.getRefDatabase()
-				.getRefsByPrefix(Constants.R_REFS);
+		List<Ref> allRefs = new ArrayList<>(myRepository.getRefDatabase()
+				.getRefsByPrefix(Constants.R_REFS));
+		Collections.sort(allRefs, CommonUtils.REF_ASCENDING_COMPARATOR);
 		for (Ref ref : allRefs) {
 			for (RefSpec fetchSpec : fetchSpecs) {
 				// Fetch specs map remote ref names (source) to local ref names
