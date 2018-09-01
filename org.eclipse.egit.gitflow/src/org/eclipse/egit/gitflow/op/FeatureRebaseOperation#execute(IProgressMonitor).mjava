@@ -3,7 +3,7 @@
 		try {
 			if (!repository.isFeature()) {
 				throw new WrongGitFlowStateException(
-						CoreText.FeatureRebaseOperation_notOnAFeatureBranch);
+						CoreText.AbstractFeatureOperation_notOnAFeatureBranch);
 			}
 
 			Repository jgitRepo = repository.getRepository();
