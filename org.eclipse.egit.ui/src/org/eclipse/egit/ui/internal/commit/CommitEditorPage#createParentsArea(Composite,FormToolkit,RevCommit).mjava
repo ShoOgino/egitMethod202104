@@ -28,6 +28,9 @@
 					}
 				}
 			});
+			String sha1 = parentCommit.getName();
+			link.setToolTipText(sha1);
+			createParentContextMenu(link, sha1);
 			addToFocusTracking(link);
 		}
 	}

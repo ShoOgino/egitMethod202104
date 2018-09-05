@@ -1,0 +1,25 @@
+	@Test
+	public void testFeatureStart_localDevelopAhead() throws Exception {
+		GitFlowRepository gfRepo1 = new GitFlowRepository(
+				repository1.getRepository());
+		GitFlowRepository gfRepo2 = new GitFlowRepository(
+				repository2.getRepository());
+
+		fetch(gfRepo2);
+		init(gfRepo2);
+		setDevelopRemote(gfRepo1, gfRepo2);
+
+		new PullOperation(Collections.singleton(repository2.getRepository()),
+				-1).execute(null);
+
+		repository2.commit("develop is 1 commit ahead");
+
+		FeatureStartOperation featureStartOperation = new FeatureStartOperation(
+				gfRepo2, MY_FEATURE);
+		featureStartOperation.execute(null);
+
+		assertEquals("feature branch successfully created and checked out",
+				gfRepo2.getConfig().getFullFeatureBranchName(MY_FEATURE),
+				repository2.getRepository().getFullBranch());
+	}
+

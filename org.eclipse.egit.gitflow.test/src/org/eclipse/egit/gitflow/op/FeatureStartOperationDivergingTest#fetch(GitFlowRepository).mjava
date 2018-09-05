@@ -1,0 +1,9 @@
+	private void fetch(GitFlowRepository gfRepo2)
+			throws InvocationTargetException {
+		RemoteConfig config = gfRepo2.getConfig().getDefaultRemoteConfig();
+		FetchOperation fetchOperation = new FetchOperation(
+				gfRepo2.getRepository(), config,
+				-1, false);
+		fetchOperation.run(null);
+	}
+

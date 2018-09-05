@@ -1,0 +1,23 @@
+	@Test
+	public void testFeatureStart_localDevelopBehind() throws Exception {
+		GitFlowRepository gfRepo1 = new GitFlowRepository(
+				repository1.getRepository());
+		GitFlowRepository gfRepo2 = new GitFlowRepository(
+				repository2.getRepository());
+
+		fetch(gfRepo2);
+		init(gfRepo2);
+		setDevelopRemote(gfRepo1, gfRepo2);
+
+		repository1.commit("origin/develop is 1 commit ahead");
+
+		FeatureStartOperation featureStartOperation = new FeatureStartOperation(
+				gfRepo2, MY_FEATURE);
+
+		expectedException.expect(CoreException.class);
+		expectedException.expectMessage(
+				"Branches 'develop' and 'origin/develop' have diverged."
+						+ "\nAnd branch 'develop' may be fast-forwarded.");
+		featureStartOperation.execute(null);
+	}
+

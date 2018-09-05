@@ -5,7 +5,7 @@
 		try {
 			if (releaseExists()) {
 				throw new CoreException(
-						error(format(
+						error(NLS.bind(
 								CoreText.ReleaseStartOperation_releaseNameAlreadyExists,
 								versionName)));
 			}

@@ -1,6 +1,8 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		GitFlowConfig config = repository.getConfig();
+		handleDivergingDevelop(config);
+
 		String branchName = config.getFeatureBranchName(featureName);
 		RevCommit head = repository.findHead(config.getDevelop());
 		if (head == null) {
