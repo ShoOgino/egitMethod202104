@@ -142,12 +142,6 @@
 				enableOk();
 			}
 		});
-		fTreeViewer.addDoubleClickListener(event -> {
-			Object element = ((IStructuredSelection) event.getSelection())
-					.getFirstElement();
-			fTreeViewer.setChecked(element, !fTreeViewer.getChecked(element));
-			enableOk();
-		});
 
 		// Set a reasonable minimum height here; otherwise the dialog comes up
 		// with a tree that has only a few rows visible.
