@@ -1,0 +1,6 @@
+	private String[] getProjectPaths(String branch) {
+		List<String> value = ProjectTrackerPreferenceHelper
+				.restoreFromPreferences(repository, branch);
+		return value.toArray(new String[0]);
+	}
+

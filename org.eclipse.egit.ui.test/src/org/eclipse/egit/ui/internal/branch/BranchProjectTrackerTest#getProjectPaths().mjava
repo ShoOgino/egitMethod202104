@@ -1,0 +1,9 @@
+	private String[] getProjectPaths() {
+		try {
+			String branch = repository.getBranch();
+			return getProjectPaths(branch);
+		} catch (IOException e) {
+			return new String[0];
+		}
+	}
+

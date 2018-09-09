@@ -1,0 +1,9 @@
+	private static void savePreference(ProjectTrackerPreferenceSnapshot snapshot) {
+
+		Repository repo = snapshot.getRepository();
+		String branch = snapshot.getBranch();
+		List<String> projects = snapshot.getAssociatedProjects();
+		ProjectTrackerPreferenceHelper.saveToPreferences(repo, branch,
+				projects);
+	}
+

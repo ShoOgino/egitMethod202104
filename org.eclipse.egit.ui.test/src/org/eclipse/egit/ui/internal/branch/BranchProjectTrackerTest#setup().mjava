@@ -6,10 +6,9 @@
 		repository = Activator.getDefault().getRepositoryCache()
 				.lookupRepository(repoFile);
 		assertNotNull(repository);
-		BranchProjectTracker tracker = new BranchProjectTracker(repository);
 		org.eclipse.egit.ui.Activator.getDefault().getPreferenceStore()
-				.setValue(tracker.getPreference(Constants.MASTER), "");
+				.setValue(getPreferenceKey(Constants.MASTER), "");
 		org.eclipse.egit.ui.Activator.getDefault().getPreferenceStore()
-				.setValue(tracker.getPreference(BRANCH), "");
+				.setValue(getPreferenceKey(BRANCH), "");
 	}
 

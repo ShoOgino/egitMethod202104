@@ -1,7 +1,6 @@
 	@Test
 	public void twoProjectsWithOnlyOneOnBranch() throws Exception {
-		BranchProjectTracker tracker = new BranchProjectTracker(repository);
-		String[] paths = tracker.getProjectPaths();
+		String[] paths = getProjectPaths();
 		assertNotNull(paths);
 		assertEquals(0, paths.length);
 		assertNotNull(Git.wrap(repository).branchCreate().setName(BRANCH)
@@ -9,7 +8,7 @@
 		BranchOperationUI.checkout(repository, BRANCH).start();
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 
-		paths = tracker.getProjectPaths(Constants.MASTER);
+		paths = getProjectPaths(Constants.MASTER);
 		assertNotNull(paths);
 		assertEquals(2, paths.length);
 
@@ -27,7 +26,7 @@
 		BranchOperationUI.checkout(repository, Constants.MASTER).start();
 		TestUtil.joinJobs(JobFamilies.CHECKOUT);
 
-		paths = tracker.getProjectPaths(BRANCH);
+		paths = getProjectPaths(BRANCH);
 		assertNotNull(paths);
 		assertEquals(1, paths.length);
 

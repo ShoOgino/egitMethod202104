@@ -1,0 +1,13 @@
+	/**
+	 * @param repo
+	 * @param branch
+	 * @param projects
+	 */
+	static void saveToPreferences(Repository repo, String branch,
+			List<String> projects)
+	{
+		XMLMemento preferencesMemento = createXMLMemento(projects);
+		String preferenceKey = getPreferenceKey(repo, branch);
+		saveToPreferenceStore(preferenceKey, preferencesMemento);
+	}
+

@@ -7,7 +7,7 @@
 		} else {
 			final BranchProjectTracker tracker = new BranchProjectTracker(
 					repository);
-			IMemento snapshot = tracker.snapshot();
+			ProjectTrackerMemento snapshot = tracker.snapshot();
 			bop.execute(progress.newChild(7));
 			tracker.save(snapshot);
 			IWorkspaceRunnable action = new IWorkspaceRunnable() {

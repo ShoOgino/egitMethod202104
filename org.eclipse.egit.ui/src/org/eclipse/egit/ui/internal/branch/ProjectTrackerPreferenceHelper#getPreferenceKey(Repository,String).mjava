@@ -1,0 +1,14 @@
+	/**
+	 * Get preference key for branch. This will be unique to the repository and
+	 * branch.
+	 *
+	 * @param repo
+	 * @param branch
+	 * @return key
+	 */
+	static String getPreferenceKey(Repository repo,
+			final String branch) {
+		return PREFIX + '_' + repo.getDirectory().getAbsolutePath() + '_'
+				+ branch;
+	}
+
