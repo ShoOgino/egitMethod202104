@@ -1,8 +1,8 @@
 	@Override
 	protected SyncInfo getSyncInfo(IResource local, IResourceVariant base,
 			IResourceVariant remote) throws TeamException {
-
-		Repository repo = gsds.getData(local.getProject()).getRepository();
-		return getSyncInfo(local, base, remote, repo);
+		GitSynchronizeData data = gsds.getData(local.getProject());
+		Repository repo = data != null ? data.getRepository() : null;
+		return repo != null ? getSyncInfo(local, base, remote, repo) : null;
 	}
 
