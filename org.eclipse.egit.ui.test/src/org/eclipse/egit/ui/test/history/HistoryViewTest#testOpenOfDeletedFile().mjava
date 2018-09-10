@@ -8,8 +8,7 @@
 		assertEquals(commitCount + 1, commitsTable.rowCount());
 		commitsTable.select(0);
 
-		SWTBot viewBot = getHistoryViewBot();
-		SWTBotTable fileDiffTable = viewBot.table(1);
+		SWTBotTable fileDiffTable = getFileDiffTable();
 		assertEquals(1, fileDiffTable.rowCount());
 
 		fileDiffTable.select(0);
