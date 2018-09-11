@@ -1,0 +1,8 @@
+	@Override
+	public void run(IAction action) {
+		if (fWindow == null || fWindow.getActivePage() == null) {
+			return;
+		}
+		NewSearchUI.openSearchDialog(fWindow, CommitSearchPage.ID);
+	}
+
