@@ -13,7 +13,13 @@
 			return new IResource[0];
 		}
 		GitSynchronizeData gsd = gsds.getData(res.getProject());
+		if (gsd == null) {
+			return new IResource[0];
+		}
 		Repository repo = gsd.getRepository();
+		if (repo == null) {
+			return new IResource[0];
+		}
 		GitSyncObjectCache repoCache = cache.get(repo);
 
 		Collection<IResource> allMembers = new ArrayList<>();
