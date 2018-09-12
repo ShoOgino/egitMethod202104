@@ -28,6 +28,6 @@
 			result = ResourcesPlugin.getWorkspace().getRoot().getRawLocation()
 					.toOSString();
 		}
-		return result;
+		return FileUtils.canonicalize(new File(result)).toString();
 	}
 
