@@ -1,17 +1,19 @@
 	/**
 	 * Restore projects associated with the given branch to the workspace
 	 *
+	 * @param repo
 	 * @param branch
 	 * @param monitor
 	 */
-	public void restore(final String branch, final IProgressMonitor monitor) {
+	public void restore(Repository repo, final String branch,
+			final IProgressMonitor monitor) {
 		List<String> paths = ProjectTrackerPreferenceHelper
-				.restoreFromPreferences(repository, branch);
+				.restoreFromPreferences(repo, branch);
 		if (paths.size() == 0)
 			return;
 
 		Set<ProjectRecord> records = new LinkedHashSet<>();
-		File parent = repository.getWorkTree();
+		File parent = repo.getWorkTree();
 		for (String path : paths) {
 			File root;
 			if (!REPO_ROOT.equals(path)) {

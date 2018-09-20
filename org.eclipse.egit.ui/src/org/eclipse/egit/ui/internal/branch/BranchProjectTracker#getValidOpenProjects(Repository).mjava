@@ -1,0 +1,8 @@
+	private IProject[] getValidOpenProjects(Repository repo) {
+		try {
+			return ProjectUtil.getValidOpenProjects(repo);
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+

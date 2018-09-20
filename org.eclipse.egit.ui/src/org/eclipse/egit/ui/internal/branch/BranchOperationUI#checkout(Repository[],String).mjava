@@ -1,0 +1,13 @@
+	/**
+	 * Create an operation for checking out a branch on multiple repositories
+	 *
+	 * @param repositories
+	 * @param target
+	 *            a valid {@link Ref} name or commit id
+	 * @return the {@link BranchOperationUI}
+	 */
+	public static BranchOperationUI checkout(Repository[] repositories,
+			String target) {
+		return new BranchOperationUI(repositories, target, true);
+	}
+

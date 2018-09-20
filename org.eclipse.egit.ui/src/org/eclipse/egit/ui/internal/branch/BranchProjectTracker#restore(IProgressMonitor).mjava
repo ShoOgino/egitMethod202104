@@ -5,9 +5,12 @@
 	 * @param monitor
 	 */
 	public void restore(final IProgressMonitor monitor) {
-		String branch = getBranch();
-		if (branch != null) {
-			restore(branch, monitor);
+
+		for (Repository repo : repositories) {
+			String branch = getBranch(repo);
+			if (branch != null) {
+				restore(repo, branch, monitor);
+			}
 		}
 	}
 

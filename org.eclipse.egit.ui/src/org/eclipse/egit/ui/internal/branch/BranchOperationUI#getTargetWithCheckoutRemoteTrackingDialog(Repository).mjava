@@ -1,0 +1,9 @@
+	private String getTargetWithCheckoutRemoteTrackingDialog(Repository repo) {
+		final String[] dialogResult = new String[1];
+		PlatformUI.getWorkbench().getDisplay().syncExec(
+				() -> dialogResult[0] = getTargetWithCheckoutRemoteTrackingDialogInUI(
+						repo));
+
+		return dialogResult[0];
+	}
+

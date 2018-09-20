@@ -1,0 +1,13 @@
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			ColumnLabelProvider labelProvider = (ColumnLabelProvider) tv
+					.getLabelProvider(columnIndex);
+			String label1 = labelProvider.getText(e1);
+			String label2 = labelProvider.getText(e2);
+			if (direction == ASCENDING) {
+				return label1.compareTo(label2);
+			} else {
+				return label2.compareTo(label1);
+			}
+		}
+

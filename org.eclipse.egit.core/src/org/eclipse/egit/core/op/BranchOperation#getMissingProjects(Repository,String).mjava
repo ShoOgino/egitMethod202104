@@ -2,13 +2,15 @@
 	 * Compute the current projects that will be missing after the given branch
 	 * is checked out
 	 *
+	 * @param repository
 	 * @param branch
-	 * @param currentProjects
 	 * @return non-null but possibly empty array of missing projects
+	 * @throws CoreException
 	 */
-	private IProject[] getMissingProjects(String branch,
-			IProject[] currentProjects) {
-		if (delete || currentProjects.length == 0)
+	private IProject[] getMissingProjects(Repository repository,
+			String branch) throws CoreException {
+		IProject[] openProjects = ProjectUtil.getValidOpenProjects(repository);
+		if (delete || openProjects.length == 0)
 			return new IProject[0];
 
 		ObjectId targetTreeId;
@@ -23,7 +25,7 @@
 			return new IProject[0];
 
 		Map<File, IProject> locations = new HashMap<>();
-		for (IProject project : currentProjects) {
+		for (IProject project : openProjects) {
 			IPath location = project.getLocation();
 			if (location == null)
 				continue;

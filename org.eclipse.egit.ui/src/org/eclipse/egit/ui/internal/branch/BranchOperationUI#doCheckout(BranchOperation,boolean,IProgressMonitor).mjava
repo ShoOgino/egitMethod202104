@@ -1,12 +1,11 @@
 	private void doCheckout(BranchOperation bop, boolean restore,
-			IProgressMonitor monitor)
-			throws CoreException {
+			IProgressMonitor monitor) throws CoreException {
 		SubMonitor progress = SubMonitor.convert(monitor, restore ? 10 : 1);
 		if (!restore) {
 			bop.execute(progress.newChild(1));
 		} else {
 			final BranchProjectTracker tracker = new BranchProjectTracker(
-					repository);
+					repositories);
 			ProjectTrackerMemento snapshot = tracker.snapshot();
 			bop.execute(progress.newChild(7));
 			tracker.save(snapshot);

@@ -3,16 +3,9 @@
 		final MenuItem item = new MenuItem(menu, SWT.PUSH);
 		item.setText(shortName);
 
-		boolean allRepositoriesCheckedOut = true;
-		Map<Repository, String> repoToFullNameMap = new HashMap<>();
-		for (Repository repository : repositories) {
-			Map<String, Ref> refs = repository.getRefDatabase()
-					.getRefs(Constants.R_HEADS);
-			String fullName = refs.get(shortName).getName();
-			repoToFullNameMap.put(repository, fullName);
-			allRepositoriesCheckedOut &= fullName
-					.equals(repository.getFullBranch());
-		}
+		boolean allRepositoriesCheckedOut = Stream.of(repositories) //
+				.allMatch(r -> shortName.equals(getBranch(r)));
+
 		if (allRepositoriesCheckedOut)
 			item.setImage(checkedOutImage);
 		else
@@ -23,11 +16,7 @@
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				for (Entry<Repository, String> entry : repoToFullNameMap
-						.entrySet()) {
-					BranchOperationUI.checkout(entry.getKey(), entry.getValue())
-							.start();
-				}
+				BranchOperationUI.checkout(repositories, shortName).start();
 			}
 		});
 	}

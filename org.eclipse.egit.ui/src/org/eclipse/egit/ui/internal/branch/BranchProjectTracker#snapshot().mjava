@@ -11,10 +11,10 @@
 
 		ProjectTrackerMemento memento = new ProjectTrackerMemento();
 
-		ProjectTrackerPreferenceSnapshot snapshot = takeSnapshot();
-		if (snapshot != null) {
-			memento.addSnapshot(snapshot);
-		}
+		Stream.of(repositories) //
+				.map(this::takeSnapshot) //
+				.filter(Objects::nonNull) //
+				.forEach(x -> memento.addSnapshot(x));
 
 		return memento;
 	}

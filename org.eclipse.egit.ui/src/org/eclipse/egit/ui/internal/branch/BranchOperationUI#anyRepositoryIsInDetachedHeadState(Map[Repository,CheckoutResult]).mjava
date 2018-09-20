@@ -1,0 +1,6 @@
+	private boolean anyRepositoryIsInDetachedHeadState(
+			final @NonNull Map<Repository, CheckoutResult> results) {
+		return results.keySet().stream()
+				.anyMatch(RepositoryUtil::isDetachedHead);
+	}
+

@@ -1,14 +1,14 @@
 	@NonNull
-	private List<String> getAssociatedProjectsPaths() {
+	private List<String> getAssociatedProjectsPaths(Repository repo) {
 
-		IProject[] projects = getValidOpenProjects();
+		IProject[] projects = getValidOpenProjects(repo);
 		if (projects == null) {
 			return Collections.emptyList();
 		}
 
 		List<String> projectPaths = new ArrayList<>();
 
-		final String workDir = repository.getWorkTree().getAbsolutePath();
+		final String workDir = repo.getWorkTree().getAbsolutePath();
 		for (IProject project : projects) {
 			IPath path = project.getLocation();
 			if (path == null) {

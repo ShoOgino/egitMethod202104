@@ -1,10 +1,10 @@
-	void retryDelete(List<String> pathList) {
+	void retryDelete(Repository repo, List<String> pathList) {
 		// try to delete, but for a short time only
 		long startTime = System.currentTimeMillis();
 		for (String path : pathList) {
 			if (System.currentTimeMillis() - startTime > 1000)
 				break;
-			File fileToDelete = new File(repository.getWorkTree(), path);
+			File fileToDelete = new File(repo.getWorkTree(), path);
 			if (fileToDelete.exists())
 				try {
 					// Only files should be passed here, thus

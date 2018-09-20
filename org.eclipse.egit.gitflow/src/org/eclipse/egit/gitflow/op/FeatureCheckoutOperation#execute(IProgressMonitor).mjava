@@ -3,9 +3,10 @@
 		String branchName = repository.getConfig().getFeatureBranchName(featureName);
 
 		boolean dontCloseProjects = false;
+		Repository gitRepo = repository.getRepository();
 		BranchOperation branchOperation = new BranchOperation(
-				repository.getRepository(), branchName, dontCloseProjects);
+				gitRepo, branchName, dontCloseProjects);
 		branchOperation.execute(monitor);
-		result = branchOperation.getResult();
+		result = branchOperation.getResult(gitRepo);
 	}
 
