@@ -1,0 +1,16 @@
+	/**
+	 * @param isFetchOnFeatureStart
+	 *            Whether or not to fetch from upstream before feature branch is
+	 *            created.
+	 * @throws IOException
+	 *
+	 * @since 5.2
+	 */
+	public void setFetchOnFeatureStart(boolean isFetchOnFeatureStart)
+			throws IOException {
+		StoredConfig config = repository.getConfig();
+		config.setBoolean(GITFLOW_SECTION, FEATURE_START_SUBSECTION, FEATURE_START_FETCH_KEY,
+				isFetchOnFeatureStart);
+		config.save();
+	}
+

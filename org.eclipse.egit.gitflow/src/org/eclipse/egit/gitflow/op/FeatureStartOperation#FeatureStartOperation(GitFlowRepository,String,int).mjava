@@ -1,0 +1,15 @@
+	/**
+	 * @param repository
+	 * @param featureName
+	 * @param timeout
+	 *            number of seconds to wait (with no data transfer occurring)
+	 *            before aborting an IO read or write operation with this
+	 *            remote.
+	 * @since 5.2
+	 */
+	public FeatureStartOperation(GitFlowRepository repository,
+			String featureName, int timeout) {
+		super(repository, featureName);
+		this.timeoutInSeconds = timeout;
+	}
+

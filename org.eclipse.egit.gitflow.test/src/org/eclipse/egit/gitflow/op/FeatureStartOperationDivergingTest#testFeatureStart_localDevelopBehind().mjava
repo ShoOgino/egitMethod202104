@@ -12,7 +12,7 @@
 		repository1.commit("origin/develop is 1 commit ahead");
 
 		FeatureStartOperation featureStartOperation = new FeatureStartOperation(
-				gfRepo2, MY_FEATURE);
+				gfRepo2, MY_FEATURE, -1);
 
 		expectedException.expect(CoreException.class);
 		expectedException.expectMessage(

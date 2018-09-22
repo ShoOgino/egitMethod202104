@@ -1,6 +1,19 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
+		SubMonitor progress = SubMonitor.convert(monitor, 2);
 		GitFlowConfig config = repository.getConfig();
+		if (config.isFetchOnFeatureStart()) {
+			try {
+				fetch(progress.newChild(1), timeoutInSeconds);
+			} catch (InvocationTargetException e) {
+				throw new CoreException(Activator.error(e));
+			} catch (URISyntaxException e) {
+				// TODO: remove as soon as useless throws clause is removed from
+				// fetch(..)
+				throw new CoreException(Activator.error(e));
+			}
+		}
+		progress.setWorkRemaining(1);
 		handleDivergingDevelop(config);
 
 		String branchName = config.getFeatureBranchName(featureName);
@@ -8,6 +21,6 @@
 		if (head == null) {
 			throw new IllegalStateException(NLS.bind(CoreText.StartOperation_unableToFindCommitFor, config.getDevelop()));
 		}
-		start(monitor, branchName, head);
+		start(progress.newChild(1), branchName, head);
 	}
 

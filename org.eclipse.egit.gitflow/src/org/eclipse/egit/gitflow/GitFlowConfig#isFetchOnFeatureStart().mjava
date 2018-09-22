@@ -1,0 +1,12 @@
+	/**
+	 * @return Whether or not the to fetch from upstream before feature branch
+	 *         is created.
+	 *
+	 * @since 5.2
+	 */
+	public boolean isFetchOnFeatureStart() {
+		StoredConfig config = repository.getConfig();
+		return config.getBoolean(GITFLOW_SECTION, FEATURE_START_SUBSECTION,
+				FEATURE_START_FETCH_KEY, false);
+	}
+

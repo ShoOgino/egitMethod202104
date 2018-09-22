@@ -14,8 +14,10 @@
 		}
 
 		final String featureName = inputDialog.getValue();
+		int timeout = Activator.getDefault().getPreferenceStore()
+				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 		FeatureStartOperation featureStartOperation = new FeatureStartOperation(
-				gfRepo, featureName);
+				gfRepo, featureName, timeout);
 		JobUtil.scheduleUserWorkspaceJob(featureStartOperation,
 				UIText.FeatureStartHandler_startingNewFeature,
 				JobFamilies.GITFLOW_FAMILY);
