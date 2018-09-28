@@ -5,10 +5,6 @@
 	 *            whether bare repositories shall be shown
 	 */
 	public GitSelectRepositoryPage(boolean allowBare) {
-		super(GitSelectRepositoryPage.class.getName());
-		setTitle(UIText.GitSelectRepositoryPage_PageTitle);
-		setDescription(UIText.GitSelectRepositoryPage_PageMessage);
-		util = Activator.getDefault().getRepositoryUtil();
-		this.allowBare = allowBare;
+		this(allowBare, true);
 	}
 

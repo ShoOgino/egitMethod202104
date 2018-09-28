@@ -3,7 +3,13 @@
 		try {
 			List<?> currentInput = (List<?>) tv.getInput();
 			if (currentInput == null || currentInput.isEmpty()) {
-				setErrorMessage(UIText.GitSelectRepositoryPage_NoRepoFoundMessage);
+				if (!allowAdd) {
+					setErrorMessage(
+							UIText.GitSelectRepositoryPage_NoRepository);
+				} else {
+					setErrorMessage(
+							UIText.GitSelectRepositoryPage_NoRepoFoundMessage);
+				}
 				return;
 			}
 

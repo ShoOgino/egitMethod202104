@@ -1,0 +1,19 @@
+	@Override
+	protected List<String> getInitialRepositories() {
+		List<String> configuredRepos = util.getConfiguredRepositories();
+		return configuredRepos.stream().map(name -> {
+			File gitDir = new File(name);
+			if (gitDir.exists()) {
+				try {
+					Repository repo = cache.lookupRepository(gitDir);
+					if (repo != null && ResourcePropertyTester.hasGerritConfiguration(repo)) {
+						return name;
+					}
+				} catch (IOException e) {
+					Activator.logWarning(e.getLocalizedMessage(), e);
+				}
+			}
+			return null;
+		}).filter(Objects::nonNull).collect(Collectors.toList());
+	}
+

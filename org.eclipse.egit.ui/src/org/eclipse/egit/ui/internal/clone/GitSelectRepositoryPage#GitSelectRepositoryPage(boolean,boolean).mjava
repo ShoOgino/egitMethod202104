@@ -1,0 +1,17 @@
+	/**
+	 * Creates a new {@link GitSelectRepositoryPage}
+	 *
+	 * @param allowBare
+	 *            - whether bare repositories shall be shown
+	 * @param allowAdd
+	 *            - whether the dialog should show an add button
+	 */
+	public GitSelectRepositoryPage(boolean allowBare, boolean allowAdd) {
+		super(GitSelectRepositoryPage.class.getName());
+		setTitle(UIText.GitSelectRepositoryPage_PageTitle);
+		setDescription(UIText.GitSelectRepositoryPage_PageMessage);
+		util = Activator.getDefault().getRepositoryUtil();
+		this.allowBare = allowBare;
+		this.allowAdd = allowAdd;
+	}
+
