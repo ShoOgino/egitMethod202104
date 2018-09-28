@@ -4,15 +4,18 @@
 		rawTable.addListener(SWT.EraseItem, new Listener() {
 			@Override
 			public void handleEvent(final Event event) {
-				if (0 <= event.index && event.index <= 5)
+				if (event.index == 1) {
 					event.detail &= ~SWT.FOREGROUND;
+				}
 			}
 		});
 
 		rawTable.addListener(SWT.PaintItem, new Listener() {
 			@Override
 			public void handleEvent(final Event event) {
-				doPaint(event);
+				if (event.index == 1) {
+					doPaint(event);
+				}
 			}
 		});
 	}
