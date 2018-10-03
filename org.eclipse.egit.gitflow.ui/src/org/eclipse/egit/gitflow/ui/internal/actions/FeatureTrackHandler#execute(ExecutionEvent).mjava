@@ -4,7 +4,7 @@
 		if (gfRepo == null) {
 			return error(UIText.Handlers_noGitflowRepositoryFound);
 		}
-		final List<Ref> refs = new ArrayList<Ref>();
+		final List<Ref> refs = new ArrayList<>();
 		Shell activeShell = HandlerUtil.getActiveShell(event);
 
 		int timeout = Activator.getDefault().getPreferenceStore()
