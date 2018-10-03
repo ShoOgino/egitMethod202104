@@ -67,6 +67,14 @@
 				}
 			} else if (o instanceof HistoryPageInput) {
 				input = (HistoryPageInput) o;
+			} else if (o instanceof Path) {
+				Path path = (Path) o;
+				RepositoryMapping mapping = RepositoryMapping.getMapping(path);
+				if (mapping != null) {
+					repo = mapping.getRepository();
+					input = new HistoryPageInput(repo,
+							new File[] { path.toFile() });
+				}
 			} else {
 				IResource resource = AdapterUtils.adaptToAnyResource(o);
 				if (resource != null) {

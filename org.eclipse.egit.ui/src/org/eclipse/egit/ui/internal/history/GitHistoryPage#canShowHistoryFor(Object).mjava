@@ -17,6 +17,10 @@
 		if (object instanceof RepositoryTreeNode)
 			return true;
 
+		if (object instanceof Path) {
+			return true;
+		}
+
 		IResource resource = AdapterUtils.adaptToAnyResource(object);
 		if (resource != null && typeOk(resource))
 			return true;
