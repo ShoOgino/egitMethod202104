@@ -5,17 +5,12 @@
 			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
 				SubMonitor progress = SubMonitor.convert(pm, 4);
-
-
 				for (Repository repository : repositories) {
-
 					CheckoutResult result = checkoutRepository(repository,
 							progress);
-
 					if (result.getStatus() == Status.NONDELETED) {
 						retryDelete(repository, result.getUndeletedList());
 					}
-
 					results.put(repository, result);
 				}
 				refreshAffectedProjects(progress);
@@ -23,25 +18,17 @@
 
 			public CheckoutResult checkoutRepository(Repository repo,
 					SubMonitor progress) throws CoreException {
-
 				closeProjectsMissingAfterCheckout(repo, progress);
-
 				try (Git git = new Git(repo)) {
 					CheckoutCommand co = git.checkout().setProgressMonitor(
 							new EclipseGitProgressTransformer(
 									progress.newChild(1)));
 					co.setName(target);
-
 					try {
 						co.call();
-						// The below exceptions are handled by the
-						// CheckoutCommand's result status which is returned
-					} catch (CheckoutConflictException e) {
-						// ignore
-					} catch (JGitInternalException e) {
-						// ignore
-					} catch (GitAPIException e) {
-						// ignore
+					} catch (JGitInternalException | GitAPIException e) {
+						// Result status, which is returned below, accounts
+						// for these.
 					}
 					return co.getResult();
 				}
@@ -70,20 +57,17 @@
 
 			private void refreshAffectedProjects(SubMonitor progress)
 					throws CoreException {
-
-				IProject[] refreshProjects = results.entrySet().stream() //
-					.map(this::getAffectedProjects) //
-					.flatMap(arr -> Stream.of(arr)) //
-					.distinct()
-					.toArray(IProject[]::new);
+				IProject[] refreshProjects = results.entrySet().stream()
+						.map(this::getAffectedProjects)
+						.flatMap(arr -> Stream.of(arr)).distinct()
+						.toArray(IProject[]::new);
 
 				ProjectUtil.refreshValidProjects(refreshProjects, delete,
 						progress.newChild(1));
 			}
 
 			private IProject[] getAffectedProjects(
-					Entry<Repository, CheckoutResult> entry)
-			{
+					Entry<Repository, CheckoutResult> entry) {
 				CheckoutResult result = entry.getValue();
 
 				if (result.getStatus() != Status.OK

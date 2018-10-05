@@ -4,19 +4,18 @@
 			try {
 				doCheckout(bop, restore, monitor);
 			} catch (CoreException e) {
-
 				/*
 				 * For a checkout operation with multiple repositories we can
 				 * handle any error status by displaying all of them in a table.
 				 * For a single repository, though, we will stick to using a
 				 * simple message in case of an unexpected exception.
 				 */
-				if (!isSingleRepositoryOperation)
+				if (!isSingleRepositoryOperation) {
 					return Status.OK_STATUS;
-
+				}
 				CheckoutResult result = bop.getResult(repositories[0]);
 
-				if (result.getStatus() == CheckoutResult.Status.CONFLICTS || //
+				if (result.getStatus() == CheckoutResult.Status.CONFLICTS ||
 						result.getStatus() == CheckoutResult.Status.NONDELETED) {
 					return Status.OK_STATUS;
 				}

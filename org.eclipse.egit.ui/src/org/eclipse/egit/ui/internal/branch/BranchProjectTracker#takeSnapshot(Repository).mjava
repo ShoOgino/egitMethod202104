@@ -1,14 +1,12 @@
 	private ProjectTrackerPreferenceSnapshot takeSnapshot(Repository repo) {
-
 		String branch = getBranch(repo);
-		if (StringUtils.isEmptyOrNull(branch))
+		if (StringUtils.isEmptyOrNull(branch)) {
 			return null;
-
+		}
 		List<String> projectPaths = getAssociatedProjectsPaths(repo);
 		if (projectPaths.isEmpty()) {
 			return null;
 		}
-
 		return new ProjectTrackerPreferenceSnapshot(repo, branch,
 				projectPaths);
 	}

@@ -1,11 +1,8 @@
 	private void askForTargetIfNecessary() {
-
-		if (target == null || //
-				!showQuestionsBeforeCheckout || //
-				!shouldShowCheckoutRemoteTrackingDialog(target)) {
+		if (target == null || !showQuestionsBeforeCheckout
+				|| !shouldShowCheckoutRemoteTrackingDialog(target)) {
 			return;
 		}
-
 		target = getTargetWithCheckoutRemoteTrackingDialog(repositories[0]);
 	}
 

@@ -1,12 +1,9 @@
 	private static XMLMemento createXMLMemento(List<String> projectPaths) {
-
 		XMLMemento memento = XMLMemento.createWriteRoot(KEY_PROJECTS);
-
 		projectPaths.forEach(path -> {
 			IMemento child = memento.createChild(KEY_PROJECT);
 			child.putTextData(path);
 		});
-
 		return memento;
 	}
 

@@ -1,7 +1,6 @@
 		@Override
 		public boolean belongsTo(Object family) {
-			if (JobFamilies.CHECKOUT.equals(family))
-				return true;
-			return super.belongsTo(family);
+			return JobFamilies.CHECKOUT.equals(family)
+					|| super.belongsTo(family);
 		}
 

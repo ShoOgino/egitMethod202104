@@ -1,5 +1,5 @@
-	private int createMostActiveBranchesMenuItems(Menu menu, Repository[] repositories)
-	{
+	private int createMostActiveBranchesMenuItems(Menu menu,
+			Repository[] repositories) {
 		int itemCount = 0;
 		try {
 			List<Map<String, Ref>> activeBranches = new ArrayList<>();
@@ -10,11 +10,11 @@
 				activeBranches.add(branchRefMapping);
 			}
 
-			Set<String> activeBranchIntersection = getBranchNameIntersection(activeBranches);
+			Set<String> activeBranchIntersection = getBranchNameIntersection(
+					activeBranches);
 			for (String branchName : activeBranchIntersection) {
 				itemCount++;
-				createMenuItemMultiple(menu, repositories,
-						branchName);
+				createMenuItemMultiple(menu, repositories, branchName);
 			}
 
 			if (itemCount >= MAX_NUM_MENU_ENTRIES) {
@@ -46,8 +46,7 @@
 
 				createMenuItemMultiple(menu, repositories, localBranchName);
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			Activator.handleError(e.getMessage(), e, true);
 		}
 

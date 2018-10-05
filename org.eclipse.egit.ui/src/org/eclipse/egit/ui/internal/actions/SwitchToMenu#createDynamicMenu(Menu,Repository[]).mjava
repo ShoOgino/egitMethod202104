@@ -1,7 +1,6 @@
 	private void createDynamicMenu(Menu menu, final Repository[] repositories) {
 
-		if (!isMultipleSelection(repositories))
-		{
+		if (!isMultipleSelection(repositories)) {
 			createNewBranchMenuItem(menu, repositories[0]);
 			createSeparator(menu);
 		}
@@ -14,10 +13,8 @@
 		}
 
 		if (itemCount == 0 && isMultipleSelection(repositories)) {
-			/*
-			 * If the menu would be empty, add a disabled menuItem to inform the
-			 * user that no common branches among the selection were found
-			 */
+			// If the menu would be empty, add a disabled menuItem to inform the
+			// user that no common branches among the selection were found
 			createDisabledMenu(menu, UIText.SwitchToMenu_NoCommonBranchesFound);
 		}
 	}

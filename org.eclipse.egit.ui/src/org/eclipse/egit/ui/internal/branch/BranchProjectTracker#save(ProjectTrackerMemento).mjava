@@ -7,7 +7,6 @@
 	 * @return this tracker
 	 */
 	public BranchProjectTracker save(ProjectTrackerMemento snapshot) {
-
 		snapshot.getSnapshots().stream()
 				.forEach(BranchProjectTracker::savePreference);
 		return this;

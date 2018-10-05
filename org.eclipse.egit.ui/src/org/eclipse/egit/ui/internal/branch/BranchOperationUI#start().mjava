@@ -2,11 +2,9 @@
 	 * Starts the operation asynchronously
 	 */
 	public void start() {
-
 		if (repositories == null || repositories.length == 0) {
 			return;
 		}
-
 		target = confirmTarget(new NullProgressMonitor());
 		if (target == null) {
 			return;

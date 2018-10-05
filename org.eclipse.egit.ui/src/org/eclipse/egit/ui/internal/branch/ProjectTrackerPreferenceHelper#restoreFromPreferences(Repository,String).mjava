@@ -8,14 +8,13 @@
 	 */
 	static List<String> restoreFromPreferences(Repository repo,
 			String branch) {
-
 		String key = getPreferenceKey(repo, branch);
 		String value = Activator.getDefault().getPreferenceStore()
 				.getString(key);
 
-		if (value.length() == 0)
+		if (value.isEmpty()) {
 			return Collections.emptyList();
-
+		}
 		XMLMemento memento;
 		try {
 			memento = XMLMemento.createReadRoot(new StringReader(value));
@@ -24,12 +23,12 @@
 			return Collections.emptyList();
 		}
 		IMemento[] children = memento.getChildren(KEY_PROJECT);
-		if (children.length == 0)
+		if (children.length == 0) {
 			return Collections.emptyList();
-
-		List<String> projectPaths = Stream.of(children) //
-				.map(child -> child.getTextData()) //
-				.filter(x -> !StringUtils.isEmptyOrNull(x)) //
+		}
+		List<String> projectPaths = Stream.of(children)
+				.map(child -> child.getTextData())
+				.filter(x -> !StringUtils.isEmptyOrNull(x))
 				.collect(Collectors.toList());
 		return projectPaths;
 	}

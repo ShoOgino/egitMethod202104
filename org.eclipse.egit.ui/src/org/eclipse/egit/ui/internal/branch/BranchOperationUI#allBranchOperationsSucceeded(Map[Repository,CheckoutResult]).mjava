@@ -1,6 +1,5 @@
 	private boolean allBranchOperationsSucceeded(
-			final @NonNull Map<Repository, CheckoutResult> results)
-	{
+			@NonNull Map<Repository, CheckoutResult> results) {
 		return results.values().stream()
 				.allMatch(r -> r.getStatus() == CheckoutResult.Status.OK);
 	}

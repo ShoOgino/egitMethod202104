@@ -1,11 +1,11 @@
-	private void handleSingleRepositoryCheckoutOperationResult(Repository repository,
-			CheckoutResult result) {
+	private void handleSingleRepositoryCheckoutOperationResult(
+			Repository repository, CheckoutResult result) {
 
 		if (result.getStatus() == CheckoutResult.Status.CONFLICTS) {
 			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 				Shell shell = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getShell();
-					CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
+				CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
 						shell, UIText.BranchResultDialog_CheckoutConflictsTitle,
 						NLS.bind(
 								UIText.BranchResultDialog_CheckoutConflictsMessage,
@@ -15,7 +15,7 @@
 				if (cleanupUncomittedChangesDialog.shouldContinue()) {
 					BranchOperationUI.checkout(repository, target, false)
 							.start();
-					}
+				}
 			});
 		} else if (result.getStatus() == CheckoutResult.Status.NONDELETED) {
 			// double-check if the files are still there
@@ -27,17 +27,16 @@
 					break;
 				}
 
-			if (!show)
+			if (!show) {
 				return;
-
+			}
 			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-					Shell shell = PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getShell();
-					new NonDeletedFilesDialog(shell, repository,
-							result.getUndeletedList()).open();
+				Shell shell = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell();
+				new NonDeletedFilesDialog(shell, repository,
+						result.getUndeletedList()).open();
 			});
 		} else {
-
 			String repoName = Activator.getDefault().getRepositoryUtil()
 					.getRepositoryName(repository);
 			String message = NLS.bind(
