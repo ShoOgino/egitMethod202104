@@ -1,0 +1,73 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		tv = new TableViewer(main, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
+		tv.setContentProvider(ArrayContentProvider.getInstance());
+		TableColumnLayout layout = new TableColumnLayout();
+		main.setLayout(layout);
+
+
+		Table table = tv.getTable();
+		TableViewerColumn tc = new TableViewerColumn(tv, SWT.NONE);
+		TableColumn col = tc.getColumn();
+		tc.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				Entry<Repository, CheckoutResult> item = (Entry<Repository, CheckoutResult>) element;
+				return utils.getRepositoryName(item.getKey());
+			}
+		});
+		col.setText(
+				UIText.MultiBranchOperationResultDialog_RepositoryColumnHeader);
+		layout.setColumnData(col, new ColumnWeightData(200, 200));
+		createComparator(col, 0);
+
+		// update status
+		tc = new TableViewerColumn(tv, SWT.NONE);
+		col = tc.getColumn();
+		tc.setLabelProvider(new ColumnLabelProvider() {
+
+			@Override
+			public Image getImage(Object element) {
+
+				@SuppressWarnings("unchecked")
+				Entry<Repository, CheckoutResult> item = (Entry<Repository, CheckoutResult>) element;
+
+				if (item.getValue().getStatus() == Status.OK) {
+					return null;
+				}
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImage(ISharedImages.IMG_ELCL_STOP);
+			}
+
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				Entry<Repository, CheckoutResult> item = (Entry<Repository, CheckoutResult>) element;
+
+				CheckoutResult.Status status = item.getValue().getStatus();
+				return getMessageForStatus(status);
+			}
+		});
+		col.setText(
+				UIText.MultiBranchOperationResultDialog_CheckoutStatusColumnHeader);
+		layout.setColumnData(col, new ColumnWeightData(200, 450));
+		createComparator(col, 1);
+
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		tv.setInput(results.entrySet());
+
+		int linesToShow = Math.min(Math.max(results.size(), 5), 15);
+		int height = table.getItemHeight() * linesToShow;
+
+		GridDataFactory.fillDefaults().grab(true, true)
+				.minSize(SWT.DEFAULT, height).applyTo(main);
+
+		setTitle(UIText.MultiBranchOperationResultDialog_DialogTitle);
+		setErrorMessage(
+				UIText.MultiBranchOperationResultDialog_DialogErrorMessage);
+		return main;
+	}
+

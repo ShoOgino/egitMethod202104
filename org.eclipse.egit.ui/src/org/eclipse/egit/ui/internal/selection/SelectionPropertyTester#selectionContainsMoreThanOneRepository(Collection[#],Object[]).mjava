@@ -1,0 +1,7 @@
+	private boolean selectionContainsMoreThanOneRepository(
+			Collection<?> collection, Object[] args) {
+		IStructuredSelection selection = getStructuredSelection(collection);
+		Repository[] repos = SelectionUtils.getRepositories(selection);
+		return testMultipleRepositoryProperties(Arrays.asList(repos), args);
+	}
+

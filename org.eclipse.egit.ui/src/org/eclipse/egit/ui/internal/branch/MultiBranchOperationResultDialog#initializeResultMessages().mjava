@@ -1,0 +1,15 @@
+	private void initializeResultMessages() {
+		this.resultMessages = new EnumMap<>(CheckoutResult.Status.class);
+
+		this.resultMessages.put(Status.OK,
+				UIText.MultiBranchOperationResultDialog_CheckoutResultOK);
+		this.resultMessages.put(Status.CONFLICTS,
+				UIText.MultiBranchOperationResultDialog_CheckoutResultConflicts);
+		this.resultMessages.put(Status.NOT_TRIED,
+				UIText.MultiBranchOperationResultDialog_CheckoutResultNotTried);
+		this.resultMessages.put(Status.NONDELETED,
+				UIText.MultiBranchOperationResultDialog_CheckoutResultNonDeleted);
+		this.resultMessages.put(Status.ERROR,
+				UIText.MultiBranchOperationResultDialog_CheckoutResultError);
+	}
+

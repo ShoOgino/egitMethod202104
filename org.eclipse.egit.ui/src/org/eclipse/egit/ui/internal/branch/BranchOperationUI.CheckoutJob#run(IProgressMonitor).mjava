@@ -1,17 +1,28 @@
 		@Override
 		public IStatus run(IProgressMonitor monitor) {
-			bop = new BranchOperation(repository, target, !restore);
+			bop = new BranchOperation(repositories, target, !restore);
 			try {
 				doCheckout(bop, restore, monitor);
 			} catch (CoreException e) {
-				switch (bop.getResult().getStatus()) {
-				case CONFLICTS:
-				case NONDELETED:
-					break;
-				default:
-					return Activator.createErrorStatus(
-							UIText.BranchAction_branchFailed, e);
+
+				/*
+				 * For a checkout operation with multiple repositories we can
+				 * handle any error status by displaying all of them in a table.
+				 * For a single repository, though, we will stick to using a
+				 * simple message in case of an unexpected exception.
+				 */
+				if (!isSingleRepositoryOperation)
+					return Status.OK_STATUS;
+
+				CheckoutResult result = bop.getResult(repositories[0]);
+
+				if (result.getStatus() == CheckoutResult.Status.CONFLICTS || //
+						result.getStatus() == CheckoutResult.Status.NONDELETED) {
+					return Status.OK_STATUS;
 				}
+
+				return Activator
+						.createErrorStatus(UIText.BranchAction_branchFailed, e);
 			} finally {
 				GitLightweightDecorator.refresh();
 				monitor.done();

@@ -1,0 +1,25 @@
+	@Test
+	public void validateMenuEntriesForMultiSelectionWithMultipleRepositories()
+			throws Exception {
+		File gitOne = createProjectAndCommitToRepository(REPO1, PROJ1);
+		File gitTwo = createProjectAndCommitToRepository(REPO2, PROJ2);
+
+		Repository repoOne = lookupRepository(gitOne);
+		Repository repoTwo = lookupRepository(gitTwo);
+		for (int i = 0; i < SwitchToMenu.MAX_NUM_MENU_ENTRIES; i++) {
+			createBranch(repoOne, "refs/heads/change/" + i);
+			createBranch(repoTwo, "refs/heads/change/" + (i + 15));
+		}
+
+		mockMultiProjectSelection(PROJ1, PROJ2);
+
+		MenuItem[] items = fillMenu();
+		assertTextEquals("change/15", items[0]);
+		assertTextEquals("change/16", items[1]);
+		assertTextEquals("change/17", items[2]);
+		assertTextEquals("change/18", items[3]);
+		assertTextEquals("change/19", items[4]);
+		assertTextEquals("master", items[5]);
+		assertTextEquals("stable", items[6]);
+	}
+

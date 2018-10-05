@@ -1,28 +1,26 @@
 	private String confirmTarget(IProgressMonitor monitor) {
-		if (target != null) {
-			if (!repository.getRepositoryState().canCheckout()) {
-				PlatformUI.getWorkbench().getDisplay()
-						.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								MessageDialog.openError(getShell(),
-										UIText.BranchAction_cannotCheckout,
-										NLS.bind(
-												UIText.BranchAction_repositoryState,
-												repository.getRepositoryState()
-														.getDescription()));
-							}
-						});
-				return null;
-			}
 
-			if (LaunchFinder.shouldCancelBecauseOfRunningLaunches(repository,
-					monitor)) {
-				return null;
-			}
-
-			askForTargetIfNecessary();
+		if (target == null) {
+			return null;
 		}
+
+		Optional<Repository> invalidRepo = Stream.of(repositories) //
+				.filter(r -> !r.getRepositoryState().canCheckout()) //
+				.findFirst();
+
+		if (invalidRepo.isPresent()) {
+			PlatformUI.getWorkbench().getDisplay()
+					.asyncExec(() -> showRepositoryInInvalidStateForCheckout(
+							invalidRepo.get()));
+			return null;
+		}
+
+		Collection<Repository> repos = Arrays.asList(repositories);
+		if (LaunchFinder.shouldCancelBecauseOfRunningLaunches(repos, monitor)) {
+			return null;
+		}
+
+		askForTargetIfNecessary();
 		return target;
 	}
 

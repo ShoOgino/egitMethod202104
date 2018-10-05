@@ -1,0 +1,15 @@
+	/**
+	 * Associate projects with branch. The specified memento must the one
+	 * previously returned from a call to {@link #snapshot()}.
+	 *
+	 * @see #snapshot()
+	 * @param snapshot
+	 * @return this tracker
+	 */
+	public BranchProjectTracker save(ProjectTrackerMemento snapshot) {
+
+		snapshot.getSnapshots().stream()
+				.forEach(BranchProjectTracker::savePreference);
+		return this;
+	}
+

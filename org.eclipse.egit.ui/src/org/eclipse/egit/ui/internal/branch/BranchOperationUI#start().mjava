@@ -2,14 +2,16 @@
 	 * Starts the operation asynchronously
 	 */
 	public void start() {
+
+		if (repositories == null || repositories.length == 0) {
+			return;
+		}
+
 		target = confirmTarget(new NullProgressMonitor());
 		if (target == null) {
 			return;
 		}
-		String repoName = Activator.getDefault().getRepositoryUtil()
-				.getRepositoryName(repository);
-		String jobname = NLS.bind(UIText.BranchAction_checkingOut, repoName,
-				target);
+		String jobname = getJobName(repositories, target);
 		boolean restore = Activator.getDefault().getPreferenceStore()
 				.getBoolean(UIPreferences.CHECKOUT_PROJECT_RESTORE);
 		final CheckoutJob job = new CheckoutJob(jobname, restore);

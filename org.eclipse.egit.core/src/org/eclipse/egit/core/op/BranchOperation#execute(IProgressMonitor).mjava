@@ -5,11 +5,28 @@
 			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
 				SubMonitor progress = SubMonitor.convert(pm, 4);
-				preExecute(progress.newChild(1));
 
-				closeProjectsMissingAfterCheckout(progress);
 
-				try (Git git = new Git(repository)) {
+				for (Repository repository : repositories) {
+
+					CheckoutResult result = checkoutRepository(repository,
+							progress);
+
+					if (result.getStatus() == Status.NONDELETED) {
+						retryDelete(repository, result.getUndeletedList());
+					}
+
+					results.put(repository, result);
+				}
+				refreshAffectedProjects(progress);
+			}
+
+			public CheckoutResult checkoutRepository(Repository repo,
+					SubMonitor progress) throws CoreException {
+
+				closeProjectsMissingAfterCheckout(repo, progress);
+
+				try (Git git = new Git(repo)) {
 					CheckoutCommand co = git.checkout().setProgressMonitor(
 							new EclipseGitProgressTransformer(
 									progress.newChild(1)));
@@ -17,30 +34,23 @@
 
 					try {
 						co.call();
+						// The below exceptions are handled by the
+						// CheckoutCommand's result status which is returned
 					} catch (CheckoutConflictException e) {
-						return;
+						// ignore
 					} catch (JGitInternalException e) {
-						throw new CoreException(
-								Activator.error(e.getMessage(), e));
+						// ignore
 					} catch (GitAPIException e) {
-						throw new CoreException(
-								Activator.error(e.getMessage(), e));
-					} finally {
-						result = co.getResult();
+						// ignore
 					}
-					if (result.getStatus() == Status.NONDELETED) {
-						retryDelete(result.getUndeletedList());
-					}
-					refreshAffectedProjects(progress);
-
-					postExecute(progress.newChild(1));
+					return co.getResult();
 				}
 			}
 
-			private void closeProjectsMissingAfterCheckout(SubMonitor progress)
+			private void closeProjectsMissingAfterCheckout(Repository repo,
+					SubMonitor progress)
 					throws CoreException {
-				IProject[] missing = getMissingProjects(target, ProjectUtil
-						.getValidOpenProjects(repository));
+				IProject[] missing = getMissingProjects(repo, target);
 
 				progress.setTaskName(NLS.bind(
 						CoreText.BranchOperation_performingBranch, target));
@@ -60,14 +70,36 @@
 
 			private void refreshAffectedProjects(SubMonitor progress)
 					throws CoreException {
+
+				IProject[] refreshProjects = results.entrySet().stream() //
+					.map(this::getAffectedProjects) //
+					.flatMap(arr -> Stream.of(arr)) //
+					.distinct()
+					.toArray(IProject[]::new);
+
+				ProjectUtil.refreshValidProjects(refreshProjects, delete,
+						progress.newChild(1));
+			}
+
+			private IProject[] getAffectedProjects(
+					Entry<Repository, CheckoutResult> entry)
+			{
+				CheckoutResult result = entry.getValue();
+
+				if (result.getStatus() != Status.OK
+						&& result.getStatus() != Status.NONDELETED) {
+					// the checkout did not succeed
+					return new IProject[0];
+				}
+
+				Repository repo = entry.getKey();
 				List<String> pathsToHandle = new ArrayList<>();
 				pathsToHandle.addAll(result.getModifiedList());
 				pathsToHandle.addAll(result.getRemovedList());
 				pathsToHandle.addAll(result.getConflictList());
 				IProject[] refreshProjects = ProjectUtil
-						.getProjectsContaining(repository, pathsToHandle);
-				ProjectUtil.refreshValidProjects(refreshProjects, delete,
-						progress.newChild(1));
+						.getProjectsContaining(repo, pathsToHandle);
+				return refreshProjects;
 			}
 		};
 		// lock workspace to protect working tree changes

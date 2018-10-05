@@ -1,0 +1,23 @@
+	private void createMenuItemMultiple(Menu menu, final Repository[] repositories, String shortName) throws IOException {
+
+		final MenuItem item = new MenuItem(menu, SWT.PUSH);
+		item.setText(shortName);
+
+		boolean allRepositoriesCheckedOut = Stream.of(repositories) //
+				.allMatch(r -> shortName.equals(getBranch(r)));
+
+		if (allRepositoriesCheckedOut)
+			item.setImage(checkedOutImage);
+		else
+			item.setImage(branchImage);
+		item.setEnabled(!allRepositoriesCheckedOut);
+
+		item.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				BranchOperationUI.checkout(repositories, shortName).start();
+			}
+		});
+	}
+
