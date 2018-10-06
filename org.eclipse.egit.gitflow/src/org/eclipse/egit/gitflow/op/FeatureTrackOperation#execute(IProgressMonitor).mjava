@@ -38,8 +38,6 @@
 						CoreText.FeatureTrackOperation_unableToStoreGitConfig,
 						e));
 			}
-		} catch (URISyntaxException e) {
-			throw new CoreException(error(e.getMessage(), e));
 		} catch (InvocationTargetException e) {
 			Throwable targetException = e.getTargetException();
 			throw new CoreException(error(targetException.getMessage(),

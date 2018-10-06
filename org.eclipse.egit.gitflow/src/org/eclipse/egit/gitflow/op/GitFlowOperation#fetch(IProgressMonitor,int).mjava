@@ -5,13 +5,12 @@
 	 * @param timeout
 	 *            timeout in seconds
 	 * @return result of fetching from remote
-	 * @throws URISyntaxException
 	 * @throws InvocationTargetException
 	 *
 	 * @since 4.2
 	 */
 	protected FetchResult fetch(IProgressMonitor monitor, int timeout)
-			throws URISyntaxException, InvocationTargetException {
+			throws InvocationTargetException {
 		RemoteConfig config = repository.getConfig().getDefaultRemoteConfig();
 		FetchOperation fetchOperation = new FetchOperation(
 				repository.getRepository(), config, timeout, false);
