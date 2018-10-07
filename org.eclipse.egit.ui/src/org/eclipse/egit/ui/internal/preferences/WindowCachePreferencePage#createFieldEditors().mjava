@@ -24,8 +24,12 @@
 				UIText.WindowCachePreferencePage_streamFileThreshold,
 				getFieldEditorParent(), 10 * MB, 1 * GB));
 
-		addField(new BooleanFieldEditor(GitCorePreferences.core_packedGitMMAP,
-				UIText.WindowCachePreferencePage_packedGitMMAP,
-				getFieldEditorParent()));
+		if (!SystemReader.getInstance().isWindows()) {
+			BooleanFieldEditor mmapEditor = new BooleanFieldEditor(
+					GitCorePreferences.core_packedGitMMAP,
+					UIText.WindowCachePreferencePage_packedGitMMAP,
+					getFieldEditorParent());
+			addField(mmapEditor);
+		}
 	}
 
