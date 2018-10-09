@@ -1,0 +1,11 @@
+	/**
+	 * @param verString
+	 *            the version {@link String} returned by Gerrit (including the
+	 *            leading "gerrit version ").
+	 * @return whether the given {@link String} identifies a Gerrit server
+	 */
+	static boolean isGerritVersion(String verString) {
+		return verString != null
+				&& GERRIT_SSHD_REPLY.matcher(verString).matches();
+	}
+
