@@ -3,7 +3,8 @@
 				.resolve(repository.getFullBranch());
 		if (objectId == null) {
 			Text headLabel = createLabeledReadOnlyText(composite, UIText.GitProjectPropertyPage_LabelId);
-			if (repository.getAllRefs().size() == 0)
+			if (repository.getRefDatabase().getRefsByPrefix(RefDatabase.ALL)
+					.isEmpty())
 				headLabel.setText(UIText.GitProjectPropertyPage_ValueEmptyRepository);
 			else
 				headLabel.setText(UIText.GitProjectPropertyPage_ValueUnbornBranch);

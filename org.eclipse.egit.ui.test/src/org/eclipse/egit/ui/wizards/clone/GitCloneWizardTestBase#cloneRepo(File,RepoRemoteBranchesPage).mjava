@@ -28,7 +28,8 @@
 		assertNotNull(repository.resolve(
 				Constants.R_TAGS + SampleTestRepository.v1_0_name).name());
 		// lots of refs
-		int refs = repository.getAllRefs().size();
+		int refs = repository.getRefDatabase().getRefsByPrefix(RefDatabase.ALL)
+				.size();
 		assertTrue(refs >= 4);
 		// and a known file in the working dir
 		assertTrue(new File(destinationRepo, SampleTestRepository.A_txt_name)

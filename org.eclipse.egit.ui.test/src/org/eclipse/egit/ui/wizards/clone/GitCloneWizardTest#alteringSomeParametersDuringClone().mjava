@@ -36,7 +36,8 @@
 		// A well known tag
 		assertNotNull(repository.resolve(Constants.R_TAGS + SampleTestRepository.v2_0_name).name());
 		// lots of refs
-		assertTrue(repository.getAllRefs().size() >= 4);
+		assertTrue(repository.getRefDatabase().getRefsByPrefix(RefDatabase.ALL)
+				.size() >= 4);
 		bot.button("Cancel").click();
 	}
 
