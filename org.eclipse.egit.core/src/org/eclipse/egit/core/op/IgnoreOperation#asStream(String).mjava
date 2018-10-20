@@ -1,6 +1,5 @@
-	private ByteArrayInputStream asStream(String entry)
-			throws UnsupportedEncodingException {
+	private ByteArrayInputStream asStream(String entry) {
 		return new ByteArrayInputStream(
-				entry.getBytes(Constants.CHARACTER_ENCODING));
+				entry.getBytes(StandardCharsets.UTF_8));
 	}
 

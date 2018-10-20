@@ -15,7 +15,7 @@
 
 			FileOutputStream os = new FileOutputStream(gitIgnore, true);
 			try {
-				os.write(ignoreLine.getBytes(Constants.CHARACTER_ENCODING));
+				os.write(ignoreLine.getBytes(StandardCharsets.UTF_8));
 			} finally {
 				os.close();
 			}
