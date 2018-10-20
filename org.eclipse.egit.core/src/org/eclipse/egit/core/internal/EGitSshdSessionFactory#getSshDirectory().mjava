@@ -1,0 +1,10 @@
+	@Override
+	public File getSshDirectory() {
+		File file = super.getSshDirectory();
+		if (file != null) {
+			// Someone explicitly set an ssh directory: use it
+			return file;
+		}
+		return SshPreferencesMirror.INSTANCE.getSshDirectory();
+	}
+

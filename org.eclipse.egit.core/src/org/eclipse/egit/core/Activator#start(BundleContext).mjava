@@ -2,10 +2,10 @@
 	public void start(final BundleContext context) throws Exception {
 
 		super.start(context);
+		pluginId = context.getBundle().getSymbolicName();
 
 		SystemReader.setInstance(
 				new EclipseSystemReader(SystemReader.getInstance()));
-		pluginId = context.getBundle().getSymbolicName();
 
 		Config.setTypedConfigGetter(new ReportingTypedConfigGetter());
 		// we want to be notified about debug options changes
@@ -14,8 +14,19 @@
 		context.registerService(DebugOptionsListener.class.getName(), this,
 				props);
 
+		SshPreferencesMirror.INSTANCE.start();
+		proxyServiceTracker = new ServiceTracker<>(context,
+				IProxyService.class.getName(), null);
+		proxyServiceTracker.open();
 		setupSSH(context);
-		setupProxy(context);
+		sshClientChangeListener = event -> {
+			if (GitCorePreferences.core_sshClient.equals(event.getKey())) {
+				setupSSH(getBundle().getBundleContext());
+			}
+		};
+		InstanceScope.INSTANCE.getNode(pluginId)
+				.addPreferenceChangeListener(sshClientChangeListener);
+		setupProxy();
 
 		repositoryCache = new RepositoryCache();
 		indexDiffCache = new IndexDiffCache();

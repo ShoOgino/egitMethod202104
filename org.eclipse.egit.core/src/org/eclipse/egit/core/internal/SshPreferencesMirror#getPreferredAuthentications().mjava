@@ -1,0 +1,12 @@
+	/**
+	 * Gets the configured default authentication mechanisms.
+	 *
+	 * @return the default authentication mechanisms as a single comma-separated
+	 *         string
+	 */
+	public String getPreferredAuthentications() {
+		synchronized (this) {
+			return defaultMechanisms;
+		}
+	}
+

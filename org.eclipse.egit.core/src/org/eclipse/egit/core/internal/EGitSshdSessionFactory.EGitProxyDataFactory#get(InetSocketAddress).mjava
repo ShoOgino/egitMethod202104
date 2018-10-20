@@ -1,0 +1,23 @@
+		@Override
+		public ProxyData get(InetSocketAddress remoteAddress) {
+			IProxyService service = Activator.getDefault().getProxyService();
+			if (service == null || !service.isProxiesEnabled()) {
+				return null;
+			}
+			try {
+				IProxyData[] data = service
+						.select(new URI(IProxyData.SOCKS_PROXY_TYPE,
+						"//" + remoteAddress.getHostString(), null)); //$NON-NLS-1$
+				if (data == null || data.length == 0) {
+					data = service.select(new URI(IProxyData.HTTP_PROXY_TYPE,
+							"//" + remoteAddress.getHostString(), null)); //$NON-NLS-1$
+					if (data == null || data.length == 0) {
+						return null;
+					}
+				}
+				return newData(data[0]);
+			} catch (URISyntaxException e) {
+				return null;
+			}
+		}
+

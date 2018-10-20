@@ -116,6 +116,18 @@
 		timeoutEditor.getLabelControl(remoteConnectionsGroup).setToolTipText(
 				UIText.RemoteConnectionPreferencePage_ZeroValueTooltip);
 		addField(timeoutEditor);
+		ComboFieldEditor sshClient = new ComboFieldEditor(
+				GitCorePreferences.core_sshClient,
+				UIText.RemoteConnectionPreferencePage_SshClientLabel,
+				SSH_CLIENT_NAMES_AND_VALUES, remoteConnectionsGroup) {
+
+			@Override
+			public IPreferenceStore getPreferenceStore() {
+				return getSecondaryPreferenceStore();
+			}
+
+		};
+		addField(sshClient);
 		updateMargins(remoteConnectionsGroup);
 
 		Group repoChangeScannerGroup = new Group(main, SWT.SHADOW_ETCHED_IN);

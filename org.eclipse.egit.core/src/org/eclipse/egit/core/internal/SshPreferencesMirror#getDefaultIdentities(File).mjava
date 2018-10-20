@@ -1,0 +1,21 @@
+	/**
+	 * Gets the configured default key files.
+	 *
+	 * @param sshDir
+	 *            the directory that represents ~/.ssh/
+	 * @return a possibly empty list of paths containing the configured default
+	 *         identities (private keys), or {@code null} if the user didn't
+	 *         configure any. An empty list indicates that user did configure
+	 *         something invalid.
+	 */
+	public List<Path> getDefaultIdentities(@NonNull File sshDir) {
+		synchronized (this) {
+			if (defaultIdentities == null) {
+				return null;
+			}
+			return defaultIdentities.stream()
+					.map(s -> new File(sshDir, s).toPath())
+					.filter(Files::exists).collect(Collectors.toList());
+		}
+	}
+

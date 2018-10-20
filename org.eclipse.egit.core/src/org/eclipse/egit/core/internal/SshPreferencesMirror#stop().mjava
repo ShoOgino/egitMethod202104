@@ -1,0 +1,7 @@
+	/** Stops mirroring the ssh preferences. */
+	public void stop() {
+		if (preferences != null) {
+			preferences.removePreferenceChangeListener(listener);
+		}
+	}
+

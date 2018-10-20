@@ -1,0 +1,12 @@
+	/**
+	 * Gets the ssh directory.
+	 *
+	 * @return the configured ssh directory, or {@code null} if the
+	 *         configuration is invalid
+	 */
+	public File getSshDirectory() {
+		synchronized (this) {
+			return sshDirectory;
+		}
+	}
+

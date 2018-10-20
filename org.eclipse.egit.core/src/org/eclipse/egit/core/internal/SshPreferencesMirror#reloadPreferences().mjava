@@ -1,0 +1,8 @@
+	private void reloadPreferences() {
+		synchronized (this) {
+			setSshDirectory();
+			setDefaultIdentities();
+			setPreferredAuthentications();
+		}
+	}
+

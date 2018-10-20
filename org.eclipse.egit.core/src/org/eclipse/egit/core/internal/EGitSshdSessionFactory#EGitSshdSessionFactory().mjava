@@ -1,0 +1,8 @@
+	/**
+	 * Creates a new {@link EGitSshdSessionFactory}. It doesn't use a key
+	 * cache, and a proxy database based on the {@link IProxyService}.
+	 */
+	public EGitSshdSessionFactory() {
+		super(null, new EGitProxyDataFactory());
+	}
+

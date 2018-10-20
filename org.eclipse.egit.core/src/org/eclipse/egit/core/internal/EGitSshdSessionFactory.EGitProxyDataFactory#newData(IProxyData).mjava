@@ -1,0 +1,28 @@
+		private ProxyData newData(IProxyData data) {
+			if (data == null) {
+				return null;
+			}
+			InetSocketAddress proxyAddress = new InetSocketAddress(
+					data.getHost(), data.getPort());
+			char[] password = null;
+			try {
+				password = data.getPassword() == null ? null
+						: data.getPassword().toCharArray();
+				Proxy proxy;
+				switch (data.getType()) {
+				case IProxyData.HTTP_PROXY_TYPE:
+					proxy = new Proxy(Proxy.Type.HTTP, proxyAddress);
+					return new ProxyData(proxy, data.getUserId(), password);
+				case IProxyData.SOCKS_PROXY_TYPE:
+					proxy = new Proxy(Proxy.Type.SOCKS, proxyAddress);
+					return new ProxyData(proxy, data.getUserId(), password);
+				default:
+					return null;
+				}
+			} finally {
+				if (password != null) {
+					Arrays.fill(password, '\000');
+				}
+			}
+		}
+

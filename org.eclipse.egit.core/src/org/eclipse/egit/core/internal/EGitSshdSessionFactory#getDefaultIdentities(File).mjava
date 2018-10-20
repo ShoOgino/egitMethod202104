@@ -1,0 +1,15 @@
+	@Override
+	@NonNull
+	protected List<Path> getDefaultIdentities(@NonNull File sshDir) {
+		List<Path> defaultKeys = SshPreferencesMirror.INSTANCE
+				.getDefaultIdentities(sshDir);
+		if (defaultKeys == null) {
+			// None configured
+			return Collections.emptyList();
+		} else if (defaultKeys.isEmpty()) {
+			// Something configured, but invalid: use default
+			return super.getDefaultIdentities(sshDir);
+		}
+		return defaultKeys;
+	}
+

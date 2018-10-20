@@ -1,0 +1,24 @@
+	private void setDefaultIdentities() {
+		String defaultKeys = get("PRIVATEKEY"); //$NON-NLS-1$
+		if (defaultKeys == null || defaultKeys.isEmpty()) {
+			defaultIdentities = null;
+			return;
+		}
+		defaultIdentities = Arrays.asList(defaultKeys.trim().split("\\s*,\\s*")) //$NON-NLS-1$
+				.stream().map(s -> {
+					if (s.isEmpty()) {
+						return null;
+					}
+					try {
+						Paths.get(s);
+						return s;
+					} catch (InvalidPathException e) {
+						Activator.logWarning(
+								format(CoreText.SshPreferencesMirror_invalidKeyFile,
+										s),
+								null);
+						return null;
+					}
+				}).filter(Objects::nonNull).collect(Collectors.toList());
+	}
+
