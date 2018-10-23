@@ -1,0 +1,21 @@
+	/**
+	 * Tries to finish the wizard dialog as if the "Finish" button had been
+	 * clicked. Does nothing if the "Finish" button is not enabled or the wizard
+	 * cannot finish.
+	 *
+	 * @return whether the dialog was closed
+	 */
+	public boolean finish() {
+		Button finishButton = getButton(IDialogConstants.FINISH_ID);
+		if (finishButton.isEnabled() && getWizard().canFinish()) {
+			// Probably checking both the button and the wizard is a bit
+			// paranoid, especially since finishPressed only does something if
+			// wizard.performFinish() == true, but yes, let's be paranoid and
+			// not rely on implementation details. The javadoc of finishPressed
+			// makes no promises.
+			finishPressed();
+			return getShell() == null || getShell().isDisposed();
+		}
+		return false;
+	}
+

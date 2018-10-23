@@ -17,7 +17,8 @@
 			};
 			wizard.addPage(page);
 			wizard.setWindowTitle(UIText.GerritSelectRepositoryPage_PageTitle);
-			WizardDialog wizardDialog = new WizardDialog(shell, wizard) {
+			WizardDialog wizardDialog = new MinimumSizeWizardDialog(shell,
+					wizard) {
 				@Override
 				protected Button createButton(Composite parent, int id,
 						String label, boolean defaultButton) {
