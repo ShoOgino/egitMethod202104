@@ -1,0 +1,7 @@
+		PullJob(Repository repository, PullReferenceConfig config) {
+			super(getPullTaskName(repository, config));
+			this.repository = repository;
+			this.config = config;
+			setRule(RuleUtil.getRule(repository));
+		}
+
