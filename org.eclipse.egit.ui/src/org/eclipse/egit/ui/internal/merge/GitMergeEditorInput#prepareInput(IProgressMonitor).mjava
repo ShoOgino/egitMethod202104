@@ -43,7 +43,7 @@
 				ObjectId mergeHead = repo.resolve(target);
 				if (mergeHead == null)
 					throw new IOException(NLS.bind(
-							UIText.ValidationUtils_CanNotResolveRefMessage,
+							CoreText.ValidationUtils_CanNotResolveRefMessage,
 							target));
 				rightCommit = rw.parseCommit(mergeHead);
 			} catch (IOException e) {
@@ -57,7 +57,7 @@
 				ObjectId head = repo.resolve(Constants.HEAD);
 				if (head == null)
 					throw new IOException(NLS.bind(
-							UIText.ValidationUtils_CanNotResolveRefMessage,
+							CoreText.ValidationUtils_CanNotResolveRefMessage,
 							Constants.HEAD));
 				headCommit = rw.parseCommit(head);
 			} catch (IOException e) {
