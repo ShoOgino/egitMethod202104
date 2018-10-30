@@ -5,8 +5,6 @@
 	 * @param listener
 	 */
 	public void addIndexDiffChangedListener(IndexDiffChangedListener listener) {
-		synchronized (listeners) {
-			listeners.add(listener);
-		}
+		listeners.addIfAbsent(listener);
 	}
 

@@ -12,16 +12,8 @@
 						Object[] listeners= fListenerList.getListeners();
 						for (int i= 0; i < listeners.length; i++) {
 							final IContentChangeListener contentChangeListener = (IContentChangeListener)listeners[i];
-							SafeRunner.run(new ISafeRunnable() {
-								@Override
-								public void run() throws Exception {
-									(contentChangeListener).contentChanged(element);
-								}
-								@Override
-								public void handleException(Throwable exception) {
-									// Logged by safe runner
-								}
-							});
+						SafeRunnable.run(() -> (contentChangeListener)
+								.contentChanged(element));
 						}
 					}
 				};
