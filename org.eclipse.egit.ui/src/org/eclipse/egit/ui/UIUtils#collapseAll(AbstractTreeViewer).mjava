@@ -1,0 +1,15 @@
+	/**
+	 * Collapse all tree nodes while disabling redraw.
+	 *
+	 * @param viewer
+	 *            tree viewer
+	 */
+	public static void collapseAll(AbstractTreeViewer viewer) {
+		viewer.getControl().setRedraw(false);
+		try {
+			viewer.collapseAll();
+		} finally {
+			viewer.getControl().setRedraw(true);
+		}
+	}
+

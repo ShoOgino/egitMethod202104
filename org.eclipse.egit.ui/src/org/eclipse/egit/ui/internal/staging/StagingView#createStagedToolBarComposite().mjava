@@ -8,7 +8,7 @@
 				IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				stagedViewer.expandAll();
+				UIUtils.expandAll(stagedViewer);
 				enableAutoExpand(stagedViewer);
 			}
 		};
@@ -19,7 +19,7 @@
 				IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				stagedViewer.collapseAll();
+				UIUtils.collapseAll(stagedViewer);
 				disableAutoExpand(stagedViewer);
 			}
 		};

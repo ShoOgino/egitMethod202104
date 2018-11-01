@@ -16,7 +16,7 @@
 			filePaths.clear();
 			filePaths.addAll(newPaths);
 			tree.setInput(filePaths);
-			tree.expandAll();
+			UIUtils.expandAll(tree);
 			if (refresh) {
 				try {
 					ResourcesPlugin.getWorkspace().getRoot().refreshLocal(

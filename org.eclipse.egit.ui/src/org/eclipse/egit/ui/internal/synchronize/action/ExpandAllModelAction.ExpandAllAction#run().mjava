@@ -5,8 +5,6 @@
 					|| !(viewer instanceof AbstractTreeViewer)) {
 				return;
 			}
-			viewer.getControl().setRedraw(false);
-			((AbstractTreeViewer) viewer).expandAll();
-			viewer.getControl().setRedraw(true);
+			UIUtils.expandAll(((AbstractTreeViewer) viewer));
 		}
 
