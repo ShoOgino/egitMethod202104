@@ -6,7 +6,7 @@
 							CoreText.OperationAlreadyExecuted));
 		}
 		int workers = repositories.length;
-		String taskName = NLS.bind(CoreText.PullOperation_TaskName,
+		String taskName = MessageFormat.format(CoreText.PullOperation_TaskName,
 				Integer.valueOf(workers));
 
 		int maxThreads = getMaxPullThreadsCount();

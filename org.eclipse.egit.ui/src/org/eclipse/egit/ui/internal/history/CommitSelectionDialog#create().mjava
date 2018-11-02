@@ -47,8 +47,7 @@
 										if (monitor.isCanceled()
 												|| oldsz == allCommits.size())
 											break;
-										String taskName = NLS
-												.bind(
+										String taskName = MessageFormat.format(
 														UIText.CommitSelectionDialog_FoundCommitsMessage,
 														Integer
 																.valueOf(allCommits

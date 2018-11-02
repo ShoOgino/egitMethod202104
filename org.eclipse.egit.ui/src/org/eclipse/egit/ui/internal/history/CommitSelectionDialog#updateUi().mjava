@@ -1,5 +1,5 @@
 	private void updateUi() {
-		setTitle(NLS.bind(UIText.CommitSelectionDialog_DialogTitle,
+		setTitle(MessageFormat.format(UIText.CommitSelectionDialog_DialogTitle,
 				Integer.valueOf(allCommits.size()),
 				GitLabels.getPlainShortLabel(repository)));
 		setMessage(UIText.CommitSelectionDialog_DialogMessage);
