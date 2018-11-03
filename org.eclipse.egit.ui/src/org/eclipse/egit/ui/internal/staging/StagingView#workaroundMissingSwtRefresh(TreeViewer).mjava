@@ -1,0 +1,13 @@
+	/**
+	 * On Windows some SWT bug avoids repainting the non selected elements
+	 * correctly, see bugzilla 533555.
+	 *
+	 * @param viewer
+	 *            tree viewer
+	 */
+	private void workaroundMissingSwtRefresh(TreeViewer viewer) {
+		if (Util.isWindows()) {
+			viewer.getControl().redraw();
+		}
+	}
+
