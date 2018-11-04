@@ -130,6 +130,7 @@
 				stageAction.setEnabled(hasSelection);
 				unstagedToolBarManager.update(true);
 			}
+			workaroundMissingSwtRefresh(unstagedViewer);
 		});
 		Composite rebaseAndCommitComposite = toolkit.createComposite(mainSashForm);
 		rebaseAndCommitComposite.setLayout(GridLayoutFactory.fillDefaults().create());
@@ -404,6 +405,7 @@
 				unstageAction.setEnabled(hasSelection);
 				stagedToolBarManager.update(true);
 			}
+			workaroundMissingSwtRefresh(stagedViewer);
 		});
 
 		selectionChangedListener = new ISelectionListener() {
