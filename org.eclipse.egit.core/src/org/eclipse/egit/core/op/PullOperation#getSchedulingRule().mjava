@@ -1,5 +1,7 @@
 	@Override
 	public ISchedulingRule getSchedulingRule() {
-		return RuleUtil.getRuleForRepositories(Arrays.asList(repositories));
+		// main job does not block anyone, but the sub tasks are blocking and
+		// have own rules
+		return null;
 	}
 

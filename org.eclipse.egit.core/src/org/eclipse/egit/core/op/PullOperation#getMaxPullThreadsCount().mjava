@@ -1,0 +1,9 @@
+	private int getMaxPullThreadsCount() {
+		String key = GitCorePreferences.core_maxPullThreadsCount;
+		int defaultValue = 1;
+		int value = Platform.getPreferencesService().getInt(
+				Activator.getPluginId(), key,
+				defaultValue, null);
+		return Math.max(defaultValue, value);
+	}
+
