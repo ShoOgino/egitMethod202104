@@ -2,10 +2,13 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		RepositoriesView view;
 		try {
+			// remember selection before activating a new view
+			IStructuredSelection selection = getSelection(event);
+
 			view = (RepositoriesView) PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage().showView(
 							RepositoriesView.VIEW_ID);
-			ShowInContext ctx = new ShowInContext(ResourcesPlugin.getWorkspace().getRoot(), getSelection(event));
+			ShowInContext ctx = new ShowInContext(ResourcesPlugin.getWorkspace().getRoot(), selection);
 			view.show(ctx);
 		} catch (PartInitException e) {
 			throw new ExecutionException(e.getMessage(), e);
