@@ -4,7 +4,8 @@
 			reloadDecorationHelper();
 
 			fViewer.setContentProvider(this);
-			fViewer.setLabelProvider(new ResLabelProvider());
+			fViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+					new ResLabelProvider()));
 			fViewer.setInput(PREVIEW_FILESYSTEM_ROOT);
 			fViewer.expandAll();
 			fHelper = new DecorationHelper(new PreferenceStore());

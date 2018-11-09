@@ -1,7 +1,6 @@
 		public PreviewResource(String name, int type, String repositoryName,
-				String branch, String branchStatus, boolean tracked,
-				boolean ignored, boolean dirty, @NonNull StagingState staged,
-				boolean conflicts, boolean assumeUnchanged) {
+				String branch, String branchStatus, int flags,
+				@NonNull StagingState staged) {
 
 			super(null);
 			this.name = name;
@@ -11,11 +10,12 @@
 			this.branchStatus = branchStatus;
 			this.type = type;
 			this.children = Collections.EMPTY_LIST;
-			setTracked(tracked);
-			setIgnored(ignored);
-			setDirty(dirty);
+			setTracked((flags & UNTRACKED) == 0);
+			setIgnored((flags & IGNORED) != 0);
+			setDirty((flags & DIRTY) != 0);
 			setStagingState(staged);
-			setConflicts(conflicts);
-			setAssumeUnchanged(assumeUnchanged);
+			setConflicts((flags & CONFLICTS) != 0);
+			setAssumeUnchanged((flags & ASSUME_UNCHANGED) != 0);
+			setIsRepositoryContainer((flags & SUBMODULE) != 0);
 		}
 
