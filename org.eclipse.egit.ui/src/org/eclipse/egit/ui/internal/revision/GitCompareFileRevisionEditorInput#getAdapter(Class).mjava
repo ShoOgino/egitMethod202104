@@ -5,6 +5,8 @@
 	public Object getAdapter(Class adapter) {
 		if (adapter == IFile.class || adapter == IResource.class) {
 			return getResource();
+		} else if (adapter == Repository.class && left != null) {
+			return AdapterUtils.adapt(left, Repository.class);
 		}
 		return super.getAdapter(adapter);
 	}

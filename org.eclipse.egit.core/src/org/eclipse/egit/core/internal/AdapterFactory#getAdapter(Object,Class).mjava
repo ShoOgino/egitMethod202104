@@ -1,0 +1,12 @@
+	// TODO: Generify once baseline is Eclipse Neon
+	@Override
+	@SuppressWarnings("unchecked")
+	public Object getAdapter(Object adaptableObject, Class adapterType) {
+		if (adapterType == Repository.class) {
+			if (adaptableObject instanceof GitFileRevision) {
+				return ((GitFileRevision) adaptableObject).getRepository();
+			}
+		}
+		return null;
+	}
+
