@@ -225,14 +225,19 @@
 			@Override
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
+				if (part == ReflogView.this) {
+					return;
+				}
 				if (part instanceof IEditorPart) {
 					IEditorInput input = ((IEditorPart) part).getEditorInput();
 					Repository repository = AdapterUtils.adapt(input,
 							Repository.class);
-					if (repository != null)
+					if (repository != null) {
 						reactOnSelection(new StructuredSelection(repository));
-				} else
+					}
+				} else {
 					reactOnSelection(selection);
+				}
 			}
 		};
 
@@ -268,7 +273,5 @@
 		menuManager.add(resetManager);
 
 		getSite().registerContextMenu(POPUP_MENU_ID, menuManager, refLogTableTreeViewer);
-
-		showInitialSelection();
 	}
 
