@@ -68,6 +68,16 @@
 			@Override
 			public void apply(boolean value) {
 				reactOnSelection = value;
+				if (value && currentRepository == null) {
+					if (lastSelection != null) {
+						reactOnSelection(lastSelection);
+					} else {
+						ISelection selection = getSelectionOfActiveEditor();
+						if (selection != null) {
+							reactOnSelection(selection);
+						}
+					}
+				}
 			}
 		};
 		linkSelectionAction.setImageDescriptor(UIIcons.ELCL16_SYNCED);
