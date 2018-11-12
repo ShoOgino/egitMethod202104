@@ -5,7 +5,9 @@
 			if (resource != null) {
 				sel = new StructuredSelection(resource);
 			} else {
-				Repository repository = getRepository((IEditorPart) part);
+				Repository repository = AdapterUtils.adapt(
+						((IEditorPart) part).getEditorInput(),
+						Repository.class);
 				if (repository != null) {
 					sel = new StructuredSelection(repository);
 				}

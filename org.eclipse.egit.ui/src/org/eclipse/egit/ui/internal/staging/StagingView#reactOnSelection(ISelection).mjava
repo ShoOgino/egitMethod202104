@@ -1,4 +1,8 @@
-	private void reactOnSelection(StructuredSelection selection) {
+	private void reactOnSelection(ISelection sel) {
+		if (!(sel instanceof StructuredSelection)) {
+			return;
+		}
+		StructuredSelection selection = (StructuredSelection) sel;
 		if (selection.size() != 1 || isDisposed()) {
 			return;
 		}

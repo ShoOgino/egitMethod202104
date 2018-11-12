@@ -412,12 +412,18 @@
 			@Override
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
-				if (part == getSite().getPart()) {
+				if (part == StagingView.this) {
 					return;
 				}
-				// don't accept text selection, only structural one
-				if (selection instanceof StructuredSelection) {
-					reactOnSelection((StructuredSelection) selection);
+				if (part instanceof IEditorPart) {
+					IEditorInput input = ((IEditorPart) part).getEditorInput();
+					Repository repository = AdapterUtils.adapt(input,
+							Repository.class);
+					if (repository != null) {
+						reactOnSelection(new StructuredSelection(repository));
+					}
+				} else {
+					reactOnSelection(selection);
 				}
 			}
 		};
@@ -499,16 +505,17 @@
 			}
 		});
 
-		// react on selection changes
 		IWorkbenchPartSite site = getSite();
+		// Use current selection to populate staging view
+		UIUtils.notifySelectionChangedWithCurrentSelection(
+				selectionChangedListener, site);
+
+		// react on selection changes
 		ISelectionService srv = CommonUtils.getService(site, ISelectionService.class);
 		srv.addPostSelectionListener(selectionChangedListener);
 		CommonUtils.getService(site, IPartService.class).addPartListener(
 				partListener);
 
-		// Use current selection to populate staging view
-		UIUtils.notifySelectionChangedWithCurrentSelection(
-				selectionChangedListener, site);
 
 		site.setSelectionProvider(new RepositorySelectionProvider(
 				new MultiViewerSelectionProvider(unstagedViewer, stagedViewer),
@@ -531,7 +538,6 @@
 		stagedViewer.addFilter(filter);
 
 		restoreSashFormWeights();
-		reactOnInitialSelection();
 
 		IWorkbenchSiteProgressService service = CommonUtils.getService(
 				getSite(), IWorkbenchSiteProgressService.class);
