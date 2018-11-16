@@ -10,7 +10,7 @@
 				Integer.valueOf(workers));
 
 		int maxThreads = getMaxPullThreadsCount();
-		JobGroup jobGroup = new JobGroup(taskName, maxThreads, workers);
+		JobGroup jobGroup = new PullJobGroup(taskName, maxThreads, workers);
 
 		SubMonitor progress = SubMonitor.convert(m, workers);
 		for (Repository repository : repositories) {
