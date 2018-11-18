@@ -1,0 +1,36 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Object element = getSelection().getFirstElement();
+		if (!(element instanceof RepositoryTreeNode)) {
+			return null;
+		}
+		File canonicalPath = ((RepositoryTreeNode) element).getPath().toFile();
+
+		Job job = Job.create(
+				UIText.ShowInSystemExplorerActionHandler_JobTitle,
+				monitor -> {
+					try {
+						String launchCmd = getShowInSystemExplorerCommand(
+								canonicalPath);
+
+						if ("".equals(launchCmd)) { //$NON-NLS-1$
+							return Status.CANCEL_STATUS;
+						}
+
+						File dir = canonicalPath.getParentFile();
+						if (Util.isLinux() || Util.isMac()) {
+							Runtime.getRuntime().exec(
+									new String[] { "/bin/sh", "-c", launchCmd }, //$NON-NLS-1$ //$NON-NLS-2$
+									null, dir);
+						} else {
+							Runtime.getRuntime().exec(launchCmd, null, dir);
+						}
+					} catch (IOException e) {
+						return Status.CANCEL_STATUS;
+					}
+					return Status.OK_STATUS;
+				});
+		job.schedule();
+		return null;
+	}
+

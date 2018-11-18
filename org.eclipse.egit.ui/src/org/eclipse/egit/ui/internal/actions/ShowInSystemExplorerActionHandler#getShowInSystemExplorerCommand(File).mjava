@@ -1,0 +1,25 @@
+	/**
+	 * Prepare command for launching system explorer to show a path
+	 *
+	 * @param path
+	 *            the path to show
+	 * @return the command that shows the path
+	 * @throws IOException
+	 */
+	private String getShowInSystemExplorerCommand(File path)
+			throws IOException {
+		String command = IDEWorkbenchPlugin.getDefault().getPreferenceStore()
+				.getString(IDEInternalPreferences.WORKBENCH_SYSTEM_EXPLORER);
+
+		command = Util.replaceAll(command, VARIABLE_RESOURCE,
+				quotePath(path.getCanonicalPath()));
+		command = Util.replaceAll(command, VARIABLE_RESOURCE_URI,
+				path.getCanonicalFile().toURI().toString());
+		File parent = path.getParentFile();
+		if (parent != null) {
+			command = Util.replaceAll(command, VARIABLE_FOLDER,
+					quotePath(parent.getCanonicalPath()));
+		}
+		return command;
+	}
+
