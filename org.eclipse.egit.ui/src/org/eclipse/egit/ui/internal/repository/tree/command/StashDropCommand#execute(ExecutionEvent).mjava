@@ -25,8 +25,14 @@
 							UIText.StashDropCommand_confirmSingle,
 							Integer.toString(nodes.get(0).getIndex()));
 
-				confirmed.set(MessageDialog.openConfirm(shell,
-						UIText.StashDropCommand_confirmTitle, message));
+				String[] buttonLabels = { UIText.StashDropCommand_buttonDelete,
+						IDialogConstants.CANCEL_LABEL };
+
+				MessageDialog confirmDialog = new MessageDialog(shell,
+						UIText.StashDropCommand_confirmTitle, null, message,
+						MessageDialog.CONFIRM, buttonLabels, 0);
+
+				confirmed.set(confirmDialog.open() == Window.OK);
 			}
 		});
 		if (!confirmed.get())
