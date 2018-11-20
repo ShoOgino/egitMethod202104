@@ -9,7 +9,7 @@
 		final Shell parent = getPart(event).getSite().getShell();
 		final int stashIndex = getStashIndex(repo, commit.getId());
 
-		if (!confirmStashDrop(parent, stashIndex))
+		if (!confirmStashDrop(parent, stashIndex, commit.getShortMessage()))
 			return null;
 
 		final StashDropOperation op = new StashDropOperation(repo, stashIndex);
