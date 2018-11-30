@@ -5,7 +5,7 @@
 			Repository repository = repositoryProvider.get();
 			if (repository != null) {
 				return new StructuredSelection(
-						new RepositoryNode(null, repository));
+						new RepositoryVirtualNode(null, repository));
 			}
 		}
 		return selection;
