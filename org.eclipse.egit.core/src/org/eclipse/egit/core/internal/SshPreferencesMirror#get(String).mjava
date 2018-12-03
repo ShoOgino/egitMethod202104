@@ -1,5 +1,5 @@
 	private String get(@NonNull String key) {
-		IEclipsePreferences pref = preferences;
-		return pref == null ? null : pref.get(key, null);
+		return Platform.getPreferencesService().getString(PREFERENCES_NODE, key,
+				null, null);
 	}
 

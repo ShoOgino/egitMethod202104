@@ -1,10 +1,9 @@
 	/** Starts mirroring the ssh preferences. */
 	public void start() {
-		preferences = InstanceScope.INSTANCE.getNode("org.eclipse.jsch.core"); //$NON-NLS-1$
-		if (preferences == null) {
-			return;
+		preferences = InstanceScope.INSTANCE.getNode(PREFERENCES_NODE);
+		if (preferences != null) {
+			preferences.addPreferenceChangeListener(listener);
 		}
-		preferences.addPreferenceChangeListener(listener);
 		reloadPreferences();
 	}
 
