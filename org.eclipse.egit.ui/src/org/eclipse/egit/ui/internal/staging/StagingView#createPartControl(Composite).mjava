@@ -231,6 +231,18 @@
 		signedOffByAction.setImageDescriptor(UIIcons.SIGNED_OFF);
 		commitMessageToolBarManager.add(signedOffByAction);
 
+		signCommitAction = new Action(UIText.StagingView_Sign_Commit,
+				IAction.AS_CHECK_BOX) {
+
+			@Override
+			public void run() {
+				commitMessageComponent
+						.setSignCommitButtonSelection(isChecked());
+			}
+		};
+		signCommitAction.setImageDescriptor(UIIcons.SIGN_COMMIT);
+		commitMessageToolBarManager.add(signCommitAction);
+
 		addChangeIdAction = new Action(UIText.StagingView_Add_Change_ID,
 				IAction.AS_CHECK_BOX) {
 
@@ -475,6 +487,11 @@
 				commitAndPushButton
 						.setImage(getImage(
 								selection ? UIIcons.GERRIT : UIIcons.PUSH));
+			}
+
+			@Override
+			public void updateSignCommitToggleSelection(boolean selection) {
+				signCommitAction.setChecked(selection);
 			}
 
 			@Override

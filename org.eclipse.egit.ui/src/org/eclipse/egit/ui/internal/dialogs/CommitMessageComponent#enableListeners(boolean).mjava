@@ -5,7 +5,9 @@
 	 */
 	public void enableListeners(boolean enable) {
 		this.listenersEnabled = enable;
-		if (enable)
+		if (enable) {
 			listener.statusUpdated();
+			listener.updateSignCommitToggleSelection(isSignCommit());
+		}
 	}
 

@@ -9,14 +9,15 @@
 			if (e.getCause() instanceof JGitInternalException) {
 				return Activator.createErrorStatus(e.getLocalizedMessage(),
 						e.getCause());
-			}
-			if (e.getCause() instanceof AbortedByHookException) {
+			} else if (e.getCause() instanceof AbortedByHookException) {
 				showAbortedByHook(e.getCause());
 				return Status.CANCEL_STATUS;
-			} else {
-				return Activator.createErrorStatus(
-						UIText.CommitAction_CommittingFailed, e);
+			} else if (e.getCause() instanceof CanceledException) {
+				return Status.CANCEL_STATUS;
 			}
+
+			return Activator
+					.createErrorStatus(UIText.CommitAction_CommittingFailed, e);
 		} finally {
 			GitLightweightDecorator.refresh();
 		}

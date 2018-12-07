@@ -38,6 +38,7 @@
 			commitOperation.setAmending(true);
 		final boolean gerritMode = addChangeIdAction.isChecked();
 		commitOperation.setComputeChangeId(gerritMode);
+		commitOperation.setSign(signCommitAction.isChecked());
 
 		PushMode pushMode = null;
 		if (pushUpstream) {

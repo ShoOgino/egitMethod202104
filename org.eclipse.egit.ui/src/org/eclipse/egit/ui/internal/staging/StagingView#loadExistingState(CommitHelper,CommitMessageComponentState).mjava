@@ -25,6 +25,7 @@
 			commitMessageComponent.setAmending(true);
 		else
 			commitMessageComponent.setAmending(false);
+		commitMessageComponent.setSignCommit(oldState.getSign());
 		commitMessageComponent.updateUIFromState();
 		commitMessageComponent.updateSignedOffAndChangeIdButton();
 		commitMessageComponent.enableListeners(true);

@@ -1,5 +1,5 @@
 	private Collection<String> buildFileList(Collection<IFile> files) throws CoreException {
-		Collection<String> result = new HashSet<String>();
+		Collection<String> result = new HashSet<>();
 		for (IFile file : files) {
 			RepositoryMapping mapping = RepositoryMapping.getMapping(file);
 			if (mapping == null)

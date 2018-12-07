@@ -9,7 +9,8 @@
 				state.getAuthor(), state.getCommitMessage(),
 				state.getCommitter(),
 				state.getHeadCommit().getName().toString(),
-				String.valueOf(state.getCaretPosition()) };
+				String.valueOf(state.getCaretPosition()),
+				Boolean.toString(state.getSign()) };
 		dialogSettings.put(repository.getDirectory().getAbsolutePath(), values);
 	}
 

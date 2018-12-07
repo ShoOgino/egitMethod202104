@@ -19,8 +19,8 @@
 		this.committer = committer;
 		this.message = stripLeadingWhitespace(message);
 		if (filesToCommit != null)
-			commitFileList = new HashSet<String>(filesToCommit);
+			commitFileList = new HashSet<>(filesToCommit);
 		if (notTracked != null)
-			this.notTracked = new HashSet<String>(notTracked);
+			this.notTracked = new HashSet<>(notTracked);
 	}
 
