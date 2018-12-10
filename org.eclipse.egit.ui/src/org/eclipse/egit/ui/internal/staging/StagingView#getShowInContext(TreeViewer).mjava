@@ -1,5 +1,5 @@
 	private ShowInContext getShowInContext(TreeViewer treeViewer) {
-		IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+		IStructuredSelection selection = treeViewer.getStructuredSelection();
 		List<Object> elements = new ArrayList<>();
 		for (Object selectedElement : selection.toList()) {
 			if (selectedElement instanceof StagingEntry) {

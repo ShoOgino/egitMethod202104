@@ -67,7 +67,7 @@
 				UIIcons.UNSTAGE) {
 			@Override
 			public void run() {
-				unstage((IStructuredSelection) stagedViewer.getSelection());
+				unstage(stagedViewer.getStructuredSelection());
 			}
 		};
 		unstageAction.setToolTipText(UIText.StagingView_UnstageItemTooltip);
@@ -75,7 +75,7 @@
 				UIIcons.ELCL16_ADD) {
 			@Override
 			public void run() {
-				stage((IStructuredSelection) unstagedViewer.getSelection());
+				stage(unstagedViewer.getStructuredSelection());
 			}
 		};
 		stageAction.setToolTipText(UIText.StagingView_StageItemTooltip);
@@ -89,7 +89,7 @@
 			@Override
 			public void run() {
 				stagedViewer.getTree().selectAll();
-				unstage((IStructuredSelection) stagedViewer.getSelection());
+				unstage(stagedViewer.getStructuredSelection());
 			}
 		};
 		unstageAllAction
@@ -99,7 +99,7 @@
 			@Override
 			public void run() {
 				unstagedViewer.getTree().selectAll();
-				stage((IStructuredSelection) unstagedViewer.getSelection());
+				stage(unstagedViewer.getStructuredSelection());
 			}
 		};
 		stageAllAction.setToolTipText(UIText.StagingView_StageAllItemTooltip);

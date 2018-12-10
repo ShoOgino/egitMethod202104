@@ -8,8 +8,8 @@
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				control.setFocus();
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer
-						.getSelection();
+				final IStructuredSelection selection = treeViewer
+						.getStructuredSelection();
 				if (selection.isEmpty())
 					return;
 
