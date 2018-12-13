@@ -1,7 +1,8 @@
 	private RepositoryTreeNodeLabelProvider(
-			WorkbenchLabelProvider labelProvider) {
+			WorkbenchLabelProvider labelProvider, boolean showPaths) {
 		super(labelProvider, PlatformUI.getWorkbench()
 				.getDecoratorManager().getLabelDecorator(), null);
 		this.labelProvider = labelProvider;
+		this.showPaths = showPaths;
 	}
 

@@ -29,6 +29,10 @@
 
 		getDialogSettings().put(STORE_SORT_STATE, sortAction.isChecked());
 
+		if (titleLabelProvider != null) {
+			titleLabelProvider.dispose();
+			titleLabelProvider = null;
+		}
 		currentRepository = null;
 		lastSelection = null;
 		disposed = true;

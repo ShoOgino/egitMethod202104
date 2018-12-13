@@ -2,6 +2,14 @@
 	public void createPartControl(final Composite parent) {
 		GridLayoutFactory.fillDefaults().applyTo(parent);
 
+		titleNode = null;
+		titleLabelProvider = new RepositoryTreeNodeLabelProvider(false);
+		titleLabelProvider.addListener(e -> {
+			if (titleNode != null && form != null && !form.isDisposed()) {
+				form.setText(titleLabelProvider.getStyledText(titleNode)
+						.getString());
+			}
+		});
 		toolkit = new FormToolkit(parent.getDisplay());
 		parent.addDisposeListener(new DisposeListener() {
 
