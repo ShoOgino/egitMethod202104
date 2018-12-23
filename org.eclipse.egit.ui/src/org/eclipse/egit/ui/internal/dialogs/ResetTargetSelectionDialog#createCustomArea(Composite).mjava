@@ -1,7 +1,7 @@
 	@Override
 	protected void createCustomArea(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
-		main.setLayout(new GridLayout(1, false));
+		GridLayoutFactory.fillDefaults().applyTo(main);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(main);
 
 		Group g2 = new Group(main, SWT.NONE);

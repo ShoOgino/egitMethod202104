@@ -57,7 +57,7 @@
 
 		Composite lowerComp = new Composite(main, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(lowerComp);
-		lowerComp.setLayout(new GridLayout(3, false));
+		GridLayoutFactory.fillDefaults().numColumns(3).applyTo(lowerComp);
 
 		final Button checkIncludeIgnored = new Button(lowerComp, SWT.CHECK);
 		checkIncludeIgnored.setText(UIText.CleanRepositoryPage_includeIgnored);
