@@ -14,8 +14,7 @@
 		branchText = new Combo(main, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(branchText);
 
-		// TODO do we have a constant somewhere?
-		remoteText.add("."); //$NON-NLS-1$
+		remoteText.add(BranchConfig.LOCAL_REPOSITORY);
 		for (String remote : myConfig
 				.getSubsections(ConfigConstants.CONFIG_REMOTE_SECTION))
 			remoteText.add(remote);

@@ -26,7 +26,7 @@
 		if (remote == null)
 			return null;
 
-		if (".".equals(remote)) //$NON-NLS-1$
+		if (BranchConfig.LOCAL_REPOSITORY.equals(remote))
 			return merge;
 		else
 			return Constants.R_REMOTES + remote + "/" //$NON-NLS-1$
