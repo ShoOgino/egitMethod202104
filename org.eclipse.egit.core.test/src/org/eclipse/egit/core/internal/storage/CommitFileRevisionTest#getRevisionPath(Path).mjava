@@ -1,0 +1,9 @@
+	/**
+	 * @param filePath
+	 * @return path with {@code /} as separator
+	 */
+	private String getRevisionPath(Path filePath) {
+		return repository.getWorkTree().toPath().relativize(filePath).toString()
+				.replace('\\', '/');
+	}
+
