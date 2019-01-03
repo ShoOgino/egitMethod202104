@@ -2,7 +2,7 @@
 			final ByteArrayOutputStream outputStream) {
 		try {
 			String encoding = currentEncoding != null ? currentEncoding
-					: RawParseUtils.UTF8_CHARSET.name();
+					: UTF_8.name();
 			sb.append(outputStream.toString(encoding));
 		} catch (UnsupportedEncodingException e) {
 			sb.append(outputStream.toString());
