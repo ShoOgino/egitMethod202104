@@ -1,0 +1,32 @@
+		public EditableRevisionSharedDocumentAdapter(
+				EditableRevision editable) {
+			super(new ISharedDocumentAdapterListener() {
+
+				@Override
+				public void handleDocumentConnected() {
+					// Nothing
+				}
+
+				@Override
+				public void handleDocumentDisconnected() {
+					// Nothing
+				}
+
+				@Override
+				public void handleDocumentFlushed() {
+					// Nothing
+				}
+
+				@Override
+				public void handleDocumentDeleted() {
+					// Nothing
+				}
+
+				@Override
+				public void handleDocumentSaved() {
+					// Nothing
+				}
+			});
+			this.editable = editable;
+		}
+
