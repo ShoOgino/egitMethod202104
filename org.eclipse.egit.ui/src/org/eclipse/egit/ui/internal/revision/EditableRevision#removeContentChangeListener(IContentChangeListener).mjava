@@ -1,9 +1,5 @@
 	@Override
 	public void removeContentChangeListener(IContentChangeListener listener) {
-		if (fChangeNotifier != null) {
-			fChangeNotifier.removeContentChangeListener(listener);
-			if (fChangeNotifier.isEmpty())
-				fChangeNotifier = null;
-		}
+		listeners.remove(listener);
 	}
 

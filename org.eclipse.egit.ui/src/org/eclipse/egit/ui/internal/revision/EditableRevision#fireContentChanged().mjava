@@ -3,9 +3,20 @@
 	 * change.
 	 */
 	protected void fireContentChanged() {
-		if (fChangeNotifier == null || fChangeNotifier.isEmpty()) {
+		if (listeners.isEmpty()) {
 			return;
 		}
-		fChangeNotifier.fireContentChanged();
+		// Legacy listeners may expect to be notified in the UI thread.
+		Runnable runnable = () -> {
+			for (IContentChangeListener listener : listeners) {
+				SafeRunnable.run(
+						() -> listener.contentChanged(EditableRevision.this));
+			}
+		};
+		if (Display.getCurrent() == null) {
+			Display.getDefault().syncExec(runnable);
+		} else {
+			runnable.run();
+		}
 	}
 
