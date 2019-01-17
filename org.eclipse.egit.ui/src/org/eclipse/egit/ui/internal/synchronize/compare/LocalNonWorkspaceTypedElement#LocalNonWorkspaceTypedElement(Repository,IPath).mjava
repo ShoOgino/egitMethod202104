@@ -11,7 +11,9 @@
 		this.repository = repository;
 
 		File file = path.toFile();
-		exists = file.exists() || Files.isSymbolicLink(file.toPath());
+		isSymlink = Files.isSymbolicLink(file.toPath());
+		isFile = file.isFile();
+		exists = isFile || isSymlink || file.exists();
 		if (exists) {
 			timestamp = file.lastModified();
 		}

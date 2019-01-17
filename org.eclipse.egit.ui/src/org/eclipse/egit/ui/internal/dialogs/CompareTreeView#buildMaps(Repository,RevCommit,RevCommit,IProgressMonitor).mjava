@@ -104,7 +104,7 @@
 				if (baseVersionIterator != null) {
 					if (baseCommit == null) {
 						if (file != null)
-							left = new LocalFileRevision(file);
+							left = new WorkspaceFileRevision(file);
 						else {
 							IPath path = getRepositoryPath().append(
 									repoRelativePath);

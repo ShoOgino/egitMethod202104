@@ -1,7 +1,11 @@
 	private ITypedElement getTypedElement(FileNode node, IFileRevision fileRevision, String versionName) {
-		if (fileRevision instanceof LocalFileRevision) {
-			LocalFileRevision localFileRevision = (LocalFileRevision) fileRevision;
-			return new ResourceEditableRevision(fileRevision, localFileRevision.getFile(), PlatformUI.getWorkbench().getProgressService());
+		if (fileRevision instanceof WorkspaceFileRevision) {
+			return SaveableCompareEditorInput.createFileElement(node.getFile());
+		} else if (fileRevision instanceof WorkingTreeFileRevision) {
+			IPath path = Path
+					.fromPortableString(((WorkingTreeFileRevision) fileRevision)
+							.getURI().getPath());
+			return new LocalNonWorkspaceTypedElement(getRepository(), path);
 		} else if (fileRevision == null) {
 			return new GitCompareFileRevisionEditorInput.EmptyTypedElement(
 					NLS.bind(

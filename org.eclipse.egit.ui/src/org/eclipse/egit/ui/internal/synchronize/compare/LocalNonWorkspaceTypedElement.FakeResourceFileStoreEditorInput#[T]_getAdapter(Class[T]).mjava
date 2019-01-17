@@ -1,0 +1,10 @@
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			if (adapter == IFile.class || adapter == IResource.class) {
+				if (resource != null && adapter.isInstance(resource)) {
+					return adapter.cast(resource);
+				}
+			}
+			return super.getAdapter(adapter);
+		}
+

@@ -5,6 +5,9 @@
 	public String getCharset() throws CoreException {
 		if (charset == null) {
 			charset = CompareCoreUtils.getResourceEncoding(db, path);
+			if (charset == null) {
+				charset = ResourcesPlugin.getEncoding();
+			}
 		}
 		return charset;
 	}

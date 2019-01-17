@@ -1,31 +1,8 @@
 	@Override
 	public InputStream getContents() throws CoreException {
-		if (exists) {
-			try {
-				File file = path.toFile();
-				timestamp = file.lastModified();
-				if (Files.isSymbolicLink(file.toPath())) {
-					String symLink = FileUtils.readSymLink(file);
-					return new ByteArrayInputStream(Constants.encode(symLink));
-				}
-				if (file.isDirectory()) {
-					// submodule
-					Repository sub = ResourceUtil.getRepository(path);
-					if (sub != null && sub != repository) {
-						RevCommit headCommit = Activator.getDefault()
-								.getRepositoryUtil().parseHeadCommit(sub);
-						if (headCommit == null) {
-							return null;
-						}
-						return new ByteArrayInputStream(Constants
-								.encode(headCommit.name()));
-					}
-				}
-				return Files.newInputStream(file.toPath());
-			} catch (IOException | UnsupportedOperationException e) {
-				Activator.error(e.getMessage(), e);
-			}
+		if (modifiedContent != null) {
+			return new ByteArrayInputStream(modifiedContent);
 		}
-		return null;
+		return createStream();
 	}
 

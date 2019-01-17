@@ -6,9 +6,12 @@
 			if (selectedEdition instanceof DiffNode) {
 				DiffNode diffNode = (DiffNode) selectedEdition;
 				ITypedElement element = diffNode.getLeft();
-				if (element instanceof ResourceEditableRevision) {
-					ResourceEditableRevision resourceRevision = (ResourceEditableRevision) element;
-					return resourceRevision.getFile();
+				if (element instanceof IResourceProvider) {
+					IResource resource = ((IResourceProvider) element)
+							.getResource();
+					if (adapter.isInstance(resource)) {
+						return resource;
+					}
 				}
 			}
 		}

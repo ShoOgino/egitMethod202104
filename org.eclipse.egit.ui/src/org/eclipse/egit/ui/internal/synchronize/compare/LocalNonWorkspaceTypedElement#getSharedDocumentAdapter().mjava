@@ -3,38 +3,91 @@
 	 * yet, it will be created.
 	 */
 	private synchronized ISharedDocumentAdapter getSharedDocumentAdapter() {
-		if (sharedDocumentAdapter == null)
-			sharedDocumentAdapter = new EditableSharedDocumentAdapter(new EditableSharedDocumentAdapter.ISharedDocumentAdapterListener() {
-				@Override
-				public void handleDocumentConnected() {
+		if (sharedDocumentAdapter == null) {
+			sharedDocumentAdapter = new EditableSharedDocumentAdapter(
+					new EditableSharedDocumentAdapter.ISharedDocumentAdapterListener() {
+						@Override
+						public void handleDocumentConnected() {
 							refreshTimestamp();
-					if (sharedDocumentListener != null)
-						sharedDocumentListener.handleDocumentConnected();
-				}
-				@Override
-				public void handleDocumentFlushed() {
-					fireContentChanged();
-					if (sharedDocumentListener != null)
-						sharedDocumentListener.handleDocumentFlushed();
-				}
-				@Override
-				public void handleDocumentDeleted() {
-					LocalNonWorkspaceTypedElement.this.update();
-					if (sharedDocumentListener != null)
-						sharedDocumentListener.handleDocumentDeleted();
-				}
-				@Override
-				public void handleDocumentSaved() {
+							if (sharedDocumentListener != null) {
+								sharedDocumentListener
+										.handleDocumentConnected();
+							}
+						}
+
+						@Override
+						public void handleDocumentFlushed() {
+							fireContentChanged();
+							if (sharedDocumentListener != null) {
+								sharedDocumentListener.handleDocumentFlushed();
+							}
+						}
+
+						@Override
+						public void handleDocumentDeleted() {
+							update();
+							if (sharedDocumentListener != null) {
+								sharedDocumentListener.handleDocumentDeleted();
+							}
+						}
+
+						@Override
+						public void handleDocumentSaved() {
+							updateGitState();
 							refreshTimestamp();
-					if (sharedDocumentListener != null)
-						sharedDocumentListener.handleDocumentSaved();
-				}
+							if (sharedDocumentListener != null) {
+								sharedDocumentListener.handleDocumentSaved();
+							}
+						}
+
+						@Override
+						public void handleDocumentDisconnected() {
+							if (sharedDocumentListener != null) {
+								sharedDocumentListener
+										.handleDocumentDisconnected();
+							}
+						}
+					}) {
+
 				@Override
-				public void handleDocumentDisconnected() {
-					if (sharedDocumentListener != null)
-						sharedDocumentListener.handleDocumentDisconnected();
+				public IEditorInput getDocumentKey(Object element) {
+					if (element == LocalNonWorkspaceTypedElement.this) {
+						IFileStore store = EFS.getLocalFileSystem().getStore(
+								LocalNonWorkspaceTypedElement.this.path);
+						if (store != null) {
+							return new FakeResourceFileStoreEditorInput(store,
+									LocalNonWorkspaceTypedElement.this
+											.getResource());
+						}
+					}
+					return super.getDocumentKey(element);
 				}
-			});
+
+				@Override
+				public void connect(IDocumentProvider provider,
+						IEditorInput documentKey) throws CoreException {
+					if (documentKey instanceof FakeResourceFileStoreEditorInput) {
+						// When we connect, our editor input shouldn't adapt to
+						// that (non-existing) resource, otherwise we'll confuse
+						// other parts of Eclipse.
+						FakeResourceFileStoreEditorInput input = (FakeResourceFileStoreEditorInput) documentKey;
+						try {
+							input.setResource(null);
+							super.connect(provider, input);
+						} finally {
+							// Once we _are_ connected, there are other places
+							// where SharedDocumentAdapter.getDocumentProvider()
+							// is called again during the life of the document,
+							// so the documentKey must again adapt to IFile.
+							input.setResource(LocalNonWorkspaceTypedElement.this
+									.getResource());
+						}
+					} else {
+						super.connect(provider, documentKey);
+					}
+				}
+			};
+		}
 		return sharedDocumentAdapter;
 	}
 

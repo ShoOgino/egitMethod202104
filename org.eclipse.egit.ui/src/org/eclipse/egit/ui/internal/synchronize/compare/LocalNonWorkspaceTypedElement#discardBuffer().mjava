@@ -1,0 +1,9 @@
+	@Override
+	public void discardBuffer() {
+		super.discardBuffer();
+		if (sharedDocumentAdapter != null) {
+			sharedDocumentAdapter.releaseBuffer();
+		}
+		modifiedContent = null;
+	}
+

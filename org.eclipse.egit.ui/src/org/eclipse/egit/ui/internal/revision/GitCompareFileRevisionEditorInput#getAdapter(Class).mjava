@@ -4,6 +4,9 @@
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IFile.class || adapter == IResource.class) {
+			if (left instanceof LocalNonWorkspaceTypedElement) {
+				return null;
+			}
 			return getResource();
 		} else if (adapter == Repository.class && left != null) {
 			return AdapterUtils.adapt(left, Repository.class);

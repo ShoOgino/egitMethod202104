@@ -7,11 +7,10 @@
 	 * @param runnableContext
 	 *            the context to use for the file write operation
 	 */
-	public ResourceEditableRevision(IFileRevision fileRevision, IFile file,
-			IRunnableContext runnableContext) {
+	public ResourceEditableRevision(IFileRevision fileRevision,
+			@NonNull IFile file, @NonNull IRunnableContext runnableContext) {
 		super(fileRevision, CompareCoreUtils.getResourceEncoding(file));
 		this.file = file;
-		Assert.isNotNull(runnableContext);
 		this.runnableContext = runnableContext;
 	}
 

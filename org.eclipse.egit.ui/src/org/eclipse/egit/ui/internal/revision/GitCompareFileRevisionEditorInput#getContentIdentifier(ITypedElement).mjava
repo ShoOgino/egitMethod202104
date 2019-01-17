@@ -1,26 +1,7 @@
 	private String getContentIdentifier(ITypedElement element){
 		if (element instanceof FileRevisionTypedElement){
 			FileRevisionTypedElement fileRevisionElement = (FileRevisionTypedElement) element;
-			Object fileObject = fileRevisionElement.getFileRevision();
-			if (fileObject instanceof LocalFileRevision){
-				try {
-					IStorage storage = ((LocalFileRevision) fileObject).getStorage(new NullProgressMonitor());
-					if (AdapterUtils.adapt(storage, IFileState.class) != null) {
-						//local revision
-						return UIText.GitCompareFileRevisionEditorInput_LocalRevision;
-					} else if (AdapterUtils.adapt(storage, IFile.class) != null) {
-						//current revision
-						return UIText.GitCompareFileRevisionEditorInput_CurrentRevision;
-					}
-				} catch (CoreException e) {
-					Activator
-							.logError(
-									UIText.GitCompareFileRevisionEditorInput_contentIdentifier,
-									e);
-				}
-			} else {
-				return fileRevisionElement.getContentIdentifier();
-			}
+			return fileRevisionElement.getContentIdentifier();
 		}
 		return UIText.GitCompareFileRevisionEditorInput_CurrentTitle;
 	}
