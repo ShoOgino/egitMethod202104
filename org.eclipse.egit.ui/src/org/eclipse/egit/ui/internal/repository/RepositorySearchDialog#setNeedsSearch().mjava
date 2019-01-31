@@ -1,11 +1,13 @@
 	private void setNeedsSearch() {
 		fTreeViewer.setInput(null);
 		final File file = new File(dir.getText());
-		if (!file.exists()) {
+		if (!file.isDirectory()) {
 			setErrorMessage(MessageFormat.format(
 					UIText.RepositorySearchDialog_DirectoryNotFoundMessage, dir
 							.getText()));
+			searchButton.setEnabled(false);
 		} else {
+			searchButton.setEnabled(true);
 			setErrorMessage(null);
 			setMessage(UIText.RepositorySearchDialog_NoSearchAvailableMessage,
 					IMessageProvider.INFORMATION);
