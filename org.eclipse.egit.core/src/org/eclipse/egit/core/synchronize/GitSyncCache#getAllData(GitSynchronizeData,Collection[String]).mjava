@@ -1,7 +1,8 @@
 	private static GitSyncCache getAllData(GitSynchronizeData gsd,
 			Collection<String> paths) {
 		GitSyncCache cache = new GitSyncCache();
-		TreeFilter filter = paths.isEmpty() ? null : createPathFilter(paths);
+		TreeFilter filter = paths.isEmpty() ? null
+				: PathFilterGroup.createFromStrings(paths);
 
 		Repository repo = gsd.getRepository();
 		ObjectId baseTree = getTree(gsd.getSrcRevCommit());
@@ -9,13 +10,14 @@
 		GitSyncObjectCache repoCache = cache.put(repo, baseTree, remoteTree);
 
 		TreeFilter gsdFilter = gsd.getPathFilter();
-		if (filter == null)
+		if (filter == null) {
 			loadDataFromGit(gsd, gsdFilter, repoCache);
-		else if (gsdFilter == null)
+		} else if (gsdFilter == null) {
 			loadDataFromGit(gsd, filter, repoCache);
-		else
+		} else {
 			loadDataFromGit(gsd, AndTreeFilter.create(filter, gsdFilter),
 					repoCache);
+		}
 		return cache;
 	}
 
