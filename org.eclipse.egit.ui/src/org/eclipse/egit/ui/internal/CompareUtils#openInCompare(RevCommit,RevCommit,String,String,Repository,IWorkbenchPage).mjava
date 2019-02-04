@@ -12,18 +12,18 @@
 	 *            path to the file within commit2's tree
 	 * @param repository
 	 *            the repository this commit was loaded out of
-	 * @param workBenchPage
+	 * @param workbenchPage
 	 *            the page to open the compare editor in
 	 */
 	public static void openInCompare(RevCommit commit1, RevCommit commit2,
 			String commit1Path, String commit2Path, Repository repository,
-			IWorkbenchPage workBenchPage) {
+			IWorkbenchPage workbenchPage) {
 		final ITypedElement base = CompareUtils.getFileRevisionTypedElement(
 				commit1Path, commit1, repository);
 		final ITypedElement next = CompareUtils.getFileRevisionTypedElement(
 				commit2Path, commit2, repository);
 		CompareEditorInput in = new GitCompareFileRevisionEditorInput(base,
 				next, null);
-		CompareUtils.openInCompare(workBenchPage, in);
+		CompareUtils.openInCompare(workbenchPage, in);
 	}
 
