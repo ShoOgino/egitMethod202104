@@ -1,8 +1,7 @@
 	private static GitSyncCache getAllData(GitSynchronizeData gsd,
 			Collection<String> paths) {
 		GitSyncCache cache = new GitSyncCache();
-		TreeFilter filter = paths.isEmpty() ? null
-				: PathFilterGroup.createFromStrings(paths);
+		TreeFilter filter = createPathFilter(paths);
 
 		Repository repo = gsd.getRepository();
 		ObjectId baseTree = getTree(gsd.getSrcRevCommit());
