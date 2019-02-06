@@ -1,9 +1,9 @@
 	private List<IFile> getDependencies(IStorage storage, IContainer c)
 			throws CoreException, IOException {
 		List<IFile> result = new ArrayList<>();
-		try (InputStream contents = storage.getContents();) {
-			BufferedReader r = new BufferedReader(
-					new InputStreamReader(contents, Charset.forName("UTF-8")));
+		try (InputStream contents = storage.getContents();
+				BufferedReader r = new BufferedReader(new InputStreamReader(
+						contents, Charset.forName("UTF-8")))) {
 			try {
 				while (true) {
 					String line = r.readLine();
