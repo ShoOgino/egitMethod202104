@@ -5,11 +5,11 @@
 					return Status.CANCEL_STATUS;
 				}
 				diffs = FileDiff.compute(input.getRepository(),
-						input.getTreeWalk(),
-						input.getCommit(), monitor, filter);
+						input.getTreeWalk(), input.getCommit(), monitor,
+						filter);
 			} catch (IOException err) {
 				Activator.handleError(MessageFormat.format(
-						UIText.FileDiffContentProvider_errorGettingDifference,
+						UIText.CommitFileDiffViewer_errorGettingDifference,
 						input.getCommit().getId()), err, false);
 			}
 			if (monitor.isCanceled()) {

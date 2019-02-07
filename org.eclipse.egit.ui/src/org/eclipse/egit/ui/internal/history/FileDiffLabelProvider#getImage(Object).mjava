@@ -1,6 +1,19 @@
 	@Override
 	public Image getImage(final Object element) {
+		if (element == null) {
+			return null;
+		}
 		final FileDiff c = (FileDiff) element;
-		return (Image) resourceManager.get(c.getImageDescriptor(c));
+		ImageDescriptor desc = c.getBaseImageDescriptor();
+		if (desc == null) {
+			return null;
+		}
+		Image image = UIIcons.getImage(resourceManager, desc);
+		desc = c.getImageDcoration();
+		if (desc != null) {
+			image = UIIcons.getImage(resourceManager, new DecorationOverlayIcon(
+					image, desc, IDecoration.BOTTOM_RIGHT));
+		}
+		return image;
 	}
 

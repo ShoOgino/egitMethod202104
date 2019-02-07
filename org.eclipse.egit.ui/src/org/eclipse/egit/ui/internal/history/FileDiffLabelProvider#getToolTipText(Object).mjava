@@ -1,5 +1,8 @@
 	@Override
 	public String getToolTipText(final Object element) {
+		if (element == null) {
+			return null;
+		}
 		final FileDiff c = (FileDiff) element;
 		if (c.getChange() == ChangeType.RENAME) {
 			return MessageFormat.format(

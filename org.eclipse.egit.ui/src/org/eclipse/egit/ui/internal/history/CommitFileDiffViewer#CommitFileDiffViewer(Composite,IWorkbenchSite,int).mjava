@@ -1,7 +1,8 @@
 	/**
-	 * Shows a list of file changed by a commit.
-	 *
-	 * If no input is available, an error message is shown instead.
+	 * Shows a list of file changed by a commit. The viewer is created with the
+	 * given SWT styles and has by default an {@link ArrayContentProvider}. A
+	 * label provider and {@link ViewerComparator} are set, and a context menu
+	 * is set up.
 	 *
 	 * @param parent
 	 * @param site
@@ -10,7 +11,7 @@
 	 */
 	public CommitFileDiffViewer(final Composite parent,
 			final IWorkbenchSite site, final int style) {
-		super(parent, style);
+		super(parent, preventBug499850(style));
 		this.site = site;
 		final Table rawTable = getTable();
 
@@ -21,7 +22,7 @@
 		ColumnViewerToolTipSupport.enableFor(this);
 
 		setLabelProvider(new FileDiffLabelProvider(dimmedForegroundRgb));
-		setContentProvider(new FileDiffContentProvider());
+		setContentProvider(ArrayContentProvider.getInstance());
 		setComparator(new ViewerComparator() {
 
 			@Override
@@ -71,8 +72,7 @@
 		});
 
 		final MenuManager mgr = new MenuManager();
-		Control c = getControl();
-		c.setMenu(mgr.createContextMenu(c));
+		rawTable.setMenu(mgr.createContextMenu(rawTable));
 
 		openThisVersion = new Action(
 				UIText.CommitFileDiffViewer_OpenInEditorMenuLabel) {
@@ -194,16 +194,37 @@
 		mgr.add(showInSubMenu);
 
 		mgr.add(new Separator());
-		selectAll = ActionUtils.createGlobalAction(ActionFactory.SELECT_ALL,
-				() -> doSelectAll());
-		selectAll.setEnabled(true);
 		copy = ActionUtils.createGlobalAction(ActionFactory.COPY,
-				() -> doCopy());
+				() -> {
+					IStructuredSelection selection = getStructuredSelection();
+					if (selection != null && !selection.isEmpty()) {
+						doCopy(selection.iterator());
+					}
+				});
 		copy.setText(UIText.CommitFileDiffViewer_CopyFilePathMenuLabel);
 		copy.setEnabled(true);
-		ActionUtils.setGlobalActions(getControl(), copy, selectAll);
-		mgr.add(selectAll);
+		if ((rawTable.getStyle() & SWT.MULTI) != 0) {
+			selectAll = ActionUtils.createGlobalAction(ActionFactory.SELECT_ALL,
+					() -> doSelectAll());
+			selectAll.setEnabled(true);
+			ActionUtils.setGlobalActions(rawTable, copy, selectAll);
+			mgr.add(selectAll);
+		} else {
+			ActionUtils.setGlobalActions(rawTable, copy);
+		}
 		mgr.add(copy);
+		copyAll = new Action(
+				UIText.CommitFileDiffViewer_CopyAllFilePathsMenuLabel) {
+
+			@Override
+			public void run() {
+				doCopy(Arrays
+						.asList(((IStructuredContentProvider) getContentProvider())
+								.getElements(getInput()))
+						.iterator());
+			}
+		};
+		mgr.add(copyAll);
 		mgr.addMenuListener(manager -> getControl().setFocus());
 	}
 

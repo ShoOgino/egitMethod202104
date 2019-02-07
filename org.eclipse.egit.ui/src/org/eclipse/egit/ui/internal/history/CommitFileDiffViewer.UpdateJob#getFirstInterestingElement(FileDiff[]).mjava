@@ -1,5 +1,4 @@
-		private FileDiff getFirstInterestingElement() {
-			FileDiff[] diffs = diff;
+		private FileDiff getFirstInterestingElement(FileDiff[] diffs) {
 			if (diffs != null) {
 				for (FileDiff d : diffs) {
 					if (d.isMarked(INTERESTING_MARK_TREE_FILTER_INDEX)) {

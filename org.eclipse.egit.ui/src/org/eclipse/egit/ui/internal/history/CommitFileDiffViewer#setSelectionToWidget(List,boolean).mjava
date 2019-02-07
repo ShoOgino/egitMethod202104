@@ -1,0 +1,13 @@
+	@Override
+	protected void setSelectionToWidget(List list, boolean reveal) {
+		// setSelection(StructuredSelection.EMPTY) is not the same
+		// as setSelection(null). However, the latter is undocumented.
+		// Ensure here that we do take all possible shortcuts and just
+		// clear the selection (normally via doDeselectAll()) if the
+		// list is non-null but empty.
+		if (list != null && list.isEmpty()) {
+			list = null;
+		}
+		super.setSelectionToWidget(list, reveal);
+	}
+

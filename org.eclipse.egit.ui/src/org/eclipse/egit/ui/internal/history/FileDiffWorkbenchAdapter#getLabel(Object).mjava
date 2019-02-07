@@ -1,0 +1,8 @@
+	@Override
+	public String getLabel(Object object) {
+		if (object instanceof FileDiff) {
+			return ((FileDiff) object).getPath();
+		}
+		return null;
+	}
+

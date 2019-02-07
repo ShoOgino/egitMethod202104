@@ -1,7 +1,7 @@
 	private void fillStagedDiffs(FileDiff[] diffs) {
 		if (diffs == null)
 			return;
-		stagedDiffViewer.setInput(diffs);
+		stagedDiffViewer.newInput(diffs);
 		stagedDiffSection.setText(MessageFormat.format(
 				UIText.StashEditorPage_StagedChanges,
 				Integer.valueOf(diffs.length)));

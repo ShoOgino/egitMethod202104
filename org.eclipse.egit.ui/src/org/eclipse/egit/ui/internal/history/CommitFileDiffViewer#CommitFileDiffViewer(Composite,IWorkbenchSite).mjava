@@ -1,7 +1,7 @@
 	/**
-	 * Shows a list of file changed by a commit.
-	 *
-	 * If no input is available, an error message is shown instead.
+	 * Shows a list of file changed by a commit. The viewer is created with the
+	 * default styles: a virtual table with borders and scroll bars, with
+	 * multi-selection enabled.
 	 *
 	 * @param parent
 	 * @param site
@@ -9,6 +9,6 @@
 	public CommitFileDiffViewer(final Composite parent,
 			final IWorkbenchSite site) {
 		this(parent, site, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER
-				| SWT.FULL_SELECTION);
+				| SWT.VIRTUAL | SWT.FULL_SELECTION);
 	}
 

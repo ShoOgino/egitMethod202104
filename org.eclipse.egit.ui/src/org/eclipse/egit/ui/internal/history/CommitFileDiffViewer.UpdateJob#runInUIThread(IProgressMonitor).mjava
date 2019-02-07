@@ -1,20 +1,20 @@
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			Control control = viewer == null ? null : viewer.getControl();
+			Control control = getControl();
 			if (control == null || control.isDisposed() || loader != loadJob) {
 				return Status.CANCEL_STATUS;
 			}
-			diff = loadJob.getDiffs();
+			FileDiff[] diffs = loadJob.getDiffs();
 			try {
 				control.setRedraw(false);
-				viewer.refresh();
-				FileDiff interesting = getFirstInterestingElement();
+				setInput(diffs);
+				FileDiff interesting = getFirstInterestingElement(diffs);
 				if (interesting != null) {
-					if (currentInput.isSelectMarked()) {
-						viewer.setSelection(
-								new StructuredSelection(interesting), true);
+					if (loadJob.getInput().isSelectMarked()) {
+						setSelection(new StructuredSelection(interesting),
+								true);
 					} else {
-						viewer.reveal(interesting);
+						reveal(interesting);
 					}
 				}
 			} finally {
