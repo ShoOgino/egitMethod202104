@@ -57,8 +57,8 @@
 		}
 		Collections.sort(availableRefs, new Comparator<Ref>() {
 			@Override
-			public int compare(final Ref o1, final Ref o2) {
-				return o1.getName().compareToIgnoreCase(o2.getName());
+			public int compare(final Ref ref1, final Ref ref2) {
+				return CommonUtils.REF_ASCENDING_COMPARATOR.compare(ref1, ref2);
 			}
 		});
 		if (idHEAD != null && head == null) {
