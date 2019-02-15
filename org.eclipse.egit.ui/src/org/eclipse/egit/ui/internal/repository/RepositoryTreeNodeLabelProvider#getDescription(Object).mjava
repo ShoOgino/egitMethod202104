@@ -1,6 +1,12 @@
 	@Override
 	public String getDescription(Object element) {
 		StringBuilder result = new StringBuilder(getText(element));
+		// for branches use the complete name, even with hierarchical layout
+		if (element instanceof RefNode) {
+			Ref ref = ((RefNode) element).getObject();
+			String branchName = Repository.shortenRefName(ref.getName());
+			result = new StringBuilder(branchName);
+		}
 		if (element instanceof RepositoryTreeNode) {
 			if (((RepositoryTreeNode) element)
 					.getType() != RepositoryTreeNodeType.REPO) {
