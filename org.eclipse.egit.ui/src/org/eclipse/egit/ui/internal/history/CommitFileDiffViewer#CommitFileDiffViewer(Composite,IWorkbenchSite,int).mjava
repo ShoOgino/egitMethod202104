@@ -78,12 +78,8 @@
 				UIText.CommitFileDiffViewer_OpenInEditorMenuLabel) {
 			@Override
 			public void run() {
-				final ISelection s = getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection))
-					return;
-				final IStructuredSelection iss = (IStructuredSelection) s;
-				for (Object element : iss.toList())
-					openThisVersionInEditor((FileDiff) element);
+				withSelection(
+						CommitFileDiffViewer.this::openThisVersionInEditor);
 			}
 		};
 
@@ -91,12 +87,8 @@
 				UIText.CommitFileDiffViewer_OpenPreviousInEditorMenuLabel) {
 			@Override
 			public void run() {
-				final ISelection s = getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection))
-					return;
-				final IStructuredSelection iss = (IStructuredSelection) s;
-				for (Object element : iss.toList())
-					openPreviousVersionInEditor((FileDiff) element);
+				withSelection(
+						CommitFileDiffViewer.this::openPreviousVersionInEditor);
 			}
 		};
 
@@ -104,12 +96,7 @@
 				UIIcons.ANNOTATE) {
 			@Override
 			public void run() {
-				final ISelection s = getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection))
-					return;
-				final IStructuredSelection iss = (IStructuredSelection) s;
-				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();)
-					showAnnotations(it.next());
+				withSelection(CommitFileDiffViewer.this::showAnnotations);
 			}
 		};
 
@@ -117,19 +104,14 @@
 				UIText.CommitFileDiffViewer_OpenWorkingTreeVersionInEditorMenuLabel) {
 			@Override
 			public void run() {
-				final ISelection s = getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection))
-					return;
-				final IStructuredSelection iss = (IStructuredSelection) s;
-				for (Iterator<FileDiff> it = iss.iterator(); it.hasNext();) {
-					FileDiff diff = it.next();
-					String relativePath = diff.getPath();
+				withSelection(d -> {
+					String relativePath = d.getPath();
 					File file = new Path(
-							diff.getRepository().getWorkTree()
+							d.getRepository().getWorkTree()
 									.getAbsolutePath())
 									.append(relativePath).toFile();
 					DiffViewer.openFileInEditor(file, -1);
-				}
+				});
 			}
 		};
 
@@ -137,13 +119,8 @@
 				UIText.CommitFileDiffViewer_CompareMenuLabel) {
 			@Override
 			public void run() {
-				ISelection s = getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection)) {
-					return;
-				}
-				IStructuredSelection iss = (IStructuredSelection) s;
-				FileDiff d = (FileDiff) iss.getFirstElement();
-				showTwoWayFileDiff(d);
+				withFirstSelected(
+						CommitFileDiffViewer.this::showTwoWayFileDiff);
 			}
 		};
 
@@ -151,11 +128,8 @@
 				UIText.CommitFileDiffViewer_CompareWorkingDirectoryMenuLabel) {
 			@Override
 			public void run() {
-				final ISelection s = getSelection();
-				if (s.isEmpty() || !(s instanceof IStructuredSelection))
-					return;
-				final IStructuredSelection iss = (IStructuredSelection) s;
-				showWorkingDirectoryFileDiff((FileDiff) iss.getFirstElement());
+				withFirstSelected(
+						CommitFileDiffViewer.this::showWorkingDirectoryFileDiff);
 			}
 		};
 
