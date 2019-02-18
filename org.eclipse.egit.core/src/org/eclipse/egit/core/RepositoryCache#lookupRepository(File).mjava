@@ -10,18 +10,33 @@
 	 * @throws IOException
 	 */
 	public Repository lookupRepository(final File gitDir) throws IOException {
-		prune();
 		// Make sure we have a normalized path without .. segments here.
 		File normalizedGitDir = new Path(gitDir.getAbsolutePath()).toFile();
 		synchronized (repositoryCache) {
 			Reference<Repository> r = repositoryCache.get(normalizedGitDir);
-			Repository d = r != null ? r.get() : null;
-			if (d == null) {
-				d = FileRepositoryBuilder.create(normalizedGitDir);
+			if (r == null) {
+				Repository result = FileRepositoryBuilder
+						.create(normalizedGitDir);
 				repositoryCache.put(normalizedGitDir,
-						new WeakReference<Repository>(d));
+						new WeakReference<>(result));
+				return result;
+			} else {
+				Repository result = r.get();
+				if (result != null && result.getDirectory().exists()) {
+					return result;
+				} else {
+					repositoryCache.remove(normalizedGitDir);
+				}
 			}
-			return d;
 		}
+		// If we get here, we found a stale repository. We must remove
+		// a possibly still existing IndexDiffCache outside the synchronized
+		// block, otherwise we may run into a deadlock due to lock inversion
+		// between our repositoryCache and IndexDiffCache.entries.
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		if (cache != null) {
+			cache.remove(normalizedGitDir);
+		}
+		return lookupRepository(gitDir);
 	}
 

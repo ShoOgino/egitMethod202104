@@ -11,8 +11,6 @@
 	 */
 	public Repository getRepository(final IResource resource) {
 		IPath location = resource.getLocation();
-		if (location == null)
-			return null;
-		return getRepository(location);
+		return location == null ? null : getRepository(location);
 	}
 

@@ -2,16 +2,22 @@
 	 * @return all Repository instances contained in the cache
 	 */
 	public Repository[] getAllRepositories() {
-		prune();
-		List<Repository> repositories = new ArrayList<Repository>();
+		List<Repository> repositories = new ArrayList<>();
+		List<File> toRemove = new ArrayList<>();
 		synchronized (repositoryCache) {
-			for (Reference<Repository> reference : repositoryCache.values()) {
-				Repository repository = reference.get();
-				if (repository != null) {
+			for (Iterator<Map.Entry<File, Reference<Repository>>> i = repositoryCache
+					.entrySet().iterator(); i.hasNext();) {
+				Map.Entry<File, Reference<Repository>> entry = i.next();
+				Repository repository = entry.getValue().get();
+				if (repository == null || !repository.getDirectory().exists()) {
+					i.remove();
+					toRemove.add(entry.getKey());
+				} else {
 					repositories.add(repository);
 				}
 			}
 		}
+		removeIndexDiffCaches(toRemove);
 		return repositories.toArray(new Repository[0]);
 	}
 

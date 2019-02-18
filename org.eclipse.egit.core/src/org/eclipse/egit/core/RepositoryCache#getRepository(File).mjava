@@ -10,11 +10,22 @@
 		if (gitDir == null) {
 			return null;
 		}
-		prune();
 		File normalizedGitDir = new Path(gitDir.getAbsolutePath()).toFile();
 		synchronized (repositoryCache) {
 			Reference<Repository> r = repositoryCache.get(normalizedGitDir);
-			return r != null ? r.get() : null;
+			if (r == null) {
+				return null;
+			}
+			Repository result = r.get();
+			if (result != null && result.getDirectory().exists()) {
+				return result;
+			}
+			repositoryCache.remove(normalizedGitDir);
 		}
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		if (cache != null) {
+			cache.remove(normalizedGitDir);
+		}
+		return null;
 	}
 
