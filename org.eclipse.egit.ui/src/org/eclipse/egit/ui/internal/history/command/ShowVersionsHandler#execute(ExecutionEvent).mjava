@@ -47,7 +47,7 @@
 							} catch (Exception e) {
 								errorOccurred = true;
 							}
-						} else
+						} else {
 							try {
 								EgitUiEditorUtils.openEditor(
 										getPart(event).getSite().getPage(), rev,
@@ -57,6 +57,7 @@
 										UIText.GitHistoryPage_openFailed, e);
 								errorOccurred = true;
 							}
+						}
 					} else {
 						ids.add(commit.getId());
 					}
@@ -82,23 +83,16 @@
 					errorOccurred = true;
 				}
 				if (rev != null) {
-					if (compareMode)
-						try (RevWalk rw = new RevWalk(repo)) {
-							ITypedElement left = CompareUtils
-									.getFileRevisionTypedElement(gitPath,
-											rw.parseCommit(repo
-													.resolve(Constants.HEAD)),
-											repo);
-							ITypedElement right = CompareUtils
-									.getFileRevisionTypedElement(commitPath,
-											commit, repo);
-							final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
-									left, right, null);
-							CompareUtils.openInCompare(workbenchPage, in);
-						} catch (IOException e) {
-							errorOccurred = true;
-						}
-					else
+					if (compareMode) {
+						ITypedElement right = CompareUtils
+								.getFileRevisionTypedElement(commitPath, commit,
+										repo);
+						GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+								new LocalNonWorkspaceTypedElement(repo,
+										new Path(fileInput.getAbsolutePath())),
+								right, null);
+						CompareUtils.openInCompare(workbenchPage, in);
+					} else {
 						try {
 							EgitUiEditorUtils.openEditor(getPart(event)
 									.getSite().getPage(), rev,
@@ -108,12 +102,15 @@
 									UIText.GitHistoryPage_openFailed, e);
 							errorOccurred = true;
 						}
-				} else
+					}
+				} else {
 					ids.add(commit.getId());
+				}
 			}
 		}
-		if (errorOccurred)
+		if (errorOccurred) {
 			Activator.showError(UIText.GitHistoryPage_openFailed, null);
+		}
 		if (ids.size() > 0) {
 			StringBuilder idList = new StringBuilder(""); //$NON-NLS-1$
 			for (ObjectId objectId : ids)
