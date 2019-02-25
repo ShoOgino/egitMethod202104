@@ -38,6 +38,8 @@
 				UIPreferences.HISTORY_SHOW_BRANCH_SEQUENCE)) {
 			try (RevWalk rw = new RevWalk(db)) {
 				List<Ref> branches = getBranches(commit, allRefs, db);
+				Collections.sort(branches,
+						CommonUtils.REF_ASCENDING_COMPARATOR);
 				if (!branches.isEmpty()) {
 					d.append(UIText.CommitMessageViewer_branches);
 					d.append(": "); //$NON-NLS-1$
