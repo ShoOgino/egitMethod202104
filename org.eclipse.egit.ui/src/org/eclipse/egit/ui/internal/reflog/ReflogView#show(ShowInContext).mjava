@@ -4,7 +4,13 @@
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 			for (Object element : structuredSelection.toList()) {
-				if (element instanceof RepositoryTreeNode) {
+				if (element instanceof RefNode) {
+					RefNode node = (RefNode) element;
+					Ref ref = node.getObject();
+					showReflogFor(node.getRepository(),
+							Repository.shortenRefName(ref.getName()));
+					return true;
+				} else if (element instanceof RepositoryTreeNode) {
 					RepositoryTreeNode node = (RepositoryTreeNode) element;
 					showReflogFor(node.getRepository());
 					return true;
