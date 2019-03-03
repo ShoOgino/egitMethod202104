@@ -6,6 +6,9 @@
 					.isSupportedType(event.dataType);
 			if (isFileTransfer || isTextTransfer) {
 				RevCommit commit = getSelectedCommit();
+				if (commit == null) {
+					return;
+				}
 				String patchContent = createPatch(commit);
 				if (isTextTransfer) {
 					event.data = patchContent;

@@ -1,7 +1,11 @@
+		@Nullable
 		private RevCommit getSelectedCommit() {
 			IStructuredSelection selection = (IStructuredSelection) table
 					.getSelection();
 			RevCommit commit = (RevCommit) selection.getFirstElement();
+			if (commit == null) {
+				return null;
+			}
 			try (RevWalk walk = new org.eclipse.jgit.revwalk.RevWalk(
 					input.getRepository())) {
 				return walk.parseCommit(commit.getId());

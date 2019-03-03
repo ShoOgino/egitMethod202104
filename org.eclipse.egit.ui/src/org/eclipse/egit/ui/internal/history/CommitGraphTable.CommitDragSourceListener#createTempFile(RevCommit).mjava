@@ -1,4 +1,5 @@
-		private File createTempFile(RevCommit commit) throws IOException {
+		private File createTempFile(@NonNull RevCommit commit)
+				throws IOException {
 			String tmpDir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
 			String patchName = "egit-patch" + commit.getId().name(); //$NON-NLS-1$
 			File patchDir = new File(tmpDir, patchName);
