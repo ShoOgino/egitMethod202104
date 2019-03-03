@@ -35,6 +35,7 @@
 							new Transfer[] { TextTransfer.getInstance() });
 					try {
 						text.paste();
+						refTextEdited = false;
 					} finally {
 						clipboard.setContents(new Object[] { clipText },
 								new Transfer[] { TextTransfer.getInstance() });

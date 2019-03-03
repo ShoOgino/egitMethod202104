@@ -2,24 +2,41 @@
 			final Text textField) {
 		return UIUtils.addContentProposalToText(textField, () -> {
 			try {
-				return getRefsForContentAssist(textField.getText());
+				return getRefsForContentAssist();
 			} catch (InvocationTargetException e) {
 				Activator.handleError(e.getMessage(), e, true);
 				return null;
 			} catch (InterruptedException e) {
 				return null;
 			}
-		}, (pattern, ref) -> {
-			if (pattern == null || pattern
-					.matcher(ref.getChangeNumber().toString()).matches()) {
-				return new ChangeContentProposal(ref);
+		}, (pattern, change) -> {
+			if (pattern == null
+					|| pattern.matcher(change.getRefName()).matches()) {
+				return new ChangeContentProposal(change);
 			}
 			return null;
-		}, s -> {
-			String input = s;
-			Matcher matcher = GERRIT_CHANGE_REF_PATTERN.matcher(input);
-			if (matcher.find()) {
-				input = matcher.group(2);
+		}, input -> {
+			Change change = determineChangeFromString(input);
+			int changeNumber = -1;
+			try {
+				if (change == null) {
+					Matcher matcher = DIGITS.matcher(input);
+					if (matcher.find()) {
+						return Pattern.compile(GERRIT_CHANGE_REF_PREFIX
+								+ "(../)?" + matcher.group() + WILDCARD); //$NON-NLS-1$
+					} else if (input.startsWith(GERRIT_CHANGE_REF_PREFIX)
+							|| GERRIT_CHANGE_REF_PREFIX.startsWith(input)) {
+						return null; // Match all
+					}
+				} else {
+					changeNumber = change.getChangeNumber().intValue();
+				}
+				if (changeNumber > 0) {
+					return Pattern.compile(GERRIT_CHANGE_REF_PREFIX + "../" //$NON-NLS-1$
+							+ changeNumber + WILDCARD);
+				}
+			} catch (PatternSyntaxException e) {
+				// Ignore and return default pattern below.
 			}
 			return UIUtils.createProposalPattern(input);
 		}, null, UIText.FetchGerritChangePage_ContentAssistTooltip);
