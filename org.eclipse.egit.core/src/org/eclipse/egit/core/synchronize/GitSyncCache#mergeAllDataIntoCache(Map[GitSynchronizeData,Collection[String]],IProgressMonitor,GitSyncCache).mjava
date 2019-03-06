@@ -7,7 +7,7 @@
 				.entrySet()) {
 			Collection<String> paths = entry.getValue();
 			GitSyncCache partialCache = getAllData(entry.getKey(), paths);
-			cache.merge(partialCache, new HashSet<String>(paths));
+			cache.merge(partialCache, new HashSet<>(paths));
 			m.worked(1);
 		}
 

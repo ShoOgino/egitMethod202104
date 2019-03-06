@@ -1,0 +1,17 @@
+	/**
+	 * @return an {@link ImageDescriptor} for a decoration (to be applied
+	 *         bottom-right), or {@code null} if no decoration to apply
+	 */
+	public ImageDescriptor getImageDcoration() {
+		switch (getChange()) {
+		case ADD:
+			return UIIcons.OVR_STAGED_ADD;
+		case DELETE:
+			return UIIcons.OVR_STAGED_REMOVE;
+		case RENAME:
+			return UIIcons.OVR_STAGED_RENAME;
+		default:
+			return null;
+		}
+	}
+

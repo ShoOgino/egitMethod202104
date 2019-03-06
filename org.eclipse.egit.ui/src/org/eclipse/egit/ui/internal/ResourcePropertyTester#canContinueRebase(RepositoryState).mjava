@@ -1,0 +1,16 @@
+	/**
+	 * @param state
+	 * @return {@code true} if the repository state permits a rebase to be
+	 *         continued
+	 */
+	public static boolean canContinueRebase(@NonNull RepositoryState state) {
+		switch (state) {
+		case REBASING_INTERACTIVE:
+			return true;
+		case REBASING_MERGE:
+			return true;
+		default:
+			return false;
+		}
+	}
+

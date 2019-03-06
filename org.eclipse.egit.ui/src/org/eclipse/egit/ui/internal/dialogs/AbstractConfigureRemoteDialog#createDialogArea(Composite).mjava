@@ -39,8 +39,12 @@
 				.applyTo(sameUriDetails);
 		Label commonUriLabel = new Label(sameUriDetails, SWT.NONE);
 		commonUriLabel.setText(UIText.AbstractConfigureRemoteDialog_UriLabel);
-		commonUriText = new Text(sameUriDetails, SWT.BORDER | SWT.READ_ONLY);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(commonUriText);
+		commonUriText = new StyledText(sameUriDetails,
+				SWT.SINGLE | SWT.READ_ONLY);
+		commonUriText.setBackground(sameUriDetails.getBackground());
+		commonUriText.setCaret(null);
+		GridDataFactory.fillDefaults().grab(true, false)
+				.align(SWT.FILL, SWT.CENTER).applyTo(commonUriText);
 		changeCommonUriAction = new Action(
 				UIText.AbstractConfigureRemoteDialog_ChangeUriLabel) {
 
@@ -75,7 +79,8 @@
 				updateControls();
 			}
 		};
-		createActionButton(sameUriDetails, SWT.PUSH, changeCommonUriAction);
+		changeButton = createActionButton(sameUriDetails, SWT.PUSH,
+				changeCommonUriAction);
 		createActionButton(sameUriDetails, SWT.PUSH, deleteCommonUriAction)
 				.setEnabled(false);
 

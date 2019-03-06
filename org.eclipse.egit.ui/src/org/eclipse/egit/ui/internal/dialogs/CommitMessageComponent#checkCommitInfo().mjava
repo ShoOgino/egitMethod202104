@@ -27,16 +27,29 @@
 			return false;
 		}
 
-		boolean committerValid = false;
-		if (committer.length() > 0)
-			committerValid = RawParseUtils.parsePersonIdent(committer) != null;
-		if (!committerValid) {
+		PersonIdent committerPersonIdent = committer.length() > 0
+				? RawParseUtils.parsePersonIdent(committer)
+				: null;
+		if (committerPersonIdent == null) {
 			MessageDialog.openWarning(getShell(),
 					UIText.CommitDialog_ErrorInvalidAuthor,
 					UIText.CommitDialog_ErrorInvalidCommitterSpecified);
 			return false;
 		}
 
+		if (signCommit) {
+			String signingKey = repository != null
+					? new GpgConfig(repository.getConfig()).getSigningKey()
+					: null;
+			boolean signingKeyAvailable = checkSigningKey(signingKey,
+					committerPersonIdent);
+			if (!signingKeyAvailable) {
+				MessageDialog.openWarning(getShell(),
+						UIText.CommitMessageComponent_ErrorMissingSigningKey,
+						UIText.CommitMessageComponent_ErrorNoSigningKeyFound);
+				return false;
+			}
+		}
 		authorHandler.updateProposals();
 		committerHandler.updateProposals();
 		return true;

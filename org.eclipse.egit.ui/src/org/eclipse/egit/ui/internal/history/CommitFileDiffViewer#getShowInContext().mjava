@@ -3,7 +3,7 @@
 	 * @see IShowInSource#getShowInContext()
 	 */
 	public ShowInContext getShowInContext() {
-		IStructuredSelection selection = (IStructuredSelection) getSelection();
+		IStructuredSelection selection = getStructuredSelection();
 		List<Object> elements = new ArrayList<>();
 		List<File> files = new ArrayList<>();
 		Repository repo = null;

@@ -7,6 +7,8 @@
 		if (IWorkbenchAdapter.class == adapterType) {
 			if (adaptableObject instanceof RepositoryTreeNode) {
 				return RepositoryTreeNodeWorkbenchAdapter.INSTANCE;
+			} else if (adaptableObject instanceof FileDiff) {
+				return FileDiffWorkbenchAdapter.INSTANCE;
 			}
 
 			if (gitModelWorkbenchAdapter == null) {

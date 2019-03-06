@@ -7,7 +7,7 @@
 		// Even if there's more than one element, only consider the first
 		RevCommit commit = (RevCommit) selection.getFirstElement();
 		Object input = getPage(event).getInputInternal().getSingleFile();
-		IWorkbenchPage workBenchPage = HandlerUtil
+		IWorkbenchPage workbenchPage = HandlerUtil
 				.getActiveWorkbenchWindowChecked(event).getActivePage();
 		if (input instanceof IFile) {
 			IFile file = (IFile) input;
@@ -18,27 +18,26 @@
 				final String commitPath = getRenamedPath(gitPath, commit);
 				ITypedElement right = CompareUtils.getFileRevisionTypedElement(
 						commitPath, commit, mapping.getRepository());
-				final GitCompareFileRevisionEditorInput in = new GitCompareFileRevisionEditorInput(
+				CompareEditorInput in = new GitCompareFileRevisionEditorInput(
 						SaveableCompareEditorInput.createFileElement(file),
 						right, null);
-				CompareUtils.openInCompare(workBenchPage, in);
+				CompareUtils.openInCompare(workbenchPage, in);
 			}
 		} else if (input instanceof File) {
 			File file = (File) input;
-			// TODO can we create a ITypedElement from the local file?
 			Repository repo = getRepository(event);
-			RevCommit leftCommit;
-			try (RevWalk rw = new RevWalk(repo)) {
-				leftCommit = rw.parseCommit(repo
-						.resolve(Constants.HEAD));
-			} catch (Exception e) {
-				throw new ExecutionException(e.getMessage(), e);
+			if (repo != null) {
+				final String leftCommitPath = getRepoRelativePath(repo, file);
+				final String rightCommitPath = getRenamedPath(leftCommitPath,
+						commit);
+				ITypedElement right = CompareUtils.getFileRevisionTypedElement(
+						rightCommitPath, commit, repo);
+				CompareEditorInput in = new GitCompareFileRevisionEditorInput(
+						new LocalNonWorkspaceTypedElement(repo,
+								new Path(file.getAbsolutePath())),
+						right, null);
+				CompareUtils.openInCompare(workbenchPage, in);
 			}
-			final String leftCommitPath = getRepoRelativePath(repo, file);
-			final String rightCommitPath = getRenamedPath(leftCommitPath,
-					commit);
-			CompareUtils.openInCompare(leftCommit, commit, leftCommitPath,
-					rightCommitPath, repo, workBenchPage);
 		}
 		return null;
 	}

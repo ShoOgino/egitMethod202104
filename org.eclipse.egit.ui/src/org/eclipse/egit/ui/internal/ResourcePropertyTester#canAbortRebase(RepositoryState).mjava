@@ -1,0 +1,18 @@
+	/**
+	 * @param state
+	 * @return {@code true} if the repository state permits a rebase to be
+	 *         aborted
+	 */
+	public static boolean canAbortRebase(@NonNull RepositoryState state) {
+		switch (state) {
+		case REBASING_INTERACTIVE:
+			return true;
+		case REBASING_REBASING:
+			return true;
+		case REBASING_MERGE:
+			return true;
+		default:
+			return false;
+		}
+	}
+

@@ -6,9 +6,6 @@
 		}
 		setHistoryPageInput(input);
 		final SWTCommitList oldList = allCommits;
-		if (oldList != null && oldList != list) {
-			oldList.dispose();
-		}
 		highlight = hFlag;
 		allCommits = list;
 		int newAllCommitsLength = asArray == null ? 0 : asArray.length;

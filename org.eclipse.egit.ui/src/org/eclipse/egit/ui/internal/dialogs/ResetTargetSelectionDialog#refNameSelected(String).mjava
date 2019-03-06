@@ -1,6 +1,6 @@
 	@Override
 	protected void refNameSelected(String refName) {
 		boolean enabled = refName != null || parsedCommitish != null;
-		getButton(Window.OK).setEnabled(enabled);
+		setOkButtonEnabled(enabled);
 	}
 

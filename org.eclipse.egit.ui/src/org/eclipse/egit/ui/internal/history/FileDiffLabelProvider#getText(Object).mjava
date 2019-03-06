@@ -1,5 +1,8 @@
 	@Override
 	public String getText(final Object element) {
-		return ((FileDiff) element).getLabel(element);
+		if (element == null) {
+			return null;
+		}
+		return ((FileDiff) element).getPath();
 	}
 

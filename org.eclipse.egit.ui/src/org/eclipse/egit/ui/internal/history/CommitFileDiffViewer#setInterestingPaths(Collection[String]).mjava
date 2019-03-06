@@ -1,9 +1,14 @@
 	/**
-	 * @see FileDiffContentProvider#setInterestingPaths(Collection)
+	 * Set the interesting paths to be marked and re-compute and update the UI.
+	 *
 	 * @param interestingPaths
+	 *            to be marked
 	 */
 	void setInterestingPaths(Collection<String> interestingPaths) {
-		((FileDiffContentProvider) getContentProvider())
-				.setInterestingPaths(interestingPaths);
+		if (realInput != null) {
+			cancelJob();
+			realInput.setInterestingPaths(interestingPaths);
+			startJob(realInput);
+		}
 	}
 

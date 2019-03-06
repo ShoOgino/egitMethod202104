@@ -1,9 +1,0 @@
-		public FileDiffLoader(FileDiffInput input, TreeFilter filter) {
-			super(MessageFormat.format(
-					UIText.FileDiffContentProvider_computingFileDiffs,
-					input.getCommit().getName()));
-			this.input = input;
-			this.filter = filter;
-			setRule(new TreeWalkSchedulingRule(input.getTreeWalk()));
-		}
-

@@ -2,7 +2,7 @@
 	public ResourceTraversal[] getTraversals(ResourceMappingContext context,
 			IProgressMonitor monitor) throws CoreException {
 		SubMonitor sm = SubMonitor.convert(monitor, 3);
-		Set<IFile> result = new LinkedHashSet<IFile>();
+		Set<IFile> result = new LinkedHashSet<>();
 		result.add(file);
 		try {
 			List<IFile> dependencies = getDependencies(file, file.getParent());

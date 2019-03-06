@@ -10,21 +10,41 @@
 	 * @since 3.2
 	 */
 	public Repository getRepository(final IPath location) {
-		Repository[] repositories = getAllRepositories();
+		if (location == null) {
+			return null;
+		}
 		Repository repository = null;
 		int largestSegmentCount = 0;
-		for (Repository r : repositories) {
-			if (!r.isBare()) {
-				IPath repoPath = new Path(r.getWorkTree().getAbsolutePath());
-				if (location != null && repoPath.isPrefixOf(location)) {
+		List<File> toRemove = new ArrayList<>();
+		synchronized (repositoryCache) {
+			for (Iterator<Map.Entry<File, Reference<Repository>>> i = repositoryCache
+					.entrySet().iterator(); i.hasNext();) {
+				Map.Entry<File, Reference<Repository>> entry = i.next();
+				Repository repo = entry.getValue().get();
+				if (repo == null) {
+					i.remove();
+					toRemove.add(entry.getKey());
+					continue;
+				}
+				if (repo.isBare()) {
+					continue;
+				}
+				IPath repoPath = new Path(repo.getWorkTree().getAbsolutePath());
+				if (repoPath.isPrefixOf(location)) {
 					if (repository == null
 							|| repoPath.segmentCount() > largestSegmentCount) {
-						repository = r;
+						if (!repo.getDirectory().exists()) {
+							i.remove();
+							toRemove.add(entry.getKey());
+							continue;
+						}
+						repository = repo;
 						largestSegmentCount = repoPath.segmentCount();
 					}
 				}
 			}
 		}
+		removeIndexDiffCaches(toRemove);
 		return repository;
 	}
 

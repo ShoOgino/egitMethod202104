@@ -1,8 +1,6 @@
 	private String getFileRevisionLabel(FileRevisionTypedElement element) {
 		Object fileObject = element.getFileRevision();
-		if (fileObject instanceof LocalFileRevision){
-			return NLS.bind(UIText.GitCompareFileRevisionEditorInput_LocalHistoryLabel, new Object[]{element.getName(), element.getTimestamp()});
-		} else if (fileObject instanceof IndexFileRevision) {
+		if (fileObject instanceof IndexFileRevision) {
 			if (isEditable(element))
 				return NLS.bind(
 						UIText.GitCompareFileRevisionEditorInput_IndexEditableLabel,

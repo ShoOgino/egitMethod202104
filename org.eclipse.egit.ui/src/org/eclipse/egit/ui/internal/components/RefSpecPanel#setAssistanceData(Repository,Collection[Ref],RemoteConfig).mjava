@@ -21,9 +21,9 @@
 		for (final RefContentProposal p : remoteProposals)
 			remoteRefNames.add(p.getContent());
 
-		Ref HEAD = null;
+		Ref head = null;
 		try {
-			HEAD = localDb.exactRef(Constants.HEAD);
+			head = localDb.exactRef(Constants.HEAD);
 		} catch (IOException e) {
 			Activator.logError("Couldn't read HEAD from local repository", e); //$NON-NLS-1$
 		}
@@ -34,7 +34,7 @@
 			refs = Collections.emptyList();
 		}
 		final List<RefContentProposal> localProposals = createContentProposals(
-				refs, HEAD);
+				refs, head);
 		localProposalProvider.setProposals(localProposals);
 		localRefNames = new HashSet<>();
 		for (final RefContentProposal ref : localProposals)

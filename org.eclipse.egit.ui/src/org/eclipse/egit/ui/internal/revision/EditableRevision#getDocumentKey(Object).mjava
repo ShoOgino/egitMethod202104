@@ -1,6 +1,6 @@
 	@Override
 	public IEditorInput getDocumentKey(Object element) {
-		if (element == this && getFileRevision() instanceof IndexFileRevision) {
+		if (element == this) {
 			if (input == null) {
 				input = new IStorageEditorInput() {
 

@@ -1,0 +1,13 @@
+	GenerateHistoryJob(final GitHistoryPage ghp, @NonNull RevWalk walk,
+			ResourceManager resources) {
+		super(NLS.bind(UIText.HistoryPage_refreshJob, Activator.getDefault()
+				.getRepositoryUtil().getRepositoryName(
+						ghp.getInputInternal().getRepository())));
+		page = ghp;
+		this.walk = walk;
+		highlightFlag = walk.newFlag("highlight"); //$NON-NLS-1$
+		loadedCommits = new SWTCommitList(resources);
+		loadedCommits.source(walk);
+		trace = GitTraceLocation.HISTORYVIEW.isActive();
+	}
+

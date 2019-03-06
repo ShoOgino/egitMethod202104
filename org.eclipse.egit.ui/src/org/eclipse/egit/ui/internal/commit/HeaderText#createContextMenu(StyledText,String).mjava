@@ -3,6 +3,9 @@
 
 		final MenuItem copySHA1MenuItem = new MenuItem(menu, SWT.PUSH);
 		copySHA1MenuItem.setText(UIText.Header_contextMenu_copy_SHA1);
+		Image shaImage = UIIcons.ELCL16_ID.createImage();
+		copySHA1MenuItem.setImage(shaImage);
+		UIUtils.hookDisposal(styledText, shaImage);
 		final Shell shell = styledText.getShell();
 		copySHA1MenuItem.addSelectionListener(new SelectionAdapter() {
 			@Override

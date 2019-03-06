@@ -7,9 +7,9 @@
 			} else {
 				File file = path.toFile();
 				try {
-					java.nio.file.Path fp = file.toPath();
-					if (Files.isSymbolicLink(fp)) {
-						String sp = new String(getContent(),
+					byte[] contents = getContent();
+					if (isSymlink) {
+						String sp = new String(contents,
 								StandardCharsets.UTF_8)
 								.trim();
 						if (sp.indexOf('\n') > 0) {
@@ -26,7 +26,7 @@
 					} else {
 						try (OutputStream out = Files
 								.newOutputStream(file.toPath())) {
-							out.write(getContent());
+							out.write(contents);
 						}
 					}
 					fDirty = false;
@@ -38,7 +38,8 @@
 									UIText.LocalNonWorkspaceTypedElement_errorWritingContents,
 									e));
 				} finally {
-					fireChanges();
+					fireContentChanged();
+					updateGitState();
 				}
 			}
 			refreshTimestamp();

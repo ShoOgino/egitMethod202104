@@ -10,15 +10,13 @@
 
 			// filter by selected resources
 			if (filterPathStrings.size() > 1) {
-				List<TreeFilter> suffixFilters = new ArrayList<>();
-				for (String filterPath : filterPathStrings)
-					suffixFilters.add(PathFilter.create(filterPath));
-				TreeFilter otf = OrTreeFilter.create(suffixFilters);
-				tw.setFilter(otf);
+				tw.setFilter(
+						PathFilterGroup.createFromStrings(filterPathStrings));
 			} else if (filterPathStrings.size() > 0) {
 				String path = filterPathStrings.get(0);
-				if (path.length() != 0)
-					tw.setFilter(PathFilter.create(path));
+				if (!path.isEmpty()) {
+					tw.setFilter(PathFilterGroup.createFromStrings(path));
+				}
 			}
 
 			tw.setRecursive(true);

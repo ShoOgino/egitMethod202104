@@ -19,7 +19,9 @@
 			}
 		}
 
-		selectAll.setEnabled(!allSelected);
+		if (selectAll != null) {
+			selectAll.setEnabled(!allSelected);
+		}
 		copy.setEnabled(!sel.isEmpty());
 		showInHistory.setEnabled(!sel.isEmpty());
 

@@ -1,4 +1,7 @@
 	private void setDefaultUpstreamConfig() {
+		if (fullBranch == null) {
+			return;
+		}
 		String branchName = Repository.shortenRefName(this.fullBranch);
 		BranchConfig branchConfig = new BranchConfig(repository.getConfig(),
 				branchName);

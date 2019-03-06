@@ -8,6 +8,7 @@
 			c.setFocus();
 			boolean selectionNotEmpty = !planViewer.getSelection().isEmpty();
 			boolean rebaseNotStarted = currentPlan != null
+					&& currentPlan.isRebasingInteractive()
 					&& !currentPlan.hasRebaseBeenStartedYet();
 			boolean menuEnabled = selectionNotEmpty && rebaseNotStarted;
 			if (menuEnabled) {

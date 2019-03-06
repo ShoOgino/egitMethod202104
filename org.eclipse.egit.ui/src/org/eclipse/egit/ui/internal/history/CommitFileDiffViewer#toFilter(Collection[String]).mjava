@@ -1,0 +1,8 @@
+	private TreeFilter toFilter(Collection<String> paths) {
+		if (paths != null && !paths.isEmpty()) {
+			return PathFilterGroup.createFromStrings(paths);
+		} else {
+			return TreeFilter.ALL;
+		}
+	}
+

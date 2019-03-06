@@ -1,0 +1,13 @@
+	@Override
+	public byte[] getContent() {
+		if (modifiedContent == null) {
+			try {
+				InputStream is = createStream();
+				modifiedContent = Utilities.readBytes(is);
+			} catch (CoreException e) {
+				Activator.handleStatus(e.getStatus(), false);
+			}
+		}
+		return modifiedContent;
+	}
+

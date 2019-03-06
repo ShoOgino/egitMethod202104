@@ -2,7 +2,8 @@
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final List<RepositoryTreeNode> nodes = getSelectedNodes(event);
 		final Map<Ref, Repository> refs = getRefsToDelete(nodes);
-		final AtomicReference<Map<Ref, Repository>> unmergedNodesRef = new AtomicReference<>();
+		final AtomicReference<Map<Ref, Repository>> unmergedNodesRef = new AtomicReference<>(
+				Collections.emptyMap());
 		final Shell shell = getShell(event);
 
 		try {

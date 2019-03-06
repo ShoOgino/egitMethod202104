@@ -7,7 +7,7 @@
 		final Path file = Paths.get(dir.getText());
 		final boolean lookForNested = lookForNestedButton.getSelection();
 		final boolean skipHidden = skipHiddenButton.getSelection();
-		if (!Files.exists(file)) {
+		if (!Files.isDirectory(file)) {
 			return;
 		}
 

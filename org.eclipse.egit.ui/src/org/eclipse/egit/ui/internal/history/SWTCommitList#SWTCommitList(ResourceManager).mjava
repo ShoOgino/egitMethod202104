@@ -1,0 +1,8 @@
+	SWTCommitList(final ResourceManager resources) {
+		allColors = new ArrayList<>(COMMIT_RGB.length);
+		for (RGB rgb : COMMIT_RGB)
+			allColors.add(resources.createColor(rgb));
+		availableColors = new LinkedList<>();
+		repackColors();
+	}
+

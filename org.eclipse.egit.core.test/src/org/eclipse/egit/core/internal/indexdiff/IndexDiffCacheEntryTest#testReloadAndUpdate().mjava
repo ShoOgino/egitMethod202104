@@ -3,7 +3,7 @@
 		prepareCacheEntry();
 
 		testRepository.connect(project.project);
-		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtils.waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		// on a simple connect, nothing should be called
 		assertFalse(entry.reloadScheduled);
@@ -13,14 +13,14 @@
 		// adds .project and .classpath files: more than limit of 1,
 		// so update redirects to reload
 		testRepository.addToIndex(project.project);
-		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtils.waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		assertTrue(entry.reloadScheduled);
 		assertTrue(entry.updateScheduled);
 		cleanEntryFlags();
 
 		testRepository.createInitialCommit("first commit\n");
-		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtils.waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		// RefsChangedEvent causes always full update
 		assertTrue(entry.reloadScheduled);
@@ -40,7 +40,7 @@
 
 			}
 		}, null);
-		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtils.waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		// adds 2 files: more than limit of 1,
 		// so update redirects to reload
@@ -59,7 +59,7 @@
 
 			}
 		}, null);
-		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtils.waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		// adds 1 file: less than limit of 1, so no reload
 		assertFalse(entry.reloadScheduled);
@@ -77,7 +77,7 @@
 
 			}
 		}, null);
-		waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		TestUtils.waitForJobs(MAX_WAIT_TIME, JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		// adds .gitignore file: always full reload
 		assertTrue(entry.reloadScheduled);

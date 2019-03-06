@@ -1,14 +1,24 @@
 	private void setNeedsSearch() {
 		fTreeViewer.setInput(null);
-		final File file = new File(dir.getText());
-		if (!file.exists()) {
+		try {
+			Path file = Paths.get(dir.getText());
+			if (!Files.isDirectory(file)) {
+				setErrorMessage(MessageFormat.format(
+						UIText.RepositorySearchDialog_DirectoryNotFoundMessage,
+						dir.getText()));
+				searchButton.setEnabled(false);
+			} else {
+				searchButton.setEnabled(true);
+				setErrorMessage(null);
+				setMessage(
+						UIText.RepositorySearchDialog_NoSearchAvailableMessage,
+						IMessageProvider.INFORMATION);
+			}
+		} catch (InvalidPathException e) {
 			setErrorMessage(MessageFormat.format(
-					UIText.RepositorySearchDialog_DirectoryNotFoundMessage, dir
-							.getText()));
-		} else {
-			setErrorMessage(null);
-			setMessage(UIText.RepositorySearchDialog_NoSearchAvailableMessage,
-					IMessageProvider.INFORMATION);
+					UIText.RepositorySearchDialog_InvalidDirectoryMessage,
+					e.getLocalizedMessage()));
+			searchButton.setEnabled(false);
 		}
 		enableOk();
 	}

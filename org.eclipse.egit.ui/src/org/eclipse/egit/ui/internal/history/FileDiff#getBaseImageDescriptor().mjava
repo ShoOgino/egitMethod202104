@@ -1,0 +1,12 @@
+	/**
+	 * @return an {@link ImageDescriptor} for display of this {@link FileDiff}
+	 *         in the UI, or {@code null} if no image is available
+	 */
+	public ImageDescriptor getBaseImageDescriptor() {
+		if (!isSubmodule()) {
+			return UIUtils.getEditorImage(getPath());
+		} else {
+			return UIIcons.REPOSITORY;
+		}
+	}
+

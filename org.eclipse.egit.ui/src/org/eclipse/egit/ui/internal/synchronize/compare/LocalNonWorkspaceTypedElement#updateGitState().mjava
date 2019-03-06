@@ -1,0 +1,15 @@
+	private void updateGitState() {
+		// external file change must be reported explicitly, see bug 481682
+		Repository myRepository = repository;
+		boolean updated = false;
+		if (!myRepository.isBare()) {
+			updated = refreshRepositoryState(myRepository);
+		}
+		if (!updated) {
+			RepositoryMapping mapping = RepositoryMapping.getMapping(path);
+			if (mapping != null) {
+				mapping.getRepository().fireEvent(new IndexChangedEvent(true));
+			}
+		}
+	}
+

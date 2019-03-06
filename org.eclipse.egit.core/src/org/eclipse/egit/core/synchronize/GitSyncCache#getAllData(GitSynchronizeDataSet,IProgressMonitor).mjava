@@ -1,6 +1,6 @@
 	public static GitSyncCache getAllData(GitSynchronizeDataSet gsds,
 			IProgressMonitor monitor) {
-		Map<GitSynchronizeData, Collection<String>> updateRequests = new HashMap<GitSynchronizeData, Collection<String>>();
+		Map<GitSynchronizeData, Collection<String>> updateRequests = new HashMap<>();
 		for (GitSynchronizeData data : gsds)
 			updateRequests.put(data, Collections.<String> emptyList());
 		return getAllData(updateRequests, monitor);
