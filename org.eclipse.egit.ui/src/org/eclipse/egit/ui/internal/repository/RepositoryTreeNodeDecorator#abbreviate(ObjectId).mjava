@@ -1,8 +1,8 @@
 	private String abbreviate(final ObjectId id) {
 		if (id != null) {
-			return id.abbreviate(7).name();
+			return Utils.getShortObjectId(id);
 		} else {
-			return ObjectId.zeroId().abbreviate(7).name();
+			return Utils.getShortObjectId(ObjectId.zeroId());
 		}
 	}
 

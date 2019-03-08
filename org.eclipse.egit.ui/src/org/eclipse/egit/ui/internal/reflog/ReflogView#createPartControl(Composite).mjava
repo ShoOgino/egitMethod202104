@@ -58,7 +58,7 @@
 			public String getText(Object element) {
 				if (element instanceof ReflogEntry) {
 					final ReflogEntry entry = (ReflogEntry) element;
-					return entry.getNewId().abbreviate(7).name();
+					return Utils.getShortObjectId(entry.getNewId());
 				}
 				return null;
 			}

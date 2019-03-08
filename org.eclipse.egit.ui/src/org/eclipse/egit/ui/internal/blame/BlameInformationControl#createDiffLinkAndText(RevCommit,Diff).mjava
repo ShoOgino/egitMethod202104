@@ -1,6 +1,6 @@
 	private void createDiffLinkAndText(final RevCommit parent, final Diff diff)
 			throws IOException {
-		String parentId = parent.toObjectId().abbreviate(7).name();
+		String parentId = Utils.getShortObjectId(parent.toObjectId());
 		String parentMessage = parent.getShortMessage();
 
 		EditList interestingDiff = getInterestingDiff(diff.getEditList());

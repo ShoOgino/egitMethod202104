@@ -4,7 +4,7 @@
 			return ""; //$NON-NLS-1$
 
 		StringBuilder s = new StringBuilder();
-		s.append(commitId.abbreviate(7).name());
+		s.append(Utils.getShortObjectId(commitId));
 		s.append("..."); //$NON-NLS-1$
 
 		PersonIdent authorIdent = commitId.getAuthorIdent();

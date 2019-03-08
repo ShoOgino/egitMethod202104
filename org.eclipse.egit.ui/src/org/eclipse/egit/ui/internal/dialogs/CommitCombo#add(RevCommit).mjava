@@ -7,7 +7,7 @@
 		Assert.isNotNull(revCommit);
 		checkWidget();
 
-		String shortSha1 = revCommit.abbreviate(8).name();
+		String shortSha1 = Utils.getShortObjectId(revCommit);
 		String message = shortSha1 + ": " + revCommit.getShortMessage(); //$NON-NLS-1$
 		combo.add(message);
 		commits.add(new ComboCommitEnt(revCommit.getId(), message));

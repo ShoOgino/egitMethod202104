@@ -27,7 +27,7 @@
 					if (objectId == null) {
 						return ""; //$NON-NLS-1$
 					}
-					return objectId.abbreviate(7).name();
+					return Utils.getShortObjectId(objectId);
 				}
 				return super.getText(element);
 			}});

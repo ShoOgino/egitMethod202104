@@ -28,8 +28,8 @@
 		RevCommit commit = this.revision.getCommit();
 
 		String linkText = MessageFormat.format(
-				UIText.BlameInformationControl_Commit, commit.abbreviate(7)
-						.name());
+				UIText.BlameInformationControl_Commit,
+				Utils.getShortObjectId(commit));
 		commitLabel.setText(linkText);
 
 		PreferenceBasedDateFormatter dateFormatter = PreferenceBasedDateFormatter

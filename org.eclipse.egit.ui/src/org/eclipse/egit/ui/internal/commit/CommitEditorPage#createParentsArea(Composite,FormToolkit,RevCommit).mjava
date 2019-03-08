@@ -12,7 +12,7 @@
 							toolkit.getColors().getColor(IFormColors.TB_TOGGLE));
 			final Hyperlink link = toolkit
 					.createHyperlink(parents,
-							parentCommit.abbreviate(PARENT_LENGTH).name(),
+							Utils.getShortObjectId(parentCommit),
 							SWT.NONE);
 			link.addHyperlinkListener(new HyperlinkAdapter() {
 				@Override

@@ -11,7 +11,7 @@
 				loader = reader.open(objectId);
 			} catch (MissingObjectException e) {
 				if (upstream) {
-					return refName + '\n' + objectId.abbreviate(7).name()
+					return refName + '\n' + Utils.getShortObjectId(objectId)
 							+ " - " //$NON-NLS-1$
 							+ UIText.RefContentProposal_unknownRemoteObject;
 				}

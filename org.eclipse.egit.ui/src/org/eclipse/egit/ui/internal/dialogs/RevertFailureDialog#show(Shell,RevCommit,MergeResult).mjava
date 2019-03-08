@@ -11,11 +11,11 @@
 				.getFailingPaths() : null;
 		if (reasons != null && !reasons.isEmpty())
 			message = MessageFormat.format(UIText.RevertFailureDialog_Message,
-					commit.abbreviate(7).name());
+					Utils.getShortObjectId(commit));
 		else
 			message = MessageFormat.format(
-					UIText.RevertFailureDialog_MessageNoFiles, commit
-							.abbreviate(7).name());
+					UIText.RevertFailureDialog_MessageNoFiles,
+					Utils.getShortObjectId(commit));
 
 		RevertFailureDialog dialog = new RevertFailureDialog(shell, message,
 				reasons);

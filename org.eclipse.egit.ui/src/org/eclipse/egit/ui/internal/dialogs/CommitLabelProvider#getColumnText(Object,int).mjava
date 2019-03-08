@@ -2,7 +2,7 @@
 	public String getColumnText(final Object element, final int columnIndex) {
 		final RevCommit c = (RevCommit) element;
 		if (columnIndex == 0)
-			return c.getId().abbreviate(7).name();
+			return Utils.getShortObjectId(c.getId());
 		if (columnIndex == 1)
 			return c.getShortMessage();
 		if (columnIndex == 2 || columnIndex == 3) {

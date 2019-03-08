@@ -1,5 +1,5 @@
 	private void setSourceCommit(RevCommit commit) {
-		sourceNameLabel.setText(commit.abbreviate(7).name());
+		sourceNameLabel.setText(Utils.getShortObjectId(commit));
 		sourceIcon.setImage(UIIcons
 				.getImage(resourceManager, UIIcons.CHANGESET));
 
