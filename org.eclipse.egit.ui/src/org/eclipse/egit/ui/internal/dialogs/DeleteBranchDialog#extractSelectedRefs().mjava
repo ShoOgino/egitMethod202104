@@ -1,12 +1,12 @@
-	private List<RefNode> extractSelectedRefNodes() {
-		List<RefNode> nodes = new ArrayList<>();
+	private List<Ref> extractSelectedRefs() {
+		List<Ref> refs = new ArrayList<>();
 		Object[] array = ((IStructuredSelection) super.branchTree
 				.getSelection()).toArray();
 
 		for (Object selected : array)
 			if (selected instanceof RefNode)
-				nodes.add((RefNode) selected);
+				refs.add(((RefNode) selected).getObject());
 
-		return nodes;
+		return refs;
 	}
 

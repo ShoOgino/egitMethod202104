@@ -1,12 +1,13 @@
 	/**
 	 * @param parentShell
-	 * @param nodes
+	 * @param refs
 	 */
-	public UnmergedBranchDialog(Shell parentShell, List<T> nodes) {
+	public UnmergedBranchDialog(Shell parentShell, List<Ref> refs) {
 		super(parentShell, UIText.UnmergedBranchDialog_Title, null,
 				UIText.UnmergedBranchDialog_Message, MessageDialog.QUESTION,
 				new String[] { UIText.UnmergedBranchDialog_deleteButtonLabel,
 						IDialogConstants.CANCEL_LABEL }, 0);
-		this.nodes = nodes;
+		this.refs = new ArrayList<>(refs);
+		Collections.sort(this.refs, CommonUtils.REF_ASCENDING_COMPARATOR);
 	}
 

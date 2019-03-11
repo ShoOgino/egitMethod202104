@@ -6,11 +6,11 @@
 		TableViewer branchesList = new TableViewer(area);
 		branchesList.setContentProvider(ArrayContentProvider.getInstance());
 		branchesList.setLabelProvider(new GitLabelProvider());
-		branchesList.setInput(nodes);
+		branchesList.setInput(refs);
 
 		// restrict height to 20 items
 		GridData layoutData = new GridData(GridData.FILL_BOTH);
-		layoutData.heightHint = Math.min(20, nodes.size() + 1)
+		layoutData.heightHint = Math.min(20, refs.size() + 1)
 				* branchesList.getTable().getItemHeight();
 		area.setLayoutData(layoutData);
 
