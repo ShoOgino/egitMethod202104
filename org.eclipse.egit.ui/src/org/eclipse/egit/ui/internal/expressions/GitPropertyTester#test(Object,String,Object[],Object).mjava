@@ -47,6 +47,11 @@
 				return computeResult(expectedValue,
 						hasRef(commit, toRefNames(args)));
 			}
+		} else if ("isStash".equals(property)) { //$NON-NLS-1$
+			RepositoryCommit commit = AdapterUtils.adapt(receiver,
+					RepositoryCommit.class);
+			return computeResult(expectedValue,
+					commit != null && commit.isStash());
 		}
 		return false;
 	}

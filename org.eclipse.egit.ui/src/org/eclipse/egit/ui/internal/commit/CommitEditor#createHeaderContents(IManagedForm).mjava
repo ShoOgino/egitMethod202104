@@ -70,7 +70,7 @@
 		CommonUtils.getService(getSite(), IPartService.class)
 				.addPartListener(activationListener);
 		if (commit.isStash()) {
-			toolbar.add(createActionContributionItem(StashApplyHandler.ID,
+			toolbar.add(createActionContributionItem(ActionCommands.STASH_APPLY,
 					UIText.CommitEditor_toolbarApplyStash,
 					UIIcons.STASH_APPLY));
 			toolbar.add(createActionContributionItem(StashDropHandler.ID,
