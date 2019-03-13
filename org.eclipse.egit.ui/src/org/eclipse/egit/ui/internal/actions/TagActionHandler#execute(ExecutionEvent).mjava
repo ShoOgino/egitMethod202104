@@ -1,32 +1,40 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final Repository repo = getRepository(true, event);
-		if (repo == null)
-			return null;
+		IRepositoryCommit commit = getCommit(getSelection(event));
+		CreateTagDialog dialog;
+		Repository repo;
+		if (commit == null) {
+			repo = getRepository(true, event);
+			if (repo == null) {
+				return null;
+			}
+			if (!repo.getRepositoryState().canCheckout()) {
+				MessageDialog.openError(getShell(event),
+						UIText.TagAction_cannotCheckout,
+						MessageFormat.format(UIText.TagAction_repositoryState,
+								repo.getRepositoryState().getDescription()));
+				return null;
+			}
 
-		if (!repo.getRepositoryState().canCheckout()) {
-			MessageDialog.openError(getShell(event),
-					UIText.TagAction_cannotCheckout, NLS.bind(
-							UIText.TagAction_repositoryState, repo
-									.getRepositoryState().getDescription()));
+			String currentBranchName;
+			try {
+				currentBranchName = repo.getBranch();
+			} catch (IOException e) {
+				Activator.handleError(UIText.TagAction_cannotGetBranchName, e,
+						true);
+				return null;
+			}
+
+			dialog = new CreateTagDialog(getShell(event), currentBranchName,
+					repo);
+		} else {
+			repo = commit.getRepository();
+			dialog = new CreateTagDialog(getShell(event),
+					commit.getRevCommit().getId(), repo);
+		}
+		if (dialog.open() != Window.OK) {
 			return null;
 		}
-
-		String currentBranchName;
-		try {
-			currentBranchName = repo.getBranch();
-		} catch (IOException e) {
-			Activator
-					.handleError(UIText.TagAction_cannotGetBranchName, e, true);
-			return null;
-		}
-
-		CreateTagDialog dialog = new CreateTagDialog(getShell(event),
-				currentBranchName, repo);
-
-		if (dialog.open() != IDialogConstants.OK_ID)
-			return null;
-
 		final TagBuilder tag = new TagBuilder();
 		PersonIdent personIdent = new PersonIdent(repo);
 		final String tagName = dialog.getTagName();
@@ -36,16 +44,21 @@
 		tag.setMessage(dialog.getTagMessage());
 
 		RevObject tagTarget;
-		try {
-			tagTarget = getTagTarget(repo, dialog.getTagCommit());
-		} catch (IOException e1) {
-			Activator.handleError(UIText.TagAction_unableToResolveHeadObjectId,
-					e1, true);
-			return null;
+		if (commit == null) {
+			try {
+				tagTarget = getTagTarget(repo, dialog.getTagCommit());
+			} catch (IOException e1) {
+				Activator.handleError(
+						UIText.TagAction_unableToResolveHeadObjectId, e1, true);
+				return null;
+			}
+		} else {
+			tagTarget = commit.getRevCommit();
 		}
 		tag.setObjectId(tagTarget);
 
-		String tagJobName = NLS.bind(UIText.TagAction_creating, tagName);
+		String tagJobName = MessageFormat.format(UIText.TagAction_creating,
+				tagName);
 		final boolean shouldMoveTag = dialog.shouldOverWriteTag();
 
 		Job tagJob = new Job(tagJobName) {
@@ -65,14 +78,14 @@
 
 			@Override
 			public boolean belongsTo(Object family) {
-				if (JobFamilies.TAG.equals(family))
-					return true;
-				return super.belongsTo(family);
+				return JobFamilies.TAG.equals(family)
+						|| super.belongsTo(family);
 			}
 		};
 
 		if (dialog.shouldStartPushWizard()) {
 			tagJob.addJobChangeListener(new JobChangeAdapter() {
+
 				@Override
 				public void done(IJobChangeEvent jobChangeEvent) {
 					if (jobChangeEvent.getResult().isOK())
