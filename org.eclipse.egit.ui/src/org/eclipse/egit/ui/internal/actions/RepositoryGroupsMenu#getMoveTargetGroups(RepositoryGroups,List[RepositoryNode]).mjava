@@ -1,0 +1,20 @@
+	private List<RepositoryGroup> getMoveTargetGroups(
+			RepositoryGroups groupsUtil, List<RepositoryNode> selection) {
+		List<RepositoryGroup> groups = groupsUtil.getGroups();
+		Set<RepositoryTreeNode> repoNodeParents = selection.stream()
+				.map(RepositoryNode::getParent).collect(Collectors.toSet());
+		if (repoNodeParents.size() == 1) {
+			RepositoryTreeNode uniqueParent = repoNodeParents.iterator().next();
+			if (uniqueParent != null
+					&& uniqueParent instanceof RepositoryGroupNode) {
+				RepositoryGroup parentGroup = ((RepositoryGroupNode) uniqueParent)
+						.getGroup();
+				groups.remove(parentGroup);
+			}
+		}
+		Collections.sort(groups,
+				(g1, g2) -> CommonUtils.STRING_ASCENDING_COMPARATOR
+						.compare(g1.getName(), g2.getName()));
+		return groups;
+	}
+

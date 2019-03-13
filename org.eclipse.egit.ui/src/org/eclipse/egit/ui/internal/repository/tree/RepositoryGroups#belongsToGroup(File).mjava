@@ -1,0 +1,10 @@
+	/**
+	 * @param repositoryDirectory
+	 *            directory of the Repository
+	 * @return whether the repository belongs to any group
+	 */
+	public boolean belongsToGroup(File repositoryDirectory) {
+		return groupMap.values().stream().anyMatch(group -> group
+				.getRepositoryDirectories().contains(repositoryDirectory));
+	}
+

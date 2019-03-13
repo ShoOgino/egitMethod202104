@@ -5,6 +5,8 @@
 		if (repository != null) {
 			UnitOfWork.execute(repository,
 					() -> decorateText(node, repository, decoration));
+		} else if (node.getType() == RepositoryTreeNodeType.REPOGROUP) {
+			decorateRepositoryGroup(node, decoration);
 		}
 	}
 

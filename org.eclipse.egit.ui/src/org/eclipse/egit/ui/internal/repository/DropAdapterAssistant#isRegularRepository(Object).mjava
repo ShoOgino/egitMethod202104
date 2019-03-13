@@ -1,0 +1,9 @@
+	private boolean isRegularRepository(Object node) {
+		if (node instanceof RepositoryNode) {
+			RepositoryNode repoNode = (RepositoryNode) node;
+			return repoNode.getParent() == null || repoNode.getParent()
+					.getType() == RepositoryTreeNodeType.REPOGROUP;
+		}
+		return false;
+	}
+

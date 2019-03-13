@@ -1,0 +1,15 @@
+	/**
+	 * @param groupName
+	 *            name of the group
+	 * @return true if and only if a group of the given name already exists
+	 * @throws IllegalArgumentException
+	 *             if the group name is not valid
+	 *
+	 */
+	public boolean groupExists(String groupName)
+			throws IllegalArgumentException {
+		checkGroupName(groupName);
+		return groupMap.values().stream()
+				.anyMatch(group -> group.getName().equals(groupName));
+	}
+

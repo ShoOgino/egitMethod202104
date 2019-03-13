@@ -25,6 +25,11 @@
 					+ ((myObject == null) ? 0 : ((Repository) myObject)
 							.getDirectory().hashCode());
 			break;
+		case REPOGROUP:
+			RepositoryGroup group = ((RepositoryGroupNode) this).getGroup();
+			result = prime * result + group.getGroupId().hashCode();
+			result = prime * result + group.getName().hashCode();
+			break;
 		case REF:
 			// fall through
 		case TAG:
@@ -61,8 +66,10 @@
 
 		}
 
-		result = prime * result
-				+ ((myParent == null) ? 0 : myParent.hashCode());
+		if (considerParent(myType)) {
+			result = prime * result
+					+ ((myParent == null) ? 0 : myParent.hashCode());
+		}
 		result = prime
 				* result
 				+ ((myRepository == null) ? 0 : myRepository.getDirectory()

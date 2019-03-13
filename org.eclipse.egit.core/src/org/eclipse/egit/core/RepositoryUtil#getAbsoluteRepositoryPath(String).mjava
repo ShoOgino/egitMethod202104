@@ -1,0 +1,19 @@
+	/**
+	 * Make a potentially relative path absolute.
+	 * <p>
+	 * The result is the absolute path of {@code pathString} resolved against
+	 * the workspace root.
+	 * This allows retrieving a path saved using {@link #relativizeToWorkspace}.
+	 * </p>
+	 *
+	 * @param pathString
+	 *            a potentially workspace relative path String.
+	 * @return the absolute path String
+	 * @throws java.nio.file.InvalidPathException
+	 *             if the path string cannot be converted to a Path
+	 */
+	public @NonNull String getAbsoluteRepositoryPath(
+			@NonNull String pathString) {
+		return workspacePath.resolve(pathString).toString();
+	}
+

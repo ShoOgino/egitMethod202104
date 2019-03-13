@@ -45,6 +45,8 @@
 			// fall through
 		case TAGS:
 			return myObject.equals(otherObject);
+		case REPOGROUP:
+			// fall through - comparison not by label alone
 		}
 		return false;
 	}

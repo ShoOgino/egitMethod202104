@@ -1,0 +1,23 @@
+	private void savePreferences() {
+		try {
+			List<String> groupIds = new ArrayList<>();
+			for (RepositoryGroup group : groupMap.values()) {
+				String groupId = group.getGroupId().toString();
+				groupIds.add(groupId);
+				String name = group.getName();
+				preferences.put(PREFS_GROUP_NAME_PREFIX + groupId, name);
+				String repos = group.getRepositoryDirectories().stream()
+						.map(File::toString)
+						.map(util::relativizeToWorkspace)
+						.collect(Collectors.joining(SEPARATOR));
+				preferences.put(PREFS_GROUP_PREFIX + groupId, repos);
+			}
+			preferences.put(PREFS_GROUPS,
+					StringUtils.join(groupIds, SEPARATOR));
+			preferences.flush();
+		} catch (BackingStoreException e) {
+			Activator.logError(
+					UIText.RepositoriesView_RepoGroup_ErrorSavePreferences, e);
+		}
+	}
+

@@ -84,6 +84,14 @@
 			return nodeList.toArray();
 		}
 
+		case REPOGROUP: {
+			List<File> repoDirs = ((RepositoryGroupNode) node).getGroup()
+					.getRepositoryDirectories();
+			return getRepositoryNodes(
+					Activator.getDefault().getRepositoryUtil(), null, node,
+					repoDirs).toArray();
+		}
+
 		case WORKINGDIR:
 			if (repo.isBare()) {
 				return NO_CHILDREN;

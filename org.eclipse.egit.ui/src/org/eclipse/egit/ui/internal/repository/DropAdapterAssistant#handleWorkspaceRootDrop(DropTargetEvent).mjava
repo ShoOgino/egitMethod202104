@@ -1,0 +1,17 @@
+	private IStatus handleWorkspaceRootDrop(DropTargetEvent event) {
+		if (event.data instanceof IStructuredSelection) {
+			IStructuredSelection selection = (IStructuredSelection) event.data;
+			if (onlyRepositoryNodesSelected(selection)) {
+				List<File> reposToRemove = new ArrayList<>();
+				for (Object treeNode : selection.toList()) {
+					RepositoryNode repo = (RepositoryNode) treeNode;
+					reposToRemove.add(repo.getRepository().getDirectory());
+				}
+				RepositoryGroups.getInstance().removeFromGroups(reposToRemove);
+				refreshRepositoriesView();
+				return Status.OK_STATUS;
+			}
+		}
+		return Status.CANCEL_STATUS;
+	}
+

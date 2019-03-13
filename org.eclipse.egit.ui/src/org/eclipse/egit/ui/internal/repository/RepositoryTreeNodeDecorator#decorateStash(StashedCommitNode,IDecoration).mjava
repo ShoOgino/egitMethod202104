@@ -2,7 +2,8 @@
 			IDecoration decoration) {
 		RevCommit commit = node.getObject();
 		decoration.addSuffix(
-				" [" + abbreviate(commit) + "] " + commit.getShortMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+				OPEN_BRACKET + abbreviate(commit) + "] " //$NON-NLS-1$
+				+ commit.getShortMessage());
 		return true;
 	}
 

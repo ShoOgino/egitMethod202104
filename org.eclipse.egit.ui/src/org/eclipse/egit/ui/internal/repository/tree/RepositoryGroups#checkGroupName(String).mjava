@@ -1,0 +1,8 @@
+	private void checkGroupName(String groupName) {
+		if (StringUtils.isEmptyOrNull(groupName)
+				|| !groupName.equals(groupName.trim())) {
+			throw new IllegalArgumentException(
+					UIText.RepositoriesView_RepoGroup_InvalidNameException);
+		}
+	}
+

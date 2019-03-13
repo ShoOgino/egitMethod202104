@@ -25,9 +25,7 @@
 			return;
 		}
 		if (!decorated) {
-			// Ensure the caching of last labels in
-			// RepositoryTreeNodeLabelProvider works
-			decoration.addSuffix(" "); //$NON-NLS-1$
+			ensureCorrectLabelCaching(decoration);
 		}
 	}
 

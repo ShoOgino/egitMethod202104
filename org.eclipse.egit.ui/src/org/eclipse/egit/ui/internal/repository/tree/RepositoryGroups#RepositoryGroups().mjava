@@ -1,0 +1,20 @@
+	/**
+	 * new repository groups initialized from preferences
+	 */
+	private RepositoryGroups() {
+		List<String> groups = split(
+				preferences.get(PREFS_GROUPS, EMPTY_STRING));
+		for (String groupIdString : groups) {
+			UUID groupId = UUID.fromString(groupIdString);
+			String name = preferences
+					.get(PREFS_GROUP_NAME_PREFIX + groupIdString, EMPTY_STRING);
+			List<File> repos = split(preferences
+					.get(PREFS_GROUP_PREFIX + groupIdString, EMPTY_STRING))
+							.stream().map(util::getAbsoluteRepositoryPath)
+							.map(File::new)
+							.collect(Collectors.toList());
+			RepositoryGroup group = new RepositoryGroup(groupId, name, repos);
+			groupMap.put(groupId, group);
+		}
+	}
+

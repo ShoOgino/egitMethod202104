@@ -1,0 +1,10 @@
+	private IStatus validateRepositoryGroupNodeDrop() {
+		ISelection selection = LocalSelectionTransfer.getTransfer()
+				.getSelection();
+		if (onlyRepositoryNodesSelected(selection)) {
+			return Status.OK_STATUS;
+		} else {
+			return Status.CANCEL_STATUS;
+		}
+	}
+

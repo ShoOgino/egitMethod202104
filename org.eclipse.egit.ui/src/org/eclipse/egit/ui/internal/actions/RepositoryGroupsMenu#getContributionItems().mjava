@@ -1,0 +1,27 @@
+	@Override
+	protected IContributionItem[] getContributionItems() {
+		List<IContributionItem> result = new ArrayList<>();
+		ISelection selection = serviceLocator
+				.getService(ISelectionService.class).getSelection();
+		List<RepositoryNode> selectedRepoNodes = getRepositoryNodes(selection);
+		final List<File> selectedRepoDirectories = selectedRepoNodes.stream()
+				.map(node -> node.getRepository().getDirectory())
+				.collect(Collectors.toList());
+
+		if (!selectedRepoDirectories.isEmpty()) {
+			final RepositoryGroups groupsUtil = RepositoryGroups.getInstance();
+			addStaticItems(groupsUtil, selectedRepoDirectories, result);
+
+			List<RepositoryGroup> groups = getMoveTargetGroups(groupsUtil,
+					selectedRepoNodes);
+			if (!groups.isEmpty()) {
+				result.add(new Separator());
+				for (RepositoryGroup group : groups) {
+					result.add(getAssignGroupItem(groupsUtil, group,
+							selectedRepoDirectories));
+				}
+			}
+		}
+		return result.toArray(new IContributionItem[0]);
+	}
+

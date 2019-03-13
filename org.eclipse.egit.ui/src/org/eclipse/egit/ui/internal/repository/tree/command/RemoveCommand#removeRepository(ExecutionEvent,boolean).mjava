@@ -89,9 +89,11 @@
 					deleteProjects(deleteWorkDir, projectsToDelete,
 							monitor);
 				}
-				for (RepositoryNode node : selectedNodes) {
-					util.removeDir(node.getRepository().getDirectory());
-				}
+				List<File> repoDirs = selectedNodes.stream()
+						.map(node -> node.getRepository().getDirectory())
+						.collect(Collectors.toList());
+				repoDirs.stream().forEach(util::removeDir);
+				RepositoryGroups.getInstance().removeFromGroups(repoDirs);
 
 				if (delete) {
 					try {

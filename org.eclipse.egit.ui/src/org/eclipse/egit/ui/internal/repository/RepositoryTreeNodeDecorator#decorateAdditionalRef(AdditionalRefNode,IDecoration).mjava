@@ -3,7 +3,8 @@
 		Ref ref = node.getObject();
 		StringBuilder suffix = new StringBuilder();
 		if (ref.isSymbolic()) {
-			suffix.append(" [").append(ref.getLeaf().getName()).append(']'); //$NON-NLS-1$
+			suffix.append(OPEN_BRACKET).append(ref.getLeaf().getName())
+					.append(']');
 		}
 		ObjectId refId = ref.getObjectId();
 		suffix.append(' ');

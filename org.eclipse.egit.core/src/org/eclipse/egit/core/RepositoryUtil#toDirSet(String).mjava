@@ -11,8 +11,7 @@
 		Set<String> configuredStrings = new HashSet<>();
 		StringTokenizer tok = new StringTokenizer(dirs, File.pathSeparator);
 		while (tok.hasMoreTokens()) {
-			configuredStrings
-					.add(workspacePath.resolve(tok.nextToken()).toString());
+			configuredStrings.add(getAbsoluteRepositoryPath(tok.nextToken()));
 		}
 		return configuredStrings;
 	}

@@ -4,6 +4,8 @@
 		RepositoryTreeNode node = (RepositoryTreeNode) element;
 		Repository repo = node.getRepository();
 		switch (node.getType()) {
+		case REPOGROUP:
+			return ((RepositoryGroupNode) element).hasChildren();
 		case BRANCHES:
 		case REPO:
 		case ADDITIONALREFS:

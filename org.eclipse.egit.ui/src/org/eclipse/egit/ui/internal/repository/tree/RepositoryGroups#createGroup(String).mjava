@@ -1,0 +1,19 @@
+	/**
+	 * @param groupName
+	 *            valid name of the new group
+	 * @return id of the new group
+	 */
+	public UUID createGroup(String groupName) {
+		if (!groupExists(groupName)) {
+			String trimmedName = groupName.trim();
+			UUID groupId = UUID.randomUUID();
+			RepositoryGroup group = new RepositoryGroup(groupId, trimmedName);
+			groupMap.put(groupId, group);
+			savePreferences();
+			return groupId;
+		} else {
+			throw new IllegalStateException(
+					UIText.RepositoriesView_RepoGroup_GroupExists);
+		}
+	}
+

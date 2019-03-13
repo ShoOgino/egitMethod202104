@@ -12,6 +12,9 @@
 				if (element == null) {
 					return;
 				}
+				if (element instanceof RepositoryGroupNode) {
+					return;
+				}
 				// Disable checkout for bare repositories
 				if (element.getRepository().isBare()) {
 					return;

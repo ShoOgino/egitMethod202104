@@ -1,0 +1,10 @@
+	private List<File> getSelectedRepositories(ExecutionEvent event)
+			throws ExecutionException {
+		return getSelectedNodes(event).stream()
+				.filter(node -> node instanceof RepositoryNode)
+				.filter(node -> node.getParent() == null || node.getParent()
+						.getType() == RepositoryTreeNodeType.REPOGROUP)
+				.map(e -> e.getRepository().getDirectory())
+				.collect(Collectors.toList());
+	}
+

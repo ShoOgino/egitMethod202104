@@ -1,0 +1,13 @@
+	private List<RepositoryNode> getRepositoryNodes(ISelection selection) {
+		List<RepositoryNode> result = new ArrayList<>();
+		if (selection instanceof StructuredSelection) {
+			Object[] elements = ((StructuredSelection) selection).toArray();
+			for (Object element : elements) {
+				if (element instanceof RepositoryNode) {
+					result.add((RepositoryNode) element);
+				}
+			}
+		}
+		return result;
+	}
+

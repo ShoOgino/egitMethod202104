@@ -1,0 +1,8 @@
+	private boolean onlyRepositoryNodesSelected(ISelection selection) {
+		if (selection instanceof IStructuredSelection) {
+			return ((List<?>) ((IStructuredSelection) selection).toList())
+					.stream().allMatch(e -> isRegularRepository(e));
+		}
+		return false;
+	}
+

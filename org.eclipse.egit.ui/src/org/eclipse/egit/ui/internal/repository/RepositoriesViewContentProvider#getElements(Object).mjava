@@ -3,33 +3,30 @@
 	public Object[] getElements(Object inputElement) {
 
 		List<RepositoryTreeNode> nodes = new ArrayList<>();
-		List<String> directories = new ArrayList<>();
+		List<File> directories = new ArrayList<>();
 		RepositoryUtil repositoryUtil = Activator.getDefault()
 				.getRepositoryUtil();
+		RepositoryGroups groupsUtil = RepositoryGroups.getInstance();
 
 		if (inputElement instanceof Collection) {
 			for (Object next : ((Collection) inputElement)) {
 				if (next instanceof RepositoryTreeNode) {
 					nodes.add((RepositoryTreeNode) next);
 				} else if (next instanceof String) {
-					directories.add((String) next);
+					directories.add(new File((String) next));
 				}
 			}
 		} else if (inputElement instanceof IWorkspaceRoot) {
-			directories.addAll(repositoryUtil.getConfiguredRepositories());
+			directories.addAll(repositoryUtil.getConfiguredRepositories()
+					.stream().map(File::new).collect(Collectors.toList()));
 		}
 
-		for (String directory : directories) {
-			try {
-				File gitDir = new File(directory);
-				if (gitDir.exists()) {
-					RepositoryNode rNode = new RepositoryNode(null,
-							repositoryCache.lookupRepository(gitDir));
-					nodes.add(rNode);
-				} else
-					repositoryUtil.removeDir(gitDir);
-			} catch (IOException e) {
-				// ignore for now
+		nodes.addAll(
+				getRepositoryNodes(repositoryUtil, groupsUtil, null,
+						directories));
+		if (showRepositoryGroups) {
+			for (RepositoryGroup group : groupsUtil.getGroups()) {
+				nodes.add(new RepositoryGroupNode(group));
 			}
 		}
 

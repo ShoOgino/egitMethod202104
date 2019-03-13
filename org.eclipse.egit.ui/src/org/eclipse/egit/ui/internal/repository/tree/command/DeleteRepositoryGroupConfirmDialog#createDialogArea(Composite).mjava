@@ -1,0 +1,18 @@
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
+		main.setLayout(new GridLayout(1, false));
+		TreeViewer groupsViewer = new TreeViewer(main,
+				SWT.BORDER | SWT.V_SCROLL);
+		GridDataFactory.fillDefaults().grab(true, true)
+				.applyTo(groupsViewer.getControl());
+		groupsViewer.setLabelProvider(new RepositoryTreeNodeLabelProvider());
+		groupsViewer.setContentProvider(
+				new DeleteRepositoryGroupTreeContentProvider());
+		groupsViewer.setInput(groupsToDelete);
+		setTitle(UIText.RepositoriesView_RepoGroup_Delete_Title);
+		setMessage(UIText.RepositoriesView_RepoGroup_Delete_Confirm);
+		return main;
+	}
+

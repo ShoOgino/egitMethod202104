@@ -3,10 +3,19 @@
 			Repository repository) {
 		for (Object repo : roots) {
 			RepositoryTreeNode node = (RepositoryTreeNode) repo;
-			// TODO equals implementation of Repository?
-			if (repository.getDirectory().equals(
-					((Repository) node.getObject()).getDirectory())) {
-				return node;
+			if (node instanceof RepositoryGroupNode) {
+				RepositoryTreeNode candidate = findRepositoryNode(cp,
+						cp.getChildren(node), repository);
+				if (candidate != null) {
+					return candidate;
+				}
+			} else {
+				// TODO equals implementation of Repository?
+				if (repository.getDirectory()
+						.equals(((Repository) node.getObject())
+								.getDirectory())) {
+					return node;
+				}
 			}
 		}
 		// Might be a submodule

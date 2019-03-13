@@ -1,0 +1,14 @@
+	private List<String> split(String input) {
+		List<String> result = new ArrayList<>();
+		String[] split = input.split(SEPARATOR);
+		for (String string : split) {
+			if (string != null) {
+				String trimmed = string.trim();
+				if (trimmed.length() > 0) {
+					result.add(trimmed);
+				}
+			}
+		}
+		return result;
+	}
+

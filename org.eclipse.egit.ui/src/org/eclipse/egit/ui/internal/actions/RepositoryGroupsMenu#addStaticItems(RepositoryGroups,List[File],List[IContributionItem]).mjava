@@ -1,0 +1,23 @@
+	private void addStaticItems(RepositoryGroups groupsUtil,
+			List<File> selectedRepoDirectories, List<IContributionItem> menu) {
+		CommandContributionItemParameter createCommandParameters = new CommandContributionItemParameter(
+				serviceLocator, null, CreateRepositoryGroupCommand.COMMAND_ID,
+				CommandContributionItem.STYLE_PUSH);
+		createCommandParameters.label = UIText.RepositoriesView_RepoGroup_Create_MenuItemLabel;
+		menu.add(new CommandContributionItem(createCommandParameters));
+		for (File repoDir : selectedRepoDirectories) {
+			if (groupsUtil.belongsToGroup(repoDir)) {
+				menu.add(new ActionContributionItem(new Action(
+						UIText.RepositoriesView_RepoGroup_Remove_Title,
+						UIIcons.REMOVE_FROM_REPO_GROUP) {
+					@Override
+					public void runWithEvent(Event event) {
+						groupsUtil.removeFromGroups(selectedRepoDirectories);
+						refreshRepositoriesView();
+					}
+				}));
+				break;
+			}
+		}
+	}
+

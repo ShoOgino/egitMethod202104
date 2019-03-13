@@ -1,0 +1,12 @@
+	private RepositoryGroup getSelectedGroup(ExecutionEvent event)
+			throws ExecutionException {
+		List<RepositoryTreeNode> elements = getSelectedNodes(event);
+		if (elements.size() == 1
+				&& elements.get(0) instanceof RepositoryGroupNode) {
+			return ((RepositoryGroupNode) elements.get(0)).getGroup();
+		} else {
+			throw new ExecutionException(
+					UIText.RepositoriesView_RepoGroup_Rename_IllegalSelection);
+		}
+	}
+

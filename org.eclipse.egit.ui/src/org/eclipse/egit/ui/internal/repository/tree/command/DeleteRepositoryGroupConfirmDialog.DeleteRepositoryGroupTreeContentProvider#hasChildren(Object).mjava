@@ -1,0 +1,9 @@
+		@Override
+		public boolean hasChildren(Object element) {
+			if (element instanceof RepositoryGroupNode) {
+				return !((RepositoryGroupNode) element).getGroup()
+						.getRepositoryDirectories().isEmpty();
+			}
+			return false;
+		}
+

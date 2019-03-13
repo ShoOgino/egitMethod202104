@@ -1,6 +1,12 @@
 	@Override
 	public IStatus handleDrop(CommonDropAdapter aDropAdapter,
 			DropTargetEvent aDropTargetEvent, Object aTarget) {
+		if (aTarget instanceof RepositoryGroupNode) {
+			return handleRepositoryGroupNodeDrop((RepositoryGroupNode) aTarget,
+					aDropTargetEvent);
+		} else if (aTarget instanceof IWorkspaceRoot) {
+			return handleWorkspaceRootDrop(aDropTargetEvent);
+		}
 		String[] data = (String[]) aDropTargetEvent.data;
 		for (String folder : data) {
 			File repoFile = new File(folder);
