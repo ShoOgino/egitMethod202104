@@ -1,4 +1,4 @@
-	private Collection<Change> getRefsForContentAssist(String originalRefText)
+	private Collection<Change> getRefsForContentAssist()
 			throws InvocationTargetException, InterruptedException {
 		String uriText = uriCombo.getText();
 		if (!changeRefs.containsKey(uriText)) {
@@ -6,6 +6,10 @@
 		}
 		ChangeList list = changeRefs.get(uriText);
 		if (!list.isFinished()) {
+			if (!list.mark()) {
+				// We're already getting it
+				return null;
+			}
 			IWizardContainer container = getContainer();
 			IRunnableWithProgress operation = monitor -> {
 				monitor.beginTask(MessageFormat.format(
@@ -25,11 +29,6 @@
 						UIText.AsynchronousRefProposalProvider_ShowingProposalsJobName) {
 
 					@Override
-					public boolean shouldRun() {
-						return super.shouldRun() && !fetching;
-					}
-
-					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
 						// But only if we're not disposed, the focus is still
 						// (or again) in the Change field, and the uri is still
@@ -47,25 +46,17 @@
 								}
 								if (refText != refText.getDisplay()
 										.getFocusControl()) {
-									fillInPatchSet(result, null);
+									refTextEdited = false;
+									fillInPatchSet(result);
 									return Status.CANCEL_STATUS;
 								}
-								// Try not to interfere with the user's typing.
-								// Only fill in the patch set number if the text
-								// is still the same.
-								fillInPatchSet(result, originalRefText);
-								doAutoFill = false;
-							} else {
-								// Dialog was blocked
-								fillInPatchSet(result, null);
-								doAutoFill = false;
 							}
+							fillInPatchSet(result);
 							contentProposer.openProposalPopup();
 						} catch (SWTException e) {
 							// Disposed already
 							return Status.CANCEL_STATUS;
 						} finally {
-							doAutoFill = true;
 							uiMonitor.done();
 						}
 						return Status.OK_STATUS;
@@ -89,9 +80,7 @@
 		}
 		// ChangeList is already here, so get() won't block
 		Collection<Change> changes = list.get();
-		if (doAutoFill) {
-			fillInPatchSet(changes, originalRefText);
-		}
+		fillInPatchSet(changes);
 		return changes;
 	}
 

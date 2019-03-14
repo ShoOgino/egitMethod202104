@@ -228,6 +228,7 @@
 		refText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				refTextEdited = true;
 				Change change = determineChangeFromString(refText.getText());
 				String suggestion = ""; //$NON-NLS-1$
 				if (change != null) {
@@ -259,6 +260,7 @@
 				refText.setText(candidateChange.getChangeNumber().toString());
 			}
 		}
+		refTextEdited = false;
 
 		// get all available Gerrit URIs from the repository
 		SortedSet<String> uris = new TreeSet<>();
