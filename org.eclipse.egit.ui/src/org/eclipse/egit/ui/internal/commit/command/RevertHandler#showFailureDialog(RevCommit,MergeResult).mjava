@@ -1,0 +1,16 @@
+	/**
+	 * Shows a dialog with failing result of revert.
+	 *
+	 * @param commit
+	 *            the commit
+	 * @param result
+	 *            the failing result
+	 */
+	private static void showFailureDialog(RevCommit commit,
+			MergeResult result) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+			RevertFailureDialog.show(PlatformUI.getWorkbench()
+					.getModalDialogShellProvider().getShell(), commit, result);
+		});
+	}
+
