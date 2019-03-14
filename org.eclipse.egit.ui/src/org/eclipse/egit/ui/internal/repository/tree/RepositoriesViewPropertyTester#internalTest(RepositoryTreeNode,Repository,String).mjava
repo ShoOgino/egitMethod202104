@@ -1,14 +1,5 @@
-	private boolean internalTest(Object receiver, String property) {
-
-		if (!(receiver instanceof RepositoryTreeNode))
-			return false;
-		RepositoryTreeNode node = (RepositoryTreeNode) receiver;
-
-		Repository repository = node.getRepository();
-		if (repository == null) {
-			return false;
-		}
-
+	private boolean internalTest(RepositoryTreeNode node, Repository repository,
+			String property) {
 		if (property.equals("isBare")) { //$NON-NLS-1$
 			return repository.isBare();
 		}
