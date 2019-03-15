@@ -146,9 +146,9 @@
 					}
 					return uris.get(0).toString();
 				}, uri -> {
-					FutureRefs list = refs.get(uri);
+					AsynchronousBranchList list = refs.get(uri);
 					if (list == null) {
-						list = new FutureRefs(repository, uri,
+						list = new AsynchronousBranchList(repository, uri,
 								getLocalBranchName());
 						refs.put(uri, list);
 					}

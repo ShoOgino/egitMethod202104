@@ -1,0 +1,17 @@
+	/**
+	 * Creates a new {@link AsynchronousBranchList}.
+	 *
+	 * @param repository
+	 *            local repository for which to run the operation
+	 * @param uriText
+	 *            upstream URI
+	 * @param localBranchName
+	 *            short name of a local branch to add as suggestion if not
+	 *            {@code null}
+	 */
+	public AsynchronousBranchList(Repository repository, String uriText,
+			String localBranchName) {
+		super(repository, uriText);
+		this.localBranchName = localBranchName;
+	}
+
