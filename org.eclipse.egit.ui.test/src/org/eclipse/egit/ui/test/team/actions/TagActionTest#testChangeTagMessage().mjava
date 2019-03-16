@@ -13,8 +13,8 @@
 				.setText("Here's the first message");
 		tagDialog.bot().button(UIText.CreateTagDialog_CreateTagButton).click();
 		waitInUI();
-		assertTrue(lookupRepository(repositoryFile).getTags().keySet()
-				.contains("MessageChangeTag"));
+		assertNotNull(lookupRepository(repositoryFile)
+				.exactRef(Constants.R_TAGS + "MessageChangeTag"));
 		tagDialog = openTagDialog();
 		tagDialog.bot().tableWithLabel(UIText.CreateTagDialog_existingTags)
 				.getTableItem("MessageChangeTag").select();

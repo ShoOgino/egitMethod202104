@@ -16,15 +16,14 @@
 			throw new OperationCanceledException();
 		try (RevWalk revWalk = new RevWalk(db)) {
 			revWalk.setRetainBody(false);
-			Map<String, Ref> tagsMap = db.getTags();
 			Ref tagRef = null;
 
-			for (Ref ref : tagsMap.values()) {
+			for (Ref ref : db.getRefDatabase()
+					.getRefsByPrefix(Constants.R_TAGS)) {
 				if (monitor.isCanceled())
 					throw new OperationCanceledException();
 				// both RevCommits must be allocated using same RevWalk
-				// instance,
-				// otherwise isMergedInto returns wrong result!
+				// instance, otherwise isMergedInto returns wrong result!
 				RevCommit current = revWalk.parseCommit(commit);
 				// tags can point to any object, we only want tags pointing at
 				// commits
@@ -45,8 +44,7 @@
 								.parseCommit(tagRef.getObjectId());
 
 						// both oldTag and newTag satisfy search criteria, so
-						// taking
-						// the closest one
+						// taking the closest one
 						if (isMergedInto(revWalk, oldTag, newTag,
 								searchDescendant))
 							tagRef = ref;

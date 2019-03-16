@@ -1,6 +1,7 @@
-	private List<Ref> getTags() {
+	private List<Ref> getTags() throws IOException {
 		Repository repository = getCommit().getRepository();
-		List<Ref> tags = new ArrayList<>(repository.getTags().values());
+		List<Ref> tags = new ArrayList<>(
+				repository.getRefDatabase().getRefsByPrefix(Constants.R_TAGS));
 		Collections.sort(tags, new Comparator<Ref>() {
 
 			@Override

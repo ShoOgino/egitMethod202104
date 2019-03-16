@@ -1,14 +1,15 @@
-	private String getTagsString() {
+	private String getTagsString() throws IOException {
 		StringBuilder sb = new StringBuilder();
-		Map<String, Ref> tagsMap = db.getTags();
-		for (Entry<String, Ref> tagEntry : tagsMap.entrySet()) {
-			ObjectId target = tagEntry.getValue().getPeeledObjectId();
-			if (target == null)
-				target = tagEntry.getValue().getObjectId();
+		for (Ref ref : db.getRefDatabase().getRefsByPrefix(Constants.R_TAGS)) {
+			ObjectId target = ref.getPeeledObjectId();
+			if (target == null) {
+				target = ref.getObjectId();
+			}
 			if (target != null && target.equals(commit)) {
-				if (sb.length() > 0)
+				if (sb.length() > 0) {
 					sb.append(", "); //$NON-NLS-1$
-				sb.append(tagEntry.getKey());
+				}
+				sb.append(formatTagRef(ref));
 			}
 		}
 		return sb.toString();

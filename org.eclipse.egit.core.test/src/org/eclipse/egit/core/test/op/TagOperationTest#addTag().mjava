@@ -1,7 +1,7 @@
 	@Test
 	public void addTag() throws Exception {
 		assertTrue("Tags should be empty", repository1.getRepository()
-				.getTags().isEmpty());
+				.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
 		TagBuilder newTag = new TagBuilder();
 		newTag.setTag("TheNewTag");
 		newTag.setMessage("Well, I'm the tag");
@@ -12,7 +12,7 @@
 				newTag, false);
 		top.execute(new NullProgressMonitor());
 		assertFalse("Tags should not be empty", repository1.getRepository()
-				.getTags().isEmpty());
+				.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
 
 		try {
 			top.execute(null);
@@ -28,17 +28,16 @@
 		} catch (CoreException e) {
 			// expected
 		}
-		Ref tagRef = repository1.getRepository().getTags().get("TheNewTag");
 		try (RevWalk walk = new RevWalk(repository1.getRepository())) {
 			RevTag tag = walk.parseTag(repository1.getRepository().resolve(
-					tagRef.getName()));
+					Constants.R_TAGS + "TheNewTag"));
 
 			newTag.setMessage("Another message");
 			assertFalse("Messages should differ",
 					tag.getFullMessage().equals(newTag.getMessage()));
 			top.execute(null);
 			tag = walk.parseTag(repository1.getRepository().resolve(
-					tagRef.getName()));
+					Constants.R_TAGS + "TheNewTag"));
 			assertTrue("Messages be same",
 					tag.getFullMessage().equals(newTag.getMessage()));
 			walk.dispose();
