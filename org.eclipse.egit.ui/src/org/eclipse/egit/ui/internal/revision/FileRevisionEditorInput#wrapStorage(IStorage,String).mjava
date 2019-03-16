@@ -5,7 +5,7 @@
 		if (storage instanceof IFileState) {
 			return new IFileState() {
 				@Override
-				public Object getAdapter(Class adapter) {
+				public <T> T getAdapter(Class<T> adapter) {
 					return AdapterUtils.adapt(storage, adapter);
 				}
 
@@ -48,7 +48,7 @@
 
 		return new IEncodedStorage() {
 			@Override
-			public Object getAdapter(Class adapter) {
+			public <T> T getAdapter(Class<T> adapter) {
 				return AdapterUtils.adapt(storage, adapter);
 			}
 

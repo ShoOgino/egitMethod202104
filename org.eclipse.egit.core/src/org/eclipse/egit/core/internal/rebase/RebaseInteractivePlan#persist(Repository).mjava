@@ -15,7 +15,7 @@
 				.getRepositoryState() != RepositoryState.REBASING_INTERACTIVE) {
 			return false;
 		}
-		List<RebaseTodoLine> todoLines = new LinkedList<RebaseTodoLine>();
+		List<RebaseTodoLine> todoLines = new LinkedList<>();
 		for (PlanElement element : planList.getSecondList())
 			todoLines.add(element.getRebaseTodoLine());
 		try {

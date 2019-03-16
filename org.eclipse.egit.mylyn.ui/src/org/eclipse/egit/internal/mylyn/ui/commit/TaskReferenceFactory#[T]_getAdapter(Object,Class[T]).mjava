@@ -1,0 +1,8 @@
+	@Override
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
+		if (!AbstractTaskReference.class.equals(adapterType)) {
+			return null;
+		}
+		return adapterType.cast(adaptFromObject(adaptableObject));
+	}
+

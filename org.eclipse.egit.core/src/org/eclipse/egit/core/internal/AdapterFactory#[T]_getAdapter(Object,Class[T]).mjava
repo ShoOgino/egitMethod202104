@@ -1,0 +1,11 @@
+	@Override
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
+		if (adapterType == Repository.class) {
+			if (adaptableObject instanceof GitFileRevision) {
+				return adapterType.cast(
+						((GitFileRevision) adaptableObject).getRepository());
+			}
+		}
+		return null;
+	}
+

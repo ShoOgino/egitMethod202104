@@ -3,7 +3,7 @@
 		try {
 			rebaseTodoLines = repository.readRebaseTodo(REBASE_TODO, true);
 		} catch (IOException e) {
-			rebaseTodoLines = new LinkedList<RebaseTodoLine>();
+			rebaseTodoLines = new LinkedList<>();
 		}
 		List<PlanElement> todoElements = createElementList(rebaseTodoLines,
 				walk);
