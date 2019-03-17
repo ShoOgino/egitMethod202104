@@ -7,11 +7,11 @@
 			shouldContinue = commitUI.commit();
 			break;
 		case IDialogConstants.ABORT_ID:
-			final ResetOperation operation = new ResetOperation(repository,
-					Constants.HEAD, ResetType.HARD);
-			String jobname = NLS.bind(UIText.ResetAction_reset, Constants.HEAD);
-			JobUtil.scheduleUserWorkspaceJob(operation, jobname,
-					JobFamilies.RESET);
+			DiscardChangesOperation operation = new DiscardChangesOperation(
+					repository, fileList);
+			JobUtil.scheduleUserWorkspaceJob(operation,
+					UIText.DiscardChangesAction_discardChanges,
+					JobFamilies.DISCARD_CHANGES);
 			shouldContinue = true;
 			break;
 		case IDialogConstants.SKIP_ID:

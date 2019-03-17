@@ -1,0 +1,10 @@
+	protected String getTestFileContent(String fileName) throws Exception {
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1)
+				.getFolder(FOLDER).getFile(fileName);
+		if (file.exists()) {
+			byte[] bytes = IO.readFully(file.getLocation().toFile());
+			return new String(bytes, file.getCharset());
+		}
+		return "";
+	}
+

@@ -6,8 +6,11 @@
 					new StructuredSelection(repository));
 			break;
 		case IDialogConstants.ABORT_ID:
-			CommonUtils.runCommand(ResetCommand.ID, new StructuredSelection(
-					new RepositoryNode(null, repository)));
+			DiscardChangesOperation operation = new DiscardChangesOperation(
+					repository, this.conflicts);
+			JobUtil.scheduleUserWorkspaceJob(operation,
+					UIText.DiscardChangesAction_discardChanges,
+					JobFamilies.DISCARD_CHANGES);
 			break;
 		case IDialogConstants.SKIP_ID:
 			CommonUtils.runCommand(ActionCommands.STASH_CREATE,

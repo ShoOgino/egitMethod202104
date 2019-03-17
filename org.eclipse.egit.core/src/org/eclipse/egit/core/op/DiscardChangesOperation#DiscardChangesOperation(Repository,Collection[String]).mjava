@@ -1,0 +1,14 @@
+	/**
+	 * A {@link DiscardChangesOperation} that resets the given repo-relative
+	 * paths in the given repository.
+	 *
+	 * @param repository
+	 *            to work on
+	 * @param paths
+	 *            collection of repository-relative paths to reset
+	 */
+	public DiscardChangesOperation(Repository repository,
+			Collection<String> paths) {
+		this(Collections.singletonMap(repository, paths));
+	}
+
