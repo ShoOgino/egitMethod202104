@@ -7,15 +7,11 @@
 						.getActiveWorkbenchWindow().getShell();
 				String repoName = Activator.getDefault().getRepositoryUtil()
 						.getRepositoryName(repository);
-				CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
-						shell,
-						MessageFormat
-								.format(UIText.AbstractRebaseCommandHandler_cleanupDialog_title,
-										repoName),
-						UIText.AbstractRebaseCommandHandler_cleanupDialog_text,
-						repository, files);
-				cleanupUncomittedChangesDialog.open();
-				if (cleanupUncomittedChangesDialog.shouldContinue()) {
+				String title = MessageFormat.format(
+						UIText.AbstractRebaseCommandHandler_cleanupDialog_title,
+						repoName);
+				if (UIRepositoryUtils.showCleanupDialog(repository, files,
+						title, shell)) {
 					try {
 						execute(repository);
 					} catch (ExecutionException e) {

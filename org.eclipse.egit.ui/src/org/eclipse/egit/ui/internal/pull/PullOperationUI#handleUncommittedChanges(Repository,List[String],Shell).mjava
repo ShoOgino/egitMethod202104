@@ -8,15 +8,11 @@
 			final List<String> files, Shell shell) {
 		String repoName = Activator.getDefault().getRepositoryUtil()
 				.getRepositoryName(repository);
-		CleanupUncomittedChangesDialog cleanupUncomittedChangesDialog = new CleanupUncomittedChangesDialog(
-				shell,
-				MessageFormat
-						.format(UIText.AbstractRebaseCommandHandler_cleanupDialog_title,
-								repoName),
-				UIText.AbstractRebaseCommandHandler_cleanupDialog_text,
-				repository, files);
-		cleanupUncomittedChangesDialog.open();
-		if (cleanupUncomittedChangesDialog.shouldContinue()) {
+		String title = MessageFormat.format(
+				UIText.AbstractRebaseCommandHandler_cleanupDialog_title,
+				repoName);
+		if (UIRepositoryUtils.showCleanupDialog(repository, files, title,
+				shell)) {
 			final PullOperationUI parentOperation = this;
 			final PullOperationUI pullOperationUI = new PullOperationUI(
 					Collections.singleton(repository));

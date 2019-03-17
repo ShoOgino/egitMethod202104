@@ -5,8 +5,6 @@
 			return error(UIText.Handlers_noGitflowRepositoryFound);
 		}
 
-		Repository repository = gfRepo.getRepository();
-
 		final List<Ref> refs = gfRepo.getFeatureBranches();
 
 		FeatureBranchSelectionDialog dialog = new FeatureBranchSelectionDialog(
@@ -40,8 +38,13 @@
 			CheckoutResult result = checkoutOperation.getResult();
 			if (!CheckoutResult.Status.OK.equals(result.getStatus())) {
 				Shell shell = HandlerUtil.getActiveShell(event);
-				if (!handleUncommittedFiles(gfRepo.getRepository(), shell,
-						repository.getWorkTree().getName())) {
+				String repoName = Activator.getDefault().getRepositoryUtil()
+						.getRepositoryName(gfRepo.getRepository());
+				if (!UIRepositoryUtils.handleUncommittedFiles(
+						gfRepo.getRepository(), shell,
+						MessageFormat.format(
+								UIText.FeatureCheckoutHandler_cleanupDialog_title,
+								repoName))) {
 					return Status.CANCEL_STATUS;
 				} else {
 					JobUtil.scheduleUserWorkspaceJob(checkoutOperation,
