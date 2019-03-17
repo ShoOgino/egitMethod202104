@@ -10,7 +10,7 @@
 		this.workspaceSupplement = workspaceSupplement;
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProjectDescription description = createDescription(path, insidews,
-				root, workspaceSupplement);
+				root);
 		project = root.getProject(description.getName());
 		if (remove)
 			project.delete(true, null);
