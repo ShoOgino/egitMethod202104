@@ -14,8 +14,11 @@
 			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 				Shell shell = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getShell();
-				new CheckoutConflictDialog(shell, repository,
-						result.getConflicts()).open();
+				MessageDialog dialog = new CleanupUncomittedChangesDialog(shell,
+						UIText.BranchResultDialog_CheckoutConflictsTitle,
+						UIText.AbstractRebaseCommandHandler_cleanupDialog_text,
+						repository, result.getConflicts(), false);
+				dialog.open();
 			});
 			return;
 		case STOPPED:

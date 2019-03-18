@@ -1,0 +1,30 @@
+	/**
+	 * Creates a new {@link CleanupUncomittedChangesDialog}. If
+	 * {@code needResult == true}, a commit dialog is always used for the
+	 * "Commit" button, otherwise the commit command is executed, which may also
+	 * simply open the staging view.
+	 *
+	 * @param shell
+	 *            to use as parent
+	 * @param title
+	 *            for the dialog
+	 * @param message
+	 *            to show in the dialog
+	 * @param repository
+	 *            containing the uncommitted changes
+	 * @param fileList
+	 *            giving the paths that have uncommitted changes
+	 * @param needResult
+	 *            whether to always use a commit dialog for the "Commit" button
+	 */
+	public CleanupUncomittedChangesDialog(Shell shell, String title,
+			String message, Repository repository, List<String> fileList,
+			boolean needResult) {
+		super(shell, title, INFO, message,
+				MessageDialog.INFORMATION, new String[] {}, -1);
+		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
+		this.repository = repository;
+		this.fileList = fileList;
+		this.needResult = needResult;
+	}
+

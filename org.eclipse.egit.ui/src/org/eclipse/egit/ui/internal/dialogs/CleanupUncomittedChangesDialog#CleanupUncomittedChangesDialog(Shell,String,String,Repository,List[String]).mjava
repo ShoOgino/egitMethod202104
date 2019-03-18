@@ -7,10 +7,6 @@
 	 */
 	public CleanupUncomittedChangesDialog(Shell shell, String dialogTitle,
 			String dialogMessage, Repository repository, List<String> fileList) {
-		super(shell, dialogTitle, INFO, dialogMessage,
-				MessageDialog.INFORMATION, new String[] {}, -1);
-		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);
-		this.repository = repository;
-		this.fileList = fileList;
+		this(shell, dialogTitle, dialogMessage, repository, fileList, true);
 	}
 

@@ -2,9 +2,14 @@
 	protected void buttonPressed(int buttonId) {
 		switch (buttonId) {
 		case IDialogConstants.PROCEED_ID:
-			CommitUI commitUI = new CommitUI(getShell(), repository,
-					new IResource[0], true);
-			shouldContinue = commitUI.commit();
+			if (needResult) {
+				CommitUI commitUI = new CommitUI(getShell(), repository,
+						new IResource[0], true);
+				shouldContinue = commitUI.commit();
+			} else {
+				CommonUtils.runCommand(ActionCommands.COMMIT_ACTION,
+						new StructuredSelection(repository));
+			}
 			break;
 		case IDialogConstants.ABORT_ID:
 			DiscardChangesOperation operation = new DiscardChangesOperation(
