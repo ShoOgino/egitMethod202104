@@ -1,0 +1,9 @@
+	private void createProject(File workingTree, String name)
+			throws IOException {
+		File dir = new File(workingTree, name);
+		Files.createDirectories(dir.toPath());
+		File project = new File(dir, ".project");
+		String prj = PROJECT_FILE.replace("</name>", name + "</name>");
+		Files.write(project.toPath(), prj.getBytes(StandardCharsets.UTF_8));
+	}
+

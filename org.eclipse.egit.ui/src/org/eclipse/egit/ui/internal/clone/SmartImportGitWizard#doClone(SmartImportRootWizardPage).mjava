@@ -3,14 +3,11 @@
 		try {
 			final GitRepositoryInfo repositoryInfo = currentSearchResult.getGitRepositoryInfo();
 			performClone(repositoryInfo);
-			getContainer().getShell().getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					runCloneOperation(getContainer(), repositoryInfo);
-					cloneDestination.saveSettingsForClonedRepo();
-					importRootPage.setInitialImportRoot(
-							getCloneDestinationPage().getDestinationFile());
-				}
+			getContainer().getShell().getDisplay().asyncExec(() -> {
+				runCloneOperation(getContainer(), repositoryInfo);
+				cloneDestination.saveSettingsForClonedRepo();
+				importRootPage.setInitialImportRoot(
+						getCloneDestinationPage().getDestinationFile());
 			});
 		} catch (URISyntaxException e) {
 			org.eclipse.egit.ui.Activator.error(UIText.GitImportWizard_errorParsingURI, e);

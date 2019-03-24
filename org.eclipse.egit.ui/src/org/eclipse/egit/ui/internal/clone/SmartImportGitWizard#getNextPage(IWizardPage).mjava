@@ -1,7 +1,7 @@
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page == selectRepoPage || page == this.cloneDestination) {
-			return this.easymportWizard.getPages()[0];
+			return this.smartImportWizard.getPages()[0];
 		}
 		return super.getNextPage(page);
 	}

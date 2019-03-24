@@ -1,0 +1,12 @@
+	@Before
+	public void prepareTest() throws Exception {
+		repository = createLocalTestRepository(REPO1);
+		File workingTree = repository.getWorkTree();
+		createProject(workingTree, "Project1");
+		createProject(workingTree, "Project2");
+		try (Git git = new Git(repository)) {
+			git.add().addFilepattern(".").call();
+			git.commit().setMessage("Initial commit").call();
+		}
+	}
+

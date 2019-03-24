@@ -1,31 +1,32 @@
 	@Test
 	public void test() throws Exception {
-		try {
-			new URL("https://git.eclipse.org/r/").openConnection();
-		} catch (Exception ex) {
-			Assume.assumeNoException("Internet access is required for that test", ex);
-		}
-
 		Set<IProject> initialProjects = new HashSet<>(Arrays.asList(ResourcesPlugin.getWorkspace().getRoot().getProjects()));
 		Set<IProject> newProjects = null;
-
+		Set<String> expectedProjectNames = new HashSet<>();
+		expectedProjectNames.add("Project1");
+		expectedProjectNames.add("Project2");
 		bot.menu("File").menu("Import...").click();
 		expandAndWait(bot.tree().getTreeItem("Git"))
 				.select("Projects from Git (with smart import)");
 		bot.button("Next >").click();
 		bot.tree().select("Clone URI");
 		bot.button("Next >").click();
-		bot.text().setText("https://git.eclipse.org/r/jgit/jgit");
+		String path = Path
+				.fromOSString(repository.getDirectory().getCanonicalPath())
+				.toString();
+		if (!path.startsWith("/")) {
+			// Might be Windows: C:/foo...
+			path = '/' + path;
+		}
+		bot.text().setText("file://" + path);
 		bot.button("Next >").click();
-		waitForButtonEnabled("Next >", 30); // Time to fetch branch info
-		bot.button("Deselect All").click();
-		bot.tree().getTreeItem("master").check();
+		waitForButtonEnabled("Next >", 5);
 		bot.button("Next >").click();
-		Path tmpDir = Files.createTempDirectory(getClass().getName());
+		File tmpDir = tmp.newFolder(getClass().getName());
 		try {
 			bot.text().setText(tmpDir.toString());
 			bot.button("Next >").click();
-			waitForButtonEnabled("Finish", 180); // Time to clone repo
+			waitForButtonEnabled("Finish", 5);
 			bot.button("Finish").click();
 
 			Job.getJobManager().join(SmartImportJob.class,
@@ -33,10 +34,16 @@
 
 			newProjects = new HashSet<>(Arrays.asList(ResourcesPlugin.getWorkspace().getRoot().getProjects()));
 			newProjects.removeAll(initialProjects);
-			Assert.assertTrue("There should be more than one project imported with jgit...", newProjects.size() > 1);
+			assertTrue("There should be more than one project imported",
+					newProjects.size() > 1);
 
-			IProject someProject = ResourcesPlugin.getWorkspace().getRoot().getProject("org.eclipse.jgit.ui");
-			Assert.assertTrue("Project not found", someProject.exists());
+			for (IProject project : newProjects) {
+				assertTrue("Project " + project.getName() + " not found",
+						project.exists());
+				expectedProjectNames.remove(project.getName());
+			}
+			assertEquals("Some projects not imported", "[]",
+					expectedProjectNames.toString());
 		} finally {
 			// clean up
 			if (newProjects != null) {
@@ -44,10 +51,6 @@
 					p.delete(true, new NullProgressMonitor());
 				}
 			}
-
-			Delete deleteTask = new Delete();
-			deleteTask.setDir(tmpDir.toFile());
-			deleteTask.execute();
 		}
 	}
 
