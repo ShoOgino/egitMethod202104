@@ -1,4 +1,10 @@
 	private void handleBlockCheckboxSelection(boolean selection) {
 		blockCombo.setEnabled(selection, buildProblemsGroup);
+		if (selection) {
+			warnCheckbox.setSelection(true);
+			warnCheckbox.setEnabled(false);
+		} else {
+			warnCheckbox.setEnabled(true);
+		}
 	}
 
