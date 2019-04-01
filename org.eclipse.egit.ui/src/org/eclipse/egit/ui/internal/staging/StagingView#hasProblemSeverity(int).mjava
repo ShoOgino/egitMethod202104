@@ -1,0 +1,12 @@
+	private boolean hasProblemSeverity(int severity) {
+		StagingViewContentProvider stagedContentProvider = getContentProvider(
+				stagedViewer);
+		StagingEntry[] entries = stagedContentProvider.getStagingEntries();
+		for (StagingEntry entry : entries) {
+			if (entry.getProblemSeverity() >= severity) {
+				return true;
+			}
+		}
+		return false;
+	}
+

@@ -13,8 +13,8 @@
 		boolean indexDiffAvailable = indexDiffAvailable(indexDiff);
 		boolean noConflicts = noConflicts(indexDiff);
 
-		boolean commitEnabled = !isCommitBlocked() && noConflicts
-				&& indexDiffAvailable;
+		boolean commitEnabled = noConflicts && indexDiffAvailable
+				&& !isCommitBlocked();
 
 		boolean commitAndPushEnabled = commitAndPushEnabled(commitEnabled);
 

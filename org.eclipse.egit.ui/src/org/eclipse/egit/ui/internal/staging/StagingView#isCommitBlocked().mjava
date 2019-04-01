@@ -2,10 +2,8 @@
 		return getPreferenceStore()
 				.getBoolean(UIPreferences.WARN_BEFORE_COMMITTING)
 				&& getPreferenceStore().getBoolean(UIPreferences.BLOCK_COMMIT)
-						? (getProblemsSeverity() >= Integer
+				&& !ignoreErrors.getSelection() && hasProblemSeverity(Integer
 								.parseInt(getPreferenceStore().getString(
-										UIPreferences.BLOCK_COMMIT_LEVEL))
-								&& !ignoreErrors.getSelection())
-						: false;
+								UIPreferences.BLOCK_COMMIT_LEVEL)));
 	}
 

@@ -1,9 +1,9 @@
 	private boolean hasErrorsOrWarnings() {
 		return getPreferenceStore()
 				.getBoolean(UIPreferences.WARN_BEFORE_COMMITTING)
-						? (getProblemsSeverity() >= Integer
-								.parseInt(getPreferenceStore()
-						.getString(UIPreferences.WARN_BEFORE_COMMITTING_LEVEL))
-				&& !ignoreErrors.getSelection()) : false;
+				&& !ignoreErrors.getSelection()
+				&& hasProblemSeverity(
+						Integer.parseInt(getPreferenceStore().getString(
+										UIPreferences.WARN_BEFORE_COMMITTING_LEVEL)));
 	}
 
