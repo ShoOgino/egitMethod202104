@@ -2,28 +2,28 @@
 	 * @param indexDiff
 	 */
 	public IndexDiffData(IndexDiff indexDiff) {
-		added = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		added = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getAdded()));
 		assumeUnchanged = Collections.unmodifiableSet(
-				new HashSet<String>(indexDiff.getAssumeUnchanged()));
-		changed = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+				new HashSet<>(indexDiff.getAssumeUnchanged()));
+		changed = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getChanged()));
-		removed = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		removed = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getRemoved()));
-		missing = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		missing = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getMissing()));
-		modified = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		modified = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getModified()));
-		untracked = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		untracked = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getUntracked()));
 		untrackedFolders = Collections.unmodifiableSet(getUntrackedFolders(indexDiff));
-		conflicts = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		conflicts = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getConflicting()));
-		ignored = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		ignored = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getIgnoredNotInIndex()));
-		symlinks = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		symlinks = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getPathsWithIndexMode(FileMode.SYMLINK)));
-		submodules = Collections.unmodifiableSet(new HashSet<String>(indexDiff
+		submodules = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getPathsWithIndexMode(FileMode.GITLINK)));
 		changedResources = Collections.emptySet();
 	}

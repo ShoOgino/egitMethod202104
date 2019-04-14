@@ -1,7 +1,7 @@
 	private static Map<String, Change> getChangedObjects(Repository repo,
 			RevCommit commit, RevCommit parentCommit,
 			TreeFilter pathFilter, final int direction) throws IOException {
-		final Map<String, Change> result = new HashMap<String, GitCommitsModelCache.Change>();
+		final Map<String, Change> result = new HashMap<>();
 		try (final TreeWalk tw = new TreeWalk(repo)) {
 			int commitIndex = addTree(tw, commit);
 			int parentCommitIndex = addTree(tw, parentCommit);

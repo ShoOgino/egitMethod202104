@@ -8,7 +8,7 @@
 	 */
 	protected static Set<String> mergeIgnored(Set<String> oldIgnoredPaths,
 			Collection<String> changedPaths, Set<String> newIgnoredPaths) {
-		Set<String> merged = new HashSet<String>();
+		Set<String> merged = new HashSet<>();
 		for (String oldIgnoredPath : oldIgnoredPaths) {
 			boolean changed = isAnyPrefixOf(oldIgnoredPath, changedPaths);
 			if (!changed) {

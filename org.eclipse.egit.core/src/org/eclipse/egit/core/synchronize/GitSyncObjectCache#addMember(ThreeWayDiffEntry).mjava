@@ -12,7 +12,7 @@
 		String memberPath = entry.getPath();
 
 		if (members == null)
-			members = new HashMap<String, GitSyncObjectCache>();
+			members = new HashMap<>();
 
 		int start = -1;
 		Map<String, GitSyncObjectCache> parent = members;
@@ -27,7 +27,7 @@
 			start = separatorIdx;
 			separatorIdx = memberPath.indexOf("/", separatorIdx + 1); //$NON-NLS-1$
 			if (cacheObject.members == null)
-				cacheObject.members = new HashMap<String, GitSyncObjectCache>();
+				cacheObject.members = new HashMap<>();
 
 			parent = cacheObject.members;
 		}

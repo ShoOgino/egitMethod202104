@@ -6,7 +6,7 @@
 	 */
 	public void assertRepositoryContainsFiles(Repository repository,
 			String[] paths) throws Exception {
-		Set<String> expectedfiles = new HashSet<String>();
+		Set<String> expectedfiles = new HashSet<>();
 		for (String path : paths)
 			expectedfiles.add(path);
 		try (TreeWalk treeWalk = new TreeWalk(repository)) {

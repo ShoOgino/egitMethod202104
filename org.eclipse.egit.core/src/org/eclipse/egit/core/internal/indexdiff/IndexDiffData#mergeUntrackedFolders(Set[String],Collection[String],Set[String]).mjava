@@ -1,6 +1,6 @@
 	private static Set<String> mergeUntrackedFolders(Set<String> oldUntrackedFolders,
 			Collection<String> changedFiles, Set<String> newUntrackedFolders) {
-		Set<String> merged = new HashSet<String>();
+		Set<String> merged = new HashSet<>();
 		for (String oldUntrackedFolder : oldUntrackedFolders) {
 			boolean changeInUntrackedFolder = isAnyFileContainedInFolder(
 					oldUntrackedFolder, changedFiles);

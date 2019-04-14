@@ -7,7 +7,7 @@
 			if (repositoryAlreadyExistsForUrl(repositoryPath, gitUrl))
 				return repositoryPath;
 			else {
-				final Collection<String> projectNames = new LinkedList<String>();
+				final Collection<String> projectNames = new LinkedList<>();
 				for (final ProjectReference projectReference : projects)
 					projectNames.add(projectReference.getProjectDir());
 				throw new TeamException(

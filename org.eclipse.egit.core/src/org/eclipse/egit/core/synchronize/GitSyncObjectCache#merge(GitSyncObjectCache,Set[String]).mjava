@@ -1,7 +1,7 @@
 	void merge(GitSyncObjectCache other, Set<String> filterPaths) {
 		if (other.members != null) {
 			if (members == null)
-				members = new HashMap<String, GitSyncObjectCache>();
+				members = new HashMap<>();
 
 			for (Entry<String, GitSyncObjectCache> entry : members.entrySet()) {
 				String key = entry.getKey();
