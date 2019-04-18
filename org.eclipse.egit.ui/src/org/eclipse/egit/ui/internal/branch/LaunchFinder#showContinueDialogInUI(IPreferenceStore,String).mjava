@@ -1,9 +1,9 @@
 	private static boolean showContinueDialogInUI(final IPreferenceStore store,
-			final ILaunchConfiguration launchConfiguration) {
+			final String launchConfiguration) {
 		String[] buttons = new String[] { UIText.BranchOperationUI_Continue,
 				IDialogConstants.CANCEL_LABEL };
 		String message = NLS.bind(UIText.LaunchFinder_RunningLaunchMessage,
-				launchConfiguration.getName()) + ' '
+				launchConfiguration) + ' '
 				+ UIText.LaunchFinder_ContinueQuestion;
 		MessageDialogWithToggle continueDialog = new MessageDialogWithToggle(
 				PlatformUI.getWorkbench().getModalDialogShellProvider()

@@ -7,13 +7,11 @@
 	 *            running launches
 	 * @param monitor
 	 *            for progress reporting and cancellation
-	 * @return the launch name, or {@code null} if none found.
+	 * @return the name of the launch configuration, or {@code null} if none
+	 *         found.
 	 */
 	@Nullable
-	public static String getRunningLaunchConfiguration(
+	public String getRunningLaunchConfigurationName(
 			final Collection<Repository> repositories,
-			IProgressMonitor monitor) {
-		return debugPluginFacade.getRunningLaunchConfigurationName(repositories,
-				monitor);
-	}
+			IProgressMonitor monitor);
 

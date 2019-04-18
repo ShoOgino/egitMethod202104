@@ -1,0 +1,12 @@
+	@Override
+	public String getRunningLaunchConfigurationName(
+			final Collection<Repository> repositories,
+			IProgressMonitor monitor) {
+		ILaunchConfiguration launch = getRunningLaunchConfiguration(
+				repositories, monitor);
+		if (launch != null)
+			return launch.getName();
+
+		return null;
+	}
+

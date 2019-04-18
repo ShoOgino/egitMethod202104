@@ -1,7 +1,7 @@
 		@Override
 		public void run() {
 			String question = UIText.DiscardChangesAction_confirmActionMessage;
-			ILaunchConfiguration launch = LaunchFinder
+			String launch = LaunchFinder
 					.getRunningLaunchConfiguration(
 							Collections.singleton(getCurrentRepository()),
 							null);
@@ -9,7 +9,7 @@
 				question = MessageFormat.format(question,
 						"\n\n" + MessageFormat.format( //$NON-NLS-1$
 								UIText.LaunchFinder_RunningLaunchMessage,
-								launch.getName()));
+								launch));
 			} else {
 				question = MessageFormat.format(question, ""); //$NON-NLS-1$
 			}

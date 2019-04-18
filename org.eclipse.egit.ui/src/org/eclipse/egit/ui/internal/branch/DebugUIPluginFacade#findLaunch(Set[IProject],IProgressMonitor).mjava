@@ -4,8 +4,7 @@
 				.getLaunchManager();
 		ILaunch[] launches = launchManager.getLaunches();
 		SubMonitor progress = SubMonitor.convert(monitor,
-				UIText.LaunchFinder_SearchLaunchConfiguration,
-				launches.length);
+				UIText.LaunchFinder_SearchLaunchConfiguration, launches.length);
 		for (ILaunch launch : launches) {
 			if (progress.isCanceled()) {
 				break;

@@ -1,10 +1,10 @@
 	private String getLaunchMessage(Repository repository) {
-		ILaunchConfiguration launch = LaunchFinder
+		String launch = LaunchFinder
 				.getRunningLaunchConfiguration(
 						Collections.singleton(repository), null);
 		if (launch != null) {
 			return MessageFormat.format(
-					UIText.LaunchFinder_RunningLaunchMessage, launch.getName());
+					UIText.LaunchFinder_RunningLaunchMessage, launch);
 		}
 		return null;
 	}

@@ -22,7 +22,7 @@
 			return false;
 		}
 		SubMonitor progress = SubMonitor.convert(monitor);
-		final ILaunchConfiguration launchConfiguration = getRunningLaunchConfiguration(
+		final String launchConfiguration = getRunningLaunchConfiguration(
 				repositories,
 				progress);
 		if (launchConfiguration != null) {
