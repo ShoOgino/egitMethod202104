@@ -26,7 +26,7 @@
 		if (projectPath == null) {
 			return null;
 		}
-		if (projectPath.equals("")) //$NON-NLS-1$
+		if (projectPath.isEmpty())
 			projectPath = "."; //$NON-NLS-1$
 
 		return asReference(url, branch, projectPath);

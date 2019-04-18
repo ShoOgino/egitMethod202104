@@ -69,7 +69,7 @@
 			for (Object checkedElement : viewer.getCheckedElements()) {
 				String path = ((ProjectAndRepo) checkedElement).getRepo();
 				if (((ProjectAndRepo) checkedElement).getRepo() != null
-						&& path.equals("")) { //$NON-NLS-1$
+						&& path.isEmpty()) {
 					pageComplete = false;
 				}
 			}

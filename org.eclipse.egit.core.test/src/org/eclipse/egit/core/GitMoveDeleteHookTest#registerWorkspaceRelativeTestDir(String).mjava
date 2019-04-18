@@ -1,5 +1,5 @@
 	private void registerWorkspaceRelativeTestDir(String relativeDir) {
-		if ((relativeDir != null) && !relativeDir.equals("")) {
+		if ((relativeDir != null) && !relativeDir.isEmpty()) {
 			File d = new File(workspace, relativeDir);
 			testDirs.add(d);
 		}

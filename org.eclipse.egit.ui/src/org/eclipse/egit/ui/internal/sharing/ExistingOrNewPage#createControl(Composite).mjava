@@ -170,7 +170,7 @@
 					for (TreeItem ti : tree.getItems()) {
 						if (ti.getItemCount() > 0
 								|| ((ProjectAndRepo) ti.getData()).getRepo()
-										.equals("")) //$NON-NLS-1$
+										.isEmpty())
 							ti.setChecked(false);
 						for (TreeItem subTi : ti.getItems()) {
 							IProject project = ((ProjectAndRepo) subTi
