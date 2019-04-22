@@ -1,6 +1,5 @@
 	private DiscardChangesOperation createOperation(IWorkbenchPart part,
 			ExecutionEvent event) throws ExecutionException {
-
 		IResource[] selectedResources = gatherResourceToOperateOn(event);
 		String revision;
 		try {
@@ -18,8 +17,8 @@
 			// cancels the scope operation
 			return null;
 		}
-
+		hasDirectories = Stream.of(resourcesInScope)
+				.anyMatch(rsc -> rsc.getType() != IResource.FILE);
 		return new DiscardChangesOperation(resourcesInScope, revision);
-
 	}
 

@@ -1,0 +1,5 @@
+	private boolean containsAny(Set<String> repoPaths,
+			Collection<String> files) {
+		return files.stream().anyMatch(repoPaths::contains);
+	}
+

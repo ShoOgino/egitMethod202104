@@ -1,0 +1,28 @@
+	private boolean containsAnyDirectory(Set<String> repoPaths,
+			Collection<String> files) {
+		String lastDirectory = null;
+		for (String file : files) {
+			int j = file.lastIndexOf('/');
+			if (j <= 0) {
+				continue;
+			}
+			String directory = file.substring(0, j);
+			String withTerminator = directory + '/';
+			if (lastDirectory != null
+					&& lastDirectory.startsWith(withTerminator)) {
+				continue;
+			}
+			if (repoPaths.contains(directory)) {
+				return true;
+			}
+			lastDirectory = withTerminator;
+			for (int i = directory.indexOf('/'); i > 0; i = directory.indexOf(
+					'/', i + 1)) {
+				if (repoPaths.contains(directory.substring(0, i))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+

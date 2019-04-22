@@ -1,0 +1,18 @@
+	private boolean haveChanges(Map<Repository, Collection<String>> paths) {
+		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		for (Map.Entry<Repository, Collection<String>> entry : paths
+				.entrySet()) {
+			Repository repo = entry.getKey();
+			Assert.isNotNull(repo);
+			IndexDiffCacheEntry indexDiff = cache.getIndexDiffCacheEntry(repo);
+			if (indexDiff == null) {
+				return true; // No info, assume worst case
+			}
+			IndexDiffData diff = indexDiff.getIndexDiff();
+			if (diff == null || hasChanges(diff, entry.getValue())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
