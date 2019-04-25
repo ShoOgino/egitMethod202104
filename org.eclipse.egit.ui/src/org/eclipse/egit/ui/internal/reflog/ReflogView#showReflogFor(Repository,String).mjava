@@ -6,7 +6,7 @@
 	 */
 	private void showReflogFor(Repository repository, String ref) {
 		if (repository != null && ref != null) {
-			refLogTableTreeViewer.setInput(new ReflogInput(repository, ref));
+			refLogTreeViewer.setInput(new ReflogInput(repository, ref));
 			updateRefLink(ref);
 			form.setText(getRepositoryName(repository));
 		}

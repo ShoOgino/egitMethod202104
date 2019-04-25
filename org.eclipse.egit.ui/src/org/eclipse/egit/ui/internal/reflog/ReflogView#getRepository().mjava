@@ -2,7 +2,7 @@
 	 * @return the repository the view is showing the reflog for
 	 */
 	public Repository getRepository() {
-		Object input = refLogTableTreeViewer.getInput();
+		Object input = refLogTreeViewer.getInput();
 		if (input instanceof ReflogInput)
 			return ((ReflogInput) input).getRepository();
 		return null;

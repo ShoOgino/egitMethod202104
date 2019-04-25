@@ -42,13 +42,13 @@
 		};
 
 		toolkit.adapt(filteredTree);
-		refLogTableTreeViewer = filteredTree.getViewer();
-		refLogTableTreeViewer.getTree().setLinesVisible(true);
-		refLogTableTreeViewer.getTree().setHeaderVisible(true);
-		refLogTableTreeViewer
+		refLogTreeViewer = filteredTree.getViewer();
+		refLogTreeViewer.getTree().setLinesVisible(true);
+		refLogTreeViewer.getTree().setHeaderVisible(true);
+		refLogTreeViewer
 				.setContentProvider(new ReflogViewContentProvider());
 
-		ColumnViewerToolTipSupport.enableFor(refLogTableTreeViewer);
+		ColumnViewerToolTipSupport.enableFor(refLogTreeViewer);
 
 		TreeViewerColumn toColumn = createColumn(layout,
 				UIText.ReflogView_CommitColumnHeader, 10, SWT.LEFT);
@@ -172,7 +172,7 @@
 			}
 		});
 
-		new OpenAndLinkWithEditorHelper(refLogTableTreeViewer) {
+		new OpenAndLinkWithEditorHelper(refLogTreeViewer) {
 			@Override
 			protected void linkToEditor(ISelection selection) {
 				// Not supported
@@ -216,7 +216,7 @@
 				if (UIPreferences.DATE_FORMAT.equals(property)
 						|| UIPreferences.DATE_FORMAT_CHOICE.equals(property)) {
 					dateFormatter = PreferenceBasedDateFormatter.create();
-					refLogTableTreeViewer.refresh();
+					refLogTreeViewer.refresh();
 				}
 			}
 		};
@@ -251,7 +251,7 @@
 				selectionChangedListener, site);
 
 		site.setSelectionProvider(new RepositorySelectionProvider(
-				refLogTableTreeViewer, () -> getRepository()));
+				refLogTreeViewer, () -> getRepository()));
 
 		addRefsChangedListener = Repository.getGlobalListenerList()
 				.addRefsChangedListener(this);
@@ -267,12 +267,12 @@
 		// register context menu
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		Tree tree = refLogTableTreeViewer.getTree();
+		Tree tree = refLogTreeViewer.getTree();
 		tree.setMenu(menuManager.createContextMenu(tree));
 
 		MenuManager resetManager = ResetMenu.createMenu(getSite());
 		menuManager.add(resetManager);
 
-		getSite().registerContextMenu(POPUP_MENU_ID, menuManager, refLogTableTreeViewer);
+		getSite().registerContextMenu(POPUP_MENU_ID, menuManager, refLogTreeViewer);
 	}
 

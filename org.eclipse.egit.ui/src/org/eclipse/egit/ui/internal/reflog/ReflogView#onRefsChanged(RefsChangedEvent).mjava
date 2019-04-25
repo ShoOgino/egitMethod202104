@@ -1,7 +1,7 @@
 	@Override
 	public void onRefsChanged(RefsChangedEvent event) {
 		PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
-			Object currentInput = refLogTableTreeViewer.getInput();
+			Object currentInput = refLogTreeViewer.getInput();
 			if (currentInput instanceof ReflogInput) {
 				ReflogInput oldInput = (ReflogInput) currentInput;
 				Repository repo = oldInput.getRepository();
@@ -9,7 +9,7 @@
 						.equals(event.getRepository().getDirectory())) {
 					try {
 						if (repo.findRef(oldInput.getRef()) != null) {
-							refLogTableTreeViewer.setInput(
+							refLogTreeViewer.setInput(
 									new ReflogInput(oldInput.getRepository(),
 											oldInput.getRef()));
 							return;
