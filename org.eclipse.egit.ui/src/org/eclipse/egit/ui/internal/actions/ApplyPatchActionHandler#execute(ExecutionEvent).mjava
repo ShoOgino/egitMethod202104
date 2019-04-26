@@ -22,7 +22,7 @@
 			op = new ApplyPatchOperation(HandlerUtil.getActivePart(event),
 					resource);
 		}
-		BusyIndicator.showWhile(Display.getDefault(), op);
+		BusyIndicator.showWhile(PlatformUI.getWorkbench().getDisplay(), op);
 		return null;
 	}
 

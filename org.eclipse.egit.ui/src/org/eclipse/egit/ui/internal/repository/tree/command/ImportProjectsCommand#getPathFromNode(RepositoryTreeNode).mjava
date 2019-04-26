@@ -7,7 +7,7 @@
 		case FOLDER:
 			return ((FolderNode) node).getObject().getPath().toString();
 		default:
-			MessageDialog.openError(Display.getDefault().getActiveShell(),
+			MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
 					UIText.ImportProjectsWrongSelection,
 					UIText.ImportProjectsSelectionInRepositoryRequired);
 			return null;

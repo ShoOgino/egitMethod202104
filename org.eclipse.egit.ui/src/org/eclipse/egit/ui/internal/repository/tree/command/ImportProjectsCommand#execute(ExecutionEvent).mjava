@@ -2,13 +2,13 @@
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		List<RepositoryTreeNode> selectedNodes = getSelectedNodes(event);
 		if (selectedNodes == null || selectedNodes.isEmpty()) {
-			MessageDialog.openError(Display.getDefault().getActiveShell(),
+			MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
 					UIText.ImportProjectsWrongSelection,
 					UIText.ImportProjectsSelectionInRepositoryRequired);
 			return null;
 		}
 		if (!(((List) selectedNodes).get(0) instanceof RepositoryTreeNode)) {
-			MessageDialog.openError(Display.getDefault().getActiveShell(),
+			MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
 					UIText.ImportProjectsWrongSelection,
 					UIText.ImportProjectsSelectionInRepositoryRequired);
 			return null;

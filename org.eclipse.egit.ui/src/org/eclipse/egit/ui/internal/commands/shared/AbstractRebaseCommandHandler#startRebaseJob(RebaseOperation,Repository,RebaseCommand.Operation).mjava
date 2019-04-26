@@ -29,7 +29,7 @@
 								&& result.getSeverity() == IStatus.ERROR) {
 							handleBeginError(repository, result);
 						} else if (result.getSeverity() == IStatus.CANCEL)
-							Display.getDefault().asyncExec(new Runnable() {
+							PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 								@Override
 								public void run() {
 									// don't use getShell(event) here since
@@ -63,7 +63,7 @@
 
 					private void setAmending(final boolean amending,
 							final boolean openStagingView) {
-						Display.getDefault().asyncExec(new Runnable() {
+						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 							@Override
 							public void run() {
 								try {
@@ -82,7 +82,7 @@
 									if (view instanceof StagingView) {
 										final StagingView sv = (StagingView) view;
 										sv.reload(repository);
-										Display.getDefault().asyncExec(
+										PlatformUI.getWorkbench().getDisplay().asyncExec(
 												new Runnable() {
 													@Override
 													public void run() {

@@ -14,7 +14,7 @@
 			}
 		};
 		if (Display.getCurrent() == null) {
-			Display.getDefault().syncExec(runnable);
+			PlatformUI.getWorkbench().getDisplay().syncExec(runnable);
 		} else {
 			runnable.run();
 		}

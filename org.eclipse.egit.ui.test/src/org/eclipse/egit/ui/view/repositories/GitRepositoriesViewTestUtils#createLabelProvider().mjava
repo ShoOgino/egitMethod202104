@@ -5,7 +5,7 @@
 	 */
 	public static RepositoryTreeNodeLabelProvider createLabelProvider() {
 		final AtomicReference<RepositoryTreeNodeLabelProvider> providerRef = new AtomicReference<>();
-		Display.getDefault().syncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 
 			@Override
 			public void run() {

@@ -1,12 +1,12 @@
 	private void getDialog() {
-		Display.getDefault().syncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
 				if (configurationDialog != null)
 					configurationDialog.close();
 
 				GitTraceConfigurationDialog dlg = new GitTraceConfigurationDialog(
-						new Shell(Display.getDefault()));
+						new Shell(PlatformUI.getWorkbench().getDisplay()));
 				dlg.setBlockOnOpen(false);
 				dlg.open();
 				configurationDialog = bot.shell(

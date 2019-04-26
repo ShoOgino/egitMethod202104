@@ -75,7 +75,7 @@
 					return;
 
 				// Unselect repository as it has been removed
-				Display.getDefault().asyncExec(new Runnable() {
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						currentRepository = null;

@@ -1,6 +1,6 @@
 	private static void assertClipboard(final String expected) {
 		final String[] value = { null };
-		Display.getDefault().syncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
 				Clipboard clp = new Clipboard(Display.getCurrent());

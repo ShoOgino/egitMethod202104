@@ -86,7 +86,7 @@
 			}
 
 			private void tryToCloseEditor(final StashedCommitNode node) {
-				Display.getDefault().asyncExec(new Runnable() {
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
 					@Override
 					public void run() {

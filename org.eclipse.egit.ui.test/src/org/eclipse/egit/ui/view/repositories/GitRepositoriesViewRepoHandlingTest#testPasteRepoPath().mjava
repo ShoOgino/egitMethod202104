@@ -5,13 +5,13 @@
 		final Exception[] exceptions = new Exception[1];
 		final SWTBotLabel label = getOrOpenView().bot().label(
 				UIText.RepositoriesView_messageEmpty);
-		Display.getDefault().syncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 
 			@Override
 			public void run() {
 				Clipboard clip = null;
 				try {
-					clip = new Clipboard(Display.getDefault());
+					clip = new Clipboard(PlatformUI.getWorkbench().getDisplay());
 					clip.setContents(new Object[] { repositoryFile.getPath() },
 							new Transfer[] { TextTransfer.getInstance() });
 
