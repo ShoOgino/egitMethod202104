@@ -9,9 +9,9 @@
 
 			@Override
 			public void run() {
-				Clipboard clip = null;
+				Clipboard clip = new Clipboard(
+						PlatformUI.getWorkbench().getDisplay());
 				try {
-					clip = new Clipboard(PlatformUI.getWorkbench().getDisplay());
 					clip.setContents(new Object[] { repositoryFile.getPath() },
 							new Transfer[] { TextTransfer.getInstance() });
 
@@ -20,8 +20,7 @@
 				} catch (Exception e) {
 					exceptions[0] = e;
 				} finally {
-					if (clip != null)
-						clip.dispose();
+					clip.dispose();
 				}
 			}
 		});
