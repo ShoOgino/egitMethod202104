@@ -10,14 +10,19 @@
 
 		String tagMessageVal = tagMessageText.getText().trim();
 
+		boolean isLightWeight = tagMessageVal.isEmpty();
 		Control button = getButton(IDialogConstants.OK_ID);
 		if (button != null) {
-			boolean containsTagNameAndMessage = (tagNameMessage == null || tagMessageVal
-					.length() == 0) && tagMessageVal.length() != 0;
-			boolean shouldOverwriteTag = (overwriteButton.getSelection() && Repository
-					.isValidRefName(Constants.R_TAGS + tagNameText.getText()));
+			boolean containsTagNameAndMessage = (tagNameMessage == null
+					|| tagMessageVal.length() == 0)
+					&& tagMessageVal.length() != 0;
+			boolean shouldOverwriteTag = (overwriteButton.getSelection()
+					&& Repository.isValidRefName(
+							Constants.R_TAGS + tagNameText.getText()));
 
-			boolean enabled = containsTagNameAndMessage || shouldOverwriteTag;
+			boolean enabled = containsTagNameAndMessage || shouldOverwriteTag
+					|| (isLightWeight && tagNameMessage == null
+							&& !tagNameText.getText().isEmpty());
 			button.setEnabled(enabled);
 
 			Button createTagAndStartPush = getButton(CREATE_AND_START_PUSH_ID);
@@ -26,10 +31,9 @@
 		}
 
 		boolean existingTagSelected = existingTag != null;
-		if (existingTagSelected && !overwriteButton.getSelection())
-			tagMessageText.getTextWidget().setEditable(false);
-		else
-			tagMessageText.getTextWidget().setEditable(true);
+		boolean readOnly = (existingTagSelected
+				&& !overwriteButton.getSelection());
+		tagMessageText.getTextWidget().setEditable(!readOnly);
 
 		overwriteButton.setEnabled(existingTagSelected);
 		if (!existingTagSelected)

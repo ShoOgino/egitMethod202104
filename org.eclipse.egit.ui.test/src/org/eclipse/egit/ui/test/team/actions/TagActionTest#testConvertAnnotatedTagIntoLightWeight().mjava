@@ -1,0 +1,31 @@
+	@Test
+	public void testConvertAnnotatedTagIntoLightWeight() throws Exception {
+		assertIsAnnotated("SomeTag", someTagCommit, null);
+
+		SWTBotShell tagDialog = openTagDialog();
+		tagDialog.bot().textWithLabel(UIText.CreateTagDialog_tagName)
+				.setText("SomeTag");
+		// Selecting the second item via the table doesn't work on GTK,
+		// focusing the table somehow selects the first element, which
+		// sets the tag name text field, which filters the table to
+		// show only that first element, after which the item.select()
+		// below silently fails and we still have the first tag selected,
+		// which is "SomeLightTag".
+		//
+		// SWTBotTableItem item = tagDialog.bot()
+		// .tableWithLabel(UIText.CreateTagDialog_existingTags)
+		// .getTableItem("SomeTag");
+		// assertEquals("Wrong item selected", "SomeTag", item.getText());
+		// item.select();
+		// assertEquals("Tag name incorrect", "SomeTag", tagDialog.bot()
+		// .textWithLabel(UIText.CreateTagDialog_tagName).getText());
+		assertFalse("Ok should be disabled", tagDialog.bot()
+				.button(UIText.CreateTagDialog_CreateTagButton).isEnabled());
+		tagDialog.bot().checkBox(UIText.CreateTagDialog_overwriteTag).click();
+		tagDialog.bot().styledTextWithLabel(UIText.CreateTagDialog_tagMessage)
+				.setText("");
+		tagDialog.bot().button(UIText.CreateTagDialog_CreateTagButton).click();
+		TestUtil.joinJobs(JobFamilies.TAG);
+		assertIsLightweight("SomeTag", headCommit);
+	}
+

@@ -1,8 +1,8 @@
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		parent.setLayout(GridLayoutFactory.swtDefaults().create());
-		parent.setLayoutData(GridDataFactory.fillDefaults().grab(true, false)
-				.create());
+		parent.setLayoutData(
+				GridDataFactory.fillDefaults().grab(true, false).create());
 
 		Button clearButton = createButton(parent, CLEAR_ID,
 				UIText.CreateTagDialog_clearButton, false);
@@ -10,18 +10,20 @@
 		setButtonLayoutData(clearButton);
 
 		Composite margin = new Composite(parent, SWT.NONE);
-		margin.setLayoutData(GridDataFactory.fillDefaults().grab(true, false)
-				.create());
+		margin.setLayoutData(
+				GridDataFactory.fillDefaults().grab(true, false).create());
 
 		Button createTagAndStartPushButton = createButton(parent,
-				CREATE_AND_START_PUSH_ID, UIText.CreateTagDialog_CreateTagAndStartPushButton, false);
-		createTagAndStartPushButton
-				.setToolTipText(UIText.CreateTagDialog_CreateTagAndStartPushToolTip);
+				CREATE_AND_START_PUSH_ID,
+				UIText.CreateTagDialog_CreateTagAndStartPushButton, false);
+		createTagAndStartPushButton.setToolTipText(
+				UIText.CreateTagDialog_CreateTagAndStartPushToolTip);
 		setButtonLayoutData(createTagAndStartPushButton);
 
 		super.createButtonsForButtonBar(parent);
 
 		getButton(OK).setText(UIText.CreateTagDialog_CreateTagButton);
+		getButton(OK).setToolTipText(UIText.CreateTagDialog_tagMessageToolTip);
 
 		validateInput();
 	}

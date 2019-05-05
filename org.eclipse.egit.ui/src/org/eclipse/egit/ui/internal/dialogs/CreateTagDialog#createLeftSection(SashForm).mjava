@@ -1,22 +1,23 @@
 	private void createLeftSection(SashForm mainForm) {
 		Composite left = new Composite(mainForm, SWT.RESIZE);
 		left.setLayout(GridLayoutFactory.swtDefaults().margins(10, 5).create());
-		left.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
-				.create());
+		left.setLayoutData(
+				GridDataFactory.fillDefaults().grab(true, true).create());
 
 		Label label = new Label(left, SWT.WRAP);
 		label.setText(UIText.CreateTagDialog_tagName);
-		GridData data = new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.VERTICAL_ALIGN_CENTER);
-		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2);
+		GridData data = new GridData(
+				GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL
+						| GridData.VERTICAL_ALIGN_CENTER);
+		data.widthHint = convertHorizontalDLUsToPixels(
+				IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2);
 		label.setLayoutData(data);
 		label.setFont(left.getFont());
 
-		tagNameText = new Text(left, SWT.SINGLE | SWT.BORDER | SWT.SEARCH
-				| SWT.ICON_CANCEL);
-		tagNameText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
+		tagNameText = new Text(left,
+				SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+		tagNameText.setLayoutData(new GridData(
+				GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 		tagNameText.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -28,7 +29,7 @@
 				// Only parse/set tag once (otherwise it would be set twice when
 				// selecting from the existing tags)
 				if (existingTag == null
-						|| !tagNameValue.equals(existingTag.getTagName()))
+						|| !tagNameValue.equals(existingTag.getName()))
 					setExistingTagFromText(tagNameValue);
 				validateInput();
 			}
@@ -37,7 +38,6 @@
 		normalizer.setVisible(false);
 
 		new Label(left, SWT.WRAP).setText(UIText.CreateTagDialog_tagMessage);
-
 
 		tagMessageText = new SpellcheckableMessageArea(left, tagMessage);
 		Point size = tagMessageText.getTextWidget().getSize();

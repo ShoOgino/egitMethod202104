@@ -1,0 +1,14 @@
+	@Test
+	public void testForceOverwriteLightWeightTag() throws Exception {
+		assertIsLightweight("SomeLightTag", someLightTagCommit);
+		SWTBotShell tagDialog = openTagDialog();
+		tagDialog.bot().tableWithLabel(UIText.CreateTagDialog_existingTags)
+				.getTableItem("SomeLightTag").select();
+		assertFalse("Ok should be disabled", tagDialog.bot()
+				.button(UIText.CreateTagDialog_CreateTagButton).isEnabled());
+		tagDialog.bot().checkBox(UIText.CreateTagDialog_overwriteTag).click();
+		tagDialog.bot().button(UIText.CreateTagDialog_CreateTagButton).click();
+		TestUtil.joinJobs(JobFamilies.TAG);
+		assertIsLightweight("SomeLightTag", headCommit);
+	}
+

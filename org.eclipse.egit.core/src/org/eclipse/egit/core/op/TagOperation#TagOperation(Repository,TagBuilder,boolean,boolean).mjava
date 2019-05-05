@@ -1,0 +1,18 @@
+	/**
+	 * Construct TagOperation
+	 *
+	 * @param repo
+	 * @param tag
+	 * @param shouldMoveTag
+	 *            if <code>true</code> it will replace tag with same name
+	 * @param annotated
+	 *            <code>true</code> if tag is annotated
+	 */
+	public TagOperation(Repository repo, TagBuilder tag, boolean shouldMoveTag,
+			boolean annotated) {
+		this.tag = tag;
+		this.repo = repo;
+		this.shouldMoveTag = shouldMoveTag;
+		this.annotated = annotated;
+	}
+

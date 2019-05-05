@@ -1,0 +1,7 @@
+	private void assertIsLightweight(String tag, ObjectId target)
+			throws Exception {
+		Ref ref = repository1.getRepository().exactRef(Constants.R_TAGS + tag);
+		ObjectId obj = ref.getObjectId();
+		assertEquals("Unexpected commit for tag " + ref.getName(), target, obj);
+	}
+

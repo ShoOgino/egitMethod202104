@@ -1,8 +1,9 @@
 	@Test
 	public void testTagDialogShowExistingTags() throws Exception {
 		SWTBotShell tagDialog = openTagDialog();
-		SWTBotTable table = tagDialog.bot().tableWithLabel(
-				UIText.CreateTagDialog_existingTags);
-		TestUtil.waitUntilTableHasRowWithText(tagDialog.bot(), table, "SomeTag", 10000);
+		SWTBotTable table = tagDialog.bot()
+				.tableWithLabel(UIText.CreateTagDialog_existingTags);
+		TestUtil.waitUntilTableHasRowWithText(tagDialog.bot(), table, "SomeTag",
+				10000);
 	}
 

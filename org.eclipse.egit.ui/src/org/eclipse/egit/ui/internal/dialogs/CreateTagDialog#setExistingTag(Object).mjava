@@ -1,19 +1,20 @@
 	private void setExistingTag(Object tagObject) {
 		if (tagObject instanceof RevTag)
-			existingTag = (RevTag) tagObject;
-		else {
+			existingTag = new TagWrapper((RevTag) tagObject);
+		else if (tagObject instanceof Ref) {
+			existingTag = new TagWrapper((Ref) tagObject);
+		} else {
 			setNoExistingTag();
-			setErrorMessage(UIText.CreateTagDialog_LightweightTagMessage);
 			return;
 		}
 
-		if (!tagNameText.getText().equals(existingTag.getTagName()))
-			tagNameText.setText(existingTag.getTagName());
+		if (!tagNameText.getText().equals(existingTag.getName()))
+			tagNameText.setText(existingTag.getName());
 		if (commitCombo != null)
-			commitCombo.setSelectedElement(existingTag.getObject());
+			commitCombo.setSelectedElement(existingTag.getId());
 
 		// handle un-annotated tags
-		String message = existingTag.getFullMessage();
-		tagMessageText.setText(null != message ? message : ""); //$NON-NLS-1$
+		String message = existingTag.getMessage();
+		tagMessageText.setText(message != null ? message : ""); //$NON-NLS-1$
 	}
 

@@ -1,0 +1,6 @@
+		public ObjectId getId() {
+			if (annotatedTag != null)
+				return annotatedTag.getObject();
+			return lightweightTag.getObjectId();
+		}
+

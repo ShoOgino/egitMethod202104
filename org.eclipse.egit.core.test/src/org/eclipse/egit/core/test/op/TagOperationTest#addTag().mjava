@@ -14,20 +14,14 @@
 		assertFalse("Tags should not be empty", repository1.getRepository()
 				.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
 
-		try {
-			top.execute(null);
-			fail("Expected Exception not thrown");
-		} catch (CoreException e) {
-			// expected
-		}
+		top.execute(null);
+		assertEquals(top.getResult(), RefUpdate.Result.NO_CHANGE);
 
 		top = new TagOperation(repository1.getRepository(), newTag, true);
-		try {
-			top.execute(null);
-			fail("Expected Exception not thrown");
-		} catch (CoreException e) {
-			// expected
-		}
+
+		top.execute(null);
+		assertEquals(top.getResult(), RefUpdate.Result.NO_CHANGE);
+
 		try (RevWalk walk = new RevWalk(repository1.getRepository())) {
 			RevTag tag = walk.parseTag(repository1.getRepository().resolve(
 					Constants.R_TAGS + "TheNewTag"));

@@ -1,0 +1,15 @@
+	private void assertIsAnnotated(String tag, ObjectId target, String message)
+			throws Exception {
+		Ref ref = repository1.getRepository().exactRef(Constants.R_TAGS + tag);
+		ObjectId obj = ref.getObjectId();
+		try (RevWalk walk = new RevWalk(repository1.getRepository())) {
+			RevTag t = walk.parseTag(obj);
+			if (message != null) {
+				assertEquals("Unexpected tag message", message,
+						t.getFullMessage());
+			}
+			assertEquals("Unexpected commit for tag " + t.getName(), target,
+					walk.peel(t));
+		}
+	}
+

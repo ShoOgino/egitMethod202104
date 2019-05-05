@@ -8,6 +8,12 @@
 				util.getPluginLocalizedValue("TagAction_label") };
 		ContextMenuHelper.clickContextMenu(projectExplorerTree, menuPath);
 		SWTBotShell dialog = bot.shell(UIText.CreateTagDialog_NewTag);
+		TestUtil.joinJobs(JobFamilies.FILL_TAG_LIST);
+		// The job fires an asyncExec.
+		dialog.widget.getDisplay().syncExec(() -> {
+			// Make sure that asyncExec gets run
+		});
+
 		return dialog;
 	}
 

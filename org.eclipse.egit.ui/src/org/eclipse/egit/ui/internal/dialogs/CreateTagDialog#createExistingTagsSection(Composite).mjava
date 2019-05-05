@@ -5,8 +5,8 @@
 
 		new Label(right, SWT.WRAP).setText(UIText.CreateTagDialog_existingTags);
 
-		Table table = new Table(right, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER
-				| SWT.SINGLE);
+		Table table = new Table(right,
+				SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE);
 		table.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
 				.hint(80, 100).create());
 
@@ -54,8 +54,8 @@
 		// let's set the table inactive initially and display a "Loading..."
 		// message and fill the list asynchronously during create() in order to
 		// improve UI responsiveness
-		tagViewer
-				.setInput(new String[] { UIText.CreateTagDialog_LoadingMessageText });
+		tagViewer.setInput(
+				new String[] { UIText.CreateTagDialog_LoadingMessageText });
 		tagViewer.getTable().setEnabled(false);
 		applyDialogFont(parent);
 	}
