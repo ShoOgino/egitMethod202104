@@ -4,9 +4,8 @@
 		if (rev != null) {
 			String identifier;
 			if (rev instanceof CommitFileRevision) {
-				// 7 characters as in Utils.getShortObjectId(), used in the
-				// window title
-				identifier = rev.getContentIdentifier().substring(0, 7);
+				// Used in the window title
+				identifier = abbreviate(rev.getContentIdentifier());
 			} else {
 				identifier = rev.getContentIdentifier();
 			}
