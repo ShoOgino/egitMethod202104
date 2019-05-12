@@ -19,7 +19,7 @@
 			BundleContext context = bundle.getBundleContext();
 
 			ServiceTracker<BundleLocalization, BundleLocalization> localizationTracker =
-					new ServiceTracker<BundleLocalization, BundleLocalization>(
+					new ServiceTracker<>(
 					context, BundleLocalization.class, null);
 			localizationTracker.open();
 

@@ -6,7 +6,7 @@
 	 */
 	public SWTBotTreeItem[] getProjectItems(SWTBotTree projectExplorerTree,
 			String... projects) {
-		List<SWTBotTreeItem> items = new ArrayList<SWTBotTreeItem>();
+		List<SWTBotTreeItem> items = new ArrayList<>();
 		for (SWTBotTreeItem item : projectExplorerTree.getAllItems()) {
 			String itemText = item.getText();
 			StringTokenizer tok = new StringTokenizer(itemText, " ");
