@@ -3,15 +3,12 @@
 	 * elements
 	 */
 	public void refreshViewers() {
-		syncExec(new Runnable() {
-			@Override
-			public void run() {
-				setRedraw(false);
-				try {
-					refreshViewersInternal();
-				} finally {
-					setRedraw(true);
-				}
+		syncExec(() -> {
+			setRedraw(false);
+			try {
+				refreshViewersInternal();
+			} finally {
+				setRedraw(true);
 			}
 		});
 	}
