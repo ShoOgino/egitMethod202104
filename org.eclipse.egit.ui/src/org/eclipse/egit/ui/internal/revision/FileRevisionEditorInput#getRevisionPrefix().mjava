@@ -1,9 +1,9 @@
 	private String getRevisionPrefix() {
-		IFileRevision rev = AdapterUtils.adapt(this, IFileRevision.class);
+		IFileRevision rev = Adapters.adapt(this, IFileRevision.class);
 		if (rev != null) {
 			return abbreviate(rev.getContentIdentifier()) + '_';
 		}
-		IFileState state = AdapterUtils.adapt(this, IFileState.class);
+		IFileState state = Adapters.adapt(this, IFileState.class);
 		if (state != null) {
 			return DATE_FORMAT.format(new Date(state.getModificationTime()))
 					+ '_';

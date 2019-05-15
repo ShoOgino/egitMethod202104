@@ -2,8 +2,8 @@
 			throws ExecutionException {
 		IStructuredSelection selection = getSelection(event);
 		if (!selection.isEmpty()) {
-			IRepositoryCommit commit = AdapterUtils
-					.adapt(selection.getFirstElement(), IRepositoryCommit.class);
+			IRepositoryCommit commit = Adapters.adapt(
+					selection.getFirstElement(), IRepositoryCommit.class);
 			if (commit != null) {
 				return commit.getRepository();
 			}
@@ -18,7 +18,7 @@
 		if (input instanceof RepositoryTreeNode) {
 			return ((RepositoryTreeNode) input).getRepository();
 		}
-		Repository repo = AdapterUtils.adapt(input, Repository.class);
+		Repository repo = Adapters.adapt(input, Repository.class);
 		if (repo != null) {
 			return repo;
 		}

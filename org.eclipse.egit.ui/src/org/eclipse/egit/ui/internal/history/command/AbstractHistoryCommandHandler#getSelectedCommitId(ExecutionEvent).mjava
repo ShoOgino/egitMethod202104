@@ -11,7 +11,7 @@
 			throw new ExecutionException(
 					UIText.AbstractHistoryCommandHandler_ActionRequiresOneSelectedCommitMessage);
 		}
-		RevCommit commit = AdapterUtils.adapt(selection.getFirstElement(),
+		RevCommit commit = Adapters.adapt(selection.getFirstElement(),
 				RevCommit.class);
 		if (commit == null) {
 			throw new ExecutionException(

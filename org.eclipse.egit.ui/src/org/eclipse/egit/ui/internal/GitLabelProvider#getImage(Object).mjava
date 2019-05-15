@@ -14,7 +14,7 @@
 		}
 
 		if (element instanceof GitModelBlob || element instanceof GitModelTree) {
-			Object adapter = AdapterUtils.adapt(element, IResource.class);
+			Object adapter = Adapters.adapt(element, IResource.class);
 			return getWorkbenchLabelProvider().getImage(adapter);
 		}
 

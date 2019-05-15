@@ -4,7 +4,7 @@
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (RepositoryCommit.class == adapter) {
-			return AdapterUtils.adapt(getEditorInput(), adapter);
+			return Adapters.adapt(getEditorInput(), adapter);
 		} else if (IContentOutlinePage.class == adapter) {
 			return adapter.cast(getOutlinePage());
 		}

@@ -1,15 +1,15 @@
 	protected IMergeContext prepareModelContext(Repository repository,
 			IFile workspaceFile, String srcRev, String dstRev) throws Exception {
-		Set<IResource> includedResources = new HashSet<IResource>(
+		Set<IResource> includedResources = new HashSet<>(
 				Arrays.asList(workspaceFile));
-		Set<IResource> newResources = new HashSet<IResource>(includedResources);
-		Set<ResourceMapping> allMappings = new HashSet<ResourceMapping>();
+		Set<IResource> newResources = new HashSet<>(includedResources);
+		Set<ResourceMapping> allMappings = new HashSet<>();
 		ResourceMappingContext mappingContext = ResourceMappingContext.LOCAL_CONTEXT;
 		ModelProvider provider = ModelProvider.getModelProviderDescriptor(
 				SampleModelProvider.SAMPLE_PROVIDER_ID).getModelProvider();
 		do {
 			Set<IResource> copy = newResources;
-			newResources = new HashSet<IResource>();
+			newResources = new HashSet<>();
 			for (IResource resource : copy) {
 				ResourceMapping[] mappings = provider.getMappings(resource,
 						mappingContext, new NullProgressMonitor());

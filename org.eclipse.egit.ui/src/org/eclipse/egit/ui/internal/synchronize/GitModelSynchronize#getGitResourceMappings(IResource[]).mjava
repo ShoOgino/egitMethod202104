@@ -10,7 +10,7 @@
 		List<ResourceMapping> gitMappings = new ArrayList<>();
 
 		for (IResource element : elements) {
-			ResourceMapping mapping = AdapterUtils.adapt(element,
+			ResourceMapping mapping = Adapters.adapt(element,
 					ResourceMapping.class);
 			if (mapping != null && isMappedToGitProvider(mapping))
 				gitMappings.add(mapping);

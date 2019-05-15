@@ -89,9 +89,9 @@
 				}
 			}
 			if (repo == null) {
-				repo = AdapterUtils.adapt(o, Repository.class);
+				repo = Adapters.adapt(o, Repository.class);
 				if (repo != null) {
-					File file = AdapterUtils.adapt(o, File.class);
+					File file = Adapters.adapt(o, File.class);
 					if (file == null) {
 						input = new HistoryPageInput(repo);
 					} else {
@@ -99,7 +99,7 @@
 					}
 				}
 			}
-			selection = AdapterUtils.adapt(o, RevCommit.class);
+			selection = Adapters.adapt(o, RevCommit.class);
 
 			if (input == null || repo == null) {
 				this.name = ""; //$NON-NLS-1$

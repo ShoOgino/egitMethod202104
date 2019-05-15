@@ -10,7 +10,7 @@
 			ExecutionEvent event) {
 		final List<V> items = new LinkedList<>();
 		for (Object selected : getSelection(event).toArray()) {
-			V adapted = AdapterUtils.adapt(selected, itemClass);
+			V adapted = Adapters.adapt(selected, itemClass);
 			if (adapted != null)
 				items.add(adapted);
 		}

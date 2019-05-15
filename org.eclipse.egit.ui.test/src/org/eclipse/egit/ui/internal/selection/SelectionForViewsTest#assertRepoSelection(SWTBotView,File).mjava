@@ -15,7 +15,7 @@
 		Object firstElement = ((IStructuredSelection) selection)
 				.getFirstElement();
 		assertNotNull("Null in selection " + viewId, firstElement);
-		Repository repo = AdapterUtils.adapt(firstElement, Repository.class);
+		Repository repo = Adapters.adapt(firstElement, Repository.class);
 		assertNotNull("Expected a repository " + viewId + ", but "
 				+ firstElement.getClass().getName()
 				+ " doesn't adapt to Repository", repo);

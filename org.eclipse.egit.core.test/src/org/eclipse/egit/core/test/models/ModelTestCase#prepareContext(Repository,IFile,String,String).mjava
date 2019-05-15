@@ -7,7 +7,7 @@
 				gsds);
 		subscriber.init(new NullProgressMonitor());
 
-		ResourceMapping mapping = AdapterUtils.adapt(workspaceFile,
+		ResourceMapping mapping = Adapters.adapt(workspaceFile,
 				ResourceMapping.class);
 		SubscriberScopeManager manager = new SubscriberScopeManager(
 				subscriber.getName(), new ResourceMapping[] { mapping, },

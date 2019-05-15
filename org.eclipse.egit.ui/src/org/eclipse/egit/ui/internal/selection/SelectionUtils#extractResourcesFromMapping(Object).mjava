@@ -1,5 +1,5 @@
 	private static List<IResource> extractResourcesFromMapping(Object o) {
-		ResourceMapping mapping = AdapterUtils.adapt(o, ResourceMapping.class);
+		ResourceMapping mapping = Adapters.adapt(o, ResourceMapping.class);
 		return ResourceUtil.extractResourcesFromMapping(mapping);
 	}
 

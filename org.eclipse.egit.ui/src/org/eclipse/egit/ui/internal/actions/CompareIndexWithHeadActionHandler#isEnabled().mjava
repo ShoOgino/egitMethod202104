@@ -11,13 +11,13 @@
 		}
 
 		Object selected = selection.getFirstElement();
-		IResource resource = AdapterUtils.adapt(selected, IResource.class);
+		IResource resource = Adapters.adapt(selected, IResource.class);
 		if (resource instanceof IFile) {
 			// action is only working on files. Avoid calculation
 			// of unnecessary expensive IndexDiff on a folder
 			return ResourceStateFactory.getInstance().get(resource).isStaged();
 		} else if (resource == null) {
-			IPath location = AdapterUtils.adapt(selected, IPath.class);
+			IPath location = Adapters.adapt(selected, IPath.class);
 			if (location != null) {
 				return ResourceStateFactory.getInstance().get(location.toFile())
 						.isStaged();

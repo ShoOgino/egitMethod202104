@@ -22,7 +22,7 @@
 			}
 		}
 		if (repo == null) {
-			repo = AdapterUtils.adapt(o, Repository.class);
+			repo = Adapters.adapt(o, Repository.class);
 		}
 		if (repo == null && !force) {
 			return;

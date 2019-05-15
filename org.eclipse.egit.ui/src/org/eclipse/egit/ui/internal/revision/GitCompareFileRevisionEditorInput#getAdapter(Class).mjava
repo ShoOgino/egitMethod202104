@@ -9,7 +9,7 @@
 			}
 			return getResource();
 		} else if (adapter == Repository.class && left != null) {
-			return AdapterUtils.adapt(left, Repository.class);
+			return Adapters.adapt(left, Repository.class);
 		}
 		return super.getAdapter(adapter);
 	}

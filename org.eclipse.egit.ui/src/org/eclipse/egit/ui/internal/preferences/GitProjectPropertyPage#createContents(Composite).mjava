@@ -24,7 +24,7 @@
 		if (element instanceof IResource) {
 			project = ((IResource) element).getProject();
 		} else {
-			IResource adapter = AdapterUtils.adapt(element, IResource.class);
+			IResource adapter = Adapters.adapt(element, IResource.class);
 			if (adapter != null) {
 				project = adapter.getProject();
 			}

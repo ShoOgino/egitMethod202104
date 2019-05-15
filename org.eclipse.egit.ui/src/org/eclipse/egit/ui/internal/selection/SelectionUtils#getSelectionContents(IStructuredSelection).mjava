@@ -17,7 +17,7 @@
 			@NonNull IStructuredSelection selection) {
 		Set<Object> result = new HashSet<>();
 		for (Object o : selection.toList()) {
-			Repository r = AdapterUtils.adapt(o, Repository.class);
+			Repository r = Adapters.adapt(o, Repository.class);
 			if (r != null) {
 				result.add(r);
 				continue;
@@ -27,12 +27,11 @@
 				result.add(resource);
 				continue;
 			}
-			ResourceMapping mapping = AdapterUtils.adapt(o,
-					ResourceMapping.class);
+			ResourceMapping mapping = Adapters.adapt(o, ResourceMapping.class);
 			if (mapping != null) {
 				result.addAll(extractResourcesFromMapping(mapping));
 			} else {
-				IPath location = AdapterUtils.adapt(o, IPath.class);
+				IPath location = Adapters.adapt(o, IPath.class);
 				if (location != null) {
 					result.add(location);
 				}

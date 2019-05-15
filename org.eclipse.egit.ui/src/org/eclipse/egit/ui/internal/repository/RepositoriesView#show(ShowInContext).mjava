@@ -31,7 +31,7 @@
 			showResource(input.getFile());
 			return true;
 		}
-		Repository repository = AdapterUtils.adapt(context.getInput(),
+		Repository repository = Adapters.adapt(context.getInput(),
 				Repository.class);
 		if (repository != null) {
 			showRepository(repository);

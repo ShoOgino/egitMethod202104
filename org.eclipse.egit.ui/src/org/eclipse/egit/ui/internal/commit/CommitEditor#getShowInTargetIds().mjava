@@ -1,7 +1,7 @@
 	@Override
 	public String[] getShowInTargetIds() {
 		IFormPage currentPage = getActivePageInstance();
-		IShowInTargetList targetList = AdapterUtils.adapt(currentPage,
+		IShowInTargetList targetList = Adapters.adapt(currentPage,
 				IShowInTargetList.class);
 		if (targetList != null) {
 			return targetList.getShowInTargetIds();

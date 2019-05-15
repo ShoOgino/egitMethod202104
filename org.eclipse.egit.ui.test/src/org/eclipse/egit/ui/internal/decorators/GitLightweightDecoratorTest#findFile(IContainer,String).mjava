@@ -1,5 +1,5 @@
 	protected static IFile findFile(IContainer container, String name) {
 		IResource resource = findResource(container, name);
-		return AdapterUtils.adapt(resource, IFile.class);
+		return Adapters.adapt(resource, IFile.class);
 	}
 
