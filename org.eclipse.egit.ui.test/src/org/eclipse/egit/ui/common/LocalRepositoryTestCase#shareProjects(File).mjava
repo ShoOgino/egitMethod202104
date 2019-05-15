@@ -1,6 +1,6 @@
 	protected void shareProjects(File repositoryDir) throws Exception {
 		Repository myRepository = lookupRepository(repositoryDir);
-		FilenameFilter projectFilter = (File dir, String name) -> name.equals(".project");
+		FilenameFilter projectFilter = (dir, name) -> name.equals(".project");
 		for (File file : myRepository.getWorkTree().listFiles()) {
 			if (file.isDirectory()) {
 				if (file.list(projectFilter).length > 0) {
