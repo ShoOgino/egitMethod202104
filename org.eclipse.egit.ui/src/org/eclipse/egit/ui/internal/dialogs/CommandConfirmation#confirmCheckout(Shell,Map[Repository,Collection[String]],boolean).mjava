@@ -1,0 +1,46 @@
+	/**
+	 * Ask the user to confirm an operation that might lose uncommitted changes.
+	 *
+	 * @param shell
+	 *            to use as parent for the dialog asking the user. If
+	 *            {@code null} a suitable parent is determined automatically.
+	 * @param repoAndPaths
+	 *            to check
+	 * @param filesOnly
+	 *            {@code true} if the paths are all for files; {@code false} if
+	 *            there may be directories among the paths
+	 * @return {@code true} if the user confirmed the operation, {@code false}
+	 *         otherwise
+	 */
+	public static boolean confirmCheckout(Shell shell,
+			Map<Repository, Collection<String>> repoAndPaths,
+			boolean filesOnly) {
+		if (haveChanges(repoAndPaths, filesOnly)) {
+			String question = UIText.DiscardChangesAction_confirmActionMessage;
+			String launch = LaunchFinder
+					.getRunningLaunchConfiguration(repoAndPaths.keySet(), null);
+			if (launch != null) {
+				question = MessageFormat.format(question,
+						"\n\n" + MessageFormat.format( //$NON-NLS-1$
+								UIText.LaunchFinder_RunningLaunchMessage,
+								launch));
+			} else {
+				question = MessageFormat.format(question, ""); //$NON-NLS-1$
+			}
+			Shell parent = shell != null ? shell
+					: PlatformUI.getWorkbench().getModalDialogShellProvider()
+							.getShell();
+			MessageDialog messageDialog = new MessageDialog(parent,
+					UIText.DiscardChangesAction_confirmActionTitle, null,
+					question, MessageDialog.CONFIRM,
+					new String[] {
+							UIText.DiscardChangesAction_discardChangesButtonText,
+							IDialogConstants.CANCEL_LABEL },
+					0);
+			return messageDialog.open() == Window.OK;
+		} else {
+			return !LaunchFinder.shouldCancelBecauseOfRunningLaunches(
+					repoAndPaths.keySet(), null);
+		}
+	}
+

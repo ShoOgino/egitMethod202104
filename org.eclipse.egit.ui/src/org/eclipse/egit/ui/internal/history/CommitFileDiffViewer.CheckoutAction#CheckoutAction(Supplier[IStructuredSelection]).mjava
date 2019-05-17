@@ -1,0 +1,12 @@
+		/**
+		 * Creates a new {@link CheckoutAction}.
+		 *
+		 * @param selectionProvider
+		 *            to get the selection from
+		 */
+		public CheckoutAction(
+				Supplier<IStructuredSelection> selectionProvider) {
+			super(UIText.CommitFileDiffViewer_CheckoutThisVersionMenuLabel);
+			this.selectionProvider = selectionProvider;
+		}
+

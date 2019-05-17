@@ -7,8 +7,12 @@
 		boolean submoduleSelected = false;
 		boolean addSelected = false;
 		boolean deleteSelected = false;
+		Repository repository = null;
 		for (Object item : sel.toList()) {
 			FileDiff fileDiff = (FileDiff) item;
+			if (repository == null) {
+				repository = fileDiff.getRepository();
+			}
 			if (fileDiff.isSubmodule()) {
 				submoduleSelected = true;
 			}
@@ -27,6 +31,9 @@
 
 		if (!submoduleSelected) {
 			boolean oneOrMoreSelected = !sel.isEmpty();
+			checkOutThisVersion.setEnabled(
+					oneOrMoreSelected && repository != null && repository
+							.getRepositoryState().equals(RepositoryState.SAFE));
 			openThisVersion.setEnabled(oneOrMoreSelected && !deleteSelected);
 			openPreviousVersion.setEnabled(oneOrMoreSelected && !addSelected);
 			compareWithPrevious.setEnabled(
@@ -48,6 +55,7 @@
 				openWorkingTreeVersion.setEnabled(oneOrMoreSelected);
 			}
 		} else {
+			checkOutThisVersion.setEnabled(false);
 			openThisVersion.setEnabled(false);
 			openPreviousVersion.setEnabled(false);
 			openWorkingTreeVersion.setEnabled(false);

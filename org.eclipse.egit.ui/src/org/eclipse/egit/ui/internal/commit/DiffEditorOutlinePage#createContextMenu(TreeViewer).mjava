@@ -64,21 +64,34 @@
 						}
 					}
 				});
-				if (selected.size() == 1 && !haveNew.isEmpty()) {
-					// "Compare with previous" makes only sense if there are
-					// both a new and a previous version.
+			}
+			if (!haveNew.isEmpty()) {
+				boolean hasFiles = haveNew.stream()
+						.anyMatch(d -> !d.getDiff().isSubmodule());
+				if (hasFiles) {
 					menuManager.add(new Separator());
-					menuManager.add(new Action(
-							UIText.CommitFileDiffViewer_CompareMenuLabel) {
-
-						@Override
-						public void run() {
-							FileDiffRegion fileDiff = selected.iterator()
-									.next();
-							DiffViewer.showTwoWayFileDiff(fileDiff.getDiff());
-						}
-					});
+					CheckoutAction action = new CheckoutAction(
+							this::getStructuredSelection);
+					menuManager.add(action);
+					action.setEnabled(haveNew.iterator().next().getDiff()
+							.getRepository().getRepositoryState()
+							.equals(RepositoryState.SAFE));
 				}
+			}
+			if (selected.size() == 1 && !haveNew.isEmpty()
+					&& !haveOld.isEmpty()) {
+				// "Compare with previous" makes only sense if there are
+				// both a new and a previous version.
+				menuManager.add(new Separator());
+				menuManager.add(new Action(
+						UIText.CommitFileDiffViewer_CompareMenuLabel) {
+
+					@Override
+					public void run() {
+						FileDiffRegion fileDiff = selected.iterator().next();
+						DiffViewer.showTwoWayFileDiff(fileDiff.getDiff());
+					}
+				});
 			}
 		});
 		Menu menu = contextMenu.createContextMenu(viewer.getTree());

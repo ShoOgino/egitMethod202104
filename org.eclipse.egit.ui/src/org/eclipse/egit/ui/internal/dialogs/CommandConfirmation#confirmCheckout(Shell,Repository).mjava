@@ -1,0 +1,17 @@
+	/**
+	 * Ask the user to confirm an operation that might lose uncommitted changes.
+	 *
+	 * @param shell
+	 *            to use as parent for the dialog asking the user. If
+	 *            {@code null} a suitable parent is determined automatically.
+	 * @param repository
+	 *            to check
+	 * @return {@code true} if the user confirmed the operation, {@code false}
+	 *         otherwise
+	 */
+	public static boolean confirmCheckout(Shell shell, Repository repository) {
+		return confirmCheckout(shell,
+				Collections.singletonMap(repository, Collections.emptyList()),
+				true);
+	}
+
