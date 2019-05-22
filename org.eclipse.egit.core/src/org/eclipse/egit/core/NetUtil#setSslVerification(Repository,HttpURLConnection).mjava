@@ -20,9 +20,9 @@
 						new URIish(conn.getURL().toString()));
 				if (!http.isSslVerify()) {
 					SSLContext ctx = SSLContext.getInstance("TLS"); //$NON-NLS-1$
-					ctx.init(null, trustAllCerts, null);
+					ctx.init(null, TRUST_ALL_CERTS, null);
 					httpsConn.setSSLSocketFactory(ctx.getSocketFactory());
-					httpsConn.setHostnameVerifier(trustAllHostNames);
+					httpsConn.setHostnameVerifier(TRUST_ALL_HOST_NAMES);
 				}
 			} catch (KeyManagementException | NoSuchAlgorithmException
 					| URISyntaxException e) {

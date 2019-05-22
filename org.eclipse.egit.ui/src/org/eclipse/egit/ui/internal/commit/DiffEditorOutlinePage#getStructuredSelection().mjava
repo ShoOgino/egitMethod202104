@@ -1,0 +1,8 @@
+	private IStructuredSelection getStructuredSelection() {
+		ISelection currentSelection = getSelection();
+		if (currentSelection instanceof IStructuredSelection) {
+			return (IStructuredSelection) currentSelection;
+		}
+		return StructuredSelection.EMPTY;
+	}
+

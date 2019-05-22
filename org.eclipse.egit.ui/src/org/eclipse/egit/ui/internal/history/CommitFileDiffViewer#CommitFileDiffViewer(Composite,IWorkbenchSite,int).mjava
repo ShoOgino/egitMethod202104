@@ -74,6 +74,8 @@
 		final MenuManager mgr = new MenuManager();
 		rawTable.setMenu(mgr.createContextMenu(rawTable));
 
+		checkOutThisVersion = new CheckoutAction(this::getStructuredSelection);
+
 		openThisVersion = new Action(
 				UIText.CommitFileDiffViewer_OpenInEditorMenuLabel) {
 			@Override
@@ -156,6 +158,8 @@
 		mgr.add(openWorkingTreeVersion);
 		mgr.add(openThisVersion);
 		mgr.add(openPreviousVersion);
+		mgr.add(new Separator());
+		mgr.add(checkOutThisVersion);
 		mgr.add(new Separator());
 		mgr.add(compareWithPrevious);
 		mgr.add(compareWorkingTreeVersion);

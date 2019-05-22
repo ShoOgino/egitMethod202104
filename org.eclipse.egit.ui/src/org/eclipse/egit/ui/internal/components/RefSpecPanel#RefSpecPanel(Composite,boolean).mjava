@@ -31,12 +31,7 @@
 		createPredefinedCreationPanel();
 		createTableGroup();
 
-		addRefSpecTableListener(new SelectionChangeListener() {
-			@Override
-			public void selectionChanged() {
-				validateSpecs();
-			}
-		});
+		addRefSpecTableListener(this::validateSpecs);
 		setEnable(false);
 	}
 

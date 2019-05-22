@@ -55,12 +55,7 @@
 				}
 			}
 		}
-		Collections.sort(availableRefs, new Comparator<Ref>() {
-			@Override
-			public int compare(final Ref ref1, final Ref ref2) {
-				return CommonUtils.REF_ASCENDING_COMPARATOR.compare(ref1, ref2);
-			}
-		});
+		Collections.sort(availableRefs, CommonUtils.REF_ASCENDING_COMPARATOR);
 		if (idHEAD != null && head == null) {
 			head = idHEAD;
 			availableRefs.add(0, idHEAD);

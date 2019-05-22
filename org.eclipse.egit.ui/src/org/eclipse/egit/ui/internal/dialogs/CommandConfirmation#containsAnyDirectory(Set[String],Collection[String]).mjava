@@ -1,4 +1,4 @@
-	private boolean containsAnyDirectory(Set<String> repoPaths,
+	private static boolean containsAnyDirectory(Set<String> repoPaths,
 			Collection<String> files) {
 		String lastDirectory = null;
 		for (String file : files) {
@@ -16,8 +16,8 @@
 				return true;
 			}
 			lastDirectory = withTerminator;
-			for (int i = directory.indexOf('/'); i > 0; i = directory.indexOf(
-					'/', i + 1)) {
+			for (int i = directory.indexOf('/'); i > 0; i = directory
+					.indexOf('/', i + 1)) {
 				if (repoPaths.contains(directory.substring(0, i))) {
 					return true;
 				}

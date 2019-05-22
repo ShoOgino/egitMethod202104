@@ -1,0 +1,13 @@
+		private Collection<FileDiff> getFileDiffs(
+				IStructuredSelection selection) {
+			List<FileDiff> result = new ArrayList<>();
+			for (Object obj : selection.toList()) {
+				FileDiff diff = Adapters.adapt(obj, FileDiff.class);
+				if (diff != null && diff.getChange() != ChangeType.DELETE
+						&& !diff.isSubmodule()) {
+					result.add(diff);
+				}
+			}
+			return result;
+		}
+

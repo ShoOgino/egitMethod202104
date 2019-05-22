@@ -1,0 +1,16 @@
+		@Override
+		public void run() {
+			DiscardChangesOperation operation = createOperation();
+			if (operation == null) {
+				return;
+			}
+			Map<Repository, Collection<String>> paths = operation
+					.getPathsPerRepository();
+			if (!CommandConfirmation.confirmCheckout(null, paths, true)) {
+				return;
+			}
+			JobUtil.scheduleUserWorkspaceJob(operation,
+					UIText.DiscardChangesAction_discardChanges,
+					JobFamilies.DISCARD_CHANGES);
+		}
+

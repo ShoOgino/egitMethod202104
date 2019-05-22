@@ -9,13 +9,8 @@
 		try {
 			this.remoteConfigs = RemoteConfig
 					.getAllRemoteConfigs(repository.getConfig());
-			Collections.sort(remoteConfigs, new Comparator<RemoteConfig>() {
-				@Override
-				public int compare(RemoteConfig first, RemoteConfig second) {
-					return String.CASE_INSENSITIVE_ORDER
-							.compare(first.getName(), second.getName());
-				}
-			});
+			Collections.sort(remoteConfigs, Comparator.comparing(
+					RemoteConfig::getName, String.CASE_INSENSITIVE_ORDER));
 			setDefaultUpstreamConfig();
 		} catch (URISyntaxException e) {
 			this.remoteConfigs = new ArrayList<>();
@@ -33,15 +28,11 @@
 		GridDataFactory.fillDefaults().grab(true, false)
 				.applyTo(remoteSelectionCombo);
 		setRemoteConfigs();
-		remoteSelectionCombo
-				.addRemoteSelectionListener(new IRemoteSelectionListener() {
-					@Override
-					public void remoteSelected(RemoteConfig rc) {
-						remoteConfig = rc;
-						setRefAssist(rc);
-						checkPage();
-					}
-				});
+		remoteSelectionCombo.addRemoteSelectionListener(rc -> {
+			remoteConfig = rc;
+			setRefAssist(rc);
+			checkPage();
+		});
 
 		Button newRemoteButton = new Button(res, SWT.PUSH);
 		newRemoteButton.setText(UIText.PushBranchPage_NewRemoteButton);

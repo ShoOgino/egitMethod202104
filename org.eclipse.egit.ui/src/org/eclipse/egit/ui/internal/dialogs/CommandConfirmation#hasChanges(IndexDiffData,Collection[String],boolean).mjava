@@ -1,5 +1,10 @@
-	private boolean hasChanges(@NonNull IndexDiffData diff,
-			Collection<String> paths) {
+	private static boolean hasChanges(@NonNull IndexDiffData diff,
+			Collection<String> paths, boolean filesOnly) {
+		if (paths.isEmpty()) {
+			// We're going to do _something_, but it's unknown which paths will
+			// be affected
+			return diff.hasChanges();
+		}
 		Set<String> repoPaths = new HashSet<>(paths);
 		// Untracked files are ignored and won't be removed.
 		if (repoPaths.contains("")) { //$NON-NLS-1$
@@ -14,7 +19,7 @@
 				|| containsAny(repoPaths, diff.getRemoved())) {
 			return true;
 		}
-		if (hasDirectories) {
+		if (!filesOnly) {
 			return containsAnyDirectory(repoPaths, diff.getAdded())
 					|| containsAnyDirectory(repoPaths, diff.getChanged())
 					|| containsAnyDirectory(repoPaths, diff.getModified())

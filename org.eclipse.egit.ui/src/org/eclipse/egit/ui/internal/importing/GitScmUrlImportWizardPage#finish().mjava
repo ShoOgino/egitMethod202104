@@ -16,9 +16,9 @@
 
 		if (head && descriptions != null)
 			// modify tags on bundle import descriptions
-			for (int i = 0; i < descriptions.length; i++) {
-				URI scmUri = descriptions[i].getUri();
-				descriptions[i].setUrl(removeTag(scmUri));
+			for (ScmUrlImportDescription description : descriptions) {
+				URI scmUri = description.getUri();
+				description.setUrl(removeTag(scmUri));
 			}
 
 		return true;

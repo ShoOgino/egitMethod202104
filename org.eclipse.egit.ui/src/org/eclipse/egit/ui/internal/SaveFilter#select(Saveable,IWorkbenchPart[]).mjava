@@ -8,8 +8,7 @@
 			return true;
 		}
 		// For backwards compatibility, we need to check the parts
-		for (int i = 0; i < containingParts.length; i++) {
-			IWorkbenchPart workbenchPart = containingParts[i];
+		for (IWorkbenchPart workbenchPart : containingParts) {
 			if (workbenchPart instanceof IEditorPart) {
 				IEditorPart editorPart = (IEditorPart) workbenchPart;
 				if (isEditingDescendantOf(editorPart)) {

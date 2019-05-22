@@ -2,7 +2,7 @@
 	 * constructor
 	 */
 	public IndexDiffCache() {
-		createGlobalListener();
+		globalListener = this::notifyListeners;
 		registerBufferListener();
 	}
 

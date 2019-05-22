@@ -1,4 +1,6 @@
-	private boolean haveChanges(Map<Repository, Collection<String>> paths) {
+	private static boolean haveChanges(
+			Map<Repository, Collection<String>> paths,
+			boolean filesOnly) {
 		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
 		for (Map.Entry<Repository, Collection<String>> entry : paths
 				.entrySet()) {
@@ -9,7 +11,7 @@
 				return true; // No info, assume worst case
 			}
 			IndexDiffData diff = indexDiff.getIndexDiff();
-			if (diff == null || hasChanges(diff, entry.getValue())) {
+			if (diff == null || hasChanges(diff, entry.getValue(), filesOnly)) {
 				return true;
 			}
 		}

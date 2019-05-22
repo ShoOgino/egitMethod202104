@@ -7,8 +7,7 @@
 	 *         one of the given roots
 	 */
 	private boolean isDescendantOfRoots(IResource resource) {
-		for (int l = 0; l < roots.length; l++) {
-			IResource root = roots[l];
+		for (IResource root : roots) {
 			if (root.getFullPath().isPrefixOf(resource.getFullPath())) {
 				return true;
 			}
