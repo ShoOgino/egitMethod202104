@@ -1,0 +1,39 @@
+	/**
+	 * Create the standard text actions, fill them into a {@MenuManager} and
+	 * return them as an array indexed by the {@link ITextOperationTarget}
+	 * operation codes. For an editable target, creates undo, redo | cut, copy,
+	 * paste | delete, select all; otherwise just copy, select all.
+	 *
+	 * @param target
+	 *            for the actions to operate on
+	 * @param editable
+	 *            whether the target is editable
+	 * @param manager
+	 *            to fill in; may be {@code null} if the actions shall not be
+	 *            added to a {@link MenuManager}
+	 * @return the actions; may contain {@code null} values (index 0 will always
+	 *         be {@code null})
+	 */
+	public static UpdateableAction[] fillStandardTextActions(
+			ITextOperationTarget target, boolean editable,
+			MenuManager manager) {
+		UpdateableAction[] actions = createStandardTextActions(target,
+				editable);
+		if (manager != null) {
+			if (editable) {
+				manager.add(actions[ITextOperationTarget.UNDO]);
+				manager.add(actions[ITextOperationTarget.REDO]);
+				manager.add(new Separator());
+				manager.add(actions[ITextOperationTarget.CUT]);
+			}
+			manager.add(actions[ITextOperationTarget.COPY]);
+			if (editable) {
+				manager.add(actions[ITextOperationTarget.PASTE]);
+				manager.add(new Separator());
+				manager.add(actions[ITextOperationTarget.DELETE]);
+			}
+			manager.add(actions[ITextOperationTarget.SELECT_ALL]);
+		}
+		return actions;
+	}
+

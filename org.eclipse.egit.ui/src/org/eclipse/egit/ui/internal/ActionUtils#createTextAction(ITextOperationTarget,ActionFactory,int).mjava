@@ -1,0 +1,26 @@
+	/**
+	 * Creates a new text action using a given {@link ActionFactory} to use as a
+	 * template to set the label, image, and action definition id.
+	 *
+	 * @param target
+	 *            for the action
+	 * @param factory
+	 *            to configure the action
+	 * @param operationCode
+	 *            for the action
+	 * @return the configured {@link UpdateableAction}
+	 */
+	public static UpdateableAction createTextAction(
+			ITextOperationTarget target, ActionFactory factory,
+			int operationCode) {
+		if (operationCode == ITextOperationTarget.REDO) {
+			// XXX: workaround for
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=206111
+			return createGlobalAction(factory,
+					() -> target.doOperation(operationCode), () -> true);
+		}
+		return createGlobalAction(factory,
+				() -> target.doOperation(operationCode),
+				() -> target.canDoOperation(operationCode));
+	}
+

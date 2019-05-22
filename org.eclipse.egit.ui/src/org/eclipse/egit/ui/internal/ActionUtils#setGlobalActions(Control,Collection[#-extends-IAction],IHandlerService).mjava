@@ -7,7 +7,8 @@
 	 * @param control
 	 *            to hook up
 	 * @param actions
-	 *            to be registered while the control has the focus
+	 *            to be registered while the control has the focus; {@code null}
+	 *            items are skipped.
 	 * @param service
 	 *            to register the actions with
 	 */
@@ -38,12 +39,14 @@
 					// Looks like sometimes we get two focusGained events.
 					return;
 				}
-				for (final IAction action : actions) {
-					handlerActivations.add(service.activateHandler(
-							action.getActionDefinitionId(),
-							new ActionHandler(action), expression, false));
-					if (action instanceof IUpdate) {
-						((IUpdate) action).update();
+				for (IAction action : actions) {
+					if (action != null) {
+						handlerActivations.add(service.activateHandler(
+								action.getActionDefinitionId(),
+								new ActionHandler(action), expression, false));
+						if (action instanceof IUpdate) {
+							((IUpdate) action).update();
+						}
 					}
 				}
 			}

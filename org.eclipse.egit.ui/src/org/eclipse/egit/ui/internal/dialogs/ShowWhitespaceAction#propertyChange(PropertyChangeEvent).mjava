@@ -1,0 +1,27 @@
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		String property = event.getProperty();
+		if (property == null) {
+			return;
+		}
+		switch (property) {
+		case AbstractTextEditor.PREFERENCE_SHOW_WHITESPACE_CHARACTERS:
+		case AbstractTextEditor.PREFERENCE_SHOW_LEADING_SPACES:
+		case AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_SPACES:
+		case AbstractTextEditor.PREFERENCE_SHOW_TRAILING_SPACES:
+		case AbstractTextEditor.PREFERENCE_SHOW_LEADING_IDEOGRAPHIC_SPACES:
+		case AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_IDEOGRAPHIC_SPACES:
+		case AbstractTextEditor.PREFERENCE_SHOW_TRAILING_IDEOGRAPHIC_SPACES:
+		case AbstractTextEditor.PREFERENCE_SHOW_LEADING_TABS:
+		case AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_TABS:
+		case AbstractTextEditor.PREFERENCE_SHOW_TRAILING_TABS:
+		case AbstractTextEditor.PREFERENCE_SHOW_CARRIAGE_RETURN:
+		case AbstractTextEditor.PREFERENCE_SHOW_LINE_FEED:
+		case AbstractTextEditor.PREFERENCE_WHITESPACE_CHARACTER_ALPHA_VALUE:
+			synchronizeWithPreference();
+			break;
+		default:
+			break;
+		}
+	}
+

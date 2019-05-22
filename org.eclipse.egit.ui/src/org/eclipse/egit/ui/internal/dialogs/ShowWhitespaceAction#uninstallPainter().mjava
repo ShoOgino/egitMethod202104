@@ -1,0 +1,15 @@
+	/**
+	 * Remove the painter from the viewer.
+	 */
+	private void uninstallPainter() {
+		if (whitespaceCharPainter == null) {
+			return;
+		}
+		ITextViewer v = getTextViewer();
+		if (v instanceof ITextViewerExtension2) {
+			((ITextViewerExtension2) v).removePainter(whitespaceCharPainter);
+		}
+		whitespaceCharPainter.deactivate(true);
+		whitespaceCharPainter = null;
+	}
+

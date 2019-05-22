@@ -1,135 +1,15 @@
 	private void configureContextMenu() {
 		final boolean editable = isEditable(sourceViewer);
-		TextViewerAction cutAction;
-		TextViewerAction undoAction;
-		TextViewerAction redoAction;
-		TextViewerAction pasteAction;
-		IAction quickFixAction;
+		IAction quickFixAction = null;
 		if (editable) {
-			cutAction = createFromActionFactory(ActionFactory.CUT,
-					ITextOperationTarget.CUT);
-			undoAction = createFromActionFactory(ActionFactory.UNDO,
-					ITextOperationTarget.UNDO);
-			redoAction = createFromActionFactory(ActionFactory.REDO,
-					ITextOperationTarget.REDO);
-			pasteAction = createFromActionFactory(ActionFactory.PASTE,
-					ITextOperationTarget.PASTE);
 			quickFixAction = new QuickfixAction(sourceViewer);
-		} else {
-			cutAction = null;
-			undoAction = null;
-			redoAction = null;
-			pasteAction = null;
-			quickFixAction = null;
 		}
-		TextViewerAction copyAction = createFromActionFactory(
-				ActionFactory.COPY, ITextOperationTarget.COPY);
-		TextViewerAction selectAllAction = createFromActionFactory(
-				ActionFactory.SELECT_ALL, ITextOperationTarget.SELECT_ALL);
 
-		final TextEditorPropertyAction showWhitespaceAction = new TextEditorPropertyAction(
-				UIText.SpellcheckableMessageArea_showWhitespace,
-				sourceViewer,
-				AbstractTextEditor.PREFERENCE_SHOW_WHITESPACE_CHARACTERS) {
-
-			private IPainter whitespaceCharPainter;
-
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				String property = event.getProperty();
-				if (property.equals(getPreferenceKey())
-						|| AbstractTextEditor.PREFERENCE_SHOW_LEADING_SPACES
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_SPACES
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_TRAILING_SPACES
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_LEADING_IDEOGRAPHIC_SPACES
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_IDEOGRAPHIC_SPACES
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_TRAILING_IDEOGRAPHIC_SPACES
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_LEADING_TABS
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_TABS
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_TRAILING_TABS
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_CARRIAGE_RETURN
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_SHOW_LINE_FEED
-								.equals(property)
-						|| AbstractTextEditor.PREFERENCE_WHITESPACE_CHARACTER_ALPHA_VALUE
-								.equals(property)) {
-					synchronizeWithPreference();
-				}
-			}
-
-			@Override
-			protected void toggleState(boolean checked) {
-				if (checked)
-					installPainter();
-				else
-					uninstallPainter();
-			}
-
-			/**
-			 * Installs the painter on the viewer.
-			 */
-			private void installPainter() {
-				Assert.isTrue(whitespaceCharPainter == null);
-				ITextViewer v = getTextViewer();
-				if (v instanceof ITextViewerExtension2) {
-					IPreferenceStore store = getStore();
-					whitespaceCharPainter = new WhitespaceCharacterPainter(
-							v,
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_LEADING_SPACES),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_SPACES),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_TRAILING_SPACES),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_LEADING_IDEOGRAPHIC_SPACES),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_IDEOGRAPHIC_SPACES),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_TRAILING_IDEOGRAPHIC_SPACES),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_LEADING_TABS),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_ENCLOSED_TABS),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_TRAILING_TABS),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_CARRIAGE_RETURN),
-							store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_LINE_FEED),
-							store.getInt(AbstractTextEditor.PREFERENCE_WHITESPACE_CHARACTER_ALPHA_VALUE));
-					((ITextViewerExtension2) v).addPainter(whitespaceCharPainter);
-				}
-			}
-
-			/**
-			 * Remove the painter from the viewer.
-			 */
-			private void uninstallPainter() {
-				if (whitespaceCharPainter == null)
-					return;
-				ITextViewer v = getTextViewer();
-				if (v instanceof ITextViewerExtension2)
-					((ITextViewerExtension2) v)
-							.removePainter(whitespaceCharPainter);
-				whitespaceCharPainter.deactivate(true);
-				whitespaceCharPainter = null;
-			}
-		};
-
+		final ShowWhitespaceAction showWhitespaceAction = new ShowWhitespaceAction(
+				sourceViewer, !editable);
 		MenuManager contextMenu = new MenuManager();
-		if (cutAction != null) {
-			contextMenu.add(cutAction);
-		}
-		contextMenu.add(copyAction);
-		if (pasteAction != null) {
-			contextMenu.add(pasteAction);
-		}
-		contextMenu.add(selectAllAction);
-		if (undoAction != null) {
-			contextMenu.add(undoAction);
-		}
-		if (redoAction != null) {
-			contextMenu.add(redoAction);
-		}
+		UpdateableAction[] standardActions = ActionUtils
+				.fillStandardTextActions(sourceViewer, editable, contextMenu);
 		contextMenu.add(new Separator());
 		contextMenu.add(showWhitespaceAction);
 		contextMenu.add(new Separator());
@@ -148,15 +28,10 @@
 
 		final StyledText textWidget = getTextWidget();
 		List<IAction> globalActions = new ArrayList<>();
-		if (editable) {
-			globalActions.add(cutAction);
-			globalActions.add(pasteAction);
-			globalActions.add(undoAction);
-			globalActions.add(redoAction);
+		globalActions.addAll(Arrays.asList(standardActions));
+		if (quickFixAction != null) {
 			globalActions.add(quickFixAction);
 		}
-		globalActions.add(copyAction);
-		globalActions.add(selectAllAction);
 		if (contentAssistAction != null) {
 			globalActions.add(contentAssistAction);
 		}
@@ -165,34 +40,24 @@
 
 		textWidget.setMenu(contextMenu.createContextMenu(textWidget));
 
-        sourceViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-					@Override
-					public void selectionChanged(SelectionChangedEvent event) {
-						if (cutAction != null)
-							cutAction.update();
-						copyAction.update();
-					}
-
-				});
+		sourceViewer.addSelectionChangedListener(event -> {
+			if (standardActions[ITextOperationTarget.CUT] != null) {
+				standardActions[ITextOperationTarget.CUT].update();
+			}
+			standardActions[ITextOperationTarget.COPY].update();
+		});
 
 		if (editable) {
-			sourceViewer.addTextListener(new ITextListener() {
-				@Override
-				public void textChanged(TextEvent event) {
-					if (undoAction != null)
-						undoAction.update();
-					if (redoAction != null)
-						redoAction.update();
+			sourceViewer.addTextListener(event -> {
+				if (standardActions[ITextOperationTarget.UNDO] != null) {
+					standardActions[ITextOperationTarget.UNDO].update();
+				}
+				if (standardActions[ITextOperationTarget.REDO] != null) {
+					standardActions[ITextOperationTarget.REDO].update();
 				}
 			});
 		}
 
-		textWidget.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent disposeEvent) {
-				showWhitespaceAction.dispose();
-			}
-		});
+		textWidget.addDisposeListener(e -> showWhitespaceAction.dispose());
 	}
 

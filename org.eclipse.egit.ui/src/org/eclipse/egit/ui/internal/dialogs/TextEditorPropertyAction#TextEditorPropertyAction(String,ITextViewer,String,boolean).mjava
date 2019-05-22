@@ -1,0 +1,27 @@
+	/**
+	 * Creates a new {@link TextEditorPropertyAction}.
+	 *
+	 * @param label
+	 *            for the action
+	 * @param viewer
+	 *            to operate on
+	 * @param preferenceKey
+	 *            in the {@link EditorsUI#getPreferenceStore()} for this action
+	 * @param initiallyOff
+	 *            if {@code true}, the action initially is not checked and does
+	 *            not reflect the preference state
+	 */
+	public TextEditorPropertyAction(String label, ITextViewer viewer,
+			String preferenceKey, boolean initiallyOff) {
+		super(label, IAction.AS_CHECK_BOX);
+		this.viewer = viewer;
+		this.preferenceKey = preferenceKey;
+		this.store = EditorsUI.getPreferenceStore();
+		if (store != null) {
+			store.addPropertyChangeListener(this);
+		}
+		if (!initiallyOff) {
+			synchronizeWithPreference();
+		}
+	}
+
