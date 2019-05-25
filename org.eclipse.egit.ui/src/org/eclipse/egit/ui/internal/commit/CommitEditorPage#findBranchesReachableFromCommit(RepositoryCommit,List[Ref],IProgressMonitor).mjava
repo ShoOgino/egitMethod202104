@@ -1,8 +1,10 @@
 	private List<Ref> findBranchesReachableFromCommit(RepositoryCommit commit,
-			List<Ref> refs) {
+			List<Ref> refs, IProgressMonitor monitor) {
+		EclipseGitProgressTransformer progress = new EclipseGitProgressTransformer(
+				SubMonitor.convert(monitor, refs.size()));
 		try (RevWalk revWalk = new RevWalk(commit.getRepository())) {
 			return RevWalkUtils.findBranchesReachableFrom(commit.getRevCommit(),
-					revWalk, refs);
+					revWalk, refs, progress);
 		} catch (IOException e) {
 			Activator.handleError(e.getMessage(), e, false);
 			return Collections.emptyList();

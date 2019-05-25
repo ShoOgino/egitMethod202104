@@ -6,13 +6,14 @@
 			return Collections.emptyList();
 		}
 		if (refs.size() < BRANCH_LIMIT_FOR_SYNC_LOAD) {
-			return findBranchesReachableFromCommit(commit, refs);
+			return findBranchesReachableFromCommit(commit, refs,
+					new NullProgressMonitor());
 		} else {
 			Job branchRefreshJob = new CommitEditorPageJob(commit) {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					List<Ref> branches = findBranchesReachableFromCommit(commit,
-							refs);
+							refs, monitor);
 					updateUI(monitor, () -> fillBranches(branches));
 					return Status.OK_STATUS;
 				}
