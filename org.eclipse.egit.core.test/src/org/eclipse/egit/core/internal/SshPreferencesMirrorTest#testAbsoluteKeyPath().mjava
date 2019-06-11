@@ -1,0 +1,15 @@
+	@Test
+	public void testAbsoluteKeyPath() throws Exception {
+		File fakeSshHome = tmp.newFolder("faks_ssh_home");
+		File otherDirectory = tmp.newFolder("other");
+		File fakeDefaultKey = File.createTempFile("id_", "key", fakeSshHome);
+		File fakeOtherKey = File.createTempFile("other", "key", otherDirectory);
+		set("PRIVATEKEY", fakeDefaultKey.getName() + ','
+				+ fakeOtherKey.getAbsolutePath());
+		assertEquals(
+				'[' + fakeDefaultKey.getAbsolutePath() + ", "
+						+ fakeOtherKey.getAbsolutePath() + ']',
+				SshPreferencesMirror.INSTANCE.getDefaultIdentities(fakeSshHome)
+						.toString());
+	}
+

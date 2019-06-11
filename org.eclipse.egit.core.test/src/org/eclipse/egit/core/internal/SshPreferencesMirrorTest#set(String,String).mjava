@@ -1,0 +1,11 @@
+	private void set(String key, String value) throws Exception {
+		IEclipsePreferences preferences = InstanceScope.INSTANCE
+				.getNode("org.eclipse.jsch.core");
+		if (value == null) {
+			preferences.remove(key);
+		} else {
+			preferences.put(key, value);
+		}
+		preferences.flush();
+	}
+

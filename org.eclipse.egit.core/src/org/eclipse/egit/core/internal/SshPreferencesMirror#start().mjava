@@ -1,5 +1,9 @@
 	/** Starts mirroring the ssh preferences. */
 	public void start() {
+		if (started) {
+			return;
+		}
+		started = true;
 		preferences = InstanceScope.INSTANCE.getNode(PREFERENCES_NODE);
 		if (preferences != null) {
 			preferences.addPreferenceChangeListener(listener);
