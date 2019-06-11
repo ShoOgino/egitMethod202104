@@ -20,14 +20,9 @@
 
 		// Get the project that is the source of this property page
 		IProject project = null;
-		final IAdaptable element = getElement();
-		if (element instanceof IResource) {
-			project = ((IResource) element).getProject();
-		} else {
-			IResource adapter = Adapters.adapt(element, IResource.class);
-			if (adapter != null) {
-				project = adapter.getProject();
-			}
+		IResource resource = Adapters.adapt(getElement(), IResource.class);
+		if (resource != null) {
+			project = resource.getProject();
 		}
 
 		RepositoryMapping mapping = RepositoryMapping.getMapping(project);

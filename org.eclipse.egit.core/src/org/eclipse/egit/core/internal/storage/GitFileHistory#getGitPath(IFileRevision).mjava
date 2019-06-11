@@ -1,14 +1,13 @@
 	private String getGitPath(IFileRevision revision) {
-		if (revision instanceof CommitFileRevision)
+		if (revision instanceof CommitFileRevision) {
 			return ((CommitFileRevision) revision).getGitPath();
-		else if (revision instanceof IAdaptable) {
-			IResourceVariant variant = Adapters.adapt(((IAdaptable) revision),
-					IResourceVariant.class);
-
-			if (variant instanceof GitRemoteResource)
-				return ((GitRemoteResource) variant).getPath();
 		}
+		IResourceVariant variant = Adapters.adapt(revision,
+				IResourceVariant.class);
 
+		if (variant instanceof GitRemoteResource) {
+			return ((GitRemoteResource) variant).getPath();
+		}
 		return null;
 	}
 
