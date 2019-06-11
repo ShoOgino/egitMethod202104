@@ -10,13 +10,13 @@
 				showResource(adapted);
 				return;
 			}
-			File file = AdapterUtils.adapt(ssel.getFirstElement(), File.class);
+			File file = Adapters.adapt(ssel.getFirstElement(), File.class);
 			if (file != null) {
 				IPath path = new Path(file.getAbsolutePath());
 				showPaths(Arrays.asList(path));
 				return;
 			}
-			Repository repository = AdapterUtils.adapt(ssel.getFirstElement(),
+			Repository repository = Adapters.adapt(ssel.getFirstElement(),
 					Repository.class);
 			if (repository != null) {
 				showRepository(repository);

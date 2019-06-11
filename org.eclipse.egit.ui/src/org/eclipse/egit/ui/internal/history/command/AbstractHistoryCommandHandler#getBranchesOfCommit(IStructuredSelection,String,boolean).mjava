@@ -4,7 +4,7 @@
 		if (selection.isEmpty()) {
 			return branchesOfCommit;
 		}
-		RevCommit revCommit = AdapterUtils.adapt(selection.getFirstElement(),
+		RevCommit revCommit = Adapters.adapt(selection.getFirstElement(),
 				RevCommit.class);
 		if (!(revCommit instanceof PlotCommit)) {
 			return branchesOfCommit;

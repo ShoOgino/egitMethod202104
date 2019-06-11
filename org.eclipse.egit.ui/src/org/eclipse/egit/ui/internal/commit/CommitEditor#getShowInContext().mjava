@@ -1,7 +1,7 @@
 	@Override
 	public ShowInContext getShowInContext() {
 		IFormPage currentPage = getActivePageInstance();
-		IShowInSource showInSource = AdapterUtils.adapt(currentPage,
+		IShowInSource showInSource = Adapters.adapt(currentPage,
 				IShowInSource.class);
 		if (showInSource != null) {
 			return showInSource.getShowInContext();

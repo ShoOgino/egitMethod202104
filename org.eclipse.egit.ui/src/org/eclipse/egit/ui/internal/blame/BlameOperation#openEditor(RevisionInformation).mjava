@@ -31,7 +31,7 @@
 		AbstractDecoratedTextEditor editor = (AbstractDecoratedTextEditor) editorPart;
 		// IRevisionRulerColumn would also be possible but using
 		// IVerticalRulerInfo seems to work in more situations.
-		IVerticalRulerInfo rulerInfo = AdapterUtils.adapt(editor,
+		IVerticalRulerInfo rulerInfo = Adapters.adapt(editor,
 				IVerticalRulerInfo.class);
 
 		BlameInformationControlCreator creator = new BlameInformationControlCreator(
@@ -55,7 +55,7 @@
 			}
 		}
 
-		IRevisionRulerColumn revisionRuler = AdapterUtils.adapt(editor,
+		IRevisionRulerColumn revisionRuler = Adapters.adapt(editor,
 				IRevisionRulerColumn.class);
 		if (revisionRuler instanceof IRevisionRulerColumnExtension)
 			((IRevisionRulerColumnExtension) revisionRuler)

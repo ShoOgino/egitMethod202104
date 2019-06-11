@@ -11,7 +11,7 @@
 			column.setText(title);
 		}
 
-		Repository repo = AdapterUtils.adapt(getElement(), Repository.class);
+		Repository repo = Adapters.adapt(getElement(), Repository.class);
 		if (repo == null) {
 			return table;
 		}

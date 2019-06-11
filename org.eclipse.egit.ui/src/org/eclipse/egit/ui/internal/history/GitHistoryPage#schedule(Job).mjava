@@ -2,7 +2,7 @@
 		IWorkbenchPartSite site = getPartSite();
 		if (site != null) {
 			final IWorkbenchSiteProgressService p;
-			p = AdapterUtils.adapt(site, IWorkbenchSiteProgressService.class);
+			p = Adapters.adapt(site, IWorkbenchSiteProgressService.class);
 			if (p != null) {
 				p.schedule(j, 0, true /* use half-busy cursor */);
 				return;

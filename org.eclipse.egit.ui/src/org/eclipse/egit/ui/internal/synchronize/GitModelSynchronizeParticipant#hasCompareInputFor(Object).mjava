@@ -5,7 +5,7 @@
 
 		// in Java Workspace model Java source files are passed as type
 		// CompilationUnit which can be adapted to IResource
-		IResource res = AdapterUtils.adapt(object, IResource.class);
+		IResource res = Adapters.adapt(object, IResource.class);
 		if (res != null && res.getType() == IResource.FILE)
 			return true;
 

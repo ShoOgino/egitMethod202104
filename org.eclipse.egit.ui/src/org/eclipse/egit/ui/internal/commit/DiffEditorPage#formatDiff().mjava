@@ -5,7 +5,7 @@
 	 * cause this document to be shown.
 	 */
 	private void formatDiff() {
-		RepositoryCommit commit = AdapterUtils.adapt(getEditor(),
+		RepositoryCommit commit = Adapters.adapt(getEditor(),
 				RepositoryCommit.class);
 		if (commit == null) {
 			return;

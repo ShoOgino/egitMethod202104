@@ -5,7 +5,7 @@
 			return adapter.cast(result);
 		}
 		if (adapter == Repository.class) {
-			return AdapterUtils.adapt(fileRevision, adapter);
+			return Adapters.adapt(fileRevision, adapter);
 		}
 		return null;
 	}

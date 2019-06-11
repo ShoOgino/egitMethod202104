@@ -7,7 +7,7 @@
 					.getStagingEntriesFiltered((StagingFolderEntry) o);
 			collectPaths(entries, result);
 		} else if (o instanceof StagingEntry) {
-			result.add(AdapterUtils.adapt(o, IPath.class));
+			result.add(Adapters.adapt(o, IPath.class));
 		}
 	}
 

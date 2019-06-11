@@ -1,6 +1,6 @@
 	@Override
 	public String getName() {
-		IFileRevision rev = AdapterUtils.adapt(this, IFileRevision.class);
+		IFileRevision rev = Adapters.adapt(this, IFileRevision.class);
 		if (rev != null) {
 			String identifier;
 			if (rev instanceof CommitFileRevision) {
@@ -13,7 +13,7 @@
 					UIText.FileRevisionEditorInput_NameAndRevisionTitle,
 					rev.getName(), identifier);
 		}
-		IFileState state = AdapterUtils.adapt(this, IFileState.class);
+		IFileState state = Adapters.adapt(this, IFileState.class);
 		if (state != null) {
 			return state.getName() + ' ' + PreferenceBasedDateFormatter.create()
 					.formatDate(new Date(state.getModificationTime()));

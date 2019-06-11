@@ -1,5 +1,6 @@
 	private void scheduleFormatJob() {
-		IWorkbenchSiteProgressService siteService = AdapterUtils.adapt(partSite, IWorkbenchSiteProgressService.class);
+		IWorkbenchSiteProgressService siteService = Adapters.adapt(partSite,
+				IWorkbenchSiteProgressService.class);
 		if (siteService == null) {
 			return;
 		}

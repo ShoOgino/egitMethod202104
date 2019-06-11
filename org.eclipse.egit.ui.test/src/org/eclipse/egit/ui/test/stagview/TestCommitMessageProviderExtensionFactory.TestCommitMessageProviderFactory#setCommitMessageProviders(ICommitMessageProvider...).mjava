@@ -1,8 +1,6 @@
 		public void setCommitMessageProviders(
 				ICommitMessageProvider... newProviders) {
 			providers.clear();
-			for (ICommitMessageProvider p : newProviders) {
-				providers.add(p);
-			}
+			providers.addAll(Arrays.asList(newProviders));
 		}
 

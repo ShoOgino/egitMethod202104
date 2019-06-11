@@ -17,7 +17,7 @@
 		List<RevCommit> commits = new ArrayList<>();
 		try (RevWalk walk = new RevWalk(repository)) {
 			for (Object element : selection.toList()) {
-				RevCommit commit = AdapterUtils.adapt(element, RevCommit.class);
+				RevCommit commit = Adapters.adapt(element, RevCommit.class);
 				if (commit != null) {
 					// Re-parse commit to clear effects of TreeFilter
 					RevCommit reparsed = walk.parseCommit(commit.getId());

@@ -52,7 +52,7 @@
 
 		if (result == null) {
 			for (Object o : selection.toArray()) {
-				Repository nextRepo = AdapterUtils.adapt(o, Repository.class);
+				Repository nextRepo = Adapters.adapt(o, Repository.class);
 				if (nextRepo != null && result != null && result != nextRepo) {
 					if (warn)
 						MessageDialog

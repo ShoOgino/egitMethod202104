@@ -10,19 +10,19 @@
 		if (object == null) {
 			return null;
 		}
-		IResource resource = adapt(object, IResource.class);
+		IResource resource = Adapters.adapt(object, IResource.class);
 		if (resource != null) {
 			return resource;
 		}
-		resource = adapt(object, IFile.class);
+		resource = Adapters.adapt(object, IFile.class);
 		if (resource != null) {
 			return resource;
 		}
-		resource = adapt(object, IProject.class);
+		resource = Adapters.adapt(object, IProject.class);
 		if (resource != null) {
 			return resource;
 		}
-		resource = adapt(object, IContainer.class);
+		resource = Adapters.adapt(object, IContainer.class);
 		if (resource != null) {
 			return resource;
 		}

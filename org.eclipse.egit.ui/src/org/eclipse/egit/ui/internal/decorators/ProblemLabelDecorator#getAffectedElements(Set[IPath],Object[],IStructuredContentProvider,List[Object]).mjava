@@ -1,10 +1,9 @@
 	private void getAffectedElements(Set<IPath> paths, Object[] elements,
 			IStructuredContentProvider contentProvider, List<Object> result) {
 		for (Object element : elements) {
-			IPath path = AdapterUtils.adapt(element, IPath.class);
+			IPath path = Adapters.adapt(element, IPath.class);
 			if (path == null) {
-				IResource resource = AdapterUtils.adapt(element,
-						IResource.class);
+				IResource resource = Adapters.adapt(element, IResource.class);
 				if (resource != null) {
 					path = resource.getLocation();
 				}

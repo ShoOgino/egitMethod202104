@@ -14,7 +14,7 @@
 			result = new ArrayList<>();
 			Iterator elements = ((IStructuredSelection) selection).iterator();
 			while (elements.hasNext()) {
-				T adapter = AdapterUtils.adapt(elements.next(), c);
+				T adapter = Adapters.adapt(elements.next(), c);
 				if (adapter != null) {
 					result.add(adapter);
 				}

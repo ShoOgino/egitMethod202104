@@ -9,13 +9,12 @@
 			boolean single) {
 		Repository repo = null;
 		for (Object element : collection) {
-			IContainer container = AdapterUtils.adapt(element,
-					IProject.class);
+			IContainer container = Adapters.adapt(element, IProject.class);
 			RepositoryMapping mapping = null;
 			if (container != null) {
 				mapping = RepositoryMapping.getMapping(container);
 			} else {
-				container = AdapterUtils.adapt(element, IContainer.class);
+				container = Adapters.adapt(element, IContainer.class);
 				if (container != null) {
 					mapping = RepositoryMapping.getMapping(container);
 				}
@@ -29,7 +28,7 @@
 					repo = r;
 				}
 			} else {
-				IWorkingSet workingSet = AdapterUtils.adapt(element,
+				IWorkingSet workingSet = Adapters.adapt(element,
 						IWorkingSet.class);
 				if (workingSet != null) {
 					for (IAdaptable adaptable : workingSet.getElements()) {

@@ -13,9 +13,7 @@
 			}
 
 			if (contentProvider == null) {
-				for (Object element : visible) {
-					checkState.add(element);
-				}
+				checkState.addAll(Arrays.asList(visible));
 			} else {
 				Set<Object> toCheck = new HashSet<>();
 				for (Object element : visible) {

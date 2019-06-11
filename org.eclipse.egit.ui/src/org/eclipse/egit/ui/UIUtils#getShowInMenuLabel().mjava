@@ -1,5 +1,5 @@
 	private static String getShowInMenuLabel() {
-		IBindingService bindingService = AdapterUtils.adapt(PlatformUI
+		IBindingService bindingService = Adapters.adapt(PlatformUI
 		.getWorkbench(), IBindingService.class);
 		if (bindingService != null) {
 			String keyBinding = bindingService

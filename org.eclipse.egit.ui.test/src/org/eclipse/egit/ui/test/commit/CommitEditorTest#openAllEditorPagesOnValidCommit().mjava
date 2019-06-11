@@ -13,7 +13,7 @@
 		assertNotNull(editorRef.get());
 		IEditorPart editor = editorRef.get();
 		assertTrue(editor instanceof CommitEditor);
-		RepositoryCommit adaptedCommit = Utils.getAdapter(editor,
+		RepositoryCommit adaptedCommit = Adapters.adapt(editor,
 				RepositoryCommit.class);
 		assertNotNull(adaptedCommit);
 		assertEquals(commit, adaptedCommit.getRevCommit());
