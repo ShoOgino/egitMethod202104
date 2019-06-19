@@ -47,7 +47,7 @@
 					SubMonitor progress) throws CoreException {
 				IProject[] missing = getMissingProjects(repo, target);
 
-				progress.setTaskName(NLS.bind(
+				progress.setTaskName(MessageFormat.format(
 						CoreText.BranchOperation_performingBranch, target));
 				progress.setWorkRemaining(missing.length > 0 ? 4 : 3);
 
