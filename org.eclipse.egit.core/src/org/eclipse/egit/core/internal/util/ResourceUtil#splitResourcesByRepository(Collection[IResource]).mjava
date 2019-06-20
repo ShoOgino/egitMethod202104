@@ -12,7 +12,7 @@
 	 */
 	public static Map<Repository, Collection<String>> splitResourcesByRepository(
 			Collection<IResource> resources) {
-		Map<Repository, Collection<String>> result = new HashMap<Repository, Collection<String>>();
+		Map<Repository, Collection<String>> result = new HashMap<>();
 		for (IResource resource : resources) {
 			RepositoryMapping repositoryMapping = RepositoryMapping
 					.getMapping(resource);

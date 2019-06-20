@@ -14,7 +14,7 @@
 			Collection<IPath> paths) {
 		RepositoryCache repositoryCache = Activator.getDefault()
 				.getRepositoryCache();
-		Map<Repository, Collection<String>> result = new HashMap<Repository, Collection<String>>();
+		Map<Repository, Collection<String>> result = new HashMap<>();
 		for (IPath path : paths) {
 			Repository repository = repositoryCache.getRepository(path);
 			if (repository != null) {

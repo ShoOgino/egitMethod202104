@@ -1,11 +1,8 @@
 	private static void addPathToMap(@NonNull Repository repository,
 			@Nullable String path, Map<Repository, Collection<String>> result) {
 		if (path != null) {
-			Collection<String> resourcesList = result.get(repository);
-			if (resourcesList == null) {
-				resourcesList = new ArrayList<>();
-				result.put(repository, resourcesList);
-			}
+			Collection<String> resourcesList = result
+					.computeIfAbsent(repository, key -> new ArrayList<>());
 			resourcesList.add(path);
 		}
 	}
