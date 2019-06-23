@@ -222,6 +222,10 @@
 		};
 		Activator.getDefault().getPreferenceStore()
 				.addPropertyChangeListener(uiPrefsListener);
+		InstanceScope.INSTANCE
+				.getNode(org.eclipse.egit.core.Activator.getPluginId())
+				.addPreferenceChangeListener(prefListener);
+
 		selectionChangedListener = new ISelectionListener() {
 			@Override
 			public void selectionChanged(IWorkbenchPart part,
@@ -242,7 +246,10 @@
 			}
 		};
 
+		partListener = new VisibilityListener();
 		IWorkbenchPartSite site = getSite();
+		CommonUtils.getService(site, IPartService.class)
+				.addPartListener(partListener);
 		ISelectionService service = CommonUtils.getService(site, ISelectionService.class);
 		service.addPostSelectionListener(selectionChangedListener);
 

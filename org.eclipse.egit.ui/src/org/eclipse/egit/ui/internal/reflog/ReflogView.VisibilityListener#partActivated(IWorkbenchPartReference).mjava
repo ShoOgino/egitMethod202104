@@ -1,0 +1,13 @@
+		@Override
+		public void partActivated(IWorkbenchPartReference partRef) {
+			if (isMe(partRef) && pendingInput != null) {
+				ReflogInput input = pendingInput;
+				pendingInput = null;
+				// Verify that the repository still exists
+				if (!input.getRepository().getDirectory().exists()) {
+					input = null;
+				}
+				updateView(input);
+			}
+		}
+

@@ -22,9 +22,10 @@
 			return;
 		}
 
-		// Only update when different repository is selected
+		// Only update when different repository is selected, unless we're not
+		// visible
 		Repository currentRepo = getRepository();
-		if (currentRepo == null
+		if (currentRepo == null || !partListener.isVisible()
 				|| !selectedRepo.getDirectory().equals(
 						currentRepo.getDirectory())) {
 			showReflogFor(selectedRepo);

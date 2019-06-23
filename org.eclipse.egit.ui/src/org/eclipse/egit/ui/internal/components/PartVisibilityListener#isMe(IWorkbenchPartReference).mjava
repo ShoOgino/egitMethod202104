@@ -1,0 +1,14 @@
+	/**
+	 * Determines whether the {@code partRef} is for the part this
+	 * {@link PartVisibilityListener} was instantiated with.
+	 *
+	 * @param partRef
+	 *            to check
+	 * @return {@code true} if the {@code partRef} is for the part this
+	 *         {@link PartVisibilityListener} was instantiated with,
+	 *         {@code false} otherwise
+	 */
+	protected final boolean isMe(IWorkbenchPartReference partRef) {
+		return partRef.getPart(false) == myself;
+	}
+

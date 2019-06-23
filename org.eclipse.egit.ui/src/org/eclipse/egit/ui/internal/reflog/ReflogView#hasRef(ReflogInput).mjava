@@ -1,0 +1,8 @@
+	private static boolean hasRef(ReflogInput input) {
+		try {
+			return input.getRepository().findRef(input.getRef()) != null;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
