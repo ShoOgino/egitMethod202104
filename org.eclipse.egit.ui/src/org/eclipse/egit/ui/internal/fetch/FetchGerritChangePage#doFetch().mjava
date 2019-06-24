@@ -130,8 +130,11 @@
 					if (monitor.isCanceled()) {
 						throw new OperationCanceledException();
 					}
-					return findHighestPatchSet(changes,
+					Change highest = findHighestPatchSet(changes,
 							originalChange.getChangeNumber().intValue());
+					if (highest != null) {
+						return highest;
+					}
 				}
 				return originalChange;
 			}

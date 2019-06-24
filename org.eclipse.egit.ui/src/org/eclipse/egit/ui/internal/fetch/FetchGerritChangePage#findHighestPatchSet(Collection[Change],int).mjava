@@ -1,5 +1,8 @@
 	private Change findHighestPatchSet(Collection<Change> changes,
 			int changeNumber) {
+		if (changes == null) {
+			return null;
+		}
 		// We know that the result is sorted by change and
 		// patch set number descending
 		for (Change fromGerrit : changes) {
