@@ -1,0 +1,21 @@
+	/**
+	 * Tests that the Team->Switch To... menu item has content by clicking on
+	 * "New Branch..." and then closing the resulting "Create Branch" dialog.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testSwitchToMenu() throws Exception {
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		SWTBotTreeItem node = TestUtil.navigateTo(projectExplorerTree,
+				childFolder.getFullPath().segments());
+		TestUtil.waitForDecorations();
+		node.select();
+		ContextMenuHelper.clickContextMenu(projectExplorerTree, "Team",
+				util.getPluginLocalizedValue("SwitchToMenu.label"),
+				UIText.SwitchToMenu_NewBranchMenuLabel);
+
+		SWTBotShell shell = bot.shell(UIText.CreateBranchWizard_NewBranchTitle);
+		shell.close();
+	}
+

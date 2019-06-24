@@ -1,0 +1,15 @@
+	/**
+	 * Retrieves all the repositories associated with the current selection,
+	 * even if associated with a folder instead of a project. If no repository
+	 * can be determined for any object in the selection, returns an empty
+	 * array.
+	 *
+	 * @param evaluationContext
+	 * @return array of selected repositories
+	 */
+	@NonNull
+	public static Repository[] getAllRepositories(
+			@Nullable IEvaluationContext evaluationContext) {
+		return getAllRepositories(getSelection(evaluationContext));
+	}
+
