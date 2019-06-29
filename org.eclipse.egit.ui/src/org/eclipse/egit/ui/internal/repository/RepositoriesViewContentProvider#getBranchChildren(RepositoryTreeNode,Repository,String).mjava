@@ -1,9 +1,7 @@
 	private Object[] getBranchChildren(RepositoryTreeNode node, Repository repo,
 			String prefix) {
 		if (branchHierarchyMode) {
-			return getBranchHierarchyChildren(
-					new BranchHierarchyNode(node, repo, new Path(prefix)), repo,
-					node);
+			return getBranchHierarchyChildren(node, repo, prefix);
 		} else {
 			try {
 				return getRefs(repo, prefix).values().stream()

@@ -19,10 +19,10 @@
 		case REMOTETRACKING:
 			return getBranchChildren(node, repo, Constants.R_REMOTES);
 
-		case BRANCHHIERARCHY: {
-			return getBranchHierarchyChildren((BranchHierarchyNode) node, repo,
-					node);
-		}
+		case BRANCHHIERARCHY:
+			return getBranchHierarchyChildren(node, repo,
+					((BranchHierarchyNode) node).getObject()
+							.toPortableString());
 
 		case TAGS:
 			return getTagsChildren(node, repo);
