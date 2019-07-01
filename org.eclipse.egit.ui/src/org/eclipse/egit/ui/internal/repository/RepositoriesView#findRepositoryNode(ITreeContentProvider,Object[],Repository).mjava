@@ -1,0 +1,27 @@
+	private RepositoryTreeNode findRepositoryNode(
+			ITreeContentProvider cp, Object[] roots,
+			Repository repository) {
+		for (Object repo : roots) {
+			RepositoryTreeNode node = (RepositoryTreeNode) repo;
+			// TODO equals implementation of Repository?
+			if (repository.getDirectory().equals(
+					((Repository) node.getObject()).getDirectory())) {
+				return node;
+			}
+		}
+		// Might be a submodule
+		for (Object repo : roots) {
+			RepositoryTreeNode node = (RepositoryTreeNode) repo;
+			RepositoryTreeNode submodules = findChild(cp, node,
+						RepositoryTreeNodeType.SUBMODULES);
+			if (submodules != null) {
+				RepositoryTreeNode submoduleNode = findRepositoryNode(cp,
+						cp.getChildren(submodules), repository);
+				if (submoduleNode != null) {
+					return submoduleNode;
+				}
+			}
+		}
+		return null;
+	}
+

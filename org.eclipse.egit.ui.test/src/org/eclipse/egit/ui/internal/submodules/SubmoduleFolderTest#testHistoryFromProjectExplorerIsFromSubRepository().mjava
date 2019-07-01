@@ -10,9 +10,9 @@
 		// Set link with selection
 		((org.eclipse.team.internal.ui.history.GenericHistoryView) viewPart)
 				.setLinkingEnabled(true);
-		// Select PROJ1 (has 3 commits)
+		// Select PROJ1 (has 4 commits)
 		TestUtil.navigateTo(TestUtil.getExplorerTree(), PROJ1).select();
-		assertRowCountInHistory(PROJ1, 3);
+		assertRowCountInHistory(PROJ1, 4);
 		// Select the child folder (from the submodule; has 2 commits)
 		TestUtil.navigateTo(TestUtil.getExplorerTree(),
 				childFolder.getFullPath().segments()).select();

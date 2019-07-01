@@ -24,7 +24,7 @@
 						.toString())
 				.call();
 		TestRepository parentRepo = new TestRepository(parentRepository);
-		parentRepo.trackAllFiles(parentProject);
+		Git.wrap(parentRepository).add().addFilepattern(".").call();
 		parentRepo.commit("Commit submodule");
 		assertTrue(SubmoduleWalk.containsGitModulesFile(parentRepository));
 		parentProject.refreshLocal(IResource.DEPTH_INFINITE, null);

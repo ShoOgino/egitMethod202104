@@ -2,7 +2,9 @@
 			String repoRelativePath) {
 		RepositoryTreeNode currentNode = getRepositoryChildNode(repository,
 				RepositoryTreeNodeType.WORKINGDIR);
-
+		if (currentNode == null) {
+			return null;
+		}
 		ITreeContentProvider cp = (ITreeContentProvider) getCommonViewer()
 				.getContentProvider();
 		IPath relPath = new Path(repoRelativePath);
