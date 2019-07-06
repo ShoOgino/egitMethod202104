@@ -1,9 +1,12 @@
 	@Override
 	public int hashCode() {
-		return (repo == null ? 0 : repo.hashCode())
-				^ (singleFile == null ? 0 : singleFile.hashCode())
-				^ (singleItem == null ? 0 : singleItem.hashCode())
-				^ (files == null ? 0 : Arrays.hashCode(files.toArray()))
-				^ (list == null ? 0 : Arrays.hashCode(list.toArray()));
+		int result = Objects.hash(repo, singleFile, singleItem);
+		if (files != null) {
+			result = 31 * result + Arrays.hashCode(files.toArray());
+		}
+		if (list != null) {
+			result = 31 * result + Arrays.hashCode(list.toArray());
+		}
+		return result;
 	}
 

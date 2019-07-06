@@ -7,8 +7,9 @@
 			return false;
 		}
 		HistoryPageInput other = (HistoryPageInput) obj;
-		return repo == other.repo && singleFile == other.singleFile
-				&& singleItem == other.singleItem
+		return repo == other.repo
+				&& Objects.equals(singleFile, other.singleFile)
+				&& Objects.equals(singleItem, other.singleItem)
 				&& listEquals(files, other.files)
 				&& listEquals(list, other.list);
 	}
