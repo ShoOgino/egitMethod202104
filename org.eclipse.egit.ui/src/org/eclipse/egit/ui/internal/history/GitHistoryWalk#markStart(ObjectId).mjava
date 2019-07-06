@@ -1,0 +1,14 @@
+	private void markStart(ObjectId id)
+			throws IOException, IncorrectObjectTypeException {
+		try {
+			RevObject peeled = peel(parseAny(id));
+			if (peeled instanceof RevCommit) {
+				markStart((RevCommit) peeled);
+			}
+		} catch (MissingObjectException e) {
+			// If there is a ref which points to Nirvana then we should simply
+			// ignore this ref. We should not let a corrupt ref cause that the
+			// history view is not filled at all.
+		}
+	}
+

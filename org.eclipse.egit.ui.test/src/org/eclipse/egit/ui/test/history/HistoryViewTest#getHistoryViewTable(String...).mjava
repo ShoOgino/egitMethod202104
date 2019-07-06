@@ -22,16 +22,6 @@
 		explorerItem.select();
 		ContextMenuHelper.clickContextMenuSync(projectExplorerTree, "Team",
 				"Show in History");
-		// join GenerateHistoryJob
-		Job.getJobManager().join(JobFamilies.GENERATE_HISTORY, null);
-		// join UI update triggered by GenerateHistoryJob
-		projectExplorerTree.widget.getDisplay().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				// empty
-			}
-		});
-
-		return getHistoryViewBot().table();
+		return getHistoryViewTable();
 	}
 

@@ -37,6 +37,8 @@
 		}
 		renameTracker.reset(null);
 		Job.getJobManager().cancel(JobFamilies.HISTORY_DIFF);
+		currentRepo = null;
+		selectedObj = null;
 		super.dispose();
 	}
 

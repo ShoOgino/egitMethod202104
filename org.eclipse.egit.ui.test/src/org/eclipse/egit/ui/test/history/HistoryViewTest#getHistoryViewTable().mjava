@@ -1,0 +1,9 @@
+	private SWTBotTable getHistoryViewTable() throws Exception {
+		SWTBot historyView = getHistoryViewBot();
+		Job.getJobManager().join(JobFamilies.GENERATE_HISTORY, null);
+		historyView.getDisplay().syncExec(() -> {
+			// Join UI update triggered by GenerateHistoryJob
+		});
+		return historyView.table();
+	}
+

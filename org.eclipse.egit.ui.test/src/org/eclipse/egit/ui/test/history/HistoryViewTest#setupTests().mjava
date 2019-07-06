@@ -1,5 +1,5 @@
 	@Before
-	public void setup() throws Exception {
+	public void setupTests() throws Exception {
 		repoFile = createProjectAndCommitToRepository();
 		IProject prj = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(PROJ1);
@@ -12,5 +12,8 @@
 		addAndCommit(addedFile, ADDEDMESSAGE);
 		// TODO count the commits
 		commitCount = 3;
+		RepositoryUtil repositoryUtil = Activator.getDefault()
+				.getRepositoryUtil();
+		repositoryUtil.addConfiguredRepository(repoFile);
 	}
 

@@ -24,6 +24,9 @@
 				markUninteresting(db, Constants.R_NOTES);
 			}
 			markStart(parseCommit(headId));
+			if (toShow != null) {
+				markStart(toShow);
+			}
 		} catch (IOException e) {
 			throw new IOException(MessageFormat.format(
 					UIText.GitHistoryPage_errorSettingStartPoints,
