@@ -2,11 +2,14 @@
 		UIUtils.<String> addContentProposalToText(textField,
 				() -> {
 					try {
+						String prefix = Constants.R_REMOTES + remoteName + '/';
 						Set<String> sortedSet = new TreeSet<>(
 								CommonUtils.STRING_ASCENDING_COMPARATOR);
 						sortedSet.addAll(repository.getRefDatabase()
-								.getRefs(Constants.R_REMOTES + remoteName + '/')
-								.keySet());
+								.getRefsByPrefix(prefix).stream()
+								.map(ref -> ref.getName()
+										.substring(prefix.length()))
+								.collect(Collectors.toList()));
 						return sortedSet;
 					} catch (IOException e) {
 						return Collections.emptyList();
