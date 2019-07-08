@@ -8,22 +8,27 @@
 	 *         FOLDER or PROJECT and we can show it; false otherwise.
 	 */
 	public static boolean canShowHistoryFor(final Object object) {
-		if (object instanceof HistoryPageInput)
+		if (object instanceof HistoryPageInput) {
 			return true;
+		}
 
-		if (object instanceof IResource)
+		if (object instanceof IResource) {
 			return typeOk((IResource) object);
+		}
 
-		if (object instanceof RepositoryTreeNode)
-			return true;
+		if (object instanceof RepositoryTreeNode) {
+			return SUPPORTED_REPOSITORY_NODE_TYPES
+					.contains(((RepositoryTreeNode) object).getType());
+		}
 
 		if (object instanceof Path) {
 			return true;
 		}
 
 		IResource resource = AdapterUtils.adaptToAnyResource(object);
-		if (resource != null && typeOk(resource))
+		if (resource != null && typeOk(resource)) {
 			return true;
+		}
 
 		return Adapters.adapt(object, Repository.class) != null;
 	}
