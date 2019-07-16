@@ -115,6 +115,8 @@
 		unstageAllAction.setEnabled(false);
 		stageAllAction.setEnabled(false);
 
+		createPresentationActions();
+
 		unstagedSection = toolkit.createSection(stagingSashForm,
 				ExpandableComposite.SHORT_TITLE_BAR);
 		unstagedSection.clientVerticalSpacing = 0;
@@ -448,6 +450,7 @@
 			}
 		};
 
+		initPresentation();
 		partListener = new PartListener();
 
 		IPreferenceStore preferenceStore = getPreferenceStore();

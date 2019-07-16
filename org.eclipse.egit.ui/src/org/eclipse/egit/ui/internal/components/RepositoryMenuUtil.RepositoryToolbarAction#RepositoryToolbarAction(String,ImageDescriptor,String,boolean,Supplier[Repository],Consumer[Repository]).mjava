@@ -22,7 +22,7 @@
 				@Nullable ImageDescriptor image, @Nullable String tooltip,
 				boolean includeBare, @NonNull Supplier<Repository> currentRepo,
 				@NonNull Consumer<Repository> action) {
-			super(text, IAction.AS_DROP_DOWN_MENU);
+			super(text);
 			setImageDescriptor(image);
 			setToolTipText(tooltip == null ? text : tooltip);
 			this.includeBare = includeBare;

@@ -1,0 +1,8 @@
+		@Override
+		public Collection<IAction> getActions() {
+			Repository current = currentRepo.get();
+			File gitDir = current == null ? null : current.getDirectory();
+			return RepositoryMenuUtil.getRepositoryActions(includeBare, gitDir,
+					action);
+		}
+

@@ -1,0 +1,23 @@
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if (UIPreferences.STAGING_VIEW_PRESENTATION
+					.equals(event.getProperty())) {
+				Presentation current = getPresentation(
+						event.getNewValue().toString(), Presentation.LIST);
+				switch (current) {
+				case LIST:
+					setImageDescriptor(UIIcons.FLAT);
+					break;
+				case TREE:
+					setImageDescriptor(UIIcons.HIERARCHY);
+					break;
+				case COMPACT_TREE:
+					setImageDescriptor(UIIcons.COMPACT);
+					break;
+				default:
+					return;
+				}
+				update();
+			}
+		}
+

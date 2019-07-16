@@ -24,6 +24,10 @@
 			switchRepositoriesAction.dispose();
 			switchRepositoriesAction = null;
 		}
+		if (presentationAction != null) {
+			presentationAction.dispose();
+			presentationAction = null;
+		}
 
 		getPreferenceStore().removePropertyChangeListener(uiPrefsListener);
 

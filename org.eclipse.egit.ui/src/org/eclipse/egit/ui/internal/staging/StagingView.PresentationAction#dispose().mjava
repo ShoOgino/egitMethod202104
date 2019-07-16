@@ -1,6 +1,6 @@
 		@Override
 		public void dispose() {
-			preferences.removePreferenceChangeListener(listener);
+			store.removePropertyChangeListener(this);
 			super.dispose();
 		}
 

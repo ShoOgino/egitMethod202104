@@ -151,73 +151,9 @@
 		IMenuManager dropdownMenu = actionBars.getMenuManager();
 		MenuManager presentationMenu = new MenuManager(
 				UIText.StagingView_Presentation);
-		listPresentationAction = new Action(UIText.StagingView_List,
-				IAction.AS_RADIO_BUTTON) {
-			@Override
-			public void run() {
-				if (!isChecked()) {
-					return;
-				}
-				switchToListMode();
-				refreshViewers();
-			}
-		};
-		listPresentationAction.setImageDescriptor(UIIcons.FLAT);
 		presentationMenu.add(listPresentationAction);
-
-		treePresentationAction = new Action(UIText.StagingView_Tree,
-				IAction.AS_RADIO_BUTTON) {
-			@Override
-			public void run() {
-				if (!isChecked()) {
-					return;
-				}
-				presentation = Presentation.TREE;
-				setPresentation(presentation, false);
-				listPresentationAction.setChecked(false);
-				compactTreePresentationAction.setChecked(false);
-				setExpandCollapseActionsVisible(false, isExpandAllowed(false),
-						true);
-				setExpandCollapseActionsVisible(true, isExpandAllowed(true),
-						true);
-				refreshViewers();
-			}
-		};
-		treePresentationAction.setImageDescriptor(UIIcons.HIERARCHY);
 		presentationMenu.add(treePresentationAction);
-
-		compactTreePresentationAction = new Action(UIText.StagingView_CompactTree,
-				IAction.AS_RADIO_BUTTON) {
-			@Override
-			public void run() {
-				if (!isChecked()) {
-					return;
-				}
-				switchToCompactModeInternal(false);
-				refreshViewers();
-			}
-
-		};
-		compactTreePresentationAction.setImageDescriptor(UIIcons.COMPACT);
 		presentationMenu.add(compactTreePresentationAction);
-
-		presentation = readPresentation(UIPreferences.STAGING_VIEW_PRESENTATION,
-				Presentation.LIST);
-		switch (presentation) {
-		case LIST:
-			listPresentationAction.setChecked(true);
-			setExpandCollapseActionsVisible(false, false, false);
-			setExpandCollapseActionsVisible(true, false, false);
-			break;
-		case TREE:
-			treePresentationAction.setChecked(true);
-			break;
-		case COMPACT_TREE:
-			compactTreePresentationAction.setChecked(true);
-			break;
-		default:
-			break;
-		}
 		dropdownMenu.add(presentationMenu);
 		dropdownMenu.add(new Separator());
 		dropdownMenu.add(openNewCommitsAction);

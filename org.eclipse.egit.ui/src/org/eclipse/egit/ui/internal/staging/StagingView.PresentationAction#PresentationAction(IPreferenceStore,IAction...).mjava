@@ -1,0 +1,11 @@
+		public PresentationAction(IPreferenceStore store, IAction... actions) {
+			super(UIText.StagingView_Presentation);
+			@SuppressWarnings("null")
+			@NonNull
+			List<IAction> a = actions != null ? Arrays.asList(actions)
+					: Collections.emptyList();
+			this.actions = a;
+			this.store = store;
+			store.addPropertyChangeListener(this);
+		}
+
