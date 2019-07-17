@@ -11,6 +11,7 @@
 		selectionWithProj1Common();
 
 		// delete reflog again to not confuse other tests
-		new File(gitDir, Constants.LOGS + "/" + Constants.HEAD).delete();
+		assertTrue(new File(gitDir, Constants.LOGS + "/" + Constants.HEAD)
+				.delete());
 	}
 

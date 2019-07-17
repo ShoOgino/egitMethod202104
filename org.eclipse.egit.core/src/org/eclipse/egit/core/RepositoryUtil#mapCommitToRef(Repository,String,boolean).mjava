@@ -35,28 +35,27 @@
 			}
 
 			try {
-				ReflogReader reflogReader = repository.getReflogReader(Constants.HEAD);
-				if (reflogReader != null) {
-					List<ReflogEntry> lastEntry = reflogReader.getReverseEntries();
-					for (ReflogEntry entry : lastEntry) {
-						if (entry.getNewId().name().equals(commitId)) {
-							CheckoutEntry checkoutEntry = entry.parseCheckout();
-							if (checkoutEntry != null) {
-								Ref ref = repository
-										.findRef(checkoutEntry.getToBranch());
-								if (ref != null) {
-									ObjectId objectId = ref.getObjectId();
-									if (objectId != null && objectId.getName()
-											.equals(commitId)) {
-										return checkoutEntry.getToBranch();
-									}
-									ref = repository.getRefDatabase().peel(ref);
+				List<ReflogEntry> lastEntry = safeReadReflog(repository,
+						Constants.HEAD);
+				for (ReflogEntry entry : lastEntry) {
+					if (entry.getNewId().name().equals(commitId)) {
+						CheckoutEntry checkoutEntry = entry.parseCheckout();
+						if (checkoutEntry != null) {
+							Ref ref = repository
+									.findRef(checkoutEntry.getToBranch());
+							if (ref != null) {
+								ObjectId objectId = ref.getObjectId();
+								if (objectId != null && objectId.getName()
+										.equals(commitId)) {
+									return checkoutEntry.getToBranch();
 								}
-								if (ref != null) {
-									ObjectId id = ref.getPeeledObjectId();
-									if (id != null && id.getName().equals(commitId)) {
-										return checkoutEntry.getToBranch();
-									}
+								ref = repository.getRefDatabase().peel(ref);
+							}
+							if (ref != null) {
+								ObjectId id = ref.getPeeledObjectId();
+								if (id != null
+										&& id.getName().equals(commitId)) {
+									return checkoutEntry.getToBranch();
 								}
 							}
 						}
