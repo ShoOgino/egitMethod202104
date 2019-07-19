@@ -19,7 +19,7 @@
 				currentHeadId = null;
 				currentFetchHeadId = null;
 				selectedObj = null;
-				currentRepo = db;
+				setCurrentRepo(db);
 				clearViewers();
 				return;
 			}
@@ -29,9 +29,9 @@
 					.getFileList(), db);
 
 			boolean repoChanged = false;
-			if (!db.equals(currentRepo)) {
+			if (!db.equals(getCurrentRepo())) {
 				repoChanged = true;
-				currentRepo = db;
+				setCurrentRepo(db);
 			}
 
 			boolean objChanged = false;

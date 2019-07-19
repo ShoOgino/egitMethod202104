@@ -1,8 +1,8 @@
 		private void createRepositorySwitchAction() {
 			switchRepositoryAction = new RepositoryToolbarAction(true,
-					() -> historyPage.currentRepo,
+					() -> historyPage.getCurrentRepo(),
 					repo -> {
-						Repository current = historyPage.currentRepo;
+						Repository current = historyPage.getCurrentRepo();
 						if (current != null && repo.getDirectory()
 								.equals(current.getDirectory())) {
 							HistoryPageInput currentInput = historyPage

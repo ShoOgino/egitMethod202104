@@ -1,6 +1,6 @@
 	@Override
 	public void setFocus() {
-		if (repoHasBeenRemoved(currentRepo)) {
+		if (repoHasBeenRemoved(getCurrentRepo())) {
 			clearHistoryPage();
 			graph.getControl().setFocus();
 		} else {

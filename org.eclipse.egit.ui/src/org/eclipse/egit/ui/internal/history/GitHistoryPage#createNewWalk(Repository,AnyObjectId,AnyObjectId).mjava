@@ -3,6 +3,11 @@
 		currentHeadId = headId;
 		currentFetchHeadId = fetchHeadId;
 		SWTWalk walk = new GitHistoryWalk(db, headId, selectedObj);
+
+		if (isShowFirstParentOnly()) {
+			walk.setFirstParent(true);
+		}
+
 		try {
 			if (store
 					.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS))

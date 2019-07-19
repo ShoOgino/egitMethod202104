@@ -1,0 +1,14 @@
+	private boolean isShowFirstParentOnly() {
+		final String prefKey = UIPreferences.RESOURCEHISTORY_SHOW_FIRST_PARENT_ONLY_DEFAULT;
+		boolean firstParent = store.getBoolean(prefKey);
+		Repository repo = getCurrentRepo();
+
+		if (repo != null) {
+			String repoSpecificKey = getRepoSpecificKey(repo, prefKey);
+			if (store.contains(repoSpecificKey)) {
+				firstParent = store.getBoolean(repoSpecificKey);
+			}
+		}
+		return firstParent;
+	}
+

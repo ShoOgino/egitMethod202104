@@ -1,0 +1,31 @@
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				Repository repo = historyPage.getCurrentRepo();
+
+				final String prefKey = UIPreferences.RESOURCEHISTORY_SHOW_FIRST_PARENT_ONLY_DEFAULT;
+
+				if (repo == null) {
+					if (prefKey.equals(event.getProperty())) {
+						// global first parent preference changed and we have no
+						// current repo. Apply the new global preference
+						applyNewState(historyPage.store.getBoolean(prefKey));
+					}
+					return;
+				}
+
+				String repoSpecificKey = getRepoSpecificKey(repo, prefKey);
+
+				if (prefKey.equals(event.getProperty())) {
+					// global first parent preference changed, if this repo does
+					// not have a repo specific one apply the global one
+					if (!historyPage.store.contains(repoSpecificKey)) {
+						applyNewState(historyPage.store.getBoolean(prefKey));
+					}
+				}
+
+				if (P_REPOSITORY.equals(event.getProperty())) {
+					// The repository was switched. Apply that correct state.
+					applyNewState(historyPage.isShowFirstParentOnly());
+				}
+			}
+

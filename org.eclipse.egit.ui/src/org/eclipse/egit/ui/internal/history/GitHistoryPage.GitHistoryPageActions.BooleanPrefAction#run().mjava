@@ -1,11 +1,6 @@
 			@Override
 			public void run() {
 				historyPage.store.setValue(prefName, isChecked());
-				if (historyPage.store.needsSaving())
-					try {
-						historyPage.store.save();
-					} catch (IOException e) {
-						Activator.handleError(e.getMessage(), e, false);
-					}
+				historyPage.saveStoreIfNeeded();
 			}
 

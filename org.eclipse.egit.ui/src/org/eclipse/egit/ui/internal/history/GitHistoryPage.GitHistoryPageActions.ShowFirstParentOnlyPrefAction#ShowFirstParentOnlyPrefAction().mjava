@@ -1,0 +1,9 @@
+			ShowFirstParentOnlyPrefAction() {
+				super(UIText.GitHistoryPage_ShowFirstParentOnlyMenuLabel);
+				historyPage.addPropertyChangeListener(this);
+				historyPage.store.addPropertyChangeListener(this);
+				setChecked(historyPage.isShowFirstParentOnly());
+				setImageDescriptor(UIIcons.FIRST_PARENT_ONLY);
+				setToolTipText(UIText.GitHistoryPage_showFirstParentOnly);
+			}
+

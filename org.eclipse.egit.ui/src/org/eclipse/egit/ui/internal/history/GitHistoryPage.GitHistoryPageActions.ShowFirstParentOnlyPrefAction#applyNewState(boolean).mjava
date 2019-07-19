@@ -1,0 +1,19 @@
+			/**
+			 * Applies the new boolean state to the checkbox and refreshes the
+			 * historyPage if the state was changed.
+			 *
+			 * @param newState
+			 *            the new state to apply.
+			 */
+			private void applyNewState(boolean newState) {
+				Control control = historyPage.getControl();
+				if (control != null && !control.isDisposed()) {
+					control.getDisplay().asyncExec(() -> {
+						if (!control.isDisposed()) {
+							setChecked(newState);
+						}
+					});
+				}
+				historyPage.refresh();
+			}
+

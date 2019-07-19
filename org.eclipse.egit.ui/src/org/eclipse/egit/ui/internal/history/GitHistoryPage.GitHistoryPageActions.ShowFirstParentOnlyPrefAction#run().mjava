@@ -1,0 +1,20 @@
+			@Override
+			public void run() {
+				final String prefKey = UIPreferences.RESOURCEHISTORY_SHOW_FIRST_PARENT_ONLY_DEFAULT;
+				Repository repo = historyPage.getCurrentRepo();
+				if (repo != null) {
+					String repoSpecificKey = getRepoSpecificKey(repo, prefKey);
+					boolean newBoolean = isChecked();
+					if (newBoolean == historyPage.store.getBoolean(prefKey)) {
+						historyPage.store.setToDefault(repoSpecificKey);
+					} else {
+						String newValue = newBoolean ? IPreferenceStore.TRUE
+								: IPreferenceStore.FALSE;
+						historyPage.store.putValue(repoSpecificKey, newValue);
+					}
+
+					historyPage.saveStoreIfNeeded();
+				}
+				historyPage.refresh();
+			}
+

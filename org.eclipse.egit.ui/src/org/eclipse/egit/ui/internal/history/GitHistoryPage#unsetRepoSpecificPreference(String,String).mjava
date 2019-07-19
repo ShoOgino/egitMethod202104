@@ -1,0 +1,19 @@
+	/**
+	 * Unset the repository specific preference of the given key for the
+	 * repository represented by the given repository path.
+	 * <p>
+	 * This method does not save the preference store. Call
+	 * {@link #saveStoreIfNeeded()} when appropriate.
+	 * </p>
+	 *
+	 * @param repositoryPath
+	 *            Representing the repository to remove the preference for
+	 * @param key
+	 *            The preference to remove for the given repository.
+	 */
+	private void unsetRepoSpecificPreference(String repositoryPath,
+			String key) {
+		String prefString = getRepoSpecificKey(repositoryPath, key);
+		store.setToDefault(prefString);
+	}
+

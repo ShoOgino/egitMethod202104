@@ -8,6 +8,10 @@
 		currentShowAllBranches = store
 			.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
 
+		boolean isShowFirstParentOnly = isShowFirstParentOnly();
+		boolean firstParentOnlyChanged = currentShowFirstParentOnly != isShowFirstParentOnly;
+		currentShowFirstParentOnly = isShowFirstParentOnly;
+
 		boolean additionalRefsChange = currentShowAdditionalRefs != store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS);
 		currentShowAdditionalRefs = store
@@ -24,7 +28,8 @@
 		currentFollowRenames = getFollowRenames();
 
 		return pathChanged || headChanged || fetchHeadChanged
-				|| allBranchesChanged || additionalRefsChange
-				|| showNotesChanged || followRenamesChanged;
+				|| allBranchesChanged || firstParentOnlyChanged
+				|| additionalRefsChange || showNotesChanged
+				|| followRenamesChanged;
 	}
 

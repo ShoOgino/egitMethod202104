@@ -1,0 +1,21 @@
+	/**
+	 * Get the relativized path of the given repository.
+	 * <p>
+	 * If the repository is not local this method will return null.
+	 * </p>
+	 *
+	 * @param repository
+	 *            The repository to get the path String of
+	 * @return the relativized path String
+	 * @see #relativizeToWorkspace(String)
+	 */
+	@Nullable
+	public String getRelativizedRepositoryPath(
+			final @NonNull Repository repository) {
+		File dir = repository.getDirectory();
+		if (dir == null) {
+			return null;
+		}
+		return relativizeToWorkspace(dir.getAbsolutePath());
+	}
+
