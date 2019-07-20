@@ -19,12 +19,12 @@
 			return null;
 
 		RepositoryUtil config = Activator.getDefault().getRepositoryUtil();
-
-		List<String> repos = config.getConfiguredRepositories();
-		for (String repo : repos) {
+		RepositoryCache cache = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryCache();
+		for (String repo : config.getConfiguredRepositories()) {
 			Repository repository;
 			try {
-				repository = FileRepositoryBuilder.create(new File(repo));
+				repository = cache.lookupRepository(new File(repo));
 			} catch (IOException e) {
 				continue;
 			}

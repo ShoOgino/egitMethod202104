@@ -15,10 +15,9 @@
 				treeItem.setText(0, path.toString());
 			}
 			treeItem.setText(2, relativePath.toOSString());
-			try {
+			try (Repository repo = new RepositoryBuilder()
+					.setGitDir(gitDir.toFile()).build();) {
 				IProject project = m.getContainer().getProject();
-				Repository repo = new RepositoryBuilder()
-						.setGitDir(gitDir.toFile()).build();
 				File workTree = repo.getWorkTree();
 				IPath workTreePath = Path.fromOSString(workTree
 						.getAbsolutePath());
@@ -43,7 +42,6 @@
 						}
 					}
 				}
-				repo.close();
 			} catch (IOException e1) {
 				Activator
 						.logError(
