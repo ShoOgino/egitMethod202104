@@ -40,13 +40,7 @@
 		showInMessageManager.add(actions.wrapCommentAction);
 		showInMessageManager.add(actions.fillCommentAction);
 
-		IMenuManager filterSubMenuMgr = new MenuManager(
-				UIText.GitHistoryPage_FilterSubMenuLabel);
-		viewMenuMgr.add(filterSubMenuMgr);
-		filterSubMenuMgr.add(actions.showAllRepoVersionsAction);
-		filterSubMenuMgr.add(actions.showAllProjectVersionsAction);
-		filterSubMenuMgr.add(actions.showAllFolderVersionsAction);
-		filterSubMenuMgr.add(actions.showAllResourceVersionsAction);
+		viewMenuMgr.add(actions.filterAction);
 
 		viewMenuMgr.add(new Separator());
 		viewMenuMgr.add(actions.compareModeAction);

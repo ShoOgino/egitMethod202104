@@ -1,0 +1,8 @@
+			@Override
+			public void dispose() {
+				for (IAction action : this.actions) {
+					action.removePropertyChangeListener(listener);
+				}
+				super.dispose();
+			}
+

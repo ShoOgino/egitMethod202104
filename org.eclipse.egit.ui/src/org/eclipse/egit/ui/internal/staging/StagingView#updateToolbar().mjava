@@ -149,12 +149,7 @@
 				UIPreferences.STAGING_VIEW_FILENAME_MODE));
 
 		IMenuManager dropdownMenu = actionBars.getMenuManager();
-		MenuManager presentationMenu = new MenuManager(
-				UIText.StagingView_Presentation);
-		presentationMenu.add(listPresentationAction);
-		presentationMenu.add(treePresentationAction);
-		presentationMenu.add(compactTreePresentationAction);
-		dropdownMenu.add(presentationMenu);
+		dropdownMenu.add(presentationAction);
 		dropdownMenu.add(new Separator());
 		dropdownMenu.add(openNewCommitsAction);
 		dropdownMenu.add(columnLayoutAction);

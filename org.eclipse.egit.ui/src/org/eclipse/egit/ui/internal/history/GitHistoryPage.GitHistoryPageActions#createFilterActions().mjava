@@ -19,6 +19,10 @@
 					UIText.GitHistoryPage_AllOfResourceMenuLabel,
 					UIText.GitHistoryPage_AllOfResourceTooltip);
 
+			filterAction = new FilterAction(showAllRepoVersionsAction,
+					showAllProjectVersionsAction, showAllFolderVersionsAction,
+					showAllResourceVersionsAction);
+
 			showAllRepoVersionsAction
 					.setChecked(historyPage.showAllFilter == showAllRepoVersionsAction.filter);
 			showAllProjectVersionsAction
@@ -27,5 +31,6 @@
 					.setChecked(historyPage.showAllFilter == showAllFolderVersionsAction.filter);
 			showAllResourceVersionsAction
 					.setChecked(historyPage.showAllFilter == showAllResourceVersionsAction.filter);
+			actionsToDispose.add(filterAction);
 		}
 

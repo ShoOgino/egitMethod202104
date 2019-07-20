@@ -1,0 +1,26 @@
+			@Override
+			public void run() {
+				if (!isEnabled()) {
+					return;
+				}
+				// Cycle through the available actions
+				int i = 1;
+				for (IAction action : actions) {
+					if (action.isChecked()) {
+						IAction next = actions.get(i % actions.size());
+						while (next != action) {
+							if (next.isEnabled()) {
+								action.setChecked(false);
+								next.setChecked(true);
+								next.run();
+								break;
+							}
+							i++;
+							next = actions.get(i % actions.size());
+						}
+						return;
+					}
+					i++;
+				}
+			}
+
