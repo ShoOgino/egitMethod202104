@@ -2,14 +2,9 @@
 			final boolean delete,
 			final List<IProject> projectsToDelete,
 			IProgressMonitor monitor) {
-		IWorkspaceRunnable wsr = new IWorkspaceRunnable() {
-
-			@Override
-			public void run(IProgressMonitor actMonitor)
-			throws CoreException {
-
-				for (IProject prj : projectsToDelete)
-					prj.delete(delete, false, actMonitor);
+		IWorkspaceRunnable wsr = actMonitor -> {
+			for (IProject prj : projectsToDelete) {
+				prj.delete(delete, false, actMonitor);
 			}
 		};
 
