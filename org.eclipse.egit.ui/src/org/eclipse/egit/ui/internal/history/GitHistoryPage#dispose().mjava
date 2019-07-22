@@ -14,6 +14,10 @@
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(listener);
 
+		InstanceScope.INSTANCE
+				.getNode(org.eclipse.egit.core.Activator.getPluginId())
+				.removePreferenceChangeListener(prefListener);
+
 		if (myRefsChangedHandle != null) {
 			myRefsChangedHandle.remove();
 			myRefsChangedHandle = null;

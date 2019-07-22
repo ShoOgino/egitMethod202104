@@ -227,6 +227,10 @@
 		myRefsChangedHandle = Repository.getGlobalListenerList()
 				.addRefsChangedListener(this);
 
+		InstanceScope.INSTANCE
+				.getNode(org.eclipse.egit.core.Activator.getPluginId())
+				.addPreferenceChangeListener(prefListener);
+
 		IToolBarManager manager = getSite().getActionBars().getToolBarManager();
 		searchBar = new SearchBar(GitHistoryPage.class.getName() + ".searchBar", //$NON-NLS-1$
 				graph, actions.findAction, getSite().getActionBars());
