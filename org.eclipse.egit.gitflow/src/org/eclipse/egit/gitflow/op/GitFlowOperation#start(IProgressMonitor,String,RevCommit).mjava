@@ -15,5 +15,7 @@
 		BranchOperation checkoutOperation = new BranchOperation(
 				repository.getRepository(), branchName);
 		checkoutOperation.execute(progress.newChild(1));
+		checkoutResult = checkoutOperation
+				.getResult(repository.getRepository());
 	}
 

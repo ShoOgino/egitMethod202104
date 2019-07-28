@@ -1,6 +1,9 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+		if (gfRepo == null) {
+			return null;
+		}
 		final String startCommitSha1 = getStartCommit(event);
 
 		Shell activeShell = HandlerUtil.getActiveShell(event);

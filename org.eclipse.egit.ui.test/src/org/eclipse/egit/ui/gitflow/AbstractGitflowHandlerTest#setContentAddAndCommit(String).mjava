@@ -1,10 +1,7 @@
 	protected RevCommit setContentAddAndCommit(String newContent) throws Exception, GitAPIException, NoHeadException,
 	NoMessageException, UnmergedPathsException, ConcurrentRefUpdateException, WrongRepositoryStateException,
 	AbortedByHookException, IOException {
-		setTestFileContent(newContent);
-
-		Git git = Git.wrap(repository);
-		git.add().addFilepattern(".").call();
+		Git git = setContentAndStage(newContent);
 		CommitCommand commit = git.commit().setMessage(newContent);
 		commit.setAuthor(TestUtil.TESTCOMMITTER_NAME, TestUtil.TESTCOMMITTER_EMAIL);
 		commit.setCommitter(TestUtil.TESTCOMMITTER_NAME, TestUtil.TESTCOMMITTER_EMAIL);

@@ -1,6 +1,9 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
+		if (gfRepo == null) {
+			return null;
+		}
 
 		InputDialog inputDialog = new StartDialog(
 				HandlerUtil.getActiveShell(event),
@@ -16,11 +19,14 @@
 		final String featureName = inputDialog.getValue();
 		int timeout = Activator.getDefault().getPreferenceStore()
 				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-		FeatureStartOperation featureStartOperation = new FeatureStartOperation(
+		GitFlowOperation operation = new FeatureStartOperation(
 				gfRepo, featureName, timeout);
-		JobUtil.scheduleUserWorkspaceJob(featureStartOperation,
+		String fullBranchName = gfRepo.getConfig()
+				.getFullFeatureBranchName(featureName);
+		JobUtil.scheduleUserWorkspaceJob(operation,
 				UIText.FeatureStartHandler_startingNewFeature,
-				JobFamilies.GITFLOW_FAMILY);
+				JobFamilies.GITFLOW_FAMILY,
+				new PostBranchCheckoutUiTask(gfRepo, fullBranchName, operation));
 
 		return null;
 	}

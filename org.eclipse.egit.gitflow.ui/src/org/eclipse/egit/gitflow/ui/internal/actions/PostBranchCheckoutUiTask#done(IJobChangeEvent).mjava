@@ -1,0 +1,8 @@
+	@Override
+	public void done(IJobChangeEvent jobChangeEvent) {
+		BranchOperationUI.handleSingleRepositoryCheckoutOperationResult(
+				gfRepo.getRepository(),
+				operation.getCheckoutResult(),
+				fullBranchName);
+	}
+

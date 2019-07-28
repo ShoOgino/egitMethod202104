@@ -12,10 +12,13 @@
 
 		final String releaseName = inputDialog.getValue();
 
-		ReleaseStartOperation releaseStartOperation = new ReleaseStartOperation(
+		ReleaseStartOperation operation = new ReleaseStartOperation(
 				gfRepo, startCommitSha1, releaseName);
-		JobUtil.scheduleUserWorkspaceJob(releaseStartOperation,
+		String fullBranchName = gfRepo.getConfig()
+				.getFullReleaseBranchName(releaseName);
+		JobUtil.scheduleUserWorkspaceJob(operation,
 				UIText.ReleaseStartHandler_startingNewRelease,
-				JobFamilies.GITFLOW_FAMILY);
+				JobFamilies.GITFLOW_FAMILY,
+				new PostBranchCheckoutUiTask(gfRepo, fullBranchName, operation));
 	}
 
