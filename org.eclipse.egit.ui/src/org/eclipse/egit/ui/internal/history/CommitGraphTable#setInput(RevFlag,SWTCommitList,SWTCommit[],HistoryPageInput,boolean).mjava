@@ -1,30 +1,43 @@
 	void setInput(final RevFlag hFlag, final SWTCommitList list,
 			final SWTCommit[] asArray, HistoryPageInput input, boolean keepPosition) {
-		int topIndex = -1;
+		Table t = table.getTable();
+		String topCommitName = null;
 		if (keepPosition) {
-			topIndex = table.getTable().getTopIndex();
+			int i = t.getTopIndex();
+			if (i >= 0 && i < t.getItemCount()
+					&& i < allCommitsLength
+					&& allCommitsArray != null) {
+				// We have a virtual table, so item.getData() may return null...
+				topCommitName = allCommitsArray[i].getId().name();
+			}
 		}
 		setHistoryPageInput(input);
 		final SWTCommitList oldList = allCommits;
 		highlight = hFlag;
 		allCommits = list;
 		int newAllCommitsLength = asArray == null ? 0 : asArray.length;
-		table.setInput(asArray);
+		int topIndex = -1;
 		if (newAllCommitsLength > 0) {
 			if (oldList != list || allCommitsLength < newAllCommitsLength) {
-				initCommitsMap(asArray);
+				topIndex = initCommitsMap(asArray, topCommitName);
+			} else {
+				topIndex = findCommit(asArray, topCommitName);
+			}
+		}
+		allCommitsArray = asArray;
+		allCommitsLength = newAllCommitsLength;
+		table.setInput(asArray);
+		if (newAllCommitsLength > 0) {
+			if (commitToShow != null) {
+				selectCommit(commitToShow);
+			}
+			if (keepPosition && topIndex >= 0) {
+				t.setTopIndex(topIndex);
 			}
 		} else {
-			table.getTable().deselectAll();
+			t.deselectAll();
 			// Fire an event
 			table.setSelection(table.getSelection());
-		}
-		allCommitsLength = newAllCommitsLength;
-		if (commitToShow != null) {
-			selectCommit(commitToShow);
-		}
-		if (keepPosition) {
-			table.getTable().setTopIndex(topIndex);
 		}
 	}
 

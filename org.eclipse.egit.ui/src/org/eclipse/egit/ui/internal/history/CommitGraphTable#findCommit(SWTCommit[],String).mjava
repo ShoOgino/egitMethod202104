@@ -1,0 +1,14 @@
+	private int findCommit(SWTCommit[] asArray, String topName) {
+		int index = 0;
+		for (SWTCommit commit : asArray) {
+			if (commit != null) {
+				String name = commit.getId().name();
+				if (name.equals(topName)) {
+					return index;
+				}
+			}
+			index++;
+		}
+		return -1;
+	}
+

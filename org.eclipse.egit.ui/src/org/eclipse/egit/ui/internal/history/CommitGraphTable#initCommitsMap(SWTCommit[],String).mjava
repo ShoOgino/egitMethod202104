@@ -1,0 +1,15 @@
+	private int initCommitsMap(SWTCommit[] asArray, String topName) {
+		int topIndex = -1;
+		commitsMap = new HashMap<>();
+		for (SWTCommit commit : asArray) {
+			if (commit != null) {
+				String name = commit.getId().name();
+				commitsMap.put(name, commit);
+				if (name.equals(topName)) {
+					topIndex = commitsMap.size() - 1;
+				}
+			}
+		}
+		return topIndex;
+	}
+

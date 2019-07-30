@@ -5,7 +5,7 @@
 
 				@Override
 				void apply(boolean value) {
-					historyPage.refresh();
+					historyPage.refresh(historyPage.selectedCommit());
 				}
 			};
 			showAllBranchesAction.setImageDescriptor(UIIcons.BRANCH);

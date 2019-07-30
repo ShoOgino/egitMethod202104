@@ -4,7 +4,7 @@
 					UIText.GitHistoryPage_FollowRenames) {
 				@Override
 				void apply(boolean follow) {
-					historyPage.refresh();
+					historyPage.refresh(historyPage.selectedCommit());
 				}
 			};
 			followRenamesAction.apply(followRenamesAction.isChecked());

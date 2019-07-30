@@ -1,9 +1,5 @@
 	@Override
 	public void refresh() {
-		if (repoHasBeenRemoved(getCurrentRepo())) {
-			clearHistoryPage();
-		}
-		this.input = null;
-		inputSet();
+		refresh(null);
 	}
 
