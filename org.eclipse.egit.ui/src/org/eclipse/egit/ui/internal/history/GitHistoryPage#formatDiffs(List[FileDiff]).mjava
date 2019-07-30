@@ -25,7 +25,7 @@
 							diffs.size());
 					for (FileDiff diff : diffs) {
 						if (progress.isCanceled()
-								|| diff.getCommit().getParentCount() > 1
+								|| diff.getBlobs().length > 2
 								|| document.getNumberOfLines() > maxLines) {
 							break;
 						}

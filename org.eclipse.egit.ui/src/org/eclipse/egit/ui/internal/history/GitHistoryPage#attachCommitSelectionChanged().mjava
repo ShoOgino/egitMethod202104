@@ -23,6 +23,7 @@
 					return;
 				}
 				commentViewer.setInput(c);
+				boolean firstParentOnly = isShowFirstParentOnly();
 				try (RevWalk walk = new RevWalk(input.getRepository())) {
 					final RevCommit unfilteredCommit = walk.parseCommit(c);
 					for (RevCommit parent : unfilteredCommit.getParents())
@@ -30,11 +31,11 @@
 					fileViewer.newInput(new FileDiffInput(input.getRepository(),
 							fileDiffWalker, unfilteredCommit,
 							fileViewerInterestingPaths,
-							input.getSingleFile() != null));
+							input.getSingleFile() != null, firstParentOnly));
 				} catch (IOException e) {
 					fileViewer.newInput(new FileDiffInput(input.getRepository(),
 							fileDiffWalker, c, fileViewerInterestingPaths,
-							input.getSingleFile() != null));
+							input.getSingleFile() != null, firstParentOnly));
 				}
 			}
 		});

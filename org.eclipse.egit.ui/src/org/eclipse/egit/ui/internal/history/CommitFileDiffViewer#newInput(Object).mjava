@@ -18,6 +18,8 @@
 					FileDiffInput newInput = (FileDiffInput) input;
 					if (!Objects.equals(realInput.getRepository(),
 							newInput.getRepository())
+							|| realInput.isFirstParentOnly() != newInput
+									.isFirstParentOnly()
 							|| !realInput.getCommit()
 									.equals(newInput.getCommit())) {
 						setSelection(StructuredSelection.EMPTY);

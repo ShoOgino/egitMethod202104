@@ -6,11 +6,14 @@
 	 * @param commit
 	 * @param interestingPaths
 	 * @param selectMarked
+	 * @param firstParentOnly
 	 */
 	public FileDiffInput(Repository repository, TreeWalk walk, RevCommit commit,
-			Collection<String> interestingPaths, boolean selectMarked) {
+			Collection<String> interestingPaths, boolean selectMarked,
+			boolean firstParentOnly) {
 		this.commit = commit;
 		this.selectMarked = selectMarked;
+		this.firstParentOnly = firstParentOnly;
 		this.repository = repository;
 		this.walk = walk;
 		this.interestingPaths = interestingPaths;
