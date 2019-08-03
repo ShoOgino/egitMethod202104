@@ -1,10 +1,25 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final List<RefNode> nodes = getSelectedNodes(event);
-		RefNode refNode = nodes.get(0);
+		final List<RepositoryTreeNode> nodes = getSelectedNodes(event);
+		RepositoryTreeNode node = nodes.get(0);
 
-		Shell shell = getShell(event);
-		new BranchRenameDialog(shell, refNode.getRepository(), refNode.getObject()).open();
+		Repository repository = node.getRepository();
+		Ref branch = null;
+		if (node instanceof RefNode) {
+			branch = (Ref) node.getObject();
+		} else if (node instanceof RepositoryNode) {
+			try {
+				branch = repository
+						.exactRef(Constants.R_HEADS + repository.getBranch());
+			} catch (IOException e) {
+				Activator.logError("Cannot rename branch", e); //$NON-NLS-1$
+			}
+		}
+
+		if (branch != null) {
+			Shell shell = getShell(event);
+			new BranchRenameDialog(shell, repository, branch).open();
+		}
 		return null;
 	}
 
