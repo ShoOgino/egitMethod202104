@@ -1,0 +1,38 @@
+	private void assertStashes(SWTBotTreeItem[] children, int expectedSize,
+			String... decorations)
+			throws Exception {
+		assertEquals("Expected " + expectedSize + " children", expectedSize,
+				children.length);
+		if (decorations != null && decorations.length > 0) {
+			TestUtil.waitForDecorations();
+		}
+		int[] indices = new int[expectedSize];
+		int[] expectedIndices = new int[expectedSize];
+		for (int i = 0; i < indices.length; i++) {
+			indices[i] = -1;
+			expectedIndices[i] = i;
+		}
+		children[0].display.syncExec(() -> {
+			int j = 0;
+			for (SWTBotTreeItem child : children) {
+				Object data = child.widget.getData();
+				if (data instanceof StashedCommitNode) {
+					indices[j++] = ((StashedCommitNode) data).getIndex();
+				}
+			}
+		});
+		assertArrayEquals("Unexpected stash indices", expectedIndices, indices);
+		for (int i = 0; i < children.length; i++) {
+			String text = children[i].getText();
+			assertTrue("Stash " + i + " has wrong label: " + text,
+					text.startsWith("stash@{" + i + "}"));
+			if (decorations != null && i < decorations.length) {
+				String deco = decorations[i];
+				if (deco != null) {
+					assertTrue("Label should contain '" + deco + "': " + text,
+							text.contains(deco));
+				}
+			}
+		}
+	}
+

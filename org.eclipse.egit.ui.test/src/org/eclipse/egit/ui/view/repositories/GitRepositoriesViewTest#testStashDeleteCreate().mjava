@@ -1,0 +1,42 @@
+	@Test
+	public void testStashDeleteCreate() throws Exception {
+		Repository repo = lookupRepository(repositoryFile);
+		IFile file = touch("Something");
+		new StashCreateOperation(repo, "First stash").execute(null);
+		file.refreshLocal(IResource.DEPTH_ZERO, null);
+		touch("Something else");
+		new StashCreateOperation(repo, "Second stash").execute(null);
+		file.refreshLocal(IResource.DEPTH_ZERO, null);
+		touch("Something else again");
+		new StashCreateOperation(repo, "Third stash").execute(null);
+		file.refreshLocal(IResource.DEPTH_ZERO, null);
+		SWTBotTree tree = getOrOpenView().bot().tree();
+		refreshAndWait();
+
+		SWTBotTreeItem item = myRepoViewUtil.getStashesItem(tree,
+				repositoryFile);
+		item = TestUtil.expandAndWait(item);
+		assertEquals("Unexpected number of stashed commits", 3,
+				item.getItems().length);
+		item.getNode(0).select();
+		ContextMenuHelper.clickContextMenu(tree,
+				myUtil.getPluginLocalizedValue("StashDropCommand.label"));
+		SWTBotShell confirm = bot.shell(UIText.StashDropCommand_confirmTitle);
+		confirm.bot().button(UIText.StashDropCommand_buttonDelete).click();
+		bot.waitUntil(shellCloses(confirm));
+		TestUtil.joinJobs(JobFamilies.STASH);
+		TestUtil.joinJobs(JobFamilies.REPO_VIEW_REFRESH);
+		touch("Something different");
+		tree.getAllItems()[0].select();
+		ContextMenuHelper.clickContextMenu(tree,
+				myUtil.getPluginLocalizedValue("StashesMenu.label"),
+				UIText.StashesMenu_StashChangesActionText);
+		confirm = bot.shell(UIText.StashCreateCommand_titleEnterCommitMessage);
+		confirm.bot().button(UIText.StashCreateCommand_ButtonOK).click();
+		bot.waitUntil(shellCloses(confirm));
+		TestUtil.joinJobs(JobFamilies.STASH);
+		TestUtil.joinJobs(JobFamilies.REPO_VIEW_REFRESH);
+		item = myRepoViewUtil.getStashesItem(tree, repositoryFile);
+		assertStashes(item.getItems(), 3);
+	}
+
