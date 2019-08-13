@@ -18,8 +18,13 @@
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				SubMonitor progress = SubMonitor.convert(monitor,
+						selectedNodes.size());
 
 				for (RepositoryNode node : selectedNodes) {
+					if (progress.isCanceled()) {
+						break;
+					}
 					Repository repo = node.getRepository();
 					String name = MessageFormat.format(
 							UIText.GarbageCollectCommand_jobTitle,
@@ -28,13 +33,13 @@
 					final GarbageCollectOperation op = new GarbageCollectOperation(
 							repo);
 					try {
-						op.execute(monitor);
+						op.execute(progress.newChild(1));
 					} catch (CoreException e) {
 						Activator.logError(MessageFormat.format(
 								UIText.GarbageCollectCommand_failed, repo), e);
 					}
 				}
-
+				monitor.done();
 				return Status.OK_STATUS;
 			}
 		};
