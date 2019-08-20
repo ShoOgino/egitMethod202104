@@ -5,7 +5,7 @@
 				ent.setFileMode(FileMode.REGULAR_FILE);
 
 			ent.setLength(content.limit());
-			ent.setLastModified(System.currentTimeMillis());
+			ent.setLastModified(Instant.now());
 			try {
 				ByteArrayInputStream in = new ByteArrayInputStream(
 						content.array(), 0, content.limit());
