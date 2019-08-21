@@ -20,12 +20,8 @@
 			String launch = LaunchFinder
 					.getRunningLaunchConfiguration(repoAndPaths.keySet(), null);
 			if (launch != null) {
-				question = MessageFormat.format(question,
-						"\n\n" + MessageFormat.format( //$NON-NLS-1$
-								UIText.LaunchFinder_RunningLaunchMessage,
-								launch));
-			} else {
-				question = MessageFormat.format(question, ""); //$NON-NLS-1$
+				question += "\n\n" + MessageFormat.format( //$NON-NLS-1$
+						UIText.LaunchFinder_RunningLaunchMessage, launch);
 			}
 			Shell parent = shell != null ? shell
 					: PlatformUI.getWorkbench().getModalDialogShellProvider()
