@@ -50,10 +50,13 @@
 
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
+				// top level: branches and tags
 				if (e1 instanceof FetchResultAdapter
 						&& e2 instanceof FetchResultAdapter) {
 					FetchResultAdapter f1 = (FetchResultAdapter) e1;
 					FetchResultAdapter f2 = (FetchResultAdapter) e2;
+
+					// branches come before tags
 					if (f1.getChildren(f1).length > 0
 							&& f2.getChildren(f2).length == 0)
 						return -1;
@@ -61,15 +64,25 @@
 							&& f2.getChildren(f2).length > 0)
 						return 1;
 
+					// currently checked out branch comes before other branches
+					if (f1.isRemoteBranch(remoteBranchOfCurrentBranch)) {
+						return -1;
+					}
+					if (f2.isRemoteBranch(remoteBranchOfCurrentBranch)) {
+						return 1;
+					}
+
+					// otherwise sort by name
 					return CommonUtils.STRING_ASCENDING_COMPARATOR
 							.compare(f1.getLabel(f1), f2.getLabel(f2));
 				}
 
-				// Leave commits order alone
+				// nested inside of branches: don't change commit order
 				if (e1 instanceof RepositoryCommit
 						&& e2 instanceof RepositoryCommit)
 					return 0;
 
+				// nested inside commits: sort by path
 				if (e1 instanceof FileDiff && e2 instanceof FileDiff) {
 					FileDiff f1 = (FileDiff) e1;
 					FileDiff f2 = (FileDiff) e2;
