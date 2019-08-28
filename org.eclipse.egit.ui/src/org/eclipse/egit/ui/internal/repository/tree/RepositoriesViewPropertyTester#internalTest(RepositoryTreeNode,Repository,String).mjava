@@ -44,7 +44,8 @@
 
 				RemoteConfig rconfig;
 				try {
-					rconfig = new RemoteConfig(repository.getConfig(),
+					rconfig = new RemoteConfig(
+							RepositoryStateCache.INSTANCE.getConfig(repository),
 							configName);
 				} catch (URISyntaxException e2) {
 					return false;
@@ -60,7 +61,8 @@
 
 				RemoteConfig rconfig;
 				try {
-					rconfig = new RemoteConfig(repository.getConfig(),
+					rconfig = new RemoteConfig(
+							RepositoryStateCache.INSTANCE.getConfig(repository),
 							configName);
 				} catch (URISyntaxException e2) {
 					return false;
@@ -72,21 +74,22 @@
 			}
 		}
 		if (property.equals("canStash")) { //$NON-NLS-1$
-			return repository.getRepositoryState().canCommit();
+			RepositoryState state = RepositoryStateCache.INSTANCE
+					.getRepositoryState(repository);
+			return state.canCommit();
 		}
 		if (property.equals("canMerge")) { //$NON-NLS-1$
-			if (repository.getRepositoryState() != RepositoryState.SAFE) {
+			RepositoryState state = RepositoryStateCache.INSTANCE
+					.getRepositoryState(repository);
+			if (state != RepositoryState.SAFE) {
 				return false;
 			}
-			try {
-				String branch = repository.getFullBranch();
-				if (branch == null) {
-					return false; // fail gracefully...
-				}
-				return branch.startsWith(Constants.R_HEADS);
-			} catch (IOException e) {
-				return false;
+			String branch = RepositoryStateCache.INSTANCE
+					.getFullBranchName(repository);
+			if (branch == null) {
+				return false; // fail gracefully...
 			}
+			return branch.startsWith(Constants.R_HEADS);
 		}
 
 		if ("isSubmodule".equals(property)) { //$NON-NLS-1$

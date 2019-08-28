@@ -1,0 +1,16 @@
+	/**
+	 * Initializes the {@link RepositoryStateCache} and makes it listen to changes
+	 * that may affect the cache.
+	 */
+	public void initialize() {
+		// Clear the cache whenever the selection changes.
+		IEclipseContext applicationContext = PlatformUI.getWorkbench()
+				.getService(IEclipseContext.class);
+		// A RunAndTrack on the workbench context runs *before* any E3 or E4
+		// selection listener on the selection service, which is how expression
+		// re-evaluations for expressions based on the current selection are
+		// triggered. So we can ensure here that re-evaluations don't use stale
+		// cached values.
+		applicationContext.runAndTrack(new ContextListener(stopped, cache));
+	}
+

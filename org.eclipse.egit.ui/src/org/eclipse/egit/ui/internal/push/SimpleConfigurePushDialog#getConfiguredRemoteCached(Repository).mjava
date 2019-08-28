@@ -1,0 +1,20 @@
+	/**
+	 * Same as {@link #getConfiguredRemote(Repository)} but using cached
+	 * repository state; intended for use in property testers or handler
+	 * enablements.
+	 *
+	 * @param repository
+	 * @return the configured remote for the current branch if any, or null
+	 */
+	public static RemoteConfig getConfiguredRemoteCached(
+			Repository repository) {
+		String branch = RepositoryStateCache.INSTANCE
+				.getFullBranchName(repository);
+		if (branch == null) {
+			return null;
+		}
+		branch = Repository.shortenRefName(branch);
+		return getConfiguredRemote(branch,
+				RepositoryStateCache.INSTANCE.getConfig(repository));
+	}
+

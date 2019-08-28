@@ -1,0 +1,29 @@
+	/**
+	 * Retrieves the {@link ObjectId} of the current HEAD.
+	 *
+	 * @param repository
+	 * @return ObjectId of HEAD, or {@code null} if none
+	 */
+	public ObjectId getHead(Repository repository) {
+		if (repository == null) {
+			return null;
+		}
+		Map<RepositoryItem, Object> items = getItems(repository);
+		Object value = items.get(RepositoryItem.HEAD);
+		if (value == null) {
+			String[] fullName = { null };
+			Ref[] headRef = { null };
+			value = items.computeIfAbsent(RepositoryItem.HEAD,
+					key -> getHead(repository, fullName, headRef));
+			items.computeIfAbsent(RepositoryItem.FULL_BRANCH_NAME,
+					key -> fullName[0]);
+			items.computeIfAbsent(RepositoryItem.HEAD_REF,
+					key -> headRef[0] == null ? NOTHING : headRef[0]);
+		}
+		ObjectId head = (ObjectId) value;
+		if (head == null || head.equals(ObjectId.zeroId())) {
+			return null;
+		}
+		return head;
+	}
+

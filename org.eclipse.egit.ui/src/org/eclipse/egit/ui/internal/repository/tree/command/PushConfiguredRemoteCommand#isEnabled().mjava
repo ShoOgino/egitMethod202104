@@ -1,6 +1,6 @@
 	@Override
 	public boolean isEnabled() {
 		RepositoryTreeNode<?> node = getSelectedNodes().get(0);
-		return getRemoteConfig(node) != null;
+		return getRemoteConfigCached(node) != null;
 	}
 

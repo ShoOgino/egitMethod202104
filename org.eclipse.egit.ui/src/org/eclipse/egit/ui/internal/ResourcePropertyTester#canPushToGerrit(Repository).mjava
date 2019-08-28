@@ -4,7 +4,7 @@
 	 *         Gerrit
 	 */
 	public static boolean canPushToGerrit(@NonNull Repository repository) {
-		Config config = repository.getConfig();
+		Config config = RepositoryStateCache.INSTANCE.getConfig(repository);
 		try {
 			List<RemoteConfig> remoteConfigs = RemoteConfig
 					.getAllRemoteConfigs(config);

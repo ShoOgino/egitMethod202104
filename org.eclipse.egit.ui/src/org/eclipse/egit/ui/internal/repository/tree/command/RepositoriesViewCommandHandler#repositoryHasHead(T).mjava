@@ -1,11 +1,5 @@
 	private boolean repositoryHasHead(T treeNode) {
-		Repository repo = treeNode.getRepository();
-		try {
-			Ref ref = repo.exactRef(Constants.HEAD);
-			return ref != null && ref.getObjectId() != null;
-		} catch (IOException e) {
-			// ignore and report false
-			return false;
-		}
+		return RepositoryStateCache.INSTANCE
+				.getHead(treeNode.getRepository()) != null;
 	}
 

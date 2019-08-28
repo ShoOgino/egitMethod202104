@@ -8,7 +8,7 @@
 	 * @since 4.3
 	 */
 	public boolean isOnDevelop(@NonNull RevCommit selectedCommit) throws IOException {
-		String develop = config.getDevelopFull();
+		String develop = getConfig().getDevelopFull();
 		return isOnBranch(selectedCommit, develop);
 	}
 

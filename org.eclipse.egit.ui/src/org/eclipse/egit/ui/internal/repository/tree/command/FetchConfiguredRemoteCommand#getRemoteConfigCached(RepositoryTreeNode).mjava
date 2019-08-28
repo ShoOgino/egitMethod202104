@@ -1,0 +1,21 @@
+	private RemoteConfig getRemoteConfigCached(RepositoryTreeNode node)
+			throws ExecutionException {
+		if (node instanceof RepositoryNode) {
+			return SimpleConfigureFetchDialog
+					.getConfiguredRemoteCached(node.getRepository());
+		}
+		if (node instanceof FetchNode) {
+			node = node.getParent();
+		}
+		if (node instanceof RemoteNode) {
+			try {
+				RemoteNode remote = (RemoteNode) node;
+				return new RemoteConfig(RepositoryStateCache.INSTANCE
+						.getConfig(node.getRepository()), remote.getObject());
+			} catch (URISyntaxException e) {
+				throw new ExecutionException(e.getMessage());
+			}
+		}
+		return null;
+	}
+

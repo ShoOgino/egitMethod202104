@@ -4,8 +4,10 @@
 		if (repositories.length == 0)
 			return false;
 		for (Repository repository : repositories) {
-			if (!repository.getRepositoryState().equals(RepositoryState.SAFE))
+			if (!RepositoryState.SAFE.equals(RepositoryStateCache.INSTANCE
+					.getRepositoryState(repository))) {
 				return false;
+			}
 		}
 		return true;
 	}

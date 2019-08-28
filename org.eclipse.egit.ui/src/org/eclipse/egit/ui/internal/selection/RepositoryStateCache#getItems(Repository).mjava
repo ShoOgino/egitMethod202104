@@ -1,0 +1,5 @@
+	private Map<RepositoryItem, Object> getItems(Repository repository) {
+		return cache.computeIfAbsent(repository.getDirectory(),
+				gitDir -> new ConcurrentHashMap<>());
+	}
+

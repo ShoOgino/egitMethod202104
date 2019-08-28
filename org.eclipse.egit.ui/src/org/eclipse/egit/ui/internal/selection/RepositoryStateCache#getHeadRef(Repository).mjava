@@ -1,0 +1,28 @@
+	/**
+	 * Retrieves the current HEAD ref.
+	 *
+	 * @param repository
+	 * @return the HEAD ref, or {@code null} if none
+	 */
+	public Ref getHeadRef(Repository repository) {
+		if (repository == null) {
+			return null;
+		}
+		Map<RepositoryItem, Object> items = getItems(repository);
+		Object value = items.get(RepositoryItem.HEAD_REF);
+		if (value == null) {
+			String[] fullName = { null };
+			Ref[] headRef = { null };
+			items.computeIfAbsent(RepositoryItem.HEAD,
+					key -> getHead(repository, fullName, headRef));
+			items.computeIfAbsent(RepositoryItem.FULL_BRANCH_NAME,
+					key -> fullName[0]);
+			value = items.computeIfAbsent(RepositoryItem.HEAD_REF,
+					key -> headRef[0] == null ? NOTHING : headRef[0]);
+		}
+		if (value == null || value == NOTHING) {
+			return null;
+		}
+		return (Ref) value;
+	}
+

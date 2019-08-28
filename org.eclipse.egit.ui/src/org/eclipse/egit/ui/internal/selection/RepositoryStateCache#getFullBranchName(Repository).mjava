@@ -1,0 +1,29 @@
+	/**
+	 * Retrieves the full name of the current branch.
+	 *
+	 * @param repository
+	 * @return the full branch name
+	 */
+	public String getFullBranchName(Repository repository) {
+		if (repository == null) {
+			return null;
+		}
+		Map<RepositoryItem, Object> items = getItems(repository);
+		Object fullBranchName = items.get(RepositoryItem.FULL_BRANCH_NAME);
+		if (fullBranchName == null) {
+			String[] fullName = { null };
+			Ref[] headRef = { null };
+			items.computeIfAbsent(RepositoryItem.HEAD,
+					key -> getHead(repository, fullName, headRef));
+			fullBranchName = items.computeIfAbsent(
+					RepositoryItem.FULL_BRANCH_NAME, key -> fullName[0]);
+			items.computeIfAbsent(RepositoryItem.HEAD_REF,
+					key -> headRef[0] == null ? NOTHING : headRef[0]);
+		}
+		String name = (String) fullBranchName;
+		if (name == null || name.isEmpty()) {
+			return null;
+		}
+		return name;
+	}
+

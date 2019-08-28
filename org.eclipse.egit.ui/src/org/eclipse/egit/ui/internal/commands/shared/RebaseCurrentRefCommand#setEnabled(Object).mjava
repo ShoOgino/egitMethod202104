@@ -5,7 +5,7 @@
 			Repository repo = SelectionUtils.getRepository(ctx);
 			if (repo != null) {
 				boolean enabled = isEnabledForState(repo,
-						repo.getRepositoryState());
+						RepositoryStateCache.INSTANCE.getRepositoryState(repo));
 				setBaseEnabled(enabled);
 			} else {
 				setBaseEnabled(false);

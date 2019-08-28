@@ -2,7 +2,6 @@
 	 * @return Whether or not there is a default remote configured.
 	 */
 	public boolean hasDefaultRemote() {
-		RemoteConfig config = getDefaultRemoteConfig();
-		return !config.getURIs().isEmpty();
+		return !getDefaultRemoteConfig().getURIs().isEmpty();
 	}
 

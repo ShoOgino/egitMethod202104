@@ -1,0 +1,12 @@
+	/**
+	 * Retrieves the given repository's {@link StoredConfig}.
+	 *
+	 * @param repository
+	 * @return the {@link StoredConfig} of the repository
+	 */
+	public StoredConfig getConfig(Repository repository) {
+		Object value = getItems(repository).computeIfAbsent(
+				RepositoryItem.CONFIG, key -> repository.getConfig());
+		return (StoredConfig) value;
+	}
+

@@ -2,7 +2,8 @@
 	public boolean isEnabled() {
 		Repository repo = getRepository();
 		return repo != null
-				&& repo.getRepositoryState() == RepositoryState.SAFE
+				&& RepositoryState.SAFE.equals(
+						RepositoryStateCache.INSTANCE.getRepositoryState(repo))
 				&& isLocalBranchCheckedout(repo);
 	}
 

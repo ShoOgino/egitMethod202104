@@ -1,0 +1,9 @@
+		private Object getInput(IEclipseContext context) {
+			Object[] input = { null };
+			runExternalCode(() -> {
+				IEditorInput e = getEditorInput(context);
+				input[0] = e != null ? e : StructuredSelection.EMPTY;
+			});
+			return input[0];
+		}
+

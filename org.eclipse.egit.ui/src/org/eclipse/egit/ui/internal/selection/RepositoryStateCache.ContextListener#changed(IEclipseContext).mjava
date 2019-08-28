@@ -1,0 +1,28 @@
+		@Override
+		public boolean changed(IEclipseContext context) {
+			if (stopped.get()) {
+				cache.clear();
+				return false;
+			}
+			Object selection = context
+					.get(ISources.ACTIVE_CURRENT_SELECTION_NAME);
+			if (selection instanceof ITextSelection) {
+				selection = getInput(context);
+			}
+			Object menuSelection = context
+					.getActive(ISources.ACTIVE_MENU_SELECTION_NAME);
+			if (menuSelection instanceof ITextSelection) {
+				menuSelection = getInput(context);
+			}
+			// Clearing the cache on every workbench _or_ menu selection
+			// change is defensive. It might be possible to not clear the
+			// cache if the menuSelection == lastSelection.
+			if (selection != lastSelection
+					|| menuSelection != lastMenuSelection) {
+				cache.clear();
+			}
+			lastSelection = selection;
+			lastMenuSelection = menuSelection;
+			return true;
+		}
+

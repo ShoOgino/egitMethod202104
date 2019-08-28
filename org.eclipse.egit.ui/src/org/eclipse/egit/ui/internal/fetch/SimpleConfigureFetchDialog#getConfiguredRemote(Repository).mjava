@@ -14,35 +14,6 @@
 		}
 		if (branch == null)
 			return null;
-
-		String remoteName;
-		if (ObjectId.isId(branch))
-			remoteName = Constants.DEFAULT_REMOTE_NAME;
-		else
-			remoteName = repository.getConfig().getString(
-					ConfigConstants.CONFIG_BRANCH_SECTION, branch,
-					ConfigConstants.CONFIG_REMOTE_SECTION);
-
-		// check if we find the configured and default Remotes
-		List<RemoteConfig> allRemotes;
-		try {
-			allRemotes = RemoteConfig.getAllRemoteConfigs(repository
-					.getConfig());
-		} catch (URISyntaxException e) {
-			allRemotes = new ArrayList<>();
-		}
-
-		RemoteConfig defaultConfig = null;
-		RemoteConfig configuredConfig = null;
-		for (RemoteConfig config : allRemotes) {
-			if (config.getName().equals(Constants.DEFAULT_REMOTE_NAME))
-				defaultConfig = config;
-			if (remoteName != null && config.getName().equals(remoteName))
-				configuredConfig = config;
-		}
-
-		RemoteConfig configToUse = configuredConfig != null ? configuredConfig
-				: defaultConfig;
-		return configToUse;
+		return getConfiguredRemote(branch, repository.getConfig());
 	}
 

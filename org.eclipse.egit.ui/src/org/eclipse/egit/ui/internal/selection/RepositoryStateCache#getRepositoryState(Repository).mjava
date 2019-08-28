@@ -1,0 +1,13 @@
+	/**
+	 * Retrieves the repository state.
+	 *
+	 * @param repository
+	 * @return the {@link RepositoryState}
+	 */
+	public @NonNull RepositoryState getRepositoryState(Repository repository) {
+		Object value = getItems(repository).computeIfAbsent(
+				RepositoryItem.STATE, key -> repository.getRepositoryState());
+		assert value != null; // Keep the compiler happy.
+		return (RepositoryState) value;
+	}
+
