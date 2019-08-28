@@ -1,69 +1,23 @@
 	private void commit(boolean pushUpstream) {
-		// don't allow to do anything as long as commit is in progress
+		boolean reEnable = false;
+		// Don't allow to do anything as long as commit is in progress
 		enableAllWidgets(false);
-
-		if (!isCommitWithoutFilesAllowed()) {
-			MessageDialog md = new MessageDialog(getSite().getShell(),
-					UIText.StagingView_committingNotPossible, null,
-					UIText.StagingView_noStagedFiles, MessageDialog.ERROR,
-					new String[] { IDialogConstants.CLOSE_LABEL }, 0);
-			md.open();
-			enableAllWidgets(true);
-			return;
-		}
-		if (!commitMessageComponent.checkCommitInfo()) {
-			enableAllWidgets(true);
-			return;
-		}
-
-		if (!UIUtils.saveAllEditors(currentRepository,
-				UIText.StagingView_cancelCommitAfterSaving)) {
-			enableAllWidgets(true);
-			return;
-		}
-
-		String commitMessage = commitMessageComponent.getCommitMessage();
-		CommitOperation commitOperation = null;
 		try {
-			commitOperation = new CommitOperation(currentRepository,
-					commitMessageComponent.getAuthor(),
-					commitMessageComponent.getCommitter(),
-					commitMessage);
-		} catch (CoreException e) {
-			Activator.handleError(UIText.StagingView_commitFailed, e, true);
-			enableAllWidgets(true);
-			return;
-		}
-		if (amendPreviousCommitAction.isChecked())
-			commitOperation.setAmending(true);
-		final boolean gerritMode = addChangeIdAction.isChecked();
-		commitOperation.setComputeChangeId(gerritMode);
-		commitOperation.setSign(signCommitAction.isChecked());
-
-		PushMode pushMode = null;
-		if (pushUpstream) {
-			pushMode = gerritMode ? PushMode.GERRIT : PushMode.UPSTREAM;
-		}
-		Job commitJob = new CommitJob(currentRepository, commitOperation)
-				.setOpenCommitEditor(openNewCommitsAction.isChecked())
-				.setPushUpstream(pushMode);
-
-		commitJob.addJobChangeListener(new JobChangeAdapter() {
-
-			@Override
-			public void done(IJobChangeEvent event) {
-				asyncExec(() -> {
-					enableAllWidgets(true);
-					if (event.getResult().isOK()) {
-						commitMessageText.setText(EMPTY_STRING);
-					}
-				});
+			boolean jobScheduled = internalCommit(pushUpstream,
+					() -> enableAllWidgets(true));
+			// If a job was scheduled, our Runnable will re-enable the widgets
+			// once the commit and push is done; even if it fails. Otherwise, we
+			// must re-enable the widgets here and now ourselves.
+			reEnable = !jobScheduled;
+		} catch (RuntimeException e) { // See bugs 550336, 550513
+			// If internalCommit() should fail after having scheduled the job,
+			// we may re-enable a little too early. But better that than never.
+			reEnable = true;
+			Activator.handleError(e.getLocalizedMessage(), e, true);
+		} finally {
+			if (reEnable) {
+				enableAllWidgets(true);
 			}
-		});
-
-		schedule(commitJob, true);
-
-		CommitMessageHistory.saveCommitHistory(commitMessage);
-		clearCommitMessageToggles();
+		}
 	}
 

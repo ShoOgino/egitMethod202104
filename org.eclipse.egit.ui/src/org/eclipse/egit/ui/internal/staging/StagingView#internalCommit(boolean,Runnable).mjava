@@ -1,0 +1,73 @@
+	/**
+	 * Performs some checks and if successful schedules a background job to
+	 * execute the commit (and possibly push).
+	 *
+	 * @param pushUpstream
+	 *            whether to also push the commit to upstream
+	 * @param afterJob
+	 *            code to run after the job if a job is scheduled
+	 * @return whether a job was scheduled
+	 */
+	private boolean internalCommit(boolean pushUpstream, Runnable afterJob) {
+		if (!isCommitWithoutFilesAllowed()) {
+			MessageDialog md = new MessageDialog(getSite().getShell(),
+					UIText.StagingView_committingNotPossible, null,
+					UIText.StagingView_noStagedFiles, MessageDialog.ERROR,
+					new String[] { IDialogConstants.CLOSE_LABEL }, 0);
+			md.open();
+			return false;
+		}
+		if (!commitMessageComponent.checkCommitInfo()) {
+			return false;
+		}
+
+		if (!UIUtils.saveAllEditors(currentRepository,
+				UIText.StagingView_cancelCommitAfterSaving)) {
+			return false;
+		}
+
+		String commitMessage = commitMessageComponent.getCommitMessage();
+		CommitOperation commitOperation = null;
+		try {
+			commitOperation = new CommitOperation(currentRepository,
+					commitMessageComponent.getAuthor(),
+					commitMessageComponent.getCommitter(),
+					commitMessage);
+		} catch (CoreException e) {
+			Activator.handleError(UIText.StagingView_commitFailed, e, true);
+			return false;
+		}
+		if (amendPreviousCommitAction.isChecked())
+			commitOperation.setAmending(true);
+		final boolean gerritMode = addChangeIdAction.isChecked();
+		commitOperation.setComputeChangeId(gerritMode);
+		commitOperation.setSign(signCommitAction.isChecked());
+
+		PushMode pushMode = null;
+		if (pushUpstream) {
+			pushMode = gerritMode ? PushMode.GERRIT : PushMode.UPSTREAM;
+		}
+		Job commitJob = new CommitJob(currentRepository, commitOperation)
+				.setOpenCommitEditor(openNewCommitsAction.isChecked())
+				.setPushUpstream(pushMode);
+
+		commitJob.addJobChangeListener(new JobChangeAdapter() {
+
+			@Override
+			public void done(IJobChangeEvent event) {
+				asyncExec(() -> {
+					afterJob.run();
+					if (event.getResult().isOK()) {
+						commitMessageText.setText(EMPTY_STRING);
+					}
+				});
+			}
+		});
+
+		schedule(commitJob, true);
+
+		CommitMessageHistory.saveCommitHistory(commitMessage);
+		clearCommitMessageToggles();
+		return true;
+	}
+
