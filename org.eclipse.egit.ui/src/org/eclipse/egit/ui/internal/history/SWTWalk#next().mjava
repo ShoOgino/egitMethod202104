@@ -1,0 +1,10 @@
+	@Override
+	public RevCommit next() throws MissingObjectException,
+			IncorrectObjectTypeException, IOException {
+		if (!headInitialized) {
+			head = determineHead();
+			headInitialized = true;
+		}
+		return super.next();
+	}
+

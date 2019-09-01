@@ -1,0 +1,15 @@
+	/**
+	 * Retrieves the HEAD ref if it is symbolic.
+	 *
+	 * @return the Ref, or {@code null} if HEAD is not a symbolic Ref
+	 * @throws IOException
+	 *             if the head cannot be read
+	 */
+	public Ref getHead() throws IOException {
+		if (!headInitialized) {
+			head = determineHead();
+			headInitialized = true;
+		}
+		return head;
+	}
+
