@@ -4,11 +4,12 @@
 	 *
 	 * @param repository
 	 * @param branch
+	 * @param monitor
 	 * @return non-null but possibly empty array of missing projects
 	 * @throws CoreException
 	 */
 	private IProject[] getMissingProjects(Repository repository,
-			String branch) throws CoreException {
+			String branch, IProgressMonitor monitor) throws CoreException {
 		IProject[] openProjects = ProjectUtil.getValidOpenProjects(repository);
 		if (delete || openProjects.length == 0) {
 			return new IProject[0];
@@ -26,6 +27,9 @@
 		}
 		Map<File, IProject> locations = new HashMap<>();
 		for (IProject project : openProjects) {
+			if (monitor.isCanceled()) {
+				break;
+			}
 			IPath location = project.getLocation();
 			if (location == null) {
 				continue;
@@ -46,6 +50,9 @@
 					.create(IProjectDescription.DESCRIPTION_FILE_NAME),
 					TreeFilter.ANY_DIFF));
 			while (walk.next()) {
+				if (monitor.isCanceled()) {
+					break;
+				}
 				AbstractTreeIterator targetIter = walk.getTree(0,
 						AbstractTreeIterator.class);
 				if (targetIter != null) {

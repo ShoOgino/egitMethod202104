@@ -65,13 +65,16 @@
 
 			private void closeProjectsMissingAfterCheckout(Repository repo,
 					IProgressMonitor monitor) throws CoreException {
-				IProject[] missing = getMissingProjects(repo, target);
+				IProject[] missing = getMissingProjects(repo, target, monitor);
 
 				if (missing.length > 0) {
 					SubMonitor closeMonitor = SubMonitor.convert(monitor,
 							missing.length);
 					closeMonitor.setWorkRemaining(missing.length);
 					for (IProject project : missing) {
+						if (closeMonitor.isCanceled()) {
+							break;
+						}
 						closeMonitor.subTask(MessageFormat.format(
 								CoreText.BranchOperation_closingMissingProject,
 								project.getName()));
