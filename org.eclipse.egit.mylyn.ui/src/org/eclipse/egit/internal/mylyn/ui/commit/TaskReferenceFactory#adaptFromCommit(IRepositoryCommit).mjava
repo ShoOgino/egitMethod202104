@@ -10,11 +10,7 @@
 	 */
 	private AbstractTaskReference adaptFromCommit(IRepositoryCommit commit) {
 		Repository r = commit.getRepository();
-		String repoUrl = getRepoUrl(r);
-		if (repoUrl == null) {
-			return null;
-		}
-		TaskRepository repository = getTaskRepositoryByGitRepoURL(repoUrl);
+		TaskRepository repository = getTaskRepository(r);
 		if (repository == null) {
 			return null;
 		}

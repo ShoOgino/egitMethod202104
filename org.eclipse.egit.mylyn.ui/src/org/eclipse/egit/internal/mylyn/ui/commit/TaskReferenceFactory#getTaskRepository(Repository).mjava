@@ -1,0 +1,29 @@
+	/**
+	 * Finds a {@link TaskRepository} for the given {@link Repository}.
+	 *
+	 * @param repository
+	 *            git repository to find a task repository for
+	 * @return {@link TaskRepository} associated with this git repository or
+	 *         {@code null} if none found
+	 */
+	private TaskRepository getTaskRepository(Repository repository) {
+		Config config = repository.getConfig();
+		String url = config.getString(BUGTRACK_SECTION, null, BUGTRACK_URL);
+		if (url != null) {
+			return TasksUiPlugin.getRepositoryManager().getRepository(url);
+		}
+		// Try to find any that uses the same host as the configured origin URL
+		url = config.getString(ConfigConstants.CONFIG_REMOTE_SECTION,
+				Constants.DEFAULT_REMOTE_NAME, ConfigConstants.CONFIG_KEY_URL);
+		if (url == null) {
+			return null;
+		}
+		try {
+			return getTaskRepositoryByHost(new URIish(url).getHost());
+		} catch (Exception ex) {
+			EGitMylynUI.getDefault().getLog().log(
+					new Status(IStatus.ERROR, EGitMylynUI.PLUGIN_ID, "failed to get repo url", ex)); //$NON-NLS-1$
+		}
+		return null;
+	}
+
