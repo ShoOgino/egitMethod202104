@@ -1,8 +1,8 @@
 	private AbstractTaskReference adaptFromObject(Object element) {
-		RevCommit commit = getCommitForElement(element);
-		if (commit != null)
-			return adaptFromRevCommit(commit);
-
+		IRepositoryCommit commit = getCommitForElement(element);
+		if (commit != null) {
+			return adaptFromCommit(commit);
+		}
 		return null;
 	}
 

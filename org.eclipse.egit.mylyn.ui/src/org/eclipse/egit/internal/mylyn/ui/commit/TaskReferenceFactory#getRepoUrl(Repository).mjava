@@ -1,7 +1,11 @@
 	private static String getRepoUrl(Repository repo) {
-		String configuredUrl = repo.getConfig().getString(BUGTRACK_SECTION, null, BUGTRACK_URL);
-		String originUrl = repo.getConfig().getString(ConfigConstants.CONFIG_REMOTE_SECTION,
+		Config config = repo.getConfig();
+		String configuredUrl = config.getString(BUGTRACK_SECTION, null,
+				BUGTRACK_URL);
+		if (configuredUrl != null) {
+			return configuredUrl;
+		}
+		return config.getString(ConfigConstants.CONFIG_REMOTE_SECTION,
 				Constants.DEFAULT_REMOTE_NAME, ConfigConstants.CONFIG_KEY_URL);
-		return configuredUrl != null ? configuredUrl : originUrl;
 	}
 

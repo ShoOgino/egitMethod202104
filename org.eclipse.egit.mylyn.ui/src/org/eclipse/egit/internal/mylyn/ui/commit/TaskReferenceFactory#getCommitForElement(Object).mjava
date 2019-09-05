@@ -1,8 +1,8 @@
-	private static RevCommit getCommitForElement(Object element) {
-		RevCommit commit = null;
-		if (element instanceof RevCommit)
-			commit = (RevCommit) element;
-		else if (element instanceof GitModelCommit) {
+	private static IRepositoryCommit getCommitForElement(Object element) {
+		if (element instanceof IRepositoryCommit) {
+			// plugin.xml references SWTCommit, but that's internal
+			return (IRepositoryCommit) element;
+		} else if (element instanceof GitModelCommit) {
 			GitModelCommit modelCommit = (GitModelCommit) element;
 			if (!(modelCommit.getParent() instanceof GitModelRepository))
 				return null; // should never happen
@@ -11,9 +11,21 @@
 			Repository repo = parent.getRepository();
 			AbbreviatedObjectId id = modelCommit.getCachedCommitObj().getId();
 			try (RevWalk rw = new RevWalk(repo)) {
-				commit = rw.lookupCommit(id.toObjectId());
+				RevCommit commit = rw.lookupCommit(id.toObjectId());
+				return new IRepositoryCommit() {
+
+					@Override
+					public Repository getRepository() {
+						return repo;
+					}
+
+					@Override
+					public RevCommit getRevCommit() {
+						return commit;
+					}
+				};
 			}
 		}
-		return commit;
+		return null;
 	}
 

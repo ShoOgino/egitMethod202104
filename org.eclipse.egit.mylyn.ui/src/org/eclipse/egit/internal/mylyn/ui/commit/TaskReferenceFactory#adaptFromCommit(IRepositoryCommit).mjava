@@ -1,0 +1,38 @@
+	/**
+	 * Finds the {@link TaskRepository} for the provided
+	 * {@link IRepositoryCommit} object and returns new {@link LinkedTaskInfo}
+	 * object or <code>null</code> if nothing found.
+	 *
+	 * @param commit
+	 *            an {@link IRepositoryCommit} object to find the task info for
+	 * @return {@link LinkedTaskInfo} object, or <code>null</code> if repository
+	 *         not found
+	 */
+	private AbstractTaskReference adaptFromCommit(IRepositoryCommit commit) {
+		Repository r = commit.getRepository();
+		String repoUrl = getRepoUrl(r);
+		if (repoUrl == null) {
+			return null;
+		}
+		TaskRepository repository = getTaskRepositoryByGitRepoURL(repoUrl);
+		if (repository == null) {
+			return null;
+		}
+		String taskRepositoryUrl = repository.getRepositoryUrl();
+
+		String message = null;
+		long timestamp = 0;
+		try (RevWalk revWalk = new RevWalk(r)) {
+			RevCommit revCommit = revWalk.parseCommit(commit.getRevCommit());
+			message = revCommit.getFullMessage();
+			timestamp = (long) revCommit.getCommitTime() * 1000;
+		} catch (IOException | RuntimeException e) {
+			return null;
+		}
+		if (message == null || message.trim().isEmpty()) {
+			return null;
+		}
+		return new LinkedTaskInfo(taskRepositoryUrl, null, null, message,
+				timestamp);
+	}
+
