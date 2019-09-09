@@ -17,7 +17,7 @@
 		} else {
 			selectionModel = SWT.SINGLE;
 		}
-		PatternFilter filter = new PatternFilter();
+		PatternFilter filter = new RefNamePatternFilter();
 		filter.setIncludeLeadingWildcard(true);
 		FilteredTree tree = new FilteredTree(composite,
 				selectionModel | SWT.BORDER, filter, true);
