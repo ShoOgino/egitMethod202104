@@ -102,6 +102,12 @@
 						left = new LocalNonWorkspaceTypedElement(repository,
 								location);
 					}
+					if (left instanceof LocalResourceTypedElement) {
+						((LocalResourceTypedElement) left)
+								.setSharedDocumentListener(
+										new LocalResourceSaver(
+												(LocalResourceTypedElement) left));
+					}
 				} else {
 					rev = GitFileRevision.inIndex(repository, gitPath,
 							DirCacheEntry.STAGE_2);

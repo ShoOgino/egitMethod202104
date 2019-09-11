@@ -1,0 +1,9 @@
+		@Override
+		public void handleDocumentFlushed() {
+			try {
+				element.saveDocument(true, null);
+			} catch (CoreException e) {
+				Activator.handleStatus(e.getStatus(), true);
+			}
+		}
+
