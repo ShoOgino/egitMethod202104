@@ -10,6 +10,13 @@
 				}
 			}
 		};
+		parentControl.addControlListener(new ControlAdapter() {
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				parentRuler.relayout();
+			}
+		});
 		return composite.createControl(parentControl,
 				parentRuler.getTextViewer());
 	}
