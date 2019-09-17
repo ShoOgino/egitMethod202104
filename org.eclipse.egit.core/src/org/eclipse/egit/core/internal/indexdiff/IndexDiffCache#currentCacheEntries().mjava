@@ -7,10 +7,6 @@
 	 */
 	@NonNull
 	public Set<File> currentCacheEntries() {
-		Set<File> result = null;
-		synchronized (entries) {
-			result = new HashSet<>(entries.keySet());
-		}
-		return result;
+		return new HashSet<>(entries.keySet());
 	}
 

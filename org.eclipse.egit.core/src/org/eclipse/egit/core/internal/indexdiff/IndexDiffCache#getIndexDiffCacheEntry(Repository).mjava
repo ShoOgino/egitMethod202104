@@ -4,20 +4,12 @@
 	 */
 	@Nullable
 	public IndexDiffCacheEntry getIndexDiffCacheEntry(@NonNull Repository repository) {
-		IndexDiffCacheEntry entry;
-		synchronized (entries) {
-			File gitDir = new Path(repository.getDirectory().getAbsolutePath())
-					.toFile();
-			entry = entries.get(gitDir);
-			if (entry != null) {
-				return entry;
-			}
-			if (repository.isBare()) {
-				return null;
-			}
-			entry = new IndexDiffCacheEntry(repository, globalListener);
-			entries.put(gitDir, entry);
+		if (repository.isBare()) {
+			return null;
 		}
-		return entry;
+		File gitDir = new Path(repository.getDirectory().getAbsolutePath())
+				.toFile();
+		return entries.computeIfAbsent(gitDir,
+				dir -> new IndexDiffCacheEntry(repository, globalListener));
 	}
 

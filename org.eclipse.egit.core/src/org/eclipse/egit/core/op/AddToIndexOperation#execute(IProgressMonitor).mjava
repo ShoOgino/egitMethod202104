@@ -5,7 +5,7 @@
 	public void execute(IProgressMonitor monitor) throws CoreException {
 		SubMonitor progress = SubMonitor.convert(monitor, rsrcList.size() * 2);
 
-		Map<RepositoryMapping, AddCommand> addCommands = new HashMap<RepositoryMapping, AddCommand>();
+		Map<RepositoryMapping, AddCommand> addCommands = new HashMap<>();
 		try {
 			for (IResource obj : rsrcList) {
 				addToCommand(obj, addCommands);
