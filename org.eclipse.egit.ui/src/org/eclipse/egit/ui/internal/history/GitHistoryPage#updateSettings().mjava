@@ -5,10 +5,17 @@
 	 * @return {@code true} if any setting changed, {@code false} otherwise
 	 */
 	private boolean updateSettings() {
-		boolean allBranchesChanged = currentShowAllBranches != store
-			.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
-		currentShowAllBranches = store
-			.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
+		String newRefFilters = ""; //$NON-NLS-1$
+		Repository repo = getCurrentRepo();
+		if (repo != null) {
+			newRefFilters = store.getString(Activator.getDefault()
+					.getRepositoryUtil()
+					.getRepositorySpecificPreferenceKey(repo,
+							UIPreferences.RESOURCEHISTORY_SELECTED_REF_FILTERS));
+		}
+		boolean refFiltersChanged = !Objects.equals(currentRefFilters,
+				newRefFilters);
+		currentRefFilters = newRefFilters;
 
 		boolean isShowFirstParentOnly = isShowFirstParentOnly();
 		boolean firstParentOnlyChanged = currentShowFirstParentOnly != isShowFirstParentOnly;
@@ -26,7 +33,7 @@
 		boolean followRenamesChanged = currentFollowRenames != getFollowRenames();
 		currentFollowRenames = getFollowRenames();
 
-		return allBranchesChanged || firstParentOnlyChanged
+		return refFiltersChanged || firstParentOnlyChanged
 				|| additionalRefsChange || showNotesChanged
 				|| followRenamesChanged;
 	}

@@ -1,0 +1,8 @@
+	private void typeTextAndEnter(String text) {
+		Control c = dialog.getShell();
+		for (int i = 0; i < text.length(); i++) {
+			keyEvent(c, text.charAt(i));
+		}
+		keyEvent(c, 13);
+	}
+

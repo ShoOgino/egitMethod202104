@@ -1,0 +1,23 @@
+	/**
+	 * Set the given rev filters in the preference store.
+	 * <p>
+	 * This overrides the selected and the configuered filters in the preference
+	 * store.
+	 * <p>
+	 *
+	 * @param filters
+	 *            The set of filters to save.
+	 */
+	public void setRefFilters(Set<RefFilter> filters) {
+		List<String> selected = filters.stream().filter(RefFilter::isSelected)
+				.map(RefFilter::getFilterString).collect(Collectors.toList());
+		setSelectedFilters(selected, false);
+
+		List<String> configured = filters.stream()
+				.filter(f -> !f.isPreconfigured())
+				.map(RefFilter::getFilterString).collect(Collectors.toList());
+		setConfiguredFilters(configured, false);
+
+		savePreferencStoreIfNeeded();
+	}
+

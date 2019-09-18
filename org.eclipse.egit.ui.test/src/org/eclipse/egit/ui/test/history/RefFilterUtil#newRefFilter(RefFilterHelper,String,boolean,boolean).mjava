@@ -1,0 +1,11 @@
+	@SuppressWarnings("boxing")
+	public static RefFilter newRefFilter(RefFilterHelper helper,
+			String filterString, boolean preConfigured,
+			boolean selected) {
+		RefFilter mock = Mockito.mock(RefFilter.class);
+		when(mock.getFilterString()).thenReturn(filterString);
+		when(mock.isPreconfigured()).thenReturn(preConfigured);
+		when(mock.isSelected()).thenReturn(selected);
+		return helper.new RefFilter(mock);
+	}
+

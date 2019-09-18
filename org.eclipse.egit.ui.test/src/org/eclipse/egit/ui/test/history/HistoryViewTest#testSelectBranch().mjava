@@ -1,6 +1,5 @@
 	@Test
 	public void testSelectBranch() throws Exception {
-		toggleShowAllBranchesButton(false);
 		SWTBotTable commitTable = getHistoryViewTable(PROJ1);
 		assertEquals("Unexpected number of commits", commitCount,
 				commitTable.rowCount());

@@ -1,0 +1,12 @@
+	@Test
+	public void testSetLastSelectedFiltersWithSave() throws Exception {
+		List<String> filters = Arrays.asList("Mock", "test", "filter");
+
+		refFilterHelper.setLastSelectedFilters(filters, true);
+		verify(prefStore).setValue(
+				eq(getRepoSpecificPrefKeyForLastSelectedFilters()),
+				argThat(refFilterConfigStringOf(
+						containsInAnyOrder("Mock", "test", "filter"))));
+		verify(prefStore).save();
+	}
+

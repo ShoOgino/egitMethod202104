@@ -1,0 +1,23 @@
+	/**
+	 * Check whether only the preconfigured ref filter for the current branch
+	 * (local and remote) is selected.
+	 *
+	 * @param filters
+	 *            The filters to check
+	 * @return Whether exactly the current branch is selected
+	 */
+	public boolean isOnlyCurrentBranchSelected(Set<RefFilter> filters) {
+		for (RefFilter filter : filters) {
+			if (filter.isSelected()) {
+				if (!filtersForCurrentBranch.contains(filter)) {
+					return false;
+				}
+			} else {
+				if (filtersForCurrentBranch.contains(filter)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+

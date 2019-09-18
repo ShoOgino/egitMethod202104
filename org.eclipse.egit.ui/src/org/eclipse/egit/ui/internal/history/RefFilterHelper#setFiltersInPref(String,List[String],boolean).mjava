@@ -1,0 +1,13 @@
+	private void setFiltersInPref(String preferenceName, List<String> filters,
+			boolean save) {
+		String repoSepcificPrefName = Activator.getDefault().getRepositoryUtil()
+				.getRepositorySpecificPreferenceKey(this.repository,
+						preferenceName);
+		String refFiltersString = String.join(REF_SEPERATOR, filters);
+		store.setValue(repoSepcificPrefName, refFiltersString);
+
+		if (save) {
+			savePreferencStoreIfNeeded();
+		}
+	}
+

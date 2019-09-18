@@ -1,0 +1,32 @@
+	private Matcher<SWTBotTableItem> newTableRowMatcher(String text,
+			boolean preConfigured, boolean checked) {
+		return new TypeSafeMatcher<SWTBotTableItem>() {
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("A table row with ");
+				description.appendValue(text);
+				description.appendText(" which is ");
+				if (!checked) {
+					description.appendText("_not_ ");
+				}
+				description.appendText("checked");
+
+			}
+
+			private boolean matchText(String itemText) {
+				if (preConfigured) {
+					return Objects.equals(itemText,
+							text + " - (preconfigured)");
+				} else {
+					return Objects.equals(itemText, text);
+				}
+			}
+
+			@Override
+			protected boolean matchesSafely(SWTBotTableItem item) {
+				return matchText(item.getText()) && item.isChecked() == checked;
+			}
+		};
+	}
+

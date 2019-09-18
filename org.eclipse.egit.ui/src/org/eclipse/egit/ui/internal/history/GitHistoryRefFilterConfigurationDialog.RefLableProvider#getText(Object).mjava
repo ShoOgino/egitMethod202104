@@ -1,0 +1,10 @@
+		@Override
+		public String getText(Object element) {
+			RefFilter filter = ((RefFilter) element);
+			String result = filter.getFilterString();
+			if (filter.isPreconfigured()) {
+				result += UIText.GitHistoryPage_filterRefDialog_preconfiguredText;
+			}
+			return result;
+		}
+

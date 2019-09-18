@@ -1,0 +1,7 @@
+	@Test
+	public void testCancel() throws Exception {
+		clickCancel();
+		verify(refFilterHelper, Mockito.never())
+				.setRefFilters(ArgumentMatchers.any());
+	}
+

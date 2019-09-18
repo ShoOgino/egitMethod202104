@@ -1,0 +1,7 @@
+	private List<String> getFiltersFromPref(String preferenceName) {
+		String refFiltersString = getPreferenceString(preferenceName);
+		String[] filters = refFiltersString.split(REF_SEPERATOR);
+
+		return Arrays.asList(filters);
+	}
+

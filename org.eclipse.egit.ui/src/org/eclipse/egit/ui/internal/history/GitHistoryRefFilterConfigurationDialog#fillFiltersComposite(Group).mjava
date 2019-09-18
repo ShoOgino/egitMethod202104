@@ -1,0 +1,19 @@
+	private void fillFiltersComposite(Group filtersComposite) {
+		Composite tableComposite = new Composite(filtersComposite, SWT.NONE);
+		tableComposite.setLayout(new GridLayout());
+		tableComposite
+				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		tableComposite.setBackground(filtersComposite.getBackground());
+
+		createTable(tableComposite);
+
+		createFilterCompositeButtons(filtersComposite);
+
+		Label patternExplanation = new Label(filtersComposite,
+				SWT.CENTER | SWT.WRAP);
+		patternExplanation
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		patternExplanation.setText(
+				UIText.GitHistoryPage_filterRefDialog_patternExplanation);
+	}
+

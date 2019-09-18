@@ -1,0 +1,20 @@
+	@Test
+	public void testUncheckOne() throws Exception {
+		SWTBotTable table = dialogBot.bot().table();
+
+		table.getTableItem(2).uncheck();
+
+		List<RefFilterInfo> expected = new ArrayList<>();
+		expected.add(new RefFilterInfo("HEAD", true, false));
+		expected.add(
+				new RefFilterInfo("refs/**/[CURRENT-BRANCH]", true, false));
+		expected.add(new RefFilterInfo("refs/heads/**", true, false));
+		expected.add(new RefFilterInfo("refs/remotes/**", true, false));
+		expected.add(new RefFilterInfo("refs/tags/**", true, false));
+		expected.add(new RefFilterInfo("filter", false, true));
+		expected.add(new RefFilterInfo("Mock", false, false));
+		expected.add(new RefFilterInfo("test", false, false));
+
+		verifyTableContentsClickOkAndVerifyResult(expected);
+	}
+

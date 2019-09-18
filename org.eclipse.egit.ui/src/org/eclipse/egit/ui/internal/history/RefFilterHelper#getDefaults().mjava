@@ -1,0 +1,16 @@
+	/**
+	 * Get the default ref filters
+	 *
+	 * @return a set of the default ref filters.
+	 */
+	public Set<RefFilter> getDefaults() {
+		setDefaultSelectionBasedOnShowAllBranches();
+		RefFilterHelper defaultsHelper = new RefFilterHelper(this.repository) {
+			@Override
+			protected String getPreferenceString(String preferenceName) {
+				return store.getDefaultString(preferenceName);
+			}
+		};
+		return defaultsHelper.getRefFilters();
+	}
+

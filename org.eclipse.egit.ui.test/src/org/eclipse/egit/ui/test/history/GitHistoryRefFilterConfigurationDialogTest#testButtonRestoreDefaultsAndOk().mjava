@@ -1,0 +1,16 @@
+	@Test
+	public void testButtonRestoreDefaultsAndOk() throws Exception {
+		click(JFaceResources.getString("defaults"));
+
+		List<RefFilterInfo> expected = new ArrayList<>();
+		expected.add(new RefFilterInfo("HEAD", true, true));
+		expected.add(
+				new RefFilterInfo("refs/**/[CURRENT-BRANCH]", true, false));
+		expected.add(new RefFilterInfo("refs/heads/**", true, false));
+		expected.add(new RefFilterInfo("refs/remotes/**", true, false));
+		expected.add(new RefFilterInfo("refs/tags/**", true, false));
+
+		verifyTableContentsClickOkAndVerifyResult(expected);
+		verify(refFilterHelper).resetLastSelectionStateToDefault();
+	}
+

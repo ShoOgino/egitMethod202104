@@ -1,0 +1,32 @@
+	@SuppressWarnings("boxing")
+	@Before
+	public void setupTests() throws Exception {
+		myRepoViewUtil = new GitRepositoriesViewTestUtils();
+		File repoFile = createProjectAndCommitToRepository();
+		createSimpleRemoteRepository(repoFile);
+
+		RepositoryUtil repositoryUtil = Activator.getDefault()
+				.getRepositoryUtil();
+		repositoryUtil.addConfiguredRepository(repoFile);
+
+		repo = myRepoViewUtil.lookupRepository(repoFile);
+
+		try (Git git = Git.wrap(repo)) {
+			TagCommand tag = git.tag();
+			tag.setName("TestTag");
+			PersonIdent committer = new PersonIdent(TestUtil.TESTCOMMITTER_NAME,
+					TestUtil.TESTCOMMITTER_EMAIL);
+			tag.setTagger(committer);
+			RevCommit headCommit = repo.parseCommit(
+					repo.exactRef(Constants.HEAD).getLeaf().getObjectId());
+			tag.setObjectId(headCommit);
+			tag.call();
+		}
+		prefStore = mock(IPersistentPreferenceStore.class);
+
+		when(prefStore.needsSaving()).thenReturn(true);
+		when(prefStore.getDefaultString(anyString())).thenReturn("");
+
+		refFilterHelper = new RefFilterHelper(repo, prefStore);
+	}
+

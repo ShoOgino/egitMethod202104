@@ -22,19 +22,12 @@
 										.newFlag("highlight"); //$NON-NLS-1$
 								allCommits.source(currentWalk);
 
-								if (Activator.getDefault().getPreferenceStore()
-										.getBoolean(
-												UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES)) {
-									markStartAllRefs(currentWalk,
-											Constants.R_HEADS);
-									markStartAllRefs(currentWalk,
-											Constants.R_REMOTES);
-								} else {
-									currentWalk
-											.markStart(currentWalk.parseCommit(
-													repository.resolve(
-															Constants.HEAD)));
-								}
+								RefFilterHelper helper = new RefFilterHelper(
+										repository);
+
+								markStartAllRefs(currentWalk, helper
+										.getMatchingRefsForSelectedRefFilters());
+
 								for (;;) {
 									final int oldsz = allCommits.size();
 									allCommits.fillTo(oldsz + BATCH_SIZE - 1);

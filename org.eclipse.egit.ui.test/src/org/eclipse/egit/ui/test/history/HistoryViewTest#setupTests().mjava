@@ -7,13 +7,24 @@
 		folder2.create(false, true, null);
 		IFile addedFile = folder2.getFile(ADDEDFILE);
 		addedFile.create(
-				new ByteArrayInputStream("More content".getBytes(prj
-						.getDefaultCharset())), false, null);
+				new ByteArrayInputStream(
+						"More content".getBytes(prj.getDefaultCharset())),
+				false, null);
 		addAndCommit(addedFile, ADDEDMESSAGE);
+
 		// TODO count the commits
 		commitCount = 3;
+
+		setupAdditionalCommits();
+
 		RepositoryUtil repositoryUtil = Activator.getDefault()
 				.getRepositoryUtil();
 		repositoryUtil.addConfiguredRepository(repoFile);
+
+		Repository repo = myRepoViewUtil.lookupRepository(repoFile);
+
+		refFilterHelper = new RefFilterHelper(repo);
+		refFilterHelper.setRefFilters(refFilterHelper.getDefaults());
+		refFilterHelper.resetLastSelectionStateToDefault();
 	}
 

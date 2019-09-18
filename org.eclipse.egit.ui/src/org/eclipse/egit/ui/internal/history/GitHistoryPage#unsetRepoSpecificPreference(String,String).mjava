@@ -13,7 +13,8 @@
 	 */
 	private void unsetRepoSpecificPreference(String repositoryPath,
 			String key) {
-		String prefString = getRepoSpecificKey(repositoryPath, key);
+		String prefString = Activator.getDefault().getRepositoryUtil()
+				.getRepositorySpecificPreferenceKey(repositoryPath, key);
 		store.setToDefault(prefString);
 	}
 

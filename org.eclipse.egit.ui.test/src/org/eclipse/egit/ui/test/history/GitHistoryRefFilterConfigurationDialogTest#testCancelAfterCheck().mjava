@@ -1,0 +1,11 @@
+	@Test
+	public void testCancelAfterCheck() throws Exception {
+		SWTBotTable table = dialogBot.bot().table();
+
+		table.getTableItem(0).check();
+
+		clickCancel();
+		verify(refFilterHelper, Mockito.never())
+				.setRefFilters(ArgumentMatchers.any());
+	}
+

@@ -1,0 +1,8 @@
+				@Override
+				public void run() {
+					if (historyPage.getCurrentRepo() == null)
+						return;
+					filter.setSelected(!filter.isSelected());
+					postChangeAction.run();
+				}
+

@@ -3,7 +3,9 @@
 				final String prefKey = UIPreferences.RESOURCEHISTORY_SHOW_FIRST_PARENT_ONLY_DEFAULT;
 				Repository repo = historyPage.getCurrentRepo();
 				if (repo != null) {
-					String repoSpecificKey = getRepoSpecificKey(repo, prefKey);
+					String repoSpecificKey = Activator.getDefault()
+							.getRepositoryUtil()
+							.getRepositorySpecificPreferenceKey(repo, prefKey);
 					boolean newBoolean = isChecked();
 					if (newBoolean == historyPage.store.getBoolean(prefKey)) {
 						historyPage.store.setToDefault(repoSpecificKey);

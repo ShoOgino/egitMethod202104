@@ -1,0 +1,11 @@
+	@Test
+	public void testOpenRefFilterDialogFromMenu() throws Exception {
+		getHistoryViewTable(PROJ1); // Make sure the history view is visible
+		SWTBotView view = bot.viewById(IHistoryView.VIEW_ID);
+
+		view.viewMenu(UIText.GitHistoryPage_configureFilters).click();
+		// This will cause an exception if the dialog is not found
+		bot.shell(UIText.GitHistoryPage_filterRefDialog_dialogTitle).bot()
+				.button(IDialogConstants.OK_LABEL).click();
+	}
+

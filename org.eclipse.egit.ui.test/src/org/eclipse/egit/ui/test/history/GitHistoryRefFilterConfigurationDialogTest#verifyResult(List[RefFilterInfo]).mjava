@@ -1,0 +1,8 @@
+	private void verifyResult(List<RefFilterInfo> expected) {
+		ArgumentCaptor<Set<RefFilter>> argument = newRefFilterSetArgCaptor();
+		verify(refFilterHelper, times(1)).setRefFilters(argument.capture());
+
+		assertThat("Expected different set to be saved", argument.getValue(),
+				containsInAnyOrder(getRefFilterMatchersFromInfos(expected)));
+	}
+

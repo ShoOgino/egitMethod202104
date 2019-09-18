@@ -1,0 +1,9 @@
+			ConfigureFilterAction() {
+				super(UIText.GitHistoryPage_configureFilters);
+				historyPage.addPropertyChangeListener(this);
+				Repository currentRepo = historyPage.getCurrentRepo();
+				if (currentRepo != null) {
+					helper = new RefFilterHelper(currentRepo);
+				}
+			}
+

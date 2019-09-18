@@ -1,0 +1,7 @@
+	private void resetHard(Git git, String to) throws Exception {
+		ResetCommand reset = git.reset();
+		reset.setRef(to);
+		reset.setMode(ResetType.HARD);
+		reset.call();
+	}
+

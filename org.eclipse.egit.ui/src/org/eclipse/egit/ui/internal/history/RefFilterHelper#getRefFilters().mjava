@@ -1,0 +1,28 @@
+	/**
+	 * @return the set of all ref filters
+	 */
+	public Set<RefFilter> getRefFilters() {
+		Map<String, RefFilter> filters = new HashMap<>();
+		addPreconfigueredFilters(filters);
+
+		for (String filter : getConfiguredFilters()) {
+			if (filter == null || filter.isEmpty()) {
+				continue;
+			}
+			filters.put(filter, new RefFilter(filter, false));
+		}
+
+		for (String filter : getSelectedFilters()) {
+			if (filter == null || filter.isEmpty()) {
+				continue;
+			}
+			// A user could change the pref files manually
+			// Therefore we need to make sure all selected filters are also
+			// available.
+			// So we add them to the set if they are not already there
+			filters.putIfAbsent(filter, new RefFilter(filter, false));
+			filters.get(filter).setSelected(true);
+		}
+		return new HashSet<>(filters.values());
+	}
+

@@ -1,0 +1,9 @@
+	@Test
+	public void testCancelAfterButtonHead() throws Exception {
+		click(UIText.GitHistoryPage_filterRefDialog_button_headOnly);
+
+		clickCancel();
+		verify(refFilterHelper, Mockito.never())
+				.setRefFilters(ArgumentMatchers.any());
+	}
+

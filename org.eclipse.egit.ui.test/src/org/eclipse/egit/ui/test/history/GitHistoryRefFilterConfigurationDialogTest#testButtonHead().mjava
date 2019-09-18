@@ -1,0 +1,19 @@
+	@Test
+	public void testButtonHead() throws Exception {
+
+		click(UIText.GitHistoryPage_filterRefDialog_button_headOnly);
+
+		List<RefFilterInfo> expected = new ArrayList<>();
+		expected.add(new RefFilterInfo("HEAD", true, true));
+		expected.add(
+				new RefFilterInfo("refs/**/[CURRENT-BRANCH]", true, false));
+		expected.add(new RefFilterInfo("refs/heads/**", true, false));
+		expected.add(new RefFilterInfo("refs/remotes/**", true, false));
+		expected.add(new RefFilterInfo("refs/tags/**", true, false));
+		expected.add(new RefFilterInfo("filter", false, false));
+		expected.add(new RefFilterInfo("Mock", false, false));
+		expected.add(new RefFilterInfo("test", false, false));
+
+		verifyTableContentsClickOkAndVerifyResult(expected);
+	}
+

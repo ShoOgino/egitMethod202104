@@ -1,0 +1,17 @@
+	@Test
+	public void testGetMatchingRefsForSelectedRefFilters()
+			throws Exception {
+		checkMatchingRefsForSelectedRefFilters("HEAD",
+				Arrays.asList(ref(equalTo("HEAD"))));
+		checkMatchingRefsForSelectedRefFilters("refs/**/[CURRENT-BRANCH]",
+				Arrays.asList(ref(equalTo("refs/heads/master")),
+						ref(equalTo("refs/remotes/origin/master"))));
+		checkMatchingRefsForSelectedRefFilters("refs/heads/**",
+				Arrays.asList(ref(equalTo("refs/heads/master")),
+						ref(equalTo("refs/heads/stable"))));
+		checkMatchingRefsForSelectedRefFilters("refs/remotes/**",
+				Arrays.asList(ref(equalTo("refs/remotes/origin/master"))));
+		checkMatchingRefsForSelectedRefFilters("refs/tags/**",
+				Arrays.asList(ref(equalTo("refs/tags/TestTag"))));
+	}
+

@@ -1,0 +1,9 @@
+	private void removeSelectedFilter() {
+		RefFilter filter = getSelectionFromTable();
+		if (filter == null) {
+			return;
+		}
+		filters.remove(filter);
+		configsTable.refresh();
+	}
+

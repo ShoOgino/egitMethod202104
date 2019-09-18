@@ -1,0 +1,19 @@
+	private SWTBotTreeItem findMaster(SWTBotTreeItem[] items) {
+		for (SWTBotTreeItem item : items) {
+			if (item.getText().startsWith("master")) {
+				return item;
+			}
+		}
+
+		SWTBotTreeItem found = null;
+
+		for (SWTBotTreeItem item : items) {
+			found = findMaster(item.getItems());
+			if (found != null) {
+				return found;
+			}
+		}
+
+		return null;
+	}
+

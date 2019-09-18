@@ -1,0 +1,64 @@
+	private void createFilterCompositeButtons(Composite parent) {
+		Composite buttonComposite = new Composite(parent, SWT.NONE);
+		buttonComposite.setLayout(new GridLayout());
+		buttonComposite.setLayoutData(
+				new GridData(SWT.CENTER, SWT.BEGINNING, false, false));
+
+		Button addNew = new Button(buttonComposite, SWT.PUSH);
+		addNew.setText(UIText.GitHistoryPage_filterRefDialog_button_add);
+		addNew.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RefFilter newFilter = helper.new RefFilter(
+						NEW_FILTER_INITIAL_STRING);
+				filters.add(newFilter);
+				configsTable.refresh();
+				editFilter(newFilter);
+			}
+		});
+		setButtonLayoutData(addNew);
+
+		Button addRefButton = new Button(buttonComposite, SWT.PUSH);
+		addRefButton
+				.setText(UIText.GitHistoryPage_filterRefDialog_button_addRef);
+		addRefButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateButtonEnablement();
+				RefSelectionDialog dialog = new RefSelectionDialog(getShell(),
+						repo);
+				if (dialog.open() == Window.OK) {
+					RefFilter newFilter = helper.new RefFilter(
+							dialog.getRefName());
+					filters.add(newFilter);
+					configsTable.refresh();
+				}
+			}
+		});
+		setButtonLayoutData(addRefButton);
+
+		removeButton = new Button(buttonComposite, SWT.PUSH);
+		removeButton
+				.setText(UIText.GitHistoryPage_filterRefDialog_button_remove);
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				removeSelectedFilter();
+			}
+		});
+		removeButton.setEnabled(false);
+		setButtonLayoutData(removeButton);
+
+		editButton = new Button(buttonComposite, SWT.PUSH);
+		editButton.setText(UIText.GitHistoryPage_filterRefDialog_button_edit);
+		editButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				editCurrentRow();
+				updateButtonEnablement();
+			}
+		});
+		editButton.setEnabled(false);
+		setButtonLayoutData(editButton);
+	}
+

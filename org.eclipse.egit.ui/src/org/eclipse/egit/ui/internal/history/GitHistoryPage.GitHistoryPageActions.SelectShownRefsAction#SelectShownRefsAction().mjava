@@ -1,0 +1,14 @@
+			public SelectShownRefsAction() {
+				super(UIText.GitHistoryPage_SelectShownRefsMenuLabel);
+				historyPage.addPropertyChangeListener(this);
+
+				Repository currentRepo = historyPage.getCurrentRepo();
+
+				if (currentRepo != null) {
+					helper = new RefFilterHelper(currentRepo);
+				}
+
+				setHeadModeFromHelperState();
+				updateUiForMode();
+			}
+

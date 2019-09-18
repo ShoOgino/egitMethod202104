@@ -1,17 +1,7 @@
 	private RevCommit[] checkoutLine(final SWTBotTable table, int line)
 			throws InterruptedException {
 		table.getTableItem(line).select();
-		final RevCommit[] commit = new RevCommit[1];
-
-		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				TableItem tableItem = table.widget.getSelection()[0];
-				ensureTableItemLoaded(tableItem);
-				commit[0] = (RevCommit) tableItem.getData();
-			}
-		});
+		final RevCommit[] commit = getCommitInLine(table, line);
 
 		ContextMenuHelper.clickContextMenuSync(table,
 				UIText.GitHistoryPage_CheckoutMenuLabel);

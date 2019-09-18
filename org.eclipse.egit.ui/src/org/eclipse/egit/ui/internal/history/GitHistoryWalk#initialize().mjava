@@ -8,12 +8,8 @@
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		RefDatabase db = getRepository().getRefDatabase();
 		try {
-			if (store.getBoolean(
-					UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES)) {
-				markStartAllRefs(db, Constants.R_HEADS);
-				markStartAllRefs(db, Constants.R_REMOTES);
-				markStartAllRefs(db, Constants.R_TAGS);
-			}
+			markStartAllRefs(new RefFilterHelper(getRepository())
+					.getMatchingRefsForSelectedRefFilters());
 			if (store.getBoolean(
 					UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS)) {
 				markStartAdditionalRefs(db);
@@ -23,7 +19,6 @@
 			} else {
 				markUninteresting(db, Constants.R_NOTES);
 			}
-			markStart(parseCommit(headId));
 			if (toShow != null) {
 				markStart(toShow);
 			}

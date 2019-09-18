@@ -4,7 +4,8 @@
 		Repository repo = getCurrentRepo();
 
 		if (repo != null) {
-			String repoSpecificKey = getRepoSpecificKey(repo, prefKey);
+			String repoSpecificKey = Activator.getDefault().getRepositoryUtil()
+					.getRepositorySpecificPreferenceKey(repo, prefKey);
 			if (store.contains(repoSpecificKey)) {
 				firstParent = store.getBoolean(repoSpecificKey);
 			}

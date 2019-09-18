@@ -15,6 +15,8 @@
 				return;
 			}
 
+			Assert.isNotNull(db);
+
 			AnyObjectId headId = resolveHead(db, true);
 			if (headId == null) {
 				currentHeadId = null;

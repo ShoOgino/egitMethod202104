@@ -1,0 +1,16 @@
+	private void checkMatchingRefsForSelectedRefFilters(
+			String selectedRefConfig, List<Matcher<? super Ref>> expected)
+			throws Exception {
+		when(prefStore
+				.getString(eq(getRepoSpecificPrefKeyForSelectedFilters())))
+						.thenReturn(selectedRefConfig);
+		when(prefStore
+				.getString(eq(getRepoSpecificPrefKeyForConfiguredFilters())))
+						.thenReturn("");
+		Set<Ref> result = refFilterHelper
+				.getMatchingRefsForSelectedRefFilters();
+
+		assertThat("Expected different refs for config: " + selectedRefConfig,
+				result, containsInAnyOrder(expected));
+	}
+

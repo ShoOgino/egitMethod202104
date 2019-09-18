@@ -1,0 +1,13 @@
+	private static void tag(Git git, String name) throws Exception {
+		TagCommand tag = git.tag();
+		tag.setName(name);
+		PersonIdent committer = new PersonIdent(TestUtil.TESTCOMMITTER_NAME,
+				TestUtil.TESTCOMMITTER_EMAIL);
+		tag.setTagger(committer);
+		Repository repo = git.getRepository();
+		RevCommit headCommit = repo.parseCommit(
+				repo.exactRef(Constants.HEAD).getLeaf().getObjectId());
+		tag.setObjectId(headCommit);
+		tag.call();
+	}
+

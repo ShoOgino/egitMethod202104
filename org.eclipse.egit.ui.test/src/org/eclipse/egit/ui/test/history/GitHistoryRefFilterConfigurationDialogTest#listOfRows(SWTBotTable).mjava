@@ -1,0 +1,9 @@
+	private List<SWTBotTableItem> listOfRows(SWTBotTable table) {
+		int rows = table.rowCount();
+		List<SWTBotTableItem> result = new ArrayList<>(rows);
+		for (int i = 0; i < rows; i++) {
+			result.add(table.getTableItem(i));
+		}
+		return result;
+	}
+

@@ -1,0 +1,15 @@
+	private Matcher<Ref> ref(Matcher<String> refName) {
+		return new TypeSafeMatcher<Ref>() {
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("A ref with the name ");
+				refName.describeTo(description);
+			}
+
+			@Override
+			protected boolean matchesSafely(Ref item) {
+				return refName.matches(item.getName());
+			}
+		};
+	}
+

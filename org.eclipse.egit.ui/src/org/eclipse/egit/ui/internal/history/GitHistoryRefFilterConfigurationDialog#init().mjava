@@ -1,0 +1,9 @@
+	private void init() {
+		filters = helper.getRefFilters();
+		if (helper.isOnlyHEADSelected(filters)) {
+			helper.restoreLastSelectionState(filters);
+		}
+		configsTable.setInput(filters);
+		configsTable.refresh();
+	}
+

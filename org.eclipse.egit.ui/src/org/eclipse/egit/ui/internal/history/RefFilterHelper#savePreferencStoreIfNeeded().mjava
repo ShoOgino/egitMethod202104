@@ -1,0 +1,11 @@
+	private void savePreferencStoreIfNeeded() {
+		if (store.needsSaving()
+				&& store instanceof IPersistentPreferenceStore) {
+			try {
+				((IPersistentPreferenceStore) store).save();
+			} catch (IOException e) {
+				Activator.handleError(e.getMessage(), e, false);
+			}
+		}
+	}
+

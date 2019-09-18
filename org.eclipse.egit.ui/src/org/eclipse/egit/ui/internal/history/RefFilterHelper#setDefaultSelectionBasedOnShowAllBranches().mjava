@@ -1,0 +1,24 @@
+	private void setDefaultSelectionBasedOnShowAllBranches() {
+		String currentDefault = store.getDefaultString(
+				UIPreferences.RESOURCEHISTORY_SELECTED_REF_FILTERS);
+
+		if (currentDefault != DEFAULT_SELECTED_REFS
+				&& currentDefault != DEFAULT_SELECTED_REFS_ALL_BRANCHES) {
+			// The default was changed elsewhere.
+			// Probably a plugin customization.
+			// Don't overwrite it.
+			return;
+		}
+
+		boolean showAll = store
+				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
+
+		if (showAll) {
+			store.setDefault(UIPreferences.RESOURCEHISTORY_SELECTED_REF_FILTERS,
+					DEFAULT_SELECTED_REFS_ALL_BRANCHES);
+		} else {
+			store.setDefault(UIPreferences.RESOURCEHISTORY_SELECTED_REF_FILTERS,
+					DEFAULT_SELECTED_REFS);
+		}
+	}
+

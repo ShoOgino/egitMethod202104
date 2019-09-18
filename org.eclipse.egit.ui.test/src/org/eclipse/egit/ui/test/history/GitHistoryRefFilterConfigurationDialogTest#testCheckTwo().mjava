@@ -1,0 +1,21 @@
+	@Test
+	public void testCheckTwo() throws Exception {
+		SWTBotTable table = dialogBot.bot().table();
+
+		table.getTableItem(3).check();
+		table.getTableItem(6).check();
+
+		List<RefFilterInfo> expected = new ArrayList<>();
+		expected.add(new RefFilterInfo("HEAD", true, false));
+		expected.add(
+				new RefFilterInfo("refs/**/[CURRENT-BRANCH]", true, false));
+		expected.add(new RefFilterInfo("refs/heads/**", true, true));
+		expected.add(new RefFilterInfo("refs/remotes/**", true, true));
+		expected.add(new RefFilterInfo("refs/tags/**", true, false));
+		expected.add(new RefFilterInfo("filter", false, true));
+		expected.add(new RefFilterInfo("Mock", false, true));
+		expected.add(new RefFilterInfo("test", false, false));
+
+		verifyTableContentsClickOkAndVerifyResult(expected);
+	}
+

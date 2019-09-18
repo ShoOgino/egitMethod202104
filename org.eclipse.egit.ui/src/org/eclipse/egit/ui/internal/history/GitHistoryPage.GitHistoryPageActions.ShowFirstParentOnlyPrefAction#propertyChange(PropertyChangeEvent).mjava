@@ -14,7 +14,9 @@
 					return;
 				}
 
-				String repoSpecificKey = getRepoSpecificKey(repo, prefKey);
+				String repoSpecificKey = Activator.getDefault()
+						.getRepositoryUtil()
+						.getRepositorySpecificPreferenceKey(repo, prefKey);
 
 				if (prefKey.equals(event.getProperty())) {
 					// global first parent preference changed, if this repo does

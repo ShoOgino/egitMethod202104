@@ -1,0 +1,16 @@
+	/**
+	 * Get a preference string from the preference store. This should return the
+	 * repository specific preference string if applicable.
+	 *
+	 * @param preferenceName
+	 *            the name of the preference
+	 * @return the string-valued preference
+	 */
+	protected String getPreferenceString(String preferenceName) {
+		String repoSepcificPrefName = Activator.getDefault().getRepositoryUtil()
+				.getRepositorySpecificPreferenceKey(this.repository,
+						preferenceName);
+
+		return store.getString(repoSepcificPrefName);
+	}
+

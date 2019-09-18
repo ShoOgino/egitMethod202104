@@ -1,0 +1,15 @@
+	/**
+	 * Select only the HEAD preconfigured ref filter.
+	 * <p>
+	 * This will modify objects in the given list.
+	 * </p>
+	 *
+	 * @param filters
+	 *            The filters to change the selection of
+	 */
+	public void selectOnlyHEAD(Set<RefFilter> filters) {
+		for (RefFilter filter : filters) {
+			filter.setSelected(filtersForHEAD.contains(filter));
+		}
+	}
+

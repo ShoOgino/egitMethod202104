@@ -1,0 +1,14 @@
+	private String[] getCommitMsgsFromUi(final SWTBotTable table) {
+		int length = table.rowCount();
+		String[] result = new String[length];
+
+		for (int i = 0; i < length; i++) {
+			RevCommit commit = getCommitInLine(table, i)[0];
+			String msg = commit.getFullMessage();
+			// Want newest commit last.
+			result[length - (1 + i)] = msg;
+		}
+
+		return result;
+	}
+

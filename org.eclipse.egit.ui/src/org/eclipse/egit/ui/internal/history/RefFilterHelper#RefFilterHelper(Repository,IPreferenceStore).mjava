@@ -1,0 +1,20 @@
+	/**
+	 * Create a new RefFilterHelper for the given repository using the given
+	 * preference store.
+	 *
+	 * @param repository
+	 *            The repository to create the helper for; must not be null
+	 * @param store
+	 *            The preference store to use; must not be null
+	 */
+	public RefFilterHelper(@NonNull Repository repository,
+			@NonNull IPreferenceStore store) {
+		this.repository = repository;
+		this.store = store;
+		setupPreconfigueredFilters();
+		setupMacros();
+		// Just always init the repo defaults as we don't know if this repo had
+		// a helper before.
+		initDefaultsForRepo();
+	}
+

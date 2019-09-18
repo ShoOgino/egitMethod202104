@@ -1,0 +1,9 @@
+	@Override
+	protected void okPressed() {
+		helper.setRefFilters(filters);
+		if (defaultsPerformed) {
+			helper.resetLastSelectionStateToDefault();
+		}
+		super.okPressed();
+	}
+

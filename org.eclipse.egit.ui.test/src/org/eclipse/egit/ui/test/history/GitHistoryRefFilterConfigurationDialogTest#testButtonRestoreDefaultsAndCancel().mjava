@@ -1,0 +1,11 @@
+	@Test
+	public void testButtonRestoreDefaultsAndCancel() throws Exception {
+		click(JFaceResources.getString("defaults"));
+		click(IDialogConstants.CANCEL_LABEL);
+
+		verify(refFilterHelper, Mockito.never())
+				.setRefFilters(ArgumentMatchers.any());
+		verify(refFilterHelper, Mockito.never())
+				.resetLastSelectionStateToDefault();
+	}
+

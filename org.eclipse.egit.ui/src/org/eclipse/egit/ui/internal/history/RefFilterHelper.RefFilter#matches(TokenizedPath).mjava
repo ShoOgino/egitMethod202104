@@ -1,0 +1,12 @@
+		/**
+		 * Tries to match the given ref against this filter.
+		 *
+		 * @param refPath
+		 *            The path of the ref to match
+		 * @return true if the ref path matches the pattern of this filter
+		 */
+		public boolean matches(TokenizedPath refPath) {
+			return patternWithExpandedMacros().matchPath(refPath,
+					true);
+		}
+

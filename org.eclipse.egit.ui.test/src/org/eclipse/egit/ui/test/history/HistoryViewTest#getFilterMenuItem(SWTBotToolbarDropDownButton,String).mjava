@@ -1,0 +1,18 @@
+	private SWTBotMenu getFilterMenuItem(
+			SWTBotToolbarDropDownButton selectedRefs, String refFilter) {
+		return selectedRefs.menuItem(new TypeSafeMatcher<MenuItem>() {
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText(
+						"MenuItem for RefFilter \"" + refFilter + "\"");
+			}
+
+			@Override
+			protected boolean matchesSafely(MenuItem item) {
+				return item.getText().startsWith(refFilter);
+			}
+
+		});
+	}
+

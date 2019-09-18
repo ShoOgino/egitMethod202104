@@ -1,0 +1,32 @@
+	@Test
+	public void testToggleShownRefs() throws Exception {
+		SWTBotTable table = getHistoryViewTable(PROJ1);
+		SWTBotView view = bot.viewById(IHistoryView.VIEW_ID);
+		SWTBotToolbarDropDownButton selectedRefs = (SWTBotToolbarDropDownButton) view
+				.toolbarButton(UIText.GitHistoryPage_showingHistoryOfHead);
+
+		checkRefFilter(selectedRefs, "refs/heads/**");
+		checkRefFilter(selectedRefs, "refs/remotes/**");
+		checkRefFilter(selectedRefs, "refs/tags/**");
+
+		assertCommitsAfterBase(table, "test1", "test2", "test12", "testDa",
+				"testDb", "test1t", "testR");
+
+		selectedRefs.click();
+		assertCommitsAfterBase(table);
+
+		uncheckRefFilter(selectedRefs, "HEAD");
+		assertNoCommit(table);
+
+		checkRefFilter(selectedRefs, "HEAD");
+		assertCommitsAfterBase(table);
+
+		selectedRefs.click();
+		assertCommitsAfterBase(table, "test1", "test2", "test12", "testDa",
+				"testDb", "test1t", "testR");
+
+		uncheckRefFilter(selectedRefs, "refs/heads/**");
+		uncheckRefFilter(selectedRefs, "refs/remotes/**");
+		uncheckRefFilter(selectedRefs, "refs/tags/**");
+	}
+

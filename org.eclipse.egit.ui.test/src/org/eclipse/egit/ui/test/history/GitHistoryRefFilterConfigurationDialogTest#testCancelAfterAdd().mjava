@@ -1,0 +1,11 @@
+	@Test
+	public void testCancelAfterAdd() throws Exception {
+		click(UIText.GitHistoryPage_filterRefDialog_button_add);
+
+		typeTextAndEnter("added");
+
+		clickCancel();
+		verify(refFilterHelper, Mockito.never())
+				.setRefFilters(ArgumentMatchers.any());
+	}
+

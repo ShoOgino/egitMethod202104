@@ -1,0 +1,13 @@
+	/**
+	 * Init the default of the repo specific pref from global default. This
+	 * needs to happen after each eclipse startup (as the default is not
+	 * persistet) for each repo.
+	 */
+	private void initDefaultsForRepo() {
+		setDefaultSelectionBasedOnShowAllBranches();
+		initDefaultForRepo(UIPreferences.RESOURCEHISTORY_REF_FILTERS);
+		initDefaultForRepo(UIPreferences.RESOURCEHISTORY_SELECTED_REF_FILTERS);
+		initDefaultForRepo(
+				UIPreferences.RESOURCEHISTORY_LAST_SELECTED_REF_FILTERS);
+	}
+

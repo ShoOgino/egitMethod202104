@@ -1,0 +1,9 @@
+		public RefSelectionDialog(Shell parentShell, Repository repository) {
+			// Using empty string instead of null to select nothing instead of
+			// the current branch.
+			super(parentShell, repository, "", SHOW_LOCAL_BRANCHES //$NON-NLS-1$
+					| SHOW_REMOTE_BRANCHES | SHOW_TAGS | SHOW_REFERENCES
+					| SELECT_CURRENT_REF | EXPAND_LOCAL_BRANCHES_NODE
+					| EXPAND_REMOTE_BRANCHES_NODE);
+		}
+

@@ -1,0 +1,16 @@
+	@Test
+	public void testConstructor() throws Exception {
+		verify(prefStore)
+				.getDefaultString(UIPreferences.RESOURCEHISTORY_REF_FILTERS);
+		verify(prefStore, times(2)).getDefaultString(
+				UIPreferences.RESOURCEHISTORY_SELECTED_REF_FILTERS);
+		verify(prefStore).getDefaultString(
+				UIPreferences.RESOURCEHISTORY_LAST_SELECTED_REF_FILTERS);
+		verify(prefStore).setDefault(
+				eq(getRepoSpecificPrefKeyForConfiguredFilters()), eq(""));
+		verify(prefStore).setDefault(
+				eq(getRepoSpecificPrefKeyForSelectedFilters()), eq(""));
+		verify(prefStore).setDefault(
+				eq(getRepoSpecificPrefKeyForLastSelectedFilters()), eq(""));
+	}
+

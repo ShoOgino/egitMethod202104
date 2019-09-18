@@ -1,0 +1,16 @@
+	/**
+	 * Select only the preconfigured ref filter for the current branch (local
+	 * and remote).
+	 * <p>
+	 * This will modify objects in the given list.
+	 * </p>
+	 *
+	 * @param filters
+	 *            The filters to change the selection of
+	 */
+	public void selectOnlyCurrentBranch(Set<RefFilter> filters) {
+		for (RefFilter filter : filters) {
+			filter.setSelected(filtersForCurrentBranch.contains(filter));
+		}
+	}
+

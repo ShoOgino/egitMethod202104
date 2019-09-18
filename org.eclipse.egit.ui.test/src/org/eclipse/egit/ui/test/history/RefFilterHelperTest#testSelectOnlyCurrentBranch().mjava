@@ -1,0 +1,29 @@
+	@Test
+	public void testSelectOnlyCurrentBranch() throws Exception {
+		Set<RefFilter> testSet = new HashSet<>();
+		testSet.add(newRefFilter("HEAD", true, false));
+		testSet.add(newRefFilter("refs/**/[CURRENT-BRANCH]", true,
+				false));
+		testSet.add(newRefFilter("refs/heads/**", true, true));
+		testSet.add(newRefFilter("refs/remotes/**", true, false));
+		testSet.add(newRefFilter("refs/tags/**", true, false));
+		testSet.add(newRefFilter("Mock", false, false));
+		testSet.add(newRefFilter("test", false, false));
+		testSet.add(newRefFilter("filter", false, true));
+
+		List<Matcher<? super RefFilter>> expected = new ArrayList<>();
+		expected.add(newRefFilterMatcher("HEAD", true, false));
+		expected.add(
+				newRefFilterMatcher("refs/**/[CURRENT-BRANCH]", true, true));
+		expected.add(newRefFilterMatcher("refs/heads/**", true, false));
+		expected.add(newRefFilterMatcher("refs/remotes/**", true, false));
+		expected.add(newRefFilterMatcher("refs/tags/**", true, false));
+		expected.add(newRefFilterMatcher("Mock", false, false));
+		expected.add(newRefFilterMatcher("test", false, false));
+		expected.add(newRefFilterMatcher("filter", false, false));
+
+		refFilterHelper.selectOnlyCurrentBranch(testSet);
+		assertThat("Expected different filters", testSet,
+				containsInAnyOrder(expected));
+	}
+

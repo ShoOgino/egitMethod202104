@@ -1,0 +1,14 @@
+			@Override
+			public void run() {
+				if (historyPage.getCurrentRepo() == null) {
+					return;
+				}
+
+				dialog = new GitHistoryRefFilterConfigurationDialog(
+						historyPage.getSite().getWorkbenchWindow().getShell(),
+						historyPage.getCurrentRepo(), helper);
+				if (dialog.open() == Window.OK) {
+					historyPage.refresh(historyPage.selectedCommit());
+				}
+			}
+

@@ -1,0 +1,16 @@
+	/**
+	 * Select exactly the preconfigured ref filters, which represent all
+	 * branches and tags.
+	 * <p>
+	 * This will modify objects in the given list.
+	 * </p>
+	 *
+	 * @param filters
+	 *            The filters to change the selection of.
+	 */
+	public void selectExactlyAllBranchesAndTags(Set<RefFilter> filters) {
+		for (RefFilter filter : filters) {
+			filter.setSelected(filtersForAllBranchesAndTags.contains(filter));
+		}
+	}
+

@@ -1,0 +1,6 @@
+	private List<Matcher<? super SWTBotTableItem>> getTableRowMatchersFromInfos(
+			List<RefFilterInfo> infos) {
+		return infos.stream().map(info -> newTableRowMatcher(info))
+				.collect(Collectors.toList());
+	}
+

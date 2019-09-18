@@ -1,0 +1,34 @@
+	@Test
+	public void testAddRef() throws Exception {
+		click(UIText.GitHistoryPage_filterRefDialog_button_addRef);
+		SWTBotShell refSelectDialogBot = bot.shell(
+				UIText.GitHistoryPage_filterRefDialog_selectRefDialog_dialogTitle);
+
+		SWTBotTree treeBot = refSelectDialogBot.bot().tree();
+		SWTBotTreeItem[] items = treeBot.getAllItems();
+
+		SWTBotTreeItem masterItem = findMaster(items);
+
+		if (masterItem == null) {
+			fail("No master branch in select ref dialog.");
+		} else {
+			masterItem.select();
+		}
+
+		refSelectDialogBot.bot().button(IDialogConstants.OK_LABEL).click();
+
+		List<RefFilterInfo> expected = new ArrayList<>();
+		expected.add(new RefFilterInfo("HEAD", true, false));
+		expected.add(
+				new RefFilterInfo("refs/**/[CURRENT-BRANCH]", true, false));
+		expected.add(new RefFilterInfo("refs/heads/**", true, true));
+		expected.add(new RefFilterInfo("refs/remotes/**", true, false));
+		expected.add(new RefFilterInfo("refs/tags/**", true, false));
+		expected.add(new RefFilterInfo("filter", false, true));
+		expected.add(new RefFilterInfo("Mock", false, false));
+		expected.add(new RefFilterInfo("refs/heads/master", false, false));
+		expected.add(new RefFilterInfo("test", false, false));
+
+		verifyTableContentsClickOkAndVerifyResult(expected);
+	}
+

@@ -1,0 +1,21 @@
+	/**
+	 * Check whether exactly the preconfigured ref filters which represent all
+	 * branches and tags.
+	 *
+	 * @param filters
+	 *            The filters to check
+	 * @return Whether exactly all branches and tags are selected
+	 */
+	public boolean isExactlyAllBranchesAndTagsSelected(Set<RefFilter> filters) {
+		for (RefFilter filter : filters) {
+			if (filter.isSelected()) {
+				if (!filtersForAllBranchesAndTags.contains(filter))
+					return false;
+			} else {
+				if (filtersForAllBranchesAndTags.contains(filter))
+					return false;
+			}
+		}
+		return true;
+	}
+

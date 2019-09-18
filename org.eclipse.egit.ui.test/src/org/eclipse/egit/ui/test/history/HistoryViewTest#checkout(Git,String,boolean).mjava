@@ -1,0 +1,9 @@
+	private void checkout(Git git, String ref, boolean create)
+			throws Exception {
+		CheckoutCommand checkout = git.checkout();
+		checkout.setName(ref);
+		checkout.setCreateBranch(create);
+		checkout.setUpstreamMode(SetupUpstreamMode.SET_UPSTREAM);
+		checkout.call();
+	}
+

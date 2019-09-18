@@ -1,0 +1,9 @@
+	private void markStartAllRefs(RevWalk currentWalk, Set<Ref> refs)
+			throws IOException, MissingObjectException,
+			IncorrectObjectTypeException {
+		for (Ref ref : refs) {
+			currentWalk.markStart(
+					currentWalk.parseCommit(ref.getLeaf().getObjectId()));
+		}
+	}
+

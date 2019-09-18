@@ -1,0 +1,10 @@
+	@Test
+	public void testGetConfiguredFilters() throws Exception {
+		when(prefStore
+				.getString(eq(getRepoSpecificPrefKeyForConfiguredFilters())))
+						.thenReturn("Mock:test:filter");
+		List<String> result = refFilterHelper.getConfiguredFilters();
+		assertThat("Expected different list of configured filters", result,
+				containsInAnyOrder("Mock", "test", "filter"));
+	}
+

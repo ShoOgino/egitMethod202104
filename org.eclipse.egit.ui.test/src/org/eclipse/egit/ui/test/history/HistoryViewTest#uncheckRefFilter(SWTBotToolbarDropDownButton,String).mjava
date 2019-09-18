@@ -1,0 +1,8 @@
+	private void uncheckRefFilter(SWTBotToolbarDropDownButton selectedRefs,
+			String refFilter) {
+		SWTBotMenu filter = getFilterMenuItem(selectedRefs, refFilter);
+		assertTrue("Expected " + refFilter + " to be checked",
+				filter.isChecked());
+		filter.click();
+	}
+

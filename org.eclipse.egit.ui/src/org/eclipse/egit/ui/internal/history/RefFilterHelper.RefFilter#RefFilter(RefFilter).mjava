@@ -1,0 +1,15 @@
+		/**
+		 * Create a ref filter as the copy of an original.
+		 * <p>
+		 * The new filter has the same values as the original, but future
+		 * changes on either of the original or this new filter won't affect the
+		 * other one.
+		 * </p>
+		 *
+		 * @param original
+		 */
+		public RefFilter(RefFilter original) {
+			this(original.getFilterString(), original.isPreconfigured());
+			this.selected = original.isSelected();
+		}
+

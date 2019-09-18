@@ -1,0 +1,93 @@
+	private void createTable(Composite parent) {
+		configsTable = CheckboxTableViewer
+				.newCheckList(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		GridData tableData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		tableData.widthHint = convertHorizontalDLUsToPixels(120);
+		configsTable.getControl().setLayoutData(tableData);
+
+		configsTable.setContentProvider(ArrayContentProvider.getInstance());
+
+		configsTable.setLabelProvider(new RefLableProvider());
+
+		configsTable.setComparator(new ViewerComparator() {
+			@Override
+			public int category(Object element) {
+				RefFilter filter = ((RefFilter) element);
+				if (filter.isPreconfigured()) {
+					return 100;
+				}
+				return 1000;
+			}
+		});
+
+		configsTable.addSelectionChangedListener(event -> {
+			updateButtonEnablement();
+		});
+
+		configsTable.addCheckStateListener(new ICheckStateListener() {
+			@Override
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				((RefFilter) event.getElement())
+						.setSelected(event.getChecked());
+			}
+		});
+
+		configsTable.setCheckStateProvider(new ICheckStateProvider() {
+			@Override
+			public boolean isGrayed(Object element) {
+				return false;
+			}
+
+			@Override
+			public boolean isChecked(Object element) {
+				return ((RefFilter) element).isSelected();
+			}
+		});
+
+		configsTable.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				editCurrentRow();
+			}
+		});
+
+		editor = new TextCellEditor(configsTable.getTable()) {
+			@Override
+			public void deactivate() {
+				super.deactivate();
+				if (editingMode) {
+					editingMode = false;
+					updateButtonEnablement();
+				}
+			}
+		};
+		CellEditor[] editors = new CellEditor[1];
+		editors[0] = editor;
+		configsTable.setColumnProperties(new String[] { FILTER_COLUMN_NAME });
+		configsTable.setCellEditors(editors);
+		configsTable.setCellModifier(new ICellModifier() {
+
+			@Override
+			public void modify(Object element, String property, Object value) {
+				RefFilter filter = (RefFilter) ((TableItem) element).getData();
+				filter.setFilterString((String) value);
+				configsTable.refresh();
+			}
+
+			@Override
+			public Object getValue(Object element, String property) {
+				RefFilter filter = (RefFilter) element;
+				return filter.getFilterString();
+			}
+
+			@Override
+			public boolean canModify(Object element, String property) {
+				if (!editingMode) {
+					return false;
+				}
+				RefFilter filter = (RefFilter) element;
+				return !filter.isPreconfigured();
+			}
+		});
+	}
+

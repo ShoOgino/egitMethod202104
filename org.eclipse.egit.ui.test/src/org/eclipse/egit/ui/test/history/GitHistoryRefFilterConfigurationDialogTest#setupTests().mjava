@@ -1,0 +1,83 @@
+	@Before
+	public void setupTests() throws Exception {
+		display = PlatformUI.getWorkbench().getDisplay();
+
+		myRepoViewUtil = new GitRepositoriesViewTestUtils();
+		File repoFile = createProjectAndCommitToRepository();
+
+		RepositoryUtil repositoryUtil = Activator.getDefault()
+				.getRepositoryUtil();
+		repositoryUtil.addConfiguredRepository(repoFile);
+
+		repo = myRepoViewUtil.lookupRepository(repoFile);
+
+		refFilterHelper = mock(RefFilterHelper.class);
+
+		List<RefFilter> testFilters = new ArrayList<>();
+		testFilters.add(newRefFilter("HEAD", true, false));
+		testFilters.add(newRefFilter("refs/**/[CURRENT-BRANCH]", true, false));
+		testFilters.add(newRefFilter("refs/heads/**", true, true));
+		testFilters.add(newRefFilter("refs/remotes/**", true, false));
+		testFilters.add(newRefFilter("refs/tags/**", true, false));
+		testFilters.add(newRefFilter("Mock", false, false));
+		testFilters.add(newRefFilter("test", false, false));
+		testFilters.add(newRefFilter("filter", false, true));
+
+		when(refFilterHelper.getRefFilters())
+				.thenReturn(new HashSet<>(testFilters));
+
+		doAnswer(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				Set<RefFilter> filters = invocation.getArgument(0);
+				for (RefFilter filter : filters) {
+					filter.setSelected(filter.equals(testFilters.get(0)));
+				}
+				return null;
+			}
+		}).when(refFilterHelper).selectOnlyHEAD(anySet());
+
+		doAnswer(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				Set<RefFilter> filters = invocation.getArgument(0);
+				for (RefFilter filter : filters) {
+					filter.setSelected(filter.equals(testFilters.get(1)));
+				}
+				return null;
+			}
+		}).when(refFilterHelper).selectOnlyCurrentBranch(anySet());
+
+		doAnswer(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				Set<RefFilter> filters = invocation.getArgument(0);
+				for (RefFilter filter : filters) {
+					filter.setSelected(filter.equals(testFilters.get(0))
+							|| filter.equals(testFilters.get(2))
+							|| filter.equals(testFilters.get(3))
+							|| filter.equals(testFilters.get(4)));
+				}
+				return null;
+			}
+		}).when(refFilterHelper).selectExactlyAllBranchesAndTags(anySet());
+
+		List<RefFilter> defaults = new ArrayList<>();
+		defaults.add(newRefFilter("HEAD", true, true));
+		defaults.add(newRefFilter("refs/**/[CURRENT-BRANCH]", true, false));
+		defaults.add(newRefFilter("refs/heads/**", true, false));
+		defaults.add(newRefFilter("refs/remotes/**", true, false));
+		defaults.add(newRefFilter("refs/tags/**", true, false));
+
+		when(refFilterHelper.getDefaults())
+				.thenReturn(new HashSet<>(defaults));
+
+		display.asyncExec(() -> {
+			dialog = new GitHistoryRefFilterConfigurationDialog(
+					display.getActiveShell(), repo, refFilterHelper);
+			dialog.open();
+		});
+		dialogBot = bot
+				.shell(UIText.GitHistoryPage_filterRefDialog_dialogTitle);
+	}
+

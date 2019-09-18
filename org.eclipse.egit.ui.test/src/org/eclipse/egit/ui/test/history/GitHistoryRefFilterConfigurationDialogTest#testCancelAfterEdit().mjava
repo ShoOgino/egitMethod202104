@@ -1,0 +1,13 @@
+	@Test
+	public void testCancelAfterEdit() throws Exception {
+		SWTBotTable table = dialogBot.bot().table();
+		table.getTableItem(5).select();
+		click(UIText.GitHistoryPage_filterRefDialog_button_edit);
+
+		typeTextAndEnter("edited");
+
+		clickCancel();
+		verify(refFilterHelper, Mockito.never())
+				.setRefFilters(ArgumentMatchers.any());
+	}
+

@@ -1,0 +1,8 @@
+	private void addPreconfigueredFilters(Map<String, RefFilter> filters) {
+		for (RefFilter filter : preconfiguredFilters) {
+			// Don't use the existing object because selection states would be
+			// persisted immediately without calling setRefFilters.
+			filters.put(filter.getFilterString(), new RefFilter(filter));
+		}
+	}
+

@@ -1,0 +1,10 @@
+	@Test
+	public void testResetLastSelectionStateToDefault() throws Exception {
+		refFilterHelper.resetLastSelectionStateToDefault();
+
+		verify(prefStore).setToDefault(
+				eq(getRepoSpecificPrefKeyForLastSelectedFilters()));
+
+		verify(prefStore).save();
+	}
+

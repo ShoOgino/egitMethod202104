@@ -1,0 +1,10 @@
+	@Test
+	public void testGetSelectedFilters() throws Exception {
+		when(prefStore
+				.getString(eq(getRepoSpecificPrefKeyForSelectedFilters())))
+						.thenReturn("Mock:test:filter");
+		List<String> result = refFilterHelper.getSelectedFilters();
+		assertThat("Expected different list of selected filters", result,
+				containsInAnyOrder("Mock", "test", "filter"));
+	}
+

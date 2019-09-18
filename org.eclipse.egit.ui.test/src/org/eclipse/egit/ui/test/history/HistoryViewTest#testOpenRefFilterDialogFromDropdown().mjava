@@ -1,0 +1,13 @@
+	@Test
+	public void testOpenRefFilterDialogFromDropdown() throws Exception {
+		getHistoryViewTable(PROJ1); // Make sure the history view is visible
+		SWTBotView view = bot.viewById(IHistoryView.VIEW_ID);
+		SWTBotToolbarDropDownButton selectedRefs = (SWTBotToolbarDropDownButton) view
+				.toolbarButton(UIText.GitHistoryPage_showingHistoryOfHead);
+
+		selectedRefs.menuItem(UIText.GitHistoryPage_configureFilters).click();
+		// This will cause an exception if the dialog is not found
+		bot.shell(UIText.GitHistoryPage_filterRefDialog_dialogTitle).bot()
+				.button(IDialogConstants.OK_LABEL).click();
+	}
+

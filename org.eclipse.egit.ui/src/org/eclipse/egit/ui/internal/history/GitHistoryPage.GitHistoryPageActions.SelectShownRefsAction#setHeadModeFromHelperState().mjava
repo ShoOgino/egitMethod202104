@@ -1,0 +1,9 @@
+			private void setHeadModeFromHelperState() {
+				if (helper == null) {
+					return;
+				}
+				Set<RefFilter> filters = helper.getRefFilters();
+
+				headMode = helper.isOnlyHEADSelected(filters);
+			}
+

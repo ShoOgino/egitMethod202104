@@ -1,0 +1,9 @@
+	private void initDefaultForRepo(String preferenceName) {
+		String repoSepcificPrefName = Activator.getDefault().getRepositoryUtil()
+				.getRepositorySpecificPreferenceKey(this.repository,
+						preferenceName);
+
+		store.setDefault(repoSepcificPrefName,
+				store.getDefaultString(preferenceName));
+	}
+

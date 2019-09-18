@@ -1,0 +1,22 @@
+		/**
+		 * Create a new ref filter
+		 *
+		 * @param filterString
+		 *            The filter string for the new ref filter; must not be
+		 *            null; must not be empty.
+		 * @param isPreconfigured
+		 *            Whether the new Filter is a preconfiguered one
+		 *
+		 * @throws IllegalArgumentException
+		 *             if the filter string is null or empty
+		 */
+		private RefFilter(String filterString, boolean isPreconfigured) {
+			if (filterString == null || filterString.isEmpty()) {
+				throw new IllegalArgumentException(
+						"Filter string is null or empty."); //$NON-NLS-1$
+			}
+			this.filterString = filterString;
+			this.filterPattern = new TokenizedPattern(filterString);
+			this.preconfigured = isPreconfigured;
+		}
+

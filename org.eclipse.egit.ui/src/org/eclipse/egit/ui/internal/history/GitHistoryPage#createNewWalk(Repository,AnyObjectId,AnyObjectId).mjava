@@ -1,8 +1,9 @@
-	private @NonNull SWTWalk createNewWalk(Repository db, AnyObjectId headId,
+	private @NonNull SWTWalk createNewWalk(@NonNull Repository db,
+			AnyObjectId headId,
 			AnyObjectId fetchHeadId) {
 		currentHeadId = headId;
 		currentFetchHeadId = fetchHeadId;
-		SWTWalk walk = new GitHistoryWalk(db, headId, selectedObj);
+		SWTWalk walk = new GitHistoryWalk(db, selectedObj);
 
 		if (isShowFirstParentOnly()) {
 			walk.setFirstParent(true);

@@ -1,0 +1,11 @@
+				public ShownRefAction(RefFilter filter,
+						Runnable postChangeAction) {
+					super(filter.getFilterString(), IAction.AS_CHECK_BOX);
+					if (filter.isPreconfigured()) {
+						this.setText(filter.getFilterString()
+								+ UIText.GitHistoryPage_filterRefDialog_preconfiguredText);
+					}
+					this.filter = filter;
+					this.postChangeAction = postChangeAction;
+				}
+

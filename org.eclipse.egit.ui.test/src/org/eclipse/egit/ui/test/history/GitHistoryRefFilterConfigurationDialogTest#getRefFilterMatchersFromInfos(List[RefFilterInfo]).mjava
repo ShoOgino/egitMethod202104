@@ -1,0 +1,6 @@
+	private List<Matcher<? super RefFilter>> getRefFilterMatchersFromInfos(
+			List<RefFilterInfo> infos) {
+		return infos.stream().map(info -> newRefFilterMatcher(info))
+				.collect(Collectors.toList());
+	}
+

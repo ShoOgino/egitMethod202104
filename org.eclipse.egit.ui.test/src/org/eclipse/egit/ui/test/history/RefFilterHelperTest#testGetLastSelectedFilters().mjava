@@ -1,0 +1,10 @@
+	@Test
+	public void testGetLastSelectedFilters() throws Exception {
+		when(prefStore
+				.getString(eq(getRepoSpecificPrefKeyForLastSelectedFilters())))
+						.thenReturn("Mock:test:filter");
+		List<String> result = refFilterHelper.getLastSelectedFilters();
+		assertThat("Expected different list of last selected filters", result,
+				containsInAnyOrder("Mock", "test", "filter"));
+	}
+

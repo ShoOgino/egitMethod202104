@@ -1,0 +1,10 @@
+		@Override
+		public Color getForeground(Object element) {
+			RefFilter filter = ((RefFilter) element);
+			if (filter.isPreconfigured()) {
+				return PlatformUI.getWorkbench().getDisplay()
+						.getSystemColor(SWT.COLOR_DARK_GRAY);
+			}
+			return null;
+		}
+

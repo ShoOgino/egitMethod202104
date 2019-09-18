@@ -1,0 +1,14 @@
+	/**
+	 * Set the last selected ref filters in the preference store.
+	 *
+	 * @param filters
+	 *            The list of last selected ref filter strings to set
+	 * @param save
+	 *            Whether to save the preference store if necessary
+	 */
+	public void setLastSelectedFilters(List<String> filters, boolean save) {
+		setFiltersInPref(
+				UIPreferences.RESOURCEHISTORY_LAST_SELECTED_REF_FILTERS,
+				filters, save);
+	}
+

@@ -1,0 +1,11 @@
+	/**
+	 * Restore the last selection state.
+	 * @param filters The set of filters to restore the state for.
+	 */
+	public void restoreLastSelectionState(Set<RefFilter> filters) {
+		for(RefFilter filter : filters) {
+			filter.setSelected(getLastSelectedFilters()
+					.contains(filter.getFilterString()));
+		}
+	}
+

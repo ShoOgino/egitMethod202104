@@ -1,0 +1,28 @@
+	@Test
+	public void testSetFilters() throws Exception {
+		Set<RefFilter> testSet = new HashSet<>();
+		testSet.add(newRefFilter("HEAD", true, false));
+		testSet.add(newRefFilter("refs/**/[CURRENT-BRANCH]", true,
+				false));
+		testSet.add(newRefFilter("refs/heads/**", true, true));
+		testSet.add(newRefFilter("refs/remotes/**", true, false));
+		testSet.add(newRefFilter("refs/tags/**", true, false));
+		testSet.add(newRefFilter("Mock", false, false));
+		testSet.add(newRefFilter("test", false, false));
+		testSet.add(newRefFilter("filter", false, true));
+
+		refFilterHelper.setRefFilters(testSet);
+
+		verify(prefStore).setValue(
+				eq(getRepoSpecificPrefKeyForConfiguredFilters()),
+				argThat(refFilterConfigStringOf(
+						containsInAnyOrder("Mock", "test", "filter"))));
+
+		verify(prefStore).setValue(
+				eq(getRepoSpecificPrefKeyForSelectedFilters()),
+				argThat(refFilterConfigStringOf(
+						containsInAnyOrder("refs/heads/**", "filter"))));
+
+		verify(prefStore).save();
+	}
+

@@ -4,10 +4,15 @@
 	 *
 	 * @param parentShell
 	 * @param repository
+	 *            the repository; must not be null
 	 * @param filterResources
 	 *            the resources to use to filter commits, null for no filter
+	 *
+	 * @throws IllegalArgumentException
+	 *             if the given repository is null
 	 */
-	public CommitSelectionDialog(Shell parentShell, Repository repository,
+	public CommitSelectionDialog(Shell parentShell,
+			@NonNull Repository repository,
 			IResource[] filterResources) {
 		super(parentShell);
 		setShellStyle(getShellStyle() | SWT.SHELL_TRIM);

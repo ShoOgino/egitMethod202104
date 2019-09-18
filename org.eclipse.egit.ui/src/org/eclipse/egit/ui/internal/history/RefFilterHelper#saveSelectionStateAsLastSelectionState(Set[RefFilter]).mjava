@@ -1,0 +1,17 @@
+	/**
+	 * Save the selection state of the given filter set as the last selection
+	 * state.
+	 *
+	 * @param filters
+	 *            The filters to get the selection state from
+	 */
+	public void saveSelectionStateAsLastSelectionState(Set<RefFilter> filters) {
+		List<String> selected = new ArrayList<>();
+		for(RefFilter filter : filters) {
+			if (filter.isSelected()) {
+				selected.add(filter.getFilterString());
+			}
+		}
+		setLastSelectedFilters(selected, true);
+	}
+

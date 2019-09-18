@@ -1,0 +1,25 @@
+	@Test
+	public void testGetDefaults() throws Exception {
+		when(prefStore.getDefaultString(
+				eq(UIPreferences.RESOURCEHISTORY_REF_FILTERS)))
+						.thenReturn("Mock:test:filter");
+		when(prefStore.getDefaultString(
+				eq(UIPreferences.RESOURCEHISTORY_SELECTED_REF_FILTERS)))
+						.thenReturn("HEAD:test");
+		Set<RefFilter> result = refFilterHelper.getDefaults();
+
+		List<Matcher<? super RefFilter>> expected = new ArrayList<>();
+		expected.add(newRefFilterMatcher("HEAD", true, true));
+		expected.add(
+				newRefFilterMatcher("refs/**/[CURRENT-BRANCH]", true, false));
+		expected.add(newRefFilterMatcher("refs/heads/**", true, false));
+		expected.add(newRefFilterMatcher("refs/remotes/**", true, false));
+		expected.add(newRefFilterMatcher("refs/tags/**", true, false));
+		expected.add(newRefFilterMatcher("Mock", false, false));
+		expected.add(newRefFilterMatcher("test", false, true));
+		expected.add(newRefFilterMatcher("filter", false, false));
+
+		assertThat("Expected different filters", result,
+				containsInAnyOrder(expected));
+	}
+

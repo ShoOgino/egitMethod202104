@@ -1,0 +1,7 @@
+	private void verifyTableContents(List<RefFilterInfo> expected) {
+		SWTBotTable table = dialogBot.bot().table();
+
+		assertThat("Expeceted different rows", listOfRows(table),
+				contains(getTableRowMatchersFromInfos(expected)));
+	}
+

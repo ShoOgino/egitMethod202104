@@ -1,0 +1,34 @@
+	public static Matcher<RefFilter> newRefFilterMatcher(String filterString,
+			boolean preConfigured,
+			boolean selected) {
+		return new TypeSafeMatcher<RefFilterHelper.RefFilter>() {
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("a ref filter with ");
+				description.appendValue(filterString);
+				description.appendText(" which is ");
+				if (!preConfigured) {
+					description.appendText("_not_ ");
+				}
+				description.appendText("preconfigured and ");
+				if (!selected) {
+					description.appendText("_not_ ");
+				}
+				description.appendText("selected");
+			}
+
+			@Override
+			protected boolean matchesSafely(RefFilter item) {
+				if (item.isPreconfigured() != preConfigured) {
+					return false;
+				}
+
+				if (item.isSelected() != selected) {
+					return false;
+				}
+
+				return Objects.equals(filterString, item.getFilterString());
+			}
+		};
+	}
+

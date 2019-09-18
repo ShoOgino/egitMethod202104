@@ -1,0 +1,19 @@
+			@Override
+			public void run() {
+				if (historyPage.getCurrentRepo() == null)
+					return;
+				Set<RefFilter> filters = helper.getRefFilters();
+
+				if (helper.isOnlyHEADSelected(filters)) {
+					helper.restoreLastSelectionState(filters);
+					headMode = false;
+				} else {
+					helper.saveSelectionStateAsLastSelectionState(filters);
+					helper.selectOnlyHEAD(filters);
+					headMode = true;
+				}
+				updateUiForMode();
+				helper.setRefFilters(filters);
+				historyPage.refresh(historyPage.selectedCommit());
+			}
+

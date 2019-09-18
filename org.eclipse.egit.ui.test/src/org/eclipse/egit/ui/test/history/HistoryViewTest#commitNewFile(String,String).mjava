@@ -1,0 +1,12 @@
+	private void commitNewFile(String fileName, String commitMsg)
+			throws Exception {
+		IProject prj = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(PROJ1);
+		IFile toCreate = prj.getFile(fileName);
+		toCreate.create(
+				new ByteArrayInputStream(
+						"Content".getBytes(prj.getDefaultCharset())),
+				false, null);
+		addAndCommit(toCreate, commitMsg);
+	}
+

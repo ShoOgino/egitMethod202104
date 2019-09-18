@@ -1,0 +1,17 @@
+	@Test
+	public void testButtonCurrentBranch() throws Exception {
+		click(UIText.GitHistoryPage_filterRefDialog_button_currentBranchOnly);
+
+		List<RefFilterInfo> expected = new ArrayList<>();
+		expected.add(new RefFilterInfo("HEAD", true, false));
+		expected.add(new RefFilterInfo("refs/**/[CURRENT-BRANCH]", true, true));
+		expected.add(new RefFilterInfo("refs/heads/**", true, false));
+		expected.add(new RefFilterInfo("refs/remotes/**", true, false));
+		expected.add(new RefFilterInfo("refs/tags/**", true, false));
+		expected.add(new RefFilterInfo("filter", false, false));
+		expected.add(new RefFilterInfo("Mock", false, false));
+		expected.add(new RefFilterInfo("test", false, false));
+
+		verifyTableContentsClickOkAndVerifyResult(expected);
+	}
+

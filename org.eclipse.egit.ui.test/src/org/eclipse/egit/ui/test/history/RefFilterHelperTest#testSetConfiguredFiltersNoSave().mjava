@@ -1,0 +1,12 @@
+	@Test
+	public void testSetConfiguredFiltersNoSave() throws Exception {
+		List<String> filters = Arrays.asList("Mock", "test", "filter");
+
+		refFilterHelper.setConfiguredFilters(filters, false);
+		verify(prefStore).setValue(
+				eq(getRepoSpecificPrefKeyForConfiguredFilters()),
+				argThat(refFilterConfigStringOf(
+						containsInAnyOrder("Mock", "test", "filter"))));
+		verify(prefStore, never()).save();
+	}
+

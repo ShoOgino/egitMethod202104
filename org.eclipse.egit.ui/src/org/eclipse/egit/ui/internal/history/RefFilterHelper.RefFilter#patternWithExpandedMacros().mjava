@@ -1,0 +1,15 @@
+		private TokenizedPattern patternWithExpandedMacros() {
+			TokenizedPattern currentPattern = filterPattern;
+			for(Map.Entry<String, Function<Repository, String>> macro : macros.entrySet()) {
+				if (currentPattern.containsPattern(macro.getKey())) {
+					String oldString = currentPattern.getPattern();
+					String macroString = macro.getKey();
+					String replacingString = macro.getValue().apply(repository);
+					String newString = oldString.replace(macroString,
+							replacingString);
+					currentPattern = new TokenizedPattern(newString);
+				}
+			}
+			return currentPattern;
+		}
+

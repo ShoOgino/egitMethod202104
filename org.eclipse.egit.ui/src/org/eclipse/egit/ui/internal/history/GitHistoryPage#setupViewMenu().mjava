@@ -19,7 +19,6 @@
 		IMenuManager showSubMenuMgr = new MenuManager(
 				UIText.GitHistoryPage_ShowSubMenuLabel);
 		viewMenuMgr.add(showSubMenuMgr);
-		showSubMenuMgr.add(actions.showAllBranchesAction);
 		showSubMenuMgr.add(actions.showFirstParentOnlyAction);
 		showSubMenuMgr.add(actions.showAdditionalRefsAction);
 		showSubMenuMgr.add(actions.showNotesAction);
@@ -41,6 +40,8 @@
 		showInMessageManager.add(actions.fillCommentAction);
 
 		viewMenuMgr.add(actions.filterAction);
+
+		viewMenuMgr.add(actions.configureFiltersAction);
 
 		viewMenuMgr.add(new Separator());
 		viewMenuMgr.add(actions.compareModeAction);

@@ -1,0 +1,12 @@
+	/**
+	 * Create a new RefFilterHelper for the given repository using the
+	 * preference store provided by the activator of this ui plugin.
+	 *
+	 * @param repository
+	 *            The repository to create the helper for; must not be null
+	 */
+	public RefFilterHelper(@NonNull Repository repository) {
+		this(repository,
+				checkNull(Activator.getDefault().getPreferenceStore()));
+	}
+

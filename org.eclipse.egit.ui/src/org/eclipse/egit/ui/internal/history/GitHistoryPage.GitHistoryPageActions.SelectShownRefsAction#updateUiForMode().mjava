@@ -1,0 +1,12 @@
+			private void updateUiForMode() {
+				if (headMode) {
+					this.setImageDescriptor(UIIcons.BRANCH);
+					this.setToolTipText(
+							UIText.GitHistoryPage_showingHistoryOfHead);
+				} else {
+					this.setImageDescriptor(UIIcons.BRANCHES);
+					this.setToolTipText(
+							UIText.GitHistoryPage_showingHistoryOfConfiguredFilters);
+				}
+			}
+

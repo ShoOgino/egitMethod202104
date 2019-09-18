@@ -1,0 +1,49 @@
+	@Test
+	public void testIsOnlyHEADSelected() throws Exception {
+		Set<RefFilter> testSet1 = new HashSet<>();
+		testSet1.add(newRefFilter("HEAD", true, false));
+		testSet1.add(newRefFilter("refs/**/[CURRENT-BRANCH]",
+				true, false));
+		testSet1.add(newRefFilter("refs/heads/**", true, true));
+		testSet1.add(
+				newRefFilter("refs/remotes/**", true, false));
+		testSet1.add(newRefFilter("refs/tags/**", true, false));
+		testSet1.add(newRefFilter("Mock", false, false));
+		testSet1.add(newRefFilter("test", false, false));
+		testSet1.add(newRefFilter("filter", false, true));
+
+		assertFalse("Not only head selected",
+				refFilterHelper.isOnlyHEADSelected(testSet1));
+
+		Set<RefFilter> testSet2 = new HashSet<>();
+		testSet2.add(newRefFilter("HEAD", true, true));
+		testSet2.add(newRefFilter("refs/**/[CURRENT-BRANCH]",
+				true, false));
+		testSet2.add(newRefFilter("refs/heads/**", true, true));
+		testSet2.add(
+				newRefFilter("refs/remotes/**", true, false));
+		testSet2.add(newRefFilter("refs/tags/**", true, false));
+		testSet2.add(newRefFilter("Mock", false, false));
+		testSet2.add(newRefFilter("test", false, false));
+		testSet2.add(newRefFilter("filter", false, true));
+
+		assertFalse("Not only head selected",
+				refFilterHelper.isOnlyHEADSelected(testSet2));
+
+		Set<RefFilter> testSet3 = new HashSet<>();
+		testSet3.add(newRefFilter("HEAD", true, true));
+		testSet3.add(newRefFilter("refs/**/[CURRENT-BRANCH]",
+				true, false));
+		testSet3.add(newRefFilter("refs/heads/**", true, false));
+		testSet3.add(
+				newRefFilter("refs/remotes/**", true, false));
+		testSet3.add(newRefFilter("refs/tags/**", true, false));
+		testSet3.add(newRefFilter("Mock", false, false));
+		testSet3.add(newRefFilter("test", false, false));
+		testSet3.add(newRefFilter("filter", false, false));
+
+		assertTrue("Only head selected!",
+				refFilterHelper.isOnlyHEADSelected(testSet3));
+
+	}
+

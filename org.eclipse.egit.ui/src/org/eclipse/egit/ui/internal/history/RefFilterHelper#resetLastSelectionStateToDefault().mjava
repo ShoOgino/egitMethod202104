@@ -1,0 +1,11 @@
+	/**
+	 * Reset the last selection state to the default.
+	 */
+	public void resetLastSelectionStateToDefault() {
+		String repoSepcificPrefName = Activator.getDefault().getRepositoryUtil()
+				.getRepositorySpecificPreferenceKey(this.repository,
+						UIPreferences.RESOURCEHISTORY_LAST_SELECTED_REF_FILTERS);
+		store.setToDefault(repoSepcificPrefName);
+		savePreferencStoreIfNeeded();
+	}
+
