@@ -6,7 +6,7 @@
 	 * @return scheduling rule
 	 */
 	public static ISchedulingRule getRuleForContainers(Collection<IPath> paths) {
-		List<ISchedulingRule> rules = new ArrayList<ISchedulingRule>();
+		List<ISchedulingRule> rules = new ArrayList<>();
 		IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace()
 				.getRuleFactory();
 		for (IPath path : paths) {
