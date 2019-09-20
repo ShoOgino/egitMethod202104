@@ -1,7 +1,6 @@
 	private void clearViewers() {
 		TableViewer viewer = graph.getTableView();
+		viewer.setSelection(StructuredSelection.EMPTY);
 		viewer.setInput(new SWTCommit[0]);
-		// Force a selection changed event
-		viewer.setSelection(viewer.getSelection());
 	}
 
