@@ -1,0 +1,12 @@
+	@Override
+	protected <T> T adaptEditorInput(IEditorInput editorInput,
+			Class<T> adapter) {
+		// Ugly hack to ensure the framework finds the correct document
+		// provider.
+		if (adapter == IFile.class) {
+			return adapter.cast(
+					ResourcesPlugin.getWorkspace().getRoot().getFile(location));
+		}
+		return super.adaptEditorInput(editorInput, adapter);
+	}
+

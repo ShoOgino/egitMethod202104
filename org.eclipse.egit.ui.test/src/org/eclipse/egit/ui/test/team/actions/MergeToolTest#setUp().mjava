@@ -2,6 +2,8 @@
 	public void setUp() throws Exception {
 		File repositoryFile = createProjectAndCommitToRepository();
 		Repository repository = lookupRepository(repositoryFile);
-		testRepository = new TestRepository<Repository>(repository);
+		testRepository = new TestRepository<>(repository);
+		mergeMode = org.eclipse.egit.ui.Activator.getDefault()
+				.getPreferenceStore().getInt(UIPreferences.MERGE_MODE);
 	}
 

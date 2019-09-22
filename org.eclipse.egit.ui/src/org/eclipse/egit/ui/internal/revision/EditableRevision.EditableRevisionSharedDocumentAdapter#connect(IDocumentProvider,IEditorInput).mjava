@@ -1,0 +1,23 @@
+		@Override
+		public void connect(IDocumentProvider provider,
+				IEditorInput documentKey) throws CoreException {
+			if (documentKey instanceof FakeResourceStorageEditorInput) {
+				// When we connect, our editor input shouldn't adapt to
+				// that (non-existing) resource, otherwise we'll confuse
+				// other parts of Eclipse.
+				FakeResourceStorageEditorInput input = (FakeResourceStorageEditorInput) documentKey;
+				try {
+					input.setAdapt(false);
+					super.connect(provider, input);
+				} finally {
+					// Once we _are_ connected, there are other places
+					// where SharedDocumentAdapter.getDocumentProvider()
+					// is called again during the life of the document,
+					// so the documentKey must again adapt to IFile.
+					input.setAdapt(true);
+				}
+			} else {
+				super.connect(provider, documentKey);
+			}
+		}
+

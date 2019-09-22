@@ -1,0 +1,6 @@
+	@After
+	public void resetMergeMode() throws Exception {
+		org.eclipse.egit.ui.Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.MERGE_MODE, mergeMode);
+	}
+

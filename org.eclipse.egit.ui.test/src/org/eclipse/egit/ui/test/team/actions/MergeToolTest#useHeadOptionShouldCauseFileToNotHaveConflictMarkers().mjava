@@ -1,6 +1,8 @@
 	@Test
 	public void useHeadOptionShouldCauseFileToNotHaveConflictMarkers()
 			throws Exception {
+		org.eclipse.egit.ui.Activator.getDefault().getPreferenceStore()
+				.setValue(UIPreferences.MERGE_MODE, 2);
 		IPath path = new Path(PROJ1).append("folder/test.txt");
 		testRepository.branch("stable").commit().add(path.toString(), "stable")
 				.create();

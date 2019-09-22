@@ -1,0 +1,8 @@
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			if (adapt) {
+				return editable.adaptEditorInput(this, adapter);
+			}
+			return null;
+		}
+
