@@ -1,0 +1,5 @@
+	private static boolean isValid(@NonNull IResource resource) {
+		return resource.isAccessible()
+				&& !resource.isLinked(IResource.CHECK_ANCESTORS);
+	}
+

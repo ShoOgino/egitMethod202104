@@ -1,0 +1,116 @@
+	private Map<IResource, Boolean> computeResources(
+			Collection<String> modified, Collection<String> deleted,
+			IPath workTree, Map<IPath, IProject> roots) {
+		// Attempt to minimize the refreshes by returning IContainers if
+		// more than one file in a container has changed.
+		if (GitTraceLocation.REFRESH.isActive()) {
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.REFRESH.getLocation(),
+					"Calculating refresh for repository " + workTree + ' ' //$NON-NLS-1$
+							+ modified.size() + ' ' + deleted.size());
+		}
+		Set<IPath> fullRefreshes = new HashSet<>();
+		Map<IPath, IFile> handled = new HashMap<>();
+		Map<IResource, Boolean> result = new HashMap<>();
+		Stream.concat(modified.stream(), deleted.stream()).forEach(path -> {
+			IPath filePath = "/".equals(path) ? workTree //$NON-NLS-1$
+					: workTree.append(path);
+			IProject project = roots.get(filePath);
+			if (project != null) {
+				// Eclipse knows this as a project. Make sure it gets
+				// refreshed as such. One can refresh a folder via an IFile,
+				// but not an IProject.
+				handled.put(filePath, null);
+				result.put(project, Boolean.FALSE);
+				return;
+			}
+			if (fullRefreshes.stream()
+					.anyMatch(full -> full.isPrefixOf(filePath))
+					|| !roots.keySet().stream()
+							.anyMatch(root -> root.isPrefixOf(filePath))) {
+				// Not in workspace or covered by a full container refresh
+				return;
+			}
+			IPath containerPath;
+			boolean isFile;
+			if (path.endsWith("/")) { //$NON-NLS-1$
+				// It's already a directory
+				isFile = false;
+				containerPath = filePath.removeTrailingSeparator();
+			} else {
+				isFile = true;
+				containerPath = filePath.removeLastSegments(1);
+			}
+			if (!handled.containsKey(containerPath)) {
+				if (!isFile && containerPath != null) {
+					IContainer container = getContainerForLocation(
+							containerPath);
+					if (container != null) {
+						IFile file = handled.get(containerPath);
+						handled.put(containerPath, null);
+						if (file != null) {
+							result.remove(file);
+						}
+						result.put(container, Boolean.FALSE);
+					}
+				} else if (isFile) {
+					// First file in this container. Find the deepest
+					// existing container and record its child.
+					String lastPart = filePath.lastSegment();
+					while (containerPath != null
+							&& workTree.isPrefixOf(containerPath)) {
+						IContainer container = getContainerForLocation(
+								containerPath);
+						if (container == null) {
+							lastPart = containerPath.lastSegment();
+							containerPath = containerPath
+									.removeLastSegments(1);
+							isFile = false;
+							continue;
+						}
+						if (container.getType() == IResource.ROOT) {
+							// Missing project... ignore it and anything
+							// beneath. The user or our own branch project
+							// tracker will have to properly add/import the
+							// project.
+							containerPath = containerPath.append(lastPart);
+							fullRefreshes.add(containerPath);
+							handled.put(containerPath, null);
+						} else if (isFile) {
+							IFile file = container
+									.getFile(new Path(lastPart));
+							handled.put(containerPath, file);
+							result.put(file, Boolean.FALSE);
+						} else {
+							// New or deleted folder.
+							container = container
+									.getFolder(new Path(lastPart));
+							containerPath = containerPath.append(lastPart);
+							fullRefreshes.add(containerPath);
+							handled.put(containerPath, null);
+							result.put(container, Boolean.TRUE);
+						}
+						break;
+					}
+				}
+			} else {
+				IFile file = handled.get(containerPath);
+				if (file != null) {
+					// Second file in this container: replace file by
+					// its container.
+					handled.put(containerPath, null);
+					result.remove(file);
+					result.put(file.getParent(), Boolean.FALSE);
+				}
+				// Otherwise we already have this container.
+			}
+		});
+
+		if (GitTraceLocation.REFRESH.isActive()) {
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.REFRESH.getLocation(),
+					"Calculated refresh for repository " + workTree); //$NON-NLS-1$
+		}
+		return result;
+	}
+

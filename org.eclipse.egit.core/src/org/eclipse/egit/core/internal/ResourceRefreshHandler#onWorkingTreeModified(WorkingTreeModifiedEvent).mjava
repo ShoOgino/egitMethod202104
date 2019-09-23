@@ -1,0 +1,23 @@
+	@Override
+	public void onWorkingTreeModified(WorkingTreeModifiedEvent event) {
+		if (event.isEmpty()) {
+			return;
+		}
+		Repository repo = event.getRepository();
+		if (repo == null || repo.isBare()) {
+			return; // Should never occur
+		}
+		if (GitTraceLocation.REFRESH.isActive()) {
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.REFRESH.getLocation(),
+					"Triggered refresh for repo: " + repo); //$NON-NLS-1$
+		}
+		try {
+			refreshRepository(event);
+		} catch (OperationCanceledException oe) {
+			return;
+		} catch (CoreException e) {
+			Activator.error(CoreText.Activator_refreshFailed, e);
+		}
+	}
+

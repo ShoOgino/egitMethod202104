@@ -29,6 +29,10 @@
 			ignoreDerivedResourcesListener.stop();
 			ignoreDerivedResourcesListener = null;
 		}
+		if (refreshHandle != null) {
+			refreshHandle.remove();
+			refreshHandle = null;
+		}
 		if (shareGitProjectsJob != null) {
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(
 					shareGitProjectsJob);

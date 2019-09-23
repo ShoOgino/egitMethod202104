@@ -1,8 +1,0 @@
-		@Override
-		public void onWorkingTreeModified(WorkingTreeModifiedEvent event) {
-			if (Activator.getDefault().getPreferenceStore()
-					.getBoolean(UIPreferences.REFRESH_ON_INDEX_CHANGE)) {
-				mayTriggerRefresh(event);
-			}
-		}
-

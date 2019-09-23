@@ -1,0 +1,21 @@
+	private Map<IPath, IProject> getProjectLocations(File workTree) {
+		IProject[] projects = RuleUtil.getProjects(workTree);
+		if (projects == null) {
+			return Collections.emptyMap();
+		}
+		Map<IPath, IProject> result = new HashMap<>();
+		for (IProject project : projects) {
+			if (project.isAccessible()) {
+				IPath path = project.getLocation();
+				if (path != null) {
+					IPath projectFilePath = path.append(
+							IProjectDescription.DESCRIPTION_FILE_NAME);
+					if (projectFilePath.toFile().exists()) {
+						result.put(path, project);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
