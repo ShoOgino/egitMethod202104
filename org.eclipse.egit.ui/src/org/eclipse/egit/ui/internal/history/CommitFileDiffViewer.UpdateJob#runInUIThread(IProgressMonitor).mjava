@@ -1,7 +1,8 @@
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
 			Control control = getControl();
-			if (control == null || control.isDisposed() || loader != loadJob) {
+			if (control == null || control.isDisposed() || loader != loadJob
+					|| monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}
 			FileDiff[] diffs = loadJob.getDiffs();
