@@ -75,7 +75,7 @@
 				UIIcons.UNSTAGE) {
 			@Override
 			public void run() {
-				unstage(stagedViewer.getStructuredSelection());
+				unstage(stagedViewer.getStructuredSelection().toList());
 			}
 		};
 		unstageAction.setToolTipText(UIText.StagingView_UnstageItemTooltip);
@@ -83,7 +83,7 @@
 				UIIcons.ELCL16_ADD) {
 			@Override
 			public void run() {
-				stage(unstagedViewer.getStructuredSelection());
+				stage(unstagedViewer.getStructuredSelection().toList());
 			}
 		};
 		stageAction.setToolTipText(UIText.StagingView_StageItemTooltip);
@@ -96,8 +96,8 @@
 				UIIcons.UNSTAGE_ALL) {
 			@Override
 			public void run() {
-				stagedViewer.getTree().selectAll();
-				unstage(stagedViewer.getStructuredSelection());
+				unstage(Arrays.asList(
+						getContentProvider(stagedViewer).getStagingEntries()));
 			}
 		};
 		unstageAllAction
@@ -106,8 +106,8 @@
 				UIIcons.ELCL16_ADD_ALL) {
 			@Override
 			public void run() {
-				unstagedViewer.getTree().selectAll();
-				stage(unstagedViewer.getStructuredSelection());
+				stage(Arrays.asList(getContentProvider(unstagedViewer)
+						.getStagingEntries()));
 			}
 		};
 		stageAllAction.setToolTipText(UIText.StagingView_StageAllItemTooltip);
@@ -132,7 +132,7 @@
 		GridLayoutFactory.fillDefaults().applyTo(unstagedComposite);
 
 		unstagedViewer = createViewer(unstagedComposite, true,
-				selection -> unstage(selection), stageAction);
+				selection -> unstage(selection.toList()), stageAction);
 
 		unstagedViewer.addSelectionChangedListener(event -> {
 			boolean hasSelection = !event.getSelection().isEmpty();
@@ -416,7 +416,7 @@
 		GridLayoutFactory.fillDefaults().applyTo(stagedComposite);
 
 		stagedViewer = createViewer(stagedComposite, false,
-				selection -> stage(selection), unstageAction);
+				selection -> stage(selection.toList()), unstageAction);
 		stagedViewer.getLabelProvider().addListener(event -> {
 			updateMessage();
 			updateCommitButtons();

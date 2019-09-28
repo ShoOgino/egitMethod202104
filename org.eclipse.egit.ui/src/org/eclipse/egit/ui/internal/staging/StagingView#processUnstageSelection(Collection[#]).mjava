@@ -1,8 +1,8 @@
 	private Collection<String> processUnstageSelection(
-			IStructuredSelection selection) {
+			Collection<?> selectedEntries) {
 		Set<String> paths = new HashSet<>();
 		resetPathsToExpand();
-		for (Object element : selection.toList()) {
+		for (Object element : selectedEntries) {
 			if (element instanceof StagingEntry) {
 				StagingEntry entry = (StagingEntry) element;
 				addUnstagePath(entry, paths);

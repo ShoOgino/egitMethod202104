@@ -1,8 +1,8 @@
-	private void unstage(IStructuredSelection selection) {
-		if (selection.isEmpty())
+	private void unstage(Collection<?> selectedEntries) {
+		if (selectedEntries.isEmpty())
 			return;
 
-		Collection<String> paths = processUnstageSelection(selection);
+		Collection<String> paths = processUnstageSelection(selectedEntries);
 		if (paths.isEmpty())
 			return;
 

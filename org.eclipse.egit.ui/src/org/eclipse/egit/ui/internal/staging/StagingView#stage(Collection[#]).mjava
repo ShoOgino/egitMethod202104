@@ -1,7 +1,7 @@
-	private void stage(IStructuredSelection selection) {
+	private void stage(Collection<?> selectedEntries) {
 		StagingViewContentProvider contentProvider = getContentProvider(unstagedViewer);
 		final Repository repository = currentRepository;
-		Iterator iterator = selection.iterator();
+		Iterator iterator = selectedEntries.iterator();
 		final Set<String> addPaths = new HashSet<>();
 		final Set<String> rmPaths = new HashSet<>();
 		resetPathsToExpand();
