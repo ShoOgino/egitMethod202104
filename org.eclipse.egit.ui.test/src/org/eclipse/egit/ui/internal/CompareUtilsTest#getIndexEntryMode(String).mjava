@@ -1,0 +1,11 @@
+	private FileMode getIndexEntryMode(String path) throws Exception {
+		DirCache dc = repository.readDirCache();
+		try (TreeWalk w = new TreeWalk(repository)) {
+			w.addTree(new DirCacheIterator(dc));
+			w.setFilter(PathFilterGroup.createFromStrings(path));
+			w.setRecursive(true);
+			assertTrue(path + " not in index", w.next());
+			return w.getFileMode();
+		}
+	}
+
