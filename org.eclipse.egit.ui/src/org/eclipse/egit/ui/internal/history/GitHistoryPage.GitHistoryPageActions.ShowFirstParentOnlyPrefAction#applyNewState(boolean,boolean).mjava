@@ -4,8 +4,10 @@
 			 *
 			 * @param newState
 			 *            the new state to apply.
+			 * @param forceRefresh
+			 *            whether to force a refresh of the entire history page
 			 */
-			private void applyNewState(boolean newState) {
+			private void applyNewState(boolean newState, boolean forceRefresh) {
 				Control control = historyPage.getControl();
 				if (control != null && !control.isDisposed()) {
 					control.getDisplay().asyncExec(() -> {
@@ -14,6 +16,8 @@
 						}
 					});
 				}
-				historyPage.refresh(historyPage.selectedCommit());
+				if (forceRefresh) {
+					historyPage.refresh(historyPage.selectedCommit());
+				}
 			}
 
