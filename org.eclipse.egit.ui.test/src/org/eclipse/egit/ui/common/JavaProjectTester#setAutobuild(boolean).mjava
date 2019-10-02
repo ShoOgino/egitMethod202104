@@ -1,4 +1,4 @@
-	private static boolean setAutobuild(boolean value) throws CoreException {
+	public static boolean setAutobuild(boolean value) throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceDescription desc = workspace.getDescription();
 		boolean isAutoBuilding = desc.isAutoBuilding();

@@ -1,0 +1,35 @@
+	@Test
+	public void testJavaCompareWithIndex() throws Exception {
+		IProject project = javaProject.getProject();
+		IFile file = project.getFolder(JavaProjectTester.SRC_FOLDER_NAME)
+				.getFolder(JavaProjectTester.PACKAGE_NAME)
+				.getFile(JavaProjectTester.JAVA_FILE_NAME);
+		String newContent = JavaProjectTester.INITIAL_FILE_CONTENT
+				+ "\n// Comment\n";
+		ResourcesPlugin.getWorkspace().run(monitor -> {
+			try (InputStream s = new ByteArrayInputStream(
+					newContent.getBytes(StandardCharsets.UTF_8))) {
+				file.setContents(s, IResource.FORCE, monitor);
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		}, file, IResource.NONE, null);
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
+		// Select the project to ensure the staging view does have a repo.
+		SWTBotTree projectExplorerTree = TestUtil.getExplorerTree();
+		getProjectItem(projectExplorerTree, project.getName()).select();
+		StagingViewTester stagingViewTester = StagingViewTester
+				.openStagingView();
+		stagingViewTester.compareWithIndex(JavaProjectTester.JAVA_FILE_PATH);
+		CompareEditorTester editor = CompareEditorTester
+				.forTitleContaining(JavaProjectTester.JAVA_FILE_NAME);
+		String actualContent = editor.getLeftEditor().getText();
+		boolean isDirty = editor.isDirty();
+		if (isDirty) {
+			editor.save();
+		}
+		editor.close();
+		assertEquals(newContent, actualContent);
+		assertFalse(isDirty);
+	}
+

@@ -2,8 +2,9 @@
 	public void testShowAnnotationsFromProjectExplorer() throws Exception {
 		IProject project = javaProject.getProject();
 		// Find the file
-		IFile file = project.getFolder(SRC_FOLDER_NAME).getFolder(PACKAGE_NAME)
-				.getFile(JAVA_FILE_NAME);
+		IFile file = project.getFolder(JavaProjectTester.SRC_FOLDER_NAME)
+				.getFolder(JavaProjectTester.PACKAGE_NAME)
+				.getFile(JavaProjectTester.JAVA_FILE_NAME);
 		assertBlameEnabled(file, true);
 		// Now repeat the same with the ICompilationUnit.
 		IJavaElement element = JavaCore.create(file, javaProject);
@@ -11,7 +12,8 @@
 				element instanceof ICompilationUnit);
 		assertBlameEnabled(element, true);
 		// And with IType...
-		IType type = javaProject.findType(PACKAGE_NAME, JAVA_CLASS_NAME);
+		IType type = javaProject.findType(JavaProjectTester.PACKAGE_NAME,
+				JavaProjectTester.JAVA_CLASS_NAME);
 		assertBlameEnabled(type, true);
 		// ... and finally with something that doesn't adapt to IResource:
 		assertBlameEnabled(this, false);

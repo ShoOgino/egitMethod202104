@@ -1,4 +1,5 @@
-	private void removeJavaProject() throws CoreException {
+	public void removeJavaProject(IJavaProject javaProject)
+			throws CoreException {
 		if (javaProject == null) {
 			return;
 		}
@@ -13,9 +14,8 @@
 				// to some resources.
 				for (int i = 0; i < MAX_DELETE_RETRY; i++) {
 					try {
-						project.delete(
-								IResource.FORCE
-										| IResource.ALWAYS_DELETE_PROJECT_CONTENT,
+						project.delete(IResource.FORCE
+								| IResource.ALWAYS_DELETE_PROJECT_CONTENT,
 								null);
 						break;
 					} catch (CoreException e) {

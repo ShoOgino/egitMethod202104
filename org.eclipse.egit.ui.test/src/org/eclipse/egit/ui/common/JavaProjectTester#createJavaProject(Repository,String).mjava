@@ -47,9 +47,7 @@
 						.createPackageFragment(PACKAGE_NAME, true, null);
 				javaPackage
 						.createCompilationUnit(JAVA_FILE_NAME,
-								"package " + PACKAGE_NAME + ";\nclass "
-										+ JAVA_CLASS_NAME + " {\n\n}",
-								true, null);
+								INITIAL_FILE_CONTENT, true, null);
 				jProjectHolder[0] = jProject;
 			}
 		};

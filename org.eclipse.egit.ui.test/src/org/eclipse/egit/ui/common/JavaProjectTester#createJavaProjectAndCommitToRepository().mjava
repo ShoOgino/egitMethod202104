@@ -1,6 +1,7 @@
-	private IJavaProject createJavaProjectAndCommitToRepository()
+	public IJavaProject createJavaProjectAndCommitToRepository()
 			throws Exception {
-		Repository myRepository = createLocalTestRepository(REPO1);
+		Repository myRepository = testCase
+				.createLocalTestRepository(LocalRepositoryTestCase.REPO1);
 		File gitDir = myRepository.getDirectory();
 		IJavaProject jProject = createJavaProject(myRepository,
 				JAVA_PROJECT_NAME);
@@ -10,14 +11,14 @@
 		} catch (Exception e) {
 			Activator.logError("Failed to connect project to repository", e);
 		}
-		assertConnected(project);
+		testCase.assertConnected(project);
 		// Check in at least the java file
 		IFolder folder = project.getFolder(SRC_FOLDER_NAME)
 				.getFolder(PACKAGE_NAME);
 		IFile file = folder.getFile(JAVA_FILE_NAME);
 
 		IFile[] commitables = new IFile[] { file };
-		ArrayList<IFile> untracked = new ArrayList<IFile>();
+		ArrayList<IFile> untracked = new ArrayList<>();
 		untracked.addAll(Arrays.asList(commitables));
 		// commit to master
 		CommitOperation op = new CommitOperation(commitables, untracked,
@@ -26,7 +27,8 @@
 
 		// Make sure cache entry is already listening for changes
 		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
-		cache.getIndexDiffCacheEntry(lookupRepository(gitDir));
+		cache.getIndexDiffCacheEntry(Activator.getDefault().getRepositoryCache()
+				.lookupRepository(gitDir));
 		return jProject;
 	}
 
