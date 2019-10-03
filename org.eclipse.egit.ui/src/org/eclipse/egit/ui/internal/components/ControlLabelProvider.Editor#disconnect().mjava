@@ -1,0 +1,11 @@
+		private void disconnect() {
+			if (disposer != null) {
+				TableItem item = getItem();
+				if (item != null) {
+					editors.remove(item);
+					item.removeDisposeListener(disposer);
+				}
+				disposer = null;
+			}
+		}
+

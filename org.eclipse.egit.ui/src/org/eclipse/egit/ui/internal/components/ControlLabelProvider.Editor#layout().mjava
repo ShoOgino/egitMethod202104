@@ -1,0 +1,24 @@
+		@Override
+		public void layout() {
+			if (Util.isGtk() && SWT.getVersion() <= 4924) {
+				// Layout is relative to the table's clientArea, which includes
+				// the header if one is shown. Results in editors being shown
+				// over the column headers.
+				//
+				// This is a work-around for bug 535978; would be needed only on
+				// SWT versions < 4924r7.
+				TableItem item = getItem();
+				if (item != null) {
+					Rectangle rect = item.getBounds();
+					if (table.getHeaderVisible()) {
+						Control editor = getEditor();
+						if (editor != null && !editor.isDisposed()) {
+							editor.setVisible(
+									rect.y >= table.getHeaderHeight());
+						}
+					}
+				}
+			}
+			super.layout();
+		}
+

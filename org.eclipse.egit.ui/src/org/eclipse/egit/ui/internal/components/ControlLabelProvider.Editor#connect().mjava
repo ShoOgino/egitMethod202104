@@ -1,0 +1,14 @@
+		public void connect() {
+			TableItem item = getItem();
+			if (item != null) {
+				disposer = e -> {
+					Control editor = getEditor();
+					if (editor != null && !editor.isDisposed()) {
+						editor.dispose();
+					}
+					dispose();
+				};
+				item.addDisposeListener(disposer);
+			}
+		}
+

@@ -1,0 +1,42 @@
+	@Override
+	public void update(ViewerCell cell) {
+		super.update(cell);
+		Object obj = cell.getElement();
+		Widget w = cell.getViewerRow().getItem();
+		if (w instanceof TableItem) {
+			TableItem item = (TableItem) w;
+			Table table = item.getParent();
+			Editor editor = editors.get(item);
+			if (editor == null) {
+				Control control = setEditor(cell, table, null, obj);
+				if (control == null) {
+					return;
+				}
+				control.pack();
+				editor = new Editor(table);
+				editor.horizontalAlignment = SWT.CENTER;
+				editor.verticalAlignment = SWT.CENTER;
+				Point size = control.getSize();
+				editor.minimumWidth = size.x;
+				editor.minimumHeight = size.y;
+				editors.put(item, editor);
+				editor.setEditor(control, item, cell.getColumnIndex());
+				editor.connect();
+			} else {
+				Control existing = editor.getEditor();
+				Control control = setEditor(cell, table, existing, obj);
+				if (control != existing) {
+					if (!existing.isDisposed()) {
+						existing.dispose();
+					}
+					if (control == null) {
+						editor.dispose();
+						return;
+					}
+					control.pack();
+					editor.setEditor(control);
+				}
+			}
+		}
+	}
+
