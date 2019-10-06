@@ -66,6 +66,14 @@
 			}
 		});
 
+		StyledText commentWidget = commentViewer.getTextWidget();
+		commentWidget.addCaretListener(event -> {
+			Point location = commentWidget
+					.getLocationAtOffset(event.caretOffset);
+			scrollCommentAndDiff(location,
+					commentWidget.getLineHeight(event.caretOffset));
+		});
+
 		commentAndDiffComposite.setBackground(commentViewer.getControl()
 				.getBackground());
 
@@ -172,6 +180,13 @@
 		StyledText diffWidget = diffViewer.getTextWidget();
 		diffWidget.setMenu(contextMenu.createContextMenu(diffWidget));
 		diffWidget.addDisposeListener(e -> showWhitespaceAction.dispose());
+
+		diffWidget.addCaretListener(event -> {
+			Point location = diffWidget.getLocationAtOffset(event.caretOffset);
+			location.y += diffViewer.getControl().getLocation().y;
+			scrollCommentAndDiff(location,
+					diffWidget.getLineHeight(event.caretOffset));
+		});
 
 		setWrap(store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_COMMENT_WRAP));
