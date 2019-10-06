@@ -3,6 +3,9 @@
 		if (Repository.class == adapter && myRepository != null) {
 			return adapter.cast(myRepository);
 		}
+		if (File.class == adapter) {
+			return adapter.cast(adaptFile());
+		}
 		if (myObject != null) {
 			if (adapter.isInstance(myObject)) {
 				return adapter.cast(myObject);
