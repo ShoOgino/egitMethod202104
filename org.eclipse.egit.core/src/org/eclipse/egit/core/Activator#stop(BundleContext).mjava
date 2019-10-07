@@ -1,10 +1,10 @@
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		SshPreferencesMirror.INSTANCE.stop();
-		if (sshClientChangeListener != null) {
+		if (preferenceChangeListener != null) {
 			InstanceScope.INSTANCE.getNode(pluginId)
-					.removePreferenceChangeListener(sshClientChangeListener);
-			sshClientChangeListener = null;
+					.removePreferenceChangeListener(preferenceChangeListener);
+			preferenceChangeListener = null;
 		}
 		SshSessionFactory current = SshSessionFactory.getInstance();
 		if (current instanceof SshdSessionFactory) {

@@ -16,18 +16,22 @@
 		context.registerService(DebugOptionsListener.class.getName(), this,
 				props);
 
+		setupHttp();
 		SshPreferencesMirror.INSTANCE.start();
 		proxyServiceTracker = new ServiceTracker<>(context,
 				IProxyService.class.getName(), null);
 		proxyServiceTracker.open();
 		setupSSH(context);
-		sshClientChangeListener = event -> {
+		preferenceChangeListener = event -> {
 			if (GitCorePreferences.core_sshClient.equals(event.getKey())) {
 				setupSSH(getBundle().getBundleContext());
+			} else if (GitCorePreferences.core_httpClient
+					.equals(event.getKey())) {
+				setupHttp();
 			}
 		};
 		InstanceScope.INSTANCE.getNode(pluginId)
-				.addPreferenceChangeListener(sshClientChangeListener);
+				.addPreferenceChangeListener(preferenceChangeListener);
 		setupProxy();
 
 		repositoryCache = new RepositoryCache();
