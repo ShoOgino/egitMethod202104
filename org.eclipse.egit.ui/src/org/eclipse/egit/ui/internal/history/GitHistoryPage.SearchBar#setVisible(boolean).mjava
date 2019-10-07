@@ -5,6 +5,7 @@
 					beforeHide();
 				}
 				super.setVisible(visible);
+				workAroundBug551067(visible);
 				// Update the toolbar. Will dispose our FindToolbar widget on
 				// hide, and will create a new one (through createControl())
 				// on show. It'll also reposition the toolbar, if needed.
