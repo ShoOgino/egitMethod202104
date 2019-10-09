@@ -1,0 +1,12 @@
+	/**
+	 * Sets word-wrapping on the text viewers.
+	 *
+	 * @param wrap
+	 *            whether to word-wrap
+	 */
+	public void setWrap(boolean wrap) {
+		commentViewer.getTextWidget().setWordWrap(wrap);
+		diffViewer.getTextWidget().setWordWrap(wrap);
+		resizeCommentAndDiffScrolledComposite();
+	}
+

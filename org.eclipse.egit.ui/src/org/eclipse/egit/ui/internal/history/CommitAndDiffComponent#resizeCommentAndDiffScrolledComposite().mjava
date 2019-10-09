@@ -2,6 +2,7 @@
 		resizing = true;
 		long start = 0;
 		int lines = 0;
+		boolean trace = GitTraceLocation.HISTORYVIEW.isActive();
 		if (trace) {
 			IDocument document = diffViewer.getDocument();
 			lines = document != null ? document.getNumberOfLines() : 0;
@@ -13,8 +14,8 @@
 			start = System.currentTimeMillis();
 		}
 
-		Point size = commentAndDiffComposite
-				.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		Point size = commentAndDiffComposite.computeSize(SWT.DEFAULT,
+				SWT.DEFAULT);
 		commentAndDiffComposite.layout();
 		commentAndDiffScrolledComposite.setMinSize(size);
 		resizing = false;

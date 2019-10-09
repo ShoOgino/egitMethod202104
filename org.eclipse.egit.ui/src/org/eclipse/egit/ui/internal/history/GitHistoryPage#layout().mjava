@@ -9,7 +9,8 @@
 			revInfoSplit.setMaximizedControl(null);
 		} else if (showComment && !showFiles) {
 			graphDetailSplit.setMaximizedControl(null);
-			revInfoSplit.setMaximizedControl(commentViewer.getControl());
+			revInfoSplit.setMaximizedControl(
+					commitAndDiff.getCommitViewer().getControl());
 		} else if (!showComment && showFiles) {
 			graphDetailSplit.setMaximizedControl(null);
 			revInfoSplit.setMaximizedControl(fileViewer.getControl());

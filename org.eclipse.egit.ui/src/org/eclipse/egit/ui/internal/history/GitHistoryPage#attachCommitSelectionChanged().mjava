@@ -1,4 +1,5 @@
 	private void attachCommitSelectionChanged() {
+		CommitMessageViewer commentViewer = commitAndDiff.getCommitViewer();
 		graph.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {

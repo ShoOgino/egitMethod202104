@@ -1,10 +1,10 @@
 	private void formatDiffs(final List<FileDiff> diffs) {
 		Job.getJobManager().cancel(JobFamilies.HISTORY_DIFF);
+		DiffViewer diffViewer = commitAndDiff.getDiffViewer();
 		if (diffs.isEmpty()) {
 			if (UIUtils.isUsable(diffViewer)) {
 				IDocument document = new Document();
 				diffViewer.setDocument(document);
-				resizeCommentAndDiffScrolledComposite();
 			}
 			return;
 		}
@@ -50,7 +50,6 @@
 						}
 						if (UIUtils.isUsable(diffViewer)) {
 							diffViewer.setDocument(document);
-							resizeCommentAndDiffScrolledComposite();
 						}
 						return Status.OK_STATUS;
 					}
