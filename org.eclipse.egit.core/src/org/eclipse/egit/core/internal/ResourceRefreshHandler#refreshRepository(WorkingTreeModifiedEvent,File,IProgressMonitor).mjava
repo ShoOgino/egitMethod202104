@@ -1,0 +1,71 @@
+	/**
+	 * Refresh the Eclipse workspace resources in response to a
+	 * {@link WorkingTreeModifiedEvent}.
+	 *
+	 * @param event
+	 *            describing changes
+	 * @param workTree
+	 *            of the repository this event relates to
+	 * @param monitor
+	 *            for progress reporting and cancellation, may be {@code null}
+	 *            if neither is desired
+	 * @throws CoreException
+	 */
+	public void refreshRepository(WorkingTreeModifiedEvent event,
+			File workTree, IProgressMonitor monitor)
+			throws CoreException {
+		SubMonitor progress = SubMonitor.convert(monitor, 2);
+		if (progress.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+		if (event.isEmpty()) {
+			progress.done();
+			return; // Should actually not occur
+		}
+		Map<IPath, IProject> roots = getProjectLocations(workTree);
+		if (roots.isEmpty()) {
+			// No open projects from this repository in the workspace
+			progress.done();
+			return;
+		}
+		IPath wt = new Path(workTree.getPath());
+		Map<IResource, Boolean> toRefresh = computeResources(
+				event.getModified(), event.getDeleted(), wt, roots,
+				progress.newChild(1));
+		if (toRefresh.isEmpty()) {
+			return;
+		}
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRunnable operation = innerMonitor -> {
+			SubMonitor innerProgress = SubMonitor.convert(innerMonitor,
+					toRefresh.size());
+			if (GitTraceLocation.REFRESH.isActive()) {
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.REFRESH.getLocation(),
+						"Refreshing repository " + workTree + ' ' //$NON-NLS-1$
+								+ toRefresh.size());
+			}
+			for (Map.Entry<IResource, Boolean> entry : toRefresh.entrySet()) {
+				if (innerProgress.isCanceled()) {
+					break;
+				}
+				entry.getKey().refreshLocal(
+						entry.getValue().booleanValue()
+								? IResource.DEPTH_INFINITE
+								: IResource.DEPTH_ONE,
+						innerProgress.newChild(1));
+			}
+			if (GitTraceLocation.REFRESH.isActive()) {
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.REFRESH.getLocation(),
+						"Refreshed repository " + workTree + ' ' //$NON-NLS-1$
+								+ toRefresh.size());
+			}
+		};
+		// No scheduling rule needed; IResource.refreshLocal() gets its own
+		// rule. This workspace operation serves only to batch resource
+		// update notifications.
+		workspace.run(operation, null, IWorkspace.AVOID_UPDATE,
+				progress.newChild(1));
+	}
+

@@ -1,0 +1,40 @@
+		/**
+		 * Record which projects have changes. Initiate a resource refresh job
+		 * if the user settings allow it.
+		 *
+		 * @param events
+		 *            The {@link WorkingTreeModifiedEvent}s that triggered this
+		 *            refresh
+		 */
+		public void trigger(Collection<WorkingTreeModifiedEvent> events) {
+			boolean haveChanges = false;
+			for (WorkingTreeModifiedEvent event : events) {
+				if (event.isEmpty()) {
+					continue;
+				}
+				Repository repo = event.getRepository();
+				if (repo == null || repo.isBare()) {
+					continue; // Should never occur
+				}
+				File gitDir = repo.getDirectory();
+				synchronized (repositoriesChanged) {
+					WorkingTreeChanges changes = repositoriesChanged
+							.get(gitDir);
+					if (changes == null) {
+						repositoriesChanged.put(gitDir,
+								new WorkingTreeChanges(event));
+					} else {
+						changes.merge(event);
+						if (changes.isEmpty()) {
+							// Actually, this cannot happen.
+							repositoriesChanged.remove(gitDir);
+						}
+					}
+				}
+				haveChanges = true;
+			}
+			if (haveChanges) {
+				schedule();
+			}
+		}
+

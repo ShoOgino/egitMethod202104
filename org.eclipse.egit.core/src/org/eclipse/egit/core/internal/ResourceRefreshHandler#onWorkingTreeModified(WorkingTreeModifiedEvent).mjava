@@ -13,7 +13,9 @@
 					"Triggered refresh for repo: " + repo); //$NON-NLS-1$
 		}
 		try {
-			refreshRepository(event);
+			refreshRepository(event,
+					event.getRepository().getWorkTree().getAbsoluteFile(),
+					null);
 		} catch (OperationCanceledException oe) {
 			return;
 		} catch (CoreException e) {

@@ -1,0 +1,46 @@
+		@Override
+		public IStatus run(IProgressMonitor monitor) {
+			try {
+				List<WorkingTreeChanges> changes;
+				synchronized (repositoriesChanged) {
+					if (repositoriesChanged.isEmpty()) {
+						return Status.OK_STATUS;
+					}
+					changes = new ArrayList<>(repositoriesChanged.values());
+					repositoriesChanged.clear();
+				}
+
+				SubMonitor progress = SubMonitor.convert(monitor,
+						changes.size());
+				try {
+					for (WorkingTreeChanges change : changes) {
+						if (progress.isCanceled()) {
+							return Status.CANCEL_STATUS;
+						}
+						ResourceRefreshHandler handler = new ResourceRefreshHandler();
+						handler.refreshRepository(new WorkingTreeModifiedEvent(
+								change.getModified(), change.getDeleted()),
+								change.getWorkTree(), progress.newChild(1));
+					}
+				} catch (OperationCanceledException oe) {
+					return Status.CANCEL_STATUS;
+				} catch (CoreException e) {
+					handleError(UIText.Activator_refreshFailed, e, false);
+					return new Status(IStatus.ERROR, getPluginId(),
+							e.getMessage());
+				}
+
+				if (!monitor.isCanceled()) {
+					// re-schedule if we got some changes in the meantime
+					synchronized (repositoriesChanged) {
+						if (!repositoriesChanged.isEmpty()) {
+							schedule(100);
+						}
+					}
+				}
+			} finally {
+				monitor.done();
+			}
+			return Status.OK_STATUS;
+		}
+

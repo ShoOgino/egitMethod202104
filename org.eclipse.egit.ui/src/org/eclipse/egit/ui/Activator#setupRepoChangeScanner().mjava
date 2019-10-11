@@ -1,5 +1,6 @@
 	private void setupRepoChangeScanner() {
-		rcs = new RepositoryChangeScanner();
+		refreshJob = new ResourceRefreshJob();
+		rcs = new RepositoryChangeScanner(refreshJob);
 		getPreferenceStore().addPropertyChangeListener(rcs);
 	}
 

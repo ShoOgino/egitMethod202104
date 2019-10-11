@@ -1,0 +1,8 @@
+			public WorkingTreeChanges merge(WorkingTreeModifiedEvent event) {
+				modified.removeAll(event.getDeleted());
+				deleted.removeAll(event.getModified());
+				modified.addAll(event.getModified());
+				deleted.addAll(event.getDeleted());
+				return this;
+			}
+

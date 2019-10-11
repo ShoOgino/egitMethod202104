@@ -1,5 +1,6 @@
-		RepositoryChangeScanner() {
+		public RepositoryChangeScanner(ResourceRefreshJob refresher) {
 			super(UIText.Activator_repoScanJobName);
+			this.refresher = refresher;
 			setRule(new RepositoryCacheRule());
 			setSystem(true);
 			setUser(false);

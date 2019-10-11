@@ -1,6 +1,7 @@
 	private Map<IResource, Boolean> computeResources(
 			Collection<String> modified, Collection<String> deleted,
-			IPath workTree, Map<IPath, IProject> roots) {
+			IPath workTree, Map<IPath, IProject> roots,
+			IProgressMonitor monitor) {
 		// Attempt to minimize the refreshes by returning IContainers if
 		// more than one file in a container has changed.
 		if (GitTraceLocation.REFRESH.isActive()) {
@@ -9,10 +10,15 @@
 					"Calculating refresh for repository " + workTree + ' ' //$NON-NLS-1$
 							+ modified.size() + ' ' + deleted.size());
 		}
+		SubMonitor progress = SubMonitor.convert(monitor,
+				modified.size() + deleted.size());
 		Set<IPath> fullRefreshes = new HashSet<>();
 		Map<IPath, IFile> handled = new HashMap<>();
 		Map<IResource, Boolean> result = new HashMap<>();
 		Stream.concat(modified.stream(), deleted.stream()).forEach(path -> {
+			if (progress.isCanceled()) {
+				throw new OperationCanceledException();
+			}
 			IPath filePath = "/".equals(path) ? workTree //$NON-NLS-1$
 					: workTree.append(path);
 			IProject project = roots.get(filePath);
@@ -22,6 +28,7 @@
 				// but not an IProject.
 				handled.put(filePath, null);
 				result.put(project, Boolean.FALSE);
+				progress.worked(1);
 				return;
 			}
 			if (fullRefreshes.stream()
@@ -29,6 +36,7 @@
 					|| !roots.keySet().stream()
 							.anyMatch(root -> root.isPrefixOf(filePath))) {
 				// Not in workspace or covered by a full container refresh
+				progress.worked(1);
 				return;
 			}
 			IPath containerPath;
@@ -104,6 +112,7 @@
 				}
 				// Otherwise we already have this container.
 			}
+			progress.worked(1);
 		});
 
 		if (GitTraceLocation.REFRESH.isActive()) {
