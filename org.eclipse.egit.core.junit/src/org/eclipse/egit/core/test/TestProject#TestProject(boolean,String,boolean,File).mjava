@@ -12,8 +12,9 @@
 		IProjectDescription description = createDescription(path, insidews,
 				root);
 		project = root.getProject(description.getName());
-		if (remove)
-			project.delete(true, null);
+		if (remove) {
+			TestUtils.deleteProject(project);
+		}
 		IPath locationBefore = null;
 		URI locationURI = description.getLocationURI();
 		if (locationURI != null) {
