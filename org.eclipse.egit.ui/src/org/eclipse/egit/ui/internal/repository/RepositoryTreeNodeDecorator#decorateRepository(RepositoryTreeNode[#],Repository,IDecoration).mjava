@@ -1,6 +1,5 @@
 	private boolean decorateRepository(RepositoryTreeNode<?> node,
-			@NonNull Repository repository, IDecoration decoration)
-			throws IOException {
+			@NonNull Repository repository, IDecoration decoration) {
 		boolean isSubModule = node.getParent() != null && node.getParent()
 				.getType() == RepositoryTreeNodeType.SUBMODULES;
 		if (RepositoryUtil.hasChanges(repository)) {
@@ -8,7 +7,8 @@
 		}
 		StringBuilder suffix = new StringBuilder();
 		if (isSubModule) {
-			Ref head = repository.exactRef(Constants.HEAD);
+			Ref head = DecoratorRepositoryStateCache.INSTANCE
+					.getHeadRef(repository);
 			if (head == null) {
 				return false;
 			}
@@ -21,33 +21,29 @@
 			}
 			suffix.append(']');
 			if (verboseBranchMode && head.getObjectId() != null) {
-				try (RevWalk walk = new RevWalk(repository)) {
-					RevCommit commit = walk.parseCommit(head.getObjectId());
+				RevCommit commit = DecoratorRepositoryStateCache.INSTANCE
+						.getHeadCommit(repository);
+				if (commit != null) {
 					suffix.append(' ').append(commit.getShortMessage());
-				} catch (IOException ignored) {
-					// Ignored
 				}
 			}
 		} else {
 			// Not a submodule
-			String branch = Activator.getDefault().getRepositoryUtil()
-					.getShortBranch(repository);
+			String branch = DecoratorRepositoryStateCache.INSTANCE
+					.getCurrentBranchLabel(repository);
 			if (branch == null) {
 				return false;
 			}
 			suffix.append(" ["); //$NON-NLS-1$
 			suffix.append(branch);
 
-			BranchTrackingStatus trackingStatus = BranchTrackingStatus
-					.of(repository, branch);
-			if (trackingStatus != null && (trackingStatus.getAheadCount() != 0
-					|| trackingStatus.getBehindCount() != 0)) {
-				String formattedTrackingStatus = GitLabels
-						.formatBranchTrackingStatus(trackingStatus);
-				suffix.append(' ').append(formattedTrackingStatus);
+			String trackingStatus = DecoratorRepositoryStateCache.INSTANCE
+					.getBranchStatus(repository);
+			if (trackingStatus != null) {
+				suffix.append(' ').append(trackingStatus);
 			}
-
-			RepositoryState repositoryState = repository.getRepositoryState();
+			RepositoryState repositoryState = DecoratorRepositoryStateCache.INSTANCE
+					.getRepositoryState(repository);
 			if (repositoryState != RepositoryState.SAFE) {
 				suffix.append(" - ") //$NON-NLS-1$
 						.append(repositoryState.getDescription());

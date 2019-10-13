@@ -1,7 +1,7 @@
 		@Override
 		public boolean changed(IEclipseContext context) {
 			if (stopped.get()) {
-				cache.clear();
+				clearCache.run();
 				return false;
 			}
 			Object selection = context
@@ -19,7 +19,7 @@
 			// cache if the menuSelection == lastSelection.
 			if (selection != lastSelection
 					|| menuSelection != lastMenuSelection) {
-				cache.clear();
+				clearCache.run();
 			}
 			lastSelection = selection;
 			lastMenuSelection = menuSelection;

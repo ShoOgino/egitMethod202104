@@ -4,7 +4,7 @@
 		if (repository == null) {
 			return false;
 		}
-		Ref head = RepositoryStateCache.INSTANCE.getHeadRef(repository);
+		Ref head = SelectionRepositoryStateCache.INSTANCE.getHeadRef(repository);
 		return head != null && head.isSymbolic();
 	}
 

@@ -4,13 +4,13 @@
 		// ensure that a branch is checked out
 		Repository[] repos = getRepositories();
 		for (Repository repo : repos) {
-			String fullBranch = RepositoryStateCache.INSTANCE
+			String fullBranch = SelectionRepositoryStateCache.INSTANCE
 					.getFullBranchName(repo);
 			if (fullBranch == null
 					|| !fullBranch.startsWith(Constants.R_REFS)) {
 				return false;
 			}
-			if (RepositoryStateCache.INSTANCE.getHead(repo) == null) {
+			if (SelectionRepositoryStateCache.INSTANCE.getHead(repo) == null) {
 				return false;
 			}
 		}

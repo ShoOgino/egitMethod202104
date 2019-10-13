@@ -1,0 +1,7 @@
+	@Override
+	public void clear(Repository repository) {
+		super.clear(repository);
+		branchLabels.remove(repository.getDirectory());
+		branchStateLabels.remove(repository.getDirectory());
+	}
+

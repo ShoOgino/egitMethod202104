@@ -22,13 +22,13 @@
 			Repository repository = Adapters.adapt(receiver, Repository.class);
 			if (repository != null) {
 				return computeResult(expectedValue,
-						RepositoryState.SAFE.equals(RepositoryStateCache.INSTANCE
+						RepositoryState.SAFE.equals(SelectionRepositoryStateCache.INSTANCE
 								.getRepositoryState(repository)));
 			}
 		} else if ("canCommit".equals(property)) { //$NON-NLS-1$
 			Repository repository = Adapters.adapt(receiver, Repository.class);
 			if (repository != null) {
-				RepositoryState state = RepositoryStateCache.INSTANCE
+				RepositoryState state = SelectionRepositoryStateCache.INSTANCE
 						.getRepositoryState(repository);
 				return computeResult(expectedValue, state.canCommit());
 			}

@@ -1,8 +1,8 @@
 		private void decorateIcons(IDecoration decoration,
-				GitFlowRepository repository) throws IOException {
+				GitFlowConfig config) {
 			ImageDescriptor overlay = null;
 
-			if (repository.getConfig().isInitialized()) {
+			if (config.isInitialized()) {
 				overlay = INITIALIZED_IMAGE;
 			}
 
@@ -10,6 +10,8 @@
 			// for feature branch
 
 			// Overlays can only be added once, so do it at the end
-			decoration.addOverlay(overlay);
+			if (overlay != null) {
+				decoration.addOverlay(overlay);
+			}
 		}
 

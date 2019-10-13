@@ -45,7 +45,7 @@
 				RemoteConfig rconfig;
 				try {
 					rconfig = new RemoteConfig(
-							RepositoryStateCache.INSTANCE.getConfig(repository),
+							SelectionRepositoryStateCache.INSTANCE.getConfig(repository),
 							configName);
 				} catch (URISyntaxException e2) {
 					return false;
@@ -62,7 +62,7 @@
 				RemoteConfig rconfig;
 				try {
 					rconfig = new RemoteConfig(
-							RepositoryStateCache.INSTANCE.getConfig(repository),
+							SelectionRepositoryStateCache.INSTANCE.getConfig(repository),
 							configName);
 				} catch (URISyntaxException e2) {
 					return false;
@@ -74,17 +74,17 @@
 			}
 		}
 		if (property.equals("canStash")) { //$NON-NLS-1$
-			RepositoryState state = RepositoryStateCache.INSTANCE
+			RepositoryState state = SelectionRepositoryStateCache.INSTANCE
 					.getRepositoryState(repository);
 			return state.canCommit();
 		}
 		if (property.equals("canMerge")) { //$NON-NLS-1$
-			RepositoryState state = RepositoryStateCache.INSTANCE
+			RepositoryState state = SelectionRepositoryStateCache.INSTANCE
 					.getRepositoryState(repository);
 			if (state != RepositoryState.SAFE) {
 				return false;
 			}
-			String branch = RepositoryStateCache.INSTANCE
+			String branch = SelectionRepositoryStateCache.INSTANCE
 					.getFullBranchName(repository);
 			if (branch == null) {
 				return false; // fail gracefully...

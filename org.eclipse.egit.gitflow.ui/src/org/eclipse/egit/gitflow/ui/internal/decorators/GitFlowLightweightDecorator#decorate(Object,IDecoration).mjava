@@ -6,24 +6,23 @@
 	 */
 	@Override
 	public void decorate(Object element, IDecoration decoration) {
-		// Don't decorate if UI plugin is not running
-		if (Activator.getDefault() == null) {
+		if (!PlatformUI.isWorkbenchRunning() || Activator.getDefault() == null) {
 			return;
 		}
 
-		// Don't decorate if the workbench is not running
-		if (!PlatformUI.isWorkbenchRunning()) {
-			return;
+		GitFlowConfig config = null;
+		if (element instanceof GitFlowRepository) {
+			config = ((GitFlowRepository) element).getConfig();
+		} else if (element instanceof RepositoryNode) {
+			config = new GitFlowConfig(DecoratorRepositoryStateCache.INSTANCE
+					.getConfig(((RepositoryNode) element).getRepository()));
 		}
-
-
-		final GitFlowRepository repository = getRepository(element);
 		try {
-			if (repository != null) {
-				decorateRepository(repository, decoration);
+			if (config != null) {
+				decorateRepository(config, decoration);
 			}
 		} catch (Exception e) {
-			handleException(repository, e);
+			log.log(Activator.error(e.getMessage(), e));
 		}
 	}
 

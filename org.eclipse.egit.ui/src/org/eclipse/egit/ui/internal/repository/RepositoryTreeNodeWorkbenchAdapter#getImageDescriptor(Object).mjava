@@ -9,12 +9,8 @@
 			return null;
 		}
 		// We have to decorate here: if we let an asynchronous lightweight
-		// decorator do it, image decorations may flicker in the repositories
-		// view and elsewhere where we'd refresh viewers.
-		try {
-			return decorateImageDescriptor(base, node);
-		} catch (IOException e) {
-			return base;
-		}
+		// decorator do it, image decorations may flicker in the
+		// repositories view and elsewhere where we'd refresh viewers.
+		return decorateImageDescriptor(base, node);
 	}
 

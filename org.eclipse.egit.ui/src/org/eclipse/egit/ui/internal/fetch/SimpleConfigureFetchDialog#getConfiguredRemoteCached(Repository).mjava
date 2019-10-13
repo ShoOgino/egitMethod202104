@@ -10,13 +10,13 @@
 	 */
 	public static RemoteConfig getConfiguredRemoteCached(
 			Repository repository) {
-		String branch = RepositoryStateCache.INSTANCE
+		String branch = SelectionRepositoryStateCache.INSTANCE
 				.getFullBranchName(repository);
 		if (branch == null) {
 			return null;
 		}
 		branch = Repository.shortenRefName(branch);
 		return getConfiguredRemote(branch,
-				RepositoryStateCache.INSTANCE.getConfig(repository));
+				SelectionRepositoryStateCache.INSTANCE.getConfig(repository));
 	}
 

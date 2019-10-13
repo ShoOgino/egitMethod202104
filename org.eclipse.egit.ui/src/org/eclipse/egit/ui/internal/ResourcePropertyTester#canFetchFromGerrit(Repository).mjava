@@ -4,7 +4,7 @@
 	 *         Gerrit
 	 */
 	public static boolean canFetchFromGerrit(@NonNull Repository repository) {
-		Config config = RepositoryStateCache.INSTANCE.getConfig(repository);
+		Config config = SelectionRepositoryStateCache.INSTANCE.getConfig(repository);
 		try {
 			List<RemoteConfig> remoteConfigs = RemoteConfig
 					.getAllRemoteConfigs(config);

@@ -1,6 +1,6 @@
 	private ImageDescriptor decorateImageDescriptor(
-			@NonNull ImageDescriptor base, @NonNull RepositoryTreeNode<?> node)
-			throws IOException {
+			@NonNull ImageDescriptor base,
+			@NonNull RepositoryTreeNode<?> node) {
 		switch (node.getType()) {
 		case TAG:
 		case ADDITIONALREF:
@@ -13,7 +13,8 @@
 
 			String compareString = null;
 			Repository repository = node.getRepository();
-			String branchName = repository.getFullBranch();
+			String branchName = DecoratorRepositoryStateCache.INSTANCE
+					.getFullBranchName(repository);
 			if (branchName == null) {
 				return base;
 			}
@@ -48,7 +49,8 @@
 				}
 				ObjectId objectId = leaf.getObjectId();
 				if (objectId != null && objectId
-						.equals(repository.resolve(Constants.HEAD))) {
+						.equals(DecoratorRepositoryStateCache.INSTANCE
+								.getHead(repository))) {
 					return new DecorationOverlayDescriptor(base,
 							UIIcons.OVR_CHECKEDOUT, IDecoration.TOP_LEFT);
 				}

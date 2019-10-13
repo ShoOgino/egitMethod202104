@@ -1,0 +1,19 @@
+	/**
+	 * Retrieves a display name for the {@link Repository}, possibly augmented
+	 * with state information.
+	 *
+	 * @param repository
+	 *            to get the name of
+	 * @return the name
+	 */
+	public String getRepositoryNameAndState(Repository repository) {
+		String repoName = Activator.getDefault().getRepositoryUtil()
+				.getRepositoryName(repository);
+		RepositoryState state = getRepositoryState(repository);
+		if (state != RepositoryState.SAFE) {
+			return repoName + '|' + state.getDescription();
+		} else {
+			return repoName;
+		}
+	}
+

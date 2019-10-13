@@ -3,7 +3,7 @@
 		Repository repo = getRepository();
 		return repo != null
 				&& RepositoryState.SAFE.equals(
-						RepositoryStateCache.INSTANCE.getRepositoryState(repo))
+						SelectionRepositoryStateCache.INSTANCE.getRepositoryState(repo))
 				&& isLocalBranchCheckedout(repo);
 	}
 

@@ -4,7 +4,7 @@
 	 */
 	public static boolean hasGerritConfiguration(
 			@NonNull Repository repository) {
-		Config config = RepositoryStateCache.INSTANCE.getConfig(repository);
+		Config config = SelectionRepositoryStateCache.INSTANCE.getConfig(repository);
 		if (GerritUtil.getCreateChangeId(config)) {
 			return true;
 		}

@@ -17,7 +17,7 @@
 			if ("canPushToGerrit".equals(property)) { //$NON-NLS-1$
 				return canPushToGerrit(repository);
 			}
-			RepositoryState state = RepositoryStateCache.INSTANCE
+			RepositoryState state = SelectionRepositoryStateCache.INSTANCE
 					.getRepositoryState(repository);
 
 			if ("canAbortRebase".equals(property)) { //$NON-NLS-1$

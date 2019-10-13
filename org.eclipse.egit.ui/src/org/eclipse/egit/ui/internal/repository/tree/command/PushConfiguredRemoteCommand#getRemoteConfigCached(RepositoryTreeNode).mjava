@@ -10,7 +10,7 @@
 			try {
 				RemoteNode remoteNode = (RemoteNode) node;
 				RemoteConfig config = new RemoteConfig(
-						RepositoryStateCache.INSTANCE
+						SelectionRepositoryStateCache.INSTANCE
 								.getConfig(node.getRepository()),
 						remoteNode.getObject());
 				return withRefSpecs(config);

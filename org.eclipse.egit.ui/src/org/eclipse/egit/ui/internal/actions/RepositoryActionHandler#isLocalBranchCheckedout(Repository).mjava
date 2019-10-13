@@ -1,5 +1,5 @@
 	protected boolean isLocalBranchCheckedout(Repository repository) {
-		String fullBranch = RepositoryStateCache.INSTANCE
+		String fullBranch = SelectionRepositoryStateCache.INSTANCE
 				.getFullBranchName(repository);
 		return fullBranch != null && fullBranch.startsWith(Constants.R_HEADS);
 	}

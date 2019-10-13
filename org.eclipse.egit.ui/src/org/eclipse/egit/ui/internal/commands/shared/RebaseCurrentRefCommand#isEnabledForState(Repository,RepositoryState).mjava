@@ -6,6 +6,6 @@
 	public static boolean isEnabledForState(Repository repo,
 			RepositoryState state) {
 		return state == RepositoryState.SAFE
-				&& RepositoryStateCache.INSTANCE.getHead(repo) != null;
+				&& SelectionRepositoryStateCache.INSTANCE.getHead(repo) != null;
 	}
 

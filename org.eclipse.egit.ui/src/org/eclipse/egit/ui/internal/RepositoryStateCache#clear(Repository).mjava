@@ -1,0 +1,10 @@
+	/**
+	 * Clears all cached entries for the given {@link Repository}.
+	 *
+	 * @param repository
+	 *            to remove cached items of
+	 */
+	public void clear(Repository repository) {
+		cache.remove(repository.getDirectory());
+	}
+
