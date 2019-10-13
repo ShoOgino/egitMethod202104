@@ -3,6 +3,8 @@
 			if (buttonId == IDialogConstants.OK_ID) {
 				commitMessage = text.getText();
 				includeUntracked = untrackedButton.getSelection();
+				store.setValue(UIPreferences.STASH_INCLUDE_UNTRACKED,
+						includeUntracked);
 			} else {
 				commitMessage = null;
 				includeUntracked = false;

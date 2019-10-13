@@ -21,6 +21,9 @@
 			untrackedButton = new Button(composite, SWT.CHECK);
 			untrackedButton
 					.setText(UIText.StashCreateCommand_includeUntrackedLabel);
+			includeUntracked = store
+					.getBoolean(UIPreferences.STASH_INCLUDE_UNTRACKED);
+			untrackedButton.setSelection(includeUntracked);
 
 			text.setFocus();
 			return composite;
