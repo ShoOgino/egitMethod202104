@@ -5,17 +5,21 @@
 			// Check for uncommitted changes in submodules.
 			try {
 				boolean submodulesNodeSelected = false;
+				RepositoryCache cache = org.eclipse.egit.core.Activator
+						.getDefault().getRepositoryCache();
 				List<Repository> subRepos = new ArrayList<>();
 				// If Submodules node is selected, check all submodules.
 				for (RepositoryTreeNode<?> node : getSelectedNodes(event)) {
 					if (node.getType() == RepositoryTreeNodeType.SUBMODULES) {
 						submodulesNodeSelected = true;
-						SubmoduleWalk walk = SubmoduleWalk
-								.forIndex(node.getRepository());
-						while (walk.next()) {
-							Repository subRepo = walk.getRepository();
-							if (subRepo != null) {
-								subRepos.add(subRepo);
+						try (SubmoduleWalk walk = SubmoduleWalk
+								.forIndex(node.getRepository())) {
+							while (walk.next()) {
+								Repository subRepo = getCached(cache,
+										walk.getRepository());
+								if (subRepo != null) {
+									subRepos.add(subRepo);
+								}
 							}
 						}
 						break;
@@ -28,9 +32,9 @@
 							.entrySet()) {
 						if (entry.getValue() != null) {
 							for (String path : entry.getValue()) {
-								Repository subRepo;
-								subRepo = SubmoduleWalk.getSubmoduleRepository(
-										entry.getKey(), path);
+								Repository subRepo = getCached(cache,
+										SubmoduleWalk.getSubmoduleRepository(
+												entry.getKey(), path));
 								if (subRepo != null) {
 									subRepos.add(subRepo);
 								}
