@@ -1,6 +1,6 @@
 	private Object[] getBranchChildren(RepositoryTreeNode node, Repository repo,
 			String prefix) {
-		if (branchHierarchyMode) {
+		if (isHierarchical()) {
 			return getBranchHierarchyChildren(node, repo, prefix);
 		} else {
 			try {

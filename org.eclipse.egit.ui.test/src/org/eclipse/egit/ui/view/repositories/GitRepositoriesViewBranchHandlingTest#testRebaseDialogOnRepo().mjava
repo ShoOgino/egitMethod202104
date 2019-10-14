@@ -3,7 +3,7 @@
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(),
 				ICommandService.class);
 		State commandState = srv.getCommand(ToggleBranchHierarchyCommand.ID)
-				.getState(ToggleBranchHierarchyCommand.TOGGLE_STATE);
+				.getState(RegistryToggleState.STATE_ID);
 		Boolean isHierarchical = (Boolean) commandState.getValue();
 		commandState.setValue(Boolean.TRUE);
 		try {

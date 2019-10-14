@@ -1,6 +1,7 @@
 	@Before
-	public void beforeClass() throws Exception {
+	public void prepare() throws Exception {
 		setVerboseBranchMode(false);
+		initialLinkingState = setLinkWithSelection(false);
 		repositoryFile = createProjectAndCommitToRepository();
 		Activator.getDefault().getRepositoryUtil()
 				.addConfiguredRepository(repositoryFile);

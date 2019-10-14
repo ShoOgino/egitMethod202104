@@ -1,8 +1,6 @@
 	@After
 	public void after() {
-		RepositoriesView repos = (RepositoriesView) repoView.getViewReference()
-				.getView(false);
-		repos.setReactOnSelection(false);
+		linkWithSelectionState.setValue(initialLinkingWithSelection);
 		IHistoryView history = (IHistoryView) historyView.getViewReference()
 				.getView(false);
 		((GenericHistoryView) history).setLinkingEnabled(false);

@@ -1,9 +1,9 @@
 	protected static void setVerboseBranchMode(boolean state) {
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(),
 				ICommandService.class);
-		State verboseBranchModeState = srv.getCommand(
-				ToggleBranchCommitCommand.ID).getState(
-				ToggleBranchCommitCommand.TOGGLE_STATE);
+		State verboseBranchModeState = srv
+				.getCommand(ToggleBranchCommitCommand.ID)
+				.getState(RegistryToggleState.STATE_ID);
 		verboseBranchModeState.setValue(Boolean.valueOf(state));
 	}
 

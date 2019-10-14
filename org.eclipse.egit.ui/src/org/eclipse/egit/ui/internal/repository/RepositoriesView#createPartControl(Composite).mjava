@@ -1,4 +1,3 @@
-	@SuppressWarnings("boxing")
 	@Override
 	public void createPartControl(Composite aParent) {
 		Composite displayArea = new Composite(aParent, SWT.NONE);
@@ -11,11 +10,12 @@
 		IWorkbenchWindow w = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		ICommandService csrv = CommonUtils.getService(w, ICommandService.class);
-		Command command = csrv
-				.getCommand("org.eclipse.egit.ui.RepositoriesLinkWithSelection"); //$NON-NLS-1$
-		reactOnSelection = (Boolean) command.getState(
-				RegistryToggleState.STATE_ID).getValue();
-
+		reactOnSelection = csrv.getCommand(ToggleLinkWithSelectionCommand.ID)
+				.getState(RegistryToggleState.STATE_ID);
+		reactOnSelection.addListener(reactOnSelectionListener);
+		branchHierarchy = csrv.getCommand(ToggleBranchHierarchyCommand.ID)
+				.getState(RegistryToggleState.STATE_ID);
+		branchHierarchy.addListener(stateChangeListener);
 		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
 		if (service != null) {
 			service.showBusyForFamily(JobFamilies.REPO_VIEW_REFRESH);

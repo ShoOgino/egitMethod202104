@@ -12,14 +12,19 @@
 		repoUtil.addConfiguredRepository(localRepositoryDir);
 		repoUtil.addConfiguredRepository(clonedRepositoryDir);
 		repoUtil.addConfiguredRepository(remoteRepositoryDir); // it's bare
+		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(),
+				ICommandService.class);
+		linkWithSelectionState = srv
+				.getCommand(ToggleLinkWithSelectionCommand.ID)
+				.getState(RegistryToggleState.STATE_ID);
+		initialLinkingWithSelection = (Boolean) linkWithSelectionState
+				.getValue();
+		linkWithSelectionState.setValue(Boolean.TRUE);
 		stagingView = TestUtil.showView(StagingView.VIEW_ID);
 		reflogView = TestUtil.showView(ReflogView.VIEW_ID);
 		rebaseInteractiveView = TestUtil
 				.showView(RebaseInteractiveView.VIEW_ID);
 		repoView = TestUtil.showView(RepositoriesView.VIEW_ID);
-		RepositoriesView repos = (RepositoriesView) repoView.getViewReference()
-				.getView(false);
-		repos.setReactOnSelection(true);
 		historyView = TestUtil.showHistoryView();
 		IHistoryView history = (IHistoryView) historyView.getViewReference()
 				.getView(false);

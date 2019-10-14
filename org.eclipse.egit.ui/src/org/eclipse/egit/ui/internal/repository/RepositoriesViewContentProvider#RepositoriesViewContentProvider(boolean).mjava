@@ -8,15 +8,7 @@
 		super();
 		this.showUnbornHead = showUnbornHead;
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(), ICommandService.class);
-		commandState = srv.getCommand(
-				ToggleBranchHierarchyCommand.ID)
-				.getState(ToggleBranchHierarchyCommand.TOGGLE_STATE);
-		commandState.addListener(this);
-		try {
-			this.branchHierarchyMode = ((Boolean) commandState.getValue())
-					.booleanValue();
-		} catch (Exception e) {
-			Activator.handleError(e.getMessage(), e, false);
-		}
+		branchHierarchy = srv.getCommand(ToggleBranchHierarchyCommand.ID)
+				.getState(RegistryToggleState.STATE_ID);
 	}
 

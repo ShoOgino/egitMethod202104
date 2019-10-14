@@ -1,8 +1,6 @@
 	@Override
 	public void dispose() {
-		commandState.removeListener(this);
-		for (ListenerHandle handle : refsChangedListeners.values())
-			handle.remove();
+		refsChangedListeners.values().forEach(ListenerHandle::remove);
 		refsChangedListeners.clear();
 	}
 
