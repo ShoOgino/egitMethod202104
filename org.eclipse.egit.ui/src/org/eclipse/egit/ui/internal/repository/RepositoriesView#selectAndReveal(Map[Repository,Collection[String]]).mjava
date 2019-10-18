@@ -1,9 +1,10 @@
 	private void selectAndReveal(
 			Map<Repository, Collection<String>> pathsByRepo) {
 		final List<RepositoryTreeNode> nodesToShow = new ArrayList<>();
+		Repository repository = null;
 		for (Map.Entry<Repository, Collection<String>> entry : pathsByRepo
 				.entrySet()) {
-			Repository repository = entry.getKey();
+			repository = entry.getKey();
 			for (String repoPath : entry.getValue()) {
 				final RepositoryTreeNode node = getNodeForPath(repository,
 						repoPath);
@@ -12,6 +13,19 @@
 				}
 			}
 		}
-		selectReveal(new StructuredSelection(nodesToShow));
+
+		if (repository != null && !nodesToShow.isEmpty()
+				&& pathsByRepo.size() == 1) {
+			lastSelectedRepository = repository.getDirectory();
+		} else {
+			lastSelectedRepository = null;
+		}
+		List<?> current = getCommonViewer().getStructuredSelection().toList();
+		Set<?> currentlySelected = new HashSet<>(current);
+		if (currentlySelected.containsAll(nodesToShow)) {
+			getCommonViewer().getTree().showSelection();
+		} else {
+			selectReveal(new StructuredSelection(nodesToShow));
+		}
 	}
 

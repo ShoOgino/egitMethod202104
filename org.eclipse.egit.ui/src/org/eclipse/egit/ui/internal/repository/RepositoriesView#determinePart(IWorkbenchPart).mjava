@@ -1,0 +1,15 @@
+	private IWorkbenchPart determinePart(IWorkbenchPart part) {
+		IWorkbenchPart currentPart = part;
+		// this may happen if we switch between editors
+		if (currentPart instanceof IEditorPart) {
+			if (currentPart instanceof MultiPageEditorPart) {
+				Object nestedEditor = ((MultiPageEditorPart) part)
+						.getSelectedPage();
+				if (nestedEditor instanceof IEditorPart) {
+					currentPart = ((IEditorPart) nestedEditor);
+				}
+			}
+		}
+		return currentPart;
+	}
+

@@ -6,10 +6,11 @@
 	public void showRepository(Repository repositoryToShow) {
 		ITreeContentProvider cp = (ITreeContentProvider) getCommonViewer()
 				.getContentProvider();
-		for (Object repo : cp.getElements(getCommonViewer().getInput())) {
-			RepositoryTreeNode node = (RepositoryTreeNode) repo;
-			if (repositoryToShow.getDirectory().equals(node.getRepository().getDirectory()))
-				selectReveal(new StructuredSelection(node));
+		RepositoryTreeNode node = findRepositoryNode(cp,
+				cp.getElements(getCommonViewer().getInput()), repositoryToShow);
+		if (node != null) {
+			lastSelectedRepository = repositoryToShow.getDirectory();
+			selectReveal(new StructuredSelection(node));
 		}
 	}
 

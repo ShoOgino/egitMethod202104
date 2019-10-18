@@ -1,0 +1,14 @@
+	private ISelection convertSelection(IWorkbenchPart part,
+			ISelection selection) {
+		if (part instanceof IEditorPart) {
+			IEditorInput input = ((IEditorPart) part).getEditorInput();
+			if (input instanceof IFileEditorInput) {
+				return new StructuredSelection(
+						((IFileEditorInput) input).getFile());
+			} else if (input instanceof IURIEditorInput) {
+				return new StructuredSelection(input);
+			}
+		}
+		return selection;
+	}
+

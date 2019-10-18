@@ -1,5 +1,6 @@
 	private void reactOnSelection(ISelection selection) {
-		if (selection instanceof StructuredSelection) {
+		if (layout.topControl != emptyArea
+				&& selection instanceof StructuredSelection) {
 			StructuredSelection ssel = (StructuredSelection) selection;
 			if (ssel.size() != 1) {
 				return;
@@ -18,7 +19,8 @@
 			}
 			Repository repository = Adapters.adapt(ssel.getFirstElement(),
 					Repository.class);
-			if (repository != null) {
+			if (repository != null && !repository.getDirectory()
+					.equals(lastSelectedRepository)) {
 				showRepository(repository);
 				return;
 			}
