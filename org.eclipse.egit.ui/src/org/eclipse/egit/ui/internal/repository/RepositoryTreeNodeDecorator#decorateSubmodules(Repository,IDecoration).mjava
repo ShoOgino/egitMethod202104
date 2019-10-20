@@ -1,5 +1,5 @@
 	private boolean decorateSubmodules(@NonNull Repository repository,
-			IDecoration decoration) throws IOException {
+			IDecoration decoration) {
 		if (haveSubmoduleChanges(repository)) {
 			decoration.addPrefix("> "); //$NON-NLS-1$
 			return true;
