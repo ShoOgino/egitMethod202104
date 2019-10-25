@@ -39,7 +39,7 @@
 			@Override
 			public void setPreferenceStore(IPreferenceStore store) {
 				super.setPreferenceStore(
-						store == null ? store : getSecondaryPreferenceStore());
+						store == null ? null : getSecondaryPreferenceStore());
 			}
 		};
 		addField(autoStageDeletion);
@@ -51,7 +51,7 @@
 			@Override
 			public void setPreferenceStore(IPreferenceStore store) {
 				super.setPreferenceStore(
-						store == null ? store : getSecondaryPreferenceStore());
+						store == null ? null : getSecondaryPreferenceStore());
 			}
 		};
 		addField(autoStageMoves);

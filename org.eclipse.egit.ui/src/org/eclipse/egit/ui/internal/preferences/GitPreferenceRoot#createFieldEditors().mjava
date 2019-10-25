@@ -17,7 +17,7 @@
 			@Override
 			public void setPreferenceStore(IPreferenceStore store) {
 				super.setPreferenceStore(
-						store == null ? store : getSecondaryPreferenceStore());
+						store == null ? null : getSecondaryPreferenceStore());
 			}
 
 			@Override
@@ -104,7 +104,7 @@
 			@Override
 			public void setPreferenceStore(IPreferenceStore store) {
 				super.setPreferenceStore(
-						store == null ? store : getSecondaryPreferenceStore());
+						store == null ? null : getSecondaryPreferenceStore());
 			}
 		};
 		pullEditor.getLabelControl(remoteConnectionsGroup).setToolTipText(
@@ -126,7 +126,7 @@
 			@Override
 			public void setPreferenceStore(IPreferenceStore store) {
 				super.setPreferenceStore(
-						store == null ? store : getSecondaryPreferenceStore());
+						store == null ? null : getSecondaryPreferenceStore());
 			}
 		};
 		addField(sshClient);
@@ -138,7 +138,7 @@
 			@Override
 			public void setPreferenceStore(IPreferenceStore store) {
 				super.setPreferenceStore(
-						store == null ? store : getSecondaryPreferenceStore());
+						store == null ? null : getSecondaryPreferenceStore());
 			}
 		};
 		addField(httpClient);
