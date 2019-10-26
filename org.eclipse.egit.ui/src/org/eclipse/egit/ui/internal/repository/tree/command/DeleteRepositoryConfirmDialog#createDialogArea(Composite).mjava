@@ -55,8 +55,12 @@
 					.hint(SWT.DEFAULT, 100)
 					.applyTo(projectsViewer.getControl());
 
-			projectsViewer.setLabelProvider(WorkbenchLabelProvider
-					.getDecoratingWorkbenchLabelProvider());
+			projectsViewer
+					.setLabelProvider(new DecoratingStyledCellLabelProvider(
+							new WorkbenchLabelProvider(),
+							PlatformUI.getWorkbench().getDecoratorManager()
+									.getLabelDecorator(),
+							null));
 			projectsViewer.setContentProvider(ArrayContentProvider.getInstance());
 			projectsViewer.setInput(projectsToDelete);
 		} else
