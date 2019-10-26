@@ -42,6 +42,22 @@
 					executeOpenCommand(element);
 			}
 		});
+		ctxSrv = CommonUtils.getService(getSite(), IContextService.class);
+		viewer.addSelectionChangedListener(event -> {
+			handleSingleRepositoryContext(event.getSelection(), viewer);
+		});
+		viewer.getTree().addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				handleSingleRepositoryContext(null, viewer);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				handleSingleRepositoryContext(viewer.getSelection(), viewer);
+			}
+		});
 		// react on selection changes
 		ISelectionService srv = CommonUtils.getService(getSite(), ISelectionService.class);
 		srv.addPostSelectionListener(selectionChangedListener);
@@ -49,7 +65,7 @@
 		repositoryUtil.getPreferences().addPreferenceChangeListener(
 				configurationListener);
 		initRepositoriesAndListeners();
-		activateContextService();
+		ctxSrv.activateContext(VIEW_ID);
 		// link with editor
 		viewer.addPostSelectionChangedListener(event -> {
 			if (!((Boolean) reactOnSelection.getValue()).booleanValue()) {
@@ -69,6 +85,7 @@
 				showEditor((FileNode) selected);
 			}
 		});
+
 		emptyArea.setBackground(viewer.getControl().getBackground());
 		if (!repositories.isEmpty())
 			layout.topControl = viewer.getControl();
