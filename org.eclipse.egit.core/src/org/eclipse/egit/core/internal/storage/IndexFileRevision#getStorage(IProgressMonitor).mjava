@@ -3,9 +3,23 @@
 		if (blobId == null) {
 			try {
 				DirCache cache = db.readDirCache();
-				blobId = locateBlobObjectId(cache);
-				if (blobId != null) {
-					metadata = getMetadata(cache);
+				DirCacheEntry entry = locateEntry(cache);
+				if (entry != null) {
+					blobId = entry.getObjectId();
+					if (FileMode.GITLINK.equals(entry.getFileMode())) {
+						isGitlink = true;
+					} else {
+						if (blobId != null) {
+							metadata = getMetadata(cache);
+						}
+					}
+				} else if (!db.isBare()) {
+					// Not found in index. Check if the file on disk, if any, is
+					// a directory, and assume it's a gitlink if so. This is a
+					// safe fallback and results in a read-only editor in the
+					// compare editor.
+					File onDisk = new File(db.getWorkTree(), path);
+					isGitlink = onDisk.isDirectory();
 				}
 			} catch (IOException e) {
 				throw new CoreException(Activator.error(
@@ -14,6 +28,6 @@
 						e));
 			}
 		}
-		return new IndexBlobStorage(db, path, blobId, metadata);
+		return new IndexBlobStorage(db, path, isGitlink, blobId, metadata);
 	}
 

@@ -1,5 +1,13 @@
 	@Override
 	public boolean isEditable() {
+		IFileRevision revision = getFileRevision();
+		if (revision instanceof IndexFileRevision
+				&& ((IndexFileRevision) revision).isGitlink()) {
+			// Gitlinks are not editable in the index. It's too fragile; content
+			// is the commit ID of the submodule's HEAD. We don't allow changing
+			// that manually.
+			return false;
+		}
 		return true;
 	}
 

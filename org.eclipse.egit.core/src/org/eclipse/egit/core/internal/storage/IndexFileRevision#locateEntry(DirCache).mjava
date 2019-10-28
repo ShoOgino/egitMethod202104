@@ -1,4 +1,4 @@
-	private ObjectId locateBlobObjectId(DirCache cache) {
+	private DirCacheEntry locateEntry(DirCache cache) {
 		int firstIndex = cache.findEntry(path);
 		if (firstIndex < 0)
 			return null;
@@ -6,14 +6,14 @@
 		// Try to avoid call to nextEntry if first entry already matches
 		DirCacheEntry firstEntry = cache.getEntry(firstIndex);
 		if (stage == FIRST_AVAILABLE || firstEntry.getStage() == stage)
-			return firstEntry.getObjectId();
+			return firstEntry;
 
 		// Ok, we have to search
 		int nextIndex = cache.nextEntry(firstIndex);
 		for (int i = firstIndex; i < nextIndex; i++) {
 			DirCacheEntry entry = cache.getEntry(i);
 			if (entry.getStage() == stage)
-				return entry.getObjectId();
+				return entry;
 		}
 		return null;
 	}

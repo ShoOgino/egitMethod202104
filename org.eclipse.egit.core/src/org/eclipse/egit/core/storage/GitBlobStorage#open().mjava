@@ -2,6 +2,8 @@
 			IncorrectObjectTypeException {
 		if (blobId == null) {
 			return new ByteArrayInputStream(new byte[0]);
+		} else if (isGitlink) {
+			return new ByteArrayInputStream(Constants.encode(blobId.name()));
 		}
 		try {
 			WorkingTreeOptions workingTreeOptions = db.getConfig().get(WorkingTreeOptions.KEY);
