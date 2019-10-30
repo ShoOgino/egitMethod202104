@@ -1,0 +1,11 @@
+	/**
+	 * @param repositoryDirectories
+	 *            repository directories to be removed from all groups
+	 */
+	public void removeFromGroups(List<File> repositoryDirectories) {
+		for (RepositoryGroup group : groupMap.values()) {
+			group.removeRepositoryDirectories(repositoryDirectories);
+		}
+		savePreferences();
+	}
+

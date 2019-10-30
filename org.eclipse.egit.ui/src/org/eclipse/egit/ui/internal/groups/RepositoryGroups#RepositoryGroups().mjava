@@ -4,17 +4,29 @@
 	private RepositoryGroups() {
 		List<String> groups = split(
 				preferences.get(PREFS_GROUPS, EMPTY_STRING));
+		List<RepositoryGroup> toDelete = new ArrayList<>();
 		for (String groupIdString : groups) {
 			UUID groupId = UUID.fromString(groupIdString);
 			String name = preferences
 					.get(PREFS_GROUP_NAME_PREFIX + groupIdString, EMPTY_STRING);
+			// Guard against corrupted preferences
+			if (isGroupNameInvalid(name)) {
+				toDelete.add(new RepositoryGroup(groupId, name));
+				Activator.logWarning(MessageFormat.format(
+						UIText.RepositoryGroups_LoadPreferencesInvalidName,
+						name), null);
+				continue;
+			}
 			List<File> repos = split(preferences
 					.get(PREFS_GROUP_PREFIX + groupIdString, EMPTY_STRING))
 							.stream().map(util::getAbsoluteRepositoryPath)
-							.map(File::new)
+							.map(File::new).filter(File::isDirectory)
 							.collect(Collectors.toList());
 			RepositoryGroup group = new RepositoryGroup(groupId, name, repos);
 			groupMap.put(groupId, group);
+		}
+		if (!toDelete.isEmpty()) {
+			delete(toDelete);
 		}
 	}
 

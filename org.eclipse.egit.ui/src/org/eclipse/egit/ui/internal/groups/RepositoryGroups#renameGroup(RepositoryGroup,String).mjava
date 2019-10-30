@@ -7,7 +7,7 @@
 	public void renameGroup(RepositoryGroup group, String newName) {
 		checkGroupName(newName);
 		RepositoryGroup myGroup = groupMap.get(group.getGroupId());
-		if (myGroup != null) {
+		if (myGroup != null && !newName.equals(myGroup.getName())) {
 			myGroup.setGroupName(newName);
 			savePreferences();
 		}
