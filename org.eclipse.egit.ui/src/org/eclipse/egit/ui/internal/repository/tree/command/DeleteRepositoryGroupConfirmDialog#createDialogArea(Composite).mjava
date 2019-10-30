@@ -11,6 +11,8 @@
 		groupsViewer.setContentProvider(
 				new DeleteRepositoryGroupTreeContentProvider());
 		groupsViewer.setInput(groupsToDelete);
+		dontShowAgain = new Button(main, SWT.CHECK);
+		dontShowAgain.setText(UIText.RepositoriesView_RepoGroup_DeleteDontShowAgain);
 		setTitle(UIText.RepositoriesView_RepoGroup_Delete_Title);
 		setMessage(UIText.RepositoriesView_RepoGroup_Delete_Confirm);
 		return main;
