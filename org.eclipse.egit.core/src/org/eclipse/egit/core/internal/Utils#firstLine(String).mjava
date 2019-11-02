@@ -1,0 +1,15 @@
+	/**
+	 * Reduce a multi-line text to the first line only.
+	 *
+	 * @param text
+	 *            to reduce
+	 * @return the first line of {@text}, may be empty.
+	 */
+	public static String firstLine(String text) {
+		Matcher m = VERTICAL_SPACES.matcher(text);
+		if (m.find()) {
+			return text.substring(0, m.start());
+		}
+		return text;
+	}
+

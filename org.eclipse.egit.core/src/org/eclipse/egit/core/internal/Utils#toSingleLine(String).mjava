@@ -1,0 +1,12 @@
+	/**
+	 * Converts a multi-line text to a single line by replacing all sequences of
+	 * vertical whitespace by a single blank.
+	 *
+	 * @param text
+	 *            to convert
+	 * @return the converted text
+	 */
+	public static String toSingleLine(String text) {
+		return VERTICAL_SPACES.matcher(text).replaceAll(" "); //$NON-NLS-1$
+	}
+
