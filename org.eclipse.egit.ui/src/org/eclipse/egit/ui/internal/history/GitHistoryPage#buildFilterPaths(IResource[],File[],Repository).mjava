@@ -55,13 +55,12 @@
 					isRegularFile = file.isFile();
 				}
 
-				if (gitDirPath.isPrefixOf(filePath))
+				if (gitDirPath.isPrefixOf(filePath)) {
 					throw new IllegalStateException(
-							NLS
-									.bind(
-											UIText.GitHistoryPage_FileOrFolderPartOfGitDirMessage,
-											filePath.toOSString()));
-
+							NLS.bind(
+									UIText.GitHistoryPage_FileOrFolderPartOfGitDirMessage,
+									filePath.toOSString()));
+				}
 				IPath pathToAdd = filePath.removeFirstSegments(segmentCount)
 						.setDevice(null);
 				if (!pathToAdd.isEmpty())

@@ -1,0 +1,10 @@
+	private RevCommit toRevCommit(RevWalk w, AnyObjectId id) {
+		try {
+			return w.parseCommit(id);
+		} catch (IOException e) {
+			// Ignore here; HEAD or FETCH_HEAD are not a commit? Result is only
+			// for display purposes.
+			return null;
+		}
+	}
+

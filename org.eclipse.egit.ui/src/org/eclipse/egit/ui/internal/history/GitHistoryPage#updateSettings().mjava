@@ -1,8 +1,10 @@
-	private boolean shouldRedraw(AnyObjectId headId, AnyObjectId fetchHeadId,
-			List<FilterPath> paths) {
-		boolean pathChanged = pathChanged(pathFilters, paths);
-		boolean headChanged = headId == null || !headId.equals(currentHeadId);
-
+	/**
+	 * Updates the settings from the preferences and returns whether any have
+	 * changed.
+	 *
+	 * @return {@code true} if any setting changed, {@code false} otherwise
+	 */
+	private boolean updateSettings() {
 		boolean allBranchesChanged = currentShowAllBranches != store
 			.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ALL_BRANCHES);
 		currentShowAllBranches = store
@@ -16,9 +18,6 @@
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS);
 		currentShowAdditionalRefs = store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_ADDITIONAL_REFS);
-		boolean fetchHeadChanged = currentShowAdditionalRefs
-				&& fetchHeadId != null
-				&& !fetchHeadId.equals(currentFetchHeadId);
 
 		boolean showNotesChanged = currentShowNotes != store
 				.getBoolean(UIPreferences.RESOURCEHISTORY_SHOW_NOTES);
@@ -27,8 +26,7 @@
 		boolean followRenamesChanged = currentFollowRenames != getFollowRenames();
 		currentFollowRenames = getFollowRenames();
 
-		return pathChanged || headChanged || fetchHeadChanged
-				|| allBranchesChanged || firstParentOnlyChanged
+		return allBranchesChanged || firstParentOnlyChanged
 				|| additionalRefsChange || showNotesChanged
 				|| followRenamesChanged;
 	}
