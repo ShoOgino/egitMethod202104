@@ -1,0 +1,19 @@
+	/**
+	 * Runs a {@link WorkWithResult}. If the {@code repository} supports config
+	 * caching, the git config is cached during the {@code work}.
+	 *
+	 * @param repository
+	 *            to operate on
+	 * @param work
+	 *            to perform
+	 * @return the result of {@code work}
+	 * @throws IOException
+	 *             if {@code work} throws it
+	 */
+	public static <T> T run(Repository repository,
+			WorkWithResult<? extends T> work) throws IOException {
+		try (ConfigScope scope = new ConfigScope(repository)) {
+			return work.get();
+		}
+	}
+

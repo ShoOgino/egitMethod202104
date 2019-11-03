@@ -1,0 +1,14 @@
+	@Override
+	public FileBasedConfig getConfig() {
+		Map<File, CachedConfig> cache = CACHED_CONFIG.get();
+		CachedConfig cfg = cache.get(getDirectory());
+		if (cfg == null) {
+			return super.getConfig();
+		} else {
+			if (cfg.config == null) {
+				cfg.config = super.getConfig();
+			}
+			return cfg.config;
+		}
+	}
+

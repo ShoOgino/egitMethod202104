@@ -1,0 +1,8 @@
+		@Override
+		public void close() {
+			if (repo != null) {
+				repo.cacheConfig(false);
+				repo = null;
+			}
+		}
+

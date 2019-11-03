@@ -1,0 +1,18 @@
+	/**
+	 * Executes the given {@link Work}. If the {@code repository} supports
+	 * config caching, the git config is cached during the {@code work}.
+	 *
+	 * @param repository
+	 *            to operate on
+	 * @param work
+	 *            to perform
+	 * @throws IOException
+	 *             if {@code work} throws it
+	 */
+	public static void run(Repository repository, Work work)
+			throws IOException {
+		try (ConfigScope scope = new ConfigScope(repository)) {
+			work.run();
+		}
+	}
+

@@ -1,0 +1,15 @@
+	/**
+	 * Executes the given {@code work}. If the {@code repository} supports
+	 * config caching, the git config is cached during the {@code work}.
+	 *
+	 * @param repository
+	 *            to operate on
+	 * @param work
+	 *            to perform
+	 */
+	public static void execute(Repository repository, Runnable work) {
+		try (ConfigScope scope = new ConfigScope(repository)) {
+			work.run();
+		}
+	}
+

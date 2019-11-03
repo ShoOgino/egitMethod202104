@@ -15,8 +15,8 @@
 		synchronized (repositoryCache) {
 			RepositoryReference r = repositoryCache.get(normalizedGitDir);
 			if (r == null) {
-				Repository inner = FileRepositoryBuilder
-						.create(normalizedGitDir);
+				Repository inner = new Builder().setGitDir(normalizedGitDir)
+						.readEnvironment().build();
 				RepositoryHandle result = new RepositoryHandle(inner);
 				repositoryCache.put(normalizedGitDir,
 						new RepositoryReference(result, inner, queue));

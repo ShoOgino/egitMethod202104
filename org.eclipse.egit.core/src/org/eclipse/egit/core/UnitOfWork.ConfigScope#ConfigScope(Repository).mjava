@@ -1,0 +1,19 @@
+		/**
+		 * Creates a new {@link ConfigScope} and initiates caching of the
+		 * {@link Repository#getConfig() Config} if the {@code repository}
+		 * supports config caching.
+		 *
+		 * @param repository
+		 *            to open the scope for
+		 */
+		public ConfigScope(Repository repository) {
+			Repository toCache = repository;
+			if (repository instanceof RepositoryHandle) {
+				toCache = ((RepositoryHandle) repository).getDelegate();
+			}
+			if (toCache instanceof CachingRepository) {
+				repo = (CachingRepository) toCache;
+				repo.cacheConfig(true);
+			}
+		}
+

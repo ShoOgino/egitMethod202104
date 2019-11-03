@@ -1,0 +1,10 @@
+	/**
+	 * Completely unwinds the caching stack in case of nested calls to
+	 * {@link #cacheConfig(boolean)}. The git config of the repository will not
+	 * be cached anymore for the calling thread.
+	 */
+	void clearConfigCache() {
+		Map<File, CachedConfig> cache = CACHED_CONFIG.get();
+		cache.remove(getDirectory());
+	}
+
