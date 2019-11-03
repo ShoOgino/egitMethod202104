@@ -17,12 +17,13 @@
 		int largestSegmentCount = 0;
 		List<File> toRemove = new ArrayList<>();
 		synchronized (repositoryCache) {
-			for (Iterator<Map.Entry<File, Reference<Repository>>> i = repositoryCache
+			for (Iterator<Map.Entry<File, RepositoryReference>> i = repositoryCache
 					.entrySet().iterator(); i.hasNext();) {
-				Map.Entry<File, Reference<Repository>> entry = i.next();
+				Map.Entry<File, RepositoryReference> entry = i.next();
 				Repository repo = entry.getValue().get();
 				if (repo == null) {
 					i.remove();
+					Closer.closeReference(entry.getValue());
 					toRemove.add(entry.getKey());
 					continue;
 				}
@@ -35,6 +36,7 @@
 							|| repoPath.segmentCount() > largestSegmentCount) {
 						if (!repo.getDirectory().exists()) {
 							i.remove();
+							Closer.closeReference(entry.getValue());
 							toRemove.add(entry.getKey());
 							continue;
 						}

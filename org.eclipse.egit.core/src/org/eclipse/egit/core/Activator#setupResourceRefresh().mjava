@@ -1,6 +1,5 @@
 	private void setupResourceRefresh() {
-		refreshHandler = new ResourceRefreshHandler();
-		refreshHandle = Repository.getGlobalListenerList()
-				.addWorkingTreeModifiedListener(refreshHandler);
+		refreshHandle = repositoryCache.getGlobalListenerList()
+				.addWorkingTreeModifiedListener(new ResourceRefreshHandler());
 	}
 

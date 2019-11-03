@@ -1,0 +1,11 @@
+	private static void fireEvent(Repository repo,
+			RepositoryEvent<? extends RepositoryListener> event) {
+		// Since the delegate will also dispatch its event through the global
+		// list, which we intercept in the RepositoryCache, we don't use
+		// repo.fireEvent() here but instead dispatch the event ourselves
+		// through the repo's listener list. Otherwise there'd be two
+		// notifications through the global list.
+		event.setRepository(repo);
+		repo.getListenerList().dispatch(event);
+	}
+

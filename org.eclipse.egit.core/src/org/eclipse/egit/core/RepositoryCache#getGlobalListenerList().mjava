@@ -1,0 +1,12 @@
+	/**
+	 * Gets a global listener list that fires events from any repository. EGit
+	 * uses this instead of {@link Repository#getGlobalListenerList()} so that
+	 * we can be sure to only ever pass around {@link RepositoryHandle}s instead
+	 * of the underlying real repositories.
+	 *
+	 * @return the global listener list
+	 */
+	public ListenerList getGlobalListenerList() {
+		return globalListeners;
+	}
+

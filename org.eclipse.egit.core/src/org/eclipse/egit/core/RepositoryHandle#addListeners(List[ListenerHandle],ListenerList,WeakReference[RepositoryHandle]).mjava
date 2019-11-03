@@ -1,0 +1,43 @@
+	private static void addListeners(List<ListenerHandle> listeners,
+			ListenerList list, WeakReference<RepositoryHandle> ref) {
+		// Add listeners that change the repository so that forwarded events
+		// have this handle set as repository. Since we can't change the
+		// repository in the original event we have to re-fire new ones.
+		//
+		// We use a static method and a WeakReference to the RepositoryHandle
+		// instance to avoid a hard reference loop from the delegate back to the
+		// RepositoryHandle:
+		//
+		// delegate->listerList->listenerHandle->repositoryHandle,
+		//
+		// which would prevent GC from collecting the RepositoryHandle because
+		// of the hard reference to the delegate inside the RepositoryCache's
+		// RepositoryReference.
+		listeners.add(list.addConfigChangedListener(event -> {
+			Repository repo = ref.get();
+			if (repo != null) {
+				fireEvent(repo, new ConfigChangedEvent());
+			}
+		}));
+		listeners.add(list.addIndexChangedListener(event -> {
+			Repository repo = ref.get();
+			if (repo != null) {
+				fireEvent(repo, new IndexChangedEvent(event.isInternal()));
+			}
+		}));
+		listeners.add(list.addRefsChangedListener(event -> {
+			Repository repo = ref.get();
+			if (repo != null) {
+				fireEvent(repo, new RefsChangedEvent());
+			}
+		}));
+		listeners.add(list.addWorkingTreeModifiedListener(event -> {
+			Repository repo = ref.get();
+			if (repo != null) {
+				fireEvent(repo,
+						new WorkingTreeModifiedEvent(event.getModified(),
+						event.getDeleted()));
+			}
+		}));
+	}
+

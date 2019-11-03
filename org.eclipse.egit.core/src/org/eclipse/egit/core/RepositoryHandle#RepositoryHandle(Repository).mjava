@@ -1,0 +1,17 @@
+	/**
+	 * Creates a new {@link RepositoryHandle} for the given {@code delegate}.
+	 *
+	 * @param delegate
+	 *            to wrap with the handle; must <em>not</em> be another
+	 *            {@link RepositoryHandle}
+	 */
+	RepositoryHandle(Repository delegate) {
+		super(new RepositoryBuilder());
+		// Internal error; no translation.
+		Assert.isLegal(!(delegate instanceof RepositoryHandle),
+				"Delegate of a RepositoryHandle must not be another RepositoryHandle"); //$NON-NLS-1$
+		this.delegate = delegate;
+		addListeners(listeners, delegate.getListenerList(),
+				new WeakReference<>(this));
+	}
+

@@ -3,10 +3,13 @@
 	 */
 	public void clear() {
 		List<File> gitDirs;
+		List<RepositoryReference> references;
 		synchronized (repositoryCache) {
 			gitDirs = new ArrayList<>(repositoryCache.keySet());
+			references = new ArrayList<>(repositoryCache.values());
 			repositoryCache.clear();
 		}
 		removeIndexDiffCaches(gitDirs);
+		references.forEach(Closer::closeReference);
 	}
 

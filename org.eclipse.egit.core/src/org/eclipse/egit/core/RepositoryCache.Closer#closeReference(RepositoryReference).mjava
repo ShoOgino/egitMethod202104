@@ -1,0 +1,8 @@
+		public static void closeReference(RepositoryReference stale) {
+			Repository repository = stale.getRepository();
+			if (repository != null) {
+				repository.close();
+			}
+			stale.clearRepository();
+		}
+

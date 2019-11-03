@@ -1,0 +1,14 @@
+		@Override
+		public void run() {
+			try {
+				for (;;) {
+					Reference<?> stale = queue.remove();
+					if (stale instanceof RepositoryReference) {
+						closeReference((RepositoryReference) stale);
+					}
+				}
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+

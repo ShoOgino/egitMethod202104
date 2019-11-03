@@ -1,0 +1,7 @@
+	@Override
+	public RevCommit parseCommit(AnyObjectId id)
+			throws IncorrectObjectTypeException, IOException,
+			MissingObjectException {
+		return delegate.parseCommit(id);
+	}
+
