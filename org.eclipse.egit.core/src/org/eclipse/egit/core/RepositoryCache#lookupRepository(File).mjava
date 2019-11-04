@@ -16,7 +16,7 @@
 			RepositoryReference r = repositoryCache.get(normalizedGitDir);
 			if (r == null) {
 				Repository inner = new Builder().setGitDir(normalizedGitDir)
-						.readEnvironment().build();
+						.readEnvironment().setup().createRepository();
 				RepositoryHandle result = new RepositoryHandle(inner);
 				repositoryCache.put(normalizedGitDir,
 						new RepositoryReference(result, inner, queue));

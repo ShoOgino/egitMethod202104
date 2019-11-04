@@ -1,13 +1,36 @@
 		@Override
-		public Repository build() throws IOException {
-			CachingRepository repo = new CachingRepository(setup());
-			if (isMustExist()) {
-				@SuppressWarnings("restriction")
-				boolean exists = repo.getObjectDatabase().exists();
-				if (!exists) {
-					throw new RepositoryNotFoundException(getGitDir());
+		public RepositoryHandle build() throws IOException {
+			setup();
+			File gitDir = getGitDir();
+			RepositoryHandle result = null;
+			boolean removeCache = false;
+			try {
+				synchronized (repositoryCache) {
+					Reference<RepositoryHandle> r = repositoryCache.get(gitDir);
+					if (r != null) {
+						RepositoryHandle cached = r.get();
+						if (cached != null && cached.getDirectory().exists()) {
+							return cached;
+						} else {
+							Closer.closeReference(
+									repositoryCache.remove(gitDir));
+							removeCache = true;
+						}
+					}
+					CachingRepository inner = createRepository();
+					result = new RepositoryHandle(inner);
+					repositoryCache.put(gitDir,
+							new RepositoryReference(result, inner, queue));
+				}
+			} finally {
+				if (removeCache) {
+					IndexDiffCache indexCache = Activator.getDefault()
+							.getIndexDiffCache();
+					if (indexCache != null) {
+						indexCache.remove(gitDir);
+					}
 				}
 			}
-			return repo;
+			return result;
 		}
 
