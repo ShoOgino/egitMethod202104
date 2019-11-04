@@ -1,9 +1,15 @@
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
+		int category1 = category(e1);
+		int category2 = category(e2);
+
+		if (category1 != category2) {
+			return category1 - category2;
+		}
 		if (e1 instanceof RepositoryTreeNode
 				&& e2 instanceof RepositoryTreeNode) {
-			RepositoryTreeNode node1 = (RepositoryTreeNode) e1;
-			RepositoryTreeNode node2 = (RepositoryTreeNode) e2;
+			RepositoryTreeNode<?> node1 = (RepositoryTreeNode<?>) e1;
+			RepositoryTreeNode<?> node2 = (RepositoryTreeNode<?>) e2;
 			return node1.compareTo(node2);
 		} else {
 			return super.compare(viewer, e1, e2);

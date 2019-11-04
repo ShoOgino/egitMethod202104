@@ -1,11 +1,16 @@
-	@SuppressWarnings("unchecked")
 	@Override
 	public int category(Object element) {
 		if (element instanceof RepositoryTreeNode) {
-			RepositoryTreeNode<? extends Object> node = (RepositoryTreeNode<? extends Object>) element;
-			if (node.getType() == RepositoryTreeNodeType.BRANCHHIERARCHY)
+			RepositoryTreeNode<?> node = (RepositoryTreeNode<?>) element;
+			RepositoryTreeNodeType type = node.getType();
+			switch (type) {
+			case REPOGROUP:
+				return RepositoryTreeNodeType.values().length; // At the bottom
+			case BRANCHHIERARCHY:
 				return RepositoryTreeNodeType.REF.ordinal();
-			return node.getType().ordinal();
+			default:
+				return type.ordinal();
+			}
 		}
 		return super.category(element);
 	}
