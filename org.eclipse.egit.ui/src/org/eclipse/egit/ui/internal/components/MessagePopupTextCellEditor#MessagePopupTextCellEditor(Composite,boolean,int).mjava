@@ -1,0 +1,18 @@
+	/**
+	 * Creates a new {@link MessagePopupTextCellEditor} parented under the given
+	 * control using the given style.
+	 *
+	 * @param parent
+	 *            the parent control
+	 * @param cancelOnFocusLost
+	 *            whether to cancel the edit when the focus is lost
+	 * @param style
+	 *            the style bits
+	 * @see TextCellEditor#TextCellEditor(Composite, int)
+	 */
+	public MessagePopupTextCellEditor(Composite parent,
+			boolean cancelOnFocusLost, int style) {
+		super(parent, style);
+		this.cancelOnFocusLost = cancelOnFocusLost;
+	}
+

@@ -1,0 +1,15 @@
+	/**
+	 * If a text editor is open and has the focus, paste into it.
+	 *
+	 * @return {@code true} if there was a text editor that did paste,
+	 *         {@code false} otherwise
+	 */
+	public boolean pasteInEditor() {
+		if (textCellEditor != null && textCellEditor.isActivated()) {
+			// We're editing
+			textCellEditor.performPaste();
+			return true;
+		}
+		return false;
+	}
+

@@ -1,16 +1,14 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		RepositoryGroups groupsUtil = RepositoryGroups.getInstance();
-
-		RepositoryGroup group = getSelectedGroup(event);
-		String groupName =
-				CreateRepositoryGroupCommand.getNewGroupName(getActiveShell(event),
-						UIText.RepositoriesView_RepoGroup_Rename_Title,
-						groupsUtil,
-						group.getName());
-		if (groupName != null) {
-			groupsUtil.renameGroup(group, groupName);
-			getView(event).refresh();
+		List<RepositoryTreeNode> elements = getSelectedNodes(event);
+		if (elements.size() == 1
+				&& elements.get(0) instanceof RepositoryGroupNode) {
+			RepositoriesView view = getView(event);
+			view.getCommonViewer().editElement(elements.get(0), 0);
+		} else {
+			Activator.logError(
+					UIText.RepositoriesView_RepoGroup_Rename_IllegalSelection,
+					null);
 		}
 		return null;
 	}

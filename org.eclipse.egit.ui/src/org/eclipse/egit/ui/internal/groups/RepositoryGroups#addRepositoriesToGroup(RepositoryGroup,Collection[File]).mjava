@@ -2,15 +2,15 @@
 	 * adds repositories to the given group and removes them from all other
 	 * groups
 	 *
-	 * @param groupId
-	 *            id of group to which the repositories are added
+	 * @param group
+	 *            to which the repositories are added
 	 * @param repoDirs
 	 *            repository directories to be added to the group
 	 *
 	 */
-	public void addRepositoriesToGroup(UUID groupId,
+	public void addRepositoriesToGroup(RepositoryGroup group,
 			Collection<File> repoDirs) {
-		if (!groupMap.containsKey(groupId)) {
+		if (!groupMap.containsKey(group.getGroupId())) {
 			throw new IllegalArgumentException();
 		}
 		Collection<RepositoryGroup> currentGroups = groupMap.values();
@@ -18,7 +18,7 @@
 			groups.removeRepositoryDirectories(repoDirs);
 		}
 
-		groupMap.get(groupId).addRepositoryDirectories(repoDirs);
+		group.addRepositoryDirectories(repoDirs);
 		savePreferences();
 
 	}

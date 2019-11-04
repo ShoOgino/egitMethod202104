@@ -1,0 +1,18 @@
+	/**
+	 * Invoked when the cell editor has lost the focus; cancels the editor
+	 * without applying the value.
+	 */
+	@Override
+	protected void focusLost() {
+		// The super implementation applies the value, but that may be a bit
+		// risky. In some contexts edits should be done only if the user
+		// explicitly hit <return>.
+		if (cancelOnFocusLost) {
+			if (isActivated()) {
+				fireCancelEditor();
+			}
+		} else {
+			super.focusLost();
+		}
+	}
+

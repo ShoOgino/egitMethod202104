@@ -1,16 +1,22 @@
 	/**
+	 * Creates a new group with the given name.
+	 *
 	 * @param groupName
 	 *            valid name of the new group
-	 * @return id of the new group
+	 * @return the new group
+	 * @throws IllegalArgumentException
+	 *             if the name is invalid
+	 * @throws IllegalStateException
+	 *             if a group with the given name already exists
 	 */
-	public UUID createGroup(String groupName) {
+	public RepositoryGroup createGroup(String groupName) {
 		checkGroupName(groupName);
 		if (!groupExists(groupName)) {
 			UUID groupId = UUID.randomUUID();
 			RepositoryGroup group = new RepositoryGroup(groupId, groupName);
 			groupMap.put(groupId, group);
 			savePreferences();
-			return groupId;
+			return group;
 		} else {
 			throw new IllegalStateException(
 					MessageFormat.format(

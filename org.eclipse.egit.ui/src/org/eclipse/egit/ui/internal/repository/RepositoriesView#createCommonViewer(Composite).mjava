@@ -58,6 +58,7 @@
 				handleSingleRepositoryContext(viewer.getSelection(), viewer);
 			}
 		});
+		setupInlineEditing(viewer);
 		// react on selection changes
 		ISelectionService srv = CommonUtils.getService(getSite(), ISelectionService.class);
 		srv.addPostSelectionListener(selectionChangedListener);

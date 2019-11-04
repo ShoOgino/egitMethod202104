@@ -1,5 +1,9 @@
 	@Override
 	public void dispose() {
+		if (textCellEditor != null) {
+			textCellEditor.dispose();
+			textCellEditor = null;
+		}
 		if (reactOnSelection != null) {
 			reactOnSelection.removeListener(reactOnSelectionListener);
 		}

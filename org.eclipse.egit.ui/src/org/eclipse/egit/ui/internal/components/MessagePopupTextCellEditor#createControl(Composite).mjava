@@ -1,0 +1,48 @@
+	@Override
+	protected Control createControl(Composite parent) {
+		Control control = super.createControl(parent);
+		errorPopup = new DefaultToolTip(control, ToolTip.NO_RECREATE, true);
+		// A delay enables us to cancel showing the tooltip if the user keeps
+		// typing and the value is valid again.
+		errorPopup.setPopupDelay(DEFAULT_DELAY_MILLIS);
+		errorPopup.setBackgroundColor(Activator.getDefault()
+				.getResourceManager().createColor(DEFAULT_BACKGROUND));
+		control.addDisposeListener(event -> errorPopup.hide());
+		addListener(new ICellEditorListener() {
+
+			@Override
+			public void editorValueChanged(boolean oldValidState,
+					boolean newValidState) {
+				if (newValidState) {
+					errorPopup.hide();
+					return;
+				}
+				Control editor = getControl();
+				Point pos = editor.getSize();
+				errorPopup.setText(getErrorMessage());
+				pos.x = 0;
+				errorPopup.show(pos);
+			}
+
+			@Override
+			public void cancelEditor() {
+				errorPopup.hide();
+			}
+
+			@Override
+			public void applyEditorValue() {
+				errorPopup.hide();
+			}
+		});
+		// Since "text" in the super class is protected, we may rely on (a)
+		// super.createControl() having created and returned a Text, and (b) it
+		// having actually set "text", and (c) control == text.
+		if ((text.getStyle() & SWT.SINGLE) != 0) {
+			// Prevent pasting multi-line text into a single-line control. See
+			// bug 273470.
+			text.addVerifyListener(
+					event -> event.text = Utils.firstLine(event.text));
+		}
+		return control;
+	}
+
