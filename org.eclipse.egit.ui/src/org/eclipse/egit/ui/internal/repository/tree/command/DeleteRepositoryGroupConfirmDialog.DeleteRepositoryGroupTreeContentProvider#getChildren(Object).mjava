@@ -5,7 +5,7 @@
 						.getRepositoryCache();
 				RepositoryGroupNode groupNode = ((RepositoryGroupNode) parentElement);
 				final List<RepositoryNode> result = new ArrayList<>();
-				groupNode.getGroup().getRepositoryDirectories().stream()
+				groupNode.getObject().getRepositoryDirectories().stream()
 						.forEach(repoDir -> {
 							try {
 								result.add(new RepositoryNode(groupNode,

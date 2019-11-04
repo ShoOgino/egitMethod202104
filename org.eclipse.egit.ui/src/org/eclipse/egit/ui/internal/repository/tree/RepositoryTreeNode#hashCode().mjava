@@ -4,36 +4,21 @@
 		int result = 1;
 		switch (myType) {
 		case REPO:
-			// fall through
 		case REMOTES:
-			// fall through
 		case LOCAL:
-			// fall through
 		case REMOTETRACKING:
-			// fall through
 		case BRANCHES:
-			// fall through
 		case ADDITIONALREFS:
-			// fall through
 		case SUBMODULES:
-			// fall through
 		case STASH:
-			// fall through
 		case WORKINGDIR:
 			result = prime
 					* result
 					+ ((myObject == null) ? 0 : ((Repository) myObject)
 							.getDirectory().hashCode());
 			break;
-		case REPOGROUP:
-			RepositoryGroup group = ((RepositoryGroupNode) this).getGroup();
-			result = prime * result + group.getGroupId().hashCode();
-			result = prime * result + group.getName().hashCode();
-			break;
 		case REF:
-			// fall through
 		case TAG:
-			// fall through
 		case ADDITIONALREF:
 			result = prime
 					* result
@@ -41,7 +26,6 @@
 							.hashCode());
 			break;
 		case FILE:
-			// fall through
 		case FOLDER:
 			result = prime
 					* result
@@ -49,17 +33,12 @@
 							.hashCode());
 			break;
 		case TAGS:
-			// fall through
 		case REMOTE:
-			// fall through
 		case PUSH:
-			// fall through
 		case FETCH:
-			// fall through
 		case BRANCHHIERARCHY:
-			// fall through
 		case STASHED_COMMIT:
-			// fall through
+		case REPOGROUP:
 		case ERROR:
 			result = prime * result
 					+ ((myObject == null) ? 0 : myObject.hashCode());

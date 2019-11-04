@@ -1,7 +1,7 @@
 		@Override
 		public boolean hasChildren(Object element) {
 			if (element instanceof RepositoryGroupNode) {
-				return !((RepositoryGroupNode) element).getGroup()
+				return !((RepositoryGroupNode) element).getObject()
 						.getRepositoryDirectories().isEmpty();
 			}
 			return false;

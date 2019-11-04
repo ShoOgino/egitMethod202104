@@ -1,52 +1,34 @@
 	private boolean checkObjectsEqual(Object otherObject) {
 		switch (myType) {
 		case REPO:
-			// fall through
 		case REMOTES:
-			// fall through
 		case BRANCHES:
-			// fall through
 		case LOCAL:
-			// fall through
 		case REMOTETRACKING:
-			// fall through
 		case ADDITIONALREFS:
-			// fall through
 		case SUBMODULES:
-			// fall through
 		case STASH:
-			// fall through
 		case WORKINGDIR:
 			return ((Repository) myObject).getDirectory().equals(
 					((Repository) otherObject).getDirectory());
 		case REF:
-			// fall through
 		case TAG:
-			// fall through
 		case ADDITIONALREF:
 			return ((Ref) myObject).getName().equals(
 					((Ref) otherObject).getName());
 		case FOLDER:
-			// fall through
 		case FILE:
 			return ((File) myObject).getPath().equals(
 					((File) otherObject).getPath());
 		case ERROR:
-			// fall through
 		case REMOTE:
-			// fall through
 		case FETCH:
-			// fall through
 		case PUSH:
-			// fall through
 		case BRANCHHIERARCHY:
-			// fall through
 		case STASHED_COMMIT:
-			// fall through
+		case REPOGROUP:
 		case TAGS:
 			return myObject.equals(otherObject);
-		case REPOGROUP:
-			// fall through - comparison not by label alone
 		}
 		return false;
 	}

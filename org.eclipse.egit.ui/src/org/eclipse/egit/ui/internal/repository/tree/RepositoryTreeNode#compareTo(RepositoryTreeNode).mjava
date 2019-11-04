@@ -1,50 +1,39 @@
 	@Override
 	public int compareTo(RepositoryTreeNode otherNode) {
 		int typeDiff = this.myType.ordinal() - otherNode.getType().ordinal();
-		if (typeDiff != 0)
+		if (typeDiff != 0) {
 			return typeDiff;
-
+		}
 		// we only implement this for sorting, so we only have to
 		// implement this for nodes that can be on the same level
 		// i.e. siblings to each other
 
 		switch (myType) {
-
 		case REPOGROUP:
-			// fall through
+			return CommonUtils.STRING_ASCENDING_COMPARATOR.compare(
+					((RepositoryGroup) myObject).getName(),
+					((RepositoryGroup) otherNode.getObject()).getName());
 		case BRANCHES:
-			// fall through
 		case LOCAL:
-			// fall through
 		case REMOTETRACKING:
-			// fall through
 		case BRANCHHIERARCHY:
 			return CommonUtils.STRING_ASCENDING_COMPARATOR.compare(
 					myObject.toString(), otherNode.getObject().toString());
 		case REMOTES:
-			// fall through
 		case ADDITIONALREFS:
-			// fall through
 		case TAGS:
-			// fall through
 		case ERROR:
-			// fall through
 		case SUBMODULES:
-			// fall through
 		case STASH:
-			// fall through
 		case WORKINGDIR:
 			return 0;
 
 		case FETCH:
-			// fall through
 		case PUSH:
-			// fall through
 		case REMOTE:
 			return CommonUtils.STRING_ASCENDING_COMPARATOR
 					.compare((String) myObject, (String) otherNode.getObject());
 		case FILE:
-			// fall through
 		case FOLDER:
 			return CommonUtils.STRING_ASCENDING_COMPARATOR
 					.compare(((File) myObject).getName(),
@@ -54,9 +43,7 @@
 			return ((StashedCommitNode) this).getIndex()
 					- ((StashedCommitNode) otherNode).getIndex();
 		case TAG:
-			// fall through
 		case ADDITIONALREF:
-			// fall through
 		case REF:
 			return CommonUtils.REF_ASCENDING_COMPARATOR.compare((Ref) myObject,
 					(Ref) otherNode.getObject());
