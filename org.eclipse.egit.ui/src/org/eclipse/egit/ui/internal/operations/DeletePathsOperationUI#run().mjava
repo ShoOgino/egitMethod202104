@@ -3,9 +3,10 @@
 	 */
 	public void run() {
 		List<IResource> resources = getSelectedResourcesIfAllExist();
-		if (resources != null)
+		if (resources != null) {
 			runNormalAction(resources);
-		else
+		} else {
 			runNonWorkspaceAction();
+		}
 	}
 

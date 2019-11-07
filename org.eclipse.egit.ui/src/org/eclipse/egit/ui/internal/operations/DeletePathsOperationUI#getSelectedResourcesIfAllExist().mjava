@@ -2,10 +2,10 @@
 		List<IResource> resources = new ArrayList<>();
 		for (IPath path : paths) {
 			IResource resource = ResourceUtil.getResourceForLocation(path, false);
-			if (resource != null)
-				resources.add(resource);
-			else
+			if (resource == null) {
 				return null;
+			}
+			resources.add(resource);
 		}
 		return resources;
 	}

@@ -1,17 +1,15 @@
 	private void runNonWorkspaceAction() {
-		boolean performAction = openConfirm(
-				shellProvider.getShell(),
-				UIText.DeleteResourcesOperationUI_confirmActionTitle,
-				UIText.DeleteResourcesOperationUI_confirmActionMessage);
-		if (!performAction)
+		String[] buttonLabels = { UIText.DeletePathsOperationUI_ButtonOK,
+				IDialogConstants.CANCEL_LABEL };
+		MessageDialog dialog = new MessageDialog(shellProvider.getShell(),
+				UIText.DeletePathsOperationUI_confirmActionTitle, null,
+				UIText.DeletePathsOperationUI_confirmActionMessage,
+				MessageDialog.CONFIRM, buttonLabels, 0);
+		if (dialog.open() != Window.OK) {
 			return;
-
-		DeletePathsOperation operation = new DeletePathsOperation(paths);
-
-		try {
-			operation.execute(null);
-		} catch (CoreException e) {
-			Activator.handleError(UIText.DeleteResourcesOperationUI_deleteFailed, e, true);
 		}
+		JobUtil.scheduleUserWorkspaceJob(new DeletePathsOperation(paths),
+				UIText.DeletePathsOperationUI_DeleteFilesJobName,
+				JobFamilies.DELETE);
 	}
 
