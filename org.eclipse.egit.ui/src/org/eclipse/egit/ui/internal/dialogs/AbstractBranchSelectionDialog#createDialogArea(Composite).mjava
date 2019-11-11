@@ -57,8 +57,7 @@
 			}
 		});
 
-		branchTree.setComparator(new ViewerComparator(
-				STRING_ASCENDING_COMPARATOR));
+		branchTree.setComparator(new RepositoryTreeNodeSorter());
 
 		createCustomArea(composite);
 
