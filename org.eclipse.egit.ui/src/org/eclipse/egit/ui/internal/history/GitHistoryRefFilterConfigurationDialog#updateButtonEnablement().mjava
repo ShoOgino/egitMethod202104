@@ -1,7 +1,15 @@
 	private void updateButtonEnablement() {
-		RefFilter filter = getSelectionFromTable();
-		boolean writableRow = filter != null && !filter.isPreconfigured();
-		removeButton.setEnabled(writableRow);
-		editButton.setEnabled(writableRow);
+		IStructuredSelection selection = configsTable.getStructuredSelection();
+		boolean allWriteable = false;
+		if (!selection.isEmpty()) {
+			List<?> elements = selection.toList();
+			allWriteable = elements.stream()
+					.allMatch(x -> x instanceof RefFilter
+							&& !((RefFilter) x).isPreconfigured());
+		}
+		removeButton.setEnabled(allWriteable);
+		editButton.setEnabled(selection.size() == 1
+				&& !((RefFilter) selection.getFirstElement())
+						.isPreconfigured());
 	}
 

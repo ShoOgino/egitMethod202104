@@ -1,6 +1,7 @@
 	private void createTable(Composite parent) {
 		configsTable = CheckboxTableViewer
-				.newCheckList(parent, SWT.BORDER | SWT.FULL_SELECTION);
+				.newCheckList(parent,
+						SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		GridData tableData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		tableData.widthHint = convertHorizontalDLUsToPixels(120);
 		configsTable.getControl().setLayoutData(tableData);

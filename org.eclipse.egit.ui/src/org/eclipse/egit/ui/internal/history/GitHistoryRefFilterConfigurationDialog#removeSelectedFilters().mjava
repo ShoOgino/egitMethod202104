@@ -1,0 +1,9 @@
+	private void removeSelectedFilters() {
+		IStructuredSelection selection = configsTable.getStructuredSelection();
+		if (selection.isEmpty()) {
+			return;
+		}
+		filters.removeAll(selection.toList());
+		configsTable.refresh();
+	}
+
