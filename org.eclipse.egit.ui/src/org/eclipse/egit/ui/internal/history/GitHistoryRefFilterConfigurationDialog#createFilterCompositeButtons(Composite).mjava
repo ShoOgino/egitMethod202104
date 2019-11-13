@@ -32,6 +32,8 @@
 							dialog.getRefName());
 					filters.add(newFilter);
 					configsTable.refresh();
+					configsTable.setSelection(
+							new StructuredSelection(newFilter), true);
 				}
 			}
 		});
