@@ -2,5 +2,16 @@
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText(UIText.GitHistoryPage_filterRefDialog_dialogTitle);
+		newShell.addShellListener(new ShellAdapter() {
+
+			@Override
+			public void shellActivated(ShellEvent e) {
+				// Prevent making the dialog too small
+				newShell.removeShellListener(this); // Only the first time
+				if (minimumSize != null) {
+					newShell.setMinimumSize(minimumSize);
+				}
+			}
+		});
 	}
 
