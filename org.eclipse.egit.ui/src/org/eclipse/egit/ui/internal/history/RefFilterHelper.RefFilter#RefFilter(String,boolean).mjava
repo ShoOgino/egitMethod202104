@@ -16,7 +16,7 @@
 						"Filter string is null or empty."); //$NON-NLS-1$
 			}
 			this.filterString = filterString;
-			this.filterPattern = new TokenizedPattern(filterString);
+			this.filterPattern = createPattern(filterString);
 			this.preconfigured = isPreconfigured;
 		}
 

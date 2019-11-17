@@ -1,5 +1,5 @@
 	private void setupMacros() {
-		macros = new HashMap<>();
+		macros = new LinkedHashMap<>();
 		macros.put(MACRO_CURRENT_BRANCH, repo -> {
 			try {
 				return repo.getBranch();

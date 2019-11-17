@@ -17,6 +17,7 @@
 						"Cannot change a preconfigured filter."); //$NON-NLS-1$
 			}
 			this.filterString = filterString;
-			this.filterPattern = new TokenizedPattern(filterString);
+			this.filterPattern = createPattern(filterString);
+			this.expandedFilterPattern = null;
 		}
 

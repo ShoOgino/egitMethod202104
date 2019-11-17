@@ -2,7 +2,7 @@
 	 * @return the set of all ref filters
 	 */
 	public Set<RefFilter> getRefFilters() {
-		Map<String, RefFilter> filters = new HashMap<>();
+		Map<String, RefFilter> filters = new LinkedHashMap<>();
 		addPreconfigueredFilters(filters);
 
 		for (String filter : getConfiguredFilters()) {
@@ -23,6 +23,6 @@
 			filters.putIfAbsent(filter, new RefFilter(filter, false));
 			filters.get(filter).setSelected(true);
 		}
-		return new HashSet<>(filters.values());
+		return new LinkedHashSet<>(filters.values());
 	}
 
