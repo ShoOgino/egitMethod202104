@@ -3,10 +3,12 @@
 	 */
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
-		try (Git git = new Git(repository)) {
-			git.gc().setProgressMonitor(
+		try {
+			GarbageCollectCommand gc = RepositoryUtil
+					.getGarbageCollectCommand(repository);
+			gc.setProgressMonitor(
 					new EclipseGitProgressTransformer(monitor)).call();
-		} catch (GitAPIException e) {
+		} catch (IllegalStateException | GitAPIException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
 					Activator.getPluginId(), e.getMessage(), e));
 		}

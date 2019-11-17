@@ -15,8 +15,9 @@
 		if (repo == null) {
 			return table;
 		}
-		try (Git git = new Git(repo)) {
-			GarbageCollectCommand gc = git.gc();
+		try {
+			GarbageCollectCommand gc = RepositoryUtil
+					.getGarbageCollectCommand(repo);
 			Properties stats = gc.getStatistics();
 
 			table.setLinesVisible(true);
@@ -50,7 +51,7 @@
 				table.getColumn(i).pack();
 			}
 			parent.pack();
-		} catch (GitAPIException e) {
+		} catch (IllegalStateException | GitAPIException e) {
 			Activator.handleError(e.getMessage(), e, false);
 		}
 		return table;
