@@ -1,0 +1,15 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		List<RepositoryTreeNode<?>> nodes = getSelectedNodes();
+		Set<WorkingDirNode> nodesToCollapse = nodes.stream()
+				.map(this::getWorkingDirParent).filter(Objects::nonNull)
+				.collect(Collectors.toSet());
+		if (!nodesToCollapse.isEmpty()) {
+			CommonViewer viewer = getView(event).getCommonViewer();
+			for (WorkingDirNode node : nodesToCollapse) {
+				viewer.collapseToLevel(node, AbstractTreeViewer.ALL_LEVELS);
+			}
+		}
+		return null;
+	}
+

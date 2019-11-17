@@ -1,0 +1,9 @@
+	private WorkingDirNode getWorkingDirParent(RepositoryTreeNode<?> node) {
+		RepositoryTreeNode<?> candidate = node;
+		while (candidate != null
+				&& candidate.getType() != RepositoryTreeNodeType.WORKINGDIR) {
+			candidate = candidate.getParent();
+		}
+		return (WorkingDirNode) candidate;
+	}
+
