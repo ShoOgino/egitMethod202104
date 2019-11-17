@@ -3,7 +3,7 @@
 	 */
 	public Set<RefFilter> getRefFilters() {
 		Map<String, RefFilter> filters = new LinkedHashMap<>();
-		addPreconfigueredFilters(filters);
+		addPreconfiguredFilters(filters);
 
 		for (String filter : getConfiguredFilters()) {
 			if (filter == null || filter.isEmpty()) {

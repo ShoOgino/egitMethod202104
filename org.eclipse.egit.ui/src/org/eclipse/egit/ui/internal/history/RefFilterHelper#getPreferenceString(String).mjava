@@ -7,10 +7,10 @@
 	 * @return the string-valued preference
 	 */
 	protected String getPreferenceString(String preferenceName) {
-		String repoSepcificPrefName = Activator.getDefault().getRepositoryUtil()
+		String repoSpecificPrefName = Activator.getDefault().getRepositoryUtil()
 				.getRepositorySpecificPreferenceKey(this.repository,
 						preferenceName);
 
-		return store.getString(repoSepcificPrefName);
+		return store.getString(repoSpecificPrefName);
 	}
 

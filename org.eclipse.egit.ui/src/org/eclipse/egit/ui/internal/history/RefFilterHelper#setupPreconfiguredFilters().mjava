@@ -1,4 +1,4 @@
-	private void setupPreconfigueredFilters() {
+	private void setupPreconfiguredFilters() {
 		preconfiguredFilters = new ArrayList<>();
 		filtersForHEAD = new ArrayList<>();
 		filtersForCurrentBranch = new ArrayList<>();
@@ -9,10 +9,10 @@
 		filtersForHEAD.add(head);
 		filtersForAllBranchesAndTags.add(head);
 
-		RefFilter current_branch = newPreConfFilter(
+		RefFilter currentBranch = newPreConfFilter(
 				Constants.R_REFS + "**/" + MACRO_CURRENT_BRANCH); //$NON-NLS-1$
-		preconfiguredFilters.add(current_branch);
-		filtersForCurrentBranch.add(current_branch);
+		preconfiguredFilters.add(currentBranch);
+		filtersForCurrentBranch.add(currentBranch);
 
 		RefFilter branches = newPreConfPrefixFilter(Constants.R_HEADS);
 		preconfiguredFilters.add(branches);
