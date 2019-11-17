@@ -3,8 +3,8 @@
 		switchToMenu = new SwitchToMenu();
 		handlerService = mock(IHandlerService.class);
 		IServiceLocator serviceLocator = mock(IServiceLocator.class);
-		when(serviceLocator.getService(IHandlerService.class)).thenReturn(
-				handlerService);
+		when(serviceLocator.getService(IHandlerService.class))
+				.thenReturn(handlerService);
 		switchToMenu.initialize(serviceLocator);
 	}
 

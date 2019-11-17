@@ -3,7 +3,8 @@
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
-				Menu menu = new Menu(new Shell(PlatformUI.getWorkbench().getDisplay()));
+				Menu menu = new Menu(
+						new Shell(PlatformUI.getWorkbench().getDisplay()));
 				switchToMenu.fill(menu, 0 /* index */);
 				items[0] = menu.getItems();
 			}

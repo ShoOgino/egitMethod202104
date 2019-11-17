@@ -10,9 +10,12 @@
 
 		int itemCount = createMostActiveBranchesMenuItems(menu, repositories);
 
-		if (!isMultipleSelection(repositories) && itemCount > 0) {
+		if (!isMultipleSelection(repositories)) {
 			createSeparator(menu);
-			createOtherMenuItem(menu, repositories[0]);
+			createSwitchToCommitItem(menu, repositories[0]);
+			if (itemCount > 0) {
+				createOtherMenuItem(menu, repositories[0]);
+			}
 		}
 
 		if (itemCount == 0 && isMultipleSelection(repositories)) {

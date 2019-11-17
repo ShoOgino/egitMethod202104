@@ -1,6 +1,7 @@
 	private void createOtherMenuItem(Menu menu, Repository repository) {
 		MenuItem others = new MenuItem(menu, SWT.PUSH);
 		others.setText(UIText.SwitchToMenu_OtherMenuLabel);
+		others.setImage(othersImage);
 		others.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

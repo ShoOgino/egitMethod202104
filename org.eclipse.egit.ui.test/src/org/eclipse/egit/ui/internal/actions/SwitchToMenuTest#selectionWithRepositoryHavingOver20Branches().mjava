@@ -1,6 +1,7 @@
 	@Test
 	public void selectionWithRepositoryHavingOver20Branches() throws Exception {
-		Repository repo = lookupRepository(createProjectAndCommitToRepository());
+		Repository repo = lookupRepository(
+				createProjectAndCommitToRepository());
 		for (int i = 0; i < SwitchToMenu.MAX_NUM_MENU_ENTRIES; i++) {
 			createBranch(repo, "refs/heads/change/" + i);
 		}
@@ -10,7 +11,7 @@
 
 		MenuItem[] items = fillMenu();
 
-		assertEquals(24, items.length);
+		assertEquals(25, items.length);
 		assertTextEquals(UIText.SwitchToMenu_NewBranchMenuLabel, items[0]);
 		assertStyleEquals(SWT.SEPARATOR, items[1]);
 		assertTextEquals("change/0", items[2]);
@@ -35,6 +36,7 @@
 		assertTextEquals("change/19", items[21]);
 		// "master" and "stable" didn't make it
 		assertStyleEquals(SWT.SEPARATOR, items[22]);
-		assertTextEquals(UIText.SwitchToMenu_OtherMenuLabel, items[23]);
+		assertTextEquals(UIText.SwitchToMenu_CommitMenuLabel, items[23]);
+		assertTextEquals(UIText.SwitchToMenu_OtherMenuLabel, items[24]);
 	}
 
