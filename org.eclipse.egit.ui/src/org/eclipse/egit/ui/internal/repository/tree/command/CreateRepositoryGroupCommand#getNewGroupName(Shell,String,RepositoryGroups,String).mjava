@@ -8,7 +8,9 @@
 						return UIText.RepositoriesView_RepoGroup_EmptyNameError;
 					}
 					if (groupsUtil.groupExists(name.trim())) {
-						return UIText.RepositoryGroups_DuplicateGroupNameError;
+						return MessageFormat.format(
+								UIText.RepositoryGroups_DuplicateGroupNameError,
+								name.trim());
 					}
 					return null;
 				});
