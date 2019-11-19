@@ -10,6 +10,7 @@
 		setHeadOnly.setText(
 				UIText.GitHistoryPage_filterRefDialog_button_headOnly);
 		setHeadOnly.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				helper.selectOnlyHEAD(filters);
@@ -19,10 +20,10 @@
 		setButtonLayoutData(setHeadOnly);
 
 		Button setCurrentBranchOnly = new Button(buttonComposite, SWT.PUSH);
-		setCurrentBranchOnly
-				.setText(
-						UIText.GitHistoryPage_filterRefDialog_button_currentBranchOnly);
+		setCurrentBranchOnly.setText(
+				UIText.GitHistoryPage_filterRefDialog_button_currentBranchOnly);
 		setCurrentBranchOnly.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				helper.selectOnlyCurrentBranch(filters);
@@ -35,6 +36,7 @@
 		setAllBranchesAndTags.setText(
 				UIText.GitHistoryPage_filterRefDialog_button_allBranchesAndTags);
 		setAllBranchesAndTags.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				helper.selectExactlyAllBranchesAndTags(filters);

@@ -7,10 +7,9 @@
 		configsTable.getControl().setLayoutData(tableData);
 
 		configsTable.setContentProvider(ArrayContentProvider.getInstance());
-
 		configsTable.setLabelProvider(new RefLabelProvider());
-
 		configsTable.setComparator(new ViewerComparator() {
+
 			@Override
 			public int category(Object element) {
 				RefFilter filter = ((RefFilter) element);
@@ -20,20 +19,19 @@
 				return 1000;
 			}
 		});
-
 		configsTable.addSelectionChangedListener(event -> {
 			updateButtonEnablement();
 		});
-
 		configsTable.addCheckStateListener(new ICheckStateListener() {
+
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				((RefFilter) event.getElement())
 						.setSelected(event.getChecked());
 			}
 		});
-
 		configsTable.setCheckStateProvider(new ICheckStateProvider() {
+
 			@Override
 			public boolean isGrayed(Object element) {
 				return false;
@@ -45,12 +43,26 @@
 			}
 		});
 
-		configsTable.addDoubleClickListener(new IDoubleClickListener() {
+		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				configsTable, new FocusCellHighlighter(configsTable) {
+					// Empty; SWT highlights already.
+				});
+		ColumnViewerEditorActivationStrategy editorActivation = new ColumnViewerEditorActivationStrategy(
+				configsTable) {
+
 			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				editCurrentRow();
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+				boolean singleSelect = configsTable.getStructuredSelection()
+						.size() == 1;
+				boolean isLeftDoubleClick = event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION
+						&& ((MouseEvent) event.sourceEvent).button == 1;
+				return singleSelect && (isLeftDoubleClick
+						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
 			}
-		});
+		};
+		TableViewerEditor.create(configsTable, focusCellManager,
+				editorActivation, ColumnViewerEditor.DEFAULT);
 
 		editor = new TextCellEditor(configsTable.getTable()) {
 
@@ -91,7 +103,6 @@
 
 			@Override
 			public void cancelEditor() {
-				editingMode = false;
 				editorValueChanged(false, true);
 				updateButtonEnablement();
 			}
@@ -125,9 +136,6 @@
 
 			@Override
 			public boolean canModify(Object element, String property) {
-				if (!editingMode) {
-					return false;
-				}
 				RefFilter filter = (RefFilter) element;
 				return !filter.isPreconfigured();
 			}

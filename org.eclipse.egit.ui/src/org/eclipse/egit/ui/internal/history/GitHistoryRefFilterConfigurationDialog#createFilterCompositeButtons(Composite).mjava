@@ -7,13 +7,14 @@
 		Button addNew = new Button(buttonComposite, SWT.PUSH);
 		addNew.setText(UIText.GitHistoryPage_filterRefDialog_button_add);
 		addNew.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				RefFilter newFilter = helper.new RefFilter(
 						NEW_FILTER_INITIAL_STRING);
 				filters.add(newFilter);
 				configsTable.refresh();
-				editFilter(newFilter);
+				configsTable.editElement(newFilter, 0);
 			}
 		});
 		setButtonLayoutData(addNew);
@@ -22,9 +23,9 @@
 		addRefButton
 				.setText(UIText.GitHistoryPage_filterRefDialog_button_addRef);
 		addRefButton.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateButtonEnablement();
 				RefSelectionDialog dialog = new RefSelectionDialog(getShell(),
 						repo);
 				if (dialog.open() == Window.OK) {
@@ -43,6 +44,7 @@
 		removeButton
 				.setText(UIText.GitHistoryPage_filterRefDialog_button_remove);
 		removeButton.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				removeSelectedFilters();
@@ -54,10 +56,12 @@
 		editButton = new Button(buttonComposite, SWT.PUSH);
 		editButton.setText(UIText.GitHistoryPage_filterRefDialog_button_edit);
 		editButton.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				editCurrentRow();
-				updateButtonEnablement();
+				configsTable.editElement(
+						configsTable.getStructuredSelection().getFirstElement(),
+						0);
 			}
 		});
 		editButton.setEnabled(false);
