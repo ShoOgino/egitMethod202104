@@ -3,7 +3,7 @@
 	 */
 	public IPath getPath() {
 		Repository repository = getRepository();
-		if (repository == null) {
+		if (repository == null || repository.isBare()) {
 			return null;
 		}
 		return new Path(getRepository().getWorkTree().getAbsolutePath());
