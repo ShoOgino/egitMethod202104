@@ -25,7 +25,8 @@
 		} else {
 			this.upstreamConfig = null;
 		}
-		setTitle(UIText.CreateBranchPage_Title);
+		setTitle(MessageFormat.format(UIText.CreateBranchPage_Title, Activator
+				.getDefault().getRepositoryUtil().getRepositoryName(repo)));
 		setMessage(UIText.CreateBranchPage_ChooseBranchAndNameMessage);
 	}
 
