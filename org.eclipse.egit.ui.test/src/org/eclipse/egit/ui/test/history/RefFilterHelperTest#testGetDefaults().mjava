@@ -11,7 +11,7 @@
 		List<Matcher<? super RefFilter>> expected = new ArrayList<>();
 		expected.add(newRefFilterMatcher("HEAD", true, true));
 		expected.add(
-				newRefFilterMatcher("refs/**/[CURRENT-BRANCH]", true, false));
+				newRefFilterMatcher("refs/**/${git_branch}", true, false));
 		expected.add(newRefFilterMatcher("refs/heads/**", true, false));
 		expected.add(newRefFilterMatcher("refs/remotes/**", true, false));
 		expected.add(newRefFilterMatcher("refs/tags/**", true, false));

@@ -3,7 +3,7 @@
 			throws Exception {
 		checkMatchingRefsForSelectedRefFilters("HEAD",
 				Arrays.asList(ref(equalTo("HEAD"))));
-		checkMatchingRefsForSelectedRefFilters("refs/**/[CURRENT-BRANCH]",
+		checkMatchingRefsForSelectedRefFilters("refs/**/${git_branch}",
 				Arrays.asList(ref(equalTo("refs/heads/master")),
 						ref(equalTo("refs/remotes/origin/master"))));
 		checkMatchingRefsForSelectedRefFilters("refs/heads/**",

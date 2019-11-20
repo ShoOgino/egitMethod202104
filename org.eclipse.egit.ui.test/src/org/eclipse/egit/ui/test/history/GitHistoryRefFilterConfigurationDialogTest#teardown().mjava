@@ -1,6 +1,8 @@
 	@After
 	public void teardown() {
 		myRepoViewUtil.dispose();
-		display.asyncExec(dialog::close);
+		if (dialog != null) {
+			display.asyncExec(dialog::close);
+		}
 	}
 

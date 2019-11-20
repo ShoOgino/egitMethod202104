@@ -15,7 +15,7 @@
 
 		List<RefFilter> testFilters = new ArrayList<>();
 		testFilters.add(newRefFilter("HEAD", true, false));
-		testFilters.add(newRefFilter("refs/**/[CURRENT-BRANCH]", true, false));
+		testFilters.add(newRefFilter("refs/**/${git_branch}", true, false));
 		testFilters.add(newRefFilter("refs/heads/**", true, true));
 		testFilters.add(newRefFilter("refs/remotes/**", true, false));
 		testFilters.add(newRefFilter("refs/tags/**", true, false));
@@ -64,7 +64,7 @@
 
 		List<RefFilter> defaults = new ArrayList<>();
 		defaults.add(newRefFilter("HEAD", true, true));
-		defaults.add(newRefFilter("refs/**/[CURRENT-BRANCH]", true, false));
+		defaults.add(newRefFilter("refs/**/${git_branch}", true, false));
 		defaults.add(newRefFilter("refs/heads/**", true, false));
 		defaults.add(newRefFilter("refs/remotes/**", true, false));
 		defaults.add(newRefFilter("refs/tags/**", true, false));

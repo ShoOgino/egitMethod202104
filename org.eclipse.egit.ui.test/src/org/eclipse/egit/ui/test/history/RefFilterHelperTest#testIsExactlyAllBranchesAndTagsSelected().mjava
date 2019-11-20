@@ -2,7 +2,7 @@
 	public void testIsExactlyAllBranchesAndTagsSelected() throws Exception {
 		Set<RefFilter> testSet1 = new HashSet<>();
 		testSet1.add(newRefFilter("HEAD", true, false));
-		testSet1.add(newRefFilter("refs/**/[CURRENT-BRANCH]",
+		testSet1.add(newRefFilter("refs/**/${git_branch}",
 				true, false));
 		testSet1.add(newRefFilter("refs/heads/**", true, true));
 		testSet1.add(
@@ -17,7 +17,7 @@
 
 		Set<RefFilter> testSet2 = new HashSet<>();
 		testSet2.add(newRefFilter("HEAD", true, true));
-		testSet2.add(newRefFilter("refs/**/[CURRENT-BRANCH]",
+		testSet2.add(newRefFilter("refs/**/${git_branch}",
 				true, false));
 		testSet2.add(newRefFilter("refs/heads/**", true, true));
 		testSet2.add(newRefFilter("refs/remotes/**", true, true));
@@ -31,7 +31,7 @@
 
 		Set<RefFilter> testSet3 = new HashSet<>();
 		testSet3.add(newRefFilter("HEAD", true, true));
-		testSet3.add(newRefFilter("refs/**/[CURRENT-BRANCH]",
+		testSet3.add(newRefFilter("refs/**/${git_branch}",
 				true, false));
 		testSet3.add(newRefFilter("refs/heads/**", true, true));
 		testSet3.add(newRefFilter("refs/remotes/**", true, true));

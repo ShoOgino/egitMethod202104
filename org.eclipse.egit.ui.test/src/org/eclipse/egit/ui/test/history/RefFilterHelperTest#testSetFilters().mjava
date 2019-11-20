@@ -2,7 +2,7 @@
 	public void testSetFilters() throws Exception {
 		Set<RefFilter> testSet = new HashSet<>();
 		testSet.add(newRefFilter("HEAD", true, false));
-		testSet.add(newRefFilter("refs/**/[CURRENT-BRANCH]", true,
+		testSet.add(newRefFilter("refs/**/${git_branch}", true,
 				false));
 		testSet.add(newRefFilter("refs/heads/**", true, true));
 		testSet.add(newRefFilter("refs/remotes/**", true, false));

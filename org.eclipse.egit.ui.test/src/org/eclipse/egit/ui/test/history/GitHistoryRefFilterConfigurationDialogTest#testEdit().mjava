@@ -4,12 +4,12 @@
 		table.getTableItem(5).select();
 		click(UIText.GitHistoryPage_filterRefDialog_button_edit);
 
-		typeTextAndEnter("edited");
+		typeTextAndApply("edited");
 
 		List<RefFilterInfo> expected = new ArrayList<>();
 		expected.add(new RefFilterInfo("HEAD", true, false));
 		expected.add(
-				new RefFilterInfo("refs/**/[CURRENT-BRANCH]", true, false));
+				new RefFilterInfo("refs/**/${git_branch}", true, false));
 		expected.add(new RefFilterInfo("refs/heads/**", true, true));
 		expected.add(new RefFilterInfo("refs/remotes/**", true, false));
 		expected.add(new RefFilterInfo("refs/tags/**", true, false));
