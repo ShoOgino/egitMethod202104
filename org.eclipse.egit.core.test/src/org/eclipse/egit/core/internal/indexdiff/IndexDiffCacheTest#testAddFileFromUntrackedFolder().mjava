@@ -3,18 +3,23 @@
 		testRepository.connect(project.project);
 		testRepository.addToIndex(project.project);
 		testRepository.createInitialCommit("testAddFileFromUntrackedFolder\n\nfirst commit\n");
-		prepareCacheEntry();
 
-		project.createFolder("folder");
-		project.createFolder("folder/a");
-		project.createFolder("folder/b");
-		IFile fileA = project.createFile("folder/a/file", new byte[] {});
-		project.createFile("folder/b/file", new byte[] {});
+		IFile[] fileA = { null };
+		runInWorkspace(() -> {
+			project.createFolder("folder");
+			project.createFolder("folder/a");
+			project.createFolder("folder/b");
+			fileA[0] = project.createFile("folder/a/file", new byte[] {});
+			project.createFile("folder/b/file", new byte[] {});
+			return null;
+		});
+
+		prepareCacheEntry();
 
 		IndexDiffData data1 = waitForListenerCalled();
 		assertThat(data1.getUntrackedFolders(), hasItem("Project-1/folder/"));
 
-		testRepository.track(fileA.getLocation().toFile());
+		testRepository.track(fileA[0].getLocation().toFile());
 
 		IndexDiffData data2 = waitForListenerCalled();
 		assertThat(data2.getAdded(), hasItem("Project-1/folder/a/file"));

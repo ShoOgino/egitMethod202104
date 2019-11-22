@@ -1,10 +1,13 @@
 	@Test
 	public void testAddIgnoredFolder() throws Exception {
 		testRepository.connect(project.project);
-		project.createFile(".gitignore", "ignore\n".getBytes("UTF-8"));
-		project.createFolder("ignore");
-		project.createFile("ignore/file.txt", new byte[] {});
-		project.createFolder("sub");
+		runInWorkspace(() -> {
+			project.createFile(".gitignore", "ignore\n".getBytes("UTF-8"));
+			project.createFolder("ignore");
+			project.createFile("ignore/file.txt", new byte[] {});
+			project.createFolder("sub");
+			return null;
+		});
 		testRepository.addToIndex(project.project);
 		testRepository.createInitialCommit("testAddFileInIgnoredFolder\n\nfirst commit\n");
 		prepareCacheEntry();
