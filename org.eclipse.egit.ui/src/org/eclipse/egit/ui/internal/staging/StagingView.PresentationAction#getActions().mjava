@@ -1,5 +1,6 @@
 		@Override
-		protected Collection<IAction> getActions() {
-			return actions;
+		protected Collection<IContributionItem> getActions() {
+			return actions.stream().map(ActionContributionItem::new)
+					.collect(Collectors.toList());
 		}
 

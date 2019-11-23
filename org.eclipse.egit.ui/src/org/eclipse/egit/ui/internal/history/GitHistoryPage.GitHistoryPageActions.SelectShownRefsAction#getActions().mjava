@@ -1,10 +1,11 @@
 			@Override
-			protected Collection<IAction> getActions() {
+			protected Collection<IContributionItem> getActions() {
 				if (historyPage.getCurrentRepo() == null) {
 					return new ArrayList<>();
 				}
-				List<IAction> actions = new ArrayList<>();
-				actions.add(configureFiltersAction);
+				List<IContributionItem> actions = new ArrayList<>();
+				actions.add(new ActionContributionItem(configureFiltersAction));
+				actions.add(new Separator());
 				Set<RefFilter> filters = helper.getRefFilters();
 				List<RefFilter> sortedFilters = new ArrayList<>(
 						filters);
@@ -15,6 +16,7 @@
 								.thenComparing(RefFilter::getFilterString,
 										String.CASE_INSENSITIVE_ORDER));
 
+				boolean separated = false;
 				for (RefFilter filter : sortedFilters) {
 					Action action = new ShownRefAction(filter, () -> {
 						helper.setRefFilters(filters);
@@ -22,7 +24,11 @@
 						updateUiForMode();
 						historyPage.refresh();
 					});
-					actions.add(action);
+					if (!separated && !filter.isPreconfigured()) {
+						actions.add(new Separator());
+						separated = true;
+					}
+					actions.add(new ActionContributionItem(action));
 				}
 				return actions;
 			}

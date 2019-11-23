@@ -1,8 +1,9 @@
 		@Override
-		public Collection<IAction> getActions() {
+		public Collection<IContributionItem> getActions() {
 			Repository current = currentRepo.get();
 			File gitDir = current == null ? null : current.getDirectory();
 			return RepositoryMenuUtil.getRepositoryActions(includeBare, gitDir,
-					action);
+					action).stream().map(ActionContributionItem::new)
+					.collect(Collectors.toList());
 		}
 
