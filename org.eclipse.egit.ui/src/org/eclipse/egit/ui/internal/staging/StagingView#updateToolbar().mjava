@@ -25,7 +25,7 @@
 					StagingViewSearchThread searchThread = new StagingViewSearchThread(
 							StagingView.this);
 					filterText.getDisplay().timerExec(200,
-							() -> searchThread.start());
+							searchThread::start);
 				});
 				return toolbarComposite;
 			}

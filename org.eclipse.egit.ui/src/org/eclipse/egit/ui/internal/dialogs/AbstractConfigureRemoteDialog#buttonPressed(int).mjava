@@ -4,7 +4,7 @@
 		case DRY_RUN:
 			try {
 				new ProgressMonitorDialog(getShell()).run(true, true,
-						(monitor) -> dryRun(monitor));
+						this::dryRun);
 			} catch (InvocationTargetException e) {
 				Activator.showError(e.getMessage(), e);
 			} catch (InterruptedException e1) {

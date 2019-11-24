@@ -22,12 +22,10 @@
 		super(parent, verticalRuler, overviewRuler, showAnnotationsOverview,
 				styles);
 		setColors();
-		editorPropertyChangeListener = event -> handleEditorPreferencesChange(
-				event);
+		editorPropertyChangeListener = this::handleEditorPreferencesChange;
 		EditorsUI.getPreferenceStore()
 				.addPropertyChangeListener(editorPropertyChangeListener);
-		jFacePropertyChangeListener = event -> handleJFacePreferencesChange(
-				event);
+		jFacePropertyChangeListener = this::handleJFacePreferencesChange;
 		JFacePreferences.getPreferenceStore()
 				.addPropertyChangeListener(jFacePropertyChangeListener);
 	}

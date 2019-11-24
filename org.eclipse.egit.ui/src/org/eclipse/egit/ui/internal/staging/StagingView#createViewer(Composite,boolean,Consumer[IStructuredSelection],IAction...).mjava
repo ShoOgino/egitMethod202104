@@ -46,7 +46,7 @@
 						}
 					}
 				});
-		viewer.addOpenListener(event -> compareWith(event));
+		viewer.addOpenListener(this::compareWith);
 		viewer.setComparator(new StagingEntryComparator(!getSortCheckState(),
 				getPreferenceStore()
 						.getBoolean(UIPreferences.STAGING_VIEW_FILENAME_MODE)));

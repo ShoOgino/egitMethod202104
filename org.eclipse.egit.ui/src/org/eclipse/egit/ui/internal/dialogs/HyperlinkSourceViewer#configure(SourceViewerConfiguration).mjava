@@ -9,7 +9,7 @@
 				String property = event.getProperty();
 				if (preferenceKeysForEnablement.contains(property)) {
 					resetHyperlinkDetectors();
-					async(() -> refresh());
+					async(this::refresh);
 				} else if (preferenceKeysForActivation.contains(property)) {
 					resetHyperlinkDetectors();
 				}

@@ -260,7 +260,7 @@
 				selectionChangedListener, site);
 
 		site.setSelectionProvider(new RepositorySelectionProvider(
-				refLogTreeViewer, () -> getRepository()));
+				refLogTreeViewer, this::getRepository));
 
 		addRefsChangedListener = org.eclipse.egit.core.Activator.getDefault()
 				.getRepositoryCache().getGlobalListenerList()
@@ -270,7 +270,7 @@
 		IToolBarManager toolbar = getViewSite().getActionBars()
 				.getToolBarManager();
 		switchRepositoriesAction = new RepositoryToolbarAction(false,
-				() -> getRepository(),
+				this::getRepository,
 				repo -> reactOnSelection(new StructuredSelection(repo)));
 		toolbar.add(switchRepositoriesAction);
 		getViewSite().getActionBars().updateActionBars();
