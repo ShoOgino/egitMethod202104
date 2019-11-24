@@ -1,0 +1,12 @@
+	private void addRepository(File repositoryDir, RepositoryGroup group) {
+		GerritUtil.tryToAutoConfigureForGerrit(repositoryDir);
+		if (group != null) {
+			RepositoryGroups.getInstance().addRepositoriesToGroup(group,
+				Collections.singletonList(repositoryDir));
+		}
+		util.addConfiguredRepository(repositoryDir);
+		if (doAutoShare()) {
+			autoShareProjects(repositoryDir);
+		}
+	}
+

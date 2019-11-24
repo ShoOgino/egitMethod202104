@@ -9,6 +9,10 @@
 					.call().getRepository().getDirectory();
 			this.repository = Activator.getDefault().getRepositoryCache()
 					.lookupRepository(gitDir);
+			if (group != null) {
+				RepositoryGroups.getInstance().addRepositoriesToGroup(group,
+						Collections.singletonList(gitDir));
+			}
 			Activator.getDefault().getRepositoryUtil()
 					.addConfiguredRepository(gitDir);
 

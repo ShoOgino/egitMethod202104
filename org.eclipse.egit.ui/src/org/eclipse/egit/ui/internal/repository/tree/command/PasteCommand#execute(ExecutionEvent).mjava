@@ -43,7 +43,13 @@
 				}
 			}
 
+			file = FileUtils.canonicalize(file);
 			if (util.addConfiguredRepository(file)) {
+				RepositoryGroup group = getSelectedRepositoryGroup(event);
+				if (group != null) {
+					RepositoryGroups.getInstance().addRepositoriesToGroup(group,
+							Collections.singletonList(file));
+				}
 				// let's do the auto-refresh the rest
 			} else {
 				errorMessage = NLS.bind(

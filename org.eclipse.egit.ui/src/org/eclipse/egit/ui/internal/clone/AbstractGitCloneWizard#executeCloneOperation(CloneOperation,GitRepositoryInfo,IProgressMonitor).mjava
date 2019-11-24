@@ -6,6 +6,10 @@
 		final RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
 
 		op.run(monitor);
+		if (group != null) {
+			RepositoryGroups.getInstance().addRepositoriesToGroup(group,
+					Collections.singletonList(op.getGitDir()));
+		}
 		util.addConfiguredRepository(op.getGitDir());
 		try {
 			if (repositoryInfo.shouldSaveCredentialsInSecureStore())
