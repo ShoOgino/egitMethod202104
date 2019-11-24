@@ -1,0 +1,9 @@
+	// After a refresh of the CommonViewer decide what to display
+	private void afterRefresh(CommonViewer viewer) {
+		Control currentTop = layout.topControl;
+		setTopControl(viewer);
+		if (currentTop != layout.topControl) {
+			emptyArea.getParent().layout(true, true);
+		}
+	}
+

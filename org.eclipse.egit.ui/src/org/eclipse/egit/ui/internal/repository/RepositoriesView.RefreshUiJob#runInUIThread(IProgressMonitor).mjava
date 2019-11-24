@@ -17,6 +17,7 @@
 				Object[] expanded = tv.getExpandedElements();
 				tv.setInput(ResourcesPlugin.getWorkspace().getRoot());
 				tv.setExpandedElements(expanded);
+				afterRefresh(tv);
 			} else {
 				tv.refresh(true);
 			}
@@ -39,12 +40,6 @@
 				return Status.CANCEL_STATUS;
 			}
 
-			if (!repositories.isEmpty()) {
-				layout.topControl = getCommonViewer().getControl();
-			} else {
-				layout.topControl = emptyArea;
-			}
-			emptyArea.getParent().layout(true, true);
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}

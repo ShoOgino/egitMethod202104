@@ -1,0 +1,9 @@
+	private void setTopControl(CommonViewer viewer) {
+		if (!repositories.isEmpty()
+				|| RepositoryGroups.getInstance().hasGroups()) {
+			layout.topControl = viewer.getControl();
+		} else {
+			layout.topControl = emptyArea;
+		}
+	}
+
