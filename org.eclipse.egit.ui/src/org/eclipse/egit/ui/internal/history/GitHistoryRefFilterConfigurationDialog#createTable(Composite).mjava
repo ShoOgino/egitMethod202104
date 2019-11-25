@@ -91,6 +91,10 @@
 			String currentText = value.toString().trim();
 			if (currentText.isEmpty()) {
 				return UIText.GitHistoryPage_filterRefDialog_refEmptyError;
+			} else if (predefinedPatterns.contains(currentText)) {
+				return MessageFormat.format(
+						UIText.GitHistoryPage_filterRefDialog_refPredefinedPattern,
+						currentText);
 			}
 			return null;
 		});
@@ -100,28 +104,52 @@
 			public void editorValueChanged(boolean oldValidState,
 					boolean newValidState) {
 				if (newValidState) {
-					message.setImage(null);
-					message.setText(
-							UIText.GitHistoryPage_filterRefDialog_dialogMessage);
+					setMessage(null);
 				} else {
-					message.setImage(PlatformUI.getWorkbench().getSharedImages()
-							.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-					message.setText(editor.getErrorMessage());
+					setMessage(editor.getErrorMessage());
 				}
 				getButton(OK).setEnabled(newValidState);
 			}
 
 			@Override
 			public void cancelEditor() {
-				editorValueChanged(false, true);
-				updateButtonEnablement();
+				// Nothing
 			}
 
 			@Override
 			public void applyEditorValue() {
-				cancelEditor();
+				// Nothing
 			}
 		});
+		configsTable.getColumnViewerEditor().addEditorActivationListener(
+				new ColumnViewerEditorActivationListener() {
+
+					@Override
+					public void beforeEditorActivated(
+							ColumnViewerEditorActivationEvent event) {
+						// Nothing
+					}
+
+					@Override
+					public void afterEditorActivated(
+							ColumnViewerEditorActivationEvent event) {
+						// Nothing
+					}
+
+					@Override
+					public void beforeEditorDeactivated(
+							ColumnViewerEditorDeactivationEvent event) {
+						// Nothing
+					}
+
+					@Override
+					public void afterEditorDeactivated(
+							ColumnViewerEditorDeactivationEvent event) {
+						setMessage(null);
+						updateButtonEnablement();
+						getButton(OK).setEnabled(true);
+					}
+				});
 		configsTable.setColumnProperties(new String[] { FILTER_COLUMN_NAME });
 		configsTable.setCellEditors(new CellEditor[] { editor });
 		configsTable.setCellModifier(new ICellModifier() {

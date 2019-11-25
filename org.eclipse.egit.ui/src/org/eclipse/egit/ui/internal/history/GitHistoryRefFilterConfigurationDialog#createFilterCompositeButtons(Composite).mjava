@@ -10,6 +10,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				configsTable.applyEditorValue();
 				RefFilter newFilter = helper.new RefFilter(
 						NEW_FILTER_INITIAL_STRING);
 				filters.add(newFilter);
@@ -26,6 +27,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				configsTable.applyEditorValue();
 				RefSelectionDialog dialog = new RefSelectionDialog(getShell(),
 						repo);
 				if (dialog.open() == Window.OK) {
@@ -47,6 +49,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				configsTable.applyEditorValue();
 				removeSelectedFilters();
 			}
 		});
@@ -59,6 +62,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				configsTable.applyEditorValue();
 				configsTable.editElement(
 						configsTable.getStructuredSelection().getFirstElement(),
 						0);

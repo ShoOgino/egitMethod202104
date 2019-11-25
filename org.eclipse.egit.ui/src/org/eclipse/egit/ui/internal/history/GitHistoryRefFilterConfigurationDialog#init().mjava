@@ -1,5 +1,7 @@
 	private void init() {
 		filters = helper.getRefFilters();
+		predefinedPatterns = filters.stream().filter(RefFilter::isPreconfigured)
+				.map(RefFilter::getFilterString).collect(Collectors.toSet());
 		if (helper.isOnlyHEADSelected(filters)) {
 			helper.restoreLastSelectionState(filters);
 		}

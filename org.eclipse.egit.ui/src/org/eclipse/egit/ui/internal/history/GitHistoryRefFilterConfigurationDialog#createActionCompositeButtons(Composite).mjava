@@ -13,6 +13,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				configsTable.applyEditorValue();
 				helper.selectOnlyHEAD(filters);
 				configsTable.refresh();
 			}
@@ -26,6 +27,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				configsTable.applyEditorValue();
 				helper.selectOnlyCurrentBranch(filters);
 				configsTable.refresh();
 			}
@@ -39,6 +41,7 @@
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				configsTable.applyEditorValue();
 				helper.selectExactlyAllBranchesAndTags(filters);
 				configsTable.refresh();
 			}
