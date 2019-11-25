@@ -96,7 +96,8 @@
 				.addPreferenceChangeListener(prefListener);
 
 		IToolBarManager manager = getSite().getActionBars().getToolBarManager();
-		searchBar = new SearchBar(GitHistoryPage.class.getName() + ".searchBar", //$NON-NLS-1$
+		searchBar = new HistorySearchBar(
+				GitHistoryPage.class.getName() + ".searchBar", //$NON-NLS-1$
 				graph, actions.findAction, getSite().getActionBars());
 		manager.prependToGroup("org.eclipse.team.ui.historyView", searchBar); //$NON-NLS-1$
 		getSite().getActionBars().updateActionBars();

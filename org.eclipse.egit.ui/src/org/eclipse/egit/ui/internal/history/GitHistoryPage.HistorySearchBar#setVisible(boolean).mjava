@@ -11,7 +11,9 @@
 				// on show. It'll also reposition the toolbar, if needed.
 				// Note: just doing bars.getToolBarManager().update(true);
 				// messes up big time (doesn't resize or re-position).
-				bars.updateActionBars();
+				if (bars != null) {
+					bars.updateActionBars();
+				}
 				if (visible && toolbar != null) {
 					openCloseToggle.setChecked(true);
 					// If the toolbar was moved below the tabs, we now have

@@ -1,29 +1,12 @@
 		@Override
-		protected Control createControl(Composite parent) {
-			toolbar = new FindToolbar(parent);
-			toolbar.setBackground(null);
+		protected FindToolbar createControl(Composite parent) {
+			FindToolbar createdControl = super.createControl(parent);
 			toolbar.addKeyListener(keyListener);
 			toolbar.addListener(SWT.FocusIn, mouseListener);
 			toolbar.addListener(SWT.FocusOut, mouseListener);
 			toolbar.addListener(SWT.MouseDown, mouseListener);
 			toolbar.addListener(SWT.MouseUp, mouseListener);
-			toolbar.addListener(SWT.Modify,
-					(e) -> lastText = toolbar.getText());
-			toolbar.addStatusListener(statusListener);
-			toolbar.addSelectionListener(selectionListener);
-			boolean hasInput = provider != null;
-			if (hasInput) {
-				setInput(provider);
-			}
-			if (lastText != null) {
-				if (lastSearchContext != null
-						&& lastSearchContext.equals(searchContext)) {
-					toolbar.setPreselect(lastObjectId);
-				}
-				toolbar.setText(lastText, hasInput);
-			}
-			lastSearchContext = null;
-			lastObjectId = null;
+
 			if (wasVisible) {
 				return toolbar;
 			}
@@ -41,6 +24,6 @@
 					}
 				}
 			});
-			return toolbar;
+			return createdControl;
 		}
 

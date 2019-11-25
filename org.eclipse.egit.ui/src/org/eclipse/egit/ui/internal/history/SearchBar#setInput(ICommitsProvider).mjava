@@ -1,0 +1,16 @@
+	/**
+	 * Set the {@link ICommitsProvider} implementation that provides a search
+	 * context for the SearchBar. The list of commits and the {@link RevFlag}
+	 * are passed on to the {@link FindToolbar}.
+	 *
+	 * @param provider
+	 */
+	public void setInput(ICommitsProvider provider) {
+		this.provider = provider;
+		if (toolbar != null) {
+			searchContext = provider.getSearchContext();
+			toolbar.setInput(provider.getHighlight(),
+					graph.getTableView().getTable(), provider.getCommits());
+		}
+	}
+

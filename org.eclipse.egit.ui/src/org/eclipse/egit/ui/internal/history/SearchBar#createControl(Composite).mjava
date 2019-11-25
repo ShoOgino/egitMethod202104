@@ -1,0 +1,25 @@
+	@Override
+	protected FindToolbar createControl(Composite parent) {
+		toolbar = new FindToolbar(parent);
+		toolbar.setBackground(null);
+		toolbar.addListener(SWT.Modify, (e) -> lastText = toolbar.getText());
+		toolbar.addSelectionListener(selectionListener);
+		toolbar.addStatusListener(this::showStatus);
+		boolean hasInput = provider != null;
+		if (hasInput) {
+			setInput(provider);
+		}
+		if (lastText != null) {
+			if (lastSearchContext != null
+					&& lastSearchContext.equals(searchContext)) {
+				toolbar.setPreselect(lastObjectId);
+			}
+			toolbar.setText(lastText, hasInput);
+		}
+		lastSearchContext = null;
+		lastObjectId = null;
+
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(toolbar);
+		return toolbar;
+	}
+
