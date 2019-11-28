@@ -10,7 +10,7 @@
 				return Activator.createErrorStatus(e.getLocalizedMessage(),
 						e.getCause());
 			} else if (e.getCause() instanceof AbortedByHookException) {
-				showAbortedByHook(e.getCause());
+				showAbortedByHook((AbortedByHookException) e.getCause());
 				return Status.CANCEL_STATUS;
 			} else if (e.getCause() instanceof CanceledException) {
 				return Status.CANCEL_STATUS;
