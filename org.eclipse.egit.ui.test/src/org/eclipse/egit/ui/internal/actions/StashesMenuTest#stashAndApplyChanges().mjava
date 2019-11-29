@@ -16,6 +16,8 @@
 		enterMessageText.setText(stashMessage);
 		createDialog.bot().button(UIText.StashCreateCommand_ButtonOK).click();
 
+		TestUtils.waitForJobs(5000, JobFamilies.STASH);
+
 		assertEquals(originalContent, getTestFileContent());
 
 		ContextMenuHelper.clickContextMenu(selectProject(), "Team", STASHES,
@@ -30,6 +32,8 @@
 				.toolbarButtonWithTooltip(
 						util.getPluginLocalizedValue("StashApplyCommand.label"))
 				.click();
+
+		TestUtils.waitForJobs(5000, JobFamilies.STASH);
 
 		assertEquals(modifiedContent, getTestFileContent());
 	}
