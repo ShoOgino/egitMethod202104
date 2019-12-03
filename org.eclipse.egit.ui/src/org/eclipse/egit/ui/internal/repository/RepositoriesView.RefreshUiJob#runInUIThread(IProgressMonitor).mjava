@@ -36,15 +36,12 @@
 					((PropertySheetPage) page).refresh();
 				}
 			}
-			if (monitor.isCanceled()) {
-				return Status.CANCEL_STATUS;
-			}
 
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}
 
-			Runnable task = uiTask;
+			Runnable task = uiTask.getAndSet(null);
 			if (task != null) {
 				task.run();
 			}

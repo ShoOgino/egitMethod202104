@@ -4,7 +4,7 @@
 		}
 
 		refreshUiJob.cancel();
-		refreshUiJob.uiTask = uiTask;
+		refreshUiJob.uiTask.compareAndSet(null, uiTask);
 
 		if (scheduledJob != null) {
 			schedule(scheduledJob, delay);
