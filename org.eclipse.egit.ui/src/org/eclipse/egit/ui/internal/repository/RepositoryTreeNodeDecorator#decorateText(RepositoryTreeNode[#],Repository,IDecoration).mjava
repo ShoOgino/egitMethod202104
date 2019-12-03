@@ -1,31 +1,27 @@
 	private void decorateText(RepositoryTreeNode<?> node,
 			@NonNull Repository repository, IDecoration decoration) {
-		boolean decorated = false;
 		switch (node.getType()) {
 		case REPO:
-			decorated = decorateRepository(node, repository, decoration);
+			decorateRepository(node, repository, decoration);
 			break;
 		case ADDITIONALREF:
-			decorated = decorateAdditionalRef((AdditionalRefNode) node,
+			decorateAdditionalRef((AdditionalRefNode) node,
 					decoration);
 			break;
 		case REF:
-			decorated = decorateRef((RefNode) node, decoration);
+			decorateRef((RefNode) node, decoration);
 			break;
 		case TAG:
-			decorated = decorateTag((TagNode) node, decoration);
+			decorateTag((TagNode) node, decoration);
 			break;
 		case STASHED_COMMIT:
-			decorated = decorateStash((StashedCommitNode) node, decoration);
+			decorateStash((StashedCommitNode) node, decoration);
 			break;
 		case SUBMODULES:
-			decorated = decorateSubmodules(repository, decoration);
+			decorateSubmodules(repository, decoration);
 			break;
 		default:
 			return;
-		}
-		if (!decorated) {
-			ensureCorrectLabelCaching(decoration);
 		}
 	}
 

@@ -1,10 +1,8 @@
-	private boolean decorateTag(TagNode node, IDecoration decoration) {
+	private void decorateTag(TagNode node, IDecoration decoration) {
 		if (verboseBranchMode && node.getCommitId() != null
 				&& node.getCommitId().length() > 0) {
 			decoration.addSuffix(" " + node.getCommitId().substring(0, 7) + ' ' //$NON-NLS-1$
 					+ node.getCommitShortMessage());
-			return true;
 		}
-		return false;
 	}
 

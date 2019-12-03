@@ -4,7 +4,7 @@
 		Repository repository = node.getRepository();
 		if (repository != null) {
 			UnitOfWork.execute(repository,
-					() -> decorateText(node, repository, decoration));
+					() -> decorateNode(node, repository, decoration));
 		} else if (node.getType() == RepositoryTreeNodeType.REPOGROUP) {
 			decorateRepositoryGroup(node, decoration);
 		}

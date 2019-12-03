@@ -11,16 +11,8 @@
 				return Status.CANCEL_STATUS;
 			}
 
-			if (needsNewInput) {
-				// keep expansion state and selection so that we can
-				// restore the tree after update
-				Object[] expanded = tv.getExpandedElements();
-				tv.setInput(ResourcesPlugin.getWorkspace().getRoot());
-				tv.setExpandedElements(expanded);
-				afterRefresh(tv);
-			} else {
-				tv.refresh(true);
-			}
+			tv.refresh(true);
+
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}

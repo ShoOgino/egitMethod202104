@@ -1,11 +1,12 @@
 	/**
-	 * Creates a new {@link RepositoryTreeNodeLabelProvider}.
+	 * Creates a new {@link RepositoryTreeNodeLabelProvider} that decorates and
+	 * optionally shows paths.
 	 *
 	 * @param showPaths
-	 *            whether to show the file system paths for repositories and
-	 *            working tree nodes
+	 *            whether to show paths
 	 */
 	public RepositoryTreeNodeLabelProvider(boolean showPaths) {
-		this(new WorkbenchLabelProvider(), showPaths);
+		this(new WorkbenchLabelProvider(), PlatformUI.getWorkbench()
+				.getDecoratorManager().getLabelDecorator(), null, showPaths);
 	}
 

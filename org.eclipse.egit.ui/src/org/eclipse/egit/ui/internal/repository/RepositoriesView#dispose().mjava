@@ -10,11 +10,6 @@
 		if (branchHierarchy != null) {
 			branchHierarchy.removeListener(stateChangeListener);
 		}
-		// make sure to cancel the refresh job
-		if (this.scheduledJob != null) {
-			this.scheduledJob.cancel();
-			this.scheduledJob = null;
-		}
 		refreshUiJob.cancel();
 
 		repositoryUtil.getPreferences().removePreferenceChangeListener(
@@ -23,8 +18,7 @@
 		ISelectionService srv = CommonUtils.getService(getSite(), ISelectionService.class);
 		srv.removePostSelectionListener(selectionChangedListener);
 
-		// remove RepositoryChangedListener
-		unregisterRepositoryListener();
+		unregisterRepositoryListeners();
 		repositories.clear();
 
 		super.dispose();

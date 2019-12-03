@@ -1,9 +1,8 @@
-	private boolean decorateStash(StashedCommitNode node,
+	private void decorateStash(StashedCommitNode node,
 			IDecoration decoration) {
 		RevCommit commit = node.getObject();
 		decoration.addSuffix(
 				OPEN_BRACKET + abbreviate(commit) + "] " //$NON-NLS-1$
 				+ commit.getShortMessage());
-		return true;
 	}
 

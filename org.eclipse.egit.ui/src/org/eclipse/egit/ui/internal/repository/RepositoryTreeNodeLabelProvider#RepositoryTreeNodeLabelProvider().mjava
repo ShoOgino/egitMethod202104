@@ -1,8 +1,8 @@
 	/**
-	 * Creates a new {@link RepositoryTreeNodeLabelProvider} that shows the
-	 * paths for repositories and working tree nodes.
+	 * Creates a new {@link RepositoryTreeNodeLabelProvider} that neither
+	 * decorates nor shows paths.
 	 */
 	public RepositoryTreeNodeLabelProvider() {
-		this(true);
+		this(new WorkbenchLabelProvider(), null, null, false);
 	}
 
