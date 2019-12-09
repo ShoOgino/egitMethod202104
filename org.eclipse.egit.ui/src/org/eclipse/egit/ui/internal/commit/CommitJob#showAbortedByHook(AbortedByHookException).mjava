@@ -1,0 +1,17 @@
+	private void showAbortedByHook(final AbortedByHookException cause) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+
+			private String createTitle() {
+				return MessageFormat.format(UIText.CommitJob_AbortedByHook,
+						cause.getHookName());
+			}
+
+			@Override
+			public void run() {
+				MessageDialog.openWarning(PlatformUI.getWorkbench()
+						.getDisplay().getActiveShell(), createTitle(),
+						cause.getHookStdErr());
+			}
+		});
+	}
+
