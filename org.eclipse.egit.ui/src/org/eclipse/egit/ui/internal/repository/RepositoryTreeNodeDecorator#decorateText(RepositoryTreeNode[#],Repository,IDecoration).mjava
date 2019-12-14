@@ -1,5 +1,6 @@
 	private void decorateText(RepositoryTreeNode<?> node,
-			@NonNull Repository repository, IDecoration decoration) {
+			@NonNull Repository repository, IDecoration decoration)
+			throws IOException {
 		switch (node.getType()) {
 		case REPO:
 			decorateRepository(node, repository, decoration);

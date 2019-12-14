@@ -1,0 +1,9 @@
+		@Override
+		public Map<String, Ref> byPrefix(Repository repository, String prefix)
+				throws IOException {
+			if (disposed) {
+				return Collections.emptyMap();
+			}
+			return INSTANCE.byPrefix(repository, prefix);
+		}
+

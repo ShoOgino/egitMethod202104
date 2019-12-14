@@ -1,6 +1,12 @@
 	private void decorateNode(RepositoryTreeNode<?> node,
 			@NonNull Repository repository, IDecoration decoration) {
-		decorateText(node, repository, decoration);
-		decorateIcon(node, repository, decoration);
+		try {
+			decorateText(node, repository, decoration);
+			decorateIcon(node, repository, decoration);
+		} catch (IOException e) {
+			Activator.logError(MessageFormat.format(
+					UIText.GitLabelProvider_UnableToRetrieveLabel,
+					node.toString()), e);
+		}
 	}
 

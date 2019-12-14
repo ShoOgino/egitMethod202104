@@ -1,0 +1,18 @@
+	protected synchronized List<Ref> additional(Repository repository)
+			throws IOException {
+		List<Ref> result = additionalRefs.get(repository);
+		if (result == null) {
+			result = repository.getRefDatabase().getAdditionalRefs();
+			additionalRefs.put(repository, result);
+			if (indexChangedListeners.get(repository) == null) {
+				indexChangedListeners.put(repository, repository
+						.getListenerList().addIndexChangedListener(event -> {
+							synchronized (this) {
+								additionalRefs.remove(event.getRepository());
+							}
+						}));
+			}
+		}
+		return result;
+	}
+

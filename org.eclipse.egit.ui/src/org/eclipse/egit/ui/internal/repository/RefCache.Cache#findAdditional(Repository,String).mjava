@@ -1,0 +1,15 @@
+		default Ref findAdditional(Repository repository, String name)
+				throws IOException {
+			Ref ref = exact(repository, name);
+			if (ref != null) {
+				return ref;
+			}
+			for (Ref additional : additional(repository)) {
+				if (additional.getName().equals(name)) {
+					return additional;
+				}
+			}
+			return null;
+
+		}
+

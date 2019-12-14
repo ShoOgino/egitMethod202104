@@ -36,7 +36,7 @@
 						refs.add(new AdditionalRefNode(node, repo, refEntry
 								.getValue()));
 				}
-				for (Ref r : repo.getRefDatabase().getAdditionalRefs()) {
+				for (Ref r : refCache.additional(repo)) {
 					refs.add(new AdditionalRefNode(node, repo, r));
 				}
 				if (showUnbornHead) {

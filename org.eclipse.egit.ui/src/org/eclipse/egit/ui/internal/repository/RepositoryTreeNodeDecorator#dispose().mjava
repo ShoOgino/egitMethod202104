@@ -1,6 +1,7 @@
 	@Override
 	public void dispose() {
 		verboseBranchModeState.removeListener(this);
+		refCache.dispose();
 		super.dispose();
 	}
 

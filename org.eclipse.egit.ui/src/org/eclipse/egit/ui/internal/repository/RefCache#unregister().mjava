@@ -1,0 +1,13 @@
+	protected synchronized void unregister() {
+		if (refCount == 0) {
+			return;
+		}
+		if (--refCount == 0) {
+			refsChangedListeners.values().forEach(ListenerHandle::remove);
+			refsChangedListeners.clear();
+			indexChangedListeners.values().forEach(ListenerHandle::remove);
+			indexChangedListeners.clear();
+			branchRefs.clear();
+		}
+	}
+

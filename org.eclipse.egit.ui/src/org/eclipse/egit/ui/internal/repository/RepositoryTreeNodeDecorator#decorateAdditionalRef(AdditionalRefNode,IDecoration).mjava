@@ -1,6 +1,10 @@
 	private void decorateAdditionalRef(AdditionalRefNode node,
-			IDecoration decoration) {
-		Ref ref = node.getObject();
+			IDecoration decoration) throws IOException {
+		String name = node.getObject().getName();
+		Ref ref = refCache.findAdditional(node.getRepository(), name);
+		if (ref == null) {
+			return;
+		}
 		StringBuilder suffix = new StringBuilder();
 		if (ref.isSymbolic()) {
 			suffix.append(OPEN_BRACKET).append(ref.getLeaf().getName())
@@ -8,7 +12,7 @@
 		}
 		ObjectId refId = ref.getObjectId();
 		suffix.append(' ');
-		RevCommit commit = getLatestCommit(node);
+		RevCommit commit = getLatestCommit(node.getRepository(), ref);
 		if (commit != null) {
 			suffix.append(abbreviate(commit)).append(' ')
 					.append(commit.getShortMessage());

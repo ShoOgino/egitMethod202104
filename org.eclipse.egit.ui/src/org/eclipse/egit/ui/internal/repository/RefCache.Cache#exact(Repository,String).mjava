@@ -1,0 +1,5 @@
+		default Ref exact(Repository repository, String fullName)
+				throws IOException {
+			return byPrefix(repository, RefDatabase.ALL).get(fullName);
+		}
+

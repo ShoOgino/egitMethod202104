@@ -1,6 +1,12 @@
-	private void decorateRef(RefNode node, IDecoration decoration) {
+	private void decorateRef(RefNode node, IDecoration decoration)
+			throws IOException {
 		if (verboseBranchMode) {
-			RevCommit latest = getLatestCommit(node);
+			Ref ref = refCache.exact(node.getRepository(),
+					node.getObject().getName());
+			if (ref == null) {
+				return;
+			}
+			RevCommit latest = getLatestCommit(node.getRepository(), ref);
 			if (latest != null) {
 				decoration.addSuffix(" " + abbreviate(latest) + ' ' //$NON-NLS-1$
 						+ latest.getShortMessage());

@@ -1,6 +1,5 @@
 	@Override
 	public void dispose() {
-		refsChangedListeners.values().forEach(ListenerHandle::remove);
-		refsChangedListeners.clear();
+		refCache.dispose();
 	}
 

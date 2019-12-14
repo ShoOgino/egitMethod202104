@@ -1,0 +1,8 @@
+		@Override
+		public List<Ref> additional(Repository repository) throws IOException {
+			if (disposed) {
+				return Collections.emptyList();
+			}
+			return INSTANCE.additional(repository);
+		}
+
