@@ -16,7 +16,7 @@
 		item = TestUtil.expandAndWait(myRepoViewUtil.getRemoteBranchesItem(tree,
 				clonedRepositoryFile));
 		List<String> children = item.getNodes();
-		assertEquals("Wrong number of remote children", 2, children.size());
+		assertEquals("Wrong number of remote children", 3, children.size());
 
 		item.getNode("origin/stable").select();
 		ContextMenuHelper.clickContextMenuSync(tree,

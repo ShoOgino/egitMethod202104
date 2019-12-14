@@ -1,7 +1,9 @@
 	@Override
 	public void clear(Repository repository) {
 		super.clear(repository);
-		branchLabels.remove(repository.getDirectory());
-		branchStateLabels.remove(repository.getDirectory());
+		File gitDir = repository.getDirectory();
+		branchLabels.remove(gitDir);
+		branchStateLabels.remove(gitDir);
+		branchStatesToClear.remove(gitDir);
 	}
 

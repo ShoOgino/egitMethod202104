@@ -2,6 +2,8 @@
 	public void dispose() {
 		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache()
 				.removeIndexDiffChangedListener(this);
+		configListener.remove();
+		configListener = null;
 		Job job;
 		synchronized (lock) {
 			job = eventJob;

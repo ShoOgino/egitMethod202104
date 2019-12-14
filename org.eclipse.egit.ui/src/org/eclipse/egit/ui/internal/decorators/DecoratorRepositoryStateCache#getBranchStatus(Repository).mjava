@@ -7,8 +7,13 @@
 	 * @return the label, or {@code null} if none
 	 */
 	public String getBranchStatus(Repository repository) {
+		File gitDir = repository.getDirectory();
+		// Clear if needed
+		if (branchStatesToClear.remove(gitDir)) {
+			branchStateLabels.remove(gitDir);
+		}
 		String label = branchStateLabels
-				.computeIfAbsent(repository.getDirectory(), dir -> {
+				.computeIfAbsent(gitDir, dir -> {
 					return UnitOfWork.get(repository, () -> {
 						String branchName = getFullBranchName(repository);
 						if (branchName == null) {

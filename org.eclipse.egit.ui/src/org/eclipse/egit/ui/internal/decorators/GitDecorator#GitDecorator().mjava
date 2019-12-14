@@ -5,5 +5,8 @@
 	public GitDecorator() {
 		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache()
 				.addIndexDiffChangedListener(this);
+		configListener = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryCache().getGlobalListenerList()
+				.addConfigChangedListener(this);
 	}
 

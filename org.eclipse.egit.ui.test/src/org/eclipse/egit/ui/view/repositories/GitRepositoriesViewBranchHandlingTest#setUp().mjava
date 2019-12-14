@@ -4,6 +4,11 @@
 		setVerboseBranchMode(false);
 		repositoryFile = createProjectAndCommitToRepository();
 		remoteRepositoryFile = createRemoteRepository(repositoryFile);
+		// Create one more branch on HEAD^1
+		try (Git git = new Git(lookupRepository(remoteRepositoryFile))) {
+			git.branchCreate().setName("initial").setStartPoint("HEAD^1")
+					.call();
+		}
 		// now let's clone the remote repository
 		final URIish uri = new URIish(remoteRepositoryFile.getPath());
 		final File workdir = new File(getTestDirectory(), "Cloned");

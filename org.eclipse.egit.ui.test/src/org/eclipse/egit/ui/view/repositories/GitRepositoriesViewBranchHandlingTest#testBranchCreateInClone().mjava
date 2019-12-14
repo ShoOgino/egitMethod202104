@@ -11,7 +11,9 @@
 		item = TestUtil.expandAndWait(myRepoViewUtil.getRemoteBranchesItem(tree,
 				clonedRepositoryFile));
 		children = item.getNodes();
-		assertEquals("Wrong number of children", 2, children.size());
+		assertEquals("Wrong number of children", 3, children.size());
+		assertTrue("Missing remote branch",
+				children.contains("origin/initial"));
 		assertTrue("Missing remote branch", children.contains("origin/master"));
 		assertTrue("Missing remote branch", children.contains("origin/stable"));
 		item.getNode("origin/stable").select();

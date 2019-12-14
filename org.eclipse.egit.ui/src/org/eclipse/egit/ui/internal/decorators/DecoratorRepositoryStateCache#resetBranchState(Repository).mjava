@@ -1,0 +1,10 @@
+	/**
+	 * Clears the cache for {@link #getBranchStatus(Repository)}.
+	 *
+	 * @param repository
+	 *            to clear the state of
+	 */
+	public void resetBranchState(Repository repository) {
+		branchStatesToClear.add(repository.getDirectory());
+	}
+
