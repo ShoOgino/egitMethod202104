@@ -32,8 +32,7 @@
 
 			if (repositoryChanged) {
 				titleNode = new RepositoryNode(null, repository);
-				form.setText(titleLabelProvider.getStyledText(titleNode)
-						.getString());
+				updateTitle(true);
 				// Reset paths, they're from the old repository
 				resetPathsToExpand();
 				removeRepositoryListeners();
@@ -47,8 +46,7 @@
 										repository));
 			} else if (titleNode != null) {
 				// The label decoration may need an update.
-				form.setText(titleLabelProvider.getStyledText(titleNode)
-						.getString());
+				updateTitle(false);
 			}
 			final StagingViewUpdate update = new StagingViewUpdate(repository,
 					indexDiff, null);
