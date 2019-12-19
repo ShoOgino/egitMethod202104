@@ -1,0 +1,19 @@
+	/**
+	 * @param parentShell
+	 *            the parent SWT shell
+	 * @param commitMessage
+	 *            the commit message to be edited
+	 * @param okButtonLabel
+	 *            the label for the Ok button
+	 * @param cancelButtonLabel
+	 *            the label for the Cancel button
+	 */
+	public CommitMessageEditorDialog(Shell parentShell, String commitMessage,
+			String okButtonLabel, String cancelButtonLabel) {
+		super(parentShell);
+		this.commitMessage = commitMessage;
+		this.title = UIText.CommitMessageEditorDialog_EditCommitMessageTitle;
+		this.okButtonLabel = okButtonLabel;
+		this.cancelButtonLabel = cancelButtonLabel;
+	}
+
