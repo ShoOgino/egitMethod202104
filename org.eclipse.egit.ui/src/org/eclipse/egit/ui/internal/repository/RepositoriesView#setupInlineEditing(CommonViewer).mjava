@@ -1,9 +1,4 @@
 	private void setupInlineEditing(CommonViewer viewer) {
-		TreeViewerFocusCellManager focusCellManager = new TreeViewerFocusCellManager(
-				viewer, new FocusCellHighlighter(viewer) {
-					// Empty; SWT highlights already.
-				});
-
 		ColumnViewerEditorActivationStrategy editorActivation = new ColumnViewerEditorActivationStrategy(
 				viewer) {
 
@@ -20,7 +15,7 @@
 		// tabbing. It may jump otherwise into an open editor (closing the cell
 		// editor), and when the user is typing he may then inadvertently modify
 		// that file.
-		TreeViewerEditor.create(viewer, focusCellManager, editorActivation,
+		TreeViewerEditor.create(viewer, editorActivation,
 				ColumnViewerEditor.TABBING_HORIZONTAL);
 
 		// Record the initial value so that the validator can avoid producing an
