@@ -68,11 +68,14 @@
 				boolean isLeftDoubleClick = event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION
 						&& ((MouseEvent) event.sourceEvent).button == 1;
 				return singleSelect && (isLeftDoubleClick
-						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
+						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC
+						|| event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED
+								&& event.keyCode == EDITOR_ACTIVATION_KEY);
 			}
 		};
 		TableViewerEditor.create(configsTable, focusCellManager,
-				editorActivation, ColumnViewerEditor.DEFAULT);
+				editorActivation, ColumnViewerEditor.DEFAULT
+						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
 
 		editor = new TextCellEditor(configsTable.getTable()) {
 
@@ -127,7 +130,8 @@
 					@Override
 					public void beforeEditorActivated(
 							ColumnViewerEditorActivationEvent event) {
-						// Nothing
+						configsTable.reveal(configsTable
+								.getStructuredSelection().getFirstElement());
 					}
 
 					@Override
