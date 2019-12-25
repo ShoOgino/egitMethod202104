@@ -1,13 +1,10 @@
 	private String getBranchNameSuggestionFromProvider() {
 		final AtomicReference<String> ref = new AtomicReference<>();
 		final IBranchNameProvider branchNameProvider = getBranchNameProvider();
-		if (branchNameProvider != null)
-			SafeRunner.run(new SafeRunnable() {
-				@Override
-				public void run() throws Exception {
-					ref.set(branchNameProvider.getBranchNameSuggestion());
-				}
-			});
+		if (branchNameProvider != null) {
+			SafeRunnable.run(() -> ref
+					.set(branchNameProvider.getBranchNameSuggestion()));
+		}
 		return ref.get();
 	}
 

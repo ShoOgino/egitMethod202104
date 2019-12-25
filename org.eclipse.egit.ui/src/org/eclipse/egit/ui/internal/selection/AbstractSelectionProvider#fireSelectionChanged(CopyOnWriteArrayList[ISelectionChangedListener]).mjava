@@ -9,13 +9,7 @@
 		SelectionChangedEvent event = new SelectionChangedEvent(this,
 				getSelection());
 		for (ISelectionChangedListener listener : listeners) {
-			SafeRunner.run(new SafeRunnable() {
-
-				@Override
-				public void run() throws Exception {
-					listener.selectionChanged(event);
-				}
-			});
+			SafeRunnable.run(() -> listener.selectionChanged(event));
 		}
 	}
 
