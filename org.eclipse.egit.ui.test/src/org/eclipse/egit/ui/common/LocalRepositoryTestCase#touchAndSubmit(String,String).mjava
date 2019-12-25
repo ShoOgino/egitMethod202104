@@ -11,13 +11,13 @@
 			throws Exception {
 		IFile file = touch(newContent);
 
-		IFile[] commitables = new IFile[] { file };
+		IFile[] committableFiles = new IFile[] { file };
 		ArrayList<IFile> untracked = new ArrayList<>();
-		untracked.addAll(Arrays.asList(commitables));
+		untracked.addAll(Arrays.asList(committableFiles));
 		String message = commitMessage;
 		if (message == null)
 			message = newContent;
-		CommitOperation op = new CommitOperation(commitables,
+		CommitOperation op = new CommitOperation(committableFiles,
 				untracked, TestUtil.TESTAUTHOR, TestUtil.TESTCOMMITTER,
 				message);
 		op.execute(null);
