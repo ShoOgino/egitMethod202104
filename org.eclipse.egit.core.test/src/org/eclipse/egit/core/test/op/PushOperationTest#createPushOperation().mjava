@@ -6,7 +6,7 @@
 		URIish remote = new URIish("file:///"
 				+ repository2.getRepository().getDirectory().toString());
 		// update master upon master
-		List<RemoteRefUpdate> refUpdates = new ArrayList<RemoteRefUpdate>();
+		List<RemoteRefUpdate> refUpdates = new ArrayList<>();
 		RemoteRefUpdate update = new RemoteRefUpdate(repository1
 				.getRepository(), "HEAD", "refs/heads/test", false, null, null);
 		refUpdates.add(update);

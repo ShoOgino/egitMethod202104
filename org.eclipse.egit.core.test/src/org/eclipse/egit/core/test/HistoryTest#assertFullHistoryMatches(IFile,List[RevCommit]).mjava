@@ -10,7 +10,7 @@
 
 			final IFileRevision[] revisions = history.getFileRevisions();
 			assertEquals(expectedHistory.size(), revisions.length);
-			final List<RevCommit> commitList = new ArrayList<RevCommit>(
+			final List<RevCommit> commitList = new ArrayList<>(
 					expectedHistory);
 			assertMatchingRevisions(Arrays.asList(revisions), commitList);
 		}

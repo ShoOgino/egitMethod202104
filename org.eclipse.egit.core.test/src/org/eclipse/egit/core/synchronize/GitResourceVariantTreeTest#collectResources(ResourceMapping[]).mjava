@@ -1,6 +1,6 @@
 	private static Set<IResource> collectResources(ResourceMapping[] mappings)
 			throws CoreException {
-		final Set<IResource> resources = new HashSet<IResource>();
+		final Set<IResource> resources = new HashSet<>();
 		ResourceMappingContext context = ResourceMappingContext.LOCAL_CONTEXT;
 		for (ResourceMapping mapping : mappings) {
 			ResourceTraversal[] traversals = mapping.getTraversals(context,

@@ -14,10 +14,10 @@
 				new LinkedHashSet<>(expected));
 		List<String> shuffeled = new ArrayList<>(expected);
 		Collections.shuffle(shuffeled, new Random(1));
-		TreeSet<String> sortedSet = new TreeSet<String>(
+		TreeSet<String> sortedSet = new TreeSet<>(
 				CommonUtils.STRING_ASCENDING_COMPARATOR);
 		sortedSet.addAll(shuffeled);
 		assertEquals(expectedWithoutDuplicates,
-				new ArrayList<String>(sortedSet));
+				new ArrayList<>(sortedSet));
 	}
 

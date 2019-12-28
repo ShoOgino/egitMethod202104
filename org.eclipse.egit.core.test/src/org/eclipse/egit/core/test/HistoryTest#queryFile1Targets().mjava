@@ -30,7 +30,7 @@
 		final IFileRevision[] masterCommit1Children = history
 				.getTargets(masterFileRevision1);
 		assertEquals(2, masterCommit1Children.length);
-		final List<RevCommit> expected = new ArrayList<RevCommit>(
+		final List<RevCommit> expected = new ArrayList<>(
 				Arrays.asList(masterCommit3, branchCommit1));
 		assertMatchingRevisions(Arrays.asList(masterCommit1Children), expected);
 

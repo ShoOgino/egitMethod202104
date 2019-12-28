@@ -2,7 +2,7 @@
 	 * @return collection of files to update
 	 */
 	public Collection<IFile> getFileResourcesToUpdate() {
-		Collection<IFile> result = new ArrayList<IFile>();
+		Collection<IFile> result = new ArrayList<>();
 		for (IResource resource : resourcesToUpdate)
 			if (resource instanceof IFile)
 				result.add((IFile) resource);
