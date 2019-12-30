@@ -1,0 +1,13 @@
+	@Override
+	public void done(IJobChangeEvent jobChangeEvent) {
+		Action resultAction = new ShowPushResultAction(
+				gfRepo.getRepository(),
+				operation.getOperationResult(),
+				Constants.DEFAULT_REMOTE_NAME,
+				false,
+				PushMode.UPSTREAM);
+		PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+			resultAction.run();
+		});
+	}
+
