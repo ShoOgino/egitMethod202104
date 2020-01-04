@@ -1,0 +1,15 @@
+	private boolean canBulkCreateNewBranch(Repository[] repositories) {
+		for (Repository repo : repositories) {
+			if (!hasBranches(repo)) {
+				return false;
+			}
+			if (repo.isBare()) {
+				return false;
+			}
+			if (repo.getRepositoryState() != RepositoryState.SAFE) {
+				return false;
+			}
+		}
+		return true;
+	}
+

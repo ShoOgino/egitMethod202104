@@ -1,7 +1,5 @@
 	private void createNewBranchMenuItem(Menu menu, Repository repository) {
-		MenuItem newBranch = new MenuItem(menu, SWT.PUSH);
-		newBranch.setText(UIText.SwitchToMenu_NewBranchMenuLabel);
-		newBranch.setImage(newBranchImage);
+		MenuItem newBranch = getNewBranchMenuItem(menu);
 		newBranch.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

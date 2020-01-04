@@ -1,0 +1,20 @@
+	private String validateNewBulkBranchName(String newBranchName,
+			Repository[] repositories) {
+		if (StringUtils.isEmptyOrNull(newBranchName)
+				|| newBranchName.trim().isEmpty()) {
+			return UIText.CreateBranchPage_ChooseNameMessage;
+		}
+		for (Repository repo : repositories) {
+			IStatus status = Utils.validateNewRefName(newBranchName, repo,
+					Constants.R_HEADS, true);
+			if (status.getException() != null) {
+				Activator.handleStatus(status, false);
+			}
+			if (!status.isOK()) {
+				return Activator.getDefault().getRepositoryUtil()
+						.getRepositoryName(repo) + ": " + status.getMessage(); //$NON-NLS-1$
+			}
+		}
+		return null;
+	}
+
