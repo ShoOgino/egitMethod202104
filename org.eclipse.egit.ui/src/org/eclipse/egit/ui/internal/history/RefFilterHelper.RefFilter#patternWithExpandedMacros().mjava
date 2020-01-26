@@ -1,6 +1,11 @@
-		private TokenizedPattern patternWithExpandedMacros() {
+		private IMatcher patternWithExpandedMacros() {
 			if (expandedFilterPattern == null) {
-				expandedFilterPattern = expandMacros();
+				IMatcher expanded = expandMacros();
+				if (expanded != null) {
+					expandedFilterPattern = expanded;
+				} else {
+					expandedFilterPattern = filterPattern;
+				}
 			}
 			return expandedFilterPattern;
 		}

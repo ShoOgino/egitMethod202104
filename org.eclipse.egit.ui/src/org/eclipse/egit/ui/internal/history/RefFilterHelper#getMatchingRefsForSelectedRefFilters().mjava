@@ -15,8 +15,7 @@
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 
 		for (Ref ref : db.getRefs()) {
-			TokenizedPath refPath = new TokenizedPath(
-					ref.getName().replace('/', File.separatorChar));
+			String refPath = ref.getName();
 			for (RefFilter filter : selectedFilters) {
 				if (filter.matches(refPath)) {
 					result.add(ref);
