@@ -3,15 +3,17 @@
 	 * {@link CommitEditorInput}, formats it into a {@link DiffDocument}, and
 	 * then re-sets this editors's input to a {@link DiffEditorInput} which will
 	 * cause this document to be shown.
+	 *
+	 * @param input
+	 *            of this editor
 	 */
-	private void formatDiff() {
-		RepositoryCommit commit = Adapters.adapt(getEditor(),
-				RepositoryCommit.class);
+	private void formatDiff(@NonNull CommitEditorInput input) {
+		RepositoryCommit commit = input.getCommit();
 		if (commit == null) {
 			return;
 		}
 		if (!commit.isStash() && commit.getRevCommit().getParentCount() > 1) {
-			setInput(new DiffEditorInput(commit, null));
+			setInput(new DiffEditorInput(null));
 			return;
 		}
 
@@ -43,8 +45,9 @@
 
 					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
-						if (UIUtils.isUsable(getPartControl())) {
-							setInput(new DiffEditorInput(commit, document));
+						if (UIUtils
+								.isUsable(getSourceViewer().getTextWidget())) {
+							setInput(new DiffEditorInput(document));
 						}
 						return Status.OK_STATUS;
 					}

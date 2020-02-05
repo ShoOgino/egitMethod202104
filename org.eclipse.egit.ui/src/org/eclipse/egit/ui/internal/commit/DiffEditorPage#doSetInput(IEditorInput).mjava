@@ -7,7 +7,7 @@
 			currentFileDiffRange = region;
 			setOverviewAnnotations();
 		} else if (input instanceof CommitEditorInput) {
-			formatDiff();
+			formatDiff((CommitEditorInput) input);
 			currentFileDiffRange = null;
 		}
 		if (outlinePage != null) {
