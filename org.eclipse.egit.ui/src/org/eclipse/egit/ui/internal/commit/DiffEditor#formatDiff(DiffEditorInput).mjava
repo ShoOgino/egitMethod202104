@@ -7,21 +7,23 @@
 	 * @param input
 	 *            of this editor
 	 */
-	private void formatDiff(@NonNull CommitEditorInput input) {
-		RepositoryCommit commit = input.getCommit();
-		if (commit == null) {
-			return;
+	private void formatDiff(@NonNull DiffEditorInput input) {
+		IRepositoryCommit commit = input.getTip();
+		if (commit instanceof RepositoryCommit) {
+			RepositoryCommit repoCommit = (RepositoryCommit) commit;
+			if (!repoCommit.isStash()
+					&& repoCommit.getRevCommit().getParentCount() > 1) {
+				input.setDocument(new Document());
+				setInput(input);
+				return;
+			}
 		}
-		if (!commit.isStash() && commit.getRevCommit().getParentCount() > 1) {
-			setInput(new DiffEditorInput(null));
-			return;
-		}
-
-		Job job = new Job(UIText.DiffEditorPage_TaskGeneratingDiff) {
+		IRepositoryCommit base = input.getBase();
+		Job job = new Job(UIText.DiffEditor_TaskGeneratingDiff) {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				FileDiff diffs[] = getDiffs(commit);
+				FileDiff diffs[] = getDiffs(commit, base);
 				DiffDocument document = new DiffDocument();
 				try (DiffRegionFormatter formatter = new DiffRegionFormatter(
 						document)) {
@@ -41,18 +43,24 @@
 					}
 					document.connect(formatter);
 				}
-				new UIJob(UIText.DiffEditorPage_TaskUpdatingViewer) {
+				new UIJob(UIText.DiffEditor_TaskUpdatingViewer) {
 
 					@Override
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
 						if (UIUtils
 								.isUsable(getSourceViewer().getTextWidget())) {
-							setInput(new DiffEditorInput(document));
+							input.setDocument(document);
+							setInput(input);
 						}
 						return Status.OK_STATUS;
 					}
 				}.schedule();
 				return Status.OK_STATUS;
+			}
+
+			@Override
+			public boolean belongsTo(Object family) {
+				return JobFamilies.DIFF == family || super.belongsTo(family);
 			}
 		};
 		job.schedule();

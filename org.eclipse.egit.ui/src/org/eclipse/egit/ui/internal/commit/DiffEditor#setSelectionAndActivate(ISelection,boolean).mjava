@@ -1,0 +1,16 @@
+	/**
+	 * Sets the selection and potentially activates the editor.
+	 *
+	 * @param selection
+	 *            to set
+	 * @param activate
+	 *            whether to activate the editor
+	 */
+	protected void setSelectionAndActivate(ISelection selection,
+			boolean activate) {
+		if (activate) {
+			getSite().getPage().activate(this);
+		}
+		doSetSelection(selection);
+	}
+

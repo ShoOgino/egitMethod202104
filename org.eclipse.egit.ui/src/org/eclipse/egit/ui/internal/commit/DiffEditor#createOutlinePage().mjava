@@ -1,0 +1,9 @@
+	private DiffEditorOutlinePage createOutlinePage() {
+		DiffEditorOutlinePage page = new DiffEditorOutlinePage();
+		page.addSelectionChangedListener(
+				event -> setSelectionAndActivate(event.getSelection(), false));
+		page.addOpenListener(
+				event -> setSelectionAndActivate(event.getSelection(), true));
+		return page;
+	}
+

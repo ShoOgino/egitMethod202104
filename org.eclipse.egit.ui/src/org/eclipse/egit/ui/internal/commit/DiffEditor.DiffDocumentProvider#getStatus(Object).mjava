@@ -1,0 +1,19 @@
+		@Override
+		public IStatus getStatus(Object element) {
+			if (element instanceof DiffEditorInput) {
+				DiffEditorInput input = (DiffEditorInput) element;
+				if (input.getBase() == null) {
+					IRepositoryCommit commit = input.getTip();
+					if (commit.getRevCommit() != null
+							&& commit.getRevCommit().getParentCount() > 1) {
+						if (!(commit instanceof RepositoryCommit)
+								|| !((RepositoryCommit) commit).isStash()) {
+							return Activator.createErrorStatus(
+									UIText.DiffEditor_WarningNoDiffForMerge);
+						}
+					}
+				}
+			}
+			return Status.OK_STATUS;
+		}
+

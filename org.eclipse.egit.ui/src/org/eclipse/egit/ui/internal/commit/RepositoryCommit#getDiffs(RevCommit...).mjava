@@ -12,7 +12,9 @@
 				TreeWalk treewalk = new TreeWalk(revWalk.getObjectReader())) {
 			treewalk.setRecursive(true);
 			treewalk.setFilter(TreeFilter.ANY_DIFF);
-			loadParents();
+			for (RevCommit parent : commit.getParents()) {
+				revWalk.parseBody(parent);
+			}
 			diffsResult = FileDiff.compute(repository, treewalk, commit,
 					parents, null, TreeFilter.ALL);
 		} catch (IOException e) {
