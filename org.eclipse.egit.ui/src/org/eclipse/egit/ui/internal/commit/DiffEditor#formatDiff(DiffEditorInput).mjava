@@ -9,39 +9,21 @@
 	 */
 	private void formatDiff(@NonNull DiffEditorInput input) {
 		IRepositoryCommit commit = input.getTip();
-		if (commit instanceof RepositoryCommit) {
-			RepositoryCommit repoCommit = (RepositoryCommit) commit;
-			if (!repoCommit.isStash()
-					&& repoCommit.getRevCommit().getParentCount() > 1) {
+		IRepositoryCommit base = input.getBase();
+		if (base == null && commit.getRevCommit().getParentCount() > 1) {
+			if (!(commit instanceof RepositoryCommit)
+					|| !((RepositoryCommit) commit).isStash()) {
 				input.setDocument(new Document());
 				setInput(input);
 				return;
 			}
 		}
-		IRepositoryCommit base = input.getBase();
-		Job job = new Job(UIText.DiffEditor_TaskGeneratingDiff) {
-
+		DiffJob job = getDiffer(commit, base);
+		job.addJobChangeListener(new JobChangeAdapter() {
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				FileDiff diffs[] = getDiffs(commit, base);
-				DiffDocument document = new DiffDocument();
-				try (DiffRegionFormatter formatter = new DiffRegionFormatter(
-						document)) {
-					SubMonitor progress = SubMonitor.convert(monitor,
-							diffs.length);
-					for (FileDiff diff : diffs) {
-						if (progress.isCanceled()) {
-							break;
-						}
-						progress.subTask(diff.getPath());
-						try {
-							formatter.write(diff);
-						} catch (IOException ignore) {
-							// Ignored
-						}
-						progress.worked(1);
-					}
-					document.connect(formatter);
+			public void done(IJobChangeEvent event) {
+				if (!event.getResult().isOK()) {
+					return;
 				}
 				new UIJob(UIText.DiffEditor_TaskUpdatingViewer) {
 
@@ -49,20 +31,14 @@
 					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
 						if (UIUtils
 								.isUsable(getSourceViewer().getTextWidget())) {
-							input.setDocument(document);
+							input.setDocument(job.getDocument());
 							setInput(input);
 						}
 						return Status.OK_STATUS;
 					}
 				}.schedule();
-				return Status.OK_STATUS;
 			}
-
-			@Override
-			public boolean belongsTo(Object family) {
-				return JobFamilies.DIFF == family || super.belongsTo(family);
-			}
-		};
+		});
 		job.schedule();
 	}
 
