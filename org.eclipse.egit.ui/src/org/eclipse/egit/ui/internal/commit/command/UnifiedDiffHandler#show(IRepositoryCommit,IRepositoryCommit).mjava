@@ -8,9 +8,7 @@
 	 *            to diff against
 	 */
 	public static void show(IRepositoryCommit tip, IRepositoryCommit base) {
-		if (tip == null) {
-			return;
-		}
+		Assert.isNotNull(tip);
 		DiffEditorInput input = new DiffEditorInput(tip, base);
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
