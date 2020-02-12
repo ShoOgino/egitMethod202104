@@ -3,6 +3,9 @@
 	 */
 	@Override
 	public void doSaveAs() {
-		// Save as not supported
+		IEditorPart editor = getActiveEditor();
+		if (editor != null && editor.isSaveAsAllowed()) {
+			editor.doSaveAs();
+		}
 	}
 

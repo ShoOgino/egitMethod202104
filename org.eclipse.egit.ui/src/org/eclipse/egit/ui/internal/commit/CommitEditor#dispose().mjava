@@ -1,5 +1,9 @@
 	@Override
 	public void dispose() {
+		if (pageListener != null) {
+			removePageChangedListener(pageListener);
+			pageListener = null;
+		}
 		CommonUtils.getService(getSite(), IPartService.class)
 				.removePartListener(activationListener);
 		refListenerHandle.remove();
