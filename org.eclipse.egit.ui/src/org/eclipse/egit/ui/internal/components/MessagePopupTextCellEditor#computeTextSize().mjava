@@ -1,0 +1,16 @@
+	private Point computeTextSize() {
+		// Get the text before computing the size, otherwise the size may
+		// sometimes be too large when a multi-character selection was deleted.
+		boolean isEmpty = text.getText().isEmpty();
+		Point size = text.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		if (isEmpty) {
+			// Text enforces a minimum width of 60px if the text is empty,
+			// which makes the editor grow when the last character is
+			// removed.
+			size.x = size.y;
+		} else {
+			size.x += size.y;
+		}
+		return size;
+	}
+

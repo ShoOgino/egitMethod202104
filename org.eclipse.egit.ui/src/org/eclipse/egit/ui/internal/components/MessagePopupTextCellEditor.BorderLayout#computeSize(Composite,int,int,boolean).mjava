@@ -1,0 +1,16 @@
+		@Override
+		protected Point computeSize(Composite composite, int wHint, int hHint,
+				boolean flushCache) {
+			// Actually never called, but try to do something meaningful anyway.
+			Point inner = computeTextSize();
+			if (wHint == SWT.DEFAULT) {
+				inner.x += 4;
+			} else {
+				inner.x = wHint;
+			}
+			if (hHint != SWT.DEFAULT) {
+				inner.y = hHint;
+			}
+			return inner;
+		}
+

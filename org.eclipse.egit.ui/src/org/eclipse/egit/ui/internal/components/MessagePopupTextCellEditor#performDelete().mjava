@@ -1,0 +1,9 @@
+	@Override
+	public void performDelete() {
+		super.performDelete();
+		// At least on SWT/Cocoa, no Modify event is sent
+		if (outer != null) {
+			adjustSize();
+		}
+	}
+

@@ -1,0 +1,9 @@
+	private void drawRectangle(Event event) {
+		Rectangle textBounds = text.getBounds();
+		Rectangle parentSize = outer.getClientArea();
+		event.gc.setForeground(text.getForeground());
+		event.gc.drawRectangle(0, 0,
+				Math.min(textBounds.width + 4, parentSize.width) - 1,
+				parentSize.height - 1);
+	}
+

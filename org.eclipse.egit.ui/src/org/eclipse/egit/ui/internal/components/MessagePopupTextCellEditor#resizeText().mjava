@@ -1,0 +1,6 @@
+	private void resizeText() {
+		Rectangle area = outer.getClientArea();
+		Point size = computeTextSize();
+		text.setBounds(2, 1, Math.min(size.x, area.width - 4), area.height - 2);
+	}
+

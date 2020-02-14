@@ -1,6 +1,18 @@
 	@Override
 	protected Control createControl(Composite parent) {
-		Control control = super.createControl(parent);
+		Control control = null;
+		if ((getStyle() & SWT.SINGLE) != 0 && withBorder()) {
+			outer = new Composite(parent, SWT.NONE);
+			outer.setVisible(false);
+			outer.setLayout(new BorderLayout());
+			super.createControl(outer);
+			control = outer;
+			outer.setBackground(text.getBackground());
+			outer.addListener(SWT.Paint, this::drawRectangle);
+			text.addListener(SWT.Modify, event -> adjustSize());
+		} else {
+			control = super.createControl(parent);
+		}
 		errorPopup = new DefaultToolTip(control, ToolTip.NO_RECREATE, true);
 		// A delay enables us to cancel showing the tooltip if the user keeps
 		// typing and the value is valid again.
@@ -34,9 +46,6 @@
 				errorPopup.hide();
 			}
 		});
-		// Since "text" in the super class is protected, we may rely on (a)
-		// super.createControl() having created and returned a Text, and (b) it
-		// having actually set "text", and (c) control == text.
 		if ((text.getStyle() & SWT.SINGLE) != 0) {
 			// Prevent pasting multi-line text into a single-line control. See
 			// bug 273470.
