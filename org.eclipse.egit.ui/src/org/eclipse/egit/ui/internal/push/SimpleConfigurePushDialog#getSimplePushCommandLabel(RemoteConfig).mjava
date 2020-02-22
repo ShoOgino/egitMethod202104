@@ -1,0 +1,13 @@
+	/**
+	 * Computes a specific push label for the given remote config
+	 *
+	 * @param config
+	 * @return the menu item label
+	 *
+	 */
+	public static String getSimplePushCommandLabel(
+			@NonNull RemoteConfig config) {
+		String target = config.getName();
+		return NLS.bind(UIText.SimpleConfigurePushDialog_PushToLabel, target);
+	}
+
