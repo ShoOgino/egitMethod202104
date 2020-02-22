@@ -6,6 +6,8 @@
 		viewer.setUseHashlookup(true);
 		viewer.setContentProvider(new DiffContentProvider());
 		viewer.setLabelProvider(new DiffLabelProvider());
+		viewer.setComparator(
+				new ViewerComparator(CommonUtils.STRING_ASCENDING_COMPARATOR));
 		viewer.addDoubleClickListener(
 				event -> openFolder(event.getSelection()));
 		viewer.addOpenListener(this::fireOpenEvent);
