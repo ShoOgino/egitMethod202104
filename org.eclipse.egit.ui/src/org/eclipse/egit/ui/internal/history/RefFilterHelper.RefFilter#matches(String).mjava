@@ -5,8 +5,11 @@
 		 *            The path of the ref to match
 		 * @return true if the ref path matches the pattern of this filter
 		 */
-		public boolean matches(TokenizedPath refPath) {
-			return patternWithExpandedMacros().matchPath(refPath,
-					true);
+		public boolean matches(String refPath) {
+			IMatcher matcher = patternWithExpandedMacros();
+			if(matcher == null){
+				return false;
+			}
+			return matcher.matches(refPath, false, true);
 		}
 

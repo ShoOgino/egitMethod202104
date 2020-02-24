@@ -1,0 +1,44 @@
+	/**
+	 * Asynchronously gets the diff of the commit set on our
+	 * {@link CommitEditorInput}, formats it into a {@link DiffDocument}, and
+	 * then re-sets this editors's input to a {@link DiffEditorInput} which will
+	 * cause this document to be shown.
+	 *
+	 * @param input
+	 *            of this editor
+	 */
+	private void formatDiff(@NonNull DiffEditorInput input) {
+		IRepositoryCommit commit = input.getTip();
+		IRepositoryCommit base = input.getBase();
+		if (base == null && commit.getRevCommit().getParentCount() > 1) {
+			if (!(commit instanceof RepositoryCommit)
+					|| !((RepositoryCommit) commit).isStash()) {
+				input.setDocument(new Document());
+				setInput(input);
+				return;
+			}
+		}
+		DiffJob job = getDiffer(commit, base);
+		job.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				if (!event.getResult().isOK()) {
+					return;
+				}
+				new UIJob(UIText.DiffEditor_TaskUpdatingViewer) {
+
+					@Override
+					public IStatus runInUIThread(IProgressMonitor uiMonitor) {
+						if (UIUtils
+								.isUsable(getSourceViewer().getTextWidget())) {
+							input.setDocument(job.getDocument());
+							setInput(input);
+						}
+						return Status.OK_STATUS;
+					}
+				}.schedule();
+			}
+		});
+		job.schedule();
+	}
+

@@ -1,0 +1,7 @@
+	@Override
+	public int hashCode() {
+		return Objects.hash(tip.getObjectId(),
+				tip.getRepository().getDirectory(),
+				base == null ? null : base.getObjectId());
+	}
+

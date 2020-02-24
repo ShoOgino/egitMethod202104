@@ -3,6 +3,7 @@
 	 */
 	@Override
 	public boolean isSaveAsAllowed() {
-		return false;
+		IEditorPart editor = getActiveEditor();
+		return editor != null && editor.isSaveAsAllowed();
 	}
 

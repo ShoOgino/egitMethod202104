@@ -1,14 +1,15 @@
-		private TokenizedPattern expandMacros() {
-			TokenizedPattern currentPattern = filterPattern;
+		@Nullable
+		private IMatcher expandMacros() {
+			String currentPattern = filterString;
 			for(Map.Entry<String, Function<Repository, String>> macro : macros.entrySet()) {
 				String macroString = macro.getKey();
-				if (currentPattern.containsPattern(macroString)) {
+				if (currentPattern.contains(macroString)) {
 					String replacingString = macro.getValue().apply(repository);
-					String newString = currentPattern.getPattern()
-							.replace(macroString, replacingString);
-					currentPattern = createPattern(newString);
+					String newString = currentPattern.replace(macroString,
+							replacingString);
+					currentPattern = newString;
 				}
 			}
-			return currentPattern;
+			return createPattern(currentPattern);
 		}
 

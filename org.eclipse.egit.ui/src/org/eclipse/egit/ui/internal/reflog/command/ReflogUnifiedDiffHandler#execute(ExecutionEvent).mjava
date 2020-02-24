@@ -1,0 +1,34 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Repository repository = getRepository(event);
+		ISelection selection = HandlerUtil.getCurrentSelectionChecked(event);
+		if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
+			IStructuredSelection ssel = (IStructuredSelection) selection;
+			if (ssel.size() == 2) {
+				List<?> items = ssel.toList();
+				ReflogEntry first = Adapters.adapt(items.get(0),
+						ReflogEntry.class);
+				ReflogEntry second = Adapters.adapt(items.get(1),
+						ReflogEntry.class);
+				RevCommit tip = null;
+				RevCommit base = null;
+				try (RevWalk w = new RevWalk(repository)) {
+					if (first != null) {
+						tip = w.parseCommit(first.getNewId());
+					}
+					if (second != null) {
+						base = w.parseCommit(second.getNewId());
+					}
+				} catch (IOException e) {
+					throw new ExecutionException(e.getMessage(), e);
+				}
+				if (tip != null && base != null) {
+					UnifiedDiffHandler.show(
+							new RepositoryCommit(repository, tip),
+							new RepositoryCommit(repository, base));
+				}
+			}
+		}
+		return null;
+	}
+

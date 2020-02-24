@@ -27,7 +27,7 @@
 			matchers.add(equalTo(msg));
 		}
 
-		Assert.assertThat("Expected different commits",
+		assertThat("Expected different commits",
 				getCommitMsgsFromUi(table),
 				is(arrayContainingInAnyOrder(matchers)));
 	}

@@ -1,0 +1,7 @@
+	@Override
+	public boolean isSaveAsAllowed() {
+		IDocumentProvider provider = getDocumentProvider();
+		return provider != null && provider
+				.getDocument(getEditorInput()) instanceof DiffDocument;
+	}
+

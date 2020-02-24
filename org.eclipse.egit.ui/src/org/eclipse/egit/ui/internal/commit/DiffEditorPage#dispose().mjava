@@ -2,13 +2,10 @@
 	public void dispose() {
 		// Nested editors are responsible for disposing their outline pages
 		// themselves.
+		DiffEditorOutlinePage outlinePage = getOutlinePage();
 		if (outlinePage != null) {
 			outlinePage.dispose();
 			outlinePage = null;
-		}
-		if (overviewStore != null) {
-			overviewStore.dispose();
-			overviewStore = null;
 		}
 		super.dispose();
 	}

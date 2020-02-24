@@ -1,14 +1,17 @@
 	@Override
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
+		currentFileDiffRange = null;
 		if (input instanceof DiffEditorInput) {
-			setFolding();
-			FileDiffRegion region = getFileDiffRange(0);
-			currentFileDiffRange = region;
-			setOverviewAnnotations();
-		} else if (input instanceof CommitEditorInput) {
-			formatDiff();
-			currentFileDiffRange = null;
+			DiffEditorInput diffInput = (DiffEditorInput) input;
+			if (diffInput.getDocument() != null) {
+				setFolding();
+				FileDiffRegion region = getFileDiffRange(0);
+				currentFileDiffRange = region;
+				setOverviewAnnotations();
+			} else {
+				formatDiff(diffInput);
+			}
 		}
 		if (outlinePage != null) {
 			outlinePage.setInput(getDocumentProvider().getDocument(input));

@@ -1,0 +1,19 @@
+	/**
+	 * Creates a new {@link DiffEditorInput} for the given
+	 * {@link IRepositoryCommit}s and {@link DiffDocument}.
+	 *
+	 * @param tip
+	 *            top commit of the diff
+	 * @param base
+	 *            base commit of the diff, if {@null}, the parent of tip is
+	 *            taken
+	 * @param diff
+	 *            to show if already computed, may be {@code null}
+	 * @throws IllegalArgumentException
+	 *             if the two commits are from different repositories
+	 */
+	public DiffEditorInput(@NonNull IRepositoryCommit tip,
+			IRepositoryCommit base, DiffDocument diff) {
+		this(tip, base, diff, null);
+	}
+

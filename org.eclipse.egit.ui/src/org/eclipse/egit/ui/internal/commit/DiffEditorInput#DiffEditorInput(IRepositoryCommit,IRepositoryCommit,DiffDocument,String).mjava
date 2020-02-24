@@ -1,0 +1,27 @@
+	/**
+	 * Creates a new {@link DiffEditorInput} for the given
+	 * {@link IRepositoryCommit}s and {@link DiffDocument} with a given title.
+	 *
+	 * @param tip
+	 *            top commit of the diff
+	 * @param base
+	 *            base commit of the diff; if {@null}, the parent of tip is
+	 *            taken
+	 * @param diff
+	 *            to show if already computed, may be {@code null}
+	 * @param title
+	 *            for the editor input; may be shown in the UI; if {@code null},
+	 *            a default title is computed
+	 * @throws IllegalArgumentException
+	 *             if the two commits are from different repositories
+	 */
+	public DiffEditorInput(@NonNull IRepositoryCommit tip,
+			IRepositoryCommit base, DiffDocument diff, String title) {
+		Assert.isLegal(base == null || tip.getRepository().getDirectory()
+				.equals(base.getRepository().getDirectory()));
+		this.tip = tip;
+		this.base = base;
+		this.document = diff;
+		this.title = title;
+	}
+
