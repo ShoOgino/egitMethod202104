@@ -1,0 +1,25 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		List<RepositoryTreeNode> nodes = getSelectedNodes();
+		Ref ref1 = getRef(nodes.get(0));
+		Ref ref2 = getRef(nodes.get(1));
+		if (ref1 != null && ref2 != null) {
+			Repository repo = nodes.get(0).getRepository();
+			IWorkbenchPage workbenchPage = HandlerUtil
+					.getActiveWorkbenchWindowChecked(event).getActivePage();
+			try {
+				// Use the older one as base
+				RevCommit a = repo.parseCommit(ref1.getObjectId());
+				RevCommit b = repo.parseCommit(ref2.getObjectId());
+				if (a.getCommitTime() <= b.getCommitTime()) {
+					compare(workbenchPage, repo, b.getName(), a.getName());
+				} else {
+					compare(workbenchPage, repo, a.getName(), b.getName());
+				}
+			} catch (IOException e) {
+				throw new ExecutionException(e.getLocalizedMessage(), e);
+			}
+		}
+		return null;
+	}
+

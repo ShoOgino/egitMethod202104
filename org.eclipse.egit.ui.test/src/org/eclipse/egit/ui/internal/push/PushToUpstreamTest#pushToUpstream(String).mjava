@@ -1,9 +1,10 @@
-	private void pushToUpstream() {
+	private void pushToUpstream(String remoteName) {
 		SWTBotTree project = selectProject();
 		JobJoiner joiner = JobJoiner.startListening(JobFamilies.PUSH, 20,
 				TimeUnit.SECONDS);
 		ContextMenuHelper
-				.clickContextMenu(project, getPushToUpstreamMenuPath());
+				.clickContextMenu(project,
+						getPushToUpstreamMenuPath(remoteName));
 		TestUtil.openJobResultDialog(joiner.join());
 		SWTBotShell resultDialog = TestUtil
 				.botForShellStartingWith("Push Results");

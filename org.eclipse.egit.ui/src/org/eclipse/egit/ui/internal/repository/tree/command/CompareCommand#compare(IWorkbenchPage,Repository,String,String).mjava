@@ -1,0 +1,21 @@
+	/**
+	 * Shows the comparison {@code baseCommit..compareCommit}.
+	 *
+	 * @param workbenchPage
+	 *            to show the result in
+	 * @param repo
+	 *            of the two commits
+	 * @param compareCommit
+	 *            commit ID
+	 * @param baseCommit
+	 *            commit ID
+	 * @throws ExecutionException
+	 *             if the comparison cannot be shown
+	 */
+	protected void compare(IWorkbenchPage workbenchPage, Repository repo,
+			String compareCommit, String baseCommit) throws ExecutionException {
+		GitCompareEditorInput compareInput = new GitCompareEditorInput(
+				compareCommit, baseCommit, repo);
+		CompareUtils.openInCompare(workbenchPage, compareInput);
+	}
+

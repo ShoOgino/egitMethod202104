@@ -1,0 +1,14 @@
+	@Override
+	protected void compare(IWorkbenchPage page, Repository repo,
+			String compareCommit, String baseCommit) throws ExecutionException {
+		try {
+			RevCommit base = repo.parseCommit(ObjectId.fromString(baseCommit));
+			RevCommit tip = repo
+					.parseCommit(ObjectId.fromString(compareCommit));
+			UnifiedDiffHandler.show(new RepositoryCommit(repo, tip),
+					new RepositoryCommit(repo, base));
+		} catch (Exception e) {
+			throw new ExecutionException(e.getLocalizedMessage(), e);
+		}
+	}
+

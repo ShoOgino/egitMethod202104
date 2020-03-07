@@ -1,0 +1,12 @@
+	@Override
+	protected void compare(IWorkbenchPage page, Repository repo,
+			String compareCommit, String baseCommit) throws ExecutionException {
+		try {
+			CompareTreeView view = (CompareTreeView) page
+					.showView(CompareTreeView.ID);
+			view.setInput(repo, compareCommit, baseCommit);
+		} catch (PartInitException e) {
+			throw new ExecutionException(e.getLocalizedMessage(), e);
+		}
+	}
+

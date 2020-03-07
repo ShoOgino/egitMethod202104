@@ -1,6 +1,7 @@
-	private void refreshRepositoriesView() {
+	private void refreshRepositoriesView(RepositoryGroup group) {
 		RepositoriesView view = (RepositoriesView) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart();
 		view.refresh();
+		view.expandNodeForGroup(group);
 	}
 

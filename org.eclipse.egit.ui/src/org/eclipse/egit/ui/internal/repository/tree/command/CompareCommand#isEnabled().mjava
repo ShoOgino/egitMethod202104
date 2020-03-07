@@ -1,0 +1,10 @@
+	@Override
+	public boolean isEnabled() {
+		List<RepositoryTreeNode> nodes = getSelectedNodes();
+		if (nodes.size() == 2) {
+			return nodes.stream().map(RepositoryTreeNode::getRepository)
+					.distinct().count() == 1;
+		}
+		return false;
+	}
+

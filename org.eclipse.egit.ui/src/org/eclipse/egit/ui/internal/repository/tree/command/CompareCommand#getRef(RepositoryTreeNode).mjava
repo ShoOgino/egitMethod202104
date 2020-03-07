@@ -1,0 +1,10 @@
+	private Ref getRef(RepositoryTreeNode node) {
+		if (node instanceof TagNode) {
+			return ((TagNode) node).getObject();
+		} else if (node instanceof RefNode
+				|| node instanceof AdditionalRefNode) {
+			return (Ref) node.getObject();
+		}
+		return null;
+	}
+

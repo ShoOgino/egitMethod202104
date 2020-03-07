@@ -8,7 +8,7 @@
 					reposToRemove.add(repo.getRepository().getDirectory());
 				}
 				RepositoryGroups.getInstance().removeFromGroups(reposToRemove);
-				refreshRepositoriesView();
+				refreshRepositoriesView(null);
 				return Status.OK_STATUS;
 			}
 		}
