@@ -9,7 +9,10 @@
 		RepoRemoteBranchesPage remoteBranches = propertiesPage
 				.nextToRemoteBranches(r.getUri());
 
-		cloneRepo(destRepo, remoteBranches);
+		Repository cloned = cloneRepo(destRepo, remoteBranches);
 		bot.button("Cancel").click();
+		List<Ref> tags = cloned.getRefDatabase()
+				.getRefsByPrefix(Constants.R_TAGS);
+		Assert.assertFalse(tags.isEmpty());
 	}
 

@@ -47,6 +47,9 @@
 			cloneRepository.setTimeout(timeout);
 			cloneRepository.setCloneAllBranches(allSelected);
 			cloneRepository.setCloneSubmodules(cloneSubmodules);
+			if (tagOption != null) {
+				cloneRepository.setTagOption(tagOption);
+			}
 			if (cloneSubmodules) {
 				cloneRepository.setCallback(callback);
 			}

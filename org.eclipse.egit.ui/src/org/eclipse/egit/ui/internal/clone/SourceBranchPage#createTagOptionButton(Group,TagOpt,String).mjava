@@ -1,0 +1,13 @@
+	private void createTagOptionButton(Group tagsGroup, final TagOpt option,
+			String text) {
+		Button button = new Button(tagsGroup, SWT.RADIO);
+		button.setText(text);
+		button.setSelection(option == tagOption);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				tagOption = option;
+			}
+		});
+	}
+
