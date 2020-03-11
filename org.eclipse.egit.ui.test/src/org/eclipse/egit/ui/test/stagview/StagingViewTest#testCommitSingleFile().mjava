@@ -13,5 +13,7 @@
 		stagingViewTester.commit();
 		TestUtil.checkHeadCommit(repository, TestUtil.TESTAUTHOR,
 				TestUtil.TESTCOMMITTER, "The new commit");
+		assertFalse("Commit Button should be disabled",
+				stagingViewTester.isCommitEnabled());
 	}
 

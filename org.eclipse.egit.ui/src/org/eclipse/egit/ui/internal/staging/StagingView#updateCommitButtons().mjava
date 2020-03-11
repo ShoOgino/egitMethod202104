@@ -13,7 +13,10 @@
 		boolean indexDiffAvailable = indexDiffAvailable(indexDiff);
 		boolean noConflicts = noConflicts(indexDiff);
 
-		boolean commitEnabled = noConflicts && indexDiffAvailable
+		boolean hasChange = amendPreviousCommitAction.isChecked()
+				|| stagedViewer.getTree().getItemCount() > 0;
+
+		boolean commitEnabled = noConflicts && indexDiffAvailable && hasChange
 				&& !isCommitBlocked();
 
 		boolean commitAndPushEnabled = commitAndPushEnabled(commitEnabled);
