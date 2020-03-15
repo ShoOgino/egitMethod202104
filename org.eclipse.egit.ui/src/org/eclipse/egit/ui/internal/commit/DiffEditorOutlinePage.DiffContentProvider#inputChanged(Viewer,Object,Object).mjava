@@ -1,7 +1,7 @@
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput,
 				Object newInput) {
-			folders.clear();
+			rootFolders.clear();
 			parents.clear();
 			if (newInput instanceof DiffDocument) {
 				computeFolders(((DiffDocument) newInput).getFileRegions());

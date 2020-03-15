@@ -14,6 +14,16 @@
 				.getService(IHandlerService.class);
 		handlerService.activateHandler(collapseAction.getActionDefinitionId(),
 				collapseHandler);
+
+		Action toggleTreeModeAction = new Action(
+				UIText.DiffEditor_OutlineTreeToggle) {
+			@Override
+			public void run() {
+				updateOutlineTreeMode(true, this);
+			}
+		};
+		updateOutlineTreeMode(false, toggleTreeModeAction);
 		toolbarManager.add(collapseAction);
+		toolbarManager.add(toggleTreeModeAction);
 	}
 

@@ -1,7 +1,11 @@
 		@Override
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof Folder) {
-				return ((Folder) parentElement).files.toArray();
+				List<Object> children = new ArrayList<>();
+				Folder parentFolder = (Folder) parentElement;
+				children.addAll(parentFolder.folders);
+				children.addAll(parentFolder.files);
+				return children.toArray();
 			}
 			return NOTHING;
 		}

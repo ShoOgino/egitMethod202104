@@ -1,8 +1,5 @@
 		@Override
 		public Object getParent(Object element) {
-			if (element instanceof FileDiffRegion) {
-				return parents.get(element);
-			}
-			return null;
+			return parents.get(element);
 		}
 

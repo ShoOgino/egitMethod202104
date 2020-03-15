@@ -2,12 +2,21 @@
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		TreeViewer viewer = getTreeViewer();
-		viewer.setAutoExpandLevel(2);
+		viewer.setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
 		viewer.setUseHashlookup(true);
 		viewer.setContentProvider(new DiffContentProvider());
 		viewer.setLabelProvider(new DiffLabelProvider());
 		viewer.setComparator(
-				new ViewerComparator(CommonUtils.STRING_ASCENDING_COMPARATOR));
+				new ViewerComparator(CommonUtils.STRING_ASCENDING_COMPARATOR) {
+					@Override
+					public int category(Object element) {
+						if (element instanceof DiffContentProvider.Folder) {
+							return 0;
+						} else {
+							return 1;
+						}
+					}
+				});
 		viewer.addDoubleClickListener(
 				event -> openFolder(event.getSelection()));
 		viewer.addOpenListener(this::fireOpenEvent);
