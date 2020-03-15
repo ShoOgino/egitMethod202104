@@ -9,7 +9,7 @@
 
 		// now we configure the remote
 		myRepository.getConfig().setString("remote", "origin", "url",
-				"file:///" + myRemoteRepository.getDirectory().getPath());
+				"file://" + myRemoteRepository.getDirectory().getPath());
 		myRepository.getConfig().setString("remote", "origin", "fetch",
 				"+refs/heads/*:refs/remotes/origin/*");
 		myRepository.getConfig().save();
