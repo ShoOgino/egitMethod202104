@@ -9,8 +9,6 @@
 	 */
 	public FileDiff(final Repository repo, final RevCommit c,
 			final DiffEntry entry) {
-		repository = repo;
-		diffEntry = entry;
-		commit = c;
+		this(repo, c, null, entry);
 	}
 

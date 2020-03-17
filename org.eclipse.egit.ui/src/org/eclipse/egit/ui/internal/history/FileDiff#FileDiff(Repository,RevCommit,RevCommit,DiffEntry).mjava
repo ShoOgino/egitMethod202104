@@ -1,0 +1,21 @@
+	/**
+	 * Create a file diff for a specified {@link RevCommit} and
+	 * {@link DiffEntry}
+	 *
+	 * @param repo
+	 *            the diff is in
+	 * @param tip
+	 *            tip {@link RevCommit}
+	 * @param base
+	 *            base {@link RevCommit}
+	 * @param entry
+	 *            describing the diff
+	 */
+	public FileDiff(Repository repo, RevCommit tip, RevCommit base,
+			DiffEntry entry) {
+		repository = repo;
+		diffEntry = entry;
+		commit = tip;
+		this.base = base;
+	}
+

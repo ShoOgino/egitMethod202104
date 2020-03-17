@@ -14,9 +14,12 @@
 		ObjectId[] blobs = d.getBlobs();
 		switch (side) {
 		case OLD:
-			openInEditor(d.getRepository(), d.getOldPath(),
-					d.getCommit().getParent(0),
-					blobs[0], lineNoToReveal);
+			RevCommit base = d.getBase();
+			if (base == null) {
+				base = d.getCommit().getParent(0);
+			}
+			openInEditor(d.getRepository(), d.getOldPath(), base, blobs[0],
+					lineNoToReveal);
 			break;
 		default:
 			openInEditor(d.getRepository(), d.getNewPath(), d.getCommit(),

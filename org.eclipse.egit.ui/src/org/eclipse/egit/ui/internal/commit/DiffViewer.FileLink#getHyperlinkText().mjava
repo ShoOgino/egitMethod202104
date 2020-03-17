@@ -1,5 +1,6 @@
 		@Override
 		public String getHyperlinkText() {
-			return UIText.DiffViewer_OpenWorkingTreeLinkLabel;
+			return MessageFormat.format(
+					UIText.DiffViewer_OpenWorkingTreeLinkLabel, file.getName());
 		}
 

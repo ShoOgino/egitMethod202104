@@ -1,0 +1,16 @@
+	/**
+	 * Truncates a text to at most {@code maxLength} characters and replaces any
+	 * white space by single blanks.
+	 *
+	 * @param text
+	 *            to process
+	 * @param maxLength
+	 *            of the result
+	 * @return the resulting shortened string, may be shorter than
+	 *         {@code maxLength} characters
+	 */
+	public static String menuText(String text, int maxLength) {
+		String result = Utils.shortenText(text, maxLength);
+		return SPACES.matcher(result).replaceAll(" "); //$NON-NLS-1$
+	}
+

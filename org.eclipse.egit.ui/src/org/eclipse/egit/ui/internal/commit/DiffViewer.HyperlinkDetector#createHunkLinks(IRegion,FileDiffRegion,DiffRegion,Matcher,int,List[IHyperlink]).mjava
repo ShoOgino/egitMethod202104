@@ -11,6 +11,11 @@
 						links.add(
 								new CompareLink(linkRegion, fileRange, lineNo));
 					}
+					IHyperlink fileLink = createWorkingTreeLink(linkRegion,
+							fileRange.getDiff(), DiffEntry.Side.OLD, lineNo);
+					if (fileLink != null) {
+						links.add(fileLink);
+					}
 					links.add(new OpenLink(linkRegion, fileRange,
 							DiffEntry.Side.OLD, lineNo));
 				}
@@ -24,13 +29,10 @@
 						links.add(
 								new CompareLink(linkRegion, fileRange, lineNo));
 					}
-					File file = new Path(
-							fileRange.getDiff().getRepository().getWorkTree()
-							.getAbsolutePath())
-									.append(fileRange.getDiff().getNewPath())
-									.toFile();
-					if (file.exists()) {
-						links.add(new FileLink(linkRegion, file, lineNo));
+					IHyperlink fileLink = createWorkingTreeLink(linkRegion,
+							fileRange.getDiff(), DiffEntry.Side.NEW, lineNo);
+					if (fileLink != null) {
+						links.add(fileLink);
 					}
 					links.add(new OpenLink(linkRegion, fileRange,
 							DiffEntry.Side.NEW, lineNo));

@@ -21,10 +21,13 @@
 		RevCommit c = d.getCommit();
 
 		// extract commits
-		final RevCommit oldCommit;
-		final ObjectId oldObjectId;
+		RevCommit oldCommit;
+		ObjectId oldObjectId;
 		if (!d.getChange().equals(ChangeType.ADD)) {
-			oldCommit = c.getParent(0);
+			oldCommit = d.getBase();
+			if (oldCommit == null) {
+				oldCommit = c.getParent(0);
+			}
 			oldObjectId = blobs[0];
 		} else {
 			// Initial import
@@ -32,8 +35,8 @@
 			oldObjectId = null;
 		}
 
-		final RevCommit newCommit;
-		final ObjectId newObjectId;
+		RevCommit newCommit;
+		ObjectId newObjectId;
 		if (d.getChange().equals(ChangeType.DELETE)) {
 			newCommit = null;
 			newObjectId = null;
