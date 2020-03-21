@@ -1,0 +1,8 @@
+		private void gotoSelectedElement() {
+			IStructuredSelection sel = delegate.getTreeViewer()
+					.getStructuredSelection();
+			if (!sel.isEmpty()) {
+				selectionProvider.setSelection(sel);
+			}
+		}
+

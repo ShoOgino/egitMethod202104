@@ -1,0 +1,23 @@
+		private boolean isMatch(SearchPattern pattern, Object treeElement) {
+			if (treeElement instanceof FileDiffRegion) {
+				String path = ((FileDiffRegion) treeElement).getDiff()
+						.getPath();
+				String fileName = path;
+				int lastSegmentIndex = path.lastIndexOf('/');
+				if (lastSegmentIndex >= 0) {
+					fileName = path.substring(lastSegmentIndex + 1);
+					if (pattern.matches(fileName)) {
+						return true;
+					}
+				}
+				return pattern.matches(path);
+			} else if (treeElement instanceof DiffContentProvider.Folder) {
+				DiffContentProvider.Folder folder = (DiffContentProvider.Folder) treeElement;
+				return folder.files.stream()
+						.anyMatch(r -> isMatch(pattern, r))
+						|| folder.folders.stream()
+								.anyMatch(f -> isMatch(pattern, f));
+			}
+			return false;
+		}
+

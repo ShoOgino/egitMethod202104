@@ -1,0 +1,15 @@
+	/**
+	 * Opens a quick outline analgous to the outline page with tree filter
+	 * capability.
+	 *
+	 * @param document
+	 *            the diff document
+	 * @param selectionProvider
+	 *            the editor's selection provider for revealing the selected
+	 *            region
+	 */
+	static void openQuickOutline(IDocument document,
+			ISelectionProvider selectionProvider) {
+		new QuickOutlinePopup(document, selectionProvider).open();
+	}
+

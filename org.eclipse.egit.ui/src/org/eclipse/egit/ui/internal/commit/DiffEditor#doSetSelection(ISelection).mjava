@@ -8,6 +8,10 @@
 				if (!newRange.equals(currentFileDiffRange)) {
 					currentFileDiffRange = newRange;
 					selectAndReveal(newRange.getOffset(), 0);
+					if (outlinePage != null) {
+						outlinePage.setSelection(
+								new StructuredSelection(selected));
+					}
 				}
 				return;
 			}

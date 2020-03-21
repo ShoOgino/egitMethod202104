@@ -1,0 +1,10 @@
+		public QuickOutlinePopup(Shell parent, IDocument document,
+				ISelectionProvider selectionProvider) {
+			super(parent, SWT.RESIZE, true, false, true, true, true,
+					UIText.DiffEditor_QuickOutlineAction,
+					UIText.DiffEditor_QuickOutlineFilterDescription);
+			delegate = new DiffEditorOutlinePage();
+			delegate.setInput(document);
+			this.selectionProvider = selectionProvider;
+		}
+

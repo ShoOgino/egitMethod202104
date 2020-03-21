@@ -1,0 +1,52 @@
+		private Text createFilterText(Composite parent) {
+			filterText = new Text(parent, SWT.NONE);
+			Dialog.applyDialogFont(filterText);
+
+			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+					.grab(true, false).applyTo(filterText);
+
+			filterText.addKeyListener(new KeyAdapter() {
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.keyCode == SWT.CR || e.character == '\r'
+							|| e.character == '\n') {// return
+						gotoSelectedElement();
+						close();
+					} else if (e.keyCode == SWT.ARROW_DOWN) {
+						delegate.getTreeViewer().getTree().setFocus();
+						selectFirst();
+					} else if (e.character == SWT.ESC) {
+						close();
+					}
+				}
+			});
+			filterText.setMessage(UIText.DiffEditor_QuickOutlineFilterHint);
+			filterText.addModifyListener(e -> {
+				TreeViewer viewer = delegate.getTreeViewer();
+				try {
+					viewer.getControl().setRedraw(false);
+					String text = filterText.getText();
+					if (StringUtils.isEmptyOrNull(text)) {
+						viewer.setFilters();
+					} else {
+						final SearchPattern pattern = new SearchPattern();
+						pattern.setPattern(text);
+						viewer.setFilters(new ViewerFilter() {
+
+							@Override
+							public boolean select(Viewer v,
+									Object parentElement, Object element) {
+								return isMatch(pattern, element);
+							}
+						});
+					}
+					viewer.expandAll();
+					selectFirst();
+				} finally {
+					viewer.getControl().setRedraw(true);
+				}
+			});
+			return filterText;
+		}
+

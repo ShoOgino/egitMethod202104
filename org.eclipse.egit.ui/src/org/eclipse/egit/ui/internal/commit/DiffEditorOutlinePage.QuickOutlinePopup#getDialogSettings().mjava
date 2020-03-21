@@ -1,0 +1,14 @@
+		@Override
+		protected IDialogSettings getDialogSettings() {
+			String sectionName = "diffEditor.quickoutline"; //$NON-NLS-1$
+
+			IDialogSettings settings = Activator.getDefault()
+					.getDialogSettings().getSection(sectionName);
+			if (settings == null) {
+				settings = Activator.getDefault().getDialogSettings()
+						.addNewSection(sectionName);
+			}
+
+			return settings;
+		}
+

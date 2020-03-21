@@ -2,7 +2,8 @@
 	protected ISourceViewer createSourceViewer(Composite parent,
 			IVerticalRuler ruler, int styles) {
 		DiffViewer viewer = new DiffViewer(parent, ruler, getOverviewRuler(),
-				isOverviewRulerVisible(), styles) {
+				isOverviewRulerVisible(), styles,
+				getSite().getService(IContextService.class)) {
 			@Override
 			protected void setFont(Font font) {
 				// Don't do anything; AbstractTextEditor handles this.

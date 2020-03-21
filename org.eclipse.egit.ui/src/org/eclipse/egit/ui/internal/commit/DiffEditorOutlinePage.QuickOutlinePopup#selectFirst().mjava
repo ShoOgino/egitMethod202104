@@ -1,0 +1,14 @@
+		private void selectFirst() {
+			TreeViewer viewer = delegate.getTreeViewer();
+			Tree tree = viewer.getTree();
+			if (tree.getItemCount() > 0) {
+				TreeItem folder = tree.getItem(0);
+				if (folder.getItemCount() > 0) {
+					TreeItem file = folder.getItem(0);
+					viewer.setSelection(
+							new StructuredSelection(file.getData()));
+					gotoSelectedElement();
+				}
+			}
+		}
+

@@ -6,5 +6,7 @@
 		// TextEditor always adds these, even if the document is not editable.
 		menu.remove(ITextEditorActionConstants.SHIFT_RIGHT);
 		menu.remove(ITextEditorActionConstants.SHIFT_LEFT);
+		menu.appendToGroup(ITextEditorActionConstants.GROUP_OPEN,
+				getAction(QUICK_OUTLINE_COMMAND));
 	}
 
