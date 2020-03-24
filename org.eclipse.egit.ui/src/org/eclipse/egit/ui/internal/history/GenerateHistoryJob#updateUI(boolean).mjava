@@ -4,8 +4,9 @@
 					GitTraceLocation.HISTORYVIEW.getLocation());
 		try {
 			if (forcedRedrawsAfterListIsCompleted != 1 && !incomplete
-					&& loadedCommits.size() == lastUpdateCnt)
+					&& loadedCommits.size() == lastUpdateCnt) {
 				return;
+			}
 			if (forcedRedrawsAfterListIsCompleted == 1)
 				forcedRedrawsAfterListIsCompleted++;
 			final SWTCommit[] asArray = new SWTCommit[loadedCommits.size()];
