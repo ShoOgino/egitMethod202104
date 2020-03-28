@@ -2,7 +2,7 @@
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(),
 				ICommandService.class);
 		State verboseBranchModeState = srv
-				.getCommand(ToggleBranchCommitCommand.ID)
+				.getCommand(ToggleCommand.COMMIT_MESSAGE_DECORATION_ID)
 				.getState(RegistryToggleState.STATE_ID);
 		verboseBranchModeState.setValue(Boolean.valueOf(state));
 	}

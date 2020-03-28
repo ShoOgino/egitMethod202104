@@ -3,7 +3,8 @@
 	 */
 	public RepositoryTreeNodeDecorator() {
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(), ICommandService.class);
-		verboseBranchModeState = srv.getCommand(ToggleBranchCommitCommand.ID)
+		verboseBranchModeState = srv
+				.getCommand(ToggleCommand.COMMIT_MESSAGE_DECORATION_ID)
 				.getState(RegistryToggleState.STATE_ID);
 		verboseBranchModeState.addListener(this);
 		try {

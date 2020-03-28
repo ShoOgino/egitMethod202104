@@ -8,7 +8,7 @@
 		super();
 		this.showUnbornHead = showUnbornHead;
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(), ICommandService.class);
-		branchHierarchy = srv.getCommand(ToggleBranchHierarchyCommand.ID)
+		branchHierarchy = srv.getCommand(ToggleCommand.BRANCH_HIERARCHY_ID)
 				.getState(RegistryToggleState.STATE_ID);
 	}
 

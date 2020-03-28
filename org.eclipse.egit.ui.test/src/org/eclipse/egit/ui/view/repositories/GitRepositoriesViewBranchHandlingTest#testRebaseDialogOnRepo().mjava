@@ -2,7 +2,7 @@
 	public void testRebaseDialogOnRepo() throws Exception {
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(),
 				ICommandService.class);
-		State commandState = srv.getCommand(ToggleBranchHierarchyCommand.ID)
+		State commandState = srv.getCommand(ToggleCommand.BRANCH_HIERARCHY_ID)
 				.getState(RegistryToggleState.STATE_ID);
 		Boolean isHierarchical = (Boolean) commandState.getValue();
 		commandState.setValue(Boolean.TRUE);

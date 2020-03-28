@@ -10,10 +10,10 @@
 		IWorkbenchWindow w = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		ICommandService csrv = CommonUtils.getService(w, ICommandService.class);
-		reactOnSelection = csrv.getCommand(ToggleLinkWithSelectionCommand.ID)
+		reactOnSelection = csrv.getCommand(LINK_WITH_SELECTION_ID)
 				.getState(RegistryToggleState.STATE_ID);
 		reactOnSelection.addListener(reactOnSelectionListener);
-		branchHierarchy = csrv.getCommand(ToggleBranchHierarchyCommand.ID)
+		branchHierarchy = csrv.getCommand(ToggleCommand.BRANCH_HIERARCHY_ID)
 				.getState(RegistryToggleState.STATE_ID);
 		branchHierarchy.addListener(stateChangeListener);
 		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);

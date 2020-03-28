@@ -15,7 +15,7 @@
 		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(),
 				ICommandService.class);
 		linkWithSelectionState = srv
-				.getCommand(ToggleLinkWithSelectionCommand.ID)
+				.getCommand(RepositoriesView.LINK_WITH_SELECTION_ID)
 				.getState(RegistryToggleState.STATE_ID);
 		initialLinkingWithSelection = (Boolean) linkWithSelectionState
 				.getValue();
