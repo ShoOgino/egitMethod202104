@@ -25,7 +25,7 @@
 							.toPortableString());
 
 		case TAGS:
-			return getTagsChildren(node, repo);
+			return getTagsChildren((TagsNode) node, repo);
 
 		case ADDITIONALREFS: {
 			List<RepositoryTreeNode<Ref>> refs = new ArrayList<>();
@@ -70,7 +70,11 @@
 		case REPO: {
 			List<RepositoryTreeNode<? extends Object>> nodeList = new ArrayList<>();
 			nodeList.add(new BranchesNode(node, repo));
-			nodeList.add(new TagsNode(node, repo));
+			TagsNode tags = new TagsNode(node, repo);
+			if (filters != null) {
+				tags.setFilter(filters.get(tags));
+			}
+			nodeList.add(tags);
 			nodeList.add(new AdditionalRefsNode(node, repo));
 			final boolean bare = repo.isBare();
 			if (!bare)

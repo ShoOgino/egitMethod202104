@@ -1,0 +1,36 @@
+	/**
+	 * Persists the cache in the EGit UI preferences.
+	 */
+	public void save() {
+		XMLMemento memento = XMLMemento
+				.createWriteRoot(getClass().getSimpleName());
+		RepositoryUtil util = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryUtil();
+		cache.entrySet().stream().forEach(entry -> {
+			Map<RepositoryTreeNodeType, String> values = entry.getValue();
+			if (values.isEmpty()) {
+				return;
+			}
+			IMemento repo = memento.createChild(TAG_REPO);
+			String path = entry.getKey().getAbsolutePath();
+			assert path != null;
+			repo.putString(ATTR_DIR, util.relativizeToWorkspace(path));
+			values.entrySet().stream().forEach(e -> {
+				String filter = e.getValue();
+				if (StringUtils.isEmptyOrNull(filter)) {
+					return;
+				}
+				IMemento child = repo.createChild(TAG_FILTER);
+				child.putString(ATTR_NODE, e.getKey().name());
+				child.putString(ATTR_FILTER, filter);
+			});
+		});
+		try (StringWriter writer = new StringWriter()) {
+			memento.save(writer);
+			Activator.getDefault().getPreferenceStore().setValue(
+					UIPreferences.REPOSITORIES_VIEW_FILTERS, writer.toString());
+		} catch (IOException e) {
+			Activator.logError(UIText.RepositoriesView_FilterErrorSave, e);
+		}
+	}
+

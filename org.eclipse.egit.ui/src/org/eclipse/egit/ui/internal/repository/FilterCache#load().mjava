@@ -1,0 +1,52 @@
+	/**
+	 * Loads the cache from the EGit UI preferences.
+	 */
+	public void load() {
+		String data = Activator.getDefault().getPreferenceStore()
+				.getString(UIPreferences.REPOSITORIES_VIEW_FILTERS);
+		if (StringUtils.isEmptyOrNull(data)) {
+			return;
+		}
+		XMLMemento memento;
+		try (StringReader reader = new StringReader(data)) {
+			memento = XMLMemento.createReadRoot(reader);
+		} catch (WorkbenchException e) {
+			Activator.logError(UIText.RepositoriesView_FilterErrorRead, e);
+			return;
+		}
+		RepositoryUtil util = org.eclipse.egit.core.Activator.getDefault()
+				.getRepositoryUtil();
+		for (IMemento repo : memento.getChildren(TAG_REPO)) {
+			String repoId = repo.getString(ATTR_DIR);
+			if (repoId == null || repoId.isEmpty()) {
+				continue;
+			}
+			try {
+				repoId = util.getAbsoluteRepositoryPath(repoId);
+			} catch (InvalidPathException e) {
+				continue; // Skip invalid paths
+			}
+			Map<RepositoryTreeNodeType, String> values = new ConcurrentHashMap<>();
+			for (IMemento entry : repo.getChildren(TAG_FILTER)) {
+				String tag = entry.getString(ATTR_NODE);
+				if (StringUtils.isEmptyOrNull(tag)) {
+					continue;
+				}
+				String filter = entry.getString(ATTR_FILTER);
+				if (StringUtils.isEmptyOrNull(filter)) {
+					continue;
+				}
+				RepositoryTreeNodeType type = null;
+				try {
+					type = RepositoryTreeNodeType.valueOf(tag);
+				} catch (RuntimeException e) {
+					continue; // Just skip unknown values
+				}
+				values.put(type, filter);
+			}
+			if (!values.isEmpty()) {
+				cache.put(new File(repoId), values);
+			}
+		}
+	}
+

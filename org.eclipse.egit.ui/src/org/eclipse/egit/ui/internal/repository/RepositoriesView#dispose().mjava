@@ -1,5 +1,11 @@
 	@Override
 	public void dispose() {
+		if (filterCacheLoaded) {
+			// Don't save if didn't load for whatever reason. Otherwise we might
+			// overwrite existing persisted data with an empty cache.
+			filterCacheLoaded = false;
+			FilterCache.INSTANCE.save();
+		}
 		if (textCellEditor != null) {
 			textCellEditor.dispose();
 			textCellEditor = null;

@@ -2,9 +2,12 @@
 			RepositoryGroups groupsUtil, RepositoryTreeNode<?> parent,
 			List<File> directories) {
 		List<RepositoryNode> result = new ArrayList<>();
+		List<File> filtersToKeep = new ArrayList<>();
 		for (File gitDir : directories) {
 			try {
 				if (gitDir.exists()) {
+					filtersToKeep
+							.add(new Path(gitDir.getAbsolutePath()).toFile());
 					boolean addRepo = (groupsUtil == null
 							|| !showRepositoryGroups
 							|| !groupsUtil.belongsToGroup(gitDir));
@@ -19,6 +22,9 @@
 			} catch (IOException e) {
 				// ignore for now
 			}
+		}
+		if (filters != null) {
+			filters.keepOnly(filtersToKeep);
 		}
 		return result;
 	}

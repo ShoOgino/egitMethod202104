@@ -1,0 +1,22 @@
+	/**
+	 * Ensures the text doesn't end with a lone escape character '\': if there's
+	 * an odd number of backslashes at the end, add one backslash.
+	 *
+	 * @param text
+	 *            to fix
+	 * @return fixed text
+	 */
+	private static String fixTrailingBackslash(String text) {
+		int l = text.length();
+		int i = l;
+		for (; i > 0; i--) {
+			if (text.charAt(i - 1) != '\\') {
+				break;
+			}
+		}
+		if ((l - i) % 2 == 1) {
+			return text + '\\';
+		}
+		return text;
+	}
+

@@ -1,0 +1,18 @@
+	private void filter(RepositoriesCommonViewer viewer,
+			FilterableNode filterNode, String filter) {
+		FilterCache.INSTANCE.set(filterNode, filter);
+		try {
+			viewer.getTree().setRedraw(false);
+			TreeItem item = viewer.getItem(filterNode);
+			Object currentNode = item.getData();
+			if (filterNode != currentNode && filterNode.equals(currentNode)) {
+				((FilterableNode) currentNode)
+						.setFilter(filterNode.getFilter());
+				viewer.update(currentNode, null);
+			}
+			viewer.refresh(filterNode);
+		} finally {
+			viewer.getTree().setRedraw(true);
+		}
+	}
+

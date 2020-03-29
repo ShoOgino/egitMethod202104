@@ -5,6 +5,11 @@
 	 *         {@code false} otherwise
 	 */
 	public boolean pasteInEditor() {
+		if (filterField != null && !filterField.isDisposed()) {
+			// We're editing
+			filterField.paste();
+			return true;
+		}
 		if (textCellEditor != null && textCellEditor.isActivated()) {
 			// We're editing
 			textCellEditor.performPaste();

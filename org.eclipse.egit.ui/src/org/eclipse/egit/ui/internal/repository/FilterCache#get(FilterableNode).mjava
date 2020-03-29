@@ -1,0 +1,13 @@
+	/**
+	 * Retrieves the cached filter, if any, for a node.
+	 *
+	 * @param node
+	 *            to get the filter of
+	 * @return the filter, or {@code null} if none cached
+	 */
+	public String get(FilterableNode node) {
+		Map<RepositoryTreeNodeType, String> filters = cache
+				.get(node.getRepository().getDirectory());
+		return filters == null ? null : filters.get(node.getType());
+	}
+

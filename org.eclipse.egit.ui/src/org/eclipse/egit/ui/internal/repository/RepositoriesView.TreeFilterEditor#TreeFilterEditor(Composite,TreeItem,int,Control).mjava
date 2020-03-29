@@ -1,0 +1,10 @@
+		public TreeFilterEditor(Composite parent, TreeItem item,
+				int columnIndex, Control editor) {
+			super(parent);
+			this.parent = parent;
+			this.item = item;
+			this.columnIndex = columnIndex;
+			editorSize = editor.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			setEditor(editor);
+		}
+

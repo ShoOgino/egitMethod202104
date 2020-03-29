@@ -1,5 +1,7 @@
 	@Override
 	public void createPartControl(Composite aParent) {
+		FilterCache.INSTANCE.load();
+		filterCacheLoaded = true;
 		Composite displayArea = new Composite(aParent, SWT.NONE);
 		layout = new StackLayout();
 		displayArea.setLayout(layout);

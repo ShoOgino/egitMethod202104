@@ -1,0 +1,9 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		RepositoryTreeNode node = getSelectedNodes(event).get(0);
+		if (node instanceof FilterableNode) {
+			getView(event).filter((FilterableNode) node);
+		}
+		return null;
+	}
+

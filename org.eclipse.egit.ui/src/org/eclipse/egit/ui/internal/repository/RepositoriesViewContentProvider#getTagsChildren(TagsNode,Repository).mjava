@@ -1,10 +1,16 @@
-	private Object[] getTagsChildren(RepositoryTreeNode parentNode,
+	private Object[] getTagsChildren(TagsNode parentNode,
 			Repository repo) {
 		List<RepositoryTreeNode<Ref>> nodes = new ArrayList<>();
 
 		try (RevWalk walk = new RevWalk(repo)) {
 			walk.setRetainBody(true);
+			Matcher filter = matcher(
+					filters != null ? filters.get(parentNode) : null);
 			for (Ref tagRef : getRefs(repo, Constants.R_TAGS).values()) {
+				if (!filter
+						.matches(Repository.shortenRefName(tagRef.getName()))) {
+					continue;
+				}
 				ObjectId objectId = tagRef.getLeaf().getObjectId();
 				RevObject revObject = walk.parseAny(objectId);
 				RevObject peeledObject = walk.peel(revObject);

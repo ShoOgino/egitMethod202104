@@ -1,6 +1,7 @@
 	@Override
 	public Object create() throws CoreException {
 		return new RepositoriesViewContentProvider(true)
-				.showingRepositoryGroups(true);
+				.showingRepositoryGroups(true)
+				.withFilterCache(FilterCache.INSTANCE);
 	}
 

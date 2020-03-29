@@ -1,0 +1,11 @@
+	/**
+	 * Clears all cached entries from repositories not in the given collection.
+	 *
+	 * @param gitDirs
+	 *            collection of git directories of repositories for which to
+	 *            keep the cached filters
+	 */
+	public void keepOnly(Collection<File> gitDirs) {
+		cache.keySet().retainAll(gitDirs);
+	}
+
