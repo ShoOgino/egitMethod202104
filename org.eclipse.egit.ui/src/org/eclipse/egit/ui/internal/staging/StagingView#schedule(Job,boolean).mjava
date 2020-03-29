@@ -11,7 +11,8 @@
 	private void schedule(Job job, boolean useRepositoryRule) {
 		if (useRepositoryRule)
 			job.setRule(RuleUtil.getRule(currentRepository));
-		IWorkbenchSiteProgressService service = CommonUtils.getService(getSite(), IWorkbenchSiteProgressService.class);
+		IWorkbenchSiteProgressService service = getSite()
+				.getService(IWorkbenchSiteProgressService.class);
 		if (service != null)
 			service.schedule(job, 0, true);
 		else

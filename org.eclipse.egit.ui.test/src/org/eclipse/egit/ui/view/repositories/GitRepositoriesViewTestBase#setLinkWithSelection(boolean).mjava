@@ -1,6 +1,6 @@
 	protected static boolean setLinkWithSelection(boolean state) {
-		ICommandService srv = CommonUtils.getService(PlatformUI.getWorkbench(),
-				ICommandService.class);
+		ICommandService srv = PlatformUI.getWorkbench()
+				.getService(ICommandService.class);
 		State linkingState = srv
 				.getCommand(RepositoriesView.LINK_WITH_SELECTION_ID)
 				.getState(RegistryToggleState.STATE_ID);

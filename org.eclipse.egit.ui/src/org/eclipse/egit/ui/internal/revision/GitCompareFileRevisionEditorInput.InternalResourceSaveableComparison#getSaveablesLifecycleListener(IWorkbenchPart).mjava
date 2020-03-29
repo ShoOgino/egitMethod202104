@@ -3,7 +3,8 @@
 			ISaveablesLifecycleListener listener = Adapters.adapt(part,
 					ISaveablesLifecycleListener.class);
 			if (listener == null)
-				listener = CommonUtils.getService(part.getSite(), ISaveablesLifecycleListener.class);
+				listener = part.getSite()
+						.getService(ISaveablesLifecycleListener.class);
 			return listener;
 		}
 

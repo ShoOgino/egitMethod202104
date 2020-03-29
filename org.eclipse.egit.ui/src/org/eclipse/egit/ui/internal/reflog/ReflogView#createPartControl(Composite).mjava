@@ -251,9 +251,9 @@
 
 		partListener = new VisibilityListener();
 		IWorkbenchPartSite site = getSite();
-		CommonUtils.getService(site, IPartService.class)
+		site.getService(IPartService.class)
 				.addPartListener(partListener);
-		ISelectionService service = CommonUtils.getService(site, ISelectionService.class);
+		ISelectionService service = site.getService(ISelectionService.class);
 		service.addPostSelectionListener(selectionChangedListener);
 
 		// Use current selection to populate reflog view

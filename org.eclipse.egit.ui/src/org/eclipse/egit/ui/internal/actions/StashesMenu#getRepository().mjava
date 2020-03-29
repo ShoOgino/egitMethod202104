@@ -2,7 +2,8 @@
 		if (serviceLocator == null)
 			return null;
 
-		IHandlerService handlerService = CommonUtils.getService(serviceLocator, IHandlerService.class);
+		IHandlerService handlerService = serviceLocator
+				.getService(IHandlerService.class);
 		if (handlerService == null)
 			return null;
 

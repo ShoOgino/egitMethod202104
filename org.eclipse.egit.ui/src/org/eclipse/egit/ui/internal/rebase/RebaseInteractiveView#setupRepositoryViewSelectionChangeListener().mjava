@@ -23,7 +23,7 @@
 			}
 		};
 
-		ISelectionService srv = CommonUtils.getService(getSite(), ISelectionService.class);
+		ISelectionService srv = getSite().getService(ISelectionService.class);
 		srv.addPostSelectionListener(selectionChangedListener);
 	}
 

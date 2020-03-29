@@ -1,6 +1,6 @@
 	@Override
 	public void initialize(IServiceLocator locator) {
 		this.serviceLocator = locator;
-		this.handlerService = CommonUtils.getService(locator, IHandlerService.class);
+		this.handlerService = locator.getService(IHandlerService.class);
 	}
 

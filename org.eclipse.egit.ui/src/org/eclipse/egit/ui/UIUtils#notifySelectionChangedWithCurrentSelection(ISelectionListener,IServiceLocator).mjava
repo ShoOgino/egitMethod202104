@@ -8,7 +8,8 @@
 	 */
 	public static void notifySelectionChangedWithCurrentSelection(
 			ISelectionListener selectionListener, IServiceLocator serviceLocator) {
-		IHandlerService handlerService = CommonUtils.getService(serviceLocator, IHandlerService.class);
+		IHandlerService handlerService = serviceLocator
+				.getService(IHandlerService.class);
 		IEvaluationContext state = handlerService.getCurrentState();
 		// This seems to be the most reliable way to get the active part, it
 		// also returns a part when it is called while creating a view that is

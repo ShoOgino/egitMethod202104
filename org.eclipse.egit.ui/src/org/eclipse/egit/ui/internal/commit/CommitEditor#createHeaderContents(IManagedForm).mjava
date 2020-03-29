@@ -67,7 +67,7 @@
 			}
 		};
 		toolbar.add(repositoryLabelControl);
-		CommonUtils.getService(getSite(), IPartService.class)
+		getSite().getService(IPartService.class)
 				.addPartListener(activationListener);
 		if (commit.isStash()) {
 			toolbar.add(createActionContributionItem(ActionCommands.STASH_APPLY,

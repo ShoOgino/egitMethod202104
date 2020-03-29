@@ -5,7 +5,8 @@
 
 		IWorkbenchWindow activeWorkbenchWindow = workbench
 				.getActiveWorkbenchWindow();
-		IHandlerService hsr = CommonUtils.getService(activeWorkbenchWindow, IHandlerService.class);
+		IHandlerService hsr = activeWorkbenchWindow
+				.getService(IHandlerService.class);
 		IEvaluationContext ctx = hsr.getCurrentState();
 		ctx.addVariable(ACTIVE_MENU_SELECTION_NAME, getContext().getSelection());
 
