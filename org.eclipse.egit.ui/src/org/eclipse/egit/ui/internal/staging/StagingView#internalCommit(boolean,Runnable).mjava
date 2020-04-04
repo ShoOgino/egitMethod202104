@@ -9,7 +9,7 @@
 	 * @return whether a job was scheduled
 	 */
 	private boolean internalCommit(boolean pushUpstream, Runnable afterJob) {
-		if (!isCommitWithoutFilesAllowed()) {
+		if (!isCommitPossible()) {
 			MessageDialog md = new MessageDialog(getSite().getShell(),
 					UIText.StagingView_committingNotPossible, null,
 					UIText.StagingView_noStagedFiles, MessageDialog.ERROR,

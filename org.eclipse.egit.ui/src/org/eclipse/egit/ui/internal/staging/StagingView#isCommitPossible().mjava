@@ -1,0 +1,6 @@
+	private boolean isCommitPossible() {
+		return stagedViewer.getTree().getItemCount() > 0
+				|| amendPreviousCommitAction.isChecked()
+				|| CommitHelper.isCommitWithoutFilesAllowed(currentRepository);
+	}
+
