@@ -1,0 +1,28 @@
+	/**
+	 * @param treeNode
+	 *            node to be filtered
+	 * @param timeCarrier
+	 *            object from which the commit time associated with the node can
+	 *            be extracted (currently only RevCommit)
+	 */
+	public void addNode(RepositoryTreeNode<?> treeNode, Object timeCarrier) {
+		if (isFiltering()) {
+			if (maxCount > 0) {
+				int time = Integer.MIN_VALUE;
+				if (timeCarrier instanceof RevCommit) {
+					time = ((RevCommit) timeCarrier).getCommitTime();
+				}
+				if (time >= thresholdTime) {
+					TimedNode node = new TimedNode(treeNode, time);
+					nodes.add(node);
+					if (nodes.size() > maxCount) {
+						nodes.poll();
+						thresholdTime = nodes.peek().time;
+					}
+				}
+			}
+		} else {
+			allNodes.add(treeNode);
+		}
+	}
+

@@ -1,0 +1,13 @@
+	/**
+	 * @return filtered list of added nodes; all if the filter text did not
+	 *         activate the filter
+	 */
+	public List<RepositoryTreeNode<?>> getFilteredNodes() {
+		if (isFiltering()) {
+			return nodes.stream().map(node -> node.node)
+					.collect(Collectors.toList());
+		} else {
+			return allNodes;
+		}
+	}
+

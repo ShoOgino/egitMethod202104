@@ -1,0 +1,21 @@
+	/**
+	 * @param filterText
+	 *            user defined filter pattern
+	 */
+	public NodesByCommitTimeFilter(String filterText) {
+		if (filterText != null) {
+			Matcher matcher = FILTER_ACTIVE_PATTERN.matcher(filterText);
+			active = matcher.matches();
+			if (active) {
+				if (filterText.length() > 1) {
+					try {
+						maxCount = Integer.parseInt(filterText.substring(1));
+					} catch (NumberFormatException e) {
+						// ignore - the number must be so large that filtering
+						// is not necessary; maxCount stays negative
+					}
+				}
+			}
+		}
+	}
+
