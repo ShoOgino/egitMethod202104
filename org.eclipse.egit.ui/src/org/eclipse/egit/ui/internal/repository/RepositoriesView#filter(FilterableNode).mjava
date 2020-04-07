@@ -37,7 +37,8 @@
 		// Pop up search field with initial pattern set; update pattern and
 		// request a refresh of the node on each change with a small delay.
 		AtomicReference<String> currentPattern = new AtomicReference<>();
-		UIJob refresher = new UIJob(UIText.RepositoriesView_FilterJob) {
+		WorkbenchJob refresher = new WorkbenchJob(
+				UIText.RepositoriesView_FilterJob) {
 
 			@Override
 			public boolean belongsTo(Object family) {
@@ -112,7 +113,6 @@
 					container.setVisible(false);
 					container.dispose();
 					viewer.getTree().setFocus();
-					viewer.setSelection(new StructuredSelection(node));
 				}
 			}
 		});

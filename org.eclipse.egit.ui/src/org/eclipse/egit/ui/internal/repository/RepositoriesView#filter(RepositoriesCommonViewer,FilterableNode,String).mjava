@@ -1,8 +1,12 @@
 	private void filter(RepositoriesCommonViewer viewer,
 			FilterableNode filterNode, String filter) {
 		FilterCache.INSTANCE.set(filterNode, filter);
+		Tree tree = viewer.getTree();
+		if (tree == null || tree.isDisposed()) {
+			return;
+		}
 		try {
-			viewer.getTree().setRedraw(false);
+			tree.setRedraw(false);
 			TreeItem item = viewer.getItem(filterNode);
 			Object currentNode = item.getData();
 			if (filterNode != currentNode && filterNode.equals(currentNode)) {
@@ -12,7 +16,9 @@
 			}
 			viewer.refresh(filterNode);
 		} finally {
-			viewer.getTree().setRedraw(true);
+			tree.setRedraw(true);
 		}
+		// Force an update of the status bar
+		viewer.setSelection(viewer.getSelection());
 	}
 
