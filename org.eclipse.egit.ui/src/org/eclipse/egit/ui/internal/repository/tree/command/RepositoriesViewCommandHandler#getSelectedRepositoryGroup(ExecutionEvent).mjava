@@ -1,10 +1,25 @@
 	public RepositoryGroup getSelectedRepositoryGroup(ExecutionEvent event)
 			throws ExecutionException {
-		List<?> selected = getSelectedNodes(event);
-		if (selected.size() == 1
-				&& selected.get(0) instanceof RepositoryGroupNode) {
-			return ((RepositoryGroupNode) selected.get(0)).getObject();
+		Object singleSelection = null;
+		if (HandlerUtil
+				.getActivePartChecked(event) instanceof RepositoriesView) {
+			List<?> selected = getSelectedNodes(event);
+			if (selected.size() == 1) {
+				singleSelection = selected.get(0);
+			}
+		} else {
+			RepositoriesView view = getRepositoriesView();
+			if (view != null) {
+				IStructuredSelection selection = view.getCommonViewer()
+						.getStructuredSelection();
+				if (selection != null && selection.size() == 1) {
+					singleSelection = selection.getFirstElement();
+				}
+			}
 		}
-		return null;
+		if (!(singleSelection instanceof RepositoryGroupNode)) {
+			return null;
+		}
+		return ((RepositoryGroupNode) singleSelection).getObject();
 	}
 
