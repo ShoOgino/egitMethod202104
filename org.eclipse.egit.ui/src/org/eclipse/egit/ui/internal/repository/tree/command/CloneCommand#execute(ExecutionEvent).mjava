@@ -1,11 +1,24 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		GitCloneWizard wizard;
+
 		if (presetURI == null) {
-			wizard = new GitCloneWizard();
+			String uriParameter = event
+					.getParameter(REPOSITORY_URI_PARAMETER_ID);
+			if (uriParameter != null) {
+				String sanitizedURI = GitUrlChecker
+						.sanitizeAsGitUrl(uriParameter);
+
+				wizard = GitUrlChecker.isValidGitUrl(sanitizedURI)
+						? new GitCloneWizard(sanitizedURI)
+						: new GitCloneWizard();
+			} else {
+				wizard = new GitCloneWizard();
+			}
 		} else {
 			wizard = new GitCloneWizard(presetURI);
 		}
+
 		RepositoryGroup group = getSelectedRepositoryGroup(event);
 		wizard.setRepositoryGroup(group);
 		wizard.setShowProjectImport(true);
