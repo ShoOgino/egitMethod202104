@@ -2,11 +2,7 @@
 	 * @param url
 	 */
 	protected void proceedClone(String url) {
-		CloneCommand command = new CloneCommand(url);
-		try {
-			command.execute(new ExecutionEvent());
-		} catch (ExecutionException e) {
-			Activator.logError(e.getLocalizedMessage(), e);
-		}
+		CommonUtils.runCommand(CloneCommand.COMMAND_ID, null, Collections
+				.singletonMap(CloneCommand.REPOSITORY_URI_PARAMETER_ID, url));
 	}
 
