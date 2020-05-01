@@ -25,6 +25,8 @@
 		srv.removePostSelectionListener(selectionChangedListener);
 
 		unregisterRepositoryListeners();
+		refCache.remove(repositories);
+		refCache.dispose();
 		repositories.clear();
 
 		super.dispose();

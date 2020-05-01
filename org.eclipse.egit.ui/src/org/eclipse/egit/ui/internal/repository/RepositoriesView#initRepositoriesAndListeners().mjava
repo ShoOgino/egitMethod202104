@@ -1,5 +1,6 @@
 	private void initRepositoriesAndListeners() {
 		synchronized (repositories) {
+			refCache.remove(repositories);
 			repositories.clear();
 			unregisterRepositoryListeners();
 			Set<File> dirs = new HashSet<>();
