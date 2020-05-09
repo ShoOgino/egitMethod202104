@@ -1,19 +1,16 @@
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Repository repository = getRepository(true, event);
-
+		if (repository == null) {
+			return null;
+		}
 		try {
-			PushBranchWizard wizard = null;
-			Ref ref = getBranchRef(repository);
-			if (ref != null) {
-				wizard = new PushBranchWizard(repository, ref);
-			} else {
-				ObjectId id = repository.resolve(repository.getFullBranch());
-				wizard = new PushBranchWizard(repository, id);
+			Wizard wizard = PushMode.UPSTREAM.getWizard(repository, null);
+			if (wizard != null) {
+				PushWizardDialog dlg = new PushWizardDialog(getShell(event),
+						wizard);
+				dlg.open();
 			}
-			PushWizardDialog dlg = new PushWizardDialog(getShell(event),
-					wizard);
-			dlg.open();
 		} catch (IOException ex) {
 			Activator.handleError(ex.getLocalizedMessage(), ex, false);
 		}

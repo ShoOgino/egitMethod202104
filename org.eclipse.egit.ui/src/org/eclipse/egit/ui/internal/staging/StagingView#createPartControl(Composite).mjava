@@ -377,9 +377,8 @@
 				.createComposite(buttonsContainer);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(commitButtonsContainer);
-		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(true)
+		GridLayoutFactory.fillDefaults().numColumns(2)
 				.applyTo(commitButtonsContainer);
-
 
 		this.commitAndPushButton = toolkit.createButton(commitButtonsContainer,
 				UIText.StagingView_CommitAndPush, SWT.PUSH);
@@ -387,7 +386,31 @@
 		commitAndPushButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				commit(true);
+				if (canPushHeadOnly()) {
+					pushHead(currentRepository);
+				} else {
+					commit(true);
+				}
+			}
+
+			private void pushHead(Repository repository) {
+				if (repository == null) {
+					return;
+				}
+				PushMode mode = getPushMode();
+				if (mode == null) {
+					return;
+				}
+				try {
+					Wizard wizard = mode.getWizard(repository, null);
+					if (wizard != null) {
+						PushWizardDialog dialog = new PushWizardDialog(
+								commitAndPushButton.getShell(), wizard);
+						dialog.open();
+					}
+				} catch (IOException e) {
+					Activator.handleError(e.getMessage(), e, true);
+				}
 			}
 		});
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
@@ -489,9 +512,7 @@
 			@Override
 			public void updateChangeIdToggleSelection(boolean selection) {
 				addChangeIdAction.setChecked(selection);
-				commitAndPushButton
-						.setImage(getImage(
-								selection ? UIIcons.GERRIT : UIIcons.PUSH));
+				updateCommitButtons();
 			}
 
 			@Override

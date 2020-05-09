@@ -12,13 +12,20 @@
 		}
 		boolean indexDiffAvailable = indexDiffAvailable(indexDiff);
 		boolean noConflicts = noConflicts(indexDiff);
-
 		boolean commitEnabled = noConflicts && indexDiffAvailable
 				&& isCommitPossible() && !isCommitBlocked();
-
-		boolean commitAndPushEnabled = commitAndPushEnabled(commitEnabled);
-
 		commitButton.setEnabled(commitEnabled);
-		commitAndPushButton.setEnabled(commitAndPushEnabled);
+
+		final Repository repo = currentRepository;
+		commitAndPushButton.setEnabled(
+				repo != null && !repo.getRepositoryState().isRebasing());
+		PushMode pushMode = getPushMode();
+		commitAndPushButton.setImage(getImage(
+				pushMode != null && pushMode == PushMode.GERRIT ? UIIcons.GERRIT
+						: UIIcons.PUSH));
+		commitAndPushButton
+				.setText(canPushHeadOnly() ? UIText.StagingView_PushHEAD
+						: UIText.StagingView_CommitAndPush);
+		commitAndPushButton.requestLayout();
 	}
 
