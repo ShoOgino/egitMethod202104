@@ -46,17 +46,39 @@
 								}
 							});
 						else if (result.isOK()) {
-							if (rebase.getResult().getStatus() == Status.UNCOMMITTED_CHANGES) {
+							Status status = rebase.getResult().getStatus();
+							switch (status) {
+							case UNCOMMITTED_CHANGES:
 								handleUncommittedChanges(repository,
 										rebase.getResult()
 												.getUncommittedChanges());
-							} else {
+								break;
+							case INTERACTIVE_PREPARED:
+								PlatformUI.getWorkbench().getDisplay()
+										.asyncExec(() -> {
+											try {
+												RebaseInteractiveView view = (RebaseInteractiveView) PlatformUI
+														.getWorkbench()
+														.getActiveWorkbenchWindow()
+														.getActivePage()
+														.showView(
+																RebaseInteractiveView.VIEW_ID);
+												view.setInput(repository);
+											} catch (PartInitException e) {
+												Activator.logError(
+														e.getMessage(), e);
+											}
+										});
+								break;
+							default:
 								RebaseResultDialog.show(rebase.getResult(),
 										repository);
-								if (operation == Operation.ABORT)
+								if (operation == Operation.ABORT) {
 									setAmending(false, false);
-								if (rebase.getResult().getStatus() == Status.EDIT)
+								} else if (status == Status.EDIT) {
 									setAmending(true, true);
+								}
+								break;
 							}
 						}
 					}
