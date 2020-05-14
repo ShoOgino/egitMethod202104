@@ -77,7 +77,8 @@
 				// element in the viewer failing those. The general idea is that
 				// it's really annoying to have the viewer scroll to the top
 				// element whenever you drag something out of a staging viewer.
-				Collection<Object> removedElements = removedPaths.values();
+				Collection<Object> removedElements = new LinkedHashSet<>(
+						removedPaths.values());
 				Object firstRemovedElement = removedElements.iterator()
 						.next();
 				Object parent = contentProvider.getParent(firstRemovedElement);
