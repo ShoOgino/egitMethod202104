@@ -246,6 +246,12 @@
 		};
 		signCommitAction.setImageDescriptor(UIIcons.SIGN_COMMIT);
 		commitMessageToolBarManager.add(signCommitAction);
+		boolean canSign = GpgSigner.getDefault() != null;
+		signCommitAction.setEnabled(canSign);
+		if (!canSign) {
+			signCommitAction
+					.setToolTipText(UIText.StagingView_Sign_Not_Available);
+		}
 
 		addChangeIdAction = new Action(UIText.StagingView_Add_Change_ID,
 				IAction.AS_CHECK_BOX) {
