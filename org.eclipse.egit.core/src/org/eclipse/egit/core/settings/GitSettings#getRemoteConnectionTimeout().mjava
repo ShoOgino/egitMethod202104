@@ -1,0 +1,11 @@
+	/**
+	 * Retrieves the configured connection timeout in seconds.
+	 *
+	 * @return the configured connection timeout in seconds; 60 seconds by
+	 *         default.
+	 */
+	public static int getRemoteConnectionTimeout() {
+		return Platform.getPreferencesService().getInt(Activator.getPluginId(),
+				GitCorePreferences.core_remoteConnectionTimeout, 60, null);
+	}
+

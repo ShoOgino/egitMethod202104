@@ -15,9 +15,7 @@
 			boolean local = pushMode == source;
 			if (!local) {
 				final ListRemoteOperation lop = new ListRemoteOperation(repo,
-						uri,
-						Activator.getDefault().getPreferenceStore().getInt(
-								UIPreferences.REMOTE_CONNECTION_TIMEOUT));
+						uri, GitSettings.getRemoteConnectionTimeout());
 				IRunnableWithProgress runnable = new IRunnableWithProgress() {
 					@Override
 					public void run(IProgressMonitor monitor)

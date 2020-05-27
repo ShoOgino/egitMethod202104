@@ -2,13 +2,13 @@
 	 * @param repository
 	 * @param uri
 	 * @param specs
-	 * @param timeout
 	 * @param dryRun
 	 */
 	public FetchOperationUI(Repository repository, URIish uri,
-			List<RefSpec> specs, int timeout, boolean dryRun) {
+			List<RefSpec> specs, boolean dryRun) {
 		this.repository = repository;
-		op = new FetchOperation(repository, uri, specs, timeout, dryRun);
+		op = new FetchOperation(repository, uri, specs,
+				GitSettings.getRemoteConnectionTimeout(), dryRun);
 		sourceString = uri.toPrivateString();
 	}
 

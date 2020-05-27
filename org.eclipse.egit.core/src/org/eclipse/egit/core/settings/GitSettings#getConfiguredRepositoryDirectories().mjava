@@ -1,0 +1,16 @@
+	/**
+	 * Retrieves the set of absolute paths to all repositories configured in
+	 * EGit.
+	 * <p>
+	 * Note that there is no guarantee that all the paths returned correspond to
+	 * existing directories. Repositories can be deleted outside of EGit.
+	 * </p>
+	 *
+	 * @return a collection of absolute path strings pointing to the git
+	 *         directories of repositories configured in EGit.
+	 */
+	public static Collection<Path> getConfiguredRepositoryDirectories() {
+		return Activator.getDefault().getRepositoryUtil().getRepositories()
+				.stream().map(Paths::get).collect(Collectors.toSet());
+	}
+

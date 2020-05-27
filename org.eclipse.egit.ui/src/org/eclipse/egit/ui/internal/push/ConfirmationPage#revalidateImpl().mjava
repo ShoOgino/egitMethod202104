@@ -23,9 +23,8 @@
 			final PushOperationSpecification spec = new PushOperationSpecification();
 			for (final URIish uri : displayedRepoSelection.getPushURIs())
 				spec.addURIRefUpdates(uri, copyUpdates(updates));
-			int timeout = Activator.getDefault().getPreferenceStore().getInt(
-					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-			operation = new PushOperation(local, spec, true, timeout);
+			operation = new PushOperation(local, spec, true,
+					GitSettings.getRemoteConnectionTimeout());
 			if (credentials != null)
 				operation.setCredentialsProvider(new EGitCredentialsProvider(
 						credentials.getUser(), credentials.getPassword()));

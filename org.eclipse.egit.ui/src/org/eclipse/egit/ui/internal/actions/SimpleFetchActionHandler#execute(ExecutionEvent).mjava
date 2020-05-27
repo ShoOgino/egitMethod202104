@@ -14,8 +14,7 @@
 			return null;
 		}
 
-		new FetchOperationUI(repository, config, Activator.getDefault().getPreferenceStore()
-						.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT), false).start();
+		new FetchOperationUI(repository, config, false).start();
 		return null;
 	}
 

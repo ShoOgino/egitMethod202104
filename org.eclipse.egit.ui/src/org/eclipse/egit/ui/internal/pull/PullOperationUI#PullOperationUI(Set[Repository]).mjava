@@ -3,9 +3,8 @@
 	 */
 	public PullOperationUI(Set<Repository> repositories) {
 		this.repositories = repositories.toArray(new Repository[0]);
-		int timeout = Activator.getDefault().getPreferenceStore().getInt(
-				UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-		pullOperation = new PullOperation(repositories, timeout);
+		pullOperation = new PullOperation(repositories,
+				GitSettings.getRemoteConnectionTimeout());
 		pullOperation.setCredentialsProvider(new EGitCredentialsProvider());
 		for (Repository repository : repositories)
 			results.put(repository, NOT_TRIED_STATUS);

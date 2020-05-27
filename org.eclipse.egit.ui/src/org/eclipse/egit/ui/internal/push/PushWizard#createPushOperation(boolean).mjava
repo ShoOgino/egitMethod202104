@@ -43,8 +43,7 @@
 					spec.addURIRefUpdates(uri, ConfirmationPage
 							.copyUpdates(updates));
 			}
-			int timeout = Activator.getDefault().getPreferenceStore().getInt(
-					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
+			int timeout = GitSettings.getRemoteConnectionTimeout();
 			return new PushOperation(localDb, spec, false, timeout);
 		} catch (final IOException e) {
 			ErrorDialog.openError(getShell(),

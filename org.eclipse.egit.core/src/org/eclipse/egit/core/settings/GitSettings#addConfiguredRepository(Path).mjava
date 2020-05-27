@@ -1,0 +1,15 @@
+	/**
+	 * Adds a repository to the list of repositories configured in EGit.
+	 *
+	 * @param gitDir
+	 *            to add; must not be {@code null}
+	 * @throws IllegalArgumentException
+	 *             if {@code gitDir} does not "look like" a git repository
+	 *             directory
+	 */
+	public static void addConfiguredRepository(Path gitDir)
+			throws IllegalArgumentException {
+		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+				Objects.requireNonNull(gitDir).toFile());
+	}
+

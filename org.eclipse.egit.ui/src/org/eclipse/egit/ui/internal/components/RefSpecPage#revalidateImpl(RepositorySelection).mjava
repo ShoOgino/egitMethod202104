@@ -3,9 +3,8 @@
 		try {
 			final URIish uri;
 			uri = newRepoSelection.getURI(pushPage);
-			int timeout = Activator.getDefault().getPreferenceStore().getInt(
-					UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-			listRemotesOp = new ListRemoteOperation(local, uri, timeout);
+			listRemotesOp = new ListRemoteOperation(local, uri,
+					GitSettings.getRemoteConnectionTimeout());
 			if (credentials != null)
 				listRemotesOp
 						.setCredentialsProvider(new EGitCredentialsProvider(

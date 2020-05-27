@@ -4,8 +4,7 @@
 			List<Ref> proposals = new ArrayList<>();
 			uriToCheck = config.getURIs().get(0);
 			final ListRemoteOperation lop = new ListRemoteOperation(repository,
-					uriToCheck, Activator.getDefault().getPreferenceStore()
-							.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT));
+					uriToCheck, GitSettings.getRemoteConnectionTimeout());
 			try {
 				new ProgressMonitorDialog(getShell()).run(true, true,
 						new IRunnableWithProgress() {

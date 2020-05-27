@@ -1,9 +1,7 @@
 	@Override
 	protected void dryRun(IProgressMonitor monitor) {
-		int timeout = Activator.getDefault().getPreferenceStore()
-				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 		final FetchOperationUI op = new FetchOperationUI(getRepository(),
-				getConfig(), timeout, true);
+				getConfig(), true);
 		try {
 			final FetchResult result = op.execute(monitor);
 			getShell().getDisplay().asyncExec(new Runnable() {

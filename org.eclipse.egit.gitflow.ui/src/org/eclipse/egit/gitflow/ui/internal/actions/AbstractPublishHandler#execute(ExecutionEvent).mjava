@@ -3,10 +3,8 @@
 		final GitFlowRepository gfRepo = GitFlowHandlerUtil.getRepository(event);
 
 		try {
-			int timeout = Activator.getDefault().getPreferenceStore()
-					.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 			CurrentBranchPublishOperation publishOperation = new CurrentBranchPublishOperation(
-					gfRepo, timeout);
+					gfRepo, GitSettings.getRemoteConnectionTimeout());
 			JobUtil.scheduleUserWorkspaceJob(publishOperation,
 					getProgressText(), JobFamilies.REBASE,
 					new PostPublishUiTask(gfRepo, publishOperation));

@@ -17,10 +17,9 @@
 		}
 
 		final String featureName = inputDialog.getValue();
-		int timeout = Activator.getDefault().getPreferenceStore()
-				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
 		GitFlowOperation operation = new FeatureStartOperation(
-				gfRepo, featureName, timeout);
+				gfRepo, featureName,
+				GitSettings.getRemoteConnectionTimeout());
 		String fullBranchName = gfRepo.getConfig()
 				.getFullFeatureBranchName(featureName);
 		JobUtil.scheduleUserWorkspaceJob(operation,

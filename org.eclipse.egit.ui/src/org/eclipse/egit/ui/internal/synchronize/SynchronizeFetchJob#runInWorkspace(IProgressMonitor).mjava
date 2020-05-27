@@ -25,7 +25,7 @@
 			}
 
 			FetchOperationUI fetchOperationUI = new FetchOperationUI(repo,
-					config, timeout, false);
+					config, false);
 			fetchOperationUI.setCredentialsProvider(new EGitCredentialsProvider());
 			try {
 				fetchOperationUI.execute(progress.newChild(1));

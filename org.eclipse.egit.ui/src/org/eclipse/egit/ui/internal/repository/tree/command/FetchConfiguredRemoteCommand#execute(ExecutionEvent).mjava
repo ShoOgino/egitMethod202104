@@ -10,10 +10,7 @@
 							UIText.SimpleFetchActionHandler_NothingToFetchDialogMessage);
 			return null;
 		}
-		int timeout = Activator.getDefault().getPreferenceStore()
-				.getInt(UIPreferences.REMOTE_CONNECTION_TIMEOUT);
-		new FetchOperationUI(node.getRepository(), config, timeout, false)
-				.start();
+		new FetchOperationUI(node.getRepository(), config, false).start();
 		return null;
 	}
 

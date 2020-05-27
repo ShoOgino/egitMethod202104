@@ -3,6 +3,7 @@
 
 		super.start(context);
 		pluginId = context.getBundle().getSymbolicName();
+		migratePreferences();
 
 		FS.FileStoreAttributes.setBackground(true);
 
