@@ -39,13 +39,13 @@
 		}
 		if (amendPreviousCommitAction.isChecked())
 			commitOperation.setAmending(true);
-		final boolean gerritMode = addChangeIdAction.isChecked();
-		commitOperation.setComputeChangeId(gerritMode);
+		final boolean withChangeId = addChangeIdAction.isChecked();
+		commitOperation.setComputeChangeId(withChangeId);
 		commitOperation.setSign(signCommitAction.isChecked());
 
 		PushMode pushMode = null;
 		if (pushUpstream) {
-			pushMode = gerritMode ? PushMode.GERRIT : PushMode.UPSTREAM;
+			pushMode = getPushMode();
 		}
 		Job commitJob = new CommitJob(currentRepository, commitOperation)
 				.setOpenCommitEditor(openNewCommitsAction.isChecked())

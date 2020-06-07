@@ -1,0 +1,15 @@
+	/**
+	 * Determines a {@link Wizard} suitable for the {@link PushMode}.
+	 *
+	 * @param repository
+	 *            to push to
+	 * @param commit
+	 *            to push
+	 * @return a {@link Wizard}, or {@code null} if the repo has no HEAD
+	 * @throws IOException
+	 *             if some I/O problem prevent reading information, for instance
+	 *             from a git config file
+	 */
+	public abstract Wizard getWizard(@NonNull Repository repository,
+			RevCommit commit) throws IOException;
+

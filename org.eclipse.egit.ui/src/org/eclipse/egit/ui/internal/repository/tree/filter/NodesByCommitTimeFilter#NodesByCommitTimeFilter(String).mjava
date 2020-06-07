@@ -3,19 +3,22 @@
 	 *            user defined filter pattern
 	 */
 	public NodesByCommitTimeFilter(String filterText) {
+		boolean doFilter = false;
+		int count = -1;
 		if (filterText != null) {
-			Matcher matcher = FILTER_ACTIVE_PATTERN.matcher(filterText);
-			active = matcher.matches();
-			if (active) {
+			doFilter = FILTER_ACTIVE_PATTERN.matcher(filterText).matches();
+			if (doFilter) {
 				if (filterText.length() > 1) {
 					try {
-						maxCount = Integer.parseInt(filterText.substring(1));
+						count = Integer.parseInt(filterText.substring(1));
 					} catch (NumberFormatException e) {
 						// ignore - the number must be so large that filtering
-						// is not necessary; maxCount stays negative
+						// is not necessary; count stays negative
 					}
 				}
 			}
 		}
+		active = doFilter;
+		maxCount = count;
 	}
 

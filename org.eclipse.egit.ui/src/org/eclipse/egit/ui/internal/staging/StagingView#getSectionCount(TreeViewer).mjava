@@ -2,9 +2,10 @@
 		StagingViewContentProvider contentProvider = getContentProvider(viewer);
 		int count = contentProvider.getCount();
 		int shownCount = contentProvider.getShownCount();
-		if (shownCount == count)
-			return Integer.toString(count);
-		else
+		if (getFilterPattern() != null && count > 0) {
 			return shownCount + "/" + count; //$NON-NLS-1$
+		} else {
+			return Integer.toString(count);
+		}
 	}
 

@@ -4,7 +4,7 @@
 	 */
 	public List<RepositoryTreeNode<?>> getFilteredNodes() {
 		if (isFiltering()) {
-			return nodes.stream().map(node -> node.node)
+			return nodes.stream().map(TimedNode::getNode)
 					.collect(Collectors.toList());
 		} else {
 			return allNodes;

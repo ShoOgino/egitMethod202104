@@ -6,7 +6,7 @@
 		enableAuthorText(enabled);
 		amendPreviousCommitAction.setEnabled(enabled);
 		signedOffByAction.setEnabled(enabled);
-		signCommitAction.setEnabled(enabled);
+		signCommitAction.setEnabled(enabled && GpgSigner.getDefault() != null);
 		addChangeIdAction.setEnabled(enabled);
 		if (enabled) {
 			updateCommitButtons();
