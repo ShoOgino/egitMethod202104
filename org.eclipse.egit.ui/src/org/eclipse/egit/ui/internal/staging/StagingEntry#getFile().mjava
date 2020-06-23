@@ -5,7 +5,7 @@
 	public IFile getFile() {
 		if (!fileLoaded) {
 			fileLoaded = true;
-			file = ResourceUtil.getFileForLocation(repository, path, false);
+			file = fileProvider.apply(this);
 		}
 		return file;
 	}

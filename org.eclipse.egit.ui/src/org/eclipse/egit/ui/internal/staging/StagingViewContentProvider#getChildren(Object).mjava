@@ -8,10 +8,11 @@
 			return ((StagingFolderEntry) parentElement).getChildren();
 		} else {
 			// Return the root nodes
-			if (stagingView.getPresentation() == Presentation.LIST)
+			if (stagingView.getPresentation() == Presentation.LIST) {
+				getTreeRoots();
 				return content;
-			else
-				return getTreePresentationRoots();
+			}
+			return getTreePresentationRoots();
 		}
 	}
 

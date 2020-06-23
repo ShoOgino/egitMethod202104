@@ -9,12 +9,16 @@
 			content = new StagingEntry[0];
 			treeRoots = new Object[0];
 			compactTreeRoots = new Object[0];
+			rootDetermined = false;
+			rootContainer = null;
 			return;
 		}
 
 		if (update.repository != repository) {
 			treeRoots = null;
 			compactTreeRoots = null;
+			rootDetermined = false;
+			rootContainer = null;
 		}
 
 		repository = update.repository;
@@ -37,29 +41,36 @@
 			for (String file : indexDiff.getMissing())
 				if (indexDiff.getChanged().contains(file))
 					nodes.add(new StagingEntry(repository, MISSING_AND_CHANGED,
-							file));
+							file, s -> null));
 				else
-					nodes.add(new StagingEntry(repository, MISSING, file));
+					nodes.add(new StagingEntry(repository, MISSING, file,
+							s -> null));
 			for (String file : indexDiff.getModified())
 				if (indexDiff.getChanged().contains(file))
 					nodes.add(new StagingEntry(repository, MODIFIED_AND_CHANGED,
-							file));
+							file, this::getFile));
 				else if (indexDiff.getAdded().contains(file))
 					nodes.add(new StagingEntry(repository, MODIFIED_AND_ADDED,
-							file));
+							file, this::getFile));
 				else
-					nodes.add(new StagingEntry(repository, MODIFIED, file));
+					nodes.add(new StagingEntry(repository, MODIFIED, file,
+							this::getFile));
 			for (String file : indexDiff.getUntracked())
-				nodes.add(new StagingEntry(repository, UNTRACKED, file));
+				nodes.add(new StagingEntry(repository, UNTRACKED, file,
+						this::getFile));
 			for (String file : indexDiff.getConflicting())
-				nodes.add(new StagingEntry(repository, CONFLICTING, file));
+				nodes.add(new StagingEntry(repository, CONFLICTING, file,
+						this::getFile));
 		} else {
 			for (String file : indexDiff.getAdded())
-				nodes.add(new StagingEntry(repository, ADDED, file));
+				nodes.add(new StagingEntry(repository, ADDED, file,
+						this::getFile));
 			for (String file : indexDiff.getChanged())
-				nodes.add(new StagingEntry(repository, CHANGED, file));
+				nodes.add(new StagingEntry(repository, CHANGED, file,
+						this::getFile));
 			for (String file : indexDiff.getRemoved())
-				nodes.add(new StagingEntry(repository, REMOVED, file));
+				nodes.add(new StagingEntry(repository, REMOVED, file,
+						this::getFile));
 		}
 
 		setSymlinkFileMode(indexDiff, nodes);

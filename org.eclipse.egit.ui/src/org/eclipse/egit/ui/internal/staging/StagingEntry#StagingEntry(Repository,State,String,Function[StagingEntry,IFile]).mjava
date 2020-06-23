@@ -1,0 +1,17 @@
+	/**
+	 * @param repository
+	 *            repository for this entry
+	 * @param state
+	 * @param path
+	 *            repo-relative path for this entry
+	 * @param fileProvider
+	 *            to get the file for this {@link StagingEntry} from
+	 */
+	public StagingEntry(Repository repository, State state, String path,
+			Function<StagingEntry, IFile> fileProvider) {
+		this.repository = repository;
+		this.state = state;
+		this.path = path;
+		this.fileProvider = fileProvider;
+	}
+
