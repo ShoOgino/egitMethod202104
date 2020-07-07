@@ -27,6 +27,15 @@
 			if (fc != null) {
 				decoration.setForegroundColor(fc);
 			}
+			if (f == null
+					|| isSameFont(f, current.getFontRegistry().defaultFont())) {
+				// Try the TREE_TABLE_FONT new in Eclipse 4.17
+				Font treeTableFont = current.getFontRegistry()
+						.get(TREE_TABLE_FONT);
+				if (treeTableFont != null) {
+					f = treeTableFont;
+				}
+			}
 			if (f != null) {
 				decoration.setFont(f);
 			}

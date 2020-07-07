@@ -9,19 +9,28 @@
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		final String prop = event.getProperty();
-		// If the property is of any interest to us
-		if (prop.equals(TeamUI.GLOBAL_IGNORES_CHANGED)
-				|| prop.equals(TeamUI.GLOBAL_FILE_TYPES_CHANGED)
-				|| prop.equals(Activator.DECORATORS_CHANGED)) {
+		if (prop == null) {
+			return;
+		}
+		switch (prop) {
+		case TeamUI.GLOBAL_IGNORES_CHANGED:
+		case TeamUI.GLOBAL_FILE_TYPES_CHANGED:
+		case Activator.DECORATORS_CHANGED:
 			postLabelEvent();
-		} else if (prop.equals(UIPreferences.THEME_UncommittedChangeBackgroundColor)
-				|| prop.equals(UIPreferences.THEME_UncommittedChangeFont)
-				|| prop.equals(UIPreferences.THEME_UncommittedChangeForegroundColor)
-				|| prop.equals(UIPreferences.THEME_IgnoredResourceFont)
-				|| prop.equals(UIPreferences.THEME_IgnoredResourceBackgroundColor)
-				|| prop.equals(UIPreferences.THEME_IgnoredResourceForegroundColor)) {
-			ensureFontAndColorsCreated(FONT_IDS, COLOR_IDS);
+			break;
+		case IThemeManager.CHANGE_CURRENT_THEME:
+		case TREE_TABLE_FONT:
+		case UIPreferences.THEME_UncommittedChangeBackgroundColor:
+		case UIPreferences.THEME_UncommittedChangeFont:
+		case UIPreferences.THEME_UncommittedChangeForegroundColor:
+		case UIPreferences.THEME_IgnoredResourceFont:
+		case UIPreferences.THEME_IgnoredResourceBackgroundColor:
+		case UIPreferences.THEME_IgnoredResourceForegroundColor:
+			ensureFontAndColorsCreated();
 			postLabelEvent(); // TODO do I really need this?
+			break;
+		default:
+			break;
 		}
 	}
 
