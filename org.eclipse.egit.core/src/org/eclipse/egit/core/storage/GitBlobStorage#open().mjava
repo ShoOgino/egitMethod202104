@@ -6,7 +6,6 @@
 			return new ByteArrayInputStream(Constants.encode(blobId.name()));
 		}
 		try {
-			WorkingTreeOptions workingTreeOptions = db.getConfig().get(WorkingTreeOptions.KEY);
 			InputStream objectInputStream = db.open(blobId,
 					Constants.OBJ_BLOB).openStream();
 			InputStream filteredInputStream = objectInputStream;
@@ -17,13 +16,14 @@
 			EolStreamType streamType;
 			if (metadata != null && metadata.eolStreamType != null) {
 				streamType = metadata.eolStreamType;
-			} else if (workingTreeOptions.getAutoCRLF() == AutoCRLF.TRUE) {
+			} else if (db.getConfig().get(WorkingTreeOptions.KEY)
+					.getAutoCRLF() == AutoCRLF.TRUE) {
 				streamType = EolStreamType.AUTO_CRLF;
 			} else {
 				streamType = EolStreamType.DIRECT;
 			}
 			return EolStreamTypeUtil.wrapInputStream(filteredInputStream,
-					streamType);
+					streamType, true);
 		} catch (MissingObjectException notFound) {
 			throw new CoreException(Activator.error(NLS.bind(
 					CoreText.BlobStorage_blobNotFound, blobId.name(), path),
