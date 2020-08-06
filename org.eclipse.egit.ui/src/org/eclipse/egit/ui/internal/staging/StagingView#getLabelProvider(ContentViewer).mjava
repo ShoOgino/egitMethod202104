@@ -1,7 +1,5 @@
 	private StagingViewLabelProvider getLabelProvider(ContentViewer viewer) {
 		IBaseLabelProvider base = viewer.getLabelProvider();
-		ILabelProvider labelProvider = ((TreeDecoratingLabelProvider) base)
-				.getLabelProvider();
-		return (StagingViewLabelProvider) labelProvider;
+		return ((TreeDecoratingLabelProvider) base).getBaseLabelProvider();
 	}
 

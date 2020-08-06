@@ -1,0 +1,9 @@
+		public TreeDecoratingLabelProvider(StagingViewLabelProvider base,
+				ILabelDecorator decorator) {
+			this.base = base;
+			this.provider = new DecoratingLabelProvider(
+					new DecoratingLabelProvider(base, decorator),
+					PlatformUI.getWorkbench().getDecoratorManager()
+							.getLabelDecorator());
+		}
+

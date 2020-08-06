@@ -11,8 +11,6 @@
 		}
 
 		StagingEntry c = (StagingEntry) element;
-		DecorationResult decoration = new DecorationResult();
-		decorationHelper.decorate(decoration, c);
-		return getDecoratedImage(getEditorImage(c), decoration.getOverlay());
+		return getEditorImage(c);
 	}
 
