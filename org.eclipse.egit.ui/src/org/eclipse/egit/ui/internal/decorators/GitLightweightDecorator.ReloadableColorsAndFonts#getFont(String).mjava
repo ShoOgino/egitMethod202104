@@ -1,0 +1,9 @@
+		@Override
+		public Font getFont(String id) {
+			Font font = (Font) colorsOrFonts.get(id);
+			if (font != null && font.isDisposed()) {
+				return null;
+			}
+			return font;
+		}
+

@@ -1,5 +1,6 @@
-		private boolean isSameFont(Font a, Font b) {
-			return a.equals(b)
-					|| Arrays.equals(a.getFontData(), b.getFontData());
+		private boolean isSameFont(@NonNull Font a, Font b) {
+			return a.equals(b) //
+					|| (b != null
+							&& Arrays.equals(a.getFontData(), b.getFontData()));
 		}
 

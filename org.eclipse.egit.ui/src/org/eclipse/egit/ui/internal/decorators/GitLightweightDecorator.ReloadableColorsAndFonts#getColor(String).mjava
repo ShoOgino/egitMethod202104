@@ -1,0 +1,9 @@
+		@Override
+		public Color getColor(String id) {
+			Color color = (Color) colorsOrFonts.get(id);
+			if (color != null && color.isDisposed()) {
+				return null;
+			}
+			return color;
+		}
+

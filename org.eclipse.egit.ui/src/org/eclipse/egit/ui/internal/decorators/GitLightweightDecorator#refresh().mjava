@@ -2,12 +2,7 @@
 	 * Perform a blanket refresh of all decorations
 	 */
 	public static void refresh() {
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				PlatformUI.getWorkbench().getDecoratorManager()
-						.update(DECORATOR_ID);
-			}
-		});
+		PlatformUI.getWorkbench().getDisplay().asyncExec(() -> PlatformUI
+				.getWorkbench().getDecoratorManager().update(DECORATOR_ID));
 	}
 

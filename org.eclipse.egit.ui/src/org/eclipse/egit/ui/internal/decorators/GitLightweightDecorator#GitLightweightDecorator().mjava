@@ -4,7 +4,10 @@
 	public GitLightweightDecorator() {
 		// This is an optimization to ensure that while decorating our fonts and
 		// colors are pre-created and decoration can occur without having to syncExec.
-		ensureFontAndColorsCreated();
+		resources = new ReloadableColorsAndFonts();
+		resources.reload();
+		helper = new DecorationHelper(
+				Activator.getDefault().getPreferenceStore(), resources);
 		TeamUI.addPropertyChangeListener(this);
 		Activator.addPropertyChangeListener(this);
 		PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()

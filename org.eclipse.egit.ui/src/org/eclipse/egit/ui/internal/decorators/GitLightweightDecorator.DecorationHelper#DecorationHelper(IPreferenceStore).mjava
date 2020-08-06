@@ -1,11 +1,51 @@
 		/**
 		 * Constructs a decorator using the rules from the given
-		 * <code>preferencesStore</code>
+		 * {@code preferencesStore}.
+		 * <p>
+		 * Intended to be used in the GitDecoratorPreferencesPage only. The
+		 * decorator assumes that colors, fonts, and the theme do not change
+		 * while it is in use.
+		 * </p>
 		 *
 		 * @param preferencesStore
 		 *            the preferences store with the preferred decorator rules
 		 */
 		public DecorationHelper(IPreferenceStore preferencesStore) {
-			store = preferencesStore;
+			this(preferencesStore, new ColorsAndFonts() {
+
+				private final ITheme current = PlatformUI.getWorkbench()
+						.getThemeManager().getCurrentTheme();
+
+				private volatile RGB defaultBackground;
+
+				@Override
+				public Color getColor(String id) {
+					return current.getColorRegistry().get(id);
+				}
+
+				@Override
+				public Font getFont(String id) {
+					return current.getFontRegistry().get(id);
+				}
+
+				@Override
+				public Font getDefaultFont() {
+					return current.getFontRegistry().defaultFont();
+				}
+
+				@Override
+				public RGB getDefaultBackground() {
+					if (defaultBackground == null) {
+						Display display = PlatformUI.getWorkbench()
+								.getDisplay();
+						display.syncExec(() -> {
+							defaultBackground = display
+									.getSystemColor(SWT.COLOR_LIST_BACKGROUND)
+									.getRGB();
+						});
+					}
+					return defaultBackground;
+				}
+			});
 		}
 
