@@ -1,0 +1,11 @@
+		/**
+		 * Register a listener to be called when the colors or fonts have
+		 * changed. A no-op if the listener is already registered.
+		 *
+		 * @param runnable
+		 *            to invoke
+		 */
+		public void addListener(Runnable runnable) {
+			listeners.addIfAbsent(runnable);
+		}
+

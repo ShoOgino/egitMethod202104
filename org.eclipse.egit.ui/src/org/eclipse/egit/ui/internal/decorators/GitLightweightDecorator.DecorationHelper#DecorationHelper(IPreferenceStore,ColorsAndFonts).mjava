@@ -1,14 +1,13 @@
 		/**
-		 * Internal constructor; also used by the
-		 * {@link GitLightweightDecorator} to provide a {@link ColorsAndFonts}
-		 * registry that reacts to color, font, or theme changes.
+		 * Creates a new {@link DecorationHelper} based on the given
+		 * {@link IPreferenceStore} using the given {@link ColorsAndFonts}.
 		 *
 		 * @param preferencesStore
 		 *            to get decoration settings from
 		 * @param resources
 		 *            to get colors and fonts from
 		 */
-		private DecorationHelper(IPreferenceStore preferencesStore,
+		public DecorationHelper(IPreferenceStore preferencesStore,
 				ColorsAndFonts resources) {
 			store = preferencesStore;
 			this.resources = resources;

@@ -12,16 +12,34 @@
 			return ""; //$NON-NLS-1$
 		}
 
+		DecorationResult decoration = new DecorationResult();
+		decorationHelper.decorate(decoration, stagingEntry);
+		String prefix = decoration.getPrefix();
+		String suffix = decoration.getSuffix();
+		StringBuilder label = new StringBuilder();
+		if (prefix != null) {
+			label.append(prefix);
+		}
 		if (stagingView.getPresentation() == Presentation.LIST) {
 			if (fileNameMode) {
 				IPath parsed = Path.fromOSString(stagingEntry.getPath());
 				if (parsed.segmentCount() > 1) {
-					return parsed.lastSegment() + " - " //$NON-NLS-1$
-							+ parsed.removeLastSegments(1).toString();
+					label.append(parsed.lastSegment());
+					if (suffix != null) {
+						label.append(suffix);
+					}
+					label.append(" - ") //$NON-NLS-1$
+							.append(parsed.removeLastSegments(1).toString());
+					return label.toString();
 				}
 			}
-			return stagingEntry.getPath();
+			label.append(stagingEntry.getPath());
+		} else {
+			label.append(stagingEntry.getName());
 		}
-		return stagingEntry.getName();
+		if (suffix != null) {
+			label.append(suffix);
+		}
+		return label.toString();
 	}
 

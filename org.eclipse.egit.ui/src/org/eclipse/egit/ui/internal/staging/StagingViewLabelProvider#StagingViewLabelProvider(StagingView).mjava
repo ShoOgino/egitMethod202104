@@ -3,6 +3,10 @@
 	 */
 	public StagingViewLabelProvider(StagingView stagingView) {
 		super();
+		colorsAndFonts = new ChangeTrackingColorsAndFonts();
+		decorationHelper = new DecorationHelper(
+				Activator.getDefault().getPreferenceStore(), colorsAndFonts);
+		colorsAndFonts.addListener(this::postLabelEvent);
 		this.stagingView = stagingView;
 	}
 

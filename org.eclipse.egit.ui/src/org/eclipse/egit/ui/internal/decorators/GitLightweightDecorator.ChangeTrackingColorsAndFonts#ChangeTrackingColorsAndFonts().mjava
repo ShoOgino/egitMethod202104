@@ -1,0 +1,9 @@
+		/**
+		 * Creates a new {@link ChangeTrackingColorsAndFonts} object.
+		 */
+		public ChangeTrackingColorsAndFonts() {
+			PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
+					.addPropertyChangeListener(themeListener);
+			reload();
+		}
+

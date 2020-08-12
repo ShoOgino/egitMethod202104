@@ -1,8 +1,7 @@
 	@Override
 	public void dispose() {
 		super.dispose();
-		PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
-				.removePropertyChangeListener(this);
+		resources.dispose();
 		TeamUI.removePropertyChangeListener(this);
 		Activator.removePropertyChangeListener(this);
 		GitProjectData.removeRepositoryChangeListener(mappingChangeListener);

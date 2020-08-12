@@ -1,0 +1,10 @@
+		/**
+		 * Disposes internal resources, removes all listeners, and stops
+		 * reacting on color or font changes.
+		 */
+		public void dispose() {
+			listeners.clear();
+			PlatformUI.getWorkbench().getThemeManager().getCurrentTheme()
+					.removePropertyChangeListener(themeListener);
+		}
+

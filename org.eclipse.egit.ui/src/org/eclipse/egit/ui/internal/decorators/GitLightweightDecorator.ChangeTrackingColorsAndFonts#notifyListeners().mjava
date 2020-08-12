@@ -1,0 +1,6 @@
+		private void notifyListeners() {
+			for (Runnable listener : listeners) {
+				SafeRunnable.run(listener::run);
+			}
+		}
+
