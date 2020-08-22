@@ -8,8 +8,25 @@
 		if (dialog.open() != Window.OK) {
 			return;
 		}
-		JobUtil.scheduleUserWorkspaceJob(new DeletePathsOperation(paths),
-				UIText.DeletePathsOperationUI_DeleteFilesJobName,
+		// Do not schedule the DeletePathsOperation directly; the calculation of
+		// the scheduling rule can be expensive. The operation runs in an
+		// IWorkspaceRunnable anyway, so it's not necessary to schedule the
+		// job already with that rule, and we can thus determine the scheduling
+		// rule once we are in the background.
+		JobUtil.scheduleUserWorkspaceJob(new IEGitOperation() {
+
+			@Override
+			public ISchedulingRule getSchedulingRule() {
+				return null;
+			}
+
+			@Override
+			public void execute(IProgressMonitor monitor) throws CoreException {
+				DeletePathsOperation op = new DeletePathsOperation(paths);
+				op.execute(monitor);
+			}
+
+		}, UIText.DeletePathsOperationUI_DeleteFilesJobName,
 				JobFamilies.DELETE);
 	}
 
