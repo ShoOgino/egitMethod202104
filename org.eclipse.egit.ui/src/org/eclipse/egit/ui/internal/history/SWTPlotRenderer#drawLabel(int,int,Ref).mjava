@@ -6,6 +6,9 @@
 		boolean branch = false;
 		RGB labelOuter;
 		RGB labelInner;
+		Color labelTextColor = sys_black;
+		boolean adjustColors = true;
+
 		if (name.startsWith(Constants.R_HEADS)) {
 			branch = true;
 			labelOuter = OUTER_HEAD;
@@ -41,7 +44,22 @@
 			}
 		} else {
 			labelOuter = OUTER_OTHER;
-			labelInner = INNER_OTHER;
+			float hsb[] = tableBG.getRGB().getHSB();
+			if (hsb[2] < 0.5) {
+				// Dark table: use table background a little lightened
+				if (hsb[2] < 0.1) {
+					hsb[2] = 0.3f;
+				} else {
+					hsb[2] *= 1.7;
+				}
+				labelInner = new RGB(hsb[0], hsb[1], hsb[2]);
+				labelTextColor = hsb[2] < 0.5 ? sys_white : sys_black;
+				adjustColors = false;
+			} else {
+				// Light table
+				labelInner = INNER_OTHER;
+				labelTextColor = sys_black;
+			}
 
 			if (name.startsWith(Constants.R_REFS))
 				txt = name.substring(Constants.R_REFS.length());
@@ -49,6 +67,26 @@
 				txt = name; // HEAD and such
 		}
 
+		if (adjustColors) {
+			float hsb[] = tableBG.getRGB().getHSB();
+			if (hsb[2] < 0.5) {
+				// Dark table: darken the fill color
+				hsb = labelInner.getHSB();
+				if (hsb[2] >= 0.5) {
+					// With the very bright, weakly saturated colors we have,
+					// the following works reasonably well: Bump the saturation
+					// up, and darken a little. Unless it's a gray: then darken
+					// only.
+					if (!(labelInner.red == labelInner.blue
+							&& labelInner.blue == labelInner.green)) {
+						hsb[1] = (float) Math.min(1.0, hsb[1] * 1.5);
+					}
+					hsb[2] *= 0.7;
+					labelInner = new RGB(hsb[0], hsb[1], hsb[2]);
+				}
+				labelTextColor = hsb[2] < 0.5 ? sys_white : sys_black;
+			}
+		}
 		int maxLength;
 		if (tag)
 			maxLength = Activator.getDefault().getPreferenceStore()
@@ -94,10 +132,13 @@
 		g.drawRoundRectangle(cellX + x, cellY + texty - 1, outerWidth,
 				textsz.y + 1, arc, arc);
 
-		g.setForeground(sys_black);
+		g.setForeground(labelTextColor);
 
 		// Draw text
 		g.drawString(txt, cellX + x + 4, cellY + texty, true);
+
+		g.setBackground(cellBG);
+		g.setBackground(cellFG);
 
 		if (isHead)
 			g.setFont(oldFont);

@@ -5,6 +5,11 @@
 		cellY = event.y;
 		cellFG = g.getForeground();
 		cellBG = g.getBackground();
+		// Can't use cellBG for determining dark mode; it changes for
+		// selected/inactive selected cells. The table background updates fine
+		// on theme changes.
+		tableBG = table.getBackground();
+
 		if (textHeight == 0)
 			textHeight = g.stringExtent("/").y; //$NON-NLS-1$
 

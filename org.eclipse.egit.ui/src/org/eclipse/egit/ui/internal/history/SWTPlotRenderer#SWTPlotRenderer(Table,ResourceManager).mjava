@@ -1,5 +1,7 @@
-	SWTPlotRenderer(final Display d, final ResourceManager resources) {
+	SWTPlotRenderer(final Table table, final ResourceManager resources) {
 		this.resources = resources;
+		this.table = table;
+		Display d = table.getDisplay();
 		sys_black = d.getSystemColor(SWT.COLOR_BLACK);
 		sys_gray = d.getSystemColor(SWT.COLOR_GRAY);
 		sys_white = d.getSystemColor(SWT.COLOR_WHITE);
