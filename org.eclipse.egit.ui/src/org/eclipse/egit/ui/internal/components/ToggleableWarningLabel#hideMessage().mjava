@@ -1,8 +1,9 @@
 	/**
 	 * Hide the warning label.
+	 *
+	 * @return whether the visibility changed
 	 */
-	public void hideMessage() {
-		if (getVisible())
-			changeVisibility(false);
+	public boolean hideMessage() {
+		return changeVisibility(false);
 	}
 

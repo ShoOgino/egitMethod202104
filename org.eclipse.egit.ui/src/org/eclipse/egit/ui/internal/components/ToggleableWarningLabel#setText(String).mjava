@@ -3,10 +3,15 @@
 	 *
 	 * @param message
 	 *            to show
+	 * @return whether the Composite changed
 	 */
-	protected void setText(String message) {
-		warningText.setText(message);
-		layout(true);
-		changeVisibility(true);
+	protected boolean setText(String message) {
+		boolean changed = false;
+		if (!Objects.equals(message, warningText.getText())) {
+			warningText.setText(message);
+			changed = true;
+		}
+		changed |= changeVisibility(true);
+		return changed;
 	}
 
