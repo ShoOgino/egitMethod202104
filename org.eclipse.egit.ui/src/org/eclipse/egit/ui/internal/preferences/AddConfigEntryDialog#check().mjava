@@ -7,8 +7,7 @@
 				hasError = true;
 				return;
 			}
-			StringTokenizer st = new StringTokenizer(keyText.getText(), "."); //$NON-NLS-1$
-			if (st.countTokens() < 2) {
+			if (keyText.getText().indexOf('.') < 0) {
 				setErrorMessage(UIText.AddConfigEntryDialog_KeyComponentsMessage);
 				hasError = true;
 				return;
