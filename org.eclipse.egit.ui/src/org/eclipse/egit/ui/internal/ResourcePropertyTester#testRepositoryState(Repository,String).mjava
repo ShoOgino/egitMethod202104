@@ -5,9 +5,14 @@
 	 *         {@link ResourcePropertyTester}
 	 */
 	public static boolean testRepositoryState(Repository repository, String property) {
-		if ("isShared".equals(property)) //$NON-NLS-1$
+		if ("isShared".equals(property)) { //$NON-NLS-1$
 			return repository != null;
+		}
 		if (repository != null) {
+			if ("hasHead".equals(property)) { //$NON-NLS-1$
+				return SelectionRepositoryStateCache.INSTANCE
+						.getHead(repository) != null;
+			}
 			if ("hasGerritConfiguration".equals(property)) { //$NON-NLS-1$
 				return hasGerritConfiguration(repository);
 			}
