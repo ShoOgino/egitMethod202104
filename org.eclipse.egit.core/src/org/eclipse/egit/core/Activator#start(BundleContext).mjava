@@ -22,12 +22,9 @@
 		proxyServiceTracker = new ServiceTracker<>(context,
 				IProxyService.class.getName(), null);
 		proxyServiceTracker.open();
-		setupSSH(context);
+		SshSessionFactory.setInstance(new EGitSshdSessionFactory());
 		preferenceChangeListener = event -> {
-			if (GitCorePreferences.core_sshClient.equals(event.getKey())) {
-				setupSSH(getBundle().getBundleContext());
-			} else if (GitCorePreferences.core_httpClient
-					.equals(event.getKey())) {
+			if (GitCorePreferences.core_httpClient.equals(event.getKey())) {
 				setupHttp();
 			}
 		};
