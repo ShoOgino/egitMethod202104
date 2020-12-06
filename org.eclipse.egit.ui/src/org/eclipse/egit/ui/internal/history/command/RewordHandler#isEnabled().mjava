@@ -1,15 +1,14 @@
 	@Override
 	public boolean isEnabled() {
 		GitHistoryPage page = getPage();
-		if (page == null)
+		if (page == null) {
 			return false;
+		}
 		IStructuredSelection selection = getSelection(page);
-		if (selection.size() != 1)
+		if (selection.size() != 1) {
 			return false;
+		}
 		Repository repository = getRepository(page);
-		if (repository.getRepositoryState() != RepositoryState.SAFE)
-			return false;
-		RevCommit commit = (RevCommit) selection.getFirstElement();
-		return (commit.getParentCount() == 1);
+		return RepositoryState.SAFE.equals(repository.getRepositoryState());
 	}
 

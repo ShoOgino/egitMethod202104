@@ -9,17 +9,10 @@
 
 		Shell shell = getPart(event).getSite().getShell();
 
-		try {
-			if (!UIRepositoryUtils.handleUncommittedFiles(repo, shell))
-				return null;
-		} catch (GitAPIException e) {
-			Activator.logError(e.getMessage(), e);
+		String newMessage = promptCommitMessage(shell, commit);
+		if (newMessage == null || newMessage.equals(commit.getFullMessage())) {
 			return null;
 		}
-
-		String newMessage = promptCommitMessage(shell, commit);
-		if (newMessage == null)
-			return null;
 
 		final RewordCommitOperation op = new RewordCommitOperation(repo,
 				commit, newMessage);
@@ -33,7 +26,7 @@
 				try {
 					op.execute(monitor);
 				} catch (CoreException e) {
-					Activator.logError(UIText.RewordHandler_InternalError, e);
+					return e.getStatus();
 				}
 				return Status.OK_STATUS;
 			}

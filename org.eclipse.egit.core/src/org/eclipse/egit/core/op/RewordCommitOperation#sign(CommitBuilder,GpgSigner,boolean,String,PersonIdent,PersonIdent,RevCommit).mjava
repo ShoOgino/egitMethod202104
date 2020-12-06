@@ -1,0 +1,30 @@
+	private GpgSigner sign(CommitBuilder builder, GpgSigner signer,
+			boolean signAll, String keyId, PersonIdent committer,
+			PersonIdent oldCommitter, RevCommit original)
+			throws JGitInternalException {
+		if (committer.getName().equals(oldCommitter.getName()) && committer
+				.getEmailAddress().equals(oldCommitter.getEmailAddress())) {
+			// We don't sign commits that were committed by someone else. If
+			// they were signed, the signature will be dropped.
+			try {
+				signer.sign(builder, keyId, committer,
+						CredentialsProvider.getDefault());
+			} catch (CanceledException e) {
+				// User cancelled signing: don't sign and assume he doesn't want
+				// to sign any other commit.
+				return null;
+			} catch (JGitInternalException e) {
+				if (signAll) {
+					throw e;
+				}
+				Activator.logWarning(MessageFormat.format(
+						CoreText.RewordCommitOperation_cannotSign,
+						Utils.getShortObjectId(commit),
+						Utils.getShortObjectId(headId),
+						Utils.getShortObjectId(original)), e);
+				return null;
+			}
+		}
+		return signer;
+	}
+

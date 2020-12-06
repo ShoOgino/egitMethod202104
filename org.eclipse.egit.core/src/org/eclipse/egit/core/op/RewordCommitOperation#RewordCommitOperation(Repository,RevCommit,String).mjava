@@ -10,11 +10,6 @@
 	 */
 	public RewordCommitOperation(Repository repository, RevCommit commit,
 			String newMessage) {
-		if (commit.getParentCount() != 1) {
-			throw new UnsupportedOperationException(
-					"commit is expected to have exactly one parent"); //$NON-NLS-1$
-		}
-
 		this.repository = repository;
 		this.commit = commit;
 		this.newMessage = newMessage;
