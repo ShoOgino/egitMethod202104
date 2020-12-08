@@ -7,12 +7,12 @@
 	 */
 	protected void createTag(IProgressMonitor monitor, RevCommit head,
 			String name, String message) throws CoreException {
-		TagBuilder tag = new TagBuilder();
-		tag.setTag(name);
-		tag.setTagger(new PersonIdent(repository.getRepository()));
-		tag.setMessage(message);
-		tag.setObjectId(head);
-		new TagOperation(repository.getRepository(), tag, false)
-				.execute(monitor);
+		TagOperation operation = new TagOperation(repository.getRepository())
+				.setAnnotated(true)
+				.setName(name)
+				.setMessage(message)
+				.setTarget(head)
+				.setTagger(new PersonIdent(repository.getRepository()));
+		operation.execute(monitor);
 	}
 

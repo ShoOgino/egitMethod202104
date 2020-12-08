@@ -1,19 +1,17 @@
 	@Test
 	public void addEmptyAnnotatedTag() throws Exception {
-		assertTrue("Tags should be empty", repository1.getRepository()
-				.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
-		TagBuilder newTag = new TagBuilder();
-		newTag.setTag("TheNewTag");
-		newTag.setMessage("");
-		newTag.setTagger(RawParseUtils.parsePersonIdent(TestUtils.AUTHOR));
-		ObjectId headCommit = repository1.getRepository()
-				.resolve("refs/heads/master");
-		newTag.setObjectId(headCommit, Constants.OBJ_COMMIT);
-		TagOperation top = new TagOperation(repository1.getRepository(), newTag,
-				false, true);
+		Repository repo = repository1.getRepository();
+		assertTrue("Tags should be empty", repo.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
+		RevCommit commit = repo.parseCommit(repo.resolve("refs/heads/master"));
+		TagOperation top = new TagOperation(repo)
+				.setName("TheNewTag")
+				.setAnnotated(true)
+				.setMessage("")
+				.setTagger(RawParseUtils.parsePersonIdent(TestUtils.AUTHOR))
+				.setTarget(repo.parseCommit(repo.resolve("refs/heads/master")));
 		top.execute(new NullProgressMonitor());
-		assertFalse("Tags should not be empty", repository1.getRepository()
-				.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
-		assertIsAnnotated("TheNewTag", headCommit, "");
+		assertFalse("Tags should not be empty", repo.getRefDatabase()
+				.getRefsByPrefix(Constants.R_TAGS).isEmpty());
+		assertIsAnnotated("TheNewTag", commit, "");
 	}
 

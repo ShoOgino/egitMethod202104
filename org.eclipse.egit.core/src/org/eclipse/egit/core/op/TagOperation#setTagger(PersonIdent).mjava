@@ -1,0 +1,19 @@
+	/**
+	 * Sets the {@link PersonIdent} to use as the author of the tag to be
+	 * created by this {@link TagOperation}.
+	 * <p>
+	 * A possibly set tagger will be ignored if the tag is to be a lightweight
+	 * tag.
+	 * </p>
+	 *
+	 * @param tagger
+	 *            the {@link PersonIdent} to use, or {@code null} to use a
+	 *            default author based on the repository configuration (default)
+	 * @return {@code this}
+	 * @see #setAnnotated(boolean)
+	 */
+	public TagOperation setTagger(PersonIdent tagger) {
+		this.tagger = tagger;
+		return this;
+	}
+

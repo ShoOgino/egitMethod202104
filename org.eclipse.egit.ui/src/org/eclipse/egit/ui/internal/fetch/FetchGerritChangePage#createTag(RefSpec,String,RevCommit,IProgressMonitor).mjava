@@ -1,16 +1,19 @@
-	private void createTag(final RefSpec spec, final String textForTag,
-			RevCommit commit, IProgressMonitor monitor) throws CoreException {
+	private void createTag(@NonNull RefSpec spec, @NonNull String textForTag,
+			@NonNull RevCommit commit, IProgressMonitor monitor)
+			throws CoreException {
 		monitor.subTask(UIText.FetchGerritChangePage_CreatingTagTaskName);
-		final TagBuilder tag = new TagBuilder();
 		PersonIdent personIdent = new PersonIdent(repository);
 
-		tag.setTag(textForTag);
-		tag.setTagger(personIdent);
-		tag.setMessage(NLS.bind(
-				UIText.FetchGerritChangePage_GeneratedTagMessage,
-				spec.getSource()));
-		tag.setObjectId(commit);
-		new TagOperation(repository, tag, false).execute(monitor);
+		TagOperation operation = new TagOperation(repository)
+				.setAnnotated(true)
+				.setName(textForTag)
+				.setTagger(personIdent)
+				.setMessage(NLS.bind(
+						UIText.FetchGerritChangePage_GeneratedTagMessage,
+						spec.getSource()))
+				.setTarget(commit)
+				.setSign(Boolean.FALSE);
+		operation.execute(monitor);
 		monitor.worked(1);
 	}
 

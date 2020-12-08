@@ -1,0 +1,14 @@
+	/**
+	 * Indicates whether the tag should be signed.
+	 *
+	 * @return whether tag should be signed, {@code null} means the user made no
+	 *         choice and the git config decides.
+	 */
+	@Nullable
+	public Boolean shouldSign() {
+		if (signButton == null) {
+			return Boolean.FALSE;
+		}
+		return signExplicit ? Boolean.valueOf(signUser) : null;
+	}
+

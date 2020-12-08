@@ -60,6 +60,8 @@
 											innerProgress.newChild(1));
 									break;
 								case CREATE_TAG:
+									assert spec != null;
+									assert textForTag != null;
 									createTag(spec, textForTag, commit,
 											innerProgress.newChild(1));
 									checkout(commit.name(),

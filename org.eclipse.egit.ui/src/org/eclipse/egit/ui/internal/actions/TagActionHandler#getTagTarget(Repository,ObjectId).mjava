@@ -1,10 +1,10 @@
-	private RevObject getTagTarget(Repository repo, ObjectId objectId)
+	private RevCommit getTagTarget(Repository repo, ObjectId objectId)
 			throws IOException {
 		try (RevWalk rw = new RevWalk(repo)) {
-			if (objectId == null)
-				return rw.parseAny(repo.resolve(Constants.HEAD));
-			else
-				return rw.parseAny(objectId);
+			if (objectId == null) {
+				return rw.parseCommit(repo.resolve(Constants.HEAD));
+			}
+			return rw.parseCommit(objectId);
 		}
 	}
 

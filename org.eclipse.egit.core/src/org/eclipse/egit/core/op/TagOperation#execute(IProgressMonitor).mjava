@@ -1,11 +1,65 @@
 	@Override
 	public void execute(IProgressMonitor monitor) throws CoreException {
-		SubMonitor progress = SubMonitor.convert(monitor, 2);
-		progress.setTaskName(NLS.bind(CoreText.TagOperation_performingTagging,
-				tag.getTag()));
-		ObjectId tagId = annotated ? updateTagObject() : tag.getObjectId();
-		progress.worked(1);
-		updateRepo(tagId);
-		progress.worked(1);
+		SubMonitor progress = SubMonitor.convert(monitor, 1);
+		progress.setTaskName(MessageFormat
+				.format(CoreText.TagOperation_performingTagging, getName()));
+		try (Git git = new Git(repository)) {
+			TagCommand command = git.tag()
+					.setName(getName())
+					.setForceUpdate(isForce())
+					.setObjectId(getTarget());
+			// Because of tag.forceSignAnnotated we have to be careful
+			// not to call setAnnotated(true) explicitly.
+			// TagCommand.setAnnotated() corresponds to the "-a"
+			// command-line option being given explicitly, which would
+			// force an unsigned tag unless tag.gpgSign was also true or
+			// the user also gave the -s option. "-s" (or "--no-sign")
+			// is sign != null here.
+			//
+			// So we must not setAnnotated(true) if sign == null,
+			// otherwise tag.forceSignAnnotated = true would be ignored.
+			if (!isAnnotated()) {
+				// We want a lightweight tag, unless it's signed
+				if (Boolean.FALSE.equals(sign)) {
+					setMessage(null);
+					setTagger(null);
+					command.setAnnotated(false);
+				} else if (sign == null) {
+					// User did not decide explicitly.
+					GpgConfig config = new GpgConfig(repository.getConfig());
+					if (!config.isSignAllTags()) {
+						setMessage(null);
+						setTagger(null);
+						command.setAnnotated(false);
+					}
+				}
+			}
+			command.setMessage(getMessage()).setTagger(getTagger());
+			if (sign != null) {
+				command.setSigned(sign.booleanValue());
+			}
+			// A CredentialsProvider might be needed when signing to
+			// get the passphrase for an encrypted key
+			CredentialsProvider provider = getCredentialsProvider();
+			if (provider != null) {
+				// If none is set explicitly, the command will fall back to
+				// CredentialsProvider.getDefault()
+				command.setCredentialsProvider(provider);
+			}
+			command.call();
+			progress.worked(1);
+		} catch (RefAlreadyExistsException e) {
+			// NO_CHANGE: update of existing lightweight tag to the same commit.
+			if (!RefUpdate.Result.NO_CHANGE.equals(e.getUpdateResult())) {
+				throw new TeamException(MessageFormat.format(
+						CoreText.TagOperation_taggingFailure, getName(),
+						e.getMessage()), e);
+			}
+		} catch (GitAPIException e) {
+			throw new TeamException(
+					MessageFormat.format(CoreText.TagOperation_taggingFailure,
+							getName(), e.getMessage()),
+					e);
+		}
 	}
 

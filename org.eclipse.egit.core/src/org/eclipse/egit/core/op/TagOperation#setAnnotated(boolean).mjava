@@ -1,0 +1,19 @@
+	/**
+	 * Sets whether this {@link TagOperation} shall create an annotated tag.
+	 * <p>
+	 * If set to {@code false}, a potentially set {@link #setMessage(String)
+	 * message} or {@link #setTagger(PersonIdent) tagger} is ignored.
+	 * </p>
+	 *
+	 * @param annotated
+	 *            {@code false} if a lightweight tag is to be created,
+	 *            {@code true} otherwise (default)
+	 * @return {@code this}
+	 * @see #setMessage(String)
+	 * @see #setTagger(PersonIdent)
+	 */
+	public TagOperation setAnnotated(boolean annotated) {
+		this.annotated = annotated;
+		return this;
+	}
+

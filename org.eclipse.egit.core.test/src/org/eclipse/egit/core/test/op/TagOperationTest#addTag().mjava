@@ -1,40 +1,39 @@
 	@Test
 	public void addTag() throws Exception {
-		assertTrue("Tags should be empty", repository1.getRepository()
-				.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
-		TagBuilder newTag = new TagBuilder();
-		newTag.setTag("TheNewTag");
-		newTag.setMessage("Well, I'm the tag");
-		newTag.setTagger(RawParseUtils.parsePersonIdent(TestUtils.AUTHOR));
-		newTag.setObjectId(repository1.getRepository()
-				.resolve("refs/heads/master"), Constants.OBJ_COMMIT);
-		TagOperation top = new TagOperation(repository1.getRepository(),
-				newTag, false);
+		Repository repo = repository1.getRepository();
+		assertTrue("Tags should be empty", repo.getRefDatabase()
+				.getRefsByPrefix(Constants.R_TAGS).isEmpty());
+		PersonIdent author = RawParseUtils.parsePersonIdent(TestUtils.AUTHOR);
+		TagOperation top = new TagOperation(repo)
+				.setAnnotated(true)
+				.setForce(false).setName("TheNewTag")
+				.setMessage("Well, I'm the tag")
+				.setTagger(author)
+				.setTarget(repo.parseCommit(repo.resolve("refs/heads/master")));
 		top.execute(new NullProgressMonitor());
-		assertFalse("Tags should not be empty", repository1.getRepository()
-				.getRefDatabase().getRefsByPrefix(Constants.R_TAGS).isEmpty());
+		assertFalse("Tags should not be empty", repo.getRefDatabase()
+				.getRefsByPrefix(Constants.R_TAGS).isEmpty());
 
+		// Execute it again: should create an identical tag object with the same
+		// hash and be allowed
 		top.execute(null);
-		assertEquals(top.getResult(), RefUpdate.Result.NO_CHANGE);
 
-		top = new TagOperation(repository1.getRepository(), newTag, true);
-
+		// Set the force flag and re-execute; should also be allowed.
+		top.setForce(true);
 		top.execute(null);
-		assertEquals(top.getResult(), RefUpdate.Result.NO_CHANGE);
 
-		try (RevWalk walk = new RevWalk(repository1.getRepository())) {
-			RevTag tag = walk.parseTag(repository1.getRepository().resolve(
-					Constants.R_TAGS + "TheNewTag"));
+		// Change the message (force flag is still set)
+		try (RevWalk walk = new RevWalk(repo)) {
+			RevTag tag = walk
+					.parseTag(repo.resolve(Constants.R_TAGS + "TheNewTag"));
 
-			newTag.setMessage("Another message");
+			top.setMessage("Another message");
 			assertFalse("Messages should differ",
-					tag.getFullMessage().equals(newTag.getMessage()));
+					tag.getFullMessage().equals(top.getMessage()));
 			top.execute(null);
-			tag = walk.parseTag(repository1.getRepository().resolve(
-					Constants.R_TAGS + "TheNewTag"));
+			tag = walk.parseTag(repo.resolve(Constants.R_TAGS + "TheNewTag"));
 			assertTrue("Messages be same",
-					tag.getFullMessage().equals(newTag.getMessage()));
-			walk.dispose();
+					tag.getFullMessage().equals(top.getMessage()));
 		}
 	}
 
