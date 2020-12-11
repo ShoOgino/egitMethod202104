@@ -1,7 +1,7 @@
 	private void setExistingTag(Object tagObject) {
-		if (tagObject instanceof RevTag)
+		if (tagObject instanceof RevTag) {
 			existingTag = new TagWrapper((RevTag) tagObject);
-		else if (tagObject instanceof Ref) {
+		} else if (tagObject instanceof Ref) {
 			existingTag = new TagWrapper((Ref) tagObject);
 		} else {
 			setNoExistingTag();
