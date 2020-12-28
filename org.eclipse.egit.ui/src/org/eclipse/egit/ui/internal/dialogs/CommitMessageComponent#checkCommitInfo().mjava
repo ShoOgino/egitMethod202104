@@ -44,9 +44,14 @@
 			boolean signingKeyAvailable = SignatureUtils
 					.checkSigningKey(signingKey, committerPersonIdent);
 			if (!signingKeyAvailable) {
+				if (StringUtils.isEmptyOrNull(signingKey)) {
+					signingKey = committerPersonIdent.getEmailAddress();
+				}
 				MessageDialog.openWarning(getShell(),
 						UIText.CommitMessageComponent_ErrorMissingSigningKey,
-						UIText.CommitMessageComponent_ErrorNoSigningKeyFound);
+						MessageFormat.format(
+								UIText.CommitMessageComponent_ErrorNoSigningKeyFound,
+								signingKey));
 				return false;
 			}
 		}
