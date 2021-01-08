@@ -147,7 +147,9 @@
 			bars.getToolBarManager().add(singleValueToggleAction);
 			bars.getToolBarManager().add(editAction);
 
-			bars.getToolBarManager().update(false);
+			// bars.getToolBarManager().update(true) is not good enough; the
+			// layout of the bar doesn't get updated.
+			bars.updateActionBars();
 		}
 	}
 

@@ -10,26 +10,21 @@
 		String name = keyString.substring(j + 1);
 
 		String[] valueList = null;
-		if (getSingleValueMode())
+		if (getSingleValueMode()) {
 			valueList = new String[] { config.getString(section, subsection,
 					name) };
-		else
+		} else {
 			valueList = config.getStringList(section, subsection, name);
+		}
 
-		if (valueList == null || valueList.length == 0)
+		if (valueList == null || valueList.length == 0) {
 			return null;
+		}
 
 		if (valueList.length == 1) {
 			return valueList[0];
 		}
 
-		StringBuilder sb = new StringBuilder();
-		for (String value : valueList) {
-			sb.append('[');
-			sb.append(value);
-			sb.append(']');
-		}
-
-		return sb.toString();
+		return new ListPropertySource(Arrays.asList(valueList));
 	}
 

@@ -1,0 +1,11 @@
+	@Override
+	public Object getPropertyValue(Object id) {
+		if (id instanceof Integer) {
+			int index = ((Integer) id).intValue() - 1;
+			if (index >= 0 && index < values.size()) {
+				return values.get(index);
+			}
+		}
+		return null;
+	}
+

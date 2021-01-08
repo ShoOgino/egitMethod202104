@@ -9,7 +9,8 @@
 						configName));
 		if (ok) {
 			StoredConfig config = node.getRepository().getConfig();
-			config.unsetSection(RepositoriesView.REMOTE, configName);
+			config.unsetSection(ConfigConstants.CONFIG_REMOTE_SECTION,
+					configName);
 			try {
 				config.save();
 			} catch (IOException e1) {

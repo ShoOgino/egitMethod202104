@@ -1,6 +1,11 @@
 	@Override
 	public IPropertySource getPropertySource(Object object) {
 
+		if (object instanceof IPropertySource) {
+			// Enable nested properties
+			return (IPropertySource) object;
+		}
+
 		if (object == lastObject) {
 			return lastRepositorySource;
 		}

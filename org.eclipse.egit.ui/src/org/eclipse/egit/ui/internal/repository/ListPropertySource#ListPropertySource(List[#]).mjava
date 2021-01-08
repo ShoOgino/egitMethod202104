@@ -1,0 +1,17 @@
+	/**
+	 * Creates a new {@link ListPropertySource}.
+	 *
+	 * @param values
+	 *            to show
+	 */
+	public ListPropertySource(List<?> values) {
+		this.values = values == null ? Collections.emptyList() : values;
+		IPropertyDescriptor[] result = new IPropertyDescriptor[this.values
+				.size()];
+		for (int i = 1; i <= result.length; i++) {
+			result[i - 1] = new PropertyDescriptor(Integer.valueOf(i),
+					Integer.toString(i));
+		}
+		descriptors = result;
+	}
+
