@@ -10,8 +10,10 @@
 		} else {
 			result.add(new PropertyDescriptor(PROPERTY_TAG_ID,
 					UIText.TagPropertySource_TagId));
-			result.add(new PropertyDescriptor(PROPERTY_TAG_MESSAGE,
-					UIText.TagPropertySource_TagMessage));
+			result.add(
+					new MessagePropertyDescriptor(PROPERTY_TAG_MESSAGE,
+							UIText.TagPropertySource_TagMessage,
+							tag.getFullMessage(), page));
 			result.add(new PropertyDescriptor(PROPERTY_TAG_TAGGER,
 					UIText.TagPropertySource_TagTagger));
 			result.add(new PropertyDescriptor(PROPERTY_TAG_TARGET,

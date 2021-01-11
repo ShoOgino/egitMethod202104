@@ -9,22 +9,21 @@
 			if (tag != null) {
 				RevObject target = tag.getObject();
 				if (target instanceof RevTag) {
-					return new TagPropertySource(repository, (RevTag) target);
+					return new TagPropertySource(repository, (RevTag) target,
+							page);
 				} else if (target instanceof RevCommit) {
-					return new CommitPropertySource((RevCommit) target);
+					return new CommitPropertySource((RevCommit) target, page);
 				}
 				return Constants.typeString(target.getType()) + ' '
 						+ target.name();
 			}
 			if (commit != null) {
-				return new CommitPropertySource(commit);
+				return new CommitPropertySource(commit, page);
 			}
 			return null;
 		case PROPERTY_TAG_TAGGER:
 			return new PersonIdentPropertySource(tag.getTaggerIdent());
 		case PROPERTY_TAG_MESSAGE:
-			// TODO: figure out a way to show the full message, if different
-			// from the short message.
 			return tag.getShortMessage();
 		default:
 			return null;

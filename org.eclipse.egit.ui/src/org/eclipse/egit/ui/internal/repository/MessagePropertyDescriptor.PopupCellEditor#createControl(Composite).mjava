@@ -1,0 +1,13 @@
+		@Override
+		protected Control createControl(Composite parent) {
+			tree = (Tree) parent;
+			// Use a transparent label on which there is never any text, so the
+			// original selected cell is still visible. Additionally, the editor
+			// deactivates itself when focused as transparency doesn't work on
+			// Windows.
+			editor = new Label(parent, SWT.LEFT);
+			editor.setBackground(
+					parent.getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
+			return editor;
+		}
+

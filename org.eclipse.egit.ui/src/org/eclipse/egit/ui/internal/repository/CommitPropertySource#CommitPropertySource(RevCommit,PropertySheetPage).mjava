@@ -3,14 +3,17 @@
 	 *
 	 * @param commit
 	 *            to show
+	 * @param page
+	 *            to show the commit in
 	 */
-	public CommitPropertySource(RevCommit commit) {
+	public CommitPropertySource(RevCommit commit, PropertySheetPage page) {
 		this.commit = commit;
 		List<PropertyDescriptor> result = new ArrayList<>();
 		result.add(new PropertyDescriptor(PROPERTY_COMMIT_ID,
 				UIText.CommitPropertySource_CommitId));
-		result.add(new PropertyDescriptor(PROPERTY_COMMIT_MESSAGE,
-				UIText.CommitPropertySource_CommitMessage));
+		result.add(new MessagePropertyDescriptor(PROPERTY_COMMIT_MESSAGE,
+				UIText.CommitPropertySource_CommitMessage,
+				commit.getFullMessage(), page));
 		result.add(new PropertyDescriptor(PROPERTY_COMMIT_AUTHOR,
 				UIText.CommitPropertySource_CommitAuthor));
 		result.add(new PropertyDescriptor(PROPERTY_COMMITTER,

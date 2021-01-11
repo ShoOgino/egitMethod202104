@@ -4,8 +4,6 @@
 		case PROPERTY_COMMIT_ID:
 			return commit.getName();
 		case PROPERTY_COMMIT_MESSAGE:
-			// TODO: figure out a way to show the full message, if different
-			// from the short message.
 			return commit.getShortMessage();
 		case PROPERTY_COMMIT_AUTHOR:
 			return new PersonIdentPropertySource(commit.getAuthorIdent());

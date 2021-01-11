@@ -1,0 +1,8 @@
+	@Override
+	public CellEditor createPropertyEditor(Composite parent) {
+		if (StringUtils.isEmptyOrNull(message)) {
+			return null;
+		}
+		return new PopupCellEditor(parent);
+	}
+

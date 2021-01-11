@@ -5,10 +5,14 @@
 	 *            repository
 	 * @param tag
 	 *            to show
+	 * @param page
+	 *            to show the property in
 	 */
-	public TagPropertySource(Repository repo, RevTag tag) {
+	public TagPropertySource(Repository repo, RevTag tag,
+			PropertySheetPage page) {
 		this.repository = repo;
 		this.tag = tag;
+		this.page = page;
 		name = tag.getName();
 		try (RevWalk refWalk = new RevWalk(repo)) {
 			refWalk.parseBody(tag.getObject());
