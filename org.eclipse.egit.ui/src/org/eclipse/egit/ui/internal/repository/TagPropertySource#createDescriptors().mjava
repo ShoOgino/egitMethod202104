@@ -4,8 +4,9 @@
 				UIText.TagPropertySource_TagName));
 		if (tag == null) {
 			if (commit != null) {
-				result.add(new PropertyDescriptor(PROPERTY_TAG_TARGET,
-						UIText.TagPropertySource_TagTarget));
+				result.add(new CommitPropertyDescriptor(PROPERTY_TAG_TARGET,
+						UIText.TagPropertySource_TagTarget,
+						new RepositoryCommit(repository, commit)));
 			}
 		} else {
 			result.add(new PropertyDescriptor(PROPERTY_TAG_ID,
@@ -16,8 +17,15 @@
 							tag.getFullMessage(), page));
 			result.add(new PropertyDescriptor(PROPERTY_TAG_TAGGER,
 					UIText.TagPropertySource_TagTagger));
-			result.add(new PropertyDescriptor(PROPERTY_TAG_TARGET,
-					UIText.TagPropertySource_TagTarget));
+			if (tag.getObject() instanceof RevCommit) {
+				result.add(new CommitPropertyDescriptor(PROPERTY_TAG_TARGET,
+						UIText.TagPropertySource_TagTarget,
+						new RepositoryCommit(repository,
+								(RevCommit) tag.getObject())));
+			} else {
+				result.add(new PropertyDescriptor(PROPERTY_TAG_TARGET,
+						UIText.TagPropertySource_TagTarget));
+			}
 		}
 		for (PropertyDescriptor p : result) {
 			p.setCategory(UIText.TagPropertySource_TagCategory);

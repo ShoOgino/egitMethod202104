@@ -1,0 +1,40 @@
+		@Override
+		protected void doSetFocus() {
+			if (listener == null) {
+				listener = new FocusListener() {
+
+					@Override
+					public void focusGained(FocusEvent e) {
+						// Nothing
+					}
+
+					@Override
+					public void focusLost(FocusEvent e) {
+						editor.getDisplay().asyncExec(() -> {
+							if (!openCommit.isFocusControl()
+									&& !showInHistory.isFocusControl()) {
+								ButtonCellEditor.this.focusLost();
+							}
+						});
+					}
+				};
+			}
+			openCommit.addFocusListener(listener);
+			showInHistory.addFocusListener(listener);
+			if (parentListener == null) {
+				parentListener = event -> {
+					switch (event.type) {
+					case SWT.Collapse:
+					case SWT.Expand:
+						fireCancelEditor();
+						break;
+					default:
+						break;
+					}
+				};
+			}
+			editor.getParent().addListener(SWT.Collapse, parentListener);
+			editor.getParent().addListener(SWT.Expand, parentListener);
+			editor.setFocus();
+		}
+

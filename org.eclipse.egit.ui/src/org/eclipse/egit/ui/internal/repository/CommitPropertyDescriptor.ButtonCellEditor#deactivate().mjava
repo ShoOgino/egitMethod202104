@@ -1,0 +1,13 @@
+		@Override
+		public void deactivate() {
+			if (listener != null) {
+				openCommit.removeFocusListener(listener);
+				showInHistory.removeFocusListener(listener);
+			}
+			if (parentListener != null) {
+				editor.getParent().removeListener(SWT.Collapse, parentListener);
+				editor.getParent().removeListener(SWT.Expand, parentListener);
+			}
+			super.deactivate();
+		}
+

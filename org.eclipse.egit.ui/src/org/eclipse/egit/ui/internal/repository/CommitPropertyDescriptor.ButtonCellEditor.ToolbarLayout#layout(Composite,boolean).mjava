@@ -1,0 +1,43 @@
+			@Override
+			public void layout(Composite cellEditor, boolean force) {
+				Point size = openCommit.computeSize(SWT.DEFAULT, SWT.DEFAULT,
+						force);
+				Point size2 = showInHistory.computeSize(SWT.DEFAULT,
+						SWT.DEFAULT, force);
+				int width = size.x + size2.x;
+				int height = Math.max(size.y, size2.y);
+				// Adjust the cellEditor's bounds as needed
+				Rectangle editorBounds = cellEditor.getBounds();
+				if (item != null) {
+					Point textSize;
+					GC gc = null;
+					try {
+						gc = new GC(cellEditor.getDisplay());
+						gc.setFont(item.getFont(idx));
+						textSize = gc.stringExtent(item.getText(idx));
+					} finally {
+						if (gc != null) {
+							gc.dispose();
+						}
+					}
+					if (textSize.x >= 0 && textSize.x < editorBounds.width) {
+						editorBounds.width = textSize.x == 0 ? 0
+								: textSize.x + LayoutConstants.getSpacing().x;
+						editorBounds.width += width;
+					}
+				}
+				editorBounds.x += editorBounds.width - width;
+				editorBounds.width = width;
+				if (height > editorBounds.height) {
+					editorBounds.y -= (height - editorBounds.height) / 2;
+					editorBounds.height = height;
+				} else if (height < editorBounds.height) {
+					// Center vertically
+					editorBounds.y += (editorBounds.height - height) / 2;
+					editorBounds.height = height;
+				}
+				cellEditor.setBounds(editorBounds);
+				openCommit.setBounds(0, 0, size.x, size.y);
+				showInHistory.setBounds(size.x, 0, size2.x, size2.y);
+			}
+

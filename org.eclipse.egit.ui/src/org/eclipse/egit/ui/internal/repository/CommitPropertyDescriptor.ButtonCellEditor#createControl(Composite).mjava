@@ -1,0 +1,59 @@
+		@Override
+		protected Control createControl(Composite parent) {
+			editor = new Composite(parent, SWT.NONE);
+			openCommit = new Button(editor, SWT.PUSH);
+			openCommit.setImage(UIIcons.getImage(
+					Activator.getDefault().getResourceManager(),
+					UIIcons.OPEN_COMMIT));
+			openCommit.setToolTipText(
+					UIText.CommitPropertyDescriptor_OpenCommitLabel);
+			openCommit.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent evenet) {
+					try {
+						CommitEditor.open(commit);
+					} catch (PartInitException e) {
+						Activator.showError(e.getLocalizedMessage(), e);
+					}
+				}
+			});
+			showInHistory = new Button(editor, SWT.PUSH);
+			showInHistory.setImage(UIIcons.getImage(
+					Activator.getDefault().getResourceManager(),
+					UIIcons.HISTORY));
+			showInHistory.setToolTipText(
+					UIText.CommitPropertyDescriptor_ShowInHistoryLabel);
+			showInHistory.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent event) {
+					try {
+						IHistoryView view = (IHistoryView) PlatformUI
+								.getWorkbench().getActiveWorkbenchWindow()
+								.getActivePage().showView(IHistoryView.VIEW_ID);
+						view.showHistoryFor(commit);
+					} catch (PartInitException e) {
+						Activator.showError(e.getLocalizedMessage(), e);
+					}
+				}
+			});
+			KeyListener closeEditor = new KeyAdapter() {
+
+				@Override
+				public void keyReleased(KeyEvent e) {
+					if (e.character == SWT.ESC) {
+						fireCancelEditor();
+					}
+				}
+			};
+			openCommit.addKeyListener(closeEditor);
+			showInHistory.addKeyListener(closeEditor);
+			Tree tree = (Tree) parent;
+			TreeItem[] selected = tree.getSelection();
+			TreeItem item = selected == null || selected.length == 0 ? null
+					: selected[0];
+			editor.setLayout(new ToolbarLayout(item, columnIndex));
+			return editor;
+		}
+
