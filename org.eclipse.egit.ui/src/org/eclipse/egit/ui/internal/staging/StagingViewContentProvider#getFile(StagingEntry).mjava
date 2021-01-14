@@ -12,6 +12,12 @@
 							repository.getWorkTree().getAbsolutePath());
 					rootContainer = ResourcesPlugin.getWorkspace().getRoot()
 							.getContainerForLocation(path);
+					if (rootContainer != null
+							&& rootContainer.getType() == IResource.ROOT) {
+						// Files in the workspace root can't be accessed as
+						// IFiles.
+						rootContainer = null;
+					}
 				}
 				container = rootContainer;
 			}
