@@ -7,7 +7,7 @@
 		viewer.setContentProvider(new DiffContentProvider());
 		viewer.setLabelProvider(new DiffLabelProvider());
 		viewer.setComparator(
-				new ViewerComparator(FileDiff.PATH_STRING_COMPARATOR) {
+				new ViewerComparator(CMP) {
 					@Override
 					public int category(Object element) {
 						if (element instanceof DiffContentProvider.Folder) {
