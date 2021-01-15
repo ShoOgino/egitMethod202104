@@ -11,9 +11,6 @@
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				removeListener();
-				if (listenToDateFormatChanges) {
-					store.removePropertyChangeListener(dateFormatListener);
-				}
 			}
 		};
 		control.addDisposeListener(disposeListener);

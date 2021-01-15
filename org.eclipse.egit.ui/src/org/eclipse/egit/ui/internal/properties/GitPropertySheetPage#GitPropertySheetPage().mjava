@@ -1,0 +1,9 @@
+	/**
+	 * Creates a new instance.
+	 */
+	public GitPropertySheetPage() {
+		super();
+		store = Activator.getDefault().getPreferenceStore();
+		store.addPropertyChangeListener(dateFormatListener);
+	}
+

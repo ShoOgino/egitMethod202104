@@ -1,0 +1,7 @@
+	@Override
+	public void dispose() {
+		disposed = true;
+		store.removePropertyChangeListener(dateFormatListener);
+		super.dispose();
+	}
+

@@ -1,0 +1,11 @@
+	/**
+	 * Refreshes the page in the UI thread.
+	 */
+	public void refreshInUiThread() {
+		getSite().getShell().getDisplay().asyncExec(() -> {
+			if (!isDisposed()) {
+				refresh();
+			}
+		});
+	}
+
