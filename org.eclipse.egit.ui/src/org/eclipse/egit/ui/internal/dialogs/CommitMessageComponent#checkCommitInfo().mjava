@@ -38,12 +38,16 @@
 		}
 
 		if (signCommit) {
-			String signingKey = repository != null
-					? new GpgConfig(repository.getConfig()).getSigningKey()
-					: null;
+			GpgConfig gpgConfig;
+			if (repository != null) {
+				gpgConfig = new GpgConfig(repository.getConfig());
+			} else {
+				gpgConfig = new GpgConfig(null, GpgFormat.OPENPGP, null);
+			}
 			boolean signingKeyAvailable = SignatureUtils
-					.checkSigningKey(signingKey, committerPersonIdent);
+					.checkSigningKey(gpgConfig, committerPersonIdent);
 			if (!signingKeyAvailable) {
+				String signingKey = gpgConfig.getSigningKey();
 				if (StringUtils.isEmptyOrNull(signingKey)) {
 					signingKey = committerPersonIdent.getEmailAddress();
 				}
