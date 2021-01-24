@@ -1,0 +1,103 @@
+	private byte[] signWithGpg(byte[] data, String keySpec, String gpgProgram)
+			throws IOException, CanceledException {
+		// Sign an object with an external GPG executable. GPG handles
+		// passphrase entry, including gpg-agent and native keychain
+		// integration.
+		String program = gpgProgram;
+		if (StringUtils.isEmptyOrNull(program)) {
+			program = FROM_PATH.getGpg();
+			if (StringUtils.isEmptyOrNull(program)) {
+				throw new IOException(CoreText.ExternalGpgSigner_gpgNotFound);
+			}
+		}
+		ProcessBuilder process = new ProcessBuilder();
+		process.command(program,
+				// Detached signature, sign, armor, user
+				"-bsau", //$NON-NLS-1$
+				keySpec,
+				// No extra output
+				"--batch", //$NON-NLS-1$
+				"--no-tty", //$NON-NLS-1$
+				// Write extra status messages to stderr
+				"--status-fd", //$NON-NLS-1$
+				"2", //$NON-NLS-1$
+				// Force output of the signature to stdout
+				"--output", //$NON-NLS-1$
+				"-"); //$NON-NLS-1$
+		gpgEnvironment(process);
+		try (ByteArrayInputStream dataIn = new ByteArrayInputStream(data)) {
+			class Holder {
+				byte[] rawData;
+			}
+			Holder result = new Holder();
+			runProcess(process, dataIn, b -> {
+				// Sanity check: do we have a signature?
+				GpgSignatureVerifierFactory factory = GpgSignatureVerifierFactory
+						.getDefault();
+				boolean isValid = false;
+				if (factory == null) {
+					byte[] fromGpg = b.toByteArray(SIGNATURE_START.length);
+					isValid = Arrays.equals(fromGpg, SIGNATURE_START);
+					if (isValid) {
+						result.rawData = b.toByteArray();
+					}
+				} else {
+					byte[] fromGpg = b.toByteArray();
+					GpgSignatureVerifier verifier = factory.getVerifier();
+					try {
+						GpgSignatureVerifier.SignatureVerification verification = verifier
+								.verify(data, fromGpg);
+						isValid = verification != null
+								&& verification.getVerified();
+						if (isValid) {
+							result.rawData = fromGpg;
+						}
+					} catch (JGitInternalException e) {
+						throw new IOException(e.getLocalizedMessage(), e);
+					} finally {
+						verifier.clear();
+					}
+				}
+				if (!isValid) {
+					throw new IOException(MessageFormat.format(
+							CoreText.ExternalGpgSigner_noSignature,
+							toString(b)));
+				}
+			}, e -> {
+				// Error handling: parse stderr to figure out whether we have a
+				// cancellation. Unfortunately, GPG does record cancellation not
+				// via a [GNUPG:] stable status but by printing "gpg: signing
+				// failed: Operation cancelled". Since we don't know whether
+				// this string is stable (or may even be localized), we check
+				// for a "[GNUPG:] PINENTRY_LAUNCHED" line followed by the next
+				// [GNUPG:] line being "[GNUPG:] FAILURE sign".
+				//
+				// The [GNUPG:] strings are part of GPG's public API. See
+				// https://github.com/gpg/gnupg/blob/master/doc/DETAILS
+				try (BufferedReader r = new BufferedReader(
+						new InputStreamReader(e.openInputStream(),
+								StandardCharsets.UTF_8))) {
+					String line;
+					boolean pinentry = false;
+					while ((line = r.readLine()) != null) {
+						if (!pinentry && line
+								.startsWith("[GNUPG:] PINENTRY_LAUNCHED")) { //$NON-NLS-1$
+							pinentry = true;
+						} else if (pinentry) {
+							if (line.startsWith("[GNUPG:] FAILURE sign")) { //$NON-NLS-1$
+								throw new CanceledException(
+										CoreText.ExternalGpgSigner_signingCanceled);
+							}
+							if (line.startsWith("[GNUPG:]")) { //$NON-NLS-1$
+								pinentry = false;
+							}
+						}
+					}
+				} catch (IOException ex) {
+					// Swallow it here; runProcess will raise one anyway.
+				}
+			});
+			return result.rawData;
+		}
+	}
+

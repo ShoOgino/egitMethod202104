@@ -16,6 +16,8 @@
 		context.registerService(DebugOptionsListener.class.getName(), this,
 				props);
 
+		GpgSigner.setDefault(new ExternalGpgSigner());
+
 		setupHttp();
 		SshPreferencesMirror.INSTANCE.start();
 		proxyServiceTracker = new ServiceTracker<>(context,

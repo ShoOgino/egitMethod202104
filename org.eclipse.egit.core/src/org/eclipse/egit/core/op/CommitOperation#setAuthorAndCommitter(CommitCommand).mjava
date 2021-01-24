@@ -44,5 +44,19 @@
 		commitCommand.setAuthor(authorIdent);
 		commitCommand.setCommitter(committerIdent);
 		commitCommand.setSign(sign ? TRUE : FALSE);
+		if (sign) {
+			// Ensure the Eclipse preference, if set, overrides the git config
+			File gpg = GitSettings.getGpgExecutable();
+			if (gpg != null) {
+				GpgConfig cfg = new GpgConfig(repo.getConfig()) {
+
+					@Override
+					public String getProgram() {
+						return gpg.getAbsolutePath();
+					}
+				};
+				commitCommand.setGpgConfig(cfg);
+			}
+		}
 	}
 

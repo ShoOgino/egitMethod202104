@@ -1,0 +1,8 @@
+	@Override
+	protected void doFillIntoGrid(Composite parent, int numColumns) {
+		if (parent != wrapper) {
+			layoutData.horizontalSpan = numColumns;
+		}
+		super.doFillIntoGrid(wrapper, super.getNumberOfControls());
+	}
+

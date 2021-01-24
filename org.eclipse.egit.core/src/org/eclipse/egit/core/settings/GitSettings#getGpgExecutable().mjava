@@ -1,0 +1,31 @@
+	/**
+	 * Retrieves the {@link File} set in the EGit preferences for a GPG
+	 * executable.
+	 *
+	 * @return the file, {@code null} if not set, invalid or not executable
+	 * @since 5.11
+	 */
+	public static File getGpgExecutable() {
+		String result = Platform.getPreferencesService().getString(
+				Activator.PLUGIN_ID, GitCorePreferences.core_gpgExecutable,
+				null, null);
+		if (!StringUtils.isEmptyOrNull(result)) {
+			try {
+				// Use Paths.get; it validates more.
+				File exe = Paths.get(result).toFile();
+				if (exe.isFile() && exe.canExecute()) {
+					return exe.getAbsoluteFile();
+				} else {
+					Activator.logError(MessageFormat.format(
+							CoreText.GitSettings_gpgNotExecutable, result),
+							null);
+				}
+			} catch (Exception e) {
+				Activator.logError(MessageFormat.format(
+						CoreText.GitSettings_gpgInvalidExecutable, result),
+						e);
+			}
+		}
+		return null;
+	}
+
