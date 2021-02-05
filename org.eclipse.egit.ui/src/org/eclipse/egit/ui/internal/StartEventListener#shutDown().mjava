@@ -1,0 +1,7 @@
+	@Deactivate
+	void shutDown() {
+		if (started.get()) {
+			SelectionRepositoryStateCache.INSTANCE.dispose();
+		}
+	}
+

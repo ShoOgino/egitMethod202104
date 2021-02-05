@@ -1,7 +1,5 @@
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		SelectionRepositoryStateCache.INSTANCE.dispose();
-
 		if (focusListener != null) {
 			if (PlatformUI.isWorkbenchRunning()) {
 				PlatformUI.getWorkbench().removeWindowListener(focusListener);
