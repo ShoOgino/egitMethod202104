@@ -1,31 +1,9 @@
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		if (focusListener != null) {
-			if (PlatformUI.isWorkbenchRunning()) {
-				PlatformUI.getWorkbench().removeWindowListener(focusListener);
-			}
-			focusListener = null;
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
+			serviceRegistration = null;
 		}
-
-		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
-			GitTraceLocation.getTrace().trace(
-					GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
-					"Trying to cancel " + rcs.getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		getPreferenceStore().removePropertyChangeListener(rcs);
-		rcs.setReschedule(false);
-		rcs.cancel();
-		refreshJob.cancel();
-
-		rcs.join();
-		refreshJob.join();
-		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
-			GitTraceLocation.getTrace().trace(
-					GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
-					"Jobs terminated"); //$NON-NLS-1$
-		}
-
 		if (resourceManager != null) {
 			resourceManager.dispose();
 			resourceManager = null;

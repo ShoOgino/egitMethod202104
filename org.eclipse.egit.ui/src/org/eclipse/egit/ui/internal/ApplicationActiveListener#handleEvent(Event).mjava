@@ -1,0 +1,22 @@
+	@Override
+	public void handleEvent(Event event) {
+		String topic = event.getTopic();
+		if (topic == null) {
+			return;
+		}
+		switch (topic) {
+		case UIEvents.UILifeCycle.APP_STARTUP_COMPLETE:
+			if (listener == null) {
+				listener = new WindowTracker();
+				listener.update();
+				PlatformUI.getWorkbench().addWindowListener(listener);
+			}
+			break;
+		case UIEvents.UILifeCycle.APP_SHUTDOWN_STARTED:
+			shutDown();
+			break;
+		default:
+			break;
+		}
+	}
+

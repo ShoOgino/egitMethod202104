@@ -1,0 +1,14 @@
+	@Override
+	public void handleEvent(Event event) {
+		if (ApplicationActiveListener.TOPIC_APPLICATION_ACTIVE
+				.equals(event.getTopic())) {
+			Object value = event.getProperty(IEventBroker.DATA);
+			if (value instanceof Boolean) {
+				boolean newValue = ((Boolean) value).booleanValue();
+				if (isActive.compareAndSet(!newValue, newValue) && newValue) {
+					scanner.schedule();
+				}
+			}
+		}
+	}
+

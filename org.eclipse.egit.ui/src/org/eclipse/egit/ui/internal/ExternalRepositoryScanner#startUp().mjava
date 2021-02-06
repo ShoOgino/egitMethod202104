@@ -1,0 +1,8 @@
+	@Activate
+	void startUp() {
+		refreshJob = new ResourceRefreshJob();
+		scanner = new RepositoryChangeScanner(refreshJob, isActive);
+		Activator.getDefault().getPreferenceStore()
+				.addPropertyChangeListener(scanner);
+	}
+

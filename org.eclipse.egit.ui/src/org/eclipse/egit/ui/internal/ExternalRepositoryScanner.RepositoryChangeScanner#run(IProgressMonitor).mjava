@@ -3,15 +3,16 @@
 			// When people use Git from the command line a lot of changes
 			// may happen. Don't scan when inactive depending on the user's
 			// choice.
-			if (getDefault().getPreferenceStore()
+			if (Activator.getDefault().getPreferenceStore()
 					.getBoolean(UIPreferences.REFRESH_ONLY_WHEN_ACTIVE)
-					&& !isActive()) {
+					&& !workbenchActive.get()) {
 				monitor.done();
 				return Status.OK_STATUS;
 			}
 
 			Repository[] repos = repositoryCache.getAllRepositories();
 			if (repos.length == 0) {
+				schedule(interval);
 				return Status.OK_STATUS;
 			}
 
@@ -24,10 +25,10 @@
 						break;
 					}
 					if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
-						GitTraceLocation.getTrace().trace(
-								GitTraceLocation.REPOSITORYCHANGESCANNER
+						GitTraceLocation.getTrace()
+								.trace(GitTraceLocation.REPOSITORYCHANGESCANNER
 										.getLocation(),
-								"Scanning " + repo + " for changes"); //$NON-NLS-1$ //$NON-NLS-2$
+										"Scanning " + repo + " for changes"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 
 					if (!repo.isBare()) {
@@ -57,7 +58,8 @@
 									.getLocation(),
 							"Stopped rescheduling " + getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				return createErrorStatus(UIText.Activator_scanError, e);
+				return Activator.createErrorStatus(UIText.Activator_scanError,
+						e);
 			} finally {
 				monitor.done();
 			}
