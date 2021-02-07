@@ -1,9 +1,5 @@
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		if (serviceRegistration != null) {
-			serviceRegistration.unregister();
-			serviceRegistration = null;
-		}
 		if (resourceManager != null) {
 			resourceManager.dispose();
 			resourceManager = null;

@@ -36,7 +36,13 @@
 			platformSwitch.setSelection(options.isDebugEnabled());
 		}
 
-		traceFileLocation.setText(getOptions().getFile().getPath());
+		File traceFile = getOptions().getFile();
+		if (traceFile == null) {
+			traceFileLocation.setEnabled(false);
+			openButton.setEnabled(false);
+		} else {
+			traceFileLocation.setText(traceFile.getPath());
+		}
 		updateEnablement();
 	}
 
