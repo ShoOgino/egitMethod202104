@@ -22,6 +22,7 @@
 		viewer.addOpenListener(this::fireOpenEvent);
 		if (input != null) {
 			viewer.setInput(input);
+			updateToolbarActions();
 		}
 		createContextMenu(viewer);
 		if (selection != null) {
