@@ -2,8 +2,6 @@
 	public void handleEvent(Event event) {
 		if (UIEvents.UILifeCycle.APP_STARTUP_COMPLETE
 				.equals(event.getTopic())) {
-			// If the workbench wasn't running yet when we were activated, we'll
-			// initialize on the APP_STARTUP_COMPLETE event.
 			startInternalComponents();
 		}
 	}

@@ -2,6 +2,7 @@
 		if (started.compareAndSet(false, true)) {
 			SelectionRepositoryStateCache.INSTANCE.initialize();
 			registerCoreJobFamilyIcons();
+			registerTemplateVariableResolvers();
 		}
 	}
 

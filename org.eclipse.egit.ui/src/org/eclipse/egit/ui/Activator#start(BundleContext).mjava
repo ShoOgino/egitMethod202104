@@ -1,10 +1,7 @@
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
-
-		setupCredentialsProvider();
+		CredentialsProvider.setDefault(new EGitCredentialsProvider());
 		ConfigurationChecker.checkConfiguration();
-
-		registerTemplateVariableResolvers();
 	}
 

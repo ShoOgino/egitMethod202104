@@ -1,8 +1,10 @@
 	private void registerCoreJobFamilyIcons() {
-		PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+		runAsync(() -> {
 			IProgressService service = PlatformUI.getWorkbench()
 					.getProgressService();
-
+			if (service == null) {
+				return;
+			}
 			service.registerIconForFamily(UIIcons.PULL, JobFamilies.PULL);
 			service.registerIconForFamily(UIIcons.REPOSITORY,
 					JobFamilies.AUTO_IGNORE);
