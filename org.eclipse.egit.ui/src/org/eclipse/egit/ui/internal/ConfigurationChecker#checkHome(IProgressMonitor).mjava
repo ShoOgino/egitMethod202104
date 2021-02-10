@@ -1,4 +1,4 @@
-	private static void checkHome() {
+	private static void checkHome(IProgressMonitor monitor) {
 		String home = System.getenv("HOME"); //$NON-NLS-1$
 		if (home != null)
 			return; // home is set => ok
@@ -6,7 +6,8 @@
 		String message = NLS.bind(UIText.ConfigurationChecker_homeNotSet, home);
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		boolean hidden = !store.getBoolean(UIPreferences.SHOW_HOME_DIR_WARNING);
-		if (!hidden)
+		if (!hidden && !monitor.isCanceled()) {
 			Activator.handleIssue(IStatus.WARNING, message, null, false);
+		}
 	}
 

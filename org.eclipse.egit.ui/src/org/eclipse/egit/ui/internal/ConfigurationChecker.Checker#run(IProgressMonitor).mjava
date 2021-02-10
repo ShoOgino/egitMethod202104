@@ -1,0 +1,8 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			SubMonitor progress = SubMonitor.convert(monitor, 2);
+			checkHome(progress.newChild(1));
+			checkLfs(progress.newChild(1));
+			return Status.OK_STATUS;
+		}
+
