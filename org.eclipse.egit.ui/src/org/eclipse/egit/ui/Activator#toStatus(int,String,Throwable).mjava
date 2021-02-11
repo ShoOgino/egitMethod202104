@@ -30,6 +30,6 @@
 		if (exc != null && (message == null || message.isEmpty())) {
 			message = exc.getLocalizedMessage();
 		}
-		return new Status(severity, getPluginId(), message, exc);
+		return new Status(severity, PLUGIN_ID, message, exc);
 	}
 

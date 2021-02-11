@@ -3,13 +3,13 @@
 		try {
 			operation.run(monitor);
 		} catch (final InvocationTargetException e) {
-			return new Status(IStatus.ERROR, Activator.getPluginId(),
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					UIText.PushJob_unexpectedError, e.getCause());
 		}
 
 		operationResult = operation.getOperationResult();
 		if (!operationResult.isSuccessfulConnectionForAnyURI()) {
-			return new Status(IStatus.ERROR, Activator.getPluginId(),
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					NLS.bind(UIText.PushJob_cantConnectToAny,
 							operationResult.getErrorStringForAllURis()));
 		}
