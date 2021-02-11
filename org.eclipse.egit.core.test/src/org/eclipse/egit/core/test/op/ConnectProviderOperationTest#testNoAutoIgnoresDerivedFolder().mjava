@@ -2,7 +2,7 @@
 	public void testNoAutoIgnoresDerivedFolder() throws Exception {
 		// disable auto-ignore
 		IEclipsePreferences p = InstanceScope.INSTANCE
-				.getNode(Activator.getPluginId());
+				.getNode(Activator.PLUGIN_ID);
 		boolean autoignore = p.getBoolean(
 				GitCorePreferences.core_autoIgnoreDerivedResources, false);
 		if (autoignore) {

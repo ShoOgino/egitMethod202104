@@ -11,7 +11,7 @@
 	public MergeStrategy getPreferredMergeStrategy() {
 		// Get preferences set by user in the UI
 		final IEclipsePreferences prefs = InstanceScope.INSTANCE
-				.getNode(Activator.getPluginId());
+				.getNode(PLUGIN_ID);
 		String preferredMergeStrategyKey = prefs.get(
 				GitCorePreferences.core_preferredMergeStrategy, null);
 
@@ -19,7 +19,7 @@
 		if (preferredMergeStrategyKey == null
 				|| preferredMergeStrategyKey.isEmpty()) {
 			final IEclipsePreferences defaultPrefs = DefaultScope.INSTANCE
-					.getNode(Activator.getPluginId());
+					.getNode(PLUGIN_ID);
 			preferredMergeStrategyKey = defaultPrefs.get(
 					GitCorePreferences.core_preferredMergeStrategy, null);
 		}

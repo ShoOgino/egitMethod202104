@@ -1,7 +1,7 @@
 	@Test
 	public void testGetPreferredMergeStrategyWhenNoPref() {
-		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).remove(
-				GitCorePreferences.core_preferredMergeStrategy);
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
+				.remove(GitCorePreferences.core_preferredMergeStrategy);
 
 		assertNull(a.getPreferredMergeStrategy());
 	}

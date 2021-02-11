@@ -2,7 +2,7 @@
 	public void stop(final BundleContext context) throws Exception {
 		SshPreferencesMirror.INSTANCE.stop();
 		if (preferenceChangeListener != null) {
-			InstanceScope.INSTANCE.getNode(pluginId)
+			InstanceScope.INSTANCE.getNode(PLUGIN_ID)
 					.removePreferenceChangeListener(preferenceChangeListener);
 			preferenceChangeListener = null;
 		}

@@ -2,7 +2,7 @@
 	public void execute(IProgressMonitor m) throws CoreException {
 		if (!results.isEmpty()) {
 			throw new CoreException(
-					new Status(IStatus.ERROR, Activator.getPluginId(),
+					new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 							CoreText.OperationAlreadyExecuted));
 		}
 		int workers = repositories.length;

@@ -8,11 +8,11 @@
 		String key = GitCorePreferences.core_defaultRepositoryDir;
 		String dir = migrateRepoRootPreference();
 		IEclipsePreferences p = InstanceScope.INSTANCE
-				.getNode(Activator.getPluginId());
+				.getNode(Activator.PLUGIN_ID);
 		if (dir == null) {
 			dir = Platform.getPreferencesService().getString(
-					Activator.getPluginId(), key,
-					getDefaultDefaultRepositoryDir(), null);
+					Activator.PLUGIN_ID, key, getDefaultDefaultRepositoryDir(),
+					null);
 		} else {
 			p.put(key, dir);
 		}

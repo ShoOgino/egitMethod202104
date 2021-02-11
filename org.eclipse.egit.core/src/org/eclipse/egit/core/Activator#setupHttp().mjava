@@ -1,5 +1,5 @@
 	private void setupHttp() {
-		String sshClient = Platform.getPreferencesService().getString(pluginId,
+		String sshClient = Platform.getPreferencesService().getString(PLUGIN_ID,
 				GitCorePreferences.core_httpClient, "jdk", null); //$NON-NLS-1$
 		if (HttpClientType.APACHE.name().equalsIgnoreCase(sshClient)) {
 			HttpTransport.setConnectionFactory(new HttpClientConnectionFactory());

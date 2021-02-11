@@ -3,7 +3,7 @@
 		FS.FileStoreAttributes.setBackground(false);
 		// suppress auto-ignoring and auto-sharing to avoid interference
 		IEclipsePreferences corePrefs = InstanceScope.INSTANCE
-				.getNode(org.eclipse.egit.core.Activator.getPluginId());
+				.getNode(org.eclipse.egit.core.Activator.PLUGIN_ID);
 		corePrefs.putBoolean(
 				GitCorePreferences.core_autoIgnoreDerivedResources, false);
 		corePrefs.putBoolean(GitCorePreferences.core_autoShareProjects, false);

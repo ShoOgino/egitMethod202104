@@ -25,21 +25,21 @@
 				case SUCCESS:
 					break;
 				case FAILED:
-					tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(),
+					tree.failed(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 							0, CoreText.MoveDeleteHook_operationError, null));
 					return I_AM_DONE;
 				case UNTRACKED:
 					// we are not responsible for moving untracked files
 					return FINISH_FOR_ME;
 				case UNMERGED:
-					tree.failed(new Status(IStatus.WARNING, Activator.getPluginId(),
+					tree.failed(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 							CoreText.MoveDeleteHook_unmergedFileInFolderError));
 					return I_AM_DONE;
 				}
 			}
 			tree.standardMoveFolder(srcf, dstf, updateFlags, monitor);
 		} catch (IOException e) {
-			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
+			tree.failed(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 					CoreText.MoveDeleteHook_operationError, e));
 		}
 		return true;

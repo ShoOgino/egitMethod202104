@@ -1,7 +1,7 @@
 	@Override
 	public void dispose() {
 		InstanceScope.INSTANCE
-				.getNode(org.eclipse.egit.core.Activator.getPluginId())
+				.getNode(org.eclipse.egit.core.Activator.PLUGIN_ID)
 				.removePreferenceChangeListener(prefListener);
 		getSite().getService(IPartService.class)
 				.removePartListener(partListener);

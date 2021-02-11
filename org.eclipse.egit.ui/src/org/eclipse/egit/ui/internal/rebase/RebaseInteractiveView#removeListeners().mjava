@@ -5,8 +5,8 @@
 		if (currentPlan != null)
 			currentPlan.removeRebaseInteractivePlanChangeListener(this);
 
-		InstanceScope.INSTANCE.getNode(
-				org.eclipse.egit.core.Activator.getPluginId())
+		InstanceScope.INSTANCE
+				.getNode(org.eclipse.egit.core.Activator.PLUGIN_ID)
 				.removePreferenceChangeListener(prefListener);
 		Activator.getDefault().getPreferenceStore()
 				.removePropertyChangeListener(uiPrefsListener);

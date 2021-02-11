@@ -2,7 +2,6 @@
 	public void start(final BundleContext context) throws Exception {
 
 		super.start(context);
-		pluginId = context.getBundle().getSymbolicName();
 		migratePreferences();
 
 		FS.FileStoreAttributes.setBackground(true);
@@ -23,7 +22,7 @@
 				setupHttp();
 			}
 		};
-		InstanceScope.INSTANCE.getNode(pluginId)
+		InstanceScope.INSTANCE.getNode(PLUGIN_ID)
 				.addPreferenceChangeListener(preferenceChangeListener);
 		setupProxy();
 
