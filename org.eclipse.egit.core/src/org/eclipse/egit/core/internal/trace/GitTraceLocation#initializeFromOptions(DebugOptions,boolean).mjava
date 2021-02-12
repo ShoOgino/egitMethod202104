@@ -1,13 +1,13 @@
 	/**
-	 * Initializes the locations.
+	 * Initialize the locations
 	 *
 	 * @param options
-	 *            to initialize from
+	 * @param pluginIsDebugging
 	 */
-	public static void initializeFromOptions(DebugOptions options) {
+	public static void initializeFromOptions(DebugOptions options,
+			boolean pluginIsDebugging) {
+
 		// we evaluate the plug-in switch
-		boolean pluginIsDebugging = options
-				.getBooleanOption(Activator.PLUGIN_ID + "/debug", false); //$NON-NLS-1$
 		if (pluginIsDebugging) {
 			myTrace = options.newDebugTrace(Activator.PLUGIN_ID);
 			for (GitTraceLocation loc : values()) {
