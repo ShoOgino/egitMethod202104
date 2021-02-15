@@ -24,8 +24,7 @@
 				}
 			} finally {
 				if (removeCache) {
-					IndexDiffCache indexCache = Activator.getDefault()
-							.getIndexDiffCache();
+					IndexDiffCache indexCache = IndexDiffCache.getInstance();
 					if (indexCache != null) {
 						indexCache.remove(gitDir);
 					}

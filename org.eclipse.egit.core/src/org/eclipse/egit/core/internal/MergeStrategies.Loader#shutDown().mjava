@@ -1,0 +1,15 @@
+		@Deactivate
+		void shutDown() {
+			loader = null;
+			cancel();
+			try {
+				join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			if (mergeStrategyRegistryListener != null) {
+				registry.removeListener(mergeStrategyRegistryListener);
+				mergeStrategyRegistryListener = null;
+			}
+		}
+

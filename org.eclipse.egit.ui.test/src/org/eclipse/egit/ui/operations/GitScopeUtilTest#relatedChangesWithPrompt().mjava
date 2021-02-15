@@ -5,8 +5,7 @@
 		final IFile modelFile = createModelFiles();
 
 		Repository repository = lookupRepository(repositoryFile);
-		Activator.getDefault().getIndexDiffCache()
-				.getIndexDiffCacheEntry(repository);
+		IndexDiffCache.getInstance().getIndexDiffCacheEntry(repository);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 
 		final IResource[] selectedResources = new IResource[] { modelFile };

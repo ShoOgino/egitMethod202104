@@ -2,6 +2,6 @@
 	public void beforeTestCase() throws Exception {
 		// ensure there are no shared Repository instances left
 		// when starting a new test
-		Activator.getDefault().getRepositoryCache().clear();
+		RepositoryCache.getInstance().clear();
 	}
 

@@ -14,7 +14,7 @@
 				else
 					name = UIText.CompareTreeView_MultipleResourcesHeaderText;
 			} else if (input instanceof Repository)
-				name = Activator.getDefault().getRepositoryUtil()
+				name = RepositoryUtil.getInstance()
 						.getRepositoryName(((Repository) input));
 			else
 				throw new IllegalStateException();

@@ -1,6 +1,5 @@
 	private boolean haveSubmoduleChanges(@NonNull Repository repository) {
-		IndexDiffCache cache = org.eclipse.egit.core.Activator.getDefault()
-				.getIndexDiffCache();
+		IndexDiffCache cache = IndexDiffCache.getInstance();
 		if (cache == null) {
 			return false;
 		}

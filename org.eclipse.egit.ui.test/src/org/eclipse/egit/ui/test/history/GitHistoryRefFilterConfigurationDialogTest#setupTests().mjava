@@ -5,8 +5,7 @@
 		myRepoViewUtil = new GitRepositoriesViewTestUtils();
 		File repoFile = createProjectAndCommitToRepository();
 
-		RepositoryUtil repositoryUtil = Activator.getDefault()
-				.getRepositoryUtil();
+		RepositoryUtil repositoryUtil = RepositoryUtil.getInstance();
 		repositoryUtil.addConfiguredRepository(repoFile);
 
 		repo = myRepoViewUtil.lookupRepository(repoFile);

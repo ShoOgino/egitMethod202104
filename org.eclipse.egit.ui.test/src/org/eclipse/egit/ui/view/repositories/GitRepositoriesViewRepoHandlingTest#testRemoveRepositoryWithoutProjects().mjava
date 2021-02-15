@@ -2,8 +2,7 @@
 	public void testRemoveRepositoryWithoutProjects() throws Exception {
 		deleteAllProjects();
 		clearView();
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				repositoryFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(repositoryFile);
 		refreshAndWait();
 		assertHasRepo(repositoryFile);
 		SWTBotTree tree = getOrOpenView().bot().tree();

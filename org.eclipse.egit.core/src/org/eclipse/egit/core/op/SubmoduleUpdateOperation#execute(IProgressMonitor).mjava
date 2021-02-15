@@ -4,8 +4,7 @@
 
 			@Override
 			public void run(IProgressMonitor pm) throws CoreException {
-				RepositoryUtil util = Activator.getDefault()
-						.getRepositoryUtil();
+				RepositoryUtil util = RepositoryUtil.getInstance();
 				SubMonitor progress = SubMonitor.convert(pm, 4);
 				progress.setTaskName(MessageFormat.format(
 						CoreText.SubmoduleUpdateOperation_updating,
@@ -26,7 +25,7 @@
 						update.addPath(path);
 					update.setProgressMonitor(new EclipseGitProgressTransformer(
 							progress.newChild(2)));
-					MergeStrategy strategy = Activator.getDefault()
+					MergeStrategy strategy = MergeStrategies
 							.getPreferredMergeStrategy();
 					if (strategy != null) {
 						update.setStrategy(strategy);

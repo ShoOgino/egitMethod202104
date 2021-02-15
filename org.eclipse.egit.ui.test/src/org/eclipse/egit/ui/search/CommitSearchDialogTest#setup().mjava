@@ -2,10 +2,9 @@
 	public void setup() throws Exception {
 		File repoFile = createProjectAndCommitToRepository();
 		assertNotNull(repoFile);
-		repository = Activator.getDefault().getRepositoryCache()
-				.lookupRepository(repoFile);
+		repository = RepositoryCache.getInstance().lookupRepository(repoFile);
 		assertNotNull(repository);
-		Activator.getDefault().getRepositoryUtil()
+		RepositoryUtil.getInstance()
 				.addConfiguredRepository(repository.getDirectory());
 
 		try (RevWalk walk = new RevWalk(repository)) {

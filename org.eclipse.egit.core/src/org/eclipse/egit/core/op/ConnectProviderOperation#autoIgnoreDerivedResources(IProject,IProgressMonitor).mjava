@@ -1,6 +1,8 @@
 	private void autoIgnoreDerivedResources(IProject project,
 			IProgressMonitor monitor) throws CoreException {
-		if (!Activator.autoIgnoreDerived()) {
+		if (!Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID,
+				GitCorePreferences.core_autoIgnoreDerivedResources, true,
+				null)) {
 			return;
 		}
 		List<IPath> paths = findDerivedResources(project);

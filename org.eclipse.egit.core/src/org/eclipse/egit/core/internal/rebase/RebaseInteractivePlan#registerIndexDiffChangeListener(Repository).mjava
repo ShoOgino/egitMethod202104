@@ -1,6 +1,6 @@
 	private void registerIndexDiffChangeListener(Repository repository) {
-		IndexDiffCacheEntry entry = org.eclipse.egit.core.Activator.getDefault()
-				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		IndexDiffCacheEntry entry = IndexDiffCache.getInstance()
+				.getIndexDiffCacheEntry(repository);
 		if (entry != null) {
 			entry.addIndexDiffChangedListener(this);
 		}

@@ -1,7 +1,7 @@
 	GenerateHistoryJob(final GitHistoryPage ghp, @NonNull RevWalk walk,
 			ResourceManager resources) {
-		super(NLS.bind(UIText.HistoryPage_refreshJob, Activator.getDefault()
-				.getRepositoryUtil().getRepositoryName(
+		super(NLS.bind(UIText.HistoryPage_refreshJob,
+				RepositoryUtil.getInstance().getRepositoryName(
 						ghp.getInputInternal().getRepository())));
 		page = ghp;
 		this.walk = walk;

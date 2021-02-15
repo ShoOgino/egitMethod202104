@@ -3,10 +3,8 @@
 	 * about index changes.
 	 */
 	public GitDecorator() {
-		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache()
-				.addIndexDiffChangedListener(this);
-		configListener = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryCache().getGlobalListenerList()
+		IndexDiffCache.getInstance().addIndexDiffChangedListener(this);
+		configListener = RepositoryCache.getInstance().getGlobalListenerList()
 				.addConfigChangedListener(this);
 	}
 

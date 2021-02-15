@@ -1,6 +1,6 @@
 	private void removeIndexDiffCaches(List<File> gitDirs) {
 		if (!gitDirs.isEmpty()) {
-			IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+			IndexDiffCache cache = IndexDiffCache.getInstance();
 			if (cache != null) {
 				for (File f : gitDirs) {
 					cache.remove(f);

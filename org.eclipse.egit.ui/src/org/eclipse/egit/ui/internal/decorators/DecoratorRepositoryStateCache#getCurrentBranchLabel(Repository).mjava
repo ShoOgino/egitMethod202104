@@ -20,7 +20,7 @@
 				if (objectId == null) {
 					return CoreText.RepositoryUtil_noHead;
 				}
-				String ref = Activator.getDefault().getRepositoryUtil()
+				String ref = RepositoryUtil.getInstance()
 						.mapCommitToRef(repository, objectId.name(), false);
 				if (ref != null) {
 					return Repository.shortenRefName(ref) + ' '

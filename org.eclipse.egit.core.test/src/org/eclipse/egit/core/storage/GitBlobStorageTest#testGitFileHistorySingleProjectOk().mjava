@@ -12,7 +12,8 @@
 		singleProjectRepo.create();
 
 		// Repository must be mapped in order to test the GitFileHistory
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(singleProjectGitDir);
+		RepositoryUtil.getInstance()
+				.addConfiguredRepository(singleProjectGitDir);
 		ConnectProviderOperation connectOp = new ConnectProviderOperation(proj, singleProjectGitDir);
 		connectOp.execute(progress);
 
@@ -31,7 +32,7 @@
 		} finally {
 			DisconnectProviderOperation disconnectOp = new DisconnectProviderOperation(Collections.singletonList(proj));
 			disconnectOp.execute(progress);
-			Activator.getDefault().getRepositoryUtil().removeDir(singleProjectGitDir);
+			RepositoryUtil.getInstance().removeDir(singleProjectGitDir);
 			singleProjectRepo.close();
 			singleRepoProject.dispose();
 		}

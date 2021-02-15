@@ -1,6 +1,6 @@
 	private void importProjects(final Repository repository,
 			final IWorkingSet[] sets) {
-		String repoName = Activator.getDefault().getRepositoryUtil()
+		String repoName = RepositoryUtil.getInstance()
 				.getRepositoryName(repository);
 		Job importJob = new WorkspaceJob(MessageFormat.format(
 				UIText.GitCloneWizard_jobImportProjects, repoName)) {

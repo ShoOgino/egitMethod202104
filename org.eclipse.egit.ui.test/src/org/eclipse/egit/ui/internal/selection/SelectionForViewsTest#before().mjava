@@ -8,7 +8,7 @@
 				"refs/heads/master", "origin", 0);
 		op.run(null);
 		clonedRepositoryDir = new File(workdir, Constants.DOT_GIT);
-		RepositoryUtil repoUtil = Activator.getDefault().getRepositoryUtil();
+		RepositoryUtil repoUtil = RepositoryUtil.getInstance();
 		repoUtil.addConfiguredRepository(localRepositoryDir);
 		repoUtil.addConfiguredRepository(clonedRepositoryDir);
 		repoUtil.addConfiguredRepository(remoteRepositoryDir); // it's bare

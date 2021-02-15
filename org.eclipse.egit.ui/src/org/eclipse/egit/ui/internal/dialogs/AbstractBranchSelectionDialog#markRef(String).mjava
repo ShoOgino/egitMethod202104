@@ -29,7 +29,7 @@
 					return false;
 				node = new AdditionalRefNode(references, repo, ref);
 			} else {
-				String mappedRef = Activator.getDefault().getRepositoryUtil()
+				String mappedRef = RepositoryUtil.getInstance()
 						.mapCommitToRef(repo, refName, false);
 				if (mappedRef != null
 						&& mappedRef.startsWith(Constants.R_REMOTES)) {

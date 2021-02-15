@@ -1,0 +1,12 @@
+	@Activate
+	void start() {
+		GitProjectData.attachToWorkspace();
+		refreshHandle = repositoryCache.getGlobalListenerList()
+				.addWorkingTreeModifiedListener(new ResourceRefreshHandler());
+		registerAutoIgnoreDerivedResources();
+		registerAutoShareProjects();
+		registerPreDeleteResourceChangeListener();
+
+		registerBuiltinLFS();
+	}
+

@@ -53,11 +53,10 @@
 			project.refreshLocal(IResource.DEPTH_INFINITE, subMon.newChild(30));
 			if (gitPath != null) {
 				try {
-					Repository repository = org.eclipse.egit.core.Activator
-							.getDefault().getRepositoryCache()
+					Repository repository = RepositoryCache.getInstance()
 							.lookupRepository(gitPath.toFile());
-					IndexDiffCacheEntry cacheEntry = org.eclipse.egit.core.Activator
-							.getDefault().getIndexDiffCache()
+					IndexDiffCacheEntry cacheEntry = IndexDiffCache
+							.getInstance()
 							.getIndexDiffCacheEntry(repository);
 					if (cacheEntry != null) {
 						cacheEntry.refresh();

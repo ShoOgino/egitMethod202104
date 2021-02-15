@@ -4,13 +4,7 @@
 	 * @since 4.6
 	 */
 	public static boolean autoStageDeletion() {
-		IEclipsePreferences d = DefaultScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
-		IEclipsePreferences p = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
-		boolean autoStageDeletion = p.getBoolean(
-				GitCorePreferences.core_autoStageDeletion,
-				d.getBoolean(GitCorePreferences.core_autoStageDeletion, false));
-		return autoStageDeletion;
+		return Platform.getPreferencesService().getBoolean(PLUGIN_ID,
+				GitCorePreferences.core_autoStageDeletion, false, null);
 	}
 

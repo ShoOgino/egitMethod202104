@@ -10,7 +10,7 @@
 		super(GitSelectRepositoryPage.class.getName());
 		setTitle(UIText.GitSelectRepositoryPage_PageTitle);
 		setDescription(UIText.GitSelectRepositoryPage_PageMessage);
-		util = Activator.getDefault().getRepositoryUtil();
+		util = RepositoryUtil.getInstance();
 		this.allowBare = allowBare;
 		this.allowAdd = allowAdd;
 	}

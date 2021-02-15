@@ -6,8 +6,9 @@
 			userConfig = SystemReader.getInstance().openUserConfig(null, FS.DETECTED); // no inherit here!
 		if (repositories == null) {
 			repositories = new ArrayList<>();
-			List<String> repoPaths = Activator.getDefault().getRepositoryUtil().getConfiguredRepositories();
-			RepositoryCache repositoryCache = org.eclipse.egit.core.Activator.getDefault().getRepositoryCache();
+			List<String> repoPaths = RepositoryUtil.getInstance()
+					.getConfiguredRepositories();
+			RepositoryCache repositoryCache = RepositoryCache.getInstance();
 			for (String repoPath : repoPaths) {
 				File gitDir = new File(repoPath);
 				if (!gitDir.exists())

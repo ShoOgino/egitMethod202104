@@ -5,7 +5,7 @@
 			public void run() {
 				Shell shell = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getShell();
-				String repoName = Activator.getDefault().getRepositoryUtil()
+				String repoName = RepositoryUtil.getInstance()
 						.getRepositoryName(repository);
 				String title = MessageFormat.format(
 						UIText.AbstractRebaseCommandHandler_cleanupDialog_title,

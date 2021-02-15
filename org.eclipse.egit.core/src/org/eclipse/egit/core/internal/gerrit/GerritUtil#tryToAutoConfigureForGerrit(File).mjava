@@ -11,8 +11,8 @@
 			@Nullable File repositoryDir) {
 		if (repositoryDir != null) {
 			try {
-				Repository repository = Activator.getDefault()
-						.getRepositoryCache().lookupRepository(repositoryDir);
+				Repository repository = RepositoryCache.getInstance()
+						.lookupRepository(repositoryDir);
 				if (repository != null) {
 					tryToAutoConfigureForGerrit(repository);
 				}

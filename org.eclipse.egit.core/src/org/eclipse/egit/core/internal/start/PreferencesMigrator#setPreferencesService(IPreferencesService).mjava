@@ -1,0 +1,8 @@
+	@Reference
+	void setPreferencesService(
+			@SuppressWarnings("unused") IPreferencesService service) {
+		// Nothing; but we need this reference to ensure this component gets
+		// activated only once the IPreferencesService is available.
+		// InstanceScope uses it internally.
+	}
+

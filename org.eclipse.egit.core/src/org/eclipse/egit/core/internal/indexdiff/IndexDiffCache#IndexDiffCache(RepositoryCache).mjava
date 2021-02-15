@@ -1,0 +1,5 @@
+	private IndexDiffCache(RepositoryCache cache) {
+		globalListener = this::notifyListeners;
+		registerBufferListener(cache);
+	}
+

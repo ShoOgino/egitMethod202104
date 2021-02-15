@@ -15,7 +15,7 @@
 		this.refName = refName;
 		MergeStrategy strategy = null;
 		strategy = MergeStrategy.get(mergeStrategyName);
-		this.mergeStrategy = strategy != null ? strategy : Activator.getDefault()
-				.getPreferredMergeStrategy();
+		this.mergeStrategy = strategy != null ? strategy
+				: MergeStrategies.getPreferredMergeStrategy();
 	}
 

@@ -1,7 +1,7 @@
 	@After
 	public void tearDown() throws Exception {
 		project.dispose();
-		Activator.getDefault().getRepositoryCache().clear();
+		RepositoryCache.getInstance().clear();
 		if (gitDir.exists()) {
 			try {
 				FileUtils.delete(gitDir, FileUtils.RECURSIVE | FileUtils.RETRY);

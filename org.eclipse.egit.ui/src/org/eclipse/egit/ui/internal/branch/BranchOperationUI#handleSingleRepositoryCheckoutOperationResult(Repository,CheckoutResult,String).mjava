@@ -46,7 +46,7 @@
 			return;
 		case NOT_TRIED:
 		case ERROR:
-			String repoName = Activator.getDefault().getRepositoryUtil()
+			String repoName = RepositoryUtil.getInstance()
 					.getRepositoryName(repository);
 			String message = NLS.bind(
 					UIText.BranchOperationUI_CheckoutError_DialogMessage,

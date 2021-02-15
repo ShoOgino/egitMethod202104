@@ -18,7 +18,7 @@
 		// that ref will be possible.
 		final Ref targetBranch = (Ref) node.getObject();
 
-		final String repoName = Activator.getDefault().getRepositoryUtil()
+		final String repoName = RepositoryUtil.getInstance()
 				.getRepositoryName(node.getRepository());
 
 		Wizard wiz = new Wizard() {

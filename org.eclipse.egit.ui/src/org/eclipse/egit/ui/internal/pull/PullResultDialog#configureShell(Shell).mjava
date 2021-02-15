@@ -3,7 +3,6 @@
 		super.configureShell(newShell);
 		newShell.setText(NLS.bind(
 				UIText.PullResultDialog_DialogTitle,
-				Activator.getDefault().getRepositoryUtil()
-						.getRepositoryName(repo)));
+				RepositoryUtil.getInstance().getRepositoryName(repo)));
 	}
 

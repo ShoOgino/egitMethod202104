@@ -1,5 +1,5 @@
 	private static String getRepositoryName(Repository repository) {
-		String repoName = Activator.getDefault().getRepositoryUtil()
+		String repoName = RepositoryUtil.getInstance()
 				.getRepositoryName(repository);
 		RepositoryState state = repository.getRepositoryState();
 		if (state != RepositoryState.SAFE)

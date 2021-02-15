@@ -1,8 +1,7 @@
 	@Test
 	public void testCopyPathToClipboard() throws Exception {
 		clearView();
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				repositoryFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(repositoryFile);
 		refreshAndWait();
 		final SWTBotTree tree = getOrOpenView().bot().tree();
 		tree.getAllItems()[0].select();

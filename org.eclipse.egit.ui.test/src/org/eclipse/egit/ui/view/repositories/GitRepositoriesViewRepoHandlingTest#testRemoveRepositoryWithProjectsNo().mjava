@@ -3,8 +3,7 @@
 		deleteAllProjects();
 		assertProjectExistence(PROJ1, false);
 		clearView();
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				repositoryFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(repositoryFile);
 		shareProjects(repositoryFile);
 		assertProjectExistence(PROJ1, true);
 		refreshAndWait();

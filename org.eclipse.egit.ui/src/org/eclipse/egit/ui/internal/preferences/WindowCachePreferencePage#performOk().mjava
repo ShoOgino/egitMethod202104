@@ -3,7 +3,7 @@
 		// first put the editor values into the configuration
 		super.performOk();
 		try {
-			GitProjectData.reconfigureWindowCache();
+			RepositoryInitializer.reconfigureWindowCache();
 			return true;
 		} catch (RuntimeException e) {
 			org.eclipse.egit.ui.Activator.handleError(e.getMessage(), e, true);

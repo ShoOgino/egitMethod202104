@@ -14,8 +14,7 @@
 			Activator.logError(UIText.RepositoriesView_FilterErrorRead, e);
 			return;
 		}
-		RepositoryUtil util = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryUtil();
+		RepositoryUtil util = RepositoryUtil.getInstance();
 		for (IMemento repo : memento.getChildren(TAG_REPO)) {
 			String repoId = repo.getString(ATTR_DIR);
 			if (repoId == null || repoId.isEmpty()) {

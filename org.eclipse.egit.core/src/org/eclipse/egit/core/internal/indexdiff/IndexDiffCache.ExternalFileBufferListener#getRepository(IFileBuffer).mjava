@@ -2,8 +2,7 @@
 		private Repository getRepository(IFileBuffer buffer) {
 			IPath location = getPath(buffer);
 			if (location != null) {
-				return Activator.getDefault().getRepositoryCache()
-						.getRepository(location);
+				return repositoryCache.getRepository(location);
 			}
 			return null;
 		}

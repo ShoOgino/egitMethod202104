@@ -1,7 +1,6 @@
 	@Override
 	protected String getTitle() {
 		return MessageFormat.format(UIText.BranchSelectionAndEditDialog_Title,
-				Activator.getDefault().getRepositoryUtil()
-						.getRepositoryName(repo));
+				RepositoryUtil.getInstance().getRepositoryName(repo));
 	}
 

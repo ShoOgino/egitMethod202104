@@ -35,7 +35,7 @@
 		// a possibly still existing IndexDiffCache outside the synchronized
 		// block, otherwise we may run into a deadlock due to lock inversion
 		// between our repositoryCache and IndexDiffCache.entries.
-		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		IndexDiffCache cache = IndexDiffCache.getInstance();
 		if (cache != null) {
 			cache.remove(normalizedGitDir);
 		}

@@ -7,7 +7,7 @@
 		// figure out a job name
 		String jobName;
 		if (this.repositories.length == 1) {
-			String repoName = Activator.getDefault().getRepositoryUtil()
+			String repoName = RepositoryUtil.getInstance()
 					.getRepositoryName(repositories[0]);
 			String shortBranchName;
 			try {

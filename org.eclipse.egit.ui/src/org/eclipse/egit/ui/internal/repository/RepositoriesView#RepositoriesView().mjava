@@ -3,8 +3,7 @@
 	 */
 	public RepositoriesView() {
 		refreshUiJob = new RefreshUiJob();
-		repositoryUtil = Activator.getDefault().getRepositoryUtil();
-		repositoryCache = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryCache();
+		repositoryUtil = RepositoryUtil.getInstance();
+		repositoryCache = RepositoryCache.getInstance();
 	}
 

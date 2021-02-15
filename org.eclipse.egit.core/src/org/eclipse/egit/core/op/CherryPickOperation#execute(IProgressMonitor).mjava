@@ -12,7 +12,7 @@
 				try (Git git = new Git(repo)) {
 					CherryPickCommand command = git.cherryPick()
 							.include(commit.getId());
-					MergeStrategy strategy = Activator.getDefault()
+					MergeStrategy strategy = MergeStrategies
 							.getPreferredMergeStrategy();
 					if (strategy != null) {
 						command.setStrategy(strategy);

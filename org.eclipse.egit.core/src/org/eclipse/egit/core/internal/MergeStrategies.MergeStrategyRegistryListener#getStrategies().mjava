@@ -1,0 +1,5 @@
+		private Collection<MergeStrategyDescriptor> getStrategies() {
+			// Create a copy to prevent concurrent access.
+			return new ArrayList<>(strategies.values());
+		}
+

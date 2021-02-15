@@ -1,0 +1,10 @@
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		try {
+			migrate();
+		} finally {
+			monitor.done();
+		}
+		return Status.OK_STATUS;
+	}
+

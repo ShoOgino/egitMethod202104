@@ -1,0 +1,8 @@
+	private void registerAutoShareProjects() {
+		GitResourcChangeListener autoShareListener = new AutoShareProjects(
+				preferencesService);
+		listeners.push(autoShareListener);
+		workspace.addResourceChangeListener(autoShareListener,
+				IResourceChangeEvent.POST_CHANGE);
+	}
+

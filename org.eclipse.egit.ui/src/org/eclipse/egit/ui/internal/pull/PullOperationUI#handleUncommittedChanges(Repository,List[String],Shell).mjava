@@ -6,7 +6,7 @@
 	 */
 	private void handleUncommittedChanges(final Repository repository,
 			final List<String> files, Shell shell) {
-		String repoName = Activator.getDefault().getRepositoryUtil()
+		String repoName = RepositoryUtil.getInstance()
 				.getRepositoryName(repository);
 		String title = MessageFormat.format(
 				UIText.AbstractRebaseCommandHandler_cleanupDialog_title,

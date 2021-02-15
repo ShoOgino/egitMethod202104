@@ -4,7 +4,7 @@
 		SubMonitor progress = SubMonitor.convert(monitor, 1);
 		if (container == null) {
 			// .gitignore outside of workspace
-			Repository repository = Activator.getDefault().getRepositoryCache()
+			Repository repository = RepositoryCache.getInstance()
 					.getRepository(parent);
 			if (repository == null || repository.isBare()) {
 				String message = NLS.bind(

@@ -5,8 +5,7 @@
 			// Check for uncommitted changes in submodules.
 			try {
 				boolean submodulesNodeSelected = false;
-				RepositoryCache cache = org.eclipse.egit.core.Activator
-						.getDefault().getRepositoryCache();
+				RepositoryCache cache = RepositoryCache.getInstance();
 				List<Repository> subRepos = new ArrayList<>();
 				// If Submodules node is selected, check all submodules.
 				for (RepositoryTreeNode<?> node : getSelectedNodes(event)) {
@@ -44,7 +43,7 @@
 				}
 				Shell parent = getActiveShell(event);
 				for (Repository subRepo : subRepos) {
-					String repoName = Activator.getDefault().getRepositoryUtil()
+					String repoName = RepositoryUtil.getInstance()
 							.getRepositoryName(subRepo);
 					if (!UIRepositoryUtils.handleUncommittedFiles(subRepo,
 							parent,

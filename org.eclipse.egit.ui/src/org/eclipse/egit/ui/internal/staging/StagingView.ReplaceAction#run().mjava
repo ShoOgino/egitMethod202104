@@ -21,9 +21,8 @@
 
 					@Override
 					public void done(IJobChangeEvent event) {
-						IndexDiffCacheEntry indexDiffCacheForRepository = org.eclipse.egit.core.Activator
-								.getDefault().getIndexDiffCache()
-								.getIndexDiffCacheEntry(repo);
+						IndexDiffCacheEntry indexDiffCacheForRepository = IndexDiffCache
+								.getInstance().getIndexDiffCacheEntry(repo);
 						if (indexDiffCacheForRepository != null) {
 							indexDiffCacheForRepository
 									.refreshFiles(inaccessibleFiles);

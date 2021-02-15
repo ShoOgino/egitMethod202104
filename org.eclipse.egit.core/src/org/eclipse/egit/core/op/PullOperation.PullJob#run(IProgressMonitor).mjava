@@ -17,7 +17,7 @@
 					}
 					pull.setRebase(config.getUpstreamConfig());
 				}
-				MergeStrategy strategy = Activator.getDefault()
+				MergeStrategy strategy = MergeStrategies
 						.getPreferredMergeStrategy();
 				if (strategy != null) {
 					pull.setStrategy(strategy);

@@ -1,0 +1,12 @@
+		@Override
+		public void added(IExtension[] extensions) {
+			boolean changed = false;
+			for (IExtension extension : extensions) {
+				changed |= loadMergeStrategies(
+						extension.getConfigurationElements());
+			}
+			if (changed) {
+				currentStrategies = getStrategies();
+			}
+		}
+

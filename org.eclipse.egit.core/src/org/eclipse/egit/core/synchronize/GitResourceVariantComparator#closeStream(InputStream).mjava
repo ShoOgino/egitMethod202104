@@ -3,7 +3,7 @@
 			try {
 				stream.close();
 			} catch (IOException e) {
-				logException(e);
+				Activator.logError(e.getMessage(), e);
 			}
 		}
 	}

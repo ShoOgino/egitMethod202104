@@ -263,9 +263,8 @@
 		site.setSelectionProvider(new RepositorySelectionProvider(
 				refLogTreeViewer, this::getRepository));
 
-		addRefsChangedListener = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryCache().getGlobalListenerList()
-				.addRefsChangedListener(this);
+		addRefsChangedListener = RepositoryCache.getInstance()
+				.getGlobalListenerList().addRefsChangedListener(this);
 
 		// Toolbar
 		IToolBarManager toolbar = getViewSite().getActionBars()

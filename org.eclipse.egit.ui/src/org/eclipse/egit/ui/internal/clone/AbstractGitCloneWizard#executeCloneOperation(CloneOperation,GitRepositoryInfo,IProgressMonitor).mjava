@@ -3,7 +3,7 @@
 			final IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
-		final RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
+		final RepositoryUtil util = RepositoryUtil.getInstance();
 
 		op.run(monitor);
 		if (group != null) {

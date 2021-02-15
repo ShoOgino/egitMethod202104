@@ -4,8 +4,7 @@
 
 		List<RepositoryTreeNode> nodes = new ArrayList<>();
 		List<File> directories = new ArrayList<>();
-		RepositoryUtil repositoryUtil = Activator.getDefault()
-				.getRepositoryUtil();
+		RepositoryUtil repositoryUtil = RepositoryUtil.getInstance();
 		RepositoryGroups groupsUtil = RepositoryGroups.getInstance();
 
 		if (inputElement instanceof Collection) {

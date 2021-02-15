@@ -15,7 +15,7 @@
 		repository.close();
 		repository2.close();
 
-		org.eclipse.egit.core.Activator.getDefault().getRepositoryCache().clear();
+		RepositoryCache.getInstance().clear();
 
 		FileUtils.delete(gitDir, FileUtils.RECURSIVE);
 		// gitDir2 is inside project, already gone

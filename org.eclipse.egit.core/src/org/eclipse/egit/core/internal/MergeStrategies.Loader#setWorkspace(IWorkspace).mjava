@@ -1,0 +1,8 @@
+		@Reference
+		void setWorkspace(@SuppressWarnings("unused") IWorkspace workspace) {
+			// Nothing. But this code instantiates extension classes; we have no
+			// way of knowing what they need. This reference makes this
+			// component be activated only once the workspace is available,
+			// which hopefully is good enough.
+		}
+

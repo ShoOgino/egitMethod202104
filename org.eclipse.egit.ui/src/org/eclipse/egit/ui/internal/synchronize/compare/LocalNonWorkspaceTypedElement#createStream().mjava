@@ -24,15 +24,12 @@
 							walk.setFilter(PathFilterGroup
 									.createFromStrings(subPath.toString()));
 							walk.setRootTree(iterator);
-							walk.setBuilderFactory(
-									() -> org.eclipse.egit.core.Activator
-											.getDefault().getRepositoryCache()
-											.getBuilder(true, true));
+							walk.setBuilderFactory(() -> RepositoryCache
+									.getInstance().getBuilder(true, true));
 							if (walk.next()) {
 								try (Repository sub = walk.getRepository()) {
-									RevCommit headCommit = Activator
-											.getDefault().getRepositoryUtil()
-											.parseHeadCommit(sub);
+									RevCommit headCommit = RepositoryUtil
+											.getInstance().parseHeadCommit(sub);
 									if (headCommit == null) {
 										return null;
 									}

@@ -9,7 +9,7 @@
 			return false;
 		}
 		IndexDiffCacheEntry entry = null;
-		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		IndexDiffCache cache = IndexDiffCache.getInstance();
 		if (cache != null) {
 			entry = cache.getIndexDiffCacheEntry(repository);
 		}

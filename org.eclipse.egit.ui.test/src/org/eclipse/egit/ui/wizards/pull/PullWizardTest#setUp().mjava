@@ -4,8 +4,7 @@
 		clearView();
 		repositoryFile = createProjectAndCommitToRepository();
 		createRemoteRepository(repositoryFile);
-		Activator.getDefault().getRepositoryUtil()
-				.addConfiguredRepository(repositoryFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(repositoryFile);
 		refreshAndWait();
 		assertHasRepo(repositoryFile);
 	}

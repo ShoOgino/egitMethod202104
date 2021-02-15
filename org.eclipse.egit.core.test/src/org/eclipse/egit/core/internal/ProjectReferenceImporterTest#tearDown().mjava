@@ -1,7 +1,7 @@
 	@Override
 	@After
 	public void tearDown() throws Exception {
-		RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
+		RepositoryUtil util = RepositoryUtil.getInstance();
 		util.removeDir(repository.getDirectory());
 		testRepository.dispose();
 		repository = null;

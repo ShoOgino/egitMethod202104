@@ -1,0 +1,16 @@
+	@Activate
+	void start() {
+		setupHttp();
+		preferenceChangeListener = event -> {
+			if (GitCorePreferences.core_httpClient.equals(event.getKey())) {
+				setupHttp();
+			}
+		};
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
+				.addPreferenceChangeListener(preferenceChangeListener);
+		SshSessionFactory.setInstance(new EGitSshdSessionFactory(proxyService));
+
+		ProxySelector.setDefault(new EclipseProxySelector(proxyService));
+		Authenticator.setDefault(new EclipseAuthenticator(proxyService));
+	}
+

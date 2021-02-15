@@ -22,8 +22,8 @@
 		} catch (PartInitException e) {
 			Activator.error("Error adding page", e); //$NON-NLS-1$
 		}
-		refListenerHandle = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryCache().getGlobalListenerList()
+		refListenerHandle = RepositoryCache.getInstance()
+				.getGlobalListenerList()
 				.addRefsChangedListener(this);
 		pageListener = event -> {
 			IEvaluationService service = PlatformUI.getWorkbench()

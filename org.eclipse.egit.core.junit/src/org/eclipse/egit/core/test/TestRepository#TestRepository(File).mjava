@@ -9,7 +9,7 @@
 		tmpRepository.create();
 		tmpRepository.close();
 		// use repository instance from RepositoryCache!
-		repository = Activator.getDefault().getRepositoryCache().lookupRepository(gitDir);
+		repository = RepositoryCache.getInstance().lookupRepository(gitDir);
 		workdirPrefix = repository.getWorkTree().getAbsolutePath();
 		workdirPrefix = workdirPrefix.replace('\\', '/');
 		if (!workdirPrefix.endsWith("/")) //$NON-NLS-1$

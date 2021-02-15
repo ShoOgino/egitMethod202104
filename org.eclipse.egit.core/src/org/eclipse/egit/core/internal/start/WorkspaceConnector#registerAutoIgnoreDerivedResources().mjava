@@ -1,0 +1,8 @@
+	private void registerAutoIgnoreDerivedResources() {
+		GitResourcChangeListener ignoreDerivedResourcesListener = new IgnoreDerivedResources(
+				preferencesService);
+		listeners.push(ignoreDerivedResourcesListener);
+		workspace.addResourceChangeListener(ignoreDerivedResourcesListener,
+				IResourceChangeEvent.POST_CHANGE);
+	}
+

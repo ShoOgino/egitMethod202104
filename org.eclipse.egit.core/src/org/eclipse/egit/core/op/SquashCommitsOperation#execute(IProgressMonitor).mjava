@@ -47,7 +47,7 @@
 							.setUpstream(commits.get(0).getParent(0))
 							.runInteractively(handler)
 							.setOperation(RebaseCommand.Operation.BEGIN);
-					MergeStrategy strategy = Activator.getDefault()
+					MergeStrategy strategy = MergeStrategies
 							.getPreferredMergeStrategy();
 					if (strategy != null) {
 						command.setStrategy(strategy);

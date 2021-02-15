@@ -1,0 +1,14 @@
+	/**
+	 * Provides all currently registered {@link MergeStrategies}.
+	 *
+	 * @return a collection of all registered strategies; may be empty
+	 */
+	@NonNull
+	public static Collection<MergeStrategyDescriptor> getRegisteredMergeStrategies() {
+		Loader loadJob = loader;
+		if (loadJob != null && loadJob.isDone()) {
+			return loadJob.getRegisteredMergeStrategies();
+		}
+		return Collections.emptyList();
+	}
+

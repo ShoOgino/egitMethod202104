@@ -58,8 +58,8 @@
 					// Is its working directory really here? If not,
 					// a submodule folder may have been copied.
 					try {
-						Repository r = Activator.getDefault()
-								.getRepositoryCache().lookupRepository(git);
+						Repository r = RepositoryCache.getInstance()
+								.lookupRepository(git);
 						if (m != null && r != null && !r.isBare()
 								&& gitCandidate.equals(r.getWorkTree())) {
 							if (data.map(m)) {

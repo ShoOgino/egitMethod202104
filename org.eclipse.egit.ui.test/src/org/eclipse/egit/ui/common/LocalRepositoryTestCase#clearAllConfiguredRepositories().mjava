@@ -1,6 +1,6 @@
 	@SuppressWarnings("deprecation")
 	protected void clearAllConfiguredRepositories() throws Exception {
-		IEclipsePreferences prefs = Activator.getDefault().getRepositoryUtil()
+		IEclipsePreferences prefs = RepositoryUtil.getInstance()
 				.getPreferences();
 		synchronized (prefs) {
 			prefs.put(RepositoryUtil.PREFS_DIRECTORIES, "");

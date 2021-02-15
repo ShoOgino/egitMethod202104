@@ -10,7 +10,7 @@
 						Integer.valueOf(commits.size())));
 				try (Git git = new Git(repo)) {
 					RevertCommand command = git.revert();
-					MergeStrategy strategy = Activator.getDefault()
+					MergeStrategy strategy = MergeStrategies
 							.getPreferredMergeStrategy();
 					if (strategy != null) {
 						command.setStrategy(strategy);

@@ -10,8 +10,7 @@
 	public static @NonNull StyledString getStyledLabel(
 			@NonNull Repository repository)
 			throws IOException {
-		RepositoryUtil repositoryUtil = Activator.getDefault()
-				.getRepositoryUtil();
+		RepositoryUtil repositoryUtil = RepositoryUtil.getInstance();
 
 		StyledString string = getChangedPrefix(repository);
 

@@ -1,0 +1,9 @@
+	private void registerBufferListener(RepositoryCache cache) {
+		bufferListener = new ExternalFileBufferListener(cache);
+		ITextFileBufferManager bufferManager = FileBuffers
+				.getTextFileBufferManager();
+		if (bufferManager != null) {
+			bufferManager.addFileBufferListener(bufferListener);
+		}
+	}
+

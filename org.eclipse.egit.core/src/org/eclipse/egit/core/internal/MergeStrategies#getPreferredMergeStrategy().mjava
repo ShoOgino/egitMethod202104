@@ -1,0 +1,32 @@
+	/**
+	 * Provides the 3-way merge strategy to use according to the user's
+	 * preferences. The preferred merge strategy is JGit's default merge
+	 * strategy unless the user has explicitly chosen a different strategy among
+	 * the registered strategies.
+	 *
+	 * @return The {@link MergeStrategy} to use, can be {@code null}, in which
+	 *         case the default merge strategy should be used as defined by
+	 *         JGit.
+	 */
+	public static MergeStrategy getPreferredMergeStrategy() {
+		String key = Platform.getPreferencesService().getString(
+				Activator.PLUGIN_ID,
+				GitCorePreferences.core_preferredMergeStrategy, null, null);
+		if (!StringUtils.isEmptyOrNull(key)
+				&& !GitCorePreferences.core_preferredMergeStrategy_Default
+						.equals(key)) {
+			Loader loadJob = loader;
+			boolean jobDone = loadJob != null && loadJob.isDone();
+			MergeStrategy result = MergeStrategy.get(key);
+			if (result != null) {
+				return result;
+			}
+			if (jobDone) {
+				Activator.logError(MessageFormat.format(
+						CoreText.Activator_invalidPreferredMergeStrategy, key),
+						null);
+			}
+		}
+		return null;
+	}
+

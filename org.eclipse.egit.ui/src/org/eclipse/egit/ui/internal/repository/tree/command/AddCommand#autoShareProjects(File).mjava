@@ -2,7 +2,7 @@
 		// Don't even try to auto-share for bare repositories.
 		IPath workingDirPath;
 		try {
-			Repository repo = Activator.getDefault().getRepositoryCache()
+			Repository repo = RepositoryCache.getInstance()
 					.lookupRepository(repositoryDir);
 			if (repo.isBare()) {
 				return;

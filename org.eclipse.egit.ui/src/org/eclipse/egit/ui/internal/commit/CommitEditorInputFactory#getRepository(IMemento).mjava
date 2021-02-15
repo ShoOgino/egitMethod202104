@@ -14,8 +14,7 @@
 			return null;
 
 		try {
-			return Activator.getDefault().getRepositoryCache()
-					.lookupRepository(gitDir);
+			return RepositoryCache.getInstance().lookupRepository(gitDir);
 		} catch (IOException e) {
 			return null;
 		}

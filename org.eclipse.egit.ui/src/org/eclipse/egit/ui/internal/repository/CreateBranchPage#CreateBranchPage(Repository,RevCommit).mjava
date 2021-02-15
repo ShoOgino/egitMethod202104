@@ -16,8 +16,8 @@
 		this.myValidator = ValidationUtils.getRefNameInputValidator(
 				myRepository, Constants.R_HEADS, false);
 		this.upstreamConfig = null;
-		setTitle(MessageFormat.format(UIText.CreateBranchPage_Title, Activator
-				.getDefault().getRepositoryUtil().getRepositoryName(repo)));
+		setTitle(MessageFormat.format(UIText.CreateBranchPage_Title,
+				RepositoryUtil.getInstance().getRepositoryName(repo)));
 		setMessage(UIText.CreateBranchPage_ChooseNameMessage);
 	}
 

@@ -2,8 +2,7 @@
 		listenerCalled.set(false);
 		indexDiffDataResult.set(null);
 
-		IndexDiffCache indexDiffCache = Activator.getDefault()
-				.getIndexDiffCache();
+		IndexDiffCache indexDiffCache = IndexDiffCache.getInstance();
 		indexDiffCache.addIndexDiffChangedListener(indexDiffListener);
 		// This call should trigger an indexDiffChanged event
 		IndexDiffCacheEntry cacheEntry = indexDiffCache

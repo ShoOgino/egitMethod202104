@@ -14,7 +14,7 @@
 		cloneOperation.run(new NullProgressMonitor());
 		file = new File(localRepoPath, SampleTestRepository.A_txt_name);
 		assertTrue(file.exists());
-		localRepository = Activator.getDefault().getRepositoryCache()
+		localRepository = RepositoryCache.getInstance()
 				.lookupRepository(new File(localRepoPath, ".git"));
 		assertNotNull(localRepository);
 	}

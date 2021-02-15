@@ -25,7 +25,7 @@
 		} catch (IOException e) {
 			throw new IOException(MessageFormat.format(
 					UIText.GitHistoryPage_errorSettingStartPoints,
-					Activator.getDefault().getRepositoryUtil()
+					RepositoryUtil.getInstance()
 							.getRepositoryName(getRepository())),
 					e);
 		}

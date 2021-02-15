@@ -22,7 +22,7 @@
 			}
 			Closer.closeReference(repositoryCache.remove(normalizedGitDir));
 		}
-		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		IndexDiffCache cache = IndexDiffCache.getInstance();
 		if (cache != null) {
 			cache.remove(normalizedGitDir);
 		}

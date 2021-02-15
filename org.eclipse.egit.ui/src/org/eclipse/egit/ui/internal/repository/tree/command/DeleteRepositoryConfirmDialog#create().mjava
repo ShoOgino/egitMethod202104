@@ -3,7 +3,6 @@
 		super.create();
 		setTitle(NLS.bind(
 				UIText.DeleteRepositoryConfirmDialog_DeleteRepositoryTitle,
-				Activator.getDefault().getRepositoryUtil()
-						.getRepositoryName(repository)));
+				RepositoryUtil.getInstance().getRepositoryName(repository)));
 	}
 

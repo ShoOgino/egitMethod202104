@@ -38,7 +38,7 @@
 			CheckoutResult result = checkoutOperation.getResult();
 			if (!CheckoutResult.Status.OK.equals(result.getStatus())) {
 				Shell shell = HandlerUtil.getActiveShell(event);
-				String repoName = Activator.getDefault().getRepositoryUtil()
+				String repoName = RepositoryUtil.getInstance()
 						.getRepositoryName(gfRepo.getRepository());
 				if (!UIRepositoryUtils.handleUncommittedFiles(
 						gfRepo.getRepository(), shell,

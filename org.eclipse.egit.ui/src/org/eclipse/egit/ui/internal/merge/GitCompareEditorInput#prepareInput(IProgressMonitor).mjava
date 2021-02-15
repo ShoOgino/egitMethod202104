@@ -71,7 +71,7 @@
 				// set title and icon
 				if (resources.length == 0) {
 					Object[] titleParameters = new Object[] {
-							Activator.getDefault().getRepositoryUtil()
+							RepositoryUtil.getInstance()
 									.getRepositoryName(repository),
 							CompareUtils.truncatedRevision(compareVersion),
 							CompareUtils.truncatedRevision(baseVersion) };

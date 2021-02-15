@@ -14,8 +14,8 @@
 
 		Repository repo = lookupRepository(gitDir);
 		git = new Git(repo);
-		indexDiffCacheEntry = org.eclipse.egit.core.Activator.getDefault()
-				.getIndexDiffCache().getIndexDiffCacheEntry(repo);
+		indexDiffCacheEntry = IndexDiffCache.getInstance()
+				.getIndexDiffCacheEntry(repo);
 		waitForIndexDiff(false);
 	}
 

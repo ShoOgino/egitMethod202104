@@ -1,7 +1,7 @@
 	private static boolean haveChanges(
 			Map<Repository, Collection<String>> paths,
 			boolean filesOnly) {
-		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		IndexDiffCache cache = IndexDiffCache.getInstance();
 		for (Map.Entry<Repository, Collection<String>> entry : paths
 				.entrySet()) {
 			Repository repo = entry.getKey();

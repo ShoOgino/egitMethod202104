@@ -1,0 +1,12 @@
+	/**
+	 * Creates a new {@link EGitSshdSessionFactory}. It doesn't use a key cache,
+	 * and a proxy database based on the {@link IProxyService}.
+	 *
+	 * @param service
+	 *            the {@link IProxyService} to use
+	 */
+	public EGitSshdSessionFactory(IProxyService service) {
+		super(null, new EGitProxyDataFactory(service));
+		SshPreferencesMirror.INSTANCE.start();
+	}
+

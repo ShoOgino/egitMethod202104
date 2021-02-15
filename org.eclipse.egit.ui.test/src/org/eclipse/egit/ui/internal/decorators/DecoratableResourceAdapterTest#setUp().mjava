@@ -5,7 +5,7 @@
 
 		Repository repo = lookupRepository(gitDir);
 		git = new Git(repo);
-		indexDiffCacheEntry = Activator.getDefault().getIndexDiffCache()
+		indexDiffCacheEntry = IndexDiffCache.getInstance()
 				.getIndexDiffCacheEntry(repo);
 		waitForIndexDiffUpdate(false);
 	}

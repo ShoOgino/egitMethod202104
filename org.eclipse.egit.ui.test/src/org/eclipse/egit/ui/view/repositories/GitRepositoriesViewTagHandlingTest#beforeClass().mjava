@@ -2,8 +2,7 @@
 	public void beforeClass() throws Exception {
 		setVerboseBranchMode(false);
 		repositoryFile = createProjectAndCommitToRepository();
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				repositoryFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(repositoryFile);
 		repository = lookupRepository(repositoryFile);
 		revWalk = new RevWalk(repository);
 	}

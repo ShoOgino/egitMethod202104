@@ -1,0 +1,23 @@
+		@Override
+		public void resourceChanged(IResourceChangeEvent event) {
+			if (!getBoolean(GitCorePreferences.core_autoShareProjects, true)) {
+				return;
+			}
+			try {
+				final Set<IProject> projectCandidates = new LinkedHashSet<>();
+				event.getDelta().accept(new IResourceDeltaVisitor() {
+					@Override
+					public boolean visit(IResourceDelta delta)
+							throws CoreException {
+						return collectOpenedProjects(delta, projectCandidates);
+					}
+				});
+				if (!projectCandidates.isEmpty()) {
+					checkProjectsJob.addProjectsToCheck(projectCandidates);
+				}
+			} catch (CoreException e) {
+				Activator.logError(e.getMessage(), e);
+				return;
+			}
+		}
+

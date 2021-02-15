@@ -1,8 +1,7 @@
 	@Override
 	@After
 	public void tearDown() throws Exception {
-		IndexDiffCache indexDiffCache = Activator.getDefault()
-				.getIndexDiffCache();
+		IndexDiffCache indexDiffCache = IndexDiffCache.getInstance();
 		indexDiffCache.removeIndexDiffChangedListener(indexDiffListener);
 		testRepository.dispose();
 		repository = null;

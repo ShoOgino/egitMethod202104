@@ -8,14 +8,13 @@
 					.setInitialBranch(myCreatePage.getDefaultBranch())
 					.setBare(isBare)
 					.call().getRepository().getDirectory();
-			this.repository = Activator.getDefault().getRepositoryCache()
+			this.repository = RepositoryCache.getInstance()
 					.lookupRepository(gitDir);
 			if (group != null) {
 				RepositoryGroups.getInstance().addRepositoriesToGroup(group,
 						Collections.singletonList(gitDir));
 			}
-			Activator.getDefault().getRepositoryUtil()
-					.addConfiguredRepository(gitDir);
+			RepositoryUtil.getInstance().addConfiguredRepository(gitDir);
 
 			if (!isBare && doAutoShare()) {
 				IPath workTree = new Path(repository.getWorkTree()

@@ -1,6 +1,6 @@
 	@Nullable
 	private IResource getWorkspaceResourceFromGitPath(IPath gitPath) {
-		Repository repository = Activator.getDefault().getRepositoryCache()
+		Repository repository = RepositoryCache.getInstance()
 				.getRepository(gitPath);
 		if (repository == null || repository.isBare()) {
 			return null;

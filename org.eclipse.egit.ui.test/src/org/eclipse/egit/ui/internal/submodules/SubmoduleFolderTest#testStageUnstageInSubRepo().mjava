@@ -23,7 +23,7 @@
 				util.getPluginLocalizedValue("AddToIndexAction_label"));
 		TestUtil.joinJobs(ADD_TO_INDEX);
 		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
-		IndexDiffCacheEntry cache = Activator.getDefault().getIndexDiffCache()
+		IndexDiffCacheEntry cache = IndexDiffCache.getInstance()
 				.getIndexDiffCacheEntry(subRepository);
 		IResourceState state = ResourceStateFactory.getInstance()
 				.get(cache.getIndexDiff(), file);

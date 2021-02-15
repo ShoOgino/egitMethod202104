@@ -1,0 +1,10 @@
+	@Deactivate
+	void shutDown() {
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
+				.removePreferenceChangeListener(preferenceChangeListener);
+		SshSessionFactory current = SshSessionFactory.getInstance();
+		if (current instanceof SshdSessionFactory) {
+			((SshdSessionFactory) current).close();
+		}
+	}
+

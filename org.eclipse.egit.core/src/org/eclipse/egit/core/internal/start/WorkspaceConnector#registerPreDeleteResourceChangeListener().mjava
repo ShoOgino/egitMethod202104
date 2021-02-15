@@ -1,0 +1,8 @@
+	private void registerPreDeleteResourceChangeListener() {
+		// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=395488
+		GitResourcChangeListener deleteProjectListener = new GitReleaseListener();
+		listeners.push(deleteProjectListener);
+		workspace.addResourceChangeListener(deleteProjectListener,
+				IResourceChangeEvent.PRE_DELETE);
+	}
+

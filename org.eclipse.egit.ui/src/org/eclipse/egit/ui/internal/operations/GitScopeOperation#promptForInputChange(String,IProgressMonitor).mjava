@@ -8,7 +8,7 @@
 				.entrySet()) {
 			Repository repository = entry.getKey();
 			Collection<String> paths = entry.getValue();
-			IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+			IndexDiffCache cache = IndexDiffCache.getInstance();
 			if (cache == null)
 				continue;
 

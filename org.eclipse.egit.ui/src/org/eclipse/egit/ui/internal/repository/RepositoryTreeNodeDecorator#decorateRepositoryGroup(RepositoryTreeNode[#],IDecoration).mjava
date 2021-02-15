@@ -1,7 +1,6 @@
 	private void decorateRepositoryGroup(RepositoryTreeNode<?> node,
 			IDecoration decoration) {
-		RepositoryCache cache = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryCache();
+		RepositoryCache cache = RepositoryCache.getInstance();
 		RepositoryGroup group = ((RepositoryGroupNode) node).getObject();
 		boolean markGroupDirty = false;
 		int numberOfBranches = 0;

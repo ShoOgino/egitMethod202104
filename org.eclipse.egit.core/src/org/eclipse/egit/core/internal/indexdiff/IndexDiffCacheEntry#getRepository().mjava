@@ -1,8 +1,5 @@
 	private @Nullable Repository getRepository() {
-		if (Activator.getDefault() == null) {
-			return null;
-		}
-		Repository repository = Activator.getDefault().getRepositoryCache()
+		Repository repository = RepositoryCache.getInstance()
 				.getRepository(repositoryGitDir);
 		if (repository == null) {
 			return null;

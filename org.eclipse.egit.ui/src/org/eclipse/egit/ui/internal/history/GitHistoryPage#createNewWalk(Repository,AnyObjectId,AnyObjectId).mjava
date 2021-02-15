@@ -17,10 +17,10 @@
 			walk.addAdditionalRefs(db.getRefDatabase()
 					.getRefsByPrefix(Constants.R_NOTES));
 		} catch (IOException e) {
-			throw new IllegalStateException(NLS.bind(
-					UIText.GitHistoryPage_errorReadingAdditionalRefs, Activator
-							.getDefault().getRepositoryUtil()
-							.getRepositoryName(db)), e);
+			throw new IllegalStateException(
+					NLS.bind(UIText.GitHistoryPage_errorReadingAdditionalRefs,
+							RepositoryUtil.getInstance().getRepositoryName(db)),
+					e);
 		}
 		walk.sort(RevSort.COMMIT_TIME_DESC, true);
 		walk.sort(RevSort.BOUNDARY, true);

@@ -1,0 +1,13 @@
+	@Activate
+	void start() {
+		try {
+			reconfigureWindowCache(preferencesService);
+		} catch (RuntimeException | ExceptionInInitializerError e) {
+			Activator.logError(CoreText.Activator_ReconfigureWindowCacheError,
+					e);
+		}
+		registration = FrameworkUtil.getBundle(getClass()).getBundleContext()
+				.registerService(RepositoryCache.class,
+						RepositoryCache.getInstance(), null);
+	}
+

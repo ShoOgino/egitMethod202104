@@ -1,7 +1,6 @@
 	private IndexDiffData getIndexDiffData(final @NonNull Repository repository,
 			final @NonNull Collection<IProject> projects) {
-		IndexDiffCacheEntry diffCacheEntry = org.eclipse.egit.core.Activator
-				.getDefault().getIndexDiffCache()
+		IndexDiffCacheEntry diffCacheEntry = IndexDiffCache.getInstance()
 				.getIndexDiffCacheEntry(repository);
 		IndexDiffData diff = null;
 		if (diffCacheEntry != null) {

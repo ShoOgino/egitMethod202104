@@ -1,6 +1,6 @@
 	@After
 	public void afterTestCase() throws Exception {
-		Activator.getDefault().getRepositoryCache().clear();
+		RepositoryCache.getInstance().clear();
 		if (repository1 != null)
 			repository1.dispose();
 		if (repository2 != null)

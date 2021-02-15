@@ -4,7 +4,7 @@
 		super.setUp();
 		testRepository = new TestRepository(gitDir);
 		repository = testRepository.getRepository();
-		RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
+		RepositoryUtil util = RepositoryUtil.getInstance();
 		util.addConfiguredRepository(repository.getDirectory());
 	}
 

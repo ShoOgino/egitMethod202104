@@ -25,14 +25,14 @@
 		}
 		git = absolutePath.toFile();
 
-		if (!RepositoryCache.FileKey.isGitRepository(git, FS.DETECTED)) {
+		if (!FileKey.isGitRepository(git, FS.DETECTED)) {
 			logAndUnmapGoneMappedResource(m, c);
 			return false;
 		}
 
 		try {
-			m.setRepository(Activator.getDefault().getRepositoryCache()
-					.lookupRepository(git));
+			m.setRepository(
+					RepositoryCache.getInstance().lookupRepository(git));
 		} catch (IOException ioe) {
 			logAndUnmapGoneMappedResource(m, c);
 			return false;

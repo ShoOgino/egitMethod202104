@@ -1,0 +1,9 @@
+		private MergeStrategyRegistryListener(IExtensionRegistry registry) {
+			IConfigurationElement[] elements = registry
+					.getConfigurationElementsFor(
+							MergeStrategies.EXTENSION_POINT);
+			if (loadMergeStrategies(elements)) {
+				currentStrategies = getStrategies();
+			}
+		}
+

@@ -21,8 +21,8 @@
 				}
 			}
 			// Also listen to submodules and nested git repositories.
-			for (Repository repo : org.eclipse.egit.core.Activator.getDefault()
-					.getRepositoryCache().getAllRepositories()) {
+			for (Repository repo : RepositoryCache.getInstance()
+					.getAllRepositories()) {
 				if (!dirs.contains(repo.getDirectory())) {
 					listenToRepository(repo);
 					dirs.add(repo.getDirectory());

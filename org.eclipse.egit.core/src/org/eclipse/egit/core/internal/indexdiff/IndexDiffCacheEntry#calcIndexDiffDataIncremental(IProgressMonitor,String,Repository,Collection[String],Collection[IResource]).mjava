@@ -22,8 +22,7 @@
 			diffForChangedResources.setFilter(
 					PathFilterGroup.createFromStrings(treeFilterPaths));
 			diffForChangedResources.diff(jgitMonitor, 0, 0, jobName,
-					() -> Activator.getDefault().getRepositoryCache()
-							.getBuilder(true, true));
+					() -> RepositoryCache.getInstance().getBuilder(true, true));
 			IndexDiffData previous = indexDiffData;
 			if (previous == null) {
 				// Can happen when the index diff cache entry is already

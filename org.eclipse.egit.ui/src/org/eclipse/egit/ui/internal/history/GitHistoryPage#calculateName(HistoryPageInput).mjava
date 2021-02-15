@@ -5,8 +5,8 @@
 		// menus they can expect with the current input
 		// we show the filter hint only upon getDescription()
 		// as it wrongly pollutes the navigation history
-		final String repositoryName = Activator.getDefault()
-				.getRepositoryUtil().getRepositoryName(in.getRepository());
+		final String repositoryName = RepositoryUtil.getInstance()
+				.getRepositoryName(in.getRepository());
 		if (in.getItems() == null && in.getFileList() == null)
 			// plain repository, no files specified
 			return NLS.bind(UIText.GitHistoryPage_RepositoryNamePattern,

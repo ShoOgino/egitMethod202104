@@ -14,8 +14,8 @@
 			// For bare repository just return empty data
 			return new IndexDiffData();
 		}
-		IndexDiffCacheEntry diffCacheEntry = Activator.getDefault()
-				.getIndexDiffCache().getIndexDiffCacheEntry(repository);
+		IndexDiffCacheEntry diffCacheEntry = IndexDiffCache.getInstance()
+				.getIndexDiffCacheEntry(repository);
 		if (diffCacheEntry == null) {
 			return null;
 		}

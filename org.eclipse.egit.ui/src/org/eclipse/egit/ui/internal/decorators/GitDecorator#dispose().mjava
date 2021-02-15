@@ -1,7 +1,6 @@
 	@Override
 	public void dispose() {
-		org.eclipse.egit.core.Activator.getDefault().getIndexDiffCache()
-				.removeIndexDiffChangedListener(this);
+		IndexDiffCache.getInstance().removeIndexDiffChangedListener(this);
 		configListener.remove();
 		configListener = null;
 		Job job;

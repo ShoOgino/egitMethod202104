@@ -1,0 +1,16 @@
+	@Deactivate
+	void shutDown() {
+		if (listeners != null) {
+			LinkedList<GitResourcChangeListener> toClose = listeners;
+			listeners = null;
+			toClose.forEach(workspace::removeResourceChangeListener);
+			toClose.forEach(l -> l.stop());
+			toClose.clear();
+		}
+		if (refreshHandle != null) {
+			refreshHandle.remove();
+			refreshHandle = null;
+		}
+		GitProjectData.detachFromWorkspace();
+	}
+

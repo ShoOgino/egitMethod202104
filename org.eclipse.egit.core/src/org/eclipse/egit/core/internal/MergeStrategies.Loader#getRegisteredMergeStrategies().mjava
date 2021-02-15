@@ -1,0 +1,8 @@
+		Collection<MergeStrategyDescriptor> getRegisteredMergeStrategies() {
+			MergeStrategyRegistryListener listener = mergeStrategyRegistryListener;
+			if (listener != null) {
+				return listener.getCurrentStrategies();
+			}
+			return Collections.emptyList();
+		}
+

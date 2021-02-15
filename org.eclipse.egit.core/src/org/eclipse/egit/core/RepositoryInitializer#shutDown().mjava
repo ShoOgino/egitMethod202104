@@ -1,0 +1,8 @@
+	@Deactivate
+	void shutDown() {
+		registration.unregister();
+		RepositoryUtil.getInstance().clear();
+		IndexDiffCache.getInstance().dispose();
+		RepositoryCache.getInstance().clear();
+	}
+

@@ -26,9 +26,9 @@
 		op.execute(null);
 
 		// Make sure cache entry is already listening for changes
-		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
-		cache.getIndexDiffCacheEntry(Activator.getDefault().getRepositoryCache()
-				.lookupRepository(gitDir));
+		IndexDiffCache cache = IndexDiffCache.getInstance();
+		cache.getIndexDiffCacheEntry(
+				RepositoryCache.getInstance().lookupRepository(gitDir));
 		return jProject;
 	}
 

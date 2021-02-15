@@ -4,8 +4,8 @@
 	public GitRepositoryProviderType() {
 		GitSynchronizeDataSet set = new GitSynchronizeDataSet();
 		try {
-			Repository[] repositories = Activator.getDefault()
-					.getRepositoryCache().getAllRepositories();
+			Repository[] repositories = RepositoryCache.getInstance()
+					.getAllRepositories();
 			for (Repository repository : repositories) {
 				if (!repository.isBare()) {
 					GitSynchronizeData data = new GitSynchronizeData(

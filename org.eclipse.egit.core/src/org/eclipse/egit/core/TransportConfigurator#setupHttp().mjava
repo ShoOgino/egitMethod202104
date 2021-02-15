@@ -1,0 +1,17 @@
+	private void setupHttp() {
+		String httpClient = preferencesService.getString(Activator.PLUGIN_ID,
+				GitCorePreferences.core_httpClient,
+				HttpClientType.JDK.toString(), null);
+		if (HttpClientType.APACHE.name().equalsIgnoreCase(httpClient)) {
+			HttpTransport
+					.setConnectionFactory(new HttpClientConnectionFactory());
+		} else {
+			if (!HttpClientType.JDK.name().equalsIgnoreCase(httpClient)) {
+				Activator.logWarning(MessageFormat.format(
+						CoreText.Activator_HttpClientUnknown, httpClient),
+						null);
+			}
+			HttpTransport.setConnectionFactory(new JDKHttpConnectionFactory());
+		}
+	}
+

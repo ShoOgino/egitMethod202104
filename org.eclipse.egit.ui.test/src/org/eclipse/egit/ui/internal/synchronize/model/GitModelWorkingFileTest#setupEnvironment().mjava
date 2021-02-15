@@ -2,7 +2,6 @@
 	public void setupEnvironment() throws Exception {
 		leftRepoFile = createProjectAndCommitToRepository();
 
-		Activator.getDefault().getRepositoryUtil()
-				.addConfiguredRepository(leftRepoFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(leftRepoFile);
 	}
 

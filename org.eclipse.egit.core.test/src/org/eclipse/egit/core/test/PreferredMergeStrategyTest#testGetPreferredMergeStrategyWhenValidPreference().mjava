@@ -5,6 +5,7 @@
 		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
 				.put(GitCorePreferences.core_preferredMergeStrategy, "resolve");
 
-		assertSame(MergeStrategy.RESOLVE, a.getPreferredMergeStrategy());
+		assertSame(MergeStrategy.RESOLVE,
+				MergeStrategies.getPreferredMergeStrategy());
 	}
 

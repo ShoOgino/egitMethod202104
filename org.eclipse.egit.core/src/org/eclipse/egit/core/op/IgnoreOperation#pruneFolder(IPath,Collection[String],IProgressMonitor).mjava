@@ -4,7 +4,7 @@
 		if (files.isEmpty()) {
 			return;
 		}
-		Repository repository = Activator.getDefault().getRepositoryCache()
+		Repository repository = RepositoryCache.getInstance()
 				.getRepository(folder);
 		if (repository == null || repository.isBare()) {
 			files.clear();

@@ -4,8 +4,7 @@
 	public void save() {
 		XMLMemento memento = XMLMemento
 				.createWriteRoot(getClass().getSimpleName());
-		RepositoryUtil util = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryUtil();
+		RepositoryUtil util = RepositoryUtil.getInstance();
 		cache.entrySet().stream().forEach(entry -> {
 			Map<RepositoryTreeNodeType, String> values = entry.getValue();
 			if (values.isEmpty()) {

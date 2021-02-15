@@ -11,7 +11,7 @@
 	 * @since 4.1.0
 	 */
 	public static boolean canBeAutoIgnored(IPath path) throws IOException {
-		Repository repository = Activator.getDefault().getRepositoryCache()
+		Repository repository = RepositoryCache.getInstance()
 				.getRepository(path);
 		if (repository == null || repository.isBare()) {
 			return false;

@@ -37,8 +37,8 @@
 				form.setText(getRepositoryName(repo));
 			return;
 		}
-		IndexDiffCacheEntry entry = org.eclipse.egit.core.Activator.getDefault()
-				.getIndexDiffCache().getIndexDiffCacheEntry(repo);
+		IndexDiffCacheEntry entry = IndexDiffCache.getInstance()
+				.getIndexDiffCacheEntry(repo);
 		IndexDiffData data = entry == null ? null : entry.getIndexDiff();
 		boolean hasConflicts = data != null && !data.getConflicting().isEmpty();
 		if (!currentPlan.isRebasingInteractive()) {

@@ -3,7 +3,6 @@
 		setVerboseBranchMode(false);
 		initialLinkingState = setLinkWithSelection(false);
 		repositoryFile = createProjectAndCommitToRepository();
-		Activator.getDefault().getRepositoryUtil()
-				.addConfiguredRepository(repositoryFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(repositoryFile);
 	}
 

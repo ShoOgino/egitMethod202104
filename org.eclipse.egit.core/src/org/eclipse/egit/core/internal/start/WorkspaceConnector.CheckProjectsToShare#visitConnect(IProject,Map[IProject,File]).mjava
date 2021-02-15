@@ -1,0 +1,65 @@
+		private void visitConnect(IProject project,
+				final Map<IProject, File> projects) throws CoreException {
+
+			if (RepositoryMapping.getMapping(project) != null) {
+				return;
+			}
+			RepositoryProvider provider = RepositoryProvider
+					.getProvider(project);
+			// respect if project is already shared with another
+			// team provider
+			if (provider != null) {
+				return;
+			}
+			RepositoryFinder f = new RepositoryFinder(project);
+			f.setFindInChildren(false);
+			List<RepositoryMapping> mappings = f
+					.find(new NullProgressMonitor());
+			if (mappings.isEmpty()) {
+				return;
+			}
+			RepositoryMapping m = mappings.get(0);
+			IPath gitDirPath = m.getGitDirAbsolutePath();
+			if (gitDirPath == null || !isValidRepositoryPath(gitDirPath)) {
+				return;
+			}
+
+			// connect
+			File repositoryDir = gitDirPath.toFile();
+			projects.put(project, repositoryDir);
+
+			Set<String> configured = RepositoryUtil.getInstance()
+					.getRepositories();
+			if (configured.contains(gitDirPath.toString())) {
+				return;
+			}
+			int nofMappings = mappings.size();
+			if (nofMappings > 1) {
+				// We don't want to add submodules, that would only lead to
+				// problems when a configured repository is deleted. Walk up the
+				// hierarchy of nested repositories found. If we hit an already
+				// configured repository, we're done anyway. Otherwise add the
+				// topmost not yet configured repository that has a valid path.
+				IPath lastPath = gitDirPath;
+				for (int i = 1; i < nofMappings; i++) {
+					IPath nextPath = mappings.get(i).getGitDirAbsolutePath();
+					if (nextPath == null) {
+						continue;
+					}
+					if (configured.contains(nextPath.toString())) {
+						return;
+					} else if (!isValidRepositoryPath(nextPath)) {
+						break;
+					}
+					lastPath = nextPath;
+				}
+				repositoryDir = lastPath.toFile();
+			}
+			try {
+				RepositoryUtil.getInstance()
+						.addConfiguredRepository(repositoryDir);
+			} catch (IllegalArgumentException e) {
+				Activator.logError(CoreText.Activator_AutoSharingFailed, e);
+			}
+		}
+

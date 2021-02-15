@@ -5,7 +5,7 @@
 	public CleanWizard(Repository repository) {
 		this.repository = repository;
 		setNeedsProgressMonitor(true);
-		final String repoName = Activator.getDefault().getRepositoryUtil()
+		final String repoName = RepositoryUtil.getInstance()
 				.getRepositoryName(repository);
 		setWindowTitle(NLS.bind(UIText.CleanWizard_title, repoName));
 	}

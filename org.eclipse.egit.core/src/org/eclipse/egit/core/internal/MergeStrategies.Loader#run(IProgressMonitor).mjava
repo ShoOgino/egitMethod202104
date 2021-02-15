@@ -1,0 +1,18 @@
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			try {
+				MergeStrategyRegistryListener listener = new MergeStrategyRegistryListener(
+						registry);
+				if (!monitor.isCanceled()) {
+					registry.addListener(listener,
+							MergeStrategies.EXTENSION_POINT);
+					mergeStrategyRegistryListener = listener;
+					return Status.OK_STATUS;
+				}
+			} finally {
+				done = true;
+				monitor.done();
+			}
+			return Status.CANCEL_STATUS;
+		}
+

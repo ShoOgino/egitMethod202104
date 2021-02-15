@@ -14,8 +14,7 @@
 					return;
 				}
 
-				String repoSpecificKey = Activator.getDefault()
-						.getRepositoryUtil()
+				String repoSpecificKey = RepositoryUtil.getInstance()
 						.getRepositorySpecificPreferenceKey(repo, prefKey);
 
 				if (prefKey.equals(event.getProperty())) {

@@ -1,0 +1,8 @@
+	@Reference
+	void setRepositoryCache(RepositoryCache cache) {
+		// We need the repository cache. The RepositoryInitializer publishes the
+		// RepositoryCache as a service, so with this we can be sure and safe
+		// that it _has_ already been set.
+		repositoryCache = cache;
+	}
+

@@ -3,7 +3,6 @@
 		leftRepoFile = createProjectAndCommitToRepository();
 		rightRepoFile = createChildRepository(leftRepoFile);
 
-		Activator.getDefault().getRepositoryUtil()
-				.addConfiguredRepository(leftRepoFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(leftRepoFile);
 	}
 

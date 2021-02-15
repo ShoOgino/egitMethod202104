@@ -1,6 +1,6 @@
 	@Override
 	protected String getTitle() {
-		return MessageFormat.format(UIText.CheckoutDialog_Title, Activator
-				.getDefault().getRepositoryUtil().getRepositoryName(repo));
+		return MessageFormat.format(UIText.CheckoutDialog_Title,
+				RepositoryUtil.getInstance().getRepositoryName(repo));
 	}
 

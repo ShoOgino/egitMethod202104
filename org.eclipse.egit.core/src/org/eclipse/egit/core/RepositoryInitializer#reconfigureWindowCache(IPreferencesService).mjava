@@ -1,0 +1,20 @@
+	private static void reconfigureWindowCache(IPreferencesService prefs) {
+		WindowCacheConfig c = new WindowCacheConfig();
+		c.setPackedGitLimit(prefs.getInt(Activator.PLUGIN_ID,
+				GitCorePreferences.core_packedGitLimit, 0, null));
+		c.setPackedGitWindowSize(prefs.getInt(Activator.PLUGIN_ID,
+				GitCorePreferences.core_packedGitWindowSize, 0, null));
+		if (SystemReader.getInstance().isWindows()) {
+			c.setPackedGitMMAP(false);
+		} else {
+			c.setPackedGitMMAP(prefs.getBoolean(Activator.PLUGIN_ID,
+					GitCorePreferences.core_packedGitMMAP, false, null));
+		}
+		c.setDeltaBaseCacheLimit(prefs.getInt(Activator.PLUGIN_ID,
+				GitCorePreferences.core_deltaBaseCacheLimit, 0, null));
+		c.setStreamFileThreshold(prefs.getInt(Activator.PLUGIN_ID,
+				GitCorePreferences.core_streamFileThreshold, 0, null));
+		c.setExposeStatsViaJmx(false);
+		c.install();
+	}
+

@@ -1,6 +1,6 @@
 	private void testPushToOrigin(boolean useRemote) throws Exception {
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				clonedRepositoryFile);
+		RepositoryUtil.getInstance()
+				.addConfiguredRepository(clonedRepositoryFile);
 		shareProjects(clonedRepositoryFile);
 
 

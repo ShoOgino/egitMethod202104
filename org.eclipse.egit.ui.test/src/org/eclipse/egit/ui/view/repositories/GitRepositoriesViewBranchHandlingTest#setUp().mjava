@@ -19,8 +19,7 @@
 
 		clonedRepositoryFile = new File(workdir, Constants.DOT_GIT);
 
-		RepositoryUtil repositoryUtil = Activator.getDefault()
-				.getRepositoryUtil();
+		RepositoryUtil repositoryUtil = RepositoryUtil.getInstance();
 		repositoryUtil.addConfiguredRepository(repositoryFile);
 		repositoryUtil.addConfiguredRepository(remoteRepositoryFile);
 		repositoryUtil.addConfiguredRepository(clonedRepositoryFile);

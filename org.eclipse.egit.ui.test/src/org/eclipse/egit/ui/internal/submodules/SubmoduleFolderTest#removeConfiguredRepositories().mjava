@@ -1,12 +1,10 @@
 	@After
 	public void removeConfiguredRepositories() {
 		if (parentRepositoryGitDir != null) {
-			Activator.getDefault().getRepositoryUtil()
-					.removeDir(parentRepositoryGitDir);
+			RepositoryUtil.getInstance().removeDir(parentRepositoryGitDir);
 		}
 		if (childRepositoryGitDir != null) {
-			Activator.getDefault().getRepositoryUtil()
-					.removeDir(childRepositoryGitDir);
+			RepositoryUtil.getInstance().removeDir(childRepositoryGitDir);
 		}
 		childRepository = null;
 		parentRepository = null;

@@ -1,8 +1,0 @@
-	private void setupProxy() {
-		IProxyService proxy = getProxyService();
-		if (proxy != null) {
-			ProxySelector.setDefault(new EclipseProxySelector(proxy));
-			Authenticator.setDefault(new EclipseAuthenticator(proxy));
-		}
-	}
-

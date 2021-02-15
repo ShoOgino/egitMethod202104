@@ -9,7 +9,7 @@
 	 */
 	public static void addConfiguredRepository(Path gitDir)
 			throws IllegalArgumentException {
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
+		RepositoryUtil.getInstance().addConfiguredRepository(
 				Objects.requireNonNull(gitDir).toFile());
 	}
 

@@ -69,7 +69,7 @@
 		addAndCommit(file, newContent);
 
 		// Make sure cache entry is already listening for changes
-		IndexDiffCache cache = Activator.getDefault().getIndexDiffCache();
+		IndexDiffCache cache = IndexDiffCache.getInstance();
 		cache.getIndexDiffCacheEntry(lookupRepository(gitDir));
 
 		return gitDir;

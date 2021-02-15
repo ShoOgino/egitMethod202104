@@ -1,0 +1,59 @@
+		@Override
+		public void resourceChanged(IResourceChangeEvent event) {
+			try {
+				IResourceDelta d = event.getDelta();
+				if (d == null || !getBoolean(
+						GitCorePreferences.core_autoIgnoreDerivedResources,
+						true)) {
+					return;
+				}
+				final Set<IPath> toBeIgnored = new LinkedHashSet<>();
+
+				d.accept(new IResourceDeltaVisitor() {
+
+					@Override
+					public boolean visit(IResourceDelta delta)
+							throws CoreException {
+						if ((delta.getKind() & (IResourceDelta.ADDED
+								| IResourceDelta.CHANGED)) == 0)
+							return false;
+						int flags = delta.getFlags();
+						if ((flags != 0) && ((flags
+								& IResourceDelta.DERIVED_CHANGED) == 0))
+							return false;
+
+						final IResource r = delta.getResource();
+						// don't consider resources contained in a project not
+						// shared with Git team provider
+						if ((r.getProject() != null)
+								&& (RepositoryMapping.getMapping(r) == null))
+							return false;
+						if (r.isTeamPrivateMember())
+							return false;
+
+						if (r.isDerived()) {
+							try {
+								IPath location = r.getLocation();
+								if (RepositoryUtil.canBeAutoIgnored(location)) {
+									toBeIgnored.add(location);
+								}
+							} catch (IOException e) {
+								Activator.logError(MessageFormat.format(
+										CoreText.Activator_ignoreResourceFailed,
+										r.getFullPath()), e);
+							}
+							return false;
+						}
+						return true;
+					}
+				});
+				if (toBeIgnored.size() > 0)
+					JobUtil.scheduleUserJob(new IgnoreOperation(toBeIgnored),
+							CoreText.Activator_autoIgnoreDerivedResources,
+							JobFamilies.AUTO_IGNORE);
+			} catch (CoreException e) {
+				Activator.logError(e.getMessage(), e);
+				return;
+			}
+		}
+

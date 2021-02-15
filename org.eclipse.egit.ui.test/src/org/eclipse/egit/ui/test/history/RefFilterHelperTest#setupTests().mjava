@@ -5,8 +5,7 @@
 		File repoFile = createProjectAndCommitToRepository();
 		createSimpleRemoteRepository(repoFile);
 
-		RepositoryUtil repositoryUtil = Activator.getDefault()
-				.getRepositoryUtil();
+		RepositoryUtil repositoryUtil = RepositoryUtil.getInstance();
 		repositoryUtil.addConfiguredRepository(repoFile);
 
 		repo = myRepoViewUtil.lookupRepository(repoFile);

@@ -13,7 +13,7 @@
 		IPath otherRepoPath = reposPath.append("other");
 		File otherRepoDir = createRepository(otherRepoPath, "other-url", "master");
 
-		RepositoryUtil util = Activator.getDefault().getRepositoryUtil();
+		RepositoryUtil util = RepositoryUtil.getInstance();
 		util.addConfiguredRepository(repoDir);
 		util.addConfiguredRepository(otherRepoDir);
 

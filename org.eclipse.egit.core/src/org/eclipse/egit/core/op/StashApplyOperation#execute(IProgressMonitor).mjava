@@ -11,7 +11,7 @@
 					progress.worked(1);
 					StashApplyCommand command = Git.wrap(repository)
 							.stashApply().setStashRef(commit.name());
-					MergeStrategy strategy = Activator.getDefault()
+					MergeStrategy strategy = MergeStrategies
 							.getPreferredMergeStrategy();
 					if (strategy != null) {
 						command.setStrategy(strategy);

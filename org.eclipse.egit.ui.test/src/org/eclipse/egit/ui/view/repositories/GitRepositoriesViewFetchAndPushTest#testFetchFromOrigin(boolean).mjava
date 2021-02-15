@@ -1,9 +1,9 @@
 	private void testFetchFromOrigin(boolean useRemote) throws Exception {
 
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				clonedRepositoryFile);
-		Activator.getDefault().getRepositoryUtil().addConfiguredRepository(
-				clonedRepositoryFile2);
+		RepositoryUtil.getInstance()
+				.addConfiguredRepository(clonedRepositoryFile);
+		RepositoryUtil.getInstance()
+				.addConfiguredRepository(clonedRepositoryFile2);
 
 		Repository repository = lookupRepository(clonedRepositoryFile2);
 		// add the configuration for push from cloned2

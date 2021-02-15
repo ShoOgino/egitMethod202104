@@ -31,8 +31,7 @@
 			if (file.exists())
 				try {
 					RepositoryNode node = new RepositoryNode(null,
-							org.eclipse.egit.core.Activator.getDefault()
-									.getRepositoryCache()
+							RepositoryCache.getInstance()
 									.lookupRepository(file));
 					repositories.add(node);
 				} catch (IOException ignore) {

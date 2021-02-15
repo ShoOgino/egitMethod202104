@@ -7,6 +7,6 @@
 	 */
 	@Nullable
 	public static Repository getRepository(@NonNull IPath path) {
-		return Activator.getDefault().getRepositoryCache().getRepository(path);
+		return RepositoryCache.getInstance().getRepository(path);
 	}
 

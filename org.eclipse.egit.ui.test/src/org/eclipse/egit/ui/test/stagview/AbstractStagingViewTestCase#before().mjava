@@ -3,8 +3,7 @@
 		repositoryFile = createProjectAndCommitToRepository();
 		repository = lookupRepository(repositoryFile);
 		TestUtil.configureTestCommitterAsUser(repository);
-		Activator.getDefault().getRepositoryUtil()
-				.addConfiguredRepository(repositoryFile);
+		RepositoryUtil.getInstance().addConfiguredRepository(repositoryFile);
 
 		selectRepositoryNode();
 	}

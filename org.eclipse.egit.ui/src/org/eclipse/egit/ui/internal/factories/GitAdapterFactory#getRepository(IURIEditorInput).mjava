@@ -9,8 +9,8 @@
 		if (mapping != null) {
 			return mapping.getRepository();
 		}
-		Repository repository = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryCache().getRepository(path);
+		Repository repository = RepositoryCache.getInstance()
+				.getRepository(path);
 		return repository;
 	}
 

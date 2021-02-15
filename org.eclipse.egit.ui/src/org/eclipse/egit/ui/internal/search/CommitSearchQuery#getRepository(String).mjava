@@ -2,8 +2,7 @@
 		Repository repository = null;
 		File path = new File(name);
 		if (path.exists())
-			repository = Activator.getDefault().getRepositoryCache()
-					.lookupRepository(path);
+			repository = RepositoryCache.getInstance().lookupRepository(path);
 		return repository;
 	}
 

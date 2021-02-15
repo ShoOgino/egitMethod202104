@@ -10,7 +10,7 @@
 	 *         directories of repositories configured in EGit.
 	 */
 	public static Collection<Path> getConfiguredRepositoryDirectories() {
-		return Activator.getDefault().getRepositoryUtil().getRepositories()
+		return RepositoryUtil.getInstance().getRepositories()
 				.stream().map(Paths::get).collect(Collectors.toSet());
 	}
 

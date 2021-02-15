@@ -4,7 +4,7 @@
 		parentRepository.dispose();
 		childProject.delete(true, true, null);
 		parentProject.delete(true, true, null);
-		Activator.getDefault().getRepositoryCache().clear();
+		RepositoryCache.getInstance().clear();
 		testUtils.deleteTempDirs();
 	}
 

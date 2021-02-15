@@ -3,16 +3,15 @@
 		try {
 			headId = db.resolve(Constants.HEAD);
 		} catch (IOException e) {
-			throw new IllegalStateException(NLS.bind(
-					UIText.GitHistoryPage_errorParsingHead, Activator
-							.getDefault().getRepositoryUtil()
-							.getRepositoryName(db)), e);
+			throw new IllegalStateException(
+					NLS.bind(UIText.GitHistoryPage_errorParsingHead,
+							RepositoryUtil.getInstance().getRepositoryName(db)),
+					e);
 		}
 		if (headId == null && !acceptNull)
 			throw new IllegalStateException(NLS.bind(
-					UIText.GitHistoryPage_errorParsingHead, Activator
-							.getDefault().getRepositoryUtil()
-							.getRepositoryName(db)));
+					UIText.GitHistoryPage_errorParsingHead,
+					RepositoryUtil.getInstance().getRepositoryName(db)));
 		return headId;
 	}
 

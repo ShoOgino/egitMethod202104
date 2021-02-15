@@ -87,9 +87,8 @@
 		trackFocus(fileViewer.getControl());
 		layout();
 
-		myRefsChangedHandle = org.eclipse.egit.core.Activator.getDefault()
-				.getRepositoryCache().getGlobalListenerList()
-				.addRefsChangedListener(this);
+		myRefsChangedHandle = RepositoryCache.getInstance()
+				.getGlobalListenerList().addRefsChangedListener(this);
 
 		InstanceScope.INSTANCE
 				.getNode(org.eclipse.egit.core.Activator.PLUGIN_ID)

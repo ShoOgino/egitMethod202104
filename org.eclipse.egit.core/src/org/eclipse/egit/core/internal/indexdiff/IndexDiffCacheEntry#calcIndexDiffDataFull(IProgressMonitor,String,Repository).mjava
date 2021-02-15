@@ -11,8 +11,8 @@
 				return null; // workspace is closed
 			IndexDiff newDiff = new IndexDiff(repository, Constants.HEAD,
 					iterator);
-			newDiff.diff(jgitMonitor, 0, 0, jobName, () -> Activator
-					.getDefault().getRepositoryCache().getBuilder(true, true));
+			newDiff.diff(jgitMonitor, 0, 0, jobName,
+					() -> RepositoryCache.getInstance().getBuilder(true, true));
 			return new IndexDiffData(newDiff);
 		});
 	}

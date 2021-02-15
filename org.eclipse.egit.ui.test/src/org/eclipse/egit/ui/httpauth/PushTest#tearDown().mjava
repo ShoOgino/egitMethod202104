@@ -2,7 +2,7 @@
 	public void tearDown() throws Exception {
 		if (remoteRepository != null)
 			remoteRepository.shutDown();
-		Activator.getDefault().getRepositoryCache().clear();
+		RepositoryCache.getInstance().clear();
 		if (localRepository != null)
 			localRepository.close();
 		if (localRepoPath != null)
