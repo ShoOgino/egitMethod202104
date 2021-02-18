@@ -81,7 +81,7 @@
 			}
 		});
 
-		GpgSigner signer = GpgSigner.getDefault();
+		GpgSigner signer = GpgSetup.getDefault();
 		if (signer instanceof GpgObjectSigner) {
 			PersonIdent tagger = new PersonIdent(repo);
 			// Ensure the Eclipse preference, if set, overrides the git config

@@ -246,7 +246,7 @@
 		};
 		signCommitAction.setImageDescriptor(UIIcons.SIGN_COMMIT);
 		commitMessageToolBarManager.add(signCommitAction);
-		boolean canSign = GpgSigner.getDefault() != null;
+		boolean canSign = GpgSetup.getDefault() != null;
 		signCommitAction.setEnabled(canSign);
 		if (!canSign) {
 			signCommitAction

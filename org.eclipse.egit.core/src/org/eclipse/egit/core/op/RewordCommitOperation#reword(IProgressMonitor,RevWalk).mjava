@@ -60,7 +60,7 @@
 			}
 		};
 		boolean signAllCommits = gpgConfig.isSignCommits();
-		GpgSigner gpgSigner = GpgSigner.getDefault();
+		GpgSigner gpgSigner = GpgSetup.getDefault();
 		if (gpgSigner != null
 				&& (signAllCommits || commit.getRawGpgSignature() != null)) {
 			gpgSigner = sign(builder, gpgSigner, gpgConfig, committer, commit);

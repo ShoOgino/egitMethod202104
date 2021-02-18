@@ -178,7 +178,7 @@
 			}
 		});
 
-		boolean canSign = GpgSigner.getDefault() != null;
+		boolean canSign = GpgSetup.getDefault() != null;
 		signCommitItem.setEnabled(canSign);
 		if (!canSign) {
 			signCommitItem

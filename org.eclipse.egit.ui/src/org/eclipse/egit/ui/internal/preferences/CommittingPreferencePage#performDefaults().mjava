@@ -7,5 +7,9 @@
 				getPreferenceStore().getDefaultBoolean(
 						UIPreferences.ALWAYS_USE_STAGING_VIEW),
 				generalGroup);
+		gpgExecutable.setEnabled(
+				"gpg".equals(getSecondaryPreferenceStore() //$NON-NLS-1$
+						.getDefaultString(GitCorePreferences.core_gpgSigner)),
+				generalGroup);
 	}
 
