@@ -60,6 +60,8 @@
 			}
 			command.call();
 			progress.worked(1);
+		} catch (GpgConfigurationException e) {
+			throw new TeamException(e.getLocalizedMessage(), e);
 		} catch (RefAlreadyExistsException e) {
 			// NO_CHANGE: update of existing lightweight tag to the same commit.
 			if (!RefUpdate.Result.NO_CHANGE.equals(e.getUpdateResult())) {

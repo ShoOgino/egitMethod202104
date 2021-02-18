@@ -6,7 +6,15 @@
 			commit = commitOperation.getCommit();
 			CommitMessageComponentStateManager.deleteState(repository);
 		} catch (CoreException e) {
-			if (e.getCause() instanceof JGitInternalException) {
+			if (e.getCause() instanceof GpgConfigurationException) {
+				showGpgProblem(e.getStatus());
+				return Status.CANCEL_STATUS;
+			} else if (e.getCause() instanceof JGitInternalException) {
+				if (e.getCause()
+						.getCause() instanceof GpgConfigurationException) {
+					showGpgProblem(e.getStatus());
+					return Status.CANCEL_STATUS;
+				}
 				return Activator.createErrorStatus(e.getLocalizedMessage(),
 						e.getCause());
 			} else if (e.getCause() instanceof AbortedByHookException) {

@@ -1,0 +1,14 @@
+	private void createHelpLink(Composite parent) {
+		Link link = new Link(parent, SWT.WRAP | SWT.NO_FOCUS);
+		link.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		link.setText("<a>" + IDialogConstants.HELP_LABEL + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$
+		link.setToolTipText(JFaceResources.getString("helpToolTip")); //$NON-NLS-1$
+		link.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				helpPressed();
+			}
+		});
+	}
+

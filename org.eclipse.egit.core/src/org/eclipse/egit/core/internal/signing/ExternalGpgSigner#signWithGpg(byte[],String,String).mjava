@@ -83,6 +83,7 @@
 						if (!pinentry && line
 								.startsWith("[GNUPG:] PINENTRY_LAUNCHED")) { //$NON-NLS-1$
 							pinentry = true;
+							checkTerminalPrompt(line);
 						} else if (pinentry) {
 							if (line.startsWith("[GNUPG:] FAILURE sign")) { //$NON-NLS-1$
 								throw new CanceledException(

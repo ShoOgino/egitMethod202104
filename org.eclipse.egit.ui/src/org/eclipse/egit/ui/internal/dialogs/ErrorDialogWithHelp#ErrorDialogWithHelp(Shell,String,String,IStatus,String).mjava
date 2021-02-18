@@ -1,0 +1,21 @@
+	/**
+	 * Creates a new error dialog to show the given status.
+	 *
+	 * @param parent
+	 *            shell to parent the new dialog off
+	 * @param title
+	 *            of the dialog
+	 * @param message
+	 *            for the dialog
+	 * @param status
+	 *            {@link IStatus} to show
+	 * @param helpId
+	 *            if not {@code null} the ID of a help context to show via a
+	 *            help button
+	 */
+	public ErrorDialogWithHelp(Shell parent, String title,
+			String message, IStatus status, String helpId) {
+		super(parent, title, message, status, ~0); // Show all
+		this.helpId = helpId;
+	}
+

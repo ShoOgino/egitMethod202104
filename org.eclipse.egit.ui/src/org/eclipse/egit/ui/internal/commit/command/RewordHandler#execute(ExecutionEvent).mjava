@@ -17,16 +17,26 @@
 		final RewordCommitOperation op = new RewordCommitOperation(repo,
 				commit, newMessage);
 
-		Job job = new WorkspaceJob(MessageFormat.format(
-				UIText.RewordHandler_JobName,
-				commit.name())) {
+		Job job = new RepositoryJob(MessageFormat.format(
+				UIText.RewordHandler_JobName, commit.name()), null) {
+
+			private IStatus gpgConfigProblem;
 
 			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) {
+			protected IStatus performJob(IProgressMonitor monitor) {
 				try {
 					op.execute(monitor);
 				} catch (CoreException e) {
-					return e.getStatus();
+					IStatus status = e.getStatus();
+					if (status
+							.getException() instanceof GpgConfigurationException) {
+						gpgConfigProblem = e.getStatus();
+						// We're going to show our own dialog
+						return Status.OK_STATUS;
+					}
+					return status;
+				} finally {
+					monitor.done();
 				}
 				return Status.OK_STATUS;
 			}
@@ -36,6 +46,15 @@
 				if (JobFamilies.REWORD.equals(family))
 					return true;
 				return super.belongsTo(family);
+			}
+
+			@Override
+			protected IAction getAction() {
+				if (gpgConfigProblem == null || gpgConfigProblem.isOK()) {
+					return null;
+				}
+				return new GpgConfigProblemReportAction(gpgConfigProblem,
+						UIText.RewordHandler_GpgConfigProblem);
 			}
 		};
 		job.setUser(true);

@@ -9,6 +9,8 @@
 				for(String path:commitFileList)
 					commitCommand.setOnly(path);
 			commit = commitCommand.call();
+		} catch (GpgConfigurationException e) {
+			throw new TeamException(e.getLocalizedMessage(), e);
 		} catch (Exception e) {
 			throw new TeamException(
 					CoreText.MergeOperation_InternalError, e);

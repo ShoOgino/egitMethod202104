@@ -20,10 +20,23 @@
 			// this PINENTRY_USER_DATA method is still needed or used with
 			// modern gpg; at least pinentry-gtk and pinentry-gnome should fall
 			// back to prompting on the terminal if $DISPLAY of the calling
-			// process is not set.
+			// process is not set. $DISPLAY for Eclipse on Linux/OS X will
+			// always be set, and be inherited by the child process.
 			String value = childEnv.get(PINENTRY_USER_DATA);
 			if (!StringUtils.isEmptyOrNull(value)) {
 				childEnv.remove(PINENTRY_USER_DATA);
+			}
+			// If gpg-agent is not running already, gpg will start it. If
+			// GPG_TTY is set, the newly started gpg-agent may decide to use a
+			// terminal prompt (pinentry-tty or pinentry-curses) for
+			// passphrases, which doesn't work for us. So clear GPG_TTY, too.
+			//
+			// If gpg-agent is already running and is using a terminal prompt,
+			// the signing may fail. We detect this in checkTerminalPrompt()
+			// and throw an exception.
+			value = childEnv.get(GPG_TTY);
+			if (!StringUtils.isEmptyOrNull(value)) {
+				childEnv.remove(GPG_TTY);
 			}
 		} catch (SecurityException | UnsupportedOperationException
 				| IllegalArgumentException e) {
