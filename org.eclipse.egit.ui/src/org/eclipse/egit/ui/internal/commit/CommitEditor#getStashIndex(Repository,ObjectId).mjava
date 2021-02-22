@@ -1,11 +1,12 @@
 	private int getStashIndex(Repository repo, ObjectId id) {
 		int index = 0;
 		try {
-			for (RevCommit commit : Git.wrap(repo).stashList().call())
-				if (commit.getId().equals(id))
+			for (RevCommit commit : new StashListCommand(repo).call()) {
+				if (commit.getId().equals(id)) {
 					return index;
-				else
-					index++;
+				}
+				index++;
+			}
 			throw new IllegalStateException(
 					UIText.CommitEditor_couldNotFindStashCommit);
 		} catch (Exception e) {
