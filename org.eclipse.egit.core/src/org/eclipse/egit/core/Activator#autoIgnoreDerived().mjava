@@ -4,9 +4,9 @@
 	 */
 	public static boolean autoIgnoreDerived() {
 		IEclipsePreferences d = DefaultScope.INSTANCE
-				.getNode(Activator.getPluginId());
+				.getNode(Activator.PLUGIN_ID);
 		IEclipsePreferences p = InstanceScope.INSTANCE
-				.getNode(Activator.getPluginId());
+				.getNode(Activator.PLUGIN_ID);
 		return p.getBoolean(GitCorePreferences.core_autoIgnoreDerivedResources,
 				d.getBoolean(GitCorePreferences.core_autoIgnoreDerivedResources,
 						true));

@@ -1,0 +1,10 @@
+	@Override
+	public void run() {
+		ErrorDialogWithHelp dialog = new ErrorDialogWithHelp(
+				PlatformUI.getWorkbench().getModalDialogShellProvider()
+						.getShell(),
+				UIText.GpgConfigProblemReportAction_Title, message, status,
+				"org.eclipse.egit.ui.gpgSigning"); //$NON-NLS-1$
+		dialog.open();
+	}
+

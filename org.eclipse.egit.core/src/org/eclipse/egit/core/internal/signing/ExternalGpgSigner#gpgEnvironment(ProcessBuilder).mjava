@@ -1,0 +1,47 @@
+	private void gpgEnvironment(ProcessBuilder process) {
+		try {
+			Map<String, String> childEnv = process.environment();
+			// The map is "typically case sensitive on all platforms", whatever
+			// that means. "Typically"? Or really on all platforms? It would
+			// make more sense if it were case-insensitive on Windows.
+			//
+			// Remove the PINENTRY_USER_DATA variable. On Linux, some people use
+			// this sometimes in combination with a custom script configured as
+			// the gpg-agent's pinentry-program to force pinentry-tty or
+			// pinentry-curses to be used when in a shell, and a graphical
+			// prompt otherwise. When Eclipse gets started from the shell, it
+			// may inherit that environment variable, but when it calls gpg, it
+			// needs a graphical pinentry. So remove this variable.
+			//
+			// If the variable is not set, a well-written custom pinentry script
+			// should fall back to the default gpg pinentry which _is_ a
+			// graphical one (pinentry-mac on Mac, pinentry-qt on Windows,
+			// pinentry-gtk or pinentry-gnome or similar on Linux). Not sure if
+			// this PINENTRY_USER_DATA method is still needed or used with
+			// modern gpg; at least pinentry-gtk and pinentry-gnome should fall
+			// back to prompting on the terminal if $DISPLAY of the calling
+			// process is not set. $DISPLAY for Eclipse on Linux/OS X will
+			// always be set, and be inherited by the child process.
+			String value = childEnv.get(PINENTRY_USER_DATA);
+			if (!StringUtils.isEmptyOrNull(value)) {
+				childEnv.remove(PINENTRY_USER_DATA);
+			}
+			// If gpg-agent is not running already, gpg will start it. If
+			// GPG_TTY is set, the newly started gpg-agent may decide to use a
+			// terminal prompt (pinentry-tty or pinentry-curses) for
+			// passphrases, which doesn't work for us. So clear GPG_TTY, too.
+			//
+			// If gpg-agent is already running and is using a terminal prompt,
+			// the signing may fail. We detect this in checkTerminalPrompt()
+			// and throw an exception.
+			value = childEnv.get(GPG_TTY);
+			if (!StringUtils.isEmptyOrNull(value)) {
+				childEnv.remove(GPG_TTY);
+			}
+		} catch (SecurityException | UnsupportedOperationException
+				| IllegalArgumentException e) {
+			Activator.logWarning(CoreText.ExternalGpgSigner_environmentError,
+					e);
+		}
+	}
+

@@ -1,6 +1,7 @@
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite main = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(main);
 		main.setLayout(new GridLayout(3, false));
 
 		platformSwitch = new Button(main, SWT.CHECK);
@@ -37,7 +38,7 @@
 		GridDataFactory.defaultsFor(traceFileLocation).grab(true, false)
 				.applyTo(traceFileLocation);
 
-		Button openButton = new Button(main, SWT.PUSH);
+		openButton = new Button(main, SWT.PUSH);
 		openButton
 				.setText(UIText.GitTraceConfigurationDialog_OpenInEditorButton);
 		openButton.addSelectionListener(new SelectionAdapter() {

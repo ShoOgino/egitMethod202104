@@ -1,0 +1,20 @@
+		void update() {
+			if (PlatformUI.isWorkbenchRunning()) {
+				Display display = PlatformUI.getWorkbench().getDisplay();
+				if (display != null && !display.isDisposed()) {
+					try {
+						display.asyncExec(() -> {
+							boolean wasActive = isActive;
+							isActive = !display.isDisposed()
+									&& display.getActiveShell() != null;
+							if (wasActive != isActive) {
+								notify(isActive);
+							}
+						});
+					} catch (SWTException e) {
+						// Silently ignore -- display was disposed already
+					}
+				}
+			}
+		}
+

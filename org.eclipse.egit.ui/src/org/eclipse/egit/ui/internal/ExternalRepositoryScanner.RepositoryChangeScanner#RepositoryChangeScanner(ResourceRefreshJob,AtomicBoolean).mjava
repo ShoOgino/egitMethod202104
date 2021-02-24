@@ -1,0 +1,13 @@
+		public RepositoryChangeScanner(ResourceRefreshJob refresher,
+				AtomicBoolean workbenchActive) {
+			super(UIText.Activator_repoScanJobName);
+			this.refresher = refresher;
+			this.workbenchActive = workbenchActive;
+			setRule(new RepositoryCacheRule());
+			setSystem(true);
+			setUser(false);
+			repositoryCache = org.eclipse.egit.core.Activator.getDefault()
+					.getRepositoryCache();
+			updateRefreshInterval();
+		}
+

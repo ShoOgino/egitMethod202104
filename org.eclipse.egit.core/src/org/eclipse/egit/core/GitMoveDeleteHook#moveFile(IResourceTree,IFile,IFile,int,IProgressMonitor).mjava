@@ -20,7 +20,7 @@
 				return FINISH_FOR_ME;
 
 			if (!sEnt.isMerged()) {
-				tree.failed(new Status(IStatus.WARNING, Activator.getPluginId(),
+				tree.failed(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 						CoreText.MoveDeleteHook_unmergedFileError));
 				return I_AM_DONE;
 			}
@@ -40,13 +40,13 @@
 				}
 				if (!sEdit.commit()) {
 					tree.failed(new Status(IStatus.ERROR,
-							Activator.getPluginId(), 0,
+							Activator.PLUGIN_ID, 0,
 							CoreText.MoveDeleteHook_operationError, null));
 				}
 			}
 			tree.standardMoveFile(srcf, dstf, updateFlags, monitor);
 		} catch (IOException e) {
-			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
+			tree.failed(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 					CoreText.MoveDeleteHook_operationError, e));
 		} finally {
 			if (sCache != null)

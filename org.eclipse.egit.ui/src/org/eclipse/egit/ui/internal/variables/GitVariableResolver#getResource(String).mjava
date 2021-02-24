@@ -14,18 +14,17 @@
 		if (argument == null) {
 			res = getResource();
 			if (res == null)
-				throw new CoreException(new Status(IStatus.ERROR, Activator
-						.getPluginId(), UIText.GitVariableResolver_NoSelectedResource));
+				throw new CoreException(
+						new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+								UIText.GitVariableResolver_NoSelectedResource));
 		} else {
 			res = ResourcesPlugin.getWorkspace().getRoot().findMember(argument);
 			if (res == null || !res.exists()) {
-				throw new CoreException(
-						new Status(
-								IStatus.ERROR,
-								Activator.getPluginId(),
-								NLS.bind(
-										UIText.GitVariableResolver_VariableReferencesNonExistentResource,
-										argument)));
+				throw new CoreException(new Status(IStatus.ERROR,
+						Activator.PLUGIN_ID,
+						NLS.bind(
+								UIText.GitVariableResolver_VariableReferencesNonExistentResource,
+								argument)));
 			}
 		}
 		return res;

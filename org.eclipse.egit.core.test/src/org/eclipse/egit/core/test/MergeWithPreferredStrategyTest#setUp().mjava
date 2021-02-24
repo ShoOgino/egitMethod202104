@@ -7,8 +7,8 @@
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).put(
-				GitCorePreferences.core_preferredMergeStrategy, "ours");
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
+				.put(GitCorePreferences.core_preferredMergeStrategy, "ours");
 		gitDir = new File(project.getProject().getLocationURI().getPath(),
 				Constants.DOT_GIT);
 		testRepository = new TestRepository(gitDir);

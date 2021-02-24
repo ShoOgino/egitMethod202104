@@ -1,0 +1,35 @@
+		private static String findGpg() {
+			SystemReader system = SystemReader.getInstance();
+			String path = system.getenv("PATH"); //$NON-NLS-1$
+			String exe = null;
+			if (system.isMacOS()) {
+				// On Mac, $PATH is typically much shorter in programs launched
+				// from the graphical UI than in the shell. Use the shell $PATH
+				// first.
+				String bash = searchPath(path, "bash"); //$NON-NLS-1$
+				if (bash != null) {
+					ProcessBuilder process = new ProcessBuilder();
+					process.command(bash, "--login", "-c", "which gpg"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					process.directory(FS.DETECTED.userHome());
+					String[] result = { null };
+					try {
+						runProcess(process, null, b -> {
+							try (BufferedReader r = new BufferedReader(
+									new InputStreamReader(b.openInputStream(),
+											Charset.defaultCharset()))) {
+								result[0] = r.readLine();
+							}
+						}, null);
+					} catch (IOException | CanceledException e) {
+						Activator.logWarning(
+								CoreText.ExternalGpgSigner_cannotSearch, e);
+					}
+					exe = result[0];
+				}
+			}
+			if (exe == null) {
+				exe = searchPath(path, system.isWindows() ? "gpg.exe" : "gpg"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			return exe == null ? "" : exe; //$NON-NLS-1$
+		}
+

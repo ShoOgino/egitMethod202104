@@ -13,7 +13,7 @@
 			} finally {
 				index.unlock();
 			}
-		} catch (IOException e) {
+		} catch (GpgConfigurationException | IOException e) {
 			throw new TeamException(e.getMessage(), e);
 		}
 	}

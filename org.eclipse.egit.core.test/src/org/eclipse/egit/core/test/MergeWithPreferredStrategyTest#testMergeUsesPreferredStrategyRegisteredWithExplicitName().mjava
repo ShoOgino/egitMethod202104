@@ -1,7 +1,7 @@
 	@Test
 	public void testMergeUsesPreferredStrategyRegisteredWithExplicitName()
 			throws Exception {
-		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).put(
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).put(
 				GitCorePreferences.core_preferredMergeStrategy,
 				"org.eclipse.egit.core.test.theirs");
 		MergeOperation operation = new MergeOperation(

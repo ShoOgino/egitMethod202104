@@ -1,0 +1,11 @@
+	private void helpPressed() {
+		Control c = getShell().getDisplay().getFocusControl();
+		while (c != null) {
+			if (c.isListening(SWT.Help)) {
+				c.notifyListeners(SWT.Help, new Event());
+				break;
+			}
+			c = c.getParent();
+		}
+	}
+

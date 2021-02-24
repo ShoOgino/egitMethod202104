@@ -92,7 +92,7 @@
 				.addRefsChangedListener(this);
 
 		InstanceScope.INSTANCE
-				.getNode(org.eclipse.egit.core.Activator.getPluginId())
+				.getNode(org.eclipse.egit.core.Activator.PLUGIN_ID)
 				.addPreferenceChangeListener(prefListener);
 
 		IToolBarManager manager = getSite().getActionBars().getToolBarManager();

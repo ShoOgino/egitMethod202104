@@ -1,0 +1,22 @@
+	@Override
+	protected void createControl(Composite parent) {
+		wrapper = new Composite(parent, SWT.NONE);
+		layoutData = GridDataFactory.fillDefaults().grab(true, false)
+				.create();
+		wrapper.setLayoutData(layoutData);
+		GridLayoutFactory.fillDefaults()
+				.numColumns(super.getNumberOfControls()).applyTo(wrapper);
+		doFillIntoGrid(wrapper, super.getNumberOfControls());
+		if (SystemReader.getInstance().isMacOS()) {
+			// The default "Open File" dialog on Mac does not show
+			// hidden files, even if the user has enabled showing them
+			// in the Finder. GPG is normally installed under /usr,
+			// which is a hidden directory on Mac. There is a keyboard
+			// shortcut to make it show hidden files and directories
+			// (Cmd-Shift-.), but that's not obvious. Tell the user
+			// about that shortcut in a tooltip.
+			getChangeControl(wrapper).setToolTipText(
+					UIText.FullWidthFileFieldEditor_buttonTooltipMac);
+		}
+	}
+

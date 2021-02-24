@@ -1,0 +1,19 @@
+	@Override
+	protected Control createButtonBar(Composite parent) {
+		if (helpId == null) {
+			return super.createButtonBar(parent);
+		}
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(3)
+				.applyTo(composite);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.span(2, 1).applyTo(composite);
+		composite.setFont(parent.getFont());
+
+		createHelpControl(composite);
+		Control buttonSection = super.createButtonBar(composite);
+		((GridData) buttonSection
+				.getLayoutData()).grabExcessHorizontalSpace = true;
+		return composite;
+	}
+

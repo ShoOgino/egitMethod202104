@@ -10,8 +10,8 @@
 					return Status.CANCEL_STATUS;
 				} catch (InvocationTargetException e) {
 					Throwable thr = e.getCause();
-					return new Status(IStatus.ERROR, Activator.getPluginId(),
-							0, thr.getMessage(), thr);
+					return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+							thr.getMessage(), thr);
 				}
 			}
 

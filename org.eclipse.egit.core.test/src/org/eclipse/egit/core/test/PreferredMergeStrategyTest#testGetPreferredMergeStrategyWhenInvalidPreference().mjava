@@ -2,9 +2,9 @@
 	public void testGetPreferredMergeStrategyWhenInvalidPreference() {
 		// Using "invalid value" simulates a property set to a merge strategy
 		// that's no longer registered
-		InstanceScope.INSTANCE.getNode(Activator.getPluginId())
-				.put(GitCorePreferences.core_preferredMergeStrategy,
-						"invalid value");
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).put(
+				GitCorePreferences.core_preferredMergeStrategy,
+				"invalid value");
 
 		assertNull(a.getPreferredMergeStrategy());
 	}

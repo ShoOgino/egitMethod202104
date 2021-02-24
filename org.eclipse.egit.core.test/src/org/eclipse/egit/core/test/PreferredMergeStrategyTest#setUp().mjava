@@ -4,7 +4,7 @@
 	@Before
 	public void setUp() {
 		a = Activator.getDefault();
-		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).remove(
-				GitCorePreferences.core_preferredMergeStrategy);
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
+				.remove(GitCorePreferences.core_preferredMergeStrategy);
 	}
 

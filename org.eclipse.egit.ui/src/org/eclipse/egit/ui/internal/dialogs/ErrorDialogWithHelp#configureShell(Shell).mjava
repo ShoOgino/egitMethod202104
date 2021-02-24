@@ -1,0 +1,9 @@
+	@Override
+	protected void configureShell(Shell shell) {
+		super.configureShell(shell);
+		if (helpId != null) {
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(shell,
+					helpId);
+		}
+	}
+

@@ -53,7 +53,7 @@
 			if (next < dirc.getEntryCount())
 				edit.keep(next, dirc.getEntryCount() - next);
 			if (!edit.commit())
-				tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(),
+				tree.failed(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						0, CoreText.MoveDeleteHook_operationError, null));
 			tree.standardDeleteFile(file, updateFlags, monitor);
 		} catch (LockFailedException e) {
@@ -70,13 +70,13 @@
 			// needed, which won't happen for calls triggered by merge
 			// operations from the merge strategies.
 			Activator.getDefault().getLog()
-					.log(new Status(IStatus.WARNING, Activator.getPluginId(),
+					.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 							MessageFormat
 									.format(CoreText.MoveDeleteHook_cannotAutoStageDeletion,
 											file.getLocation())));
 			return FINISH_FOR_ME;
 		} catch (IOException e) {
-			tree.failed(new Status(IStatus.ERROR, Activator.getPluginId(), 0,
+			tree.failed(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 					CoreText.MoveDeleteHook_operationError, e));
 		} finally {
 			if (dirc != null)

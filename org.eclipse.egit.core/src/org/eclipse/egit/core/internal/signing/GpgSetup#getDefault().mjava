@@ -1,0 +1,27 @@
+	/**
+	 * Ensures that the default {@link GpgSigner} is the one set from the
+	 * preferences.
+	 *
+	 * @return the {@link GpgSigner}
+	 */
+	public static GpgSigner getDefault() {
+		Signer signer = getSigner();
+		synchronized (LOCK) {
+			if (signer != current) {
+				current = signer;
+				switch (signer) {
+				case BC:
+					GpgSigner.setDefault(BouncyCastleGpgSignerFactory.create());
+					break;
+				case GPG:
+					GpgSigner.setDefault(new ExternalGpgSigner());
+					break;
+				default:
+					// Internal error, no translation
+					throw new IllegalStateException("Unknown signer " + signer); //$NON-NLS-1$
+				}
+			}
+			return GpgSigner.getDefault();
+		}
+	}
+

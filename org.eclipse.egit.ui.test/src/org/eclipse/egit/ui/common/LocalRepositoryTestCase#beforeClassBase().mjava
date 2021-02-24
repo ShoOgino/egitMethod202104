@@ -1,20 +1,20 @@
 	@BeforeClass
 	public static void beforeClassBase() throws Exception {
+		FS.FileStoreAttributes.setBackground(false);
 		// suppress auto-ignoring and auto-sharing to avoid interference
 		IEclipsePreferences corePrefs = InstanceScope.INSTANCE
-				.getNode(org.eclipse.egit.core.Activator.getPluginId());
+				.getNode(org.eclipse.egit.core.Activator.PLUGIN_ID);
 		corePrefs.putBoolean(
 				GitCorePreferences.core_autoIgnoreDerivedResources, false);
 		corePrefs.putBoolean(GitCorePreferences.core_autoShareProjects, false);
+		IPreferenceStore uiPrefs = org.eclipse.egit.ui.Activator.getDefault()
+				.getPreferenceStore();
 		// suppress the configuration dialog
-		org.eclipse.egit.ui.Activator.getDefault().getPreferenceStore()
-				.setValue(UIPreferences.SHOW_INITIAL_CONFIG_DIALOG, false);
+		uiPrefs.setValue(UIPreferences.SHOW_INITIAL_CONFIG_DIALOG, false);
 		// suppress the detached head warning dialog
-		org.eclipse.egit.ui.Activator
-				.getDefault()
-				.getPreferenceStore()
-				.setValue(UIPreferences.SHOW_DETACHED_HEAD_WARNING,
-						false);
+		uiPrefs.setValue(UIPreferences.SHOW_DETACHED_HEAD_WARNING, false);
+		// suppress checking for external changes to git repositories
+		uiPrefs.setValue(UIPreferences.REFRESH_INDEX_INTERVAL, 0);
 		closeGitViews();
 	}
 

@@ -1,0 +1,32 @@
+	@Deactivate
+	void shutDown() {
+		if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
+			GitTraceLocation.getTrace().trace(
+					GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
+					"Trying to cancel " + scanner.getName() + " job"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		Activator.getDefault().getPreferenceStore()
+				.removePropertyChangeListener(scanner);
+		scanner.setReschedule(false);
+		scanner.cancel();
+		refreshJob.cancel();
+
+		try {
+			scanner.join();
+			refreshJob.join();
+			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
+						"Jobs terminated"); //$NON-NLS-1$
+			}
+		} catch (InterruptedException e) {
+			if (GitTraceLocation.REPOSITORYCHANGESCANNER.isActive()) {
+				GitTraceLocation.getTrace().trace(
+						GitTraceLocation.REPOSITORYCHANGESCANNER.getLocation(),
+						"Jobs termination interrupted"); //$NON-NLS-1$
+			}
+			Thread.currentThread().interrupt();
+		}
+	}
+

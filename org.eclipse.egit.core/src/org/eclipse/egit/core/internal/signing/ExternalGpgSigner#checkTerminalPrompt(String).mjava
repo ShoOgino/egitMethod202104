@@ -1,0 +1,16 @@
+	private void checkTerminalPrompt(String gpgTraceLine) {
+		// @formatter:off
+		// Expected format: [GNUPG:] PINENTRY_LAUNCHED <pid> <pinentry-type> <version> <tty> <tty-type> <display>
+		// Example: [GNUPG:] PINENTRY_LAUNCHED 22245 curses 1.1.1 - xterm-256color <$DISPLAY>
+		// @formatter:on
+		String[] parts = gpgTraceLine.split(" "); //$NON-NLS-1$
+		if (parts.length > 3 && "[GNUPG:]".equals(parts[0]) //$NON-NLS-1$
+				&& "PINENTRY_LAUNCHED".equals(parts[1])) { //$NON-NLS-1$
+			String pinentryType = parts[3];
+			if ("tty".equals(pinentryType) || "curses".equals(pinentryType)) { //$NON-NLS-1$ //$NON-NLS-2$
+				throw new GpgConfigurationException(MessageFormat.format(
+						CoreText.ExternalGpgSigner_ttyInput, gpgTraceLine));
+			}
+		}
+	}
+

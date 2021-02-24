@@ -1,0 +1,12 @@
+	private static String toString(TemporaryBuffer b) {
+		if (b != null) {
+			try {
+				return new String(b.toByteArray(4000),
+						Charset.defaultCharset());
+			} catch (IOException e) {
+				Activator.logWarning(CoreText.ExternalGpgSigner_bufferError, e);
+			}
+		}
+		return ""; //$NON-NLS-1$
+	}
+

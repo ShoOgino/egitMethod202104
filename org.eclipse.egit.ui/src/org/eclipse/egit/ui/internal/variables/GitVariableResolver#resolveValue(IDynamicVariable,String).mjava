@@ -9,7 +9,7 @@
 			return getGitWorkTree(argument);
 		if (variable.getName().equals(GIT_BRANCH))
 			return getGitBranch(argument);
-		throw new CoreException(new Status(IStatus.ERROR, Activator
-				.getPluginId(), UIText.GitVariableResolver_InternalError));
+		throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+				UIText.GitVariableResolver_InternalError));
 	}
 

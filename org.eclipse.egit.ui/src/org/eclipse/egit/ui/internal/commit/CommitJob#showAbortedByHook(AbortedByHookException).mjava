@@ -9,8 +9,8 @@
 			@Override
 			public void run() {
 				MessageDialog.openWarning(PlatformUI.getWorkbench()
-						.getDisplay().getActiveShell(), createTitle(),
-						cause.getHookStdErr());
+						.getModalDialogShellProvider().getShell(),
+						createTitle(), cause.getHookStdErr());
 			}
 		});
 	}

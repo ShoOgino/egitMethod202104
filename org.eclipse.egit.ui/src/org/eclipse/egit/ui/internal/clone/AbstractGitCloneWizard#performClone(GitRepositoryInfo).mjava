@@ -33,7 +33,7 @@
 					UIText.GitCloneWizard_errorCannotCreate, workdir.getPath());
 			ErrorDialog.openError(getShell(), getWindowTitle(),
 					UIText.GitCloneWizard_failed, new Status(IStatus.ERROR,
-							Activator.getPluginId(), 0, errorMessage, null));
+							Activator.PLUGIN_ID, errorMessage, null));
 			// let's give user a chance to fix this minor problem
 			return false;
 		}

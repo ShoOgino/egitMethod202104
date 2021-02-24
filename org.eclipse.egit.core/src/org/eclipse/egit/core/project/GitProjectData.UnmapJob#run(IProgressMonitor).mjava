@@ -4,7 +4,7 @@
 				RepositoryProvider.unmap(project);
 				return Status.OK_STATUS;
 			} catch (TeamException e) {
-				return new Status(IStatus.ERROR, Activator.getPluginId(),
+				return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						MessageFormat.format(
 								CoreText.GitProjectData_UnmappingGoneResourceFailed,
 								project.getName()),

@@ -1,19 +1,6 @@
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
-		// we want to be notified about debug options changes
-		Dictionary<String, String> props = new Hashtable<>(4);
-		props.put(DebugOptions.LISTENER_SYMBOLICNAME, context.getBundle()
-				.getSymbolicName());
-		context.registerService(DebugOptionsListener.class.getName(), this,
-				props);
-
-		SelectionRepositoryStateCache.INSTANCE.initialize();
-		setupRepoChangeScanner();
-		setupFocusHandling();
-		setupCredentialsProvider();
-		ConfigurationChecker.checkConfiguration();
-
-		registerTemplateVariableResolvers();
+		CredentialsProvider.setDefault(new EGitCredentialsProvider());
 	}
 

@@ -2,8 +2,8 @@
 	public void testGetPreferredMergeStrategyWhenValidPreference() {
 		// Using "resolve" here because there's no need for more configuration
 		// in this test, it is a registered MergeStrategy
-		InstanceScope.INSTANCE.getNode(Activator.getPluginId()).put(
-				GitCorePreferences.core_preferredMergeStrategy, "resolve");
+		InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
+				.put(GitCorePreferences.core_preferredMergeStrategy, "resolve");
 
 		assertSame(MergeStrategy.RESOLVE, a.getPreferredMergeStrategy());
 	}

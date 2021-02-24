@@ -5,7 +5,8 @@
 			try {
 				return mapping.getRepository().getBranch();
 			} catch (IOException e) {
-				throw new CoreException(new Status(IStatus.ERROR, Activator.getPluginId(), e.getMessage()));
+				throw new CoreException(new Status(IStatus.ERROR,
+						Activator.PLUGIN_ID, e.getMessage()));
 			}
 		else
 			return ""; //$NON-NLS-1$

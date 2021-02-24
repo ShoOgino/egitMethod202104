@@ -1,0 +1,9 @@
+	private void createHelpControl(Composite parent) {
+		Image helpImage = JFaceResources.getImage(DLG_IMG_HELP);
+		if (helpImage != null) {
+			createHelpImageButton(parent, helpImage);
+		} else {
+			createHelpLink(parent);
+		}
+	}
+

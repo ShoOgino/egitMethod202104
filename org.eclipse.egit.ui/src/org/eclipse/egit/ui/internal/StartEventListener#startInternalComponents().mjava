@@ -1,0 +1,8 @@
+	private void startInternalComponents() {
+		if (started.compareAndSet(false, true)) {
+			SelectionRepositoryStateCache.INSTANCE.initialize();
+			registerCoreJobFamilyIcons();
+			registerTemplateVariableResolvers();
+		}
+	}
+

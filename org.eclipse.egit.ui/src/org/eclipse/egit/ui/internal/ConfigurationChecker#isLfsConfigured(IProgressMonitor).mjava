@@ -1,0 +1,17 @@
+	private static boolean isLfsConfigured(IProgressMonitor monitor) {
+		try {
+			StoredConfig cfg = SystemReader.getInstance().openUserConfig(null,
+					FS.DETECTED);
+			if (monitor.isCanceled()) {
+				return true; // Don't do anything more if canceled
+			}
+			cfg.load();
+			return cfg.getSubsections(ConfigConstants.CONFIG_FILTER_SECTION)
+					.contains("lfs"); //$NON-NLS-1$
+		} catch (Exception e) {
+			Activator.handleIssue(IStatus.WARNING,
+					UIText.ConfigurationChecker_installLfsCannotLoadConfig, e, false);
+		}
+		return false;
+	}
+

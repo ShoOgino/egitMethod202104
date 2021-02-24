@@ -50,14 +50,20 @@
 		CommitBuilder builder = copy(commit, commit.getParents(), committer,
 				newMessage);
 		// Signature will be invalid for the new commit. Try to re-sign.
-		GpgConfig gpgConfig = new GpgConfig(repository.getConfig());
+		File gpgProgram = GitSettings.getGpgExecutable();
+		GpgConfig gpgConfig = new GpgConfig(repository.getConfig()) {
+
+			@Override
+			public String getProgram() {
+				return gpgProgram != null ? gpgProgram.getAbsolutePath()
+						: super.getProgram();
+			}
+		};
 		boolean signAllCommits = gpgConfig.isSignCommits();
-		String keyId = gpgConfig.getSigningKey();
-		GpgSigner gpgSigner = GpgSigner.getDefault();
+		GpgSigner gpgSigner = GpgSetup.getDefault();
 		if (gpgSigner != null
 				&& (signAllCommits || commit.getRawGpgSignature() != null)) {
-			gpgSigner = sign(builder, gpgSigner, signAllCommits, keyId,
-					committer, commit.getCommitterIdent(), commit);
+			gpgSigner = sign(builder, gpgSigner, gpgConfig, committer, commit);
 		}
 		Map<ObjectId, ObjectId> rewritten = new HashMap<>();
 		String newCommitId = null;
@@ -86,8 +92,8 @@
 				builder = copy(c, newParents, committer, c.getFullMessage());
 				if (gpgSigner != null
 						&& (signAllCommits || c.getRawGpgSignature() != null)) {
-					gpgSigner = sign(builder, gpgSigner, signAllCommits, keyId,
-							committer, c.getCommitterIdent(), c);
+					gpgSigner = sign(builder, gpgSigner, gpgConfig, committer,
+							c);
 				}
 				rewritten.put(c.getId(), inserter.insert(builder));
 				progress.worked(1);

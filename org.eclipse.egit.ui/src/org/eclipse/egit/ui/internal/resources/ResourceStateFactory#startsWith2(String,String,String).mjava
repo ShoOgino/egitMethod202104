@@ -1,0 +1,9 @@
+	/*
+	 * same as s.startsWith(prefix1+prefix2) but faster since it avoids memory
+	 * allocation during string concatenation
+	 */
+	private static boolean startsWith2(String s, String prefix1,
+			String prefix2) {
+		return s.startsWith(prefix1) && s.startsWith(prefix2, prefix1.length());
+	}
+

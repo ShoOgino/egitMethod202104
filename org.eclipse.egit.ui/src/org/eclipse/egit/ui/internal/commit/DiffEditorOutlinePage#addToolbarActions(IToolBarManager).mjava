@@ -1,5 +1,5 @@
 	private void addToolbarActions(IToolBarManager toolbarManager) {
-		Action collapseAction = new Action(UIText.UIUtils_CollapseAll,
+		collapseAction = new Action(UIText.UIUtils_CollapseAll,
 				PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
 						ISharedImages.IMG_ELCL_COLLAPSEALL)) {
 			@Override
@@ -15,15 +15,31 @@
 		handlerService.activateHandler(collapseAction.getActionDefinitionId(),
 				collapseHandler);
 
-		Action toggleTreeModeAction = new Action(
-				UIText.DiffEditor_OutlineTreeToggle) {
+		IPreferenceStore preferences = Activator.getDefault()
+				.getPreferenceStore();
+		togglePresentationAction = new Action(
+				UIText.DiffEditor_OutlineTreeToggle, IAction.AS_CHECK_BOX) {
 			@Override
 			public void run() {
-				updateOutlineTreeMode(true, this);
+				boolean compact = isChecked();
+				preferences.setValue(UIPreferences.DIFF_OUTLINE_PRESENTATION,
+						compact);
+				((DiffContentProvider) getTreeViewer().getContentProvider())
+						.setCompactTree(compact);
+				getTreeViewer().setInput(getTreeViewer().getInput());
 			}
 		};
-		updateOutlineTreeMode(false, toggleTreeModeAction);
+		togglePresentationAction.setImageDescriptor(UIIcons.COMPACT);
+		togglePresentationAction.setToolTipText(
+				UIText.DiffEditor_OutlineShowCompactTreeTooltip);
+		boolean compact = preferences
+				.getBoolean(UIPreferences.DIFF_OUTLINE_PRESENTATION);
+		togglePresentationAction.setChecked(compact);
+		updateToolbarActions();
 		toolbarManager.add(collapseAction);
-		toolbarManager.add(toggleTreeModeAction);
+		toolbarManager.add(togglePresentationAction);
+		((DiffContentProvider) getTreeViewer().getContentProvider())
+				.setCompactTree(compact);
+		getTreeViewer().setInput(getTreeViewer().getInput());
 	}
 

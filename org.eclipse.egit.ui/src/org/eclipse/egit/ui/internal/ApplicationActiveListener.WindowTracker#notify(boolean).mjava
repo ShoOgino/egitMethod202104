@@ -1,0 +1,11 @@
+		private void notify(boolean active) {
+			if (PlatformUI.isWorkbenchRunning()) {
+				IEventBroker broker = PlatformUI.getWorkbench()
+						.getService(IEventBroker.class);
+				if (broker != null) {
+					broker.post(TOPIC_APPLICATION_ACTIVE,
+							Boolean.valueOf(active));
+				}
+			}
+		}
+

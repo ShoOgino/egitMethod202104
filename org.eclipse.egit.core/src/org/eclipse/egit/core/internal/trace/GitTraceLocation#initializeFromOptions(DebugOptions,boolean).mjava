@@ -9,7 +9,7 @@
 
 		// we evaluate the plug-in switch
 		if (pluginIsDebugging) {
-			myTrace = options.newDebugTrace(Activator.getPluginId());
+			myTrace = options.newDebugTrace(Activator.PLUGIN_ID);
 			for (GitTraceLocation loc : values()) {
 				boolean active = options.getBooleanOption(loc.getFullPath(),
 						false);

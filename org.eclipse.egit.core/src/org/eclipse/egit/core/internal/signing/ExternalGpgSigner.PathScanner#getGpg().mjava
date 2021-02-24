@@ -1,0 +1,7 @@
+		synchronized String getGpg() {
+			if (gpg == null) {
+				gpg = findGpg();
+			}
+			return gpg.isEmpty() ? null : gpg;
+		}
+

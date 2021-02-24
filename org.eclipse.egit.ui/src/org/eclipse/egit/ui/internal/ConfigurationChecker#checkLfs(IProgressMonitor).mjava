@@ -1,0 +1,18 @@
+	private static void checkLfs(IProgressMonitor monitor) {
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		boolean auto = store.getBoolean(UIPreferences.LFS_AUTO_CONFIGURATION);
+		if (auto && !isLfsConfigured(monitor)) {
+			try {
+				LfsInstallCommand cmd = LfsFactory.getInstance()
+						.getInstallCommand();
+				if (cmd != null && !monitor.isCanceled()) {
+					cmd.call();
+				}
+			} catch (Exception e) {
+				Activator.handleIssue(IStatus.WARNING,
+						UIText.ConfigurationChecker_installLfsCannotInstall, e,
+						!monitor.isCanceled());
+			}
+		}
+	}
+

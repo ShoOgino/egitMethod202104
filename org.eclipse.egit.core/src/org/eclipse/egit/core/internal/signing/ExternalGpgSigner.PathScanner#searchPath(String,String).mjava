@@ -1,0 +1,19 @@
+		private static String searchPath(String path, String name) {
+			if (StringUtils.isEmptyOrNull(path)) {
+				return null;
+			}
+			for (String p : path.split(File.pathSeparator)) {
+				File exe = new File(p, name);
+				try {
+					if (exe.isFile() && exe.canExecute()) {
+						return exe.getAbsolutePath();
+					}
+				} catch (SecurityException e) {
+					Activator.logWarning(MessageFormat.format(
+							CoreText.ExternalGpgSigner_skipNotAccessiblePath,
+							exe.getPath()), e);
+				}
+			}
+			return null;
+		}
+
