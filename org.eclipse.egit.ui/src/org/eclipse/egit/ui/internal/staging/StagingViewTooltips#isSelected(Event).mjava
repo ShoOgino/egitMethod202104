@@ -1,6 +1,7 @@
 	private boolean isSelected(Event event) {
 		ViewerCell currentCell = getToolTipArea(event);
-		if (currentCell == null) {
+		if (currentCell == null || currentCell.getColumnIndex() > 0
+				&& !currentCell.getText().isEmpty()) {
 			return false;
 		}
 		Object item = currentCell.getElement();

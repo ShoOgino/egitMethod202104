@@ -26,5 +26,7 @@
 		submodules = Collections.unmodifiableSet(new HashSet<>(indexDiff
 				.getPathsWithIndexMode(FileMode.GITLINK)));
 		changedResources = Collections.emptySet();
+		conflictStates = Collections.unmodifiableMap(
+				new HashMap<>(indexDiff.getConflictingStageStates()));
 	}
 

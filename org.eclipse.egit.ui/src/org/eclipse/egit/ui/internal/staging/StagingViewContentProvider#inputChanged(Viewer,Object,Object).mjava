@@ -58,9 +58,13 @@
 			for (String file : indexDiff.getUntracked())
 				nodes.add(new StagingEntry(repository, UNTRACKED, file,
 						this::getFile));
-			for (String file : indexDiff.getConflicting())
-				nodes.add(new StagingEntry(repository, CONFLICTING, file,
-						this::getFile));
+			for (String file : indexDiff.getConflicting()) {
+				StagingEntry newEntry = new StagingEntry(repository,
+						CONFLICTING, file, this::getFile);
+				newEntry.setConflictType(
+						indexDiff.getConflictStates().get(file));
+				nodes.add(newEntry);
+			}
 		} else {
 			for (String file : indexDiff.getAdded())
 				nodes.add(new StagingEntry(repository, ADDED, file,

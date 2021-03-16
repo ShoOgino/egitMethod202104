@@ -32,8 +32,16 @@
 				// Conflicts override everything
 				if (store
 						.getBoolean(UIPreferences.DECORATOR_SHOW_CONFLICTS_ICON)
-						&& resource.hasConflicts())
-					overlay = CONFLICT_IMAGE;
+						&& resource.hasConflicts()) {
+					StageState conflictType = resource.getConflictType();
+					if (conflictType == StageState.DELETED_BY_THEM) {
+						overlay = MODIFY_DELETE_IMAGE;
+					} else if (conflictType == StageState.DELETED_BY_US) {
+						overlay = DELETE_MODIFY_IMAGE;
+					} else {
+						overlay = CONFLICT_IMAGE;
+					}
+				}
 
 			} else if (store
 					.getBoolean(UIPreferences.DECORATOR_SHOW_UNTRACKED_ICON)) {

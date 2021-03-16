@@ -26,6 +26,8 @@
 		Set<String> conflicts2 = new HashSet<>(baseDiff.getConflicting());
 		Set<String> symlinks2 = new HashSet<>(baseDiff.getSymlinks());
 		Set<String> submodules2 = new HashSet<>(baseDiff.getSubmodules());
+		Map<String, StageState> conflictStates2 = new HashMap<>(
+				baseDiff.getConflictStates());
 
 		mergeList(added2, changedFiles, diffForChangedFiles.getAdded());
 		mergeList(assumeUnchanged2, changedFiles,
@@ -43,7 +45,8 @@
 				baseDiff.getUntrackedFolders(), changedFiles,
 				getUntrackedFolders(diffForChangedFiles));
 		mergeList(conflicts2, changedFiles,
-				diffForChangedFiles.getConflicting());
+				diffForChangedFiles.getConflicting(), conflictStates2,
+				diffForChangedFiles.getConflictingStageStates());
 		Set<String> ignored2 = mergeIgnored(baseDiff.getIgnoredNotInIndex(), changedFiles,
 				diffForChangedFiles.getIgnoredNotInIndex());
 
@@ -59,5 +62,6 @@
 		ignored = Collections.unmodifiableSet(ignored2);
 		symlinks = Collections.unmodifiableSet(symlinks2);
 		submodules = Collections.unmodifiableSet(submodules2);
+		conflictStates = Collections.unmodifiableMap(conflictStates2);
 	}
 

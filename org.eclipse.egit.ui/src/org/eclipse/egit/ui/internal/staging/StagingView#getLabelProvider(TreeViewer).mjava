@@ -1,0 +1,8 @@
+	private StagingViewLabelProvider getLabelProvider(TreeViewer viewer) {
+		IBaseLabelProvider base = viewer.getLabelProvider(0);
+		if (base == null) {
+			base = viewer.getLabelProvider();
+		}
+		return ((TreeDecoratingLabelProvider) base).getBaseLabelProvider();
+	}
+

@@ -1,0 +1,20 @@
+	private int getColumnWidth(Tree tree, String... labels) {
+		GC gc = new GC(tree.getDisplay());
+		try {
+			gc.setFont(tree.getFont());
+			int width = -1;
+			for (String label : labels) {
+				int w = gc.textExtent(label).x;
+				if (w > width) {
+					width = w;
+				}
+			}
+			// Add some margin to account for internal padding of the tree cell
+			// and possible gaps between columns. OS X needs 4, GTK 6, and
+			// Windows 8 pixels to fully show the text.
+			return width + 8;
+		} finally {
+			gc.dispose();
+		}
+	}
+

@@ -28,6 +28,10 @@
 		// conflicting
 		Set<String> conflicting = indexDiffData.getConflicting();
 		state.setConflicts(conflicting.contains(repoRelativePath));
+		if (state.hasConflicts()) {
+			state.setConflictType(
+					indexDiffData.getConflictStates().get(repoRelativePath));
+		}
 
 		// locally modified
 		Set<String> modified = indexDiffData.getModified();
