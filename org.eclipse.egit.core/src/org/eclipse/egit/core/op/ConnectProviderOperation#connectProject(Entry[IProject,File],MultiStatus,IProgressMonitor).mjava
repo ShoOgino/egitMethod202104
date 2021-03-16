@@ -48,8 +48,8 @@
 		RepositoryProvider.map(project, GitProvider.ID);
 
 		IPath gitPath = actualMapping.getGitDirAbsolutePath();
+		checkForSubmodules(project, subMon.newChild(10));
 		if (refreshResources) {
-			touchGitResources(project, subMon.newChild(10));
 			project.refreshLocal(IResource.DEPTH_INFINITE, subMon.newChild(30));
 			if (gitPath != null) {
 				try {
@@ -66,7 +66,7 @@
 				}
 			}
 		} else {
-			subMon.worked(40);
+			subMon.worked(30);
 		}
 
 		autoIgnoreDerivedResources(project, subMon.newChild(10));

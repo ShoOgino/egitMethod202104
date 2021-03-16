@@ -1,6 +1,6 @@
 	/**
-	 * Touches all descendants named ".git" so that they'll be included in a
-	 * subsequent resource delta.
+	 * Scan all descendants for files or folders named ".git" and pass them to
+	 * GitProjectData to pick up possible submodules or nested repositories.
 	 *
 	 * @param project
 	 *            to process
@@ -8,8 +8,11 @@
 	 *            for progress reporting and cancellation, may be {@code null}
 	 *            if neither is desired
 	 */
-	private void touchGitResources(IProject project, IProgressMonitor monitor) {
-		final SubMonitor progress = SubMonitor.convert(monitor, 1);
+	private void checkForSubmodules(IProject project,
+			IProgressMonitor monitor) {
+		SubMonitor progress = SubMonitor.convert(monitor, 2);
+		SubMonitor seekProgress = progress.newChild(1);
+		List<IResource> gitDirs = new ArrayList<>();
 		try {
 			project.accept(new IResourceProxyVisitor() {
 				@Override
@@ -18,8 +21,9 @@
 					int type = resource.getType();
 					if ((type == IResource.FILE || type == IResource.FOLDER)
 							&& Constants.DOT_GIT.equals(resource.getName())) {
-						progress.setWorkRemaining(2);
-						resource.requestResource().touch(progress.newChild(1));
+						seekProgress.setWorkRemaining(2);
+						gitDirs.add(resource.requestResource());
+						seekProgress.worked(1);
 						return false;
 					}
 					return true;
@@ -28,5 +32,6 @@
 		} catch (CoreException e) {
 			Activator.logError(e.getMessage(), e);
 		}
+		GitProjectData.update(gitDirs, progress.newChild(1));
 	}
 

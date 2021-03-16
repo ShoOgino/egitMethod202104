@@ -33,43 +33,10 @@
 							|| resource.isLinked()) {
 						return false;
 					}
-					IPath location = resource.getLocation();
-					if (location == null) {
-						return false;
-					}
 					if (!Constants.DOT_GIT.equals(resource.getName())) {
 						return type == IResource.FOLDER;
 					}
-					// A file or folder named .git
-					File gitCandidate = location.toFile().getParentFile();
-					File git = new FileRepositoryBuilder()
-							.addCeilingDirectory(gitCandidate)
-							.findGitDir(gitCandidate).getGitDir();
-					if (git == null) {
-						return false;
-					}
-					// Yes, indeed a valid git directory.
-					GitProjectData data = get(resource.getProject());
-					if (data == null) {
-						return false;
-					}
-					RepositoryMapping m = RepositoryMapping
-							.create(resource.getParent(), git);
-					// Is its working directory really here? If not,
-					// a submodule folder may have been copied.
-					try {
-						Repository r = RepositoryCache.getInstance()
-								.lookupRepository(git);
-						if (m != null && r != null && !r.isBare()
-								&& gitCandidate.equals(r.getWorkTree())) {
-							if (data.map(m)) {
-								data.mappings.put(m.getContainerPath(), m);
-								modified.add(data);
-							}
-						}
-					} catch (IOException e) {
-						Activator.logError(e.getMessage(), e);
-					}
+					createMappingIfNeeded(resource, modified);
 					return false;
 				}
 			});

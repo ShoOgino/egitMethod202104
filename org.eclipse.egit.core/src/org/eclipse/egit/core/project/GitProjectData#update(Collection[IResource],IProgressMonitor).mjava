@@ -1,0 +1,36 @@
+	/**
+	 * Update mappings of EGit-managed projects for the given DOT_GIT
+	 * directories.
+	 *
+	 * @param gitDirectories
+	 *            to check
+	 * @param monitor
+	 *            for progress reporting and cancellation
+	 */
+	public static void update(Collection<IResource> gitDirectories,
+			IProgressMonitor monitor) {
+		SubMonitor progress = SubMonitor.convert(monitor,
+				gitDirectories.size());
+		Set<GitProjectData> modified = new HashSet<>();
+		try {
+			for (IResource resource : gitDirectories) {
+				if (progress.isCanceled()) {
+					break;
+				}
+				if (resource.isAccessible()
+						&& Constants.DOT_GIT.equals(resource.getName())) {
+					createMappingIfNeeded(resource, modified);
+				}
+				progress.worked(1);
+			}
+		} finally {
+			for (GitProjectData data : modified) {
+				try {
+					data.store();
+				} catch (CoreException e) {
+					Activator.logError(e.getMessage(), e);
+				}
+			}
+		}
+	}
+
