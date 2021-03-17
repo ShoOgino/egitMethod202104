@@ -1,7 +1,7 @@
 	private Map<IResource, Boolean> computeResources(
 			Collection<String> modified, Collection<String> deleted,
 			IPath workTree, Map<IPath, IProject> roots,
-			IProgressMonitor monitor) {
+			Collection<String> needRefresh, IProgressMonitor monitor) {
 		// Attempt to minimize the refreshes by returning IContainers if
 		// more than one file in a container has changed.
 		if (GitTraceLocation.REFRESH.isActive()) {
@@ -32,10 +32,15 @@
 				return;
 			}
 			if (fullRefreshes.stream()
-					.anyMatch(full -> full.isPrefixOf(filePath))
-					|| !roots.keySet().stream()
-							.anyMatch(root -> root.isPrefixOf(filePath))) {
-				// Not in workspace or covered by a full container refresh
+					.anyMatch(full -> full.isPrefixOf(filePath))) {
+				// Covered by a full container refresh
+				progress.worked(1);
+				return;
+			}
+			if (!roots.keySet().stream()
+					.anyMatch(root -> root.isPrefixOf(filePath))) {
+				// Not in workspace.
+				needRefresh.add(path);
 				progress.worked(1);
 				return;
 			}

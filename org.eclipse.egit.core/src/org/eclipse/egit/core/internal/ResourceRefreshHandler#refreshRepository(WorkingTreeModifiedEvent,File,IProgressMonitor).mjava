@@ -25,14 +25,24 @@
 		Map<IPath, IProject> roots = getProjectLocations(workTree);
 		if (roots.isEmpty()) {
 			// No open projects from this repository in the workspace
+			if (!event.getModified().isEmpty()
+					|| !event.getDeleted().isEmpty()) {
+				Set<String> toRefresh = new HashSet<>(event.getModified());
+				toRefresh.addAll(event.getDeleted());
+				refreshIndex(event.getRepository(), toRefresh);
+			}
 			progress.done();
 			return;
 		}
 		IPath wt = new Path(workTree.getPath());
+		List<String> needRefresh = new ArrayList<>();
 		Map<IResource, Boolean> toRefresh = computeResources(
-				event.getModified(), event.getDeleted(), wt, roots,
+				event.getModified(), event.getDeleted(), wt, roots, needRefresh,
 				progress.newChild(1));
 		if (toRefresh.isEmpty()) {
+			if (!needRefresh.isEmpty()) {
+				refreshIndex(event.getRepository(), needRefresh);
+			}
 			return;
 		}
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -67,5 +77,8 @@
 		// update notifications.
 		workspace.run(operation, null, IWorkspace.AVOID_UPDATE,
 				progress.newChild(1));
+		if (!needRefresh.isEmpty()) {
+			refreshIndex(event.getRepository(), needRefresh);
+		}
 	}
 
