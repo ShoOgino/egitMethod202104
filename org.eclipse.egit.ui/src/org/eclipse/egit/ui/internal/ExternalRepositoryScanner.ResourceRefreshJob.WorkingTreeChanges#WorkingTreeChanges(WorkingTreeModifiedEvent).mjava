@@ -1,6 +1,5 @@
 			public WorkingTreeChanges(WorkingTreeModifiedEvent event) {
-				workTree = event.getRepository().getWorkTree()
-						.getAbsoluteFile();
+				gitDir = event.getRepository().getDirectory();
 				modified = new HashSet<>(event.getModified());
 				deleted = new HashSet<>(event.getDeleted());
 			}
