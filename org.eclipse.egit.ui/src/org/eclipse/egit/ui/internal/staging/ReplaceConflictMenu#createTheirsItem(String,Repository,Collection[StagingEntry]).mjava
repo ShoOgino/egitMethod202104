@@ -1,0 +1,6 @@
+	private static IContributionItem createTheirsItem(String label,
+			Repository repository, Collection<StagingEntry> entries) {
+		return new ActionContributionItem(
+				new ReplaceAction(label, Stage.THEIRS, repository, entries));
+	}
+

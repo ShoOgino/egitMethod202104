@@ -1,13 +1,12 @@
 	private static Collection<IContributionItem> createSpecificOursTheirsItems(
-			Repository repository, String path) {
+			Repository repository, Collection<StagingEntry> entries) {
 
-		Collection<IPath> paths = Collections.<IPath> singleton(new Path(
-				new File(repository.getWorkTree(), path).getAbsolutePath()));
+		StagingEntry single = entries.iterator().next();
 		List<IContributionItem> result = new ArrayList<>();
 
 		try {
 			ConflictCommits conflictCommits = RevUtils.getConflictCommits(
-					repository, path);
+					repository, single.getPath());
 			RevCommit ourCommit = conflictCommits.getOurCommit();
 			RevCommit theirCommit = conflictCommits.getTheirCommit();
 
@@ -15,25 +14,29 @@
 				result.add(createOursItem(
 						formatCommit(
 								UIText.ReplaceWithOursTheirsMenu_OursWithCommitLabel,
-								ourCommit), paths));
+								ourCommit),
+						repository, entries));
 			else
-				result.add(createOursItem(UIText.ReplaceWithOursTheirsMenu_OursWithoutCommitLabel, paths));
+				result.add(createOursItem(
+						UIText.ReplaceWithOursTheirsMenu_OursWithoutCommitLabel,
+						repository, entries));
 
 			if (theirCommit != null)
 				result.add(createTheirsItem(
 						formatCommit(
 								UIText.ReplaceWithOursTheirsMenu_TheirsWithCommitLabel,
-								theirCommit), paths));
+								theirCommit),
+						repository, entries));
 			else
 				result.add(createTheirsItem(
 						UIText.ReplaceWithOursTheirsMenu_TheirsWithoutCommitLabel,
-						paths));
+						repository, entries));
 
 			return result;
 		} catch (IOException e) {
 			Activator.logError(
 					UIText.ReplaceWithOursTheirsMenu_CalculatingOursTheirsCommitsError, e);
-			return createUnspecificOursTheirsItems(paths);
+			return createUnspecificOursTheirsItems(repository, entries);
 		}
 	}
 

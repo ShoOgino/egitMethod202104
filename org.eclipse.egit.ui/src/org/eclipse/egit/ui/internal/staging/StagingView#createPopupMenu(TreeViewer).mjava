@@ -171,8 +171,8 @@
 				if (addReplaceWithOursTheirsMenu) {
 					MenuManager replaceWithMenu = new MenuManager(
 							UIText.StagingView_ReplaceWith);
-					ReplaceWithOursTheirsMenu oursTheirsMenu = new ReplaceWithOursTheirsMenu();
-					oursTheirsMenu.initialize(getSite());
+					ReplaceConflictMenu oursTheirsMenu = new ReplaceConflictMenu(
+							currentRepository, stagingEntryList);
 					replaceWithMenu.add(oursTheirsMenu);
 					menuMgr.add(replaceWithMenu);
 				}

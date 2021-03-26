@@ -1,0 +1,16 @@
+	/**
+	 * Set the revision to check out.
+	 *
+	 * @param revision
+	 *            to check out
+	 * @throws IllegalStateException
+	 *             if a {@link #setStage(Stage) stage} is set
+	 */
+	public void setRevision(String revision) {
+		if (stage != null && revision != null) {
+			throw new IllegalStateException(
+					"Either stage or revision can be set, but not both"); //$NON-NLS-1$
+		}
+		this.revision = revision;
+	}
+

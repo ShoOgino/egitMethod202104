@@ -1,0 +1,14 @@
+	@Override
+	protected IContributionItem[] getContributionItems() {
+		if (entries == null || entries.isEmpty()) {
+			return new IContributionItem[0];
+		}
+		List<IContributionItem> items = new ArrayList<>();
+		if (entries.size() == 1) {
+			items.addAll(createSpecificOursTheirsItems(repo, entries));
+		} else {
+			items.addAll(createUnspecificOursTheirsItems(repo, entries));
+		}
+		return items.toArray(new IContributionItem[0]);
+	}
+

@@ -14,7 +14,10 @@
 				return;
 			}
 			DiscardChangesOperation operation = new DiscardChangesOperation(
-					repo, files, headRevision ? Constants.HEAD : null);
+					repo, files);
+			if (headRevision) {
+				operation.setRevision(Constants.HEAD);
+			}
 			JobChangeAdapter refresher = null;
 			if (!inaccessibleFiles.isEmpty()) {
 				refresher = new JobChangeAdapter() {
