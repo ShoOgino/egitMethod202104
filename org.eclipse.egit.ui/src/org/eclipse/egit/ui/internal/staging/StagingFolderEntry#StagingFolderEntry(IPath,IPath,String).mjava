@@ -1,13 +1,13 @@
 	/**
 	 * @param repoLocation
 	 * @param repoRelativePath
-	 * @param nodePath
+	 * @param label
 	 */
 	public StagingFolderEntry(IPath repoLocation, IPath repoRelativePath,
-			IPath nodePath) {
+			String label) {
 		this.repoLocation = repoLocation;
 		this.repoRelativePath = repoRelativePath;
-		this.nodePath = nodePath;
+		this.label = label;
 		this.container = ResourceUtil.getContainerForLocation(getLocation(),
 				false);
 	}
