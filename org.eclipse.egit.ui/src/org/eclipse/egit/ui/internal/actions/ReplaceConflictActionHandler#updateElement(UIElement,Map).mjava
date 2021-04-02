@@ -7,7 +7,7 @@
 			RevCommit commit = SelectionRepositoryStateCache.INSTANCE
 					.getHeadCommit(repository);
 			if (commit != null) {
-				element.setText(formatCommit(
+				element.setText(formatCommitLabel(
 						UIText.ReplaceWithOursTheirsMenu_OursWithCommitLabel,
 						commit));
 			}
@@ -15,7 +15,7 @@
 			try {
 				RevCommit commit = RevUtils.getTheirs(repository);
 				if (commit != null) {
-					element.setText(formatCommit(
+					element.setText(formatCommitLabel(
 							UIText.ReplaceWithOursTheirsMenu_TheirsWithCommitLabel,
 							commit));
 				}

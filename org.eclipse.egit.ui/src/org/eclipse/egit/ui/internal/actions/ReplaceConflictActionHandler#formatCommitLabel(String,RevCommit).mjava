@@ -1,0 +1,16 @@
+	/**
+	 * Format a label with commit data. It is assumed that the {@code format}
+	 * string has two placeholders for the commit message and the commit ID.
+	 *
+	 * @param format
+	 *            to use
+	 * @param commit
+	 *            to fill in
+	 * @return the formatted label
+	 */
+	public static String formatCommitLabel(String format, RevCommit commit) {
+		String message = Utils.shortenText(commit.getShortMessage(), 60);
+		return MessageFormat.format(format, Utils.getShortObjectId(commit),
+				message);
+	}
+

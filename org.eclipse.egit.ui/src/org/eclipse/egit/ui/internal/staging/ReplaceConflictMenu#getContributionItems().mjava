@@ -4,10 +4,33 @@
 			return new IContributionItem[0];
 		}
 		List<IContributionItem> items = new ArrayList<>();
-		if (entries.size() == 1) {
-			items.addAll(createSpecificOursTheirsItems(repo, entries));
+		// Ours is HEAD
+		RevCommit ours = SelectionRepositoryStateCache.INSTANCE
+				.getHeadCommit(repo);
+		if (ours != null) {
+			items.add(createOursItem(ReplaceConflictActionHandler.formatCommitLabel(
+					UIText.ReplaceWithOursTheirsMenu_OursWithCommitLabel, ours),
+					repo, entries));
 		} else {
-			items.addAll(createUnspecificOursTheirsItems(repo, entries));
+			items.add(createOursItem(
+					UIText.ReplaceWithOursTheirsMenu_OursWithoutCommitLabel,
+					repo, entries));
+		}
+		RevCommit theirs = null;
+		try {
+			theirs = RevUtils.getTheirs(repo);
+		} catch (IOException e) {
+			Activator.logError(e.getLocalizedMessage(), e);
+		}
+		if (theirs != null) {
+			items.add(
+					createTheirsItem(ReplaceConflictActionHandler.formatCommitLabel(
+							UIText.ReplaceWithOursTheirsMenu_TheirsWithCommitLabel,
+							theirs), repo, entries));
+		} else {
+			items.add(createTheirsItem(
+					UIText.ReplaceWithOursTheirsMenu_TheirsWithoutCommitLabel,
+					repo, entries));
 		}
 		return items.toArray(new IContributionItem[0]);
 	}
