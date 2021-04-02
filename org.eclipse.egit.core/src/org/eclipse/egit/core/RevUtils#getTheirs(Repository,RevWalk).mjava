@@ -1,0 +1,41 @@
+	/**
+	 * Get the 'theirs' commit in a conflict state.
+	 *
+	 * @param repository
+	 *            to get the commits from
+	 * @param walk
+	 *            to use for parsing commits
+	 * @return the commit
+	 * @throws IOException
+	 *             if the commit cannot be determined
+	 */
+	public static RevCommit getTheirs(Repository repository, RevWalk walk)
+			throws IOException {
+		String target;
+		switch (repository.getRepositoryState()) {
+		case MERGING:
+			target = Constants.MERGE_HEAD;
+			break;
+		case CHERRY_PICKING:
+			target = Constants.CHERRY_PICK_HEAD;
+			break;
+		case REBASING_INTERACTIVE:
+			target = readFile(repository.getDirectory(),
+					RebaseCommand.REBASE_MERGE + File.separatorChar
+							+ RebaseCommand.STOPPED_SHA);
+			break;
+		case REVERTING:
+			target = Constants.REVERT_HEAD;
+			break;
+		default:
+			target = Constants.ORIG_HEAD;
+			break;
+		}
+		ObjectId theirs = repository.resolve(target);
+		if (theirs == null) {
+			throw new IOException(MessageFormat.format(
+					CoreText.ValidationUtils_CanNotResolveRefMessage, target));
+		}
+		return walk.parseCommit(theirs);
+	}
+
