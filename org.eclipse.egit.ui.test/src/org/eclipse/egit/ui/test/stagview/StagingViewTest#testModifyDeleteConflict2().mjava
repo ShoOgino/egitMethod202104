@@ -1,12 +1,12 @@
 	/**
 	 * Tests resolving a modify-delete conflict via "Replace with theirs" in the
-	 * staging view, which should remove the file and stage the result.
+	 * project explorer, which should remove the file and stage the result.
 	 *
 	 * @throws Exception
 	 *             on errors
 	 */
 	@Test
-	public void testModifyDeleteConflict() throws Exception {
+	public void testModifyDeleteConflict2() throws Exception {
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJ1)
 				.getFolder(FOLDER).getFile(FILE1);
 		RevCommit side;
@@ -25,6 +25,7 @@
 
 			git.merge().include(repository.findRef("side")).call();
 		}
+		TestUtil.joinJobs(JobFamilies.INDEX_DIFF_CACHE_UPDATE);
 		assertEquals(RepositoryState.MERGING, repository.getRepositoryState());
 
 		StagingViewTester stagingView = StagingViewTester.openStagingView();
@@ -33,21 +34,17 @@
 
 		SWTBotView view = stagingView.getView();
 		SWTBot viewBot = view.bot();
-		SWTBotTree unstagedTree = viewBot.tree(0);
 
-		TestUtil.waitUntilTreeHasNodeContainsText(viewBot, unstagedTree,
-				FILE1_PATH, 10000);
-
-		SWTBotTreeItem item = TestUtil.getNode(unstagedTree.getAllItems(),
-				FILE1_PATH);
-		assertEquals(UIText.StagingView_Conflict_MD_short, item.cell(1));
+		SWTBotTree explorer = TestUtil.getExplorerTree();
+		SWTBotTreeItem item = TestUtil.navigateTo(explorer, PROJ1, FOLDER,
+				FILE1);
 		item.select();
 
 		JobJoiner jobJoiner = JobJoiner.startListening(
 				org.eclipse.egit.core.JobFamilies.INDEX_DIFF_CACHE_UPDATE, 30,
 				TimeUnit.SECONDS);
 
-		ContextMenuHelper.clickContextMenu(unstagedTree,
+		ContextMenuHelper.clickContextMenu(explorer,
 				UIText.StagingView_ReplaceWith,
 				formatCommit(
 						UIText.ReplaceWithOursTheirsMenu_TheirsWithCommitLabel,

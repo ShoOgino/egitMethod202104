@@ -1,0 +1,40 @@
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IPath[] locations = getSelectedLocations(event);
+		if (locations == null || locations.length == 0) {
+			return null;
+		}
+		Map<Repository, Collection<String>> pathsByRepository = ResourceUtil
+				.splitPathsByRepository(Arrays.asList(locations));
+		if (pathsByRepository.size() != 1) {
+			return null;
+		}
+		Entry<Repository, Collection<String>> entry = pathsByRepository
+				.entrySet().iterator().next();
+		Repository repository = entry.getKey();
+		IndexDiffCacheEntry indexDiff = IndexDiffCache.getInstance()
+				.getIndexDiffCacheEntry(repository);
+		if (indexDiff == null) {
+			return null;
+		}
+		IndexDiffData data = indexDiff.getIndexDiff();
+		if (data == null) {
+			return null;
+		}
+		Map<String, StageState> conflictStates = data.getConflictStates();
+		List<String> toCheckout = new ArrayList<>();
+		List<String> toRemove = new ArrayList<>();
+		for (String path : entry.getValue()) {
+			StageState state = conflictStates.get(path);
+			if (StageState.DELETED_BY_THEM == state && stage == Stage.THEIRS
+					|| StageState.DELETED_BY_US == state
+							&& stage == Stage.OURS) {
+				toRemove.add(path);
+			} else {
+				toCheckout.add(path);
+			}
+		}
+		replaceWithStage(repository, stage, toCheckout, toRemove);
+		return null;
+	}
+

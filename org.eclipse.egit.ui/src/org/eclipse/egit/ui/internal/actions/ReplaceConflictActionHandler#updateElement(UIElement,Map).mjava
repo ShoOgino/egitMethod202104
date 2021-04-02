@@ -1,0 +1,27 @@
+	@Override
+	public void updateElement(UIElement element, Map parameters) {
+		Repository repository = SelectionUtils.getRepository(
+				PlatformUI.getWorkbench().getService(IEvaluationService.class)
+						.getCurrentState());
+		if (DiscardChangesOperation.Stage.OURS == stage) {
+			RevCommit commit = SelectionRepositoryStateCache.INSTANCE
+					.getHeadCommit(repository);
+			if (commit != null) {
+				element.setText(formatCommit(
+						UIText.ReplaceWithOursTheirsMenu_OursWithCommitLabel,
+						commit));
+			}
+		} else {
+			try {
+				RevCommit commit = RevUtils.getTheirs(repository);
+				if (commit != null) {
+					element.setText(formatCommit(
+							UIText.ReplaceWithOursTheirsMenu_TheirsWithCommitLabel,
+							commit));
+				}
+			} catch (IOException e) {
+				Activator.logError(e.getLocalizedMessage(), e);
+			}
+		}
+	}
+
